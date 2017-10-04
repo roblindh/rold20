@@ -6,6 +6,7 @@ function application_start()
 {
 	global $_APP;
 	global $db_server, $db_user, $db_password, $db_name, $db_name_campaign;
+        global $footer_parser;
 
 	$db_server = 'localhost:3306';
 	$db_user = 'root';
@@ -13,6 +14,7 @@ function application_start()
 //	$db_password = '';
 	$db_name = 'rold20rules';
 	$db_name_campaign = 'rold20campaign';
+        $footer_parser = new cExpressionParser();
 
 	init_traits();
 	init_weaponcats();

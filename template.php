@@ -76,10 +76,112 @@ function rol_header()
 
 function rol_footer()
 {
+   global $footer_parser;
+
+   $button_style = "style=\"width: 6em\"";
+
+   $expression = isset($_POST['Calc_Expression']) ? $_POST['Calc_Expression'] : "";
+   $previous = isset($_POST['Calc_Previous']) ? $_POST['Calc_Previous'] : "";
+   $memory = isset($_POST['Calc_Memory']) ? $_POST['Calc_Memory'] : "";
+
+   if (isset($_POST['Calc_Execute']))
+   {
+      $previous = $expression;
+      $expression = $footer_parser->Evaluate($expression);
+   } else if (isset($_POST['Calc_Repeat']))
+   {
+      $expression = $footer_parser->Evaluate($previous);
+   } else if (isset($_POST['Calc_Store']))
+   {
+      $memory = $expression;
+   } else if (isset($_POST['Calc_Recall']))
+   {
+      $previous = $expression;
+      $expression = $memory;
+   } else if (isset($_POST['Calc_Swap']))
+   {
+      $tmp = $previous = $expression;
+      $expression = $memory;
+      $memory = $tmp;
+   } else if (isset($_POST['Calc_Undo']))
+   {
+      $tmp = $expression;
+      $expression = $previous;
+      $previous = $tmp;
+   } else if (isset($_POST['Calc_Clear']))
+   {
+      $previous = $expression;
+      $expression = "";
+   } else if (isset($_POST['Calc_d2']))
+   {
+      $previous = "$2";
+      $expression = $footer_parser->Evaluate("$2");
+   } else if (isset($_POST['Calc_d3']))
+   {
+      $previous = "$3";
+      $expression = $footer_parser->Evaluate("$3");
+   } else if (isset($_POST['Calc_d4']))
+   {
+      $previous = "$4";
+      $expression = $footer_parser->Evaluate("$4");
+   } else if (isset($_POST['Calc_d6']))
+   {
+      $previous = "$6";
+      $expression = $footer_parser->Evaluate("$6");
+   } else if (isset($_POST['Calc_d8']))
+   {
+      $previous = "$8";
+      $expression = $footer_parser->Evaluate("$8");
+   } else if (isset($_POST['Calc_d10']))
+   {
+      $previous = "$10";
+      $expression = $footer_parser->Evaluate("$10");
+   } else if (isset($_POST['Calc_d12']))
+   {
+      $previous = "$12";
+      $expression = $footer_parser->Evaluate("$12");
+   } else if (isset($_POST['Calc_d20']))
+   {
+      $previous = "$20";
+      $expression = $footer_parser->Evaluate("$20");
+   } else if (isset($_POST['Calc_d100']))
+   {
+      $previous = "$100";
+      $expression = $footer_parser->Evaluate("$100");
+   }
+
    $html = "<div class=\"clear\">
         </div>
         <div class=\"footer\">
-            <br />
+        <form name=\"Calc\" method=\"post\" action=\"\">
+        <table>
+           <tr><td colspan=\"9\">
+              <input type=\"text\" name=\"Calc_Expression\" value=\"" . $expression . "\" size=93 maxlength=200>
+              <input type=\"hidden\" name=\"Calc_Previous\" value=\"" . $previous . "\">
+              <input type=\"hidden\" name=\"Calc_Memory\" value=\"" . $memory . "\">
+           </td></tr>
+           <tr>
+              <td><input type=\"submit\" name=\"Calc_Execute\" value=\"Execute\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_Repeat\" value=\"Repeat\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_Store\" value=\"Store\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_Recall\" value=\"Recall\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_Swap\" value=\"Swap\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_Undo\" value=\"Undo\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_Clear\" value=\"Clear\" " . $button_style . "></td>
+           </tr>
+           <tr>
+              <td><input type=\"submit\" name=\"Calc_d2\" value=\"d2\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_d3\" value=\"d3\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_d4\" value=\"d4\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_d6\" value=\"d6\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_d8\" value=\"d8\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_d10\" value=\"d10\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_d12\" value=\"d12\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_d20\" value=\"d20\" " . $button_style . "></td>
+              <td><input type=\"submit\" name=\"Calc_d100\" value=\"d100\" " . $button_style . "></td>
+           </tr>
+        </table></form>
+        <br />
         </div>";
 
    return $html;

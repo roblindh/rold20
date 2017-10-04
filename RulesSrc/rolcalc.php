@@ -45,7 +45,7 @@ define("TOKEN_ILLEGAL", 10);	// Illegal token
 
 define("PRECISION", 12);
 
-define("DELIMITERS", "([|^§*/%+-=!&@\\~<>{}?:,");
+define("DELIMITERS", "([|^\$*/%+-=!&@\\~<>{}?:,");
 
 class cExpressionParser
 {
@@ -599,7 +599,7 @@ class cExpressionParser
                         $result = pow($result, $this->EvaluatePowers());
                     }
                 }
-                else if ($this->currentToken == "§")
+                else if ($this->currentToken == "$")
                 {
                     if ($this->GetNextToken())
                     {
@@ -1189,7 +1189,7 @@ class cExpressionParser
                         }
                         break;
                     case "^":
-                    case "§":
+                    case "$":
                         break;
                     case "<":
                         switch ($this->currentExpression[$this->currentPosition])
