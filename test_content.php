@@ -1,4 +1,5 @@
 <?php
+
 require_once 'RulesSrc/helpfuncs.php';
 require_once 'RulesSrc/rolcalc.php';
 
@@ -10,44 +11,44 @@ echo "10101010.101_2 = " . cExpressionParser::ConvertFromBase("10101010.101", 2)
 echo "-10101010_2 = " . cExpressionParser::ConvertFromBase("-10101010", 2) . "<br/>";
 echo "-10101010.101_2 = " . cExpressionParser::ConvertFromBase("-10101010.101", 2) . "<br/>";
 echo "</p>";
-	
+
 echo "<p>";
 echo "123_8 = " . cExpressionParser::ConvertFromBase("123", 8) . "<br/>";
 echo "123.3_8 = " . cExpressionParser::ConvertFromBase("123.3", 8) . "<br/>";
 echo "-123_8 = " . cExpressionParser::ConvertFromBase("-123", 8) . "<br/>";
 echo "-123.3_8 = " . cExpressionParser::ConvertFromBase("-123.3", 8) . "<br/>";
 echo "</p>";
-	
+
 echo "<p>";
 echo "1C5_16 = " . cExpressionParser::ConvertFromBase("1C5", 16) . "<br/>";
 echo "1C5.C_16 = " . cExpressionParser::ConvertFromBase("1C5.C", 16) . "<br/>";
 echo "-1C5_16 = " . cExpressionParser::ConvertFromBase("-1C5", 16) . "<br/>";
 echo "-1C5.C_16 = " . cExpressionParser::ConvertFromBase("-1C5.C", 16) . "<br/>";
 echo "</p>";
-	
+
 echo "<p>";
 echo "123_10 = " . cExpressionParser::ConvertToBase(123, 2) . "<br/>";
 echo "123.375_10 = " . cExpressionParser::ConvertToBase(123.375, 2) . "<br/>";
 echo "-123_10 = " . cExpressionParser::ConvertToBase(-123, 2) . "<br/>";
 echo "-123.375_10 = " . cExpressionParser::ConvertToBase(-123.375, 2) . "<br/>";
 echo "</p>";
-	
+
 echo "<p>";
 echo "123_10 = " . cExpressionParser::ConvertToBase(123, 8) . "<br/>";
 echo "123.375_10 = " . cExpressionParser::ConvertToBase(123.375, 8) . "<br/>";
 echo "-123_10 = " . cExpressionParser::ConvertToBase(-123, 8) . "<br/>";
 echo "-123.375_10 = " . cExpressionParser::ConvertToBase(-123.375, 8) . "<br/>";
 echo "</p>";
-	
+
 echo "<p>";
 echo "123_10 = " . cExpressionParser::ConvertToBase(123, 16) . "<br/>";
 echo "123.375_10 = " . cExpressionParser::ConvertToBase(123.375, 16) . "<br/>";
 echo "-123_10 = " . cExpressionParser::ConvertToBase(-123, 16) . "<br/>";
 echo "-123.375_10 = " . cExpressionParser::ConvertToBase(-123.375, 16) . "<br/>";
 echo "</p>";
-	
+
 $parser = new cExpressionParser();
-	
+
 echo "<p>";
 echo "12+34+56 = " . $parser->Evaluate("12+34+56") . "<br/>";
 echo "12-34-56 = " . $parser->Evaluate("12-34-56") . "<br/>";
@@ -62,7 +63,7 @@ echo "12^3 = " . $parser->Evaluate("12^3") . "<br/>";
 echo "12^.3 = " . $parser->Evaluate("12^.3") . "<br/>";
 echo "5! = " . $parser->Evaluate("5!") . "<br/>";
 echo "</p>";
-	
+
 echo "<p>";
 echo "1001_2 & 1100_2 = " . $parser->Evaluate("1001_2 & 1100_2") . "<br/>";
 echo "1001_2 @ 1100_2 = " . $parser->Evaluate("1001_2 @ 1100_2") . "<br/>";
@@ -129,7 +130,7 @@ echo "FLOOR(12.34) = " . $parser->Evaluate("FLOOR(12.34)") . "<br/>";
 echo "SQRT(10) = " . $parser->Evaluate("SQRT(10)") . "<br/>";
 echo "SGN(-10) = " . $parser->Evaluate("SGN(-10)") . "<br/>";
 echo "</p>";
-	
+
 echo "<p>";
 echo "A=12 = " . $parser->Evaluate("A=12") . "<br/>";
 echo "(A) = " . $parser->Evaluate("(A)") . "<br/>";
@@ -138,7 +139,7 @@ echo "A+B = " . $parser->Evaluate("A+B") . "<br/>";
 echo "PI = " . $parser->Evaluate("PI") . "<br/>";
 echo "E = " . $parser->Evaluate("E") . "<br/>";
 echo "</p>";
-	
+
 echo "<p>";
 echo "A=3 = " . $parser->Evaluate("A=3") . "<br/>";
 echo "A+=4 = " . $parser->Evaluate("A+=4") . "<br/>";
@@ -146,7 +147,7 @@ echo "A-=5 = " . $parser->Evaluate("A-=5") . "<br/>";
 echo "A*=6 = " . $parser->Evaluate("A*=6") . "<br/>";
 echo "A/=7 = " . $parser->Evaluate("A/=7") . "<br/>";
 echo "</p>";
-	
+
 echo "<p>";
 echo "A=13 = " . $parser->Evaluate("A=13") . "<br/>";
 echo "A%=10 = " . $parser->Evaluate("A%=10") . "<br/>";

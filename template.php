@@ -1,56 +1,49 @@
 <?php
 
-function rol_login($username, $password)
-{
-	$username = stripslashes(strip_tags($username));
-	$password = md5(stripslashes(strip_tags($password)));
+function rol_login($username, $password) {
+    $username = stripslashes(strip_tags($username));
+    $password = md5(stripslashes(strip_tags($password)));
 
-	$dbc = mysqli_connect('localhost:3306', 'root', 'admin', 'rold20campaign')
-		or die("Error connecting to database.");
-	$query = "SELECT * FROM players WHERE Name='" . $username . "'";
-	$result = mysqli_query($dbc, $query)
-		or die("Error querying database.");
+    $dbc = mysqli_connect('localhost:3306', 'root', 'admin', 'rold20campaign')
+            or die("Error connecting to database.");
+    $query = "SELECT * FROM players WHERE Name='" . $username . "'";
+    $result = mysqli_query($dbc, $query)
+            or die("Error querying database.");
 
-	if ($row = mysqli_fetch_array($result))
-	{
-		if ($row['Password'] == $password)
-		{
-			$_SESSION['User'] = $username;
-			$_SESSION['UserID'] = $row['ID'];
-			$_SESSION['UserType'] = $row['Type'];
-		}
-	} else
-	{
-	    $query = "INSERT INTO players (Name, Password, Type) VALUES ('" . $username . "', '" . $password . "', 1)";
-		$result = mysqli_query($dbc, $query)
-			or die("Error inserting into database.");
-		$query = "SELECT * FROM players WHERE Name='" . $username . "'";
-		$result = mysqli_query($dbc, $query)
-			or die("Error querying database.");
-		if ($row = mysqli_fetch_array($result))
-		{
-			$_SESSION['User'] = $username;
-			$_SESSION['UserID'] = $row['ID'];
-			$_SESSION['UserType'] = $row['Type'];
-		}
-	}
+    if ($row = mysqli_fetch_array($result)) {
+        if ($row['Password'] == $password) {
+            $_SESSION['User'] = $username;
+            $_SESSION['UserID'] = $row['ID'];
+            $_SESSION['UserType'] = $row['Type'];
+        }
+    } else {
+        $query = "INSERT INTO players (Name, Password, Type) VALUES ('" . $username . "', '" . $password . "', 1)";
+        $result = mysqli_query($dbc, $query)
+                or die("Error inserting into database.");
+        $query = "SELECT * FROM players WHERE Name='" . $username . "'";
+        $result = mysqli_query($dbc, $query)
+                or die("Error querying database.");
+        if ($row = mysqli_fetch_array($result)) {
+            $_SESSION['User'] = $username;
+            $_SESSION['UserID'] = $row['ID'];
+            $_SESSION['UserType'] = $row['Type'];
+        }
+    }
 
-	mysqli_close($dbc);
+    mysqli_close($dbc);
 }
 
-function rol_header()
-{
-	session_start();
+function rol_header() {
+    session_start();
 
-	if (isset($_POST['Login']) && isset($_POST['User']) && isset($_POST['Password']))
-		rol_login($_POST['User'], $_POST['Password']);
-	if (isset($_POST['Logout']))
-	{
-		session_destroy();
-		$_SESSION['User'] = NULL;
-	}
+    if (isset($_POST['Login']) && isset($_POST['User']) && isset($_POST['Password']))
+        rol_login($_POST['User'], $_POST['Password']);
+    if (isset($_POST['Logout'])) {
+        session_destroy();
+        $_SESSION['User'] = NULL;
+    }
 
-	$html = "<div class=\"header\">
+    $html = "<div class=\"header\">
 	            <div class=\"logo\">
 	            </div>
 	            <div class=\"title\">
@@ -60,97 +53,80 @@ function rol_header()
 	            </div><br />
 	            <div class=\"loginDisplay\">
 					<form name=\"Login\" method=\"post\" action=\"\">";
-	if (isset($_SESSION['User']) && $_SESSION['User'])
-		$html .= "Logged in as " . $_SESSION['User'] .
-			" <input type=\"submit\" name=\"Logout\" value=\"Logout\">";
-	else
-		$html .= "User: <input type=\"text\" name=\"User\" value=\"\">
+    if (isset($_SESSION['User']) && $_SESSION['User'])
+        $html .= "Logged in as " . $_SESSION['User'] .
+                " <input type=\"submit\" name=\"Logout\" value=\"Logout\">";
+    else
+        $html .= "User: <input type=\"text\" name=\"User\" value=\"\">
 			Password: <input type=\"password\" name=\"Password\" value=\"\">
 			<input type=\"submit\" name=\"Login\" value=\"Login/Register\">";
-	$html .= "</form>
+    $html .= "</form>
 	            </div>
 			</div>";
 
-	return $html;
+    return $html;
 }
 
-function rol_footer()
-{
-   global $footer_parser;
+function rol_footer() {
+    global $footer_parser;
 
-   $button_style = "style=\"width: 6em\"";
+    $button_style = "style=\"width: 6em\"";
 
-   $expression = isset($_POST['Calc_Expression']) ? $_POST['Calc_Expression'] : "";
-   $previous = isset($_POST['Calc_Previous']) ? $_POST['Calc_Previous'] : "";
-   $memory = isset($_POST['Calc_Memory']) ? $_POST['Calc_Memory'] : "";
+    $expression = isset($_POST['Calc_Expression']) ? $_POST['Calc_Expression'] : "";
+    $previous = isset($_POST['Calc_Previous']) ? $_POST['Calc_Previous'] : "";
+    $memory = isset($_POST['Calc_Memory']) ? $_POST['Calc_Memory'] : "";
 
-   if (isset($_POST['Calc_Execute']))
-   {
-      $previous = $expression;
-      $expression = $footer_parser->Evaluate($expression);
-   } else if (isset($_POST['Calc_Repeat']))
-   {
-      $expression = $footer_parser->Evaluate($previous);
-   } else if (isset($_POST['Calc_Store']))
-   {
-      $memory = $expression;
-   } else if (isset($_POST['Calc_Recall']))
-   {
-      $previous = $expression;
-      $expression = $memory;
-   } else if (isset($_POST['Calc_Swap']))
-   {
-      $tmp = $previous = $expression;
-      $expression = $memory;
-      $memory = $tmp;
-   } else if (isset($_POST['Calc_Undo']))
-   {
-      $tmp = $expression;
-      $expression = $previous;
-      $previous = $tmp;
-   } else if (isset($_POST['Calc_Clear']))
-   {
-      $previous = $expression;
-      $expression = "";
-   } else if (isset($_POST['Calc_d2']))
-   {
-      $previous = "$2";
-      $expression = $footer_parser->Evaluate("$2");
-   } else if (isset($_POST['Calc_d3']))
-   {
-      $previous = "$3";
-      $expression = $footer_parser->Evaluate("$3");
-   } else if (isset($_POST['Calc_d4']))
-   {
-      $previous = "$4";
-      $expression = $footer_parser->Evaluate("$4");
-   } else if (isset($_POST['Calc_d6']))
-   {
-      $previous = "$6";
-      $expression = $footer_parser->Evaluate("$6");
-   } else if (isset($_POST['Calc_d8']))
-   {
-      $previous = "$8";
-      $expression = $footer_parser->Evaluate("$8");
-   } else if (isset($_POST['Calc_d10']))
-   {
-      $previous = "$10";
-      $expression = $footer_parser->Evaluate("$10");
-   } else if (isset($_POST['Calc_d12']))
-   {
-      $previous = "$12";
-      $expression = $footer_parser->Evaluate("$12");
-   } else if (isset($_POST['Calc_d20']))
-   {
-      $previous = "$20";
-      $expression = $footer_parser->Evaluate("$20");
-   } else if (isset($_POST['Calc_d100']))
-   {
-      $previous = "$100";
-      $expression = $footer_parser->Evaluate("$100");
-   }
+    if (isset($_POST['Calc_Execute'])) {
+        $previous = $expression;
+        $expression = $footer_parser->Evaluate($expression);
+    } else if (isset($_POST['Calc_Repeat'])) {
+        $expression = $footer_parser->Evaluate($previous);
+    } else if (isset($_POST['Calc_Store'])) {
+        $memory = $expression;
+    } else if (isset($_POST['Calc_Recall'])) {
+        $previous = $expression;
+        $expression = $memory;
+    } else if (isset($_POST['Calc_Swap'])) {
+        $tmp = $previous = $expression;
+        $expression = $memory;
+        $memory = $tmp;
+    } else if (isset($_POST['Calc_Undo'])) {
+        $tmp = $expression;
+        $expression = $previous;
+        $previous = $tmp;
+    } else if (isset($_POST['Calc_Clear'])) {
+        $previous = $expression;
+        $expression = "";
+    } else if (isset($_POST['Calc_d2'])) {
+        $previous = "$2";
+        $expression = $footer_parser->Evaluate("$2");
+    } else if (isset($_POST['Calc_d3'])) {
+        $previous = "$3";
+        $expression = $footer_parser->Evaluate("$3");
+    } else if (isset($_POST['Calc_d4'])) {
+        $previous = "$4";
+        $expression = $footer_parser->Evaluate("$4");
+    } else if (isset($_POST['Calc_d6'])) {
+        $previous = "$6";
+        $expression = $footer_parser->Evaluate("$6");
+    } else if (isset($_POST['Calc_d8'])) {
+        $previous = "$8";
+        $expression = $footer_parser->Evaluate("$8");
+    } else if (isset($_POST['Calc_d10'])) {
+        $previous = "$10";
+        $expression = $footer_parser->Evaluate("$10");
+    } else if (isset($_POST['Calc_d12'])) {
+        $previous = "$12";
+        $expression = $footer_parser->Evaluate("$12");
+    } else if (isset($_POST['Calc_d20'])) {
+        $previous = "$20";
+        $expression = $footer_parser->Evaluate("$20");
+    } else if (isset($_POST['Calc_d100'])) {
+        $previous = "$100";
+        $expression = $footer_parser->Evaluate("$100");
+    }
 
-   $html = "<div class=\"clear\">
+    $html = "<div class=\"clear\">
         </div>
         <div class=\"footer\">
         <form name=\"Calc\" method=\"post\" action=\"\">
@@ -184,14 +160,13 @@ function rol_footer()
         <br />
         </div>";
 
-   return $html;
+    return $html;
 }
 
-function rol_toc()
-{
-	global $site_root;
+function rol_toc() {
+    global $site_root;
 
-	$html = "<div class=\"contentpanel\">
+    $html = "<div class=\"contentpanel\">
 		<h3>Handbook</h3>
         <ol>
             <li><a href=\"/rold20/hb01_intro.php\">Introduction</a></li>
@@ -282,17 +257,17 @@ function rol_toc()
 	            <li><a href=\"hb15_index.php#OptionalRules\">Optional Rules</a></li>
 	        </ul>
 	        <li><a href=\"sphider/search.php\">Site Search</a></li>
+	        <li><a href=\"hb00_all.php\">All Rules (single page)</a></li>
 	    </ol>
 		<h3>Utilities</h3>
 		<ul>";
-	if (isset($_SESSION['UserType']) && $_SESSION['UserType'] > 0)
-	{
-		if ($_SESSION['UserType'] > 3)
-			$html .= "<li><a href=\"util_campaign.php\">Campaign Administration</a></li>";
-		$html .= "<li><a href=\"util_charview.php\">Character Viewer</a></li>
+    if (isset($_SESSION['UserType']) && $_SESSION['UserType'] > 0) {
+        if ($_SESSION['UserType'] > 3)
+            $html .= "<li><a href=\"util_campaign.php\">Campaign Administration</a></li>";
+        $html .= "<li><a href=\"util_charview.php\">Character Viewer</a></li>
 			<li><a href=\"util_chargen.php\">Character Generator</a></li>";
-	}
-	$html .= "<li><a href=\"util_npcgen.php\">NPC Generator</a></li>
+    }
+    $html .= "<li><a href=\"util_npcgen.php\">NPC Generator</a></li>
 			<li><a href=\"util_itemgen.php\">Item Generator</a></li>
 		</ul>
         <h3>Administration</h3>
@@ -309,7 +284,7 @@ function rol_toc()
         </ul>
     </div>";
 
-   return $html;
+    return $html;
 }
 
 ?>
