@@ -1,10 +1,5 @@
 <?php
 
-require_once 'global.php';
-require_once 'helpfuncs.php';
-require_once 'trait.php';
-require_once 'entity.php';
-
 function show_classcomparisondescription() {
     ?>
     <p>
@@ -18,10 +13,9 @@ function show_classcomparisondescription() {
     </p>
     <p>
         <em>Att:</em> This shows the highest skill-derived attack modifier, including weapons as well as supernatural attacks.
-        The value does not include ability score modifiers (or any other modifiers).<br />
+        The value does not include ability score modifiers (or any other modifiers).<br/>
     </p>
     <?php
-
 }
 
 function show_classcomparison($title, $lvl) {
@@ -46,51 +40,49 @@ function show_classcomparison($title, $lvl) {
         "Warrior { Str=16; Con=12; Dex=14; Int=8; Wis=12; Cha=10; Class=Guard; Lvl=" . $lvl . "; Weapon1=Mw halberd (Item=Halberd: Mod=MwMeleeWp:); Armor=Mw breastplate (Item=Breastplate: Mod=MwArmor:); }"
     );
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">" . $title . "</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Class</td>";
-    echo "<td>Equipment</td>";
-    echo "<td align=\"center\">Str</td><td align=\"center\">Con</td><td align=\"center\">Dex</td>";
-    echo "<td align=\"center\">Int</td><td align=\"center\">Wis</td><td align=\"center\">Cha</td>";
-    echo "<td align=\"center\">HP</td><td align=\"center\">SP</td><td align=\"center\">PP</td>";
-    echo "<td align=\"center\">Init</td><td align=\"center\">Spd</td>";
-    echo "<td align=\"center\">DeCp</td><td align=\"center\">DeCa</td>";
-    echo "<td align=\"center\">Fort</td><td align=\"center\">Ref</td><td align=\"center\">Will</td>";
-    echo "<td align=\"center\">DR</td><td align=\"center\">MR</td><td align=\"center\">Att</td>";
-    echo "</tr></thead>";
-    $odd = true;
+    echo '<table width="100%">';
+    echo '<caption>' . $title . '</caption>';
+    echo '<thead><tr>';
+    echo '<th>Class</th>';
+    echo '<th>Equipment</th>';
+    echo '<th style="text-align:center">Str</th><th style="text-align:center">Con</th><th style="text-align:center">Dex</th>';
+    echo '<th style="text-align:center">Int</th><th style="text-align:center">Wis</th><th style="text-align:center">Cha</th>';
+    echo '<th style="text-align:center">HP</th><th style="text-align:center">SP</th><th style="text-align:center">PP</th>';
+    echo '<th style="text-align:center">Init</th><th style="text-align:center">Spd</th>';
+    echo '<th style="text-align:center">DeCp</th><th style="text-align:center">DeCa</th>';
+    echo '<th style="text-align:center">Fort</th><th style="text-align:center">Ref</th><th style="text-align:center">Will</th>';
+    echo '<th style="text-align:center">DR</th><th style="text-align:center">MR</th><th style="text-align:center">Att</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lClasses as $iClass) {
         $entity->GenerateNPC(1, $iClass);
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $entity->Name . "</td>";
+        echo '<tr>';
+        echo '<td>' . $entity->Name . '</td>';
         $itemStr = array();
         foreach ($entity->lPossessions as $iItem)
             $itemStr[] = $iItem->Name;
-        echo "<td>" . implode(", ", $itemStr) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_STR) == NULL) ? "-" : $entity->GetAbility(A_STR)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_CON) == NULL) ? "-" : $entity->GetAbility(A_CON)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_DEX) == NULL) ? "-" : $entity->GetAbility(A_DEX)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_INT) == NULL) ? "-" : $entity->GetAbility(A_INT)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_WIS) == NULL) ? "-" : $entity->GetAbility(A_WIS)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_CHA) == NULL) ? "-" : $entity->GetAbility(A_CHA)) . "</td>";
-        echo "<td align=\"center\">" . $entity->GetHPTotal() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetSPTotal() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetPPTotal() . "</td>";
-        echo "<td align=\"center\">" . signedstr($entity->GetInitMod()) . "</td>";
-        echo "<td align=\"center\">" . $entity->GetGroundSpeed() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetDeCPassive() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetDeCActive() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetFort() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetRef() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetWill() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetDR() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetMR() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetBestAttMod() . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+        echo '<td>' . implode(", ", $itemStr) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_STR) == NULL) ? "-" : $entity->GetAbility(A_STR)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_CON) == NULL) ? "-" : $entity->GetAbility(A_CON)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_DEX) == NULL) ? "-" : $entity->GetAbility(A_DEX)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_INT) == NULL) ? "-" : $entity->GetAbility(A_INT)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_WIS) == NULL) ? "-" : $entity->GetAbility(A_WIS)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_CHA) == NULL) ? "-" : $entity->GetAbility(A_CHA)) . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetHPTotal() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetSPTotal() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetPPTotal() . '</td>';
+        echo '<td style="text-align:center">' . signedstr($entity->GetInitMod()) . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetGroundSpeed() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetDeCPassive() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetDeCActive() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetFort() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetRef() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetWill() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetDR() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetMR() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetBestAttMod() . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_creaturecomparison($title) {
@@ -140,54 +132,52 @@ function show_creaturecomparison($title) {
     </p>
     <p>
         <em>Att:</em> This shows the highest skill-derived attack modifier, including weapons as well as supernatural attacks.
-        The value does not include ability score modifiers (or any other modifiers).<br />
+        The value does not include ability score modifiers (or any other modifiers).<br/>
     </p>
     <?php
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">" . $title . "</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Creature</td>";
-    echo "<td align=\"center\">CL</td><td align=\"center\">RL</td><td align=\"center\">Sz</td>";
-    echo "<td align=\"center\">Str</td><td align=\"center\">Con</td><td align=\"center\">Dex</td>";
-    echo "<td align=\"center\">Int</td><td align=\"center\">Wis</td><td align=\"center\">Cha</td>";
-    echo "<td align=\"center\">HP</td><td align=\"center\">SP</td><td align=\"center\">PP</td>";
-    echo "<td align=\"center\">Init</td><td align=\"center\">Spd</td>";
-    echo "<td align=\"center\">DeCp</td><td align=\"center\">DeCa</td>";
-    echo "<td align=\"center\">Fort</td><td align=\"center\">Ref</td><td align=\"center\">Will</td>";
-    echo "<td align=\"center\">DR</td><td align=\"center\">MR</td><td align=\"center\">Att</td>";
-    echo "</tr></thead>";
-    $odd = true;
+    echo '<table width="100%">';
+    echo '<caption>' . $title . '</caption>';
+    echo '<thead><tr>';
+    echo '<th>Creature</th>';
+    echo '<th style="text-align:center">CL</th><th style="text-align:center">RL</th><th style="text-align:center">Sz</th>';
+    echo '<th style="text-align:center">Str</th><th style="text-align:center">Con</th><th style="text-align:center">Dex</th>';
+    echo '<th style="text-align:center">Int</th><th style="text-align:center">Wis</th><th style="text-align:center">Cha</th>';
+    echo '<th style="text-align:center">HP</th><th style="text-align:center">SP</th><th style="text-align:center">PP</th>';
+    echo '<th style="text-align:center">Init</th><th style="text-align:center">Spd</th>';
+    echo '<th style="text-align:center">DeCp</th><th style="text-align:center">DeCa</th>';
+    echo '<th style="text-align:center">Fort</th><th style="text-align:center">Ref</th><th style="text-align:center">Will</th>';
+    echo '<th style="text-align:center">DR</th><th style="text-align:center">MR</th><th style="text-align:center">Att</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lCreatures as $iCreature) {
-        $entity->GenerateNPC($iCreature, $_APP['creatures'][$iCreature]['NameInformal'] . " { }");
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $entity->Name . "</td>";
-        echo "<td align=\"center\">" . $entity->GetChallengeLevel() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetRacialLevel() . "</td>";
-        echo "<td align=\"center\">" . $_APP['sizecats'][$entity->GetCurrentSize()]['Abbreviation'] . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_STR) == NULL) ? "-" : $entity->GetAbility(A_STR)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_CON) == NULL) ? "-" : $entity->GetAbility(A_CON)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_DEX) == NULL) ? "-" : $entity->GetAbility(A_DEX)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_INT) == NULL) ? "-" : $entity->GetAbility(A_INT)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_WIS) == NULL) ? "-" : $entity->GetAbility(A_WIS)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_CHA) == NULL) ? "-" : $entity->GetAbility(A_CHA)) . "</td>";
-        echo "<td align=\"center\">" . $entity->GetHPTotal() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetSPTotal() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetPPTotal() . "</td>";
-        echo "<td align=\"center\">" . signedstr($entity->GetInitMod()) . "</td>";
-        echo "<td align=\"center\">" . max($entity->GetGroundSpeed(), $entity->GetFlySpeed(), $entity->GetSwimSpeed()) . "</td>";
-        echo "<td align=\"center\">" . $entity->GetDeCPassive() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetDeCActive() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetFort() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetRef() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetWill() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetDR() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetMR() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetBestAttMod() . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+        $entity->GenerateNPC($iCreature, $_APP['creatures'][$iCreature]['NameInformal'] . ' { }');
+        echo '<tr>';
+        echo '<td>' . $entity->Name . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetChallengeLevel() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetRacialLevel() . '</td>';
+        echo '<td style="text-align:center">' . $_APP['sizecats'][$entity->GetCurrentSize()]['Abbreviation'] . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_STR) == NULL) ? "-" : $entity->GetAbility(A_STR)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_CON) == NULL) ? "-" : $entity->GetAbility(A_CON)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_DEX) == NULL) ? "-" : $entity->GetAbility(A_DEX)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_INT) == NULL) ? "-" : $entity->GetAbility(A_INT)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_WIS) == NULL) ? "-" : $entity->GetAbility(A_WIS)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_CHA) == NULL) ? "-" : $entity->GetAbility(A_CHA)) . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetHPTotal() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetSPTotal() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetPPTotal() . '</td>';
+        echo '<td style="text-align:center">' . signedstr($entity->GetInitMod()) . '</td>';
+        echo '<td style="text-align:center">' . max($entity->GetGroundSpeed(), $entity->GetFlySpeed(), $entity->GetSwimSpeed()) . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetDeCPassive() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetDeCActive() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetFort() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetRef() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetWill() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetDR() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetMR() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetBestAttMod() . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_castercomparisondescription() {
@@ -199,7 +189,6 @@ function show_castercomparisondescription() {
         Please note that the characteristics do not include use of improvement points, magical equipment, buff spells, etc.
     </p>
     <?php
-
 }
 
 class cCaster {
@@ -217,7 +206,6 @@ class cCaster {
         $this->discount2 = $sd2;
         $this->configstr = $cs;
     }
-
 }
 
 function show_castercomparison($title, $lvl) {
@@ -238,17 +226,16 @@ function show_castercomparison($title, $lvl) {
         new cCaster("Adept", $lvl . "/2", "0", "(" . $lvl . "+WISMOD)/5", "Adept { Str=8; Con=14; Dex=12; Int=12; Wis=16; Cha=10; Class=Adept; Lvl=" . $lvl . "; }")
     );
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">" . $title . "</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Class</td>";
-    echo "<td align=\"center\">Str</td><td align=\"center\">Con</td><td align=\"center\">Dex</td>";
-    echo "<td align=\"center\">Int</td><td align=\"center\">Wis</td><td align=\"center\">Cha</td>";
-    echo "<td align=\"center\">HP</td><td align=\"center\">SP</td><td align=\"center\">PP</td>";
+    echo '<table width="100%">';
+    echo '<caption>' . $title . '</caption>';
+    echo '<thead><tr>';
+    echo '<th>Class</th>';
+    echo '<th style="text-align:center">Str</th><th style="text-align:center">Con</th><th style="text-align:center">Dex</th>';
+    echo '<th style="text-align:center">Int</th><th style="text-align:center">Wis</th><th style="text-align:center">Cha</th>';
+    echo '<th style="text-align:center">HP</th><th style="text-align:center">SP</th><th style="text-align:center">PP</th>';
     for ($sl = 1; $sl <= 30; $sl += 2)
-        echo "<td align=\"center\">PL " . $sl . "</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">PL ' . $sl . '</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lCasters as $iClass) {
         $entity->GenerateNPC(1, $iClass->configstr);
         $parser = new cExpressionParser();   // Class for parsing expressions
@@ -261,25 +248,24 @@ function show_castercomparison($title, $lvl) {
         $parser->Evaluate("CHAMOD=" . $entity->GetAbilMod(A_CHA));
         $maxlvl = $parser->Evaluate($iClass->spelllvl);
 
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $iClass->name . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_STR) == NULL) ? "-" : $entity->GetAbility(A_STR)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_CON) == NULL) ? "-" : $entity->GetAbility(A_CON)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_DEX) == NULL) ? "-" : $entity->GetAbility(A_DEX)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_INT) == NULL) ? "-" : $entity->GetAbility(A_INT)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_WIS) == NULL) ? "-" : $entity->GetAbility(A_WIS)) . "</td>";
-        echo "<td align=\"center\">" . (($entity->GetAbility(A_CHA) == NULL) ? "-" : $entity->GetAbility(A_CHA)) . "</td>";
-        echo "<td align=\"center\">" . $entity->GetHPTotal() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetSPTotal() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetPPTotal() . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iClass->name . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_STR) == NULL) ? '-' : $entity->GetAbility(A_STR)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_CON) == NULL) ? '-' : $entity->GetAbility(A_CON)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_DEX) == NULL) ? '-' : $entity->GetAbility(A_DEX)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_INT) == NULL) ? '-' : $entity->GetAbility(A_INT)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_WIS) == NULL) ? '-' : $entity->GetAbility(A_WIS)) . '</td>';
+        echo '<td style="text-align:center">' . (($entity->GetAbility(A_CHA) == NULL) ? '-' : $entity->GetAbility(A_CHA)) . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetHPTotal() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetSPTotal() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetPPTotal() . '</td>';
         for ($sl = 1; $sl <= 30; $sl += 2)
-            echo "<td align=\"center\">" . (($sl <= $maxlvl) ?
-                    max(1, $sl - floor($parser->Evaluate($iClass->discount1))) . "/" . max(1, $sl - floor($parser->Evaluate($iClass->discount2))) :
-                    "-") . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+            echo '<td style="text-align:center">' . (($sl <= $maxlvl) ?
+                    max(1, $sl - floor($parser->Evaluate($iClass->discount1))) . '/' . max(1, $sl - floor($parser->Evaluate($iClass->discount2))) :
+                    '-') . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_configanalysisdescription() {
@@ -291,16 +277,15 @@ function show_configanalysisdescription() {
         use of improvement points, AP-derived bonuses, prestige skills, magical equipment, buff spells, etc.
     </p>
     <p>
-        <em>DPAP:</em> The average damage per AP of the most effective attack against the given DeC.<br />
+        <em>DPAP:</em> The average damage per AP of the most effective attack against the given DeC.<br/>
         Note: The DPAP columns take the target’s DeC into consideration but not its DR.
         The question of DR is complex and by no means irrelevant, since for a given DPAP
         a slow attack with high damage is better at overcoming DR than a fast attack with lower damage.
         On the other hand, a large number of fast attacks tends to provide more choice and flexibility for the attacker,
-        and there are also several ways to trade one’s attack bonus for a reduction in a target’s DR.<br />
-        Also note that reloading time is not included in the DPAP for the projectile weapon examples.<br />
+        and there are also several ways to trade one’s attack bonus for a reduction in a target’s DR.<br/>
+        Also note that reloading time is not included in the DPAP for the projectile weapon examples.<br/>
     </p>
     <?php
-
 }
 
 function show_configanalysis($race, $config, $vitalattack) {
@@ -308,50 +293,46 @@ function show_configanalysis($race, $config, $vitalattack) {
     $entity = new cIndividual();
 
     $entity->GenerateNPC($race, $config);
-    echo "<br /><table class=\"table\" width=\"100%\">";
+    echo '<table width="100%">';
     $itemStr = array();
     foreach ($entity->lPossessions as $iItem)
         $itemStr[] = $iItem->Name;
-    echo "<caption align=\"bottom\">" . $entity->Name . " (" . implode(", ", $itemStr) . ")</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td colspan=6></td>";
-    echo "<td colspan=21 align=\"center\">DPAP vs DeC</td>";
-    echo "</tr><tr class=\"tableheader\">";
-    echo "<td align=\"center\">Lvl</td><td align=\"center\">Init</td><td align=\"center\">Spd</td>";
-    echo "<td align=\"center\">DeCp</td><td align=\"center\">DeCa</td><td align=\"center\">DR</td>";
+    echo '<caption>' . $entity->Name . ' (' . implode(', ', $itemStr) . ')</caption>';
+    echo '<thead><tr>';
+    echo '<th colspan=6></th>';
+    echo '<th colspan=21 style="text-align:center">DPAP vs DeC</th>';
+    echo '</tr><tr>';
+    echo '<th style="text-align:center">Lvl</th><th style="text-align:center">Init</th><th style="text-align:center">Spd</th>';
+    echo '<th style="text-align:center">DeCp</th><th style="text-align:center">DeCa</th><th style="text-align:center">DR</th>';
     for ($i = 5; $i <= 25; $i++)
-        echo "<td align=\"center\">" . $i . "</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">' . $i . '</th>';
+    echo '</tr></thead><tbody>';
     for ($lvl = 1; $lvl <= 30; $lvl += 5) {
         $entity->GenerateNPC($race, str_replace("Lvl=1", "Lvl=" . $lvl, $config));
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td align=\"center\">" . $lvl . "</td>";
-        echo "<td align=\"center\">" . signedstr($entity->GetInitMod()) . "</td>";
-        echo "<td align=\"center\">" . $entity->GetGroundSpeed() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetDeCPassive() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetDeCActive() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetDR() . "</td>";
+        echo '<tr>';
+        echo '<td style="text-align:center">' . $lvl . '</td>';
+        echo '<td style="text-align:center">' . signedstr($entity->GetInitMod()) . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetGroundSpeed() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetDeCPassive() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetDeCActive() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetDR() . '</td>';
         for ($i = 5; $i <= 25; $i++)
-            echo "<td align=\"center\">" . round($entity->GetDPAP($i, $vitalattack), 2) . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+            echo '<td style="text-align:center">' . round($entity->GetDPAP($i, $vitalattack), 2) . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
+    echo '<table width="100%">';
     $itemStr = array();
     foreach ($entity->lPossessions as $iItem)
         $itemStr[] = $iItem->Name;
-    echo "<caption align=\"bottom\">" . $entity->Name . " (" . implode(", ", $itemStr) . ")</caption>";
-    $odd = true;
+    echo '<caption>' . $entity->Name . ' (' . implode(', ', $itemStr) . ')</caption><tbody>';
     for ($lvl = 1; $lvl <= 30; $lvl += 10) {
         $entity->GenerateNPC($race, str_replace("Lvl=1", "Lvl=" . $lvl, $config));
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $entity->GetStatBlockStr() . "</td></tr>";
-        $odd = !$odd;
+        echo '<tr>';
+        echo '<td>' . $entity->GetStatBlockStr() . '</td></tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_configanalysisdprdescription() {
@@ -365,10 +346,9 @@ function show_configanalysisdprdescription() {
     <p>
         <em>DPR:</em> The average damage per round, using the most effective attack action against the given DeC and DR.<br/>
         AP not used by the attack action(s) themselves are split equally between attack and damage bonuses, with nothing left over for DeC bonus.<br/>
-        Also note that reloading time is not included in the DPR for the projectile weapon examples.<br />
+        Also note that reloading time is not included in the DPR for the projectile weapon examples.<br/>
     </p>
     <?php
-
 }
 
 function show_configanalysisdpr($race, $config, $vitalattack) {
@@ -376,54 +356,50 @@ function show_configanalysisdpr($race, $config, $vitalattack) {
     $entity = new cIndividual();
 
     $entity->GenerateNPC($race, $config);
-    echo "<br /><table class=\"table\" width=\"100%\">";
+    echo '<table width="100%">';
     $itemStr = array();
     foreach ($entity->lPossessions as $iItem)
         $itemStr[] = $iItem->Name;
-    echo "<caption align=\"bottom\">" . $entity->Name . " (" . implode(", ", $itemStr) . ")</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td colspan=6></td>";
-    echo "<td colspan=7 align=\"center\">DPR vs DeC (DR 0)</td>";
-    echo "<td colspan=7 align=\"center\">DPR vs DeC (DR 5)</td>";
-    echo "<td colspan=7 align=\"center\">DPR vs DeC (DR 10)</td>";
-    echo "</tr><tr class=\"tableheader\">";
-    echo "<td align=\"center\">Lvl</td><td align=\"center\">Init</td><td align=\"center\">Spd</td>";
-    echo "<td align=\"center\">DeCp</td><td align=\"center\">DeCa</td><td align=\"center\">DR</td>";
+    echo '<caption>' . $entity->Name . ' (' . implode(', ', $itemStr) . ')</caption>';
+    echo '<thead><tr>';
+    echo '<th colspan=6></th>';
+    echo '<th colspan=7 style="text-align:center">DPR vs DeC (DR 0)</th>';
+    echo '<th colspan=7 style="text-align:center">DPR vs DeC (DR 5)</th>';
+    echo '<th colspan=7 style="text-align:center">DPR vs DeC (DR 10)</th>';
+    echo '</tr><tr>';
+    echo '<th style="text-align:center">Lvl</th><th style="text-align:center">Init</th><th style="text-align:center">Spd</th>';
+    echo '<th style="text-align:center">DeCp</th><th style="text-align:center">DeCa</th><th style="text-align:center">DR</th>';
     for ($i = 0; $i < 3; $i++)
         for ($j = 6; $j <= 25; $j += 3)
-            echo "<td align=\"center\">" . $j . "</td>";
-    echo "</tr></thead>";
-    $odd = true;
+            echo '<th style="text-align:center">' . $j . '</th>';
+    echo '</tr></thead><tbody>';
     for ($lvl = 1; $lvl <= 30; $lvl += 5) {
         $entity->GenerateNPC($race, str_replace("Lvl=1", "Lvl=" . $lvl, $config));
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td align=\"center\">" . $lvl . "</td>";
-        echo "<td align=\"center\">" . signedstr($entity->GetInitMod()) . "</td>";
-        echo "<td align=\"center\">" . $entity->GetGroundSpeed() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetDeCPassive() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetDeCActive() . "</td>";
-        echo "<td align=\"center\">" . $entity->GetDR() . "</td>";
+        echo '<tr>';
+        echo '<td style="text-align:center">' . $lvl . '</td>';
+        echo '<td style="text-align:center">' . signedstr($entity->GetInitMod()) . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetGroundSpeed() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetDeCPassive() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetDeCActive() . '</td>';
+        echo '<td style="text-align:center">' . $entity->GetDR() . '</td>';
         for ($i = 0; $i < 3; $i++)
             for ($j = 6; $j <= 25; $j += 3)
-                echo "<td align=\"center\">" . round($entity->GetDPR($j, $i * 5, $vitalattack), 1) . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+                echo '<td style="text-align:center">' . round($entity->GetDPR($j, $i * 5, $vitalattack), 1) . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
+    echo '<table width="100%">';
     $itemStr = array();
     foreach ($entity->lPossessions as $iItem)
         $itemStr[] = $iItem->Name;
-    echo "<caption align=\"bottom\">" . $entity->Name . " (" . implode(", ", $itemStr) . ")</caption>";
-    $odd = true;
+    echo '<caption>' . $entity->Name . ' (' . implode(', ', $itemStr) . ')</caption><tbody>';
     for ($lvl = 1; $lvl <= 30; $lvl += 10) {
         $entity->GenerateNPC($race, str_replace("Lvl=1", "Lvl=" . $lvl, $config));
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $entity->GetStatBlockStr() . "</td></tr>";
-        $odd = !$odd;
+        echo '<tr>';
+        echo '<td>' . $entity->GetStatBlockStr() . '</td></tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 class cEffect {
@@ -482,28 +458,26 @@ function show_spellanalysis_singledmg() {
     );
     $parser = new cExpressionParser();   // Class for parsing expressions
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">DPR of Single-target Instantaneous Effects (against defense 20)</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>DPR of Single-target Instantaneous Effects (against defense 20)</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lEffects as $iEffect) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $iEffect->name . "</td><td align=\"center\">" . $iEffect->cost . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iEffect->name . '</td><td style="text-align:center">' . $iEffect->cost . '</td>';
         for ($i = 1; $i < 30; $i += 2)
             if ($i >= $iEffect->minlvl)
-                echo "<td align=\"center\">" . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc)), 1) . "</td>";
+                echo '<td style="text-align:center">' . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc)), 1) . '</td>';
             else
-                echo "<td align=\"center\">-</td>";
-        echo "<td>" . $iEffect->notes . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+                echo '<td style="text-align:center">-</td>';
+        echo '<td>' . $iEffect->notes . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_singledmgong() {
@@ -528,28 +502,26 @@ function show_spellanalysis_singledmgong() {
     );
     $parser = new cExpressionParser();   // Class for parsing expressions
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">DPR of Single-target Ongoing Effects (against defense 20)</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>DPR of Single-target Ongoing Effects (against defense 20)</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lEffects as $iEffect) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $iEffect->name . "</td><td align=\"center\">" . $iEffect->cost . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iEffect->name . '</td><td style="text-align:center">' . $iEffect->cost . '</td>';
         for ($i = 1; $i < 30; $i += 2)
             if ($i >= $iEffect->minlvl)
-                echo "<td align=\"center\">" . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc)), 1) . "</td>";
+                echo '<td style="text-align:center">' . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc)), 1) . '</td>';
             else
-                echo "<td align=\"center\">-</td>";
-        echo "<td>" . $iEffect->notes . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+                echo '<td style="text-align:center">-</td>';
+        echo '<td>' . $iEffect->notes . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_multidmg() {
@@ -584,28 +556,26 @@ function show_spellanalysis_multidmg() {
     );
     $parser = new cExpressionParser();   // Class for parsing expressions
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">DPR/target of Multi-target Instantaneous Effects (against defense 20)</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>DPR/target of Multi-target Instantaneous Effects (against defense 20)</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lEffects as $iEffect) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $iEffect->name . "</td><td align=\"center\">" . $iEffect->cost . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iEffect->name . '</td><td style="text-align:center">' . $iEffect->cost . '</td>';
         for ($i = 1; $i < 30; $i += 2)
             if ($i >= $iEffect->minlvl)
-                echo "<td align=\"center\">" . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc)), 1) . "</td>";
+                echo '<td style="text-align:center">' . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc)), 1) . '</td>';
             else
-                echo "<td align=\"center\">-</td>";
-        echo "<td>" . $iEffect->notes . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+                echo '<td style="text-align:center">-</td>';
+        echo '<td>' . $iEffect->notes . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_multidmgong() {
@@ -630,302 +600,296 @@ function show_spellanalysis_multidmgong() {
     );
     $parser = new cExpressionParser();   // Class for parsing expressions
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">DPR/Target of Multi-target Ongoing Effects (against defense 20)</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>DPR/Target of Multi-target Ongoing Effects (against defense 20)</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lEffects as $iEffect) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $iEffect->name . "</td><td align=\"center\">" . $iEffect->cost . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iEffect->name . '</td><td style="text-align:center">' . $iEffect->cost . '</td>';
         for ($i = 1; $i < 30; $i += 2)
             if ($i >= $iEffect->minlvl)
-                echo "<td align=\"center\">" . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc)), 1) . "</td>";
+                echo '<td style="text-align:center">' . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc)), 1) . '</td>';
             else
-                echo "<td align=\"center\">-</td>";
-        echo "<td>" . $iEffect->notes . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+                echo '<td style="text-align:center">-</td>';
+        echo '<td>' . $iEffect->notes . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_singledebil() {
     global $_APP;
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">Debilitating Single-Target Effects (against defense 20)</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>Debilitating Single-Target Effects (against defense 20)</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     for ($idx = 0; $idx < 20; $idx++) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
+        echo '<tr>';
         switch ($idx) {
             case 0:
-                echo "<td>Affliction</td><td align=\"center\">PP</td>";
+                echo '<td>Affliction</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 5 ? "Dis1" : ($i >= 3 ? "Blind1" : "-")) . "</td>";
-                echo "<td>Tch</td>";
+                    echo '<td style="text-align:center">' . ($i >= 5 ? 'Dis1' : ($i >= 3 ? 'Blind1' : '-')) . '</td>';
+                echo '<td>Tch</td>';
                 break;
             case 1:
-                echo "<td>Command Creature</td><td align=\"center\">PP</td>";
+                echo '<td>Command Creature</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . "Immob1" . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . 'Immob1' . '</td>';
+                echo '<td></td>';
                 break;
             case 2:
-                echo "<td>Control Body</td><td align=\"center\">PP</td>";
+                echo '<td>Control Body</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 13 ? "Ctrl G" : ($i >= 11 ? "Ctrl H" : ($i >= 9 ? "Ctrl L" : ($i >= 7 ? "Ctrl M" : "-")))) . "</td>";
-                echo "<td>Concentration</td>";
+                    echo '<td style="text-align:center">' . ($i >= 13 ? 'Ctrl G' : ($i >= 11 ? 'Ctrl H' : ($i >= 9 ? 'Ctrl L' : ($i >= 7 ? 'Ctrl M' : '-')))) . '</td>';
+                echo '<td>Concentration</td>';
                 break;
             case 3:
-                echo "<td>Control Emotions</td><td align=\"center\">PP</td>";
+                echo '<td>Control Emotions</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 13 ? "Helpless" : ($i >= 5 ? "-4" : ($i >= 3 ? "-2" : "-"))) . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 13 ? 'Helpless' : ($i >= 5 ? '-4' : ($i >= 3 ? '-2' : '-'))) . '</td>';
+                echo '<td></td>';
                 break;
             case 4:
-                echo "<td>Curse</td><td align=\"center\">PP</td>";
+                echo '<td>Curse</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . "-" . ($i >= 5 ? 5 : $i) . "</td>";
-                echo "<td>Tch</td>";
+                    echo '<td style="text-align:center">' . '-' . ($i >= 5 ? 5 : $i) . '</td>';
+                echo '<td>Tch</td>';
                 break;
             case 5:
-                echo "<td>Dominate Creature</td><td align=\"center\">PP</td>";
+                echo '<td>Dominate Creature</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 11 ? "DomC1" : ($i >= 7 ? "DomP1" : "-")) . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 11 ? 'DomC1' : ($i >= 7 ? 'DomP1' : '-')) . '</td>';
+                echo '<td></td>';
                 break;
             case 6:
-                echo "<td>Ectoplasmic Glob</td><td align=\"center\">PP</td>";
+                echo '<td>Ectoplasmic Glob</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 5 ? "EntC" : "EntP") . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 5 ? 'EntC' : 'EntP') . '</td>';
+                echo '<td></td>';
                 break;
             case 7:
-                echo "<td>Enervation</td><td align=\"center\">PP</td>";
+                echo '<td>Enervation</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 3 ? "Stun1" : "Dmg") . "</td>";
-                echo "<td>Tch</td>";
+                    echo '<td style="text-align:center">' . ($i >= 3 ? 'Stun1' : 'Dmg') . '</td>';
+                echo '<td>Tch</td>';
                 break;
             case 8:
-                echo "<td>Evil Eye</td><td align=\"center\">PP</td>";
+                echo '<td>Evil Eye</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 7 ? "Panic1" : "-") . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 7 ? 'Panic1' : '-') . '</td>';
+                echo '<td></td>';
                 break;
             case 9:
-                echo "<td>Fear</td><td align=\"center\">PP</td>";
+                echo '<td>Fear</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 7 ? "Panic1" : ($i >= 5 ? "Fright1" : "Shaken1")) . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 7 ? 'Panic1' : ($i >= 5 ? 'Fright1' : 'Shaken1')) . '</td>';
+                echo '<td></td>';
                 break;
             case 10:
-                echo "<td>Hold Creature</td><td align=\"center\">PP</td>";
+                echo '<td>Hold Creature</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 9 ? "ParalC1" : ($i >= 5 ? "ParalP1" : "-")) . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 9 ? 'ParalC1' : ($i >= 5 ? 'ParalP1' : '-')) . '</td>';
+                echo '<td></td>';
                 break;
             case 11:
-                echo "<td>Insanity</td><td align=\"center\">PP</td>";
+                echo '<td>Insanity</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 7 ? "Feeblem1" : ($i >= 5 ? "Stun1" : ($i >= 3 ? "Confuse1" : "-"))) . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 7 ? 'Feeblem1' : ($i >= 5 ? 'Stun1' : ($i >= 3 ? 'Confuse1' : '-'))) . '</td>';
+                echo '<td></td>';
                 break;
             case 12:
-                echo "<td>Petrification</td><td align=\"center\">PP</td>";
+                echo '<td>Petrification</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 7 ? "Petrif1" : ($i >= 5 ? "PetrifC1" : "-")) . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 7 ? 'Petrif1' : ($i >= 5 ? 'PetrifC1' : '-')) . '</td>';
+                echo '<td></td>';
                 break;
             case 13:
-                echo "<td>Power Word</td><td align=\"center\">PP</td>";
+                echo '<td>Power Word</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 17 ? "Paral1" : ($i >= 15 ? "Stun1" : ($i >= 13 ? "Blind1" : "-"))) . "</td>";
-                echo "<td>6 AP</td>";
+                    echo '<td style="text-align:center">' . ($i >= 17 ? 'Paral1' : ($i >= 15 ? 'Stun1' : ($i >= 13 ? 'Blind1' : '-'))) . '</td>';
+                echo '<td>6 AP</td>';
                 break;
             case 14:
-                echo "<td>Slay Living</td><td align=\"center\">PP</td>";
+                echo '<td>Slay Living</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 9 ? "(Death)" : "-") . "</td>";
-                echo "<td>Tch</td>";
+                    echo '<td style="text-align:center">' . ($i >= 9 ? '(Death)' : '-') . '</td>';
+                echo '<td>Tch</td>';
                 break;
             case 15:
-                echo "<td>Touch of Enfeeblement</td><td align=\"center\">PP</td>";
+                echo '<td>Touch of Enfeeblement</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 3 ? "-2" : "-") . "</td>";
-                echo "<td>Tch; ability dmg</td>";
+                    echo '<td style="text-align:center">' . ($i >= 3 ? '-2' : '-') . '</td>';
+                echo '<td>Tch; ability dmg</td>';
                 break;
 
             case 16:
-                echo "<td>Div Prov: Inflict Disease</td><td align=\"center\">PP</td>";
+                echo '<td>Div Prov: Inflict Disease</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 6 ? "Dis" : "-") . "</td>";
-                echo "<td>Tch</td>";
+                    echo '<td style="text-align:center">' . ($i >= 6 ? 'Dis' : '-') . '</td>';
+                echo '<td>Tch</td>';
                 break;
             case 17:
-                echo "<td>Ki Off: Stunning Fist</td><td align=\"center\">PP</td>";
+                echo '<td>Ki Off: Stunning Fist</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 3 ? "Stun1" : "-") . "</td>";
-                echo "<td>Part of attack</td>";
+                    echo '<td style="text-align:center">' . ($i >= 3 ? 'Stun1' : '-') . '</td>';
+                echo '<td>Part of attack</td>';
                 break;
             case 18:
-                echo "<td>Ki SoF: Special Attacks</td><td align=\"center\">PP</td>";
+                echo '<td>Ki SoF: Special Attacks</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 16 ? "Stun1" : ($i >= 13 ? "Dazzle" : ($i >= 11 ? "Silent1" : ($i >= 9 ? "Deaf1" : ($i >= 5 ? "Slow1" : ""))))) . "</td>";
-                echo "<td>Part of attack</td>";
+                    echo '<td style="text-align:center">' . ($i >= 16 ? 'Stun1' : ($i >= 13 ? 'Dazzle' : ($i >= 11 ? 'Silent1' : ($i >= 9 ? 'Deaf1' : ($i >= 5 ? 'Slow1' : ''))))) . '</td>';
+                echo '<td>Part of attack</td>';
                 break;
             case 19:
-                echo "<td>Vit Att: Vital Stun</td><td align=\"center\">PP</td>";
+                echo '<td>Vit Att: Vital Stun</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 10 ? "Stun1" : "-") . "</td>";
-                echo "<td>Part of attack</td>";
+                    echo '<td style="text-align:center">' . ($i >= 10 ? 'Stun1' : '-') . '</td>';
+                echo '<td>Part of attack</td>';
                 break;
         }
-        echo "</tr>";
-        $odd = !$odd;
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_multidebil() {
     global $_APP;
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">Debilitating Multi-Target Effects (against defense 20)</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>Debilitating Multi-Target Effects (against defense 20)</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     for ($idx = 0; $idx < 18; $idx++) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
+        echo '<tr>';
         switch ($idx) {
             case 0:
-                echo "<td>Affliction</td><td align=\"center\">PP</td>";
+                echo '<td>Affliction</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 12 ? "Dis1" : ($i >= 10 ? "Blind1" : "-")) . "</td>";
-                echo "<td>4 T</td>";
+                    echo '<td style="text-align:center">' . ($i >= 12 ? 'Dis1' : ($i >= 10 ? 'Blind1' : '-')) . '</td>';
+                echo '<td>4 T</td>';
                 break;
             case 1:
-                echo "<td>Color Spray</td><td align=\"center\">PP</td>";
+                echo '<td>Color Spray</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 3 ? "Stun1" : "-") . "</td>";
-                echo "<td>4sq cone</td>";
+                    echo '<td style="text-align:center">' . ($i >= 3 ? 'Stun1' : '-') . '</td>';
+                echo '<td>4sq cone</td>';
                 break;
             case 2:
-                echo "<td>Command Creature</td><td align=\"center\">PP</td>";
+                echo '<td>Command Creature</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 5 ? "Immobil1" : "-") . "</td>";
-                echo "<td>4 T</td>";
+                    echo '<td style="text-align:center">' . ($i >= 5 ? 'Immobil1' : '-') . '</td>';
+                echo '<td>4 T</td>';
                 break;
             case 3:
-                echo "<td>Control Emotions</td><td align=\"center\">PP</td>";
+                echo '<td>Control Emotions</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 17 ? "Helpless" : ($i >= 9 ? "-4" : ($i >= 7 ? "-2" : "-"))) . "</td>";
-                echo "<td>4 T</td>";
+                    echo '<td style="text-align:center">' . ($i >= 17 ? 'Helpless' : ($i >= 9 ? '-4' : ($i >= 7 ? '-2' : '-'))) . '</td>';
+                echo '<td>4 T</td>';
                 break;
             case 4:
-                echo "<td>Create Web</td><td align=\"center\">PP</td>";
+                echo '<td>Create Web</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 3 ? "Ent" : "-") . "</td>";
-                echo "<td>4sq rad</td>";
+                    echo '<td style="text-align:center">' . ($i >= 3 ? 'Ent' : '-') . '</td>';
+                echo '<td>4sq rad</td>';
                 break;
             case 5:
-                echo "<td>Curse</td><td align=\"center\">PP</td>";
+                echo '<td>Curse</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 12 ? "-5" : ($i >= 8 ? ("-" . ($i - 7)) : "-")) . "</td>";
-                echo "<td>4 T</td>";
+                    echo '<td style="text-align:center">' . ($i >= 12 ? '-5' : ($i >= 8 ? ('-' . ($i - 7)) : '-')) . '</td>';
+                echo '<td>4 T</td>';
                 break;
             case 6:
-                echo "<td>Dominate Creature</td><td align=\"center\">PP</td>";
+                echo '<td>Dominate Creature</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 15 ? "DomC1" : "-") . "</td>";
-                echo "<td>4 T</td>";
+                    echo '<td style="text-align:center">' . ($i >= 15 ? 'DomC1' : '-') . '</td>';
+                echo '<td>4 T</td>';
                 break;
             case 7:
-                echo "<td>Enervation</td><td align=\"center\">PP</td>";
+                echo '<td>Enervation</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 9 ? "Stun1" : ($i >= 7 ? "Dmg" : "-")) . "</td>";
-                echo "<td>6sq cone</td>";
+                    echo '<td style="text-align:center">' . ($i >= 9 ? 'Stun1' : ($i >= 7 ? 'Dmg' : '-')) . '</td>';
+                echo '<td>6sq cone</td>';
                 break;
             case 8:
-                echo "<td>Fear</td><td align=\"center\">PP</td>";
+                echo '<td>Fear</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 11 ? "Panic1" : ($i >= 9 ? "Fright1" : ($i >= 7 ? "Shaken1" : "-"))) . "</td>";
-                echo "<td>4 T</td>";
+                    echo '<td style="text-align:center">' . ($i >= 11 ? 'Panic1' : ($i >= 9 ? 'Fright1' : ($i >= 7 ? 'Shaken1' : '-'))) . '</td>';
+                echo '<td>4 T</td>';
                 break;
             case 9:
-                echo "<td>Hold Creature</td><td align=\"center\">PP</td>";
+                echo '<td>Hold Creature</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 13 ? "Paral1" : "-") . "</td>";
-                echo "<td>4 T</td>";
+                    echo '<td style="text-align:center">' . ($i >= 13 ? 'Paral1' : '-') . '</td>';
+                echo '<td>4 T</td>';
                 break;
             case 10:
-                echo "<td>Holy Word</td><td align=\"center\">PP</td>";
+                echo '<td>Holy Word</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 19 ? "Paral" : ($i >= 13 ? "Blind" : "-")) . "</td>";
-                echo "<td>8sq rad</td>";
+                    echo '<td style="text-align:center">' . ($i >= 19 ? 'Paral' : ($i >= 13 ? 'Blind' : '-')) . '</td>';
+                echo '<td>8sq rad</td>';
                 break;
             case 11:
-                echo "<td>Illuminate</td><td align=\"center\">PP</td>";
+                echo '<td>Illuminate</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 5 ? "Blind1" : "-") . "</td>";
-                echo "<td>1sq rad</td>";
+                    echo '<td style="text-align:center">' . ($i >= 5 ? 'Blind1' : '-') . '</td>';
+                echo '<td>1sq rad</td>';
                 break;
             case 12:
-                echo "<td>Insanity</td><td align=\"center\">PP</td>";
+                echo '<td>Insanity</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 11 ? "Feeblem1" : ($i >= 9 ? "Stun1" : ($i >= 7 ? "Confuse1" : "-"))) . "</td>";
-                echo "<td>4 T</td>";
+                    echo '<td style="text-align:center">' . ($i >= 11 ? 'Feeblem1' : ($i >= 9 ? 'Stun1' : ($i >= 7 ? 'Confuse1' : '-'))) . '</td>';
+                echo '<td>4 T</td>';
                 break;
             case 13:
-                echo "<td>Slay Living</td><td align=\"center\">PP</td>";
+                echo '<td>Slay Living</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 13 ? "(Death)" : "-") . "</td>";
-                echo "<td>8sq rad</td>";
+                    echo '<td style="text-align:center">' . ($i >= 13 ? '(Death)' : '-') . '</td>';
+                echo '<td>8sq rad</td>';
                 break;
             case 14:
-                echo "<td>Sleep</td><td align=\"center\">PP</td>";
+                echo '<td>Sleep</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 5 ? "Daze1" : "-") . "</td>";
-                echo "<td>2sq rad</td>";
+                    echo '<td style="text-align:center">' . ($i >= 5 ? 'Daze1' : '-') . '</td>';
+                echo '<td>2sq rad</td>';
                 break;
             case 15:
-                echo "<td>Touch of Enfeeblement</td><td align=\"center\">PP</td>";
+                echo '<td>Touch of Enfeeblement</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 10 ? "-2" : "-") . "</td>";
-                echo "<td>4 T; ability dmg</td>";
+                    echo '<td style="text-align:center">' . ($i >= 10 ? '-2' : '-') . '</td>';
+                echo '<td>4 T; ability dmg</td>';
                 break;
 
             case 16:
-                echo "<td>Turn/Rebuke</td><td align=\"center\">PP</td>";
+                echo '<td>Turn/Rebuke</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">Fear</td>";
-                echo "<td>12sq cone; one type only</td>";
+                    echo '<td style="text-align:center">Fear</td>';
+                echo '<td>12sq cone; one type only</td>';
                 break;
             case 17:
-                echo "<td>Bard: Dirge of Doom</td><td align=\"center\">10 PP</td>";
+                echo '<td>Bard: Dirge of Doom</td><td style="text-align:center">10 PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 8 ? "Fear" : "-") . "</td>";
-                echo "<td>6sq rad</td>";
+                    echo '<td style="text-align:center">' . ($i >= 8 ? 'Fear' : '-') . '</td>';
+                echo '<td>6sq rad</td>';
                 break;
         }
-        echo "</tr>";
-        $odd = !$odd;
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_weaponmod() {
@@ -960,28 +924,26 @@ function show_spellanalysis_weaponmod() {
     );
     $parser = new cExpressionParser();   // Class for parsing expressions
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">Weapon Attack/Damage Bonuses</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>Weapon Attack/Damage Bonuses</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lEffects as $iEffect) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $iEffect->name . "</td><td align=\"center\">" . $iEffect->cost . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iEffect->name . '</td><td style="text-align:center">' . $iEffect->cost . '</td>';
         for ($i = 1; $i < 30; $i += 2)
             if ($i >= $iEffect->minlvl)
-                echo "<td align=\"center\">" . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . "</td>";
+                echo '<td style="text-align:center">' . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . '</td>';
             else
-                echo "<td align=\"center\">-</td>";
-        echo "<td>" . $iEffect->notes . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+                echo '<td style="text-align:center">-</td>';
+        echo '<td>' . $iEffect->notes . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_dec() {
@@ -1006,28 +968,26 @@ function show_spellanalysis_dec() {
     );
     $parser = new cExpressionParser();   // Class for parsing expressions
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">Defense Class (DeC) Bonuses</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>Defense Class (DeC) Bonuses</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lEffects as $iEffect) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $iEffect->name . "</td><td align=\"center\">" . $iEffect->cost . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iEffect->name . '</td><td style="text-align:center">' . $iEffect->cost . '</td>';
         for ($i = 1; $i < 30; $i += 2)
             if ($i >= $iEffect->minlvl)
-                echo "<td align=\"center\">" . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . "</td>";
+                echo '<td style="text-align:center">' . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . '</td>';
             else
-                echo "<td align=\"center\">-</td>";
-        echo "<td>" . $iEffect->notes . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+                echo '<td style="text-align:center">-</td>';
+        echo '<td>' . $iEffect->notes . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_dr() {
@@ -1045,28 +1005,26 @@ function show_spellanalysis_dr() {
     );
     $parser = new cExpressionParser();   // Class for parsing expressions
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">Damage Resistance (DR) Bonuses</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>Damage Resistance (DR) Bonuses</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lEffects as $iEffect) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $iEffect->name . "</td><td align=\"center\">" . $iEffect->cost . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iEffect->name . '</td><td style="text-align:center">' . $iEffect->cost . '</td>';
         for ($i = 1; $i < 30; $i += 2)
             if ($i >= $iEffect->minlvl)
-                echo "<td align=\"center\">" . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . "</td>";
+                echo '<td style="text-align:center">' . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . '</td>';
             else
-                echo "<td align=\"center\">-</td>";
-        echo "<td>" . $iEffect->notes . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+                echo '<td style="text-align:center">-</td>';
+        echo '<td>' . $iEffect->notes . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_energyres() {
@@ -1078,28 +1036,26 @@ function show_spellanalysis_energyres() {
     );
     $parser = new cExpressionParser();   // Class for parsing expressions
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">Energy Resistance Bonuses</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>Energy Resistance Bonuses</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lEffects as $iEffect) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $iEffect->name . "</td><td align=\"center\">" . $iEffect->cost . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iEffect->name . '</td><td style="text-align:center">' . $iEffect->cost . '</td>';
         for ($i = 1; $i < 30; $i += 2)
             if ($i >= $iEffect->minlvl)
-                echo "<td align=\"center\">" . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . "</td>";
+                echo '<td style="text-align:center">' . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . '</td>';
             else
-                echo "<td align=\"center\">-</td>";
-        echo "<td>" . $iEffect->notes . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+                echo '<td style="text-align:center">-</td>';
+        echo '<td>' . $iEffect->notes . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_mr() {
@@ -1113,28 +1069,26 @@ function show_spellanalysis_mr() {
     );
     $parser = new cExpressionParser();   // Class for parsing expressions
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">Magic Resistance (MR) Bonuses</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>Magic Resistance (MR) Bonuses</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lEffects as $iEffect) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $iEffect->name . "</td><td align=\"center\">" . $iEffect->cost . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iEffect->name . '</td><td style="text-align:center">' . $iEffect->cost . '</td>';
         for ($i = 1; $i < 30; $i += 2)
             if ($i >= $iEffect->minlvl)
-                echo "<td align=\"center\">" . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . "</td>";
+                echo '<td style="text-align:center">' . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . '</td>';
             else
-                echo "<td align=\"center\">-</td>";
-        echo "<td>" . $iEffect->notes . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+                echo '<td style="text-align:center">-</td>';
+        echo '<td>' . $iEffect->notes . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_heal() {
@@ -1148,158 +1102,152 @@ function show_spellanalysis_heal() {
     );
     $parser = new cExpressionParser();   // Class for parsing expressions
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">HP Healing (per AP)</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>HP Healing (per AP)</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lEffects as $iEffect) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $iEffect->name . "</td><td align=\"center\">" . $iEffect->cost . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iEffect->name . '</td><td style="text-align:center">' . $iEffect->cost . '</td>';
         for ($i = 1; $i < 30; $i += 2)
             if ($i >= $iEffect->minlvl)
-                echo "<td align=\"center\">" . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . "</td>";
+                echo '<td style="text-align:center">' . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . '</td>';
             else
-                echo "<td align=\"center\">-</td>";
-        echo "<td>" . $iEffect->notes . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+                echo '<td style="text-align:center">-</td>';
+        echo '<td>' . $iEffect->notes . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_sense() {
     global $_APP;
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">Special Senses</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>Special Senses</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     for ($idx = 0; $idx < 4; $idx++) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
+        echo '<tr>';
         switch ($idx) {
             case 0:
-                echo "<td>Enhance Senses</td><td align=\"center\">PP</td>";
+                echo '<td>Enhance Senses</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 13 ? "True" : ($i >= 3 ? "Darkv" : "LLVis")) . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 13 ? 'True' : ($i >= 3 ? 'Darkv' : 'LLVis')) . '</td>';
+                echo '<td></td>';
                 break;
 
             case 1:
-                echo "<td>Shadow Weave Affinity</td><td align=\"center\">-</td>";
+                echo '<td>Shadow Weave Affinity</td><td style="text-align:center">-</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 10 ? "Darkv" : ($i >= 7 ? "LLVis" : "-")) . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 10 ? 'Darkv' : ($i >= 7 ? 'LLVis' : '-')) . '</td>';
+                echo '<td></td>';
                 break;
             case 2:
-                echo "<td>Shadowdancing</td><td align=\"center\">-</td>";
+                echo '<td>Shadowdancing</td><td style="text-align:center">-</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 9 ? "Darkv" : "-") . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 9 ? 'Darkv' : '-') . '</td>';
+                echo '<td></td>';
                 break;
             case 3:
-                echo "<td>Survival</td><td align=\"center\">-</td>";
+                echo '<td>Survival</td><td style="text-align:center">-</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 11 ? "Tremor" : "-") . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 11 ? 'Tremor' : '-') . '</td>';
+                echo '<td></td>';
                 break;
         }
-        echo "</tr>";
-        $odd = !$odd;
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_move() {
     global $_APP;
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">Special Movement</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>Special Movement</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     for ($idx = 0; $idx < 10; $idx++) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
+        echo '<tr>';
         switch ($idx) {
             case 0:
-                echo "<td>Air Walk</td><td align=\"center\">PP</td>";
+                echo '<td>Air Walk</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 7 ? "Fly" : "-") . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 7 ? 'Fly' : '-') . '</td>';
+                echo '<td></td>';
                 break;
             case 1:
-                echo "<td>Enhance Mobility</td><td align=\"center\">PP</td>";
+                echo '<td>Enhance Mobility</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">+2</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">+2</td>';
+                echo '<td></td>';
                 break;
             case 2:
-                echo "<td>Levitate</td><td align=\"center\">PP</td>";
+                echo '<td>Levitate</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 5 ? "Fly" : ($i >= 3 ? "Levitate" : "-")) . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 5 ? 'Fly' : ($i >= 3 ? 'Levitate' : '-')) . '</td>';
+                echo '<td></td>';
                 break;
             case 3:
-                echo "<td>Meld w/ Nature</td><td align=\"center\">PP</td>";
+                echo '<td>Meld w/ Nature</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 11 ? "P Tel" : ($i >= 9 ? "L Tel" : "-")) . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 11 ? 'P Tel' : ($i >= 9 ? 'L Tel' : '-')) . '</td>';
+                echo '<td></td>';
                 break;
             case 4:
-                echo "<td>Teleport</td><td align=\"center\">PP</td>";
+                echo '<td>Teleport</td><td style="text-align:center">PP</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 9 ? "P Tel" : ($i >= 7 ? "L Tel" : ($i >= 5 ? "C Tel" : "-"))) . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 9 ? 'P Tel' : ($i >= 7 ? 'L Tel' : ($i >= 5 ? 'C Tel' : '-'))) . '</td>';
+                echo '<td></td>';
                 break;
 
             case 5:
-                echo "<td>Ki - Mobility</td><td align=\"center\">-</td>";
+                echo '<td>Ki - Mobility</td><td style="text-align:center">-</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">+" . round($i / 3) . ($i >= 12 ? ", C Tel" : "") . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">+' . round($i / 3) . ($i >= 12 ? ', C Tel' : '') . '</td>';
+                echo '<td></td>';
                 break;
             case 6:
-                echo "<td>Pyrokin: Firewalk</td><td align=\"center\">2 PP/r</td>";
+                echo '<td>Pyrokin: Firewalk</td><td style="text-align:center">2 PP/r</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 16 ? "Fly" : "-") . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 16 ? 'Fly' : '-') . '</td>';
+                echo '<td></td>';
                 break;
             case 7:
-                echo "<td>Shadow W Aff: Shadow Jump</td><td align=\"center\">2 PP/sq</td>";
+                echo '<td>Shadow W Aff: Shadow Jump</td><td style="text-align:center">2 PP/sq</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 14 ? "C Tel" : "-") . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 14 ? 'C Tel' : '-') . '</td>';
+                echo '<td></td>';
                 break;
             case 8:
-                echo "<td>Shadowdanc: Shadow Jump</td><td align=\"center\">2 PP/sq</td>";
+                echo '<td>Shadowdanc: Shadow Jump</td><td style="text-align:center">2 PP/sq</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 11 ? "C Tel" : "-") . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 11 ? 'C Tel' : '-') . '</td>';
+                echo '<td></td>';
                 break;
             case 9:
-                echo "<td>Spellfire: Spellfire Flight</td><td align=\"center\">5 SP/r</td>";
+                echo '<td>Spellfire: Spellfire Flight</td><td style="text-align:center">5 SP/r</td>';
                 for ($i = 1; $i < 30; $i += 2)
-                    echo "<td align=\"center\">" . ($i >= 20 ? "Fly" : "-") . "</td>";
-                echo "<td></td>";
+                    echo '<td style="text-align:center">' . ($i >= 20 ? 'Fly' : '-') . '</td>';
+                echo '<td></td>';
                 break;
         }
-        echo "</tr>";
-        $odd = !$odd;
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_summon() {
@@ -1321,28 +1269,26 @@ function show_spellanalysis_summon() {
     );
     $parser = new cExpressionParser();   // Class for parsing expressions
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">CL of Companion Creatures</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td><td align=\"center\">Cost(s)</td>";
+    echo '<table width="100%">';
+    echo '<caption>CL of Companion Creatures</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th><th style="text-align:center">Cost(s)</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
-    $odd = true;
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     foreach ($lEffects as $iEffect) {
-        echo "<tr class=\"tablerow" . ($odd ? "" : "alt") . "\">";
-        echo "<td>" . $iEffect->name . "</td><td align=\"center\">" . $iEffect->cost . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iEffect->name . '</td><td style="text-align:center">' . $iEffect->cost . '</td>';
         for ($i = 1; $i < 30; $i += 2)
             if ($i >= $iEffect->minlvl)
-                echo "<td align=\"center\">" . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . "</td>";
+                echo '<td style="text-align:center">' . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . '</td>';
             else
-                echo "<td align=\"center\">-</td>";
-        echo "<td>" . $iEffect->notes . "</td>";
-        echo "</tr>";
-        $odd = !$odd;
+                echo '<td style="text-align:center">-</td>';
+        echo '<td>' . $iEffect->notes . '</td>';
+        echo '</tr>';
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_buffcombo() {
@@ -1381,41 +1327,40 @@ function show_spellanalysis_buffcombo() {
     );
     $parser = new cExpressionParser();   // Class for parsing expressions
 
-    echo "<br /><table class=\"table\" width=\"100%\">";
-    echo "<caption align=\"bottom\">Combined buffs</caption>";
-    echo "<thead><tr class=\"tableheader\">";
-    echo "<td>Effect</td>";
+    echo '<table width="100%">';
+    echo '<caption>Combined buffs</caption>';
+    echo '<thead><tr>';
+    echo '<th>Effect</th>';
     for ($i = 1; $i < 30; $i += 2)
-        echo "<td align=\"center\">L" . $i . "</td>";
-    echo "<td>Notes</td>";
-    echo "</tr></thead>";
+        echo '<th style="text-align:center">L' . $i . '</th>';
+    echo '<th>Notes</th>';
+    echo '</tr></thead><tbody>';
     $cnt = 0;
     foreach ($lEffects as $iEffect) {
-        echo "<tr class=\"tablerow" . (($cnt / 3) % 2 == 0 ? "" : "alt") . "\">";
-        echo "<td>" . $iEffect->name . "</td>";
+        echo '<tr>';
+        echo '<td>' . $iEffect->name . '</td>';
         for ($i = 1; $i < 30; $i += 2)
             if ($i >= $iEffect->minlvl)
-                echo "<td align=\"center\">" . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . "</td>";
+                echo '<td style="text-align:center">' . round($parser->Evaluate(str_replace("lvl", $i, $iEffect->calc))) . '</td>';
             else
-                echo "<td align=\"center\">-</td>";
-        echo "<td>" . $iEffect->notes . "</td>";
-        echo "</tr>";
+                echo '<td style="text-align:center">-</td>';
+        echo '<td>' . $iEffect->notes . '</td>';
+        echo '</tr>';
         $cnt++;
     }
-    echo "</table>";
+    echo '</tbody></table>';
 }
 
 function show_spellanalysis_notes() {
     ?>
     <p>
-        Weapon users have the benefit of more flexibility in the distribution of AP.<br />
-        Weapon users can also more easily acquire attack, damage, and crit bonuses.<br />
-        Spellcasters have the benefit of being able to select spells that target an opponent's weaknesses.<br />
-        Many damage-causing spells can cause reduced damage even when they "miss".<br />
-        Many damage-causing spells can bypass an opponent's DR.<br />
-        Spellcasters can usually affect multiple targets.<br />
+        Weapon users have the benefit of more flexibility in the distribution of AP.<br/>
+        Weapon users can also more easily acquire attack, damage, and crit bonuses.<br/>
+        Spellcasters have the benefit of being able to select spells that target an opponent's weaknesses.<br/>
+        Many damage-causing spells can cause reduced damage even when they "miss".<br/>
+        Many damage-causing spells can bypass an opponent's DR.<br/>
+        Spellcasters can usually affect multiple targets.<br/>
     </p>
     <?php
-
 }
 ?>

@@ -1,12 +1,5 @@
 <?php
 
-require_once 'rolcalc.php';
-require_once 'abilityscores.php';
-require_once 'modifiers.php';
-require_once 'conditions.php';
-require_once 'creature.php';
-require_once 'equipment.php';
-
 define("ITEM_STOWED", 0);
 define("ITEM_CARRIED", 1);
 define("ITEM_EQUIPPED", 2);
@@ -60,7 +53,13 @@ class cEntity {
     }
 
     public function GetAbilMod($id) {
-        return AbilMod($this->GetAbility($id));
+        global $_APP;
+
+        $abilmod = AbilMod($this->GetAbility($id));
+        // For Dex ability, limit the modifier for encumbrance class
+        if ($id == A_DEX)
+            $abilmod = min($abilmod, $_APP['encumbrance'][$this->GetEncumbranceClass(0)]['MaxDexBonus']);
+        return $abilmod;
     }
 
     public function GetHPTotal() {
@@ -108,9 +107,10 @@ class cEntity {
         global $_APP;
         $dec = 10;
 
-        $dec += $_APP['sizecats'][$this->GetCurrentSize()]['CombatMod'];
         // Add penalty for low Dex (but not bonus)
         $dec += min($this->GetAbilMod(A_DEX), 0);
+        $dec += $this->GetTotalLevel();
+        $dec += $_APP['sizecats'][$this->GetCurrentSize()]['CombatMod'];
         $dec += ($this->TraitEffects->ModsDeC != NULL) ? $this->TraitEffects->ModsDeC->Total() : 0;
 
         return (int) $dec;
@@ -120,8 +120,8 @@ class cEntity {
         global $_APP;
         $dec = $this->GetDeCPassive();
 
-        // Add bonus for high Dex (but not penalty), and then limit it for encumbrance class
-        $dec += min(max($this->GetAbilMod(A_DEX), 0), $_APP['encumbrance'][$this->GetEncumbranceClass(0)]['MaxDexBonus']);
+        // Add bonus for high Dex (but not penalty)
+        $dec += max($this->GetAbilMod(A_DEX), 0);
         $dec += ($this->TraitEffects->ModsPar != NULL) ? $this->TraitEffects->ModsPar->Total() : 0;
 
         return (int) $dec;
@@ -2231,6 +2231,10 @@ class cPossession extends cEntity {
         }
 
         return $pl;
+    }
+
+    public function GetEncumbranceClass($config) {
+        return 0;
     }
 
     public function UpdateState() {

@@ -112,7 +112,7 @@ $database_funcs = Array ("database" => "default");
 			<?php 
 			print $message;
 			print "<br/>";
-			print "<br/><div align=\"center\"><center><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\" width =\"600\"><tr><td><table table cellpadding=\"3\" cellspacing=\"1\" width=\"100%\">\n";
+			print "<br/><div style="text-align:center"><center><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\" width =\"600\"><tr><td><table table cellpadding=\"3\" cellspacing=\"1\" width=\"100%\">\n";
 		}
 		$space = "";
 		for ($x = 0; $x < $lev; $x++)
@@ -397,8 +397,8 @@ function addcatform($parent) {
 		print $message;
 		print "<br/>";
 		if (mysql_num_rows($result) > 0) {
-			print "<div align=\"center\"><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing=\"1\">
-			<tr class=\"grey\"><td align=\"center\"><b>Site name</b></td><td align=\"center\"><b>Site url</b></td><td align=\"center\"><b>Last indexed</b></td><td colspan=4></td></tr>\n";
+			print "<div style="text-align:center"><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing=\"1\">
+			<tr class=\"grey\"><td style="text-align:center"><b>Site name</b></td><td style="text-align:center"><b>Site url</b></td><td style="text-align:center"><b>Last indexed</b></td><td colspan=4></td></tr>\n";
 		} else {
 			?><center><p><b>Welcom to Sphider. <br><br>Choose "Add site" from the submenu to add a new site, or "Index" to directly go to the indexing section.</b></p></center><?php 
 		}
@@ -863,15 +863,15 @@ function addcatform($parent) {
 				$stats['siteSize'] = 0;
 			$stats['siteSize'] = number_format($stats['siteSize'], 2);
 			print"<div id=\"submenu\"></div>";
-			print "<br/><div align=\"center\"><center><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing = \"1\"><tr  class=\"grey\"><td colspan=\"2\">";
+			print "<br/><div style="text-align:center"><center><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing = \"1\"><tr  class=\"grey\"><td colspan=\"2\">";
 			print "Statistics for site <a href=\"admin.php?f=20&site_id=$site_id\">$url</a>";
-			print "<tr class=\"white\"><td>Last indexed:</td><td align=\"center\"> ".$stats['lastIndex']."</td></tr>";
-			print "<tr class=\"grey\"><td>Pages indexed:</td><td align=\"center\"> ".$stats['links']."</td></tr>";
-			print "<tr class=\"white\"><td>Total index size:</td><td align=\"center\"> ".$stats['index']."</td></tr>";
+			print "<tr class=\"white\"><td>Last indexed:</td><td style="text-align:center"> ".$stats['lastIndex'].'</td></tr>';
+			print "<tr class=\"grey\"><td>Pages indexed:</td><td style="text-align:center"> ".$stats['links'].'</td></tr>';
+			print "<tr class=\"white\"><td>Total index size:</td><td style="text-align:center"> ".$stats['index'].'</td></tr>';
 			$sum = number_format($stats['sumSize']/1024, 2);
-			print "<tr class=\"grey\"><td>Cached texts:</td><td align=\"center\"> ".$sum."kb</td></tr>";
-			print "<tr class=\"white\"><td>Total number of keywords:</td><td align=\"center\"> ".$stats['words']."</td></tr>";
-			print "<tr class=\"grey\"><td>Site size:</td><td align=\"center\"> ".$stats['siteSize']."kb</td></tr>";
+			print "<tr class=\"grey\"><td>Cached texts:</td><td style="text-align:center"> ".$sum."kb</td></tr>";
+			print "<tr class=\"white\"><td>Total number of keywords:</td><td style="text-align:center"> ".$stats['words'].'</td></tr>';
+			print "<tr class=\"grey\"><td>Site size:</td><td style="text-align:center"> ".$stats['siteSize']."kb</td></tr>";
 			print "</table></td></tr></table></center></div>";
 		}
 	}
@@ -1018,19 +1018,19 @@ function addcatform($parent) {
 				$sitesSize = number_format($sitesSize, 2);
 
 				$stats = getStatistics();
-				print "<br/><div align=\"center\"><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing = \"1\"><tr  class=\"grey\"><td><b>Sites:</b></td><td align=\"center\">".$stats['sites']."</td></tr>";				
-				print "<tr class=\"white\"><td><b>Links:</b></td><td align=\"center\"> ".$stats['links']."</td></tr>";
-				print "<tr class=\"grey\"><td><b>Categories:</b></td><td align=\"center\"> ".$stats['categories']."</td></tr>";
-				print "<tr class=\"white\"><td><b>Keywords:</b></td><td align=\"center\"> ".$stats['keywords']."</td></tr>";
-				print "<tr class=\"grey\"><td><b>Keyword-link realations:</b></td><td align=\"center\"> ".$stats['index']."</td></tr>";
-				print "<tr class=\"white\"><td><b>Cached texts total:</b></td><td align=\"center\"> $cachedSumSize kb</td></tr>";
-				print "<tr class=\"grey\"><td><b>Sites size total:</b></td><td align=\"center\"> $sitesSize kb</td></tr>";
+				print "<br/><div style="text-align:center"><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing = \"1\"><tr  class=\"grey\"><td><b>Sites:</b></td><td style="text-align:center">'.$stats['sites'].'</td></tr>';				
+				print "<tr class=\"white\"><td><b>Links:</b></td><td style="text-align:center"> ".$stats['links'].'</td></tr>';
+				print "<tr class=\"grey\"><td><b>Categories:</b></td><td style="text-align:center"> ".$stats['categories'].'</td></tr>';
+				print "<tr class=\"white\"><td><b>Keywords:</b></td><td style="text-align:center"> ".$stats['keywords'].'</td></tr>';
+				print "<tr class=\"grey\"><td><b>Keyword-link realations:</b></td><td style="text-align:center"> ".$stats['index'].'</td></tr>';
+				print "<tr class=\"white\"><td><b>Cached texts total:</b></td><td style="text-align:center"> $cachedSumSize kb</td></tr>";
+				print "<tr class=\"grey\"><td><b>Sites size total:</b></td><td style="text-align:center"> $sitesSize kb</td></tr>";
 				print "</table></td></tr></table></div>";
 			}	
 
 			if ($type=='keywords') {
 				$class = "grey";
-				print "<br/><div align=\"center\"><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing = \"1\"><tr  class=\"grey\"><td><b>Keyword</b></td><td><b>Occurrences</b></td></tr>";
+				print "<br/><div style="text-align:center"><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing = \"1\"><tr  class=\"grey\"><td><b>Keyword</b></td><td><b>Occurrences</b></td></tr>";
 				for ($i=0;$i<=15; $i++) {
 					$char = dechex($i);
 					$result=mysql_query("select keyword, count(".$mysql_table_prefix."link_keyword$char.keyword_id) as x from ".$mysql_table_prefix."keywords, ".$mysql_table_prefix."link_keyword$char where ".$mysql_table_prefix."keywords.keyword_id = ".$mysql_table_prefix."link_keyword$char.keyword_id group by keyword order by x desc limit 30");
@@ -1079,7 +1079,7 @@ function addcatform($parent) {
 
 			if ($type=='top_searches') {
 				$class = "grey";
-				print "<br/><div align=\"center\"><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing = \"1\"><tr  class=\"grey\"><td><b>Query</b></td><td><b>Count</b></td><td><b> Average results</b></td><td><b>Last queried</b></td></tr>";
+				print "<br/><div style="text-align:center"><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing = \"1\"><tr  class=\"grey\"><td><b>Query</b></td><td><b>Count</b></td><td><b> Average results</b></td><td><b>Last queried</b></td></tr>";
 				$result=mysql_query("select query, count(*) as c, date_format(max(time), '%Y-%m-%d %H:%i:%s'), avg(results)  from ".$mysql_table_prefix."query_log group by query order by c desc");
 				echo mysql_error();
 				while ($row=mysql_fetch_row($result)) {
@@ -1092,13 +1092,13 @@ function addcatform($parent) {
 					$times = $row[1];
 					$date = $row[2];
 					$avg = number_format($row[3], 1);
-					print "<tr class=\"$class\"><td align=\"left\">".htmlentities($word)."</td><td align=\"center\"> ".$times."</td><td align=\"center\"> ".$avg."</td><td align=\"center\"> ".$date."</td></tr>";
+					print "<tr class=\"$class\"><td align=\"left\">".htmlentities($word)."</td><td style="text-align:center"> ".$times."</td><td style="text-align:center"> ".$avg."</td><td style="text-align:center"> ".$date.'</td></tr>';
 		 		}			
 				print "</table></td></tr></table></div>";
 			}
 			if ($type=='log') {
 				$class = "grey";
-				print "<br/><div align=\"center\"><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing = \"1\"><tr  class=\"grey\"><td align=\"center\"><b>Query</b></td><td align=\"center\"><b>Results</b></td><td align=\"center\"><b>Queried at</b></td><td align=\"center\"><b>Time taken</b></td></tr>";
+				print "<br/><div style="text-align:center"><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing = \"1\"><tr  class=\"grey\"><td style="text-align:center"><b>Query</b></td><td style="text-align:center"><b>Results</b></td><td style="text-align:center"><b>Queried at</b></td><td style="text-align:center"><b>Time taken</b></td></tr>";
 				$result=mysql_query("select query,  date_format(time, '%Y-%m-%d %H:%i:%s'), elapsed, results from ".$mysql_table_prefix."query_log order by time desc");
 				echo mysql_error();
 				while ($row=mysql_fetch_row($result)) {
@@ -1111,7 +1111,7 @@ function addcatform($parent) {
 					$time = $row[1];
 					$elapsed = $row[2];
 					$results = $row[3];
-					print "<tr class=\"$class\"><td align=\"left\">".htmlentities($word)."</td><td align=\"center\"> ".$results."</td><td align=\"center\"> ".$time."</td><td align=\"center\"> ".$elapsed."</td></tr>";
+					print "<tr class=\"$class\"><td align=\"left\">".htmlentities($word)."</td><td style="text-align:center"> ".$results."</td><td style="text-align:center"> ".$time."</td><td style="text-align:center"> ".$elapsed.'</td></tr>';
 		 		}			
 				print "</table></td></tr></table></div>";
 			}
@@ -1120,7 +1120,7 @@ function addcatform($parent) {
 				$class = "grey";
 				$files = get_dir_contents($log_dir);
 				if (count($files)>0) {
-					print "<br/><div align=\"center\"><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing = \"1\"><tr  class=\"grey\"><td align=\"center\"><b>File</b></td><td align=\"center\"><b>Time</b></td><td align=\"center\"><b></b></td></tr>";
+					print "<br/><div style="text-align:center"><table cellspacing =\"0\" cellpadding=\"0\" class=\"darkgrey\"><tr><td><table cellpadding=\"3\" cellspacing = \"1\"><tr  class=\"grey\"><td style="text-align:center"><b>File</b></td><td style="text-align:center"><b>Time</b></td><td style="text-align:center"><b></b></td></tr>";
 
 					for ($i=0; $i<count($files); $i++) {
 						$file=$files[$i];
@@ -1133,7 +1133,7 @@ function addcatform($parent) {
 							$class = "grey";
 						else 
 							$class = "white";
-						print "<tr class=\"$class\"><td align=\"left\"><a href='$log_dir/$file' tareget='_blank'>$file</a></td><td align=\"center\"> 20$year-$month-$day $hour:$minute</td><td align=\"center\"> <a href='?f=delete_log&file=$file' id='small_button'>Delete</a></td></tr>";
+						print "<tr class=\"$class\"><td align=\"left\"><a href='$log_dir/$file' tareget='_blank'>$file</a></td><td style="text-align:center"> 20$year-$month-$day $hour:$minute</td><td style="text-align:center"> <a href='?f=delete_log&file=$file' id='small_button'>Delete</a></td></tr>";
 					}
 
 					print "</table></td></tr></table></div>";

@@ -80,11 +80,11 @@ function checkAll(theForm, cName, allNo_stat) {
 		$i=0;
 		while ($rows=mysql_fetch_array($stats) ) {
 			print "<tr><td class=".$bgcolor."><input type='checkbox' id='tables$i' class='check' name='tables[$i]' value='".$rows["Name"]."' ></td>";
-			print "<td class=".$bgcolor.">".$rows["Name"]."</td>";
-			print '<td align="center" class='.$bgcolor.'>'.$rows['Rows'].'</td>';
-			print '<td align="center" class='.$bgcolor.'>'.$rows['Create_time'].'</td>';
-			print '<td align="center" class='.$bgcolor.'>'.number_format($rows['Data_length']/1024,1).'</td>';
-			print '<td align="center" class='.$bgcolor.'>'.number_format($rows['Index_length']/1024,1).'</td></tr>'."\n";
+			print "<td class=".$bgcolor.">".$rows["Name"].'</td>';
+			print '<td style="text-align:center" class='.$bgcolor.'>'.$rows['Rows'].'</td>';
+			print '<td style="text-align:center" class='.$bgcolor.'>'.$rows['Create_time'].'</td>';
+			print '<td style="text-align:center" class='.$bgcolor.'>'.number_format($rows['Data_length']/1024,1).'</td>';
+			print '<td style="text-align:center" class='.$bgcolor.'>'.number_format($rows['Index_length']/1024,1).'</td></tr>'."\n";
   		$i++;
   		if ($bgcolor=='grey') {
 			$bgcolor='white';
@@ -186,15 +186,15 @@ if (isset($file) && $del==1) {
 		if ($file != "." && $file != ".." &&  (eregi("\.sql",$file) || eregi("\.gz",$file))){
 			if($is_first==1){
 				echo "<tr> 
-				<td width=\"30%\" align=\"center\" class=\"greyHeading\"><b>File</b></td>
-				<td width=\"20%\" align=\"center\" class=\"greyHeading\"><b>Size</b></td>
-				<td width=\"20%\" align=\"center\" class=\"greyHeading\"><b>Date</b></td>
+				<td width=\"30%\" style="text-align:center" class=\"greyHeading\"><b>File</b></td>
+				<td width=\"20%\" style="text-align:center" class=\"greyHeading\"><b>Size</b></td>
+				<td width=\"20%\" style="text-align:center" class=\"greyHeading\"><b>Date</b></td>
 				<td class=\"greyHeading\">&nbsp;</td></tr>"; 
 			}
 			$is_first=0;
-			echo "<tr><td nowrap class=$bgcolor align=\"center\">$file</td>
-				 <td nowrap class=$bgcolor align=\"center\">".round(filesize($backup_path.$file) / 1024, 2)." kB</td>
-				 <td nowrap class=$bgcolor align=\"center\">".date("Y-m-d",filemtime($backup_path.$file))."</td>
+			echo "<tr><td nowrap class=$bgcolor style="text-align:center">$file</td>
+				 <td nowrap class=$bgcolor style="text-align:center">'.round(filesize($backup_path.$file) / 1024, 2)." kB</td>
+				 <td nowrap class=$bgcolor style="text-align:center">'.date("Y-m-d",filemtime($backup_path.$file))."</td>
 				 <td nowrap class=$bgcolor align=\"left\"><input type='button' id='submit' onclick=\"confirm_rest_prompt('./admin.php?f=database&file=$file&del=0');\" value='Restore'> &nbsp;<input type='button' id='submit' onclick=\"confirm_del_prompt('./admin.php?f=database&file=$file&del=1');\" value='Delete'></td>
 				 </tr>"; 
 			 

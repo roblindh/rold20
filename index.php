@@ -1,36 +1,35 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
-<html>
-    <link href="Styles/Site.css" rel="stylesheet" type="text/css">
-    <link rel="icon" href="Styles/rold20.ico">
-    <?php
-    require_once 'template.php';
-    ?>
+<?php if (!isset($_SESSION)) { session_start(); } ?>
+<!DOCTYPE html>
+<html lang="en-US">
+    <link rel="stylesheet" href="styles/site.css" type="text/css"/>
+    <link rel="icon" href="styles/reddragon.ico"/>
+    <?php require_once 'page_start.php'; ?>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>RoL d20 - Home Page</title>
+        <title>RoL d20 Introduction</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     </head>
+
     <body>
-        <div class="page">
 
-            <?php
-            echo rol_header();
-            ?> 
+        <header>
+            <?php echo rol_header(); ?>
+        </header>
 
-            <div class="main">
-                <?php
-                echo rol_toc();
-                ?> 
-                <div class="hbmain">
-                    <?php
-                    include 'about_content.php';
-                    ?> 
-                </div>
-            </div>
+        <main>
+            <nav>
+                <?php echo rol_toc(1); ?>
+            </nav>
+            <section>
+                <?php include 'hb01_intro_content.php'; ?>
+            </section>
+        </main>
 
-            <?php
-            echo rol_footer();
-            ?> 
+        <footer>
+            <iframe src="rolcalc_iframe.php" name="rolcalc" class="rolcalc"></iframe>
+        </footer>
 
-        </div>
     </body>
+
+    <?php require_once 'page_end.php'; ?>
+
 </html>

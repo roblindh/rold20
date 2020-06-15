@@ -1,13 +1,8 @@
 <?php
-
-require_once 'RulesSrc/showtables.php';
-
-application_start();
-
 global $_APP;
 
-$button_style = "style=\"width: 9em\"";
-$select_style = "style=\"width: 24em\"";
+$button_style = 'style="width: 9em"';
+$select_style = 'style="width: 24em"';
 
 $race = 1;
 $description = $_APP['creatures'][$race]['NameInformal'];
@@ -95,108 +90,108 @@ if (!isset($_POST['Reset'])) {
     }
 }
 
-echo "<h2 id=\"NPCGen\">NPC Generator</h2><br/>";
-echo "<form name=\"NPCGen\" method=\"post\" action=\"util_npcgen.php\"><table>";
+echo '<h2 id="NPCGen">NPC Generator</h2>';
+echo '<form name="NPCGen" method="post" action="util_npcgen.php"><table><tbody>';
 
-echo "<tr><td>Name/Description:</td><td><input type=\"text\" name=\"Description\" value=\"" . $description . "\" size=30 maxlength=30></td>";
-echo "<td><input type=\"button\" name=\"RandomRace\" value=\"Random\" disabled=\"\" " . $button_style . "></td></tr>";
+echo '<tr><td>Name/Description:</td><td><input type="text" name="Description" value="' . $description . '" size=30 maxlength=30></td>';
+echo '<td><input type="button" name="RandomRace" value="Random" disabled="" ' . $button_style . '></td></tr>';
 
-echo "<tr><td>Base Ability Scores:</td>";
-echo "<td><input type=\"text\" name=\"Str\" value=\"" . $abilities->Scores[A_STR] . "\" size=3 maxlength=3>";
-echo "<input type=\"text\" name=\"Con\" value=\"" . $abilities->Scores[A_CON] . "\" size=3 maxlength=3>";
-echo "<input type=\"text\" name=\"Dex\" value=\"" . $abilities->Scores[A_DEX] . "\" size=3 maxlength=3>";
-echo "<br /><input type=\"text\" name=\"Int\" value=\"" . $abilities->Scores[A_INT] . "\" size=3 maxlength=3>";
-echo "<input type=\"text\" name=\"Wis\" value=\"" . $abilities->Scores[A_WIS] . "\" size=3 maxlength=3>";
-echo "<input type=\"text\" name=\"Cha\" value=\"" . $abilities->Scores[A_CHA] . "\" size=3 maxlength=3></td>";
-echo "<td><input type=\"submit\" name=\"AbilAvg\" value=\"Average\" " . $button_style . ">";
-echo "<br /><input type=\"submit\" name=\"AbilElt\" value=\"Elite\" " . $button_style . ">";
-echo "<br /><input type=\"submit\" name=\"AbilHer\" value=\"Heroic\" " . $button_style . "></td></tr>";
+echo '<tr><td>Base Ability Scores:</td>';
+echo '<td><input type="text" name="Str" value="' . $abilities->Scores[A_STR] . '" size=3 maxlength=3>';
+echo '<input type="text" name="Con" value="' . $abilities->Scores[A_CON] . '" size=3 maxlength=3>';
+echo '<input type="text" name="Dex" value="' . $abilities->Scores[A_DEX] . '" size=3 maxlength=3>';
+echo '<br/><input type="text" name="Int" value="' . $abilities->Scores[A_INT] . '" size=3 maxlength=3>';
+echo '<input type="text" name="Wis" value="' . $abilities->Scores[A_WIS] . '" size=3 maxlength=3>';
+echo '<input type="text" name="Cha" value="' . $abilities->Scores[A_CHA] . '" size=3 maxlength=3></td>';
+echo '<td><input type="submit" name="AbilAvg" value="Average" ' . $button_style . '>';
+echo '<br/><input type="submit" name="AbilElt" value="Elite" ' . $button_style . '>';
+echo '<br/><input type="submit" name="AbilHer" value="Heroic" ' . $button_style . '></td></tr>';
 
-echo "<tr><td>Race:</td>";
-echo "<td><select name=\"Race\" " . $select_style . ">";
+echo '<tr><td>Race:</td>';
+echo '<td><select name="Race" ' . $select_style . '>';
 foreach ($_APP['creatures'] as $iCreature) {
-    echo "<option value=\"" . $iCreature['ID'] . "\"" . ($iCreature['ID'] == $race ? " selected" : "") . ">" . $iCreature['Name'] . "</option>";
+    echo '<option value="' . $iCreature['ID'] . '"' . ($iCreature['ID'] == $race ? ' selected' : '') . '>' . $iCreature['Name'] . '</option>';
 }
-echo "</select></td>";
-echo "<td><input type=\"button\" name=\"RandomRace\" value=\"Random\" disabled=\"\" " . $button_style . "></td></tr>";
+echo '</select></td>';
+echo '<td><input type="button" name="RandomRace" value="Random" disabled="" ' . $button_style . '></td></tr>';
 
-echo "<tr><td>Template:</td><td>";
+echo '<tr><td>Template:</td><td>';
 foreach ($templates as $idx => $template) {
-    echo "<select name=\"Template" . $idx . "\" " . $select_style . ">";
-    echo "<option value=\"0\"" . (0 == $template ? " selected" : "") . ">None</option>";
+    echo '<select name="Template' . $idx . '" ' . $select_style . '>';
+    echo '<option value="0"' . (0 == $template ? ' selected' : '') . '>None</option>';
     foreach ($_APP['templates'] as $iTemplate) {
-        echo "<option value=\"" . $iTemplate['ID'] . "\"" . ($iTemplate['ID'] == $template ? " selected" : "") . ">" . $iTemplate['Name'] . "</option>";
+        echo '<option value="' . $iTemplate['ID'] . '"' . ($iTemplate['ID'] == $template ? ' selected' : '') . '>' . $iTemplate['Name'] . '</option>';
     }
-    echo "</select><br />";
+    echo '</select><br/>';
 }
-echo "</td><td><input type=\"submit\" name=\"AddTemplate\" value=\"Add Template\" " . $button_style . "></td></tr>";
+echo '</td><td><input type="submit" name="AddTemplate" value="Add Template" ' . $button_style . '></td></tr>';
 
-echo "<tr><td>Gender:</td>";
-echo "<td><select name=\"Gender\" " . $select_style . ">";
+echo '<tr><td>Gender:</td>';
+echo '<td><select name="Gender" ' . $select_style . '>';
 foreach ($_APP['genders'] as $iGender) {
-    echo "<option value=\"" . $iGender['ID'] . "\"" . ($iGender['ID'] == $gender ? " selected" : "") . ">" . $iGender['Name'] . "</option>";
+    echo '<option value="' . $iGender['ID'] . '"' . ($iGender['ID'] == $gender ? ' selected' : '') . '>' . $iGender['Name'] . '</option>';
 }
-echo "</select></td>";
-echo "<td><input type=\"button\" name=\"RandomGender\" value=\"Random\" disabled=\"\" " . $button_style . "></td></tr>";
+echo '</select></td>';
+echo '<td><input type="button" name="RandomGender" value="Random" disabled="" ' . $button_style . '></td></tr>';
 
-echo "<tr><td>Age Category:</td>";
-echo "<td><select name=\"AgeCat\" " . $select_style . ">";
+echo '<tr><td>Age Category:</td>';
+echo '<td><select name="AgeCat" ' . $select_style . '>';
 foreach ($_APP['agecats'] as $iAgeCat) {
-    echo "<option value=\"" . $iAgeCat['ID'] . "\"" . ($iAgeCat['ID'] == $agecat ? " selected" : "") . ">" . $iAgeCat['Description'] . "</option>";
+    echo '<option value="' . $iAgeCat['ID'] . '"' . ($iAgeCat['ID'] == $agecat ? ' selected' : '') . '>' . $iAgeCat['Description'] . '</option>';
 }
-echo "</select></td>";
-echo "<td><input type=\"button\" name=\"RandomAge\" value=\"Random\" disabled=\"\" " . $button_style . "></td></tr>";
+echo '</select></td>';
+echo '<td><input type="button" name="RandomAge" value="Random" disabled="" ' . $button_style . '></td></tr>';
 
-echo "<tr><td>RL/Size Modifiers:</td><td colspan=2>";
-echo "<input type=\"text\" name=\"RLMod\" value=\"" . $rlmod . "\" size=3 maxlength=3> / ";
-echo "<input type=\"text\" name=\"SizeMod\" value=\"" . $sizemod . "\" size=3 maxlength=3></td></tr>";
+echo '<tr><td>RL/Size Modifiers:</td><td colspan=2>';
+echo '<input type="text" name="RLMod" value="' . $rlmod . '" size=3 maxlength=3> / ';
+echo '<input type="text" name="SizeMod" value="' . $sizemod . '" size=3 maxlength=3></td></tr>';
 
-echo "<tr><td>Culture:</td>";
-echo "<td><select name=\"Culture\" " . $select_style . ">";
-echo "<option value=\"0\"" . (0 == $culture ? " selected" : "") . ">Default</option>";
+echo '<tr><td>Culture:</td>';
+echo '<td><select name="Culture" ' . $select_style . '>';
+echo '<option value="0"' . (0 == $culture ? ' selected' : '') . '>Default</option>';
 foreach ($_APP['cultures'] as $iCulture) {
-    echo "<option value=\"" . $iCulture['ID'] . "\"" . ($iCulture['ID'] == $culture ? " selected" : "") . ">" . $iCulture['Name'] . "</option>";
+    echo '<option value="' . $iCulture['ID'] . '"' . ($iCulture['ID'] == $culture ? ' selected' : '') . '>' . $iCulture['Name'] . '</option>';
 }
-echo "</select></td>";
-echo "<td><input type=\"button\" name=\"RandomCulture\" value=\"Random\" disabled=\"\" " . $button_style . "></td></tr>";
+echo '</select></td>';
+echo '<td><input type="button" name="RandomCulture" value="Random" disabled="" ' . $button_style . '></td></tr>';
 
-echo "<tr><td>Background Class:</td>";
-echo "<td colspan=2><select name=\"BackgndClass\" " . $select_style . ">";
-echo "<option value=\"0\"" . (0 == $backgndclass ? " selected" : "") . ">Default</option>";
+echo '<tr><td>Background Class:</td>';
+echo '<td colspan=2><select name="BackgndClass" ' . $select_style . '>';
+echo '<option value="0"' . (0 == $backgndclass ? ' selected' : '') . '>Default</option>';
 foreach ($_APP['classconfigs'] as $iClassConfig) {
-    echo "<option value=\"" . $iClassConfig['ID'] . "\"" . ($iClassConfig['ID'] == $backgndclass ? " selected" : "") . ">" .
-    $_APP['classes'][$iClassConfig['ClassID']]['Name'] . " (" . $iClassConfig['Name'] . ")</option>";
+    echo '<option value="' . $iClassConfig['ID'] . '"' . ($iClassConfig['ID'] == $backgndclass ? ' selected' : '') . '>' .
+    $_APP['classes'][$iClassConfig['ClassID']]['Name'] . ' (' . $iClassConfig['Name'] . ')</option>';
 }
-echo "</select></td></tr>";
+echo '</select></td></tr>';
 
-echo "<tr><td>Class and Level:</td><td>";
+echo '<tr><td>Class and Level:</td><td>';
 foreach ($classes as $idx => $class) {
-    echo "<select name=\"Class" . $idx . "\" style=\"width: 20em\">";
-    echo "<option value=\"0\"" . (0 == $class ? " selected" : "") . ">None</option>";
+    echo '<select name="Class' . $idx . '" style="width: 20em">';
+    echo '<option value="0"' . (0 == $class ? ' selected' : '') . '>None</option>';
     foreach ($_APP['classconfigs'] as $iClassConfig) {
-        echo "<option value=\"" . $iClassConfig['ID'] . "\"" . ($iClassConfig['ID'] == $class ? " selected" : "") . ">" .
-        $_APP['classes'][$iClassConfig['ClassID']]['Name'] . " (" . $iClassConfig['Name'] . ")</option>";
+        echo '<option value="' . $iClassConfig['ID'] . '"' . ($iClassConfig['ID'] == $class ? ' selected' : '') . '>' .
+        $_APP['classes'][$iClassConfig['ClassID']]['Name'] . ' (' . $iClassConfig['Name'] . ')</option>';
     }
-    echo "</select> ";
-    echo "<input type=\"text\" name=\"Lvl" . $idx . "\" value=\"" . $classlvl[$idx] . "\" size=3 maxlength=3><br />";
+    echo '</select> ';
+    echo '<input type="text" name="Lvl' . $idx . '" value="' . $classlvl[$idx] . '" size=3 maxlength=3><br/>';
 }
-echo "</td><td><input type=\"submit\" name=\"AddClass\" value=\"Add Class\" " . $button_style . ">";
-echo "<br /><input type=\"button\" name=\"RandomClass\" value=\"Random\" disabled=\"\" " . $button_style . "></td></tr>";
+echo '</td><td><input type="submit" name="AddClass" value="Add Class" ' . $button_style . '>';
+echo '<br/><input type="button" name="RandomClass" value="Random" disabled="" ' . $button_style . '></td></tr>';
 
-echo "<tr><td>Social/Wealth Class:</td>";
-echo "<td><input type=\"text\" name=\"SC\" value=\"" . $socialclass . "\" size=3 maxlength=3> / ";
-echo "<input type=\"text\" name=\"WC\" value=\"" . $wealthclass . "\" size=3 maxlength=3></td>";
-echo "<td><input type=\"button\" name=\"RandomSCWC\" value=\"Random\" disabled=\"\" " . $button_style . "></td></tr>";
+echo '<tr><td>Social/Wealth Class:</td>';
+echo '<td><input type="text" name="SC" value="' . $socialclass . '" size=3 maxlength=3> / ';
+echo '<input type="text" name="WC" value="' . $wealthclass . '" size=3 maxlength=3></td>';
+echo '<td><input type="button" name="RandomSCWC" value="Random" disabled="" ' . $button_style . '></td></tr>';
 
-echo "<tr><td>Equipment:<br />(See random item<br />generator for syntax)</td>";
-echo "<td><textarea name=\"Equipment\" rows=\"6\" cols=\"38\">" . $equipment . "</textarea></td>";
-echo "<td><input type=\"button\" name=\"RandomEquip\" value=\"Random\" disabled=\"\" " . $button_style . "></td></tr>";
-echo "<tr><td>Example:</td><td colspan=2>Equipped=Longsword (Item=Sword, long-: Mod=MwMeleeWp:); Equipped=Full plate (Item=Full plate: Mod=ExcepArmor:);</td></tr>";
+echo '<tr><td>Equipment:<br/>(See random item<br/>generator for syntax)</td>';
+echo '<td><textarea name="Equipment" rows="6" cols="38">' . $equipment . '</textarea></td>';
+echo '<td><input type="button" name="RandomEquip" value="Random" disabled="" ' . $button_style . '></td></tr>';
+echo '<tr><td>Example:</td><td colspan=2>Equipped=Longsword (Item=Sword, long-: Mod=MwMeleeWp:); Equipped=Full plate (Item=Full plate: Mod=ExcepArmor:);</td></tr>';
 
-echo "<tr><td colspan=3><br /><input type=\"submit\" name=\"Generate\" value=\"Generate\" " . $button_style . ">";
-echo "<input type=\"submit\" name=\"Reset\" value=\"Reset\" " . $button_style . "></td></tr>";
+echo '<tr><td colspan=3><br/><input type="submit" name="Generate" value="Generate" ' . $button_style . '>';
+echo '<input type="submit" name="Reset" value="Reset" ' . $button_style . '></td></tr>';
 
-echo "</table></form>";
+echo '</tbody></table></form>';
 
 if (isset($_POST['Generate'])) {
     $entity = new cIndividual();
@@ -242,12 +237,10 @@ if (isset($_POST['Generate'])) {
     $config .= "}";
     $entity->GenerateNPC((int) $race, $config);
 
-    echo "<table><tr><td>Config String:</td>";
+    echo '<table><tbody><tr><td>Config String:</td>';
     ;
-    echo "<td><textarea name=\"Config\" rows=\"3\" cols=\"38\">" . $config . "</textarea></td></tr>";
-    echo "<tr><td>Stat Block:</td>";
-    echo "<td>" . $entity->GetStatBlockStr() . "</td></tr></table>";
+    echo '<td><textarea name="Config" rows="3" cols="38">' . $config . '</textarea></td></tr>';
+    echo '<tr><td>Stat Block:</td>';
+    echo '<td>' . $entity->GetStatBlockStr() . '</td></tr></tbody></table>';
 }
-
-application_end();
 ?> 

@@ -1,14 +1,6 @@
-<?php
-require_once 'RulesSrc/showtables.php';
-
-application_start();
-?>
-
 <h2 id="EnvironmentRules">Rules of Environment</h2>
-<p>
-</p>
 
-<h3 id="Movement">Movement</h3>
+<h3 id="Movement">Movement and Travel</h3>
 <h4>Speed</h4>
 <p>
     A creature’s 
@@ -23,15 +15,9 @@ application_start();
     During a typical day spent walking, a creature can cover a number of km equal to its adjusted speed times eight.
 </p>
 
-<br/>
-<?php
-show_speedconversion();
-?> 
+<?php show_speedconversion(); ?> 
 
-<br/>
-<?php
-show_speedtable();
-?> 
+<?php show_speedtable(); ?> 
 
 <dl>
     <dt>Difficult terrain or obstacles:</dt>
@@ -50,7 +36,7 @@ show_speedtable();
     Most [Move]-actions are performed using movement points (MP) rather than action points (AP).
     As described in earlier chapters, a creature's adjusted speed determines its number of available MP,
     but the number of MP can also be increased by converting AP to MP.
-    For example, a creature with 20 AP and an adjusted speed of 4 automatically gets 4 MP per round, but it can convert up to 4 AP into additional MP.
+    For example, a creature with 20 AP and an adjusted speed of 4 automatically gets 4 MP per round, but it can also convert up to 4 AP into additional MP.
 </p>
 <p>
     The following rules apply to all movement:
@@ -65,7 +51,7 @@ show_speedtable();
     <li>Flying and incorporeal creatures are not affected by obstructions on the ground.</li>
     <li>For creatures that occupy multiple squares, the worst conditions apply.</li>
     <li>Creatures can squeeze through areas half as wide as their normal space (or half as high as their height), but this costs double movement. While squeezing, you suffer a -4 circumstance penalty to attack rolls, DeC, and Ref. Spaces that are both narrow and low quadruple the MP cost and cause double the penalty.</li>
-    <li>If you accidentally end your movement in an illegal square, you instead end up in the previously occupied square. If this square is also illegal, you fall prone in that square.</li>
+    <li>If you accidentally end your movement in an illegal square, you instead end up in the square most recently moved through. If this square is also illegal, you fall prone in that square.</li>
 </ul>
 <p>
     Obstructed/difficult terrain includes the following features:
@@ -90,39 +76,45 @@ show_speedtable();
     Some obstructions may require extra MP to traverse and also prevent creatures from stopping in the same square.
 </p>
 
-<h4>Overland Movement</h4>
+<h4>Overland Travel</h4>
 <p>
     The speed of overland movement is described above, specified as the number of km covered per day.
     The speed should be modified for the terrain and the quality of the road, as shown below:
 </p>
 
-<br/>
-<?php
-show_terrainmove();
-?> 
+<?php show_terrainmove(); ?> 
 
 <p>
     Overland movement is typically spread over 6 to 8 hours in a day. Rowing can usually be done for 10 hours per day,
     while a well-crewed sailing ship often can travel 24 hours per day.
 </p>
 <p>
-    Slow pace: By moving at half the speed indicated for the terrain, you gain a +5 bonus on Survival checks to find food, navigate, etc.
+    <em>Slow pace:</em> By moving at half the speed indicated for the terrain, you gain a +5 bonus on Survival checks to find food, navigate, etc.
     You are also able to use Stealth actions to avoid discovery.
 </p>
 <p>
-    Fast pace: You can increase the indicated travel speed by 50%, but you then suffer a -5 penalty on Survival- and Perception-based action checks.
+    <em>Fast pace:</em> You can increase the indicated travel speed by 50%, but you then suffer a -5 penalty on Survival- and Perception-based action checks.
 </p>
 <p>
-    Hustling: When hustling, you move at twice your normal speed. After each full hour of hustling, you take (10 – Con mod) SP of damage.
+    <em>Hustling:</em> When hustling, you move at twice your normal speed. After each full hour of hustling, you take (10 – Con mod) SP of damage.
     If you are mounted, the mount takes full damage, and you take (5 - Con mod) SP of damage.
     Furthermore, any Survival- and Perception-based action checks suffer a -8 penalty.
 </p>
 <p>
-    Forced march: If you spend more than 8 hours per day walking or hustling, you take an extra 5 SP of damage per additional hour.
+    <em>Forced march:</em> If you spend more than 8 hours per day walking or hustling, you take an extra 5 SP of damage per additional hour.
     If you are mounted, the mount takes full damage, and you take 2 SP per hour.
 </p>
 
-<h3>Creature Comforts</h3>
+<h3 id="Weather">Weather</h3>
+
+<?php show_weather(); ?> 
+
+<h4>Weather Generation Tools</h4>
+<p>
+    <a href="https://donjon.bin.sh/d20/weather/">Random Weather Generator</a>
+</p>
+
+<h3 id="Necessities">Necessities</h3>
 <h4 id="Hunger">Hunger and Thirst</h4>
 <p>
     Most medium-sized humanoids require 2 l of water (or other drinkable liquid) per day to avoid dehydration.
@@ -157,16 +149,14 @@ show_terrainmove();
     once per h (S – 1d6 PP, and if its current activity state is low, it falls asleep).
 </p>
 
-<h3 id="Environment">Environment</h3>
-
-<h4>Vision and Light</h4>
+<h3 id="VisionLight">Vision and Light</h3>
 <p>
     Illumination is one of the most important and common environmental effects to consider.
     The following list describes the different levels of illumination, their effects, and typical situations:
 </p>
 <ul>
     <li><em>Extreme Darkness:</em> Supernaturally enhanced darkness.<br/>
-        Creatures without non-visual senses are effectively blind (regular darkvision is not sufficient).</li>
+        Creatures without non-visual senses are effectively blind (and regular darkvision is not sufficient).</li>
     <li><em>Darkness:</em> Enclosed area or outside on a moonless night.<br/>
         Creatures without darkvision or truesight are effectively blind.</li>
     <li><em>Dim Light:</em> Lit by candle, inside a building with few and small windows, or outside on a moonlit night.<br/>
@@ -184,76 +174,17 @@ show_terrainmove();
     Ten lanterns in the same area could create bright light, for example, although each lantern only sheds normal light by itself.
 </p>
 
-<br/>
-<?php
-show_lightsources();
-?> 
+<?php show_lightsources(); ?> 
 
-<h4>Environmental Effects</h4>
+<h3 id="EnvironEffects">Environmental Effects</h3>
 
-<br/>
-<?php
-show_environments();
-?> 
+<?php show_environments(); ?> 
 
 <p>
     SP and HP caused by an environmental effect will not be recovered by natural means until the creature returns to a harmless environment.
 </p>
 
-<h4>Natural Features</h4>
-
-<br/>
-<?php
-show_terrainfeatures();
-?> 
-
-<br/>
-<?php
-show_hazards();
-?> 
-
-<p>
-    Clearing rubble: In one minute, a (non-buried) character can clear rubble equal to five times his maximum carrying capacity.
-    One square typically contains 1000 kg of rubble. A suitable tool doubles the amount of clearing a character can do.
-</p>
-
-<h4>Dungeons and Buildings</h4>
-
-<p>
-    Many standard building features (and their typical DR, HP, break DC, and climb DC) can be found in the
-    <a href="hb12a_equipment.php">list of equipment</a>.
-</p>
-
-<br/>
-<?php
-show_buildingfeatures();
-?> 
-
-<h4>Traps</h4>
-<p>
-    Traps come in many different varieties, but they can be roughly categorized as either mechanical or magic.
-    Traps are also defined by other parameters, such as their trigger, their attack bonus and type, their damage, etc.
-</p>
-<p>
-    Detecting and defeating, or maybe just surviving, a trap can be as challenging as slaying monsters,
-    so adventurers are awarded experience points for the traps they encounter.
-    The table below shows how to calculate the EL of a trap, and as usual, each EL equals 300 XP.
-</p>
-
-<br/>
-<?php
-show_traps();
-?> 
-
-<p>
-    The Crafting (trapmaking) skill is used to craft and set mechanical traps,
-    the Enchant Item skill is used to craft and set magic device traps, and the appropriate spell is used to set a magic spell trap.
-</p>
-<p>
-    The <a href="https://www.d20srd.org/srd/traps.htm">3.5E DMG and SRD</a> have a large number of example traps.
-</p>
-
-<h4 id="Falling">Falling and Crushing Damage</h4>
+<h3 id="Falling">Falling and Crushing</h3>
 <p>
     When you fall or jump from a height, you risk taking damage.
 </p>
@@ -279,6 +210,48 @@ show_traps();
     <em>Crushing damage:</em> 1d6 HP of blunt damage per ((squares of falling height / 2; minimum 1, maximum 30) × (weight / 100 kg))
 </p>
 
+<h3 id="NaturalFeatures">Natural Features</h3>
+
+<?php show_terrainfeatures(); ?> 
+
+<?php show_hazards(); ?> 
+
+<p>
+    Clearing rubble: In one minute, a (non-buried) character can clear rubble equal to five times his maximum carrying capacity.
+    One square typically contains 1000 kg of rubble. A suitable tool doubles the amount of clearing a character can do.
+</p>
+
+<h3 id="BuildingFeatures">Dungeon and Building Features</h3>
+
+<p>
+    Many standard building features (and their typical DR, HP, break DC, and climb DC) can be found in the
+    <a href="hb12a_equipment.php">list of equipment</a>.
+</p>
+
+<?php show_buildingfeatures(); ?> 
+
+<h3 id="Traps">Traps</h3>
+<p>
+    Traps come in many different varieties, but they can be roughly categorized as either mechanical or magic.
+    Traps are also defined by other parameters, such as their trigger, their attack bonus and type, their damage, etc.
+</p>
+<p>
+    Detecting and defeating, or maybe just surviving, a trap can be as challenging as slaying monsters,
+    so adventurers are awarded experience points for the traps they encounter.
+    The table below shows how to calculate the EL of a trap, and as usual, each EL equals 300 XP.
+</p>
+
+<?php show_traps(); ?> 
+
+<p>
+    The Crafting (trapmaking) skill is used to craft and set mechanical traps,
+    the Enchant Item skill is used to craft and set magic device traps, and the appropriate spell is used to set a magic spell trap.
+</p>
+<p>
+    The <a href="https://www.d20srd.org/srd/traps.htm">3.5E DMG and SRD</a> have a large number of example traps.
+</p>
+
+<h3 id="SpecialEnvirons">Special Environments</h3>
 <h4>Mid-Air</h4>
 <ul>
     <li>Fly speed must be used for movement. See the section about maneuverability for more details.</li>
@@ -308,46 +281,7 @@ show_traps();
     <li>Fire magic requires a spellcasting check (+10 difficulty) and creates superheated steam rather than fire.</li>
 </ul>
 
-<br/>
-<?php
-show_underwatereffects();
-?> 
-
-<h3 id="Weather">Weather</h3>
-
-<br/>
-<?php
-show_weather();
-?> 
-
-<h4>Weather Generation Tools</h4>
-<p>
-    <a href="https://donjon.bin.sh/d20/weather/">Random Weather Generator</a>
-</p>
-
-<h3>Magic and Metaphysics</h3>
-<p>
-    The strength and reliability of the laws of physics vary across the universe. Where the laws are strongest, magic is at its weakest,
-    and only the most powerful and skilled magicians have any hope of casting spells there.
-    If, on the other hand, the laws are weak, they are more easily manipulated by those who are skilled in magic.
-    Weak laws of physics means strong magic, but this is not always beneficial.
-    Advanced technology is usually very dependent on the reliability of those laws,
-    so areas with strong magic tend to disrupt or at least reduce the efficiency of electronic devices, internal combustion engines,
-    even explosives, electrical batteries, and generators. Biology tends to be more resilient,
-    but areas with extremely weak laws of physics are chaotic enough to be inhospitable even to organic life, biotechnology, and simple mechanics.
-</p>
-<p>
-    The strength of magic can fluctuate greatly over both time and space. There is no typical size to these fluctuations;
-    in many cases, a whole galaxy can have strong laws of physics and practically no magic at all, while in other cases,
-    a world may be strong in magic but have sporadic “dead” zones encompassing just a few cubic meters.
-    Another possible occurrence is that an advanced technological civilization suddenly collapses due to an unexpected increase in the level of magic.
-    In very rare cases, a local magic fluctuation can even be connected to a living creature or artificial device.
-</p>
-
-<h3>Wild Magic and Dead Magic</h3>
-<h4>Affecting Zones of Wild and Dead Magic</h4>
-<p>
-</p>
+<?php show_underwatereffects(); ?> 
 
 <h3 id="Multiverse">The Multiverse</h3>
 <p>
@@ -378,12 +312,12 @@ show_weather();
     magic can be used to quite easily access other dimensions and planes.
 </p>
 <p>
-    Extremely low ML: Stability and inertia is so high that life is practically impossible.<br />
-    Very low ML: Standard universe without exotic technologies, such as FTL drives, artificial gravity, etc.<br />
-    Low ML: Standard universe. FTL drives, artificial gravity, etc. are possible but power-hungry.<br />
-    Medium ML: Same as low but very simple magic is also possible.<br />
-    High ML: Low-fantasy world. Electronics and other advanced technology are unreliable.<br />
-    Very high ML: High-fantasy world. Electronics and high-tech are virtually useless.<br />
+    Extremely low ML: Stability and inertia is so high that life is practically impossible.<br/>
+    Very low ML: Standard universe without exotic technologies, such as FTL drives, artificial gravity, etc.<br/>
+    Low ML: Standard universe. FTL drives, artificial gravity, etc. are possible but power-hungry.<br/>
+    Medium ML: Same as low but very simple magic is also possible.<br/>
+    High ML: Low-fantasy world. Electronics and other advanced technology are unreliable.<br/>
+    Very high ML: High-fantasy world. Electronics and high-tech are virtually useless.<br/>
     Extremely high ML: Pure magic. Most life is impossible, since a stray thought can lead to self-combustion.
 </p>
 
@@ -457,7 +391,7 @@ show_weather();
 <h4>The Ethereal Plane and the Demiplanes</h4>
 <p>
     Most of the planes with a spatial extent (the physical planes and the Universe) have an extradimensional property.
-    This “fourth dimension” is also often referred to as hyperspace or the Ethereal plane.
+    This &quot;fifth dimension&quot; is also often referred to as hyperspace or the Ethereal plane.
     The Ethereal links all of the physical planes and the Universe together, and can be used to travel between these planes.
 </p>
 <p>
@@ -499,41 +433,3 @@ show_weather();
     It is even possible that powerful dreams can temporarily transfer the soul into the Astral and thence into a spiritual plane.
     In the latter case, the dream will often include weird encounters with the inhabitants of that plane.
 </p>
-
-<h3 id="Undeath">Souls and Undeath</h3>
-<p>
-    Souls gradually develop as metaphysical energy patterns in any system complex enough to be sentient, whether that system is a human brain,
-    the brain of any other intelligent creature, a computer, etc.
-    What happens to the soul when the owner dies depends on the “strength” of the soul as well as the local level of magic.
-    More intelligent or powerful creatures will develop stronger souls, while the souls of common animals are usually weak enough
-    to disperse soon after the creature’s death. Souls that are strong enough to be persistent may travel to a different plane,
-    remain in the vicinity and manifest occasionally as spirits or ghosts, or reanimate the dead body as an undead.
-</p>
-<p>
-    Souls can be regarded as metaphysical copies of the physical brain, and strong souls will retain the complete personality and memories of the owner.
-    Things that affect the brain, such as disease, chemicals, injuries, etc., will also affect the soul if the effect’s duration is long enough.
-    Note that if an individual is cloned or his mind otherwise duplicated, the copy can gradually develop its own soul.
-    Souls do not have a corporeal existence, but the soul’s memories will usually cause any manifestation to resemble the original person,
-    unless the soul consciously alters its appearance. An incorporeal soul does not have any of the normal senses,
-    but it can roughly sense density of matter in the vicinity, and it can also sense other nearby souls (corporeal as well as incorporeal).
-    The soul itself usually interprets these senses as a form of sight and sound.
-</p>
-<p>
-    Trained individuals can learn to voluntarily (and temporarily) separate their soul from the body.
-    The level of concentration or meditation required means that the individual’s body is virtually comatose while the soul is travelling
-    (unless the individual is extremely good at multitasking).
-</p>
-<p>
-    A free soul can sometimes fight the soul of a living creature and 
-    <a href="hb02_coremech.php#Possession">possess</a> 
-    its body.
-    Only a very powerful soul is capable of inhabiting and controlling a body whose brain does not match the soul.
-    Therefore, a rough order of difficulty goes from a clone, to a relative, to an individual of the same species,
-    to another intelligent creature, to an unintelligent creature or construct. If the soul is very strong,
-    it will gradually imprint its pattern in the brain it inhabits, but if it is not strong enough,
-    it may eventually become replaced by or merged with the original soul.
-</p>
-
-<?php
-application_end();
-?> 

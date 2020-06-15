@@ -1,181 +1,6 @@
-<?php
-require_once 'RulesSrc/showtables.php';
-
-application_start();
-?>
-
 <h2 id="Combat">Rules of Combat</h2>
 
-<h3 id="CombatSequence">Encounter and Combat Sequence</h3>
-<ol>
-    <li>Determine surprise situation and encounter distance.</li>
-    <li>All combatants start out flat-footed. Once a combatant gets to act, he is no longer flat-footed.</li>
-    <li>Roll for initiative.</li>
-    <li>Combatants who are not surprised act in order of initiative.</li>
-    <li>During each of the following rounds, all combatants act in order of initiative. For each combatant...</li>
-    <ul>
-        <li>Update health points based on continuous damage, ongoing costs, regeneration, etc.</li>
-        <li>Assign AP to initial defense bonus.</li>
-        <li>Use the remaining AP and MP to perform actions (or increase your defense bonus).
-            Whenever an attack action is performed, additional AP can be spent on attack and/or damage bonuses.</li>
-    </ul>
-</ol>
-
-<h4>Starting and Ending Encounters</h4>
-<p>
-    Combat (as well as social encounters) typically start whenever one of the involved parties becomes aware of another party (or both parties become aware simultaneously).
-    Initial encounter distance between the two groups usually depends on terrain, environment, lines of sight, and Perception checks.
-    Surprise and initiative can be useful to determine the starting situation and positions, regardless of whether the encounter turns into combat or not.
-</p>
-<p>
-    As soon as detailed timekeeping is called for, participants should roll for <a href="hb04_combat.php#Initiative">initiative</a>,
-    and the encounter should then be handled one round at a time.
-</p>
-<p>
-    In most cases, the start of an encounter is declared by the DM, but the players should also be allowed to declare the start of an encounter at any time.
-    If, for example, a player feels the need for exact timekeeping, for determining the order in which each participant gets to act,
-    or to initiate actions that have round- or encounter-based durations, he or she should ask for the start of an encounter.
-</p>
-<p>
-    An encounter ends when the DM declares that exact timekeeping and order of actions is no longer of importance.
-    For combat encounters, this is typically when one side has been defeated, has surrendered, or has definitively disengaged.
-    If, on the other hand, the DM decides that interesting things may happen before the one-minute-per-level encounter limit,
-    or that there are active effects with encounter-level durations that may continue to be of interest,
-    he should keep the encounter running.
-    Reinforcements could be on the way, for example, or there may still be a chance to capture runaway opponents.
-</p>
-<p>
-    There are situations, such as the case of an ambush or a complicated trap, where the DM asking for initiative may spoil some of the suspense for the players.
-    Also, players in that situation may be tempted to act as if their characters know more than they actually do.
-    However, starting the encounter and rolling initiative is still recommended in this case, since it tends to minimize misunderstandings and heated discussions of fairness.
-    The players as well as the DM should strive to act only on what their respective characters actually know.
-</p>
-
-<h4 id="Surprise">Surprise</h4>
-<p>
-    Most encounters (as determined by the DM) should start with a special round known as a surprise round.
-    This round is just half as long as a regular round,
-    and only the participants that are aware of the situation (typically through a successful Perception check) get to act during this round.
-    All other participants are surprised, flat-footed, and unable to act. Since the surprise round is half the length of a normal round,
-    full-round actions are not possible, and each participant can only use half the normal number of action points and movement points.
-</p>
-<p>
-    Whenever an encounter starts with an entire group unaware of the other, the aware group can try to maintain a low profile,
-    potentially giving them multiple rounds to prepare.
-    The DM should track rounds normally while the aware group takes its actions,
-    until that group reveals itself (intentionally or unintentionally) to the unaware group.
-    Once members of both groups become aware and can interact, all aware participants should receive a surprise round.
-</p>
-<p>
-    Every participant in an encounter starts out flat-footed, and each participant remains flat-footed until his first action.
-</p>
-
-<h4 id="Initiative">Initiative</h4>
-<p>
-    Participants in an encounter act in order of initiative (highest to lowest), as determined by initiative checks at the start of the encounter.
-    If two or more participants get the same initiative result, they act in order of initiative modifier (highest to lowest).
-    If they also have the same initiative modifier, the participants choose and perform their actions simultaneously.
-    The same order is repeated each round, unless the actions of a participant changes his position in the sequence.
-</p>
-<p>
-    <em>Initiative check:</em> d20 + Dex mod + other mods
-</p>
-<p>
-    When new participants join an ongoing encounter, they enter the action "between rounds".
-    If the newcomers are aware of the encounter before joining it, they automatically act before anyone else in the next round.
-    Their initiative is set to 1 higher than the previously highest initiative.
-    Newcomers that are not aware of the encounter beforehand roll for initiative normally and are flat-footed until their first action.
-    In other words, the original participants may be able to attack the newcomers before they get a chance to act.
-</p>
-<p>
-    In rare cases, new participants may join an encounter from a separate but concurrent encounter.
-    For example, a scouting rogue may start one encounter by sneaking up on a guard, while the rest of the party members
-    are ambushed by foes in a different room. Depending on the outcome, these seemingly separate encounters are likely to merge into one.
-    In most cases, it would be easiest to simply treat this situation as a single encounter spread over multiple rooms,
-    but it is ultimately up to the DM how to best manage this and whether to treat it as one or as multiple encounters.
-</p>
-<p>
-    At the beginning of a creature’s turn, update health points for continuous damage effects, ongoing costs,
-    <a href="hb02_coremech.php#Regeneration">regeneration</a>, 
-    and similar effects.
-</p>
-<p>
-    Creatures that have a close connection or bond to another creature, including mounts, pets, familiars, companions, servants, and cohorts,
-    should normally not roll for individual initiative. In the presence of their rider or master,
-    they should always act on the master’s initiative (but after the master).
-    If the creature in question has a better initiative modifier than the master, the creature’s presence gives the master a +1 circumstance bonus to initiative.
-</p>
-
-<p>
-    <em id="InitiativeAP">Initiative-modified AP</em> (optional rule for more varied combat):
-    Depending on your initiative check, you can get a modified amount of AP during the encounter's first round.
-    A modified initiative check of 0 or less gives you a -2 AP penalty, a result of 20 to 39 gives a +2 AP bonus, and a result of 40+ gives a +4 AP bonus.
-    Note that these AP modifiers only apply during the encounter's first round, and if that round is a surprise round, the modifiers will be halved.
-</p>
-
-<h3 id="MovementPoints">Movement Points</h3>
-<p>
-    During each round, a creature gets a number of 
-    <a href="hb02_coremech.php#MovementPts">movement points</a> (MP)
-    equal to its adjusted speed characteristic (for the appropriate mode of movement).
-    MP can be used for movement actions at any time during the creature's turn, but they cannot be used as a reaction.
-</p>
-<p>
-    A creature can have several modes of movement with different adjusted speeds.
-    If this is the case, different modes of movement can be used in a single round,
-    but the available amount of MP is limited by the lowest adjusted speed out of the modes used.
-</p>
-<p>
-    Movement points that have been allocated or spent will not be regained until your next round.
-    Points that are still unused at the end of your turn provide no special bonuses.
-</p>
-
-<h3 id="ActionPoints">Action Points</h3>
-<p>
-    Every creature has a certain number of 
-    <a href="hb02_coremech.php#ActionPts">action points</a> (AP). 
-    During each round, the creature can use its action points to focus on precision attacks, damage, defense, and/or more actions.
-    All action points do not have to be allocated from the beginning of your turn, nor do actions have to be declared from the beginning.
-    It is possible to first make one attack with additional AP spent on an attack bonus,
-    then decide to allocate AP to a defense bonus (lasting until the beginning of your next turn),
-    and finally make a second attack with the remaining AP spent on increased damage.
-</p>
-<p>
-    Points that have been allocated or spent will not be regained until your next round,
-    but unspent points can be used for any purpose at any point during your turn.
-    But note that action points can only be allocated when initiating an action and never during an action.
-</p>
-<p>
-    You do not have to spend all your AP during your turn.
-    Unspent points can be used to gain bonuses for attacks of opportunity or other reactive actions that occur before the beginning of your next turn.
-</p>
-
-<br/>
-<?php
-show_actionpointbonuses();
-?> 
-
-<br/>
-<?php
-show_actionpointdistribution();
-?> 
-
-<p>
-    <em id="FixedAP">Fixed AP distribution</em> (optional rule for simpler combat):
-    Instead of letting each combatant choose how to distribute and use their AP each round, all creatures follow a fixed distribution.
-    This fixed distribution can either be based on the table above, or according to a formula decided by the DM
-    (for example, 60% to actions, 20% to DaB, 10% to AB, and 10% to DeB).
-</p>
-
-<p>
-    <em id="Escalation">Escalated combat</em> (optional rule for faster combat):
-    As an encounter progresses, each and every combatant receives a bonus starting with +1 in round 2 and reaching a maximum bonus of +6 in round 7 and onwards.
-    The faces of a six-sided die (traditionally referred to as the "escalation die") can be used to easily keep track of the current bonus.
-    The current bonus is applied to all attack rolls and/or damage rolls.
-    For a more heroic feel, the bonus can be limited to just the player characters and maybe the most important NPCs.
-</p>
-
-<h3 id="AttackTypes">Attack Actions</h3>
+<h3 id="AttackTypes">Combat Attack Actions</h3>
 <p>
     Most offensive actions have to beat one or more of a target’s defenses in order to have full effect,
     and the defense depends on the type of attack used (as described below).
@@ -199,54 +24,26 @@ show_actionpointdistribution();
     The most common attack and weapon types are listed here, together with their associated skill abbreviations:
 </p>
 <ul>
-    <li>
-        <em>Attack:</em> Includes every type of attack, including natural weapon attacks, manufactured weapon attacks, and supernatural attacks.
-    </li>
+    <li><em>Attack:</em> Includes every type of attack, including natural weapon attacks, manufactured weapon attacks, and supernatural attacks.</li>
     <ul>
-        <li>
-            <em>Weapon:</em> Includes all weapon types, natural as well as manufactured (but not supernatural attacks).
-        </li>
+        <li><em>Weapon:</em> Includes all weapon types, natural as well as manufactured (but not supernatural attacks).</li>
         <ul>
-            <li>
-                <em>Melee weapons (WpMel):</em> Close combat weapons, including most natural weapons. Also includes thrown weapons, even those that cannot easily be used in melee combat.
-            </li>
-            <li>
-                <em>Natural weapons (WpNat):</em> Includes hands, feet, claws, bite attacks, tailsweeps, etc. They count as melee weapons, unless otherwise specified.
-            </li>
-            <li>
-                <em>Manufactured weapons:</em> Includes all non-natural weapons, such as axes, swords, bows, shields, etc. Each type has its own skill.
-            </li>
+            <li><em>Melee weapons (WpMel):</em> Close combat weapons, including most natural weapons. Also includes thrown weapons, even those that cannot easily be used in melee combat.</li>
+            <li><em>Natural weapons (WpNat):</em> Includes hands, feet, claws, bite attacks, tailsweeps, etc. They also count as melee weapons, unless otherwise specified.</li>
+            <li><em>Manufactured weapons:</em> Includes all non-natural weapons, such as axes, swords, bows, shields, etc. Each type has its own skill.</li>
             <ul>
-                <li>
-                    <em>Projectile weapons (WpPrj):</em> Includes all hand-held, ranged weapons that require ammunition.
-                </li>
-                <li>
-                    <em>Exotic weapons (WpExo):</em> Special category including weapons that require special training.
-                </li>
-                <li>
-                    <em>Siege weapons (WpSie):</em> Includes all weapons large enough to be used by more than one person.
-                </li>
-                <li>
-                    <em>Shields (WpShd):</em> Shields count as weapons, although they are made more for parrying than attacking.
-                </li>
+                <li><em>Projectile weapons (WpPrj):</em> Includes all hand-held, ranged weapons that require ammunition.</li>
+                <li><em>Exotic weapons (WpExo):</em> Special category including weapons that require special training.</li>
+                <li><em>Monk weapons (WpMnk):</em> Special category covering those weapons often used by martial artists.</li>
+                <li><em>Siege weapons (WpSie):</em> Includes all weapons large enough to be used by more than one person.</li>
+                <li><em>Shields (WpShd):</em> Shields count as weapons, although they are made more for parrying than attacking.</li>
             </ul>
-            <li>
-                <em>Monk weapons (WpMnk):</em> Special category covering those weapons often used by martial artists.
-            </li>
         </ul>
-        <li>
-            <em>Brawling attacks (WpBrl):</em> Includes attacks made with the whole body, such as grappling and tackling.
-        </li>
-        <li>
-            <em>Supernatural attacks:</em> Includes ray attacks (WpRay), area attacks (WpAre), and body &amp; mind attacks (WpBaM).
-            Natural weapons are not considered supernatural, even when they are used to deliver supernatural effects.
-        </li>
-        <li>
-            <em>Ranged attacks:</em> Includes thrown melee weapons, projectile weapons, some rare natural weapons, and many supernatural attacks.
-        </li>
-        <li>
-            <em>Generic weapons (WpGen):</em> Includes most non-exotic weapons, including natural weapons, brawling, and even ray attacks.
-        </li>
+        <li><em>Brawling attacks (WpBrl):</em> Includes attacks made with the whole body, such as grappling and tackling.</li>
+        <li><em>Supernatural attacks:</em> Includes ray attacks (WpRay), area attacks (WpAre), and body &amp; mind attacks (WpBaM).
+            Natural weapons are not considered supernatural, even when they are used to deliver supernatural effects.</li>
+        <li><em>Ranged attacks:</em> Includes thrown melee weapons, projectile weapons, some rare natural weapons, and many supernatural attacks.</li>
+        <li><em>Generic weapons (WpGen):</em> Includes most non-exotic weapons, including natural weapons, brawling, and even ray attacks.</li>
     </ul>
 </ul>
 
@@ -255,7 +52,7 @@ show_actionpointdistribution();
     Natural weapons, melee weapons, thrown weapons, and projectile weapons all target the defender's DeC.
 </p>
 <p>
-    Total Weapon Damage = Base Weapon Damage + Str mod (for most weapons) + DaB
+    <dfn>Total Weapon Damage = Base Weapon Damage + Str mod (for most weapons) + AP boost</dfn>
 </p>
 <p>
     Weapons cause damage to the target’s HP or SP, according to the base damage listed for a creature's attack or a weapon in the equipment chapter.
@@ -263,32 +60,32 @@ show_actionpointdistribution();
     Changing damage from HP to SP also turns the damage type into B (blunt damage).
 </p>
 <p>
-    Strength modifier: An attacker’s strength modifies the damage of most melee, thrown, and some projectile weapons
+    <em>Strength modifier:</em> An attacker’s strength modifies the damage of most melee, thrown, and some projectile weapons
     (as specified in the equipment chapter). When a weapon is wielded in two hands, increase the Str modifier by +2.
     A strength modifier can never improve the damage of a weapon by more than its maximum base damage dice.
     For example, a dagger with a base damage of d4 can never enjoy a higher Str modifier than +4.
 </p>
 <p>
-    Minimum damage: Modifiers can reduce the damage caused by a weapon but never below 1 HP/SP.
+    <em>Minimum damage:</em> Modifiers can reduce the damage caused by a weapon but never below 1 HP/SP.
 </p>
 <p>
-    Exceptional hits: When a weapon attack results in an exceptional success or better, damage resistance is halved.
+    <em>Exceptional hits:</em> When a weapon attack results in an exceptional success or better, damage resistance is halved.
 </p>
 <p>
-    Critical hits: When a weapon attack results in a critical success, the damage is multiplied by the factor specified for the weapon.
-    If no other multiplier is specified, use ×2. All damage (except AP-based DaB) is multiplied, whether it consists of HP, SP, PP, or ability damage.
+    <em>Critical hits:</em> When a weapon attack results in a critical success, the damage is multiplied by the factor specified for the weapon.
+    If no other multiplier is specified, use ×2. All damage is multiplied, whether it consists of HP, SP, PP, or ability damage.
 </p>
 <p>
-    Multiplying damage: Some effects (a critical hit, for example) will multiply the damage of a weapon.
-    The same multiplicative factor applies to all normal modifiers (except AP-based DaB), but not to extra damage dice.
+    <em>Multiplying damage:</em> Some effects (a critical hit, for example) will multiply the damage of a weapon.
+    The same multiplicative factor applies to all normal modifiers, but not to extra damage dice.
 </p>
 <p>
-    Hot or burning weapons: A weapon that is on fire or glowing hot deals an additional d2 to d4 HP of fire damage (depending on the degree of heat).
+    <em>Hot or burning weapons:</em> A weapon that is on fire or glowing hot deals an additional d2 to d4 HP of fire damage (depending on the degree of heat).
 </p>
 
 <h4>Supernatural Touch and Reach Attacks</h4>
 <p>
-    For actions with a range of Rch (or Tch for unwilling targets), the attack is effectively a natural or melee weapon attack against the target's DeC.
+    For actions with a range of Rch (or Tch used against unwilling targets), the attack is effectively a natural or melee weapon attack against the target's DeC.
     Attack modifiers are calculated normally for the weapon used (including all bonuses from the appropriate weapon skill).
     Unless otherwise specified in the action, the action time includes one weapon attack for normal damage.
 </p>
@@ -300,10 +97,10 @@ show_actionpointdistribution();
 <p>
     If the action does not include the actual attack in the action time, the normal AP cost for the attack has to be paid separately.
     Same applies for additional targets beyond the first one (if the action allows multiple targets).
-    Note that movement (using either AP or MP) is allowed between initiating a Tch/Rch action and then spending separate AP on the attack (or attacks).
+    Note that movement (using either AP or MP) is allowed between initiating a Tch/Rch action and then spending separate AP on one or more attacks.
 </p>
 <p>
-    If the action allows for more than one target, each attempted attack counts as one target.
+    If the action allows for more than one target, each attempted attack counts as one target, regardless of success.
     The action continues until all "charges" have been delivered or the instigator (willingly or unwillingly) dismisses the action.
     Starting a new action that requires concentration will automatically remove any remaining "charges".
 </p>
@@ -311,14 +108,14 @@ show_actionpointdistribution();
     Supernatural effects delivered by Tch or Rch require a successful hit, but they typically do not require the attack's damage to penetrate DR.
 </p>
 <p>
-    Exceptional hits: When a Tch or Rch attack results in an exceptional success or better, resistance (if any) is halved.
+    <em>Exceptional hits:</em> When a Tch or Rch attack results in an exceptional success or better, resistance (if any) is halved.
 </p>
 <p>
-    Critical hits: When a Tch or Rch attack results in a critical success, the damage or effect is often doubled.
+    <em>Critical hits:</em> When a Tch or Rch attack results in a critical success, the damage or effect is often doubled.
     All damage is multiplied, whether it consists of HP, SP, PP, or ability damage.
 </p>
 <p>
-    Multiplying damage: Some effects (a critical hit, for example) can multiply the damage of a Tch or Rch attack.
+    <em>Multiplying damage:</em> Some effects (a critical hit, for example) can multiply the damage of a Tch or Rch attack.
     The same multiplicative factor applies to all normal modifiers, but not to extra damage dice.
 </p>
 <p>
@@ -335,15 +132,15 @@ show_actionpointdistribution();
     The damage from a ray attack depends on the type of attack and varies widely.
 </p>
 <p>
-    Exceptional hits: When a ray attack results in an exceptional success or better, resistance (if any) is halved.
+    <em>Exceptional hits:</em> When a ray attack results in an exceptional success or better, resistance (if any) is halved.
 </p>
 <p>
-    Critical hits: When a ray attack results in a critical success, the damage or effect is often doubled.
+    <em>Critical hits:</em> When a ray attack results in a critical success, the damage or effect is often doubled.
     All damage is multiplied, whether it consists of HP, SP, PP, or ability damage.
 </p>
 <p>
-    Multiplying damage: Some effects (a critical hit, for example) can multiply the damage of a ray.
-    The same multiplicative factor applies to all normal modifiers, but not to extra damage dice.
+    <em>Multiplying damage:</em> Some effects (a critical hit, for example) can multiply the damage of a ray.
+    The same multiplicative factor applies to base damage and all normal modifiers, but not to extra damage dice.
 </p>
 
 <h4>Area Attacks</h4>
@@ -356,13 +153,13 @@ show_actionpointdistribution();
     The DM is free to make exceptions to this rule when appropriate, maybe reducing the damage taken or giving a circumstance bonus to defenses.
 </p>
 <p>
-    A critical success often inflicts extra damage and also has a chance to destroy the victim’s exposed equipment.
+    <em>Critical success:</em> A critical success often inflicts extra damage and also has a chance to destroy the victim’s exposed equipment.
     Roll 1d4 and randomly select that number of exposed items (those not protected by the victim’s armor).
     Apply the full energy damage to those items, but note that most objects have energy resistance,
     take reduced damage from many energy types, and are immune to radiant and necrotic damage.
 </p>
 <p>
-    For situations where exact placement of an area is difficult (due to poor visibility, long range, et al),
+    <em>Placement:</em> For situations where exact placement of an area is difficult (due to poor visibility, long range, et al),
     the DM should feel free to require an outstanding or even exceptional success for optimal placement.
     A failure can be resolved by rolling 1d8 to determine an offset direction, and the offset distance should be 1%
     of the desired range per level of failure.
@@ -374,7 +171,7 @@ show_actionpointdistribution();
     The attack gets bonuses from the Weapons - Body &amp; Mind Attacks skill.
 </p>
 <p>
-    A critical success will often inflict extra damage, increase duration, or cause additional effects.
+    <em>Critical success:</em> A critical success will often inflict extra damage, increase duration, or cause additional effects.
 </p>
 <p>
     For attacks against Fort or Will defenses, the attacker typically becomes aware of the level of success or failure against each defender.
@@ -384,160 +181,45 @@ show_actionpointdistribution();
     regardless of the result of the attack. However, the details of the attack and the identity of the attacker are not automatically revealed.
 </p>
 
-<h3 id="DamageTypes">Damage Types</h3>
-<p>
-    The different damage types can be categorized as follows:
-</p>
-<ul>
-    <li>Physical Damage</li>
-    <ul>
-        <li>Blunt Damage</li>
-        <li>Piercing Damage</li>
-        <li>Slashing Damage</li>
-    </ul>
-    <li>Energy Damage</li>
-    <ul>
-        <li>Acid Damage</li>
-        <li>Cold Damage</li>
-        <li>Electricity/Lightning Damage</li>
-        <li>Fire/Heat Damage</li>
-        <li>Necrotic Damage</li>
-        <li>Radiant Damage</li>
-        <li>Sonic Damage</li>
-    </ul>
-    <li>Physical Fatigue Damage</li>
-    <li>Psychic (or Mental Fatigue) Damage</li>
-    <li>Ability Damage</li>
-</ul>
+<h3 id="CombatReactions">Combat Reactions</h3>
 
-<h4 id="PhysDmg">Physical Damage</h4>
-<p>
-    <b>Blunt</b> damage causes a loss in HP and/or SP.
-    An attack that causes 50% or more of a creature's HP or SP in blunt damage requires an Acrobatics (Maintain Balance) check
-    against a DC equal to the damage. Failure means that the creature is knocked prone; for every 5 levels of failure, the creature is also
-    knocked back one square.
-</p>
-<p>
-    Most [Force] effects cause blunt damage.
-</p>
-<p>
-    <b>Piercing</b> damage causes a loss in HP.
-    Objects and creatures that have racial resistance to critical hits of +10 or better take only half damage from piercing attacks (after reduction for DR).
-    The reason is that piercing damage is based largely on striking sensitive areas.
-</p>
-<p>
-    <b>Slashing</b> damage causes a loss in HP.
-</p>
-<p>
-    Damage resistance (DR) reduces every instance of physical damage.
-</p>
-<h4 id="EnergyDmg">Energy Damage</h4>
-<p>
-    <b>Acid</b> damage causes a loss in HP.
-</p>
-<p>
-    Moderate <b>cold</b> causes a loss of SP. Severe cold causes a loss of HP and/or SP.
-    Also note that extreme cold can instantaneously freeze water (and many other liquids) in its area of effect, potentially trapping creatures within.
-</p>
-<p>
-    <b>Electricity</b> and lightning usually cause a loss of HP and/or SP.
-</p>
-<p>
-    Moderate <b>heat</b> causes a loss of SP. Severe heat and fire cause a loss of HP and/or SP.
-</p>
-<p>
-    <b>Necrotic</b> damage (also known as negative energy or death energy) causes a loss in HP and/or SP when affecting living creatures.
-    Undead creatures typically regain HP when exposed to necrotic damage.
-</p>
-<p>
-    <b>Radiant</b> damage (also known as positive energy or life energy) causes a loss in HP when affecting living creatures,
-    and undead creatures tend to be particularly vulnerable to radiant damage.
-    Some radiant attacks can also cause blindness.
-    However, moderate amounts of radiance used with care can be used to heal injuries and even restore life.
-</p>
-<p>
-    <b>Sonic</b> damage causes a loss of HP and/or SP. Some sonic attacks can also cause deafness.
-    An attack that causes 50% or more of a creature's HP or SP in sonic damage requires an Acrobatics (Maintain Balance) check
-    against a DC equal to the damage. Failure means that the creature is knocked prone; for every 5 levels of failure, the creature is also
-    knocked back one square.
-</p>
-<p>
-    Energy resistance of the appropriate type reduces energy damage.
-    Note, however, that the amount of resistance is the maximum reduction per round (not per instance).
-</p>
-<h5>Energy Damage against Objects</h5>
-<p>
-    In general, energy damage against objects is handled the same way as energy damage against creatures.
-    In other words, the usual rolls for attacks and damage are made, and the damage is applied to the object's HP.
-    Note that most materials will have resistances to certain energy types; steel, for example, takes reduced damage from fire, electricity, and cold.
-    Objects enjoy the resistances of their base material, although creatures covered by that material do not.
-    For buildings, walls, ground, and other "objects" of undefined size, it is common to apply energy damage to each
-    square or cube separately.
-</p>
-<p>
-    Energy damage can also have special effects when the level of damage reaches certain portions of an object's HP.
-    Suggested effects are shown in the table below.
-    Note, however, that these rules are an extreme simplification, and the DM is encouraged to temper them with logic,
-    especially when it comes to low levels of damage accumulated over time.
-    For example, the heat from a candle will never melt a steel object, regardless of the length of time it is applied.
-</p>
-
-<br/>
-<?php
-show_energyeffects();
-?>
-
-<h4>Physical Fatigue Damage</h4>
-<p>
-    Attacks and effects that cause <b>physical fatigue damage</b> result in a decrease in SP. Serious physical fatigue can cause ability damage to Con.
-</p>
-<h4 id="PsychicDmg">Psychic (or Mental Fatigue) Damage</h4>
-<p>
-    Attacks and effects that cause <b>psychic damage</b> result in a decrease in PP. Serious psychic attacks can also cause ability damage to Wis.
-</p>
-<h4>Ability Damage</h4>
-<p>
-    <b>Ability damage</b> causes a temporary reduction of the specified ability score(s).
-</p>
-
-<h3 id="CombatMods">Combat Modifiers</h3><br />
-
-<br/>
-<?php
-show_combatmods();
-?> 
-
-<p>
-    For creatures that occupy more than one square, special rules for cover and concealment apply.
-    When a creature larger than one square is attacking a defender, it can choose any of its squares to determine the defender’s cover and concealment.
-    When a creature larger than one square is defending, all of its squares must have cover or concealment against the attacker in order to receive any bonuses.
-</p>
-
-<h3 id="AoO">Attacks of Opportunity</h3>
+<h4 id="AoO">Attacks of Opportunity</h4>
 <p>
     Any creature that is able to make melee attacks with a primary attack form and is not flat-footed threatens all squares
     between its minimum and maximum reach.
 </p>
 <p>
     If an opponent in a threatened square performs any action that provokes attacks of opportunity,
-    the threatening creature can choose to make such an attack of opportunity for free.
+    the threatening creature can choose to spend a reaction to make an attack of opportunity.
     The threatening creature cannot make attacks of opportunity against a creature that has cover or at least good concealment against it.
-    A creature can normally only make a single attack of opportunity per round, but certain skills and magical effects can grant additional ones.
 </p>
 <p>
-    An attack of opportunity can be any melee attack action that requires 9 AP or less, but it does not actually cost the attacker any APs.
-</p>
-<p>
-    Attacks of opportunity interrupt the normal initiative sequence and are resolved before the action that provoked the attack.
-    This means that a successful attack of opportunity can prevent the triggering action from being completed.
-    For example, if an opponent's movement triggers an attack of opportunity, a successful trip attack can prevent that movement.
-    And if an attack of opportunity triggered by spellcasting causes damage, the damage caused will penalize the caster's spellcasting check.
-</p>
-<p>
-    Note that it is possible for an attack of opportunity to trigger its own attacks of opportunity.
+    An attack of opportunity can be any melee attack action that requires 9 AP or less, but it does not actually cost the attacker any APs (unless you use saved APs to boost the attack).
 </p>
 
-<h3 id="WeaponSize">Weapon Size and Attack Speed</h3>
+<h4 id="ParryReaction">Parrying</h4>
+<p>
+    Any creature that is able to make melee attacks with a primary attack form and is not flat-footed
+    can potentially use those weapons to parry incoming melee attacks.
+</p>
+<p>
+    When a creature is exposed to an incoming melee attack, and it has a weapon or primary
+    attack form able to make a melee attack action that requires 9 AP or less, it can use a
+    reaction to try to parry the incoming attack with its own weapon.
+</p>
+
+<h3 id="CombatSkills">Combat Skills</h3>
+<p>
+    The following skill groups have certain effects that are common to each group and
+    that are not repeated for each individual skill in the List of Skills chapter.
+</p>
+<h4 id="ArmorSkills">Armor Skills</h4>
+<?php show_armorskilleffects(); ?> 
+
+<h4 id="WeaponSkills">Weapon Skills</h4>
+<?php show_weaponskilleffects(); ?> 
+
+<h3 id="WeaponSize">Weapon Usage</h3>
 <p>
     The size of a weapon is important in many ways, since it affects attack speed, reach, and how easily the weapon can be wielded.
     Weapon size typically refers to the weapon's object size, but in some cases that size by itself is not the only important factor.
@@ -562,10 +244,7 @@ show_combatmods();
     Unless otherwise specified, the creature's own size is used as the weapon size for brawling attacks.
 </p>
 
-<br/>
-<?php
-show_weaponsize();
-?> 
+<?php show_weaponsize(); ?> 
 
 <h4>Attack Speed</h4>
 <p>
@@ -576,10 +255,10 @@ show_weaponsize();
     For example, the base AP cost for a normal melee attack is 8 AP,
     and this is also the actual cost for a melee attack with a Medium-sized weapon.
     To use a Medium-sized humanoid for further examples, its actual attack speed can vary from
-    5 AP for a hand attack (a Diminutive-sized weapon with -3 attack speed modifier) to
+    5 AP for a fist attack (a Diminutive-sized weapon with -3 attack speed modifier) to
     8 AP for a two-handed weapon such as a halberd (a Medium-sized weapon with a +0 attack speed modifier).
     A Large-sized humanoid could make similar attacks, its actual attack speed varying from
-    6 AP for a hand attack (a Tiny-sized weapon with -2 attack speed modifier) to
+    6 AP for a fist attack (a Tiny-sized weapon with -2 attack speed modifier) to
     9 AP for a two-handed weapon made for a Large creature (a Large-sized weapon with a +1 attack speed modifier).
 </p>
 <p>
@@ -607,7 +286,7 @@ show_weaponsize();
 </p>
 <p>
     When used for a multi-attack, double weapons count as one one-handed and one light weapon.
-    They can only be effectively used in this way by wielders that match the weapon's made-for-size.<br />
+    They can only be effectively used in this way by wielders that match the weapon's made-for-size.<br/>
 </p>
 <p>
     When the weapon's made-for-size differs from the wielder size, all attack rolls suffer a -2 circumstance penalty per step of difference.
@@ -625,7 +304,7 @@ show_weaponsize();
     The weapon can potentially threaten or be used against any opponent that is located within this range,
     making it either dangerous or time-consuming for such an opponent to perform actions that provoke attacks of opportunity.
     A weapon with a reach of 0-1, for example, can be used against targets in your own square and up to one square away.
-    A reach of 2-2 means that the weapon threatens all squares that are two squares away,
+    A reach of 2-2 means that the weapon threatens all squares that are exactly two squares away,
     but creatures in squares adjacent to you are safe from attack.
 </p>
 <p>
@@ -639,12 +318,137 @@ show_weaponsize();
     However, there are ways to make melee attacks with small weapons without provoking attacks of opportunity.
     One common way is to make a charge attack instead of a regular melee attack.
     Another way is to use a Feint action to trick your opponent and bypass his defenses.
-    Furthermore, some conditions (such as flat-footed or stunned) will typically render a defender unable to make attacks of opportunity.
-    Also remember that a defender is limited in the number of opportunity attacks it can make each round,
-    and that it is unable to make opportunity attacks against any attacker that has cover or good concealment.
+    Furthermore, some conditions (such as being flat-footed or stunned) will typically render a defender unable to make attacks of opportunity.
+    Also remember that a defender is limited in the number of reactions it can make each round,
+    and also that it is unable to make opportunity attacks against any attacker that has cover or good concealment.
 </p>
 
-<h3 id="UntrainedWeapons">Improvised and Untrained Weapons</h3>
+<h3 id="CombatMods">Combat Modifiers</h3>
+
+<?php show_combatmods(); ?> 
+
+<p>
+    For creatures that occupy more than one square, special rules for cover and concealment apply.
+    When a creature larger than one square is attacking a defender, it can choose any of its squares to determine the defender’s cover and concealment.
+    When a creature larger than one square is defending, all of its squares must have cover or concealment against the attacker in order to receive any bonuses.
+</p>
+
+<h3 id="DamageTypes">Damage Types</h3>
+<p>
+    The different damage types can be categorized as follows:
+</p>
+<ul>
+    <li>Physical Damage</li>
+    <ul>
+        <li>Blunt Damage</li>
+        <li>Piercing Damage</li>
+        <li>Slashing Damage</li>
+    </ul>
+    <li>Energy Damage</li>
+    <ul>
+        <li>Acid Damage</li>
+        <li>Cold Damage</li>
+        <li>Electricity/Lightning Damage</li>
+        <li>Fire/Heat Damage</li>
+        <li>Necrotic/Negative Damage</li>
+        <li>Radiant/Positive Damage</li>
+        <li>Sonic Damage</li>
+    </ul>
+    <li>Physical Fatigue Damage</li>
+    <li>Psychic (or Mental Fatigue) Damage</li>
+    <li>Ability Damage</li>
+</ul>
+
+<h4 id="PhysDmg">Physical Damage</h4>
+<p>
+    <em>Blunt</em> damage causes a loss in HP and/or SP.
+    An attack that causes 50% or more of a creature's HP or SP in blunt damage requires an Acrobatics (Maintain Balance) check
+    against a DC equal to the damage. Failure means that the creature is knocked prone; for every 5 levels of failure, the creature is also
+    knocked back one square.
+</p>
+<p>
+    Most [Force] effects cause blunt damage.
+</p>
+<p>
+    <em>Piercing</em> damage causes a loss in HP.
+    Objects and creatures that have racial resistance to critical hits of +10 or better take only half damage from piercing attacks (after reduction for DR).
+    The reason is that piercing damage is based largely on striking sensitive areas.
+</p>
+<p>
+    <em>Slashing</em> damage causes a loss in HP.
+</p>
+<p>
+    Damage resistance (DR) reduces every instance of physical damage.
+</p>
+<h4 id="EnergyDmg">Energy Damage</h4>
+<p>
+    <em>Acid</em> damage causes a loss in HP.
+</p>
+<p>
+    Moderate <em>cold</em> causes a loss of SP. Severe cold causes a loss of HP and/or SP.
+    Also note that extreme cold can instantaneously freeze water (and many other liquids) in its area of effect, potentially trapping creatures within.
+</p>
+<p>
+    <em>Electricity</em> and lightning usually cause a loss of HP and/or SP.
+</p>
+<p>
+    Moderate <em>heat</em> causes a loss of SP. Severe heat and <em>fire</em> cause a loss of HP and/or SP.
+</p>
+<p>
+    <em>Necrotic</em> damage (also known as negative energy or death energy) causes a loss in HP and/or SP when affecting living creatures.
+    Undead creatures typically regain HP when exposed to necrotic damage.
+</p>
+<p>
+    <em>Radiant</em> damage (also known as positive energy or life energy) causes a loss in HP when affecting living creatures,
+    and undead creatures tend to be particularly vulnerable to radiant damage.
+    Some radiant attacks can also cause blindness.
+    However, moderate amounts of radiance used with care can be used to heal injuries and even restore life.
+</p>
+<p>
+    <em>Sonic</em> damage causes a loss of HP and/or SP. Some sonic attacks can also cause deafness.
+    An attack that causes 50% or more of a creature's HP or SP in sonic damage requires an Acrobatics (Maintain Balance) check
+    against a DC equal to the damage. Failure means that the creature is knocked prone; for every 5 levels of failure, the creature is also
+    knocked back one square.
+</p>
+<p>
+    Energy resistance of the appropriate type reduces energy damage.
+    Note, however, that the amount of resistance is the maximum reduction per round (not per instance).
+</p>
+<h5>Energy Damage against Objects</h5>
+<p>
+    In general, energy damage against objects is handled the same way as energy damage against creatures.
+    In other words, the usual rolls for attacks and damage are made, and the damage is applied to the object's HP.
+    Note that most materials will have resistances to certain energy types; steel, for example, takes reduced damage from fire, electricity, and cold.
+    Objects enjoy the resistances of their base material, although creatures covered by that material do not.
+    For buildings, walls, ground, and other "objects" of undefined size, it is common to apply energy damage to each
+    square or cube separately.
+</p>
+<p>
+    Energy damage can also have special effects when the level of damage reaches certain portions of an object's HP.
+    Suggested effects are shown in the table below.
+    Note, however, that these rules are an oversimplification, and the DM is encouraged to temper them with logic,
+    especially when it comes to low levels of damage accumulated over time.
+    For example, the heat from a candle will never melt a steel object, regardless of the length of time it is applied.
+</p>
+
+<?php show_energyeffects(); ?>
+
+<h4>Physical Fatigue Damage</h4>
+<p>
+    Attacks and effects that cause <em>physical fatigue damage</em> result in a decrease in SP. Serious physical fatigue can cause ability damage to Con.
+</p>
+<h4 id="PsychicDmg">Psychic (or Mental Fatigue) Damage</h4>
+<p>
+    Attacks and effects that cause <em>psychic damage</em> result in a decrease in PP. Serious psychic attacks can also cause ability damage to Wis.
+</p>
+<h4>Ability Damage</h4>
+<p>
+    <em>Ability damage</em> causes a temporary reduction of the specified ability score(s).
+</p>
+
+<h3 id="AdvancedCombat">Advanced Combat Rules</h3>
+
+<h4 id="UntrainedWeapons">Improvised and Untrained Weapons</h4>
 <p>
     Whenever an attacker uses a weapon that it has no skill with, the following penalties apply.
     The same penalties apply for using a non-weapon item as a weapon, such as clubbing someone with a chair or simply throwing a rock at someone.
@@ -657,13 +461,13 @@ show_weaponsize();
     <li>The weapon's or item's parry bonus is halved.</li>
 </ul>
 
-<h3 id="MultiAttacks">Two-Weapon Fighting and Multi-Attacks</h3>
+<h4 id="MultiAttacks">Two-Weapon Fighting and Multi-Attacks</h4>
 <p>
     Multi-attacking is just what it sounds like, in other words performing two or more weapon attacks simultaneously (or at least with overlapping timing of the attacks).
     The most common multi-attack for a humanoid creature is a two-weapon attack, which is why "two-weapon fighting" is sometimes used as a synonym for multi-attacking.
     Note that wielding two weapons and attacking first with one and then the other does not constitute a multi-attack; this would be nothing more than two regular attacks.
     Multi-attacking, on the other hand, means that the weapon attacks are either simultaneous or overlapping in time.
-    The benefit of a multi-attack is that the attacks cost less AP to perform than they would separately, but this comes at the cost of an attack penalty.
+    The benefit of a multi-attack is that the attacks cost less AP to perform than they would separately, but at the cost of an attack penalty.
 </p>
 <p>
     The first prerequisite for performing a multi-attack is that the attacker has multiple natural attack forms (as specified for its race and body category).
@@ -686,7 +490,7 @@ show_weaponsize();
     a kraken attacking with several tentacles at once, and so forth.
 </p>
 
-<h3 id="MountedCombat">Mounted Combat</h3>
+<h4 id="MountedCombat">Mounted Combat</h4>
 <p>
     Mounts that are trained for war (or mounts that are natural predators) will automatically move
     as directed by their rider, even in the heat of combat.
@@ -701,7 +505,7 @@ show_weaponsize();
     The following special rules apply to mounted combat:
 </p>
 <ul>
-    <li>The mount uses its own AP and MP for action point bonuses and actions. One exception is that brawling attacks with a mount cost AP both for you and the mount. You cannot use your own MP while mounted, but you can convert AP to MP for the dismount action. You can spend AP on other actions while your mount performs full-round movement actions (jog, run, and sprint).</li>
+    <li>The mount uses its own AP and MP for action point bonuses and actions. One exception is that brawling attacks with a mount cost AP both for you and the mount. You cannot use your own MP while mounted, but you can convert AP to MP for the dismount action. You can spend AP on other actions while your mount performs full-round movement actions (such as jog, run, and sprint).</li>
     <li>Your mount acts on your initiative. You can mix your own actions with those of your mount. For example, you can start by spending the mount's MP on movement, then spend your own AP to make an attack, spend additional MP on another move, and then let the mount spend its AP on an attack.</li>
     <li>When charging with a mount, both you and the mount enjoy the charging bonuses as well as suffer the penalties.</li>
     <li>It is harder to wield a two-handed or double weapon from a mount, giving you a -2 attack penalty.</li>
@@ -713,7 +517,7 @@ show_weaponsize();
     <li>If multiple riders/passengers are mounted on the same mount, most of the rules above apply to all of them.</li>
 </ul>
 
-<h3 id="VehicleCombat">Vehicle Combat</h3>
+<h4 id="VehicleCombat">Vehicle Combat</h4>
 <p>
     Most vehicles are controlled by a designated character, typically a driver, captain, or pilot.
     That character can perform one vehicle action each round to move the vehicle and/or make an attack with it.
@@ -729,8 +533,8 @@ show_weaponsize();
 </p>
 <ul>
     <li>The vehicle acts on the driver's or captain's initiative.</li>
-    <li>Vehicles have characteristics similar to creatures, including HP, DeC, DR, and Base Speed. These characteristics are also used in the same way.</li>
-    <li>Water vehicles that are below half HP (broken) take on water and will sink in 10d10 rounds unless half of the minimum crew spend all their time bailing.
+    <li>Vehicles have characteristics similar to creatures, including HP, DeC, DR, and Base Speed. These characteristics are also used in the same way that they are used for creatures.</li>
+    <li>Water vehicles that are below half HP (broken) take on water and will sink in 10d10 rounds unless half of the minimum crew spend all their time bailing water.
     Water vehicles that reach 0 HP will stop moving and sink in d10 rounds.</li>
     <li>Air vehicles that are below half HP (broken) can no longer gain altitude.
     If they reach 0 HP, they fall uncontrollably towards the ground.</li>
@@ -754,16 +558,6 @@ show_weaponsize();
     Player characters should only suffer morale checks when exposed to particularly terrifying monsters, [Fear] magic, or other extreme situations.
 </p>
 
-<br/>
-<?php
-show_moralemods();
-?> 
+<?php show_moralemods(); ?> 
 
-<br/>
-<?php
-show_moraleresults();
-?> 
-
-<?php
-application_end();
-?> 
+<?php show_moraleresults(); ?> 

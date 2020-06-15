@@ -1,68 +1,118 @@
-<?php
-require_once 'RulesSrc/showtables.php';
-
-application_start();
-?>
-
-<h2 id="CoreMechanics">Core Mechanics</h2>
+<h2 id="CoreMechanics">Core Rules</h2>
 <p>
-    The RoL d20 rules are quite extensive and replace a large portion of the normal d20 and D&amp;D 3.5E rules. 
+    The RoL d20 rules are quite extensive and replace a large portion of the
+    normal d20 and D&amp;D 3.5E rules. 
     Nevertheless, for the few areas not covered by this document, the regular 
     <a href="http://www.d20srd.org">d20 rules</a> 
     still apply.
     But don't forget... The DM is always right and can override any rule, even the RoL rules.
 </p>
 <p>
-    The main purpose of rules in a role-playing game is to provide a common framework for the players (and the DM).
-    First of all, it defines a set of characteristics that are used to describe player characters, non-player characters,
-    monsters, and even inanimate objects. For example, they let you know how strong, quick, or intelligent your character is,
-    in absolute numbers. In other words, it is easy to tell whether your character is stronger than an average orc or smarter
-    than the village wizard. Second, the rules define which actions your character can perform, your chances of success or
-    failure, and how long those actions take to perform. Of course, the rules cannot cover every possible action, so it is
+    The main purpose of rules in a role-playing game is to provide a common
+    framework for the players (and the DM).
+</p>
+<p>
+    First of all, it defines a set of characteristics that are used to describe
+    player characters, non-player characters,
+    monsters, and even inanimate objects. For example, they let you know how
+    strong, quick, or intelligent your character is,
+    in absolute numbers. In other words, it is easy to tell whether your
+    character is stronger than an average orc or smarter
+    than the village wizard.
+    All in all, there are quite a number of characteristics that define a
+    character (or any DM-controlled creature for that matter).
+    Some characteristics are generated randomly, while others are chosen by the
+    player. Quite a few are simply calculated and derived from other characteristics.
+    Some will remain constant throughout the character's career, while others
+    will change frequently.
+    Some are relatively obscure and abstract, with little or no effect in a
+    typical gaming session, while others provide well-defined modifiers
+    to actions the character performs on a regular basis.
+</p>
+<p>
+    Second, the rules define which actions your
+    character can perform, your chances of success or
+    failure, and how long those actions take to perform. Of course, the rules
+    cannot cover every possible action, so it is
     the duty of the DM to adjudicate the cases not already covered by the rules.
 </p>
 
-<h3 id="Mathematics">Mathematics</h3>
+<h3 id="FundamentalRules">Fundamentals</h3>
+
+<h4 id="DiceRolling">Dice-Rolling</h4>
 <p>
     <em>Dice:</em> The traditional role-playing notation for dice is used in the RoL rules.
-    In other words, &quot;3d6+5&quot; means &quot;roll three six-sided dice, calculate their sum, and add five&quot;.
+    In other words, &quot;3d6+5&quot; means &quot;roll three six-sided dice,
+    calculate their sum, and add five&quot;.
 </p>
 <p>
+    <em>Open-Ended Dice:</em> In some situations (those involving d20 checks,
+    in particular) RoL d20 makes use of open-ended dice rolling.
+    The notation used for open-ended rolls consists of an exclamation mark after the die size.
+    For example, &quot;d20!+12&quot; means &quot;roll a d20 and add 12 to the result&quot; as usual.
+    In addition to this, each die that rolls the maximum result (20 in this case)
+    should be rerolled and added to the final result.
+    And each die that rolls the minimum result (usually 1) subtracts &quot;die size+1&quot;
+    from the result and should then be rerolled.
+</p>
+<p>
+    <em id="DamageDice">Dice Increase and Decrease:</em> Some skills, spells, and other effects can either increase or decrease the damage dice of a weapon.
+    Such an increase or decrease follows these steps:
+</p>
+<p>
+    1 &harr; d2 &harr; d3 &harr; d4 &harr; d6 &harr; d8 &harr; d10 &harr; 2d6 (or d12) &harr; 2d8 &harr; 2d10 (or d20) &harr; 4d6 &harr; 5d6 &harr; 6d6 ...
+</p>
+<p>
+    In general, treat multiple dice separately. For example, increasing 3d8 results in a progression of 3d10, then 6d6, 7d6, etc.
+</p>
+
+<h4 id="Mathematics">Mathematics</h4>
+<p>
     <em>Units:</em> Measurements in this document are given in metric units.
-    However, to avoid major confusion with D&amp;D, most distances, areas, and volumes are measured in squares.
+    However, to avoid major confusion with D&amp;D, most distances, areas, and
+    volumes are measured in squares.
     The size of one square (or more accurately one of its edges) is equal to 5 feet or 1.5 m.
     One square is also the appropriate spacing for a man-sized creature in combat situations.
 </p>
 <p>
-    For diagonal movement and measurements of distance, every other square (starting with the second one) counts double.
+    For diagonal movement and measurements of distance, every other square
+    (starting with the second one) counts double.
 </p>
 <p>
     <em>Rounding:</em> Unless otherwise specified, always round fractions down.
 </p>
 <p>
-    <em>Multiplication:</em> When applying a single multiplier to a die roll or number, just multiply normally.
-    In some rare cases, such as a spell multiplying a weapon's damage combined with a critical hit,
+    <em>Multiplication:</em> When applying a single multiplier to a die roll or
+    number, just multiply normally.
+    In some rare cases, such as a spell multiplying a weapon's damage combined
+    with a critical hit,
     several multiplicative modifiers will apply to a single base number.
-    Such modifiers should, when applied to an abstract value, be added rather than multiplied together,
-    and all multipliers except the first should be reduced by one.
-    For example, a &times;2 modifier combined with a &times;3 modifier will result in a total of &times;4 (2 + (3 - 1)) rather than &times;6.
-    When applying several multiplicative modifiers to a &quot;real&quot; value (such as a weight or distance),
+    Such modifiers should, when applied to an abstract value, be added rather
+    than multiplied together, and all multipliers except the first should be reduced by one.
+    For example, a &times;2 modifier combined with a &times;3 modifier will result
+    in a total of &times;4 (2+(3-1)) rather than &times;6.
+    When applying several multiplicative modifiers to a &quot;real&quot; value
+    (such as a weight or distance),
     normal math should be used and all the multipliers multiplied together.
 </p>
 
 <h4 id="Stacking">Stacking</h4>
 <p>
     Characteristics and modifiers of the same type do not generally stack.
-    However, please check the section about <a href="#Modifiers">modifiers</a> for exceptions to this rule.
+    However, please check the section about <a href="#Modifiers">modifiers</a>
+    for exceptions to this rule.
 </p>
 <p>
     The same rule applies to most non-instantaneous spell effects and special abilities.
-    Unless otherwise specified (or otherwise dictated by logic), when two similar or identical effects affect
+    Unless otherwise specified (or otherwise dictated by logic), when two similar
+    or identical effects affect
     the same creature or area at the same time, only the most powerful of them applies.
-    Note, however, that determining the similarity of two effects is not always trivial and is ultimately up to the DM.
+    Note, however, that determining the similarity of two effects is not always
+    trivial and is ultimately up to the DM.
 </p>
 <p>
-    For example, let us say that a creature is first charmed by a wizard's spell, then charmed again by a vampire's gaze,
+    For example, let us say that a creature is first charmed by a wizard's spell,
+    then charmed again by a vampire's gaze,
     and finally compelled by a cursed magic item.
     In most cases, two charm effects can coexist without conflict, but if the creature in this case
     is forced to make a choice between aiding the wizard or the vampire, the most powerful charm will apply.
@@ -71,98 +121,214 @@ application_start();
 </p>
 <p>
     Also note that a single spell can have multiple effects, and unless otherwise specified,
-    the same spell can be cast multiple times on the same target. The spell Enhance Senses, for example, can be cast
+    the same spell can be cast multiple times on the same target. The spell
+    Enhance Senses, for example, can be cast
     several times at a single target, once to give low-light vision, another to give darkvision, etc. 
 </p>
 
-<h3 id="Timing">Timing</h3>
+<h4 id="Timing">Timing</h4>
 <p>
-    Time in a role-playing game is quite fluid, just as it is in movies and literature. When the DM and players agree that few
-    interesting things are taking place, then days, months, or even years of game time can pass in a second of real time.
-    During a complicated situation, on the other hand, a large number of characters may be performing a variety of actions in
+    Time in a role-playing game is quite fluid, just as it is in movies and
+    literature. When the DM and players agree that few
+    interesting things are taking place, then days, months, or even years of
+    game time can pass in a second of real time.
+    During a complicated situation, on the other hand, a large number of
+    characters may be performing a variety of actions in
     just a few seconds of game time, but this can take hours of real time to play out.
 </p>
 <p>
-    Every action takes a certain amount of game time to perform. For slower actions, the time is measured in &quot;normal&quot; time units:
-    minutes (min), hours (h), days, weeks, months, or years. Faster actions, however, are measured in rounds or action points rather than seconds.
+    Every action takes a certain amount of game time to perform. For slower
+    actions, the time is measured in &quot;normal&quot; time units:
+    minutes (min), hours (h), days, weeks, months, or years. Faster actions,
+    however, are measured in rounds or action points rather than seconds.
 </p>
 <p>
-    <em>Round (r):</em> A round is a unit of time roughly equal to 6 seconds. In other words, 10 rounds equal one minute.
-    During each round, a character can perform either a single full-round action or a combination of faster actions.
-    Note, however, that a full-round action can be combined with one or more free actions (those that take 0 AP to perform).
+    <em>Round (r):</em> A round is a unit of time roughly equal to 6 seconds.
+    In other words, 10 rounds equal one minute.
+    During each round, a character can perform either a single full-round action
+    or a combination of faster actions.
+    Note, however, that a full-round action can be combined with one or more
+    free actions (those that take 0 AP to perform).
 </p>
 <p>
-    <em>Action Points (AP):</em> Action Points is a measure of how much a creature can do in a single round.
-    When a time is specified in AP, it reflects the number of AP a creature must spend to perform a certain action.
-    Typically, a high-level character or monster has more AP to spend per round than one of low level.
-    For a low-level character, 1 AP is roughly equivalent to 0.5 seconds, while for a high-level character, it can be as short as 0.15 seconds.
+    <em>Action Points (AP):</em> Action Points is a measure of how much a
+    creature can do in a single round.
+    When a time is specified in AP, it reflects the number of AP a creature must
+    spend to perform a certain action.
+    Typically, a high-level character or monster has more AP to spend per round
+    than one of low level.
+    For a low-level character, 1 AP is roughly equivalent to 0.5 seconds, while
+    for a high-level character, it can be as short as 0.15 seconds.
 </p>
 <p>
-    <em>Movement Points (MP):</em> Movement Points are similar to Action Points but are a measure of a creature's rate of movement.
+    <em>Movement Points (MP):</em> Movement Points are similar to Action Points
+    but are tied to a creature's rate of movement.
     Movement Points can be used only for movement actions (those with the [Move] descriptor).
-    A creature's amount of available MP is determined by its speed characteristic, but a limited number of AP can also be converted into extra MP.
-    When a time is specified in MP, it reflects the number of MP a creature must spend to perform a certain action.
+    A creature's amount of available MP is determined by its speed characteristic,
+    but a limited number of AP can also be converted into extra MP.
+    When a time is specified in MP, it reflects the number of MP a creature must
+    spend to perform a certain action.
 </p>
 <p>
-    <em>Encounter (enc):</em> An encounter is not a fixed amount of time, but it is typically somewhere between half a minute and half an hour.
-    It can be an entire combat, from start to finish, a fast-paced chase through a forest, a friendly five-minute chat between characters,
+    <em>Encounter (enc):</em> An encounter is not a fixed amount of time, but it
+    is typically somewhere between half a minute and half an hour.
+    It can be an entire combat, from start to finish, a fast-paced chase through
+    a forest, a friendly five-minute chat between characters,
     a few minutes spent climbing a wall, etc.
-    In situations where an encounter's duration cannot be clearly defined, this time unit is typically limited at one minute per skill level
+    In situations where an encounter's duration cannot be clearly defined, this
+    time unit is typically limited at one minute per skill level
     (or TL, when skill level is not applicable).
 </p>
 
-<h3 id="Characteristics">Characteristics</h3>
+<h3 id="RaceChars">Racial Characteristics</h3>
 <p>
-    There are quite a number of characteristics that define a character (or any DM-controlled creature for that matter).
-    Some characteristics are generated randomly, while others are chosen by the player. Quite a few are simply calculated and derived from other characteristics.
-    Some will remain constant throughout the character's career, while others will change frequently.
-    Some are relatively obscure and abstract, with little or no effect in a typical gaming session, while others provide well-defined modifiers
-    to actions the character performs on a regular basis.
+    <em>Race/Creature:</em> This is the species an individual belongs to. Some races will also have a variety of subraces.
+    For example, sylvan and drow elves are two subraces of the elven race, with very different racial traits and temperaments.
+</p>
+<p>
+    <em>Creature type and subtype:</em> Each creature belongs to a specific creature type and subtype.
+    This will sometimes affect or determine the efficiency of special powers, spells, and magic items.
+    For example, some magic weapons deal greater damage to certain creature types,
+    and some skills teach you how to better track and fight specific creature types.
+</p>
+<p>
+    <em>Template:</em> This is a special racial modification that can be added on top of a base race.
+    Vampiricism and lycanthropy are two well-known examples of templates.
+</p>
+<p>
+    <em>Culture:</em> This represents the upbringing and background of a creature.
+    Most importantly, it determines which class or classes to use for racial levels and when choosing background skills.
+</p>
+<p>
+    <em>Gender:</em> There is usually very little difference between male and female as far as the rules are concerned.
+    For most races, the only technical difference is in height and weight calculations.
+    Still, there are a few races where the two genders are distinctly different with regards to ability adjustments and other traits.
+</p>
+<p>
+    In these rules (as in the original ones), the words ‘he’, ‘him’, and ‘his’ will often refer to both genders, in an attempt to make the text somewhat easier to read.
 </p>
 
-<h4 id="AbilityScores">Ability Scores</h4>
+<p>
+    <em>Age:</em> This is just what it sounds like, the number of years a creature has been alive.
+    In a few rare cases, a creature may suffer unnatural aging or may even be able to halt or reverse natural aging.
+    If that is the case, it becomes necessary to track physical and mental age separately.
+</p>
+<p>
+    <em>Age category:</em> A creature’s age and race determine which age category it belongs to.
+    Age category, in turn, will affect ability scores and racial level for most creature types, as shown in the table below.
+</p>
+
+<?php show_agecategories(); ?> 
+
+<h3 id="LevelChars">Level Characteristics</h3>
+<p>
+    One of the most crucial characteristics of any creature is its level. Level is quite simply a rough indication of how powerful and skilled a creature is.
+    For many intelligent creatures, time and experience will lead to a gradual increase in level.
+    This, in turn, will lead to more health points, improved skills, and many other benefits.
+</p>
+<p>
+    <em>Experience Points (XP):</em> This is a measure of how much total experience a character has accumulated in his lifetime.
+    When a character defeats opponents and overcomes other challenges, the DM will reward him with an appropriate number of XP.
+    The number of XP determines when a creature gains a level, as shown on the table below.
+</p>
+<p>
+    <em>Class:</em> This is a creature's profession or vocation (if any).
+    Although classes are primarily associated with the more intelligent and civilized races,
+    even dumb animals can sometimes gain a few levels in the Warrior class and improve their combat skills.
+    Some creatures will adopt more than one class, and this is referred to as multi-classing.
+</p>
+<p>
+    <em>Class Level (ClL):</em> This is the number of levels a creature has in a certain class.
+    A creature can also have different levels in a number of separate classes.
+    Class levels are most commonly shown as the abbreviation for the class followed by the level.
+    For example, 5 levels in the fighter class is abbreviated as Ftr5, while 6 rogue levels combined with 3 wizard levels are abbreviated as Rog6/Wiz3.
+</p>
+<p>
+    <em>Racial Level (RL):</em> Many creatures are so physically powerful that just belonging to their race counts as a certain number of &quot;bonus&quot; levels.
+    For example, an ogre that is also a level 5 fighter is a more powerful and dangerous opponent than a human level 5 fighter,
+    and this is represented by a number of racial ogre levels.
+    Racial levels are technically treated as levels in one of the classes associated with the creature's culture.
+</p>
+<p>
+    <em>Total Level (TL):</em> A creature’s total level is simply the sum of all its class and racial levels.
+</p>
+<p>
+    <dfn>TL = &sum;ClL + RL</dfn>
+</p>
+<p>
+    <em>Challenge Level (CL):</em> This is a measure of how challenging a creature is as an opponent.
+    In many cases, CL is equal to TL, but sometimes a creature has special abilities, social class, etc.
+    that can make it more (or less) dangerous than its TL would indicate.
+</p>
+<p>
+    <dfn>CL = TL + CL modifier</dfn>
+</p>
+
+<?php show_experiencelevels(); ?> 
+
+<p>
+    <em id="ActionPts">Action Points (AP):</em> Action Points is a measure of how much a creature can do in a single round.
+    The available amount of AP is determined by TL, so for a character this amount will typically increase as the character
+    gains experience and becomes more skilled.
+    During combat, action points can be used to perform a wide variety of attacks and other actions.
+</p>
+<p>
+    <em id="SkillPts">Skill Points:</em> As a creature gains levels, it also gains skill points (determined by the class).
+    These points can be used to learn new skills or improve already known skills.
+    Skill points have to be spent when the level is gained, and they can’t be saved for future use.
+</p>
+<p>
+    <em id="ImprPts">Improvement Points (IP):</em> Characters and other exceptional creatures gain 5 improvement points per level,
+    and these can be used to improve a wide variety of characteristics (see <a href="hb03_chargen.php#Improvements">Character Generation</a> chapter).
+    Improvement points can be saved and accumulated for future use.
+</p>
+
+<p>
+    <em>Power Level (PL):</em> Power Level is used for all supernatural creatures, objects, and effects,
+    and it is a measure of how supernatural they are.
+    A high PL makes the creature, object, or effect easier to detect with magic and supernatural senses but
+    also more resistant to dispelling, anti-magic, and wild magic.
+    Most supernatural creatures have a PL equal to their TL, objects have a PL based on their supernatural powers,
+    and supernatural effects have a PL based on their PP cost.
+</p>
+
+<h3 id="AbilityScores">Ability Scores</h3>
 <p>
     The six ability scores, Strength, Constitution, Dexterity, Intelligence, Wisdom, and Charisma, are among the most basic and important
     characteristics for any character or creature. They affect almost everything a creature does, and a good ability score can give as much
     bonus as several levels of training in a skill.
 </p>
 
-<br/>
-<?php
-show_abilityscores();
-?> 
+<?php show_abilityscores(); ?> 
 
 <p>
     Each ability score is calculated from a base ability score, which is then modified for race, age, and other factors.
-    A base ability score can be said to represent an individual's raw potential relative to all other individuals.
-    It is typically a random &quot;bell&quot; distribution between 3 and 18, and once it has been generated for an individual, it will never change.
+    A base ability score can be said to represent an individual's raw potential compared to the average for his or her race and age.
+    It is typically a random &quot;bell&quot; distribution between 3 and 18, and once generated for a character or creature, it will never change.
     An (actual) ability score, however, will often have modifiers that make it different from the base score.
     Some modifiers, such as race and age, tend to remain constant over long periods of time, wbile others, such as magic and disease, tend to be temporary.
     The main reason that you should keep track of both the base and actual ability scores is that a character’s race can change in the world of D&amp;D.
     For example, assume that you have a human druid with a low base Strength score of 5. If he shapeshifts into a grizzly bear, he will gain a +16 racial bonus to strength,
-    giving him an actual Strength score of 21, which is significantly stronger than any unaided human.
-    Nevertheless, he will still be relatively weak for a grizzly (base ability score is still the same).
+    giving him an actual Strength score of 21. This would be significantly stronger than any unaided human.
+    but the druid will still be relatively weak for a grizzly (base ability score is still the same).
 </p>
 <p>
     Ability score modifiers are always calculated from the actual ability scores, according to the formula or table below.
     Those modifiers are then used for a wide variety of skill checks, ability checks, attack rolls, damage rolls, defenses, etc.
 </p>
 <p>
-    <em>Base ability score:</em> 3-18
+    <dfn>Base ability score = 3 to 18 (using 3d6 for average individuals)</dfn>
 </p>
 <p>
-    <em>(Actual) ability score:</em> Base ability score + racial/template mods + age mod + other modifiers
+    <dfn>Ability score (actual) = base ability score + racial/template mods + age mod + other modifiers</dfn>
 </p>
 <p>
-    <em>Ability modifier:</em> (Ability score / 2) - 5
+    <dfn>Ability score modifier = (ability score / 2) - 5</dfn>
 </p>
 
-<br/>
-<?php
-show_abilityscoremods();
-?> 
+<?php show_abilityscoremods(); ?> 
 
-<h4 id="HealthScores">Health Scores</h4>
+<h3 id="HealthScores">Health Points</h3>
 <p>
     <em>Hit Points (HP):</em> Represent how much physical damage a creature can take before falling unconscious or dying.
 </p>
@@ -195,22 +361,34 @@ show_abilityscoremods();
     Temporary points can never be healed, naturally or supernaturally.
     Also note that multiple effects that grant temporary health points will not stack; only the highest value counts.
 </p>
-<p>
-    <em>Reduced Health Points</em> (optional rule for more realistic campaigns):
-    DMs who want faster and more dangerous combat encounters may consider reducing the health points of all creatures.
-    Simply reduce the health points granted by class and racial levels by a given fraction (25% or 50%, for example).
-    Another option would be to reduce the health points only of certain creature types, such as humanoids.
-</p>
+<div class="optionalrule">
+    <p>
+        <em>Reduced Health Points</em> (optional rule for more realistic campaigns):
+        DMs who want faster and more dangerous combat encounters may consider reducing the health points of all creatures.
+        Simply reduce the health points granted by class and racial levels by a given fraction (25% or 50%, for example).
+        Another option would be to reduce the health points only of certain creature types, such as humanoids.
+    </p>
+</div>
+<div class="optionalrule">
+    <p>
+        <em>Random Health Points</em> (optional rule for more varied characters):
+        For DMs (and players) who want more variation in the health points of characters, NPCs, and other creatures,
+        consider replacing the fixed health point bonuses per level with random dice rolls of similar size.
+        For example, a fighter might receive 2d8 HP, 2d6 SP, and d4 PP per level.
+    </p>
+</div>
 
-<h4 id="DefenseScores">Defense Scores</h4>
+<h3 id="DefenseScores">Defense Characteristics</h3>
+
+<h4 id="DefenseClass">Defense Class</h4>
 <p>
-    <em>Defense Class (DeC):</em> A measure of how difficult a creature is to hit with physical attacks.
+    <em>Defense Class (DeC):</em> A measure of how difficult a creature (or object) is to hit with physical attacks.
 </p>
 <p>
-    <dfn>DeC (passive) = 10 + Dex mod (if negative) + size mod + deflection bonus + DeB + other modifiers</dfn>
+    <dfn>DeCp (passive DeC) = 10 + Dex mod (if negative) + TL (total level) + size mod + deflection bonus + other modifiers</dfn>
 </p>
 <p>
-    <dfn>DeC (active) = DeC (passive) + Dex mod (if positive) + parry bonus + dodge bonus + other modifiers</dfn>
+    <dfn>DeCa (active DeC) = DeCp + Dex mod (if positive) + parry bonus + dodge bonus + other modifiers</dfn>
 </p>
 <p>
     The active DeC is used against attacks that you are aware of and can actively try to avoid.
@@ -222,19 +400,10 @@ show_abilityscoremods();
     Weapons (natural as well as manufactured ones) and shields usually provide parry bonuses.
     As your skill with a weapon or shield improves, so does the parry bonus you gain from it.
     Magic can also enhance the parrying ability of a weapon or shield.
-    Note that only weapons and shields consisting of or carried in primary "attack forms" count for parry bonuses.
-    A human, for example, has two hands that count as primary attacks; secondary attack forms, such as kicks and headbutts,
-    do not provide parry bonuses. If you are wielding more than one weapon (or a weapon and a shield, or even two shields),
-    you add the parry bonuses for all primary attack forms.
-    However, you only gain the highest skill-based bonus applicable to your carried weapons and shields,
-    not one skill bonus for each.
+    Parry bonuses from multiple weapons (or a weapon and shield, or even two shields) do not stack.
+    Apply only the highest parry bonus of the ones provided by weapons and shields that are held in &quot;primary attack forms&quot; (see below),
+    where the parry bonus for each weapon or shield is the sum of the item's parry bonus and the parry bonus from your skill with that weapon.
     Note that none of the parry-based bonuses apply when calculating passive DeC.
-</p>
-<p>
-    DeB is a special bonus described in the chapter about 
-    <a href="hb04_combat.php#ActionPoints">action points</a>.
-    Although DeB does apply to passive DeC,
-    note that in most surprise situations, a creature will not have been able to allocate any AP to DeB.
 </p>
 <p>
     Certain attacks may have the ability to bypass or ignore specific modifiers to DeC.
@@ -245,26 +414,28 @@ show_abilityscoremods();
     DeC can also be calculated for inanimate objects, but they have a Dex of 0 (-5 penalty) and are helpless (-4 penalty).
     In other words, their DeC = 1 + size mod. Note, however, that most objects are resistant or immune to critical hits and coup de grace.
 </p>
+
+<h4 id="FortRefWill">Fortitude, Reflex, and Will</h4>
 <p>
     <em>Fortitude defense (Fort):</em> A measure of how resistant a creature is to attacks against its health and stamina.
 </p>
 <p>
-    <dfn>Fort = 10 + Str mod + Con mod + TL (total level) + other modifiers</dfn>
+    <dfn>Fort = 10 + Str mod + Con mod + TL (total level) + skill mod + other modifiers</dfn>
 </p>
 <p>
     <em>Reflex defense (Ref):</em> A measure of how good a creature is at avoiding physical area-effect attacks.
 </p>
 <p>
-    <dfn>Ref = 10 + Dex mod + Int mod + TL (total level) + other modifiers</dfn>
+    <dfn>Ref = 10 + Dex mod + Int mod + TL (total level) + skill mod + other modifiers</dfn>
 </p>
 <p>
     <em>Will defense (Will):</em> A measure of how resistant a creature is to attacks against its emotions or intellect.
 </p>
 <p>
-    <dfn>Will = 10 + Wis mod + Cha mod + TL (total level) + other modifiers</dfn>
+    <dfn>Will = 10 + Wis mod + Cha mod + TL (total level) + skill mod + other modifiers</dfn>
 </p>
 <p>
-    Most inanimate objects have no Con or Wis, and their Dex is 0.
+    Most inanimate objects have no Con, Int, or Wis, and their Dex is 0.
     Effectively, this means that they are immune to attacks against Fort and Will, and they have a Ref defense of 5.
 </p>
 <p>
@@ -272,7 +443,7 @@ show_abilityscoremods();
     Fort, Ref, and Will are sometimes referred to as <em>Non-DeC Defenses</em> or <em>NDD</em>.
 </p>
 
-<h4 id="ResistanceScores">Resistance Scores</h4>
+<h4 id="DamageResistance">Damage Resistance</h4>
 <p>
     <em>Damage Resistance (DR):</em> This reflects how resistant a creature (or an object) is to 
     <a href="hb04_combat.php#PhysDmg">physical damage</a>, 
@@ -311,7 +482,7 @@ show_abilityscoremods();
 
 <p>
     <em>Conditional DR:</em> Some creatures receive a DR bonus against specific types of weapons or damage.
-    For example, a creature with a natural DR of 5 and +5 DR bonus against non-magical weapons has a total DR of 10 against unenchanted weapons.
+    For example, a creature with a natural DR of 5 and +5 DR bonus against non-magical weapons has an effective DR of 10 against unenchanted weapons.
     Other typical conditional DR bonuses are based on alignment (good, evil, lawful, or chaotic),
     damage types (bludgeoning, piercing, or slashing), and materials (adamantine, alchemical silver, cold iron, etc).
     Some DR bonuses may even be based on multiple combined conditions, such as +10 DR against non-good and non-silver
@@ -320,13 +491,40 @@ show_abilityscoremods();
 <p>
     With regard to conditional DR bonuses against non-magical weapons, a weapon with any sort of supernatural enchantment will
     circumvent the DR bonus, but non-magical enhancement bonuses are not enough to circumvent such bonuses.
-    Creatures with supernatural racial traits treat all of their natural attacks as magical against this type of DR bonuses.
+    Creatures with supernatural racial traits treat all of their natural attacks as magical against this type of conditional DR bonus.
 </p>
 <p>
     With regard to projectile weapons, either the weapon properties or the projectile properties (or both) may be used to
     circumvent conditional DR bonuses.
 </p>
 
+<p>
+    <em>Penetrating Hits:</em> When an attack beats a defense by 10 or more (also known as an exceptional success),
+    the damage resistance (if any) is halved against that attack.
+</p>
+
+<h4 id="CritResistance">Critical Hit Resistance</h4>
+<p>
+    <em>Critical Hit Resistance (CritRes):</em> Resistance or immunity to critical hits means that a creature has unusually few sensitive areas
+    or that such areas are more effectively protected against physical attacks.
+    Although an attack roll that beats DeC by 20 or more would normally result in a critical success,
+    critical hit resistance adds directly to the levels of success required to achieve a critical hit.
+    It applies to any attack against DeC that can achieve critical hits, but it does not apply
+    to attacks against Fort, Ref, or Will defenses.
+</p>
+<p>
+    <dfn>CritRes = DR + racial mod + other modifiers</dfn>
+</p>
+<p>
+    For example, if a creature has DeC 15, DR 5, and a racial critical hit resistance of 10, an attack result of 15 is enough for a normal hit,
+    but a result of 50 (15+5+10+20) or better is required for a critical hit.
+</p>
+<p>
+    Objects and creatures that have racial Critical Hit Resistance of 10 or better take only half damage from piercing attacks (after reduction for DR).
+    The reason is that piercing damage is based more than other damage types on striking sensitive areas.
+</p>
+
+<h4 id="EnergyResistance">Energy Resistances</h4>
 <p>
     <em>Energy Resistance (Acid, Cold, Electricity, Fire, Necrotic, Radiant and/or Sonic Res):</em> Resistance to a type of 
     <a href="hb04_combat.php#EnergyDmg">energy damage</a>, 
@@ -369,16 +567,18 @@ show_abilityscoremods();
 </p>
 
 <p>
+    <em>Penetrating Hits:</em> When an attack beats a defense by 10 or more (also known as an exceptional success),
+    the energy resistance (if any) is halved against that attack.
+</p>
+
+<h4 id="MagicResistance">Magic Resistance</h4>
+<p>
     <em id="MagicRes">Magic Resistance (MR):</em> Resistance to magic makes a creature more difficult to affect with many spells and supernatural attacks.
     The creature does not have to be aware of such an attack. The creature can voluntarily and temporarily lower its magic resistance,
     but this requires conscious effort, and it cannot do so selectively for some effects and not for others.
 </p>
 <p>
-    In most cases, MR consists of two components, one level-based and one offset.
-    For example, creatures that have natural MR usually specify it as TL + offset,
-    skills that grant MR specify it as skill level + offset,
-    and spells and magic items that grant MR specify it as PL + offset.
-    For creatures that gain MR from multiple sources, calculate total MR as the highest level-based component plus all of the offsets.
+    As with other resistances, MR from multiple sources do not stack. Only the highest MR counts.
 </p>
 <p>
     MR works by increasing the difficulty of any spellcasting check (or similar supernatural activation check) that directly affects the protected creature.
@@ -400,27 +600,10 @@ show_abilityscoremods();
     Magic immunity is effectively the same as infinite magic resistance, but it is often limited to certain types or levels of magic.
 </p>
 
+<h4 id="SpecialResistance">Special Resistances</h4>
 <p>
     <em id="AbilDmgRes">Ability Damage Resistance:</em> Reduces the effect of every instance of <a href="#AbilityDamage">ability damage</a> by the specified amount.
     Some creatures even enjoy complete immunity to ability damage.
-</p>
-
-<p>
-    <em>Critical Hit Resistance:</em> Resistance or immunity to critical hits means that a creature has unusually few sensitive areas
-    or that such areas are more effectively protected.
-    The resistance adds to the levels of success required to achieve a critical hit, and it applies to any attack that can achieve critical hits
-    (including most ray and area attacks and even some attacks against Fort).
-</p>
-<p>
-    <dfn>Critical Hit Resistance = DR + racial mod + other modifiers</dfn>
-</p>
-<p>
-    For example, if a creature has DeC 15, DR 5, and a racial critical hit resistance of 10, an attack result of 15 is enough for a normal hit,
-    but a result of 50 (15 + 5 + 10 + 20) or better is required for a critical hit.
-</p>
-<p>
-    Objects and creatures that have racial Critical Hit Resistance of 10 or better take only half damage from piercing attacks (after reduction for DR).
-    The reason is that piercing damage is based more than other damage types on striking sensitive areas.
 </p>
 
 <p>
@@ -428,17 +611,168 @@ show_abilityscoremods();
     This type of resistance provides a bonus to any defense against such an attack.
 </p>
 
+<h3 id="BodyChars">Body Characteristics</h3>
+
+<h4 id="Size">Size</h4>
 <p>
-    <em>Penetrating Hit:</em> When an attack beats a defense by 10 or more (also known as an exceptional success),
-    the damage resistance or energy resistance (if any) is halved against that attack.
+    <em>Size category (Sz):</em> Every creature or object will receive certain modifiers based on its size, as shown on the table below.
+    For many objects, the object’s own size category is specified ("object size") as well as the size category of the creature meant to use it ("made-for-size").
+    For example, a dagger made for a Medium-sized wielder is itself just a Tiny object.
 </p>
 
-<h4 id="SocialScores">Social Scores</h4>
+<?php show_sizecategories(); ?>
+
+<h4 id="BodyType">Body Type</h4>
+<p>
+    <em>Body type (Body):</em> This is a description of a creature's shape and body configuration.
+</p>
+
+<?php show_bodytypes(); ?>
+
+<h4 id="SpacingReach">Spacing and Reach</h4>
+<p>Typical spacing and reach based on size and body type:</p>
+<img src="images/rold20images/Reach1.gif" alt='Spacing and Reach'/>
+<img src="images/rold20images/Reach2.gif" alt='Spacing and Reach'/>
+<img src="images/rold20images/Reach3.gif" alt='Spacing and Reach'/>
+
+<h4 id="NaturalAttacks">Natural Attacks</h4>
+<p>
+    <em>Natural attacks:</em> Each race has a number of natural attack forms, primary as well as secondary ones.
+    For example, most humanoids have two arms that count as primary attack forms, while the two legs and one head count as secondary. 
+</p>
+<p>
+    Primary attack forms tend to have better attack and damage modifiers than secondary ones,
+    and many actions and special abilities can only be performed with primary attack forms.
+</p>
+
+<?php show_naturalattacks(); ?>
+
+<p>
+    For some creatures, a natural attack may have special effects other than causing damage.
+    Common examples are poison (usually as a separate attack against Fort if the original attack causes damage),
+    grapple (the creature can choose to initiate a grapple for free if the original attack is successful),
+    trip (make a free trip attack if the original attack is successful), etc.
+</p>
+
+<h3 id="MovementChars">Movement Characteristics</h3>
+
+<h4 id="Speed">Speed and Movement Points</h4>
+<p>
+    <em id="BaseSpeed">Base speed:</em> Most creatures (and some objects) have at least one mode of movement.
+    The speed characteristic specifies the creature’s natural modes of movement as well as the base speed of each.
+    For some creatures and movement modes, the characteristic will also include a maneuverability specification;
+    this affects maximum acceleration, turning rate, etc.
+</p>
+<ul>
+    <li>Ground: The default mode of movement for most creatures is ground movement.</li>
+    <li>Fly: The creature can move through the air at the specified speed.</li>
+    <li>Swim: The creature can move through water at the specified speed.
+        Creatures with a natural swim speed gain a +8 racial bonus on Swim actions,
+        and they can always "take 10" on those actions.</li>
+</ul>
+<p>
+    Many creatures will also have more unusual modes of movement, based on either their Ground, Fly, or Swim speed,
+    but with a different MP cost per square of movement.
+    For example, most humanoid creatures have the ability to climb, using its ground speed but paying 4 MP per square.
+    Some skills may also grant special modes of movement, such as the Athletics skill granting a ground-based swim speed even to
+    creatures without a natural swim speed.
+</p>
+<p>
+    Burrowing is a special mode of movement possessed by some creatures, and it is always based on the creature's ground speed
+    (but usually with a higher MP cost per square of movement). Burrowing does not allow running, sprinting, or charging.
+    Unless otherwise specified, a burrowing creature does not leave behind a tunnel other creatures can use.
+</p>
+<p>
+    <em id="AdjustedSpeed">Adjusted speed (Spd):</em> This is a creature's base speed adjusted for encumbrance, armor, skills, magic, etc.
+</p>
+
+<p>
+    <em id="MovementPoints">Movement points (MP):</em> Each round, a creature gets a number of MP equal to its adjusted speed
+    (based on the speed characteristic appropriate for its current environment).
+    These can be used for a variety of movement actions.
+    Furthermore, a number of AP up to a maximum of the creature's adjusted speed can be converted into additional MP.
+</p>
+
+<h4 id="Maneuverability">Maneuverability</h4>
+<p>
+    <em>Maneuverability:</em> This determines how fast a creature can accelerate, decelerate, or change direction while moving.
+    Maneuverability is rarely a limitation for normal ground movement, but it comes into play during unusually complex situations,
+    such as rapid movement across ice, combat while flying, driving a wagon, etc.
+</p>
+<p>
+    Default maneuverability for ground movement: 5 (perfect)<br/>
+    Default maneuverability for swimming: 4 (good)<br/>
+    Default maneuverability for flying: 3 (average)<br/>
+</p>
+<p>
+    The following conditions can affect maneuverability:
+</p>
+<p>
+    Wheeled vehicle on ground: -2<br/>
+    Running (&times;3 movement): -1<br/>
+    Sprinting (&times;4 movement): -2<br/>
+    Difficult terrain (including strong winds when flying or strong currents when swimming): -1<br/>
+    Slippery ground: -1<br/>
+    Very slippery ground: -2<br/>
+</p>
+
+<?php show_maneuverability(); ?>
+
+<p>
+    Here are a few maneuverability examples:<br/>
+    An ogre trying to run across ice: 5 - 1 (running) - 2 (ice) = 2 (poor)<br/>
+    A tiny fish swimming in a strong current: 4 + 1 (size) - 1 (currents) = 4 (good)<br/>
+    A gargantuan-sized dragon flying at normal speed: 3 - 1 (size) = 2 (poor)<br/>
+    A huge-sized, four-wheeled wagon moving along a good road: 5 - 1 (size) - 1 (four-wheeled) = 3 (average)<br/>
+</p>
+
+<h3 id="PersonalityChars">Personality Characteristics</h3>
+<p>
+    <em id="Alignment">Alignment:</em> This is a rough representation of a creature’s personality and its moral and ethical outlook on life.
+    It is based on two separate scales, one going from good to evil, and another going from lawful to chaotic.
+    Each of the two scales actually covers a wide range of behaviors, but alignment is often simplified by dividing it into just nine separate categories.
+</p>
+<p>
+    Players should be free to role-play their characters any way they want, so alignment should primarily be used for monsters and NPCs.
+    It is a useful guideline for a DM when role-playing a wide variety of strange creatures.
+</p>
+<p>
+    In addition to alignment, players are encouraged to decide on (or randomly generate)
+    other personality traits, mannerisms, and life goals for their characters.
+</p>
+
+<?php show_alignmentdescriptions(); ?> 
+
+<p>
+    In some cases, the rules will refer to alignments opposed to or compatible with a base alignment.
+</p>
+<p>
+    <em>Opposed alignment:</em> Any alignment opposite to the base alignment along one or both scales.
+</p>
+<p>
+    <em>Diametrically opposed alignment:</em> An alignment opposite to the base alignment along both scales.
+</p>
+<p>
+    <em>Compatible alignment:</em> An alignment within one step of the base alignment along one (but not both) scales.
+</p>
+
+<?php show_alignmentrelations(); ?>
+
+<p>
+    Whenever the rules specify that a bonus, action, or spell effect is limited to a specific alignment or set of alignments,
+    this does not apply to the relatively weak moral tendencies exhibited by most normal creatures.
+    Such effects should only be applied to creatures with a detectable alignment aura, meaning those with an alignment descriptor,
+    those that have certain skills (typically divine ones), and those that are described as <b>always</b> having a certain alignment.
+</p>
+
+<h3 id="SocialScores">Social Characteristics</h3>
 <p>
     Social scores are primarily used for creatures that belong to a &quot;civilized&quot; race, but it is also quite possible for
     other creatures to gain widespread influence and repute. For example, a venerable dragon may be known and feared
     across several countries, and a beholder can secretly be in control of a city’s guild of thieves.
 </p>
+
+<h4 id="SocialClass">Social Class</h4>
 <p>
     <em>Social Class (SC):</em> A creature’s social class is a measure of its status and power in society.
     Note that this refers to the creature’s own society - an orc king will have a high SC even if neighboring countries may regard him as a criminal.
@@ -449,14 +783,25 @@ show_abilityscoremods();
     Or he may commit a crime and suffer a reduction in SC.
 </p>
 
-<br/>
-<?php
-show_socialclasses();
-?>
+<?php show_socialclasses(); ?>
 
 <p>
+    Minor noble title examples: baronet, baron, viscount, sheik
+    <br/>
+    Major noble title examples: count, earl, marquis/margrave, duke, archduke, emir, pasha, satrap
+    <br/>
+    Ruling noble title examples: king, queen, emperor, prince, raja, maharaja, basileus, sultan, caliph, shah, tsar, polemarch
+</p>
+<p>
+    Most societies will also have a large number of special positions and titles
+    (sheriffs, magistrates, advisors, cardinals, prophets, etc.)
+    that can grant status and power on par with minor and major nobles.
+</p>
+
+<h4 id="WealthClass">Wealth Class</h4>
+<p>
     <em>Wealth Class (WC):</em> This is a measure of a creature’s (or an organization’s) resources, assets, holdings, and sources of income
-    rather than a measure of its treasure and hard cash.
+    rather than a simple tally of its treasure and hard cash.
     WC above 0 will actually generate an automatic income and can be treated as a renewable resource.
 </p>
 <p>
@@ -467,10 +812,7 @@ show_socialclasses();
     By default, a creature born to a certain SC will have a WC at the same level.
 </p>
 
-<br/>
-<?php
-show_wealthclasses();
-?>
+<?php show_wealthclasses(); ?>
 
 <p>
     A large purchase (on the order of 100 times the daily income) can temporarily decrease a creature’s WC.
@@ -482,6 +824,7 @@ show_wealthclasses();
     can cause the WC of both individuals and organizations to fluctuate by as much as ±2.
 </p>
 
+<h4 id="Influence">Influence</h4>
 <p>
     <em id="Influence">Influence (Infl):</em> This is a measure of a creature’s affiliation with and power over another individual,
     an organization, a family or clan, or even a region.
@@ -522,13 +865,16 @@ show_wealthclasses();
     For organizations and families, influence is normally limited to 10 points for non-members, but it is unlimited for members.
 </p>
 
-<p>
-    <em id="SecretInfluence">Secret Influences</em> (optional rule for more varied characters): DMs who want more intrigue in their campaign
-    can reserve the right to secretly allocate a certain portion of each character's influence on their behalf.
-    This could mean that the characters have allies of which they are not fully aware, but it could also mean that the characters
-    have less influence over certain individuals or organizations than they expect.
-</p>
+<div class="optionalrule">
+    <p>
+        <em id="SecretInfluence">Secret Influences</em> (optional rule for more varied characters): DMs who want more intrigue in their campaign
+        can reserve the right to secretly allocate a certain portion of each character's influence on their behalf.
+        This could mean that the characters have allies of which they are not fully aware, but it could also mean that the characters
+        have less influence over certain individuals or organizations than they expect.
+    </p>
+</div>
 
+<h4 id="Reputation">Reputation</h4>
 <p>
     <em id="Reputation">Reputation (Rep):</em> This determines how famous or infamous a creature is and also the reason for its fame.
     A creature’s total reputation is typically divided into a couple of separate qualities that the creature is best known for.
@@ -544,7 +890,7 @@ show_wealthclasses();
     A creature with a total reputation of 1 to 5 is typically known within its village or neighborhood,
     6 to 10 within a city or county, 11 to 15 within a nation, 16 to 20 within the neighboring countries,
     and 21 or more within the known world. Use this only as a rough guideline, however.
-    A powerful dragon that has been buried and dormant in a desert for thousands of years
+    An undead dragon that has been buried and dormant in a desert for thousands of years
     is not likely to be very famous (except maybe to bards and historians).
 </p>
 <p>
@@ -562,270 +908,21 @@ show_wealthclasses();
 <p>
     Note that reputation represents what people think and not necessarily what is true.
 </p>
-
-<h4 id="PersonalityChars">Personality Characteristics</h4>
 <p>
-    <em id="Alignment">Alignment:</em> This is a rough representation of a creature’s personality and its moral and ethical outlook on life.
-    It is based on two separate scales, one going from good to evil, and another going from lawful to chaotic.
-    Each of the two scales actually covers a wide range of behaviors, but alignment is often simplified by dividing it into just nine separate categories.
-</p>
-<p>
-    Players should be free to role-play their characters any way they want, so alignment should primarily be used for monsters and NPCs.
-    It is a useful guideline for a DM when role-playing a wide variety of strange creatures.
+    In addition to the social scores described above, players are encouraged to come up with
+    (or randomly generate) background history, family and close relatives, friends and enemies,
+    etc. for their characters.
 </p>
 
-<br/>
-<?php
-show_alignmentdescriptions();
-?> 
-
-<p>
-    In some cases, the rules will refer to alignments opposed to or compatible with a base alignment.
-</p>
-<p>
-    <em>Opposed alignment:</em> Any alignment opposite to the base alignment along one or both scales.
-</p>
-<p>
-    <em>Diametrically opposed alignment:</em> An alignment opposite to the base alignment along both scales.
-</p>
-<p>
-    <em>Compatible alignment:</em> An alignment within one step of the base alignment along one (but not both) scales.
-</p>
-
-<br/>
-<?php
-show_alignmentrelations();
-?>
-
-<p>
-    Whenever the rules specify that a bonus, action, or spell effect is limited to a specific alignment or set of alignments,
-    this does not apply to the relatively weak moral tendencies exhibited by most normal creatures.
-    Such effects should only be applied to creatures with a detectable alignment aura, meaning those with an alignment descriptor,
-    those that have certain skills (typically divine ones), and those that are described as <b>always</b> having a certain alignment.
-</p>
-
-<h4 id="LevelChars">Level Characteristics</h4>
-<p>
-    One of the most crucial characteristics of any creature is its level. Level is quite simply a rough indication of how powerful and skilled a creature is.
-    For many intelligent creatures, time and experience will lead to a gradual increase in level.
-    This, in turn, will lead to more health points, improved skills, and many other benefits.
-</p>
-<p>
-    <em>Experience Points (XP):</em> This is a measure of how much total experience a character has accumulated in his lifetime.
-    When a character defeats opponents and overcomes other challenges, the DM will reward him with an appropriate number of XP.
-    The number of XP determines when a creature gains a level, as shown on the table below.
-</p>
-<p>
-    <em>Class Level (ClL):</em> This is the number of levels a creature has in a certain class.
-    A creature can also have different levels in a number of separate classes.
-    Class levels are most commonly shown as the abbreviation for the class followed by the level.
-    For example, 5 levels in the fighter class is abbreviated as Ftr5, while 6 rogue levels combined with 3 wizard levels are abbreviated as Rog6/Wiz3.
-</p>
-<p>
-    <em>Racial Level (RL):</em> Many creatures are so physically powerful that just belonging to their race counts as a certain number of &quot;bonus&quot; levels.
-    For example, an ogre that is also a level 5 fighter is a more powerful and dangerous opponent than a human level 5 fighter,
-    and this is represented by a number of racial ogre levels.
-    Racial levels are technically treated as levels in one of the classes associated with the creature's culture.
-</p>
-<p>
-    <em>Total Level (TL):</em> A creature’s total level is simply the sum of all its class and racial levels.
-</p>
-<p>
-    <dfn>TL = &sum;ClL + RL</dfn>
-</p>
-<p>
-    <em>Challenge Level (CL):</em> This is a measure of how challenging a creature is as an opponent.
-    In many cases, CL is equal to TL, but sometimes a creature has special abilities, social class, etc.
-    that can make it more (or less) dangerous than its TL would indicate.
-</p>
-<p>
-    <dfn>CL = TL + CL modifier</dfn>
-</p>
-
-<br/>
-<?php
-show_experiencelevels();
-?> 
-
-<p>
-    CL (when it differs from TL) should be used to determine the XP cost per level.
-    TL is still used to determine the number of action points, skill points, improvement points, and most other level-based characteristics.
-</p>
-<p>
-    <em id="ActionPts">Action Points (AP):</em> Action Points is a measure of how much a creature can do in a single round.
-    The available amount of AP is determined by TL, so for a character this amount will typically increase as the character
-    gains experience and becomes more skilled.
-    During combat, action points can be used for actions and/or allocated to three different combat bonuses: 
-    <a href="hb04_combat.php#ActionPoints">Attack Bonus (AB), Damage Bonus (DaB), and Defense Bonus (DeB)</a>.
-</p>
-<p>
-    <em id="SkillPts">Skill Points:</em> As a creature gains levels, it also gains skill points (determined by the class).
-    These points can be used to learn new skills or improve already known skills.
-    Skill points have to be spent when the level is gained, and they can’t be saved for future use.
-</p>
-<p>
-    <em id="ImprPts">Improvement Points (IP):</em> Characters and other exceptional creatures gain 5 improvement points per level,
-    and these can be used to improve a wide variety of characteristics (see <a href="hb03_chargen.php#Improvements">Character Generation</a> chapter).
-    Improvement points can be saved and accumulated for future use.
-</p>
-
-<p>
-    <em>Power Level (PL):</em> Power Level is used for all supernatural creatures, objects, and effects,
-    and it is a measure of how supernatural they are.
-    A high PL makes the creature, object, or effect easier to detect with magic and supernatural senses but
-    also more resistant to dispelling, anti-magic, and wild magic.
-    Most supernatural creatures have a PL equal to their TL, objects a PL based on their supernatural powers,
-    and supernatural effects a PL based on their PP cost.
-</p>
-
-<h4 id="RaceChars">Racial Characteristics</h4>
-<p>
-    <em>Race/Creature:</em> This is the species an individual belongs to. Some races will also have a variety of subraces.
-    For example, sylvan and drow elves are two subraces of the elven race, with very different racial traits and temperaments.
-</p>
-<p>
-    <em>Creature type and subtype:</em> Each creature belongs to a specific creature type and subtype.
-    This will sometimes affect or determine the efficiency of special powers, spells, and magic items.
-    For example, some magic weapons deal greater damage to certain creature types,
-    and some skills teach you how to better track and fight specific creature types.
-</p>
-<p>
-    <em>Template:</em> This is a special racial modification that can be added on top of a base race.
-    Vampiricism and lycanthropy are two well-known examples of templates.
-</p>
-<p>
-    <em>Culture:</em> This represents the upbringing and background of a creature.
-    Most importantly, it determines which class or classes to use for racial levels and when choosing background skills.
-</p>
-<p>
-    <em>Size category (Sz):</em> Every creature or object will receive certain modifiers based on its size, as shown on the table below.
-    For many objects, the object’s own size category is specified ("object size") as well as the size category of the creature meant to use it ("made-for-size").
-    For example, a dagger made for a Medium-sized wielder is still just a Tiny object.
-</p>
-
-<br/>
-<?php
-show_sizecategories();
-?>
-
-<p>
-    <em>Body category (Body):</em> This is a description of a creature's shape and body configuration.
-</p>
-
-<br/>
-<?php
-show_bodytypes();
-?>
-
-<p>Typical space and reach:</p>
-<img src="images/rold20images/Reach1.gif" alt='Space and Reach'/>
-<img src="images/rold20images/Reach2.gif" alt='Space and Reach'/>
-<img src="images/rold20images/Reach3.gif" alt='Space and Reach'/>
-
-<p>
-    <em>Natural attacks:</em> Each race has a number of natural attack forms, primary as well as secondary ones.
-    For example, most humanoids have two arms that count as primary attack forms, while the two legs and one head count as secondary. 
-</p>
-<p>
-    Primary attack forms tend to have better attack and damage modifiers than secondary ones,
-    and many actions and special abilities can only be performed with primary attack forms.
-</p>
-
-<br/>
-<?php
-show_naturalattacks();
-?>
-
-<p>
-    For some creatures, a natural attack will sometimes have special effects other than causing damage.
-    Common examples are poison (usually as a separate attack against Fort if the original attack causes damage),
-    grapple (the creature can choose to initiate a grapple for free if the original attack is successful),
-    trip (make a free trip attack if the original attack is successful), etc.
-</p>
-
-<p>
-    <em id="BaseSpeed">Base speed:</em> Most creatures (and some objects) have at least one mode of movement.
-    The speed characteristic specifies the creature’s natural modes of movement as well as the base speed of each.
-    For some creatures and movement modes, the characteristic will also include a maneuverability specification;
-    this affects maximum acceleration, turning rate, etc.
-</p>
-<ul>
-    <li>Ground: The default mode of movement for most creatures is ground movement.</li>
-    <li>Fly: The creature can move through the air at the specified speed.</li>
-    <li>Swim: The creature can move through water at the specified speed.
-        Creatures with a natural swim speed gain a +8 racial bonus on Swim actions,
-        and they can always "take 10" on Swim actions.</li>
-</ul>
-<p>
-    Many creatures will also have more unusual modes of movement, based on either their Ground, Fly, or Swim speed,
-    but with a different MP cost per square of movement.
-    For example, most humanoid creatures have the ability to climb, using its ground speed but paying 4 MP per square.
-    Some skills may also grant special modes of movement, such as the Athletics skill granting a ground-based swim speed even to
-    creatures without a natural swim speed.
-</p>
-<p>
-    Burrowing is a special mode of movement possessed by some creatures, and it is always based on the creature's ground speed
-    (but usually with a higher MP cost per square of movement). Burrowing does not allow running, sprinting, or charging.
-    Unless otherwise specified, a burrowing creature does not leave behind a tunnel other creatures can use.
-</p>
-<p>
-    <em id="AdjustedSpeed">Adjusted speed (Spd):</em> This is a creature's base speed adjusted for encumbrance, armor, skills, magic, etc.
-</p>
-
-<p>
-    <em id="MovementPoints">Movement points (MP):</em> Each round, a creature gets a number of MP equal to its adjusted speed
-    (based on the speed characteristic appropriate for its current environment).
-    These can be used for a variety of movement actions.
-    Furthermore, a number of AP up to a maximum of the creature's adjusted speed can be converted into additional MP.
-</p>
-
-<p>
-    <em id="Maneuverability">Maneuverability:</em> This determines how fast a creature can accelerate, decelerate, or change direction while moving.
-    Maneuverability is rarely a limitation for normal ground movement, but it comes into play during unusually complex situations,
-    such as rapid movement across ice, combat while flying, etc.
-</p>
-<p>
-    Default maneuverability for ground movement: 5 (perfect)<br/>
-    Default maneuverability for swimming: 4 (good)<br/>
-    Default maneuverability for flying: 3 (average)<br/>
-</p>
-<p>
-    The following conditions can affect maneuverability:
-</p>
-<p>
-    Wheeled vehicle on ground: -2<br/>
-    Running (&times;3 movement): -1<br/>
-    Sprinting (&times;4 movement): -2<br/>
-    Difficult terrain (including strong winds when flying or strong currents when swimming): -1<br/>
-    Slippery ground: -1<br/>
-    Very slippery ground: -2<br/>
-</p>
-
-<br/>
-<?php
-show_maneuverability();
-?>
-
-<p>
-    Here are a few maneuverability examples:<br/>
-    An ogre trying to run across ice: 5 - 1 (running) - 2 (ice) = 2 (poor)<br/>
-    A tiny fish swimming in a strong current: 4 + 1 (size) - 1 (currents) = 4 (good)<br/>
-    A gargantuan-sized dragon flying at normal speed: 3 - 1 (size) = 2 (poor)<br/>
-    A huge-sized, four-wheeled wagon moving along a good road: 5 - 1 (size) - 1 (four-wheeled) = 3 (average)<br/>
-</p>
-
-<h4 id="EquipmentChars">Equipment Characteristics</h4>
+<h3 id="EquipmentChars">Equipment Characteristics</h3>
 <p>
     <em>Encumbrance class (EC):</em> This is a measure of how much a creature is encumbered by the weight of equipment carried,
-    armor worn, and even obesity. Encumbrance class is calculated separately for weight carried and equipment worn,
+    armor worn, and even his own obesity. Encumbrance class is calculated separately for weight carried and equipment worn,
     and the actual class to use is the worst of the two results. Encumbrance class due to weight is described below,
     and that due to armor and other equipped items is described in the equipment chapter.
 </p>
 
-<br/>
-<?php
-show_encumbranceclasses();
-?> 
+<?php show_encumbranceclasses(); ?> 
 
 <p>
     <em>Weight limit:</em> The following table shows the weight limits (in kg) of a medium-sized, bipedal creature.
@@ -838,16 +935,13 @@ show_encumbranceclasses();
     Weight limits should be multiplied by a factor based on the creature’s size (see the Size Category table) and body shape (see the Body Category table).
 </p>
 
-<br/>
-<?php
-show_encumbrancelimits();
-?> 
+<?php show_encumbrancelimits(); ?> 
 
 <p>
     A humanoid creature can press its EC 10 maximum load above its head, but this will prevent it from moving more than 1 square per round or performing any other actions.
 </p>
 <p>
-    A creature can lift twice its EC 10 maximum load off the ground, but this will prevent it from moving more than 1 square per round or performing any other actions.
+    A creature can lift its EC 15 maximum load off the ground, but this will prevent it from moving more than 1 square per round or performing any other actions.
 </p>
 <p>
     Loads being pushed or dragged across the ground count as only one fifth their actual weight for encumbrance purposes.
@@ -859,7 +953,9 @@ show_encumbrancelimits();
     If this is the case, the recommendation is to keep track of both encumbrance classes (with full load as well as with reduced load).
 </p>
 
-<h4 id="OtherChars">Other Characteristics</h4>
+<h3 id="OtherChars">Other Characteristics</h3>
+
+<h4 id="Initiative">Initiative</h4>
 <p>
     <em>Initiative modifier (Init):</em> This is the modifier applied to a creature’s 
     <a href="hb04_combat.php#Initiative">initiative rolls</a>.
@@ -868,27 +964,10 @@ show_encumbrancelimits();
 <p>
     <dfn>Init = Dex mod + other modifiers</dfn>
 </p>
-<p>
-    <em>Age:</em> This is just what it sounds like, the number of years a creature has been alive.
-    In a few rare cases, a creature may suffer unnatural aging or may even be able to halt or reverse natural aging.
-    If that is the case, it becomes necessary to track physical and mental age separately.
-</p>
-<p>
-    <em>Age category:</em> A creature’s age and race determine which age category it belongs to.
-    Age category, in turn, will affect ability scores and racial level for most creature types, as shown in the table below.
-</p>
 
-<br/>
-<?php
-show_agecategories();
-?> 
-
+<h4 id="FatePts">Fate Points</h4>
 <p>
-    Constructs, elementals, and outsiders do not normally have age categories or age-based adjustments.
-    Some, however, may use the ability adjustments for animals and humanoids.
-</p>
-<p>
-    <em id="FatePts">Fate Points (FP):</em> These are points that can be used in a situation where all else has failed.
+    <em>Fate Points (FP):</em> These are points that can be used in a situation where all else has failed.
     They are possessed by individuals that have important destinies, more specifically the player characters
     and their key opponents. Fate points can be used as follows:
 </p>
@@ -911,7 +990,7 @@ show_agecategories();
 <p>
     The following figure shows the characteristics that are common to most creatures. It also shows their dependencies and relationships,
     with the most basic and constant characteristics at the top. Whenever one of your characteristics gets updated,
-    you can use the graph to determine which other characteristics will be indirectly affected by the change.
+    you can use the chart to determine which other characteristics will be indirectly affected by the change.
 </p>
 <br/>
 <img src="images/rold20images/Characteristics.gif" title="Characteristics and Modifiers" alt='Characteristics Dependencies and Effects'/>
@@ -941,7 +1020,8 @@ show_agecategories();
     usually by belonging to a certain race or by having enough levels in the action's associated skill.
 </p>
 <p>
-    Special access and usage rules apply for skills with specializations. For an action that can be used untrained,
+    For skills that have specializations, the following rules determine access to and usage of actions.
+    For an action that can be used untrained,
     the character counts half his actual skill levels when using an untrained specialization.
     For an action that cannot be used untrained, the character can only attempt actions with specializations that he knows.
 </p>
@@ -949,7 +1029,7 @@ show_agecategories();
 <h4 id="ActionChecks">Performing Action Checks</h4>
 <p>
     The core mechanism for resolving any action is known as a d20 check and is quite simple:
-    roll d20, add the appropriate modifiers, and compare the result against a target number
+    roll an open-ended d20, add the appropriate modifiers, and compare the result against a target number
     (typically a difficulty class, defense score, or an opposing action check).
     If the total is equal to or higher than the target number, the action succeeds. If it is lower, the action fails.
 </p>
@@ -957,14 +1037,16 @@ show_agecategories();
     Whenever an action is to be performed, follow these steps:
 </p>
 <ol>
-    <li>Select the action you want to perform (make sure you have the necessary skills and skill levels).</li>
+    <li>Select the action you want to perform (and make sure you have the necessary skills and skill levels).</li>
     <li>Select any variable options and parameters (such as range, target, etc).</li>
     <li>Start the action.</li>
-    <li>At the end of the activation time, roll the d20 action check (if any) and apply modifiers.
-        If the action has multiple mandatory skills, use the highest skill level for the check.
-        If the action takes an extended time to perform, don't apply modifiers that have shorter durations.
-        If you are distracted or hurt during the activation time, additional action checks will often be required
+    <li>At the end of the activation time, roll the d20 action check (if any) and apply modifiers.</li>
+    <ul>
+        <li>If the action has multiple mandatory skills, use the highest skill level for the check.</li>
+        <li>If the action takes an extended time to perform, don't apply modifiers that have shorter durations.</li>
+        <li>If you are distracted or hurt during the activation time, additional action checks will often be required
         to maintain concentration and complete the action.</li>
+    </ul>
     <li>Deduct costs (in SP, PP, money, etc).</li>
     <li>Determine and apply the results and effects.</li>
 </ol>
@@ -973,11 +1055,11 @@ show_agecategories();
 </p>
 <dl>
     <dt>d20 check</dt>
-    <dd>Roll d20, add modifiers, and compare the result against the target number.</dd>
+    <dd>Roll an open-ended d20, add modifiers, and compare the result against the target number.</dd>
     <dt>Skill check</dt>
     <dd>d20 check using a skill against a difficulty class (DC) or opposing skill.</dd>
     <dt>Ability check</dt>
-    <dd>d20 check using an ability mod against a DC.</dd>
+    <dd>d20 check using just an ability mod against a DC.</dd>
     <dt>Attack roll</dt>
     <dd>d20 check using attack modifiers against a defense.</dd>
     <dt>Supernatural activation check (also known as a spellcasting check)</dt>
@@ -988,44 +1070,16 @@ show_agecategories();
 </p>
 <dl>
     <dt>Climb a wall</dt>
-    <dd>d20 + Athletics skill + Str mod + other mods against the wall’s DC.</dd>
+    <dd>d20! + Athletics skill + Str mod + other mods against the wall’s DC.</dd>
     <dt>Sneaking</dt>
-    <dd>d20 + Stealth skill + Dex mod + other mods against opposing 10 + Perception skill + Wis mod + other mods.</dd>
+    <dd>d20! + Stealth skill + Dex mod + other mods against opposing 10 + Perception skill + Wis mod + other mods.</dd>
     <dt>Break door</dt>
-    <dd>d20 + Brawling skill + Str mod against door’s DC.</dd>
+    <dd>d20! + Brawling skill + Str mod against door’s DC.</dd>
     <dt>Weapon attack</dt>
-    <dd>d20 + ability mod + attack mod + other mods against DeC.</dd>
+    <dd>d20! + ability mod + weapon skill + other mods against DeC.</dd>
     <dt>Magic attack</dt>
-    <dd>d20 + ability mod + attack mod + other mods against appropriate defense.</dd>
+    <dd>d20! + ability mod + attack skill + other mods against appropriate defense.</dd>
 </dl>
-
-<h4 id="MultipleChecksPerAction">Actions with Multiple Action Checks</h4>
-<p>
-    Although most actions require either zero or one action checks, there are some that require multiple separate action checks.
-    See below for three different examples, all of them attacks of one type or another:
-</p>
-<p>
-    Example 1: A disintegrating ray typically requires two attack rolls, one against DeC to hit the target,
-    and a second one against Fort to then overcome the target's fortitude and deal maximum damage.
-</p>
-<p>
-    Example 2: A large fireball that targets multiple opponents will require a separate attack roll against each target.
-    Unless otherwise described in the effect, damage is rolled once and applied equally against all targets,
-    but the separate attack rolls can result in varying degrees of success and failure against the different targets,
-    in turn resulting in different amounts of damage being inflicted.
-</p>
-<p>
-    Example 3: A combatant is using Multi-Attack to attack with both a sword and a dagger simultaneously,
-    possibly even against two different targets.
-    In this case, the Multi-Attack action counts as two separate attacks, and each of these attacks is resolved separately
-    (albeit simultaneously), with separate attack rolls as well as damage rolls.
-</p>
-<p>
-    The fact that a single action can consist of multiple attacks and/or multiple action checks means that it will
-    sometimes be important to note whether a modifier applies to an action, an action check, an attack, or an attack roll.
-    For example, if you happen to have a bonus that applies to your next attack roll, and you cast a fireball spell,
-    the bonus will only apply to the first of the spell's attack rolls (typically against the target closest to the center).
-</p>
 
 <h4 id="OpenEndedChecks">Open-Ended d20 Checks</h4>
 <p>
@@ -1038,127 +1092,19 @@ show_agecategories();
 </p>
 <p>
     On an initial roll of a natural 1, roll again and subtract 20 from the result.
-    If this roll results in another 1, roll again and subtract 40 instead, and so forth.
+    If this roll results in another 1, roll again and subtract 40 instead of 20, and so forth.
     Some special checks have a greater than normal risk of failure and require open-ended rerolls even on rolls higher than 1, such as on 1 to 2 or 1 to 3.
 </p>
 
-<h4 id="DiffClasses">Difficulty Classes (DC)</h4>
-<p>
-    A difficulty class is an estimate of how difficult an action is to perform successfully.
-    It is the number your action check has to match or exceed in order to be a success.
-</p>
-
-<br/>
-<?php
-show_difficulties();
-?> 
-
-<p>
-    Regardless of skill levels and difficulty classes, the DM can choose to disallow or severely penalize certain illogical actions.
-    For example, even if a crocodile has a high strength score and a few skill levels in Athletics, it should not be able to climb a tree.
-</p>
-
-<h4 id="SpecialActionMods">Physical and Mental Action Modifiers</h4>
-<p>
-    Some circumstance modifiers are common enough that they have their own abbreviations.
-    These abbreviations are used in the action checks where appropriate, 
-    PAM for Physical Action Modifier and MAM for Mental Action Modifier.
-</p>
-
-<br/>
-<?php
-show_actionmods();
-?>
-
-<p>
-    Note that the Self-Control skill can be used to reduce PAM and MAM penalties.
-</p>
-
-<h4 id="EncumbrancePen">Encumbrance Penalty (EP)</h4>
-<p>
-    Heavy equipment and armor increases a creature's 
-    <a href="#EquipmentChars">encumbrance class</a>, 
-    and this in turn leads to an
-    encumbrance penalty (EP) that applies to many physical actions, especially those related to movement.
-</p>
-<p>
-    When you are wearing armor with which you are non-proficient (skill level 0),
-    your EP also applies to all actions with the PAM or MAM modifier in the action check.
-</p>
-
-<h4 id="SynergyBonus">Synergy Bonus</h4>
-<p>
-    For some actions, proficiency in certain skills (other than the action's key skill, if any)
-    can be beneficial and provide a synergy bonus to the check.
-    Such synergy skills are listed under the modifiers for each action.
-    Multiple synergy bonuses do not stack; only the highest applicable one applies.
-</p>
-
-<h4 id="DefensiveActions">Defensive Action Checks</h4>
-<p>
-    Many actions tend to make you more vulnerable, triggering 
-    <a href="hb04_combat.php#AoO">attacks of opportunity</a> 
-    (AoO) from opponents within reach.
-    Unless otherwise specified, it is possible to perform those actions defensively, thereby avoiding AoO.
-    Performing an action defensively takes twice as long as normal (double the action time) and also involves a -4 circumstance penalty on the action check.
-</p>
-
-<h4 id="OpposingActions">Opposing Action Checks</h4>
-<p>
-    Whenever two action checks are in opposition, the highest modified roll succeeds and the other fails.
-    In case of a tie, the highest modifier wins. If the modifiers are also the same, the result is a stalemate.
-    If a stalemate is not possible, even temporarily, reroll both checks until a winner can be determined.
-</p>
-<p>
-    In some cases, an action check will be opposed by several opposed checks.
-    For example, when you are sneaking, you want your stealth check to beat every opposed perception check.
-    In these situations, roll a single action check and compare it against each opposed check.
-</p>
-
-<h4 id="LinkedActions">Linked Action Checks</h4>
-<p>
-    Some situations are complicated or long-lasting enough to require a sequence of action checks in order for the situation to be fully resolved.
-    These sequences of linked action checks are represented as a state diagram, where the change from one state to another is determined
-    by the success or failure of an action check.
-</p>
-<p>
-    A sequence of linked action checks always starts at a specific state, typically referred to as the initial state.
-    Each state has a specified duration, after which an action check is made to determine the new state in the sequence.
-    When the current state does not have a link corresponding to the action check result, stay within that state until the next interval.
-    At least one state in a sequence is defined as a terminal state - when such a state has been reached,
-    the situation has been resolved and no further checks need to be made.
-</p>
-<p>
-    For a typical example of a state diagram for linked action checks, see <a href="#Possession">Possession</a>.
-</p>
-
-<h4 id="ActionCheckLevels">Levels of Success and Failure</h4>
-<p>
-    In many cases, the degree of success or failure can be significant.
-    The difference between the total result and the target number is referred to as levels of success or failure.
-    For example, if the DC is 20 and you make a modified roll of 23, you have achieved 3 levels of success.
-    Sometimes this is also referred to as beating the DC by 3. For action checks where exceptional success or failure is possible,
-    the skill action will describe how many levels of success or failure are required to achieve such exceptional results.
-</p>
-
-<br/>
-<?php
-show_actionresults();
-?> 
-
-<h4 id="Retrying">Trying Again</h4>
-<p>
-    Unless otherwise specified, actions can be retried indefinitely, regardless of success or failure.
-    However, note that each try takes the specified amount of time and carries the full cost.
-    In many cases, each failure will also have some sort of additional consequence.
-    Also note that actions that are reactions never allow more than one reactive action per triggering event.
-    There are even some actions where retrying is simply not possible, at least not until the situation has changed or your chances have improved.
-</p>
-<p>
-    For example, let us say you are trying to punch an opponent in the face. Regardless of whether the attack succeeds or fails,
-    you can usually try to punch him again. However, each attack takes a certain amount of time and effort,
-    and if your opponent runs away or manages to knock you unconscious, you can no longer retry your attack.
-</p>
+<div class="optionalrule">
+    <p>
+        <em>Cinematic Luck</em> (optional rule for more cinematic campaigns):
+        Heroes in movies and literature are often extremely lucky, even when those heroes are ordinary people.
+        If you want a similar effect in your campaign, consider allowing a certain number of action check rerolls
+        per day for each character. A reroll can also be used to force an opponent to reroll a successful attack.
+        Another option is to always let characters roll two d20 for each action check and use the highest roll.
+    </p>
+</div>
 
 <h4 id="Taking10">Taking 10 and Taking 20</h4>
 <p>
@@ -1193,6 +1139,63 @@ show_actionresults();
     This rule can be particularly useful for opposed action checks where one or both sides are passive.
 </p>
 
+<h4 id="DefensiveActions">Defensive Action Checks</h4>
+<p>
+    Many actions tend to make you more vulnerable, triggering 
+    <a href="hb04_combat.php#AoO">attacks of opportunity</a> 
+    (AoO) from opponents within reach.
+    Unless otherwise specified, it is possible to perform those actions defensively, thereby avoiding AoO.
+    Performing an action defensively takes twice as long as normal (double the action time) and also involves a -4 circumstance penalty on the action check.
+</p>
+
+<h4 id="MultipleChecksPerAction">Actions with Multiple Action Checks</h4>
+<p>
+    Although most actions require either zero or one action checks, there are some that require multiple separate action checks.
+    See below for three different examples, all of them attacks of one type or another:
+</p>
+<p>
+    Example 1: A disintegrating ray typically requires two attack rolls, one against DeC to hit the target,
+    and a second one against Fort to then overcome the target's fortitude and deal maximum damage.
+</p>
+<p>
+    Example 2: A large fireball that targets multiple opponents will require a separate attack roll against each target.
+    Unless otherwise described in the effect, damage is rolled once and applied equally against all targets,
+    but the separate attack rolls can result in varying degrees of success and failure against the different targets,
+    in turn resulting in different amounts of damage being inflicted.
+</p>
+<p>
+    Example 3: A combatant is using Multi-Attack to attack with both a sword and a dagger simultaneously,
+    possibly even against two different targets.
+    In this case, the Multi-Attack action counts as two separate attacks, and each of these attacks is resolved separately
+    (albeit simultaneously), with separate attack rolls as well as damage rolls.
+</p>
+<p>
+    The fact that a single action can consist of multiple attacks and/or multiple action checks means that it will
+    sometimes be important to note whether a modifier applies to an action, an action check, an attack, or an attack roll.
+    For example, if you happen to have a bonus that applies to your next attack roll, and you cast a fireball spell,
+    the bonus will only apply to the first of the spell's attack rolls (typically against the target closest to the center).
+    If, on the other hand, the bonus applies to your next action, it would apply to all of the fireball's attack rolls.
+</p>
+
+<h4 id="StagedActions">Staged Action Checks</h4>
+<p>
+    Some situations and conditions are complicated or long-lasting enough to require
+    a sequence of action checks in order for the situation to be fully resolved.
+    These sequences of action checks are represented as a number of stages, where the
+    change from one stage to another is determined by the success or failure of an action check.
+</p>
+<p>
+    A sequence of staged action checks starts at a specific stage, typically referred to as the initial stage.
+    Each stage has a specified duration, after which an action check is made to determine the new stage in the sequence.
+    In most sequences, one or more stages are defined as a terminal stage -
+    when it has been reached, the situation has been resolved and no further checks need to be made.
+    Some sequences also specify a maximum duration or maximum number of checks,
+    and they will also specify what happens when that maximum has been reached.
+</p>
+<p>
+    For a typical example of a staged action check, see <a href="#Possession">Possession</a>.
+</p>
+
 <h4 id="AidAnother">Aiding Another</h4>
 <p>
     In many cases, it is possible for multiple characters to cooperate when performing an action.
@@ -1201,10 +1204,7 @@ show_actionresults();
     and the first character’s check receives a circumstance modifier for each supporting check.
 </p>
 
-<br/>
-<?php
-show_aidresults();
-?> 
+<?php show_aidresults(); ?> 
 
 <p>
     Using a skill check to aid another takes the same amount of time, carries the same cost,
@@ -1214,27 +1214,137 @@ show_aidresults();
     The DM determines when aiding another’s action check is possible as well as the maximum number of beneficial helpers.
 </p>
 
-<h4 id="CinematicLuck">Cinematic Luck</h4>
+<h4 id="DiffClasses">Difficulty Classes (DC)</h4>
 <p>
-    <em>Cinematic Luck</em> (optional rule for more cinematic campaigns):
-    Heroes in movies and literature are often extremely lucky, even when those heroes are ordinary people.
-    If you want a similar effect in your campaign, consider allowing a certain number of action check rerolls
-    per day for each character. A reroll can also be used to force an opponent to reroll a successful attack.
-    Another option is to always let characters roll two d20 for each action check and use the highest roll.
+    A difficulty class is an estimate of how difficult an action is to perform successfully.
+    It is the number your action check has to match or exceed in order to be a success.
 </p>
+
+<?php show_difficulties(); ?> 
+
+<p>
+    Regardless of skill levels and difficulty classes, the DM can choose to disallow or severely penalize certain illogical actions.
+    For example, even if a crocodile has a high strength score and a few skill levels in Athletics, it should not be able to climb a tree.
+</p>
+
+<h4 id="OpposingActions">Opposing Action Checks</h4>
+<p>
+    Whenever two action checks are in opposition, the highest modified roll succeeds and the other fails.
+    In case of a tie, the highest modifier wins. If the modifiers are also the same, the result is a stalemate.
+    If a stalemate is not possible, even temporarily, reroll both checks until a winner can be determined.
+</p>
+<p>
+    In some cases, an action check will be opposed by several opposed checks.
+    For example, when you are sneaking, you want your stealth check to beat every opposed perception check.
+    In these situations, roll a single action check and compare it against each opposed check.
+</p>
+
+<h4 id="ResultsEffects">Results and Effects</h4>
+<p>
+    After rolling the necessary action check (or checks), compare the result against the DC, defense, or opposed action check.
+    The difference determines not only success or failure but also the degree of success or failure.
+    Each action will specify what happens at the different levels.
+</p>
+<p>
+    For attack actions, please see the <a href="hb04_combat.php#AttackTypes">Combat</a> chapter for more details.
+</p>
+
+<h4 id="ActionCheckLevels">Levels of Success and Failure</h4>
+<p>
+    In many cases, the degree of success or failure can be significant.
+    The difference between the total result and the target number is referred to as levels of success or failure.
+    For example, if the DC is 20 and you make a modified roll of 23, you have achieved 3 levels of success.
+    Sometimes this is also referred to as beating the DC by 3. For action checks where exceptional success or failure is possible,
+    the skill action will describe how many levels of success or failure are required to achieve such exceptional results.
+</p>
+
+<?php show_actionresults(); ?> 
+
+<h4 id="Retrying">Trying Again</h4>
+<p>
+    Unless otherwise specified, actions can be retried indefinitely, regardless of success or failure.
+    However, note that each try takes the specified amount of time and carries the full cost.
+    In many cases, each failure will also have some sort of additional consequence.
+    Also note that actions that are reactions never allow more than one reactive action per triggering event.
+    There are even some actions where retrying is simply not possible, at least not until the situation has changed or your chances have improved.
+</p>
+<p>
+    For example, let us say you are trying to punch an opponent in the face. Regardless of whether the attack succeeds or fails,
+    you can usually try to punch him again. However, each attack takes a certain amount of time and effort,
+    and if your opponent runs away or manages to knock you unconscious, you can no longer retry your attack.
+</p>
+
+<h4 id="PowerLevel">Supernatural Actions and Power Level</h4>
+<p>
+    Just like supernatural creatures and objects, supernatural actions have a power level (PL).
+    The PL is used to determine the effect’s chance to resist dispelling or to overcome
+    magic resistance, anti-magic, and wild magic.
+</p>
+<p>
+    For spells and powers with a PP cost:
+</p>
+<p>
+    <dfn>PL = TPC (Total Power Cost) + AP boost/dampen</dfn>
+</p>
+<p>
+    For other powers:
+</p>
+<p>
+    <dfn>PL = skill level or creature’s RL/TL</dfn>
+</p>
+<p>
+    When a supernatural effect has terminated, its magical aura will linger for a variable amount of time.
+    A PL of 1 to 5 lingers for 1d6 rounds, PL 6 to 10 for 1d6 minutes, PL 11 to 20 for 1d6&times;10 minutes, and PL 20+ for 1d6 days.
+</p>
+
+<h3 id="ActionMods">Action Modifiers</h3>
+
+<h4 id="SpecialActionMods">Physical and Mental Action Modifiers</h4>
+<p>
+    Some circumstance modifiers are common enough that they have their own abbreviations.
+    These abbreviations are used in the action checks where appropriate, 
+    PAM for Physical Action Modifier and MAM for Mental Action Modifier.
+</p>
+
+<?php show_actionmods(); ?>
+
+<p>
+    Note that the Self-Control skill can be used to reduce PAM and MAM penalties.
+</p>
+
+<h4 id="EncumbrancePen">Encumbrance Penalty (EP)</h4>
+<p>
+    Heavy equipment and armor increases a creature's 
+    <a href="#EquipmentChars">encumbrance class</a>, 
+    and this in turn leads to an
+    encumbrance penalty (EP) that applies to many physical actions, especially those related to movement.
+</p>
+<p>
+    When you are wearing armor with which you are non-proficient (skill level 0),
+    your EP also applies to all actions with the PAM or MAM modifier in the action check
+    (but if EP is applied to the action check normally, don't apply it twice).
+</p>
+
+<h4 id="SynergyBonus">Synergy Bonus</h4>
+<p>
+    For some actions, proficiency in certain skills (other than the action's key skill, if any)
+    can be beneficial and provide a synergy bonus to the check.
+    Such synergy skills are listed under the modifiers for each action.
+    Multiple synergy bonuses do not stack; only the highest applicable one applies.
+</p>
+
+<h3 id="ActionParameters">Action Parameters</h3>
 
 <h4 id="ActionTime">Action Time</h4>
 <p>
     Action time is the amount of time that must be spent to perform or at least initiate an action.
 </p>
 
-<br/>
-<?php
-show_actiontime();
-?> 
+<?php show_actiontime(); ?> 
 
 <p>
     Most variable decisions of an action, such as range, targets, area, etc., can be made at the end of the specified action time.
+    A notable exception is the use of AP to gain additional bonuses for the action in question; this decision must be made when starting to perform the action.
 </p>
 <p>
     If the action time is longer than a full-round action and the action provokes attacks of opportunity,
@@ -1244,7 +1354,7 @@ show_actiontime();
     Whenever an action time specifies a percentage, it means that you can only work on the action efficiently for that portion of time.
     The rest of the time is typically spent sleeping, relaxing, or performing unrelated actions.
     On most of these actions you can also spend less than the specified portion of time, but this will increase the total action
-    time accordingly.
+    time proportionately.
 </p>
 
 <h4 id="Implements">Implements</h4>
@@ -1252,10 +1362,7 @@ show_actiontime();
     An implement is a body part, tool, weapon, faculty, sense, etc. needed to perform the action.
 </p>
 
-<br/>
-<?php
-show_implements();
-?>
+<?php show_implements(); ?>
 
 <p>
     Note that foci with bonuses will only provide those bonuses when the spell or power allows the use of that focus
@@ -1267,10 +1374,7 @@ show_implements();
     The cost of an action includes all materials, money, stamina, blood, life energy, etc. that have to be spent in order to activate or complete the action.
 </p>
 
-<br/>
-<?php
-show_actioncost();
-?> 
+<?php show_actioncost(); ?> 
 
 <p>
     Unless otherwise specified, the full cost has to be paid even if the check fails or the action is interrupted (voluntarily or involuntarily).
@@ -1294,10 +1398,7 @@ show_actioncost();
     All targets or the point of origin of an area effect must be within this range.
 </p>
 
-<br/>
-<?php
-show_actionrange();
-?>
+<?php show_actionrange(); ?>
 
 <p>
     An action's range will often specify one of these special limitations...
@@ -1307,7 +1408,7 @@ show_actionrange();
     Anything that blocks vision (such as total cover or total concealment) will prevent line of sight, but transparent obstacles will not.
 </p>
 <p>
-    <em>Line of hearing (LoH):</em> The target must be able to hear you clearly (and vice versa).
+    <em>Range of hearing (RoH):</em> The target must be able to hear you clearly (and vice versa).
 </p>
 <p>
     <em>Line of effect (LoE):</em> You must have a straight and physically (but not necessarily visually) unobstructed path to the target(s).
@@ -1325,7 +1426,7 @@ show_actionrange();
 <p>
     Unless otherwise specified, the range of an action is only significant during activation.
     If the action's effect has a specified duration, the effect continues even if the targets move outside the specified range.
-    However, effects that can be redirected, dismissed, et. al. can only be thus affected while the controller is within range of the effect.
+    However, effects that can be sustained, redirected, dismissed, et. al. can only be thus affected while the controller is within range of the effect.
 </p>
 
 <h4 id="Duration">Duration</h4>
@@ -1333,10 +1434,7 @@ show_actionrange();
     Duration specifies how long an effect lasts.
 </p>
 
-<br/>
-<?php
-show_actionduration();
-?> 
+<?php show_actionduration(); ?> 
 
 <p>
     <em>Dismissible (D):</em> You can terminate a dismissible effect at will. However, this still requires a dismiss action, and you must be within the effect’s original range.
@@ -1358,13 +1456,11 @@ show_actionduration();
     The area of effect of an action specifies the possible target(s), area, or general effect.
 </p>
 
-<br/>
-<?php
-show_actiontarget();
-?> 
+<?php show_actiontarget(); ?> 
 
 <p>
-    <em>Shapeable (S):</em> You can shape the area or volume within the specified limits.
+    <em>Shapeable (S):</em> You can shape the area or volume within the specified limits,
+    allowing you to decide which squares or cubes to exclude from the effect.
 </p>
 <p>
     Please see the original d20 rules
@@ -1383,33 +1479,7 @@ show_actiontarget();
     Otherwise, an area is immobile, unless the action specifies that it is mobile.
 </p>
 
-<h4 id="ResultsEffects">Results and Effects</h4>
-<p>
-    After rolling the necessary action check (or checks), compare the result against the DC, defense, or opposed action check.
-    The difference determines not only success or failure but also the degree of success or failure.
-    Each action will specify what happens at the different levels.
-</p>
-<p>
-    For attack actions, please see the <a href="hb04_combat.php#AttackTypes">Combat</a> chapter for more details.
-</p>
-
-<h4 id="PowerLevel">Supernatural Actions and Power Level</h4>
-<p>
-    Just like supernatural creatures and objects, supernatural actions have a power level (PL).
-    The PL is used to determine the effect’s power against dispelling, magic resistance, anti-magic, and wild magic.
-</p>
-<p>
-    For spells and powers with a PP cost: <dfn>PL = MPC (Modified Power Cost) + PP boost/dampen</dfn>
-</p>
-<p>
-    For other powers: <dfn>PL = skill level or creature’s RL/TL</dfn>
-</p>
-<p>
-    When a supernatural effect has terminated, its magical aura will linger for a variable amount of time.
-    A PL of 1 to 5 lingers for 1d6 rounds, PL 6 to 10 for 1d6 minutes, PL 11 to 20 for 1d6&times;10 minutes, and PL 20+ for 1d6 days.
-</p>
-
-<h3 id="Modifiers">Modifiers</h3>
+<h3 id="Modifiers">Modifier Types</h3>
 <p>
     Action checks (and other die rolls) are often affected by a variety of modifiers.
     Positive modifiers are commonly referred to as bonuses and negative ones as penalties.
@@ -1422,8 +1492,6 @@ show_actiontarget();
     <li>Modifiers of the same type do not normally stack. For each type, apply only the highest bonus and the most severe penalty. The following exceptions apply:</li>
     <ul>
         <li>Circumstance modifiers stack with circumstance modifiers from other sources.</li>
-        <li>Parry modifiers stack from all weapons and shields held in primary attack forms (typically hands).</li>
-        <li>Template modifiers stack with template modifiers from other compatible templates.</li>
         <li>Improvement modifiers stack, but they have a limited total as described in the section about <a href="hb03_chargen.php#Improvements">improvement points</a>.</li>
         <li>Inherent modifiers stack, but they are limited to a total of +5 for each ability score.</li>
     </ul>
@@ -1432,10 +1500,7 @@ show_actiontarget();
         a shield's parry modifier, or an armor's DR) and only indirectly affects the item's user or wearer.</li>
 </ul>
 
-<br/>
-<?php
-show_modifiers();
-?> 
+<?php show_modifiers(); ?> 
 
 <h3 id="Descriptors">Descriptors</h3>
 <p>
@@ -1444,10 +1509,7 @@ show_modifiers();
     whether a certain action triggers attacks of opportunity or not, and much, much more.
 </p>
 
-<br/>
-<?php
-show_descriptors();
-?> 
+<?php show_descriptors(); ?> 
 
 <h3 id="Prerequisites">Prerequisites</h3>
 <p>
@@ -1479,31 +1541,19 @@ show_descriptors();
     with the logical operators 'AND', 'OR', and 'XOR'.
 </p>
 
-<br/>
-<?php
-show_prereqs();
-?> 
+<?php show_prereqs(); ?> 
 
-<h3 id="Conditions">Conditions</h3>
+<h3 id="InjuryFatigue">Injury and Fatigue</h3>
+
 <h4 id="Injury">Injury</h4>
 <p>
     Physical injury is measured by a decrease in hit points (HP).
 </p>
 
-<br/>
-<?php
-show_hpeffects();
-?> 
+<?php show_hpeffects(); ?> 
 
 <p>
     If a creature takes more than half its full HP of damage in a single attack, it is dazed for 1 round.
-</p>
-<p>
-    Unconsciousness due to injury:
-</p>
-<img src="images/rold20images/Unconsciousness.gif" title="Unconsciousness due to Injury" alt='Unconsciousness due to injury'/>
-<p>
-    An unconscious creature that wakes up (through natural or supernatural healing) is flat-footed until its next initiative comes up, and it is also dazed for 1 round.
 </p>
 <p>
     For information about temporary HP, see the section about <a href="#HealthScores">Health Scores</a>.
@@ -1514,10 +1564,7 @@ show_hpeffects();
     Physical fatigue is measured by a decrease in stamina points (SP).
 </p>
 
-<br/>
-<?php
-show_speffects();
-?> 
+<?php show_speffects(); ?> 
 
 <p>
     Some types of fatigue, especially the ones that are long-lasting and/or serious,
@@ -1535,10 +1582,7 @@ show_speffects();
     Mental fatigue is measured by a decrease in power points (PP).
 </p>
 
-<br/>
-<?php
-show_ppeffects();
-?> 
+<?php show_ppeffects(); ?> 
 
 <p>
     Some types of mental fatigue, especially the ones that are long-lasting and/or serious,
@@ -1552,18 +1596,22 @@ show_ppeffects();
 </p>
 
 <h4 id="AlternativeHealthEffects">Increased or Decreased Health Effects</h4>
-<p>
-    <em>Increased Health Penalties</em> (optional rule for more realistic campaigns):
-    Increase the penalties incurred by damage to HP, SP, and PP.
-</p>
-<p>
-    <em>Decreased Health Penalties</em> (optional rule for more cinematic campaigns):
-    Decrease or remove the penalties incurred by damage to HP, SP, and PP.
-    For a truly cinematic alternative, change the penalties to bonuses of the same size.
-</p>
-<p>
-    Alternatively, the points at which a character becomes fatigued or tired can be changed from half SP/PP to a lower limit.
-</p>
+<div class="optionalrule">
+    <p>
+        <em>Increased Health Penalties</em> (optional rule for more realistic campaigns):
+        Increase the penalties incurred by damage to HP, SP, and PP.
+    </p>
+</div>
+<div class="optionalrule">
+    <p>
+        <em>Decreased Health Penalties</em> (optional rule for more cinematic campaigns):
+        Decrease or remove the penalties incurred by damage to HP, SP, and PP.
+        For a truly cinematic alternative, change the penalties to bonuses of the same size.
+    </p>
+    <p>
+        Alternatively, the points at which a character becomes fatigued or tired can be changed from half SP/PP to a lower limit.
+    </p>
+</div>
 
 <h4 id="AbilityDamage">Ability Damage</h4>
 <p>
@@ -1595,22 +1643,21 @@ show_ppeffects();
     Similarly, a creature spending PP on an ongoing spell will not naturally recover PP while the cost is being paid.
 </p>
 
-<br/>
-<?php
-show_activitylevels();
-?> 
+<?php show_activitylevels(); ?> 
 
 <p>
     Note that the recovery of ability score damage applies separately to each ability score.
 </p>
 
-<p>
-    <em>Fast Recovery</em> (optional rule for more cinematic campaigns):
-    DMs who want a faster-paced campaign, fewer resting periods, and less resource management between encounters
-    can increase the health point recovery rates listed above.
-    Even full recovery of SP and PP (and maybe even of HP damage) after each encounter can be considered,
-    if the DM desires a truly cinematic feel and a reduced dependence on healing magic (as is the case in many computer-based RPGs).
-</p>
+<div class="optionalrule">
+    <p>
+        <em>Fast Recovery</em> (optional rule for more cinematic campaigns):
+        DMs who want a faster-paced campaign, fewer resting periods, and less resource management between encounters
+        can increase the health point recovery rates listed above.
+        Even full recovery of SP and PP (and maybe even of HP damage) after each encounter can be considered,
+        if the DM desires a truly cinematic feel and a reduced dependence on healing magic (as is the case in many computer-based RPGs).
+    </p>
+</div>
 
 <h4 id="OngoingDamage">Ongoing Damage</h4>
 <p>
@@ -1645,7 +1692,44 @@ show_activitylevels();
     Insidious damage to ability scores is sometimes referred to as ability drain rather than ability damage.
 </p>
 
-<h4 id="Poison">Poison [Poison]</h4>
+<h4 id="Dying">Dying</h4>
+<p>
+    When a living creature's HP falls below 0, he falls unconscious and starts dying.
+</p>
+<?php show_stagedconditions(STAGED_DYING); ?> 
+
+<p>
+    An unconscious creature that wakes up (through natural or supernatural healing) is flat-footed until its next initiative comes up, and it is also dazed for 1 round.
+</p>
+
+<h4 id="Death">Death</h4>
+<p>
+    When a creature dies, its soul departs the body.
+    Sooner or later, the soul will leave the Prime Material Plane and journey to an outer plane that matches the creature’s alignment or religion.
+    Once there, it will linger for a variable amount of time,
+    before either being turned into a servant for its favored deity or being absorbed by one of the local creatures.
+</p>
+<p>
+    With powerful magic and/or divine intervention, it is possible to heal a dead body and call the original soul back into it.
+    However, if the soul has been destroyed or trapped, such resurrection is not possible.
+    Nor is it possible if the soul itself does not wish to return to the body.
+    The soul automatically knows the surface thoughts and approximate alignment of any creature that is attempting to resurrect it.
+</p>
+<p>
+    Whenever a living and intelligent creature dies, there is a chance that its soul remains in the body, turning it into an undead.
+    In most campaign worlds, this is resolved as a +0 attack against the creature's Will (calculated as if it had been alive).
+    If this attack fails, the creature does not become undead, but if it succeeds, the number of success levels determine the type of undead:
+    0 to 4 generates a ghoul, 5 to 9 a ghast, 10 to 14 a wight, 15 to 19 a shadow, 20 to 24 a wraith, 25 to 29 a spectre,
+    30 to 34 a ghost, and 35 or more a vampire.
+    The transformation typically occurs 1d6 days after death.
+</p>
+<p>
+    Burial on holy ground results in a -20 penalty on the attack roll for turning a corpse into an undead.
+    On the other hand, many situations can give a bonus to the attack, if the DM so desires.
+    Typical examples include areas with necrotic energy, evil temple sites, a particularly violent or unfair death, etc.
+</p>
+
+<h3 id="Poison">Poisoning</h3>
 <p>
     Typically, when a creature is exposed to a poison or a drug, the poison makes an &quot;attack&quot; against the victim’s Fortitude.
     If the attack succeeds, the poison starts to affect the victim (according to each poison’s progression).
@@ -1678,21 +1762,11 @@ show_activitylevels();
     The effects described here are for a standard dose. The equipment chapter describes modifiers for additional doses or higher concentrations.
 </p>
 
-<img src="images/rold20images/Poisons1.gif" title="Poisons" alt='Poisons'/><br /><br />
-<img src="images/rold20images/Poisons2.gif" title="Poisons" alt='Poisons'/><br /><br />
-<img src="images/rold20images/Poisons3.gif" title="Poisons" alt='Poisons'/><br /><br />
-<img src="images/rold20images/Poisons4.gif" title="Poisons" alt='Poisons'/><br /><br />
-<img src="images/rold20images/Poisons5.gif" title="Poisons" alt='Poisons'/><br /><br />
-<img src="images/rold20images/Poisons6.gif" title="Poisons" alt='Poisons'/><br /><br />
-<img src="images/rold20images/Poisons7.gif" title="Poisons" alt='Poisons'/><br /><br />
-<img src="images/rold20images/Poisons8.gif" title="Poisons" alt='Poisons'/><br /><br />
-<img src="images/rold20images/Poisons9.gif" title="Poisons" alt='Poisons'/><br /><br />
-<img src="images/rold20images/Poisons10.gif" title="Poisons" alt='Poisons'/><br /><br />
-<img src="images/rold20images/Poisons11.gif" title="Poisons" alt='Poisons'/><br /><br />
-<img src="images/rold20images/Poisons12.gif" title="Poisons" alt='Poisons'/><br /><br />
-<img src="images/rold20images/Poisons13.gif" title="Poisons" alt='Poisons'/><br /><br />
+<?php show_stagedconditions(STAGED_POISON); ?>
 
-<h4 id="Disease">Disease</h4>
+<h3 id="Disease">Disease</h3>
+
+<h4>Physical Illness</h4>
 <p>
     On exposure (or once per day during prolonged exposure), the disease makes an &quot;attack&quot; against the potential victim’s Fortitude save.
     If the attack succeeds, the victim contracts the disease and enters first stage.
@@ -1715,54 +1789,28 @@ show_activitylevels();
 <p>
     <em>Injury:</em> Exposure occurs through open wounds, so the carrier has to penetrate both armor and natural DR. This type of disease can also spread through ingestion.
 </p>
-<img src="images/rold20images/Diseases.gif" title="Diseases" alt='Diseases'/><br /><br />
-<img src="images/rold20images/Diseases2.gif" title="Diseases" alt='Diseases'/><br /><br />
-<img src="images/rold20images/Diseases3.gif" title="Diseases" alt='Diseases'/><br /><br />
-<img src="images/rold20images/Diseases4.gif" title="Diseases" alt='Diseases'/><br /><br />
+
+<?php show_stagedconditions(STAGED_DISEASE); ?>
 
 <h4 id="MentalIllness">Mental Illness</h4>
 <p>
 </p>
 
-<h4 id="Death">Death</h4>
-<p>
-    When a creature dies, its soul departs the body.
-    Sooner or later, the soul will leave the Prime Material Plane and journey to an outer plane that matches the creature’s alignment or religion.
-    Once there, it will linger for a variable amount of time,
-    before either being turned into a servant for its favored deity or being absorbed by one of the local creatures.
-</p>
-<p>
-    With powerful magic and/or divine intervention, it is possible to heal a dead body and call the original soul back into it.
-    However, if the soul has been destroyed or trapped, such resurrection is not possible.
-    Nor is it possible if the soul itself does not wish to return to the body.
-    The soul automatically knows the surface thoughts and approximate alignment of any creature that is attempting to resurrect it.
-</p>
-<p>
-    Whenever a living and intelligent creature dies, there is a chance that its soul remains in the body, turning it into an undead.
-    In most campaign worlds, this is resolved as a +0 attack against the creature's Will (calculated as if it had been alive).
-    If this attack fails, the creature does not become undead, but if it succeeds, the number of success levels determine the type of undead:
-    0 to 4 generates a ghoul, 5 to 9 a ghast, 10 to 14 a wight, 15 to 19 a shadow, 20 to 24 a wraith, 25 to 29 a spectre,
-    30 to 34 a ghost, and 35 or more a vampire.
-    The transformation typically occurs 1d6 days after death.
-</p>
-<p>
-    Burial on holy ground results in a -20 penalty on the attack roll for turning a corpse into an undead.
-    On the other hand, many situations can give a bonus to the attack, if the DM so desires.
-    Typical examples include areas with necrotic energy, evil temple sites, a particularly violent or unfair death, etc.
-</p>
+<?php show_stagedconditions(STAGED_INSANITY); ?>
 
-<h4 id="OtherConditions">Other Conditions</h4>
+<h3 id="OtherConditions">Other Conditions</h3>
 <p>
     Many of the conditions listed below represent different levels within the same type of condition.
     If a creature is subject to multiple conditions of the same type, apply only the effects of the most serious condition.
 </p>
 <p>
-    Fascinated &rarr; Charmed &rarr; Compelled &rarr; Mastered<br />
-    Dazzled &rarr; Blinded<br />
-    Dazed &rarr; Clobbered &rarr; Stunned<br />
-    Entangled &rarr; Paralysis &rarr; Petrified<br />
-    Grappling &rarr; Pinned<br />
-    Shaken &rarr; Frightened &rarr; Panicked &rarr; Cower<br />
+    <em>Lesser condition &rarr; greater condition</em><br/>
+    Fascinated &rarr; Charmed &rarr; Compelled &rarr; Mastered<br/>
+    Dazzled &rarr; Blinded<br/>
+    Dazed &rarr; Clobbered &rarr; Stunned<br/>
+    Entangled &rarr; Paralysis &rarr; Petrified<br/>
+    Grappling &rarr; Pinned<br/>
+    Shaken &rarr; Frightened &rarr; Panicked &rarr; Cower<br/>
     Sickened &rarr; Nauseated
 </p>
 
@@ -1822,10 +1870,10 @@ show_activitylevels();
     Otherwise, at the beginning of each turn, determine the confused creature’s actions by rolling a d10:
 </p>
 <p>
-    1 - Attack the most likely source of the confusion.<br />
-    2 - Act normally.<br />
-    3-5 - Babble incoherently.<br />
-    6-7 - Flee at top possible speed.<br />
+    1 - Attack the most likely source of the confusion.<br/>
+    2 - Act normally.<br/>
+    3-5 - Babble incoherently.<br/>
+    6-7 - Flee at top possible speed.<br/>
     8-10 - Attack the nearest creature.
 </p>
 
@@ -1884,7 +1932,7 @@ show_activitylevels();
 
 <h5 id="Flatfooted">Flat-Footed</h5>
 <p>
-    A flat-footed creature can only use passive DeC and cannot perform attacks of opportunity.
+    A flat-footed creature can only use passive DeC and cannot use reaction actions.
 </p>
 
 <h5 id="Frightened">Frightened</h5>
@@ -1947,7 +1995,7 @@ show_activitylevels();
     The creature takes 1d6 HP of ongoing fire damage per round.
 </p>
 <p>
-    Extinguishing the fire is a full-round action that requires a check of d20 + Dex mod vs. DC 15.
+    Extinguishing the fire is a full-round action that requires a check of d20! + Dex mod vs. DC 15.
     You can gain a +2 circumstance bonus to the check by falling prone and rolling on the ground.
 </p>
 
@@ -2031,7 +2079,7 @@ show_activitylevels();
     A creature with lesser blindsense still suffers normal DeC penalties when attacked by invisible creatures.
 </p>
 <p>
-    A creature with <em>Greater Blindsense</em> enjoys the following advantages:
+    <em>Greater Blindsense</em> confers the following advantages:
 </p>
 <ul>
     <li>It maneuvers and fights as well as a sighted creature.</li>
@@ -2129,57 +2177,7 @@ show_activitylevels();
     and the maximum thickness that can be penetrated is equivalent to a detection DC modifier of 150 (see Materials).
 </p>
 
-<h3 id="SpecialAbils">Special Abilities and Effects</h3>
-<p>
-    Special abilities can be unusual attack forms, defenses, modes of movement, etc.
-    Note that some supernatural abilities are described in greater detail in the 
-    <a href="hb05_magic.php">Rules of Magic</a> 
-    chapter. 
-</p>
-
-<h4>Age Resistance</h4>
-<p>
-    Lesser age resistance means that a creature appears to age normally and can still die from old age,
-    but it is immune to any penalties caused by aging.
-    A creature with greater age resistance does not even appear to age and will never die from old age.
-</p>
-
-<h4 id="Antimagic">Antimagic</h4>
-<p>
-    Antimagic greatly reduces the power of magic in an area.
-    It makes the casting of spells and use of supernatural or spell-like abilities extremely difficult and unreliable.
-    Even existing effects, magic items, and supernatural creatures can be rendered inert while they are within the field of antimagic.
-    Such effects are just temporarily negated, not dispelled, and they begin functioning again when they leave the field of antimagic.
-</p>
-<p>
-    See the 
-    <a href="hb05_magic.php">Rules of Magic</a> 
-    chapter for more details.
-</p>
-
-<h4 id="Auras">Auras</h4>
-<p>
-    An aura is a special property that can be detected by certain creatures or with the aid of certain spells.
-    Auras are defined according to their type and level. This is a list of the most common aura types:
-</p>
-<ul>
-    <li>Alignment: Typically possessed by clerics, templars, undead, and outsider creatures.
-        The level is either based on the level of certain divine skills or on the creature's TL.
-        If the same creature has skills that give conflicting auras, the aura with the highest level will be the detectable one,
-        but its level will be reduced by that of the conflicting skill.</li>
-    <li>Life: All living creatures have a life aura, the strength of which is based on the creature's TL.</li>
-    <li>Magic: All supernatural effects have a magical aura with a level equal to the effect's PL.</li>
-</ul>
-<p>
-    Many types of aura will linger for a variable amount of time even after the source has disappeared.
-    A level of 1 to 5 lingers for 1d6 rounds, level 6 to 10 for 1d6 minutes, level 11 to 20 for 1d6&times;10 minutes, and level 20+ for 1d6 days.
-</p>
-
-<h4 id="Barriers">Barriers</h4>
-<p>
-    Effects that create mobile barriers against certain creatures or objects can typically not be used to push such creatures/objects away.
-    If you try to do so, a discernible pressure will be felt, and if you continue to force the barrier, the effect will be broken.
-</p>
+<h3 id="SpecialAttacks">Special Attacks</h3>
 
 <h4 id="BreathWeapons">Breath Weapons</h4>
 <p>
@@ -2190,43 +2188,10 @@ show_activitylevels();
     Unless otherwise specified, a creature is immune to its own type of breath weapon.
 </p>
 
-<h4 id="DamageDice">Damage Dice Variation</h4>
-<p>
-    Some skills, spells, and other effects can either increase or decrease the damage dice of a weapon (or even of a spell).
-    Such an increase or decrease follows these steps:
-</p>
-<p>
-    1 .. d2 .. d3 .. d4 .. d6 .. d8 .. d10 .. 2d6 (or d12) .. 2d8 .. 2d10 (or d20) .. 4d6 .. 5d6 .. 6d6 ..
-</p>
-<p>
-    In general, treat multiple dice separately. For example, increasing 3d8 results in a progression of 3d10, then 6d6, 7d6, etc.
-</p>
-
 <h4 id="DeathEffects">Death Effects [Su, MR, Necrotic]</h4>
 <p>
     Certain attacks and spells can cause massive amounts of damage with necrotic energy. This is commonly referred to as a death effect.
     If the damage is enough to kill the victim, a side effect is that any attempt to magically resurrect the victim becomes significantly more difficult.
-</p>
-
-<h4 id="Detection">Detection [Su]</h4>
-<p>
-    Many supernatural detection effects reveal their information as enhanced visual cues,
-    and they are therefore limited to the creature’s normal field of vision.
-</p>
-<p>
-    Detection effects that require focus and concentration typically allow the active scanning of one quadrant per action.
-    Additional information may become available if the same quadrant is scanned repeatedly.
-</p>
-<p>
-    Detection through barriers is difficult but not impossible.
-    Any such attempt requires a spellcasting check against a difficulty set by the barrier’s 
-    <a href="hb12_equipment.php#Materials">material</a> 
-    and thickness.
-</p>
-
-<h4 id="Dodge">Dodge</h4>
-<p>
-    Not to be confused with dodge modifiers to DeC, the dodge special ability lets a creature use its active DeC even when flat-footed.
 </p>
 
 <h4 id="EnergyDrain">Energy Drain [Su, Necrotic]</h4>
@@ -2257,51 +2222,6 @@ show_activitylevels();
     Temporary HP granted by any form of Energy Drain have a maximum duration of one day.
 </p>
 
-<h4 id="EnergyShield">Energy Shield [Su, MR]</h4>
-<p>
-    This is an aura (usually visible) that surrounds a creature and automatically causes the specified type and amount of damage
-    to any melee attacker (or the attacker's weapon).
-    Each successful melee attack causes a new instance of damage to the attacker.
-</p>
-
-<h4 id="Etherealness">Etherealness [Su, Dimension]</h4>
-<p>
-    The Ethereal Plane overlaps all parts of the Prime Material Plane,
-    and some creatures have the ability to travel between those planes at will.
-    A few creatures take this one step further and actually exist on both planes simultaneously.
-</p>
-<p>
-    The following effects apply to ethereal creatures:
-</p>
-<ul>
-    <li>Invisible, inaudible, insubstantial, and scentless to creatures on the Prime Material Plane.</li>
-    <li>Can be detected by some magical senses and abilities.</li>
-    <li>An ethereal creature can see and hear into the Prime Material Plane within a 12 square radius.
-        Vision is ghostly and indistinct, and sounds are somewhat muffled.
-        Note that objects in the Prime Material Plane still block sight and sound normally.</li>
-    <li>An ethereal creature can move freely in any direction (including up and down),
-        and it can move through solid Prime Material objects (including the ground and walls).
-        It can also move effortlessly through Prime Material water and other liquids.</li>
-    <li>An ethereal creature can never fall nor take falling damage.</li>
-    <li>Ethereal creatures are immune to most attacks originating on the Prime Material Plane, normal as well as magical ones.</li>
-    <li>An ethereal creature is unable to affect Prime Material creatures with most physical and magical attacks.</li>
-    <li>Unless otherwise specified, [Force] magic exists on both the Ethereal and Prime Material Planes simultaneously.
-        Therefore, [Force] effects can be used by a creature on one plane to affect creatures on the other plane.</li>
-    <li>Most gaze attacks extend from the Prime Material Plane to the Ethereal Plane but not the other way around.</li>
-</ul>
-
-<h4 id="Evasion">Evasion</h4>
-<p>
-    Evasion makes a creature better at dodging area effect attacks.
-    If the creature is exposed to an area effect that targets the DeC or Reflex defenses,
-    a failed attack will cause no damage at all (even if the result states that 1/2 damage be dealt).
-    A creature with <em>Greater Evasion</em> suffers only half damage even when such an attack is successful.
-</p>
-<p>
-    Evasion requires some room to move, so it does not help creatures that are helpless, immobile, bound, or otherwise severely restrained.
-    However, evasion is a reflexive ability, and prior knowledge of the attack is not required.
-</p>
-
 <h4 id="Fear">Fear [Mind, Fear]</h4>
 <p>
     Some creatures have such an unsettling and fearsome presence that they have the extraordinary ability to cause fear in opponents.
@@ -2318,28 +2238,8 @@ show_activitylevels();
 </p>
 <p>
     <em>Turning and Rebuking [Su]:</em> This is similar to the Fear ability but is typically limited to a certain type of creature.
-    Note that turning and rebuking can work against the specified type of creature, even if that creature is resistant or immune to mind or fear effects.
+    Note that turning and rebuking can work against the specified type of creature, even if that creature is generally resistant or immune to mind or fear effects.
 </p>
-
-<h4 id="Gaseous">Gaseous Form</h4>
-<p>
-    Some creatures can assume gaseous form, through magic or as a special ability. A few creatures are even gaseous in their natural state.
-    The following effects apply to such creatures:
-</p>
-<ul>
-    <li>Gaseous creatures can fly, but they cannot increase their speed by running, sprinting, or charging.</li>
-    <li>Gaseous creatures never fall or become prone.</li>
-    <li>Gaseous creatures can’t move through solid or liquid matter, but they can flow through very small openings and cracks.</li>
-    <li>Gaseous creatures cannot be hurt by strong winds, but their movement will be affected by the wind speed.</li>
-    <li>A gaseous creature cannot make physical attacks nor talk or cast spells with verbal, somatic, or material components.</li>
-    <li>Many skills and special abilities cannot be used by a creature in gaseous form.</li>
-    <li>Gaseous creatures cannot wear armor and do not enjoy any benefits from natural armor,
-        but they do receive a +10 enhancement bonus to DR vs. non-magical weapons as well as +20 critical hit resistance.</li>
-    <li>Gaseous creatures do not need to breathe and are immune to suffocation and gas-based attacks.</li>
-    <li>Unless otherwise specified, gaseous creatures have normal vulnerability to energy attacks and spells.</li>
-    <li>Gaseous creatures receive a +20 circumstance bonus when trying to hide in mist, smoke, or similar gas.</li>
-    <li>Distinguishing a gaseous creature from normal mist requires a DC 15 spot check.</li>
-</ul>
 
 <h4 id="GazeAttacks">Gaze Attacks</h4>
 <p>
@@ -2385,6 +2285,245 @@ show_activitylevels();
     Whenever a swallowing creature takes damage from the outside, swallowed creatures take 1/2 of the same damage (after reduction by DR).
 </p>
 
+<h4 id="Manyshot">Manyshot</h4>
+<p>
+    This is the ability to shoot multiple projectiles at a single target with a single attack roll.
+    For all practical purposes, this counts as a single attack with increased damage but with a penalty to the attack roll.
+    Unless otherwise specified, the base weapon damage is multiplied by the number of projectiles (before modifiers are applied),
+    and the attack penalty is -2 multiplied by the number of projectiles.
+</p>
+
+<h4 id="Possession">Possession [Su, MR, Mind]</h4>
+<p>
+    When two or more souls occupy the same body, they will typically fight for control of the body, according to the staged action check shown below.
+    However, a soul may choose to surrender control and voluntarily lose any of the opposed checks.
+    When the possession is an attack, the attacker can usually leave the occupied body voluntarily at any time and return to its own body.
+    The &quot;non-native&quot; soul is designated attacker, while the &quot;native&quot; soul is the defender.
+</p>
+<p>
+    The soul that is currently in control does not just choose the body’s actions.
+    It also determines the creature’s Int, Wis, Cha, health points, class levels, skill levels, Fort, Ref, Will, mental abilities,
+    spellcasting, personality, and alignment.
+    The body itself determines Str, Con, Dex, creature type and subtype, size, modes and speed of movement, senses,
+    physical attack forms, physical abilities, and appearance.
+</p>
+
+<?php show_stagedconditions(STAGED_POSSESSION); ?> 
+
+<p>
+    Whenever a body is not occupied by a soul (but not slain), it lies comatose and helpless.
+</p>
+
+<h4 id="Stampede">Stampede</h4>
+<p>
+    This is an ability that lets some creatures make overrun attacks that cause trampling damage.
+    The danger of this ability is often increased by the quantity of stampeding creatures.
+</p>
+
+<h4 id="TouchAttacks">Touch Attacks</h4>
+<p>
+    Many special attacks are transferred by touch and therefore require a successful attack roll.
+    Note that the special attack is not activated by someone else touching the creature in question.
+</p>
+<p>
+    Reach attacks (Rch) can typically be combined with a normal melee attack (causing natural weapon damage), while touch attacks (Tch) cannot.
+</p>
+
+<h4 id="VitalAttack">Vital Attack</h4>
+<p>
+    Vital Attack is the ability to strike the most vulnerable and sensitive spots on an enemy.
+    This provides an attack and damage bonus
+    against any opponent that is flat-footed or for other reasons not allowed to use active DeC.
+</p>
+<p>
+    Vital attacks can only be made with primary attack forms or weapons held in primary attack forms.
+    Furthermore, vital attacks require at least one skill level in a weapon skill appropriate for the weapon used.
+</p>
+<p>
+    Vital attacks require a relatively unobstructed view of the target;
+    good or total cover as well as good or total concealment nullify the bonuses granted by vital attack.
+<p>
+    For attacks with secondary attack rolls, the attack bonus applies to both the primary and secondary attack.
+</p>
+
+<h3 id="SpecialDefenses">Special Defenses</h3>
+
+<h4>Age Resistance</h4>
+<p>
+    Lesser age resistance means that a creature appears to age normally and can still die from old age,
+    but it is immune to any penalties caused by aging.
+    A creature with greater age resistance does not even appear to age and will never die from old age.
+</p>
+
+<h4 id="Dodge">Dodge</h4>
+<p>
+    Not to be confused with dodge modifiers to DeC, the dodge special ability lets a creature use its active DeC even when flat-footed.
+</p>
+
+<h4 id="EnergyShield">Energy Shield [Su, MR]</h4>
+<p>
+    This is a field of energy (usually visible) that surrounds a creature and automatically causes the specified type and amount of damage
+    to any melee attacker (or the attacker's weapon).
+    Each successful melee attack causes a new instance of damage to the attacker.
+</p>
+
+<h4 id="Evasion">Evasion</h4>
+<p>
+    Evasion makes a creature better at dodging area effect attacks.
+    If the creature is exposed to an area effect that targets the DeC or Reflex defenses,
+    a failed attack will cause no damage at all (even if the result states that 1/2 damage be dealt).
+    A creature with <em>Greater Evasion</em> suffers only half damage even when such an attack is successful.
+</p>
+<p>
+    Evasion requires some room to move, so it does not help creatures that are helpless, immobile, bound, or otherwise severely restrained.
+    However, evasion is a reflexive ability, and prior knowledge of the attack is not required.
+</p>
+
+<h4 id="Regeneration">Regeneration</h4>
+<p>
+    Regeneration is the ability to heal wounds at an extraordinary rate, usually specified as a number of HP per round.
+    The healing takes place at the beginning of each of the creature’s turns.
+</p>
+<p>
+    If the creature has suffered SP as well as HP damage, regeneration will first heal SP damage (at the indicated rate).
+    SP damage caused by thirst, hunger, or suffocation will not be cured by regeneration, however.
+</p>
+<p>
+    <em>Lesser Regeneration</em> works exactly the same way as natural recovery but at an increased rate,
+    and it is often specified as points per minute or hour rather than per round.
+    The creature's level of activity as well as ongoing costs and damage have the same effect on lesser regeneration as on natural recovery.
+</p>
+<p>
+    <em>Greater Regeneration</em> also allows regrowing (or reattaching) of severed limbs and destroyed organs.
+    More importantly, a creature with Greater Regeneration can be rendered unconscious but never killed by physical damage,
+    unless that damage is of a type that bypasses the regeneration.
+    Even a severed head can regenerate a whole body, but note that a severed limb will never regenerate into a full creature.
+</p>
+<p>
+    Many creatures with regeneration are unable to use the ability to heal certain types of damage (usually acid and fire).
+    Such damage will have to be kept track of separately.
+</p>
+<p>
+    <em>SP Regeneration</em> This type of regeneration only regenerates SP (not HP) at a higher rate.
+</p>
+<p>
+    <em>PP Regeneration</em> This type of regeneration only regenerates PP (not SP or HP) at a higher rate.
+</p>
+
+<h4 id="Split">Split</h4>
+<p>
+    Split is an extraordinary ability that lets some creatures split in half when struck by certain types of damage,
+    effectively becoming two smaller creatures.
+    The original creature's current HP, SP, PP, and RL are split evenly between the two new creatures,
+    but the ability typically does not work when the creature's HP reaches a certain minimum level (default is 10 HP).
+    Each of the new creatures is one size smaller than the original and should be <a href="#SizeAlteration">adjusted</a> accordingly.
+</p>
+
+<h3 id="SpecialAbils">Other Special Abilities and Effects</h3>
+<p>
+    Note that some supernatural abilities are described in greater detail in the 
+    <a href="hb05_magic.php">Rules of Magic</a> chapter. 
+</p>
+
+<h4 id="Antimagic">Antimagic</h4>
+<p>
+    Antimagic greatly reduces the power of magic in an area.
+    It makes the casting of spells and use of supernatural or spell-like abilities extremely difficult and unreliable.
+    Even existing effects, magic items, and supernatural creatures can be rendered inert while they are within the field of antimagic.
+    Such effects are just temporarily negated, not dispelled, and they begin functioning again when they leave the field of antimagic.
+</p>
+<p>
+    See the 
+    <a href="hb05_magic.php">Rules of Magic</a> 
+    chapter for more details.
+</p>
+
+<h4 id="Auras">Auras</h4>
+<p>
+    An aura is a special property that can be detected by certain creatures or with the aid of certain spells.
+    Auras are defined according to their type and level. This is a list of the most common aura types:
+</p>
+<ul>
+    <li>Alignment: Typically possessed by clerics, templars, undead, and outsider creatures.
+        The level is either based on the level of certain divine skills or on the creature's TL.
+        If the same creature has skills that give conflicting auras, the aura with the highest level will be the detectable one,
+        but its level will be reduced by that of the conflicting skill.</li>
+    <li>Life: All living creatures have a life aura, the strength of which is based on the creature's TL.</li>
+    <li>Magic: All supernatural effects have a magical aura with a level equal to the effect's PL.</li>
+</ul>
+<p>
+    Many types of aura will linger for a variable amount of time even after the source has disappeared.
+    A level of 1 to 5 lingers for 1d6 rounds, level 6 to 10 for 1d6 minutes, level 11 to 20 for 1d6&times;10 minutes, and level 20+ for 1d6 days.
+</p>
+
+<h4 id="Barriers">Barriers</h4>
+<p>
+    Effects that create mobile barriers against certain creatures or objects can typically not be used to push such creatures/objects away.
+    If you try to do so, a discernible pressure will be felt, and if you continue to force the barrier, the effect will be broken.
+</p>
+
+<h4 id="Detection">Detection [Su]</h4>
+<p>
+    Many supernatural detection effects reveal their information as enhanced visual cues,
+    and they are therefore limited to the creature’s normal field of vision.
+</p>
+<p>
+    Detection effects that require focus and concentration typically allow the active scanning of one quadrant per action.
+    Additional information may become available if the same quadrant is scanned repeatedly.
+</p>
+<p>
+    Detection through barriers is difficult but not impossible.
+    Any such attempt requires a spellcasting check against a difficulty set by the barrier’s 
+    <a href="hb12_equipment.php#Materials">material</a> 
+    and thickness.
+</p>
+
+<h4 id="Etherealness">Etherealness [Su, Dimension]</h4>
+<p>
+    The Ethereal Plane overlaps all parts of the Prime Material Plane,
+    and some creatures have the ability to travel between those planes at will.
+    A few creatures take this one step further and actually exist on both planes simultaneously.
+</p>
+<p>
+    The following effects apply to ethereal creatures:
+</p>
+<ul>
+    <li>Invisible, inaudible, insubstantial, and scentless to creatures on the Prime Material Plane.</li>
+    <li>Can be detected by some magical senses and abilities.</li>
+    <li>An ethereal creature can see and hear into the Prime Material Plane within a 12 square radius.
+        Vision is ghostly and indistinct, and sounds are somewhat muffled.
+        Note that objects in the Prime Material Plane still block sight and sound normally.</li>
+    <li>An ethereal creature can move freely in any direction (including up and down),
+        and it can move through solid Prime Material objects (including the ground and walls).
+        It can also move effortlessly through Prime Material water and other liquids.</li>
+    <li>An ethereal creature can never fall nor take falling damage.</li>
+    <li>Ethereal creatures are immune to most attacks originating on the Prime Material Plane, normal as well as magical ones.</li>
+    <li>An ethereal creature is unable to affect Prime Material creatures with most physical and magical attacks.</li>
+    <li>Unless otherwise specified, [Force] magic exists on both the Ethereal and Prime Material Planes simultaneously.
+        Therefore, [Force] effects can be used by a creature on one plane to affect creatures on the other plane.</li>
+    <li>Most gaze attacks extend from the Prime Material Plane to the Ethereal Plane but not the other way around.</li>
+</ul>
+
+<h4 id="Gaseous">Gaseous Form</h4>
+<p>
+    Some creatures can assume gaseous form, through magic or as a special ability. A few creatures are even gaseous in their natural state.
+    The following effects apply to such creatures:
+</p>
+<ul>
+    <li>Gaseous creatures can fly, but they cannot increase their speed by running, sprinting, or charging.</li>
+    <li>Gaseous creatures never fall or become prone.</li>
+    <li>Gaseous creatures can’t move through solid or liquid matter, but they can flow through very small openings and cracks.</li>
+    <li>Gaseous creatures cannot be hurt by strong winds, but their movement will be affected by the wind speed.</li>
+    <li>A gaseous creature cannot make physical attacks nor talk or cast spells with verbal, somatic, or material components.</li>
+    <li>Many skills and special abilities cannot be used by a creature in gaseous form.</li>
+    <li>Gaseous creatures cannot wear armor and do not enjoy any benefits from natural armor,
+        but they do receive a +10 enhancement bonus to DR vs. non-magical weapons as well as +20 critical hit resistance.</li>
+    <li>Gaseous creatures do not need to breathe and are immune to suffocation and gas-based attacks.</li>
+    <li>Unless otherwise specified, gaseous creatures have normal vulnerability to energy attacks and spells.</li>
+    <li>Gaseous creatures receive a +20 circumstance bonus when trying to hide in mist, smoke, or similar gas.</li>
+    <li>Distinguishing a gaseous creature from normal mist requires a DC 15 spot check.</li>
+</ul>
+
 <h4 id="Healing">Healing [Su, MR, Radiant]</h4>
 <p>
     Supernatural healing uses controlled amounts of radiant energy to heal living creatures.
@@ -2394,10 +2533,12 @@ show_activitylevels();
     Undead creatures can be healed with necrotic energy. Not only are they immune to necrotic damage, but they are healed by it, on a point-per-point basis.
 </p>
 
-<p>
-    <em>Percentage Healing</em> (optional rule for more realistic campaigns):
-    Instead of a healing effect repairing x HP, SP, or PP, it repairs x% of the creature's total HP, SP, or PP.
-</p>
+<div class="optionalrule">
+    <p>
+        <em>Percentage Healing</em> (optional rule for more realistic campaigns):
+        Instead of a healing effect repairing x HP, SP, or PP, it repairs x% of the creature's total HP, SP, or PP.
+    </p>
+</div>
 
 <h4 id="Illusions">Illusions [Su, Illusion]</h4>
 <p>
@@ -2420,7 +2561,7 @@ show_activitylevels();
 <ul>
     <li>Insubstantial and immune to all non-magical physical attacks and energy attacks.</li>
     <li>Can be harmed by other incorporeal creatures and magical attacks.
-        Magical weapons cause damage equal to their magical bonus plus DaB and any skill-based modifiers.
+        Magical weapons cause damage equal to their magical bonus plus skill- and AP-based damage modifiers.
         The weapon’s base damage and Str modifiers do not apply.
         Magical acid, cold, electricity, fire, and sonic attacks cause half damage (but radiant and necrotic energy still have full effect).
         Magical [Force] attacks have full effect.</li>
@@ -2459,16 +2600,8 @@ show_activitylevels();
     <li>When an invisible creature picks up a visible object, the object remains visible.
         However, the object becomes effectively invisible if it can be hidden under the creature’s clothes or put in an invisible container.</li>
     <li>An invisible light source still produces light.</li>
-    <li>Some skills and special abilities (Blindsense and Scent) can reduce the benefits of invisibility or render it ineffective.</li>
+    <li>Some skills and special abilities (such as Blindsense and Scent) can reduce the benefits of invisibility or render it ineffective.</li>
 </ul>
-
-<h4 id="Manyshot">Manyshot</h4>
-<p>
-    This is the ability to shoot multiple projectiles at a single target with a single attack roll.
-    For all practical purposes, this counts as a single attack with increased damage but with a penalty to the attack roll.
-    Unless otherwise specified, the base weapon damage is multiplied by the number of projectiles (before modifiers are applied),
-    and the attack penalty is -2 multiplied by the number of projectiles.
-</p>
 
 <h4 id="PlanarTravel">Planar Travel and Projection [Su, Dimension]</h4>
 <p>
@@ -2577,56 +2710,6 @@ show_activitylevels();
     <li>You gain all of the new form’s special skills, attacks, and abilities, including supernatural ones.</li>
 </ul>
 
-<h4 id="Possession">Possession [Su, MR, Mind]</h4>
-<p>
-    When two or more souls occupy the same body, they will typically fight for control of the body, according to the linked action checks shown below.
-    However, a soul may choose to surrender control and voluntarily lose any of the opposed checks.
-    When the possession is an attack, the attacker can usually leave the occupied body voluntarily at any time and return to its own body.
-    The &quot;non-native&quot; soul is designated attacker, while the &quot;native&quot; soul is the defender.
-</p>
-<p>
-    The soul that is currently in control does not just choose the body’s actions.
-    It also determines the creature’s Int, Wis, Cha, health points, class levels, skill levels, Fort, Ref, Will, mental abilities,
-    spellcasting, personality, and alignment.
-    The body itself determines Str, Con, Dex, creature type and subtype, size, modes and speed of movement, senses,
-    physical attack forms, physical abilities, and appearance.
-</p>
-<img src="images/rold20images/Possession.gif" title="Possession" alt='Possession'/>
-<p>
-    Whenever a body is not occupied by a soul (but not slain), it lies comatose and helpless.
-</p>
-
-<h4 id="Regeneration">Regeneration</h4>
-<p>
-    Regeneration is the ability to heal wounds at an extraordinary rate, usually specified as a number of HP per round.
-    The healing takes place at the beginning of each of the creature’s turns.
-</p>
-<p>
-    If the creature has suffered SP as well as HP damage, regeneration will first heal SP damage (at the indicated rate).
-    SP damage caused by thirst, hunger, or suffocation will not be cured by regeneration, however.
-</p>
-<p>
-    <em>Lesser Regeneration</em> works exactly the same way as natural recovery but at an increased rate,
-    and it is often specified as points per minute or hour rather than per round.
-    The creature's level of activity as well as ongoing costs and damage have the same effect on lesser regeneration as on natural recovery.
-</p>
-<p>
-    <em>Greater Regeneration</em> also allows regrowing (or reattaching) of severed limbs and destroyed organs.
-    More importantly, a creature with Greater Regeneration can be rendered unconscious but never killed by physical damage,
-    unless that damage is of a type that bypasses the regeneration.
-    Even a severed head can regenerate a whole body, but note that a severed limb will never regenerate into a full creature.
-</p>
-<p>
-    Many creatures with regeneration are unable to use the ability to heal certain types of damage (usually acid and fire).
-    Such damage will have to be kept track of separately.
-</p>
-<p>
-    <em>SP Regeneration</em> This type of regeneration only regenerates SP (not HP) at a higher rate.
-</p>
-<p>
-    <em>PP Regeneration</em> This type of regeneration only regenerates PP (not SP or HP) at a higher rate.
-</p>
-
 <h4 id="Resurrection">Resurrection and Reincarnation [Su, Radiant]</h4>
 <p>
     It is possible, albeit not easy, to repair a dead body and recall its soul.
@@ -2673,10 +2756,7 @@ show_activitylevels();
 
 <h4 id="SizeAlteration">Size Alteration [Su, MR]</h4>
 
-<br/>
-<?php
-show_sizealteration();
-?> 
+<?php show_sizealteration(); ?> 
 
 <p>
     Note that the base damage for natural weapons also increases. See the weapons chapter for more details.
@@ -2685,21 +2765,6 @@ show_sizealteration();
     Supernatural size alteration will (unless otherwise specified) also alter the size of carried and worn equipment.
     If insufficient room is available for an increase in size, the creature gets a free Break Barrier check to burst the enclosures.
     If that check fails, the size alteration stops before causing harm to the creature.
-</p>
-
-<h4 id="Split">Split</h4>
-<p>
-    Split is an extraordinary ability that lets some creatures split in half when struck by certain types of damage,
-    effectively becoming two smaller creatures.
-    The original creature's current HP, SP, PP, and RL are split evenly between the two new creatures,
-    but the ability typically does not work when the creature's HP reaches a certain minimum level (default is 10 HP).
-    Each of the new creatures is one size smaller than the original and should be <a href="#SizeAlteration">adjusted</a> accordingly.
-</p>
-
-<h4 id="Stampede">Stampede</h4>
-<p>
-    This is an ability that lets some creatures make overrun attacks that cause trampling damage.
-    The danger of this ability is often increased by the quantity of stampeding creatures.
 </p>
 
 <h4 id="Summoning">Summoning and Calling [Su, Dimension]</h4>
@@ -2715,33 +2780,6 @@ show_sizealteration();
     to return home (during certain circumstances). However, if the creature is killed, it actually dies and does not return to its home plane.
 </p>
 
-<h4 id="SupernaturalAffinity">Supernatural Affinity</h4>
-<p>
-    Some classes and creatures have a natural affinity for certain types of magic. This can bring the following benefits:<br/>
-    First, they get an ability bonus to the action check for casting spells or using powers of the specified type.<br/>
-    Second, they can "take 10" on those action checks even when stressed or threatened.<br/>
-    Third, the PP costs for those spells and powers can be reduced.
-</p>
-<p>
-    The PP cost reduction can only reduce the actual PP cost to a minimum of 1 PP.
-</p>
-
-<p>
-    Supernatural affinity specifies the skill or skills for which it applies,
-    which ability score modifier to use as a bonus or penalty to spellcasting checks,
-    and the PP cost reduction (usually based on the affinity skill level and the ability score modifier).
-    If there are any special prerequisites or limitations for the affinity, these are also specified.
-</p>
-<p>
-    If a character gains multiple supernatural affinities for the same skill, use the most beneficial one.
-    The effects of multiple supernatural affinities do not stack.
-</p>
-
-<br/>
-<?php
-show_affinityskilleffects();
-?>
-
 <h4 id="Swarm">Swarm</h4>
 <p>
     A swarm creature is actually a large quantity of small creatures (of size category Tiny or smaller) that are treated as a single creature.
@@ -2750,7 +2788,7 @@ show_affinityskilleffects();
 <ul>
     <li>Reach 0 (regardless of swarm size).</li>
     <li>Deal automatic damage each round (no attack roll required) to creatures in the swarm’s square(s).</li>
-    <li>Distract - Free attack each round against creatures in the swarm’s square(s): +TL vs. Fort (S - dazed for 1 r).</li>
+    <li>Distract - Free attack each round against creatures in the swarm’s square(s): d20! + TL vs. Fort (S - dazed for 1 r).</li>
     <li>Creatures in the swarm’s squares take a -4 penalty on many action checks (PAM and MAM).</li>
     <li>Does not threaten squares and cannot make opportunity attacks.</li>
     <li>Can move through any occupied square and vice versa.</li>
@@ -2802,15 +2840,6 @@ show_affinityskilleffects();
     MR).
 </p>
 
-<h4 id="TouchAttacks">Touch Attacks</h4>
-<p>
-    Many special attacks are transferred by touch and therefore require a successful attack roll.
-    Note that the special attack is not activated by someone else touching the creature in question.
-</p>
-<p>
-    Reach attacks (Rch) can typically be combined with a normal melee attack (causing natural weapon damage), while touch attacks (Tch) cannot.
-</p>
-
 <h4 id="Troop">Troop (or Mob)</h4>
 <p>
     A troop (or mob) is a group of creatures that are very similar and can be effectively treated as a single unit.
@@ -2838,24 +2867,3 @@ show_affinityskilleffects();
     <li>Vulnerability to area effect attacks against Ref (50% extra damage).</li>
     <li>Has effectively the same ability scores, skills, and access to actions as an average member of the troop.</li>
 </ul>
-
-<h4 id="VitalAttack">Vital Attack</h4>
-<p>
-    Vital Attack is the ability to strike the most vulnerable and sensitive spots on an enemy.
-    This provides an attack and damage bonus
-    against any opponent that is flat-footed or for other reasons not allowed to use active DeC.
-</p>
-<p>
-    Vital attacks can only be made with primary attack forms or weapons held in primary attack forms.
-    Furthermore, vital attacks require at least one skill level in a weapon skill appropriate for the weapon used.
-</p>
-<p>
-    Vital attacks require a relatively unobstructed view of the target;
-    good or total cover as well as good or total concealment nullify the bonuses granted by vital attack.
-<p>
-    For attacks with secondary attack rolls, the attack bonus applies to both the primary and secondary attack.
-</p>
-
-<?php
-application_end();
-?> 

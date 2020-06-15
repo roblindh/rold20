@@ -6,8 +6,10 @@
     with some additional inspiration from other d20 systems as well as
     <a href="http://en.wikipedia.org/wiki/Dungeons_%26_Dragons">4E D&amp;D</a> and
     <a href="http://en.wikipedia.org/wiki/Dungeons_%26_Dragons">5E D&amp;D</a>.
-    The RoL rules have been designed to be simpler and more flexible, but also more realistic, than the original d20 rules.
-    However, the set of classes, character races, monsters, spells, and so forth are basically the same, and the RoL rules try to remain
+    The RoL rules have been designed to be simpler and more flexible, but also
+    more realistic, than the original d20 rules.
+    However, the set of classes, character races, monsters, spells, and so forth
+    are basically the same, and the RoL rules try to remain
     faithful to the heroic and high-fantasy feel of traditional D&amp;D.
 </p>
 
@@ -63,7 +65,7 @@
         in many other systems to avoid a high frequency of character death.</li>
 </ul>
 
-<h3 id="MainFeatures">Main Changes and Features</h3>
+<h3 id="MainFeatures">Key Changes and Features</h3>
 <p>This is a summary of the most important changes in these rules
     compared to traditional 3.5E D&amp;D:</p>
 <ul>
@@ -124,3 +126,12 @@
     <li>Most costs, prices, treasures, etc. have been changed one
         magnitude, from gold pieces to silver.</li>
 </ul>
+
+<h3 id="OptionalRules">Optional Rules</h3>
+<div class="optionalrule">
+    <p>
+        Boxes like this one contain rules that are to be considered optional.
+        They usually provide alternative or altered rules for DMs who want
+        campaigns with a special flavor.
+    </p>
+</div>

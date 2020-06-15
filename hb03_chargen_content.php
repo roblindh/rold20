@@ -1,12 +1,6 @@
-<?php
-require_once 'RulesSrc/showtables.php';
-
-application_start();
-?>
-
 <h2 id="CharGen">Character Generation</h2>
 <p>
-    When generating a player character, use the following steps:
+    When generating a player character, follow these steps:
 </p>
 <ol>
     <li>Choose a basic character concept, including class or at least a type of class. You should also give some thoughts to race and gender.</li>
@@ -19,7 +13,8 @@ application_start();
     <li>Choose class.</li>
     <li>Record special traits for race and class.</li>
     <li>Use improvement points (IP) to buy improvements. IP can be saved for future use.</li>
-    <li>Learn skills by distributing skill points. For background skills, choose one of your culture's background classes. Skill points may not be stored for future use.</li>
+    <li>Learn background skills by distributing skill points (based on RL+1 levels in your chosen background class). Skill points may not be stored for future use.</li>
+    <li>Learn class skills by distributing skill points (based on your class level or levels). Skill points may not be stored for future use.</li>
     <li>Choose or generate physical appearance.</li>
     <li>Choose or generate personality characteristics.</li>
     <li>Roll for wealth and buy equipment.</li>
@@ -28,7 +23,7 @@ application_start();
     <ul>
         <li>Hit Points, Stamina Points, and Power Points.</li>
         <li>Initiative Modifier.</li>
-        <li>Defense Class.</li>
+        <li>Defense Class (active and passive).</li>
         <li>Fortitude, Reflex, and Will Defenses.</li>
         <li>Attack Modifiers.</li>
         <li>Encumbrance Class and Penalty.</li>
@@ -44,19 +39,20 @@ application_start();
     using one of the following methods (subject to the DM’s approval):
 </p>
 
-<br/>
-<?php
-show_abilitygenmethods();
-?> 
+<?php show_abilitygenmethods(); ?> 
 
-<p>
-    <em id="AverageChars">Average Characters</em> (optional rule for more realistic campaigns):
-    Use one of the average ability generation methods listed above.
-</p>
-<p>
-    <em id="HeroicChars">Heroic Characters</em> (optional rule for more cinematic campaigns):
-    Use one of the heroic ability generation methods listed above.
-</p>
+<div class="optionalrule">
+    <p>
+        <em id="AverageChars">Average Characters</em> (optional rule for more realistic campaigns):
+        Use one of the average ability generation methods listed above.
+    </p>
+</div>
+<div class="optionalrule">
+    <p>
+        <em id="HeroicChars">Heroic Characters</em> (optional rule for more cinematic campaigns):
+        Use one of the heroic ability generation methods listed above.
+    </p>
+</div>
 
 <h3 id="CharacterRaces">Character Races</h3>
 <p>
@@ -66,15 +62,6 @@ show_abilitygenmethods();
     and some of those may also be suitable for characters
     (at the DM’s discretion). Note, however, that this chapter and the original D&amp;D rules provide more role-playing information than
     is available for most non-character creatures.
-</p>
-<p>
-    In addition to the base races, you can apply one of the listed templates to a base race,
-    but note that most templates have a CL modifier and may not be allowed for low-level campaigns.
-    Most of the templates represent an unusual bloodline somewhere among one’s ancestors.
-    For example, your character can be a half-dragon human, in other words a human with draconic blood, also known as a dragonborn.
-    Or you can be a half-earth-elemental gnome, sometimes known as an earth genasi. Although many of the templates are referred to as half-something,
-    the unusual ancestry is often more distant in the family tree than one of your parents. Also note that some human-based hybrids,
-    half-elves and half-orcs in particular, are common and distinct enough to be listed as separate races in their own right.
 </p>
 <p>
     With very few exceptions, the &quot;non-technical&quot; details listed for character races in D&amp;D still apply.
@@ -88,32 +75,24 @@ show_abilitygenmethods();
     On the other hand, an elf that is raised by dwarves should have the racial traits of an elf but at least some of the dwarven cultural traits (instead of the elven ones).
 </p>
 
-<br/>
-<?php
-show_creaturespc(4);
-?> 
+<?php show_creaturespc(4); ?> 
 
-<br/><br/>
-<?php
-show_templates(4, false);
-?> 
+<h3 id="CharacterTemplates">Character Templates</h3>
+<p>
+    In addition to the base races, you can apply one of the listed templates to a base race,
+    but note that most templates have a CL modifier and may not be allowed for low-level campaigns.
+    Most of the templates represent an unusual bloodline somewhere among one’s ancestors.
+    For example, your character can be a half-dragon human, in other words a human with draconic blood, also known as a dragonborn.
+    Or you can be a half-earth-elemental gnome, sometimes known as an earth genasi. Although many of the templates are referred to as half-something,
+    the unusual ancestry is often more distant in the family tree than one of your parents. Also note that some human-based hybrids,
+    half-elves and half-orcs in particular, are common and distinct enough to be listed as separate races in their own right.
+</p>
 
-<h3 id="CharacterGender">Character Gender</h3>
-<p>
-    There is usually very little difference between male and female as far as the rules are concerned.
-    For most races, the only technical difference is in height and weight calculations.
-    Still, there are a few races where the two genders are distinctly different with regards to ability adjustments and other traits.
-</p>
-<p>
-    In these rules (as in the original ones), the words ‘he’, ‘him’, and ‘his’ will often refer to both genders, in an attempt to make the text somewhat easier to read.
-</p>
+<?php show_templates(4, false); ?> 
 
 <h3 id="CharacterClasses">Character Classes</h3>
 
-<br/>
-<?php
-show_classes();
-?> 
+<?php show_classes(); ?> 
 
 <h4 id="MultiClass">Multi-Classing</h4>
 <p>
@@ -125,43 +104,39 @@ show_classes();
 
 <h4>Using Improvement Points</h4>
 <p>
-    Characters receive 5 improvement points per level.
+    Characters receive 5 improvement points per level with which they can buy special improvement bonuses.
 </p>
 
-<?php
-show_improvements();
-?>
+<?php show_improvements(); ?>
 
-<h4>Optional Improvement Rules</h4>
-<p>
-    <em id="Advantages">Advantages and Disadvantages</em> (optional rule for more varied characters): Characters can spend improvement points to buy special advantages,
-    and they can acquire additional improvement points by accepting special disadvantages.
-</p>
-<p>
-    All advantages and disadvantages are subject to DM approval. Many of them should typically only be allowed for newly
-    generated characters, and no character should be allowed to buy advantages for more than 10 IP nor acquire more than
-    10 IP from disadvantages. However, the DM should feel free to award or require IP for advantages or disadvantages
-    gained later in a character's career.
-</p>
-<p>
-    In most cases, a character should be able to pay IP to reduce or remove a disadvantage acquired at an earlier level.
-    The player and DM should together try to explain exactly how this is accomplished.
-    Note that a character should not be allowed to get rid of a disadvantage without paying the required IP.
-</p>
+<div class="optionalrule">
+    <p>
+        <em id="Advantages">Advantages and Disadvantages</em> (optional rule for more varied characters): Characters can spend improvement points to buy special advantages,
+        and they can acquire additional improvement points by accepting special disadvantages.
+    </p>
+    <p>
+        All advantages and disadvantages are subject to DM approval. Many of them should typically only be allowed for newly
+        generated characters, and no character should be allowed to buy advantages for more than 10 IP nor acquire more than
+        10 IP from disadvantages. However, the DM should feel free to award or require IP for advantages or disadvantages
+        gained later in a character's career.
+    </p>
+    <p>
+        In most cases, a character should be able to pay IP to reduce or remove a disadvantage acquired at an earlier level.
+        The player and DM should together try to explain exactly how this is accomplished.
+        Note that a character should not be allowed to get rid of a disadvantage without paying the required IP.
+    </p>
 
-<br/>
-<?php
-show_advantages();
-?>
+    <?php show_advantages(); ?>
 
-<p>
-    <em id="RandomAdvantages">Random Advantages and Disadvantages</em> (optional rule for more varied characters):
-    The player or DM can roll randomly for advantages and disadvantages. Roll d% &rarr;
-    01-50: No ad or disad, 51-75: One random advantage and roll again, 76-100: One random disadvantage and roll again.
-    The character's improvement points should be adjusted accordingly.
-</p>
+    <p>
+        <em id="RandomAdvantages">Random Advantages and Disadvantages</em> (optional rule for more varied characters):
+        The player or DM can roll randomly for advantages and disadvantages. Roll d% &rarr;
+        01-50: No ad or disad, 51-75: One random advantage and roll again, 76-100: One random disadvantage and roll again.
+        The character's improvement points should be adjusted accordingly.
+    </p>
+</div>
 
-<h3 id="CharSkills">Skills</h3>
+<h3 id="CharSkills">Learning Skills</h3>
 
 <h4>Acquiring Skills</h4>
 <p>
@@ -187,22 +162,26 @@ show_advantages();
 </p>
 
 <h4 id="OptionalSkillRules">Optional Skill Rules</h4>
-<p>
-    <em>Out-of-Class Skill Access</em> (optional rule for more varied characters):
-    Each character can choose one skill that he always has primary access to, regardless of class choice.
-</p>
-<p>
-    <em>Retraining</em> (optional rule for simpler character generation):
-    Each character can redistribute (effectively retrain) a certain number (DM's choice) of previously earned skill points at each level.
-    This is in addition to and separate from the skill points normally used to improve or learn new skills.
-</p>
-<ul>
-    <li>Skill points can be moved from any skill, but no more than 1 point can be moved per skill and level.</li>
-    <li>The moved skill points can be assigned according to the skills available to the levelled class.
-        Primary skills can be increased by 0.5 or 1 points, while secondary skills can only be increased by 0.5 points.
-        As noted above, this is in addition to the regular skill training.</li>
-    <li>The maximum number of total skill points that may be allocated to any skill is (TL + 1).</li>
-</ul>
+<div class="optionalrule">
+    <p>
+        <em>Out-of-Class Skill Access</em> (optional rule for more varied characters):
+        Each character can choose one skill that he always has primary access to, regardless of class choice.
+    </p>
+</div>
+<div class="optionalrule">
+    <p>
+        <em>Retraining</em> (optional rule for simpler character generation):
+        Each character can redistribute (effectively retrain) a certain number (DM's choice) of previously earned skill points at each level.
+        This is in addition to and separate from the skill points normally used to improve or learn new skills.
+    </p>
+    <ul>
+        <li>Skill points can be moved from any skill, but no more than 1 point can be moved per skill and level.</li>
+        <li>The moved skill points can be assigned according to the skills available to the levelled class.
+            Primary skills can be increased by 0.5 or 1 points, while secondary skills can only be increased by 0.5 points.
+            As noted above, this is in addition to the regular skill training.</li>
+        <li>The maximum number of total skill points that may be allocated to any skill at any time is (TL + 1).</li>
+    </ul>
+</div>
 
 <h3 id="OtherChars">Other Characteristics</h3>
 
@@ -225,19 +204,19 @@ show_advantages();
     Calculate DeC, Fort, Ref, and Will.
 </p>
 <p>
-    <dfn>DeC (passive) = 10 + Dex mod (if negative) + size mod + other modifiers</dfn>
+    <dfn>DeCp (passive DeC) = 10 + Dex mod (if negative) + TL + size mod + other modifiers</dfn>
 </p>
 <p>
-    <dfn>DeC (active) = DeC (passive) + Dex mod (if positive) + parry bonus + other modifiers</dfn>
+    <dfn>DeCa (active DeC) = DeCp + Dex mod (if positive) + parry bonus + other modifiers</dfn>
 </p>
 <p>
-    <dfn>Fort = 10 + Str mod + Con mod + TL + other modifiers</dfn>
+    <dfn>Fort = 10 + Str mod + Con mod + TL + skill mod + other modifiers</dfn>
 </p>
 <p>
-    <dfn>Ref = 10 + Dex mod + Int mod + TL + other modifiers</dfn>
+    <dfn>Ref = 10 + Dex mod + Int mod + TL + skill mod + other modifiers</dfn>
 </p>
 <p>
-    <dfn>Will = 10 + Wis mod + Cha mod + TL + other modifiers</dfn>
+    <dfn>Will = 10 + Wis mod + Cha mod + TL + skill mod + other modifiers</dfn>
 </p>
 
 <h4>Resistance Scores</h4>
@@ -340,6 +319,19 @@ show_advantages();
     <a href="https://www.kassoon.com/dnd/backstory-generator/">Random Backstory Generator</a>
 </p>
 
+<h4 id="WealthPerLevel">Starting Wealth</h4>
+<p>
+    When starting at 1st level, each character has 4d6×10 sp with which to buy 
+    <a href="hb12_equipment.php">weapons, armor, and other equipment</a>.
+    In addition, he automatically starts with one set of basic clothing (worth up to 5 sp).
+</p>
+
+<?php show_wealthperlevel(); ?> 
+
+<p>
+    New characters above 1st level should not be allowed items worth more than 25% of their total wealth.
+</p>
+
 <h3 id="ExperienceAndLevel">Experience and Level</h3>
 <p>
     In most campaigns, each player character starts at level 1 and with 0 XP.
@@ -355,7 +347,7 @@ show_advantages();
     As a character adventures, he will earn more XP by overcoming enemies, obstacles, and challenges.
     When enough experience has been earned, the character attains a new level. When this happens, follow these steps:
 </p>
-<ul>
+<ol>
     <li>Choose a class in which to advance, either one already possessed or a new one. This class level increases by one.</li>
     <li>Alternatively, if the character belongs to a race with racial levels and the maximum racial level has not yet been reached, feel free to increase the racial level instead of a class level.</li>
     <li>Increase HP, SP, and PP according to the new level.</li>
@@ -376,33 +368,16 @@ show_advantages();
         <li>Defenses.</li>
         <li>Attack and damage bonuses.</li>
     </ul>
-</ul>
+</ol>
 <p>
     The character is assumed to spend time between adventures training and studying, automatically learning how to use his new abilities and skills.
 </p>
 
-<p>
-    <em>Level Training</em> (optional rule for more realistic campaigns):
-    Instead of automatically granting a new level whenever a character accumulates sufficient XP,
-    a certain amount of time (x days, weeks, or even months) needs to be spent training and studying.
-    Optionally, the assistance of a teacher or master may also be required (and somehow paid for).
-</p>
-
-<h4 id="WealthPerLevel">Starting Wealth</h4>
-<p>
-    When starting at 1st level, each character has 4d6×10 sp with which to buy 
-    <a href="hb12_equipment.php">weapons, armor, and other equipment</a>.
-    In addition, he automatically starts with one set of basic clothing (worth up to 5 sp).
-</p>
-
-<?php
-show_wealthperlevel();
-?> 
-
-<p>
-    New characters above 1st level should not be allowed items worth more than 25% of their total wealth.
-</p>
-
-<?php
-application_end();
-?> 
+<div class="optionalrule">
+    <p>
+        <em>Level Training</em> (optional rule for more realistic campaigns):
+        Instead of automatically granting a new level whenever a character accumulates sufficient XP,
+        a certain amount of time (x days, weeks, or even months) needs to be spent training and studying.
+        Optionally, the assistance of a teacher or master may also be required (and somehow paid for).
+    </p>
+</div>

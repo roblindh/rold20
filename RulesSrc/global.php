@@ -1,4 +1,23 @@
 <?php
+require_once 'helpfuncs.php';
+require_once 'abilityscores.php';
+require_once 'modifiers.php';
+require_once 'conditions.php';
+require_once 'trait.php';
+require_once 'entity.php';
+require_once 'creature.php';
+require_once 'equipment.php';
+require_once 'showtables.php';
+require_once 'showtables_actions.php';
+require_once 'showtables_analysis.php';
+require_once 'showtables_characteristics.php';
+require_once 'showtables_classes.php';
+require_once 'showtables_creatures.php';
+require_once 'showtables_environment.php';
+require_once 'showtables_items.php';
+require_once 'showtables_pcgen.php';
+require_once 'showtables_skills.php';
+require_once 'showtables_spells.php';
 
 define("APP_DATA_FILE", "application.data");
 
@@ -10,7 +29,7 @@ function application_start() {
     $db_server = 'localhost:3306';
     $db_user = 'root';
     $db_password = 'admin';
-//	$db_password = '';
+//    $db_password = '';
     $db_name = 'rold20rules';
     $db_name_campaign = 'rold20campaign';
     $footer_parser = new cExpressionParser();
@@ -339,14 +358,14 @@ function init_traits() {
         new cTraitDescription("Defense", "SuffocateRes", "Suffocation %r", "%r (%t) to drowning and suffocation", TYPE_INTEGER),
         new cTraitDescription("Defense", "TelepathyRes", "", "Telepathy resistance, %v", TYPE_LEVEL),
         new cTraitDescription("Defense", "TrapRes", "Trap %r", "%r (%t) to traps", TYPE_INTEGER),
-        new cTraitDescription("Defense", "2WpDef", "Two-Wp DeB ×%v", "When wielding 2 melee weapons (or a double weapon or weapon & shield), multiply AP-based defense bonus (DeB) by %v", TYPE_FLOAT),
+        new cTraitDescription("Defense", "2WpDef", "Two-Wp %v free parries", "When wielding 2 melee weapons (or a double weapon or weapon & shield), you can make %v parries without spending reactions", TYPE_INTEGER),
         new cTraitDescription("Defense", "Diehard", "Diehard", "Diehard (disabled instead of unconscious below 0 HP)", TYPE_OTHER),
         new cTraitDescription("Defense", "Dodge", "Dodge %v", "Dodge, %v", TYPE_LEVEL),
         new cTraitDescription("Defense", "EnergyShield", "Energy shield %v", "Energy shield (deals %v to melee attacker or weapon)", TYPE_OTHER),
         new cTraitDescription("Defense", "Evasion", "Evasion %v", "Evasion, %v", TYPE_LEVEL),
-        new cTraitDescription("Defense", "RiposteDisarm", "Riposte disarm", "Riposte disarm (when a melee attack misses you, you can use an AoO for a melee disarm attempt)", TYPE_OTHER),
-        new cTraitDescription("Defense", "RiposteGrapple", "Riposte grapple", "Riposte grapple (when a melee attack misses you, you can use an AoO to try to initiate a grapple)", TYPE_OTHER),
-        new cTraitDescription("Defense", "RiposteTrip", "Riposte trip", "Riposte trip (when a melee attack misses you, you can use an AoO for a melee trip attempt)", TYPE_OTHER),
+        new cTraitDescription("Defense", "RiposteDisarm", "Riposte disarm", "Riposte disarm (when a melee attack misses you, you can use a reaction for a melee disarm attempt)", TYPE_OTHER),
+        new cTraitDescription("Defense", "RiposteGrapple", "Riposte grapple", "Riposte grapple (when a melee attack misses you, you can use a reaction to try to initiate a grapple)", TYPE_OTHER),
+        new cTraitDescription("Defense", "RiposteTrip", "Riposte trip", "Riposte trip (when a melee attack misses you, you can use a reaction for a melee trip attempt)", TYPE_OTHER),
         new cTraitDescription("Defense", "SlipperyMind", "Slippery mind", "Slippery mind (reduce mental effect durations by one magnitude)", TYPE_OTHER),
         new cTraitDescription("Defense", "Vulnerable", "Vulnerable to %t +%v%", "Vulnerability to %t +%v% damage", TYPE_INTEGER),
         new cTraitDescription("AttMod", "Attack", "%v on attacks", "%v %t modifier to attacks", TYPE_INTEGER),
@@ -356,8 +375,8 @@ function init_traits() {
         new cTraitDescription("AttMod", "DmgDice", "", "Damage dice increased by %v steps", TYPE_INTEGER),
         new cTraitDescription("AttMod", "BiteDmg", "", "Bite (or head) damage (%v)", TYPE_OTHER),
         new cTraitDescription("AttMod", "HandDmg", "", "Claw (or hand) damage (%v)", TYPE_OTHER),
-        new cTraitDescription("Attack", "1WpPrec", "Single-weapon AB ×%v", "With single-weapon melee attacks, multiply AP-based attack bonus (AB) by %v", TYPE_FLOAT),
-        new cTraitDescription("Attack", "2HndDmg", "2H/charge DaB ×%v", "With 2-handed melee attacks and charge attacks, multiply AP-based damage bonus (DaB) by %v", TYPE_FLOAT),
+        new cTraitDescription("Attack", "1WpPrec", "Single-weapon AP attack bonus ×%v", "With single-weapon melee attacks, multiply AP-based attack bonus by %v", TYPE_FLOAT),
+        new cTraitDescription("Attack", "2HndDmg", "2H/charge AP damage bonus ×%v", "With 2-handed melee attacks and charge attacks, multiply AP-based damage bonus by %v", TYPE_FLOAT),
         new cTraitDescription("Attack", "AttType", "", "Attacks count as %v", TYPE_OTHER),
         new cTraitDescription("Attack", "BleedingCrit", "Bleeding crit (%v ongoing HP)", "Bleeding crit (each crit also bleeds for %v HP/r)", TYPE_OTHER),
         new cTraitDescription("Attack", "BypassArmor", "", "Bypass armor (up to %v penalty on attack reduces DR by same amount)", TYPE_INTEGER),
@@ -404,10 +423,10 @@ function init_traits() {
         new cTraitDescription("Attack", "RangedVitalAttack", "Vital attack range +%v", "Increased vital attack range (+%v sq maximum distance)", TYPE_INTEGER),
         new cTraitDescription("Attack", "RapidReload", "", "Rapid reload (halve AP cost)", TYPE_OTHER),
         new cTraitDescription("Attack", "Reflexes", "Fast reflexes %v", "Fast reflexes, %v", TYPE_LEVEL),
-        new cTraitDescription("Attack", "RefMod", "%v AoO/r", "Fast reflexes (%v AoO per round)", TYPE_INTEGER),
+        new cTraitDescription("Attack", "RefMod", "%v reactions/r", "Fast reflexes (%v reactions per round)", TYPE_INTEGER),
         new cTraitDescription("Attack", "RidebyAttack", "", "Rideby attack (mounted charge does not provoke AoO from target)", TYPE_OTHER),
         new cTraitDescription("Attack", "Shaping", "Shape areas", "Shaping (area attacks can be shaped, so as to leave any square(s) in the original area unaffected)", TYPE_OTHER),
-        new cTraitDescription("Attack", "SniperAim", "Sniping", "Sniper aim (for every 4 AP spent on AB, increase threat range by 1)", TYPE_OTHER),
+        new cTraitDescription("Attack", "SniperAim", "Sniping", "Sniper aim (for every 4 AP spent on AP attack bonus, increase threat range by 1 for that attack)", TYPE_OTHER),
         new cTraitDescription("Attack", "Stampede", "Stampede", "Stampede", TYPE_OTHER),
         new cTraitDescription("Attack", "VitalAttackLt", "Vital attack (light weapons; %v att/dmg)", "Vital attack with light weapons (+%v attack and damage against any target within 6 sq that is not allowed to use active DeC)", TYPE_INTEGER),
         new cTraitDescription("Attack", "VitalAttack1H", "Vital attack (one-handed weapons; %v att/dmg)", "Vital attack with one-handed weapons (+%v attack and damage against any target within 6 sq that is not allowed to use active DeC)", TYPE_INTEGER),
@@ -477,7 +496,7 @@ function init_traits() {
         new cTraitDescription("Equipment", "WearHelmet", "Wear helmet", "Can wear helmet or hat", TYPE_OTHER),
         new cTraitDescription("Equipment", "WearLens", "Wear lenses", "Can wear lenses", TYPE_OTHER),
         new cTraitDescription("Equipment", "WearRing", "Wear ring", "Can wear ring", TYPE_OTHER),
-        new cTraitDescription("Equipment", "UseTool", "Use tools", "Can use tools and somatic component", TYPE_OTHER),
+        new cTraitDescription("Equipment", "UseTool", "Use tools", "Can use tools and somatic components", TYPE_OTHER),
         new cTraitDescription("Equipment", "WearSaddle", "Wear saddle", "Can wear saddle and carry rider(s)", TYPE_OTHER),
         new cTraitDescription("Equipment", "WearHorseshoe", "Wear horseshoes", "Can wear horseshoes", TYPE_OTHER),
         new cTraitDescription("Special", "AidMod", "Aid %v", "%v modifier when Aiding Another in combat", TYPE_INTEGER),
@@ -515,6 +534,7 @@ function init_traits() {
         new cTraitDescription("Special", "Trance", "", "Trance (%v h per day grants full rest)", TYPE_INTEGER),
         new cTraitDescription("Special", "Transcendence", "Transcended", "Transcendence (treat as Outsider; gain +10 enhancement bonus to DR vs non-magic weapons)", TYPE_OTHER),
         new cTraitDescription("Special", "TrueTeleporter", "", "%v modifier on activation checks for [Teleport] effects.", TYPE_INTEGER),
+
         // Unique monster abilities
         new cTraitDescription("Special", "Babble", "Babble (constant; once per target; all within 12 sq; +9 vs Will; hypnotism for rest of enc)", "Babble (Constant sonic mind-affecting whine. All sane creatures within 12 sq suffer a +9 attack vs Will to be affected as though by a hypnotism spell for remainder of encounter.)", TYPE_OTHER), // Allip babble
         new cTraitDescription("Special", "CharmAura", "Charm aura (affects humanoids within 6 sq)", "Charm/beauty aura (affects humanoids within 6 sq)", TYPE_OTHER), // Special charm aura (e.g. nymph)

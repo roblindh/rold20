@@ -1,8 +1,5 @@
 <?php
 
-require_once 'global.php';
-require_once 'helpfuncs.php';
-
 define("A_STR", 0);
 define("A_CON", 1);
 define("A_DEX", 2);

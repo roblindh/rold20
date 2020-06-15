@@ -3,28 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/xampp/htdocs/rold20/hb12a_equipment_content.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/hb12c_equipment_content.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/RulesSrc/showtables_characteristics.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/template.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/RulesSrc/trait.php</file>
+            <file>file:/D:/xampp/htdocs/rold20/page_template.php</file>
+            <file>file:/D:/xampp/htdocs/rold20/styles/site.css</file>
+            <file>file:/D:/xampp/htdocs/rold20/RulesSrc/showtables_spells.php</file>
             <file>file:/D:/xampp/htdocs/rold20/RulesSrc/showtables.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/RulesSrc/global.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/RulesSrc/showtables_creatures.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/RulesSrc/showtables_items.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/hb07_culture_content.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/hb08_encounters_content.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/hb00_all.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/hb03_chargen_content.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/hb12_equipment_content.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/hb12b_equipment_content.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/hb02_coremech_content.php</file>
             <file>file:/D:/xampp/htdocs/rold20/hb05_magic_content.php</file>
             <file>file:/D:/xampp/htdocs/rold20/hb06_environment_content.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/hb12d_equipment_content.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/RulesSrc/showtables_skills.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/RulesSrc/showtables_environment.php</file>
-            <file>file:/D:/xampp/htdocs/rold20/hb04_combat_content.php</file>
+            <file>file:/D:/xampp/htdocs/rold20/hb07_culture_content.php</file>
+            <file>file:/D:/xampp/htdocs/rold20/RulesSrc/showtables_items.php</file>
         </group>
     </open-files>
 </project-private>

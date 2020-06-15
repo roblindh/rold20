@@ -1,12 +1,5 @@
 <?php
 
-require_once 'global.php';
-require_once 'rolcalc.php';
-require_once 'abilityscores.php';
-require_once 'modifiers.php';
-require_once 'creature.php';
-require_once 'equipment.php';
-
 define("LVL_NONE", 0);
 define("LVL_MINOR", 1);
 define("LVL_LESSER", 2);
@@ -811,16 +804,16 @@ class cTrait {
                             $str = "(Even when flat-footed or surprised, you can use active DeC)";
                             break;
                         case LVL_LESSER:
-                            $str = "(Opponents gain only half the usual bonus for flanking and surrounding)";
+                            $str = "(Even when flat-footed or surprised, you can use active DeC; opponents gain only half the usual bonus for flanking and surrounding)";
                             break;
                         case LVL_GREATER:
-                            $str = "(Even when flat-footed or surprised, you can use active DeC, and you can add 1/4 of your AP as a DeB bonus to DeC; opponents gain only half the usual bonus for flanking and surrounding)";
+                            $str = "(Even when flat-footed or surprised, you can use active DeC, and you can use one reaction for parrying; opponents gain only half the usual bonus for flanking and surrounding)";
                             break;
                         case LVL_MAJOR:
-                            $str = "(Even when flat-footed or surprised, you can use active DeC, and you can add 1/3 of your AP as a DeB bonus to DeC; opponents gain only half the usual bonus for flanking and surrounding)";
+                            $str = "(Even when flat-footed or surprised, you can use active DeC, and you can use two reactions for parrying; opponents gain only half the usual bonus for flanking and surrounding)";
                             break;
                         case LVL_SUPERIOR:
-                            $str = "(Even when flat-footed or surprised, you can use active DeC, and you can add 1/2 your AP as a DeB bonus to DeC; opponents gain only half the usual bonus for flanking and surrounding)";
+                            $str = "(Even when flat-footed or surprised, you can use active DeC, and you can use reactions for parrying; opponents gain only half the usual bonus for flanking and surrounding)";
                             break;
                     }
                 }
@@ -891,7 +884,7 @@ class cTrait {
                         $str = "(Once per round, you can make an attack of opportunity against a creature you threaten that has just been struck by another's melee attack)";
                         break;
                     case LVL_GREATER:
-                        $str = "(Same as Lesser Opportunism, but it can be used as many times as you have attacks of opportunity)";
+                        $str = "(Same as Lesser Opportunism, but it can be used as many times as you have reactions)";
                         break;
                 }
                 break;
@@ -908,10 +901,10 @@ class cTrait {
             case "Reflexes":
                 switch (TraitLevel($this->aParams["Value"])) {
                     case LVL_LESSER:
-                        $str = "(You are able to make attacks of opportunity even when flat-footed)";
+                        $str = "(You are able to use reactions even when flat-footed)";
                         break;
                     case LVL_GREATER:
-                        $str = "(As a reaction, you can trade one attack of opportunity for +4 dodge bonus to DeC)";
+                        $str = "(When attacked, you can trade one reaction for +4 dodge bonus to DeC)";
                         break;
                 }
                 break;
@@ -1341,7 +1334,7 @@ class cTraitEffects {
     public $FastHeal = 0;
     // Attack: Special attack traits
     public $MultiAttackPenRed; // Reduction of multi-attack penalty
-    public $RefMod; // Number of AoO allowed
+    public $RefMod; // Number of reactions allowed
     public $VitalAttack = 0;
     public $RangedVitalAttack = 0;
     public $DmgDice = 0;

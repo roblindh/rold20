@@ -1,17 +1,19 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
-<html>
-    <link href="Styles/Site.css" rel="stylesheet" type="text/css">
-    <?php
-    require_once 'template.php';
-    ?>
+<!DOCTYPE html>
+<html lang="en-US">
+    <link rel="stylesheet" href="styles/site.css" type="text/css"/>
+    <link rel="icon" href="styles/reddragon.ico"/>
+    <?php require_once 'page_start.php'; ?>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>RoL d20 - PhpInfo</title>
+        <title>RoL d20 PhpInfo</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     </head>
-    <body>
-        <div>
-            <?php phpinfo(); ?>
-        </div>
-    </body>
-</html>
 
+    <body>
+        <section>
+            <?php phpinfo(); ?>
+        </section>
+    </body>
+
+    <?php require_once 'page_end.php'; ?>
+
+</html>

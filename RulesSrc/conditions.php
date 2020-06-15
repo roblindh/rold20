@@ -1,9 +1,11 @@
 <?php
 
-require_once 'global.php';
-require_once 'rolcalc.php';
-require_once 'abilityscores.php';
-require_once 'modifiers.php';
+define("STAGED_DYING", 1);
+define("STAGED_POSSESSION", 2);
+define("STAGED_POISON", 3);
+define("STAGED_DISEASE", 4);
+define("STAGED_INSANITY", 5);
+define("STAGED_DRUG", 6);
 
 class cConditions {
 
