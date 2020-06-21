@@ -631,9 +631,9 @@
 
 <h4 id="SpacingReach">Spacing and Reach</h4>
 <p>Typical spacing and reach based on size and body type:</p>
-<img src="images/rold20images/Reach1.gif" alt='Spacing and Reach'/>
-<img src="images/rold20images/Reach2.gif" alt='Spacing and Reach'/>
-<img src="images/rold20images/Reach3.gif" alt='Spacing and Reach'/>
+<img src="images/Reach1.gif" alt='Spacing and Reach'/>
+<img src="images/Reach2.gif" alt='Spacing and Reach'/>
+<img src="images/Reach3.gif" alt='Spacing and Reach'/>
 
 <h4 id="NaturalAttacks">Natural Attacks</h4>
 <p>
@@ -993,7 +993,7 @@
     you can use the chart to determine which other characteristics will be indirectly affected by the change.
 </p>
 <br/>
-<img src="images/rold20images/Characteristics.gif" title="Characteristics and Modifiers" alt='Characteristics Dependencies and Effects'/>
+<img src="images/Characteristics.gif" title="Characteristics and Modifiers" alt='Characteristics Dependencies and Effects'/>
 <p>
     Note that spells and magic items can affect almost any characteristic, and this is not shown in the chart above.
 </p>
@@ -1469,7 +1469,7 @@
 </p>
 
 <br/>
-<img src="images/rold20images/Areas.gif" title="Example Areas of Effect" alt='Example Areas of Effect'/>
+<img src="images/Areas.gif" title="Example Areas of Effect" alt='Example Areas of Effect'/>
 
 <p>
     When target specifies "Ally" or "Allies", this can also include you (unless otherwise specified).
