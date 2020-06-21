@@ -36,7 +36,7 @@ function show_actiondescriptions() {
 
     $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
             or die("Error connecting to database.");
-    $query = "SELECT * FROM actiontypes";
+    $query = "SELECT * FROM actiontypes ORDER BY SortOrder";
     $result = mysqli_query($dbc, $query)
             or die("Error querying database.");
     ?>
@@ -227,7 +227,7 @@ function show_actionsummary() {
 
     $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
             or die("Error connecting to database.");
-    $query = "SELECT * FROM actions WHERE ShowPCGen > 0 ORDER BY Category";
+    $query = "SELECT * FROM actions WHERE ShowPCGen > 0 ORDER BY Category, Name";
     $result = mysqli_query($dbc, $query)
             or die("Error querying database.");
     ?>

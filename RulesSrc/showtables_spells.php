@@ -22,12 +22,12 @@ function show_spelldescriptions() {
         If the attack or action check is shown in parenthesis, it means that the check is usually not required (often because the typical target is either willing or non-sentient).<br/>
         <em>Action Time:</em> The amount of time required to cast the spell (and the PP cost modifier in parenthesis).<br/>
         <em>Implements:</em> Implements needed to cast the spell (and the PP cost modifier in parenthesis).<br/>
-        <em>Cost:</em> List of the cost(s) involved (usually PP). PP cost modifiers for additional options are listed as well.<br/>
+        <em>Cost:</em> List of the cost(s) involved (usually PP). PP cost modifiers for additional variations are listed as well.<br/>
         <em>Range:</em> The range of the spell's effect (and the PP cost modifier in parenthesis).<br/>
         <em>Duration:</em> The duration of the spell's effect (and the PP cost modifier in parenthesis).<br/>
         <em>Target/Area:</em> The focus, target, or area of the spell's effect (and the PP cost modifier in parenthesis).<br/>
         <em>Description:</em> General description and explanation of the spell.<br/>
-        <em>Options:</em> Description of additional spell options that can be learned and used (and their PP cost modifier).<br/>
+        <em>Variations:</em> Description of additional spell variations that can be learned and used (and their PP cost modifier).<br/>
         <em>Results:</em> Description of the effects of success and failure, respectively. If certain levels of success or failure have special effects, it will also be described here.<br/>
         <em>Modifiers:</em> A list of the modifiers that can apply to the spellcasting check or attack check.<br/>
         <em>AP Boosts:</em> Specifies ways in which AP can be used to boost the spell.<br/>
@@ -97,7 +97,7 @@ function show_spelldescriptions() {
                     or die("Error querying database.");
             while ($row2 = mysqli_fetch_array($result2)) {
                 echo '<tr>';
-                echo '<td>Option ' . $row2['Name'] . ' (' .
+                echo '<td>Variation ' . $row2['Name'] . ' (' .
                 ($row2['Descriptors'] ? $row2['Descriptors'] . '; ' : '') .
                 ($row2['Skills'] ? str_replace("\\n", "<br/>", $row2['Skills']) . '; ' : '') .
                 str_replace("\\n", "<br/>", $row2['Cost']) . '):</td>';
@@ -143,35 +143,35 @@ function show_spelllearning() {
 
         <tr>
             <td>Arcane - ...</td>
-            <td>One new spell or option every skill level</td>
-            <td>Two spells/options per skill level</td>
+            <td>One new spell or variation every skill level</td>
+            <td>Two spells/variations per skill level</td>
         </tr>
         <tr>
             <td>Divine - ...</td>
-            <td>Two new spells or options every skill level</td>
+            <td>Two new spells or variations every skill level</td>
             <td>Unlimited</td>
         </tr>
         <tr>
             <td>Psi - ...</td>
-            <td>One new spell or option every two skill levels (but starting at 1st)</td>
-            <td>One spell/option per skill level</td>
+            <td>One new spell or variation every two skill levels (but starting at 1st)</td>
+            <td>One spell/variation per skill level</td>
         </tr>
         <tr>
             <td>Wizard Affinity - Generalist</td>
-            <td>Two new spells or options every skill level (belonging to any Arcane skill)</td>
+            <td>Two new spells or variations every skill level (belonging to any Arcane skill)</td>
             <td>-</td>
         </tr>
         <tr>
             <td>Other Spell-Related Skill</td>
             <td>-</td>
-            <td>One spell/option per skill level</td>
+            <td>One spell/variation per skill level</td>
         </tr>
 
     </tbody></table>
 
     <p>
-        <sup>1</sup>Automatic Spell Learning: The number of spells or options you can learn automatically and immediately whenever you gain levels in this type of skill.<br/>
-        <sup>2</sup>Maximum Spell Learning: This is the maximum number of spells or options you can learn
+        <sup>1</sup>Automatic Spell Learning: The number of spells or variations you can learn automatically and immediately whenever you gain levels in this type of skill.<br/>
+        <sup>2</sup>Maximum Spell Learning: This is the maximum number of spells or variations you can learn
         that have the given skill as a mandatory skill.
     </p>
     <?php
@@ -258,7 +258,7 @@ function show_spellskills() {
     global $db_server, $db_user, $db_password, $db_name;
     ?>
     <p>
-        Each of the following tables lists the spells/powers and options associated with a specific skill.
+        Each of the following tables lists the spells/powers and variations associated with a specific skill.
     </p>
 
     <?php

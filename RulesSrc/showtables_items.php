@@ -93,7 +93,10 @@ function show_items() {
             or die("Error connecting to database.");
 
     foreach ($_APP['itemtypes'] as $row) {
-        echo '<h4>' . $row['Name'] . '</h4>';
+        // Skip "base" magic items
+        if ($row['ID'] == 10)
+            continue;
+        echo '<h4 id="ItemType' . $row['ID'] . '">' . $row['Name'] . '</h4>';
 
         switch ($row['ID']) {
             case 2:
@@ -111,8 +114,8 @@ function show_items() {
                     If the damage should be modified by an ability modifier, it is also shown here.
                     The type of damage (blunt, piercing, or slashing) is given as B, P, or S.
                     For weapons that specify more than one type, the wielder chooses which type of damage to use.<br/>
-                    <em>Crit:</em> This specifies the weapon’s threat range and critical multiplier.
-                    If no value is listed, the threat range is 20 and the critical multiplier ×2.<br/>
+                    <em>Crit:</em> This specifies the weapon’s open-ended range and critical multiplier.
+                    If no value is listed, the open-ended range is 20 and the critical multiplier &times;2.<br/>
                     <em>Rch:</em> This is the weapon’s melee reach (in squares and for a weapon made for a Medium-sized wielder).
                     The first number is the minimum effective distance (0 means that it can be used against targets in the same square),
                     and the second number is the maximum effective distance.<br/>
@@ -131,7 +134,7 @@ function show_items() {
                     If the trip attempt fails and you are about to be "tripped" back, the weapon can be dropped instead.<br/>
                     <em>Charge weapon:</em> This weapon deals double base damage when charging with an adjusted speed of 10 or more.<br/>
                     <em>Disarm:</em> This weapon gives an attack bonus on disarm actions.<br/>
-                    <em>Hand-and-a-half:</em> This weapon is a hand-and-a-half weapon. With sufficient skill in Multi-Attack, you can wield it in one hand.<br/>
+                    <em>Hand-and-a-half:</em> This weapon is a hand-and-a-half weapon. With sufficient skill in Fighting Style - Akimbo, you can wield it in one hand.<br/>
                 </p>
                 <p>
                     Typically, 50% of all fired projectiles can be retrieved and reused.
@@ -158,62 +161,83 @@ function show_items() {
                 </p>
                 <?php
                 break;
+            case 6:
+                ?>
+                <p>
+                    <b>Vehicle traits:</b>
+                </p>
+                <p>
+                    <em>Category:</em> Vehicle's main category and type of propulsion.<br/>
+                    <em>Prop:</em> More details about propulsion and drivetrain.<br/>
+                    <em>Spd:</em> Base speed on ground, water, or air. For vehicles with multiple types of propulsion, this is the speed of the primary propulsion.<br/>
+                    <em>Crew:</em> Minimum crew required to control the vehicle and maintain speed.<br/>
+                    <em>Cap:</em> Capacity (M-sized passengers and/or cargo).<br/>
+                    <em>Arm:</em> Number, size, and type of armaments.
+                </p>
+                <?php
+                break;
         }
 
-        $query2 = "SELECT * FROM items ORDER BY Subtype, Name";
-        $result2 = mysqli_query($dbc, $query2)
-                or die("Error querying database.");
-        ?>
-        <table width="100%">
-            <thead><tr>
-                <th>Item</th>
-                <th style="text-align:center">Value (sp)</th>
-                <th style="text-align:center">Weight (kg)</th>
-                <th style="text-align:center">Size</th>
-                <th style="text-align:center">EC</th>
-                <th style="text-align:center">DR</th>
-                <th style="text-align:center">HP</th>
-                <th>Base Material</th>
-            </tr></thead>
-            <tbody>
-            <?php
-            while ($row2 = mysqli_fetch_array($result2)) {
-                if ($_APP['itemsubtypes'][$row2['Subtype']]['Type'] == $row['ID']) {
-                    echo '<tr>';
-                    echo '<td>' . str_replace("\\n", "<br/>", $row2['Name']) . '</td>';
-                    echo '<td style="text-align:center">' . $row2['BaseValue'] . '</td>';
-                    echo '<td style="text-align:center">' . $row2['BaseWeight'] . '</td>';
-                    if ($row2['BaseSize'] != null)
-                        echo '<td style="text-align:center">' . $_APP['sizecats'][min(max($row2['BaseSize'], -4), 4)]['Abbreviation'] . '</td>';
-                    else
-                        echo '<td style="text-align:center">-</td>';
-                    echo '<td style="text-align:center">' . signedstr($row2['ECMod']) . '</td>';
-                    echo '<td style="text-align:center">' . cItem::GetDR($row2['BaseMaterial']) . '</td>';
-                    echo '<td style="text-align:center">' . cItem::GetHP($row2['BaseMaterial'], $row2['BaseSize']) . '</td>';
-                    if ($row2['BaseMaterial'])
-                        echo '<td>' . $_APP['materials'][$row2['BaseMaterial']]['Name'] . '</td>';
-                    else
-                        echo '<td style="text-align:center">-</td>';
-                    echo '</tr>';
-                    if ($row2['Traits']) {
-                        $entity = new cPossession();
-                        $entity->GenerateItem("(Item=" . $row2['Name'] . ":)");
+        foreach ($_APP['itemsubtypes'] as $row3) {
+            if ($row3['Type'] == $row['ID']) {
+                $query2 = "SELECT * FROM items WHERE Subtype=" . $row3['ID'] . " ORDER BY Name";
+                $result2 = mysqli_query($dbc, $query2)
+                        or die("Error querying database.");
+                if (mysqli_num_rows($result2) <= 0)
+                    continue;
+                ?>
+                <table width="100%">
+                    <thead><tr>
+                        <th><?php echo $row3['Name']; ?></th>
+                        <th style="text-align:center">Value (sp)</th>
+                        <th style="text-align:center">Weight (kg)</th>
+                        <th style="text-align:center">Size</th>
+                        <th style="text-align:center">EC</th>
+                        <th style="text-align:center">DR</th>
+                        <th style="text-align:center">HP</th>
+                        <th>Base Material</th>
+                    </tr></thead>
+                    <tbody>
+                    <?php
+                    while ($row2 = mysqli_fetch_array($result2)) {
+                        if ($_APP['itemsubtypes'][$row2['Subtype']]['Type'] == $row['ID']) {
+                            echo '<tr>';
+                            echo '<td>' . str_replace("\\n", "<br/>", $row2['Name']) . '</td>';
+                            echo '<td style="text-align:center">' . $row2['BaseValue'] . '</td>';
+                            echo '<td style="text-align:center">' . $row2['BaseWeight'] . '</td>';
+                            if ($row2['BaseSize'] != null)
+                                echo '<td style="text-align:center">' . $_APP['sizecats'][min(max($row2['BaseSize'], -4), 4)]['Abbreviation'] . '</td>';
+                            else
+                                echo '<td style="text-align:center">-</td>';
+                            echo '<td style="text-align:center">' . signedstr($row2['ECMod']) . '</td>';
+                            echo '<td style="text-align:center">' . cItem::GetDR($row2['BaseMaterial']) . '</td>';
+                            echo '<td style="text-align:center">' . cItem::GetHP($row2['BaseMaterial'], $row2['BaseSize']) . '</td>';
+                            if ($row2['BaseMaterial'])
+                                echo '<td>' . $_APP['materials'][$row2['BaseMaterial']]['Name'] . '</td>';
+                            else
+                                echo '<td style="text-align:center">-</td>';
+                            echo '</tr>';
+                            if ($row2['Traits']) {
+                                $entity = new cPossession();
+                                $entity->GenerateItem("(Item=" . $row2['Name'] . ":)");
 
-                        echo '<tr>';
-                        echo '<td></td><td colspan=7>' . str_replace("\\n", "<br/>", $entity->TraitEffects->ProcessTraits($row2['Traits'], 0, $entity)) . '</td>';
-//				    echo '<td></td><td colspan=7>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row2['Traits'], FALSE)) . '</td>';
-                        echo '</tr>';
+                                echo '<tr>';
+                                echo '<td></td><td colspan=7>' . str_replace("\\n", "<br/>", $entity->TraitEffects->ProcessTraits($row2['Traits'], 0, $entity)) . '</td>';
+        //				    echo '<td></td><td colspan=7>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row2['Traits'], FALSE)) . '</td>';
+                                echo '</tr>';
+                            }
+                            if ($row2['Description']) {
+                                echo '<tr>';
+                                echo '<td></td><td colspan=8>' . str_replace("\\n", "<br/>", $row2['Description']) . '</td>';
+                                echo '</tr>';
+                            }
+                        }
                     }
-                    if ($row2['Description']) {
-                        echo '<tr>';
-                        echo '<td></td><td colspan=8>' . str_replace("\\n", "<br/>", $row2['Description']) . '</td>';
-                        echo '</tr>';
-                    }
-                }
+                    ?>
+                </tbody></table>
+            <?php
             }
-            ?>
-        </tbody></table>
-        <?php
+        }
     }
 
     mysqli_close($dbc);
@@ -272,61 +296,70 @@ function show_itemsmagic() {
             or die("Error connecting to database.");
 
     foreach ($_APP['itemtypes'] as $row) {
-        echo '<h4>' . $row['Name'] . '</h4>';
+        // Skip services
+        if ($row['ID'] == 1 || $row['ID'] == 8)
+            continue;
+        echo '<h4 id="MagicItemType' . $row['ID'] . '">' . $row['Name'] . '</h4>';
 
-        $query2 = "SELECT * FROM itemsmodified ORDER BY Subtype, Name";
-        $result2 = mysqli_query($dbc, $query2)
-                or die("Error querying database.");
-        ?>
-        <table width="100%">
-            <thead><tr>
-                <th>Item</th>
-                <th style="text-align:center">Value (sp)</th>
-                <th style="text-align:center">Weight (kg)</th>
-                <th style="text-align:center">Size</th>
-                <th style="text-align:center">EC</th>
-                <th style="text-align:center">PL</th>
-                <th style="text-align:center">DR</th>
-                <th style="text-align:center">HP</th>
-                <th>Base Material</th>
-            </tr></thead>
-            <tbody>
-            <?php
-            while ($row2 = mysqli_fetch_array($result2)) {
-                if ($_APP['itemsubtypes'][$row2['Subtype']]['Type'] == $row['ID']) {
-                    $entity = new cPossession();
-                    $entity->GenerateItem($row2['Config']);
+        foreach ($_APP['itemsubtypes'] as $row3) {
+            if ($row3['Type'] == $row['ID']) {
+                $query2 = "SELECT * FROM itemsmodified WHERE Subtype=" . $row3['ID'] . " ORDER BY Name";
+                $result2 = mysqli_query($dbc, $query2)
+                        or die("Error querying database.");
+                if (mysqli_num_rows($result2) <= 0)
+                    continue;
+                ?>
+                <table width="100%">
+                    <thead><tr>
+                        <th><?php echo $row3['Name']; ?></th>
+                        <th style="text-align:center">Value (sp)</th>
+                        <th style="text-align:center">Weight (kg)</th>
+                        <th style="text-align:center">Size</th>
+                        <th style="text-align:center">EC</th>
+                        <th style="text-align:center">PL</th>
+                        <th style="text-align:center">DR</th>
+                        <th style="text-align:center">HP</th>
+                        <th>Base Material</th>
+                    </tr></thead>
+                    <tbody>
+                    <?php
+                    while ($row2 = mysqli_fetch_array($result2)) {
+                        if ($_APP['itemsubtypes'][$row2['Subtype']]['Type'] == $row['ID']) {
+                            $entity = new cPossession();
+                            $entity->GenerateItem($row2['Config']);
 
-                    echo '<tr>';
-                    echo '<td>' . str_replace("\\n", "<br/>", $row2['Name']) . '</td>';
-                    echo '<td style="text-align:center">' . $entity->GetValue() . '</td>';
-                    echo '<td style="text-align:center">' . $entity->GetWeight() . '</td>';
-                    echo '<td style="text-align:center">' . $_APP['sizecats'][min(max($entity->GetCurrentSize(), -4), 4)]['Abbreviation'] . '</td>';
-                    echo '<td style="text-align:center">' . $entity->GetECMod() . '</td>';
-                    echo '<td style="text-align:center">' . $entity->GetPowerLevel() . '</td>';
-                    echo '<td style="text-align:center">' . $entity->GetDR() . '</td>';
-                    echo '<td style="text-align:center">' . $entity->GetHPTotal() . '</td>';
-                    echo '<td>' . $_APP['materials'][$entity->GetMaterial()]['Name'] . '</td>';
-                    echo '</tr>';
-                    if ($row2['Description']) {
-                        echo '<tr>';
-                        echo '<td></td><td colspan=8>' . str_replace("\\n", "<br/>", $row2['Description']) . '</td>';
-                        echo '</tr>';
+                            echo '<tr>';
+                            echo '<td>' . str_replace("\\n", "<br/>", $row2['Name']) . '</td>';
+                            echo '<td style="text-align:center">' . $entity->GetValue() . '</td>';
+                            echo '<td style="text-align:center">' . $entity->GetWeight() . '</td>';
+                            echo '<td style="text-align:center">' . $_APP['sizecats'][min(max($entity->GetCurrentSize(), -4), 4)]['Abbreviation'] . '</td>';
+                            echo '<td style="text-align:center">' . $entity->GetECMod() . '</td>';
+                            echo '<td style="text-align:center">' . $entity->GetPowerLevel() . '</td>';
+                            echo '<td style="text-align:center">' . $entity->GetDR() . '</td>';
+                            echo '<td style="text-align:center">' . $entity->GetHPTotal() . '</td>';
+                            echo '<td>' . $_APP['materials'][$entity->GetMaterial()]['Name'] . '</td>';
+                            echo '</tr>';
+                            if ($row2['Description']) {
+                                echo '<tr>';
+                                echo '<td></td><td colspan=8>' . str_replace("\\n", "<br/>", $row2['Description']) . '</td>';
+                                echo '</tr>';
+                            }
+                            if ($_APP['items'][$entity->Item]['Traits']) {
+                                echo '<tr>';
+                                echo '<td></td><td colspan=8>' . str_replace("\\n", "<br/>", $entity->TraitEffects->ProcessTraits($_APP['items'][$entity->Item]['Traits'], 0, $entity)) . '</td>';
+                                echo '</tr>';
+                            } {
+                                echo '<tr>';
+                                echo '<td></td><td colspan=8>' . str_replace("\\n", "<br/>", $entity->GetModsStr()) . '</td>';
+                                echo '</tr>';
+                            }
+                        }
                     }
-                    if ($_APP['items'][$entity->Item]['Traits']) {
-                        echo '<tr>';
-                        echo '<td></td><td colspan=8>' . str_replace("\\n", "<br/>", $entity->TraitEffects->ProcessTraits($_APP['items'][$entity->Item]['Traits'], 0, $entity)) . '</td>';
-                        echo '</tr>';
-                    } {
-                        echo '<tr>';
-                        echo '<td></td><td colspan=8>' . str_replace("\\n", "<br/>", $entity->GetModsStr()) . '</td>';
-                        echo '</tr>';
-                    }
-                }
+                    ?>
+                </tbody></table>
+                <?php
             }
-            ?>
-        </tbody></table>
-        <?php
+        }
     }
 
     mysqli_close($dbc);
@@ -557,6 +590,7 @@ function show_treasuretables() {
             <th style="text-align:center">Minor Items</th>
             <th style="text-align:center">Medium Items</th>
             <th style="text-align:center">Major Items</th>
+            <th style="text-align:center">Average Total (sp)</th>
         </tr></thead>
         <tbody>
         <?php
@@ -573,6 +607,7 @@ function show_treasuretables() {
             echo '<td style="text-align:center">' . $row['MinorItems'] . '</td>';
             echo '<td style="text-align:center">' . $row['MediumItems'] . '</td>';
             echo '<td style="text-align:center">' . $row['MajorItems'] . '</td>';
+            echo '<td style="text-align:center">' . $row['AverageTotal'] . '</td>';
             echo '</tr>';
         }
         ?>

@@ -115,7 +115,7 @@
         high quality equipment.</li>
     <li>Spells and most supernatural abilities are now powered either by
         stamina points (physical stamina) or power points (mental stamina).</li>
-    <li>Spells have variable parameters and options instead of a fixed
+    <li>Spells have variable parameters and variations instead of a fixed
         effect and spell level.</li>
     <li>Spells make use of opposed checks and opposed power levels much
         more than before.</li>

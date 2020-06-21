@@ -1164,9 +1164,9 @@
     in turn resulting in different amounts of damage being inflicted.
 </p>
 <p>
-    Example 3: A combatant is using Multi-Attack to attack with both a sword and a dagger simultaneously,
+    Example 3: A combatant is using Akimbo Attack to attack with both a sword and a dagger simultaneously,
     possibly even against two different targets.
-    In this case, the Multi-Attack action counts as two separate attacks, and each of these attacks is resolved separately
+    In this case, the Akimbo Attack action counts as two separate attacks, and each of these attacks is resolved separately
     (albeit simultaneously), with separate attack rolls as well as damage rolls.
 </p>
 <p>
@@ -1309,7 +1309,7 @@
 <?php show_actionmods(); ?>
 
 <p>
-    Note that the Self-Control skill can be used to reduce PAM and MAM penalties.
+    Note that the Composure skill can be used to reduce PAM and MAM penalties.
 </p>
 
 <h4 id="EncumbrancePen">Encumbrance Penalty (EP)</h4>
@@ -2103,7 +2103,7 @@
     Note that darkvision does not reveal invisible creatures or illusions, nor does it protect against gaze attacks.
 </p>
 <p>
-    <em>Darksight:</em> This is a special form of darkvision that also gives the ability to see through extreme darkness.
+    <em>Greater Darkvision:</em> This is a special form of darkvision that also gives the ability to see through extreme darkness.
 </p>
 
 <h4 id="LifeSense">Life Sense (LoS)</h4>

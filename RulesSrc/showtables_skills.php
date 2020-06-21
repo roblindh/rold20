@@ -6,7 +6,7 @@ function show_skillaccess() {
 
     $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
             or die("Error connecting to database.");
-    $query = "SELECT * FROM skilltypes";
+    $query = "SELECT * FROM skilltypes ORDER BY SortOrder";
     $result = mysqli_query($dbc, $query)
             or die("Error querying database.");
     ?>
@@ -72,7 +72,7 @@ function show_skilldescriptions() {
 
     $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
             or die("Error connecting to database.");
-    $query = "SELECT * FROM skilltypes";
+    $query = "SELECT * FROM skilltypes ORDER BY SortOrder";
     $result = mysqli_query($dbc, $query)
             or die("Error querying database.");
 
@@ -283,17 +283,17 @@ function show_affinityskilleffects() {
         </thead>
         <tbody>
     <?php
-    for ($i = 0; $i < 20; $i++) {
+    for ($i = 0; $i < 25; $i++) {
         if ($i % 2)
             echo '<tr>';
         else
             echo '<tr>';
         for ($j = 0; $j < 2; $j++) {
-            echo '<td style="text-align:center">' . ($i + $j * 20) . '</td>';
-            echo '<td style="text-align:center">' . floor(($i + $j * 20) * 2 / 5) . '</td>';
-            echo '<td style="text-align:center">' . floor(($i + $j * 20) / 3) . '</td>';
-            echo '<td style="text-align:center">' . floor(($i + $j * 20) / 4) . '</td>';
-            echo '<td style="text-align:center">' . floor(($i + $j * 20) / 5) . '</td>';
+            echo '<td style="text-align:center">' . ($i + $j * 25) . '</td>';
+            echo '<td style="text-align:center">' . floor(($i + $j * 25) * 2 / 5) . '</td>';
+            echo '<td style="text-align:center">' . floor(($i + $j * 25) / 3) . '</td>';
+            echo '<td style="text-align:center">' . floor(($i + $j * 25) / 4) . '</td>';
+            echo '<td style="text-align:center">' . floor(($i + $j * 25) / 5) . '</td>';
         }
         echo '</tr>';
     }

@@ -33,14 +33,14 @@
 <h3 id="LearningSpells">Learning Spells and Powers</h3>
 <p>
     Skill levels in the various spell skills determine how many spells a creature can learn.
-    A certain number of spells or new options can be learned automatically whenever a skill level is gained.
-    Each option for a spell is learned separately, and when a new spell is learned, you learn none of its options for free.
-    However, spells and options that have a base cost of 0 PP typically do not have a base effect and can be learned "for free".
-    In order to learn a spell or option, it must have the appropriate skill as a mandatory skill,
+    A certain number of spells or new variations can be learned automatically whenever a skill level is gained.
+    Each variation for a spell is learned separately, and when a new spell is learned, you learn none of its variations for free.
+    However, spells and variations that have a base cost of 0 PP typically do not have a base effect and can be learned "for free".
+    In order to learn a spell or variation, it must have the appropriate skill as a mandatory skill,
     and your skill level in each of the mandatory skills must be at least equal to the spell's base PP cost.
 </p>
 <p>
-    Spells, powers, and options that are not automatically learned can be acquired with the "Learn Spell" action.
+    Spells, powers, and variations that are not automatically learned can be acquired with the "Learn Spell" action.
     Note that for spells that you gain access to through special skills (such as Bardic Music or Wild Shape),
     the "Learn Spell" action is always required.
 </p>
@@ -85,7 +85,7 @@
 </p>
 <p>
     Barring such unusual storage devices, there is a default size and cost for writing that describes a spell or power.
-    First, calculate the maximum PP cost of the spell – add all options and the maximum cost of each parameter.
+    First, calculate the maximum PP cost of the spell – add all variations and the maximum cost of each parameter.
     If the sum exceeds 30, use 30 instead as the upper limit. The writing takes up one page per maximum PP cost,
     and each page requires 20 sp and 2 h to write. A typical spellbook contains up to 300 pages.
 </p>
@@ -104,7 +104,7 @@
 </p>
 <ol>
     <li>Select the spell or power you want to use.</li>
-    <li>Select any variable options and parameters (such as range, target, etc).</li>
+    <li>Select any variable parameters (such as range, target, etc) and variations.</li>
     <li>Start the spellcasting or power manifestation.</li>
     <li>At the end of the activation time, roll the d20 action check (or 'take 10').</li>
     <li>Determine and apply the results and effects.</li>
@@ -121,17 +121,17 @@
     <em>Base Power Cost (BPC):</em> The base (or minimum) PP cost of a spell or power.
 </p>
 
-<h5>2. Select Options and Parameters</h5>
+<h5>2. Select Variations and Parameters</h5>
 <p>
-    Choose additional options and parameters among those allowed for the spell/power.
+    Choose additional variations and parameters among those allowed for the spell/power.
 </p>
 <p>
-    Most options and parameters will add to the spell's PP cost. The total cost must not
-    exceed your skill level in any of the spell's (or option's) mandatory skills.
+    Most variations and parameters will add to the spell's PP cost. The total cost must not
+    exceed your skill level in any of the spell's (or variation's) mandatory skills.
     For inherent powers without a suitable skill, use the creature's RL or TL in place of skill level.
 </p>
 <p>
-    <em>Total Power Cost (TPC):</em> TPC = BPC + PP cost of all options and parameters.
+    <em>Total Power Cost (TPC):</em> TPC = BPC + PP cost of all variations and parameters.
 </p>
 <p>
     You can voluntarily increase TPC up to your skill level limit (without adding parameters).
@@ -241,7 +241,7 @@
 <h5>6. Deduct Costs</h5>
 <p>
     Deduct activation costs (in PP, XP, etc).
-    The total PP cost is the spell's base cost plus the sum of all additional option and parameter costs that you chose in step 2.
+    The total PP cost is the spell's base cost plus the sum of all additional variation and parameter costs that you chose in step 2.
 </p>
 <p>
     However, if you have an affinity skill for the spell or power, you won't have to bear the full brunt of this cost.
@@ -455,7 +455,7 @@
 </p>
 <ol>
     <li><em>Spell:</em> A cleric (skills at level 4) tries to use Detect Alignment against an illusionist.
-        The illusionist has previously cast a boosted Protection from Divination with the False Aura option, for a total PL of 10.</li>
+        The illusionist has previously cast a boosted Protection from Divination with the False Aura variation, for a total PL of 10.</li>
     <li><em>Parameters:</em> Not relevant for the example.</li>
     <li><em>Boost:</em> The cleric can boost his spell with 5 AP.</li>
     <li><em>d20 check:</em> Since the cleric's Detect Alignment is a non-instantaneous effect,
@@ -699,7 +699,7 @@
 </p>
 <p>
     The reader chooses the actual range and target(s) within the spell's limits, but other
-    options and parameters are chosen when the scroll is created.
+    variations and parameters are chosen when the scroll is created.
 </p>
 
 <h4>Power Stones</h4>
@@ -726,7 +726,7 @@
 </p>
 <p>
     The activator chooses the actual range and target(s) within the power's limits, but other
-    options and parameters are chosen when the power stone is created.
+    variations and parameters are chosen when the power stone is created.
 </p>
 
 <h4>Runes</h4>
@@ -974,7 +974,7 @@
 <h4>Brewing Potions and Oils</h4>
 <p>
     A potion can be based on any arcane or divine spell with the restrictions listed below.
-    All other options and specifics are determined by the brewer of the potion or oil, not by the one who uses it.
+    All other variations and specifics are determined by the brewer of the potion or oil, not by the one who uses it.
 </p>
 <ul>
     <li>Action Time must be 15 AP or less</li>
@@ -994,7 +994,7 @@
 <h4>Creating Psionic Tattoos</h4>
 <p>
     A tattoo can be based on any psionic power with the restrictions listed below.
-    All other options and specifics are determined by the creator of the tattoo, not by the one who wears and activates it.
+    All other variations and specifics are determined by the creator of the tattoo, not by the one who wears and activates it.
 </p>
 <ul>
     <li>Action Time must be 15 AP or less</li>

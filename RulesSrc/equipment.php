@@ -207,10 +207,23 @@ class cArmorStats {
 
 class cImplementStats {
     
+    public $Name = "";
+    public $AttMod = "0";
+    public $CritRng = 0;
+    public $CritMul = 0;
+
 }
 
 class cVehicleStats {
     
+    public $Name = "";
+    public $VehicleCats = 0;
+    public $Propulsion = "";
+    public $BaseSpeed = 0;
+    public $MinCrew = 0;
+    public $Capacity = "";
+    public $Armaments = "";
+
 }
 
 function WeaponCat($str) {

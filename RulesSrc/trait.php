@@ -1212,10 +1212,42 @@ class cTrait {
 
     public function GetImplementStr($traitEffects) {
         $str = "";
-        $attMod = "0";
-        $critRng = "20";
-        $critMul = "x2";
+        $implementStats = new cImplementStats();
 
+        if ($traitEffects) {
+            $attMod = $traitEffects->ModsAtt->Total();
+        }
+
+        foreach ($this->aParams as $key => $iParam) {
+            switch ($key) {
+                case "Qual":
+                    break;
+                case "AttMod":
+                    $implementStats->AttMod = $iParam;
+                    break;
+                case "CritRng":
+                    $implementStats->CritRng = (int) $iParam;
+                    break;
+                case "CritMul":
+                    $implementStats->CritMul = (int) $iParam;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $str = "Implement (" . $this->aParams["Qual"];
+        $str .= "; Att: " . $implementStats->AttMod . ($traitEffects && $attMod ? signedstr($attMod) : "");
+        if ($implementStats->CritRng > 0 || $implementStats->CritMul > 0) {
+            $str .= "; Crit";
+            if ($implementStats->CritRng > 0)
+                $str .= " " . (20 - $implementStats->CritRng) . "-20";
+            if ($implementStats->CritMul > 0)
+                $str .= " (x" . (2 + $implementStats->CritMul) . ")";
+        }
+        $str .= ")";
+
+        return $str;
         /*            if (lParamDict.ContainsKey("AttMod"))
           attMod = lParamDict["AttMod"];
           if (lParamDict.ContainsKey("CritRng"))
@@ -1230,12 +1262,52 @@ class cTrait {
           str .= "; Crit " . critRng . " (" . critMul . ")";
           str .= ")";
          */
-        return $str;
     }
 
     public function GetVehicleStr($traitEffects) {
         $str = "";
+        $vehicleStats = new cVehicleStats();
+        global $aVehicleCats;
 
+        foreach ($this->aParams as $key => $iParam) {
+            switch ($key) {
+                case "Qual":
+                    $vehicleStats->VehicleCats = $iParam;
+                    break;
+                case "Prop":
+                    $vehicleStats->Propulsion = $iParam;
+                    break;
+                case "Spd":
+                    $vehicleStats->BaseSpeed = (int) $iParam;
+                    break;
+                case "Crew":
+                    $vehicleStats->MinCrew = (int) $iParam;
+                    break;
+                case "Cap":
+                    $vehicleStats->Capacity = $iParam;
+                    break;
+                case "Arm":
+                    $vehicleStats->Armaments = $iParam;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $str = "Vehicle (" . $this->aParams["Qual"];
+        if ($vehicleStats->Propulsion != "")
+            $str .= "; Prop: " . $vehicleStats->Propulsion;
+        if ($vehicleStats->BaseSpeed != 0)
+            $str .= "; Spd: " . $vehicleStats->BaseSpeed;
+        if ($vehicleStats->MinCrew != 0)
+            $str .= "; Crew: " . $vehicleStats->MinCrew;
+        if ($vehicleStats->Capacity != "")
+            $str .= "; Cap: " . $vehicleStats->Capacity;
+        if ($vehicleStats->Armaments != "")
+            $str .= "; Arm: " . $vehicleStats->Armaments;
+        $str .= ")";
+
+        return $str;
         /*            str = "Vehicle (" . $this->aParams["Qual"];
           if (lParamDict.ContainsKey("Speed"))
           str .= "; Spd " . lParamDict["Speed"];
@@ -1249,7 +1321,6 @@ class cTrait {
           str .= "; Cargo " . lParamDict["Cargo"];
           str .= ")";
          */
-        return $str;
     }
 
     public function CheckPrereq($prereq, $entity, $parser) {
@@ -1333,7 +1404,7 @@ class cTraitEffects {
     public $Regen = 0;
     public $FastHeal = 0;
     // Attack: Special attack traits
-    public $MultiAttackPenRed; // Reduction of multi-attack penalty
+    public $MultiAttackPenRed; // Reduction of akimbo attack penalty
     public $RefMod; // Number of reactions allowed
     public $VitalAttack = 0;
     public $RangedVitalAttack = 0;

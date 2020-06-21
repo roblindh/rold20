@@ -18,7 +18,7 @@
     <li>Choose or generate physical appearance.</li>
     <li>Choose or generate personality characteristics.</li>
     <li>Roll for wealth and buy equipment.</li>
-    <li>Choose spells and spell options known.</li>
+    <li>Choose spells and spell variations known.</li>
     <li>Calculate and record derived numbers:</li>
     <ul>
         <li>Hit Points, Stamina Points, and Power Points.</li>
@@ -362,7 +362,7 @@
         <li>Skill points have to be spent; they cannot be saved for future use.</li>
     </ul>
     <li>Note any new class traits provided by the level.</li>
-    <li>If you have improved arcane, divine, or psionic spell skills, choose new spells and options.</li>
+    <li>If you have improved arcane, divine, or psionic spell skills, choose new spells and variations.</li>
     <li>Recalculate any characteristics that are dependent on level or skill improvements.</li>
     <ul>
         <li>Defenses.</li>

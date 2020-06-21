@@ -199,7 +199,7 @@ function show_actionpointbonuses() {
             You can spend no more than half your total AP to boost each such action.</td>
         </tr>
         <tr>
-            <td>Movement Action</td>
+            <td>Convert to Movement</td>
             <td>Convert AP into an equal amount of MP (to use for movement actions). You can convert a maximum number of AP equal to your adjusted speed, effectively doubling your MP.</td>
         </tr>
         </tbody>
@@ -615,7 +615,7 @@ function show_combatmods() {
 
     <p>
         <sup>1</sup> Within each of these categories, apply only the highest absolute modifier.<br/>
-        <sup>2</sup> This penalty can be reduced with improved skill level in Fighting Style – Multi-Attacks.<br/>
+        <sup>2</sup> This penalty can be reduced with improved skill level in Fighting Style – Akimbo.<br/>
         <sup>3</sup> Attacker has equal chance to strike any grappler.<br/>
         <sup>4</sup> Note that many thrown and projectile weapons cannot be used properly from a prone position.<br/>
     </p>

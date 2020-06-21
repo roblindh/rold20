@@ -161,14 +161,21 @@ function show_experiencelevels() {
         </tr></thead>
         <tbody>
     <?php
-    foreach ($_APP['experience'] as $row) {
+    for ($i = 1, $xp = 0; $i <= 40; $xp += ($i++)) {
+        echo '<tr>';
+        echo '<td style="text-align:center">' . $i . '</td>';
+        echo '<td style="text-align:right">' . ($xp * 1000) . '</td>';
+        echo '<td style="text-align:center">' . ($i + 10) . '</td>';
+        echo '</tr>';
+    }
+/*    foreach ($_APP['experience'] as $row) {
         echo '<tr>';
         echo '<td style="text-align:center">' . $row['ID'] . '</td>';
         echo '<td style="text-align:right">' . $row['Experience'] . '</td>';
         echo '<td style="text-align:center">' . $row['ActionPoints'] . '</td>';
         echo '</tr>';
     }
-    ?>
+*/    ?>
     </tbody></table>
     <p>
         <sup>1</sup>CL (when it differs from TL) should be used to determine the XP requirement per level.

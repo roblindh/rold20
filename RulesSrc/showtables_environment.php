@@ -75,7 +75,7 @@ function show_deities() {
 
     $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
             or die("Error connecting to database.");
-    $query = "SELECT * FROM deities";
+    $query = "SELECT * FROM deities ORDER BY Name";
     $result = mysqli_query($dbc, $query)
             or die("Error querying database.");
     ?>

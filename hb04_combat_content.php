@@ -271,7 +271,7 @@
 </p>
 <ul>
     <li>Light: Object size is two steps smaller than wielder size.<br/>
-        It can be used effectively for multi-attacks and also in cramped situations (such as while grappling).<br/>
+        It can be used effectively for akimbo attacks and also in cramped situations (such as while grappling).<br/>
         Light projectile weapons can be fired (but not loaded) with one hand.</li>
     <li>One-handed: Object size is one step smaller than the wielder size.<br/>
         It can be easily wielded in one hand, but it can also be wielded as a two-handed weapon (for a +2 Str bonus to damage).<br/>
@@ -285,7 +285,7 @@
     Note that natural attacks always count as light weapons, regardless of their relative size.
 </p>
 <p>
-    When used for a multi-attack, double weapons count as one one-handed and one light weapon.
+    When used for an akimbo attack, double weapons count as one one-handed and one light weapon.
     They can only be effectively used in this way by wielders that match the weapon's made-for-size.<br/>
 </p>
 <p>
@@ -312,7 +312,7 @@
     compare the object size of the attacking weapon with the object size of each primary attack form or weapon of the defender.
     If the defender has one or more threatening weapons larger than the attacking weapon,
     the attack provokes an attack of opportunity from the defender.
-    For multi-attacks you count the size of the largest weapon used against each defender.
+    For akimbo attacks you count the size of the largest weapon used against each defender.
 </p>
 <p>
     However, there are ways to make melee attacks with small weapons without provoking attacks of opportunity.
@@ -457,35 +457,35 @@
 </p>
 <ul>
     <li>-4 penalty on all attack rolls.</li>
-    <li>The weapon gets a threat range of 20 and crit multiplier of ×2.</li>
+    <li>The weapon gets an open-ended range of 20 and crit multiplier of ×2.</li>
     <li>The weapon's or item's parry bonus is halved.</li>
 </ul>
 
-<h4 id="MultiAttacks">Two-Weapon Fighting and Multi-Attacks</h4>
+<h4 id="MultiAttacks">Dual-Wielding and Akimbo Attacks</h4>
 <p>
-    Multi-attacking is just what it sounds like, in other words performing two or more weapon attacks simultaneously (or at least with overlapping timing of the attacks).
-    The most common multi-attack for a humanoid creature is a two-weapon attack, which is why "two-weapon fighting" is sometimes used as a synonym for multi-attacking.
-    Note that wielding two weapons and attacking first with one and then the other does not constitute a multi-attack; this would be nothing more than two regular attacks.
-    Multi-attacking, on the other hand, means that the weapon attacks are either simultaneous or overlapping in time.
-    The benefit of a multi-attack is that the attacks cost less AP to perform than they would separately, but at the cost of an attack penalty.
+    Akimbo attacks consist of performing two or more weapon attacks simultaneously (or at least with overlapping timing of the attacks).
+    The most common akimbo attack for a humanoid creature is a two-weapon attack, which is why "two-weapon fighting" and "dual wielding" is sometimes used as a synonym for akimbo attacks.
+    Note that wielding two weapons and attacking first with one and then the other does not constitute an akimbo attack; this would be nothing more than two regular attacks.
+    Akimbo attacking, on the other hand, means that the weapon attacks are either simultaneous or overlapping in time.
+    The benefit of an akimbo attack is that the attacks cost less AP to perform than they would separately, but at the cost of an attack penalty.
 </p>
 <p>
-    The first prerequisite for performing a multi-attack is that the attacker has multiple natural attack forms (as specified for its race and body category).
+    The first prerequisite for performing an akimbo attack is that the attacker has multiple natural attack forms (as specified for its race and body category).
     The second is that the attacker has sufficiently high level in the appropriate weapon skill(s).
     Any creature with two or more natural attack forms can perform a double attack, regardless of skill.
-    More advanced multi-attacks (triple, quadruple, etc.), however, require higher levels in the weapon skills for each and every weapon used in the multi-attack.
-    Note that each natural attack form can only be used once per multi-attack action.
+    More advanced akimbo attacks (triple, quadruple, etc.), however, require higher levels in the weapon skills for each and every weapon used in the akimbo attack.
+    Note that each natural attack form can only be used once per akimbo attack action.
 </p>
 <p>
-    The action time for a multi-attack is equal to the sum of the separate attacks' action times minus a reduction specified in the multi-attack action.
-    The attack penalty is also specified in the multi-attack action, with a higher penalty for increased number of attacks.
-    Note that the attack penalty can be reduced by using lighter weapons, by attacking a single target with all the attacks, and by increasing one's level in the Fighting Style - Multi-Attack skill.
+    The action time for an akimbo attack is equal to the sum of the separate attacks' action times minus a reduction specified in the akimbo attack action.
+    The attack penalty is also specified in the akimbo attack action, with a higher penalty for increased number of attacks.
+    Note that the attack penalty can be reduced by using lighter weapons, by attacking a single target with all the attacks, and by increasing one's level in the Fighting Style - Akimbo skill.
     For example, the base attack penalty for a double attack is -6, but this is reduced to -2 for natural weapons and -4 for light weapons.
-    It follows that the Multi-Attack skill level required to reduce this penalty all the way to 0 is level 7 for natural weapons, 17 for light weapons, and 27 for one-handed weapons.
+    It follows that the Akimbo skill level required to reduce this penalty all the way to 0 is level 7 for natural weapons, 17 for light weapons, and 27 for one-handed weapons.
 </p>
 <p>
-    As mentioned earlier, most humanoid creatures will primarily use multi-attack for two-weapon attacks, such as two daggers, a sword and a shield bash, or even two scimitars.
-    However, the multi-attack action allows for more "exotic" combinations as well, such as a monk doing a triple attack with a staff (a double weapon) and a kick,
+    As mentioned earlier, most humanoid creatures will primarily use akimbo attack for two-weapon attacks, such as two daggers, a sword and a shield bash, or even two scimitars.
+    However, the akimbo attack action allows for more "exotic" combinations as well, such as a monk doing a triple attack with a staff (a double weapon) and a kick,
     a drow firing a hand crossbow while also making a sword attack, a lion doing a triple attack with two claws and a bite, a beholder firing multiple eye rays simultaneously,
     a kraken attacking with several tentacles at once, and so forth.
 </p>

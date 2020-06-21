@@ -1,14 +1,19 @@
 <h2 id="Creatures">Creatures</h2>
-<p>
-    The creature descriptions are based on an adult specimen with average ability scores and other characteristics.
-</p>
 
 <h3 id="CreatureTypes">Creature Types</h3>
 <?php show_creaturetypes(); ?> 
 
+<h3 id="CreatureList">Alphabetical List</h3>
+<?php show_creaturelist(); ?>
 <p>
     <a href="http://www.d20srd.org/extras/d20monsterfilter/">d20 Monster Filter</a>
 </p>
+
+<h3 id="CreatureDescriptions">Creature Descriptions</h3>
+<p>
+    The creature descriptions are based on an adult specimen with average ability scores and other characteristics.
+</p>
+<?php show_creatureexplanation(); ?>
 
 <h3 id="Aberrations">Aberrations</h3>
 <?php show_creatures(1); ?> 

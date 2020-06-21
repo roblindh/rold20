@@ -37,6 +37,7 @@ function application_start() {
     init_traits();
     init_weaponcats();
     init_armorcats();
+    init_vehiclecats();
 
     // If data file exists, load application variables
     if (!isset($_APP) && file_exists(APP_DATA_FILE)) {
@@ -182,7 +183,7 @@ function application_start() {
         while ($row = mysqli_fetch_array($result))
             $_APP['itemsubtypes'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM itemtypes ORDER BY ID";
+        $query = "SELECT * FROM itemtypes ORDER BY SortOrder";
         $result = mysqli_query($dbc, $query)
                 or die("Error querying database.");
         while ($row = mysqli_fetch_array($result))
@@ -370,8 +371,8 @@ function init_traits() {
         new cTraitDescription("Defense", "Vulnerable", "Vulnerable to %t +%v%", "Vulnerability to %t +%v% damage", TYPE_INTEGER),
         new cTraitDescription("AttMod", "Attack", "%v on attacks", "%v %t modifier to attacks", TYPE_INTEGER),
         new cTraitDescription("AttMod", "Damage", "%v damage", "%v %t modifier to damage", TYPE_INTEGER),
-        new cTraitDescription("AttMod", "AttSpd", "%v attack speed", "%v %t modifier to attack speed (including multi-attacks using this weapon)", TYPE_INTEGER),
-        new cTraitDescription("AttMod", "MultiAttackPenRed", "", "Multi-attack penalty reduction (%v)", TYPE_INTEGER),
+        new cTraitDescription("AttMod", "AttSpd", "%v attack speed", "%v %t modifier to attack speed (including akimbo attacks using this weapon)", TYPE_INTEGER),
+        new cTraitDescription("AttMod", "MultiAttackPenRed", "", "Akimbo attack penalty reduction (%v)", TYPE_INTEGER),
         new cTraitDescription("AttMod", "DmgDice", "", "Damage dice increased by %v steps", TYPE_INTEGER),
         new cTraitDescription("AttMod", "BiteDmg", "", "Bite (or head) damage (%v)", TYPE_OTHER),
         new cTraitDescription("AttMod", "HandDmg", "", "Claw (or hand) damage (%v)", TYPE_OTHER),
@@ -394,7 +395,7 @@ function init_traits() {
         new cTraitDescription("Attack", "GreatRush", "Greater bull rush", "Greater bull rush (target's movement triggers AoO)", TYPE_OTHER),
         new cTraitDescription("Attack", "GreatTrip", "Greater trip", "Greater melee trip (target's falling prone triggers AoO)", TYPE_OTHER),
         new cTraitDescription("Attack", "ImprChargeDmg", "Impr charge dmg", "Improved damage with charge attacks", TYPE_OTHER),
-        new cTraitDescription("Attack", "ImprCrit", "", "Improved crit range %v", TYPE_INTEGER),
+        new cTraitDescription("Attack", "ImprCrit", "", "Improved open-ended range %v", TYPE_INTEGER),
         new cTraitDescription("Attack", "ImprDisarm", "Impr disarm", "Improved melee disarm (no AoO; +4 on opposed attack roll)", TYPE_OTHER),
         new cTraitDescription("Attack", "ImprGrapple", "Impr grapple", "Improved grappling (no AoO when initiating)", TYPE_OTHER),
         new cTraitDescription("Attack", "ImprGrappleDmg", "Impr grapple dmg", "Improved damage with grappling attacks", TYPE_OTHER),
@@ -426,7 +427,7 @@ function init_traits() {
         new cTraitDescription("Attack", "RefMod", "%v reactions/r", "Fast reflexes (%v reactions per round)", TYPE_INTEGER),
         new cTraitDescription("Attack", "RidebyAttack", "", "Rideby attack (mounted charge does not provoke AoO from target)", TYPE_OTHER),
         new cTraitDescription("Attack", "Shaping", "Shape areas", "Shaping (area attacks can be shaped, so as to leave any square(s) in the original area unaffected)", TYPE_OTHER),
-        new cTraitDescription("Attack", "SniperAim", "Sniping", "Sniper aim (for every 4 AP spent on AP attack bonus, increase threat range by 1 for that attack)", TYPE_OTHER),
+        new cTraitDescription("Attack", "SniperAim", "Sniping", "Sniper aim (for every 4 AP spent on AP attack bonus, increase open-ended range by 1 for that attack)", TYPE_OTHER),
         new cTraitDescription("Attack", "Stampede", "Stampede", "Stampede", TYPE_OTHER),
         new cTraitDescription("Attack", "VitalAttackLt", "Vital attack (light weapons; %v att/dmg)", "Vital attack with light weapons (+%v attack and damage against any target within 6 sq that is not allowed to use active DeC)", TYPE_INTEGER),
         new cTraitDescription("Attack", "VitalAttack1H", "Vital attack (one-handed weapons; %v att/dmg)", "Vital attack with one-handed weapons (+%v attack and damage against any target within 6 sq that is not allowed to use active DeC)", TYPE_INTEGER),
@@ -438,7 +439,7 @@ function init_traits() {
         new cTraitDescription("Attack", "WeaponFamiliarity", "", "Weapon familiarity (proficiency with all weapons; only -2 penalty with improvised weapons)", TYPE_OTHER),
         new cTraitDescription("SocMod", "", "%v %q", "%v %t modifier to %q", TYPE_INTEGER),
         new cTraitDescription("Sns", "Blindsense", "Blindsense %v", "Blindsense, %v", TYPE_LEVEL),
-        new cTraitDescription("Sns", "Darksight", "Darksight %v", "Darksight (%v sq)", TYPE_INTEGER),
+        new cTraitDescription("Sns", "Darksight", "Darkvision Greater %v", "Darkvision, Greater (%v sq)", TYPE_INTEGER),
         new cTraitDescription("Sns", "Darkvision", "Darkvision %v", "Darkvision (%v sq)", TYPE_INTEGER),
         new cTraitDescription("Sns", "LifeSense", "Life sense %v", "Life sense (%v sq)", TYPE_INTEGER),
         new cTraitDescription("Sns", "LowLightVision", "LL vision x%v", "Low-light vision (x%v)", TYPE_INTEGER),
@@ -575,32 +576,6 @@ function init_weaponcats() {
         "Shd",
         "Gen"
     );
-
-    /* 	$aWeaponCats = array(
-      "WeapNatural",
-      "WeapAxe",
-      "WeapClub",
-      "WeapFencing",
-      "WeapFlail",
-      "WeapHvBld",
-      "WeapLtBld",
-      "WeapPoleArm",
-      "WeapSpear",
-      "WeapStaff",
-      "WeapExotic",
-      "WeapBow",
-      "WeapCrossbow",
-      "WeapFirearm",
-      "WeapSling",
-      "WeapThrown",
-      "WeapArea",
-      "WeapBodyMind",
-      "WeapRay",
-      "WeapSiege",
-      "WeapGrappling",
-      "WeapTackling",
-      "WeapShield"
-      ); */
 }
 
 function init_armorcats() {
@@ -611,12 +586,23 @@ function init_armorcats() {
         "Md",
         "Hv"
     );
+}
 
-    /* 	$aArmorCats = array(
-      "ArmorLt",
-      "ArmorMd",
-      "ArmorHv"
-      ); */
+function init_vehiclecats() {
+    global $aVehicleCats;
+
+    $aVehicleCats = array(
+        "LandCarried",
+        "LandPulled",
+        "SnowPulled",
+        "WaterSailed",
+        "WaterRowed",
+        "WaterProp",
+        "WaterPulled",
+        "UWProp",
+        "AirSailed",
+        "AirProp"
+    );
 }
 
 ?>

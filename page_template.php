@@ -269,33 +269,33 @@ function rol_toc($chapter) {
         $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillTerminology">Skill Terminology</a>';
         $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillList">Skill Availability</a>';
         $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillDescriptions">Skill Descriptions</a>';
+        $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType1">General Skills</a>';
+        $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType2">Weapon Skills</a>';
+        $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType3">Special Combat Skills</a>';
         $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType7">Affinity Skills</a>';
         $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType4">Arcane Spell Skills</a>';
-        $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType9">Creature Skills</a>';
         $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType5">Divine Spell Skills</a>';
-        $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType1">General Skills</a>';
-        $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType10">Prestige Skills</a>';
         $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType6">Psionic Power Skills</a>';
-        $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType3">Special Combat Skills</a>';
         $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType8">Special Supernatural Skills</a>';
-        $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType2">Weapon Skills</a>';
+        $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType10">Prestige Skills</a>';
+        $html .= '<a class="tocsubchapter" href="hb09_skills.php#SkillType9">Creature Skills</a>';
     }
     $html .= '<a class="' . ($chapter == 10 ? 'toccurrent' : 'tocchapter') . '" href="hb10_actions.php">List of Actions</a>';
     if ($chapter == 10) {
         $html .= '<a class="tocsubchapter" href="hb10_actions.php#CommonActions">List of Common Actions</a>';
         $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionDescriptions">Action Descriptions</a>';
-        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType5">Brawling Attack Actions</a>';
-        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType9">Defense Actions</a>';
-        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType8">Equipment Actions</a>';
         $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType1">General Actions</a>';
-        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType3">Melee Attack Actions</a>';
         $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType2">Movement Actions</a>';
-        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType11">Other Supernatural Actions</a>';
+        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType3">Melee Attack Actions</a>';
         $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType4">Ranged Attack Actions</a>';
-        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType10">Social Actions</a>';
+        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType5">Brawling Attack Actions</a>';
         $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType6">Special Attack Actions</a>';
-        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType12">Special Creature Actions</a>';
+        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType9">Defense Actions</a>';
         $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType7">Spellcasting Actions</a>';
+        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType8">Equipment Actions</a>';
+        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType10">Social Actions</a>';
+        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType11">Other Supernatural Actions</a>';
+        $html .= '<a class="tocsubchapter" href="hb10_actions.php#ActionType12">Special Creature Actions</a>';
     }
     $html .= '<a class="' . ($chapter == 11 ? 'toccurrent' : 'tocchapter') . '" href="hb11_spells.php">List of Spells</a>';
     if ($chapter == 11) {
@@ -318,7 +318,16 @@ function rol_toc($chapter) {
     $html .= '<a class="' . ($chapter == 12 ? 'toccurrent' : 'tocchapter') . '" href="hb12_equipment.php">List of Equipment</a>';
     if ($chapter == 12) {
         $html .= '<a class="tocsubchapter" href="hb12_equipment.php#MundaneItems">Mundane Items</a>';
+        $html .= '<a class="tocsubchapter" href="hb12_equipment.php#ItemType2">Weapons</a>';
+        $html .= '<a class="tocsubchapter" href="hb12_equipment.php#ItemType3">Armor &amp; Clothing</a>';
+        $html .= '<a class="tocsubchapter" href="hb12_equipment.php#ItemType5">Miscellaneous Gear</a>';
         $html .= '<a class="tocsubchapter" href="hb12_equipment.php#ComplexItems">Complex Items</a>';
+        $html .= '<a class="tocsubchapter" href="hb12_equipment.php#MagicItemType2">Magic Weapons</a>';
+        $html .= '<a class="tocsubchapter" href="hb12_equipment.php#MagicItemType3">Magic Armor &amp; Clothing</a>';
+        $html .= '<a class="tocsubchapter" href="hb12_equipment.php#MagicItemType4">Magic Foci</a>';
+        $html .= '<a class="tocsubchapter" href="hb12_equipment.php#MagicItemType5">Magic Gear</a>';
+        $html .= '<a class="tocsubchapter" href="hb12_equipment.php#MagicItemType9">Magic Jewelry</a>';
+        $html .= '<a class="tocsubchapter" href="hb12_equipment.php#MagicItemType10">Magic Consumables</a>';
         $html .= '<a class="tocsubchapter" href="hb12_equipment.php#MundaneMods">Mundane Modifications</a>';
         $html .= '<a class="tocsubchapter" href="hb12_equipment.php#MagicMods">Magic Modifications</a>';
         $html .= '<a class="tocsubchapter" href="hb12_equipment.php#Materials">Materials</a>';
@@ -326,6 +335,8 @@ function rol_toc($chapter) {
     $html .= '<a class="' . ($chapter == 13 ? 'toccurrent' : 'tocchapter') . '" href="hb13_creatures.php">List of Creatures</a>';
     if ($chapter == 13) {
         $html .= '<a class="tocsubchapter" href="hb13_creatures.php#CreatureTypes">Creature Types</a>';
+        $html .= '<a class="tocsubchapter" href="hb13_creatures.php#CreatureList">Alphabetical List</a>';
+        $html .= '<a class="tocsubchapter" href="hb13_creatures.php#CreatureDescriptions">Creature Descriptions</a>';
         $html .= '<a class="tocsubchapter" href="hb13_creatures.php#Aberrations">Aberrations</a>';
         $html .= '<a class="tocsubchapter" href="hb13_creatures.php#Animals">Animals</a>';
         $html .= '<a class="tocsubchapter" href="hb13_creatures.php#MonstrousAnimals">Monstrous Animals</a>';
@@ -341,6 +352,8 @@ function rol_toc($chapter) {
     }
     $html .= '<a class="' . ($chapter == 14 ? 'toccurrent' : 'tocchapter') . '" href="hb14_cultures.php">List of Cultures</a>';
     if ($chapter == 14) {
+        $html .= '<a class="tocsubchapter" href="hb14_cultures.php#CultureList">Alphabetical List</a>';
+        $html .= '<a class="tocsubchapter" href="hb14_cultures.php#CultureDescriptions">Culture Descriptions</a>';
     }
     $html .= '<a class="' . ($chapter == 15 ? 'toccurrent' : 'tocchapter') . '" href="hb15_index.php">Index</a>';
     if ($chapter == 15) {
