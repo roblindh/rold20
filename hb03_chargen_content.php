@@ -111,6 +111,20 @@
 
 <div class="optionalrule">
     <p>
+        <em id="ImprovementSkillAccess">Permanent Skill Access</em> (optional rule for more varied characters):
+        Characters can spend 10 improvement points to buy permanent secondary access to a skill,
+        and they can spend 20 additional improvement points to improve a permanent secondary access to permanent primary access.
+        Permanent access means that the character can spend skill points (0.5 for secondary and up to 1 for primary)
+        to improve that skill when they gain a level (even if the chosen class has no access to that skill).
+    </p>
+    <p>
+        A character is only able to circumvent class restrictions when using this rule,
+        but it does not circumvent other skill prerequisites.
+    </p>
+</div>
+
+<div class="optionalrule">
+    <p>
         <em id="Advantages">Advantages and Disadvantages</em> (optional rule for more varied characters): Characters can spend improvement points to buy special advantages,
         and they can acquire additional improvement points by accepting special disadvantages.
     </p>

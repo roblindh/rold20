@@ -898,10 +898,10 @@ function show_companionimprovements() {
     while ($row = mysqli_fetch_array($result)) {
         echo '<tr>';
         echo '<td style="text-align:center">' . signedstr($row['CLMod']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['IntMod']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['HPMod']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['DRMod']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['APMod']) . '</td>';
+        echo '<td style="text-align:center">' . $row['IntMod'] . '</td>';
+        echo '<td style="text-align:center">' . $row['HPMod'] . '</td>';
+        echo '<td style="text-align:center">' . $row['DRMod'] . '</td>';
+        echo '<td style="text-align:center">' . $row['APMod'] . '</td>';
         echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
         echo '</tr>';
     }

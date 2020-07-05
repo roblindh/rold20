@@ -57,7 +57,7 @@ function application_start() {
         $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
                 or die("Error connecting to database.");
 
-        $query = "SELECT * FROM abilitygeneration";
+        $query = "SELECT * FROM abilitygeneration ORDER BY MethodName";
         $result = mysqli_query($dbc, $query)
                 or die("Error querying database.");
         while ($row = mysqli_fetch_array($result))
@@ -105,7 +105,7 @@ function application_start() {
         while ($row = mysqli_fetch_array($result))
             $_APP['classes'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM creatures";
+        $query = "SELECT * FROM creatures ORDER BY Name";
         $result = mysqli_query($dbc, $query)
                 or die("Error querying database.");
         while ($row = mysqli_fetch_array($result))
@@ -273,7 +273,7 @@ function application_start() {
         while ($row = mysqli_fetch_array($result))
             $_APP['weightlimits'][$row['Str']] = $row;
 
-        $query = "SELECT * FROM templates";
+        $query = "SELECT * FROM templates ORDER BY Name";
         $result = mysqli_query($dbc, $query)
                 or die("Error querying database.");
         while ($row = mysqli_fetch_array($result))
