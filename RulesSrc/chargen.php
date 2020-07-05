@@ -462,7 +462,11 @@ function chargen_page_spells() {
 
 function chargen_page_details() {
     global $_APP;
+    global $db_server, $db_user, $db_password, $db_name_campaign;
     $button_style = 'style="width: 3em"';
+
+    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
+            or die("Error connecting to database.");
 
     echo '<div id="PageTab' . PAGE_DETAILS . '" class="utiltab">';
 
@@ -497,12 +501,20 @@ function chargen_page_details() {
         '<input type="text" name="InflPts" value="" size=8 readonly=""> ' .
         '<input type="text" name="InflDesc" value="" size=67>' .
         '</td></tr>';
-    echo '<tr><td>Religion/Deity:</td><td colspan=2>' .
-        '<input type="text" name="Religion" value="" size=80>' .
-        '</td></tr>';
+    echo '<tr><td>Religion/Deity:</td><td>';
+    echo '<select name="Pantheon" onchange="OnPantheonChanged()">';
+    $query = "SELECT * FROM pantheons ORDER BY ID";
+    $result = mysqli_query($dbc, $query)
+            or die("Error querying database.");
+    for ($firstrow = true; $row = mysqli_fetch_array($result); $firstrow = false)
+        echo '<option value="' . $row['ID'] . '"' . ($firstrow ? ' selected' : '') . '>' . $row['Name'] . '</option>';
+    echo '</select></td>';
+    echo '<td id="DeityCell"></td></tr>';
     echo '</tbody></table>';
 
     echo '</div>';
+
+    mysqli_close($dbc);
 }
 
 ?>

@@ -77,6 +77,7 @@ function OnCampaignChanged()
     SetSuitability(String(suitability));
     FilterRaces(levellimit, suitability);
     FilterCultures(suitability);
+    OnPantheonChanged();
 
     ValidateContent();
 }
@@ -517,6 +518,20 @@ function UpdateSkillButtons(skill)
     document.getElementById('DecH' + skill).disabled = value < 0.5;
     document.getElementById('DecF' + skill).disabled = value < 1.0;
     document.getElementById('DecM' + skill).disabled = value == 0.0;
+}
+
+function OnPantheonChanged()
+{
+    var request;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById('DeityCell').innerHTML = this.responseText;
+        }
+    };
+    request = 'scripts/getdeityselect.php?pantheon=' + document.forms["CharGen"]["Pantheon"].value;
+    xmlhttp.open("GET", request, true);
+    xmlhttp.send();
 }
 
 function ProcessCharTraits()
