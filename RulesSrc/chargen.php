@@ -8,18 +8,9 @@ define("PAGE_BACKGND", 3);
 define("PAGE_CLASS", 4);
 define("PAGE_IMPROV", 5);
 define("PAGE_SKILLS", 6);
-define("PAGE_EQUIPMENT", 7);
-define("PAGE_SPELLS", 8);
-define("PAGE_DETAILS", 9);
-define("PAGE_LAST", 9);
-
-function chargen_init() {
-    return new cIndividual();
-}
-
-function chargen_submit($entity) {
-    
-}
+define("PAGE_DETAILS", 7);
+define("PAGE_FINISH", 8);
+define("PAGE_LAST", 8);
 
 function chargen_page() {
     echo '<form name="CharGen" method="post" action="util_chargen.php">';
@@ -32,9 +23,8 @@ function chargen_page() {
     chargen_page_class();
     chargen_page_improv();
     chargen_page_skill();
-    chargen_page_equipment();
-    chargen_page_spells();
     chargen_page_details();
+    chargen_page_finish();
     echo '<span id="ProcessedTraits"></span>';
     echo '<span id="ProcessedPrereq"></span>';
     echo '</div></form>';
@@ -59,12 +49,10 @@ function chargen_page_tabbuttons() {
             'value="Improvements" onClick="GoToPage(' . PAGE_IMPROV . ')">';
     echo '<input type="button" class="utiltab" id="PageTabButton' . PAGE_SKILLS . '" ' .
             'value="Skills" onClick="GoToPage(' . PAGE_SKILLS . ')">';
-    echo '<input type="button" class="utiltab" id="PageTabButton' . PAGE_EQUIPMENT . '" ' .
-            'value="Equipment" onClick="GoToPage(' . PAGE_EQUIPMENT . ')">';
-    echo '<input type="button" class="utiltab" id="PageTabButton' . PAGE_SPELLS . '" ' .
-            'value="Spells" onClick="GoToPage(' . PAGE_SPELLS . ')">';
     echo '<input type="button" class="utiltab" id="PageTabButton' . PAGE_DETAILS . '" ' .
             'value="Other Details" onClick="GoToPage(' . PAGE_DETAILS . ')">';
+    echo '<input type="button" class="utiltab" id="PageTabButton' . PAGE_FINISH . '" ' .
+            'value="Finish &amp; Save" onClick="GoToPage(' . PAGE_FINISH . ')">';
     echo '</div>';
 }
 
@@ -139,7 +127,7 @@ function chargen_page_ability() {
     echo '<input type="hidden" name="RearrangeCnt" value="">';
     echo '<span id="GeneratedScores" hidden></span>';
 
-    echo '<table><caption>Ability Scores</caption><tbody>';
+    echo '<table><caption>Base Ability Scores</caption><tbody>';
     echo '<tr id="AbilityPointPoolRow"><td>Point Pool:</td><td><input type="text" name="PointPool" value="" size=3 readonly=""></td></tr>';
     foreach ($_APP['abilityscores'] as $iScore) {
         echo '<tr>';
@@ -188,8 +176,9 @@ function chargen_page_race() {
     $query = "SELECT * FROM creatures ORDER BY Name";
     $result = mysqli_query($dbc, $query)
             or die("Error querying database.");
-    echo '<table><caption>Choose Race</caption><thead><tr><th>Race</th>' .
-        '<th>Ability Mods</th><th style="text-align:center">CL</th></tr></thead>' .
+    echo '<table><caption>Choose Race</caption><thead><tr><th>Race</th><th>Ability Mods</th>' .
+        '<th style="text-align:center">Sz</th><th style="text-align:center">Spd</th>' .
+        '<th style="text-align:center">CL</th></tr></thead>' .
         '<tbody style="background-color:#ffffff;">';
     for ($firstrow = true; $iCreature = mysqli_fetch_array($result); $firstrow = false) {
         echo '<tr id="CreatureRow' . $iCreature['ID'] . '" class="CreatureRow" data-id="' . $iCreature['ID'] . '">';
@@ -199,6 +188,8 @@ function chargen_page_race() {
                 $iCreature['Name'] .
                 '<input type="hidden" name="RaceSuit' . $iCreature['ID'] . '" value="' . $iCreature['PCSuitability'] . '">' .
                 '<input type="hidden" name="RaceCulture' . $iCreature['ID'] . '" value="' . $iCreature['DefaultCulture'] . '">' .
+                '<input type="hidden" name="RaceGroup' . $iCreature['ID'] . '" value="' . $_APP['creaturesubtypes'][$iCreature['CreatureType']]['GroupID'] . '">' .
+                '<input type="hidden" name="RaceType' . $iCreature['ID'] . '" value="' . $iCreature['CreatureType'] . '">' .
                 '<input type="hidden" name="RaceLengthM' . $iCreature['ID'] . '" value="' . $iCreature['AvgLengthM'] . '">' .
                 '<input type="hidden" name="RaceLengthF' . $iCreature['ID'] . '" value="' . $iCreature['AvgLengthF'] . '">' .
                 '<input type="hidden" name="RaceMassM' . $iCreature['ID'] . '" value="' . $iCreature['AvgMassM'] . '">' .
@@ -208,6 +199,8 @@ function chargen_page_race() {
                 '<input type="hidden" name="RaceAgeOld' . $iCreature['ID'] . '" value="' . $iCreature['OldAge'] . '">' .
                 '<input type="hidden" name="RaceAgeVenerable' . $iCreature['ID'] . '" value="' . $iCreature['VenerableAge'] . '"></td>';
         echo '<td>' . cCreature::GetAbilAdjStr($iCreature['ID']) . '</td>';
+        echo '<td style="text-align:center">' . $_APP['sizecats'][$iCreature['SizeClass']]['Abbreviation'] . '</td>';
+        echo '<td style="text-align:center">' . $iCreature['GroundSpeed'] . '</td>';
         echo '<td style="text-align:center" id="RaceCL' . $iCreature['ID'] . '">' .
                 ($iCreature['BaseRL'] + $iCreature['CLModifier']) . '</td>' .
                 '<input type="hidden" name="RaceRL' . $iCreature['ID'] . '" value="' . $iCreature['BaseRL'] . '">' .
@@ -218,8 +211,9 @@ function chargen_page_race() {
     $query = "SELECT * FROM templates ORDER BY Name";
     $result = mysqli_query($dbc, $query)
             or die("Error querying database.");
-    echo '<table><caption>Optional Templates</caption><thead><tr><th>Template</th>' .
-        '<th>Ability Mods</th><th style="text-align:center">CL</th></tr></thead>' .
+    echo '<table><caption>Optional Templates</caption><thead><tr><th>Template</th><th>Ability Mods</th>' .
+        '<th style="text-align:center">Sz</th><th style="text-align:center">Spd</th>' .
+        '<th style="text-align:center">CL</th></tr></thead>' .
         '<tbody style="background-color:#ffffff;">';
     while ($iTemplate = mysqli_fetch_array($result)) {
         if ($iTemplate['Name'] != "None") {
@@ -228,10 +222,14 @@ function chargen_page_race() {
                     $iTemplate['ID'] . '" value="' . $iTemplate['ID'] . '" class="templateclass" ' .
                     'onChange="OnTemplateChanged(' . $iTemplate['ID'] . ')">' .
                     $iTemplate['Name'] .
-                    '<input type="hidden" name="TemplateSuit' . $iTemplate['ID'] . '" value="' . $iTemplate['PCSuitability'] . '"></td>';
+                    '<input type="hidden" name="TemplateSuit' . $iTemplate['ID'] . '" value="' . $iTemplate['PCSuitability'] . '">' .
+                    '<input type="hidden" name="TemplateReqGroup' . $iTemplate['ID'] . '" value="' . $iTemplate['RequiredGroup'] . '">' .
+                    '<input type="hidden" name="TemplateReqType' . $iTemplate['ID'] . '" value="' . $iTemplate['RequiredType'] . '"></td>';
             echo '<td>' . cTemplate::GetAbilAdjStr($iTemplate['ID']) . '</td>';
+            echo '<td style="text-align:center">' . signedstr($iTemplate['SizeAdj']) . '</td>';
+            echo '<td style="text-align:center">' . signedstr($iTemplate['GroundSpeed']) . '</td>';
             echo '<td style="text-align:center" id="TemplateCL' . $iTemplate['ID'] . '">' .
-                    ($iTemplate['RLModifier'] + $iTemplate['CLModifier']) . '</td>' .
+                    signedstr($iTemplate['RLModifier'] + $iTemplate['CLModifier']) . '</td>' .
                     '<input type="hidden" name="TemplateRLMod' . $iTemplate['ID'] . '" value="' . $iTemplate['RLModifier'] . '">' .
                     '<input type="hidden" name="TemplateCLMod' . $iTemplate['ID'] . '" value="' . $iTemplate['CLModifier'] . '"></tr>';
         }
@@ -391,7 +389,7 @@ function chargen_page_skill() {
             or die("Error querying database.");
     while ($row = mysqli_fetch_array($result)) {
         echo '<table><caption>' . $row['Name'] . '</caption><thead><tr>';
-        echo '<th>Skill</th><th style="text-align:center">Skill Lvl</th><th style="text-align:center"></th>';
+        echo '<th>Skill</th><th style="text-align:center">Skill Lvl</th>';
         echo '</tr></thead><tbody style="background-color:#ffffff;">';
         $query2 = "SELECT * FROM skills WHERE Type=" . $row['ID'] . " ORDER BY Name";
         $result2 = mysqli_query($dbc, $query2)
@@ -403,8 +401,7 @@ function chargen_page_skill() {
                     '<input type="hidden" name="SkillPrereq' . $iSkill['ID'] . '" value="' . $iSkill['PrereqMaxLvl'] . '"></td>';
             echo '<td style="text-align:center">';
             echo '<input type="text" name="SkillLvl' . $iSkill['ID'] . '" class="SkillVal" value="" size=3 readonly="">' .
-                    '<input type="hidden" name="SkillMax' . $iSkill['ID'] . '" value=""></td>';
-            echo '<td style="text-align:center">';
+                    '<input type="hidden" name="SkillMax' . $iSkill['ID'] . '" value="">';
             echo '<input type="button" id="IncM' . $iSkill['ID'] . '" value="++" ' . $button_style .
                 ' onClick="IncSkill(' . $iSkill['ID'] . ', 99.0)">' .
                 '<input type="button" id="IncF' . $iSkill['ID'] . '" value="+1" ' . $button_style .
@@ -423,11 +420,14 @@ function chargen_page_skill() {
     }
     echo '</td>';
 
+    $query = "SELECT * FROM skillspecializations ORDER BY Skill, Name";
+    $result = mysqli_query($dbc, $query)
+            or die("Error querying database.");
     echo '<td><table><caption>Skill Specializations</caption><thead><tr>';
     echo '<th>Specialization</th><th style="text-align:center">Known</th>';
     echo '</tr></thead><tbody style="background-color:#ffffff;">';
-    foreach ($_APP['specializations'] as $iSpec) {
-        echo '<tr id="SpecRow' . $iSpec['ID'] . '" class="SpecRow" data-id="' . $iSpec['ID'] . '">';
+    while ($iSpec = mysqli_fetch_array($result)) {
+        echo '<tr id="SpecRow' . $iSpec['ID'] . '" class="SpecRow" data-id="' . $iSpec['ID'] . '" data-skillid="' . $_APP['skills'][$iSpec['Skill']]['ID'] . '">';
         echo '<td>' . $_APP['skills'][$iSpec['Skill']]['Name'] . ' (' . $iSpec['Name'] . ')' .
                 '<input type="hidden" name="SpecPrereq' . $iSpec['ID'] . '" value="' . $iSpec['Prereqs'] . '"></td>';
         echo '<td style="text-align:center">';
@@ -442,33 +442,24 @@ function chargen_page_skill() {
     mysqli_close($dbc);
 }
 
-function chargen_page_equipment() {
-    global $_APP;
-
-    echo '<div id="PageTab' . PAGE_EQUIPMENT . '" class="utiltab">';
-    echo '<table><tbody>';
-    echo '</tbody></table>';
-    echo '</div>';
-}
-
-function chargen_page_spells() {
-    global $_APP;
-
-    echo '<div id="PageTab' . PAGE_SPELLS . '" class="utiltab">';
-    echo '<table><tbody>';
-    echo '</tbody></table>';
-    echo '</div>';
-}
-
 function chargen_page_details() {
     global $_APP;
-    global $db_server, $db_user, $db_password, $db_name_campaign;
+    global $db_server, $db_user, $db_password, $db_name, $db_name_campaign;
     $button_style = 'style="width: 3em"';
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
+    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
+            or die("Error connecting to database.");
+    $dbc_campaign = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
             or die("Error connecting to database.");
 
     echo '<div id="PageTab' . PAGE_DETAILS . '" class="utiltab">';
+
+    $query = "SELECT * FROM wealthperlevel";
+    $result = mysqli_query($dbc, $query)
+            or die("Error querying database.");
+    while ($row = mysqli_fetch_array($result)) {
+        echo '<input type="hidden" name="WealthLvl' . $row['Level'] . '" value="' . $row['PCWealth'] . '">';
+    }
 
     echo '<table><caption>Other Details</caption><tbody>';
     echo '<tr><td>Personality:</td><td colspan=2>' .
@@ -481,6 +472,9 @@ function chargen_page_details() {
         '<input type="text" id="Height" name="Height" value="" size=8> / ' .
         '<input type="text" id="Weight" name="Weight" value="" size=8></td>';
     echo '<td><input type="button" value="Random" onClick="RandomSize()"></td></tr>';
+    echo '<tr><td>Age:</td><td>' .
+        '<input type="text" name="Age" value="" size=8></td>' .
+        '<td id="AgeCategories">Adult: , Mature: , Old: , Venerable: </td></tr>';
     echo '<tr><td>Family:</td><td colspan=2>' .
         '<input type="text" name="Family" value="' . (isset($_POST['Family']) ? $_POST['Family'] : '') . '" size=80>' .
         '</td></tr>';
@@ -490,9 +484,9 @@ function chargen_page_details() {
     echo '<tr><td>Background:</td><td colspan=2>' .
         '<input type="text" name="Background" value="' . (isset($_POST['Background']) ? $_POST['Background'] : '') . '" size=80>' .
         '</td></tr>';
-    echo '<tr><td>Age:</td><td>' .
-        '<input type="text" name="Age" value="" size=8></td>' .
-        '<td id="AgeCategories">Adult: , Mature: , Old: , Venerable: </td></tr>';
+    echo '<tr><td>Wealth:</td><td>' .
+        '<input type="text" name="Wealth" value="" size=8 readonly=""> ' .
+        '</td><td></td></tr>';
     echo '<tr><td>Reputation:</td><td colspan=2>' .
         '<input type="text" name="RepPts" value="" size=8 readonly=""> ' .
         '<input type="text" name="RepDesc" value="" size=67>' .
@@ -504,7 +498,7 @@ function chargen_page_details() {
     echo '<tr><td>Religion/Deity:</td><td>';
     echo '<select name="Pantheon" onchange="OnPantheonChanged()">';
     $query = "SELECT * FROM pantheons ORDER BY ID";
-    $result = mysqli_query($dbc, $query)
+    $result = mysqli_query($dbc_campaign, $query)
             or die("Error querying database.");
     for ($firstrow = true; $row = mysqli_fetch_array($result); $firstrow = false)
         echo '<option value="' . $row['ID'] . '"' . ($firstrow ? ' selected' : '') . '>' . $row['Name'] . '</option>';
@@ -515,6 +509,27 @@ function chargen_page_details() {
     echo '</div>';
 
     mysqli_close($dbc);
+    mysqli_close($dbc_campaign);
+}
+
+function chargen_page_finish() {
+    global $_APP;
+
+    echo '<div id="PageTab' . PAGE_FINISH . '" class="utiltab">';
+
+    echo '<table><tbody>';
+    echo '</tbody></table>';
+
+    echo '</div>';
+
+/*if (isset($_POST['Submit'])) {
+    $entity = new cIndividual();
+    chargen_submit($entity);
+    echo '<h3>Character Saved</h3>';
+    echo '<form name="CharGen" method="post" action="util_charview.php">';
+    echo '<br/><input type="submit" name="GoToCharView" value="Continue">';
+    echo '</form>';
+}*/
 }
 
 ?>

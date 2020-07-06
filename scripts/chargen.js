@@ -6,10 +6,9 @@ const PAGE_BACKGND = 3;
 const PAGE_CLASS = 4;
 const PAGE_IMPROV = 5;
 const PAGE_SKILLS = 6;
-const PAGE_EQUIPMENT = 7;
-const PAGE_SPELLS = 8;
-const PAGE_DETAILS = 9;
-const PAGE_LAST = 9;
+const PAGE_DETAILS = 7;
+const PAGE_FINISH = 8;
+const PAGE_LAST = 8;
 
 const A_STR = 1;
 const A_CON = 2;
@@ -40,21 +39,11 @@ function ValidateContent()
         return;
 
     document.getElementById('PageTabButton' + PAGE_ABILITY).disabled = false;
-
     document.getElementById('PageTabButton' + PAGE_RACE).disabled = false;
-
     document.getElementById('PageTabButton' + PAGE_BACKGND).disabled = false;
-
     document.getElementById('PageTabButton' + PAGE_CLASS).disabled = false;
-
     document.getElementById('PageTabButton' + PAGE_IMPROV).disabled = false;
-
     document.getElementById('PageTabButton' + PAGE_SKILLS).disabled = false;
-
-    document.getElementById('PageTabButton' + PAGE_EQUIPMENT).disabled = false;
-
-    document.getElementById('PageTabButton' + PAGE_SPELLS).disabled = false;
-
     document.getElementById('PageTabButton' + PAGE_DETAILS).disabled = false;
 
 //    document.getElementById('CharGenDebugText').innerHTML = "Test";
@@ -227,11 +216,14 @@ function FilterRaces(levellimit, suitability)
 
 function FilterTemplates(levellimit, suitability)
 {
+    var raceid = GetRaceID();
     var templaterows = document.getElementsByClassName('TemplateRow');
     for (var i = 0; i < templaterows.length; i++) {
         var templateid = templaterows[i].dataset.id;
         templaterows[i].hidden = (Number(document.getElementById('TemplateCL' + templateid).innerHTML) > levellimit)
-            || Number(document.forms["CharGen"]["TemplateSuit" + templateid].value) < suitability;
+            || Number(document.forms["CharGen"]["TemplateSuit" + templateid].value) < suitability
+            || (document.forms["CharGen"]["TemplateReqGroup" + templateid].value != "" && document.forms["CharGen"]["TemplateReqGroup" + templateid].value != document.forms["CharGen"]["RaceGroup" + raceid].value)
+            || (document.forms["CharGen"]["TemplateReqType" + templateid].value != "" && document.forms["CharGen"]["TemplateReqType" + templateid].value != document.forms["CharGen"]["RaceType" + raceid].value);
         document.forms["CharGen"]["Template" + templateid].checked = false;
     }
 }
@@ -395,6 +387,7 @@ function CheckSpec(spec)
 
 function ResetSkills()
 {
+    var levellimit = GetLevelLimit();
     var raciallevel = GetRacialLevel();
     var bgclassid = GetBgClassID();
     var skillrows = document.getElementsByClassName('SkillRow');
@@ -423,8 +416,14 @@ function ResetSkills()
     }
 
     SetSkillPoints(skillpts);
-    SetInfluencePoints(inflpts);
+    if (levellimit <= 1) {
+        var dice = new Array(Math.random(), Math.random(), Math.random(), Math.random());
+        var result = Math.ceil(60.0 * dice[0]) + Math.ceil(60.0 * dice[1]) + Math.ceil(60.0 * dice[2]) + Math.ceil(60.0 * dice[3]);
+        SetWealth(result + " sp");
+    } else
+        SetWealth(document.forms["CharGen"]["WealthLvl" + levellimit].value + " sp");
     SetReputation(GetTotalLevel());
+    SetInfluencePoints(inflpts);
 
     for (var i = 0; i < skillrows.length; i++) {
         var skillid = skillrows[i].dataset.id;
@@ -446,12 +445,15 @@ function FilterSkills()
     var specrows = document.getElementsByClassName('SpecRow');
     for (var i = 0; i < skillrows.length; i++) {
         var skillid = skillrows[i].dataset.id;
+        skillrows[i].hidden = GetSkillMax(skillid) <= 0;
         var prereq = document.forms["CharGen"]["SkillPrereq" + skillid].value;
         if (prereq != "")
             CheckSkillPrereq(skillid, ProcessPrereq(prereq));
     }
     for (var i = 0; i < specrows.length; i++) {
         var specid = specrows[i].dataset.id;
+        var skillid = specrows[i].dataset.skillid;
+        specrows[i].hidden = GetSkillValue(skillid) <= 0;
         var prereq = document.forms["CharGen"]["SpecPrereq" + specid].value;
         if (prereq != "")
             CheckSpecPrereq(specid, ProcessPrereq(prereq));
@@ -745,6 +747,7 @@ function GetSkillPoints()
 function SetSkillPoints(value)
 {
     document.forms["CharGen"]["SkillPts"].value = value;
+    document.getElementById('PageTabButton' + PAGE_FINISH).disabled = value > 0;
 }
 
 function GetClassSkillPoints(classid)
@@ -806,6 +809,16 @@ function SetAge(age, agecats)
 {
     document.forms["CharGen"]["Age"].value = age;
     document.getElementById('AgeCategories').innerHTML = agecats;
+}
+
+function GetWealth()
+{
+    return Number(document.forms["CharGen"]["Wealth"].value);
+}
+
+function SetWealth(value)
+{
+    document.forms["CharGen"]["Wealth"].value = value;
 }
 
 function GetReputation()

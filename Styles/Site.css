@@ -391,7 +391,7 @@ input[type=button].rolcalc, input[type=submit].rolcalc, input[type=reset].rolcal
     background-color: var(--color-gray);
 }
 
-input[type=button].utiltab {
+input[type=button].utiltab, input[type=submit].utiltab {
     width: 10em;
     height: 1.6em;
     padding: 2px;
@@ -407,11 +407,12 @@ input[type=button].utiltab {
     font-weight: 400;
 }
 
-input[type=button].utiltab:hover, input[type=button].utiltab:active {
+input[type=button].utiltab:hover, input[type=button].utiltab:active,
+input[type=submit].utiltab:hover, input[type=submit].utiltab:active {
     background-color: var(--color-black);
 }
 
-input[type=button].utiltab:disabled {
+input[type=button].utiltab:disabled, input[type=submit].utiltab:disabled {
     color: var(--color-black);
     background-color: var(--color-gray);
 }
