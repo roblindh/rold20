@@ -25,6 +25,9 @@ function GoToPage(page)
     }
     document.getElementById('PageTabButton' + page).className = "utiltabcurrent";
     document.getElementById('PageTab' + page).hidden = false;
+
+    if (page == PAGE_FINISH)
+        SaveCharacter();
 }
 
 function ValidateContent()
@@ -234,7 +237,7 @@ function UpdateAppearance()
     var matureage = Number(document.forms["CharGen"]["RaceAgeMature" + GetRaceID()].value);
     var oldage = Number(document.forms["CharGen"]["RaceAgeOld" + GetRaceID()].value);
     var venerableage = Number(document.forms["CharGen"]["RaceAgeVenerable" + GetRaceID()].value);
-    SetAge(adultage * 1.1,
+    SetAge(Math.floor(adultage * 1.1),
         "Adult: " + adultage + ", Mature: " + matureage + ", Old: " + oldage + ", Venerable: " + venerableage);
     RandomSize();
 }
@@ -250,8 +253,8 @@ function RandomSize()
         hfactor += Math.random() / 10.0;
         wfactor += Math.random() / 10.0;
     }
-    SetHeight(Math.ceil(height * hfactor));
-    SetWeight(Math.ceil(weight * hfactor * wfactor));
+    SetHeight(Math.ceil(height * hfactor), Math.ceil(100.0 * hfactor));
+    SetWeight(Math.ceil(weight * hfactor * wfactor), Math.ceil(100.0 * wfactor));
 }
 
 function OnCultureChanged(culture)
@@ -419,9 +422,9 @@ function ResetSkills()
     if (levellimit <= 1) {
         var dice = new Array(Math.random(), Math.random(), Math.random(), Math.random());
         var result = Math.ceil(60.0 * dice[0]) + Math.ceil(60.0 * dice[1]) + Math.ceil(60.0 * dice[2]) + Math.ceil(60.0 * dice[3]);
-        SetWealth(result + " sp");
+        SetWealth(result);
     } else
-        SetWealth(document.forms["CharGen"]["WealthLvl" + levellimit].value + " sp");
+        SetWealth(document.forms["CharGen"]["WealthLvl" + levellimit].value);
     SetReputation(GetTotalLevel());
     SetInfluencePoints(inflpts);
 
@@ -550,6 +553,98 @@ function ProcessCharTraits()
     request = 'scripts/getchargentraits.php?';
     request += 'race=' + GetRaceID() + '&';
     request += 'culture=' + GetCultureID();
+    xmlhttp.open("GET", request, true);
+    xmlhttp.send();
+}
+
+function SaveCharacter()
+{
+    document.getElementById('SaveResult').innerHTML += 'Saving character ' + GetCharacterName() + '...<br/>';
+    var request;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById('SaveResult').innerHTML += this.responseText + '<br/>';
+            if (document.forms["CharGen"]["SaveBasicsResult"].value == "OK") {
+                SaveCharacterImprovements();
+            }
+        }
+    };
+    request = 'scripts/savecharbasics.php?';
+    request += 'name=' + GetCharacterName() + '&';
+    request += 'campaign=' + GetCampaignID() + '&';
+    request += 'str=' + GetAbility(A_STR) + '&';
+    request += 'con=' + GetAbility(A_CON) + '&';
+    request += 'dex=' + GetAbility(A_DEX) + '&';
+    request += 'int=' + GetAbility(A_INT) + '&';
+    request += 'wis=' + GetAbility(A_WIS) + '&';
+    request += 'cha=' + GetAbility(A_CHA) + '&';
+    request += 'race=' + GetRaceID() + '&';
+    var templaterows = document.getElementsByClassName('TemplateRow');
+    for (var i = 0, j = 1; i < templaterows.length; i++) {
+        var templateid = templaterows[i].dataset.id;
+        if (!templaterows[i].hidden && document.forms["CharGen"]["Template" + templateid].checked)
+            request += 'template' + (j++) + '=' + templateid + '&';
+    }
+    request += 'gender=' + GetGenderID() + '&';
+    request += 'culture=' + GetCultureID() + '&';
+    request += 'bgclass=' + GetBgClassID() + '&';
+    request += 'exppts=' + document.getElementById('CampaignXP' + GetCampaignID()).innerHTML + '&';
+    var classrows = document.getElementsByClassName('ClassRow');
+    for (var i = 0, j = 1; i < classrows.length && !classrows[i].hidden; i++) {
+        request += 'class' + (j++) + '=' + GetClassID(i + 1) + '&';
+    }
+    request += 'age=' + GetAge() + '&';
+    request += 'hfactor=' + document.forms["CharGen"]["HeightFactor"].value + '&';
+    request += 'wfactor=' + document.forms["CharGen"]["WeightFactor"].value + '&';
+    request += 'inflpts=' + GetInfluencePoints() + '&';
+    request += 'infldesc=' + document.forms["CharGen"]["InflDesc"].value + '&';
+    request += 'repdesc=' + document.forms["CharGen"]["RepDesc"].value + '&';
+    request += 'wealth=' + GetWealth() + '&';
+    request += 'appearance=' + document.forms["CharGen"]["Appearance"].value + '&';
+    request += 'personality=' + document.forms["CharGen"]["Personality"].value + '&';
+    request += 'history=' + document.forms["CharGen"]["Background"].value + '&';
+    request += 'family=' + document.forms["CharGen"]["Family"].value + '&';
+    request += 'contacts=' + document.forms["CharGen"]["Contacts"].value + '&';
+    request += 'deity=' + document.forms["CharGen"]["Deity"].value;
+    xmlhttp.open("GET", request, true);
+    xmlhttp.send();
+    document.getElementById('CharGenDebugText').innerHTML = request;
+}
+
+function SaveCharacterImprovements()
+{
+    document.getElementById('SaveResult').innerHTML += 'Saving improvements...<br/>';
+    var request;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById('SaveResult').innerHTML += this.responseText + '<br/>';
+            if (document.forms["CharGen"]["SaveImprovsResult"].value == "OK") {
+                SaveCharacterSkills();
+            }
+        }
+    };
+    request = 'scripts/savecharimprovs.php?';
+    xmlhttp.open("GET", request, true);
+    xmlhttp.send();
+}
+
+function SaveCharacterSkills()
+{
+    document.getElementById('SaveResult').innerHTML += 'Saving skills...<br/>';
+    var request;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById('SaveResult').innerHTML += this.responseText + '<br/>';
+            if (document.forms["CharGen"]["SaveSkillsResult"].value == "OK") {
+                document.getElementById('SaveResult').innerHTML += 'Done!<br/><br/>' +
+                        '<a class="tocchapter" href="util_charview.php" style="display:inline;">Character Viewer</a><br/>';
+            }
+        }
+    };
+    request = 'scripts/savecharskills.php?';
     xmlhttp.open("GET", request, true);
     xmlhttp.send();
 }
@@ -785,9 +880,10 @@ function GetHeight()
     return Number(document.forms["CharGen"]["Height"].value);
 }
 
-function SetHeight(height)
+function SetHeight(height, hfactor)
 {
     document.forms["CharGen"]["Height"].value = height;
+    document.forms["CharGen"]["HeightFactor"].value = hfactor;
 }
 
 function GetWeight()
@@ -795,9 +891,10 @@ function GetWeight()
     return Number(document.forms["CharGen"]["Weight"].value);
 }
 
-function SetWeight(weight)
+function SetWeight(weight, wfactor)
 {
     document.forms["CharGen"]["Weight"].value = weight;
+    document.forms["CharGen"]["WeightFactor"].value = wfactor;
 }
 
 function GetAge()

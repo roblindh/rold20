@@ -83,10 +83,10 @@ function chargen_page_campaign() {
                 '>' . $row['Name'] . '</td>';
         echo '<td>' . $_APP['abilitygen'][$row['AbilityGenMethod']]['MethodName'] .
                 '<input type="hidden" name="CampaignGenMethod' . $row['ID'] . '" value="' . $row['AbilityGenMethod'] . '"></td>';
-        echo '<td style="text-align:center">' . $row['StartingXP'] .
-                '<input type="hidden" name="CampaignLevelLimit' . $row['ID'] . '" value="' . cIndividual::GetXPLevel($row['StartingXP']) . '"></td>';
+        echo '<td id="CampaignXP' . $row['ID'] . '" style="text-align:center">' . $row['StartingXP'] . '</td>';
         echo '<td id="CampaignSuitability' . $row['ID'] . '" style="text-align:center">' . $row['SuitabilityLevel'] . '</td>';
-        echo '<td>' . $row['OptionalRules'] . '</td></tr>';
+        echo '<td>' . $row['OptionalRules'] .
+                '<input type="hidden" name="CampaignLevelLimit' . $row['ID'] . '" value="' . cIndividual::GetXPLevel($row['StartingXP']) . '"></td></tr>';
     }
     echo '</tbody></table>';
     echo '<p><sup>1</sup>Suit.: This is the PC suitability level, determining which creatures and templates are available for player characters. ';
@@ -469,6 +469,8 @@ function chargen_page_details() {
         '<input type="text" name="Appearance" value="' . (isset($_POST['Appearance']) ? $_POST['Appearance'] : '') . '" size=80>' .
         '</td></tr>';
     echo '<tr><td>Height/Weight:</td><td>' .
+        '<input type="hidden" name="HeightFactor" value="">' .
+        '<input type="hidden" name="WeightFactor" value="">' .
         '<input type="text" id="Height" name="Height" value="" size=8> / ' .
         '<input type="text" id="Weight" name="Weight" value="" size=8></td>';
     echo '<td><input type="button" value="Random" onClick="RandomSize()"></td></tr>';
@@ -484,7 +486,7 @@ function chargen_page_details() {
     echo '<tr><td>Background:</td><td colspan=2>' .
         '<input type="text" name="Background" value="' . (isset($_POST['Background']) ? $_POST['Background'] : '') . '" size=80>' .
         '</td></tr>';
-    echo '<tr><td>Wealth:</td><td>' .
+    echo '<tr><td>Wealth (sp):</td><td>' .
         '<input type="text" name="Wealth" value="" size=8 readonly=""> ' .
         '</td><td></td></tr>';
     echo '<tr><td>Reputation:</td><td colspan=2>' .
@@ -503,7 +505,7 @@ function chargen_page_details() {
     for ($firstrow = true; $row = mysqli_fetch_array($result); $firstrow = false)
         echo '<option value="' . $row['ID'] . '"' . ($firstrow ? ' selected' : '') . '>' . $row['Name'] . '</option>';
     echo '</select></td>';
-    echo '<td id="DeityCell"></td></tr>';
+    echo '<td id="DeityCell"><select name="Deity"></select></td></tr>';
     echo '</tbody></table>';
 
     echo '</div>';
@@ -513,23 +515,11 @@ function chargen_page_details() {
 }
 
 function chargen_page_finish() {
-    global $_APP;
-
     echo '<div id="PageTab' . PAGE_FINISH . '" class="utiltab">';
 
-    echo '<table><tbody>';
-    echo '</tbody></table>';
+    echo '<p id="SaveResult"></p>';
 
     echo '</div>';
-
-/*if (isset($_POST['Submit'])) {
-    $entity = new cIndividual();
-    chargen_submit($entity);
-    echo '<h3>Character Saved</h3>';
-    echo '<form name="CharGen" method="post" action="util_charview.php">';
-    echo '<br/><input type="submit" name="GoToCharView" value="Continue">';
-    echo '</form>';
-}*/
 }
 
 ?>
