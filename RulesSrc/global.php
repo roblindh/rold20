@@ -26,12 +26,11 @@ function application_start() {
     global $db_server, $db_user, $db_password, $db_name, $db_name_campaign;
     global $footer_parser;
 
-    $db_server = 'localhost:3306';
-    $db_user = 'root';
-    $db_password = 'admin';
-//    $db_password = '';
-    $db_name = 'rold20rules';
-    $db_name_campaign = 'rold20campaign';
+    $db_server = getenv('DB_HOST') ?: 'localhost:3306';
+    $db_user = getenv('DB_USER') ?: 'rold20_user';
+    $db_password = getenv('DB_PASSWORD') ?: 'rold20_pass';
+    $db_name = getenv('DB_NAME') ?: 'rold20';
+    $db_name_campaign = getenv('DB_NAME') ?: 'rold20';
     $footer_parser = new cExpressionParser();
 
     init_traits();

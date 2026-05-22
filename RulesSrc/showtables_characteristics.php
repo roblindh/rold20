@@ -714,7 +714,7 @@ function show_speedtable() {
     <?php
     for ($i = 0; $i < 16; $i++) {
         echo '<tr>';
-        $spd = ($i < 8) ? ($i + 2) : (($i < 13) ? (($i - 8) * 2 + 10) : (($i - 13) * 5 + 20));
+        $spd = ($i < 8) ? ($i + 2) : (($i < 13) ? (($i - 8) * 2 + 10) : ((($i - 13) * 5 + 20)));
         echo '<td style="text-align:center">' . $spd . '</td>';
         for ($j = 1; $j <= 4; $j++) {
             echo '<td style="text-align:center">' . ($j * $spd) . '</td>';
