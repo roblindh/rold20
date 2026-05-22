@@ -60,41 +60,42 @@ function chargen_page_campaign() {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name_campaign;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
-            or die("Error connecting to database.");
+    try {
+        $db = Database::getInstance();
+        $db->connect($db_server, $db_user, $db_password, $db_name_campaign);
 
-    echo '<div id="PageTab' . PAGE_NAMECAMPAIGN . '" class="utiltab">';
+        echo '<div id="PageTab' . PAGE_NAMECAMPAIGN . '" class="utiltab">';
 
-    echo '<p style="font-size:1.3em;"><b>Character Name:</b><br/><input type="text" name="CharName" ' .
-            'onChange="OnNameChanged()" size=30 maxlength=30 style="font-size:1.3em;"></p>';
+        echo '<p style="font-size:1.3em;"><b>Character Name:</b><br/><input type="text" name="CharName" ' .
+                'onChange="OnNameChanged()" size=30 maxlength=30 style="font-size:1.3em;"></p>';
 
-    $query = "SELECT * FROM campaigns";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    echo '<table><caption>Choose Campaign</caption>' .
-            '<thead><tr><th>Campaign</th><th>Ability Gen.</th>' .
-            '<th style="text-align:center">XP</th><th style="text-align:center">Suit.<sup>1</sup></th>' .
-            '<th>Optional Rules</th></tr></thead><tbody>';
-    for ($firstrow = true; $row = mysqli_fetch_array($result); $firstrow = false) {
-        echo '<tr>';
-        echo '<td><input type="radio" name="Campaign" value="' . $row['ID'] . '" ' .
-                ($firstrow ? 'checked ' : '') .
-                'onChange="OnCampaignChanged()"' .
-                '>' . $row['Name'] . '</td>';
-        echo '<td>' . $_APP['abilitygen'][$row['AbilityGenMethod']]['MethodName'] .
-                '<input type="hidden" name="CampaignGenMethod' . $row['ID'] . '" value="' . $row['AbilityGenMethod'] . '"></td>';
-        echo '<td id="CampaignXP' . $row['ID'] . '" style="text-align:center">' . $row['StartingXP'] . '</td>';
-        echo '<td id="CampaignSuitability' . $row['ID'] . '" style="text-align:center">' . $row['SuitabilityLevel'] . '</td>';
-        echo '<td>' . $row['OptionalRules'] .
-                '<input type="hidden" name="CampaignLevelLimit' . $row['ID'] . '" value="' . cIndividual::GetXPLevel($row['StartingXP']) . '"></td></tr>';
+        $query = "SELECT * FROM campaigns";
+        $result = $db->query($query);
+        echo '<table><caption>Choose Campaign</caption>' .
+                '<thead><tr><th>Campaign</th><th>Ability Gen.</th>' .
+                '<th style="text-align:center">XP</th><th style="text-align:center">Suit.<sup>1</sup></th>' .
+                '<th>Optional Rules</th></tr></thead><tbody>';
+        for ($firstrow = true; $row = $result->fetch(); $firstrow = false) {
+            echo '<tr>';
+            echo '<td><input type="radio" name="Campaign" value="' . $row['ID'] . '" ' .
+                    ($firstrow ? 'checked ' : '') .
+                    'onChange="OnCampaignChanged()"' .
+                    '>' . $row['Name'] . '</td>';
+            echo '<td>' . $_APP['abilitygen'][$row['AbilityGenMethod']]['MethodName'] .
+                    '<input type="hidden" name="CampaignGenMethod' . $row['ID'] . '" value="' . $row['AbilityGenMethod'] . '"></td>';
+            echo '<td id="CampaignXP' . $row['ID'] . '" style="text-align:center">' . $row['StartingXP'] . '</td>';
+            echo '<td id="CampaignSuitability' . $row['ID'] . '" style="text-align:center">' . $row['SuitabilityLevel'] . '</td>';
+            echo '<td>' . $row['OptionalRules'] .
+                    '<input type="hidden" name="CampaignLevelLimit' . $row['ID'] . '" value="' . cIndividual::GetXPLevel($row['StartingXP']) . '"></td></tr>';
+        }
+        echo '</tbody></table>';
+        echo '<p><sup>1</sup>Suit.: This is the PC suitability level, determining which creatures and templates are available for player characters. ';
+        echo 'A level of 0 would include all creatures, while a level of 5 would allow only the most common humanoids.</p>';
+
+        echo '</div>';
+    } catch (Exception $e) {
+        echo '<div class="error">Database error: ' . htmlspecialchars($e->getMessage()) . '</div>';
     }
-    echo '</tbody></table>';
-    echo '<p><sup>1</sup>Suit.: This is the PC suitability level, determining which creatures and templates are available for player characters. ';
-    echo 'A level of 0 would include all creatures, while a level of 5 would allow only the most common humanoids.</p>';
-
-    echo '</div>';
-
-    mysqli_close($dbc);
 }
 
 function chargen_page_ability() {
@@ -155,130 +156,131 @@ function chargen_page_race() {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    try {
+        $db = Database::getInstance();
+        $db->connect($db_server, $db_user, $db_password, $db_name);
 
-    echo '<div id="PageTab' . PAGE_RACE . '" class="utiltab">';
+        echo '<div id="PageTab' . PAGE_RACE . '" class="utiltab">';
 
-    echo 'Level limit: <input type="text" name="LevelLimit" value="" size=3 readonly=""><br/>';
-    echo '<input type="hidden" name="Suitability" value="">';
+        echo 'Level limit: <input type="text" name="LevelLimit" value="" size=3 readonly=""><br/>';
+        echo '<input type="hidden" name="Suitability" value="">';
 
-    echo '<table><caption>Choose Gender</caption><tbody>';
-    $firstrow = true;
-    foreach ($_APP['genders'] as $iGender) {
-        echo '<tr><td><input type="radio" name="Gender" value="' . $iGender['ID'] . '"' .
-            ($firstrow ? ' checked' : '') . ' onChange="OnGenderChanged(' . $iGender['ID'] . ')">' .
-            $iGender['Name'] . '</td></tr>';
-        $firstrow = false;
-    }
-    echo '</tbody></table>';
-
-    $query = "SELECT * FROM creatures ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    echo '<table><caption>Choose Race</caption><thead><tr><th>Race</th><th>Ability Mods</th>' .
-        '<th style="text-align:center">Sz</th><th style="text-align:center">Spd</th>' .
-        '<th style="text-align:center">CL</th></tr></thead>' .
-        '<tbody style="background-color:#ffffff;">';
-    for ($firstrow = true; $iCreature = mysqli_fetch_array($result); $firstrow = false) {
-        echo '<tr id="CreatureRow' . $iCreature['ID'] . '" class="CreatureRow" data-id="' . $iCreature['ID'] . '">';
-        echo '<td><input type="radio" name="Race" value="' . $iCreature['ID'] . '" ' .
-                ($firstrow ? 'checked ' : '') .
-                'onChange="OnRaceChanged(' . $iCreature['ID'] . ')">' .
-                $iCreature['Name'] .
-                '<input type="hidden" name="RaceSuit' . $iCreature['ID'] . '" value="' . $iCreature['PCSuitability'] . '">' .
-                '<input type="hidden" name="RaceCulture' . $iCreature['ID'] . '" value="' . $iCreature['DefaultCulture'] . '">' .
-                '<input type="hidden" name="RaceGroup' . $iCreature['ID'] . '" value="' . $_APP['creaturesubtypes'][$iCreature['CreatureType']]['GroupID'] . '">' .
-                '<input type="hidden" name="RaceType' . $iCreature['ID'] . '" value="' . $iCreature['CreatureType'] . '">' .
-                '<input type="hidden" name="RaceLengthM' . $iCreature['ID'] . '" value="' . $iCreature['AvgLengthM'] . '">' .
-                '<input type="hidden" name="RaceLengthF' . $iCreature['ID'] . '" value="' . $iCreature['AvgLengthF'] . '">' .
-                '<input type="hidden" name="RaceMassM' . $iCreature['ID'] . '" value="' . $iCreature['AvgMassM'] . '">' .
-                '<input type="hidden" name="RaceMassF' . $iCreature['ID'] . '" value="' . $iCreature['AvgMassF'] . '">' .
-                '<input type="hidden" name="RaceAgeAdult' . $iCreature['ID'] . '" value="' . $iCreature['AdultAge'] . '">' .
-                '<input type="hidden" name="RaceAgeMature' . $iCreature['ID'] . '" value="' . $iCreature['MatureAge'] . '">' .
-                '<input type="hidden" name="RaceAgeOld' . $iCreature['ID'] . '" value="' . $iCreature['OldAge'] . '">' .
-                '<input type="hidden" name="RaceAgeVenerable' . $iCreature['ID'] . '" value="' . $iCreature['VenerableAge'] . '"></td>';
-        echo '<td>' . cCreature::GetAbilAdjStr($iCreature['ID']) . '</td>';
-        echo '<td style="text-align:center">' . $_APP['sizecats'][$iCreature['SizeClass']]['Abbreviation'] . '</td>';
-        echo '<td style="text-align:center">' . $iCreature['GroundSpeed'] . '</td>';
-        echo '<td style="text-align:center" id="RaceCL' . $iCreature['ID'] . '">' .
-                ($iCreature['BaseRL'] + $iCreature['CLModifier']) . '</td>' .
-                '<input type="hidden" name="RaceRL' . $iCreature['ID'] . '" value="' . $iCreature['BaseRL'] . '">' .
-                '<input type="hidden" name="RaceCLMod' . $iCreature['ID'] . '" value="' . $iCreature['CLModifier'] . '"></tr>';
-    }
-    echo '</tbody></table>';
-
-    $query = "SELECT * FROM templates ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    echo '<table><caption>Optional Templates</caption><thead><tr><th>Template</th><th>Ability Mods</th>' .
-        '<th style="text-align:center">Sz</th><th style="text-align:center">Spd</th>' .
-        '<th style="text-align:center">CL</th></tr></thead>' .
-        '<tbody style="background-color:#ffffff;">';
-    while ($iTemplate = mysqli_fetch_array($result)) {
-        if ($iTemplate['Name'] != "None") {
-            echo '<tr id="TemplateRow' . $iTemplate['ID'] . '" class="TemplateRow" data-id="' . $iTemplate['ID'] . '">';
-            echo '<td><input type="checkbox" name="Template' . $iTemplate['ID'] . '" id="Template' .
-                    $iTemplate['ID'] . '" value="' . $iTemplate['ID'] . '" class="templateclass" ' .
-                    'onChange="OnTemplateChanged(' . $iTemplate['ID'] . ')">' .
-                    $iTemplate['Name'] .
-                    '<input type="hidden" name="TemplateSuit' . $iTemplate['ID'] . '" value="' . $iTemplate['PCSuitability'] . '">' .
-                    '<input type="hidden" name="TemplateReqGroup' . $iTemplate['ID'] . '" value="' . $iTemplate['RequiredGroup'] . '">' .
-                    '<input type="hidden" name="TemplateReqType' . $iTemplate['ID'] . '" value="' . $iTemplate['RequiredType'] . '"></td>';
-            echo '<td>' . cTemplate::GetAbilAdjStr($iTemplate['ID']) . '</td>';
-            echo '<td style="text-align:center">' . signedstr($iTemplate['SizeAdj']) . '</td>';
-            echo '<td style="text-align:center">' . signedstr($iTemplate['GroundSpeed']) . '</td>';
-            echo '<td style="text-align:center" id="TemplateCL' . $iTemplate['ID'] . '">' .
-                    signedstr($iTemplate['RLModifier'] + $iTemplate['CLModifier']) . '</td>' .
-                    '<input type="hidden" name="TemplateRLMod' . $iTemplate['ID'] . '" value="' . $iTemplate['RLModifier'] . '">' .
-                    '<input type="hidden" name="TemplateCLMod' . $iTemplate['ID'] . '" value="' . $iTemplate['CLModifier'] . '"></tr>';
+        echo '<table><caption>Choose Gender</caption><tbody>';
+        $firstrow = true;
+        foreach ($_APP['genders'] as $iGender) {
+            echo '<tr><td><input type="radio" name="Gender" value="' . $iGender['ID'] . '"' .
+                ($firstrow ? ' checked' : '') . ' onChange="OnGenderChanged(' . $iGender['ID'] . ')">' .
+                $iGender['Name'] . '</td></tr>';
+            $firstrow = false;
         }
+        echo '</tbody></table>';
+
+        $query = "SELECT * FROM creatures ORDER BY Name";
+        $result = $db->query($query);
+        echo '<table><caption>Choose Race</caption><thead><tr><th>Race</th><th>Ability Mods</th>' .
+            '<th style="text-align:center">Sz</th><th style="text-align:center">Spd</th>' .
+            '<th style="text-align:center">CL</th></tr></thead>' .
+            '<tbody style="background-color:#ffffff;">';
+        for ($firstrow = true; $iCreature = $result->fetch(); $firstrow = false) {
+            echo '<tr id="CreatureRow' . $iCreature['ID'] . '" class="CreatureRow" data-id="' . $iCreature['ID'] . '">';
+            echo '<td><input type="radio" name="Race" value="' . $iCreature['ID'] . '" ' .
+                    ($firstrow ? 'checked ' : '') .
+                    'onChange="OnRaceChanged(' . $iCreature['ID'] . ')">' .
+                    $iCreature['Name'] .
+                    '<input type="hidden" name="RaceSuit' . $iCreature['ID'] . '" value="' . $iCreature['PCSuitability'] . '">' .
+                    '<input type="hidden" name="RaceCulture' . $iCreature['ID'] . '" value="' . $iCreature['DefaultCulture'] . '">' .
+                    '<input type="hidden" name="RaceGroup' . $iCreature['ID'] . '" value="' . $_APP['creaturesubtypes'][$iCreature['CreatureType']]['GroupID'] . '">' .
+                    '<input type="hidden" name="RaceType' . $iCreature['ID'] . '" value="' . $iCreature['CreatureType'] . '">' .
+                    '<input type="hidden" name="RaceLengthM' . $iCreature['ID'] . '" value="' . $iCreature['AvgLengthM'] . '">' .
+                    '<input type="hidden" name="RaceLengthF' . $iCreature['ID'] . '" value="' . $iCreature['AvgLengthF'] . '">' .
+                    '<input type="hidden" name="RaceMassM' . $iCreature['ID'] . '" value="' . $iCreature['AvgMassM'] . '">' .
+                    '<input type="hidden" name="RaceMassF' . $iCreature['ID'] . '" value="' . $iCreature['AvgMassF'] . '">' .
+                    '<input type="hidden" name="RaceAgeAdult' . $iCreature['ID'] . '" value="' . $iCreature['AdultAge'] . '">' .
+                    '<input type="hidden" name="RaceAgeMature' . $iCreature['ID'] . '" value="' . $iCreature['MatureAge'] . '">' .
+                    '<input type="hidden" name="RaceAgeOld' . $iCreature['ID'] . '" value="' . $iCreature['OldAge'] . '">' .
+                    '<input type="hidden" name="RaceAgeVenerable' . $iCreature['ID'] . '" value="' . $iCreature['VenerableAge'] . '"></td>';
+            echo '<td>' . cCreature::GetAbilAdjStr($iCreature['ID']) . '</td>';
+            echo '<td style="text-align:center">' . $_APP['sizecats'][$iCreature['SizeClass']]['Abbreviation'] . '</td>';
+            echo '<td style="text-align:center">' . $iCreature['GroundSpeed'] . '</td>';
+            echo '<td style="text-align:center" id="RaceCL' . $iCreature['ID'] . '">' .
+                    ($iCreature['BaseRL'] + $iCreature['CLModifier']) . '</td>' .
+                    '<input type="hidden" name="RaceRL' . $iCreature['ID'] . '" value="' . $iCreature['BaseRL'] . '">' .
+                    '<input type="hidden" name="RaceCLMod' . $iCreature['ID'] . '" value="' . $iCreature['CLModifier'] . '"></tr>';
+        }
+        echo '</tbody></table>';
+
+        $query = "SELECT * FROM templates ORDER BY Name";
+        $result = $db->query($query);
+        echo '<table><caption>Optional Templates</caption><thead><tr><th>Template</th><th>Ability Mods</th>' .
+            '<th style="text-align:center">Sz</th><th style="text-align:center">Spd</th>' .
+            '<th style="text-align:center">CL</th></tr></thead>' .
+            '<tbody style="background-color:#ffffff;">';
+        while ($iTemplate = $result->fetch()) {
+            if ($iTemplate['Name'] != "None") {
+                echo '<tr id="TemplateRow' . $iTemplate['ID'] . '" class="TemplateRow" data-id="' . $iTemplate['ID'] . '">';
+                echo '<td><input type="checkbox" name="Template' . $iTemplate['ID'] . '" id="Template' .;
+                        $iTemplate['ID'] . '" value="' . $iTemplate['ID'] . '" class="templateclass" ' .
+                        'onChange="OnTemplateChanged(' . $iTemplate['ID'] . ')">' .
+                        $iTemplate['Name'] .
+                        '<input type="hidden" name="TemplateSuit' . $iTemplate['ID'] . '" value="' . $iTemplate['PCSuitability'] . '">' .
+                        '<input type="hidden" name="TemplateReqGroup' . $iTemplate['ID'] . '" value="' . $iTemplate['RequiredGroup'] . '">' .
+                        '<input type="hidden" name="TemplateReqType' . $iTemplate['ID'] . '" value="' . $iTemplate['RequiredType'] . '"></td>';
+                echo '<td>' . cTemplate::GetAbilAdjStr($iTemplate['ID']) . '</td>';
+                echo '<td style="text-align:center">' . signedstr($iTemplate['SizeAdj']) . '</td>';
+                echo '<td style="text-align:center">' . signedstr($iTemplate['GroundSpeed']) . '</td>';
+                echo '<td style="text-align:center" id="TemplateCL' . $iTemplate['ID'] . '">' .
+                        signedstr($iTemplate['RLModifier'] + $iTemplate['CLModifier']) . '</td>' .
+                        '<input type="hidden" name="TemplateRLMod' . $iTemplate['ID'] . '" value="' . $iTemplate['RLModifier'] . '">' .
+                        '<input type="hidden" name="TemplateCLMod' . $iTemplate['ID'] . '" value="' . $iTemplate['CLModifier'] . '"></tr>';
+            }
+        }
+        echo '</tbody></table>';
+
+        echo '</div>';
+    } catch (Exception $e) {
+        echo '<div class="error">Database error: ' . htmlspecialchars($e->getMessage()) . '</div>';
     }
-    echo '</tbody></table>';
-
-    echo '</div>';
-
-    mysqli_close($dbc);
 }
 
 function chargen_page_backgnd() {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    try {
+        $db = Database::getInstance();
+        $db->connect($db_server, $db_user, $db_password, $db_name);
 
-    echo '<div id="PageTab' . PAGE_BACKGND . '" class="utiltab">';
+        echo '<div id="PageTab' . PAGE_BACKGND . '" class="utiltab">';
 
-    $query = "SELECT * FROM cultures ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    echo '<table><caption>Choose Culture</caption>' .
-        '<thead><tr><th>Culture</th><th>Background Class</th></tr></thead>' .
-        '<tbody style="background-color:#ffffff;">';
-    for ($firstrow = true; $iCulture = mysqli_fetch_array($result); $firstrow = false) {
-        echo '<tr id="CultureRow' . $iCulture['ID'] . '" class="CultureRow" data-id="' . $iCulture['ID'] . '">';
-        echo '<td><input type="radio" name="Culture" value="' . $iCulture['ID'] . '" ' .
-                ($firstrow ? 'checked ' : '') .
-                'onChange="OnCultureChanged(' . $iCulture['ID'] . ')">' .
-                $iCulture['Name'] .
-                '<input type="hidden" name="CultureSuit' . $iCulture['ID'] . '" value="' . $iCulture['PCSuitability'] . '"></td>';
-        echo '<td><select name="BgClass' . $iCulture['ID'] . '" onChange="OnBgClassChanged()">';
-        echo '<option value="' . $_APP['classconfigs'][$iCulture['ClassConfig']]['ClassID'] . '" selected>' .
-            $_APP['classes'][$_APP['classconfigs'][$iCulture['ClassConfig']]['ClassID']]['Name'] . '</option>';
-        if ($iCulture['ClassConfigSec'])
-            echo '<option value="' . $_APP['classconfigs'][$iCulture['ClassConfigSec']]['ClassID'] . '">' .
-                $_APP['classes'][$_APP['classconfigs'][$iCulture['ClassConfigSec']]['ClassID']]['Name'] . '</option>';
-        if ($iCulture['ClassConfigTert'])
-            echo '<option value="' . $_APP['classconfigs'][$iCulture['ClassConfigTert']]['ClassID'] . '">' .
-                $_APP['classes'][$_APP['classconfigs'][$iCulture['ClassConfigTert']]['ClassID']]['Name'] . '</option>';
-        echo '</select></td></tr>';
+        $query = "SELECT * FROM cultures ORDER BY Name";
+        $result = $db->query($query);
+        echo '<table><caption>Choose Culture</caption>' .
+            '<thead><tr><th>Culture</th><th>Background Class</th></tr></thead>' .
+            '<tbody style="background-color:#ffffff;">';
+        for ($firstrow = true; $iCulture = $result->fetch(); $firstrow = false) {
+            echo '<tr id="CultureRow' . $iCulture['ID'] . '" class="CultureRow" data-id="' . $iCulture['ID'] . '">';
+            echo '<td><input type="radio" name="Culture" value="' . $iCulture['ID'] . '" ' .
+                    ($firstrow ? 'checked ' : '') .
+                    'onChange="OnCultureChanged(' . $iCulture['ID'] . ')">' .
+                    $iCulture['Name'] .
+                    '<input type="hidden" name="CultureSuit' . $iCulture['ID'] . '" value="' . $iCulture['PCSuitability'] . '"></td>';
+            echo '<td><select name="BgClass' . $iCulture['ID'] . '" onChange="OnBgClassChanged()">';
+            echo '<option value="' . $_APP['classconfigs'][$iCulture['ClassConfig']]['ClassID'] . '" selected>' .;
+                $_APP['classes'][$_APP['classconfigs'][$iCulture['ClassConfig']]['ClassID']]['Name'] . '</option>';
+            if ($iCulture['ClassConfigSec'])
+                echo '<option value="' . $_APP['classconfigs'][$iCulture['ClassConfigSec']]['ClassID'] . '">' .;
+                    $_APP['classes'][$_APP['classconfigs'][$iCulture['ClassConfigSec']]['ClassID']]['Name'] . '</option>';
+            if ($iCulture['ClassConfigTert'])
+                echo '<option value="' . $_APP['classconfigs'][$iCulture['ClassConfigTert']]['ClassID'] . '">' .;
+                    $_APP['classes'][$_APP['classconfigs'][$iCulture['ClassConfigTert']]['ClassID']]['Name'] . '</option>';
+            echo '</select></td></tr>';
+        }
+        echo '</tbody></table>';
+
+        echo '</div>';
+    } catch (Exception $e) {
+        echo '<div class="error">Database error: ' . htmlspecialchars($e->getMessage()) . '</div>';
     }
-    echo '</tbody></table>';
-
-    echo '</div>';
-
-    mysqli_close($dbc);
 }
 
 function chargen_page_class() {
@@ -316,51 +318,51 @@ function chargen_page_improv() {
     global $db_server, $db_user, $db_password, $db_name;
     $button_style = 'style="width: 3em"';
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    try {
+        $db = Database::getInstance();
+        $db->connect($db_server, $db_user, $db_password, $db_name);
 
-    echo '<div id="PageTab' . PAGE_IMPROV . '" class="utiltab">';
+        echo '<div id="PageTab' . PAGE_IMPROV . '" class="utiltab">';
 
-    echo 'Improvement Points: <input type="text" name="ImprPts" value="" size=3 readonly="">';
+        echo 'Improvement Points: <input type="text" name="ImprPts" value="" size=3 readonly="">';
 
-    echo '<table><caption>Spend or Save Improvement Points</caption><thead><tr>';
-    echo '<th>Improvement</th><th style="text-align:center">Cost</th><th style="text-align:center">Bonus</th>';
-    echo '</tr></thead><tbody>';
-    foreach ($_APP['improvementtraits'] as $iImprovement) {
-        echo '<tr>';
-        echo '<td>' . $iImprovement['Description'] . '</td>';
-        echo '<td id="ImprCost' . $iImprovement['ID'] . '" style="text-align:center">' . $iImprovement['IPCost'] . '</td>';
-        echo '<td style="text-align:center">';
-        echo '<input type="text" name="ImprVal' . $iImprovement['ID'] . '" class="ImprVal" value="0" size=3 readonly="">';
-        echo '<input type="button" value="+" ' . $button_style . ' onClick="IncImpr(' . $iImprovement['ID'] . ')">' .
-            '<input type="button" value="-" ' . $button_style . ' onClick="DecImpr(' . $iImprovement['ID'] . ')">';
-        echo '<input type="hidden" name="ImprMax' . $iImprovement['ID'] . '" value="' . $iImprovement['MaxBonus'] . '">';
-        echo '</td></tr>';
-    }
-    $query = "SELECT * FROM skilltypes WHERE ID<=8 ORDER BY SortOrder";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    while ($row = mysqli_fetch_array($result)) {
-        $query2 = "SELECT * FROM skills WHERE Type=" . $row['ID'] . " ORDER BY Name";
-        $result2 = mysqli_query($dbc, $query2)
-                or die("Error querying database.");
-        while ($iSkill = mysqli_fetch_array($result2)) {
+        echo '<table><caption>Spend or Save Improvement Points</caption><thead><tr>';
+        echo '<th>Improvement</th><th style="text-align:center">Cost</th><th style="text-align:center">Bonus</th>';
+        echo '</tr></thead><tbody>';
+        foreach ($_APP['improvementtraits'] as $iImprovement) {
             echo '<tr>';
-            echo '<td>Skill: ' . $iSkill['Name'] . '</td>';
-            echo '<td id="ImprSkillCost' . $iSkill['ID'] . '" style="text-align:center">10</td>';
+            echo '<td>' . $iImprovement['Description'] . '</td>';
+            echo '<td id="ImprCost' . $iImprovement['ID'] . '" style="text-align:center">' . $iImprovement['IPCost'] . '</td>';
             echo '<td style="text-align:center">';
-            echo '<input type="text" name="ImprSkillVal' . $iSkill['ID'] . '" class="ImprVal" value="0" size=3 readonly="">';
-            echo '<input type="button" value="+" ' . $button_style . ' onClick="IncImprSkill(' . $iSkill['ID'] . ')">' .
-                '<input type="button" value="-" ' . $button_style . ' onClick="DecImprSkill(' . $iSkill['ID'] . ')">';
-            echo '<input type="hidden" name="ImprSkillMax' . $iSkill['ID'] . '" value="5">';
+            echo '<input type="text" name="ImprVal' . $iImprovement['ID'] . '" class="ImprVal" value="0" size=3 readonly="">';
+            echo '<input type="button" value="+" ' . $button_style . ' onClick="IncImpr(' . $iImprovement['ID'] . ')">' .
+                '<input type="button" value="-" ' . $button_style . ' onClick="DecImpr(' . $iImprovement['ID'] . ')">';
+            echo '<input type="hidden" name="ImprMax' . $iImprovement['ID'] . '" value="' . $iImprovement['MaxBonus'] . '">';
             echo '</td></tr>';
         }
+        $query = "SELECT * FROM skilltypes WHERE ID<=8 ORDER BY SortOrder";
+        $result = $db->query($query);
+        while ($row = $result->fetch()) {
+            $query2 = "SELECT * FROM skills WHERE Type=" . $row['ID'] . " ORDER BY Name";
+            $result2 = $db->query($query2);
+            while ($iSkill = $result2->fetch()) {
+                echo '<tr>';
+                echo '<td>Skill: ' . $iSkill['Name'] . '</td>';
+                echo '<td id="ImprSkillCost' . $iSkill['ID'] . '" style="text-align:center">10</td>';
+                echo '<td style="text-align:center">';
+                echo '<input type="text" name="ImprSkillVal' . $iSkill['ID'] . '" class="ImprVal" value="0" size=3 readonly="">';
+                echo '<input type="button" value="+" ' . $button_style . ' onClick="IncImprSkill(' . $iSkill['ID'] . ')">' .
+                    '<input type="button" value="-" ' . $button_style . ' onClick="DecImprSkill(' . $iSkill['ID'] . ')">';
+                echo '<input type="hidden" name="ImprSkillMax' . $iSkill['ID'] . '" value="5">';
+                echo '</td></tr>';
+            }
+        }
+        echo '</tbody></table>';
+
+        echo '</div>';
+    } catch (Exception $e) {
+        echo '<div class="error">Database error: ' . htmlspecialchars($e->getMessage()) . '</div>';
     }
-    echo '</tbody></table>';
-
-    echo '</div>';
-
-    mysqli_close($dbc);
 }
 
 function chargen_page_skill() {
@@ -368,78 +370,76 @@ function chargen_page_skill() {
     global $db_server, $db_user, $db_password, $db_name;
     $button_style = 'style="width:2.5em; padding:0px;"';
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    try {
+        $db = Database::getInstance();
+        $db->connect($db_server, $db_user, $db_password, $db_name);
 
-    echo '<div id="PageTab' . PAGE_SKILLS . '" class="utiltab">';
+        echo '<div id="PageTab' . PAGE_SKILLS . '" class="utiltab">';
 
-    $query = "SELECT * FROM skillaccess";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    while ($row = mysqli_fetch_array($result)) {
-        echo '<input type="hidden" name="SkillAccess' . $row['SkillID'] . '_' . $row['ClassID'] .
-                '" value="' . $row['Prim'] . '">';
-    }
+        $query = "SELECT * FROM skillaccess";
+        $result = $db->query($query);
+        while ($row = $result->fetch()) {
+            echo '<input type="hidden" name="SkillAccess' . $row['SkillID'] . '_' . $row['ClassID'] .
+                    '" value="' . $row['Prim'] . '">';
+        }
 
-    echo 'Skill Points: <input type="text" name="SkillPts" value="" size=3 readonly="">';
+        echo 'Skill Points: <input type="text" name="SkillPts" value="" size=3 readonly="">';
 
-    echo '<table class="invisible"><tbody><tr valign="top"><td>';
-    $query = "SELECT * FROM skilltypes WHERE ID<>9 ORDER BY SortOrder";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    while ($row = mysqli_fetch_array($result)) {
-        echo '<table><caption>' . $row['Name'] . '</caption><thead><tr>';
-        echo '<th>Skill</th><th style="text-align:center">Skill Lvl</th>';
+        echo '<table class="invisible"><tbody><tr valign="top"><td>';
+        $query = "SELECT * FROM skilltypes WHERE ID<>9 ORDER BY SortOrder";
+        $result = $db->query($query);
+        while ($row = $result->fetch()) {
+            echo '<table><caption>' . $row['Name'] . '</caption><thead><tr>';
+            echo '<th>Skill</th><th style="text-align:center">Skill Lvl</th>';
+            echo '</tr></thead><tbody style="background-color:#ffffff;">';
+            $query2 = "SELECT * FROM skills WHERE Type=" . $row['ID'] . " ORDER BY Name";
+            $result2 = $db->query($query2);
+            while ($iSkill = $result2->fetch()) {
+                echo '<tr id="SkillRow' . $iSkill['ID'] . '" class="SkillRow" data-id="' . $iSkill['ID'] . '">';
+                echo '<td>' . $iSkill['Name'] .
+                        '<input type="hidden" name="SkillAbbr' . $iSkill['ID'] . '" value="' . $iSkill['Abbreviation'] . '">' .
+                        '<input type="hidden" name="SkillPrereq' . $iSkill['ID'] . '" value="' . $iSkill['PrereqMaxLvl'] . '"></td>';
+                echo '<td style="text-align:center">';
+                echo '<input type="text" name="SkillLvl' . $iSkill['ID'] . '" class="SkillVal" value="" size=3 readonly="">' .
+                        '<input type="hidden" name="SkillMax' . $iSkill['ID'] . '" value="">';
+                echo '<input type="button" id="IncM' . $iSkill['ID'] . '" value="++" ' . $button_style .
+                    ' onClick="IncSkill(' . $iSkill['ID'] . ', 99.0)">' .
+                    '<input type="button" id="IncF' . $iSkill['ID'] . '" value="+1" ' . $button_style .
+                    ' onClick="IncSkill(' . $iSkill['ID'] . ', 1.0)">' .
+                    '<input type="button" id="IncH' . $iSkill['ID'] . '" value="+&frac12;" ' . $button_style .
+                    ' onClick="IncSkill(' . $iSkill['ID'] . ', 0.5)">' .
+                    '<input type="button" id="DecH' . $iSkill['ID'] . '" value="-&frac12;" ' . $button_style .
+                    ' onClick="DecSkill(' . $iSkill['ID'] . ', 0.5)" disabled="1">' .
+                    '<input type="button" id="DecF' . $iSkill['ID'] . '" value="-1" ' . $button_style .
+                    ' onClick="DecSkill(' . $iSkill['ID'] . ', 1.0)" disabled="1">' .
+                    '<input type="button" id="DecM' . $iSkill['ID'] . '" value="0" ' . $button_style .
+                    ' onClick="DecSkill(' . $iSkill['ID'] . ', 99.0)" disabled="1">';
+                echo '</td></tr>';
+            }
+            echo '</tbody></table>';
+        }
+        echo '</td>';
+
+        $query = "SELECT * FROM skillspecializations ORDER BY Skill, Name";
+        $result = $db->query($query);
+        echo '<td><table><caption>Skill Specializations</caption><thead><tr>';
+        echo '<th>Specialization</th><th style="text-align:center">Known</th>';
         echo '</tr></thead><tbody style="background-color:#ffffff;">';
-        $query2 = "SELECT * FROM skills WHERE Type=" . $row['ID'] . " ORDER BY Name";
-        $result2 = mysqli_query($dbc, $query2)
-                or die("Error querying database.");
-        while ($iSkill = mysqli_fetch_array($result2)) {
-            echo '<tr id="SkillRow' . $iSkill['ID'] . '" class="SkillRow" data-id="' . $iSkill['ID'] . '">';
-            echo '<td>' . $iSkill['Name'] .
-                    '<input type="hidden" name="SkillAbbr' . $iSkill['ID'] . '" value="' . $iSkill['Abbreviation'] . '">' .
-                    '<input type="hidden" name="SkillPrereq' . $iSkill['ID'] . '" value="' . $iSkill['PrereqMaxLvl'] . '"></td>';
+        while ($iSpec = $result->fetch()) {
+            echo '<tr id="SpecRow' . $iSpec['ID'] . '" class="SpecRow" data-id="' . $iSpec['ID'] . '" data-skillid="' . $_APP['skills'][$iSpec['Skill']]['ID'] . '">';
+            echo '<td>' . $_APP['skills'][$iSpec['Skill']]['Name'] . ' (' . $iSpec['Name'] . ')' .
+                    '<input type="hidden" name="SpecPrereq' . $iSpec['ID'] . '" value="' . $iSpec['Prereqs'] . '"></td>';
             echo '<td style="text-align:center">';
-            echo '<input type="text" name="SkillLvl' . $iSkill['ID'] . '" class="SkillVal" value="" size=3 readonly="">' .
-                    '<input type="hidden" name="SkillMax' . $iSkill['ID'] . '" value="">';
-            echo '<input type="button" id="IncM' . $iSkill['ID'] . '" value="++" ' . $button_style .
-                ' onClick="IncSkill(' . $iSkill['ID'] . ', 99.0)">' .
-                '<input type="button" id="IncF' . $iSkill['ID'] . '" value="+1" ' . $button_style .
-                ' onClick="IncSkill(' . $iSkill['ID'] . ', 1.0)">' .
-                '<input type="button" id="IncH' . $iSkill['ID'] . '" value="+&frac12;" ' . $button_style .
-                ' onClick="IncSkill(' . $iSkill['ID'] . ', 0.5)">' .
-                '<input type="button" id="DecH' . $iSkill['ID'] . '" value="-&frac12;" ' . $button_style .
-                ' onClick="DecSkill(' . $iSkill['ID'] . ', 0.5)" disabled="1">' .
-                '<input type="button" id="DecF' . $iSkill['ID'] . '" value="-1" ' . $button_style .
-                ' onClick="DecSkill(' . $iSkill['ID'] . ', 1.0)" disabled="1">' .
-                '<input type="button" id="DecM' . $iSkill['ID'] . '" value="0" ' . $button_style .
-                ' onClick="DecSkill(' . $iSkill['ID'] . ', 99.0)" disabled="1">';
+            echo '<input type="checkbox" name="Spec' . $iSpec['ID'] . '" class="SpecVal" onClick="CheckSpec(' . $iSpec['ID'] . ')">';
             echo '</td></tr>';
         }
-        echo '</tbody></table>';
+        echo '</tbody></table></td>';
+        echo '</tr></tbody></table>';
+
+        echo '</div>';
+    } catch (Exception $e) {
+        echo '<div class="error">Database error: ' . htmlspecialchars($e->getMessage()) . '</div>';
     }
-    echo '</td>';
-
-    $query = "SELECT * FROM skillspecializations ORDER BY Skill, Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    echo '<td><table><caption>Skill Specializations</caption><thead><tr>';
-    echo '<th>Specialization</th><th style="text-align:center">Known</th>';
-    echo '</tr></thead><tbody style="background-color:#ffffff;">';
-    while ($iSpec = mysqli_fetch_array($result)) {
-        echo '<tr id="SpecRow' . $iSpec['ID'] . '" class="SpecRow" data-id="' . $iSpec['ID'] . '" data-skillid="' . $_APP['skills'][$iSpec['Skill']]['ID'] . '">';
-        echo '<td>' . $_APP['skills'][$iSpec['Skill']]['Name'] . ' (' . $iSpec['Name'] . ')' .
-                '<input type="hidden" name="SpecPrereq' . $iSpec['ID'] . '" value="' . $iSpec['Prereqs'] . '"></td>';
-        echo '<td style="text-align:center">';
-        echo '<input type="checkbox" name="Spec' . $iSpec['ID'] . '" class="SpecVal" onClick="CheckSpec(' . $iSpec['ID'] . ')">';
-        echo '</td></tr>';
-    }
-    echo '</tbody></table></td>';
-    echo '</tr></tbody></table>';
-
-    echo '</div>';
-
-    mysqli_close($dbc);
 }
 
 function chargen_page_details() {
@@ -447,71 +447,68 @@ function chargen_page_details() {
     global $db_server, $db_user, $db_password, $db_name, $db_name_campaign;
     $button_style = 'style="width: 3em"';
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
-    $dbc_campaign = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
-            or die("Error connecting to database.");
+    try {
+        $db = Database::getInstance();
+        $db->connect($db_server, $db_user, $db_password, $db_name);
 
-    echo '<div id="PageTab' . PAGE_DETAILS . '" class="utiltab">';
+        echo '<div id="PageTab' . PAGE_DETAILS . '" class="utiltab">';
 
-    $query = "SELECT * FROM wealthperlevel";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    while ($row = mysqli_fetch_array($result)) {
-        echo '<input type="hidden" name="WealthLvl' . $row['Level'] . '" value="' . $row['PCWealth'] . '">';
+        $query = "SELECT * FROM wealthperlevel";
+        $result = $db->query($query);
+        while ($row = $result->fetch()) {
+            echo '<input type="hidden" name="WealthLvl' . $row['Level'] . '" value="' . $row['PCWealth'] . '">';
+        }
+
+        echo '<table><caption>Other Details</caption><tbody>';
+        echo '<tr><td>Personality:</td><td colspan=2>' .
+            '<input type="text" name="Personality" value="' . (isset($_POST['Personality']) ? $_POST['Personality'] : '') . '" size=80>' .
+            '</td></tr>';
+        echo '<tr><td>Appearance:</td><td colspan=2>' .
+            '<input type="text" name="Appearance" value="' . (isset($_POST['Appearance']) ? $_POST['Appearance'] : '') . '" size=80>' .
+            '</td></tr>';
+        echo '<tr><td>Height/Weight:</td><td>' .
+            '<input type="hidden" name="HeightFactor" value="">' .
+            '<input type="hidden" name="WeightFactor" value="">' .
+            '<input type="text" id="Height" name="Height" value="" size=8> / ' .
+            '<input type="text" id="Weight" name="Weight" value="" size=8></td>';
+        echo '<td><input type="button" value="Random" onClick="RandomSize()"></td></tr>';
+        echo '<tr><td>Age:</td><td>' .
+            '<input type="text" name="Age" value="" size=8></td>' .
+            '<td id="AgeCategories">Adult: , Mature: , Old: , Venerable: </td></tr>';
+        echo '<tr><td>Family:</td><td colspan=2>' .
+            '<input type="text" name="Family" value="' . (isset($_POST['Family']) ? $_POST['Family'] : '') . '" size=80>' .
+            '</td></tr>';
+        echo '<tr><td>Contacts:</td><td colspan=2>' .
+            '<input type="text" name="Contacts" value="' . (isset($_POST['Contacts']) ? $_POST['Contacts'] : '') . '" size=80>' .
+            '</td></tr>';
+        echo '<tr><td>Background:</td><td colspan=2>' .
+            '<input type="text" name="Background" value="' . (isset($_POST['Background']) ? $_POST['Background'] : '') . '" size=80>' .
+            '</td></tr>';
+        echo '<tr><td>Wealth (sp):</td><td>' .
+            '<input type="text" name="Wealth" value="" size=8 readonly=""> ' .
+            '</td><td></td></tr>';
+        echo '<tr><td>Reputation:</td><td colspan=2>' .
+            '<input type="text" name="RepPts" value="" size=8 readonly=""> ' .
+            '<input type="text" name="RepDesc" value="" size=67>' .
+            '</td></tr>';
+        echo '<tr><td>Influence:</td><td colspan=2>' .
+            '<input type="text" name="InflPts" value="" size=8 readonly=""> ' .
+            '<input type="text" name="InflDesc" value="" size=67>' .
+            '</td></tr>';
+        echo '<tr><td>Religion/Deity:</td><td>';
+        echo '<select name="Pantheon" onchange="OnPantheonChanged()">';
+        $query = "SELECT * FROM pantheons ORDER BY ID";
+        $result = $db->connect($db_server, $db_user, $db_password, $db_name_campaign)->query($query);
+        for ($firstrow = true; $row = $result->fetch(); $firstrow = false);
+            echo '<option value="' . $row['ID'] . '"' . ($firstrow ? ' selected' : '') . '>' . $row['Name'] . '</option>';
+        echo '</select></td>';
+        echo '<td id="DeityCell"><select name="Deity"></select></td></tr>';
+        echo '</tbody></table>';
+
+        echo '</div>';
+    } catch (Exception $e) {
+        echo '<div class="error">Database error: ' . htmlspecialchars($e->getMessage()) . '</div>';
     }
-
-    echo '<table><caption>Other Details</caption><tbody>';
-    echo '<tr><td>Personality:</td><td colspan=2>' .
-        '<input type="text" name="Personality" value="' . (isset($_POST['Personality']) ? $_POST['Personality'] : '') . '" size=80>' .
-        '</td></tr>';
-    echo '<tr><td>Appearance:</td><td colspan=2>' .
-        '<input type="text" name="Appearance" value="' . (isset($_POST['Appearance']) ? $_POST['Appearance'] : '') . '" size=80>' .
-        '</td></tr>';
-    echo '<tr><td>Height/Weight:</td><td>' .
-        '<input type="hidden" name="HeightFactor" value="">' .
-        '<input type="hidden" name="WeightFactor" value="">' .
-        '<input type="text" id="Height" name="Height" value="" size=8> / ' .
-        '<input type="text" id="Weight" name="Weight" value="" size=8></td>';
-    echo '<td><input type="button" value="Random" onClick="RandomSize()"></td></tr>';
-    echo '<tr><td>Age:</td><td>' .
-        '<input type="text" name="Age" value="" size=8></td>' .
-        '<td id="AgeCategories">Adult: , Mature: , Old: , Venerable: </td></tr>';
-    echo '<tr><td>Family:</td><td colspan=2>' .
-        '<input type="text" name="Family" value="' . (isset($_POST['Family']) ? $_POST['Family'] : '') . '" size=80>' .
-        '</td></tr>';
-    echo '<tr><td>Contacts:</td><td colspan=2>' .
-        '<input type="text" name="Contacts" value="' . (isset($_POST['Contacts']) ? $_POST['Contacts'] : '') . '" size=80>' .
-        '</td></tr>';
-    echo '<tr><td>Background:</td><td colspan=2>' .
-        '<input type="text" name="Background" value="' . (isset($_POST['Background']) ? $_POST['Background'] : '') . '" size=80>' .
-        '</td></tr>';
-    echo '<tr><td>Wealth (sp):</td><td>' .
-        '<input type="text" name="Wealth" value="" size=8 readonly=""> ' .
-        '</td><td></td></tr>';
-    echo '<tr><td>Reputation:</td><td colspan=2>' .
-        '<input type="text" name="RepPts" value="" size=8 readonly=""> ' .
-        '<input type="text" name="RepDesc" value="" size=67>' .
-        '</td></tr>';
-    echo '<tr><td>Influence:</td><td colspan=2>' .
-        '<input type="text" name="InflPts" value="" size=8 readonly=""> ' .
-        '<input type="text" name="InflDesc" value="" size=67>' .
-        '</td></tr>';
-    echo '<tr><td>Religion/Deity:</td><td>';
-    echo '<select name="Pantheon" onchange="OnPantheonChanged()">';
-    $query = "SELECT * FROM pantheons ORDER BY ID";
-    $result = mysqli_query($dbc_campaign, $query)
-            or die("Error querying database.");
-    for ($firstrow = true; $row = mysqli_fetch_array($result); $firstrow = false)
-        echo '<option value="' . $row['ID'] . '"' . ($firstrow ? ' selected' : '') . '>' . $row['Name'] . '</option>';
-    echo '</select></td>';
-    echo '<td id="DeityCell"><select name="Deity"></select></td></tr>';
-    echo '</tbody></table>';
-
-    echo '</div>';
-
-    mysqli_close($dbc);
-    mysqli_close($dbc_campaign);
 }
 
 function chargen_page_finish() {

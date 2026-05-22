@@ -78,11 +78,9 @@ function show_creaturelist() {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM creatures ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>List of Creatures (by Name)</caption>
@@ -93,7 +91,7 @@ function show_creaturelist() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td><a href="#creature' . $row['ID'] . '">' . $row['Name'] . '</a> (' . $row['NameInformal'] . ')</td>';
         echo '<td>' . $_APP['creaturesubtypes'][$row['CreatureType']]['Name'] . '</td>';
@@ -103,7 +101,6 @@ function show_creaturelist() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_creatureinfo($id, $fullinfo) {
@@ -273,18 +270,15 @@ function show_creatures($typeID) {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT ID, CreatureType FROM creatures ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
 
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         if ($_APP['creaturesubtypes'][$row['CreatureType']]['GroupID'] == $typeID)
             show_creatureinfo($row['ID'], true);
     }
 
-    mysqli_close($dbc);
 
     ?>
     <script>
@@ -305,11 +299,9 @@ function show_creatures($typeID) {
 function show_creaturespc($suitability) {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT ID FROM creatures WHERE PCSuitability >= " . $suitability . " ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         <em>Type and subtype:</em> Racial types and subtypes are described in the creature chapter.<br/>
@@ -330,11 +322,10 @@ function show_creaturespc($suitability) {
         <em>Cultural Traits:</em> Special traits and bonuses granted by the default culture.<br/>
     </p><br/>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         show_creatureinfo($row['ID'], false);
     }
 
-    mysqli_close($dbc);
 }
 
 function show_creaturetypes() {
@@ -404,11 +395,9 @@ function show_culturelist() {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM cultures ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>List of Cultures (by Name)</caption>
@@ -418,7 +407,7 @@ function show_culturelist() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td><a href="#culture' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
         echo '<td>' . $_APP['classes'][$_APP['classconfigs'][$row['ClassConfig']]['ClassID']]['Name'];
@@ -431,28 +420,24 @@ function show_culturelist() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_cultures($suitability) {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT ID FROM cultures WHERE PCSuitability >= " . $suitability . " ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         <em>Traits:</em> Special traits and bonuses due to culture.<br/>
         <em>Class:</em> Class equivalences for creatures brought up in this culture.<br/>
     </p>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         show_cultureinfo($row['ID']);
     }
 
-    mysqli_close($dbc);
 }
 
 function show_templateinfo($id, $fullinfo) {
@@ -546,11 +531,9 @@ function show_templateinfo($id, $fullinfo) {
 function show_templates($suitability, $fullinfo) {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT ID FROM templates WHERE PCSuitability >= " . $suitability . " ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         <em>Old Type &rarr; New Type:</em> Old Type are the racial types compatible with this template,
@@ -564,10 +547,9 @@ function show_templates($suitability, $fullinfo) {
         <em>Racial Traits:</em> Special traits and bonuses granted by template.<br/>
     </p>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         show_templateinfo($row['ID'], $fullinfo);
     }
 
-    mysqli_close($dbc);
 }
 ?>

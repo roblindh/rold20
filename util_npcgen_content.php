@@ -159,7 +159,7 @@ echo '<tr><td>Background Class:</td>';
 echo '<td colspan=2><select name="BackgndClass" ' . $select_style . '>';
 echo '<option value="0"' . (0 == $backgndclass ? ' selected' : '') . '>Default</option>';
 foreach ($_APP['classconfigs'] as $iClassConfig) {
-    echo '<option value="' . $iClassConfig['ID'] . '"' . ($iClassConfig['ID'] == $backgndclass ? ' selected' : '') . '>' .
+    echo '<option value="' . $iClassConfig['ID'] . '"' . ($iClassConfig['ID'] == $backgndclass ? ' selected' : '') . '>' .;
     $_APP['classes'][$iClassConfig['ClassID']]['Name'] . ' (' . $iClassConfig['Name'] . ')</option>';
 }
 echo '</select></td></tr>';
@@ -169,7 +169,7 @@ foreach ($classes as $idx => $class) {
     echo '<select name="Class' . $idx . '" style="width: 20em">';
     echo '<option value="0"' . (0 == $class ? ' selected' : '') . '>None</option>';
     foreach ($_APP['classconfigs'] as $iClassConfig) {
-        echo '<option value="' . $iClassConfig['ID'] . '"' . ($iClassConfig['ID'] == $class ? ' selected' : '') . '>' .
+        echo '<option value="' . $iClassConfig['ID'] . '"' . ($iClassConfig['ID'] == $class ? ' selected' : '') . '>' .;
         $_APP['classes'][$iClassConfig['ClassID']]['Name'] . ' (' . $iClassConfig['Name'] . ')</option>';
     }
     echo '</select> ';

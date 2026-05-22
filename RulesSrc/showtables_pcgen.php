@@ -3,12 +3,10 @@
 function show_abilitygenmethods() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
 
     $query = "SELECT * FROM abilitygeneration WHERE MethodName LIKE '%E-%'";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Ability Generation Methods - Elite</caption>
@@ -18,7 +16,7 @@ function show_abilitygenmethods() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['MethodName'] . '</td>';
         echo '<td>' . str_replace("\\n", "<br/>", $row['Description']) . '</td>';
@@ -28,8 +26,7 @@ function show_abilitygenmethods() {
     </tbody></table>
         <?php
         $query = "SELECT * FROM abilitygeneration WHERE MethodName LIKE '%A-%'";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
         ?>
     <table>
         <caption>Ability Generation Methods - Average</caption>
@@ -39,7 +36,7 @@ function show_abilitygenmethods() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['MethodName'] . '</td>';
         echo '<td>' . str_replace("\\n", "<br/>", $row['Description']) . '</td>';
@@ -49,8 +46,7 @@ function show_abilitygenmethods() {
     </tbody></table>
         <?php
         $query = "SELECT * FROM abilitygeneration WHERE MethodName LIKE '%H-%'";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
         ?>
     <table>
         <caption>Ability Generation Methods - Heroic</caption>
@@ -60,7 +56,7 @@ function show_abilitygenmethods() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['MethodName'] . '</td>';
         echo '<td>' . str_replace("\\n", "<br/>", $row['Description']) . '</td>';
@@ -70,8 +66,7 @@ function show_abilitygenmethods() {
     </tbody></table>
         <?php
         $query = "SELECT * FROM abilitypointbuy";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
         ?>
     <table>
         <caption>Ability Point Buy System</caption>
@@ -81,7 +76,7 @@ function show_abilitygenmethods() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td style="text-align:center">' . $row['BaseAbility'] . '</td>';
         echo '<td style="text-align:center">' . $row['PointCost'] . '</td>';
@@ -90,18 +85,15 @@ function show_abilitygenmethods() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_advantages() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
 
     $query = "SELECT * FROM improvementads ORDER BY Advantage";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Advantages</caption>
@@ -112,7 +104,7 @@ function show_advantages() {
         </tr></thead>
         <tbody>
     <?php
-    for ($i = 1; $row = mysqli_fetch_array($result); $i++) {
+    for ($i = 1; $row = $result->fetch(); $i++) {
         echo '<tr>';
         echo '<td style="text-align:center">' . $i . '</td>';
         echo '<td>' . $row['Advantage'] . '</td>';
@@ -123,8 +115,7 @@ function show_advantages() {
     </tbody></table>
         <?php
         $query = "SELECT * FROM improvementdisads ORDER BY Disadvantage";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
         ?>
     <table>
         <caption>Disadvantages</caption>
@@ -135,7 +126,7 @@ function show_advantages() {
         </tr></thead>
         <tbody>
     <?php
-    for ($i = 1; $row = mysqli_fetch_array($result); $i++) {
+    for ($i = 1; $row = $result->fetch(); $i++) {
         echo '<tr>';
         echo '<td style="text-align:center">' . $i . '</td>';
         echo '<td>' . $row['Disadvantage'] . '</td>';
@@ -146,7 +137,6 @@ function show_advantages() {
     </tbody></table>
 
     <?php
-    mysqli_close($dbc);
 }
 
 function show_experiencelevels() {
@@ -187,11 +177,9 @@ function show_experiencelevels() {
 function show_improvements() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM improvements";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Improvements</caption>
@@ -202,7 +190,7 @@ function show_improvements() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Improvement'] . '</td>';
         echo '<td style="text-align:center">' . $row['Cost'] . '</td>';
@@ -212,7 +200,6 @@ function show_improvements() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_workexperience() {

@@ -10,7 +10,7 @@ $include_dir = "./include";
 include ("$include_dir/commonfuncs.php");
 //extract(getHttpVars());
 
-if (isset($_GET['query']))
+if (isset($_GET['query']);
 	$query = $_GET['query'];
 if (isset($_GET['search']))
 	$search = $_GET['search'];

@@ -27,11 +27,9 @@ function show_abilityscoremods() {
 function show_abilityscores() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM abilityscores";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Ability Scores</caption>
@@ -43,7 +41,7 @@ function show_abilityscores() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['AbilityScore'] . '</td>';
         echo '<td style="text-align:center">' . $row['Abbreviation'] . '</td>';
@@ -52,7 +50,6 @@ function show_abilityscores() {
         echo '</tr>';
     }
     echo '</tbody></table>';
-    mysqli_close($dbc);
 }
 
 function show_agecategories() {
@@ -135,11 +132,9 @@ function show_agecategories() {
 function show_alignmentdescriptions() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM alignments";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Alignment Descriptions</caption>
@@ -149,24 +144,21 @@ function show_alignmentdescriptions() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
         echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
         echo '</tr>';
     }
     echo '</tbody></table>';
-    mysqli_close($dbc);
 }
 
 function show_alignmentrelations() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM alignments";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Relative Alignments</caption>
@@ -178,7 +170,7 @@ function show_alignmentrelations() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
         echo '<td>' . $row['Opposed'] . '</td>';
@@ -187,7 +179,6 @@ function show_alignmentrelations() {
         echo '</tr>';
     }
     echo '</tbody></table>';
-    mysqli_close($dbc);
 }
 
 function show_bodytypes() {
@@ -319,11 +310,9 @@ function show_encumbrancelimits() {
 function show_hpeffects() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM hpeffects";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Injury Effects</caption>
@@ -333,7 +322,7 @@ function show_hpeffects() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . $row['CurrentHP'] . '</td>';
             echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
@@ -342,17 +331,14 @@ function show_hpeffects() {
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_maneuverability() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM maneuverability";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Maneuverability</caption>
@@ -370,7 +356,7 @@ function show_maneuverability() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Maneuverability'] . '</td>';
         echo '<td style="text-align:center">' . $row['Turn'] . '</td>';
@@ -406,17 +392,14 @@ function show_maneuverability() {
         nor is it allowed to <a href="hb02_coremech.php#DefensiveActions">act defensively</a> in order to avoid attacks of opportunity.
     </p>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_naturalattacks() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM naturalattacks ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         The following is a list of predefined natural attack forms and their
@@ -434,7 +417,7 @@ function show_naturalattacks() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
         echo '<td style="text-align:center">' . $row['RelSize'] . '</td>';
@@ -449,17 +432,14 @@ function show_naturalattacks() {
         the two arms count as Diminutive and the two legs count as Tiny. 
     </p>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_ppeffects() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM ppeffects";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Mental Fatigue Effects</caption>
@@ -469,7 +449,7 @@ function show_ppeffects() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . $row['CurrentPP'] . '</td>';
             echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
@@ -478,7 +458,6 @@ function show_ppeffects() {
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_sizealteration() {
@@ -587,11 +566,9 @@ function show_sizecategories() {
 function show_socialclasses() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM socialclasses";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
 
     <table>
@@ -605,7 +582,7 @@ function show_socialclasses() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td style="text-align:center">' . $row['ID'] . '</td>';
         echo '<td>' . $row['Examples'] . '</td>';
@@ -622,7 +599,6 @@ function show_socialclasses() {
         <sup>2</sup>CL Modifier: A creature's social class affects its challenge level (CL), due to its power in society and the potential trouble it can cause for its enemies.
     </p>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_speedconversion() {
@@ -734,11 +710,9 @@ function show_speedtable() {
 function show_speffects() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM speffects";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Physical Fatigue Effects</caption>
@@ -748,7 +722,7 @@ function show_speffects() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['CurrentSP'] . '</td>';
         echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
@@ -757,18 +731,15 @@ function show_speffects() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_stagedconditions($conditiontype) {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM stagedconditions WHERE Type=" . $conditiontype . " ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    while ($row = mysqli_fetch_array($result)) {
+    $result = $db->query($query);
+    while ($row = $result->fetch()) {
         echo '<table width="100%">';
         echo '<thead><tr>';
         echo '<th colspan="2">' . $row['Name'] . ($row['Descriptors'] ? (" - " . $row['Descriptors']) : "") . '</th>';
@@ -842,17 +813,14 @@ function show_stagedconditions($conditiontype) {
         }
         echo '</tbody></table>';
     }
-    mysqli_close($dbc);
 }
 
 function show_wealthclasses() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM wealthclasses";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
 
     <table>
@@ -866,7 +834,7 @@ function show_wealthclasses() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td style="text-align:center">' . $row['ID'] . '</td>';
         echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
@@ -886,6 +854,5 @@ function show_wealthclasses() {
         This is also what you have to spend if you want to temporarily live above your WC or pretend to be wealthier than you are.
     </p>
     <?php
-    mysqli_close($dbc);
 }
 ?>

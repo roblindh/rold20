@@ -3,11 +3,9 @@
 function show_actioncost() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM costtypes";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Action Cost</caption>
@@ -18,7 +16,7 @@ function show_actioncost() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
         echo '<td style="text-align:center">' . $row['ShortName'] . '</td>';
@@ -28,17 +26,14 @@ function show_actioncost() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_actiondescriptions() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM actiontypes ORDER BY SortOrder";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         The blocks that describe actions contain the following information:
@@ -63,14 +58,13 @@ function show_actiondescriptions() {
         <em>AP Boosts:</em> Specifies ways in which AP can be used to boost the action.<br/>
     </p>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<h4 id="ActionType' . $row['ID'] . '">' . $row['Category'] . ' Actions</h4>';
 
         $query2 = "SELECT * FROM actions WHERE Category=" . $row['ID'] . " ORDER BY Name";
-        $result2 = mysqli_query($dbc, $query2)
-                or die("Error querying database.");
+        $result2 = $db->query($query2);
 
-        while ($row2 = mysqli_fetch_array($result2)) {
+        while ($row2 = $result2->fetch()) {
             echo '<table width="100%" id="action' . $row2['ID'] . '">';
             echo '<thead><tr>';
             echo '<th colspan=2>' . $row2['Name'] . ($row2['Descriptors'] ? (" - " . $row2['Descriptors']) : "") . '</th>';
@@ -157,17 +151,14 @@ function show_actiondescriptions() {
         }
     }
 
-    mysqli_close($dbc);
 }
 
 function show_actionduration() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM timeunits WHERE DurationDescription<>''";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Duration</caption>
@@ -178,7 +169,7 @@ function show_actionduration() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
         echo '<td style="text-align:center">' . $row['ShortName'] . '</td>';
@@ -188,17 +179,14 @@ function show_actionduration() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_actionrange() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM distanceunits WHERE RangeDescription<>''";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Range</caption>
@@ -209,7 +197,7 @@ function show_actionrange() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . $row['Name'] . '</td>';
             echo '<td style="text-align:center">' . $row['ShortName'] . '</td>';
@@ -219,17 +207,14 @@ function show_actionrange() {
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_actionsummary() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM actions WHERE ShowPCGen > 0 ORDER BY Category, Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         This table shows the most common actions, their activation time, and their descriptors:
@@ -246,7 +231,7 @@ function show_actionsummary() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td><a href="#action' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
         echo '<td>' . str_replace("\\n", "<br/>", $row['ActionCheck']) . '</td>';
@@ -258,17 +243,14 @@ function show_actionsummary() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_actiontarget() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM targettypes";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Areas of Effect</caption>
@@ -279,7 +261,7 @@ function show_actiontarget() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . $row['Name'] . '</td>';
             echo '<td style="text-align:center">' . $row['ShortName'] . '</td>';
@@ -289,17 +271,14 @@ function show_actiontarget() {
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_actiontime() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM timeunits WHERE ActionTimeDescription<>''";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Action Time</caption>
@@ -310,7 +289,7 @@ function show_actiontime() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . $row['Name'] . '</td>';
             echo '<td style="text-align:center">' . $row['ShortName'] . '</td>';
@@ -320,17 +299,14 @@ function show_actiontime() {
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_implements() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM implementtypes";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Implements</caption>
@@ -341,7 +317,7 @@ function show_implements() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . $row['Name'] . '</td>';
             echo '<td style="text-align:center">' . $row['ShortName'] . '</td>';
@@ -351,6 +327,5 @@ function show_implements() {
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 ?>

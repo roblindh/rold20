@@ -1,4 +1,5 @@
 <?php
+require_once 'Database.php';
 require_once 'helpfuncs.php';
 require_once 'abilityscores.php';
 require_once 'modifiers.php';
@@ -53,240 +54,204 @@ function application_start() {
 
     //    if (!$_APP['initialized'])
     {
-        $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-                or die("Error connecting to database.");
+        try {
+            $db = Database::getInstance();
+            $db->connect($db_server, $db_user, $db_password, $db_name);
 
-        $query = "SELECT * FROM abilitygeneration ORDER BY MethodName";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['abilitygen'][$row['ID']] = $row;
+            $query = "SELECT * FROM abilitygeneration ORDER BY MethodName";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['abilitygen'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM abilityscores";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['abilityscores'][$row['ID']] = $row;
+            $query = "SELECT * FROM abilityscores";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['abilityscores'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM actions";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['actions'][$row['ID']] = $row;
+            $query = "SELECT * FROM actions";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['actions'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM actiontypes";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['actiontypes'][$row['ID']] = $row;
+            $query = "SELECT * FROM actiontypes";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['actiontypes'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM ages";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['agecats'][$row['ID']] = $row;
+            $query = "SELECT * FROM ages";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['agecats'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM bodytypes";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['bodycats'][$row['ID']] = $row;
+            $query = "SELECT * FROM bodytypes";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['bodycats'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM classconfigs";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['classconfigs'][$row['ID']] = $row;
+            $query = "SELECT * FROM classconfigs";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['classconfigs'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM classes";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['classes'][$row['ID']] = $row;
+            $query = "SELECT * FROM classes";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['classes'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM creatures ORDER BY Name";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['creatures'][$row['ID']] = $row;
+            $query = "SELECT * FROM creatures ORDER BY Name";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['creatures'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM creaturesubtypes";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['creaturesubtypes'][$row['ID']] = $row;
+            $query = "SELECT * FROM creaturesubtypes";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['creaturesubtypes'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM creaturetypes";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['creaturetypes'][$row['ID']] = $row;
+            $query = "SELECT * FROM creaturetypes";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['creaturetypes'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM cultures";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['cultures'][$row['ID']] = $row;
+            $query = "SELECT * FROM cultures";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['cultures'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM descriptors";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['descriptors'][$row['ID']] = $row;
+            $query = "SELECT * FROM descriptors";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['descriptors'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM encumbranceclasses";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['encumbrance'][$row['ID']] = $row;
+            $query = "SELECT * FROM encumbranceclasses";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['encumbrance'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM experiencelevels";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['experience'][$row['ID']] = $row;
+            $query = "SELECT * FROM experiencelevels";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['experience'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM genders";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['genders'][$row['ID']] = $row;
+            $query = "SELECT * FROM genders";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['genders'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM improvementtraits";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['improvementtraits'][$row['ID']] = $row;
+            $query = "SELECT * FROM improvementtraits";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['improvementtraits'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM itemmodsmagic";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['itemmodsmagic'][$row['ID']] = $row;
+            $query = "SELECT * FROM itemmodsmagic";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['itemmodsmagic'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM itemmodsmundane";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['itemmodsmundane'][$row['ID']] = $row;
+            $query = "SELECT * FROM itemmodsmundane";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['itemmodsmundane'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM items";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['items'][$row['ID']] = $row;
+            $query = "SELECT * FROM items";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['items'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM itemsubtypes";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['itemsubtypes'][$row['ID']] = $row;
+            $query = "SELECT * FROM itemsubtypes";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['itemsubtypes'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM itemtypes ORDER BY SortOrder";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['itemtypes'][$row['ID']] = $row;
+            $query = "SELECT * FROM itemtypes ORDER BY SortOrder";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['itemtypes'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM materials";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['materials'][$row['ID']] = $row;
+            $query = "SELECT * FROM materials";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['materials'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM modifiers";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['modifiers'][$row['ID']] = $row;
+            $query = "SELECT * FROM modifiers";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['modifiers'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM naturalattacks";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['naturalattacks'][$row['ID']] = $row;
+            $query = "SELECT * FROM naturalattacks";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['naturalattacks'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM prerequisites";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['prereqs'][$row['ID']] = $row;
+            $query = "SELECT * FROM prerequisites";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['prereqs'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM sizes";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['sizecats'][$row['ID']] = $row;
+            $query = "SELECT * FROM sizes";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['sizecats'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM skillaccess";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['skillaccess'][$row['SkillID']] = $row;
+            $query = "SELECT * FROM skillaccess";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['skillaccess'][$row['SkillID']] = $row;
 
-        $query = "SELECT * FROM skillbenefits";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['skillbenefits'][$row['ID']] = $row;
+            $query = "SELECT * FROM skillbenefits";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['skillbenefits'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM skills";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['skills'][$row['ID']] = $row;
+            $query = "SELECT * FROM skills";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['skills'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM skillspecializations";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['specializations'][$row['ID']] = $row;
+            $query = "SELECT * FROM skillspecializations";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['specializations'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM skilltypes";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['skilltypes'][$row['ID']] = $row;
+            $query = "SELECT * FROM skilltypes";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['skilltypes'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM socialclasses";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['socialclasses'][$row['ID']] = $row;
+            $query = "SELECT * FROM socialclasses";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['socialclasses'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM spells";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['spells'][$row['ID']] = $row;
+            $query = "SELECT * FROM spells";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['spells'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM spelloptions";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['spelloptions'][$row['ID']] = $row;
+            $query = "SELECT * FROM spelloptions";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['spelloptions'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM strweightlimits";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['weightlimits'][$row['Str']] = $row;
+            $query = "SELECT * FROM strweightlimits";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['weightlimits'][$row['Str']] = $row;
 
-        $query = "SELECT * FROM templates ORDER BY Name";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['templates'][$row['ID']] = $row;
+            $query = "SELECT * FROM templates ORDER BY Name";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['templates'][$row['ID']] = $row;
 
-        $query = "SELECT * FROM wealthclasses";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        while ($row = mysqli_fetch_array($result))
-            $_APP['wealthclasses'][$row['ID']] = $row;
+            $query = "SELECT * FROM wealthclasses";
+            $result = $db->query($query);
+            while ($row = $result->fetch());
+                $_APP['wealthclasses'][$row['ID']] = $row;
 
-        mysqli_close($dbc);
-
-        $_APP['initialized'] = true;
+            $_APP['initialized'] = true;
+        } catch (Exception $e) {
+            die("Database error: " . $e->getMessage());
+        }
     }
 }
 

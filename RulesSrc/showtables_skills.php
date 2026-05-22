@@ -4,11 +4,9 @@ function show_skillaccess() {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM skilltypes ORDER BY SortOrder";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         The following tables list all available skills,
@@ -22,7 +20,7 @@ function show_skillaccess() {
     </p>
 
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         ?>
         <table>
             <caption><?php echo $row['Name']; ?></caption>
@@ -39,18 +37,17 @@ function show_skillaccess() {
             <tbody>
                 <?php
                 $query2 = "SELECT * FROM skills WHERE Type=" . $row['ID'] . " ORDER BY Name";
-                $result2 = mysqli_query($dbc, $query2)
-                        or die("Error querying database.");
+                $result2 = $db->query($query2);
 
-                while ($row2 = mysqli_fetch_array($result2)) {
+                while ($row2 = $result2->fetch()) {
                     echo '<tr>';
                     echo '<td><a href="#skill' . $row2['Abbreviation'] . '">' .
                             $row2['Name'] . ($row2['Specializations'] >= 1 ? '*' : '') . '</a></td>';
                     echo '<td>' . $row2['Abbreviation'] . '</td>';
                     foreach ($_APP['classes'] as $class) {
                         $query3 = "SELECT Prim FROM skillaccess WHERE SkillID=" . $row2['ID'] . " AND ClassID=" . $class['ID'];
-                        $result3 = mysqli_query($dbc, $query3);
-                        if ($row3 = mysqli_fetch_array($result3)) {
+                        $result3 = $db->query($query3);
+                        if ($row3 = $result3->fetch()) {
                             echo '<td style="text-align:center">' . ($row3['Prim'] >= 1 ? 'X' : '/') . '</td>';
                         } else {
                             echo '<td></td>';
@@ -64,26 +61,22 @@ function show_skillaccess() {
             <?php
         }
 
-    mysqli_close($dbc);
 }
 
 function show_skilldescriptions() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM skilltypes ORDER BY SortOrder";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
 
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<h4 id="SkillType' . $row['ID'] . '">' . $row['Name'] . '</h4>';
 
         $query2 = "SELECT * FROM skills WHERE Type=" . $row['ID'] . " ORDER BY Name";
-        $result2 = mysqli_query($dbc, $query2)
-                or die("Error querying database.");
+        $result2 = $db->query($query2);
 
-        while ($row2 = mysqli_fetch_array($result2)) {
+        while ($row2 = $result2->fetch()) {
             echo '<h5 id="skill' . $row2['Abbreviation'] . '">' . $row2['Name'] . ' (' . $row2['Abbreviation'] . ')</h5>';
             echo '<p>' . str_replace("\\n", "<br/>", $row2['Description']) . '</p>';
             if ($row2['Prereqs']) {
@@ -103,10 +96,9 @@ function show_skilldescriptions() {
                     <tbody>
                     <?php
                     $query3 = "SELECT * FROM skillspecializations WHERE Skill=" . $row2['ID'] . " ORDER BY Name";
-                    $result3 = mysqli_query($dbc, $query3)
-                            or die("Error querying database.");
+                    $result3 = $db->query($query3);
 
-                    while ($row3 = mysqli_fetch_array($result3)) {
+                    while ($row3 = $result3->fetch()) {
                         echo '<tr>';
                         echo '<td>' . $row3['Name'] . '</td>';
                         echo '<td>' . str_replace("\\n", "<br/>", $row3['Description']) . '</td>';
@@ -120,11 +112,10 @@ function show_skilldescriptions() {
             }
 
             $query3 = "SELECT * FROM skillbenefits WHERE Skill=" . $row2['ID'] . " ORDER BY SkillLevel";
-            $result3 = mysqli_query($dbc, $query3)
-                    or die("Error querying database.");
+            $result3 = $db->query($query3);
 
             $first = true;
-            while ($row3 = mysqli_fetch_array($result3)) {
+            while ($row3 = $result3->fetch()) {
                 if ($first) {
                     ?>
                     <table>
@@ -150,11 +141,10 @@ function show_skilldescriptions() {
             }
 
             $query3 = "SELECT * FROM actions WHERE ActionCheck LIKE '%+ " . $row2['Name'] . " %' ORDER BY Name";
-            $result3 = mysqli_query($dbc, $query3)
-                    or die("Error querying database.");
+            $result3 = $db->query($query3);
 
             $first = true;
-            while ($row3 = mysqli_fetch_array($result3)) {
+            while ($row3 = $result3->fetch()) {
                 if ($first) {
                     ?>
                     <table>
@@ -181,7 +171,6 @@ function show_skilldescriptions() {
         }
     }
 
-    mysqli_close($dbc);
 }
 
 function show_armorskilleffects() {

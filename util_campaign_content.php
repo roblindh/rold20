@@ -5,15 +5,13 @@ global $db_server, $db_user, $db_password, $db_name_campaign;
 $button_style = 'style="width: 9em"';
 $select_style = 'style="width: 24em"';
 
-$dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
-        or die("Error connecting to database.");
+$db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name_campaign);
 
 if (isset($_POST['AddCampaign']) && isset($_POST['Name']) && $_SESSION['UserType'] > 3) {
-    $query = "INSERT INTO campaigns (Name, Description, GameMaster, AbilityGenMethod, StartingXP, SuitabilityLevel, OptionalRules) VALUES ('" .
+    $query = "INSERT INTO campaigns (Name, Description, GameMaster, AbilityGenMethod, StartingXP, SuitabilityLevel, OptionalRules) VALUES ('" .;
             $_POST['Name'] . "', '" . $_POST['Description'] . "', " . $_SESSION['UserID'] . ", " . $_POST['AbilityGenMethod'] .
             ", " . $_POST['StartingXP'] . ", " . $_POST['SuitabilityLevel'] . ", '" . $_POST['OptionalRules'] . "')";
-    $result = mysqli_query($dbc, $query)
-            or die("Error inserting into database.");
+    $result = $db->query($query);
 }
 
 echo '<h2 id="CampaignAdmin">Campaign Administration</h2>';
@@ -28,9 +26,8 @@ echo '<th style="text-align:center">Suit.<sup>1</sup></th>';
 echo '<th>Optional Rules</th>';
 echo '</tr></thead><tbody>';
 $query = "SELECT * FROM campaigns";
-$result = mysqli_query($dbc, $query)
-        or die("Error querying database.");
-while ($row = mysqli_fetch_array($result)) {
+$result = $db->query($query);
+while ($row = $result->fetch()) {
     echo '<tr>';
     echo '<td>' . $row['Name'] . '</td>';
     echo '<td>' . $row['Description'] . '</td>';
@@ -66,5 +63,4 @@ if ($_SESSION['UserType'] > 3) {
     echo '</tbody></table></form>';
 }
 
-mysqli_close($dbc);
 ?> 
