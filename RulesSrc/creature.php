@@ -141,7 +141,7 @@ class cCreature {
 
     public static function GetXPValue($challengelevel) {
         return ($challengelevel < 0 ? 25 : ($challengelevel == 0 ? 75 : ($challengelevel == 1 ? 150 :
-                $challengelevel == 2 ? 225 : (($challengelevel - 2) * 300))));
+                ($challengelevel == 2 ? 225 : (($challengelevel - 2) * 300)))));
     }
 
     public static function ParseNaturalAttacks($natatts) {

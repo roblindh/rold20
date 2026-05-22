@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rold20_web
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/php.ini:/usr/local/etc/php/conf.d/custom.ini
+    environment:
+      DB_HOST: db
+      DB_USER: rold20_user
+      DB_PASSWORD: rold20_pass
+      DB_NAME: rold20
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - rold20_net
+
+  db:
+    image: mysql:8.0
+    container_name: rold20_db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: rold20
+      MYSQL_USER: rold20_user
+      MYSQL_PASSWORD: rold20_pass
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./dbdump/Dump20200708.sql:/docker-entrypoint-initdb.d/01-initial-dump.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - rold20_net
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: rold20_phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: rold20_user
+      PMA_PASSWORD: rold20_pass
+      PMA_DB: rold20
+    depends_on:
+      - db
+    networks:
+      - rold20_net
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  rold20_net:
+    driver: bridge
