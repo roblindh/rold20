@@ -109,8 +109,9 @@ echo '<br/><input type="submit" name="AbilHer" value="Heroic" ' . $button_style 
 
 echo '<tr><td>Race:</td>';
 echo '<td><select name="Race" ' . $select_style . '>';
-foreach ($_APP['creatures'] as $iCreature) {
-    echo '<option value="' . $iCreature['ID'] . '"' . ($iCreature['ID'] == $race ? ' selected' : '') . '>' . $iCreature['Name'] . '</option>';
+foreach ($_APP['creatures'] ?? [] as $iCreature) {
+    if (!is_array($iCreature)) continue;
+    echo '<option value="' . ($iCreature['ID'] ?? 0) . '"' . (($iCreature['ID'] ?? 0) == $race ? ' selected' : '') . '>' . ($iCreature['Name'] ?? 'Unknown') . '</option>';
 }
 echo '</select></td>';
 echo '<td><input type="button" name="RandomRace" value="Random" disabled="" ' . $button_style . '></td></tr>';
@@ -119,7 +120,8 @@ echo '<tr><td>Template:</td><td>';
 foreach ($templates as $idx => $template) {
     echo '<select name="Template' . $idx . '" ' . $select_style . '>';
     echo '<option value="0"' . (0 == $template ? ' selected' : '') . '>None</option>';
-    foreach ($_APP['templates'] as $iTemplate) {
+    foreach ($_APP['templates'] ?? [] as $iTemplate) {
+        if (!is_array($iTemplate)) continue;
         echo '<option value="' . $iTemplate['ID'] . '"' . ($iTemplate['ID'] == $template ? ' selected' : '') . '>' . $iTemplate['Name'] . '</option>';
     }
     echo '</select><br/>';
@@ -128,7 +130,8 @@ echo '</td><td><input type="submit" name="AddTemplate" value="Add Template" ' . 
 
 echo '<tr><td>Gender:</td>';
 echo '<td><select name="Gender" ' . $select_style . '>';
-foreach ($_APP['genders'] as $iGender) {
+foreach ($_APP['genders'] ?? [] as $iGender) {
+    if (!is_array($iGender)) continue;
     echo '<option value="' . $iGender['ID'] . '"' . ($iGender['ID'] == $gender ? ' selected' : '') . '>' . $iGender['Name'] . '</option>';
 }
 echo '</select></td>';
@@ -136,7 +139,8 @@ echo '<td><input type="button" name="RandomGender" value="Random" disabled="" ' 
 
 echo '<tr><td>Age Category:</td>';
 echo '<td><select name="AgeCat" ' . $select_style . '>';
-foreach ($_APP['agecats'] as $iAgeCat) {
+foreach ($_APP['agecats'] ?? [] as $iAgeCat) {
+    if (!is_array($iAgeCat)) continue;
     echo '<option value="' . $iAgeCat['ID'] . '"' . ($iAgeCat['ID'] == $agecat ? ' selected' : '') . '>' . $iAgeCat['Description'] . '</option>';
 }
 echo '</select></td>';
@@ -149,7 +153,8 @@ echo '<input type="text" name="SizeMod" value="' . $sizemod . '" size=3 maxlengt
 echo '<tr><td>Culture:</td>';
 echo '<td><select name="Culture" ' . $select_style . '>';
 echo '<option value="0"' . (0 == $culture ? ' selected' : '') . '>Default</option>';
-foreach ($_APP['cultures'] as $iCulture) {
+foreach ($_APP['cultures'] ?? [] as $iCulture) {
+    if (!is_array($iCulture)) continue;
     echo '<option value="' . $iCulture['ID'] . '"' . ($iCulture['ID'] == $culture ? ' selected' : '') . '>' . $iCulture['Name'] . '</option>';
 }
 echo '</select></td>';
@@ -158,8 +163,9 @@ echo '<td><input type="button" name="RandomCulture" value="Random" disabled="" '
 echo '<tr><td>Background Class:</td>';
 echo '<td colspan=2><select name="BackgndClass" ' . $select_style . '>';
 echo '<option value="0"' . (0 == $backgndclass ? ' selected' : '') . '>Default</option>';
-foreach ($_APP['classconfigs'] as $iClassConfig) {
-    echo '<option value="' . $iClassConfig['ID'] . '"' . ($iClassConfig['ID'] == $backgndclass ? ' selected' : '') . '>' .;
+foreach ($_APP['classconfigs'] ?? [] as $iClassConfig) {
+    if (!is_array($iClassConfig)) continue;
+    echo '<option value="' . $iClassConfig['ID'] . '"' . ($iClassConfig['ID'] == $backgndclass ? ' selected' : '') . '>' .
     $_APP['classes'][$iClassConfig['ClassID']]['Name'] . ' (' . $iClassConfig['Name'] . ')</option>';
 }
 echo '</select></td></tr>';
@@ -168,8 +174,9 @@ echo '<tr><td>Class and Level:</td><td>';
 foreach ($classes as $idx => $class) {
     echo '<select name="Class' . $idx . '" style="width: 20em">';
     echo '<option value="0"' . (0 == $class ? ' selected' : '') . '>None</option>';
-    foreach ($_APP['classconfigs'] as $iClassConfig) {
-        echo '<option value="' . $iClassConfig['ID'] . '"' . ($iClassConfig['ID'] == $class ? ' selected' : '') . '>' .;
+    foreach ($_APP['classconfigs'] ?? [] as $iClassConfig) {
+        if (!is_array($iClassConfig)) continue;
+        echo '<option value="' . $iClassConfig['ID'] . '"' . ($iClassConfig['ID'] == $class ? ' selected' : '') . '>' .
         $_APP['classes'][$iClassConfig['ClassID']]['Name'] . ' (' . $iClassConfig['Name'] . ')</option>';
     }
     echo '</select> ';
@@ -219,7 +226,7 @@ if (isset($_POST['Generate'])) {
         $config .= "RLMod=" . $rlmod . "; ";
     if ($sizemod != 0)
         $config .= "SzMod=" . $sizemod . "; ";
-    foreach ($templates as $template) {
+    foreach ($$templates ?? [] as $template) {
         if ($template != 0)
             $config .= "Template=" . $_APP['templates'][$template]['NameInformal'] . "; ";
     }

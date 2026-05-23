@@ -675,7 +675,8 @@ class cIndividual extends cEntity {
         global $_APP;
         $str = "";
 
-        foreach ($_APP['classes'] as $iClass) {
+        foreach ($_APP['classes'] ?? [] as $iClass) {
+            if (!is_array($iClass)) continue;
             $classLvl = $this->GetClassLevel($iClass['ID']);
             if ($classLvl > 0)
                 $str .= (strlen($str) > 0 ? "/" : "") . $iClass['Abbreviation'] . $classLvl;
@@ -1270,12 +1271,12 @@ class cIndividual extends cEntity {
         }
 
         // Traits for all skills and skill levels
-        foreach ($_APP['skillbenefits'] as $iBenefit) {
-            if (($lvl = $this->GetSkillLevel($iBenefit['Skill'])) >= $iBenefit['SkillLevel'])
+        foreach ($_APP['skillbenefits'] ?? [] as $iBenefit) {
+            if (($lvl = $this->GetSkillLevel($iBenefit['Skill'] ?? 0)) >= ($iBenefit['SkillLevel'] ?? 0))
                 $this->TraitEffects->ProcessTraits($iBenefit['Traits'], $lvl, $this);
         }
         // Traits for all skill specializations
-        foreach ($_APP['specializations'] as $specID => $iSpec) {
+        foreach ($_APP['specializations'] ?? [] as $specID => $iSpec) {
             if (($lvl = $this->GetSpecLevel($specID)) > 0)
                 $this->TraitEffects->ProcessTraits($iSpec['Traits'], $lvl, $this);
         }
@@ -1412,7 +1413,8 @@ class cIndividual extends cEntity {
         $parser->Evaluate("CHAMOD=" . $this->GetAbilMod(A_CHA));
 
         if (stripos($prereq, "Skl(") !== FALSE) {
-            foreach ($_APP['skills'] as $iSkill)
+            foreach ($_APP['skills'] ?? [] as $iSkill)
+                if (!is_array($iSkill)) continue;
                 $prereq = str_replace("Skl(" . $iSkill['Abbreviation'] . ")", $this->GetSkillLevel($iSkill['ID']), $prereq);
         }
 
@@ -1437,7 +1439,7 @@ class cIndividual extends cEntity {
         $this->MentalAge = $this->PhysicalAge = 1.2 * $creature['AdultAge'];
         $aParams = explode(";", substr($configStr, $i + 1));
 
-        foreach ($aParams as $iParam) {
+        foreach ($aParams ?? [] as $iParam) {
             if (($i = strpos($iParam, "=")) === FALSE)
                 continue;
 
@@ -1480,7 +1482,7 @@ class cIndividual extends cEntity {
                     }
                     break;
                 case "BackgndClass":
-                    foreach ($_APP['classconfigs'] as $iClassConfig) {
+                    foreach ($_APP['classconfigs'] ?? [] as $iClassConfig) {
                         if ($iClassConfig['Name'] == trim(substr($iParam, $i + 1))) {
                             $this->OverrideRacialClass = $iClassConfig['ID'];
                             break;
@@ -1496,7 +1498,7 @@ class cIndividual extends cEntity {
                     break;
                 case "Shape":
                     $creature = trim(substr($iParam, $i + 1));
-                    foreach ($_APP['creatures'] as $iCreature) {
+                    foreach ($_APP['creatures'] ?? [] as $iCreature) {
                         if ($iCreature['Name'] == $creature || $iCreature['NameInformal'] == $creature) {
                             $this->SetCurrentRace($iCreature['ID']);
                             break;
@@ -1506,7 +1508,7 @@ class cIndividual extends cEntity {
                 case "Template":
                     $template = trim(substr($iParam, $i + 1));
                     if ($template != "None") {
-                        foreach ($_APP['templates'] as $iTemplate) {
+                        foreach ($_APP['templates'] ?? [] as $iTemplate) {
                             if ($iTemplate['Name'] == $template || $iTemplate['NameInformal'] == $template) {
                                 $this->lTemplates[] = $iTemplate['ID'];
                                 break;
@@ -1515,7 +1517,7 @@ class cIndividual extends cEntity {
                     }
                     break;
                 case "Culture":
-                    foreach ($_APP['cultures'] as $iCulture) {
+                    foreach ($_APP['cultures'] ?? [] as $iCulture) {
                         if ($iCulture['Name'] == trim(substr($iParam, $i + 1))) {
                             $this->Culture = $iCulture['ID'];
                             break;
@@ -1523,7 +1525,7 @@ class cIndividual extends cEntity {
                     }
                     break;
                 case "Class":
-                    foreach ($_APP['classconfigs'] as $iClassConfig) {
+                    foreach ($_APP['classconfigs'] ?? [] as $iClassConfig) {
                         if ($iClassConfig['Name'] == trim(substr($iParam, $i + 1))) {
                             $classConfig = $iClassConfig['ID'];
                             break;
@@ -1533,14 +1535,14 @@ class cIndividual extends cEntity {
                 case "Level":
                 case "Lvl":
                     $classLevel = (int) trim(substr($iParam, $i + 1));
-                    if ($classConfig != NULL && $classLevel > 0) {
+                    if ($classConfig != NULL && $classLevel > 0 && isset($_APP['classconfigs'][$classConfig])) {
                         for ($j = 0; $j < $classLevel; $j++)
                             $this->lClassLevels[] = $_APP['classconfigs'][$classConfig]['ClassID'];
-                        foreach ($_APP['skills'] as $iSkill) {
-                            if (strpos($_APP['classconfigs'][$classConfig]['PrimSkills'], $iSkill['Abbreviation']) !== FALSE)
+                        foreach ($_APP['skills'] ?? [] as $iSkill) {
+                            if (strpos(($_APP['classconfigs'][$classConfig]['PrimSkills'] ?? ''), ($iSkill['Abbreviation'] ?? '')) !== FALSE)
                                 $this->lSkillLevels[$iSkill['ID']] = $classLevel +
                                         (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
-                            else if (strpos($_APP['classconfigs'][$classConfig]['SecSkills'], $iSkill['Abbreviation']) !== FALSE)
+                            else if (strpos(($_APP['classconfigs'][$classConfig]['SecSkills'] ?? ''), ($iSkill['Abbreviation'] ?? '')) !== FALSE)
                                 $this->lSkillLevels[$iSkill['ID']] = $classLevel / 2 +
                                         (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
                         }
@@ -1571,11 +1573,11 @@ class cIndividual extends cEntity {
 
         $classConfig = $this->OverrideRacialClass > 0 ? $this->OverrideRacialClass :
                 $_APP['cultures'][$this->Culture]['ClassConfig'];
-        foreach ($_APP['skills'] as $iSkill) {
-            if (strpos($_APP['classconfigs'][$classConfig]['PrimSkills'], $iSkill['Abbreviation']) !== FALSE)
+        foreach ($_APP['skills'] ?? [] as $iSkill) {
+            if (strpos(($_APP['classconfigs'][$classConfig]['PrimSkills'] ?? ''), ($iSkill['Abbreviation'] ?? '')) !== FALSE)
                 $this->lSkillLevels[$iSkill['ID']] = $this->GetRacialLevel() + 1 +
                         (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
-            else if (strpos($_APP['classconfigs'][$classConfig]['SecSkills'], $iSkill['Abbreviation']) !== FALSE)
+            else if (strpos(($_APP['classconfigs'][$classConfig]['SecSkills'] ?? ''), ($iSkill['Abbreviation'] ?? '')) !== FALSE)
                 $this->lSkillLevels[$iSkill['ID']] = ($this->GetRacialLevel() + 1) / 2 +
                         (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
         }
@@ -2006,7 +2008,7 @@ class cIndividual extends cEntity {
         $str = "";
 
         $aBlocks = explode("}", $row['StatBlockConfigs']);
-        foreach ($aBlocks as $iBlock) {
+        foreach ($$aBlocks ?? [] as $iBlock) {
             if (strpos($iBlock, "{") !== FALSE) {
                 $this->GenerateNPC($creatureId, trim($iBlock));
                 $str .= $this->GetStatBlockStr() . "\\n";
@@ -2278,13 +2280,13 @@ class cPossession extends cEntity {
     private function GenerateItemFromParams($aParams) {
         global $_APP;
 
-        foreach ($aParams as $iParam) {
+        foreach ($$aParams ?? [] as $iParam) {
             if (($i = strpos($iParam, "=")) === FALSE)
                 continue;
 
             switch (trim(substr($iParam, 0, $i))) {
                 case "Item":
-                    foreach ($_APP['items'] as $iItem) {
+                    foreach ($_APP['items'] ?? [] as $iItem) {
                         if ($iItem['Name'] == substr($iParam, $i + 1)) {
                             $this->Item = $iItem['ID'];
                             break;
@@ -2292,7 +2294,7 @@ class cPossession extends cEntity {
                     }
                     break;
                 case "Material":
-                    foreach ($_APP['materials'] as $iMaterial) {
+                    foreach ($_APP['materials'] ?? [] as $iMaterial) {
                         if ($iMaterial['Name'] == substr($iParam, $i + 1)) {
                             $this->OverrideMaterial = $iMaterial['ID'];
                             break;
@@ -2301,16 +2303,16 @@ class cPossession extends cEntity {
                     break;
                 case "Mod":
                     $aModParams = explode("&", substr($iParam, $i + 1));
-                    foreach ($_APP['itemmodsmundane'] as $iMod) {
+                    foreach ($_APP['itemmodsmundane'] ?? [] as $iMod) {
                         if ($iMod['Abbreviation'] == $aModParams[0] || $iMod['Description'] == $aModParams[0]) {
                             $this->lMods[] = $iMod['ID'];
                             break 2;
                         }
                     }
-                    foreach ($_APP['itemmodsmagic'] as $iMod) {
+                    foreach ($_APP['itemmodsmagic'] ?? [] as $iMod) {
                         if ($iMod['Abbreviation'] == $aModParams[0] || $iMod['Description'] == $aModParams[0]) {
                             $this->lModsMagic[] = $iMod['ID'];
-                            foreach ($aModParams as $iModParam) {
+                            foreach ($$aModParams ?? [] as $iModParam) {
                                 if (substr($iModParam, 0, 2) == "x=")
                                     $this->lModsParX[count($this->lModsMagic) - 1] = substr($iModParam, 2);
                                 else if (substr($iModParam, 0, 2) == "y=")

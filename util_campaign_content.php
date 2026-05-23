@@ -8,7 +8,7 @@ $select_style = 'style="width: 24em"';
 $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name_campaign);
 
 if (isset($_POST['AddCampaign']) && isset($_POST['Name']) && $_SESSION['UserType'] > 3) {
-    $query = "INSERT INTO campaigns (Name, Description, GameMaster, AbilityGenMethod, StartingXP, SuitabilityLevel, OptionalRules) VALUES ('" .;
+    $query = "INSERT INTO campaigns (Name, Description, GameMaster, AbilityGenMethod, StartingXP, SuitabilityLevel, OptionalRules) VALUES ('"  .
             $_POST['Name'] . "', '" . $_POST['Description'] . "', " . $_SESSION['UserID'] . ", " . $_POST['AbilityGenMethod'] .
             ", " . $_POST['StartingXP'] . ", " . $_POST['SuitabilityLevel'] . ", '" . $_POST['OptionalRules'] . "')";
     $result = $db->query($query);

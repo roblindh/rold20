@@ -106,7 +106,9 @@ function chargen_page_ability() {
 
     echo 'Generation Method: ';
     echo '<select name="GenMethod" onchange="OnGenMethodChanged()">';
-    foreach ($_APP['abilitygen'] as $iGenMethod) {
+    $genmethod = isset($_POST['GenMethod']) ? $_POST['GenMethod'] : 0;
+    foreach ($_APP['abilitygen'] ?? [] as $iGenMethod) {
+    if (!is_array($iGenMethod)) continue;
         if (stripos($iGenMethod['MethodName'], "Method") !== FALSE)
             echo '<option value="' . $iGenMethod['ID'] . '" ' . ($iGenMethod['ID'] == $genmethod ? 'selected' : '') .
                 '>' . $iGenMethod['MethodName'] . '</option>';
@@ -115,7 +117,8 @@ function chargen_page_ability() {
     echo '<input type="button" name="RerollAbility" value="Reroll" onClick="OnRerollClicked()"><br/>';
 
     echo '<p id="MethodDesc"></p>';
-    foreach ($_APP['abilitygen'] as $iGenMethod) {
+    foreach ($_APP['abilitygen'] ?? [] as $iGenMethod) {
+    if (!is_array($iGenMethod)) continue;
         if (stripos($iGenMethod['MethodName'], "Method") !== FALSE) {
             echo '<input type="hidden" name="MethodDesc' . $iGenMethod['ID'] . '" value="' . $iGenMethod['Description'] . '">';
             echo '<input type="hidden" name="MethodGeneration' . $iGenMethod['ID'] . '" value="' . $iGenMethod['Generation'] . '">';
@@ -130,7 +133,8 @@ function chargen_page_ability() {
 
     echo '<table><caption>Base Ability Scores</caption><tbody>';
     echo '<tr id="AbilityPointPoolRow"><td>Point Pool:</td><td><input type="text" name="PointPool" value="" size=3 readonly=""></td></tr>';
-    foreach ($_APP['abilityscores'] as $iScore) {
+    foreach ($_APP['abilityscores'] ?? [] as $iScore) {
+        if (!is_array($iScore)) continue;
         echo '<tr>';
         echo '<td>' . $iScore['AbilityScore'] . '</td>';
         echo '<td><input type="text" name="Abil' . $iScore['ID'] . '" value="0" size=3 readonly=""></td>';
@@ -167,7 +171,8 @@ function chargen_page_race() {
 
         echo '<table><caption>Choose Gender</caption><tbody>';
         $firstrow = true;
-        foreach ($_APP['genders'] as $iGender) {
+        foreach ($_APP['genders'] ?? [] as $iGender) {
+            if (!is_array($iGender)) continue;
             echo '<tr><td><input type="radio" name="Gender" value="' . $iGender['ID'] . '"' .
                 ($firstrow ? ' checked' : '') . ' onChange="OnGenderChanged(' . $iGender['ID'] . ')">' .
                 $iGender['Name'] . '</td></tr>';
@@ -218,7 +223,7 @@ function chargen_page_race() {
         while ($iTemplate = $result->fetch()) {
             if ($iTemplate['Name'] != "None") {
                 echo '<tr id="TemplateRow' . $iTemplate['ID'] . '" class="TemplateRow" data-id="' . $iTemplate['ID'] . '">';
-                echo '<td><input type="checkbox" name="Template' . $iTemplate['ID'] . '" id="Template' .;
+                echo '<td><input type="checkbox" name="Template' . $iTemplate['ID'] . '" id="Template' .
                         $iTemplate['ID'] . '" value="' . $iTemplate['ID'] . '" class="templateclass" ' .
                         'onChange="OnTemplateChanged(' . $iTemplate['ID'] . ')">' .
                         $iTemplate['Name'] .
@@ -265,13 +270,13 @@ function chargen_page_backgnd() {
                     $iCulture['Name'] .
                     '<input type="hidden" name="CultureSuit' . $iCulture['ID'] . '" value="' . $iCulture['PCSuitability'] . '"></td>';
             echo '<td><select name="BgClass' . $iCulture['ID'] . '" onChange="OnBgClassChanged()">';
-            echo '<option value="' . $_APP['classconfigs'][$iCulture['ClassConfig']]['ClassID'] . '" selected>' .;
+            echo '<option value="' . $_APP['classconfigs'][$iCulture['ClassConfig']]['ClassID'] . '" selected>' .
                 $_APP['classes'][$_APP['classconfigs'][$iCulture['ClassConfig']]['ClassID']]['Name'] . '</option>';
             if ($iCulture['ClassConfigSec'])
-                echo '<option value="' . $_APP['classconfigs'][$iCulture['ClassConfigSec']]['ClassID'] . '">' .;
+                echo '<option value="' . $_APP['classconfigs'][$iCulture['ClassConfigSec']]['ClassID'] . '">' .
                     $_APP['classes'][$_APP['classconfigs'][$iCulture['ClassConfigSec']]['ClassID']]['Name'] . '</option>';
             if ($iCulture['ClassConfigTert'])
-                echo '<option value="' . $_APP['classconfigs'][$iCulture['ClassConfigTert']]['ClassID'] . '">' .;
+                echo '<option value="' . $_APP['classconfigs'][$iCulture['ClassConfigTert']]['ClassID'] . '">' .
                     $_APP['classes'][$_APP['classconfigs'][$iCulture['ClassConfigTert']]['ClassID']]['Name'] . '</option>';
             echo '</select></td></tr>';
         }
@@ -296,7 +301,8 @@ function chargen_page_class() {
         echo '<td style="text-align:center">' . $idx . '</td>';
         echo '<td><select name="Class' . $idx . '" onChange="OnClassChanged()">';
         $firstrow = true;
-        foreach ($_APP['classes'] as $iClass) {
+        foreach ($_APP['classes'] ?? [] as $iClass) {
+            if (!is_array($iClass)) continue;
             echo '<option value="' . $iClass['ID'] . '" ' .
                 ($firstrow ? 'selected ' : '') .
                 '>' . $iClass['Name'] . '</option>';
@@ -305,7 +311,8 @@ function chargen_page_class() {
         echo '</select></td></tr>';
     }
     echo '</tbody></table>';
-    foreach ($_APP['classes'] as $iClass) {
+    foreach ($_APP['classes'] ?? [] as $iClass) {
+        if (!is_array($iClass)) continue;
         echo '<input type="hidden" name="ClassSkillPts' . $iClass['ID'] . '" value="' . $iClass['SkillPtsPerLevel'] . '">';
         echo '<input type="hidden" name="ClassInflPts' . $iClass['ID'] . '" value="' . $iClass['InflPerLevel'] . '">';
     }
@@ -329,7 +336,8 @@ function chargen_page_improv() {
         echo '<table><caption>Spend or Save Improvement Points</caption><thead><tr>';
         echo '<th>Improvement</th><th style="text-align:center">Cost</th><th style="text-align:center">Bonus</th>';
         echo '</tr></thead><tbody>';
-        foreach ($_APP['improvementtraits'] as $iImprovement) {
+        foreach ($_APP['improvementtraits'] ?? [] as $iImprovement) {
+            if (!is_array($iImprovement)) continue;
             echo '<tr>';
             echo '<td>' . $iImprovement['Description'] . '</td>';
             echo '<td id="ImprCost' . $iImprovement['ID'] . '" style="text-align:center">' . $iImprovement['IPCost'] . '</td>';

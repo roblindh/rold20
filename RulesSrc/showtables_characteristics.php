@@ -44,8 +44,8 @@ function show_abilityscores() {
     while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['AbilityScore'] . '</td>';
-        echo '<td style="text-align:center">' . $row['Abbreviation'] . '</td>';
-        echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+        echo '<td style="text-align:center">' . $row['Abbreviation'] ?? '' . '</td>';
+        echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
         echo '<td>' . str_replace("\\n", '<br/>', $row['NoScore']) . '</td>';
         echo '</tr>';
     }
@@ -71,17 +71,17 @@ function show_agecategories() {
         </tr></thead>
         <tbody>
     <?php
-    foreach ($_APP['agecats'] as $row) {
+    foreach ($_APP['agecats'] ?? [] as $row) {
         echo '<tr>';
-        echo '<td>' . $row['Description'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['StrAdj']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ConAdj']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['DexAdj']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['IntAdj']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['WisAdj']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ChaAdj']) . '</td>';
-        echo '<td style="text-align:center">×' . $row['RLMult'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['SizeAdj']) . '</td>';
+        echo '<td>' . ($row['Description'] ?? '' ?? '') . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['StrAdj'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ConAdj'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['DexAdj'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['IntAdj'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['WisAdj'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ChaAdj'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['RLMult'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['SizeAdj'] ?? 0) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -102,17 +102,17 @@ function show_agecategories() {
         </tr></thead>
         <tbody>
     <?php
-    foreach ($_APP['agecats'] as $row) {
+    foreach ($_APP['agecats'] ?? [] as $row) {
         echo '<tr>';
-        echo '<td>' . $row['Description'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['StrAdjSN']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ConAdjSN']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['DexAdjSN']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['IntAdjSN']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['WisAdjSN']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ChaAdjSN']) . '</td>';
-        echo '<td style="text-align:center">×' . $row['RLMultSN'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['SizeAdjSN']) . '</td>';
+        echo '<td>' . ($row['Description'] ?? '' ?? '') . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['StrAdjSN'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ConAdjSN'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['DexAdjSN'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['IntAdjSN'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['WisAdjSN'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ChaAdjSN'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['RLMultSN'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['SizeAdjSN'] ?? 0) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -147,7 +147,7 @@ function show_alignmentdescriptions() {
     while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
-        echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+        echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
         echo '</tr>';
     }
     echo '</tbody></table>';
@@ -196,14 +196,14 @@ function show_bodytypes() {
         </tr></thead>
         <tbody>
     <?php
-    foreach ($_APP['bodycats'] as $row) {
+    foreach ($_APP['bodycats'] ?? [] as $row) {
         echo '<tr>';
-        echo '<td>' . $row['Description'] . '</td>';
-        echo '<td style="text-align:center">×' . $row['WeightMult'] . '</td>';
-        echo '<td style="text-align:center">×' . $row['HeightMult'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ReachMod']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ManeuverMod']) . '</td>';
-        echo '<td>' . str_replace("\\n", '<br/>', cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
+        echo '<td>' . ($row['Description'] ?? '') . '</td>';
+        echo '<td style="text-align:center">×' . ($row['WeightMult'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['HeightMult'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ReachMod'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ManeuverMod'] ?? 0) . '</td>';
+        echo '<td>' . str_replace("\\n", '<br/>', cTraitEffects::StatGetTraitsDescription($row['Traits'] ?? '', FALSE)) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -234,14 +234,14 @@ function show_encumbranceclasses() {
         </tr></thead>
         <tbody>
     <?php
-    foreach ($_APP['encumbrance'] as $row) {
+    foreach ($_APP['encumbrance'] ?? [] as $row) {
         echo '<tr>';
-        echo '<td style="text-align:center">' . $row['ID'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['MaxDexBonus']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['EP']) . '</td>';
-        echo '<td style="text-align:center">×' . $row['SpeedMultLand'] . '</td>';
-        echo '<td style="text-align:center">×' . $row['SpeedMultAir'] . '</td>';
-        echo '<td style="text-align:center">×' . $row['FatigueMult'] . '</td>';
+        echo '<td style="text-align:center">' . ($row['ID'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['MaxDexBonus'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['EP'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['SpeedMultLand'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['SpeedMultAir'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['FatigueMult'] ?? 1) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -325,7 +325,7 @@ function show_hpeffects() {
         while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . $row['CurrentHP'] . '</td>';
-            echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+            echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
             echo '</tr>';
         }
         ?>
@@ -452,7 +452,7 @@ function show_ppeffects() {
         while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . $row['CurrentPP'] . '</td>';
-            echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+            echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
             echo '</tr>';
         }
         ?>
@@ -526,20 +526,20 @@ function show_sizecategories() {
         </tr></thead>
         <tbody>
     <?php
-    foreach ($_APP['sizecats'] as $row) {
+    foreach ($_APP['sizecats'] ?? [] as $row) {
         echo '<tr>';
-        echo '<td style="text-align:center">' . signedstr($row['ID']) . '</td>';
-        echo '<td>' . $row['Description'] . ' (' . $row['Abbreviation'] . ')</td>';
-        echo '<td style="text-align:center">' . signedstr($row['CombatMod']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['GrappleMod']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['AttSpdMod']) . '</td>';
-        echo '<td style="text-align:center">×' . $row['HPMult'] . '</td>';
-        echo '<td style="text-align:center">×' . $row['WeightMult'] . '</td>';
-        echo '<td style="text-align:center">' . $row['MaxLength'] . '</td>';
-        echo '<td style="text-align:center">' . $row['MaxVolume'] . '</td>';
-        echo '<td style="text-align:center">' . $row['Space'] . '</td>';
-        echo '<td style="text-align:center">' . $row['Reach'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ManeuverMod']) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ID'] ?? 0) . '</td>';
+        echo '<td>' . ($row['Description'] ?? '') . ' (' . ($row['Abbreviation'] ?? '') . ')</td>';
+        echo '<td style="text-align:center">' . signedstr($row['CombatMod'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['GrappleMod'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['AttSpdMod'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['HPMult'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['WeightMult'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">' . ($row['MaxLength'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . ($row['MaxVolume'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . ($row['Space'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . ($row['Reach'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ManeuverMod'] ?? 0) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -584,7 +584,7 @@ function show_socialclasses() {
     <?php
     while ($row = $result->fetch()) {
         echo '<tr>';
-        echo '<td style="text-align:center">' . $row['ID'] . '</td>';
+        echo '<td style="text-align:center">' . $row['ID'] ?? 0 . '</td>';
         echo '<td>' . $row['Examples'] . '</td>';
         echo '<td style="text-align:center">' . $row['AddressForm'] . '</td>';
         echo '<td style="text-align:center">' . signedstr($row['InflMod']) . '</td>';
@@ -725,7 +725,7 @@ function show_speffects() {
     while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['CurrentSP'] . '</td>';
-        echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+        echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
         echo '</tr>';
     }
     ?>
@@ -745,10 +745,10 @@ function show_stagedconditions($conditiontype) {
         echo '<th colspan="2">' . $row['Name'] . ($row['Descriptors'] ? (" - " . $row['Descriptors']) : "") . '</th>';
         echo '</tr></thead>';
         echo '<tbody>';
-        if ($row['Description']) {
+        if ($row['Description'] ?? '') {
             echo '<tr>';
             echo '<td>Description:</td>';
-            echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+            echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
             echo '</tr>';
         }
         if ($row['Trigger']) {
@@ -836,8 +836,8 @@ function show_wealthclasses() {
     <?php
     while ($row = $result->fetch()) {
         echo '<tr>';
-        echo '<td style="text-align:center">' . $row['ID'] . '</td>';
-        echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+        echo '<td style="text-align:center">' . $row['ID'] ?? 0 . '</td>';
+        echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
         echo '<td style="text-align:center">' . $row['RenewIncome'] . '</td>';
         echo '<td style="text-align:center">' . $row['MinInvest'] . '</td>';
         echo '<td style="text-align:center">' . $row['Expenses'] . '</td>';
