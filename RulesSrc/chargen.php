@@ -506,9 +506,11 @@ function chargen_page_details() {
         echo '<tr><td>Religion/Deity:</td><td>';
         echo '<select name="Pantheon" onchange="OnPantheonChanged()">';
         $query = "SELECT * FROM pantheons ORDER BY ID";
-        $result = $db->connect($db_server, $db_user, $db_password, $db_name_campaign)->query($query);
-        for ($firstrow = true; $row = $result->fetch(); $firstrow = false);
+        $result = Database::getInstance()->query($query);
+        while ($row = $result->fetch()) {
+        $firstrow = true;
             echo '<option value="' . $row['ID'] . '"' . ($firstrow ? ' selected' : '') . '>' . $row['Name'] . '</option>';
+        }
         echo '</select></td>';
         echo '<td id="DeityCell"><select name="Deity"></select></td></tr>';
         echo '</tbody></table>';

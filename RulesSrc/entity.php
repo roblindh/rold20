@@ -1539,6 +1539,7 @@ class cIndividual extends cEntity {
                         for ($j = 0; $j < $classLevel; $j++)
                             $this->lClassLevels[] = $_APP['classconfigs'][$classConfig]['ClassID'];
                         foreach ($_APP['skills'] ?? [] as $iSkill) {
+                            if (!is_array($iSkill)) continue;
                             if (strpos(($_APP['classconfigs'][$classConfig]['PrimSkills'] ?? ''), ($iSkill['Abbreviation'] ?? '')) !== FALSE)
                                 $this->lSkillLevels[$iSkill['ID']] = $classLevel +
                                         (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
@@ -1574,6 +1575,7 @@ class cIndividual extends cEntity {
         $classConfig = $this->OverrideRacialClass > 0 ? $this->OverrideRacialClass :
                 $_APP['cultures'][$this->Culture]['ClassConfig'];
         foreach ($_APP['skills'] ?? [] as $iSkill) {
+                            if (!is_array($iSkill)) continue;
             if (strpos(($_APP['classconfigs'][$classConfig]['PrimSkills'] ?? ''), ($iSkill['Abbreviation'] ?? '')) !== FALSE)
                 $this->lSkillLevels[$iSkill['ID']] = $this->GetRacialLevel() + 1 +
                         (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
@@ -2280,7 +2282,7 @@ class cPossession extends cEntity {
     private function GenerateItemFromParams($aParams) {
         global $_APP;
 
-        foreach ($$aParams ?? [] as $iParam) {
+        foreach ($aParams ?? [] as $iParam) {
             if (($i = strpos($iParam, "=")) === FALSE)
                 continue;
 

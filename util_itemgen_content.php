@@ -53,7 +53,8 @@ echo '<tr><td>Name/Description:</td><td colspan=2><input type="text" name="Descr
 
 echo '<tr><td>Item:</td>';
 echo '<td colspan=2><select name="ItemId" ' . $select_style . '>';
-foreach ($_APP['items'] as $iItem) {
+foreach ($_APP['items'] ?? [] as $iItem) {
+    if (!is_array($iItem)) continue;
     echo '<option value="' . $iItem['ID'] . '"' . ($iItem['ID'] == $itemid ? ' selected' : '') . '>' . $iItem['Name'] . '</option>';
 }
 echo '</select></td></tr>';
@@ -61,7 +62,8 @@ echo '</select></td></tr>';
 echo '<tr><td>Material:</td>';
 echo '<td colspan=2><select name="Material" ' . $select_style . '>';
 echo '<option value="0"' . (0 == $material ? ' selected' : '') . '>Default</option>';
-foreach ($_APP['materials'] as $iMaterial) {
+foreach ($_APP['materials'] ?? [] as $iMaterial) {
+    if (!is_array($iMaterial)) continue;
     echo '<option value="' . $iMaterial['ID'] . '"' . ($iMaterial['ID'] == $material ? ' selected' : '') . '>' . $iMaterial['Name'] . '</option>';
 }
 echo '</select></td></tr>';
@@ -71,7 +73,7 @@ foreach ($modsmundane as $idx => $modmundane) {
     echo '<select name="ModMundane' . $idx . '" ' . $select_style . '>';
     echo '<option value="0"' . (0 == $modmundane ? ' selected' : '') . '>None</option>';
     foreach ($_APP['itemmodsmundane'] as $iModMundane) {
-        echo '<option value="' . $iModMundane['ID'] . '"' . ($iModMundane['ID'] == $modmundane ? ' selected' : '') . '>' .;
+        echo '<option value="' . $iModMundane['ID'] . '"' . ($iModMundane['ID'] == $modmundane ? ' selected' : '') . '>' .
         $iModMundane['Description'] . '</option>';
     }
     echo '</select><br/>';
@@ -83,7 +85,7 @@ foreach ($modsmagic as $idx => $modmagic) {
     echo '<select name="ModMagic' . $idx . '" style="width: 10em">';
     echo '<option value="0"' . (0 == $modmagic ? ' selected' : '') . '>None</option>';
     foreach ($_APP['itemmodsmagic'] as $iModMagic) {
-        echo '<option value="' . $iModMagic['ID'] . '"' . ($iModMagic['ID'] == $modmagic ? ' selected' : '') . '>' .;
+        echo '<option value="' . $iModMagic['ID'] . '"' . ($iModMagic['ID'] == $modmagic ? ' selected' : '') . '>' .
         $iModMagic['Description'] . '</option>';
     }
     echo '</select> ';
