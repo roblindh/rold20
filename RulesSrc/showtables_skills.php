@@ -4,7 +4,7 @@ function show_skillaccess() {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
 
-    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
+    $db = Database::getInstance();
     $query = "SELECT * FROM skilltypes ORDER BY SortOrder";
     $result = $db->query($query);
     ?>
@@ -28,7 +28,8 @@ function show_skillaccess() {
                 <th>Skill</th>
                 <th>Abbrev</th>
                 <?php
-                foreach ($_APP['classes'] as $class) {
+                foreach ($_APP['classes'] ?? [] as $class) {
+                    if (!is_array($class)) continue;
                     echo '<th>' . $class['Abbreviation'] . '</th>';
                 }
                 ?>
@@ -44,7 +45,8 @@ function show_skillaccess() {
                     echo '<td><a href="#skill' . $row2['Abbreviation'] . '">' .
                             $row2['Name'] . ($row2['Specializations'] >= 1 ? '*' : '') . '</a></td>';
                     echo '<td>' . $row2['Abbreviation'] . '</td>';
-                    foreach ($_APP['classes'] as $class) {
+                    foreach ($_APP['classes'] ?? [] as $class) {
+                        if (!is_array($class)) continue;
                         $query3 = "SELECT Prim FROM skillaccess WHERE SkillID=" . $row2['ID'] . " AND ClassID=" . $class['ID'];
                         $result3 = $db->query($query3);
                         if ($row3 = $result3->fetch()) {
