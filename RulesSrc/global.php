@@ -1,4 +1,5 @@
 <?php
+require_once 'Logger.php';
 require_once 'Database.php';
 require_once 'helpfuncs.php';
 require_once 'abilityscores.php';
@@ -292,6 +293,13 @@ function application_start() {
         }
     }
 }
+
+// Register global error handler
+set_error_handler('handleApplicationError');
+
+// Determine production mode from environment
+$isProduction = getenv('ENVIRONMENT') === 'production' || getenv('PRODUCTION') === 'true';
+Logger::setProductionMode($isProduction);
 
 function application_end() {
     global $_APP;
