@@ -1718,9 +1718,9 @@ class cTraitEffects {
         return $lTraits;
     }
 
-    public function ProcessTraits(string $traits, int $level, object $entity): string {
+    public function ProcessTraits(?string $traits, int $level, object $entity): string {
         $str = "";
-        $lTraits = cTraitEffects::ParseTraits($traits);
+        $lTraits = cTraitEffects::ParseTraits($traits ?? '');
 
         foreach ($lTraits as $iTrait) {
             $str .= $iTrait->Process($this, $level, $entity, FALSE) . "\\n";
@@ -1729,9 +1729,9 @@ class cTraitEffects {
         return $str;
     }
 
-    public function GetTraitsDescription(string $traits, bool $brief): string {
+    public function GetTraitsDescription(?string $traits, bool $brief): string {
         $str = "";
-        $lTraits = cTraitEffects::ParseTraits($traits);
+        $lTraits = cTraitEffects::ParseTraits($traits ?? '');
 
         foreach ($lTraits as $iTrait) {
             $traitDesc = $iTrait->Process($this, 0, NULL, $brief);
@@ -1742,9 +1742,9 @@ class cTraitEffects {
         return $str;
     }
 
-    public static function StatGetTraitsDescription(string $traits, bool $brief): string {
+    public static function StatGetTraitsDescription(?string $traits, bool $brief): string {
         $str = "";
-        $lTraits = cTraitEffects::ParseTraits($traits);
+        $lTraits = cTraitEffects::ParseTraits($traits ?? '');
 
         foreach ($lTraits as $iTrait) {
             $traitDesc = $iTrait->Process(NULL, 0, NULL, $brief);
