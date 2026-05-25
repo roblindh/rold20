@@ -234,9 +234,9 @@ function show_actionsummary() {
     while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td><a href="#action' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
-        echo '<td>' . str_replace("\\n", "<br/>", $row['ActionCheck']) . '</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", $row['ActionTime']) . '</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", $row['Cost']) . '</td>';
+        echo '<td>' . str_replace("\\n", "<br/>", $row['ActionCheck'] ?? '') . '</td>';
+        echo '<td>' . str_replace("\\n", "<br/>", $row['ActionTime'] ?? '') . '</td>';
+        echo '<td>' . str_replace("\\n", "<br/>", $row['Cost'] ?? '') . '</td>';
         echo '<td>' . $row['Descriptors'] . '</td>';
         echo '</tr>';
     }
