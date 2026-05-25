@@ -32,7 +32,7 @@ class cEntity {
         return $this->BaseAbilities->Scores[$id];
     }
 
-    public function GetAdjustedAbility(int $id): int {
+    public function GetAdjustedAbility(int $id): ?int {
         global $_APP;
 
         $adjAbil = $this->GetBaseAbility($id);
