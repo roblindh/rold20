@@ -2043,7 +2043,7 @@ class cPossession extends cEntity {
     public $lModsMul;
     public $lLocation;
 
-    public function __construct(): void {
+    public function __construct() {
         $this->Reset();
     }
 
