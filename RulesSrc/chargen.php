@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 define("PAGE_FIRST", 0);
 define("PAGE_NAMECAMPAIGN", 0);
@@ -12,7 +13,7 @@ define("PAGE_DETAILS", 7);
 define("PAGE_FINISH", 8);
 define("PAGE_LAST", 8);
 
-function chargen_page() {
+function chargen_page(): void {
     echo '<form name="CharGen" method="post" action="util_chargen.php">';
     echo '<div class="utilframe">';
     chargen_page_tabbuttons();
@@ -33,7 +34,7 @@ function chargen_page() {
     echo '<script>OnCampaignChanged();</script>';
 }
 
-function chargen_page_tabbuttons() {
+function chargen_page_tabbuttons(): void {
     echo '<div class="utiltabheader">';
     echo '<input type="button" class="utiltab" id="PageTabButton' . PAGE_NAMECAMPAIGN . '" ' .
             'value="Name &amp; Campaign" onClick="GoToPage(' . PAGE_NAMECAMPAIGN . ')">';
@@ -56,7 +57,7 @@ function chargen_page_tabbuttons() {
     echo '</div>';
 }
 
-function chargen_page_campaign() {
+function chargen_page_campaign(): void {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name_campaign;
 
@@ -98,7 +99,7 @@ function chargen_page_campaign() {
     }
 }
 
-function chargen_page_ability() {
+function chargen_page_ability(): void {
     global $_APP;
     $button_style = 'style="width: 3em"';
 
@@ -156,7 +157,7 @@ function chargen_page_ability() {
     echo '</div>';
 }
 
-function chargen_page_race() {
+function chargen_page_race(): void {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
 
@@ -247,7 +248,7 @@ function chargen_page_race() {
     }
 }
 
-function chargen_page_backgnd() {
+function chargen_page_backgnd(): void {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
 
@@ -288,7 +289,7 @@ function chargen_page_backgnd() {
     }
 }
 
-function chargen_page_class() {
+function chargen_page_class(): void {
     global $_APP;
 
     echo '<div id="PageTab' . PAGE_CLASS . '" class="utiltab">';
@@ -320,7 +321,7 @@ function chargen_page_class() {
     echo '</div>';
 }
 
-function chargen_page_improv() {
+function chargen_page_improv(): void {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
     $button_style = 'style="width: 3em"';
@@ -373,7 +374,7 @@ function chargen_page_improv() {
     }
 }
 
-function chargen_page_skill() {
+function chargen_page_skill(): void {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
     $button_style = 'style="width:2.5em; padding:0px;"';
@@ -450,7 +451,7 @@ function chargen_page_skill() {
     }
 }
 
-function chargen_page_details() {
+function chargen_page_details(): void {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name, $db_name_campaign;
     $button_style = 'style="width: 3em"';
@@ -521,7 +522,7 @@ function chargen_page_details() {
     }
 }
 
-function chargen_page_finish() {
+function chargen_page_finish(): void {
     echo '<div id="PageTab' . PAGE_FINISH . '" class="utiltab">';
 
     echo '<p id="SaveResult"></p>';

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 require_once 'Logger.php';
 require_once 'Database.php';
 require_once 'helpfuncs.php';
@@ -23,7 +25,7 @@ require_once 'showtables_spells.php';
 
 define("APP_DATA_FILE", "application.data");
 
-function application_start() {
+function application_start(): void {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name, $db_name_campaign;
     global $footer_parser;
@@ -301,7 +303,7 @@ set_error_handler('handleApplicationError');
 $isProduction = getenv('ENVIRONMENT') === 'production' || getenv('PRODUCTION') === 'true';
 Logger::setProductionMode($isProduction);
 
-function application_end() {
+function application_end(): void {
     global $_APP;
 
     // Write application data to file
@@ -313,7 +315,7 @@ function application_end() {
     }
 }
 
-function init_traits() {
+function init_traits(): void {
     global $aTraitDescriptions;
 
     $aTraitDescriptions = array(
@@ -558,7 +560,7 @@ function init_traits() {
     );
 }
 
-function init_weaponcats() {
+function init_weaponcats(): void {
     global $aWeaponCats;
 
     $aWeaponCats = array(
@@ -588,7 +590,7 @@ function init_weaponcats() {
     );
 }
 
-function init_armorcats() {
+function init_armorcats(): void {
     global $aArmorCats;
 
     $aArmorCats = array(
@@ -598,7 +600,7 @@ function init_armorcats() {
     );
 }
 
-function init_vehiclecats() {
+function init_vehiclecats(): void {
     global $aVehicleCats;
 
     $aVehicleCats = array(
