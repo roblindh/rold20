@@ -1694,6 +1694,9 @@ class cTraitEffects {
     }
 
     public static function ParseTraits($traits) {
+        if (empty($traits)) {
+            return array();
+        }
         $aTraits = explode("}", $traits);
         $lTraits = array();
         foreach ($aTraits as $iTrait) {
