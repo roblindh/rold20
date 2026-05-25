@@ -340,7 +340,8 @@ function show_creaturetypes() {
         </tr></thead>
         <tbody>
     <?php
-    foreach ($_APP['creaturetypes'] as $row) {
+    foreach ($_APP['creaturetypes'] ?? [] as $row) {
+        if (!is_array($row)) continue;
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
         echo '<td>' . $row['Description'] . '</td>';

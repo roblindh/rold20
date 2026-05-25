@@ -161,7 +161,8 @@ class cCreature {
                 }
                 $weaponStats->Name = trim(substr($weapon, $j + 1));
 
-                foreach ($_APP['naturalattacks'] as $iNatAtt) {
+                foreach ($_APP['naturalattacks'] ?? [] as $iNatAtt) {
+                    if (!is_array($iNatAtt)) continue;
                     if ($weaponStats->Name == $iNatAtt['Name']) {
                         $lTraits = cTraitEffects::ParseTraits($iNatAtt['Traits']);
                         $weaponStats = cTrait::ProcessWeapon($weaponStats, $lTraits[0]->aParams);
