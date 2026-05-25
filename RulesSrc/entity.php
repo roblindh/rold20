@@ -1273,7 +1273,7 @@ class cIndividual extends cEntity {
         // Traits for all skills and skill levels
         foreach ($_APP['skillbenefits'] ?? [] as $iBenefit) {
             if (($lvl = $this->GetSkillLevel($iBenefit['Skill'] ?? 0)) >= ($iBenefit['SkillLevel'] ?? 0))
-                $this->TraitEffects->ProcessTraits($iBenefit['Traits'], $lvl, $this);
+                $this->TraitEffects->ProcessTraits($iBenefit['Traits'] ?? [], $lvl, $this);
         }
         // Traits for all skill specializations
         foreach ($_APP['specializations'] ?? [] as $specID => $iSpec) {
