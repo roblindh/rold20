@@ -170,8 +170,8 @@ class cTrait {
                     } else if ($valueType == TYPE_FLOAT && $entity != NULL && $traitEffects != NULL) {
                         $val = (int) (100.0 * $parser->Evaluate(strtoupper($this->aParams["Value"]))) / 100.0;
                         $this->aParams["Value"] = (string) $val;
-                        $str = str_replace("%v", $val, $str);
-                        $strBrief = str_replace("%v", $val, $strBrief);
+                        $str = str_replace("%v", (string)$val, $str);
+                        $strBrief = str_replace("%v", (string)$val, $strBrief);
                     } else {
                         $str = str_replace("%v", $this->aParams["Value"], $str);
                         $strBrief = str_replace("%v", $this->aParams["Value"], $strBrief);

@@ -72,9 +72,13 @@ echo '<tr><td>Mundane Modifications:</td><td>';
 foreach ($modsmundane as $idx => $modmundane) {
     echo '<select name="ModMundane' . $idx . '" ' . $select_style . '>';
     echo '<option value="0"' . (0 == $modmundane ? ' selected' : '') . '>None</option>';
-    foreach ($_APP['itemmodsmundane'] as $iModMundane) {
-        echo '<option value="' . $iModMundane['ID'] . '"' . ($iModMundane['ID'] == $modmundane ? ' selected' : '') . '>' .
-        $iModMundane['Description'] . '</option>';
+    if (is_array($_APP['itemmodsmundane'] ?? false)) {
+        foreach ($_APP['itemmodsmundane'] as $iModMundane) {
+            if (is_array($iModMundane)) {
+                echo '<option value="' . $iModMundane['ID'] . '"' . ($iModMundane['ID'] == $modmundane ? ' selected' : '') . '>' .
+                $iModMundane['Description'] . '</option>';
+            }
+        }
     }
     echo '</select><br/>';
 }
@@ -84,9 +88,13 @@ echo '<tr><td>Magical Modifications:</td><td>';
 foreach ($modsmagic as $idx => $modmagic) {
     echo '<select name="ModMagic' . $idx . '" style="width: 10em">';
     echo '<option value="0"' . (0 == $modmagic ? ' selected' : '') . '>None</option>';
-    foreach ($_APP['itemmodsmagic'] as $iModMagic) {
-        echo '<option value="' . $iModMagic['ID'] . '"' . ($iModMagic['ID'] == $modmagic ? ' selected' : '') . '>' .
-        $iModMagic['Description'] . '</option>';
+    if (is_array($_APP['itemmodsmagic'] ?? false)) {
+        foreach ($_APP['itemmodsmagic'] as $iModMagic) {
+            if (is_array($iModMagic)) {
+                echo '<option value="' . $iModMagic['ID'] . '"' . ($iModMagic['ID'] == $modmagic ? ' selected' : '') . '>' .
+                $iModMagic['Description'] . '</option>';
+            }
+        }
     }
     echo '</select> ';
     echo '<input type="text" name="ModMagicX' . $idx . '" value="' . $modsmagicx[$idx] . '" size=3 maxlength=3> ';

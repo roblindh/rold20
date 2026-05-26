@@ -502,7 +502,7 @@ class cIndividual extends cEntity {
         $mod -= (int) max($multiPen - $this->TraitEffects->MultiAttackPenRed, 0);
 
         foreach ($aWeaponCats as $idx => $iCat) {
-            if (strpos($attStats->WeaponCats, $iCat) !== FALSE)
+            if (strpos((string)$attStats->WeaponCats, $iCat) !== FALSE)
                 $skillMod = max($skillMod, $this->TraitEffects->ModsWeapAtt[$idx]->Total());
         }
         $mod += $skillMod;
@@ -516,7 +516,7 @@ class cIndividual extends cEntity {
         $skillMod = 0;
 
         foreach ($aWeaponCats as $idx => $iCat) {
-            if (strpos($attStats->WeaponCats, $iCat) !== FALSE)
+            if (strpos((string)$attStats->WeaponCats, $iCat) !== FALSE)
                 $skillMod = max($skillMod, $this->TraitEffects->ModsWeapAttSpd[$idx]->Total());
         }
 
@@ -529,7 +529,7 @@ class cIndividual extends cEntity {
         $skillMod = 0;
 
         foreach ($aWeaponCats as $idx => $iCat) {
-            if (strpos($attStats->WeaponCats, $iCat) !== FALSE)
+            if (strpos((string)$attStats->WeaponCats, $iCat) !== FALSE)
                 $skillMod = max($skillMod, $this->TraitEffects->ModsWeapCrit[$idx]->Total());
         }
 
@@ -848,7 +848,7 @@ class cIndividual extends cEntity {
             }
         }
 
-        return $totWeight;
+        return (int)$totWeight;
     }
 
     public function GetEquipmentEC(int $config): int {
@@ -864,7 +864,7 @@ class cIndividual extends cEntity {
                         case 2: // Weapons
                             $ECRed = 0;
                             foreach ($aWeaponCats as $idx => $iCat) {
-                                if (strpos($iPossession->TraitEffects->WeaponStats->WeaponCats, $iCat) !== FALSE)
+                                if (strpos((string)$iPossession->TraitEffects->WeaponStats->WeaponCats, $iCat) !== FALSE)
                                     $ECRed = max($ECRed, $this->TraitEffects->ModsWeapEC[$idx]->Total());
                             }
                             $totEC += $iPossession->Quantity * max($iPossession->GetECMod() - $ECRed, 0);
@@ -872,7 +872,7 @@ class cIndividual extends cEntity {
                         case 3: // Armor
                             $ECRed = 0;
                             foreach ($aArmorCats as $idx => $iCat) {
-                                if (strpos($iPossession->TraitEffects->ArmorStats->ArmorCats, $iCat) !== FALSE)
+                                if (strpos((string)$iPossession->TraitEffects->ArmorStats->ArmorCats, $iCat) !== FALSE)
                                     $ECRed = max($ECRed, $this->TraitEffects->ModsArmorEC[$idx]->Total());
                             }
                             $totEC += $iPossession->Quantity * max($iPossession->GetECMod() - $ECRed, 0);
@@ -991,8 +991,8 @@ class cIndividual extends cEntity {
                     ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
             $avgDmg = $this->GetAverageDamage($parser, $iAtt->Damage, $iAtt->WeaponCats, $this->GetCurrentSize() - $this->GetBaseSize()) +
                     ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
-            $hitProbNormal = $this->GetHitProbNormal($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
-            $hitProbCrit = $this->GetHitProbCrit($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
+            $hitProbNormal = $this->GetHitProbNormal((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
+            $hitProbCrit = $this->GetHitProbCrit((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
             $critMul = 2 + $iAtt->CritMul;
             $dmg += $avgDmg * ($hitProbNormal + $hitProbCrit * $critMul);
         }
@@ -1014,8 +1014,8 @@ class cIndividual extends cEntity {
                         $APBonus + ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
                 $avgDmg = $this->GetAverageDamage($parser, $iAtt->Damage, $iAtt->WeaponCats, $this->GetCurrentSize() - $this->GetBaseSize()) +
                         ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
-                $hitProbNormal = $this->GetHitProbNormal($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
-                $hitProbCrit = $this->GetHitProbCrit($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
+                $hitProbNormal = $this->GetHitProbNormal((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
+                $hitProbCrit = $this->GetHitProbCrit((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
                 $critMul = 2 + $iAtt->CritMul;
                 $dmg += $i * ($hitProbNormal * max(0, $avgDmg + $APBonus - ($dr * (1 - $hitProbNormal / 3))) +
                         $hitProbCrit * max(0, $avgDmg * $critMul + $APBonus - $dr / 2));
@@ -1057,8 +1057,8 @@ class cIndividual extends cEntity {
                         ($numWeaps == 1 && $sizeDiff >= 0 ? 2 : 0) + // Increased Str modifier for two-handed use
                         ($iWeap->TraitEffects->ModsDmg->Total() != 0 ? signedstr($iWeap->TraitEffects->ModsDmg->Total()) : 0) +
                         ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
-                $hitProbNormal = $this->GetHitProbNormal($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
-                $hitProbCrit = $this->GetHitProbCrit($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
+                $hitProbNormal = $this->GetHitProbNormal((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
+                $hitProbCrit = $this->GetHitProbCrit((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
                 $critMul = 2 + $iAtt->CritMul;
             } else {
                 $avgDmg = $this->GetAverageDamage($parser,
@@ -1066,10 +1066,10 @@ class cIndividual extends cEntity {
                                 $iAtt->WeaponCats, $iWeap->TraitEffects->DmgDice) + ((int) $iAtt->Damage) +
                         ($iWeap->TraitEffects->ModsDmg->Total() != 0 ? signedstr($iWeap->TraitEffects->ModsDmg->Total()) : 0) +
                         ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
-                $hitProbNormal = $this->GetHitProbNormal($attMod, $dec,
-                        $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt));
-                $hitProbCrit = $this->GetHitProbCrit($attMod, $dec,
-                        $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt));
+                $hitProbNormal = $this->GetHitProbNormal((int)$attMod, (int)$dec,
+                        (int)($this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt)));
+                $hitProbCrit = $this->GetHitProbCrit((int)$attMod, (int)$dec,
+                        (int)($this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt)));
                 $critMul = 2 + $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritMul;
             }
             $dmg += $avgDmg * ($hitProbNormal + $hitProbCrit * $critMul);
@@ -1099,8 +1099,8 @@ class cIndividual extends cEntity {
                             ($numWeaps == 1 && $sizeDiff >= 0 ? 2 : 0) + // Increased Str modifier for two-handed use
                             ($iWeap->TraitEffects->ModsDmg->Total() != 0 ? signedstr($iWeap->TraitEffects->ModsDmg->Total()) : 0) +
                             ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
-                    $hitProbNormal = $this->GetHitProbNormal($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
-                    $hitProbCrit = $this->GetHitProbCrit($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
+                    $hitProbNormal = $this->GetHitProbNormal((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
+                    $hitProbCrit = $this->GetHitProbCrit((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
                     $critMul = 2 + $iAtt->CritMul;
                 } else {
                     $avgDmg = $this->GetAverageDamage($parser,
@@ -1108,10 +1108,10 @@ class cIndividual extends cEntity {
                                     $iAtt->WeaponCats, $iWeap->TraitEffects->DmgDice) + ((int) $iAtt->Damage) +
                             ($iWeap->TraitEffects->ModsDmg->Total() != 0 ? signedstr($iWeap->TraitEffects->ModsDmg->Total()) : 0) +
                             ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
-                    $hitProbNormal = $this->GetHitProbNormal($attMod, $dec,
-                            $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt));
-                    $hitProbCrit = $this->GetHitProbCrit($attMod, $dec,
-                            $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt));
+                    $hitProbNormal = $this->GetHitProbNormal((int)$attMod, (int)$dec,
+                            (int)($this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt)));
+                    $hitProbCrit = $this->GetHitProbCrit((int)$attMod, (int)$dec,
+                            (int)($this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt)));
                     $critMul = 2 + $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritMul;
                 }
                 $dmg += $i * ($hitProbNormal * max(0, $avgDmg + $APBonus - ($dr * (1 - $hitProbNormal / 3))) +
@@ -1248,37 +1248,37 @@ class cIndividual extends cEntity {
         $this->lNaturalAttacks = cCreature::ParseNaturalAttacks($_APP['creatures'][$this->CurrentRace]['NaturalAttacks']);
 
         // Creature type/group traits
-        $this->TraitEffects->ProcessTraits($_APP['creaturetypes'][$this->GetCreatureGroup()]['GroupTraits'],
+        $this->TraitEffects->ProcessTraits($_APP['creaturetypes'][$this->GetCreatureGroup()]['GroupTraits'] ?? null,
                 $this->GetRacialLevel(), $this);
-        $this->TraitEffects->ProcessTraits($_APP['creaturesubtypes'][$this->GetCreatureType()]['TypeTraits'],
+        $this->TraitEffects->ProcessTraits($_APP['creaturesubtypes'][$this->GetCreatureType()]['TypeTraits'] ?? null,
                 $this->GetRacialLevel(), $this);
         // Racial traits
-        $this->TraitEffects->ProcessTraits($_APP['creatures'][$this->BaseRace]['RacialTraits'],
+        $this->TraitEffects->ProcessTraits($_APP['creatures'][$this->BaseRace]['RacialTraits'] ?? null,
                 $this->GetRacialLevel(), $this);
         // Template traits
         foreach ($this->lTemplates as $iTemplate)
-            $this->TraitEffects->ProcessTraits($_APP['templates'][$iTemplate]['RacialTraits'],
+            $this->TraitEffects->ProcessTraits($_APP['templates'][$iTemplate]['RacialTraits'] ?? null,
                     $this->GetRacialLevel(), $this);
         // Cultural traits
         if ($this->Culture > 0)
-            $this->TraitEffects->ProcessTraits($_APP['cultures'][$this->Culture]['Traits'],
+            $this->TraitEffects->ProcessTraits($_APP['cultures'][$this->Culture]['Traits'] ?? null,
                     $this->GetRacialLevel(), $this);
 
         // Class traits of all classes
         foreach ($_APP['classes'] as $classID => $iClass) {
-            if (($lvl = $this->GetClassLevel($classID)) > 0)
-                $this->TraitEffects->ProcessTraits($_APP['classes'][$classID]['ClassTraits'], $lvl, $this);
+            if (($lvl = $this->GetClassLevel((int)$classID)) > 0)
+                $this->TraitEffects->ProcessTraits($_APP['classes'][$classID]['ClassTraits'] ?? null, $lvl, $this);
         }
 
         // Traits for all skills and skill levels
         foreach ($_APP['skillbenefits'] ?? [] as $iBenefit) {
             if (($lvl = $this->GetSkillLevel($iBenefit['Skill'] ?? 0)) >= ($iBenefit['SkillLevel'] ?? 0))
-                $this->TraitEffects->ProcessTraits($iBenefit['Traits'] ?? [], $lvl, $this);
+                $this->TraitEffects->ProcessTraits($iBenefit['Traits'] ?? null, $lvl, $this);
         }
         // Traits for all skill specializations
         foreach ($_APP['specializations'] ?? [] as $specID => $iSpec) {
-            if (($lvl = $this->GetSpecLevel($specID)) > 0)
-                $this->TraitEffects->ProcessTraits($iSpec['Traits'], $lvl, $this);
+            if (($lvl = $this->GetSpecLevel((int)$specID)) > 0)
+                $this->TraitEffects->ProcessTraits($iSpec['Traits'] ?? null, $lvl, $this);
         }
 
         // Character-specific traits
@@ -1296,17 +1296,17 @@ class cIndividual extends cEntity {
             $iPossession->UpdateState();
             switch ($iPossession->lLocation[$this->EquipConfig]) {
                 case ITEM_CARRIED:
-                    $this->TraitEffects->ProcessTraits($_APP['items'][$iPossession->Item]['Traits'], $iPossession->GetPowerLevel(), $this);
+                    $this->TraitEffects->ProcessTraits($_APP['items'][$iPossession->Item]['Traits'] ?? null, $iPossession->GetPowerLevel(), $this);
                     break;
                 case ITEM_EQUIPPED:
-                    $this->TraitEffects->ProcessTraits($_APP['items'][$iPossession->Item]['Traits'], $iPossession->GetPowerLevel(), $this);
+                    $this->TraitEffects->ProcessTraits($_APP['items'][$iPossession->Item]['Traits'] ?? null, $iPossession->GetPowerLevel(), $this);
                     // Check for equipped weapons and shields
                     if ($iPossession->GetItemType() == 2) {
                         if ($iPossession->TraitEffects->WeaponStats) {
                             $this->TraitEffects->ModsPar->SetMod(cModifiers::GetModId("Par"),
                                     $iPossession->TraitEffects->WeaponStats->ParMod + $iPossession->TraitEffects->ModsPar->Total());
                             foreach ($aWeaponCats as $idx2 => $iCat) {
-                                if (strpos($iPossession->TraitEffects->WeaponStats->WeaponCats, $iCat) !== FALSE) {
+                                if (strpos((string)$iPossession->TraitEffects->WeaponStats->WeaponCats, $iCat) !== FALSE) {
                                     $this->TraitEffects->ModsPar->SetMod(cModifiers::GetModId("Skl"),
                                             $this->TraitEffects->ModsWeapPar[$idx2]->Total());
                                 }
@@ -1328,7 +1328,7 @@ class cIndividual extends cEntity {
                     if ($iPossession->GetItemType() == 3 && $iPossession->TraitEffects->ArmorStats) {
                         $this->TraitEffects->ModsDR->SetMod(cModifiers::GetModId("Arm"), $iPossession->TraitEffects->ModsDR->Total());
                         foreach ($aArmorCats as $idx2 => $iCat) {
-                            if (strpos($iPossession->TraitEffects->ArmorStats->ArmorCats, $iCat) !== FALSE) {
+                            if (strpos((string)$iPossession->TraitEffects->ArmorStats->ArmorCats, $iCat) !== FALSE) {
                                 $this->TraitEffects->ModsPar->SetMod(cModifiers::GetModId("Arm"),
                                         $this->TraitEffects->ModsArmorDeC[$idx2]->Total());
                             }
@@ -1415,7 +1415,7 @@ class cIndividual extends cEntity {
         if (stripos($prereq, "Skl(") !== FALSE) {
             foreach ($_APP['skills'] ?? [] as $iSkill)
                 if (!is_array($iSkill)) continue;
-                $prereq = str_replace("Skl(" . $iSkill['Abbreviation'] . ")", $this->GetSkillLevel($iSkill['ID']), $prereq);
+                $prereq = str_replace("Skl(" . $iSkill['Abbreviation'] . ")", $this->GetSkillLevel((int)$iSkill['ID']), $prereq);
         }
 
         //TODO: Add more checks and string replacements
@@ -1974,7 +1974,7 @@ class cIndividual extends cEntity {
             $statBlock .= "<i>Skills:</i> ";
             $skillStr = array();
             foreach ($_APP['skills'] as $skillId => $iSkill) {
-                if (($lvl = $this->GetSkillLevel($skillId)) > 0)
+                if (($lvl = $this->GetSkillLevel((int)$skillId)) > 0)
                     $skillStr[] = $iSkill['Name'] . " " . $lvl;
             }
             $statBlock .= implode(", ", $skillStr);
