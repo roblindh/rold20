@@ -103,9 +103,9 @@ function show_skilldescriptions() {
                     while ($row3 = $result3->fetch()) {
                         echo '<tr>';
                         echo '<td>' . $row3['Name'] . '</td>';
-                        echo '<td>' . str_replace("\\n", "<br/>", $row3['Description']) . '</td>';
+                        echo '<td>' . str_replace("\\n", "<br/>", $row3['Description'] ?? '') . '</td>';
                         echo '<td>' . $row3['Prereqs'] . '</td>';
-                        echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row3['Traits'], FALSE)) . '</td>';
+                        echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row3['Traits'] ?? '', FALSE)) . '</td>';
                         echo '</tr>';
                     }
                     ?>
@@ -161,8 +161,8 @@ function show_skilldescriptions() {
                 }
 
                 echo '<tr>';
-                echo '<td>' . $row3['Name'] . (strpos($row3['Descriptors'], "Untrained") !== FALSE ? '' : '*') . '</td>';
-                echo '<td>' . str_replace("\\n", "<br/>", $row3['ActionCheck']) . '</td>';
+                echo '<td>' . $row3['Name'] . (strpos($row3['Descriptors'] ?? '', "Untrained") !== FALSE ? '' : '*') . '</td>';
+                echo '<td>' . str_replace("\\n", "<br/>", $row3['ActionCheck'] ?? '') . '</td>';
                 echo '</tr>';
             }
             if (!$first) {
