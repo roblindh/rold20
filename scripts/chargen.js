@@ -351,6 +351,10 @@ function ResetImprovements()
     for (var i = 0; i < improvements.length; i++) {
         improvements[i].value = "0";
     }
+    var improvements = document.getElementsByClassName('ImprSkillVal');
+    for (var i = 0; i < improvements.length; i++) {
+        improvements[i].value = "0";
+    }
 }
 
 function IncSkill(skill, val)
@@ -573,6 +577,7 @@ function SaveCharacter()
     request = 'scripts/savecharbasics.php?';
     request += 'name=' + GetCharacterName() + '&';
     request += 'campaign=' + GetCampaignID() + '&';
+    request += 'player=' + GetPlayerID() + '&';
     request += 'str=' + GetAbility(A_STR) + '&';
     request += 'con=' + GetAbility(A_CON) + '&';
     request += 'dex=' + GetAbility(A_DEX) + '&';
@@ -609,7 +614,7 @@ function SaveCharacter()
     request += 'deity=' + document.forms["CharGen"]["Deity"].value;
     xmlhttp.open("GET", request, true);
     xmlhttp.send();
-    document.getElementById('CharGenDebugText').innerHTML = request;
+//    document.getElementById('CharGenDebugText').innerHTML = request;
 }
 
 function SaveCharacterImprovements()
@@ -626,8 +631,25 @@ function SaveCharacterImprovements()
         }
     };
     request = 'scripts/savecharimprovs.php?';
+    request += 'name=' + GetCharacterName() + '&';
+    var improvements = document.getElementsByClassName('ImprVal');
+    for (var i = 0; i < improvements.length; i++) {
+        var impr_id = improvements[i].dataset.id;
+        var impr_val = GetImprovementValue(impr_id);
+        if (impr_val > 0)
+            request += 'impr' + impr_id + '=' + impr_val + '&';
+    }
+    var improvements = document.getElementsByClassName('ImprSkillVal');
+    for (var i = 0; i < improvements.length; i++) {
+        var impr_id = improvements[i].dataset.id;
+        var impr_val = GetSkillImprovementValue(impr_id);
+        if (impr_val > 0)
+            request += 'imprskill' + impr_id + '=' + impr_val + '&';
+    }
+    request += 'imprpts=' + GetImprovementPoints();
     xmlhttp.open("GET", request, true);
     xmlhttp.send();
+//    document.getElementById('CharGenDebugText').innerHTML = request;
 }
 
 function SaveCharacterSkills()
@@ -640,13 +662,33 @@ function SaveCharacterSkills()
             document.getElementById('SaveResult').innerHTML += this.responseText + '<br/>';
             if (document.forms["CharGen"]["SaveSkillsResult"].value == "OK") {
                 document.getElementById('SaveResult').innerHTML += 'Done!<br/><br/>' +
-                        '<a class="tocchapter" href="util_charview.php" style="display:inline;">Character Viewer</a><br/>';
+                        '<a class="tocchapter" href="util_charview.php?CharacterID=' + GetCharacterID() + '" style="display:inline;">Character Viewer</a><br/><br/>';
             }
         }
     };
     request = 'scripts/savecharskills.php?';
+    request += 'name=' + GetCharacterName() + '&';
+    var skillrows = document.getElementsByClassName('SkillRow');
+    for (var i = 0; i < skillrows.length; i++) {
+        var skillid = skillrows[i].dataset.id;
+        var skillval = GetSkillValue(skillid);
+        if (!skillrows[i].hidden && skillval > 0)
+            request += 'skill' + skillid + '=' + skillval + '&';
+    }
+    var specrows = document.getElementsByClassName('SpecRow');
+    for (var i = 0; i < specrows.length; i++) {
+        var specid = specrows[i].dataset.id;
+        if (!specrows[i].hidden && document.forms["CharGen"]["Spec" + specid].checked)
+            request += 'spec' + specid + '=1&';
+    }
     xmlhttp.open("GET", request, true);
     xmlhttp.send();
+//    document.getElementById('CharGenDebugText').innerHTML = request;
+}
+
+function GetCharacterID()
+{
+    return document.forms["CharGen"]["CharID"].value;
 }
 
 function GetCharacterName()
@@ -657,6 +699,11 @@ function GetCharacterName()
 function GetCampaignID()
 {
     return document.forms["CharGen"]["Campaign"].value;
+}
+
+function GetPlayerID()
+{
+    return document.forms["CharGen"]["PlayerID"].value;
 }
 
 function GetGenMethodID()

@@ -4,7 +4,7 @@ function rol_login($username, $password) {
     $username = stripslashes(strip_tags($username));
     $password = md5(stripslashes(strip_tags($password)));
 
-    $dbc = mysqli_connect('localhost:3306', 'root', 'admin', 'rold20campaign')
+    $dbc = mysqli_connect('localhost:3306', 'root', '', 'rold20campaign')
             or die("Error connecting to database.");
     $query = "SELECT * FROM players WHERE Name='" . $username . "'";
     $result = mysqli_query($dbc, $query)

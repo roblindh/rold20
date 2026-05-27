@@ -376,6 +376,85 @@ table.rolcalc td {
     padding: 1px;
 }
 
+table.charviewpage {
+    page-break-before: always;
+    width: 100%;
+    padding: 0px;
+    border: 0px;
+    border-spacing: 0px;
+    margin: 0px;
+    box-shadow: none;
+}
+
+table.charviewpage tr {
+    vertical-align: top;
+    background-color: var(--color-white);
+}
+
+table.charviewsection {
+    width: 100%;
+    margin: 5px 0px;
+    border-collapse: collapse;
+}
+
+table.charviewsection tr {
+    vertical-align: middle;
+}
+
+td.cvheader {
+    font-size: 1.1em;
+    font-weight: bold;
+    font-variant: small-caps;
+    color: var(--color-white);
+    background-color: var(--color-black);
+}
+
+td.cvlabel {
+    border-top: 1px solid var(--color-black);
+    border-left: 1px solid var(--color-black);
+    border-right: 1px solid var(--color-black);
+    font-size: 0.8em;
+    font-weight: bold;
+    font-variant: small-caps;
+    background-color: var(--color-white);
+}
+
+td.cvsml {
+    border-bottom: 1px solid var(--color-black);
+    border-left: 1px solid var(--color-black);
+    border-right: 1px solid var(--color-black);
+    font-size: 1em;
+    background-color: var(--color-parchment);
+}
+
+td.cvmdm {
+    border-bottom: 1px solid var(--color-black);
+    border-left: 1px solid var(--color-black);
+    border-right: 1px solid var(--color-black);
+    font-size: 1.3em;
+    background-color: var(--color-parchment);
+}
+
+td.cvlrg {
+    border-bottom: 1px solid var(--color-black);
+    border-left: 1px solid var(--color-black);
+    border-right: 1px solid var(--color-black);
+    font-size: 1.6em;
+    font-weight: bold;
+    background-color: var(--color-parchment);
+}
+
+td.cvlist {
+    border-left: 1px solid var(--color-black);
+    border-right: 1px solid var(--color-black);
+    font-size: 1em;
+    background-color: var(--color-parchment);
+}
+
+td.cvcenter {
+    text-align: center;
+}
+
 input[type=text].rolcalc {
     width: 99%;
     padding: 2px;

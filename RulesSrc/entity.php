@@ -250,6 +250,9 @@ class cEntity {
 
 class cIndividual extends cEntity {
 
+    public $CampaignID;
+    public $PlayerID;
+
     public $BaseRace;
     public $CurrentRace;
     public $lTemplates;
@@ -269,7 +272,7 @@ class cIndividual extends cEntity {
     public $WeightFactor;
     public $lSkillLevels;
     public $lSpecLevels;
-    private $lSpclActions;
+    public $lSpclActions;
     public $lSpells;
     public $SocialClass;
     public $WealthClass;
@@ -294,6 +297,7 @@ class cIndividual extends cEntity {
     public $History;
     public $CharTraits;
     public $InherentMods;
+    public $ImprovementMods;
 
     public function __construct() {
         $this->Reset();
@@ -301,6 +305,9 @@ class cIndividual extends cEntity {
 
     public function Reset() {
         parent::Reset();
+
+        $this->CampaignID = NULL;
+        $this->PlayerID = NULL;
 
         $this->BaseRace = NULL;
         $this->CurrentRace = NULL;
@@ -353,6 +360,96 @@ class cIndividual extends cEntity {
 
         $this->CharTraits = "";
         $this->InherentMods = "";
+        $this->ImprovementMods = "";
+    }
+
+    public function LoadFromDatabase($id) {
+        global $_APP;
+        global $db_server, $db_user, $db_password, $db_name_campaign;
+
+        $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
+                or die("Error connecting to database.");
+
+        $this->Reset();
+
+        $query = "SELECT * FROM characters WHERE ID=" . $id;
+        $result = mysqli_query($dbc, $query)
+                or die("Error querying database.");
+        if ($row = mysqli_fetch_array($result)) {
+            $this->Name = $row['Name'];
+            $this->BaseAbilities = new cAbilityScores(
+                    $row['BaseStr'], $row['BaseCon'], $row['BaseDex'],
+                    $row['BaseInt'], $row['BaseWis'], $row['BaseCha']);
+            $this->CampaignID = $row['Campaign'];
+            $this->PlayerID = $row['Player'];
+            $this->BaseRace = $this->CurrentRace = $row['BaseRace'];
+            if ($row['Templates']) {
+                $this->lTemplates = explode(";", $row['Templates']);
+                $this->lTemplates = array_map('intval', $this->lTemplates);
+            }
+            $this->Gender = $row['Gender'];
+            $this->SizeAdjust = $row['SizeAdjust'];
+            $this->Culture = $row['Culture'];
+            $this->OverrideRacialClass = $row['BackgndClass'];
+            $this->XP = $row['ExperiencePts'];
+            $this->RacialLevelMod = $row['RLMod'];
+            if ($row['Classes']) {
+                $this->lClassLevels = explode(";", $row['Classes']);
+                $this->lClassLevels = array_map('intval', $this->lClassLevels);
+            }
+            $this->ImprovementPts = $row['ImprovementPts'];
+            $this->FatePts = $row['FatePts'];
+            if ($row['Improvements']) {
+                $improvements = explode(";", $row['Improvements']);
+                foreach ($improvements as $improvement) {
+                    $value = signedstr(substr($improvement, strpos($improvement, "=") + 1));
+                    if ($improvement[0] == 'I') {
+                        $str = $_APP['improvementtraits'][intval(substr($improvement, 1))]['Trait'] . ' ';
+                        $this->ImprovementMods .= str_replace("}", "Value=" . $value . "; }", $str);
+                    } else if ($improvement[0] == 'S') {
+                        $this->ImprovementMods .= "SklMod { Qual=" .
+                                $_APP['skills'][intval(substr($improvement, 1))]['Name'] .
+                                '; Type=imp; Value=' . $value . '; } ';
+                    }
+                }
+            }
+            $this->MentalAge = $row['MentalAge'];
+            $this->PhysicalAge = $row['PhysicalAge'];
+            $this->HeightFactor = $row['HeightFactor'];
+            $this->WeightFactor = $row['WeightFactor'];
+            if ($row['Skills']) {
+                $skills = explode(";", $row['Skills']);
+                foreach ($skills as $skill) {
+                    $value = intval(substr($skill, strpos($skill, "=") + 1));
+                    $this->lSkillLevels[intval($skill)] = $value;
+                }
+            }
+            if ($row['Specializations']) {
+                $specs = explode(";", $row['Specializations']);
+                foreach ($specs as $spec) {
+                    $value = intval(substr($spec, strpos($spec, "=") + 1));
+                    $this->lSpecLevels[intval($spec)] = $value;
+                }
+            }
+            if ($row['Spells']) {
+                // Spells
+            }
+            $this->SocialClass = $row['SC'];
+            $this->WealthClass = $row['WC'];
+            // Influence points used
+            $this->InfluencesStr = $row['InfluenceDesc'];
+            $this->ReputationStr = $row['ReputationDesc'];
+            $this->Gold = $row['Wealth'];
+            // Equipment
+            $this->Appearance = $row['Appearance'];
+            $this->Personality = $row['Personality'];
+            $this->History = $row['History'];
+            // Family
+            // Contacts
+            // Traits
+        }
+
+        mysqli_close($dbc);
     }
 
     public function GetAdjustedAbility($id) {
@@ -478,6 +575,48 @@ class cIndividual extends cEntity {
         return ($this->TraitEffects->EnergyRes[$type]);
     }
 
+    public function GetResistancesStr() {
+        $str = "";
+
+        $res = $this->GetEnergyRes(ENERGY_ACID);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Acid imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Acid res " . $res;
+        $res = $this->GetEnergyRes(ENERGY_COLD);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Cold imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Cold res " . $res;
+        $res = $this->GetEnergyRes(ENERGY_ELEC);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Elec imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Elec res " . $res;
+        $res = $this->GetEnergyRes(ENERGY_FIRE);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Fire imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Fire res " . $res;
+        $res = $this->GetEnergyRes(ENERGY_NECRO);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Necro imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Necro res " . $res;
+        $res = $this->GetEnergyRes(ENERGY_RADIANT);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Radiant imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Radiant res " . $res;
+        $res = $this->GetEnergyRes(ENERGY_SONIC);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Sonic imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Sonic res " . $res;
+
+        return $str;
+    }
+
     public function GetBestAttMod() {
         $attMod = 0;
 
@@ -586,16 +725,31 @@ class cIndividual extends cEntity {
         return cCreature::GetBodyType($this->CurrentRace);
     }
 
-    public function GetRaceStr() {
+    public function GetRaceStr($show_templates) {
         global $_APP;
         $str = "";
 
-        if (cCreature::HasGenders($this->BaseRace) && $this->Gender > 0)
+        if ($this->BaseRace && $this->BaseRace > 0 && cCreature::HasGenders($this->BaseRace) && $this->Gender > 0)
             $str .= $_APP['genders'][$this->Gender]['Name'] . " ";
+        if ($show_templates) {
+            foreach ($this->lTemplates as $iTemplate) {
+                $str .= $_APP['templates'][$iTemplate]['NameInformal'] . " ";
+            }
+        }
+        if ($this->BaseRace && $this->BaseRace > 0) {
+            $str .= $_APP['creatures'][$this->BaseRace]['NameInformal'];
+        }
+
+        return $str;
+    }
+
+    public function GetTemplateStr() {
+        global $_APP;
+        $str = "";
+
         foreach ($this->lTemplates as $iTemplate) {
             $str .= $_APP['templates'][$iTemplate]['NameInformal'] . " ";
         }
-        $str .= $_APP['creatures'][$this->BaseRace]['NameInformal'];
 
         return $str;
     }
@@ -649,7 +803,8 @@ class cIndividual extends cEntity {
         global $_APP;
 
         $cl = $this->GetTotalLevel() + $_APP['creatures'][$this->BaseRace]['CLModifier'] +
-                $_APP['socialclasses'][$this->SocialClass]['CLMod'] + $this->SizeAdjust;
+                ($this->SocialClass ? $_APP['socialclasses'][$this->SocialClass]['CLMod'] : 0) +
+                $this->SizeAdjust;
         foreach ($this->lTemplates as $iTemplate) {
             $cl += $_APP['templates'][$iTemplate]['CLModifier'];
         }
@@ -669,6 +824,10 @@ class cIndividual extends cEntity {
 
     public function GetActionPts() {
         return 10 + $this->GetTotalLevel();
+    }
+
+    public function GetReactions() {
+        return (int) ($this->GetActionPts() / 10);
     }
 
     public function GetClassStr() {
@@ -764,6 +923,24 @@ class cIndividual extends cEntity {
         return (int) $spd;
     }
 
+    public function GetSpeedStr() {
+        $str = "";
+
+        $str = $this->GetGroundSpeed();
+        if ($this->TraitEffects->ClimbSpeed > 0 && $this->TraitEffects->ClimbSpeed < 999)
+            $str .= " (Climb &times;" . $this->TraitEffects->ClimbSpeed . " MP)";
+        if ($this->TraitEffects->SwimSpeed > 0 && $this->TraitEffects->SwimSpeed < 999 && !($this->GetSwimSpeed() > 0))
+            $str .= " (Swim &times;" . $this->TraitEffects->SwimSpeed . " MP)";
+        if ($this->TraitEffects->BurrowSpeed > 0 && $this->TraitEffects->BurrowSpeed < 999)
+            $str .= " (Burrow &times;" . $this->TraitEffects->BurrowSpeed . " MP)";
+        if ($this->GetSwimSpeed() > 0)
+            $str .= ", Swim " . $this->GetSwimSpeed();
+        if ($this->GetFlySpeed() > 0)
+            $str .= ", Fly " . $this->GetFlySpeed();
+
+        return $str;
+    }
+
     public function GetPhysicalAgeCat() {
         global $_APP;
 
@@ -811,7 +988,7 @@ class cIndividual extends cEntity {
             $infl += ($this->TraitEffects->ModsInfl != NULL) ? $this->TraitEffects->ModsInfl->Total() : 0;
         }
 
-        return (int) $sp;
+        return (int) $infl;
     }
 
     public function GetCurrentInfl() {
@@ -1281,6 +1458,7 @@ class cIndividual extends cEntity {
         }
 
         // Character-specific traits
+        $this->TraitEffects->ProcessTraits($this->ImprovementMods, $this->GetTotalLevel(), $this);
         $this->TraitEffects->ProcessTraits($this->CharTraits, $this->GetTotalLevel(), $this);
 
         // Always add parry modifiers for natural attacks
@@ -1823,7 +2001,7 @@ class cIndividual extends cEntity {
         $parser->Evaluate("CHAMOD=" . $this->GetAbilMod(A_CHA));
 
         $statBlock .= "<b>" . $this->Name . " (";
-        $statBlock .= $this->GetRaceStr();
+        $statBlock .= $this->GetRaceStr(true);
         if ($classStr = $this->GetClassStr())
             $statBlock .= " " . $classStr;
         $statBlock .= "):</b>";
@@ -1833,58 +2011,15 @@ class cIndividual extends cEntity {
         $statBlock .= "; RL " . $this->GetRacialLevel();
         $statBlock .= "; HP " . $this->GetHPTotal() . ", SP " . $this->GetSPTotal() . ", PP " . $this->GetPPTotal();
         $statBlock .= "; Init " . signedstr($this->GetInitMod());
-        $statBlock .= "; Spd " . $this->GetGroundSpeed();
-        if ($this->TraitEffects->ClimbSpeed > 0 && $this->TraitEffects->ClimbSpeed < 999)
-            $statBlock .= " (Climb &times;" . $this->TraitEffects->ClimbSpeed . " MP)";
-        if ($this->TraitEffects->SwimSpeed > 0 && $this->TraitEffects->SwimSpeed < 999 && !($this->GetSwimSpeed() > 0))
-            $statBlock .= " (Swim &times;" . $this->TraitEffects->SwimSpeed . " MP)";
-        if ($this->TraitEffects->BurrowSpeed > 0 && $this->TraitEffects->BurrowSpeed < 999)
-            $statBlock .= " (Burrow &times;" . $this->TraitEffects->BurrowSpeed . " MP)";
-        if ($this->GetSwimSpeed() > 0)
-            $statBlock .= ", Swim " . $this->GetSwimSpeed();
-        if ($this->GetFlySpeed() > 0)
-            $statBlock .= ", Fly " . $this->GetFlySpeed();
+        $statBlock .= "; Spd " . $this->GetSpeedStr();
         $statBlock .= "; DeCa/p " . $this->GetDeCActive() . "/" . $this->GetDeCPassive() .
                 " (crit " . signedstr(20 + $this->GetCritRes()) . ")" .
                 ", Fort " . $this->GetFort() . ", Ref " . $this->GetRef() . ", Will " . $this->GetWill();
         $statBlock .= "; DR " . $this->GetDR();
         if ($this->GetMR() > 0)
             $statBlock .= ", MR " . $this->GetMR();
-        $res = $this->GetEnergyRes(ENERGY_ACID);
-        if ($res >= 999)
-            $statBlock .= ", Acid imm";
-        else if ($res > 0)
-            $statBlock .= ", Acid res " . $res;
-        $res = $this->GetEnergyRes(ENERGY_COLD);
-        if ($res >= 999)
-            $statBlock .= ", Cold imm";
-        else if ($res > 0)
-            $statBlock .= ", Cold res " . $res;
-        $res = $this->GetEnergyRes(ENERGY_ELEC);
-        if ($res >= 999)
-            $statBlock .= ", Elec imm";
-        else if ($res > 0)
-            $statBlock .= ", Elec res " . $res;
-        $res = $this->GetEnergyRes(ENERGY_FIRE);
-        if ($res >= 999)
-            $statBlock .= ", Fire imm";
-        else if ($res > 0)
-            $statBlock .= ", Fire res " . $res;
-        $res = $this->GetEnergyRes(ENERGY_NECRO);
-        if ($res >= 999)
-            $statBlock .= ", Necro imm";
-        else if ($res > 0)
-            $statBlock .= ", Necro res " . $res;
-        $res = $this->GetEnergyRes(ENERGY_RADIANT);
-        if ($res >= 999)
-            $statBlock .= ", Radiant imm";
-        else if ($res > 0)
-            $statBlock .= ", Radiant res " . $res;
-        $res = $this->GetEnergyRes(ENERGY_SONIC);
-        if ($res >= 999)
-            $statBlock .= ", Sonic imm";
-        else if ($res > 0)
-            $statBlock .= ", Sonic res " . $res;
+        if ($resistStr = $this->GetResistancesStr())
+            $statBlock .= ", " . $resistStr;
         $statBlock .= "; AP " . $this->GetActionPts();
         $numNats = $this->GetNumberNaturalAttacks();
         $numWeaps = count($this->lWeapons);

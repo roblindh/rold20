@@ -28,8 +28,8 @@ function application_start() {
 
     $db_server = 'localhost:3306';
     $db_user = 'root';
-    $db_password = 'admin';
-//    $db_password = '';
+//    $db_password = 'admin';
+    $db_password = '';
     $db_name = 'rold20rules';
     $db_name_campaign = 'rold20campaign';
     $footer_parser = new cExpressionParser();
