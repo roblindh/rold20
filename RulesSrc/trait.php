@@ -1486,17 +1486,21 @@ class cTraitEffects {
         $this->ModsAP = new cModifiers();
         $this->ModsInit = new cModifiers();
 
-        foreach ($aWeaponCats as $i => $cat) {
-            $this->ModsWeapAtt[$i] = new cModifiers();
-            $this->ModsWeapDmg[$i] = new cModifiers();
-            $this->ModsWeapPar[$i] = new cModifiers();
-            $this->ModsWeapEC[$i] = new cModifiers();
-            $this->ModsWeapAttSpd[$i] = new cModifiers();
-            $this->ModsWeapCrit[$i] = new cModifiers();
+        if (is_array($aWeaponCats)) {
+            foreach ($aWeaponCats as $i => $cat) {
+                $this->ModsWeapAtt[$i] = new cModifiers();
+                $this->ModsWeapDmg[$i] = new cModifiers();
+                $this->ModsWeapPar[$i] = new cModifiers();
+                $this->ModsWeapEC[$i] = new cModifiers();
+                $this->ModsWeapAttSpd[$i] = new cModifiers();
+                $this->ModsWeapCrit[$i] = new cModifiers();
+            }
         }
-        foreach ($aArmorCats as $i => $cat) {
-            $this->ModsArmorDeC[$i] = new cModifiers();
-            $this->ModsArmorEC[$i] = new cModifiers();
+        if (is_array($aArmorCats)) {
+            foreach ($aArmorCats as $i => $cat) {
+                $this->ModsArmorDeC[$i] = new cModifiers();
+                $this->ModsArmorEC[$i] = new cModifiers();
+            }
         }
     }
 
