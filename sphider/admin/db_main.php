@@ -153,7 +153,7 @@ if (isset($file) && $del==0) {
 	$file_temp=fread(fopen($backup_path.$file, "r"), filesize($backup_path.$file));
 	$query=explode(";#%%\n",$file_temp);
 	for ($i=0;$i < count($query)-1;$i++) {
-		mysql_db_query($dbname,$query[$i]) or die(mysql_error());
+		mysql_db_query($dbname,$query[$i]));
 	}
 	unlink($backup_path.$file);
 	echo "<table width=\"94%\"><tr><td><b>Your restore 

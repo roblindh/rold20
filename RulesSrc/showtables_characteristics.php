@@ -27,11 +27,9 @@ function show_abilityscoremods() {
 function show_abilityscores() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM abilityscores";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Ability Scores</caption>
@@ -43,16 +41,15 @@ function show_abilityscores() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['AbilityScore'] . '</td>';
-        echo '<td style="text-align:center">' . $row['Abbreviation'] . '</td>';
-        echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+        echo '<td style="text-align:center">' . $row['Abbreviation'] ?? '' . '</td>';
+        echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
         echo '<td>' . str_replace("\\n", '<br/>', $row['NoScore']) . '</td>';
         echo '</tr>';
     }
     echo '</tbody></table>';
-    mysqli_close($dbc);
 }
 
 function show_agecategories() {
@@ -74,17 +71,17 @@ function show_agecategories() {
         </tr></thead>
         <tbody>
     <?php
-    foreach ($_APP['agecats'] as $row) {
+    foreach ($_APP['agecats'] ?? [] as $row) {
         echo '<tr>';
-        echo '<td>' . $row['Description'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['StrAdj']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ConAdj']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['DexAdj']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['IntAdj']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['WisAdj']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ChaAdj']) . '</td>';
-        echo '<td style="text-align:center">×' . $row['RLMult'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['SizeAdj']) . '</td>';
+        echo '<td>' . ($row['Description'] ?? '' ?? '') . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['StrAdj'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ConAdj'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['DexAdj'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['IntAdj'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['WisAdj'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ChaAdj'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['RLMult'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['SizeAdj'] ?? 0) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -105,17 +102,17 @@ function show_agecategories() {
         </tr></thead>
         <tbody>
     <?php
-    foreach ($_APP['agecats'] as $row) {
+    foreach ($_APP['agecats'] ?? [] as $row) {
         echo '<tr>';
-        echo '<td>' . $row['Description'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['StrAdjSN']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ConAdjSN']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['DexAdjSN']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['IntAdjSN']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['WisAdjSN']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ChaAdjSN']) . '</td>';
-        echo '<td style="text-align:center">×' . $row['RLMultSN'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['SizeAdjSN']) . '</td>';
+        echo '<td>' . ($row['Description'] ?? '' ?? '') . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['StrAdjSN'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ConAdjSN'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['DexAdjSN'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['IntAdjSN'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['WisAdjSN'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ChaAdjSN'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['RLMultSN'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['SizeAdjSN'] ?? 0) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -135,11 +132,9 @@ function show_agecategories() {
 function show_alignmentdescriptions() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM alignments";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Alignment Descriptions</caption>
@@ -149,24 +144,21 @@ function show_alignmentdescriptions() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
-        echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+        echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
         echo '</tr>';
     }
     echo '</tbody></table>';
-    mysqli_close($dbc);
 }
 
 function show_alignmentrelations() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM alignments";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Relative Alignments</caption>
@@ -178,7 +170,7 @@ function show_alignmentrelations() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
         echo '<td>' . $row['Opposed'] . '</td>';
@@ -187,7 +179,6 @@ function show_alignmentrelations() {
         echo '</tr>';
     }
     echo '</tbody></table>';
-    mysqli_close($dbc);
 }
 
 function show_bodytypes() {
@@ -205,14 +196,14 @@ function show_bodytypes() {
         </tr></thead>
         <tbody>
     <?php
-    foreach ($_APP['bodycats'] as $row) {
+    foreach ($_APP['bodycats'] ?? [] as $row) {
         echo '<tr>';
-        echo '<td>' . $row['Description'] . '</td>';
-        echo '<td style="text-align:center">×' . $row['WeightMult'] . '</td>';
-        echo '<td style="text-align:center">×' . $row['HeightMult'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ReachMod']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ManeuverMod']) . '</td>';
-        echo '<td>' . str_replace("\\n", '<br/>', cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
+        echo '<td>' . ($row['Description'] ?? '') . '</td>';
+        echo '<td style="text-align:center">×' . ($row['WeightMult'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['HeightMult'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ReachMod'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ManeuverMod'] ?? 0) . '</td>';
+        echo '<td>' . str_replace("\\n", '<br/>', cTraitEffects::StatGetTraitsDescription($row['Traits'] ?? '', FALSE)) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -243,14 +234,14 @@ function show_encumbranceclasses() {
         </tr></thead>
         <tbody>
     <?php
-    foreach ($_APP['encumbrance'] as $row) {
+    foreach ($_APP['encumbrance'] ?? [] as $row) {
         echo '<tr>';
-        echo '<td style="text-align:center">' . $row['ID'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['MaxDexBonus']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['EP']) . '</td>';
-        echo '<td style="text-align:center">×' . $row['SpeedMultLand'] . '</td>';
-        echo '<td style="text-align:center">×' . $row['SpeedMultAir'] . '</td>';
-        echo '<td style="text-align:center">×' . $row['FatigueMult'] . '</td>';
+        echo '<td style="text-align:center">' . ($row['ID'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['MaxDexBonus'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['EP'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['SpeedMultLand'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['SpeedMultAir'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['FatigueMult'] ?? 1) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -319,11 +310,9 @@ function show_encumbrancelimits() {
 function show_hpeffects() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM hpeffects";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Injury Effects</caption>
@@ -333,26 +322,23 @@ function show_hpeffects() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . $row['CurrentHP'] . '</td>';
-            echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+            echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
             echo '</tr>';
         }
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_maneuverability() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM maneuverability";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Maneuverability</caption>
@@ -370,7 +356,7 @@ function show_maneuverability() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Maneuverability'] . '</td>';
         echo '<td style="text-align:center">' . $row['Turn'] . '</td>';
@@ -406,17 +392,14 @@ function show_maneuverability() {
         nor is it allowed to <a href="hb02_coremech.php#DefensiveActions">act defensively</a> in order to avoid attacks of opportunity.
     </p>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_naturalattacks() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM naturalattacks ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         The following is a list of predefined natural attack forms and their
@@ -434,7 +417,7 @@ function show_naturalattacks() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
         echo '<td style="text-align:center">' . $row['RelSize'] . '</td>';
@@ -449,17 +432,14 @@ function show_naturalattacks() {
         the two arms count as Diminutive and the two legs count as Tiny. 
     </p>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_ppeffects() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM ppeffects";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Mental Fatigue Effects</caption>
@@ -469,16 +449,15 @@ function show_ppeffects() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . $row['CurrentPP'] . '</td>';
-            echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+            echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
             echo '</tr>';
         }
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_sizealteration() {
@@ -547,20 +526,20 @@ function show_sizecategories() {
         </tr></thead>
         <tbody>
     <?php
-    foreach ($_APP['sizecats'] as $row) {
+    foreach ($_APP['sizecats'] ?? [] as $row) {
         echo '<tr>';
-        echo '<td style="text-align:center">' . signedstr($row['ID']) . '</td>';
-        echo '<td>' . $row['Description'] . ' (' . $row['Abbreviation'] . ')</td>';
-        echo '<td style="text-align:center">' . signedstr($row['CombatMod']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['GrappleMod']) . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['AttSpdMod']) . '</td>';
-        echo '<td style="text-align:center">×' . $row['HPMult'] . '</td>';
-        echo '<td style="text-align:center">×' . $row['WeightMult'] . '</td>';
-        echo '<td style="text-align:center">' . $row['MaxLength'] . '</td>';
-        echo '<td style="text-align:center">' . $row['MaxVolume'] . '</td>';
-        echo '<td style="text-align:center">' . $row['Space'] . '</td>';
-        echo '<td style="text-align:center">' . $row['Reach'] . '</td>';
-        echo '<td style="text-align:center">' . signedstr($row['ManeuverMod']) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ID'] ?? 0) . '</td>';
+        echo '<td>' . ($row['Description'] ?? '') . ' (' . ($row['Abbreviation'] ?? '') . ')</td>';
+        echo '<td style="text-align:center">' . signedstr($row['CombatMod'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['GrappleMod'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['AttSpdMod'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['HPMult'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">×' . ($row['WeightMult'] ?? 1) . '</td>';
+        echo '<td style="text-align:center">' . ($row['MaxLength'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . ($row['MaxVolume'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . ($row['Space'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . ($row['Reach'] ?? 0) . '</td>';
+        echo '<td style="text-align:center">' . signedstr($row['ManeuverMod'] ?? 0) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -587,11 +566,9 @@ function show_sizecategories() {
 function show_socialclasses() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM socialclasses";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
 
     <table>
@@ -605,9 +582,9 @@ function show_socialclasses() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
-        echo '<td style="text-align:center">' . $row['ID'] . '</td>';
+        echo '<td style="text-align:center">' . $row['ID'] ?? 0 . '</td>';
         echo '<td>' . $row['Examples'] . '</td>';
         echo '<td style="text-align:center">' . $row['AddressForm'] . '</td>';
         echo '<td style="text-align:center">' . signedstr($row['InflMod']) . '</td>';
@@ -622,7 +599,6 @@ function show_socialclasses() {
         <sup>2</sup>CL Modifier: A creature's social class affects its challenge level (CL), due to its power in society and the potential trouble it can cause for its enemies.
     </p>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_speedconversion() {
@@ -734,11 +710,9 @@ function show_speedtable() {
 function show_speffects() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM speffects";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Physical Fatigue Effects</caption>
@@ -748,36 +722,33 @@ function show_speffects() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['CurrentSP'] . '</td>';
-        echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+        echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
         echo '</tr>';
     }
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_stagedconditions($conditiontype) {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM stagedconditions WHERE Type=" . $conditiontype . " ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    while ($row = mysqli_fetch_array($result)) {
+    $result = $db->query($query);
+    while ($row = $result->fetch()) {
         echo '<table width="100%">';
         echo '<thead><tr>';
         echo '<th colspan="2">' . $row['Name'] . ($row['Descriptors'] ? (" - " . $row['Descriptors']) : "") . '</th>';
         echo '</tr></thead>';
         echo '<tbody>';
-        if ($row['Description']) {
+        if ($row['Description'] ?? '') {
             echo '<tr>';
             echo '<td>Description:</td>';
-            echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+            echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
             echo '</tr>';
         }
         if ($row['Trigger']) {
@@ -842,17 +813,14 @@ function show_stagedconditions($conditiontype) {
         }
         echo '</tbody></table>';
     }
-    mysqli_close($dbc);
 }
 
 function show_wealthclasses() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM wealthclasses";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
 
     <table>
@@ -866,10 +834,10 @@ function show_wealthclasses() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
-        echo '<td style="text-align:center">' . $row['ID'] . '</td>';
-        echo '<td>' . str_replace("\\n", '<br/>', $row['Description']) . '</td>';
+        echo '<td style="text-align:center">' . $row['ID'] ?? 0 . '</td>';
+        echo '<td>' . str_replace("\\n", '<br/>', $row['Description'] ?? '') . '</td>';
         echo '<td style="text-align:center">' . $row['RenewIncome'] . '</td>';
         echo '<td style="text-align:center">' . $row['MinInvest'] . '</td>';
         echo '<td style="text-align:center">' . $row['Expenses'] . '</td>';
@@ -886,6 +854,5 @@ function show_wealthclasses() {
         This is also what you have to spend if you want to temporarily live above your WC or pretend to be wealthier than you are.
     </p>
     <?php
-    mysqli_close($dbc);
 }
 ?>

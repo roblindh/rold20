@@ -3,11 +3,9 @@
 function show_classes() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM classes";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         <em>HP per Level:</em> The number of HP gained per level (including 1st) in this class.<br/>
@@ -24,7 +22,7 @@ function show_classes() {
         <em>Class Configurations:</em> These are typical roles for each class together with their suggested skill selections.<br/>
     </p>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         ?>
         <br/>
         <table width="100%">
@@ -85,10 +83,9 @@ function show_classes() {
         </tbody></table>
         <?php
         $query2 = "SELECT * FROM classconfigs WHERE ClassID=" . $row['ID'] . " AND ShowPCGen>0 ORDER BY Name";
-        $result2 = mysqli_query($dbc, $query2)
-                or die("Error querying database.");
+        $result2 = $db->query($query2);
 
-        while ($row2 = mysqli_fetch_array($result2)) {
+        while ($row2 = $result2->fetch()) {
             ?>
             <table width="100%">
                 <thead><tr>
@@ -108,6 +105,5 @@ function show_classes() {
             <?php
         }
     }
-    mysqli_close($dbc);
 }
 ?>

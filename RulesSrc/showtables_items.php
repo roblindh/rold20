@@ -89,8 +89,7 @@ function show_items() {
         <em>Base Material:</em> The material that the object is primarily made of. This determines resistances, density, etc.<br/>
     </p>
     <?php
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
 
     foreach ($_APP['itemtypes'] as $row) {
         // Skip "base" magic items
@@ -181,9 +180,8 @@ function show_items() {
         foreach ($_APP['itemsubtypes'] as $row3) {
             if ($row3['Type'] == $row['ID']) {
                 $query2 = "SELECT * FROM items WHERE Subtype=" . $row3['ID'] . " ORDER BY Name";
-                $result2 = mysqli_query($dbc, $query2)
-                        or die("Error querying database.");
-                if (mysqli_num_rows($result2) <= 0)
+                $result2 = $db->query($query2);
+                if ($result2->rowCount() <= 0)
                     continue;
                 ?>
                 <table width="100%">
@@ -199,7 +197,7 @@ function show_items() {
                     </tr></thead>
                     <tbody>
                     <?php
-                    while ($row2 = mysqli_fetch_array($result2)) {
+                    while ($row2 = $result2->fetch()) {
                         if ($_APP['itemsubtypes'][$row2['Subtype']]['Type'] == $row['ID']) {
                             echo '<tr>';
                             echo '<td>' . str_replace("\\n", "<br/>", $row2['Name']) . '</td>';
@@ -240,20 +238,17 @@ function show_items() {
         }
     }
 
-    mysqli_close($dbc);
 }
 
 function show_itemsartifacts() {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
 
     echo '<h4>Artifacts and Relics</h4>';
 
     $query2 = "SELECT * FROM itemsartifacts ORDER BY Name";
-    $result2 = mysqli_query($dbc, $query2)
-            or die("Error querying database.");
+    $result2 = $db->query($query2);
     ?>
     <table width="100%">
         <thead><tr>
@@ -262,7 +257,7 @@ function show_itemsartifacts() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row2 = mysqli_fetch_array($result2)) {
+        while ($row2 = $result2->fetch()) {
             echo '<tr>';
             echo '<td>' . str_replace("\\n", "<br/>", $row2['Name']) . '</td>';
             if ($row2['Description']) {
@@ -274,7 +269,6 @@ function show_itemsartifacts() {
     </tbody></table>
     <?php
 
-    mysqli_close($dbc);
 }
 
 function show_itemsmagic() {
@@ -292,8 +286,7 @@ function show_itemsmagic() {
         <em>Base Material:</em> The material that the object is primarily made of. This determines resistances, density, etc.<br/>
     </p>
     <?php
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
 
     foreach ($_APP['itemtypes'] as $row) {
         // Skip services
@@ -304,9 +297,8 @@ function show_itemsmagic() {
         foreach ($_APP['itemsubtypes'] as $row3) {
             if ($row3['Type'] == $row['ID']) {
                 $query2 = "SELECT * FROM itemsmodified WHERE Subtype=" . $row3['ID'] . " ORDER BY Name";
-                $result2 = mysqli_query($dbc, $query2)
-                        or die("Error querying database.");
-                if (mysqli_num_rows($result2) <= 0)
+                $result2 = $db->query($query2);
+                if ($result2->rowCount() <= 0)
                     continue;
                 ?>
                 <table width="100%">
@@ -323,7 +315,7 @@ function show_itemsmagic() {
                     </tr></thead>
                     <tbody>
                     <?php
-                    while ($row2 = mysqli_fetch_array($result2)) {
+                    while ($row2 = $result2->fetch()) {
                         if ($_APP['itemsubtypes'][$row2['Subtype']]['Type'] == $row['ID']) {
                             $entity = new cPossession();
                             $entity->GenerateItem($row2['Config']);
@@ -362,7 +354,6 @@ function show_itemsmagic() {
         }
     }
 
-    mysqli_close($dbc);
 }
 
 function show_itemmodsmagic() {
@@ -375,11 +366,9 @@ function show_itemmodsmagic() {
         <em>PL:</em> The power level added to the item for this modification (this is indirectly used to calculate the value).<br/>
     </p>
     <?php
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM itemmodsmagic ORDER BY Type, Subtype, Description";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table width="100%">
         <thead><tr>
@@ -393,7 +382,7 @@ function show_itemmodsmagic() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . str_replace("\\n", "<br/>", $row['Description']) . '</td>';
             echo '<td style="text-align:center">';
@@ -414,7 +403,6 @@ function show_itemmodsmagic() {
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_itemmodsmundane() {
@@ -425,11 +413,9 @@ function show_itemmodsmundane() {
         <em>Type/Subtype:</em> The item type or subtype that this modification can be applied to.<br/>
     </p>
     <?php
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM itemmodsmundane ORDER BY Type, Subtype, Description";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table width="100%">
         <thead><tr>
@@ -442,7 +428,7 @@ function show_itemmodsmundane() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . str_replace("\\n", "<br/>", $row['Description']) . '</td>';
             echo '<td style="text-align:center">';
@@ -466,17 +452,14 @@ function show_itemmodsmundane() {
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_lightsources() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM lightsources ORDER BY LightSource";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         This table shows some typical sources of light:
@@ -491,7 +474,7 @@ function show_lightsources() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . $row['LightSource'] . '</td>';
             echo '<td>' . $row['Area'] . '</td>';
@@ -501,17 +484,14 @@ function show_lightsources() {
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_materials() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM materials ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         <b>Material traits:</b>
@@ -543,7 +523,7 @@ function show_materials() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td>' . str_replace("\\n", "<br/>", $row['Name']) . '</td>';
             echo '<td style="text-align:center">' . $row['DR'] . '</td>';
@@ -560,17 +540,14 @@ function show_materials() {
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_treasuretables() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM treasurerandom ORDER BY EL";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         Random treasure for EL (Encounter Level):
@@ -594,7 +571,7 @@ function show_treasuretables() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td style="text-align:center">' . $row['EL'] . '</td>';
             echo '<td style="text-align:center">' . $row['cp'] . '</td>';
@@ -622,8 +599,7 @@ function show_treasuretables() {
 
     <?php
     $query = "SELECT * FROM treasuremundane";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Random Mundane Treasure</caption>
@@ -633,7 +609,7 @@ function show_treasuretables() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td style="text-align:center">' . $row['Range'] . '</td>';
             echo '<td>' . $row['MundaneType'] . '</td>';
@@ -644,8 +620,7 @@ function show_treasuretables() {
 
     <?php
     $query = "SELECT * FROM treasuremagic";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Random Magic Treasure</caption>
@@ -658,7 +633,7 @@ function show_treasuretables() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td style="text-align:center">' . $row['MinorRange'] . '</td>';
             echo '<td style="text-align:center">' . $row['MediumRange'] . '</td>';
@@ -671,7 +646,6 @@ function show_treasuretables() {
     </tbody></table>
 
     <?php
-    mysqli_close($dbc);
 }
 
 function show_weaponsize() {

@@ -3,11 +3,9 @@
 function show_spelldescriptions() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM spells ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         The blocks that describe spells and powers contain the following information:
@@ -33,7 +31,7 @@ function show_spelldescriptions() {
         <em>AP Boosts:</em> Specifies ways in which AP can be used to boost the spell.<br/>
     </p><br/>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<table width="100%" id="spell' . $row['ID'] . '">';
         echo '<thead><tr>';
         echo '<th colspan=2>' . $row['Name'] . ($row['Descriptors'] ? (' - ' . $row['Descriptors']) : '') . '</th>';
@@ -93,9 +91,8 @@ function show_spelldescriptions() {
             echo '</tr>';
         } {
             $query2 = "SELECT * FROM spelloptions WHERE SpellID=" . $row['ID'];
-            $result2 = mysqli_query($dbc, $query2)
-                    or die("Error querying database.");
-            while ($row2 = mysqli_fetch_array($result2)) {
+            $result2 = $db->query($query2);
+            while ($row2 = $result2->fetch()) {
                 echo '<tr>';
                 echo '<td>Variation ' . $row2['Name'] . ' (' .
                 ($row2['Descriptors'] ? $row2['Descriptors'] . '; ' : '') .
@@ -127,7 +124,6 @@ function show_spelldescriptions() {
         echo '</tbody></table>';
     }
 
-    mysqli_close($dbc);
 }
 
 function show_spelllearning() {
@@ -262,8 +258,7 @@ function show_spellskills() {
     </p>
 
     <?php
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
 
     echo '<span id="ArcaneSkillLists"></span>';
     for ($skl = 54; $skl <= 67; $skl++) {
@@ -274,10 +269,9 @@ function show_spellskills() {
             echo '<th style="text-align:center">' . $_APP['skills'][$i]['Abbreviation'] . '</th>';
         echo '</tr></thead><tbody>';
         $query = "SELECT * FROM spells WHERE Skills LIKE '%" . substr($_APP['skills'][$skl]['Name'], strrpos($_APP['skills'][$skl]['Name'], " ") + 1) . "%' ORDER BY Name";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
 
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td><a href="#spell' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
             echo '<td style="text-align:center">' . substr($row['Cost'], 0, strpos($row['Cost'], " ")) . '</td>';
@@ -289,9 +283,8 @@ function show_spellskills() {
             }
             echo '</tr>';
             $query2 = "SELECT * FROM spelloptions WHERE SpellID=" . $row['ID'];
-            $result2 = mysqli_query($dbc, $query2)
-                    or die("Error querying database.");
-            while ($row2 = mysqli_fetch_array($result2)) {
+            $result2 = $db->query($query2);
+            while ($row2 = $result2->fetch()) {
                 echo '<tr>';
                 echo '<td>- ' . $row2['Name'] . '</td>';
                 echo '<td style="text-align:center">' . substr($row2['Cost'], 0, strpos($row2['Cost'], " ")) . '</td>';
@@ -318,10 +311,9 @@ function show_spellskills() {
             echo '<th style="text-align:center">' . $_APP['skills'][$i]['Abbreviation'] . '</th>';
         echo '</tr></thead><tbody>';
         $query = "SELECT * FROM spells WHERE Skills LIKE '%" . substr($_APP['skills'][$skl]['Name'], strrpos($_APP['skills'][$skl]['Name'], " ") + 1) . "%' ORDER BY Name";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
 
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td><a href="#spell' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
             echo '<td style="text-align:center">' . substr($row['Cost'], 0, strpos($row['Cost'], " ")) . '</td>';
@@ -333,9 +325,8 @@ function show_spellskills() {
             }
             echo '</tr>';
             $query2 = "SELECT * FROM spelloptions WHERE SpellID=" . $row['ID'];
-            $result2 = mysqli_query($dbc, $query2)
-                    or die("Error querying database.");
-            while ($row2 = mysqli_fetch_array($result2)) {
+            $result2 = $db->query($query2);
+            while ($row2 = $result2->fetch()) {
                 echo '<tr>';
                 echo '<td>- ' . $row2['Name'] . '</td>';
                 echo '<td style="text-align:center">' . substr($row2['Cost'], 0, strpos($row2['Cost'], " ")) . '</td>';
@@ -362,10 +353,9 @@ function show_spellskills() {
             echo '<th style="text-align:center">' . $_APP['skills'][$i]['Abbreviation'] . '</th>';
         echo '</tr></thead><tbody>';
         $query = "SELECT * FROM spells WHERE Skills LIKE '%" . substr($_APP['skills'][$skl]['Name'], strrpos($_APP['skills'][$skl]['Name'], " ") + 1) . "%' ORDER BY Name";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
 
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td><a href="#spell' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
             echo '<td style="text-align:center">' . substr($row['Cost'], 0, strpos($row['Cost'], " ")) . '</td>';
@@ -377,9 +367,8 @@ function show_spellskills() {
             }
             echo '</tr>';
             $query2 = "SELECT * FROM spelloptions WHERE SpellID=" . $row['ID'];
-            $result2 = mysqli_query($dbc, $query2)
-                    or die("Error querying database.");
-            while ($row2 = mysqli_fetch_array($result2)) {
+            $result2 = $db->query($query2);
+            while ($row2 = $result2->fetch()) {
                 echo '<tr>';
                 echo '<td>- ' . $row2['Name'] . '</td>';
                 echo '<td style="text-align:center">' . substr($row2['Cost'], 0, strpos($row2['Cost'], " ")) . '</td>';
@@ -397,7 +386,6 @@ function show_spellskills() {
         echo '</tbody></table>';
     }
 
-    mysqli_close($dbc);
 }
 
 function show_spellsummary() {
@@ -409,11 +397,9 @@ function show_spellsummary() {
     </p>
 
     <?php
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM spells WHERE Skills LIKE '%Arcane -%' ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table id="ArcaneSpellsList">
         <caption>Spells and Arcane Skills</caption>
@@ -426,7 +412,7 @@ function show_spellsummary() {
     ?>
         </tr></thead><tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td><a href="#spell' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
         echo '<td style="text-align:center">' . substr($row['Cost'], 0, strpos($row['Cost'], " ")) . '</td>';
@@ -438,9 +424,8 @@ function show_spellsummary() {
         }
         echo '</tr>';
         /* 		$query2 = "SELECT * FROM spelloptions WHERE SpellID=" . $row['ID'];
-          $result2 = mysqli_query($dbc, $query2)
-          or die("Error querying database.");
-          while ($row2 = mysqli_fetch_array($result2))
+          $result2 = $db->query($query2);
+          while ($row2 = $result2->fetch())
           {
           echo '<tr>';
           echo '<td>- ' . $row2['Name'] . '</td>';
@@ -461,8 +446,7 @@ function show_spellsummary() {
 
         <?php
         $query = "SELECT * FROM spells WHERE Skills LIKE '%Divine -%' ORDER BY Name";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
         ?>
     <table id="DivineSpellsList">
         <caption>Spells and Divine Skills</caption>
@@ -475,7 +459,7 @@ function show_spellsummary() {
         ?>
         </tr></thead><tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td><a href="#spell' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
             echo '<td style="text-align:center">' . substr($row['Cost'], 0, strpos($row['Cost'], " ")) . '</td>';
@@ -487,9 +471,8 @@ function show_spellsummary() {
             }
             echo '</tr>';
             /* 		$query2 = "SELECT * FROM spelloptions WHERE SpellID=" . $row['ID'];
-              $result2 = mysqli_query($dbc, $query2)
-              or die("Error querying database.");
-              while ($row2 = mysqli_fetch_array($result2))
+              $result2 = $db->query($query2);
+              while ($row2 = $result2->fetch())
               {
               echo '<tr>';
               echo '<td>- ' . $row2['Name'] . '</td>';
@@ -510,8 +493,7 @@ function show_spellsummary() {
 
     <?php
     $query = "SELECT * FROM spells WHERE Skills LIKE '%Psi -%' ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table id="PsionicPowersList">
         <caption>Powers and Psi Skills</caption>
@@ -524,7 +506,7 @@ function show_spellsummary() {
         ?>
         </tr></thead><tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td><a href="#spell' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
             echo '<td style="text-align:center">' . substr($row['Cost'], 0, strpos($row['Cost'], " ")) . '</td>';
@@ -536,9 +518,8 @@ function show_spellsummary() {
             }
             echo '</tr>';
             /* 		$query2 = "SELECT * FROM spelloptions WHERE SpellID=" . $row['ID'];
-              $result2 = mysqli_query($dbc, $query2)
-              or die("Error querying database.");
-              while ($row2 = mysqli_fetch_array($result2))
+              $result2 = $db->query($query2);
+              while ($row2 = $result2->fetch())
               {
               echo '<tr>';
               echo '<td>- ' . $row2['Name'] . '</td>';
@@ -558,6 +539,5 @@ function show_spellsummary() {
     </tbody></table>
 
     <?php
-    mysqli_close($dbc);
 }
 ?>

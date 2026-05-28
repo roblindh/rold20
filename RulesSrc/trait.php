@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 define("LVL_NONE", 0);
 define("LVL_MINOR", 1);
@@ -24,7 +25,7 @@ define("ENERGY_NECRO", 4);
 define("ENERGY_RADIANT", 5);
 define("ENERGY_SONIC", 6);
 
-function TraitLevel($str) {
+function TraitLevel(string $str): int {
     $lvl = LVL_NONE;
 
     switch ($str) {
@@ -48,7 +49,7 @@ function TraitLevel($str) {
     return $lvl;
 }
 
-function LevelStr($lvl) {
+function LevelStr(int $lvl): string {
     $str = "";
 
     switch ($lvl) {
@@ -80,7 +81,7 @@ class cTraitDescription {
     public $fulldesc;
     public $valuetype;
 
-    public function __construct($t, $q, $bd, $fd, $vt) {
+    public function __construct(string $t, string $q, string $bd, string $fd, int $vt) {
         $this->type = $t;
         $this->qual = $q;
         $this->briefdesc = $bd;
@@ -95,7 +96,7 @@ class cTrait {
     public $type = "";
     public $aParams = array();
 
-    public function Process($traitEffects, $level, $entity, $brief) {
+    public function Process(?object $traitEffects, int $level, ?object $entity, bool $brief): string {
         $str = "";
         $strBrief = "";
         $found = false;
@@ -169,8 +170,8 @@ class cTrait {
                     } else if ($valueType == TYPE_FLOAT && $entity != NULL && $traitEffects != NULL) {
                         $val = (int) (100.0 * $parser->Evaluate(strtoupper($this->aParams["Value"]))) / 100.0;
                         $this->aParams["Value"] = (string) $val;
-                        $str = str_replace("%v", $val, $str);
-                        $strBrief = str_replace("%v", $val, $strBrief);
+                        $str = str_replace("%v", (string)$val, $str);
+                        $strBrief = str_replace("%v", (string)$val, $strBrief);
                     } else {
                         $str = str_replace("%v", $this->aParams["Value"], $str);
                         $strBrief = str_replace("%v", $this->aParams["Value"], $strBrief);
@@ -765,7 +766,7 @@ class cTrait {
         return ($brief ? $strBrief : $str);
     }
 
-    public function SpecialTraitExplanation() {
+    public function SpecialTraitExplanation(): string {
         $str = "";
 
         switch ($this->aParams["Qual"]) {
@@ -933,7 +934,7 @@ class cTrait {
         return $str;
     }
 
-    public static function DamageStr($dmgStr, $modDie) {
+    public static function DamageStr(string $dmgStr, int $modDie): string {
         $dieStr = $dmgStr;
         $modStr = "";
 
@@ -950,7 +951,7 @@ class cTrait {
         return $dieStr . $modStr;
     }
 
-    public static function ProcessWeapon($weaponStats, $aParams) {
+    public static function ProcessWeapon(object $weaponStats, array $aParams): object {
         $str = "";
         global $aWeaponCats;
 
@@ -1047,7 +1048,7 @@ class cTrait {
         return $weaponStats;
     }
 
-    public static function GetWeaponStr($weaponStats, $type, $baseSize, $sizeAdj, $traitEffects) {
+    public static function GetWeaponStr(object $weaponStats, string $type, ?int $baseSize, int $sizeAdj, ?object $traitEffects): string {
         global $_APP;
 
         if ($traitEffects) {
@@ -1115,7 +1116,7 @@ class cTrait {
         return $str;
     }
 
-    public function GetAmmoStr($traitEffects) {
+    public function GetAmmoStr(?object $traitEffects): string {
         if ($traitEffects)
             $dmgMod = $traitEffects->ModsDmg->Total();
         $str = "";
@@ -1161,7 +1162,7 @@ class cTrait {
         return $str;
     }
 
-    public function GetArmorStr($traitEffects) {
+    public function GetArmorStr(?object $traitEffects): string {
         $str = "";
         $armorStats = new cArmorStats();
         global $aArmorCats;
@@ -1210,7 +1211,7 @@ class cTrait {
         return $str;
     }
 
-    public function GetImplementStr($traitEffects) {
+    public function GetImplementStr(?object $traitEffects): string {
         $str = "";
         $implementStats = new cImplementStats();
 
@@ -1264,7 +1265,7 @@ class cTrait {
          */
     }
 
-    public function GetVehicleStr($traitEffects) {
+    public function GetVehicleStr(?object $traitEffects): string {
         $str = "";
         $vehicleStats = new cVehicleStats();
         global $aVehicleCats;
@@ -1323,7 +1324,7 @@ class cTrait {
          */
     }
 
-    public function CheckPrereq($prereq, $entity, $parser) {
+    public function CheckPrereq(string $prereq, object $entity, object $parser): bool {
         if (strpos($prereq, "EC") !== FALSE) {
             $parser->Evaluate("EC=" . $entity->GetEncumbranceClass(0));
             if ($parser->Evaluate($prereq))
@@ -1485,24 +1486,28 @@ class cTraitEffects {
         $this->ModsAP = new cModifiers();
         $this->ModsInit = new cModifiers();
 
-        foreach ($aWeaponCats as $i => $cat) {
-            $this->ModsWeapAtt[$i] = new cModifiers();
-            $this->ModsWeapDmg[$i] = new cModifiers();
-            $this->ModsWeapPar[$i] = new cModifiers();
-            $this->ModsWeapEC[$i] = new cModifiers();
-            $this->ModsWeapAttSpd[$i] = new cModifiers();
-            $this->ModsWeapCrit[$i] = new cModifiers();
+        if (is_array($aWeaponCats)) {
+            foreach ($aWeaponCats as $i => $cat) {
+                $this->ModsWeapAtt[$i] = new cModifiers();
+                $this->ModsWeapDmg[$i] = new cModifiers();
+                $this->ModsWeapPar[$i] = new cModifiers();
+                $this->ModsWeapEC[$i] = new cModifiers();
+                $this->ModsWeapAttSpd[$i] = new cModifiers();
+                $this->ModsWeapCrit[$i] = new cModifiers();
+            }
         }
-        foreach ($aArmorCats as $i => $cat) {
-            $this->ModsArmorDeC[$i] = new cModifiers();
-            $this->ModsArmorEC[$i] = new cModifiers();
+        if (is_array($aArmorCats)) {
+            foreach ($aArmorCats as $i => $cat) {
+                $this->ModsArmorDeC[$i] = new cModifiers();
+                $this->ModsArmorEC[$i] = new cModifiers();
+            }
         }
     }
 
     public $defAbilStr = "";
     public $defAbilStrBrief = "";
 
-    public function DefAbilStr($brief) {
+    public function DefAbilStr(bool $brief): string {
         $str = "";
         $traitStr = "";
 
@@ -1563,7 +1568,7 @@ class cTraitEffects {
     public $attAbilStr = "";
     public $attAbilStrBrief = "";
 
-    public function AttAbilStr($brief) {
+    public function AttAbilStr(bool $brief): string {
         $str = "";
         $traitStr = "";
 
@@ -1596,7 +1601,7 @@ class cTraitEffects {
     public $snsAbilStr = "";
     public $snsAbilStrBrief = "";
 
-    public function SnsAbilStr($brief) {
+    public function SnsAbilStr(bool $brief): string {
         $str = "";
         $traitStr = "";
 
@@ -1629,7 +1634,7 @@ class cTraitEffects {
     public $mobAbilStr = "";
     public $mobAbilStrBrief = "";
 
-    public function MobAbilStr($brief) {
+    public function MobAbilStr(bool $brief): string {
         $str = "";
         $traitStr = "";
 
@@ -1654,7 +1659,7 @@ class cTraitEffects {
     public $spcAbilStr = "";
     public $spcAbilStrBrief = "";
 
-    public function SpcAbilStr($brief) {
+    public function SpcAbilStr(bool $brief): string {
         $str = "";
         $traitStr = "";
 
@@ -1680,7 +1685,7 @@ class cTraitEffects {
         return $str;
     }
 
-    public function Reset() {
+    public function Reset(): void {
         $defAbilStr = "";
         $attAbilStr = "";
         $snsAbilStr = "";
@@ -1693,7 +1698,10 @@ class cTraitEffects {
         $spcAbilStrBrief = "";
     }
 
-    public static function ParseTraits($traits) {
+    public static function ParseTraits(string $traits): array {
+        if (empty($traits)) {
+            return array();
+        }
         $aTraits = explode("}", $traits);
         $lTraits = array();
         foreach ($aTraits as $iTrait) {
@@ -1714,9 +1722,9 @@ class cTraitEffects {
         return $lTraits;
     }
 
-    public function ProcessTraits($traits, $level, $entity) {
+    public function ProcessTraits(?string $traits, int $level, object $entity): string {
         $str = "";
-        $lTraits = cTraitEffects::ParseTraits($traits);
+        $lTraits = cTraitEffects::ParseTraits($traits ?? '');
 
         foreach ($lTraits as $iTrait) {
             $str .= $iTrait->Process($this, $level, $entity, FALSE) . "\\n";
@@ -1725,9 +1733,9 @@ class cTraitEffects {
         return $str;
     }
 
-    public function GetTraitsDescription($traits, $brief) {
+    public function GetTraitsDescription(?string $traits, bool $brief): string {
         $str = "";
-        $lTraits = cTraitEffects::ParseTraits($traits);
+        $lTraits = cTraitEffects::ParseTraits($traits ?? '');
 
         foreach ($lTraits as $iTrait) {
             $traitDesc = $iTrait->Process($this, 0, NULL, $brief);
@@ -1738,9 +1746,9 @@ class cTraitEffects {
         return $str;
     }
 
-    public static function StatGetTraitsDescription($traits, $brief) {
+    public static function StatGetTraitsDescription(?string $traits, bool $brief): string {
         $str = "";
-        $lTraits = cTraitEffects::ParseTraits($traits);
+        $lTraits = cTraitEffects::ParseTraits($traits ?? '');
 
         foreach ($lTraits as $iTrait) {
             $traitDesc = $iTrait->Process(NULL, 0, NULL, $brief);

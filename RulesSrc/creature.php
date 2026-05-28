@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
 
 class cCreature {
 
-    public static function GetAbilAdj($id, $abilId) {
+    public static function GetAbilAdj(int $id, int $abilId): ?int {
         global $_APP;
         $row = $_APP['creatures'][$id];
 
@@ -20,9 +21,10 @@ class cCreature {
             case A_CHA:
                 return $row['ChaAdj'];
         }
+        return null;
     }
 
-    public static function GetAbilAdjStr($id) {
+    public static function GetAbilAdjStr(int $id): string {
         global $_APP;
         $row = $_APP['creatures'][$id];
         $abilstr = array();
@@ -73,7 +75,7 @@ class cCreature {
         return implode(", ", $abilstr);
     }
 
-    public static function GetAgeCatAbilAdj($ageCat, $abilId) {
+    public static function GetAgeCatAbilAdj(int $ageCat, int $abilId): ?int {
         global $_APP;
         $row = $_APP['agecats'][$ageCat];
 
@@ -91,9 +93,10 @@ class cCreature {
             case A_CHA:
                 return $row['ChaAdj'];
         }
+        return null;
     }
 
-    public static function GetAgeCatAbilAdjSN($ageCat, $abilId) {
+    public static function GetAgeCatAbilAdjSN(int $ageCat, int $abilId): ?int {
         global $_APP;
         $row = $_APP['agecats'][$ageCat];
 
@@ -111,27 +114,28 @@ class cCreature {
             case A_CHA:
                 return $row['ChaAdjSN'];
         }
+        return null;
     }
 
-    public static function GetCreatureGroup($id) {
+    public static function GetCreatureGroup(int $id): mixed {
         global $_APP;
 
         return $_APP['creaturesubtypes'][$_APP['creatures'][$id]['CreatureType']]['GroupID'];
     }
 
-    public static function GetCreatureType($id) {
+    public static function GetCreatureType(int $id): mixed {
         global $_APP;
 
         return $_APP['creatures'][$id]['CreatureType'];
     }
 
-    public static function GetBodyType($id) {
+    public static function GetBodyType(int $id): mixed {
         global $_APP;
 
         return $_APP['creatures'][$id]['BodyType'];
     }
 
-    public static function HasGenders($id) {
+    public static function HasGenders(int $id): bool {
         global $_APP;
         $creature = $_APP['creatures'][$id];
 
@@ -139,12 +143,12 @@ class cCreature {
                 ($creature['AvgLengthM'] == 0 && $creature['AvgLengthF'] == 0));
     }
 
-    public static function GetXPValue($challengelevel) {
+    public static function GetXPValue(int $challengelevel): int {
         return ($challengelevel < 0 ? 25 : ($challengelevel == 0 ? 75 : ($challengelevel == 1 ? 150 :
                 ($challengelevel == 2 ? 225 : (($challengelevel - 2) * 300)))));
     }
 
-    public static function ParseNaturalAttacks($natatts) {
+    public static function ParseNaturalAttacks(string $natatts): array {
         global $_APP;
 
         $aAtts = explode("}", $natatts);
@@ -161,7 +165,8 @@ class cCreature {
                 }
                 $weaponStats->Name = trim(substr($weapon, $j + 1));
 
-                foreach ($_APP['naturalattacks'] as $iNatAtt) {
+                foreach ($_APP['naturalattacks'] ?? [] as $iNatAtt) {
+                    if (!is_array($iNatAtt)) continue;
                     if ($weaponStats->Name == $iNatAtt['Name']) {
                         $lTraits = cTraitEffects::ParseTraits($iNatAtt['Traits']);
                         $weaponStats = cTrait::ProcessWeapon($weaponStats, $lTraits[0]->aParams);
@@ -186,7 +191,7 @@ class cCreature {
         return $lAtts;
     }
 
-    public static function GetNaturalAttacksDescription($natatts, $baseSize) {
+    public static function GetNaturalAttacksDescription(string $natatts, int $baseSize): string {
         $str = "";
 
         $lAtts = cCreature::ParseNaturalAttacks($natatts);
@@ -203,7 +208,7 @@ class cCreature {
 
 class cTemplate {
 
-    public static function GetAbilAdj($id, $abilId) {
+    public static function GetAbilAdj(int $id, int $abilId): ?int {
         global $_APP;
         $row = $_APP['templates'][$id];
 
@@ -221,9 +226,10 @@ class cTemplate {
             case A_CHA:
                 return $row['ChaAdj'];
         }
+        return null;
     }
 
-    public static function GetAbilAdjStr($id) {
+    public static function GetAbilAdjStr(int $id): string {
         global $_APP;
         $row = $_APP['templates'][$id];
         $abilstr = array();

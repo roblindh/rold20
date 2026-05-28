@@ -375,11 +375,9 @@ function show_actionresults() {
 function show_activitylevels() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM activitylevels";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Activity Levels and Recovery</caption>
@@ -394,7 +392,7 @@ function show_activitylevels() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
         echo '<td>' . str_replace("\\n", "<br/>", $row['Description']) . '</td>';
@@ -408,7 +406,6 @@ function show_activitylevels() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_aidresults() {
@@ -770,11 +767,9 @@ function show_combatmods() {
 function show_companionimprovements() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM companionimprovements WHERE SkillID=162";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Animal Companion Improvements</caption>
@@ -791,7 +786,7 @@ function show_companionimprovements() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td style="text-align:center">' . signedstr($row['CLMod']) . '</td>';
         echo '<td style="text-align:center">' . signedstr($row['StrMod']) . '</td>';
@@ -810,8 +805,7 @@ function show_companionimprovements() {
 
         <?php
         $query = "SELECT * FROM companionimprovements WHERE SkillID=167";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
         ?>
     <table>
         <caption>Divine Mount Improvements</caption>
@@ -828,7 +822,7 @@ function show_companionimprovements() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td style="text-align:center">' . signedstr($row['CLMod']) . '</td>';
         echo '<td style="text-align:center">' . signedstr($row['StrMod']) . '</td>';
@@ -846,8 +840,7 @@ function show_companionimprovements() {
 
         <?php
         $query = "SELECT * FROM companionimprovements WHERE SkillID=171";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
         ?>
     <table>
         <caption>Familiar Improvements</caption>
@@ -863,7 +856,7 @@ function show_companionimprovements() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td style="text-align:center">' . signedstr($row['CLMod']) . '</td>';
         echo '<td style="text-align:center">' . signedstr($row['IntMod']) . '</td>';
@@ -880,8 +873,7 @@ function show_companionimprovements() {
 
     <?php
     $query = "SELECT * FROM companionimprovements WHERE SkillID=189";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Psicrystal Improvements</caption>
@@ -895,7 +887,7 @@ function show_companionimprovements() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td style="text-align:center">' . signedstr($row['CLMod']) . '</td>';
         echo '<td style="text-align:center">' . $row['IntMod'] . '</td>';
@@ -909,17 +901,14 @@ function show_companionimprovements() {
     </tbody></table>
 
     <?php
-    mysqli_close($dbc);
 }
 
 function show_descriptors() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM descriptors ORDER BY Descriptor";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
 
     <table>
@@ -931,7 +920,7 @@ function show_descriptors() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Descriptor'] . '</td>';
         echo '<td>' . $row['Notation'] . '</td>';
@@ -941,7 +930,6 @@ function show_descriptors() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_difficulties() {
@@ -1091,11 +1079,9 @@ function show_elmods() {
 function show_encountercombos() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM encountercombos ORDER BY EL";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         For combat encounters of a certain EL, an appropriate mix of creatures (based on their CLs) can be gleaned from the following table:
@@ -1115,7 +1101,7 @@ function show_encountercombos() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td style="text-align:center">' . $row['EL'] . '</td>';
         echo '<td style="text-align:center">' . $row['Creatures1'] . '</td>';
@@ -1131,7 +1117,6 @@ function show_encountercombos() {
     </tbody></table>
 
     <?php
-    mysqli_close($dbc);
 }
 
 function show_energyeffects() {
@@ -1230,11 +1215,9 @@ function show_energyeffects() {
 function show_modifiers() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM modifiers ORDER BY ModifierType";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Modifier Types</caption>
@@ -1246,7 +1229,7 @@ function show_modifiers() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['ModifierType'] . '</td>';
         echo '<td style="text-align:center">' . $row['Abbreviation'] . '</td>';
@@ -1257,7 +1240,6 @@ function show_modifiers() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_moralemods() {
@@ -1345,11 +1327,9 @@ function show_moraleresults() {
 function show_prereqs() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM prerequisites ORDER BY Prereq";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>    	
     <table>
         <caption>Prerequisite Types</caption>
@@ -1360,7 +1340,7 @@ function show_prereqs() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Prereq'] . '</td>';
         echo '<td>' . $row['Example'] . '</td>';
@@ -1370,17 +1350,14 @@ function show_prereqs() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_techlevels() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM techlevelst ORDER BY TL";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
 
     <table>
@@ -1392,7 +1369,7 @@ function show_techlevels() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td style="text-align:center">' . $row['TL'] . '</td>';
             echo '<td style="text-align:center">' . $row['Year'] . '</td>';
@@ -1404,8 +1381,7 @@ function show_techlevels() {
 
     <?php
     $query = "SELECT * FROM techlevelsm ORDER BY TL";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
 
     <table>
@@ -1417,7 +1393,7 @@ function show_techlevels() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td style="text-align:center">' . $row['TL'] . '</td>';
         echo '<td style="text-align:center">' . $row['Year'] . '</td>';
@@ -1428,17 +1404,14 @@ function show_techlevels() {
     </tbody></table>
 
     <?php
-    mysqli_close($dbc);
 }
 
 function show_wealthperlevel() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM wealthperlevel";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
 
     <table>
@@ -1450,7 +1423,7 @@ function show_wealthperlevel() {
         </tr></thead>
         <tbody>
         <?php
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td style="text-align:center">' . $row['Level'] . '</td>';
             echo '<td style="text-align:right">' . $row['PCWealth'] . '</td>';
@@ -1460,6 +1433,5 @@ function show_wealthperlevel() {
         ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 ?>
