@@ -1,36 +1,36 @@
 <?php
 
 function rol_login($username, $password) {
+    global $db_server, $db_user, $db_password, $db_name_campaign;
     $username = stripslashes(strip_tags($username));
     $password = md5(stripslashes(strip_tags($password)));
 
-    $dbc = mysqli_connect('localhost:3306', 'root', '', 'rold20campaign')
-            or die("Error connecting to database.");
-    $query = "SELECT * FROM players WHERE Name='" . $username . "'";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-
-    if ($row = mysqli_fetch_array($result)) {
-        if ($row['Password'] == $password) {
-            $_SESSION['User'] = $username;
-            $_SESSION['UserID'] = $row['ID'];
-            $_SESSION['UserType'] = $row['Type'];
-        }
-    } else {
-        $query = "INSERT INTO players (Name, Password, Type) VALUES ('" . $username . "', '" . $password . "', 1)";
-        $result = mysqli_query($dbc, $query)
-                or die("Error inserting into database.");
+    try {
+        $db = Database::getInstance();
+        $db->connect($db_server, $db_user, $db_password, $db_name_campaign);
         $query = "SELECT * FROM players WHERE Name='" . $username . "'";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        if ($row = mysqli_fetch_array($result)) {
-            $_SESSION['User'] = $username;
-            $_SESSION['UserID'] = $row['ID'];
-            $_SESSION['UserType'] = $row['Type'];
-        }
-    }
+        $result = $db->query($query);
 
-    mysqli_close($dbc);
+        if ($row = $result->fetch()) {
+            if ($row['Password'] == $password) {
+                $_SESSION['User'] = $username;
+                $_SESSION['UserID'] = $row['ID'];
+                $_SESSION['UserType'] = $row['Type'];
+            }
+        } else {
+            $query = "INSERT INTO players (Name, Password, Type) VALUES ('" . $username . "', '" . $password . "', 1)";
+            $result = $db->query($query);
+            $query = "SELECT * FROM players WHERE Name='" . $username . "'";
+            $result = $db->query($query);
+            if ($row = $result->fetch()) {
+                $_SESSION['User'] = $username;
+                $_SESSION['UserID'] = $row['ID'];
+                $_SESSION['UserType'] = $row['Type'];
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Login error: " . $e->getMessage());
+    }
 }
 
 function rol_header() {

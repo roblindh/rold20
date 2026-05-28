@@ -4,20 +4,17 @@ require_once '../RulesSrc/rolcalc.php';
 application_start();
 
 global $db_server, $db_user, $db_password, $db_name_campaign;
-$dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
-        or die("Error connecting to database.");
+$db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name_campaign);
 
 $query = "SELECT * FROM characters WHERE Name='" . $_REQUEST["name"] . "'";
-$result = mysqli_query($dbc, $query)
-        or die("Error querying database.");
-if ($row = mysqli_fetch_array($result)) {
+$result = $db->query($query);
+if ($row = $result->fetch()) {
     echo "Character " . $_REQUEST["name"] . " already exists in database. Please rename and try again.";
 } else {
     $insert = "INSERT INTO characters (Name) VALUES " .
             "('" . $_REQUEST["name"] . "')";
 //    echo $insert . "<br/>";
-    $result = mysqli_query($dbc, $insert)
-            or die("Error inserting character into database.");
+    $result = $db->query($insert);
     for ($i = 1, $templatestr = ""; isset($_REQUEST["template" . $i]); $i++)
         $templatestr .= (empty($templatestr) ? "" : ";") . $_REQUEST["template" . $i];
     for ($i = 1, $classstr = ""; isset($_REQUEST["class" . $i]); $i++)

@@ -491,7 +491,7 @@ class cExpressionParser {
                 if ($this->GetNextToken()) {
                     $temp = (int) $this->EvaluatePowers();
                     $i = ($result == NULL) ? 1 : (int) $result;
-                    for ($result = 0.0; $i > 0; $i--)
+                    for ($result = 0.0; $i > 0; $i--);
                         $result += mt_rand(1, $temp);
                 }
             } else
@@ -734,7 +734,7 @@ class cExpressionParser {
                                 $count = ($count == NULL || $count <= 0) ? 1 : $count;
                                 if ($this->GetNextToken()) {
                                     $temp = $this->EvaluateAssignment();
-                                    for ($result = 0.0; $count > 0; $count--)
+                                    for ($result = 0.0; $count > 0; $count--);
                                         $result += mt_rand(1, (int) $temp);
                                     $this->GetNextToken();
                                 }

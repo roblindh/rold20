@@ -452,7 +452,7 @@ function show_spellanalysis_singledmg() {
         new cEffect("Arcane Archery: Arrow of Death", "20 PP", 16, "(lvl/2+0.5*(19-lvl/2))*80/20", "Arrow; bonus necr dmg"),
         new cEffect("Ki Off: Quivering Palm", "25 PP", 15, "1.5*(4+lvl/2)*50/20", "Bonus dmg"),
         new cEffect("Metam Inc: Incorporeal Bridge", "10 PP", 12, "(5+lvl/3)*35/20", "LoS; bypass DR"),
-        new cEffect("Metam Inc: Incorporeal Touch", "3 PP", 6, "1.1*(6+lvl/3)*((lvl>=14 ? 16.5 : (lvl>=10 ? 11 : 5.5))+3+lvl/4)*(10+lvl)/200", "Tch; bypass DR"),
+        new cEffect("Metam Inc: Incorporeal Touch", "3 PP", 6, "1.1*(6+lvl/3)*((lvl>=14 ? 16.5 : (lvl>=10 ? 11 : (5.5)))+3+lvl/4)*(10+lvl)/200", "Tch; bypass DR"),
         new cEffect("Pyrokin: Bolt of Fire", "PP", 10, "(1.1*(5+lvl/2)+0.5*(14-lvl/2))*(lvl*3.5+lvl/2)/20", "Ray; fire dmg"),
         new cEffect("Spellfire: Spellfire Bolt", "SP", 14, "(1.1*(5+lvl/2)+0.5*(14-lvl/2))*(lvl*3.5+lvl/2)/20", "Ray; fire dmg")
     );

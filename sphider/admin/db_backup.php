@@ -50,7 +50,7 @@ function get_def($database,$table,$fp) {
     $def = "";
     $def .= "DROP TABLE IF EXISTS $table;#%%\n";
     $def .= "CREATE TABLE $table (\n";
-    $result = mysql_db_query($database, "SHOW FIELDS FROM $table") or die("Table $table not existing in database");
+    $result = mysql_db_query($database, "SHOW FIELDS FROM $table")
     while($row = mysql_fetch_array($result)) {
         $def .= "    $row[Field] $row[Type]";
         if ($row["Default"] != "") $def .= " DEFAULT '$row[Default]'";
@@ -80,7 +80,7 @@ function get_def($database,$table,$fp) {
 }
 
 function get_content($database,$table,$fp) {
-     $result = mysql_db_query($database, "SELECT * FROM $table") or die("Cannot get content of table");
+     $result = mysql_db_query($database, "SELECT * FROM $table")
           
      while($row = mysql_fetch_row($result)) {
          

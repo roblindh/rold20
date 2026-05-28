@@ -825,8 +825,7 @@ function charview_page_spells() {
     global $_APP;
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
 
     echo '<div id="PageTab' . PAGE_SPELLS . '" class="utiltab">';
 
@@ -839,9 +838,8 @@ function charview_page_spells() {
         echo '<input type="hidden" name="SpellCost' . $row['ID'] .'" value="' . $row['Cost'] . '">';
     }
     $query = "SELECT * FROM spelloptions";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    while ($row = mysqli_fetch_array($result)) {
+    $result = $db->query($query);
+    while ($row = $result->fetch()) {
         echo '<input type="hidden" name="OptionName' . $row['ID'] .'" value="' . $row['Name'] . '">';
         echo '<input type="hidden" name="OptionSkills' . $row['ID'] .'" value="' . $row['Skills'] . '">';
         echo '<input type="hidden" name="OptionCost' . $row['ID'] .'" value="' . $row['Cost'] . '">';
@@ -856,10 +854,9 @@ function charview_page_spells() {
             echo '<th style="text-align:center">' . $_APP['skills'][$i]['Abbreviation'] . '</th>';
         echo '</tr></thead><tbody>';
         $query = "SELECT * FROM spells WHERE Skills LIKE '%" . substr($_APP['skills'][$skl]['Name'], strrpos($_APP['skills'][$skl]['Name'], " ") + 1) . "%' ORDER BY Name";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
 
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td><a href="#spell' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
             echo '<td style="text-align:center">' . substr($row['Cost'], 0, strpos($row['Cost'], " ")) . '</td>';
@@ -871,9 +868,8 @@ function charview_page_spells() {
             }
             echo '</tr>';
             $query2 = "SELECT * FROM spelloptions WHERE SpellID=" . $row['ID'];
-            $result2 = mysqli_query($dbc, $query2)
-                    or die("Error querying database.");
-            while ($row2 = mysqli_fetch_array($result2)) {
+            $result2 = $db->query($query2);
+            while ($row2 = $result2->fetch()) {
                 echo '<tr>';
                 echo '<td>- ' . $row2['Name'] . '</td>';
                 echo '<td style="text-align:center">' . substr($row2['Cost'], 0, strpos($row2['Cost'], " ")) . '</td>';
@@ -900,10 +896,9 @@ function charview_page_spells() {
             echo '<th style="text-align:center">' . $_APP['skills'][$i]['Abbreviation'] . '</th>';
         echo '</tr></thead><tbody>';
         $query = "SELECT * FROM spells WHERE Skills LIKE '%" . substr($_APP['skills'][$skl]['Name'], strrpos($_APP['skills'][$skl]['Name'], " ") + 1) . "%' ORDER BY Name";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
 
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td><a href="#spell' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
             echo '<td style="text-align:center">' . substr($row['Cost'], 0, strpos($row['Cost'], " ")) . '</td>';
@@ -915,9 +910,8 @@ function charview_page_spells() {
             }
             echo '</tr>';
             $query2 = "SELECT * FROM spelloptions WHERE SpellID=" . $row['ID'];
-            $result2 = mysqli_query($dbc, $query2)
-                    or die("Error querying database.");
-            while ($row2 = mysqli_fetch_array($result2)) {
+            $result2 = $db->query($query2);
+            while ($row2 = $result2->fetch()) {
                 echo '<tr>';
                 echo '<td>- ' . $row2['Name'] . '</td>';
                 echo '<td style="text-align:center">' . substr($row2['Cost'], 0, strpos($row2['Cost'], " ")) . '</td>';
@@ -944,10 +938,9 @@ function charview_page_spells() {
             echo '<th style="text-align:center">' . $_APP['skills'][$i]['Abbreviation'] . '</th>';
         echo '</tr></thead><tbody>';
         $query = "SELECT * FROM spells WHERE Skills LIKE '%" . substr($_APP['skills'][$skl]['Name'], strrpos($_APP['skills'][$skl]['Name'], " ") + 1) . "%' ORDER BY Name";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
 
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = $result->fetch()) {
             echo '<tr>';
             echo '<td><a href="#spell' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
             echo '<td style="text-align:center">' . substr($row['Cost'], 0, strpos($row['Cost'], " ")) . '</td>';
@@ -959,9 +952,8 @@ function charview_page_spells() {
             }
             echo '</tr>';
             $query2 = "SELECT * FROM spelloptions WHERE SpellID=" . $row['ID'];
-            $result2 = mysqli_query($dbc, $query2)
-                    or die("Error querying database.");
-            while ($row2 = mysqli_fetch_array($result2)) {
+            $result2 = $db->query($query2);
+            while ($row2 = $result2->fetch()) {
                 echo '<tr>';
                 echo '<td>- ' . $row2['Name'] . '</td>';
                 echo '<td style="text-align:center">' . substr($row2['Cost'], 0, strpos($row2['Cost'], " ")) . '</td>';
@@ -984,7 +976,6 @@ function charview_page_spells() {
 
     echo '</div>';
 
-    mysqli_close($dbc);
 }
 
 ?>

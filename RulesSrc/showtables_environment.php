@@ -3,11 +3,9 @@
 function show_buildingfeatures() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM buildingfeatures ORDER BY Feature";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
 
     <table>
@@ -18,7 +16,7 @@ function show_buildingfeatures() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Feature'] . '</td>';
         echo '<td>' . str_replace("\\n", "<br/>", $row['Effect']) . '</td>';
@@ -27,17 +25,14 @@ function show_buildingfeatures() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_environments() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM environmenteffects ORDER BY Environment";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Environment Effects</caption>
@@ -47,7 +42,7 @@ function show_environments() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Environment'] . '</td>';
         echo '<td>' . str_replace("\\n", "<br/>", $row['Effect']) . '</td>';
@@ -67,17 +62,14 @@ function show_environments() {
         All creatures have total concealment against those who depend on vision.
     </p>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_deities() {
     global $db_server, $db_user, $db_password, $db_name_campaign;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name_campaign);
     $query = "SELECT * FROM deities ORDER BY Name";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
 
     <table>
@@ -93,7 +85,7 @@ function show_deities() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
         echo '<td style="text-align:center">' . $row['Rank'] . '</td>';
@@ -114,17 +106,14 @@ function show_deities() {
     </p>
 
     <?php
-    mysqli_close($dbc);
 }
 
 function show_hazards() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM hazards ORDER BY Hazard";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Hazards</caption>
@@ -135,7 +124,7 @@ function show_hazards() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Hazard'] . '</td>';
         echo '<td style="text-align:center">' . $row['EL'] . '</td>';
@@ -145,17 +134,14 @@ function show_hazards() {
     ?>
     </tbody></table>
         <?php
-        mysqli_close($dbc);
     }
 
     function show_terrainfeatures() {
         global $db_server, $db_user, $db_password, $db_name;
 
-        $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-                or die("Error connecting to database.");
+        $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
         $query = "SELECT * FROM terraineffects ORDER BY Terrain";
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
+        $result = $db->query($query);
         ?>
 
     <table>
@@ -166,7 +152,7 @@ function show_hazards() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Terrain'] . '</td>';
         echo '<td>' . str_replace("\\n", "<br/>", $row['Effect']) . '</td>';
@@ -175,17 +161,14 @@ function show_hazards() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_terrainmove() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM terraintypes ORDER BY Terrain";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
 
     <table>
@@ -201,7 +184,7 @@ function show_terrainmove() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Terrain'] . '</td>';
         echo '<td style="text-align:center">&times;' . $row['HighwayMul'] . '</td>';
@@ -239,17 +222,14 @@ function show_terrainmove() {
     </p>
 
     <?php
-    mysqli_close($dbc);
 }
 
 function show_towntypes() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM towntypes";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
 
     <table>
@@ -265,7 +245,7 @@ function show_towntypes() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td style="text-align:center">' . $row['DieRoll'] . '</td>';
         echo '<td>' . $row['TownType'] . '</td>';
@@ -288,17 +268,14 @@ function show_towntypes() {
     </p>
 
     <?php
-    mysqli_close($dbc);
 }
 
 function show_traps() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM trapfeatures";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Traps and Trap Modifiers</caption>
@@ -310,7 +287,7 @@ function show_traps() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['TrapFeature'] . '</td>';
         echo '<td style="text-align:center">' . $row['EL'] . '</td>';
@@ -321,17 +298,14 @@ function show_traps() {
     ?>
     </tbody></table>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_underwatereffects() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM underwatereffects";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <p>
         This table shows conditions and traits that can mitigate the underwater penalties:
@@ -348,7 +322,7 @@ function show_underwatereffects() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Condition'] . '</td>';
         echo '<td style="text-align:center">' . $row['SBWeapon'] . '</td>';
@@ -367,17 +341,14 @@ function show_underwatereffects() {
         <sup>4</sup>Off Balance: Creature is effectively flat-footed and can only use passive DeC.<br/>
     </p>
     <?php
-    mysqli_close($dbc);
 }
 
 function show_weather() {
     global $db_server, $db_user, $db_password, $db_name;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name)
-            or die("Error connecting to database.");
+    $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM weather";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
+    $result = $db->query($query);
     ?>
     <table>
         <caption>Random Weather</caption>
@@ -391,7 +362,7 @@ function show_weather() {
         </tr></thead>
         <tbody>
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td style="text-align:center">' . $row['Roll'] . '</td>';
         echo '<td>' . $row['Weather'] . '</td>';
@@ -422,6 +393,5 @@ function show_weather() {
     </p>
 
     <?php
-    mysqli_close($dbc);
 }
 ?>
