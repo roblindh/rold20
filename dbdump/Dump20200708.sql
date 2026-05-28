@@ -4,6 +4,8 @@
 -- ------------------------------------------------------
 -- Server version	10.4.11-MariaDB
 
+USE rold20sphider;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -700,6 +702,8 @@ UNLOCK TABLES;
 -- Host: 127.0.0.1    Database: rold20rules
 -- ------------------------------------------------------
 -- Server version	10.4.11-MariaDB
+
+USE rold20rules;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -3081,6 +3085,8 @@ UNLOCK TABLES;
 -- Host: 127.0.0.1    Database: rold20campaign
 -- ------------------------------------------------------
 -- Server version	10.4.11-MariaDB
+
+USE rold20campaign;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;

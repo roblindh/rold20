@@ -16,11 +16,12 @@ if ($row = $result->fetch()) {
 //    echo $insert . "<br/>";
     $result = $db->query($insert);
     for ($i = 1, $templatestr = ""; isset($_REQUEST["template" . $i]); $i++)
-        $templatestr .= $_REQUEST["template" . $i] . ";";
+        $templatestr .= (empty($templatestr) ? "" : ";") . $_REQUEST["template" . $i];
     for ($i = 1, $classstr = ""; isset($_REQUEST["class" . $i]); $i++)
-        $classstr .= $_REQUEST["class" . $i] . ";";
+        $classstr .= (empty($classstr) ? "" : ";") . $_REQUEST["class" . $i];
     $update = "UPDATE characters SET " .
             (isset($_REQUEST["campaign"]) ? ("Campaign=" . $_REQUEST["campaign"] . ", ") : "") .
+            (isset($_REQUEST["player"]) ? ("Player=" . $_REQUEST["player"] . ", ") : "") .
             (isset($_REQUEST["str"]) ? ("BaseStr=" . $_REQUEST["str"] . ", ") : "") .
             (isset($_REQUEST["con"]) ? ("BaseCon=" . $_REQUEST["con"] . ", ") : "") .
             (isset($_REQUEST["dex"]) ? ("BaseDex=" . $_REQUEST["dex"] . ", ") : "") .
@@ -28,12 +29,12 @@ if ($row = $result->fetch()) {
             (isset($_REQUEST["wis"]) ? ("BaseWis=" . $_REQUEST["wis"] . ", ") : "") .
             (isset($_REQUEST["cha"]) ? ("BaseCha=" . $_REQUEST["cha"] . ", ") : "") .
             (isset($_REQUEST["race"]) ? ("BaseRace=" . $_REQUEST["race"] . ", ") : "") .
-            "Templates='" . $templatestr . "', " .
+            (empty($templatestr) ? "" : "Templates='" . $templatestr . "', ") .
             (isset($_REQUEST["gender"]) ? ("Gender=" . $_REQUEST["gender"] . ", ") : "") .
             (isset($_REQUEST["culture"]) ? ("Culture=" . $_REQUEST["culture"] . ", ") : "") .
             (isset($_REQUEST["bgclass"]) ? ("BackgndClass=" . $_REQUEST["bgclass"] . ", ") : "") .
             (isset($_REQUEST["exppts"]) ? ("ExperiencePts=" . $_REQUEST["exppts"] . ", ") : "") .
-            "Classes='" . $classstr . "', " .
+            (empty($classstr) ? "" : "Classes='" . $classstr . "', ") .
             "FatePts=3, " .
             (isset($_REQUEST["age"]) ? ("MentalAge=" . $_REQUEST["age"] . ", ") : "") .
             (isset($_REQUEST["age"]) ? ("PhysicalAge=" . $_REQUEST["age"] . ", ") : "") .
@@ -52,7 +53,13 @@ if ($row = $result->fetch()) {
             (isset($_REQUEST["contacts"]) ? ("Contacts='" . $_REQUEST["contacts"] . "' ") : "") .
             "WHERE (Name='" . $_REQUEST["name"] . "')";
 //    echo $update . "<br/>";
-    $result = $db->query($update);
+    $result = mysqli_query($dbc, $update)
+            or die("Error updating character with basic data.");
+    $query = "SELECT ID FROM characters WHERE Name='" . $_REQUEST["name"] . "'";
+    $result = mysqli_query($dbc, $query)
+            or die("Error retrieving generated character ID.");
+    if ($row = mysqli_fetch_array($result))
+        echo '<input type="hidden" name="CharID" value="' . $row['ID'] . '">';
     echo 'Character entry created...';
     echo '<input type="hidden" name="SaveBasicsResult" value="OK">';
 }

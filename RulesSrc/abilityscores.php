@@ -14,12 +14,12 @@ class cAbilityScores {
     public $Scores = array(10, 10, 10, 10, 10, 10);
 
     public function __construct($Str, $Con, $Dex, $Int, $Wis, $Cha) {
-        $Scores[A_STR] = $Str;
-        $Scores[A_CON] = $Con;
-        $Scores[A_DEX] = $Dex;
-        $Scores[A_INT] = $Int;
-        $Scores[A_WIS] = $Wis;
-        $Scores[A_CHA] = $Cha;
+        $this->Scores[A_STR] = $Str;
+        $this->Scores[A_CON] = $Con;
+        $this->Scores[A_DEX] = $Dex;
+        $this->Scores[A_INT] = $Int;
+        $this->Scores[A_WIS] = $Wis;
+        $this->Scores[A_CHA] = $Cha;
     }
 
     public function Str() {

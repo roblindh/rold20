@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 define("ITEM_STOWED", 0);
 define("ITEM_CARRIED", 1);
@@ -18,7 +17,8 @@ class cEntity {
         $this->Reset();
     }
 
-    public function Reset(): void {
+    public function Reset() {
+        $this->Name = "";
         $this->BaseAbilities = new cAbilityScores(10, 10, 10, 10, 10, 10);
 
         $this->SizeAdjust = 0;
@@ -28,11 +28,11 @@ class cEntity {
         $this->ConditionStr = "";
     }
 
-    public function GetBaseAbility(int $id): mixed {
+    public function GetBaseAbility($id) {
         return $this->BaseAbilities->Scores[$id];
     }
 
-    public function GetAdjustedAbility(int $id): ?int {
+    public function GetAdjustedAbility($id) {
         global $_APP;
 
         $adjAbil = $this->GetBaseAbility($id);
@@ -41,7 +41,7 @@ class cEntity {
         return $adjAbil;
     }
 
-    public function GetAbility(int $id): int {
+    public function GetAbility($id) {
         $abil = $this->GetAdjustedAbility($id);
 
         if ($abil != NULL) {
@@ -52,7 +52,7 @@ class cEntity {
         return (int) $abil;
     }
 
-    public function GetAbilMod(int $id): int {
+    public function GetAbilMod($id) {
         global $_APP;
 
         $abilmod = AbilMod($this->GetAbility($id));
@@ -62,18 +62,18 @@ class cEntity {
         return $abilmod;
     }
 
-    public function GetHPTotal(): int {
+    public function GetHPTotal() {
         $hp = ($this->GetAbility(A_CON) == NULL) ? 10 : $this->GetAbility(A_CON);
         $hp += ($this->TraitEffects->ModsHP != NULL) ? $this->TraitEffects->ModsHP->Total() : 0;
 
         return (int) $hp;
     }
 
-    public function GetHPCurrent(): int {
+    public function GetHPCurrent() {
         return $this->GetHPTotal() - $this->Conditions->HPDamage + $this->Conditions->HPTemp;
     }
 
-    public function GetSPTotal(): int {
+    public function GetSPTotal() {
         $sp = 0;
 
         if ($this->GetAbility(A_CON) != NULL) {
@@ -84,11 +84,11 @@ class cEntity {
         return (int) $sp;
     }
 
-    public function GetSPCurrent(): int {
+    public function GetSPCurrent() {
         return $this->GetSPTotal() - $this->Conditions->SPDamage + $this->Conditions->SPTemp;
     }
 
-    public function GetPPTotal(): int {
+    public function GetPPTotal() {
         $pp = 0;
 
         if ($this->GetAbility(A_WIS) != NULL) {
@@ -99,11 +99,11 @@ class cEntity {
         return (int) $pp;
     }
 
-    public function GetPPCurrent(): int {
+    public function GetPPCurrent() {
         return $this->GetPPTotal() - $this->Conditions->PPDamage + $this->Conditions->PPTemp;
     }
 
-    public function GetDeCPassive(): int {
+    public function GetDeCPassive() {
         global $_APP;
         $dec = 10;
 
@@ -116,7 +116,7 @@ class cEntity {
         return (int) $dec;
     }
 
-    public function GetDeCActive(): int {
+    public function GetDeCActive() {
         global $_APP;
         $dec = $this->GetDeCPassive();
 
@@ -127,7 +127,7 @@ class cEntity {
         return (int) $dec;
     }
 
-    public function GetFort(): mixed {
+    public function GetFort() {
         if ($this->GetAbility(A_CON) == NULL)
             return 999;
         else
@@ -135,7 +135,7 @@ class cEntity {
                     (($this->TraitEffects->ModsFort != NULL) ? $this->TraitEffects->ModsFort->Total() : 0));
     }
 
-    public function GetRef(): int {
+    public function GetRef() {
         if ($this->GetAbility(A_DEX) == NULL)
             return 0;
         else
@@ -143,7 +143,7 @@ class cEntity {
                     (($this->TraitEffects->ModsRef != NULL) ? $this->TraitEffects->ModsRef->Total() : 0));
     }
 
-    public function GetWill(): int {
+    public function GetWill() {
         if ($this->GetAbility(A_INT) == NULL)
             return 999;
         else
@@ -151,39 +151,39 @@ class cEntity {
                     (($this->TraitEffects->ModsWill != NULL) ? $this->TraitEffects->ModsWill->Total() : 0));
     }
 
-    public function GetDR(): int {
+    public function GetDR() {
         $dr = ($this->TraitEffects->ModsDR != NULL) ? $this->TraitEffects->ModsDR->Total() : 0;
 
         return (int) $dr;
     }
 
-    public function GetCritRes(): int {
+    public function GetCritRes() {
         return ($this->GetDR() + $this->TraitEffects->CritRes);
     }
 
-    public function GetMR(): int {
+    public function GetMR() {
         $mr = ($this->TraitEffects->ModsMR != NULL) ? $this->TraitEffects->ModsMR->Total() : 0;
 
         return (int) $mr;
     }
 
-    public function GetEnergyRes(int $type): mixed {
+    public function GetEnergyRes($type) {
         return ($this->TraitEffects->EnergyRes[$type]);
     }
 
-    public function GetInitMod(): int {
+    public function GetInitMod() {
         return (int) ($this->GetAbilMod(A_DEX) + $this->TraitEffects->ModsInit->Total());
     }
 
-    public function GetRacialLevel(): int {
+    public function GetRacialLevel() {
         return 0;
     }
 
-    public function GetTotalLevel(): int {
+    public function GetTotalLevel() {
         return 0;
     }
 
-    public function GetPowerLevel(): int {
+    public function GetPowerLevel() {
         // TODO: PL should not always equal TL
         return $this->GetTotalLevel();
     }
@@ -192,25 +192,25 @@ class cEntity {
         return 0;
     }
 
-    public function GetBaseSize(): int {
+    public function GetBaseSize() {
         return 0;
     }
 
-    public function GetAdjustedSize(): int {
+    public function GetAdjustedSize() {
         return $this->GetBaseSize();
     }
 
-    public function GetCurrentSize(): int {
+    public function GetCurrentSize() {
         return (int) ($this->GetAdjustedSize() + $this->SizeAdjust);
     }
 
-    public function GetSpacing(): mixed {
+    public function GetSpacing() {
         global $_APP;
 
         return $_APP['sizecats'][$this->GetCurrentSize()]['Space'];
     }
 
-    public function GetReach(): mixed {
+    public function GetReach() {
         global $_APP;
 
         // TODO: Adjust for weapons or keep this as base reach?
@@ -218,21 +218,21 @@ class cEntity {
                 ($this->GetCurrentSize() > 0 ? $_APP['bodycats'][$this->GetBodyType()]['ReachMod'] : 0);
     }
 
-    public function GetGroundSpeed(): int {
+    public function GetGroundSpeed() {
         return 0;
     }
 
-    public function GetSwimSpeed(): int {
+    public function GetSwimSpeed() {
         return 0;
     }
 
-    public function GetFlySpeed(): int {
+    public function GetFlySpeed() {
         return 0;
     }
 
     // TODO: Add methods for loading from and saving to database
 
-    public function UpdateState(): void {
+    public function UpdateState() {
         global $_APP;
 
         $this->TraitEffects->Reset();
@@ -249,6 +249,9 @@ class cEntity {
 }
 
 class cIndividual extends cEntity {
+
+    public $CampaignID;
+    public $PlayerID;
 
     public $BaseRace;
     public $CurrentRace;
@@ -269,7 +272,7 @@ class cIndividual extends cEntity {
     public $WeightFactor;
     public $lSkillLevels;
     public $lSpecLevels;
-    private $lSpclActions;
+    public $lSpclActions;
     public $lSpells;
     public $SocialClass;
     public $WealthClass;
@@ -294,13 +297,17 @@ class cIndividual extends cEntity {
     public $History;
     public $CharTraits;
     public $InherentMods;
+    public $ImprovementMods;
 
     public function __construct() {
         $this->Reset();
     }
 
-    public function Reset(): void {
+    public function Reset() {
         parent::Reset();
+
+        $this->CampaignID = NULL;
+        $this->PlayerID = NULL;
 
         $this->BaseRace = NULL;
         $this->CurrentRace = NULL;
@@ -353,9 +360,99 @@ class cIndividual extends cEntity {
 
         $this->CharTraits = "";
         $this->InherentMods = "";
+        $this->ImprovementMods = "";
     }
 
-    public function GetAdjustedAbility(int $id): ?int {
+    public function LoadFromDatabase($id) {
+        global $_APP;
+        global $db_server, $db_user, $db_password, $db_name_campaign;
+
+        $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
+                or die("Error connecting to database.");
+
+        $this->Reset();
+
+        $query = "SELECT * FROM characters WHERE ID=" . $id;
+        $result = mysqli_query($dbc, $query)
+                or die("Error querying database.");
+        if ($row = mysqli_fetch_array($result)) {
+            $this->Name = $row['Name'];
+            $this->BaseAbilities = new cAbilityScores(
+                    $row['BaseStr'], $row['BaseCon'], $row['BaseDex'],
+                    $row['BaseInt'], $row['BaseWis'], $row['BaseCha']);
+            $this->CampaignID = $row['Campaign'];
+            $this->PlayerID = $row['Player'];
+            $this->BaseRace = $this->CurrentRace = $row['BaseRace'];
+            if ($row['Templates']) {
+                $this->lTemplates = explode(";", $row['Templates']);
+                $this->lTemplates = array_map('intval', $this->lTemplates);
+            }
+            $this->Gender = $row['Gender'];
+            $this->SizeAdjust = $row['SizeAdjust'];
+            $this->Culture = $row['Culture'];
+            $this->OverrideRacialClass = $row['BackgndClass'];
+            $this->XP = $row['ExperiencePts'];
+            $this->RacialLevelMod = $row['RLMod'];
+            if ($row['Classes']) {
+                $this->lClassLevels = explode(";", $row['Classes']);
+                $this->lClassLevels = array_map('intval', $this->lClassLevels);
+            }
+            $this->ImprovementPts = $row['ImprovementPts'];
+            $this->FatePts = $row['FatePts'];
+            if ($row['Improvements']) {
+                $improvements = explode(";", $row['Improvements']);
+                foreach ($improvements as $improvement) {
+                    $value = signedstr(substr($improvement, strpos($improvement, "=") + 1));
+                    if ($improvement[0] == 'I') {
+                        $str = $_APP['improvementtraits'][intval(substr($improvement, 1))]['Trait'] . ' ';
+                        $this->ImprovementMods .= str_replace("}", "Value=" . $value . "; }", $str);
+                    } else if ($improvement[0] == 'S') {
+                        $this->ImprovementMods .= "SklMod { Qual=" .
+                                $_APP['skills'][intval(substr($improvement, 1))]['Name'] .
+                                '; Type=imp; Value=' . $value . '; } ';
+                    }
+                }
+            }
+            $this->MentalAge = $row['MentalAge'];
+            $this->PhysicalAge = $row['PhysicalAge'];
+            $this->HeightFactor = $row['HeightFactor'];
+            $this->WeightFactor = $row['WeightFactor'];
+            if ($row['Skills']) {
+                $skills = explode(";", $row['Skills']);
+                foreach ($skills as $skill) {
+                    $value = intval(substr($skill, strpos($skill, "=") + 1));
+                    $this->lSkillLevels[intval($skill)] = $value;
+                }
+            }
+            if ($row['Specializations']) {
+                $specs = explode(";", $row['Specializations']);
+                foreach ($specs as $spec) {
+                    $value = intval(substr($spec, strpos($spec, "=") + 1));
+                    $this->lSpecLevels[intval($spec)] = $value;
+                }
+            }
+            if ($row['Spells']) {
+                // Spells
+            }
+            $this->SocialClass = $row['SC'];
+            $this->WealthClass = $row['WC'];
+            // Influence points used
+            $this->InfluencesStr = $row['InfluenceDesc'];
+            $this->ReputationStr = $row['ReputationDesc'];
+            $this->Gold = $row['Wealth'];
+            // Equipment
+            $this->Appearance = $row['Appearance'];
+            $this->Personality = $row['Personality'];
+            $this->History = $row['History'];
+            // Family
+            // Contacts
+            // Traits
+        }
+
+        mysqli_close($dbc);
+    }
+
+    public function GetAdjustedAbility($id) {
         global $_APP;
         $creature = $_APP['creatures'][$this->CurrentRace];
 
@@ -406,7 +503,7 @@ class cIndividual extends cEntity {
         return $adjAbil;
     }
 
-    public function GetHPTotal(): int {
+    public function GetHPTotal() {
         global $_APP;
 
         $hp = parent::GetHPTotal();
@@ -419,7 +516,7 @@ class cIndividual extends cEntity {
         return (int) $hp;
     }
 
-    public function GetSPTotal(): int {
+    public function GetSPTotal() {
         global $_APP;
 
         $sp = parent::GetSPTotal();
@@ -433,7 +530,7 @@ class cIndividual extends cEntity {
         return (int) $sp;
     }
 
-    public function GetPPTotal(): int {
+    public function GetPPTotal() {
         global $_APP;
 
         $pp = parent::GetPPTotal();
@@ -447,7 +544,7 @@ class cIndividual extends cEntity {
         return (int) $pp;
     }
 
-    public function GetDR(): int {
+    public function GetDR() {
         global $_APP;
 
         $dr = $_APP['creatures'][$this->CurrentRace]['DR'];
@@ -462,7 +559,7 @@ class cIndividual extends cEntity {
         return max((int) $dr, 0);
     }
 
-    public function GetMR(): int {
+    public function GetMR() {
         global $_APP;
 
         $mr = $_APP['creatures'][$this->BaseRace]['MR'];
@@ -474,11 +571,53 @@ class cIndividual extends cEntity {
         return max((int) $mr, 0);
     }
 
-    public function GetEnergyRes(int $type): mixed {
+    public function GetEnergyRes($type) {
         return ($this->TraitEffects->EnergyRes[$type]);
     }
 
-    public function GetBestAttMod(): int {
+    public function GetResistancesStr() {
+        $str = "";
+
+        $res = $this->GetEnergyRes(ENERGY_ACID);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Acid imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Acid res " . $res;
+        $res = $this->GetEnergyRes(ENERGY_COLD);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Cold imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Cold res " . $res;
+        $res = $this->GetEnergyRes(ENERGY_ELEC);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Elec imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Elec res " . $res;
+        $res = $this->GetEnergyRes(ENERGY_FIRE);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Fire imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Fire res " . $res;
+        $res = $this->GetEnergyRes(ENERGY_NECRO);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Necro imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Necro res " . $res;
+        $res = $this->GetEnergyRes(ENERGY_RADIANT);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Radiant imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Radiant res " . $res;
+        $res = $this->GetEnergyRes(ENERGY_SONIC);
+        if ($res >= 999)
+            $str .= (empty($str) ? "" : ", ") . "Sonic imm";
+        else if ($res > 0)
+            $str .= (empty($str) ? "" : ", ") . "Sonic res " . $res;
+
+        return $str;
+    }
+
+    public function GetBestAttMod() {
         $attMod = 0;
 
         foreach ($this->TraitEffects->ModsWeapAtt as $iWeapAtt) {
@@ -502,7 +641,7 @@ class cIndividual extends cEntity {
         $mod -= (int) max($multiPen - $this->TraitEffects->MultiAttackPenRed, 0);
 
         foreach ($aWeaponCats as $idx => $iCat) {
-            if (strpos((string)$attStats->WeaponCats, $iCat) !== FALSE)
+            if (strpos($attStats->WeaponCats, $iCat) !== FALSE)
                 $skillMod = max($skillMod, $this->TraitEffects->ModsWeapAtt[$idx]->Total());
         }
         $mod += $skillMod;
@@ -516,7 +655,7 @@ class cIndividual extends cEntity {
         $skillMod = 0;
 
         foreach ($aWeaponCats as $idx => $iCat) {
-            if (strpos((string)$attStats->WeaponCats, $iCat) !== FALSE)
+            if (strpos($attStats->WeaponCats, $iCat) !== FALSE)
                 $skillMod = max($skillMod, $this->TraitEffects->ModsWeapAttSpd[$idx]->Total());
         }
 
@@ -529,7 +668,7 @@ class cIndividual extends cEntity {
         $skillMod = 0;
 
         foreach ($aWeaponCats as $idx => $iCat) {
-            if (strpos((string)$attStats->WeaponCats, $iCat) !== FALSE)
+            if (strpos($attStats->WeaponCats, $iCat) !== FALSE)
                 $skillMod = max($skillMod, $this->TraitEffects->ModsWeapCrit[$idx]->Total());
         }
 
@@ -546,15 +685,15 @@ class cIndividual extends cEntity {
         return $cnt;
     }
 
-    public function SetBaseRace(int $id): void {
+    public function SetBaseRace($id) {
         $this->BaseRace = $id;
     }
 
-    public function SetCurrentRace(int $id): void {
+    public function SetCurrentRace($id) {
         $this->CurrentRace = $id;
     }
 
-    public function GetCreatureGroup(): mixed {
+    public function GetCreatureGroup() {
         global $_APP;
 
         $group = cCreature::GetCreatureGroup($this->BaseRace);
@@ -568,7 +707,7 @@ class cIndividual extends cEntity {
         return $group;
     }
 
-    public function GetCreatureType(): mixed {
+    public function GetCreatureType() {
         global $_APP;
 
         $type = cCreature::GetCreatureType($this->BaseRace);
@@ -586,21 +725,36 @@ class cIndividual extends cEntity {
         return cCreature::GetBodyType($this->CurrentRace);
     }
 
-    public function GetRaceStr(): string {
+    public function GetRaceStr($show_templates) {
         global $_APP;
         $str = "";
 
-        if (cCreature::HasGenders($this->BaseRace) && $this->Gender > 0)
+        if ($this->BaseRace && $this->BaseRace > 0 && cCreature::HasGenders($this->BaseRace) && $this->Gender > 0)
             $str .= $_APP['genders'][$this->Gender]['Name'] . " ";
-        foreach ($this->lTemplates as $iTemplate) {
-            $str .= $_APP['templates'][$iTemplate]['NameInformal'] . " ";
+        if ($show_templates) {
+            foreach ($this->lTemplates as $iTemplate) {
+                $str .= $_APP['templates'][$iTemplate]['NameInformal'] . " ";
+            }
         }
-        $str .= $_APP['creatures'][$this->BaseRace]['NameInformal'];
+        if ($this->BaseRace && $this->BaseRace > 0) {
+            $str .= $_APP['creatures'][$this->BaseRace]['NameInformal'];
+        }
 
         return $str;
     }
 
-    public function GetRacialClass(): mixed {
+    public function GetTemplateStr() {
+        global $_APP;
+        $str = "";
+
+        foreach ($this->lTemplates as $iTemplate) {
+            $str .= $_APP['templates'][$iTemplate]['NameInformal'] . " ";
+        }
+
+        return $str;
+    }
+
+    public function GetRacialClass() {
         global $_APP;
         $class = 15;
 
@@ -612,7 +766,7 @@ class cIndividual extends cEntity {
         return $class;
     }
 
-    public function GetRacialLevel(): int {
+    public function GetRacialLevel() {
         global $_APP;
 
         $rl = $_APP['creatures'][$this->BaseRace]['BaseRL'];
@@ -629,7 +783,7 @@ class cIndividual extends cEntity {
         return (int) $rl;
     }
 
-    public function GetClassLevel(int $class): int {
+    public function GetClassLevel($class) {
         global $_APP;
         $lvl = 0;
 
@@ -641,15 +795,16 @@ class cIndividual extends cEntity {
         return $lvl;
     }
 
-    public function GetTotalLevel(): int {
+    public function GetTotalLevel() {
         return $this->GetRacialLevel() + count($this->lClassLevels);
     }
 
-    public function GetChallengeLevel(): int {
+    public function GetChallengeLevel() {
         global $_APP;
 
         $cl = $this->GetTotalLevel() + $_APP['creatures'][$this->BaseRace]['CLModifier'] +
-                $_APP['socialclasses'][$this->SocialClass]['CLMod'] + $this->SizeAdjust;
+                ($this->SocialClass ? $_APP['socialclasses'][$this->SocialClass]['CLMod'] : 0) +
+                $this->SizeAdjust;
         foreach ($this->lTemplates as $iTemplate) {
             $cl += $_APP['templates'][$iTemplate]['CLModifier'];
         }
@@ -657,26 +812,29 @@ class cIndividual extends cEntity {
         return (int) $cl;
     }
 
-    public function GetPowerLevel(): int {
+    public function GetPowerLevel() {
         // TODO: PL should not always equal TL
         return $this->GetTotalLevel();
     }
 
-    public function IsLevelUp(): bool {
+    public function IsLevelUp() {
         // Really include social class CLMod in Challenge Level here?
         return (cIndividual::GetXPLevel($this->XP) > $this->GetChallengeLevel());
     }
 
-    public function GetActionPts(): int {
+    public function GetActionPts() {
         return 10 + $this->GetTotalLevel();
     }
 
-    public function GetClassStr(): string {
+    public function GetReactions() {
+        return (int) ($this->GetActionPts() / 10);
+    }
+
+    public function GetClassStr() {
         global $_APP;
         $str = "";
 
-        foreach ($_APP['classes'] ?? [] as $iClass) {
-            if (!is_array($iClass)) continue;
+        foreach ($_APP['classes'] as $iClass) {
             $classLvl = $this->GetClassLevel($iClass['ID']);
             if ($classLvl > 0)
                 $str .= (strlen($str) > 0 ? "/" : "") . $iClass['Abbreviation'] . $classLvl;
@@ -685,7 +843,7 @@ class cIndividual extends cEntity {
         return $str;
     }
 
-    public function GetBaseSize(): int {
+    public function GetBaseSize() {
         global $_APP;
 
         $basesize = $_APP['creatures'][$this->CurrentRace]['SizeClass'];
@@ -697,7 +855,7 @@ class cIndividual extends cEntity {
         return $basesize;
     }
 
-    public function GetAdjustedSize(): int {
+    public function GetAdjustedSize() {
         global $_APP;
         $creature = $_APP['creatures'][$this->CurrentRace];
         $baseSize = $this->GetBaseSize();
@@ -714,7 +872,7 @@ class cIndividual extends cEntity {
         return $baseSize;
     }
 
-    public function GetGroundSpeed(): int {
+    public function GetGroundSpeed() {
         global $_APP;
         $spd = 0;
 
@@ -731,7 +889,7 @@ class cIndividual extends cEntity {
         return (int) $spd;
     }
 
-    public function GetSwimSpeed(): int {
+    public function GetSwimSpeed() {
         global $_APP;
         $spd = 0;
 
@@ -748,7 +906,7 @@ class cIndividual extends cEntity {
         return (int) $spd;
     }
 
-    public function GetFlySpeed(): int {
+    public function GetFlySpeed() {
         global $_APP;
         $spd = 0;
 
@@ -765,7 +923,25 @@ class cIndividual extends cEntity {
         return (int) $spd;
     }
 
-    public function GetPhysicalAgeCat(): int {
+    public function GetSpeedStr() {
+        $str = "";
+
+        $str = $this->GetGroundSpeed();
+        if ($this->TraitEffects->ClimbSpeed > 0 && $this->TraitEffects->ClimbSpeed < 999)
+            $str .= " (Climb &times;" . $this->TraitEffects->ClimbSpeed . " MP)";
+        if ($this->TraitEffects->SwimSpeed > 0 && $this->TraitEffects->SwimSpeed < 999 && !($this->GetSwimSpeed() > 0))
+            $str .= " (Swim &times;" . $this->TraitEffects->SwimSpeed . " MP)";
+        if ($this->TraitEffects->BurrowSpeed > 0 && $this->TraitEffects->BurrowSpeed < 999)
+            $str .= " (Burrow &times;" . $this->TraitEffects->BurrowSpeed . " MP)";
+        if ($this->GetSwimSpeed() > 0)
+            $str .= ", Swim " . $this->GetSwimSpeed();
+        if ($this->GetFlySpeed() > 0)
+            $str .= ", Fly " . $this->GetFlySpeed();
+
+        return $str;
+    }
+
+    public function GetPhysicalAgeCat() {
         global $_APP;
 
         if ($this->PhysicalAge < (0.5 * $_APP['creatures'][$this->BaseRace]['AdultAge']))
@@ -782,7 +958,7 @@ class cIndividual extends cEntity {
             return 6;
     }
 
-    public function GetMentalAgeCat(): int {
+    public function GetMentalAgeCat() {
         global $_APP;
 
         if ($this->MentalAge < (0.5 * $_APP['creatures'][$this->BaseRace]['AdultAge']))
@@ -799,7 +975,7 @@ class cIndividual extends cEntity {
             return 6;
     }
 
-    public function GetTotalInfl(): int {
+    public function GetTotalInfl() {
         global $_APP;
         $infl = 0;
 
@@ -812,28 +988,28 @@ class cIndividual extends cEntity {
             $infl += ($this->TraitEffects->ModsInfl != NULL) ? $this->TraitEffects->ModsInfl->Total() : 0;
         }
 
-        return (int) $sp;
+        return (int) $infl;
     }
 
-    public function GetCurrentInfl(): int {
+    public function GetCurrentInfl() {
         return $this->GetTotalInfl() - $this->InflUsed;
     }
 
-    public function GetReputation(): int {
+    public function GetReputation() {
         return $this->GetTotalLevel() + $this->SocialClass + $this->WealthClass;
     }
 
-    public function GetSkillLevel(int $id): int {
+    public function GetSkillLevel($id) {
         return (int) ((isset($this->lSkillLevels[$id]) ? $this->lSkillLevels[$id] : 0) +
                 (isset($this->TraitEffects->aModsSkills[$id]) ? $this->TraitEffects->aModsSkills[$id]->Total() : 0));
     }
 
-    public function GetSpecLevel(int $id): int {
+    public function GetSpecLevel($id) {
         return (int) ((isset($this->lSpecLevels[$id]) ? $this->lSpecLevels[$id] : 0) +
                 (isset($this->TraitEffects->aModsSpecs[$id]) ? $this->TraitEffects->aModsSpecs[$id]->Total() : 0));
     }
 
-    public function GetEquipmentWeight(int $config): int {
+    public function GetEquipmentWeight($config) {
         global $_APP;
         $totWeight = 0;
 
@@ -848,10 +1024,10 @@ class cIndividual extends cEntity {
             }
         }
 
-        return (int)$totWeight;
+        return $totWeight;
     }
 
-    public function GetEquipmentEC(int $config): int {
+    public function GetEquipmentEC($config) {
         global $_APP;
         global $aWeaponCats;
         global $aArmorCats;
@@ -864,7 +1040,7 @@ class cIndividual extends cEntity {
                         case 2: // Weapons
                             $ECRed = 0;
                             foreach ($aWeaponCats as $idx => $iCat) {
-                                if (strpos((string)$iPossession->TraitEffects->WeaponStats->WeaponCats, $iCat) !== FALSE)
+                                if (strpos($iPossession->TraitEffects->WeaponStats->WeaponCats, $iCat) !== FALSE)
                                     $ECRed = max($ECRed, $this->TraitEffects->ModsWeapEC[$idx]->Total());
                             }
                             $totEC += $iPossession->Quantity * max($iPossession->GetECMod() - $ECRed, 0);
@@ -872,7 +1048,7 @@ class cIndividual extends cEntity {
                         case 3: // Armor
                             $ECRed = 0;
                             foreach ($aArmorCats as $idx => $iCat) {
-                                if (strpos((string)$iPossession->TraitEffects->ArmorStats->ArmorCats, $iCat) !== FALSE)
+                                if (strpos($iPossession->TraitEffects->ArmorStats->ArmorCats, $iCat) !== FALSE)
                                     $ECRed = max($ECRed, $this->TraitEffects->ModsArmorEC[$idx]->Total());
                             }
                             $totEC += $iPossession->Quantity * max($iPossession->GetECMod() - $ECRed, 0);
@@ -888,7 +1064,7 @@ class cIndividual extends cEntity {
         return (int) $totEC;
     }
 
-    public function GetWeightEC(int $config): int {
+    public function GetWeightEC($config) {
         global $_APP;
         $curStr = $this->GetAbility(A_STR);
 
@@ -916,18 +1092,18 @@ class cIndividual extends cEntity {
         return (int) $iEC;
     }
 
-    public function GetEncumbranceClass(int $config): int {
+    public function GetEncumbranceClass($config) {
         return max($this->GetEquipmentEC($config), $this->GetWeightEC($config)) +
                 ($this->TraitEffects->ModsEC ? $this->TraitEffects->ModsEC->Total() : 0);
     }
 
-    public function GetEncumbrancePenalty(int $config): mixed {
+    public function GetEncumbrancePenalty($config) {
         global $_APP;
 
         return $_APP['encumbrance'][$this->GetEncumbranceClass($config)]['EP'];
     }
 
-    public function GetHitProbNormal(int $attMod, int $dec, int $critRange): float {
+    public function GetHitProbNormal($attMod, $dec, $critRange) {
         if ($dec <= $attMod)
             return (1 + $attMod - $dec) / (20 * 20) + (18 - max($critRange, $attMod - $dec)) / 20;
         if ($dec <= $attMod + 20)
@@ -935,7 +1111,7 @@ class cIndividual extends cEntity {
         return (1 + $critRange) * (40 + $attMod - $dec) / (20 * 20);
     }
 
-    public function GetHitProbCrit(int $attMod, int $dec, int $critRange): float {
+    public function GetHitProbCrit($attMod, $dec, $critRange) {
         if ($dec <= $attMod)
             return (1 + max($critRange, $attMod - $dec)) / 20;
         if ($dec <= $attMod + 20)
@@ -943,7 +1119,7 @@ class cIndividual extends cEntity {
         return 0;
     }
 
-    public function GetAverageDamage(object $parser, string $dmgStr, string $weaponCats, int $modDie): float {
+    public function GetAverageDamage($parser, $dmgStr, $weaponCats, $modDie) {
         global $aWeaponCats;
         $dieStr = $dmgStr;
         $modStr = "";
@@ -991,8 +1167,8 @@ class cIndividual extends cEntity {
                     ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
             $avgDmg = $this->GetAverageDamage($parser, $iAtt->Damage, $iAtt->WeaponCats, $this->GetCurrentSize() - $this->GetBaseSize()) +
                     ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
-            $hitProbNormal = $this->GetHitProbNormal((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
-            $hitProbCrit = $this->GetHitProbCrit((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
+            $hitProbNormal = $this->GetHitProbNormal($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
+            $hitProbCrit = $this->GetHitProbCrit($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
             $critMul = 2 + $iAtt->CritMul;
             $dmg += $avgDmg * ($hitProbNormal + $hitProbCrit * $critMul);
         }
@@ -1014,8 +1190,8 @@ class cIndividual extends cEntity {
                         $APBonus + ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
                 $avgDmg = $this->GetAverageDamage($parser, $iAtt->Damage, $iAtt->WeaponCats, $this->GetCurrentSize() - $this->GetBaseSize()) +
                         ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
-                $hitProbNormal = $this->GetHitProbNormal((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
-                $hitProbCrit = $this->GetHitProbCrit((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
+                $hitProbNormal = $this->GetHitProbNormal($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
+                $hitProbCrit = $this->GetHitProbCrit($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
                 $critMul = 2 + $iAtt->CritMul;
                 $dmg += $i * ($hitProbNormal * max(0, $avgDmg + $APBonus - ($dr * (1 - $hitProbNormal / 3))) +
                         $hitProbCrit * max(0, $avgDmg * $critMul + $APBonus - $dr / 2));
@@ -1057,8 +1233,8 @@ class cIndividual extends cEntity {
                         ($numWeaps == 1 && $sizeDiff >= 0 ? 2 : 0) + // Increased Str modifier for two-handed use
                         ($iWeap->TraitEffects->ModsDmg->Total() != 0 ? signedstr($iWeap->TraitEffects->ModsDmg->Total()) : 0) +
                         ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
-                $hitProbNormal = $this->GetHitProbNormal((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
-                $hitProbCrit = $this->GetHitProbCrit((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
+                $hitProbNormal = $this->GetHitProbNormal($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
+                $hitProbCrit = $this->GetHitProbCrit($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
                 $critMul = 2 + $iAtt->CritMul;
             } else {
                 $avgDmg = $this->GetAverageDamage($parser,
@@ -1066,10 +1242,10 @@ class cIndividual extends cEntity {
                                 $iAtt->WeaponCats, $iWeap->TraitEffects->DmgDice) + ((int) $iAtt->Damage) +
                         ($iWeap->TraitEffects->ModsDmg->Total() != 0 ? signedstr($iWeap->TraitEffects->ModsDmg->Total()) : 0) +
                         ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
-                $hitProbNormal = $this->GetHitProbNormal((int)$attMod, (int)$dec,
-                        (int)($this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt)));
-                $hitProbCrit = $this->GetHitProbCrit((int)$attMod, (int)$dec,
-                        (int)($this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt)));
+                $hitProbNormal = $this->GetHitProbNormal($attMod, $dec,
+                        $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt));
+                $hitProbCrit = $this->GetHitProbCrit($attMod, $dec,
+                        $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt));
                 $critMul = 2 + $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritMul;
             }
             $dmg += $avgDmg * ($hitProbNormal + $hitProbCrit * $critMul);
@@ -1099,8 +1275,8 @@ class cIndividual extends cEntity {
                             ($numWeaps == 1 && $sizeDiff >= 0 ? 2 : 0) + // Increased Str modifier for two-handed use
                             ($iWeap->TraitEffects->ModsDmg->Total() != 0 ? signedstr($iWeap->TraitEffects->ModsDmg->Total()) : 0) +
                             ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
-                    $hitProbNormal = $this->GetHitProbNormal((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
-                    $hitProbCrit = $this->GetHitProbCrit((int)$attMod, (int)$dec, (int)($iAtt->CritRng + $this->GetAttCritMod($iAtt)));
+                    $hitProbNormal = $this->GetHitProbNormal($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
+                    $hitProbCrit = $this->GetHitProbCrit($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
                     $critMul = 2 + $iAtt->CritMul;
                 } else {
                     $avgDmg = $this->GetAverageDamage($parser,
@@ -1108,10 +1284,10 @@ class cIndividual extends cEntity {
                                     $iAtt->WeaponCats, $iWeap->TraitEffects->DmgDice) + ((int) $iAtt->Damage) +
                             ($iWeap->TraitEffects->ModsDmg->Total() != 0 ? signedstr($iWeap->TraitEffects->ModsDmg->Total()) : 0) +
                             ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
-                    $hitProbNormal = $this->GetHitProbNormal((int)$attMod, (int)$dec,
-                            (int)($this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt)));
-                    $hitProbCrit = $this->GetHitProbCrit((int)$attMod, (int)$dec,
-                            (int)($this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt)));
+                    $hitProbNormal = $this->GetHitProbNormal($attMod, $dec,
+                            $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt));
+                    $hitProbCrit = $this->GetHitProbCrit($attMod, $dec,
+                            $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt));
                     $critMul = 2 + $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritMul;
                 }
                 $dmg += $i * ($hitProbNormal * max(0, $avgDmg + $APBonus - ($dr * (1 - $hitProbNormal / 3))) +
@@ -1237,7 +1413,7 @@ class cIndividual extends cEntity {
         return $dpr;
     }
 
-    public function UpdateState(): void {
+    public function UpdateState() {
         global $_APP;
         global $aWeaponCats;
         global $aArmorCats;
@@ -1248,40 +1424,41 @@ class cIndividual extends cEntity {
         $this->lNaturalAttacks = cCreature::ParseNaturalAttacks($_APP['creatures'][$this->CurrentRace]['NaturalAttacks']);
 
         // Creature type/group traits
-        $this->TraitEffects->ProcessTraits($_APP['creaturetypes'][$this->GetCreatureGroup()]['GroupTraits'] ?? null,
+        $this->TraitEffects->ProcessTraits($_APP['creaturetypes'][$this->GetCreatureGroup()]['GroupTraits'],
                 $this->GetRacialLevel(), $this);
-        $this->TraitEffects->ProcessTraits($_APP['creaturesubtypes'][$this->GetCreatureType()]['TypeTraits'] ?? null,
+        $this->TraitEffects->ProcessTraits($_APP['creaturesubtypes'][$this->GetCreatureType()]['TypeTraits'],
                 $this->GetRacialLevel(), $this);
         // Racial traits
-        $this->TraitEffects->ProcessTraits($_APP['creatures'][$this->BaseRace]['RacialTraits'] ?? null,
+        $this->TraitEffects->ProcessTraits($_APP['creatures'][$this->BaseRace]['RacialTraits'],
                 $this->GetRacialLevel(), $this);
         // Template traits
         foreach ($this->lTemplates as $iTemplate)
-            $this->TraitEffects->ProcessTraits($_APP['templates'][$iTemplate]['RacialTraits'] ?? null,
+            $this->TraitEffects->ProcessTraits($_APP['templates'][$iTemplate]['RacialTraits'],
                     $this->GetRacialLevel(), $this);
         // Cultural traits
         if ($this->Culture > 0)
-            $this->TraitEffects->ProcessTraits($_APP['cultures'][$this->Culture]['Traits'] ?? null,
+            $this->TraitEffects->ProcessTraits($_APP['cultures'][$this->Culture]['Traits'],
                     $this->GetRacialLevel(), $this);
 
         // Class traits of all classes
         foreach ($_APP['classes'] as $classID => $iClass) {
-            if (($lvl = $this->GetClassLevel((int)$classID)) > 0)
-                $this->TraitEffects->ProcessTraits($_APP['classes'][$classID]['ClassTraits'] ?? null, $lvl, $this);
+            if (($lvl = $this->GetClassLevel($classID)) > 0)
+                $this->TraitEffects->ProcessTraits($_APP['classes'][$classID]['ClassTraits'], $lvl, $this);
         }
 
         // Traits for all skills and skill levels
-        foreach ($_APP['skillbenefits'] ?? [] as $iBenefit) {
-            if (($lvl = $this->GetSkillLevel($iBenefit['Skill'] ?? 0)) >= ($iBenefit['SkillLevel'] ?? 0))
-                $this->TraitEffects->ProcessTraits($iBenefit['Traits'] ?? null, $lvl, $this);
+        foreach ($_APP['skillbenefits'] as $iBenefit) {
+            if (($lvl = $this->GetSkillLevel($iBenefit['Skill'])) >= $iBenefit['SkillLevel'])
+                $this->TraitEffects->ProcessTraits($iBenefit['Traits'], $lvl, $this);
         }
         // Traits for all skill specializations
-        foreach ($_APP['specializations'] ?? [] as $specID => $iSpec) {
-            if (($lvl = $this->GetSpecLevel((int)$specID)) > 0)
-                $this->TraitEffects->ProcessTraits($iSpec['Traits'] ?? null, $lvl, $this);
+        foreach ($_APP['specializations'] as $specID => $iSpec) {
+            if (($lvl = $this->GetSpecLevel($specID)) > 0)
+                $this->TraitEffects->ProcessTraits($iSpec['Traits'], $lvl, $this);
         }
 
         // Character-specific traits
+        $this->TraitEffects->ProcessTraits($this->ImprovementMods, $this->GetTotalLevel(), $this);
         $this->TraitEffects->ProcessTraits($this->CharTraits, $this->GetTotalLevel(), $this);
 
         // Always add parry modifiers for natural attacks
@@ -1296,17 +1473,17 @@ class cIndividual extends cEntity {
             $iPossession->UpdateState();
             switch ($iPossession->lLocation[$this->EquipConfig]) {
                 case ITEM_CARRIED:
-                    $this->TraitEffects->ProcessTraits($_APP['items'][$iPossession->Item]['Traits'] ?? null, $iPossession->GetPowerLevel(), $this);
+                    $this->TraitEffects->ProcessTraits($_APP['items'][$iPossession->Item]['Traits'], $iPossession->GetPowerLevel(), $this);
                     break;
                 case ITEM_EQUIPPED:
-                    $this->TraitEffects->ProcessTraits($_APP['items'][$iPossession->Item]['Traits'] ?? null, $iPossession->GetPowerLevel(), $this);
+                    $this->TraitEffects->ProcessTraits($_APP['items'][$iPossession->Item]['Traits'], $iPossession->GetPowerLevel(), $this);
                     // Check for equipped weapons and shields
                     if ($iPossession->GetItemType() == 2) {
                         if ($iPossession->TraitEffects->WeaponStats) {
                             $this->TraitEffects->ModsPar->SetMod(cModifiers::GetModId("Par"),
                                     $iPossession->TraitEffects->WeaponStats->ParMod + $iPossession->TraitEffects->ModsPar->Total());
                             foreach ($aWeaponCats as $idx2 => $iCat) {
-                                if (strpos((string)$iPossession->TraitEffects->WeaponStats->WeaponCats, $iCat) !== FALSE) {
+                                if (strpos($iPossession->TraitEffects->WeaponStats->WeaponCats, $iCat) !== FALSE) {
                                     $this->TraitEffects->ModsPar->SetMod(cModifiers::GetModId("Skl"),
                                             $this->TraitEffects->ModsWeapPar[$idx2]->Total());
                                 }
@@ -1328,7 +1505,7 @@ class cIndividual extends cEntity {
                     if ($iPossession->GetItemType() == 3 && $iPossession->TraitEffects->ArmorStats) {
                         $this->TraitEffects->ModsDR->SetMod(cModifiers::GetModId("Arm"), $iPossession->TraitEffects->ModsDR->Total());
                         foreach ($aArmorCats as $idx2 => $iCat) {
-                            if (strpos((string)$iPossession->TraitEffects->ArmorStats->ArmorCats, $iCat) !== FALSE) {
+                            if (strpos($iPossession->TraitEffects->ArmorStats->ArmorCats, $iCat) !== FALSE) {
                                 $this->TraitEffects->ModsPar->SetMod(cModifiers::GetModId("Arm"),
                                         $this->TraitEffects->ModsArmorDeC[$idx2]->Total());
                             }
@@ -1413,9 +1590,8 @@ class cIndividual extends cEntity {
         $parser->Evaluate("CHAMOD=" . $this->GetAbilMod(A_CHA));
 
         if (stripos($prereq, "Skl(") !== FALSE) {
-            foreach ($_APP['skills'] ?? [] as $iSkill)
-                if (!is_array($iSkill)) continue;
-                $prereq = str_replace("Skl(" . $iSkill['Abbreviation'] . ")", $this->GetSkillLevel((int)$iSkill['ID']), $prereq);
+            foreach ($_APP['skills'] as $iSkill)
+                $prereq = str_replace("Skl(" . $iSkill['Abbreviation'] . ")", $this->GetSkillLevel($iSkill['ID']), $prereq);
         }
 
         //TODO: Add more checks and string replacements
@@ -1439,7 +1615,7 @@ class cIndividual extends cEntity {
         $this->MentalAge = $this->PhysicalAge = 1.2 * $creature['AdultAge'];
         $aParams = explode(";", substr($configStr, $i + 1));
 
-        foreach ($aParams ?? [] as $iParam) {
+        foreach ($aParams as $iParam) {
             if (($i = strpos($iParam, "=")) === FALSE)
                 continue;
 
@@ -1482,7 +1658,7 @@ class cIndividual extends cEntity {
                     }
                     break;
                 case "BackgndClass":
-                    foreach ($_APP['classconfigs'] ?? [] as $iClassConfig) {
+                    foreach ($_APP['classconfigs'] as $iClassConfig) {
                         if ($iClassConfig['Name'] == trim(substr($iParam, $i + 1))) {
                             $this->OverrideRacialClass = $iClassConfig['ID'];
                             break;
@@ -1498,7 +1674,7 @@ class cIndividual extends cEntity {
                     break;
                 case "Shape":
                     $creature = trim(substr($iParam, $i + 1));
-                    foreach ($_APP['creatures'] ?? [] as $iCreature) {
+                    foreach ($_APP['creatures'] as $iCreature) {
                         if ($iCreature['Name'] == $creature || $iCreature['NameInformal'] == $creature) {
                             $this->SetCurrentRace($iCreature['ID']);
                             break;
@@ -1508,7 +1684,7 @@ class cIndividual extends cEntity {
                 case "Template":
                     $template = trim(substr($iParam, $i + 1));
                     if ($template != "None") {
-                        foreach ($_APP['templates'] ?? [] as $iTemplate) {
+                        foreach ($_APP['templates'] as $iTemplate) {
                             if ($iTemplate['Name'] == $template || $iTemplate['NameInformal'] == $template) {
                                 $this->lTemplates[] = $iTemplate['ID'];
                                 break;
@@ -1517,7 +1693,7 @@ class cIndividual extends cEntity {
                     }
                     break;
                 case "Culture":
-                    foreach ($_APP['cultures'] ?? [] as $iCulture) {
+                    foreach ($_APP['cultures'] as $iCulture) {
                         if ($iCulture['Name'] == trim(substr($iParam, $i + 1))) {
                             $this->Culture = $iCulture['ID'];
                             break;
@@ -1525,7 +1701,7 @@ class cIndividual extends cEntity {
                     }
                     break;
                 case "Class":
-                    foreach ($_APP['classconfigs'] ?? [] as $iClassConfig) {
+                    foreach ($_APP['classconfigs'] as $iClassConfig) {
                         if ($iClassConfig['Name'] == trim(substr($iParam, $i + 1))) {
                             $classConfig = $iClassConfig['ID'];
                             break;
@@ -1535,15 +1711,14 @@ class cIndividual extends cEntity {
                 case "Level":
                 case "Lvl":
                     $classLevel = (int) trim(substr($iParam, $i + 1));
-                    if ($classConfig != NULL && $classLevel > 0 && isset($_APP['classconfigs'][$classConfig])) {
+                    if ($classConfig != NULL && $classLevel > 0) {
                         for ($j = 0; $j < $classLevel; $j++)
                             $this->lClassLevels[] = $_APP['classconfigs'][$classConfig]['ClassID'];
-                        foreach ($_APP['skills'] ?? [] as $iSkill) {
-                            if (!is_array($iSkill)) continue;
-                            if (strpos(($_APP['classconfigs'][$classConfig]['PrimSkills'] ?? ''), ($iSkill['Abbreviation'] ?? '')) !== FALSE)
+                        foreach ($_APP['skills'] as $iSkill) {
+                            if (strpos($_APP['classconfigs'][$classConfig]['PrimSkills'], $iSkill['Abbreviation']) !== FALSE)
                                 $this->lSkillLevels[$iSkill['ID']] = $classLevel +
                                         (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
-                            else if (strpos(($_APP['classconfigs'][$classConfig]['SecSkills'] ?? ''), ($iSkill['Abbreviation'] ?? '')) !== FALSE)
+                            else if (strpos($_APP['classconfigs'][$classConfig]['SecSkills'], $iSkill['Abbreviation']) !== FALSE)
                                 $this->lSkillLevels[$iSkill['ID']] = $classLevel / 2 +
                                         (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
                         }
@@ -1574,12 +1749,11 @@ class cIndividual extends cEntity {
 
         $classConfig = $this->OverrideRacialClass > 0 ? $this->OverrideRacialClass :
                 $_APP['cultures'][$this->Culture]['ClassConfig'];
-        foreach ($_APP['skills'] ?? [] as $iSkill) {
-                            if (!is_array($iSkill)) continue;
-            if (strpos(($_APP['classconfigs'][$classConfig]['PrimSkills'] ?? ''), ($iSkill['Abbreviation'] ?? '')) !== FALSE)
+        foreach ($_APP['skills'] as $iSkill) {
+            if (strpos($_APP['classconfigs'][$classConfig]['PrimSkills'], $iSkill['Abbreviation']) !== FALSE)
                 $this->lSkillLevels[$iSkill['ID']] = $this->GetRacialLevel() + 1 +
                         (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
-            else if (strpos(($_APP['classconfigs'][$classConfig]['SecSkills'] ?? ''), ($iSkill['Abbreviation'] ?? '')) !== FALSE)
+            else if (strpos($_APP['classconfigs'][$classConfig]['SecSkills'], $iSkill['Abbreviation']) !== FALSE)
                 $this->lSkillLevels[$iSkill['ID']] = ($this->GetRacialLevel() + 1) / 2 +
                         (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
         }
@@ -1827,7 +2001,7 @@ class cIndividual extends cEntity {
         $parser->Evaluate("CHAMOD=" . $this->GetAbilMod(A_CHA));
 
         $statBlock .= "<b>" . $this->Name . " (";
-        $statBlock .= $this->GetRaceStr();
+        $statBlock .= $this->GetRaceStr(true);
         if ($classStr = $this->GetClassStr())
             $statBlock .= " " . $classStr;
         $statBlock .= "):</b>";
@@ -1837,58 +2011,15 @@ class cIndividual extends cEntity {
         $statBlock .= "; RL " . $this->GetRacialLevel();
         $statBlock .= "; HP " . $this->GetHPTotal() . ", SP " . $this->GetSPTotal() . ", PP " . $this->GetPPTotal();
         $statBlock .= "; Init " . signedstr($this->GetInitMod());
-        $statBlock .= "; Spd " . $this->GetGroundSpeed();
-        if ($this->TraitEffects->ClimbSpeed > 0 && $this->TraitEffects->ClimbSpeed < 999)
-            $statBlock .= " (Climb &times;" . $this->TraitEffects->ClimbSpeed . " MP)";
-        if ($this->TraitEffects->SwimSpeed > 0 && $this->TraitEffects->SwimSpeed < 999 && !($this->GetSwimSpeed() > 0))
-            $statBlock .= " (Swim &times;" . $this->TraitEffects->SwimSpeed . " MP)";
-        if ($this->TraitEffects->BurrowSpeed > 0 && $this->TraitEffects->BurrowSpeed < 999)
-            $statBlock .= " (Burrow &times;" . $this->TraitEffects->BurrowSpeed . " MP)";
-        if ($this->GetSwimSpeed() > 0)
-            $statBlock .= ", Swim " . $this->GetSwimSpeed();
-        if ($this->GetFlySpeed() > 0)
-            $statBlock .= ", Fly " . $this->GetFlySpeed();
+        $statBlock .= "; Spd " . $this->GetSpeedStr();
         $statBlock .= "; DeCa/p " . $this->GetDeCActive() . "/" . $this->GetDeCPassive() .
                 " (crit " . signedstr(20 + $this->GetCritRes()) . ")" .
                 ", Fort " . $this->GetFort() . ", Ref " . $this->GetRef() . ", Will " . $this->GetWill();
         $statBlock .= "; DR " . $this->GetDR();
         if ($this->GetMR() > 0)
             $statBlock .= ", MR " . $this->GetMR();
-        $res = $this->GetEnergyRes(ENERGY_ACID);
-        if ($res >= 999)
-            $statBlock .= ", Acid imm";
-        else if ($res > 0)
-            $statBlock .= ", Acid res " . $res;
-        $res = $this->GetEnergyRes(ENERGY_COLD);
-        if ($res >= 999)
-            $statBlock .= ", Cold imm";
-        else if ($res > 0)
-            $statBlock .= ", Cold res " . $res;
-        $res = $this->GetEnergyRes(ENERGY_ELEC);
-        if ($res >= 999)
-            $statBlock .= ", Elec imm";
-        else if ($res > 0)
-            $statBlock .= ", Elec res " . $res;
-        $res = $this->GetEnergyRes(ENERGY_FIRE);
-        if ($res >= 999)
-            $statBlock .= ", Fire imm";
-        else if ($res > 0)
-            $statBlock .= ", Fire res " . $res;
-        $res = $this->GetEnergyRes(ENERGY_NECRO);
-        if ($res >= 999)
-            $statBlock .= ", Necro imm";
-        else if ($res > 0)
-            $statBlock .= ", Necro res " . $res;
-        $res = $this->GetEnergyRes(ENERGY_RADIANT);
-        if ($res >= 999)
-            $statBlock .= ", Radiant imm";
-        else if ($res > 0)
-            $statBlock .= ", Radiant res " . $res;
-        $res = $this->GetEnergyRes(ENERGY_SONIC);
-        if ($res >= 999)
-            $statBlock .= ", Sonic imm";
-        else if ($res > 0)
-            $statBlock .= ", Sonic res " . $res;
+        if ($resistStr = $this->GetResistancesStr())
+            $statBlock .= ", " . $resistStr;
         $statBlock .= "; AP " . $this->GetActionPts();
         $numNats = $this->GetNumberNaturalAttacks();
         $numWeaps = count($this->lWeapons);
@@ -1974,7 +2105,7 @@ class cIndividual extends cEntity {
             $statBlock .= "<i>Skills:</i> ";
             $skillStr = array();
             foreach ($_APP['skills'] as $skillId => $iSkill) {
-                if (($lvl = $this->GetSkillLevel((int)$skillId)) > 0)
+                if (($lvl = $this->GetSkillLevel($skillId)) > 0)
                     $skillStr[] = $iSkill['Name'] . " " . $lvl;
             }
             $statBlock .= implode(", ", $skillStr);
@@ -2010,7 +2141,7 @@ class cIndividual extends cEntity {
         $str = "";
 
         $aBlocks = explode("}", $row['StatBlockConfigs']);
-        foreach ($$aBlocks ?? [] as $iBlock) {
+        foreach ($aBlocks as $iBlock) {
             if (strpos($iBlock, "{") !== FALSE) {
                 $this->GenerateNPC($creatureId, trim($iBlock));
                 $str .= $this->GetStatBlockStr() . "\\n";
@@ -2047,7 +2178,7 @@ class cPossession extends cEntity {
         $this->Reset();
     }
 
-    public function Reset(): void {
+    public function Reset() {
         parent::Reset();
 
         $this->Item = NULL;
@@ -2061,15 +2192,15 @@ class cPossession extends cEntity {
         $this->lLocation = array();
     }
 
-    public function GetItemType(): mixed {
+    public function GetItemType() {
         return cItem::GetType($this->Item);
     }
 
-    public function GetItemSubtype(): mixed {
+    public function GetItemSubtype() {
         return cItem::GetSubtype($this->Item);
     }
 
-    public function GetAdjustedAbility(int $id): int {
+    public function GetAdjustedAbility($id) {
         global $_APP;
 
         $adjAbil = $this->GetBaseAbility($id);
@@ -2078,47 +2209,47 @@ class cPossession extends cEntity {
         return $adjAbil;
     }
 
-    public function GetHPTotal(): int {
+    public function GetHPTotal() {
         return cItem::GetHP($this->GetMaterial(), $this->GetCurrentSize()) + $this->GetPowerLevel() * 3;
     }
 
-    public function GetSPTotal(): int {
+    public function GetSPTotal() {
         return 0;
     }
 
-    public function GetPPTotal(): int {
+    public function GetPPTotal() {
         return 0;
     }
 
-    public function GetFort(): mixed {
+    public function GetFort() {
         return cItem::GetFort($this->GetMaterial(), $this->GetCurrentSize());
     }
 
-    public function GetRef(): int {
+    public function GetRef() {
         global $_APP;
 
         return 5 + $_APP['sizecats'][$this->GetCurrentSize()]['CombatMod'];
     }
 
-    public function GetWill(): int {
+    public function GetWill() {
         return 999;
     }
 
-    public function GetDR(): int {
+    public function GetDR() {
         return cItem::GetDR($this->GetMaterial()) + (int) ($this->GetPowerLevel() / 2);
     }
 
-    public function GetMR(): int {
+    public function GetMR() {
         return cItem::GetMR($this->GetMaterial());
     }
 
-    public function GetBaseSize(): int {
+    public function GetBaseSize() {
         global $_APP;
 
         return $_APP['items'][$this->Item]['BaseSize'];
     }
 
-    public function GetAdjustedSize(): int {
+    public function GetAdjustedSize() {
         global $_APP;
         $size = $this->GetBaseSize();
         foreach ($this->lMods as $iMod) {
@@ -2128,11 +2259,11 @@ class cPossession extends cEntity {
         return $size;
     }
 
-    public function GetSizedFor(): int {
+    public function GetSizedFor() {
         return $this->SizeAdjust;
     }
 
-    public function GetWeight(): float {
+    public function GetWeight() {
         global $_APP;
         $mul = 1.0;
         $add = 0.0;
@@ -2145,7 +2276,7 @@ class cPossession extends cEntity {
         return round($_APP['items'][$this->Item]['BaseWeight'] * $matmul * $mul + $add, 1);
     }
 
-    public function GetValue(): float {
+    public function GetValue() {
         global $_APP;
         $mul = 1.0;
         $add = 0.0;
@@ -2184,7 +2315,7 @@ class cPossession extends cEntity {
       return round($value, 1);
       } */
 
-    public function GetECMod(): int {
+    public function GetECMod() {
         global $_APP;
         $ecmod = $_APP['items'][$this->Item]['ECMod'];
         $ecmod -= ($this->TraitEffects->ModsEC != NULL) ? $this->TraitEffects->ModsEC->Total() : 0;
@@ -2192,13 +2323,13 @@ class cPossession extends cEntity {
         return max($ecmod, 0);
     }
 
-    public function GetBaseMaterial(): mixed {
+    public function GetBaseMaterial() {
         global $_APP;
 
         return $_APP['items'][$this->Item]['BaseMaterial'];
     }
 
-    public function GetMaterial(): mixed {
+    public function GetMaterial() {
         global $_APP;
 
         if ($this->OverrideMaterial)
@@ -2207,7 +2338,7 @@ class cPossession extends cEntity {
             return $this->GetBaseMaterial();
     }
 
-    public function GetMinPL(): int {
+    public function GetMinPL() {
         global $_APP;
         $parser = new cExpressionParser();   // Class for parsing expressions
 
@@ -2222,7 +2353,7 @@ class cPossession extends cEntity {
         return $pl;
     }
 
-    public function GetPowerLevel(): int {
+    public function GetPowerLevel() {
         global $_APP;
         $parser = new cExpressionParser();   // Class for parsing expressions
 
@@ -2237,11 +2368,11 @@ class cPossession extends cEntity {
         return $pl;
     }
 
-    public function GetEncumbranceClass(int $config): int {
+    public function GetEncumbranceClass($config) {
         return 0;
     }
 
-    public function UpdateState(): void {
+    public function UpdateState() {
         global $_APP;
 
         parent::UpdateState();
@@ -2268,7 +2399,7 @@ class cPossession extends cEntity {
         // Active spells and effects
     }
 
-    public function GenerateItem(string $config): void {
+    public function GenerateItem($config) {
         if (($i = strpos($config, "(")) === FALSE)
             return;
 
@@ -2279,16 +2410,16 @@ class cPossession extends cEntity {
         $this->GenerateItemFromParams($aParams);
     }
 
-    private function GenerateItemFromParams(array $aParams): void {
+    private function GenerateItemFromParams($aParams) {
         global $_APP;
 
-        foreach ($aParams ?? [] as $iParam) {
+        foreach ($aParams as $iParam) {
             if (($i = strpos($iParam, "=")) === FALSE)
                 continue;
 
             switch (trim(substr($iParam, 0, $i))) {
                 case "Item":
-                    foreach ($_APP['items'] ?? [] as $iItem) {
+                    foreach ($_APP['items'] as $iItem) {
                         if ($iItem['Name'] == substr($iParam, $i + 1)) {
                             $this->Item = $iItem['ID'];
                             break;
@@ -2296,7 +2427,7 @@ class cPossession extends cEntity {
                     }
                     break;
                 case "Material":
-                    foreach ($_APP['materials'] ?? [] as $iMaterial) {
+                    foreach ($_APP['materials'] as $iMaterial) {
                         if ($iMaterial['Name'] == substr($iParam, $i + 1)) {
                             $this->OverrideMaterial = $iMaterial['ID'];
                             break;
@@ -2305,16 +2436,16 @@ class cPossession extends cEntity {
                     break;
                 case "Mod":
                     $aModParams = explode("&", substr($iParam, $i + 1));
-                    foreach ($_APP['itemmodsmundane'] ?? [] as $iMod) {
+                    foreach ($_APP['itemmodsmundane'] as $iMod) {
                         if ($iMod['Abbreviation'] == $aModParams[0] || $iMod['Description'] == $aModParams[0]) {
                             $this->lMods[] = $iMod['ID'];
                             break 2;
                         }
                     }
-                    foreach ($_APP['itemmodsmagic'] ?? [] as $iMod) {
+                    foreach ($_APP['itemmodsmagic'] as $iMod) {
                         if ($iMod['Abbreviation'] == $aModParams[0] || $iMod['Description'] == $aModParams[0]) {
                             $this->lModsMagic[] = $iMod['ID'];
-                            foreach ($$aModParams ?? [] as $iModParam) {
+                            foreach ($aModParams as $iModParam) {
                                 if (substr($iModParam, 0, 2) == "x=")
                                     $this->lModsParX[count($this->lModsMagic) - 1] = substr($iModParam, 2);
                                 else if (substr($iModParam, 0, 2) == "y=")

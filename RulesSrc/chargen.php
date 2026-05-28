@@ -67,6 +67,8 @@ function chargen_page_campaign(): void {
 
         echo '<div id="PageTab' . PAGE_NAMECAMPAIGN . '" class="utiltab">';
 
+        echo '<input type="hidden" name="PlayerID" value="' . (isset($_SESSION['UserID']) ? $_SESSION['UserID'] : '') . '">';
+
         echo '<p style="font-size:1.3em;"><b>Character Name:</b><br/><input type="text" name="CharName" ' .
                 'onChange="OnNameChanged()" size=30 maxlength=30 style="font-size:1.3em;"></p>';
 
@@ -343,7 +345,7 @@ function chargen_page_improv(): void {
             echo '<td>' . $iImprovement['Description'] . '</td>';
             echo '<td id="ImprCost' . $iImprovement['ID'] . '" style="text-align:center">' . $iImprovement['IPCost'] . '</td>';
             echo '<td style="text-align:center">';
-            echo '<input type="text" name="ImprVal' . $iImprovement['ID'] . '" class="ImprVal" value="0" size=3 readonly="">';
+            echo '<input type="text" name="ImprVal' . $iImprovement['ID'] . '" class="ImprVal" data-id="' . $iImprovement['ID'] . '" value="0" size=3 readonly="">';
             echo '<input type="button" value="+" ' . $button_style . ' onClick="IncImpr(' . $iImprovement['ID'] . ')">' .
                 '<input type="button" value="-" ' . $button_style . ' onClick="DecImpr(' . $iImprovement['ID'] . ')">';
             echo '<input type="hidden" name="ImprMax' . $iImprovement['ID'] . '" value="' . $iImprovement['MaxBonus'] . '">';
@@ -359,7 +361,7 @@ function chargen_page_improv(): void {
                 echo '<td>Skill: ' . $iSkill['Name'] . '</td>';
                 echo '<td id="ImprSkillCost' . $iSkill['ID'] . '" style="text-align:center">10</td>';
                 echo '<td style="text-align:center">';
-                echo '<input type="text" name="ImprSkillVal' . $iSkill['ID'] . '" class="ImprVal" value="0" size=3 readonly="">';
+                echo '<input type="text" name="ImprSkillVal' . $iSkill['ID'] . '" class="ImprSkillVal" data-id="' . $iSkill['ID'] . '" value="0" size=3 readonly="">';
                 echo '<input type="button" value="+" ' . $button_style . ' onClick="IncImprSkill(' . $iSkill['ID'] . ')">' .
                     '<input type="button" value="-" ' . $button_style . ' onClick="DecImprSkill(' . $iSkill['ID'] . ')">';
                 echo '<input type="hidden" name="ImprSkillMax' . $iSkill['ID'] . '" value="5">';
