@@ -137,7 +137,7 @@
 
 
 	function microtime_float(){
-	   list($usec, $sec) = explode(" ", microtime());
+	   [$usec, $sec] = explode(" ", microtime());
 	   return ((float)$usec + (float)$sec);
 	}
 
@@ -267,11 +267,11 @@
 					if (is_array($links)) {
 						reset ($links);
 
-						while ($thislink = each($links)) {
-							if ($tmp_urls[$thislink[1]] != 1) {
-								$tmp_urls[$thislink[1]] = 1;
+						foreach ($links as $key => $thislink) {
+							if ($tmp_urls[$thislink] != 1) {
+								$tmp_urls[$thislink] = 1;
 								$numoflinks++;
-								mysql_query ("insert into ".$mysql_table_prefix."temp (link, level, id) values ('$thislink[1]', '$level', '$sessid')");
+								mysql_query ("insert into ".$mysql_table_prefix."temp (link, level, id) values ('$thislink', '$level', '$sessid')");
 								echo mysql_error();
 							}
 						}
