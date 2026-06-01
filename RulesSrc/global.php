@@ -53,6 +53,20 @@ function application_start(): void {
 
         // Build application variables from data file
         $_APP = unserialize($data);
+
+        // Clean up any stale/corrupted boolean entries in sub-arrays
+        if (is_array($_APP)) {
+            foreach ($_APP as $key => &$val) {
+                if (is_array($val)) {
+                    foreach ($val as $subKey => $subVal) {
+                        if (is_bool($subVal)) {
+                            unset($val[$subKey]);
+                        }
+                    }
+                }
+            }
+            unset($val);
+        }
     }
 
     //    if (!$_APP['initialized'])
