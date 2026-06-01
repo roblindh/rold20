@@ -200,7 +200,7 @@ function check_robot_txt($url) {
 
 		$regs = Array ();
 		$this_agent= "";
-		while (list ($id, $line) = each($robot)) {
+		foreach ($robot as $id => $line) {
 			if (preg_match("/^user-agent: *([^#]+) */", $line, $regs)) {
 				$this_agent = trim($regs[1]);
 				if ($this_agent == '*' || $this_agent == $user_agent)
@@ -389,10 +389,11 @@ function url_purify($url, $parent_url, $can_leave_domain) {
 		return '';
 	}
 	
-	reset($ext);
-	while (list ($id, $excl) = each($ext))
-		if (preg_match("/\.$excl$/i", $url))
+	foreach ($ext as $id => $excl) {
+		if (preg_match("/\.$excl$/i", $url)) {
 			return '';
+		}
+	}
 
 	if (substr($url, -1) == '\\') {
 		return '';
@@ -479,11 +480,10 @@ function url_purify($url, $parent_url, $can_leave_domain) {
 
 function save_keywords($wordarray, $link_id, $domain) {
 	global $mysql_table_prefix, $all_keywords;
-	reset($wordarray);
-	while ($thisword = each($wordarray)) {
-		$word = $thisword[1][1];
+	foreach ($wordarray as $thisword_val) {
+		$word = $thisword_val[1];
 		$wordmd5 = substr(md5($word), 0, 1);
-		$weight = $thisword[1][2];
+		$weight = $thisword_val[2];
 		if (strlen($word)<= 30) {
 			$keyword_id = $all_keywords[$word];
 			if ($keyword_id  == "") {
@@ -611,12 +611,11 @@ function clean_file($file, $url, $type) {
 	$file = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $file);
     $file = preg_replace('~&#([0-9]+);~e', 'chr("\\1")', $file);
 	$file = strtolower($file);
-	reset($entities);
-	while ($char = each($entities)) {
-		$file = preg_replace("/".$char[0]."/i", $char[1], $file);
+	foreach ($entities as $key => $val) {
+		$file = preg_replace("/".$key."/i", $val, $file);
 	}
 	$file = preg_replace("/&[a-z]{1,6};/", " ", $file);
-	$file = preg_replace("/[\*\^\+\?\\\.\[\]\^\$\|\{\)\(\}~!\"\/@#£$%&=`´;><:,]+/", " ", $file);
+	$file = preg_replace("/[\*\^\+\?\\\.\[\]\^\$\|\{\)\(\}~!\"\/@#Â£$%&=`Â´;><:,]+/", " ", $file);
 	$file = preg_replace("/\s+/", " ", $file);
 	$data['fulltext'] = addslashes($fulltext);
 	$data['content'] = addslashes($file);
@@ -641,45 +640,41 @@ function calc_weights($wordarray, $title, $host, $path, $keywords) {
 	$keywordsarray = unique_array(explode(" ", preg_replace("/[^[:alnum:]-]+/i", " ", strtolower($keywords))));
 	$path_depth = countSubstrs($path, "/");
 
-	while (list ($wid, $word) = each($wordarray)) {
+	foreach ($wordarray as $wid => $word) {
 		$word_in_path = 0;
 		$word_in_domain = 0;
 		$word_in_title = 0;
 		$meta_keyword = 0;
 		if ($index_host == 1) {
-			while (list ($id, $path) = each($patharray)) {
-				if ($path[1] == $word[1]) {
+			foreach ($patharray as $id => $path_item) {
+				if ($path_item[1] == $word[1]) {
 					$word_in_path = 1;
 					break;
 				}
 			}
-			reset($patharray);
 
-			while (list ($id, $host) = each($hostarray)) {
-				if ($host[1] == $word[1]) {
+			foreach ($hostarray as $id => $host_item) {
+				if ($host_item[1] == $word[1]) {
 					$word_in_domain = 1;
 					break;
 				}
 			}
-			reset($hostarray);
 		}
 
 		if ($index_meta_keywords == 1) {
-			while (list ($id, $keyword) = each($keywordsarray)) {
-				if ($keyword[1] == $word[1]) {
+			foreach ($keywordsarray as $id => $keyword_item) {
+				if ($keyword_item[1] == $word[1]) {
 					$meta_keyword = 1;
 					break;
 				}
 			}
-			reset($keywordsarray);
 		}
-		while (list ($id, $tit) = each($titlearray)) {
-			if ($tit[1] == $word[1]) {
+		foreach ($titlearray as $id => $tit_item) {
+			if ($tit_item[1] == $word[1]) {
 				$word_in_title = 1;
 				break;
 			}
 		}
-		reset($titlearray);
 
 		$wordarray[$wid][2] = (int) (calc_weight($wordarray[$wid][2], $word_in_title, $word_in_domain, $word_in_path, $path_depth, $meta_keyword));
 	}

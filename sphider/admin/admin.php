@@ -1039,10 +1039,16 @@ function addcatform($parent) {
 						$topwords[$row[0]] = $row[1];
 					}
 				}
-				arsort($topwords);
+				if (isset($topwords) && is_array($topwords)) {
+					arsort($topwords);
+				} else {
+					$topwords = array();
+				}
 				$count = 0;
-				while ((list($word, $weight) = each($topwords)) && $count <= 30) {
-					
+				foreach ($topwords as $word => $weight) {
+					if ($count >= 30) {
+						break;
+					}
 					$count++;
 					if ($class =="white") 
 						$class = "grey";

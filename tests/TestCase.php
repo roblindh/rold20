@@ -69,7 +69,7 @@ class TestCase extends PHPUnitTestCase
     /**
      * Helper: Assert log file contains text
      */
-    protected function assertLogContains(string $text, string $logFile = null): void
+    protected function assertLogContains(string $text, ?string $logFile = null): void
     {
         $file = $logFile ?? $this->testLogFile;
         
@@ -89,7 +89,7 @@ class TestCase extends PHPUnitTestCase
     /**
      * Helper: Assert log file does NOT contain text
      */
-    protected function assertLogNotContains(string $text, string $logFile = null): void
+    protected function assertLogNotContains(string $text, ?string $logFile = null): void
     {
         $file = $logFile ?? $this->testLogFile;
         
@@ -108,7 +108,7 @@ class TestCase extends PHPUnitTestCase
     /**
      * Helper: Get log file contents
      */
-    protected function getLogContents(string $logFile = null): string
+    protected function getLogContents(?string $logFile = null): string
     {
         $file = $logFile ?? $this->testLogFile;
         

@@ -390,7 +390,7 @@ function handleApplicationError(int $errno, string $errstr, string $errfile, int
         E_USER_ERROR => 'ERROR',
         E_USER_WARNING => 'WARNING',
         E_USER_NOTICE => 'WARNING',
-        E_STRICT => 'WARNING',
+        2048 => 'WARNING', // E_STRICT
         E_RECOVERABLE_ERROR => 'ERROR',
         E_DEPRECATED => 'WARNING',
         E_USER_DEPRECATED => 'WARNING',
@@ -442,7 +442,7 @@ function getErrorName(int $errno): string
         E_USER_ERROR => 'User Error',
         E_USER_WARNING => 'User Warning',
         E_USER_NOTICE => 'User Notice',
-        E_STRICT => 'Strict Standards',
+        2048 => 'Strict Standards', // E_STRICT
         E_RECOVERABLE_ERROR => 'Recoverable Error',
         E_DEPRECATED => 'Deprecated',
         E_USER_DEPRECATED => 'User Deprecated',
