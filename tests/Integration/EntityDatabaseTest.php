@@ -110,11 +110,16 @@ class EntityDatabaseTest extends TestCase
         $this->assertEquals('Paladin', $entity->Name);
         $this->assertEquals(1, $entity->SizeAdjust);
         
-        // Database operations shouldn't affect properties
+        // Reset clears properties
         $entity->Reset();
         
-        // Name should be preserved (Reset doesn't clear Name)
-        $this->assertEquals('Paladin', $entity->Name);
+        // Name and SizeAdjust are cleared by Reset
+        $this->assertEquals('', $entity->Name);
+        $this->assertEquals(0, $entity->SizeAdjust);
+        
+        // But core objects remain initialized
+        $this->assertNotNull($entity->BaseAbilities);
+        $this->assertNotNull($entity->TraitEffects);
     }
 
     /**
