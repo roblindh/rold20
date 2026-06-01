@@ -418,7 +418,19 @@ error_reporting(E_ALL ^ E_NOTICE);
 		$i = 0;
 		while ($row = mysql_fetch_row($result)) {
 			$res[$i]['title'] = $row[2];
-			$res[$i]['url'] = $row[1];
+			$url = $row[1];
+			if (isset($_SERVER['HTTP_HOST'])) {
+				$parsed = parse_url($url);
+				if (isset($parsed['host']) && ($parsed['host'] === 'localhost' || $parsed['host'] === '127.0.0.1')) {
+					$new_host = $_SERVER['HTTP_HOST'];
+					$scheme = isset($parsed['scheme']) ? $parsed['scheme'] : 'http';
+					$path = isset($parsed['path']) ? $parsed['path'] : '';
+					$query = isset($parsed['query']) ? '?' . $parsed['query'] : '';
+					$fragment = isset($parsed['fragment']) ? '#' . $parsed['fragment'] : '';
+					$url = $scheme . '://' . $new_host . $path . $query . $fragment;
+				}
+			}
+			$res[$i]['url'] = $url;
 			if ($row[3] != null && $show_meta_description == 1)
 				$res[$i]['fulltxt'] = $row[3];
 			else 
