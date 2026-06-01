@@ -50,4 +50,10 @@ if (isset($_POST['user']) && isset($_POST['pass'])) {
 $settings_dir = "../settings";
 include "$settings_dir/database.php";
 
+// Include MySQL compatibility layer for PHP 8.1+ support
+$include_dir = "../include";
+if (file_exists($include_dir . "/mysql_compat.php")) {
+    include_once $include_dir . "/mysql_compat.php";
+}
+
 ?>

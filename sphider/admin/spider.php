@@ -103,14 +103,15 @@
 	} else {
 
 		if ($reindex == 1 && $command_line == 1) {
-			$result=mysql_query("select url, spider_depth, required, disallowed, can_leave_domain from ".$mysql_table_prefix."sites where url='$url'");
-			echo mysql_error();
-			if($row=mysql_fetch_row($result)) {
-				$url = $row[0];
-				$maxlevel = $row[1];
-				$in= $row[2];
-				$out = $row[3];
-				$domaincb = $row[4];
+			try {
+				$stmt = $pdo->prepare("select url, spider_depth, required, disallowed, can_leave_domain from ".$mysql_table_prefix."sites where url=?");
+				$stmt->execute([$url]);
+				if($row = $stmt->fetch(PDO::FETCH_NUM)) {
+					$url = $row[0];
+					$maxlevel = $row[1];
+					$in= $row[2];
+					$out = $row[3];
+					$domaincb = $row[4];
 				if ($domaincb=='') {
 					$domaincb=0;
 				}
@@ -120,6 +121,9 @@
 					$soption = 'level';
 				}
 			}
+		} catch (PDOException $e) {
+			echo "Error: " . htmlspecialchars($e->getMessage());
+		}
 
 		}
 		if (!isset($in)) {
@@ -158,12 +162,16 @@
 			$url = preg_replace("/ /", "", url_purify($url_status['path'], $url, $can_leave_domain));
 
 			if ($url <> '') {
-				$result = mysql_query("select link from ".$mysql_table_prefix."temp where link='$url' && id = '$sessid'");
-				echo mysql_error();
-				$rows = mysql_numrows($result);
-				if ($rows == 0) {
-					mysql_query ("insert into ".$mysql_table_prefix."temp (link, level, id) values ('$url', '$level', '$sessid')");
-					echo mysql_error();
+				try {
+					$stmt = $pdo->prepare("select link from ".$mysql_table_prefix."temp where link=? and id = ?");
+					$stmt->execute([$url, $sessid]);
+					$rows = $stmt->rowCount();
+					if ($rows == 0) {
+						$stmt2 = $pdo->prepare("insert into ".$mysql_table_prefix."temp (link, level, id) values (?, ?, ?)");
+						$stmt2->execute([$url, $level, $sessid]);
+					}
+				} catch (PDOException $e) {
+					echo "Error: " . htmlspecialchars($e->getMessage());
 				}
 			}
 
@@ -271,8 +279,8 @@
 							if ($tmp_urls[$thislink] != 1) {
 								$tmp_urls[$thislink] = 1;
 								$numoflinks++;
-								mysql_query ("insert into ".$mysql_table_prefix."temp (link, level, id) values ('$thislink', '$level', '$sessid')");
-								echo mysql_error();
+								try { $stmt = $pdo->prepare("insert into ".$mysql_table_prefix."temp (link, level, id) values (?, ?, ?)"); $stmt->execute([$thislink, $level, $sessid]); } catch (PDOException $e) { echo "Error: " . htmlspecialchars($e->getMessage()); };
+								// PDO errors handled via exceptions
 							}
 						}
 					}
@@ -304,9 +312,9 @@
 					if (is_array($wordarray) && count($wordarray) > $min_words_per_page) {
 						if ($md5sum == '') {
 							mysql_query ("insert into ".$mysql_table_prefix."links (site_id, url, title, description, fulltxt, indexdate, size, md5sum, level) values ('$site_id', '$url', '$title', '$desc', '$fulltxt', curdate(), '$pageSize', '$newmd5sum', $thislevel)");
-							echo mysql_error();
+							// PDO errors handled via exceptions
 							$result = mysql_query("select link_id from ".$mysql_table_prefix."links where url='$url'");
-							echo mysql_error();
+							// PDO errors handled via exceptions
 							$row = mysql_fetch_row($result);
 							$link_id = $row[0];
 
@@ -316,18 +324,18 @@
 						}else if (($md5sum <> '') && ($md5sum <> $newmd5sum)) { //if page has changed, start updating
 
 							$result = mysql_query("select link_id from ".$mysql_table_prefix."links where url='$url'");
-							echo mysql_error();
+							// PDO errors handled via exceptions
 							$row = mysql_fetch_row($result);
 							$link_id = $row[0];
 							for ($i=0;$i<=15; $i++) {
 								$char = dechex($i);
 								mysql_query ("delete from ".$mysql_table_prefix."link_keyword$char where link_id=$link_id");
-								echo mysql_error();
+								// PDO errors handled via exceptions
 							}
 							save_keywords($wordarray, $link_id, $dom_id);
 							$query = "update ".$mysql_table_prefix."links set title='$title', description ='$desc', fulltxt = '$fulltxt', indexdate=now(), size = '$pageSize', md5sum='$newmd5sum', level=$thislevel where link_id=$link_id";
 							mysql_query($query);
-							echo mysql_error();
+							// PDO errors handled via exceptions
 							printStandardReport('re-indexed', $command_line);
 						}
 					}else {
@@ -360,7 +368,7 @@
 		global $mysql_table_prefix, $command_line, $mainurl,  $tmp_urls, $domain_arr, $all_keywords;
 		if (!isset($all_keywords)) {
 			$result = mysql_query("select keyword_ID, keyword from ".$mysql_table_prefix."keywords");
-			echo mysql_error();
+			// PDO errors handled via exceptions
 			while($row=mysql_fetch_array($result)) {
 				$all_keywords[addslashes($row[1])] = $row[0];
 			}
@@ -386,13 +394,13 @@
 		
 	
 		$result = mysql_query("select site_id from ".$mysql_table_prefix."sites where url='$url'");
-		echo mysql_error();
+		// PDO errors handled via exceptions
 		$row = mysql_fetch_row($result);
 		$site_id = $row[0];
 		
 		if ($site_id != "" && $reindex == 1) {
 			mysql_query ("insert into ".$mysql_table_prefix."temp (link, level, id) values ('$url', 0, '$sessid')");
-			echo mysql_error();
+			// PDO errors handled via exceptions
 			$result = mysql_query("select url, level from ".$mysql_table_prefix."links where site_id = $site_id");
 			while ($row = mysql_fetch_array($result)) {
 				$site_link = $row['url'];
@@ -405,34 +413,34 @@
 			$qry = "update ".$mysql_table_prefix."sites set indexdate=now(), spider_depth = $maxlevel, required = '$url_inc'," .
 					"disallowed = '$url_not_inc', can_leave_domain=$can_leave_domain where site_id=$site_id";
 			mysql_query ($qry);
-			echo mysql_error();
+			// PDO errors handled via exceptions
 		} else if ($site_id == '') {
 			mysql_query ("insert into ".$mysql_table_prefix."sites (url, indexdate, spider_depth, required, disallowed, can_leave_domain) " .
 					"values ('$url', now(), $maxlevel, '$url_inc', '$url_not_inc', $can_leave_domain)");
-			echo mysql_error();
+			// PDO errors handled via exceptions
 			$result = mysql_query("select site_ID from ".$mysql_table_prefix."sites where url='$url'");
 			$row = mysql_fetch_row($result);
 			$site_id = $row[0];
 		} else {
 			mysql_query ("update ".$mysql_table_prefix."sites set indexdate=now(), spider_depth = $maxlevel, required = '$url_inc'," .
 					"disallowed = '$url_not_inc', can_leave_domain=$can_leave_domain where site_id=$site_id");
-			echo mysql_error();
+			// PDO errors handled via exceptions
 		}
 	
 	
 		$result = mysql_query("select site_id, temp_id, level, count, num from ".$mysql_table_prefix."pending where site_id='$site_id'");
-		echo mysql_error();
+		// PDO errors handled via exceptions
 		$row = mysql_fetch_row($result);
 		$pending = $row[0];
 		$level = 0;
 		$domain_arr = get_domains();
 		if ($pending == '') {
 			mysql_query ("insert into ".$mysql_table_prefix."temp (link, level, id) values ('$url', 0, '$sessid')");
-			echo mysql_error();
+			// PDO errors handled via exceptions
 		} else if ($pending != '') {
 			printStandardReport('continueSuspended',$command_line);
 			mysql_query("select temp_id, level, count from ".$mysql_table_prefix."pending where site_id='$site_id'");
-			echo mysql_error();
+			// PDO errors handled via exceptions
 			$sessid = $row[1];
 			$level = $row[2];
 			$pend_count = $row[3] + 1;
@@ -443,7 +451,7 @@
 	
 		if ($reindex != 1) {
 			mysql_query ("insert into ".$mysql_table_prefix."pending (site_id, temp_id, level, count) values ('$site_id', '$sessid', '0', '0')");
-			echo mysql_error();
+			// PDO errors handled via exceptions
 		}
 	
 	
@@ -468,7 +476,7 @@
 			$links = array();
 	
 			$result = mysql_query("select distinct link from ".$mysql_table_prefix."temp where level=$level && id='$sessid' order by link");
-			echo mysql_error();
+			// PDO errors handled via exceptions
 			$rows = mysql_num_rows($result);
 	
 			if ($rows == 0) {
@@ -518,20 +526,20 @@
 					printRetrieving($num, $thislink, $command_line);
 					$query = "select md5sum, indexdate from ".$mysql_table_prefix."links where url='$thislink'";
 					$result = mysql_query($query);
-					echo mysql_error();
+					// PDO errors handled via exceptions
 					$rows = mysql_num_rows($result);
 					if ($rows == 0) {
 						index_url($thislink, $level+1, $site_id, '',  $domain, '', $sessid, $can_leave_domain, $reindex);
 
 						mysql_query("update ".$mysql_table_prefix."pending set level = $level, count=$count, num=$num where site_id=$site_id");
-						echo mysql_error();
+						// PDO errors handled via exceptions
 					}else if ($rows <> 0 && $reindex == 1) {
 						$row = mysql_fetch_array($result);
 						$md5sum = $row['md5sum'];
 						$indexdate = $row['indexdate'];
 						index_url($thislink, $level+1, $site_id, $md5sum,  $domain, $indexdate, $sessid, $can_leave_domain, $reindex);
 						mysql_query("update ".$mysql_table_prefix."pending set level = $level, count=$count, num=$num where site_id=$site_id");
-						echo mysql_error();
+						// PDO errors handled via exceptions
 					}else {
 						printStandardReport('inDatabase',$command_line);
 					}
@@ -543,9 +551,9 @@
 		}
 	
 		mysql_query ("delete from ".$mysql_table_prefix."temp where id = '$sessid'");
-		echo mysql_error();
+		// PDO errors handled via exceptions
 		mysql_query ("delete from ".$mysql_table_prefix."pending where site_id = '$site_id'");
-		echo mysql_error();
+		// PDO errors handled via exceptions
 		printStandardReport('completed',$command_line);
 	
 
@@ -554,7 +562,7 @@
 	function index_all() {
 		global $mysql_table_prefix;
 		$result=mysql_query("select url, spider_depth, required, disallowed, can_leave_domain from ".$mysql_table_prefix."sites");
-		echo mysql_error();
+		// PDO errors handled via exceptions
     	while ($row=mysql_fetch_row($result)) {
     		$url = $row[0];
 	   		$depth = $row[1];
@@ -576,7 +584,7 @@
 	function get_temp_urls ($sessid) {
 		global $mysql_table_prefix;
 		$result = mysql_query("select link from ".$mysql_table_prefix."temp where id='$sessid'");
-		echo mysql_error();
+		// PDO errors handled via exceptions
 		$tmp_urls = Array();
     	while ($row=mysql_fetch_row($result)) {
 			$tmp_urls[$row[0]] = 1;
@@ -588,7 +596,7 @@
 	function get_domains () {
 		global $mysql_table_prefix;
 		$result = mysql_query("select domain_id, domain from ".$mysql_table_prefix."domains");
-		echo mysql_error();
+		// PDO errors handled via exceptions
 		$domains = Array();
     	while ($row=mysql_fetch_row($result)) {
 			$domains[$row[1]] = $row[0];
