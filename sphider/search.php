@@ -10,24 +10,15 @@ $include_dir = "./include";
 include ("$include_dir/commonfuncs.php");
 //extract(getHttpVars());
 
-if (isset($_GET['query']);
-	$query = $_GET['query'];
-if (isset($_GET['search']))
-	$search = $_GET['search'];
-if (isset($_GET['domain'])) 
-	$domain = $_GET['domain'];
-if (isset($_GET['type'])) 
-	$type = $_GET['type'];
-if (isset($_GET['catid'])) 
-	$catid = $_GET['catid'];
-if (isset($_GET['category'])) 
-	$category = $_GET['category'];
-if (isset($_GET['results'])) 
-	$results = $_GET['results'];
-if (isset($_GET['start'])) 
-	$start = $_GET['start'];
-if (isset($_GET['adv'])) 
-	$adv = $_GET['adv'];
+$query = $_GET['query'] ?? '';
+$search = $_GET['search'] ?? '';
+$domain = $_GET['domain'] ?? '';
+$type = $_GET['type'] ?? '';
+$catid = $_GET['catid'] ?? '';
+$category = $_GET['category'] ?? '';
+$results = $_GET['results'] ?? '';
+$start = $_GET['start'] ?? '';
+$adv = $_GET['adv'] ?? '';
 	
 	
 $include_dir = "./include"; 
@@ -61,9 +52,7 @@ if ($results != "") {
 	$results_per_page = $results;
 }
 
-if (get_magic_quotes_gpc()==1) {
-	$query = stripslashes($query);
-} 
+// magic quotes is removed in PHP 8, no-op 
 
 if (!is_numeric($catid)) {
 	$catid = "";
@@ -77,7 +66,7 @@ if (!is_numeric($category)) {
 
 if ($catid && is_numeric($catid)) {
 
-	$tpl_['category'] = sql_fetch_all('SELECT category FROM '.$mysql_table_prefix.'categories WHERE category_id='.(int)$_REQUEST['catid']);
+	$tpl_['category'] = sql_fetch_all('SELECT category FROM '.$mysql_table_prefix.'categories WHERE category_id='.(int)$catid);
 }
 	
 $count_level0 = sql_fetch_all('SELECT count(*) FROM '.$mysql_table_prefix.'categories WHERE parent_num=0');
@@ -131,7 +120,7 @@ switch ($search) {
 	break;
 	default:
 		if ($show_categories) {
-			if ($_REQUEST['catid']  && is_numeric($catid)) {
+			if (isset($_REQUEST['catid']) && $_REQUEST['catid']  && is_numeric($catid)) {
 				$cat_info = get_category_info($catid);
 			} else {
 				$cat_info = get_categories_view();

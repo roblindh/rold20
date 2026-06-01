@@ -11,8 +11,10 @@ extract($search_results);
 
 <?if ($search_results['ignore_words']){?>
 	<div id="common_report">
-	<?while ($thisword=each($ignore_words)) {
-		$ignored .= " ".$thisword[1];
+	<? 
+	$ignored = '';
+	foreach ($ignore_words as $thisword) {
+		$ignored .= " ".$thisword;
 	}		
 	$msg = str_replace ('%ignored_words', $ignored, $sph_messages["ignoredWords"]); 
 	echo $msg; ?>
@@ -59,7 +61,9 @@ extract($search_results);
 
 <!-- results listing -->
 
-	<?foreach ($qry_results as $_key => $_row){
+	<? 
+	$domain_name = "";
+	foreach ($qry_results as $_key => $_row){
 		$last_domain = $domain_name;
 		extract($_row);
 		if ($show_query_scores == 0) {

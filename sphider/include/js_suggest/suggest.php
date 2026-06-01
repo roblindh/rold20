@@ -1,4 +1,4 @@
-<?
+<?php
 error_reporting(0); // Any notices/warnings will cause errors in suggest javascript
 
 
@@ -6,9 +6,7 @@ require_once('../../settings/database.php');
 require_once('../../settings/conf.php');
 
 
-if (get_magic_quotes_gpc()==1) {
-	$_GET['q'] = stripslashes($_GET['q']);
-} 
+// magic quotes is removed in PHP 8, no-op
 
 
 $_GET['q'] = addslashes($_GET['q']);

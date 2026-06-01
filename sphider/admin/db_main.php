@@ -206,16 +206,16 @@ if (isset($file) && $del==1) {
 		if ($file != "." && $file != ".." &&  (eregi("\.sql",$file) || eregi("\.gz",$file))){
 			if($is_first==1){
 				echo "<tr> 
-				<td width=\"30%\" style="text-align:center" class=\"greyHeading\"><b>File</b></td>
-				<td width=\"20%\" style="text-align:center" class=\"greyHeading\"><b>Size</b></td>
-				<td width=\"20%\" style="text-align:center" class=\"greyHeading\"><b>Date</b></td>
+				<td width=\"30%\" style=\"text-align:center\" class=\"greyHeading\"><b>File</b></td>
+				<td width=\"20%\" style=\"text-align:center\" class=\"greyHeading\"><b>Size</b></td>
+				<td width=\"20%\" style=\"text-align:center\" class=\"greyHeading\"><b>Date</b></td>
 				<td class=\"greyHeading\">&nbsp;</td></tr>"; 
 			}
 			$is_first=0;
-			echo "<tr><td nowrap class=$bgcolor style="text-align:center">$file</td>
-				 <td nowrap class=$bgcolor style="text-align:center">'.round(filesize($backup_path.$file) / 1024, 2)." kB</td>
-				 <td nowrap class=$bgcolor style="text-align:center">'.date("Y-m-d",filemtime($backup_path.$file))."</td>
-				 <td nowrap class=$bgcolor align=\"left\"><input type='button' id='submit' onclick=\"confirm_rest_prompt('./admin.php?f=database&file=$file&del=0');\" value='Restore'> &nbsp;<input type='button' id='submit' onclick=\"confirm_del_prompt('./admin.php?f=database&file=$file&del=1');\" value='Delete'></td>
+			echo "<tr><td nowrap class=\"$bgcolor\" style=\"text-align:center\">$file</td>
+				 <td nowrap class=\"$bgcolor\" style=\"text-align:center\">" . round(filesize($backup_path.$file) / 1024, 2) . " kB</td>
+				 <td nowrap class=\"$bgcolor\" style=\"text-align:center\">" . date("Y-m-d",filemtime($backup_path.$file)) . "</td>
+				 <td nowrap class=\"$bgcolor\" align=\"left\"><input type='button' id='submit' onclick=\"confirm_rest_prompt('./admin.php?f=database&file=$file&del=0');\" value='Restore'> &nbsp;<input type='button' id='submit' onclick=\"confirm_del_prompt('./admin.php?f=database&file=$file&del=1');\" value='Delete'></td>
 				 </tr>"; 
 			 
 			if ($bgcolor=='grey') {

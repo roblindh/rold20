@@ -1,8 +1,8 @@
 <?php
-	$database="rold20sphider";
-	$mysql_user = "root";
-	$mysql_password = "admin"; 
-	$mysql_host = "localhost";
+	$mysql_host = getenv('DB_HOST') ?: 'localhost';
+	$mysql_user = getenv('DB_USER') ?: 'root';
+	$mysql_password = getenv('DB_PASSWORD') ?: 'admin';
+	$database = getenv('DB_NAME') ?: 'rold20sphider';
 	$mysql_table_prefix = "";
 
 	try {
@@ -14,5 +14,9 @@
 	} catch (PDOException $e) {
 		die ("<b>Cannot connect to database, check if username, password and host are correct.</b><br>" . htmlspecialchars($e->getMessage()));
 	}
+
+	// Load Sphider Database and legacy compatibility layers
+	include_once dirname(__DIR__) . "/include/database.php";
+	include_once dirname(__DIR__) . "/include/mysql_compat.php";
 ?>
 

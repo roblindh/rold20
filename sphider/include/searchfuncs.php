@@ -57,7 +57,14 @@ error_reporting(E_ALL ^ E_NOTICE);
 		$a = trim($a);
 
 		$a = preg_replace("/&quot;/i", "\"", $a);
-		$returnWords = array();
+		$returnWords = array(
+			'+' => array(),
+			'-' => array(),
+			'+s' => array(),
+			'-s' => array(),
+			'ignore' => array(),
+			'hilight' => array()
+		);
 		//get all phrases
 		$regs = Array();
 		while (preg_match("/([-]?)\"([^\"]+)\"/", $a, $regs)) {
@@ -140,7 +147,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 		} else {
 			$pattern = "[a-z]+";
 		}
-		if (strlen($word) < $min_word_length || (!preg_match("/".$pattern."/i", remove_accents($word))) || ($common[$word] == 1)) {
+		if (strlen($word) < $min_word_length || (!preg_match("/".$pattern."/i", remove_accents($word))) || (isset($common[$word]) && $common[$word] == 1)) {
 			return 1;
 		} else {
 			return 0;
@@ -288,7 +295,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 					$weight = 1;
 					$break = 0;
 					while ($k < $words && $break== 0) {
-						if ($linklist[$k]['weight'][$temp_array[$j]] > 0) {
+						if (isset($linklist[$k]['weight'][$temp_array[$j]]) && $linklist[$k]['weight'][$temp_array[$j]] > 0) {
 							$weight = $weight + $linklist[$k]['weight'][$temp_array[$j]];
 						} else {
 							$break = 1;
@@ -296,19 +303,19 @@ error_reporting(E_ALL ^ E_NOTICE);
 						$k++;
 					}
 					while ($n < $not_words && $break== 0) {
-						if ($notlist[$n]['id'][$temp_array[$j]] > 0) {
+						if (isset($notlist[$n]['id'][$temp_array[$j]]) && $notlist[$n]['id'][$temp_array[$j]] > 0) {
 							$break = 1;
 						}
 						$n++;
 					}				
 
 					while ($o < $phrase_words && $break== 0) {
-						if ($phraselist[$n]['id'][$temp_array[$j]] != 1) {
+						if (!isset($phraselist[$o]['id'][$temp_array[$j]]) || $phraselist[$o]['id'][$temp_array[$j]] != 1) {
 							$break = 1;
 						}
 						$o++;
 					}
-					if ($break== 0 && $category > 0 && $category_list[$temp_array[$j]] != 1) {
+					if ($break== 0 && $category > 0 && (!isset($category_list[$temp_array[$j]]) || $category_list[$temp_array[$j]] != 1)) {
 						$break = 1;
 					}
 
@@ -325,6 +332,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 		if ((count($result_array_full) == 0 || $possible_to_find == 0) && $did_you_mean_enabled == 1) {
 			reset ($searchstr['+']);
+			$near_words = array();
 			foreach ($searchstr['+'] as $word) {
 				$word = addslashes($word);
 				$result = mysql_query("select keyword from ".$mysql_table_prefix."keywords where soundex(keyword) = soundex('$word')");
@@ -463,8 +471,10 @@ function get_search_results($query, $start, $category, $searchtype, $results, $d
 	
 	$full_result['ignore_words'] = $words['ignore'];
 
-	if ($start==0) 
-		$start=1;
+	$start = (int)$start;
+	if ($start <= 0) {
+		$start = 1;
+	}
 	$result = search($words, $category, $start, $results_per_page, $searchtype, $domain);
 	$query= stripslashes($query);
 
@@ -472,13 +482,14 @@ function get_search_results($query, $start, $category, $searchtype, $results, $d
 	$full_result['ent_query'] = $entitiesQuery;
 
 	$endtime = getmicrotime() - $starttime;
-	$rows = $result['results'];
+	$rows = ($result !== null && isset($result['results'])) ? $result['results'] : 0;
 	$time = round($endtime*100)/100;
 
 	
 	$full_result['time'] = $time;
 	
 	$did_you_mean = "";
+	$did_you_mean_b = "";
 
 
 	if (isset($result['did_you_mean'])) {
@@ -500,7 +511,10 @@ function get_search_results($query, $start, $category, $searchtype, $results, $d
 		$matchword= $sph_messages["match"];
 	}
 
-	$num_of_results = count($result) - 2;
+	$num_of_results = is_array($result) ? count($result) - 2 : 0;
+	if ($num_of_results < 0) {
+		$num_of_results = 0;
+	}
 	
 	
 	
@@ -551,7 +565,7 @@ function get_search_results($query, $start, $category, $searchtype, $results, $d
 				$begin = 0;
 				$end = 0;
 				foreach($places as $id => $place) {
-					while ($places[$id + $x] - $place < $desc_length && $x+$id < count($places) && $place < strlen($fulltxt) -$desc_length) {
+					while ($id + $x < count($places) && $places[$id + $x] - $place < $desc_length && $place < strlen($fulltxt) -$desc_length) {
 						$x++;
 						$begin = $id;
 						$end = $id + $x;
