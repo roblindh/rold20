@@ -367,15 +367,13 @@ class cIndividual extends cEntity {
         global $_APP;
         global $db_server, $db_user, $db_password, $db_name_campaign;
 
-        $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
-                or die("Error connecting to database.");
+        $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name_campaign);
 
         $this->Reset();
 
-        $query = "SELECT * FROM characters WHERE ID=" . $id;
-        $result = mysqli_query($dbc, $query)
-                or die("Error querying database.");
-        if ($row = mysqli_fetch_array($result)) {
+        $query = "SELECT * FROM characters WHERE ID=?";
+        $result = $db->query($query, [$id]);
+        if ($row = $result->fetch()) {
             $this->Name = $row['Name'];
             $this->BaseAbilities = new cAbilityScores(
                     $row['BaseStr'], $row['BaseCon'], $row['BaseDex'],
@@ -449,7 +447,7 @@ class cIndividual extends cEntity {
             // Traits
         }
 
-        mysqli_close($dbc);
+        $db->close();
     }
 
     public function GetAdjustedAbility($id) {

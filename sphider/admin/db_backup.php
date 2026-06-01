@@ -66,7 +66,7 @@ function get_def($database,$table,$fp) {
           if(!isset($index[$kname])) $index[$kname] = array();
           $index[$kname][] = $row["Column_name"];
      }
-     while(list($x, $columns) = @each($index)) {
+     foreach($index as $x => $columns) {
           $def .= ",\n";
           if($x == "PRIMARY") $def .= "   PRIMARY KEY (" . implode($columns, ", ") . ")";
           else if (substr($x,0,6) == "UNIQUE") $def .= "   UNIQUE ".substr($x,7)." (" . implode($columns, ", ") . ")";
@@ -102,8 +102,8 @@ function get_content($database,$table,$fp) {
 }
 function diff_microtime($mt_old,$mt_new)
 {
-  list($old_usec, $old_sec) = explode(' ',$mt_old);
-  list($new_usec, $new_sec) = explode(' ',$mt_new);
+  [$old_usec, $old_sec] = explode(' ',$mt_old);
+  [$new_usec, $new_sec] = explode(' ',$mt_new);
   $old_mt = ((float)$old_usec + (float)$old_sec);
   $new_mt = ((float)$new_usec + (float)$new_sec);
   return $new_mt - $old_mt;

@@ -44,22 +44,25 @@ function charview_page_charlist() {
 
     $charview_entities = array();
     $charview_charid = null;
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
-            or die("Error connecting to database.");
+    $db = Database::getInstance();
+    $db->connect($db_server, $db_user, $db_password, $db_name_campaign);
+    
     $query = "SELECT * FROM characters";
-    $result = mysqli_query($dbc, $query)
-            or die("Error querying database.");
-    for ($firstrow = true; $row = mysqli_fetch_array($result); $firstrow = false) {
+    $result = $db->fetchAll($query);
+    
+    $firstrow = true;
+    foreach ($result as $row) {
         if ($firstrow)
             $charview_charid = $row['ID'];
         $charview_entities[$row['ID']] = new cIndividual();
         $charview_entities[$row['ID']]->LoadFromDatabase($row['ID']);
+        $firstrow = false;
     }
     if (isset($_REQUEST['CharacterID']))
         $charview_charid = $_REQUEST['CharacterID'];
     if (isset($_POST['CharacterID']))
         $charview_charid = $_POST['CharacterID'];
-    mysqli_close($dbc);
+    $db->close();
 
     echo '<div id="PageTab' . PAGE_CHARLIST . '" class="utiltab">';
 
@@ -87,8 +90,8 @@ function charview_page_chardata() {
     global $db_server, $db_user, $db_password, $db_name_campaign;
     global $charview_entities, $charview_charid;
 
-    $dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
-            or die("Error connecting to database.");
+    $db = Database::getInstance();
+    $db->connect($db_server, $db_user, $db_password, $db_name_campaign);
 
     $entity = $charview_entities[$charview_charid];
     $entity->UpdateState();
@@ -114,10 +117,9 @@ function charview_page_chardata() {
         echo '</td></tr><tr><td class="cvlrg">';
         echo $entity->Name;
         if ($entity->PlayerID) {
-            $query = "SELECT * FROM players WHERE ID=" . $entity->PlayerID;
-            $result = mysqli_query($dbc, $query)
-                    or die("Error querying database.");
-            if ($row = mysqli_fetch_array($result)) {
+            $query = "SELECT * FROM players WHERE ID=?";
+            $row = $db->fetchOne($query, [$entity->PlayerID]);
+            if ($row) {
                 echo '</td></tr><tr><td class="cvlabel">';
                 echo 'Player';
                 echo '</td></tr><tr><td class="cvmdm">';
@@ -125,22 +127,20 @@ function charview_page_chardata() {
             }
         }
         if ($entity->CampaignID) {
-            $query = "SELECT * FROM campaigns WHERE ID=" . $entity->CampaignID;
-            $result = mysqli_query($dbc, $query)
-                    or die("Error querying database.");
-            if ($row = mysqli_fetch_array($result)) {
+            $query = "SELECT * FROM campaigns WHERE ID=?";
+            $row = $db->fetchOne($query, [$entity->CampaignID]);
+            if ($row) {
                 echo '</td></tr><tr><td class="cvlabel">';
                 echo 'Campaign';
                 echo '</td></tr><tr><td class="cvmdm">';
                 echo $row['Name'];
-                $query = "SELECT * FROM players WHERE ID=" . $row['GameMaster'];
-                $result = mysqli_query($dbc, $query)
-                        or die("Error querying database.");
-                if ($row = mysqli_fetch_array($result)) {
+                $query = "SELECT * FROM players WHERE ID=?";
+                $row2 = $db->fetchOne($query, [$row['GameMaster']]);
+                if ($row2) {
                     echo '</td></tr><tr><td class="cvlabel">';
                     echo 'Dungeon Master';
                     echo '</td></tr><tr><td class="cvmdm">';
-                    echo $row['Name'];
+                    echo $row2['Name'];
                 }
             }
         }
@@ -796,7 +796,7 @@ function charview_page_chardata() {
 
     echo '<script>EnableLevelUp(' . $entity->IsLevelUp() . ');</script>';
 
-    mysqli_close($dbc);
+    $db->close();
 }
 
 function charview_page_charlevel() {

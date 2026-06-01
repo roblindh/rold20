@@ -1,8 +1,16 @@
 <?php 
 
 error_reporting (E_ALL ^ E_NOTICE);
-extract($_POST);
-extract($_REQUEST);
+
+// Replace extract() with explicit variable handling
+$send2 = $_POST['send2'] ?? null;
+$file = $_POST['file'] ?? $_REQUEST['file'] ?? null;
+$del = $_POST['del'] ?? $_REQUEST['del'] ?? null;
+$chg = $_POST['chg'] ?? $_REQUEST['chg'] ?? null;
+$tables = $_POST['tables'] ?? $_REQUEST['tables'] ?? null;
+$filename = $_POST['filename'] ?? $_REQUEST['filename'] ?? null;
+$structonly = $_POST['structonly'] ?? $_REQUEST['structonly'] ?? null;
+
 include "auth.php";
 $backup_path="./backup/";
 $dbname=$database;
@@ -70,15 +78,23 @@ function checkAll(theForm, cName, allNo_stat) {
  <?php
 
 
-		$stats  = mysql_query ("SHOW TABLE STATUS FROM $dbname LIKE '$dbprefix%'");
-		$num_tables = mysql_num_rows($stats);
+		try {
+			$stmt = $pdo->query("SHOW TABLE STATUS FROM `$dbname` LIKE '$dbprefix%'");
+			$stats_array = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$num_tables = count($stats_array);
+		} catch (PDOException $e) {
+			$stats_array = [];
+			$num_tables = 0;
+			echo htmlspecialchars($e->getMessage());
+		}
+
 		if ($num_tables==0) {
 			echo("ERROR: Database contains no tables");
 		}	
 
 		$bgcolor='grey';
 		$i=0;
-		while ($rows=mysql_fetch_array($stats) ) {
+		foreach ($stats_array as $rows) {
 			print "<tr><td class=".$bgcolor."><input type='checkbox' id='tables$i' class='check' name='tables[$i]' value='".$rows["Name"]."' ></td>";
 			print "<td class=".$bgcolor.">".$rows["Name"].'</td>';
 			print '<td style="text-align:center" class='.$bgcolor.'>'.$rows['Rows'].'</td>';
@@ -153,7 +169,11 @@ if (isset($file) && $del==0) {
 	$file_temp=fread(fopen($backup_path.$file, "r"), filesize($backup_path.$file));
 	$query=explode(";#%%\n",$file_temp);
 	for ($i=0;$i < count($query)-1;$i++) {
-		mysql_db_query($dbname,$query[$i]));
+		try {
+			$pdo->exec($query[$i]);
+		} catch (PDOException $e) {
+			echo "Error executing query: " . htmlspecialchars($e->getMessage()) . "<br>\n";
+		}
 	}
 	unlink($backup_path.$file);
 	echo "<table width=\"94%\"><tr><td><b>Your restore 

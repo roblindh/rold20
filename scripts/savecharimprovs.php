@@ -4,8 +4,8 @@ require_once '../RulesSrc/rolcalc.php';
 application_start();
 
 global $db_server, $db_user, $db_password, $db_name_campaign;
-$dbc = mysqli_connect($db_server, $db_user, $db_password, $db_name_campaign)
-        or die("Error connecting to database.");
+$db = Database::getInstance();
+$db->connect($db_server, $db_user, $db_password, $db_name_campaign);
 
 $improvstr = "";
 foreach ($_APP['improvementtraits'] as $iImprovement) {
@@ -17,13 +17,21 @@ foreach ($_APP['skills'] as $iSkill) {
             $improvstr .= (empty($improvstr) ? "" : ";") . "S" . $iSkill['ID'] . "=" . $_REQUEST["imprskill" . $iSkill['ID']];
 }
 $update = "UPDATE characters SET " .
-        (isset($_REQUEST["imprpts"]) ? ("ImprovementPts=" . $_REQUEST["imprpts"] . ", ") : "") .
-        "Improvements='" . $improvstr . "' " .
-        "WHERE (Name='" . $_REQUEST["name"] . "')";
-//echo $update . "<br/>";
-$result = mysqli_query($dbc, $update)
-        or die("Error updating character with improvements.");
-echo 'Character improvements saved...';
-echo '<input type="hidden" name="SaveImprovsResult" value="OK">';
+        (isset($_REQUEST["imprpts"]) ? ("ImprovementPts=?, ") : "") .
+        "Improvements=? " .
+        "WHERE (Name=?)";
+
+$params = [];
+if (isset($_REQUEST["imprpts"])) $params[] = $_REQUEST["imprpts"];
+$params[] = $improvstr;
+$params[] = $_REQUEST["name"];
+
+try {
+    $db->execute($update, $params);
+    echo 'Character improvements saved...';
+    echo '<input type="hidden" name="SaveImprovsResult" value="OK">';
+} catch (Exception $e) {
+    die("Error updating character with improvements: " . htmlspecialchars($e->getMessage()));
+}
 
 ?>
