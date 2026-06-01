@@ -36,6 +36,8 @@ rold20/
 ├── phpunit.xml             # PHPUnit testing configuration
 ├── application.data        # Serialized PHP configuration & database cache
 ├── index.php               # Homepage / Introduction handbook entry point
+├── analysis.php            # Game mechanics balance analyzer & calculator
+├── analysis_content.php    # Calculations for class, creature, and spell comparison
 ├── page_template.php       # Common site template, login, header, and TOC
 ├── hb01_* to hb15_*        # Chapter pages and content for the handbook
 └── util_*                  # Utility tools for character, NPC, and item generation
@@ -60,6 +62,8 @@ The rules engine represents the domain layer of the application, parsing game me
   - `util_npcgen.php`: Form to dynamically configure and generate NPC mobs.
   - `util_itemgen.php`: Crafting and equipment stats builder.
   - `util_campaign.php`: Master tool for campaign state and tracking.
+- **Balance Analysis Utility**:
+  - `analysis.php` / `analysis_content.php`: Generates and compares character classes, creatures, and spells to evaluate average damage-per-round and damage-per-AP, helping achieve target combat lengths and balance the RoL d20 ruleset.
 
 ### C. Search Indexer (`sphider/`)
 Uses the lightweight **Sphider** PHP search engine to index local handbook content and allow full-text search capability across the game rules.
