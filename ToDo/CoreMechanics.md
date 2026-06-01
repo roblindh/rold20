@@ -1,0 +1,61 @@
+``` markdown
+### To Do - Core Mechanics
+- [ ] Notation for numerics and calculations
+    - [ ] Support (and notation) for conditional logic? See descriptors.
+    - [ ] Support and notation for predefined variables and constants? See descriptors.
+- [ ] Characteristics
+    - [ ] Health Scores
+        - [ ] **\*\*Really keep the rule for “reserved” HP/SP/PP? Is it needed? If removed, update HB02 - Action Checks - Action Cost.\*\***
+    - [ ] Resistance Scores
+        - [ ] Change energy resistance to be more similar to DR?
+        - [ ] Replace “Conditional DR” with increased DR and vulnerabilities?
+        - [ ] Damage resistance - make damage resistance more effective against SP damage?
+        - [ ] Change MR to be more similar to DR?
+        - [ ] Change MR to be more like a defense bonus (DeC and saves) against magic?
+- [ ] Change MR to not protect against supernatural energy damage?
+- [ ] Alignment
+    - [ ] What about classes, spells, items, etc. limited to certain alignments? Variable chance? Diplomacy type check?
+    - [ ] New way of determining alignment auras? What about entities having both Divine - Life and Divine - Death, for example? Having some characters/creatures with conflicting auras could actually be a good thing (maybe with a rephrasing of detect evil to detect profane or a more generic detect aura, for example).
+- [ ] Body Type and Natural Attacks
+    - [ ] Separate names for body location and attack?; arm/fist or punch, leg/foot or kick, leg/claw, head/headbutt, head/bite, etc.; multiple attack options per body location, such as fist and elbow for arm, gore and bite for head, etc?
+    - [ ] Should body locations without attacks be specified somewhere? A tertiary level in addition to primary and secondary (never to be used for attacks)? Only count primary attack forms when grappling?
+- [ ] Fate points
+    - [ ] Let fate points be used for exceptional actions, such as bestowing a dying curse on someone? Or maybe letting a blacksmith or warrior forge a magical weapon? Fate Point worth x XP/PP (multiplied by TL)?
+    - [ ] See Tome of Sorrows II (p 8-9).
+    - [ ] Separate into fate and fortune points, fate points for life-or-death situations, and fortune points for gaining a one-time bonus to action checks or defenses? Fortune points should then be renewed regularly and automatically. Suitable as an optional rule?
+- [ ] Descriptors
+    - [ ] Add descriptor for actions and spells that only affect creatures able to see the effect?
+    - [ ] Add descriptor for actions that can only be done once per round?
+- [ ] Actions
+    - [ ] Simplify the rules for concentration and breaking of concentration?
+    - [ ] Multiple levels of concentration? For example, you can maintain a touch spell to touch/attack multiple targets. Basically, an attack requires concentration but an unopposed touch does not. Or does a held touch spell really require concentration?
+    - [ ] Should rays be more like projectile weapons with range increments? The weapon skill can grant appropriate bonuses (including Improved Range).
+    - [ ] Should breath weapons and other area attacks have reduced effect with range?
+    - [ ] Should breath weapons (and other similar abilities) have a cooldown time instead of a SP/PP cost? Or random recharge as in 4E/5E?
+    - [ ] Use residuum/XP to achieve Permanent/Instantaneous effects without reducing available PP? This means that item creation can be made much more generic. For example, Enchant Weapon is normally limited duration; can be given Permanent duration by reducing PP; can be made Instantaneous by spending XP or residuum. Really allow Instantaneous spells to create magic items in mere seconds, or greatly increase activation time when spending XP to make spells instantaneous? How to prevent large number of effects on a single item?
+- [ ] Incorporate advantaged/disadvantaged rule from D\&D 5E? Similar to existing (but rare) reroll feature?
+- [ ] Add "level check" to the list of possible d20 checks? If so, replace with skill level rather than character level?
+- [ ] Should the skill roll to act "defensively" be more difficult against skilled opponents?
+- [ ] Use half the character level instead of action points as bonus on ability checks? Original rules, however, say that ability checks should be used for things not dependent on skill and level.
+- [ ] Modifiers
+    - [ ] Use modifier categories for penalties as well as bonuses.
+    - [ ] Is exception to allow stacking of template modifiers really needed? Maybe even combine racial and template modifiers?
+    - [ ] Try to improve separation between source and purpose?
+    - [ ] Reduce and simplify the number of modifier types?
+        - [ ] Keep material modifier or change it into an enhancement modifier?
+- [ ] Conditions
+    - [ ] See Tome of Sorrows I (p 48-51) for more diseases.
+    - [ ] Mental trauma and illness? See BURPS p 81. See 5E DMG p259-260 for madness.
+    - [ ] Insanities (pfgm251+)
+    - [ ] Add more fatigue and exhaustion rules? But without adding a lot of complexity.
+        - [ ] Make the cinematic optional rule a part of Damage Reduction or Combat Instincts skill? Create similar skill(s) for PP and SP?
+    - [ ] Are the following conditions still useful: Blown away, Checked, Knocked down (by wind)?
+- [ ] Traits and special abilities
+    - [ ] Replace Evasion and Improved Evasion with racial skill in Acrobatics? Same on Enhance Mobility spell and Ring of Evasion?
+    - [ ] Teleport: How to avoid scry-and-die? Add a delay and “warning” (image and sound?) to long-range teleports? Automatically dispel all existing effects? Same for Planar Travel?
+    - [ ] Energy drain - keep it as cost of level, XP? Replace it with permanent HP/SP/PP reduction?
+    - [ ] Regeneration - should it convert some damage types to SP?
+    - [ ] Introduce auras as a well-defined generic rules concept? Always free or ongoing cost? What about multiple overlapping auras, either from separate characters or Bard/Templar combos? Also use auras for some spells? Don’t confuse this with alignment and magic auras.
+- [ ] Try to provide different levels of abstraction, where few details would be enough for stock monsters and NPCs but more details could be generated for PCs and important NPCs. For example, a single attack skill could be provided for a stock NPC, but that skill could be split into detailed subskills for an important NPC. Ideally, this should be a two-way dependency – generating the subskills randomly from the base skill as well as calculating an equivalent base skill from a set of subskills. Compare this with the attribute groups I used in BURPS.
+
+```

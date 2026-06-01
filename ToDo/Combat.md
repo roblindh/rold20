@@ -1,0 +1,64 @@
+``` markdown
+### To Do - Combat
+- [ ] Too much work for players to keep track of SP when each attack and many moves has a small cost? Good way to simplify?
+- [ ] Should the redirection of attacks due to CF be easier to do with an empty hand than with a shield or weapon parry?
+- [ ] More rules for morale
+    - [ ] When to check? How to combine with Intimidate action?
+- [ ] More rules for vehicle combat and siege engines.
+- [ ] Action points
+    - [ ] Increase AP cost of attack bonus for Fort and Will attacks?
+    - [ ] Movement still too expensive, compared to bonuses and other actions?
+        - [ ] Make movement actions cheaper, such as 2 or 3 MP per AP? Part of Mobility skill?
+        - [ ] Reward unusually successful actions with bonus MP?
+    - [ ] Attack and damage bonuses too cheap? Change the AP-to-bonus ratio?
+    - [ ] Reward unusually successful actions with temporary bonus AP?
+    - [ ] Current system has the risk of making any spell that grants bonus AP too powerful.
+    - [ ] **Action alternative 1: Action Points per round**
+        - [ ] With action points used for defense, how to avoid extremely good saves out of combat? The same problem exists for any spell caster who spends a round casting only non-attack spells.
+        - [ ] Should it be possible to use AP to increase supernatural damage (SDB)? Area attacks or just single-target attacks?
+        - [ ] Can AP be used to boost non-attack spells? Boost PL? Boost spellcasting check?
+        - [ ] Akimbo attacks: different speeds for different weapon type combos?; different attack penalties based on style skill and weapon types?
+        - [ ] Should actions other than combat actions become faster with increasing skill?
+    - [ ] Action alternative 2: BAB, BMB, BDB (based on creature type and/or class)
+        - [ ] Using BCB for defense as well, how to make rogues and monks better at defense than offense? Other skills?
+        - [ ] At the beginning of each round, you can move points from your BCB attack bonus to defense and/or damage. This reduces bonuses for all attacks (and may reduce the number of attacks accordingly). Should it be possible to go below 0?
+        - [ ] 1 round = standard + move + minor + x free.
+        - [ ] Standard action allows a single attack with main weapon.
+        - [ ] Full round allows a number of main weapon attacks as determined by level.
+        - [ ] A character has +1 action bonus per level. Each round, the character can divide this bonus between a number of actions (maximum number of actions is determined by level, but certain skills can increase the number). Unused points count as a defensive bonus against all attacks. If you are flat-footed, count one half of the action bonus for defense. If you are sleeping or unconscious, count no action bonus for defense. Unused points can also be used to improve attacks of opportunity, but those points will not count as a defensive bonus against any subsequent attacks.
+        - [ ] Each of those main weapon attacks can be exchanged for improved defense or 5' step.
+        - [ ] Standard can be converted to move, minor, or x attack actions
+        - [ ] Move can be converted to minor.
+        - [ ] Can an attack action be converted to additional minor actions?
+        - [ ] Skill in multi-attack allows additional attacks with secondary weapon(s) (even natural ones, such as feet and claws). Should this cost combat bonus? Can these be exchanged for improved defense? Default is reduced Str damage bonus, but this should disappear with improved skill.
+        - [ ] Logically, it should be possible to attack multiple opponents while moving, all in a single round. Allow attack actions to be "inserted" within a move action?
+        - [ ] Suggestion: As a full round, you get the number of attack actions determined by your level (increase this by 1). Each of these actions can be used for attack, added defense, or to move 1 square (up to base speed). Add a minor action?
+        - [ ] Any reason to keep total defense action? Yes, but let a character convert attack actions to extra defense bonus (+2 per attack).
+    - [ ] Any alternative has to cover...
+        - [ ] Increasing number of attacks with level.
+        - [ ] Additional attacks for multiple weapons, natural or artificial.
+        - [ ] Choice of focus on attack, damage, or defense.
+        - [ ] Similar system for physical and magical combat.
+        - [ ] Non-attack actions should not allow disproportionate defense bonus.
+    - [ ] Values that should increase with level somehow...
+        - [ ] Physical attack rolls (also through skill and weapon).
+        - [ ] Physical damage rolls? (also through skill and weapon).
+        - [ ] Magical attack rolls (also through skill and implements).
+        - [ ] Magical damage rolls? (also through skill and implements?)
+        - [ ] DeC (also through deflection magic and parry skills).
+        - [ ] NDD Defenses (also through resistance magic).
+        - [ ] DR (also through armor or magic).
+    - [ ] Other action types: immediate reaction? swift action?
+- [ ] Threatening and attacks of opportunity
+    - [ ] Keep the difference between supernatural and spell-like abilities? Or enough with the AoO descriptor?
+    - [ ] Should AoO apply to all spells or only those with S, M, and F implements?
+    - [ ] Replace AoO with a limited number of reaction actions?
+        - [ ] Give everybody 2+Dex mod reactions per round?
+        - [ ] Use for parrying in addition to or instead of just a DeC parry bonus? Compare Shield Block in Pf2E. Define parry as a reaction-type action, where high success can result in riposte?
+        - [ ] Specify triggers as in Pf2E?
+- [ ] Parrying
+    - [ ] Should Str modifier affect how much damage one can parry? Maybe a successful parry should reduce damage by the maximum amount dealt by the parrying weapon (but with a modifier for shields, for example)? On the other hand, it should be possible to just deflect an attack (using more Dex than Str).
+- [ ] **Should it be possible to focus defense against a particular creature or weapon (or even a particular attack)? Consider movie fights where someone desperately avoids the most dangerous weapon, while accepting several non-lethal hits from secondary attacks. Would also tend to increase the duration of one-on-one duel combats. Dedicating AP bonuses to specific actions would solve this. Could also be part of a Fighting Style skill?**
+    - [ ] **Simplest solution could be to add a new option for using AP defensively: DeB bonus of +2 per AP against a single attack (used as a reaction with saved/unused AP).**
+
+```
