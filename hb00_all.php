@@ -30,6 +30,7 @@
                 </div>
                 <?php
                 set_time_limit(30 * 60);
+                echo '<br/>';
                 include 'hb01_intro_content.php';
                 echo '<br/>';
                 include 'hb02_coremech_content.php';
