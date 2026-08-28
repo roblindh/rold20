@@ -1,2 +1,8 @@
 application.data
 logs/
+.phpunit.cache/
+.env
+.env.local
+.env.*.local
+!.env.example
+.DS_Store

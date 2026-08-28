@@ -1,0 +1,35 @@
+# ==============================================================================
+# RoL d20 - Apache Security & Runtime Configuration
+# ==============================================================================
+
+# Disable directory browsing
+Options -Indexes +FollowSymLinks
+
+# Prevent viewing of hidden files (.git, .env, etc.)
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Prevent viewing of sensitive system, configuration, and data files
+<FilesMatch "\.(sql|data|ini|xml|log|sln|vcxproj|user|md|json|yml|yaml|dockerignore|dockerfile)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Prevent direct access to sensitive directories
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(dbdump|tests|docker|nbproject|\.git|logs) - [F,L,NC]
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Default Charset
+AddDefaultCharset UTF-8

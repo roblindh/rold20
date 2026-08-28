@@ -1,20 +1,20 @@
 services:
   web:
     build:
-      context: .
+      context: /share/Container/rold20
       dockerfile: Dockerfile
     container_name: rold20_web
     restart: unless-stopped
     ports:
-      - "${WEB_PORT:-8090}:80"
+      - "8090:80"
     volumes:
-      - .:/var/www/html
-      - ./docker/php.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+      - /share/Container/rold20:/var/www/html
+      - /share/Container/rold20/docker/php.ini:/usr/local/etc/php/conf.d/custom.ini:ro
     environment:
       DB_HOST: db
-      DB_USER: ${DB_USER:-rold20_user}
-      DB_PASSWORD: ${DB_PASSWORD:-rold20_pass}
-      DB_NAME: ${DB_NAME:-rold20}
+      DB_USER: rold20_user
+      DB_PASSWORD: rold20_pass
+      DB_NAME: rold20
     depends_on:
       db:
         condition: service_healthy
@@ -26,15 +26,15 @@ services:
     container_name: rold20_db
     restart: unless-stopped
     ports:
-      - "${DB_PORT:-3307}:3306"
+      - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_password}
-      MYSQL_DATABASE: ${DB_NAME:-rold20}
-      MYSQL_USER: ${DB_USER:-rold20_user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-rold20_pass}
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: rold20
+      MYSQL_USER: rold20_user
+      MYSQL_PASSWORD: rold20_pass
     volumes:
       - db_data:/var/lib/mysql
-      - ./dbdump/Dump20200708.sql:/docker-entrypoint-initdb.d/01-initial-dump.sql:ro
+      - /share/Container/rold20/dbdump/Dump20200708.sql:/docker-entrypoint-initdb.d/01-initial-dump.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -48,12 +48,12 @@ services:
     container_name: rold20_phpmyadmin
     restart: unless-stopped
     ports:
-      - "${PMA_PORT:-8885}:80"
+      - "8885:80"
     environment:
       PMA_HOST: db
-      PMA_USER: ${DB_USER:-rold20_user}
-      PMA_PASSWORD: ${DB_PASSWORD:-rold20_pass}
-      PMA_DB: ${DB_NAME:-rold20}
+      PMA_USER: rold20_user
+      PMA_PASSWORD: rold20_pass
+      PMA_DB: rold20
     depends_on:
       - db
     networks:

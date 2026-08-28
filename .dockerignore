@@ -1,8 +1,14 @@
 .git
 .gitignore
 .DS_Store
+.phpunit.cache
 node_modules
 nbproject
+ToDo
+tests
+phpunit.xml
 *.log
 .env
-.env.local
+.env.*
+rold20.sln
+dbdump
