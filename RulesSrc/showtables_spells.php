@@ -39,55 +39,55 @@ function show_spelldescriptions() {
         {
             echo '<tr>';
             echo '<td>Skill(s):</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['Skills']) . '</td>';
+            echo '<td>' . format_text($row['Skills']) . '</td>';
             echo '</tr>';
         }
         if ($row['AttackCheck']) {
             echo '<tr>';
             echo '<td>Attack/Action Check:</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['AttackCheck']) . '</td>';
+            echo '<td>' . format_text($row['AttackCheck']) . '</td>';
             echo '</tr>';
         }
         if ($row['ActionTime']) {
             echo '<tr>';
             echo '<td>Action Time:</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['ActionTime']) . '</td>';
+            echo '<td>' . format_text($row['ActionTime']) . '</td>';
             echo '</tr>';
         }
         if ($row['Implements']) {
             echo '<tr>';
             echo '<td>Implements:</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['Implements']) . '</td>';
+            echo '<td>' . format_text($row['Implements']) . '</td>';
             echo '</tr>';
         }
         if ($row['Cost']) {
             echo '<tr>';
             echo '<td>Cost:</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['Cost']) . '</td>';
+            echo '<td>' . format_text($row['Cost']) . '</td>';
             echo '</tr>';
         }
         if ($row['Range']) {
             echo '<tr>';
             echo '<td>Range:</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['Range']) . '</td>';
+            echo '<td>' . format_text($row['Range']) . '</td>';
             echo '</tr>';
         }
         if ($row['Duration']) {
             echo '<tr>';
             echo '<td>Duration:</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['Duration']) . '</td>';
+            echo '<td>' . format_text($row['Duration']) . '</td>';
             echo '</tr>';
         }
         if ($row['Target']) {
             echo '<tr>';
             echo '<td>Target/Area:</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['Target']) . '</td>';
+            echo '<td>' . format_text($row['Target']) . '</td>';
             echo '</tr>';
         }
         if ($row['Description']) {
             echo '<tr>';
             echo '<td>Description:</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['Description']) . '</td>';
+            echo '<td>' . format_text($row['Description']) . '</td>';
             echo '</tr>';
         } {
             $query2 = "SELECT * FROM spelloptions WHERE SpellID=" . $row['ID'];
@@ -96,9 +96,9 @@ function show_spelldescriptions() {
                 echo '<tr>';
                 echo '<td>Variation ' . $row2['Name'] . ' (' .
                 ($row2['Descriptors'] ? $row2['Descriptors'] . '; ' : '') .
-                ($row2['Skills'] ? str_replace("\\n", "<br/>", $row2['Skills']) . '; ' : '') .
-                str_replace("\\n", "<br/>", $row2['Cost']) . '):</td>';
-                echo '<td>' . str_replace("\\n", "<br/>", $row2['Description']) . '</td>';
+                ($row2['Skills'] ? format_text($row2['Skills']) . '; ' : '') .
+                format_text($row2['Cost']) . '):</td>';
+                echo '<td>' . format_text($row2['Description']) . '</td>';
                 echo '</tr>';
             }
         }
@@ -106,19 +106,19 @@ function show_spelldescriptions() {
           {
           echo '<tr>';
           echo '<td>Options:</td>';
-          echo '<td>' . str_replace("\\n", "<br/>", $row['Options']) . '</td>';
+          echo '<td>' . format_text($row['Options']) . '</td>';
           echo '</tr>';
           } */
         if ($row['Results']) {
             echo '<tr>';
             echo '<td>Results:</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['Results']) . '</td>';
+            echo '<td>' . format_text($row['Results']) . '</td>';
             echo '</tr>';
         }
         if ($row['Modifiers']) {
             echo '<tr>';
             echo '<td>Modifiers:</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['Modifiers']) . '</td>';
+            echo '<td>' . format_text($row['Modifiers']) . '</td>';
             echo '</tr>';
         }
         echo '</tbody></table>';

@@ -80,7 +80,7 @@ function show_skilldescriptions() {
 
         while ($row2 = $result2->fetch()) {
             echo '<h5 id="skill' . $row2['Abbreviation'] . '">' . $row2['Name'] . ' (' . $row2['Abbreviation'] . ')</h5>';
-            echo '<p>' . str_replace("\\n", "<br/>", $row2['Description']) . '</p>';
+            echo '<p>' . format_text($row2['Description']) . '</p>';
             if ($row2['Prereqs']) {
                 echo '<p>Prerequisites: ' . $row2['Prereqs'] . '</p>';
             }
@@ -103,9 +103,9 @@ function show_skilldescriptions() {
                     while ($row3 = $result3->fetch()) {
                         echo '<tr>';
                         echo '<td>' . $row3['Name'] . '</td>';
-                        echo '<td>' . str_replace("\\n", "<br/>", $row3['Description'] ?? '') . '</td>';
+                        echo '<td>' . format_text($row3['Description'] ?? '') . '</td>';
                         echo '<td>' . $row3['Prereqs'] . '</td>';
-                        echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row3['Traits'] ?? '', FALSE)) . '</td>';
+                        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row3['Traits'] ?? '', FALSE)) . '</td>';
                         echo '</tr>';
                     }
                     ?>
@@ -133,7 +133,7 @@ function show_skilldescriptions() {
 
                 echo '<tr>';
                 echo '<td style="text-align:center">' . $row3['SkillLevel'] . '</td>';
-                echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row3['Traits'], FALSE)) . '</td>';
+                echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row3['Traits'] ?? '', FALSE)) . '</td>';
                 echo '</tr>';
             }
             if (!$first) {
@@ -162,7 +162,7 @@ function show_skilldescriptions() {
 
                 echo '<tr>';
                 echo '<td>' . $row3['Name'] . (strpos($row3['Descriptors'] ?? '', "Untrained") !== FALSE ? '' : '*') . '</td>';
-                echo '<td>' . str_replace("\\n", "<br/>", $row3['ActionCheck'] ?? '') . '</td>';
+                echo '<td>' . format_text($row3['ActionCheck'] ?? '') . '</td>';
                 echo '</tr>';
             }
             if (!$first) {

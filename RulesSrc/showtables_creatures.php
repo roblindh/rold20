@@ -1,5 +1,38 @@
 <?php
 
+function render_creature_image_script() {
+    static $rendered = false;
+    if ($rendered) return;
+    $rendered = true;
+    ?>
+    <script>
+    function showCreatureImage(id, src, isLocal, externalUrl) {
+        var span = document.getElementById('crimg' + id);
+        if (!span) return;
+        var html = '<div style="margin-top: 5px;">';
+        html += '<img src="' + src + '" alt="Creature image" style="max-width: 350px; max-height: 350px; object-fit: contain; border: 1px solid #ccc; border-radius: 4px; display: block; margin-bottom: 5px;" ';
+        html += 'onerror="this.onerror=null; this.style.display=\'none\'; document.getElementById(\'crerr' + id + '\').style.display=\'block\';"/>';
+        html += '<div id="crerr' + id + '" style="display: none; color: #c00; font-size: 0.9em; margin-bottom: 5px; background: #fff0f0; border: 1px solid #ffcccc; padding: 4px 8px; border-radius: 4px;">';
+        html += '⚠️ <strong>Image unavailable</strong> (remote link unreachable or blocked).';
+        if (externalUrl) {
+            html += ' <a href="' + externalUrl + '" target="_blank" rel="noopener noreferrer">Try opening direct link</a>.';
+        }
+        html += '<br/>To supply a local image, place <code>' + id + '.jpg</code> (or <code>.png</code>) in <code>images/creatures/</code>.';
+        html += '</div>';
+        html += '<button type="button" onclick="hideCreatureImage(' + id + ', \'' + src.replace(/'/g, "\\'") + '\', ' + isLocal + ', \'' + (externalUrl || '').replace(/'/g, "\\'") + '\')">Hide</button>';
+        html += '</div>';
+        span.innerHTML = html;
+    }
+
+    function hideCreatureImage(id, src, isLocal, externalUrl) {
+        var span = document.getElementById('crimg' + id);
+        if (!span) return;
+        span.innerHTML = '<button type="button" onclick="showCreatureImage(' + id + ', \'' + src.replace(/'/g, "\\'") + '\', ' + isLocal + ', \'' + (externalUrl || '').replace(/'/g, "\\'") + '\')">Show</button>';
+    }
+    </script>
+    <?php
+}
+
 function show_creatureexplanation() {
 ?>
     <p>
@@ -170,30 +203,40 @@ function show_creatureinfo($id, $fullinfo) {
         echo '<td>' . $_APP['bodycats'][$row['BodyType']]['Description'] . '</td>';
         echo '</tr>';
     }
+    render_creature_image_script();
+
     if ($row['NaturalAttacks']) {
         echo '<tr>';
         echo '<td>Natural Attacks:</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", cCreature::GetNaturalAttacksDescription($row['NaturalAttacks'], $row['SizeClass'])) . '</td>';
+        echo '<td>' . format_text(cCreature::GetNaturalAttacksDescription($row['NaturalAttacks'], $row['SizeClass'] ?? 0)) . '</td>';
         echo '</tr>';
     }
     if ($row['Appearance']) {
         echo '<tr>';
         echo '<td>Appearance:</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", $row['Appearance']) . '</td>';
+        echo '<td>' . format_text($row['Appearance']) . '</td>';
         echo '</tr>';
     }
-    if ($row['ExternalImageURL']) {
+    $rawUrl = $row['ExternalImageURL'] ?? null;
+    $resolvedUrl = cCreature::GetResolvedImageUrl($rawUrl, (int)$row['ID'], $row['Name'] ?? '');
+    $localImage = cCreature::GetLocalImagePath((int)$row['ID'], $row['Name'] ?? '');
+    $isLocal = ($localImage !== null);
+
+    if (!empty($resolvedUrl)) {
     ?>
-        <tr><td>Image URL:</td>
-        <td><span id="crimg<?php echo $row['ID']; ?>">
-            <button onclick="document.getElementById('crimg<?php echo $row['ID']; ?>').innerHTML='<img src=\'<?php echo $row['ExternalImageURL']; ?>\'/>';">Show</button>
-        </span></td></tr>
+        <tr><td>Image:</td>
+        <td>
+            <span id="crimg<?php echo $row['ID']; ?>">
+                <button type="button" onclick="showCreatureImage(<?php echo $row['ID']; ?>, '<?php echo addslashes(htmlspecialchars($resolvedUrl, ENT_QUOTES)); ?>', <?php echo $isLocal ? 'true' : 'false'; ?>, '<?php echo addslashes(htmlspecialchars($resolvedUrl, ENT_QUOTES)); ?>')">Show</button>
+            </span>
+            &nbsp;<a href="<?php echo htmlspecialchars($resolvedUrl); ?>" target="_blank" rel="noopener noreferrer" style="font-size: 0.85em; text-decoration: underline;">[Direct Link]</a>
+        </td></tr>
     <?php
     }
     if ($row['Personality']) {
         echo '<tr>';
         echo '<td>Personality:</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", $row['Personality']) . '</td>';
+        echo '<td>' . format_text($row['Personality']) . '</td>';
         echo '</tr>';
     }
     if ($row['Alignment']) {
@@ -205,24 +248,26 @@ function show_creatureinfo($id, $fullinfo) {
     if ($row['RacialTraits']) {
         echo '<tr>';
         echo '<td>Racial Traits:</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row['RacialTraits'], FALSE)) . '</td>';
+        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['RacialTraits'], FALSE)) . '</td>';
         echo '</tr>';
     }
-    if ($row['DefaultCulture']) {
+    if ($row['DefaultCulture'] && isset($_APP['cultures'][$row['DefaultCulture']])) {
         echo '<tr>';
         echo '<td>Default Culture:</td>';
         echo '<td>' . $_APP['cultures'][$row['DefaultCulture']]['Name'] . ' (';
-        echo $_APP['classes'][$_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfig']]['ClassID']]['Name'];
-        if ($_APP['cultures'][$row['DefaultCulture']]['ClassConfigSec'])
+        if (isset($_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfig']]['ClassID'])) {
+            echo $_APP['classes'][$_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfig']]['ClassID']]['Name'];
+        }
+        if (!empty($_APP['cultures'][$row['DefaultCulture']]['ClassConfigSec']) && isset($_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfigSec']]['ClassID']))
             echo ', ' . $_APP['classes'][$_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfigSec']]['ClassID']]['Name'];
-        if ($_APP['cultures'][$row['DefaultCulture']]['ClassConfigTert'])
+        if (!empty($_APP['cultures'][$row['DefaultCulture']]['ClassConfigTert']) && isset($_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfigTert']]['ClassID']))
             echo ', ' . $_APP['classes'][$_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfigTert']]['ClassID']]['Name'];
         echo ')</td>';
         echo '</tr>';
 
         echo '<tr>';
         echo '<td>Cultural Traits:</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($_APP['cultures'][$row['DefaultCulture']]['Traits'], FALSE)) . '</td>';
+        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($_APP['cultures'][$row['DefaultCulture']]['Traits'] ?? '', FALSE)) . '</td>';
         echo '</tr>';
     }
     if ($row['Environment']) {
@@ -345,7 +390,7 @@ function show_creaturetypes() {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
         echo '<td>' . $row['Description'] . '</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row['GroupTraits'], FALSE)) . '</td>';
+        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['GroupTraits'] ?? '', FALSE)) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -370,7 +415,7 @@ function show_cultureinfo($id) {
     if ($row['Traits']) {
         echo '<tr>';
         echo '<td>Traits:</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
+        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
         echo '</tr>';
     }
     if ($row['ClassConfig']) {
@@ -505,13 +550,13 @@ function show_templateinfo($id, $fullinfo) {
     if ($row['Appearance']) {
         echo '<tr>';
         echo '<td>Appearance:</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", $row['Appearance']) . '</td>';
+        echo '<td>' . format_text($row['Appearance']) . '</td>';
         echo '</tr>';
     }
     if ($row['Personality']) {
         echo '<tr>';
         echo '<td>Personality:</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", $row['Personality']) . '</td>';
+        echo '<td>' . format_text($row['Personality']) . '</td>';
         echo '</tr>';
     }
     if ($row['Alignment']) {
@@ -523,7 +568,7 @@ function show_templateinfo($id, $fullinfo) {
     if ($row['RacialTraits']) {
         echo '<tr>';
         echo '<td>Racial Traits:</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row['RacialTraits'], FALSE)) . '</td>';
+        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['RacialTraits'], FALSE)) . '</td>';
         echo '</tr>';
     }
     echo '</tbody></table>';

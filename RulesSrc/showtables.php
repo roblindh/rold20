@@ -395,12 +395,12 @@ function show_activitylevels() {
     while ($row = $result->fetch()) {
         echo '<tr>';
         echo '<td>' . $row['Name'] . '</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", $row['Description']) . '</td>';
+        echo '<td>' . format_text($row['Description']) . '</td>';
         echo '<td style="text-align:center">' . $row['RecoverHP'] . '</td>';
         echo '<td style="text-align:center">' . $row['RecoverSP'] . '</td>';
         echo '<td style="text-align:center">' . $row['RecoverPP'] . '</td>';
         echo '<td style="text-align:center">' . $row['RecoverAbil'] . '</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", $row['OtherEffects']) . '</td>';
+        echo '<td>' . format_text($row['OtherEffects']) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -796,7 +796,7 @@ function show_companionimprovements() {
         echo '<td style="text-align:center">' . signedstr($row['AttMod']) . '</td>';
         echo '<td style="text-align:center">' . signedstr($row['DefMod']) . '</td>';
         echo '<td style="text-align:center">' . signedstr($row['APMod']) . '</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
+        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -832,7 +832,7 @@ function show_companionimprovements() {
         echo '<td style="text-align:center">' . signedstr($row['AttMod']) . '</td>';
         echo '<td style="text-align:center">' . signedstr($row['DefMod']) . '</td>';
         echo '<td style="text-align:center">' . signedstr($row['APMod']) . '</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
+        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -865,7 +865,7 @@ function show_companionimprovements() {
         echo '<td style="text-align:center">' . signedstr($row['AttMod']) . '</td>';
         echo '<td style="text-align:center">' . signedstr($row['DefMod']) . '</td>';
         echo '<td style="text-align:center">' . signedstr($row['APMod']) . '</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
+        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -894,7 +894,7 @@ function show_companionimprovements() {
         echo '<td style="text-align:center">' . $row['HPMod'] . '</td>';
         echo '<td style="text-align:center">' . $row['DRMod'] . '</td>';
         echo '<td style="text-align:center">' . $row['APMod'] . '</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
+        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
         echo '</tr>';
     }
     ?>
@@ -924,7 +924,7 @@ function show_descriptors() {
         echo '<tr>';
         echo '<td>' . $row['Descriptor'] . '</td>';
         echo '<td>' . $row['Notation'] . '</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", $row['Description']) . '</td>';
+        echo '<td>' . format_text($row['Description']) . '</td>';
         echo '</tr>';
     }
     ?>

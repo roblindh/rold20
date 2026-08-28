@@ -200,7 +200,7 @@ function show_items() {
                     while ($row2 = $result2->fetch()) {
                         if ($_APP['itemsubtypes'][$row2['Subtype']]['Type'] == $row['ID']) {
                             echo '<tr>';
-                            echo '<td>' . str_replace("\\n", "<br/>", $row2['Name']) . '</td>';
+                            echo '<td>' . format_text($row2['Name']) . '</td>';
                             echo '<td style="text-align:center">' . $row2['BaseValue'] . '</td>';
                             echo '<td style="text-align:center">' . $row2['BaseWeight'] . '</td>';
                             if ($row2['BaseSize'] != null)
@@ -220,13 +220,13 @@ function show_items() {
                                 $entity->GenerateItem("(Item=" . $row2['Name'] . ":)");
 
                                 echo '<tr>';
-                                echo '<td></td><td colspan=7>' . str_replace("\\n", "<br/>", $entity->TraitEffects->ProcessTraits($row2['Traits'], 0, $entity)) . '</td>';
-        //				    echo '<td></td><td colspan=7>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row2['Traits'], FALSE)) . '</td>';
+                                echo '<td></td><td colspan=7>' . format_text($entity->TraitEffects->ProcessTraits($row2['Traits'], 0, $entity)) . '</td>';
+        //				    echo '<td></td><td colspan=7>' . format_text(cTraitEffects::StatGetTraitsDescription($row2['Traits'], FALSE)) . '</td>';
                                 echo '</tr>';
                             }
                             if ($row2['Description']) {
                                 echo '<tr>';
-                                echo '<td></td><td colspan=8>' . str_replace("\\n", "<br/>", $row2['Description']) . '</td>';
+                                echo '<td></td><td colspan=8>' . format_text($row2['Description']) . '</td>';
                                 echo '</tr>';
                             }
                         }
@@ -259,9 +259,9 @@ function show_itemsartifacts() {
         <?php
         while ($row2 = $result2->fetch()) {
             echo '<tr>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row2['Name']) . '</td>';
+            echo '<td>' . format_text($row2['Name']) . '</td>';
             if ($row2['Description']) {
-                echo '<td>' . str_replace("\\n", "<br/>", $row2['Description']) . '</td>';
+                echo '<td>' . format_text($row2['Description']) . '</td>';
             }
             echo '</tr>';
         }
@@ -321,7 +321,7 @@ function show_itemsmagic() {
                             $entity->GenerateItem($row2['Config']);
 
                             echo '<tr>';
-                            echo '<td>' . str_replace("\\n", "<br/>", $row2['Name']) . '</td>';
+                            echo '<td>' . format_text($row2['Name']) . '</td>';
                             echo '<td style="text-align:center">' . $entity->GetValue() . '</td>';
                             echo '<td style="text-align:center">' . $entity->GetWeight() . '</td>';
                             echo '<td style="text-align:center">' . $_APP['sizecats'][min(max($entity->GetCurrentSize(), -4), 4)]['Abbreviation'] . '</td>';
@@ -333,16 +333,16 @@ function show_itemsmagic() {
                             echo '</tr>';
                             if ($row2['Description']) {
                                 echo '<tr>';
-                                echo '<td></td><td colspan=8>' . str_replace("\\n", "<br/>", $row2['Description']) . '</td>';
+                                echo '<td></td><td colspan=8>' . format_text($row2['Description']) . '</td>';
                                 echo '</tr>';
                             }
-                            if ($_APP['items'][$entity->Item]['Traits']) {
+                            if (isset($_APP['items'][$entity->Item]['Traits']) && $_APP['items'][$entity->Item]['Traits']) {
                                 echo '<tr>';
-                                echo '<td></td><td colspan=8>' . str_replace("\\n", "<br/>", $entity->TraitEffects->ProcessTraits($_APP['items'][$entity->Item]['Traits'], 0, $entity)) . '</td>';
+                                echo '<td></td><td colspan=8>' . format_text($entity->TraitEffects->ProcessTraits($_APP['items'][$entity->Item]['Traits'], 0, $entity)) . '</td>';
                                 echo '</tr>';
                             } {
                                 echo '<tr>';
-                                echo '<td></td><td colspan=8>' . str_replace("\\n", "<br/>", $entity->GetModsStr()) . '</td>';
+                                echo '<td></td><td colspan=8>' . format_text($entity->GetModsStr()) . '</td>';
                                 echo '</tr>';
                             }
                         }
@@ -384,7 +384,7 @@ function show_itemmodsmagic() {
         <?php
         while ($row = $result->fetch()) {
             echo '<tr>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['Description']) . '</td>';
+            echo '<td>' . format_text($row['Description']) . '</td>';
             echo '<td style="text-align:center">';
             if (isset($row['Subtype']) && $row['Subtype'] > 0)
                 echo $_APP['itemsubtypes'][$row['Subtype']]['Name'];
@@ -394,10 +394,10 @@ function show_itemmodsmagic() {
                 echo 'Any';
             echo '</td>';
             echo '<td style="text-align:center">' . signedstr($row['PLAdd']) . '</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['AssociatedSpells']) . '</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['AssociatedSpecial']) . '</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['SpecialInfo']) . '</td>';
+            echo '<td>' . format_text($row['AssociatedSpells']) . '</td>';
+            echo '<td>' . format_text($row['AssociatedSpecial']) . '</td>';
+            echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
+            echo '<td>' . format_text($row['SpecialInfo']) . '</td>';
             echo '</tr>';
         }
         ?>
@@ -430,7 +430,7 @@ function show_itemmodsmundane() {
         <?php
         while ($row = $result->fetch()) {
             echo '<tr>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['Description']) . '</td>';
+            echo '<td>' . format_text($row['Description']) . '</td>';
             echo '<td style="text-align:center">';
             if (isset($row['Subtype']) && $row['Subtype'] > 0)
                 echo $_APP['itemsubtypes'][$row['Subtype']]['Name'];
@@ -445,8 +445,8 @@ function show_itemmodsmundane() {
             echo '<td style="text-align:center">Base' .
             ((isset($row['WeightMul']) && $row['WeightMul'] != 1) ? ' &times;' . $row['WeightMul'] : '') .
             ((isset($row['WeightAdd']) && $row['WeightAdd'] != 0) ? ' +' . $row['WeightAdd'] : '') . '</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['SpecialInfo']) . '</td>';
+            echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
+            echo '<td>' . format_text($row['SpecialInfo']) . '</td>';
             echo '</tr>';
         }
         ?>
@@ -525,7 +525,7 @@ function show_materials() {
         <?php
         while ($row = $result->fetch()) {
             echo '<tr>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['Name']) . '</td>';
+            echo '<td>' . format_text($row['Name']) . '</td>';
             echo '<td style="text-align:center">' . $row['DR'] . '</td>';
             echo '<td style="text-align:center">' . $row['HP'] . '</td>';
             echo '<td style="text-align:center">' . $row['BreakDC'] . '</td>';
@@ -533,8 +533,8 @@ function show_materials() {
             echo '<td style="text-align:center">' . $row['MR'] . '</td>';
             echo '<td style="text-align:center">' . $row['BaseValue'] . '</td>';
             echo '<td style="text-align:center">' . $row['Density'] . '</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
-            echo '<td>' . str_replace("\\n", "<br/>", $row['SpecialInfo']) . '</td>';
+            echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
+            echo '<td>' . format_text($row['SpecialInfo']) . '</td>';
             echo '</tr>';
         }
         ?>

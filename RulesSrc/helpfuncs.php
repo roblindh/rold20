@@ -73,4 +73,11 @@ function ModifyDie($dieStr, $steps) {
     return ($n > 1 ? $n : "") . (($n > 1 || $d > 1) ? "d" : "") . $d;
 }
 
+function format_text(?string $str): string {
+    if ($str === null || $str === '') {
+        return '';
+    }
+    return str_replace("\\n", "<br/>", $str);
+}
+
 ?>

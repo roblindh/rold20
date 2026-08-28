@@ -210,6 +210,69 @@ class cCreature {
         return $str;
     }
 
+    public static function GetLocalImagePath(int $id, string $name = ''): ?string {
+        $extensions = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+        $baseDir = dirname(__DIR__) . '/images/creatures/';
+        
+        foreach ($extensions as $ext) {
+            if (file_exists($baseDir . $id . '.' . $ext)) {
+                return 'images/creatures/' . $id . '.' . $ext;
+            }
+        }
+        
+        if (!empty($name)) {
+            $candidates = [
+                $name,
+                strtolower($name),
+                preg_replace('/[^a-zA-Z0-9_-]/', '_', $name),
+                strtolower(preg_replace('/[^a-zA-Z0-9_-]/', '_', $name)),
+                preg_replace('/\s+/', '_', $name),
+                strtolower(preg_replace('/\s+/', '_', $name)),
+            ];
+            $candidates = array_unique($candidates);
+            foreach ($candidates as $cand) {
+                foreach ($extensions as $ext) {
+                    if (file_exists($baseDir . $cand . '.' . $ext)) {
+                        return 'images/creatures/' . $cand . '.' . $ext;
+                    }
+                }
+            }
+        }
+        
+        return null;
+    }
+
+    public static function GetResolvedImageUrl(?string $rawUrl, int $id = 0, string $name = ''): ?string {
+        $localPath = self::GetLocalImagePath($id, $name);
+        if ($localPath !== null) {
+            return $localPath;
+        }
+
+        if (empty($rawUrl)) {
+            return null;
+        }
+
+        $url = trim($rawUrl);
+
+        // Wizards of the Coast archive mirror via Wayback Machine raw image endpoint
+        if (str_contains($url, 'wizards.com/dnd/images/')) {
+            if (str_starts_with($url, 'https://')) {
+                $url = 'http://' . substr($url, 8);
+            }
+            return 'https://web.archive.org/web/20160401000000im_/' . $url;
+        }
+
+        // Fandom / Wikia CDN modernization
+        if (str_contains($url, 'vignette.wikia.nocookie.net') || str_contains($url, 'static.wikia.nocookie.net')) {
+            $url = str_replace('vignette.wikia.nocookie.net', 'static.wikia.nocookie.net', $url);
+            $url = preg_replace('/\/revision\/latest.*$/', '', $url);
+            $url = preg_replace('/\/scale-to-width-down\/\d+/', '', $url);
+            return $url;
+        }
+
+        return $url;
+    }
+
 }
 
 class cTemplate {

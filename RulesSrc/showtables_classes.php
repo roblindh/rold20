@@ -61,23 +61,23 @@ function show_classes() {
             <?php if ($row['SpellKnowledge']) { ?>
                 <tr>
                     <td>Spell Knowledge:</td>
-                    <td><?php echo str_replace("\\n", "<br/>", $row['SpellKnowledge']); ?></td>
+                    <td><?php echo format_text($row['SpellKnowledge']); ?></td>
                 </tr>
             <?php } ?>
             <?php if ($row['Notes']) { ?>
             <tr>
                 <td>Role-Playing Notes:</td>
-                <td><?php echo str_replace("\\n", "<br/>", $row['Notes']); ?></td>
+                <td><?php echo format_text($row['Notes']); ?></td>
             </tr>
             <?php } ?>
             <tr>
                 <td>Roles:</td>
-                <td><?php echo str_replace("\\n", "<br/>", $row['Roles']); ?></td>
+                <td><?php echo format_text($row['Roles']); ?></td>
             </tr>
             <?php if ($row['OldRanks']) { ?>
             <tr>
                 <td>Ranks:</td>
-                <td><?php echo str_replace("\\n", "<br/>", $row['OldRanks']); ?></td>
+                <td><?php echo format_text($row['OldRanks']); ?></td>
             </tr>
             <?php } ?>
         </tbody></table>
@@ -95,11 +95,11 @@ function show_classes() {
                     <tbody>
                 <tr>
                     <td>Primary Skills:</td>
-                    <td><?php echo str_replace("\\n", "<br/>", $row2['PrimSkills']); ?></td>
+                    <td><?php echo format_text($row2['PrimSkills']); ?></td>
                 </tr>
                 <tr>
                     <td>Secondary Skills:</td>
-                    <td><?php echo str_replace("\\n", "<br/>", $row2['SecSkills']); ?></td>
+                    <td><?php echo format_text($row2['SecSkills']); ?></td>
                 </tr>
             </tbody></table>
             <?php
