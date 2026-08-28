@@ -36,11 +36,13 @@ class cModifiers {
     public function SetMod($modId, $mod) {
         global $_APP;
 
+        $stackable = (isset($_APP['modifiers'][$modId]['Stackable'])) ? (int) $_APP['modifiers'][$modId]['Stackable'] : 0;
+
         if ($mod > 0) {
             if (isset($this->aBonus[$modId])) {
-                if ($_APP['modifiers'][$modId]['Stackable'] > 0) {
+                if ($stackable > 0) {
                     $this->aBonus[$modId] += $mod;
-                    $this->aBonus[$modId] = min($this->aBonus[$modId], $_APP['modifiers'][$modId]['Stackable']);
+                    $this->aBonus[$modId] = min($this->aBonus[$modId], $stackable);
                 } else {
                     $this->aBonus[$modId] = max($mod, $this->aBonus[$modId]);
                 }
@@ -49,9 +51,9 @@ class cModifiers {
             }
         } else if ($mod < 0) {
             if (isset($this->aPenalty[$modId])) {
-                if ($_APP['modifiers'][$modId]['Stackable'] > 0) {
+                if ($stackable > 0) {
                     $this->aPenalty[$modId] += $mod;
-                    $this->aPenalty[$modId] = max($this->aPenalty[$modId], -$_APP['modifiers'][$modId]['Stackable']);
+                    $this->aPenalty[$modId] = max($this->aPenalty[$modId], -$stackable);
                 } else {
                     $this->aPenalty[$modId] = min($mod, $this->aPenalty[$modId]);
                 }
@@ -64,6 +66,10 @@ class cModifiers {
     public static function GetModId($modStr) {
         global $_APP;
         $id = NULL;
+
+        if (!isset($_APP['modifiers']) || !is_array($_APP['modifiers'])) {
+            return NULL;
+        }
 
         foreach ($_APP['modifiers'] as $iMod) {
             if (trim(strtoupper($iMod['ModifierType'])) == strtoupper($modStr) ||

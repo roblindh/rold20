@@ -52,13 +52,18 @@ class cEntity {
         return (int) $abil;
     }
 
+    public function GetEncumbranceClass($config = 0) {
+        return 0;
+    }
+
     public function GetAbilMod($id) {
         global $_APP;
 
         $abilmod = AbilMod($this->GetAbility($id));
         // For Dex ability, limit the modifier for encumbrance class
-        if ($id == A_DEX)
+        if ($id == A_DEX && isset($_APP['encumbrance'][$this->GetEncumbranceClass(0)]['MaxDexBonus'])) {
             $abilmod = min($abilmod, $_APP['encumbrance'][$this->GetEncumbranceClass(0)]['MaxDexBonus']);
+        }
         return $abilmod;
     }
 
@@ -452,41 +457,48 @@ class cIndividual extends cEntity {
 
     public function GetAdjustedAbility($id) {
         global $_APP;
+
+        if ($this->CurrentRace === null || !isset($_APP['creatures'][$this->CurrentRace])) {
+            return parent::GetAdjustedAbility($id);
+        }
+
         $creature = $_APP['creatures'][$this->CurrentRace];
-
         $adjAbil = NULL;
+        $creatureAdj = cCreature::GetAbilAdj($this->CurrentRace, $id);
 
-        if ($this->GetBaseAbility($id) != NULL && cCreature::GetAbilAdj($this->CurrentRace, $id) != NULL) {
-            $adjAbil = $this->GetBaseAbility($id) + cCreature::GetAbilAdj($this->CurrentRace, $id);
+        if ($this->GetBaseAbility($id) !== NULL && $creatureAdj !== NULL) {
+            $adjAbil = $this->GetBaseAbility($id) + $creatureAdj;
             foreach ($this->lTemplates as $iTemplate) {
-                if (cTemplate::GetAbilAdj($iTemplate, $id) == NULL) {
+                $tmplAdj = cTemplate::GetAbilAdj($iTemplate, $id);
+                if ($tmplAdj === NULL) {
                     $adjAbil = NULL;
                     break;
                 }
-                $adjAbil += cTemplate::GetAbilAdj($iTemplate, $id);
+                $adjAbil += $tmplAdj;
             }
         }
 
-        if ($adjAbil != NULL) {
+        if ($adjAbil !== NULL) {
             if ($this->SizeAdjust != 0 && $id <= A_DEX) {
                 switch ($id) {
                     case A_STR:
-                        $adjAbil += $_APP['sizecats'][$this->GetCurrentSize()]['RelativeStr'] -
-                                $_APP['sizecats'][$this->GetAdjustedSize()]['RelativeStr'];
+                        $adjAbil += ($_APP['sizecats'][$this->GetCurrentSize()]['RelativeStr'] ?? 0) -
+                                ($_APP['sizecats'][$this->GetAdjustedSize()]['RelativeStr'] ?? 0);
                         break;
                     case A_CON:
-                        $adjAbil += $_APP['sizecats'][$this->GetCurrentSize()]['RelativeCon'] -
-                                $_APP['sizecats'][$this->GetAdjustedSize()]['RelativeCon'];
+                        $adjAbil += ($_APP['sizecats'][$this->GetCurrentSize()]['RelativeCon'] ?? 0) -
+                                ($_APP['sizecats'][$this->GetAdjustedSize()]['RelativeCon'] ?? 0);
                         break;
                     case A_DEX:
-                        $adjAbil += $_APP['sizecats'][$this->GetCurrentSize()]['RelativeDex'] -
-                                $_APP['sizecats'][$this->GetAdjustedSize()]['RelativeDex'];
+                        $adjAbil += ($_APP['sizecats'][$this->GetCurrentSize()]['RelativeDex'] ?? 0) -
+                                ($_APP['sizecats'][$this->GetAdjustedSize()]['RelativeDex'] ?? 0);
                         break;
                 }
             }
 
             $ageCat = ($id <= A_DEX) ? $this->GetPhysicalAgeCat() : $this->GetMentalAgeCat();
-            switch ($_APP['creaturesubtypes'][$creature['CreatureType']]['AgingType']) {
+            $agingType = $_APP['creaturesubtypes'][$creature['CreatureType']]['AgingType'] ?? 0;
+            switch ($agingType) {
                 case 1: // Normal aging
                     $adjAbil += cCreature::GetAgeCatAbilAdj($ageCat, $id);
                     break;
@@ -505,10 +517,15 @@ class cIndividual extends cEntity {
         global $_APP;
 
         $hp = parent::GetHPTotal();
-        $hp += $_APP['classes'][$this->GetRacialClass()]['HPPerLevel'] * $this->GetRacialLevel() *
-                $_APP['sizecats'][$this->GetCurrentSize()]['HPMult'];
+        $racialClass = $this->GetRacialClass();
+        if (isset($_APP['classes'][$racialClass])) {
+            $hpMult = $_APP['sizecats'][$this->GetCurrentSize()]['HPMult'] ?? 1.0;
+            $hp += $_APP['classes'][$racialClass]['HPPerLevel'] * $this->GetRacialLevel() * $hpMult;
+        }
         foreach ($this->lClassLevels as $iClassLevel) {
-            $hp += $_APP['classes'][$iClassLevel]['HPPerLevel'];
+            if (isset($_APP['classes'][$iClassLevel]['HPPerLevel'])) {
+                $hp += $_APP['classes'][$iClassLevel]['HPPerLevel'];
+            }
         }
 
         return (int) $hp;
@@ -518,10 +535,15 @@ class cIndividual extends cEntity {
         global $_APP;
 
         $sp = parent::GetSPTotal();
-        if ($this->GetAbility(A_CON) != NULL) {
-            $sp += $_APP['classes'][$this->GetRacialClass()]['SPPerLevel'] * $this->GetRacialLevel();
+        if ($this->GetAbility(A_CON) !== NULL) {
+            $racialClass = $this->GetRacialClass();
+            if (isset($_APP['classes'][$racialClass]['SPPerLevel'])) {
+                $sp += $_APP['classes'][$racialClass]['SPPerLevel'] * $this->GetRacialLevel();
+            }
             foreach ($this->lClassLevels as $iClassLevel) {
-                $sp += $_APP['classes'][$iClassLevel]['SPPerLevel'];
+                if (isset($_APP['classes'][$iClassLevel]['SPPerLevel'])) {
+                    $sp += $_APP['classes'][$iClassLevel]['SPPerLevel'];
+                }
             }
         }
 
@@ -532,10 +554,15 @@ class cIndividual extends cEntity {
         global $_APP;
 
         $pp = parent::GetPPTotal();
-        if ($this->GetAbility(A_WIS) != NULL) {
-            $pp += $_APP['classes'][$this->GetRacialClass()]['PPPerLevel'] * $this->GetRacialLevel();
+        if ($this->GetAbility(A_WIS) !== NULL) {
+            $racialClass = $this->GetRacialClass();
+            if (isset($_APP['classes'][$racialClass]['PPPerLevel'])) {
+                $pp += $_APP['classes'][$racialClass]['PPPerLevel'] * $this->GetRacialLevel();
+            }
             foreach ($this->lClassLevels as $iClassLevel) {
-                $pp += $_APP['classes'][$iClassLevel]['PPPerLevel'];
+                if (isset($_APP['classes'][$iClassLevel]['PPPerLevel'])) {
+                    $pp += $_APP['classes'][$iClassLevel]['PPPerLevel'];
+                }
             }
         }
 
@@ -545,13 +572,17 @@ class cIndividual extends cEntity {
     public function GetDR() {
         global $_APP;
 
-        $dr = $_APP['creatures'][$this->CurrentRace]['DR'];
+        $dr = (isset($_APP['creatures'][$this->CurrentRace]['DR'])) ? $_APP['creatures'][$this->CurrentRace]['DR'] : 0;
         foreach ($this->lTemplates as $iTemplate) {
-            $dr = max($dr, $_APP['templates'][$iTemplate]['DR']);
+            if (isset($_APP['templates'][$iTemplate]['DR'])) {
+                $dr = max($dr, $_APP['templates'][$iTemplate]['DR']);
+            }
         }
-        if ($this->SizeAdjust != 0)
-            $dr += $_APP['sizecats'][$this->GetCurrentSize()]['RelativeDR'] -
-                    $_APP['sizecats'][$this->GetAdjustedSize()]['RelativeDR'];
+        if ($this->SizeAdjust != 0) {
+            $currRelDR = $_APP['sizecats'][$this->GetCurrentSize()]['RelativeDR'] ?? 0;
+            $adjRelDR = $_APP['sizecats'][$this->GetAdjustedSize()]['RelativeDR'] ?? 0;
+            $dr += $currRelDR - $adjRelDR;
+        }
         $dr += ($this->TraitEffects->ModsDR != NULL) ? (int) $this->TraitEffects->ModsDR->Total() : 0;
 
         return max((int) $dr, 0);
@@ -560,9 +591,11 @@ class cIndividual extends cEntity {
     public function GetMR() {
         global $_APP;
 
-        $mr = $_APP['creatures'][$this->BaseRace]['MR'];
+        $mr = (isset($_APP['creatures'][$this->BaseRace]['MR'])) ? $_APP['creatures'][$this->BaseRace]['MR'] : 0;
         foreach ($this->lTemplates as $iTemplate) {
-            $mr = max($mr, $_APP['templates'][$iTemplate]['MR']);
+            if (isset($_APP['templates'][$iTemplate]['MR'])) {
+                $mr = max($mr, $_APP['templates'][$iTemplate]['MR']);
+            }
         }
         $mr += ($this->TraitEffects->ModsMR != NULL) ? $this->TraitEffects->ModsMR->Total() : 0;
 
@@ -1090,15 +1123,16 @@ class cIndividual extends cEntity {
         return (int) $iEC;
     }
 
-    public function GetEncumbranceClass($config) {
+    public function GetEncumbranceClass($config = 0) {
         return max($this->GetEquipmentEC($config), $this->GetWeightEC($config)) +
                 ($this->TraitEffects->ModsEC ? $this->TraitEffects->ModsEC->Total() : 0);
     }
 
-    public function GetEncumbrancePenalty($config) {
+    public function GetEncumbrancePenalty($config = 0) {
         global $_APP;
 
-        return $_APP['encumbrance'][$this->GetEncumbranceClass($config)]['EP'];
+        return (isset($_APP['encumbrance'][$this->GetEncumbranceClass($config)]['EP'])) ?
+                $_APP['encumbrance'][$this->GetEncumbranceClass($config)]['EP'] : 0;
     }
 
     public function GetHitProbNormal($attMod, $dec, $critRange) {
@@ -2366,7 +2400,7 @@ class cPossession extends cEntity {
         return $pl;
     }
 
-    public function GetEncumbranceClass($config) {
+    public function GetEncumbranceClass($config = 0) {
         return 0;
     }
 

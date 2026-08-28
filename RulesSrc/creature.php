@@ -3,29 +3,35 @@ declare(strict_types=1);
 
 class cCreature {
 
-    public static function GetAbilAdj(int $id, int $abilId): ?int {
+    public static function GetAbilAdj(?int $id, int $abilId): ?int {
         global $_APP;
+        if ($id === null || !isset($_APP['creatures'][$id])) {
+            return null;
+        }
         $row = $_APP['creatures'][$id];
 
         switch ($abilId) {
             case A_STR:
-                return $row['StrAdj'];
+                return $row['StrAdj'] ?? null;
             case A_CON:
-                return $row['ConAdj'];
+                return $row['ConAdj'] ?? null;
             case A_DEX:
-                return $row['DexAdj'];
+                return $row['DexAdj'] ?? null;
             case A_INT:
-                return $row['IntAdj'];
+                return $row['IntAdj'] ?? null;
             case A_WIS:
-                return $row['WisAdj'];
+                return $row['WisAdj'] ?? null;
             case A_CHA:
-                return $row['ChaAdj'];
+                return $row['ChaAdj'] ?? null;
         }
         return null;
     }
 
-    public static function GetAbilAdjStr(int $id): string {
+    public static function GetAbilAdjStr(?int $id): string {
         global $_APP;
+        if ($id === null || !isset($_APP['creatures'][$id])) {
+            return "";
+        }
         $row = $_APP['creatures'][$id];
         $abilstr = array();
 

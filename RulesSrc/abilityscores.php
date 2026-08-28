@@ -23,51 +23,51 @@ class cAbilityScores {
     }
 
     public function Str() {
-        return $Scores[A_STR];
+        return $this->Scores[A_STR];
     }
 
     public function Con() {
-        return $Scores[A_CON];
+        return $this->Scores[A_CON];
     }
 
     public function Dex() {
-        return $Scores[A_DEX];
+        return $this->Scores[A_DEX];
     }
 
     public function Int() {
-        return $Scores[A_INT];
+        return $this->Scores[A_INT];
     }
 
     public function Wis() {
-        return $Scores[A_WIS];
+        return $this->Scores[A_WIS];
     }
 
     public function Cha() {
-        return $Scores[A_CHA];
+        return $this->Scores[A_CHA];
     }
 
     public function StrMod() {
-        return AbilMod($Scores[A_STR]);
+        return AbilMod($this->Scores[A_STR]);
     }
 
     public function ConMod() {
-        return AbilMod($Scores[A_CON]);
+        return AbilMod($this->Scores[A_CON]);
     }
 
     public function DexMod() {
-        return AbilMod($Scores[A_DEX]);
+        return AbilMod($this->Scores[A_DEX]);
     }
 
     public function IntMod() {
-        return AbilMod($Scores[A_INT]);
+        return AbilMod($this->Scores[A_INT]);
     }
 
     public function WisMod() {
-        return AbilMod($Scores[A_WIS]);
+        return AbilMod($this->Scores[A_WIS]);
     }
 
     public function ChaMod() {
-        return AbilMod($Scores[A_CHA]);
+        return AbilMod($this->Scores[A_CHA]);
     }
 
     public function Generate($Method, $ClassConfig) {

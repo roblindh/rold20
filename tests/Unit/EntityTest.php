@@ -230,4 +230,66 @@ class EntityTest extends TestCase
             );
         }
     }
+
+    /**
+     * Test Fortitude save formula (10 + StrMod + ConMod + TL + ModsFort)
+     */
+    public function test_fortitude_save_calculation(): void
+    {
+        // Default abilities are all 10 (mod 0), TL is 0 => Fort = 10
+        $this->assertEquals(10, $this->entity->GetFort());
+
+        // Set Str 14 (+2), Con 16 (+3) => Fort = 10 + 2 + 3 = 15
+        $this->entity->BaseAbilities->Scores[A_STR] = 14;
+        $this->entity->BaseAbilities->Scores[A_CON] = 16;
+        $this->assertEquals(15, $this->entity->GetFort());
+    }
+
+    /**
+     * Test Reflex save formula (10 + DexMod + IntMod + TL + ModsRef)
+     */
+    public function test_reflex_save_calculation(): void
+    {
+        $this->assertEquals(10, $this->entity->GetRef());
+
+        // Set Dex 16 (+3), Int 12 (+1) => Ref = 10 + 3 + 1 = 14
+        $this->entity->BaseAbilities->Scores[A_DEX] = 16;
+        $this->entity->BaseAbilities->Scores[A_INT] = 12;
+        $this->assertEquals(14, $this->entity->GetRef());
+    }
+
+    /**
+     * Test Will save formula (10 + WisMod + ChaMod + TL + ModsWill)
+     */
+    public function test_will_save_calculation(): void
+    {
+        $this->assertEquals(10, $this->entity->GetWill());
+
+        // Set Wis 14 (+2), Cha 8 (-1) => Will = 10 + 2 - 1 = 11
+        $this->entity->BaseAbilities->Scores[A_WIS] = 14;
+        $this->entity->BaseAbilities->Scores[A_CHA] = 8;
+        $this->assertEquals(11, $this->entity->GetWill());
+    }
+
+    /**
+     * Test Initiative Modifier calculation (DexMod + ModsInit)
+     */
+    public function test_initiative_modifier(): void
+    {
+        $this->assertEquals(0, $this->entity->GetInitMod());
+
+        $this->entity->BaseAbilities->Scores[A_DEX] = 16; // +3
+        $this->assertEquals(3, $this->entity->GetInitMod());
+    }
+
+    /**
+     * Test Critical Resistance calculation (DR + CritRes)
+     */
+    public function test_critical_resistance(): void
+    {
+        $this->assertEquals(0, $this->entity->GetCritRes());
+
+        $this->entity->TraitEffects->CritRes = 5;
+        $this->assertEquals(5, $this->entity->GetCritRes());
+    }
 }

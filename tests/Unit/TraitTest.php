@@ -269,4 +269,21 @@ class TraitTest extends TestCase
         $unique = array_unique($levels);
         $this->assertCount(count($levels), $unique, 'All trait levels should have distinct values');
     }
+
+    /**
+     * Test cTraitEffects initialization
+     */
+    public function test_trait_effects_initialization(): void
+    {
+        $effects = new \cTraitEffects();
+        $this->assertInstanceOf(\cTraitEffects::class, $effects);
+        $this->assertIsArray($effects->ModsAbil);
+        $this->assertCount(6, $effects->ModsAbil);
+        $this->assertIsArray($effects->EnergyRes);
+        $this->assertEquals(0, $effects->BonusImpr);
+        $this->assertEquals(0, $effects->BonusSkillPts);
+        $this->assertEquals(0, $effects->CritRes);
+        $this->assertEquals(0, $effects->Regen);
+        $this->assertEquals(0, $effects->FastHeal);
+    }
 }

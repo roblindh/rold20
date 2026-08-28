@@ -374,7 +374,7 @@ class cExpressionParser {
                 if ($this->GetNextToken()) {
                     $result = ($result == $this->EvaluateRelation()) ? 1.0 : 0.0;
                 }
-            } else if ($this->currentToken == "<>") {
+            } else if ($this->currentToken == "<>" || $this->currentToken == "!=") {
                 if ($this->GetNextToken()) {
                     $result = ($result != $this->EvaluateRelation()) ? 1.0 : 0.0;
                 }
@@ -418,11 +418,11 @@ class cExpressionParser {
 
         $result = $this->EvaluateTerms();
         while (TRUE) {
-            if ($this->currentToken == "<<") {
+            if ($this->currentToken == "<<" || $this->currentToken == "{") {
                 if ($this->GetNextToken()) {
                     $result = (int) $result << (int) $this->EvaluateTerms();
                 }
-            } else if ($this->currentToken == ">>") {
+            } else if ($this->currentToken == ">>" || $this->currentToken == "}") {
                 if ($this->GetNextToken()) {
                     $result = (int) $result >> (int) $this->EvaluateTerms();
                 }
@@ -734,8 +734,10 @@ class cExpressionParser {
                                 $count = ($count == NULL || $count <= 0) ? 1 : $count;
                                 if ($this->GetNextToken()) {
                                     $temp = $this->EvaluateAssignment();
-                                    for ($result = 0.0; $count > 0; $count--);
+                                    $result = 0.0;
+                                    for (; $count > 0; $count--) {
                                         $result += mt_rand(1, (int) $temp);
+                                    }
                                     $this->GetNextToken();
                                 }
                             }
@@ -778,13 +780,17 @@ class cExpressionParser {
                             break;
                         $this->GetNextToken();
                         for ($i = 0; $i < $rollCount; $i++) {
-                            for ($j = 0, $roll = 0; $j < $diceCount; $roll += mt_rand(1, (int) $diceSize), $j++)
-                                ;
+                            $roll = 0;
+                            for ($j = 0; $j < $diceCount; $j++) {
+                                $roll += mt_rand(1, (int) $diceSize);
+                            }
                             $lRolls[] = max((int) $minRoll, $roll);
                         }
                         sort($lRolls);
-                        for ($i = 0, $result = 0; $i < $highCount; $result += (int) $lRolls[(int) ($rollCount - (++$i))])
-                            ;
+                        $result = 0.0;
+                        for ($i = 0; $i < $highCount; $i++) {
+                            $result += (int) $lRolls[$rollCount - 1 - $i];
+                        }
                         break;
 
                     default:
@@ -882,57 +888,67 @@ class cExpressionParser {
             $this->currentToken = substr($this->currentExpression, $this->currentPosition, $i - $this->currentPosition);
             $this->currentTokenType = TOKEN_CONSTANT;
             $this->currentPosition = $i;
-        } else if (($this->currentExpression[$this->currentPosition] >= 'A') && ($this->currentExpression[$this->currentPosition] <= 'Z')) {
+        } else if ((($this->currentExpression[$this->currentPosition] >= 'A') && ($this->currentExpression[$this->currentPosition] <= 'Z')) ||
+                (($this->currentExpression[$this->currentPosition] >= 'a') && ($this->currentExpression[$this->currentPosition] <= 'z'))) {
             for ($i = $this->currentPosition + 1; ($i < strlen($this->currentExpression)) &&
                     ((($this->currentExpression[$i] >= '0') && ($this->currentExpression[$i] <= '9')) ||
-                    (($this->currentExpression[$i] >= 'A') && ($this->currentExpression[$i] <= 'Z'))); $i++)
+                    (($this->currentExpression[$i] >= 'A') && ($this->currentExpression[$i] <= 'Z')) ||
+                    (($this->currentExpression[$i] >= 'a') && ($this->currentExpression[$i] <= 'z')) ||
+                    ($this->currentExpression[$i] == '_')); $i++)
                 ;
             $this->currentToken = substr($this->currentExpression, $this->currentPosition, $i - $this->currentPosition);
-            $this->currentTokenType = TOKEN_FUNCTION;
             $this->currentPosition = $i;
-            switch ($this->currentToken) {
-                case "LN":
-                case "LG":
-                case "SINH":
-                case "COSH":
-                case "TANH":
-                case "COTH":
-                case "SIN":
-                case "COS":
-                case "TAN":
-                case "ARCSIN":
-                case "ARCCOS":
-                case "ARCTAN2":
-                case "ARCTAN":
-                case "ARCCOT2":
-                case "ARCCOT":
-                case "FRAC":
-                case "RND":
-                case "RAN":
-                case "SEC":
-                case "CSC":
-                case "COT":
-                case "CEIL":
-                case "FLOOR":
-                case "SQRT":
-                case "SGN":
-                case "MAX":
-                case "MIN":
-                case "DICE":
-                case "XDICE":
-                    $this->currentTokenType = TOKEN_FUNCTION;
-                    break;
-                case "OR":
-                case "XOR":
-                case "AND":
-                    $this->currentTokenType = TOKEN_OP2;
-                    break;
-                case "NOT":
-                    $this->currentTokenType = TOKEN_PREOP1;
-                    break;
-                default:
-                    $this->currentTokenType = TOKEN_VARIABLE;
-                    break;
+
+            if (strpos($this->currentToken, '_') !== false) {
+                $this->currentTokenType = TOKEN_CONSTANT;
+            } else {
+                switch (strtoupper($this->currentToken)) {
+                    case "LN":
+                    case "LG":
+                    case "SINH":
+                    case "COSH":
+                    case "TANH":
+                    case "COTH":
+                    case "SIN":
+                    case "COS":
+                    case "TAN":
+                    case "ARCSIN":
+                    case "ARCCOS":
+                    case "ARCTAN2":
+                    case "ARCTAN":
+                    case "ARCCOT2":
+                    case "ARCCOT":
+                    case "FRAC":
+                    case "RND":
+                    case "RAN":
+                    case "SEC":
+                    case "CSC":
+                    case "COT":
+                    case "CEIL":
+                    case "FLOOR":
+                    case "SQRT":
+                    case "SGN":
+                    case "MAX":
+                    case "MIN":
+                    case "DICE":
+                    case "XDICE":
+                        $this->currentTokenType = TOKEN_FUNCTION;
+                        $this->currentToken = strtoupper($this->currentToken);
+                        break;
+                    case "OR":
+                    case "XOR":
+                    case "AND":
+                        $this->currentTokenType = TOKEN_OP2;
+                        $this->currentToken = strtoupper($this->currentToken);
+                        break;
+                    case "NOT":
+                        $this->currentTokenType = TOKEN_PREOP1;
+                        $this->currentToken = strtoupper($this->currentToken);
+                        break;
+                    default:
+                        $this->currentTokenType = TOKEN_VARIABLE;
+                        break;
+                }
             }
             // Store constants in variable list? Protected against change?
         } else if (($this->currentExpression[$this->currentPosition] == '(') || ($this->currentExpression[$this->currentPosition] == ')') || ($this->currentExpression[$this->currentPosition] == '[') || ($this->currentExpression[$this->currentPosition] == ']') || ($this->currentExpression[$this->currentPosition] == '|')) {
@@ -1013,7 +1029,12 @@ class cExpressionParser {
                     $this->currentTokenType = TOKEN_OP3;
                     break;
                 case "!":
-                    $this->currentTokenType = TOKEN_POSTOP1;
+                    if ($this->currentPosition < strlen($this->currentExpression) && $this->currentExpression[$this->currentPosition] == '=') {
+                        $this->currentToken .= $this->currentExpression[$this->currentPosition++];
+                        $this->currentTokenType = TOKEN_OP2;
+                    } else {
+                        $this->currentTokenType = TOKEN_POSTOP1;
+                    }
                     break;
             }
         }
@@ -1025,7 +1046,7 @@ class cExpressionParser {
     }
 
     private function GetVariable($sVarName) {
-        return $this->variables[$sVarName];
+        return $this->variables[$sVarName] ?? 0.0;
     }
 
     private function SetVariable($sVarName, $value) {
