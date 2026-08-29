@@ -94,6 +94,27 @@ if ((Test-Path $StylesSrc) -and -not (Test-Path $StylesDst)) {
     }
 }
 
+# Clear stale compiled views and config cache on destination so new templates are immediately live
+$DstViewsCache = Join-Path $Destination "storage\framework\views"
+if (Test-Path $DstViewsCache) {
+    try {
+        Get-ChildItem -Path $DstViewsCache -Filter "*.php" -File | Remove-Item -Force -ErrorAction SilentlyContinue
+        Write-Host "Cleared stale Blade view cache on destination." -ForegroundColor Cyan
+    } catch {
+        # Ignore if locked
+    }
+}
+
+$DstConfigCache = Join-Path $Destination "bootstrap\cache\config.php"
+if (Test-Path $DstConfigCache) {
+    try {
+        Remove-Item -Path $DstConfigCache -Force -ErrorAction SilentlyContinue
+        Write-Host "Cleared stale bootstrap config cache on destination." -ForegroundColor Cyan
+    } catch {
+        # Ignore if locked
+    }
+}
+
 # Robocopy exit codes: 0-7 mean success/copies occurred; 8+ means errors
 if ($RoboExitCode -lt 8) {
     Write-Host "`nDeployment completed successfully! (Robocopy Code: $RoboExitCode)" -ForegroundColor Green
