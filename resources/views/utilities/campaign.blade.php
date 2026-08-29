@@ -75,13 +75,13 @@
     <!-- Create Campaign Modal -->
     <div x-show="showCreateModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showCreateModal = false">
         <div class="bg-white rounded-xl shadow-2xl max-w-md w-full border border-slate-200 overflow-hidden" @click.outside="showCreateModal = false">
-            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between" style="background: url('{{ asset('styles/goldparchment.jpg') }}') repeat #f0f0d9;">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between" style="background: url('/styles/goldparchment.jpg') repeat #f0f0d9;">
                 <h3 class="font-bold text-black text-lg flex items-center gap-2">
                     <span>👑</span> Create New Campaign
                 </h3>
                 <button @click="showCreateModal = false" class="text-slate-700 hover:text-black font-bold text-lg">&times;</button>
             </div>
-            <form action="{{ route('utilities.campaign.create') }}" method="POST" class="p-6 space-y-4">
+            <form action="{{ route('utilities.campaign.create', [], false) }}" method="POST" class="p-6 space-y-4">
                 @csrf
                 <div>
                     <label for="camp_name" class="block text-xs font-bold uppercase text-slate-700 mb-1">Campaign Name</label>

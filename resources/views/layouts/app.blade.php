@@ -6,12 +6,12 @@
     <title>{{ $title ?? 'RoL d20' }} | RoL d20 Role-Playing System</title>
     
     <!-- Compiled Tailwind CSS & Site Styling -->
-    <link rel="stylesheet" href="{{ asset('styles/tailwind.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('styles/site.css') }}">
-    <link rel="icon" href="{{ asset('styles/reddragon.ico') }}">
+    <link rel="stylesheet" href="/styles/tailwind.min.css">
+    <link rel="stylesheet" href="/styles/site.css">
+    <link rel="icon" href="/styles/reddragon.ico">
 
     <!-- Local Alpine.js -->
-    <script defer src="{{ asset('js/alpine.min.js') }}"></script>
+    <script defer src="/js/alpine.min.js"></script>
 
     <style>
         /* Site title in header */
@@ -240,7 +240,7 @@
 }" @keydown.window.ctrl.k.prevent="searchOpen = true" @keydown.window.escape="searchOpen = false">
     <!-- Main Header -->
     <header class="h-14 sm:h-16 border-b-2 border-slate-400 px-3 sm:px-6 flex items-center justify-between shadow-md shrink-0 select-none relative z-30"
-            style="background: url('{{ asset('styles/goldparchment.jpg') }}') repeat #f0f0d9;">
+            style="background: url('/styles/goldparchment.jpg') repeat #f0f0d9;">
         <div class="flex items-center gap-2 sm:gap-4">
             <!-- Mobile Sidebar Hamburger Toggle Button -->
             <button @click="mobileMenuOpen = !mobileMenuOpen" 
@@ -253,7 +253,7 @@
             </button>
 
             <a href="{{ route('home', [], false) }}" class="flex items-center gap-1.5 sm:gap-2.5 hover:opacity-90 transition">
-                <img src="{{ asset('styles/reddragon_sml.gif') }}" alt="RoL d20 Dragon" class="h-8 sm:h-10 w-auto object-contain" />
+                <img src="/styles/reddragon_sml.gif" alt="RoL d20 Dragon" class="h-8 sm:h-10 w-auto object-contain" />
                 <span class="site-title text-xl sm:text-2xl font-bold tracking-tight">RoL d20</span>
             </a>
             <span class="hidden lg:inline text-xs text-slate-800 font-semibold border-l border-slate-400 pl-3">D&D 3.5E Streamlined Ruleset</span>

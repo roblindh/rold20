@@ -121,3 +121,41 @@ $legacyRedirects = [
 foreach ($legacyRedirects as $oldUrl => $newUrl) {
     Route::permanentRedirect($oldUrl, $newUrl);
 }
+
+// Administrative Maintenance Route to clear compiled views and config cache inside Docker container
+Route::get('/clear-cache', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        \Illuminate\Support\Facades\Artisan::call('view:clear');
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+        \Illuminate\Support\Facades\Artisan::call('route:clear');
+    } catch (\Throwable $e) {
+        // Continue manual unlinks if artisan encounters environment issue
+    }
+
+    $configPath = base_path('bootstrap/cache/config.php');
+    if (file_exists($configPath)) {
+        @unlink($configPath);
+    }
+
+    $viewsPath = storage_path('framework/views');
+    if (is_dir($viewsPath)) {
+        foreach (glob($viewsPath . '/*.php') as $file) {
+            @unlink($file);
+        }
+    }
+
+    if (function_exists('opcache_reset')) {
+        @opcache_reset();
+    }
+    clearstatcache(true);
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Config, view, route, and application caches cleared successfully!',
+        'opcache_reset' => function_exists('opcache_reset'),
+        'config_cached' => file_exists($configPath),
+        'app_url' => config('app.url'),
+        'host' => request()->getHttpHost(),
+    ]);
+})->name('clear-cache');

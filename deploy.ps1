@@ -94,15 +94,21 @@ if ((Test-Path $StylesSrc) -and -not (Test-Path $StylesDst)) {
     }
 }
 
-# Clear stale compiled views and config cache on destination so new templates are immediately live
+# Clear stale compiled views, page caches, and config cache on destination
 $DstViewsCache = Join-Path $Destination "storage\framework\views"
 if (Test-Path $DstViewsCache) {
     try {
         Get-ChildItem -Path $DstViewsCache -Filter "*.php" -File | Remove-Item -Force -ErrorAction SilentlyContinue
         Write-Host "Cleared stale Blade view cache on destination." -ForegroundColor Cyan
-    } catch {
-        # Ignore if locked
-    }
+    } catch {}
+}
+
+$DstPageCache = Join-Path $Destination "storage\framework\cache\pages"
+if (Test-Path $DstPageCache) {
+    try {
+        Get-ChildItem -Path $DstPageCache -File | Remove-Item -Force -ErrorAction SilentlyContinue
+        Write-Host "Cleared stale page HTML cache on destination." -ForegroundColor Cyan
+    } catch {}
 }
 
 $DstConfigCache = Join-Path $Destination "bootstrap\cache\config.php"
@@ -110,10 +116,17 @@ if (Test-Path $DstConfigCache) {
     try {
         Remove-Item -Path $DstConfigCache -Force -ErrorAction SilentlyContinue
         Write-Host "Cleared stale bootstrap config cache on destination." -ForegroundColor Cyan
-    } catch {
-        # Ignore if locked
-    }
+    } catch {}
 }
+
+# Automatically trigger OPcache & in-container cache purge via HTTP if server is up
+try {
+    $ResetUri = "http://ROL-NAS-MINI:8090/opcache_reset.php"
+    $Response = Invoke-WebRequest -Uri $ResetUri -UseBasicParsing -TimeoutSec 5 -ErrorAction SilentlyContinue
+    if ($Response.StatusCode -eq 200) {
+        Write-Host "Triggered OPcache reset & in-container cache purge via HTTP ($ResetUri)." -ForegroundColor Green
+    }
+} catch {}
 
 # Robocopy exit codes: 0-7 mean success/copies occurred; 8+ means errors
 if ($RoboExitCode -lt 8) {

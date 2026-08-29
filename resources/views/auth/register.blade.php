@@ -4,9 +4,9 @@
 <div class="max-w-md mx-auto my-8">
     <div class="bg-white rounded-lg border-2 border-slate-300 shadow-lg overflow-hidden">
         <!-- Header banner -->
-        <div class="px-6 py-4 border-b-2 border-slate-300" style="background: url('{{ asset('styles/goldparchment.jpg') }}') repeat #f0f0d9;">
+        <div class="px-6 py-4 border-b-2 border-slate-300" style="background: url('/styles/goldparchment.jpg') repeat #f0f0d9;">
             <div class="flex items-center gap-3">
-                <img src="{{ asset('styles/reddragon_sml.gif') }}" alt="Dragon" class="h-8 w-auto object-contain" />
+                <img src="/styles/reddragon_sml.gif" alt="Dragon" class="h-8 w-auto object-contain" />
                 <div>
                     <h1 class="text-xl font-bold text-black tracking-tight">Create Account</h1>
                     <p class="text-xs text-slate-700 font-semibold">Join as a Player or Game Master</p>

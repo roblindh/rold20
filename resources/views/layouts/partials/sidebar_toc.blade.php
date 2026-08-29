@@ -1,7 +1,7 @@
 <nav class="w-72 sm:w-64 bg-slate-900 text-slate-200 h-full min-h-screen md:min-h-0 p-4 flex flex-col space-y-4 border-r border-slate-800 text-sm overflow-hidden">
     <div class="px-2 py-3 border-b border-slate-800 flex items-center justify-between">
         <a href="{{ route('home', [], false) }}" class="font-bold text-amber-400 text-lg flex items-center gap-2">
-            <img src="{{ asset('styles/reddragon_sml.gif') }}" alt="RoL d20" class="h-6 w-auto object-contain" />
+            <img src="/styles/reddragon_sml.gif" alt="RoL d20" class="h-6 w-auto object-contain" />
             <span>RoL d20</span>
         </a>
         <div class="flex items-center gap-2">
