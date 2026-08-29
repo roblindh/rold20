@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-950">
+<html lang="en" class="h-full modern-app bg-slate-950">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     
     <!-- Compiled Tailwind CSS & Site Styling -->
     <link rel="stylesheet" href="/styles/tailwind.min.css">
-    <link rel="stylesheet" href="/styles/site.css">
+    <link rel="stylesheet" href="/styles/Site.css">
     <link rel="icon" href="/styles/reddragon.ico">
 
     <!-- Local Alpine.js -->
@@ -239,16 +239,15 @@
     }
 }" @keydown.window.ctrl.k.prevent="searchOpen = true" @keydown.window.escape="searchOpen = false">
     <!-- Main Header -->
-    <header class="h-14 sm:h-16 border-b-2 border-slate-400 px-3 sm:px-6 flex items-center justify-between shadow-md shrink-0 select-none relative z-30"
-            style="background: url('/styles/goldparchment.jpg') repeat #f0f0d9;">
+    <header class="modern-header flex items-center justify-between shadow-md select-none relative z-30">
         <div class="flex items-center gap-2 sm:gap-4">
             <!-- Mobile Sidebar Hamburger Toggle Button -->
             <button @click="mobileMenuOpen = !mobileMenuOpen" 
                     type="button"
-                    class="md:hidden p-1.5 rounded-lg bg-slate-800/10 hover:bg-slate-800/20 text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-700 transition"
+                    class="mobile-nav-toggle"
                     aria-label="Toggle navigation menu">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                <svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
 
@@ -296,26 +295,20 @@
                 @endauth
             </div>
         </div>
-        </div>
     </header>
 
     <!-- Main Workspace Container -->
     <div class="flex-1 flex overflow-hidden relative">
         <!-- Mobile Sidebar Backdrop Overlay -->
         <div x-show="mobileMenuOpen" 
-             x-transition:enter="transition-opacity ease-out duration-200"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100"
-             x-transition:leave="transition-opacity ease-in duration-150"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0"
              @click="mobileMenuOpen = false" 
-             class="fixed inset-0 bg-slate-950/70 z-40 md:hidden backdrop-blur-xs" 
+             class="sidebar-backdrop"
+             :class="{ 'active': mobileMenuOpen }"
              style="display: none;"></div>
 
         <!-- Sidebar Navigation (Drawer on Mobile, Static Sidebar on Desktop) -->
-        <aside :class="mobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'"
-               class="fixed inset-y-0 left-0 z-50 md:static md:z-auto transition-transform duration-200 ease-in-out flex flex-col">
+        <aside class="sidebar-drawer"
+               :class="{ 'drawer-open': mobileMenuOpen }">
             @include('layouts.partials.sidebar_toc')
         </aside>
 

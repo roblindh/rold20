@@ -94,6 +94,14 @@ if ((Test-Path $StylesSrc) -and -not (Test-Path $StylesDst)) {
     }
 }
 
+$DstSiteUpper = Join-Path $Destination "public\styles\Site.css"
+$DstSiteLower = Join-Path $Destination "public\styles\site.css"
+if ((Test-Path $DstSiteUpper) -and !(Test-Path $DstSiteLower)) {
+    try {
+        Copy-Item -Path $DstSiteUpper -Destination $DstSiteLower -Force -ErrorAction SilentlyContinue
+    } catch {}
+}
+
 # Clear stale compiled views, page caches, and config cache on destination
 $DstViewsCache = Join-Path $Destination "storage\framework\views"
 if (Test-Path $DstViewsCache) {

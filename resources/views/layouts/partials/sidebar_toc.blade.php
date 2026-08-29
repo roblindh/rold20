@@ -1,4 +1,4 @@
-<nav class="w-72 sm:w-64 bg-slate-900 text-slate-200 h-full min-h-screen md:min-h-0 p-4 flex flex-col space-y-4 border-r border-slate-800 text-sm overflow-hidden">
+<nav @click="if ($event.target.closest('a')) mobileMenuOpen = false" class="w-full bg-slate-900 text-slate-200 h-full p-4 flex flex-col space-y-4 border-r border-slate-800 text-sm overflow-hidden">
     <div class="px-2 py-3 border-b border-slate-800 flex items-center justify-between">
         <a href="{{ route('home', [], false) }}" class="font-bold text-amber-400 text-lg flex items-center gap-2">
             <img src="/styles/reddragon_sml.gif" alt="RoL d20" class="h-6 w-auto object-contain" />
@@ -6,7 +6,10 @@
         </a>
         <div class="flex items-center gap-2">
             <span class="text-xs bg-amber-900/60 text-amber-300 px-1.5 py-0.5 rounded border border-amber-700/50">v2.0</span>
-            <button @click="mobileMenuOpen = false" class="md:hidden text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 transition text-base font-bold leading-none" aria-label="Close navigation menu">✕</button>
+            <button @click="mobileMenuOpen = false" 
+                    type="button" 
+                    class="sidebar-close-btn text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 transition text-base font-bold leading-none" 
+                    aria-label="Close navigation menu">✕</button>
         </div>
     </div>
 
