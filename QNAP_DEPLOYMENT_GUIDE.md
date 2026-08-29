@@ -1,6 +1,6 @@
 # QNAP Container Station Deployment Guide: RoL d20
 
-This guide explains how to deploy, manage, and update **RoL d20** on your **QNAP TS-453Bmini** using **Container Station** (Docker & Docker Compose) with HTTPS encryption.
+This guide explains how to deploy, manage, and update **RoL d20** on your **QNAP TS-453Bmini** using **Container Station** (Docker & Docker Compose) with HTTPS encryption and support for co-hosted projects.
 
 ---
 
@@ -10,14 +10,30 @@ To prevent collisions with QNAP QTS built-in services (which use ports `80`, `44
 
 | Service | Container Name | Internal Port | Host / NAS Port | Access URL |
 |---|---|---|---|---|
-| **RoL d20 Web App** | `rold20_web` | `80` (HTTP) | **`8090`** | `http://<NAS_IP>:8090/` |
+| **RoL d20 Web App** | `rold20_web` | `80` (HTTP) | **`8090`** | `https://rold20.ddns.net/` |
 | **phpMyAdmin** | `rold20_phpmyadmin` | `80` (HTTP) | **`8885`** | `http://<NAS_IP>:8885/` |
 | **MySQL 8.0 Database** | `rold20_db` | `3306` (TCP) | **`3307`** | `localhost:3307` |
 | **QTS HTTPS Reverse Proxy** | Built-in QTS | - | **`8443`** | `https://<NAS_IP>:8443/` |
 
 ---
 
-## 2. Directory Setup on QNAP
+## 2. Co-Hosted Projects & Endpoints
+
+All projects hosted under the web container are reachable securely over HTTPS:
+
+| Application | Path on NAS | Public URL |
+|---|---|---|
+| **RoL d20 (Main Application)** | `/share/Container/rold20/public` | `https://rold20.ddns.net/` |
+| **RoL d20 (Legacy Handbook Backup)** | `/share/Container/rold20/legacy` | `https://rold20.ddns.net/legacy/` |
+| **RPG Mapper Tool** | `/share/Container/rold20/RPGMapperTool` | `https://rold20.ddns.net/RPGMapperTool/` |
+| **RPG World Atlas** | `/share/Container/rold20/RPGWorldAtlas` | `https://rold20.ddns.net/RPGWorldAtlas/` |
+
+> [!IMPORTANT]
+> The deployment script (`deploy.ps1`) automatically excludes `legacy`, `RPGMapperTool`, and `RPGWorldAtlas` from Robocopy mirroring to ensure they are **never deleted or overwritten** when deploying RoL d20 updates.
+
+---
+
+## 3. Directory Setup on QNAP
 
 1. In QTS **Container Station**, the shared `Container` folder is located at `/share/Container`.
 2. Project target directory:
@@ -26,7 +42,7 @@ To prevent collisions with QNAP QTS built-in services (which use ports `80`, `44
 
 ---
 
-## 3. Deploy Project Files to the NAS
+## 4. Deploy Project Files to the NAS
 
 From PowerShell on your development machine in `d:\Projects\rold20`:
 
@@ -34,11 +50,11 @@ From PowerShell on your development machine in `d:\Projects\rold20`:
 .\deploy.ps1
 ```
 
-*(This automatically mirrors all application files to `\\ROL-NAS-MINI\Container\rold20` while excluding `.git`, `tests/`, `dbdump/`, and IDE metadata.)*
+*(This automatically mirrors RoL d20 files to `\\ROL-NAS-MINI\Container\rold20` while preserving `RPGMapperTool`, `RPGWorldAtlas`, and `legacy`.)*
 
 ---
 
-## 4. Starting the Application (SSH Terminal)
+## 5. Starting the Application (SSH Terminal)
 
 1. SSH into the QNAP NAS:
    ```bash
@@ -47,7 +63,7 @@ From PowerShell on your development machine in `d:\Projects\rold20`:
 2. Navigate to the project directory and start the stack:
    ```bash
    cd /share/Container/rold20
-   docker compose up -d --build
+   docker compose up -d --build web
    ```
    > [!NOTE]
    > Use `docker compose` (with a space). On modern QTS, Docker Compose v2 is integrated directly into the `docker` CLI.
@@ -61,7 +77,7 @@ On the initial launch, MySQL automatically imports the schema and data from `dbd
 
 ---
 
-## 5. Web UI Management in Container Station
+## 6. Web UI Management in Container Station
 
 Once started via SSH, the stack is automatically visible and manageable in the **Container Station Web UI**:
 - Go to **Container Station > Applications** to see `rold20` and view live status, CPU/RAM usage, and restart controls.
@@ -69,7 +85,7 @@ Once started via SSH, the stack is automatically visible and manageable in the *
 
 ---
 
-## 6. HTTPS & Public Domain Setup (DDNS)
+## 7. HTTPS & Public Domain Setup (DDNS)
 
 ### A. Free Let's Encrypt Certificate
 1. In QTS, open **Control Panel > Security > Certificate & Private Key**.
@@ -93,12 +109,9 @@ Because QTS system admin reserves internal port 443, your router translates exte
 > [!TIP]
 > If you have a cascaded / multi-router setup (e.g. ISP modem/router + secondary Wi-Fi router), ensure port forwarding is configured on **both** routers in sequence.
 
-### D. Public Access URL
-- **Public HTTPS**: 👉 **`https://rold20.ddns.net/`**
-
 ---
 
-## 7. Updating the Application
+## 8. Updating the Application
 
 ### Updating PHP, HTML, or CSS Code
 1. Make changes locally on your PC.
@@ -106,7 +119,7 @@ Because QTS system admin reserves internal port 443, your router translates exte
    ```powershell
    .\deploy.ps1
    ```
-3. Refresh your browser (changes take effect instantly because `/share/Container/rold20` is mounted into the container).
+3. Refresh your browser.
 
 ### Updating Dockerfile, Apache, or PHP Configuration
 1. Run `.\deploy.ps1`.
@@ -118,15 +131,15 @@ Because QTS system admin reserves internal port 443, your router translates exte
 
 ---
 
-## 8. Technical & Security Reference
+## 9. Technical & Security Reference
 
-### QNAP Kernel Compatibility (Ubuntu 22.04 Base)
-- Base image uses **Ubuntu 22.04 LTS** with precompiled binary packages (`php8.1`, `php8.1-mysql`, `php8.1-opcache`, `apache2`).
-- Bypasses source compilation and GNU `tar` `fchmodat` syscall errors on the QTS Linux kernel.
+### QNAP Kernel Compatibility (Ubuntu 24.04 Base)
+- Base image uses **Ubuntu 24.04 LTS** with native precompiled binary packages (`php`, `php-mysql`, `php-mbstring`, `php-xml`, `php-bcmath`, `php-intl`, `php-opcache`, `php-zip`, `php-curl`, `apache2`).
+- Bypasses source compilation, GNU `tar` `fchmodat` errors, and PPA GPG key requirements on the QTS Linux kernel.
 
 ### Case-Insensitive URL Matching (`mod_speling`)
-- Linux filesystems are case-sensitive (`Styles/Site.css`), while web links may use `styles/site.css`.
-- Apache **`mod_speling`** (`CheckSpelling On`, `CheckCaseOnly On`) is enabled to automatically resolve URL casing for stylesheets, icons, and creature images.
+- Linux filesystems are case-sensitive, while web links may vary in casing.
+- Apache **`mod_speling`** (`CheckSpelling On`, `CheckCaseOnly On`) is enabled to automatically resolve URL casing across all hosted endpoints.
 
 ### Security Hardening (`.htaccess`)
 - Blocks public web downloads of `.sql`, `.data`, `.ini`, `.xml`, `.log`, `.md`, `.json`, and `.sln` files.

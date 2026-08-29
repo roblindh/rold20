@@ -5,7 +5,8 @@
 .DESCRIPTION
     Syncs the project files to the QNAP network share while excluding
     sensitive files, IDE metadata, test directories, temporary data,
-    and the legacy backup directory.
+    the legacy backup directory, and other co-hosted projects
+    (RPGMapperTool, RPGWorldAtlas).
 
 .PARAMETER Destination
     Target network share path (Default: \\ROL-NAS-MINI\Container\rold20)
@@ -35,7 +36,7 @@ if (-not (Test-Path $Destination)) {
     }
 }
 
-# Directories to exclude from deployment and deletion
+# Directories to exclude from deployment and deletion (protects other co-hosted projects)
 $ExcludeDirs = @(
     ".git",
     ".phpunit.cache",
@@ -47,7 +48,11 @@ $ExcludeDirs = @(
     "container-station-data",
     "@Recycle",
     ".qpkg",
-    "legacy"
+    "legacy",
+    "RPGWorldAtlas",
+    "rpgworldatlas",
+    "RPGMapperTool",
+    "rpgmappertool"
 )
 
 # Files to exclude from deployment

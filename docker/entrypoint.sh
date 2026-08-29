@@ -3,15 +3,18 @@ set -e
 
 echo "Starting RoL d20 container initialization..."
 
-# Set directory permissions for Laravel runtime
+# Ensure Apache runtime directories exist
+mkdir -p /var/run/apache2 /var/lock/apache2 /var/log/apache2
+
+# Set directory permissions for Laravel runtime (don't fail on NAS permission limits)
 mkdir -p /var/www/html/storage/framework/cache/data \
          /var/www/html/storage/framework/sessions \
          /var/www/html/storage/framework/views \
          /var/www/html/storage/logs \
-         /var/www/html/bootstrap/cache
+         /var/www/html/bootstrap/cache || true
 
-chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache || true
+chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache || true
 
 # Wait for MySQL connection if DB_CONNECTION is mysql
 if [ "$DB_CONNECTION" = "mysql" ]; then
@@ -35,11 +38,5 @@ if [ -f "/var/www/html/artisan" ]; then
 fi
 
 echo "RoL d20 ready! Starting Apache web server..."
-if command -v apache2ctl >/dev/null 2>&1; then
-    exec apache2ctl -D FOREGROUND
-elif command -v apache2-foreground >/dev/null 2>&1; then
-    exec apache2-foreground
-else
-    . /etc/apache2/envvars
-    exec apache2 -D FOREGROUND
-fi
+. /etc/apache2/envvars
+exec /usr/sbin/apache2 -D FOREGROUND
