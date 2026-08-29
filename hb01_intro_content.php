@@ -70,27 +70,27 @@
     compared to traditional 3.5E D&amp;D:</p>
 <ul>
     <li>The core rules have been made more streamlined, consistent, and
-        generic, with regards to <a href="hb02_coremech.php#Actions">d20
-            checks</a>, <a href="hb02_coremech.php#Modifiers">modifiers</a>, and
-        <a href="hb02_coremech.php#Descriptors">descriptors</a>.</li>
+        generic, with regards to <a href="/rules/core#Actions">d20
+            checks</a>, <a href="/rules/core#Modifiers">modifiers</a>, and
+        <a href="/rules/core#Descriptors">descriptors</a>.</li>
     <li>The rules are based on a more distinct definition of <a
-            href="hb02_coremech.php#Characteristics">core characteristics</a> and
-        their <a href="hb02_coremech.php#CharDependencies">dependencies</a>.</li>
+            href="/rules/core#Characteristics">core characteristics</a> and
+        their <a href="/rules/core#CharDependencies">dependencies</a>.</li>
     <li>The old saving throws have been replaced with passive <a
-            href="hb02_coremech.php#DefenseScores">defense scores</a> (very
+            href="/rules/core#DefenseScores">defense scores</a> (very
         similar to D&amp;D 4E).</li>
-    <li>A set of <a href="hb02_coremech.php#SocialScores">social scores</a>
+    <li>A set of <a href="/rules/core#SocialScores">social scores</a>
         (social class, wealth class, influence, and reputation) has been
         added.</li>
     <li>The old level-based ability bonuses have been replaced with a more
-        generic <a href="hb02_coremech.php#ImprPts">improvement point</a>
+        generic <a href="/rules/core#ImprPts">improvement point</a>
         system.</li>
-    <li><a href="hb02_coremech.php#FatePts">Fate points</a> have been
+    <li><a href="/rules/core#FatePts">Fate points</a> have been
         introduced to reduce the importance of resurrection magic.</li>
-    <li>Open-ended <a href="hb02_coremech.php#Actions">d20 checks</a> are
+    <li>Open-ended <a href="/rules/core#Actions">d20 checks</a> are
         used for all skill checks, attack rolls, etc.</li>
     <li>Most class traits, feats, and even monster abilities have been changed into
-        <a href="hb09_skills.php#Skills">skills</a>.</li>
+        <a href="/reference/skills#Skills">skills</a>.</li>
     <li>Racial traits have been separated into racial and cultural traits.</li>
     <li>Some races have been changed into templates.</li>
     <li>The Barbarian class has been changed into a set of skills available to the
@@ -98,11 +98,11 @@
     <li>The Paladin and Blackguard classes have been changed into a more generic
         Templar class.</li>
     <li>Skills have been divided into
-        <a href="hb09_skills.php#SkillBenefits">skill benefits</a>
+        <a href="/reference/skills#SkillBenefits">skill benefits</a>
         (bonuses provided by the skill) and
-        <a href="hb09_skills.php#SkillActions">skill actions</a>
+        <a href="/reference/skills#SkillActions">skill actions</a>
         (things you can do with the skill).</li>
-    <li>A system based on <a href="hb02_coremech.php#ActionPts">action
+    <li>A system based on <a href="/rules/core#ActionPts">action
             points</a> (increasing with level) has replaced all the old action
         types.</li>
     <li>The size of a weapon affects attack speed. Larger weapons are slower but
@@ -120,7 +120,7 @@
     <li>Spells make use of opposed checks and opposed power levels much
         more than before.</li>
     <li>The creation of magic items has been made more streamlined.</li>
-    <li><a href="hb05_magic.php#Residuum">Residuum</a> (from D&amp;D 4E)
+    <li><a href="/rules/magic#Residuum">Residuum</a> (from D&amp;D 4E)
         has been adopted as an alternative to spending XP when creating magic
         items.</li>
     <li>Most costs, prices, treasures, etc. have been changed one

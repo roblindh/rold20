@@ -9,8 +9,9 @@ function render_creature_image_script() {
     function showCreatureImage(id, src, isLocal, externalUrl) {
         var span = document.getElementById('crimg' + id);
         if (!span) return;
+        var imgUrl = (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('/')) ? src : '/' + src;
         var html = '<div style="margin-top: 5px;">';
-        html += '<img src="' + src + '" alt="Creature image" style="max-width: 350px; max-height: 350px; object-fit: contain; border: 1px solid #ccc; border-radius: 4px; display: block; margin-bottom: 5px;" ';
+        html += '<img src="' + imgUrl + '" alt="Creature image" style="max-width: 350px; max-height: 350px; object-fit: contain; border: 1px solid #ccc; border-radius: 4px; display: block; margin-bottom: 5px;" ';
         html += 'onerror="this.onerror=null; this.style.display=\'none\'; document.getElementById(\'crerr' + id + '\').style.display=\'block\';"/>';
         html += '<div id="crerr' + id + '" style="display: none; color: #c00; font-size: 0.9em; margin-bottom: 5px; background: #fff0f0; border: 1px solid #ffcccc; padding: 4px 8px; border-radius: 4px;">';
         html += '⚠️ <strong>Image unavailable</strong> (remote link unreachable or blocked).';

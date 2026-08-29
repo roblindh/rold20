@@ -4,7 +4,8 @@
 
 .DESCRIPTION
     Syncs the project files to the QNAP network share while excluding
-    sensitive files, IDE metadata, test directories, and temporary data.
+    sensitive files, IDE metadata, test directories, temporary data,
+    and the legacy backup directory.
 
 .PARAMETER Destination
     Target network share path (Default: \\ROL-NAS-MINI\Container\rold20)
@@ -45,7 +46,8 @@ $ExcludeDirs = @(
     "node_modules",
     "container-station-data",
     "@Recycle",
-    ".qpkg"
+    ".qpkg",
+    "legacy"
 )
 
 # Files to exclude from deployment

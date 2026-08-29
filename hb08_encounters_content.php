@@ -5,7 +5,7 @@
     Here are a few examples:
 </p>
 <ul>
-    <li><a href="hb04_combat.php#CombatSequence">Standard combat</a>.</li>
+    <li><a href="/rules/combat#CombatSequence">Standard combat</a>.</li>
     <li>Special combat, such as an arena fight or an attempt to incapacitate or capture the foe.</li>
     <li>Traps and natural hazards.</li>
     <li>Negotiations and role-playing challenges.</li>
@@ -25,7 +25,7 @@
     Surprise and initiative can be useful to determine the starting situation and positions, regardless of whether the encounter turns into combat or not.
 </p>
 <p>
-    As soon as detailed timekeeping is called for, participants should roll for <a href="hb04_combat.php#Initiative">initiative</a>,
+    As soon as detailed timekeeping is called for, participants should roll for <a href="/rules/combat#Initiative">initiative</a>,
     and the encounter should then be handled one round at a time, according to this sequence:
 </p>
 <ol>
@@ -117,7 +117,7 @@
 </p>
 <p>
     At the beginning of a creature’s turn, update health points for continuous damage effects, ongoing costs,
-    <a href="hb02_coremech.php#Regeneration">regeneration</a>, 
+    <a href="/rules/core#Regeneration">regeneration</a>, 
     and similar effects.
 </p>
 <p>
@@ -139,7 +139,7 @@
 <h3 id="MovementPoints">Movement Points</h3>
 <p>
     During each round, a creature gets a number of 
-    <a href="hb02_coremech.php#MovementPts">movement points</a> (MP)
+    <a href="/rules/core#MovementPts">movement points</a> (MP)
     equal to its adjusted speed characteristic (for the appropriate mode of movement).
     MP can be used for movement actions at any time during the creature's turn, but they cannot normally be used as a reaction.
 </p>
@@ -156,7 +156,7 @@
 <h3 id="ActionPoints">Action Points</h3>
 <p>
     Every creature has a certain number of 
-    <a href="hb02_coremech.php#ActionPts">action points</a> (AP). 
+    <a href="/rules/core#ActionPts">action points</a> (AP). 
     During each round, the creature can use its action points to perform actions (and optionally boost those actions).
     The use of all action points does not have to be declared from the beginning of your turn.
     For example, it is possible to first make an attack boosted with additional AP for an attack bonus,

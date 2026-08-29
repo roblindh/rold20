@@ -279,7 +279,7 @@
 </p>
 <p>
     <em id="ImprPts">Improvement Points (IP):</em> Characters and other exceptional creatures gain 5 improvement points per level,
-    and these can be used to improve a wide variety of characteristics (see <a href="hb03_chargen.php#Improvements">Character Generation</a> chapter).
+    and these can be used to improve a wide variety of characteristics (see <a href="/rules/chargen#Improvements">Character Generation</a> chapter).
     Improvement points can be saved and accumulated for future use.
 </p>
 
@@ -446,7 +446,7 @@
 <h4 id="DamageResistance">Damage Resistance</h4>
 <p>
     <em>Damage Resistance (DR):</em> This reflects how resistant a creature (or an object) is to 
-    <a href="hb04_combat.php#PhysDmg">physical damage</a>, 
+    <a href="/rules/combat#PhysDmg">physical damage</a>, 
     regardless of whether the damage is caused by weapons, claws, teeth, crushing boulders, or a fall from a great height.
     The damage resistance does not apply to energy damage. Every time the creature takes physical damage,
     the damage is reduced by an amount equal to the creature's DR.
@@ -527,7 +527,7 @@
 <h4 id="EnergyResistance">Energy Resistances</h4>
 <p>
     <em>Energy Resistance (Acid, Cold, Electricity, Fire, Necrotic, Radiant and/or Sonic Res):</em> Resistance to a type of 
-    <a href="hb04_combat.php#EnergyDmg">energy damage</a>, 
+    <a href="/rules/combat#EnergyDmg">energy damage</a>, 
     reduces the amount of damage taken when exposed to the specified energy type.
     The reduction in damage is made after any other modifiers due to defenses, evasion, magical protection, etc.
     The number indicated for an energy resistance is the maximum sum of HP and SP that can be resisted or absorbed each round.
@@ -552,7 +552,7 @@
 </p>
 
 <p>
-    <em>Psychic Resistance (Psychic Res):</em> Resistance to <a href="hb04_combat.php#PsychicDmg">psychic damage</a>,
+    <em>Psychic Resistance (Psychic Res):</em> Resistance to <a href="/rules/combat#PsychicDmg">psychic damage</a>,
     reduces the amount of PP damage taken when exposed to psychic attacks.
     The reduction in damage is made after any other modifiers due to defenses, magical protection, etc.
     The number indicated for psychic resistance is the maximum PP damage that can be resisted or absorbed each round.
@@ -582,7 +582,7 @@
 </p>
 <p>
     MR works by increasing the difficulty of any spellcasting check (or similar supernatural activation check) that directly affects the protected creature.
-    Please refer to the <a href="hb05_magic.php">Rules of Magic</a> chapter for more details about spellcasting.
+    Please refer to the <a href="/rules/magic">Rules of Magic</a> chapter for more details about spellcasting.
 </p>
 <p>
     Magic resistance applies to most magic spells, psionic powers, and spell-like effects that target the creature in question,
@@ -630,10 +630,11 @@
 <?php show_bodytypes(); ?>
 
 <h4 id="SpacingReach">Spacing and Reach</h4>
-<p>Typical spacing and reach based on size and body type:</p>
-<img src="images/Reach1.gif" alt='Spacing and Reach'/>
-<img src="images/Reach2.gif" alt='Spacing and Reach'/>
-<img src="images/Reach3.gif" alt='Spacing and Reach'/>
+<div class="my-4 space-y-4">
+    <img src="/images/Reach1.gif" alt="Spacing and Reach" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
+    <img src="/images/Reach2.gif" alt="Spacing and Reach" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
+    <img src="/images/Reach3.gif" alt="Spacing and Reach" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
+</div>
 
 <h4 id="NaturalAttacks">Natural Attacks</h4>
 <p>
@@ -958,7 +959,7 @@
 <h4 id="Initiative">Initiative</h4>
 <p>
     <em>Initiative modifier (Init):</em> This is the modifier applied to a creature’s 
-    <a href="hb04_combat.php#Initiative">initiative rolls</a>.
+    <a href="/rules/combat#Initiative">initiative rolls</a>.
     Such rolls are used to determine the order in which creatures get to act during an encounter.
 </p>
 <p>
@@ -992,15 +993,16 @@
     with the most basic and constant characteristics at the top. Whenever one of your characteristics gets updated,
     you can use the chart to determine which other characteristics will be indirectly affected by the change.
 </p>
-<br/>
-<img src="images/Characteristics.gif" title="Characteristics and Modifiers" alt='Characteristics Dependencies and Effects'/>
+<div class="my-4 overflow-x-auto">
+    <img src="/images/Characteristics.gif" title="Characteristics and Modifiers" alt="Characteristics Dependencies and Effects" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
+</div>
 <p>
     Note that spells and magic items can affect almost any characteristic, and this is not shown in the chart above.
 </p>
 
 <h3 id="Actions">Actions and Action Checks</h3>
 <p>
-    <a href="hb10_actions.php">Actions</a> 
+    <a href="/reference/actions">Actions</a> 
     cover everything that a character can do. Some actions are very simple to perform,
     such as walking across a room or shouting a warning to a friend.
     Unless there are extreme circumstances (walking across a slippery floor during an earthquake, for example),
@@ -1142,7 +1144,7 @@
 <h4 id="DefensiveActions">Defensive Action Checks</h4>
 <p>
     Many actions tend to make you more vulnerable, triggering 
-    <a href="hb04_combat.php#AoO">attacks of opportunity</a> 
+    <a href="/rules/combat#AoO">attacks of opportunity</a> 
     (AoO) from opponents within reach.
     Unless otherwise specified, it is possible to perform those actions defensively, thereby avoiding AoO.
     Performing an action defensively takes twice as long as normal (double the action time) and also involves a -4 circumstance penalty on the action check.
@@ -1246,7 +1248,7 @@
     Each action will specify what happens at the different levels.
 </p>
 <p>
-    For attack actions, please see the <a href="hb04_combat.php#AttackTypes">Combat</a> chapter for more details.
+    For attack actions, please see the <a href="/rules/combat#AttackTypes">Combat</a> chapter for more details.
 </p>
 
 <h4 id="ActionCheckLevels">Levels of Success and Failure</h4>
@@ -1468,8 +1470,9 @@
     for examples of area templates.
 </p>
 
-<br/>
-<img src="images/Areas.gif" title="Example Areas of Effect" alt='Example Areas of Effect'/>
+<div class="my-4 overflow-x-auto">
+    <img src="/images/Areas.gif" title="Example Areas of Effect" alt="Example Areas of Effect" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
+</div>
 
 <p>
     When target specifies "Ally" or "Allies", this can also include you (unless otherwise specified).
@@ -1492,7 +1495,7 @@
     <li>Modifiers of the same type do not normally stack. For each type, apply only the highest bonus and the most severe penalty. The following exceptions apply:</li>
     <ul>
         <li>Circumstance modifiers stack with circumstance modifiers from other sources.</li>
-        <li>Improvement modifiers stack, but they have a limited total as described in the section about <a href="hb03_chargen.php#Improvements">improvement points</a>.</li>
+        <li>Improvement modifiers stack, but they have a limited total as described in the section about <a href="/rules/chargen#Improvements">improvement points</a>.</li>
         <li>Inherent modifiers stack, but they are limited to a total of +5 for each ability score.</li>
     </ul>
     <li>Enhancement and material modifiers frequently apply to weapons, shields, armor, and other equipment rather than to a character or creature.
@@ -2422,7 +2425,7 @@
 <h3 id="SpecialAbils">Other Special Abilities and Effects</h3>
 <p>
     Note that some supernatural abilities are described in greater detail in the 
-    <a href="hb05_magic.php">Rules of Magic</a> chapter. 
+    <a href="/rules/magic">Rules of Magic</a> chapter. 
 </p>
 
 <h4 id="Antimagic">Antimagic</h4>
@@ -2434,7 +2437,7 @@
 </p>
 <p>
     See the 
-    <a href="hb05_magic.php">Rules of Magic</a> 
+    <a href="/rules/magic">Rules of Magic</a> 
     chapter for more details.
 </p>
 
@@ -2474,7 +2477,7 @@
 <p>
     Detection through barriers is difficult but not impossible.
     Any such attempt requires a spellcasting check against a difficulty set by the barrier’s 
-    <a href="hb12_equipment.php#Materials">material</a> 
+    <a href="/reference/equipment#Materials">material</a> 
     and thickness.
 </p>
 
@@ -2624,7 +2627,7 @@
 <p>
     Travelling into or out of a warded area or a completely enclosed volume is more difficult than normal and
     will require a spellcasting check against the appropriate DC (determined by the ward’s PL or the 
-    <a href="hb12_equipment.php#Materials">material's</a> 
+    <a href="/reference/equipment#Materials">material's</a> 
     MR).
 </p>
 
@@ -2750,7 +2753,7 @@
 <p>
     Detection into or out of a warded area or an enclosed volume is difficult but not impossible.
     Any such attempt requires a spellcasting check against a difficulty set by the ward’s PL or the
-    <a href="hb12_equipment.php#Materials">material's</a> 
+    <a href="/reference/equipment#Materials">material's</a> 
     MR.
 </p>
 
@@ -2815,7 +2818,7 @@
 <p>
     Telepathy into or out of a warded area or an enclosed volume is difficult but not impossible.
     Any such attempt requires a spellcasting check against a difficulty set by the ward’s PL or the
-    <a href="hb12_equipment.php#Materials">material's</a> 
+    <a href="/reference/equipment#Materials">material's</a> 
     MR.
 </p>
 
@@ -2836,7 +2839,7 @@
 <p>
     Teleporting into or out of a warded area or a completely enclosed volume is more difficult than normal and
     will require a spellcasting check against the appropriate DC (determined by the ward’s PL or the 
-    <a href="hb12_equipment.php#Materials">material's</a> 
+    <a href="/reference/equipment#Materials">material's</a> 
     MR).
 </p>
 

@@ -183,7 +183,7 @@
 <dl>
     <dt>Against active opposing power...</dt>
     <dd>+ opposing power’s PL</dd>
-    <dt>Against target(s) with <a href="hb02_coremech.php#MagicRes">magic resistance</a>...</dt>
+    <dt>Against target(s) with <a href="/rules/core#MagicRes">magic resistance</a>...</dt>
     <dd>+ MR (this modifier applies only to the target or targets with MR)</dd>
     <dt>Caster or target in antimagic zone...</dt>
     <dd>+ AM (level of antimagic)</dd>
@@ -586,7 +586,7 @@
 </p>
 <p>
     A free soul can sometimes fight the soul of a living creature and 
-    <a href="hb02_coremech.php#Possession">possess</a> 
+    <a href="/rules/core#Possession">possess</a> 
     its body.
     Only a very powerful soul is capable of inhabiting and controlling a body whose brain does not match the soul.
     Therefore, a rough order of difficulty goes from a clone, to a relative, to an individual of the same species,
@@ -651,7 +651,7 @@
     or just a mental command.
     Some items, such as wands and spell scrolls, even require specific skills and action checks to use properly.
     See the 
-    <a href="hb10_actions.php">list of actions</a> 
+    <a href="/reference/actions">list of actions</a> 
     for special actions related to the use of magic items.
 </p>
 

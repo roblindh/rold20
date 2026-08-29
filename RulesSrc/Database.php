@@ -34,8 +34,17 @@ class Database
      */
     public function connect($host, $user, $password, $database)
     {
+        if ($this->pdo !== null) {
+            return;
+        }
+
         try {
-            $dsn = "mysql:host={$host};dbname={$database};charset=utf8mb4";
+            $realHost = $host ?: (getenv('DB_HOST') ?: '127.0.0.1');
+            $realPort = getenv('DB_PORT') ?: 3306;
+            if (str_contains((string)$realHost, ':')) {
+                [$realHost, $realPort] = explode(':', (string)$realHost, 2);
+            }
+            $dsn = "mysql:host={$realHost};port={$realPort};dbname={$database};charset=utf8mb4";
             $this->pdo = new PDO(
                 $dsn,
                 $user,
@@ -44,11 +53,17 @@ class Database
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                     PDO::ATTR_EMULATE_PREPARES => false,
+                    PDO::ATTR_TIMEOUT => 2,
                 ]
             );
         } catch (PDOException $e) {
             throw new Exception("Database connection failed: " . $e->getMessage());
         }
+    }
+
+    public function setPdo(PDO $pdo)
+    {
+        $this->pdo = $pdo;
     }
 
     /**
@@ -61,13 +76,36 @@ class Database
      */
     public function query($query, $params = [])
     {
+        if ($this->pdo === null && class_exists('\Illuminate\Support\Facades\DB')) {
+            try {
+                $this->pdo = \Illuminate\Support\Facades\DB::connection()->getPdo();
+            } catch (\Throwable $t) {}
+        }
+
+        // Auto map legacy table queries to ref_* tables if ref_* table exists
+        $refMappedQuery = preg_replace_callback('/\b(?:FROM|JOIN)\s+([a-zA-Z0-9_]+)\b/i', function ($matches) {
+            $table = $matches[1];
+            if (!str_starts_with($table, 'ref_') && !in_array($table, ['campaigns', 'characters', 'players', 'search_index', 'migrations'])) {
+                return str_replace($table, "ref_$table", $matches[0]);
+            }
+            return $matches[0];
+        }, $query);
+
         try {
-            $stmt = $this->pdo->prepare($query);
+            $stmt = $this->pdo->prepare($refMappedQuery);
             $stmt->execute($params);
             $this->lastStatement = $stmt;
             return new QueryResult($stmt);
         } catch (PDOException $e) {
-            throw new Exception("Query error: " . $e->getMessage() . "\nQuery: " . $query);
+            try {
+                // Retry with original query
+                $stmt = $this->pdo->prepare($query);
+                $stmt->execute($params);
+                $this->lastStatement = $stmt;
+                return new QueryResult($stmt);
+            } catch (PDOException $e2) {
+                throw new Exception("Query error: " . $e2->getMessage() . "\nQuery: " . $query);
+            }
         }
     }
 

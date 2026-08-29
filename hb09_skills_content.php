@@ -10,7 +10,7 @@
 <h4 id="SkillLevel">Skill Level</h4>
 <p>
     The skill level of a skill is equal to the number of 
-    <a href="hb02_coremech.php#SkillPts">skill points</a> 
+    <a href="/rules/core#SkillPts">skill points</a> 
     spent on it plus modifiers for race, culture, class, magic items, etc.
     Note that ability modifiers are added to skill actions but never to the skill level itself.
 </p>
@@ -36,7 +36,7 @@
 </p>
 <p>
     The success or failure of a skill action is resolved by making an 
-    <a href="hb02_coremech.php#Actions">action check</a>, 
+    <a href="/rules/core#Actions">action check</a>, 
     according to the rules already described.
     Please refer to that chapter for details about difficulty classes, opposed skill checks, retries, taking 10, taking 20, aiding another’s skill use, modifiers, descriptors, etc.
 </p>

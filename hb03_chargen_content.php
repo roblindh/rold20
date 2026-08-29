@@ -35,7 +35,7 @@
 <h3 id="AbilityGen">Ability Score Generation</h3>
 <p>
     Generate 
-    <a href="hb02_coremech.php#AbilityScores">base ability scores</a> 
+    <a href="/rules/core#AbilityScores">base ability scores</a> 
     using one of the following methods (subject to the DM’s approval):
 </p>
 
@@ -58,7 +58,7 @@
 <p>
     This chapter lists the races (i.e. species) most commonly available for player characters.
     It is merely a subset of the larger number of creatures described in the 
-    <a href="hb13_creatures.php">creature chapter</a>, 
+    <a href="/reference/creatures">creature chapter</a>, 
     and some of those may also be suitable for characters
     (at the DM’s discretion). Note, however, that this chapter and the original D&amp;D rules provide more role-playing information than
     is available for most non-character creatures.
@@ -155,7 +155,7 @@
 <h4>Acquiring Skills</h4>
 <p>
     Characters gain skill points as they increase in level, and those skill points can be used to buy levels in a wide variety of 
-    <a href="hb09_skills.php">skills</a>.
+    <a href="/reference/skills">skills</a>.
     Each skill point is worth one skill level. For each increase in TL (i.e. racial level or class level),
     a character can spend 0, 0.5, or 1 skill points on primary skills and 0 or 0.5 skill points on secondary skills.
 </p>
@@ -336,7 +336,7 @@
 <h4 id="WealthPerLevel">Starting Wealth</h4>
 <p>
     When starting at 1st level, each character has 4d6×10 sp with which to buy 
-    <a href="hb12_equipment.php">weapons, armor, and other equipment</a>.
+    <a href="/reference/equipment">weapons, armor, and other equipment</a>.
     In addition, he automatically starts with one set of basic clothing (worth up to 5 sp).
 </p>
 

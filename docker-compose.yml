@@ -9,12 +9,20 @@ services:
       - "${WEB_PORT:-8090}:80"
     volumes:
       - .:/var/www/html
-      - ./docker/php.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+      - ./docker/php.ini:/usr/local/etc/php/conf.d/99-custom.ini:ro
     environment:
+      APP_NAME: "RoL d20"
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_URL: "http://localhost:${WEB_PORT:-8090}"
+      DB_CONNECTION: mysql
       DB_HOST: db
-      DB_USER: ${DB_USER:-rold20_user}
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_NAME:-rold20}
+      DB_USERNAME: ${DB_USER:-rold20_user}
       DB_PASSWORD: ${DB_PASSWORD:-rold20_pass}
-      DB_NAME: ${DB_NAME:-rold20}
+      SESSION_DRIVER: cookie
+      CACHE_STORE: array
     depends_on:
       db:
         condition: service_healthy
@@ -34,12 +42,11 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:-rold20_pass}
     volumes:
       - db_data:/var/lib/mysql
-      - ./dbdump/Dump20200708.sql:/docker-entrypoint-initdb.d/01-initial-dump.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 5s
+      timeout: 3s
+      retries: 10
     networks:
       - rold20_net
 

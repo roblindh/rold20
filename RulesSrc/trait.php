@@ -1083,7 +1083,7 @@ class cTrait {
         }
         if (!$weaponStats->OnlyRanged)
             $str .= "; Rch " . $weaponStats->MinReach . "-" .
-                    max(0, $weaponStats->MaxReach + $_APP['sizecats'][$baseSize + $sizeAdj]['Reach'] - 1);
+                    max(0, $weaponStats->MaxReach + ($_APP['sizecats'][$baseSize + $sizeAdj]['Reach'] ?? 1) - 1);
         if ($weaponStats->Range > 0)
             $str .= "; Rng " . $weaponStats->Range;
         if ($weaponStats->PrepTime != "")

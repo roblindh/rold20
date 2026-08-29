@@ -1,0 +1,3584 @@
+abilityscores:
+  -
+    ID: 1
+    AbilityScore: Strength
+    Abbreviation: Str
+    Description: 'Affects Fortitude defense, some melee attack rolls, melee weapon damage, some skill action rolls, strength ability checks, and carrying capacity.'
+    NoScore: 'Cannot exert force or physically manipulate objects; fail all Str checks; may be allowed to use Dex modifier for some attacks.'
+  -
+    ID: 2
+    AbilityScore: Constitution
+    Abbreviation: Con
+    Description: 'Affects Fortitude defense, starting hit points, starting stamina points, some skill action rolls, and constitution ability checks.'
+    NoScore: 'Immune to ability damage, energy drain, and attacks against Fort defense; have no stamina points and do not suffer fatigue; fail all Con checks.'
+  -
+    ID: 3
+    AbilityScore: Dexterity
+    Abbreviation: Dex
+    Description: 'Affects Defense Class, Reflex defense, some melee attack rolls, most ranged attack rolls, initiative rolls, some skill action rolls, and dexterity ability checks.'
+    NoScore: 'Cannot move; fail all Dex checks, and attacks against Ref defense always have full effect; no initiative modifier.'
+  -
+    ID: 4
+    AbilityScore: Intelligence
+    Abbreviation: Int
+    Description: 'Affects Reflex defense, some magical attack rolls, some skill action rolls, and intelligence ability checks.'
+    NoScore: 'Fail all Int checks; can never learn skills; immune to mind-affecting attacks.'
+  -
+    ID: 5
+    AbilityScore: Wisdom
+    Abbreviation: Wis
+    Description: 'Affects Will defense, starting power points, some magical attack rolls, some skill action rolls, and wisdom ability checks.'
+    NoScore: 'Must be an object; have no power points and do not suffer mental fatigue.'
+  -
+    ID: 6
+    AbilityScore: Charisma
+    Abbreviation: Cha
+    Description: 'Affects Will defense, some magical attack rolls, some skill action rolls, and charisma ability checks.'
+    NoScore: 'Must be an object.'
+abilitygeneration:
+  -
+    ID: 1
+    MethodName: 'Method E-I'
+    Description: 'Roll 4d6 and discard the lowest die. Do this six times. Assign each score to one base ability.'
+    Generation: 'R:XDICE(4,1,6,3,1)'
+    Rearrange: 2
+    Reroll: 0
+  -
+    ID: 2
+    MethodName: 'Method E-II'
+    Description: 'You have 25 points with which to buy your base ability scores. See the table below for point costs.'
+    Generation: 'B:25'
+    Rearrange: 0
+    Reroll: 0
+  -
+    ID: 3
+    MethodName: 'Method E-III'
+    Description: 'Assign the following scores as desired: 15, 14, 13, 12, 10, and 8.'
+    Generation: 'F:15,14,13,12,10,8'
+    Rearrange: 2
+    Reroll: 0
+  -
+    ID: 4
+    MethodName: 'Method E-IV'
+    Description: 'Same as method I, but a single score can be rerolled once during the process.'
+    Generation: 'R:XDICE(4,1,6,3,1)'
+    Rearrange: 2
+    Reroll: 1
+  -
+    ID: 5
+    MethodName: 'Method E-V'
+    Description: 'Roll 4d6 and discard the lowest die. Do this six times and assign in order to Str, Con, Dex, Int, Wis, and Cha. Reroll any one ability score of your choice, and take the new roll if it is higher. Finally, you may switch any two ability scores.'
+    Generation: 'R:XDICE(4,1,6,3,1)'
+    Rearrange: 1
+    Reroll: 1
+  -
+    ID: 6
+    MethodName: 'Method E-VI'
+    Description: 'Assign the following dice pools to one ability score each: 6d6, 5d6, 4d6, 4d6, 3d6, 3d6. Roll the indicated number of dice and add the three highest dice in each pool. The six results are your scores.'
+    Generation: 'R:XDICE(6,1,6,3,1),XDICE(5,1,6,3,1),XDICE(4,1,6,3,1),XDICE(4,1,6,3,1),XDICE(3,1,6,3,1),XDICE(3,1,6,3,1)'
+    Rearrange: 2
+    Reroll: 0
+  -
+    ID: 7
+    MethodName: 'Method A-I'
+    Description: 'Roll 3d6. Do this six times. Assign each score to one base ability.'
+    Generation: 'R:XDICE(3,1,6,3,1)'
+    Rearrange: 2
+    Reroll: 0
+  -
+    ID: 8
+    MethodName: 'Method A-II'
+    Description: 'You have 15 points with which to buy your ability scores. See the table below for point costs.'
+    Generation: 'B:15'
+    Rearrange: 0
+    Reroll: 0
+  -
+    ID: 9
+    MethodName: 'Method A-III'
+    Description: 'Assign the following scores as desired: 13, 12, 11, 10, 9, and 8.'
+    Generation: 'F:13,12,11,10,9,8'
+    Rearrange: 2
+    Reroll: 0
+  -
+    ID: 10
+    MethodName: 'Method A-IV'
+    Description: 'Assign the following scores as desired: 11, 11, 11, 10, 10, and 10.'
+    Generation: 'F:11,11,11,10,10,10'
+    Rearrange: 2
+    Reroll: 0
+  -
+    ID: 11
+    MethodName: 'Method A-V'
+    Description: 'Assign the following dice pools to one ability score each: 4d6, 4d6, 3d6, 3d6, 2d8, 2d8. Roll the indicated number of dice and add the three highest dice in each pool. The six results are your scores.'
+    Generation: 'R:XDICE(4,1,6,3,1),XDICE(4,1,6,3,1),XDICE(3,1,6,3,1),XDICE(3,1,6,3,1),XDICE(2,1,8,2,1),XDICE(2,1,8,2,1)'
+    Rearrange: 2
+    Reroll: 0
+  -
+    ID: 12
+    MethodName: 'Method H-I'
+    Description: 'Roll 5d6 (or even 6d6) and total the three highest. Do this six times. Assign each score to one base ability.'
+    Generation: 'R:XDICE(5,1,6,3,1)'
+    Rearrange: 2
+    Reroll: 0
+  -
+    ID: 13
+    MethodName: 'Method H-II'
+    Description: 'You have 35 (or even 40) points with which to buy your base ability scores. See the table below for point costs.'
+    Generation: 'B:35'
+    Rearrange: 0
+    Reroll: 0
+  -
+    ID: 14
+    MethodName: 'Method H-III'
+    Description: 'Assign the following scores as desired: 18, 15, 13, 12, 10, and 8.'
+    Generation: 'F:18,15,13,12,10,8'
+    Rearrange: 2
+    Reroll: 0
+  -
+    ID: 15
+    MethodName: 'Method H-IV'
+    Description: 'Same as method I, but a single score can be rerolled once during the process.'
+    Generation: 'R:XDICE(5,1,6,3,1)'
+    Rearrange: 2
+    Reroll: 1
+  -
+    ID: 16
+    MethodName: 'Method H-V'
+    Description: 'Roll 5d6 (or even 6d6) and total the three highest dice. Do this six times and assign in order to Str, Con, Dex, Int, Wis, and Cha. Reroll any one ability score of your choice, and take the new roll if it is higher. Finally, you may switch any two ability scores.'
+    Generation: 'R:XDICE(5,1,6,3,1)'
+    Rearrange: 1
+    Reroll: 1
+  -
+    ID: 17
+    MethodName: 'Method H-VI'
+    Description: 'Assign the following dice pools to one ability score each: 9d6, 8d6, 7d6, 5d6, 4d6, 3d6. Roll the indicated number of dice and add the three highest dice in each pool. The six results are your scores.'
+    Generation: 'R:XDICE(9,1,6,3,1),XDICE(8,1,6,3,1),XDICE(7,1,6,3,1),XDICE(5,1,6,3,1),XDICE(4,1,6,3,1),XDICE(3,1,6,3,1)'
+    Rearrange: 2
+    Reroll: 0
+  -
+    ID: 18
+    MethodName: H-Rerolling
+    Description: 'Regardless of method, if the sum of your ability modifiers is +3 or less, or your highest score is 15 or lower, you are recommended to start over and reroll all ability scores.'
+    Generation: null
+    Rearrange: null
+    Reroll: null
+  -
+    ID: 19
+    MethodName: E-Rerolling
+    Description: 'Regardless of method, if the sum of your ability modifiers is 0 or less, or your highest score is 13 or lower, you are recommended to start over and reroll all ability scores.'
+    Generation: null
+    Rearrange: null
+    Reroll: null
+abilitypointbuy:
+  -
+    BaseAbility: 3
+    PointCost: -5
+  -
+    BaseAbility: 4
+    PointCost: -4
+  -
+    BaseAbility: 5
+    PointCost: -3
+  -
+    BaseAbility: 6
+    PointCost: -2
+  -
+    BaseAbility: 7
+    PointCost: -1
+  -
+    BaseAbility: 8
+    PointCost: 0
+  -
+    BaseAbility: 9
+    PointCost: 1
+  -
+    BaseAbility: 10
+    PointCost: 2
+  -
+    BaseAbility: 11
+    PointCost: 3
+  -
+    BaseAbility: 12
+    PointCost: 4
+  -
+    BaseAbility: 13
+    PointCost: 5
+  -
+    BaseAbility: 14
+    PointCost: 6
+  -
+    BaseAbility: 15
+    PointCost: 8
+  -
+    BaseAbility: 16
+    PointCost: 10
+  -
+    BaseAbility: 17
+    PointCost: 13
+  -
+    BaseAbility: 18
+    PointCost: 16
+experiencelevels:
+  -
+    ID: 1
+    Experience: 0
+    ActionPoints: 11
+  -
+    ID: 2
+    Experience: 1000
+    ActionPoints: 12
+  -
+    ID: 3
+    Experience: 3000
+    ActionPoints: 13
+  -
+    ID: 4
+    Experience: 6000
+    ActionPoints: 14
+  -
+    ID: 5
+    Experience: 10000
+    ActionPoints: 15
+  -
+    ID: 6
+    Experience: 15000
+    ActionPoints: 16
+  -
+    ID: 7
+    Experience: 21000
+    ActionPoints: 17
+  -
+    ID: 8
+    Experience: 28000
+    ActionPoints: 18
+  -
+    ID: 9
+    Experience: 36000
+    ActionPoints: 19
+  -
+    ID: 10
+    Experience: 45000
+    ActionPoints: 20
+  -
+    ID: 11
+    Experience: 55000
+    ActionPoints: 21
+  -
+    ID: 12
+    Experience: 66000
+    ActionPoints: 22
+  -
+    ID: 13
+    Experience: 78000
+    ActionPoints: 23
+  -
+    ID: 14
+    Experience: 91000
+    ActionPoints: 24
+  -
+    ID: 15
+    Experience: 105000
+    ActionPoints: 25
+  -
+    ID: 16
+    Experience: 120000
+    ActionPoints: 26
+  -
+    ID: 17
+    Experience: 136000
+    ActionPoints: 27
+  -
+    ID: 18
+    Experience: 153000
+    ActionPoints: 28
+  -
+    ID: 19
+    Experience: 171000
+    ActionPoints: 29
+  -
+    ID: 20
+    Experience: 190000
+    ActionPoints: 30
+  -
+    ID: 21
+    Experience: 210000
+    ActionPoints: 31
+  -
+    ID: 22
+    Experience: 231000
+    ActionPoints: 32
+  -
+    ID: 23
+    Experience: 253000
+    ActionPoints: 33
+  -
+    ID: 24
+    Experience: 276000
+    ActionPoints: 34
+  -
+    ID: 25
+    Experience: 300000
+    ActionPoints: 35
+  -
+    ID: 26
+    Experience: 325000
+    ActionPoints: 36
+  -
+    ID: 27
+    Experience: 351000
+    ActionPoints: 37
+  -
+    ID: 28
+    Experience: 378000
+    ActionPoints: 38
+  -
+    ID: 29
+    Experience: 406000
+    ActionPoints: 39
+  -
+    ID: 30
+    Experience: 435000
+    ActionPoints: 40
+sizes:
+  -
+    ID: -4
+    Description: Fine
+    Abbreviation: F
+    CombatMod: 8
+    GrappleMod: -16
+    AttSpdMod: -4
+    HPMult: 0.25
+    WeightMult: 0.1
+    MaxLength: 0.15
+    MaxVolume: 0.0001
+    Space: '-'
+    Reach: 0
+    ManeuverMod: 2
+    RelativeStr: -10
+    RelativeCon: -2
+    RelativeDex: 8
+    RelativeDR: 0
+  -
+    ID: -3
+    Description: Diminutive
+    Abbreviation: D
+    CombatMod: 4
+    GrappleMod: -12
+    AttSpdMod: -3
+    HPMult: 0.5
+    WeightMult: 0.25
+    MaxLength: 0.3
+    MaxVolume: 0.0005
+    Space: '1/4x1/4 sq'
+    Reach: 0
+    ManeuverMod: 1
+    RelativeStr: -10
+    RelativeCon: -2
+    RelativeDex: 6
+    RelativeDR: 0
+  -
+    ID: -2
+    Description: Tiny
+    Abbreviation: T
+    CombatMod: 2
+    GrappleMod: -8
+    AttSpdMod: -2
+    HPMult: 1
+    WeightMult: 0.5
+    MaxLength: 0.6
+    MaxVolume: 0.004
+    Space: '1/2x1/2 sq'
+    Reach: 1
+    ManeuverMod: 1
+    RelativeStr: -8
+    RelativeCon: -2
+    RelativeDex: 4
+    RelativeDR: 0
+  -
+    ID: -1
+    Description: Small
+    Abbreviation: S
+    CombatMod: 1
+    GrappleMod: -4
+    AttSpdMod: -1
+    HPMult: 1
+    WeightMult: 0.75
+    MaxLength: 1.2
+    MaxVolume: 0.03
+    Space: '1x1 sq'
+    Reach: 1
+    ManeuverMod: 0
+    RelativeStr: -4
+    RelativeCon: -2
+    RelativeDex: 2
+    RelativeDR: 0
+  -
+    ID: 0
+    Description: Medium
+    Abbreviation: M
+    CombatMod: 0
+    GrappleMod: 0
+    AttSpdMod: 0
+    HPMult: 1
+    WeightMult: 1
+    MaxLength: 2.5
+    MaxVolume: 0.25
+    Space: '1x1 sq'
+    Reach: 1
+    ManeuverMod: 0
+    RelativeStr: 0
+    RelativeCon: 0
+    RelativeDex: 0
+    RelativeDR: 0
+  -
+    ID: 1
+    Description: Large
+    Abbreviation: L
+    CombatMod: -1
+    GrappleMod: 4
+    AttSpdMod: 1
+    HPMult: 1.5
+    WeightMult: 2
+    MaxLength: 5
+    MaxVolume: 2
+    Space: '2x2 sq'
+    Reach: 1
+    ManeuverMod: 0
+    RelativeStr: 8
+    RelativeCon: 4
+    RelativeDex: -2
+    RelativeDR: 2
+  -
+    ID: 2
+    Description: Huge
+    Abbreviation: H
+    CombatMod: -2
+    GrappleMod: 8
+    AttSpdMod: 2
+    HPMult: 2
+    WeightMult: 4
+    MaxLength: 10
+    MaxVolume: 15
+    Space: '3x3 sq'
+    Reach: 2
+    ManeuverMod: -1
+    RelativeStr: 16
+    RelativeCon: 8
+    RelativeDex: -4
+    RelativeDR: 5
+  -
+    ID: 3
+    Description: Gargantuan
+    Abbreviation: G
+    CombatMod: -4
+    GrappleMod: 12
+    AttSpdMod: 3
+    HPMult: 3
+    WeightMult: 8
+    MaxLength: 20
+    MaxVolume: 120
+    Space: '4x4 sq'
+    Reach: 3
+    ManeuverMod: -1
+    RelativeStr: 24
+    RelativeCon: 12
+    RelativeDex: -4
+    RelativeDR: 9
+  -
+    ID: 4
+    Description: Colossal
+    Abbreviation: C
+    CombatMod: -8
+    GrappleMod: 16
+    AttSpdMod: 4
+    HPMult: 4
+    WeightMult: 16
+    MaxLength: null
+    MaxVolume: null
+    Space: '6x6 sq or more'
+    Reach: 4
+    ManeuverMod: -2
+    RelativeStr: 32
+    RelativeCon: 16
+    RelativeDex: -4
+    RelativeDR: 14
+bodytypes:
+  -
+    ID: 0
+    Description: Generic
+    WeightMult: 1
+    HeightMult: 1
+    ReachMod: 0
+    ManeuverMod: 0
+    Traits: null
+  -
+    ID: 1
+    Description: Biped
+    WeightMult: 1
+    HeightMult: 2
+    ReachMod: 1
+    ManeuverMod: 0
+    Traits: 'Equipment { Qual=WearArmor; Type=humanoid; } Equipment { Qual=WearClothing; Type=humanoid; } Equipment { Qual=WearCloak; } Equipment { Qual=WearBelt; } Equipment { Qual=WearNecklace; }'
+  -
+    ID: 2
+    Description: 'Biped, winged'
+    WeightMult: 0.75
+    HeightMult: 2
+    ReachMod: 1
+    ManeuverMod: 0
+    Traits: 'Equipment { Qual=WearArmor; Type=winged humanoid; } Equipment { Qual=WearClothing; Type=winged humanoid; } Equipment { Qual=WearBelt; } Equipment { Qual=WearNecklace; }'
+  -
+    ID: 3
+    Description: Quadruped
+    WeightMult: 1.5
+    HeightMult: 1
+    ReachMod: 0
+    ManeuverMod: 1
+    Traits: 'Equipment { Qual=WearArmor; Type=quadruped; } Equipment { Qual=WearNecklace; } Equipment { Qual=WearSaddle; }'
+  -
+    ID: 4
+    Description: 'Quadruped, winged'
+    WeightMult: 1
+    HeightMult: 1
+    ReachMod: 0
+    ManeuverMod: 1
+    Traits: 'Equipment { Qual=WearArmor; Type=winged quadruped; } Equipment { Qual=WearNecklace; } Equipment { Qual=WearSaddle; }'
+  -
+    ID: 5
+    Description: Multiped
+    WeightMult: 1.5
+    HeightMult: 1
+    ReachMod: 0
+    ManeuverMod: 1
+    Traits: 'Equipment { Qual=WearArmor; Type=multiped; } Equipment { Qual=WearNecklace; } Equipment { Qual=WearSaddle; }'
+  -
+    ID: 6
+    Description: 'Multiped, winged'
+    WeightMult: 1
+    HeightMult: 1
+    ReachMod: 0
+    ManeuverMod: 1
+    Traits: 'Equipment { Qual=WearArmor; Type=winged multiped; } Equipment { Qual=WearNecklace; } Equipment { Qual=WearSaddle; }'
+  -
+    ID: 7
+    Description: Blob
+    WeightMult: 1
+    HeightMult: 1
+    ReachMod: 0
+    ManeuverMod: 2
+    Traits: null
+  -
+    ID: 8
+    Description: Centauroid
+    WeightMult: 1.5
+    HeightMult: 1
+    ReachMod: 1
+    ManeuverMod: 1
+    Traits: 'Equipment { Qual=WearArmor; Type=centauroid; } Equipment { Qual=WearClothing; Type=centauroid; } Equipment { Qual=WearCloak; } Equipment { Qual=WearBelt; } Equipment { Qual=WearNecklace; } Equipment { Qual=WearSaddle; }'
+  -
+    ID: 9
+    Description: 'Centauroid, winged'
+    WeightMult: 1
+    HeightMult: 1
+    ReachMod: 1
+    ManeuverMod: 1
+    Traits: 'Equipment { Qual=WearArmor; Type=winged centauroid; } Equipment { Qual=WearClothing; Type=winged centauroid; } Equipment { Qual=WearBelt; } Equipment { Qual=WearNecklace; } Equipment { Qual=WearSaddle; }'
+  -
+    ID: 10
+    Description: Ichtyoid
+    WeightMult: 1.5
+    HeightMult: 1
+    ReachMod: 0
+    ManeuverMod: 0
+    Traits: 'Equipment { Qual=WearSaddle; }'
+  -
+    ID: 11
+    Description: Avian
+    WeightMult: 0.5
+    HeightMult: 2
+    ReachMod: 1
+    ManeuverMod: 0
+    Traits: 'Equipment { Qual=WearNecklace; }'
+  -
+    ID: 12
+    Description: Ophidian
+    WeightMult: 1.5
+    HeightMult: 1
+    ReachMod: 0
+    ManeuverMod: 2
+    Traits: null
+  -
+    ID: 13
+    Description: 'Ophidian, winged'
+    WeightMult: 1
+    HeightMult: 1
+    ReachMod: 0
+    ManeuverMod: 2
+    Traits: null
+genders:
+  -
+    ID: 2
+    Name: Female
+  -
+    ID: 1
+    Name: Male
+  -
+    ID: 3
+    Name: Other
+ages:
+  -
+    ID: 1
+    Description: Child
+    StrAdj: -4
+    ConAdj: -2
+    DexAdj: 2
+    IntAdj: 0
+    WisAdj: -4
+    ChaAdj: 0
+    RLMult: 0.5
+    SizeAdj: -1
+    StrAdjSN: -4
+    ConAdjSN: -2
+    DexAdjSN: 2
+    IntAdjSN: 0
+    WisAdjSN: -4
+    ChaAdjSN: 0
+    RLMultSN: 0.5
+    SizeAdjSN: -1
+  -
+    ID: 2
+    Description: Juvenile
+    StrAdj: -2
+    ConAdj: 0
+    DexAdj: 0
+    IntAdj: 0
+    WisAdj: -2
+    ChaAdj: 0
+    RLMult: 0.75
+    SizeAdj: 0
+    StrAdjSN: -2
+    ConAdjSN: 0
+    DexAdjSN: 0
+    IntAdjSN: 0
+    WisAdjSN: -2
+    ChaAdjSN: 0
+    RLMultSN: 0.75
+    SizeAdjSN: 0
+  -
+    ID: 3
+    Description: Adult
+    StrAdj: 0
+    ConAdj: 0
+    DexAdj: 0
+    IntAdj: 0
+    WisAdj: 0
+    ChaAdj: 0
+    RLMult: 1
+    SizeAdj: 0
+    StrAdjSN: 0
+    ConAdjSN: 0
+    DexAdjSN: 0
+    IntAdjSN: 0
+    WisAdjSN: 0
+    ChaAdjSN: 0
+    RLMultSN: 1
+    SizeAdjSN: 0
+  -
+    ID: 4
+    Description: Mature
+    StrAdj: -1
+    ConAdj: -1
+    DexAdj: -1
+    IntAdj: 1
+    WisAdj: 1
+    ChaAdj: 1
+    RLMult: 1
+    SizeAdj: 0
+    StrAdjSN: 1
+    ConAdjSN: 1
+    DexAdjSN: 0
+    IntAdjSN: 1
+    WisAdjSN: 1
+    ChaAdjSN: 1
+    RLMultSN: 1.5
+    SizeAdjSN: 0
+  -
+    ID: 5
+    Description: Old
+    StrAdj: -3
+    ConAdj: -3
+    DexAdj: -3
+    IntAdj: 2
+    WisAdj: 2
+    ChaAdj: 2
+    RLMult: 1
+    SizeAdj: 0
+    StrAdjSN: 2
+    ConAdjSN: 2
+    DexAdjSN: 0
+    IntAdjSN: 2
+    WisAdjSN: 2
+    ChaAdjSN: 2
+    RLMultSN: 2
+    SizeAdjSN: 1
+  -
+    ID: 6
+    Description: Venerable
+    StrAdj: -6
+    ConAdj: -6
+    DexAdj: -6
+    IntAdj: 3
+    WisAdj: 3
+    ChaAdj: 3
+    RLMult: 1
+    SizeAdj: 0
+    StrAdjSN: 3
+    ConAdjSN: 3
+    DexAdjSN: 0
+    IntAdjSN: 3
+    WisAdjSN: 3
+    ChaAdjSN: 3
+    RLMultSN: 3
+    SizeAdjSN: 1
+alignments:
+  -
+    ID: 1
+    Name: 'Lawful Good'
+    Description: 'A lawful good character acts as a good person is expected or required to act. She combines a commitment to oppose evil with the discipline to fight relentlessly. She tells the truth, keeps her word, helps those in need, and speaks out against injustice. A lawful good character hates to see the guilty go unpunished.'
+    Opposed: 'Any chaotic, any evil'
+    Diametric: 'Chaotic evil'
+    Compatible: 'Lawful good, neutral good, lawful neutral'
+  -
+    ID: 2
+    Name: 'Neutral Good'
+    Description: 'A neutral good character does the best that a good person can do. He is devoted to helping others. He works with kings and magistrates but does not feel beholden to them.'
+    Opposed: 'Any evil'
+    Diametric: 'Neutral evil'
+    Compatible: 'Any good, neutral'
+  -
+    ID: 3
+    Name: 'Chaotic Good'
+    Description: "A chaotic good character acts as his conscience directs him with little regard for what others expect of him. He makes his own way, but he's kind and benevolent. He believes in goodness and right but has little use for laws and regulations. He hates it when people try to intimidate others and tell them what to do. He follows his own moral compass, which, although good, may not agree with that of society."
+    Opposed: 'Any lawful, any evil'
+    Diametric: 'Lawful evil'
+    Compatible: 'Neutral good, chaotic good, chaotic neutral'
+  -
+    ID: 4
+    Name: 'Lawful Neutral'
+    Description: 'A lawful neutral character acts as law, tradition, or a personal code directs her. Order and organization are paramount to her. She may believe in personal order and live by a code or standard, or she may believe in order for all and favor a strong, organized government.'
+    Opposed: 'Any chaotic'
+    Diametric: 'Chaotic neutral'
+    Compatible: 'Any lawful, neutral'
+  -
+    ID: 5
+    Name: Neutral
+    Description: "A neutral character does whatever seems to be a good idea. She doesn't feel strongly one way or the other when it comes to good vs. evil or law vs. chaos. Most neutral characters exhibit a lack of conviction or bias rather than a commitment to neutrality. Such a character thinks of good as better than evil - after all, she would rather have good neighbors and rulers than evil ones. Still, she's not personally committed to upholding good in any abstract or universal way. Some neutral characters, on the other hand, commit themselves philosophically to neutrality. They see good, evil, law, and chaos as prejudices and dangerous extremes. They advocate the middle way of neutrality as the best, most balanced road in the long run."
+    Opposed: None
+    Diametric: None
+    Compatible: 'Neutral good, lawful neutral, chaotic neutral, neutral evil'
+  -
+    ID: 6
+    Name: 'Chaotic Neutral'
+    Description: "A chaotic neutral character follows his whims. He is an individualist first and last. He values his own liberty but doesn't strive to protect others' freedom. He avoids authority, resents restrictions, and challenges traditions. A chaotic neutral character does not intentionally disrupt organizations as part of a campaign of anarchy. To do so, he would have to be motivated either by good (and a desire to liberate others) or evil (and a desire to make those different from himself suffer). A chaotic neutral character may be unpredictable, but his behavior is not totally random. He is not as likely to jump off a bridge as to cross it."
+    Opposed: 'Any lawful'
+    Diametric: 'Lawful neutral'
+    Compatible: 'Any chaotic, neutral'
+  -
+    ID: 7
+    Name: 'Lawful Evil'
+    Description: 'A lawful evil villain methodically takes what he wants within the limits of his code of conduct without regard for whom it hurts. He cares about tradition, loyalty, and order but not about freedom, dignity, or life. He plays by the rules but without mercy or compassion. He is comfortable in a hierarchy and would like to rule, but is willing to serve. He condemns others not according to their actions but according to race, religion, homeland, or social rank. He is loath to break laws or promises. This reluctance comes partly from his nature and partly because he depends on order to protect himself from those who oppose him on moral grounds. Some lawful evil villains have particular taboos, such as not killing in cold blood (but having underlings do it) or not letting children come to harm (if it can be helped). They imagine that these compunctions put them above unprincipled villains. Some lawful evil people and creatures commit themselves to evil with a zeal like that of a crusader committed to good. Beyond being willing to hurt others for their own ends, they take pleasure in spreading evil as an end unto itself. They may also see doing evil as part of a duty to an evil deity or master.'
+    Opposed: 'Any chaotic, any good'
+    Diametric: 'Chaotic good'
+    Compatible: 'Lawful neutral, lawful evil, neutral evil'
+  -
+    ID: 8
+    Name: 'Neutral Evil'
+    Description: "A neutral evil villain does whatever she can get away with. She is out for herself, pure and simple. She sheds no tears for those she kills, whether for profit, sport, or convenience. She has no love of order and holds no illusion that following laws, traditions, or codes would make her any better or more noble. On the other hand, she doesn't have the restless nature or love of conflict that a chaotic evil villain has. Some neutral evil villains hold up evil as an ideal, committing evil for its own sake. Most often, such villains are devoted to evil deities or secret societies."
+    Opposed: 'Any good'
+    Diametric: 'Neutral good'
+    Compatible: 'Any evil, neutral'
+  -
+    ID: 9
+    Name: 'Chaotic Evil'
+    Description: 'A chaotic evil character does whatever his greed, hatred, and lust for destruction drive him to do. He is hot-tempered, vicious, arbitrarily violent, and unpredictable. If he is simply out for whatever he can get, he is ruthless and brutal. If he is committed to the spread of evil and chaos, he is even worse. Thankfully, his plans are haphazard, and any groups he joins or forms are poorly organized. Typically, chaotic evil people can be made to work together only by force, and their leader lasts only as long as he can thwart attempts to topple or assassinate him.'
+    Opposed: 'Any lawful, any good'
+    Diametric: 'Lawful good'
+    Compatible: 'Chaotic neutral, neutral evil, chaotic evil'
+modifiers:
+  -
+    ID: 1
+    ModifierType: Ability
+    Abbreviation: Abl
+    TypicalSource: 'Ability score (current and not base)'
+    TypicalEffect: 'Defenses, action checks, damage rolls, init.'
+    Stackable: null
+  -
+    ID: 2
+    ModifierType: Age
+    Abbreviation: Age
+    TypicalSource: Age
+    TypicalEffect: 'Ability scores, racial level, size'
+    Stackable: null
+  -
+    ID: 3
+    ModifierType: Armor
+    Abbreviation: Arm
+    TypicalSource: 'Armor (artificial, not natural; can be enhanced)'
+    TypicalEffect: 'Damage resistance'
+    Stackable: null
+  -
+    ID: 4
+    ModifierType: Circumstance
+    Abbreviation: Crc
+    TypicalSource: 'Environment, cover, concealment, equipment, etc.'
+    TypicalEffect: 'Action checks, defenses'
+    Stackable: 999
+  -
+    ID: 5
+    ModifierType: Class
+    Abbreviation: Cls
+    TypicalSource: 'Class trait'
+    TypicalEffect: Any
+    Stackable: null
+  -
+    ID: 6
+    ModifierType: Cultural
+    Abbreviation: Clt
+    TypicalSource: Upbringing
+    TypicalEffect: 'Skill levels, action checks'
+    Stackable: null
+  -
+    ID: 7
+    ModifierType: Deflection
+    Abbreviation: Dfl
+    TypicalSource: 'Spell or magic item'
+    TypicalEffect: 'DeC, Reflex defense'
+    Stackable: null
+  -
+    ID: 8
+    ModifierType: Divine
+    Abbreviation: Dvn
+    TypicalSource: 'Divine magic'
+    TypicalEffect: Any
+    Stackable: null
+  -
+    ID: 9
+    ModifierType: Dodge
+    Abbreviation: Ddg
+    TypicalSource: 'Skill or special ability'
+    TypicalEffect: 'DeC, Reflex defense; Dodge can be a composite of multiple modifiers'
+    Stackable: null
+  -
+    ID: 10
+    ModifierType: Encumbrance
+    Abbreviation: Enc
+    TypicalSource: 'Equipment, armor, obesity'
+    TypicalEffect: 'Action checks, Dex bonus, base speed'
+    Stackable: null
+  -
+    ID: 11
+    ModifierType: Enhancement
+    Abbreviation: Enh
+    TypicalSource: 'High quality or magic'
+    TypicalEffect: 'Ability scores, weapon/armor effectiveness'
+    Stackable: null
+  -
+    ID: 12
+    ModifierType: Improvement
+    Abbreviation: Imp
+    TypicalSource: 'Improvement points'
+    TypicalEffect: 'Ability scores, health points, defenses, skill levels'
+    Stackable: 25
+  -
+    ID: 13
+    ModifierType: Inherent
+    Abbreviation: Inh
+    TypicalSource: 'Powerful and permanent magic'
+    TypicalEffect: 'Ability scores'
+    Stackable: 5
+  -
+    ID: 14
+    ModifierType: Insight
+    Abbreviation: Ins
+    TypicalSource: 'Precognitive ability or magic'
+    TypicalEffect: 'Defenses, action checks, damage rolls'
+    Stackable: null
+  -
+    ID: 15
+    ModifierType: Luck
+    Abbreviation: Lck
+    TypicalSource: 'Unnaturally good or bad fortune'
+    TypicalEffect: 'Defenses, action checks, damage rolls'
+    Stackable: null
+  -
+    ID: 16
+    ModifierType: Material
+    Abbreviation: Mat
+    TypicalSource: 'Unusual material'
+    TypicalEffect: 'Weapon/armor effectiveness'
+    Stackable: null
+  -
+    ID: 17
+    ModifierType: Metabolic
+    Abbreviation: Met
+    TypicalSource: 'Drug, disease, poison, fatigue, etc.'
+    TypicalEffect: 'Ability scores, base speed, defenses'
+    Stackable: null
+  -
+    ID: 18
+    ModifierType: Morale
+    Abbreviation: Mrl
+    TypicalSource: Emotions
+    TypicalEffect: 'Will defense, action checks, damage rolls'
+    Stackable: null
+  -
+    ID: 19
+    ModifierType: Parry
+    Abbreviation: Par
+    TypicalSource: 'Weapon or shield (can be enhanced)'
+    TypicalEffect: 'DeC; Parry can be a composite of multiple modifiers'
+    Stackable: 999
+  -
+    ID: 20
+    ModifierType: Racial
+    Abbreviation: Rac
+    TypicalSource: 'Race or species (and gender)'
+    TypicalEffect: 'Ability scores, defenses, skill levels, action checks'
+    Stackable: null
+  -
+    ID: 21
+    ModifierType: Resistance
+    Abbreviation: Res
+    TypicalSource: 'Spell or magic item'
+    TypicalEffect: Defenses
+    Stackable: null
+  -
+    ID: 22
+    ModifierType: Size
+    Abbreviation: Siz
+    TypicalSource: 'Size category'
+    TypicalEffect: 'DeC, action checks'
+    Stackable: null
+  -
+    ID: 23
+    ModifierType: Skill
+    Abbreviation: Skl
+    TypicalSource: 'Skill level'
+    TypicalEffect: 'Defenses, attack rolls, damage rolls'
+    Stackable: null
+  -
+    ID: 24
+    ModifierType: Social
+    Abbreviation: Soc
+    TypicalSource: 'Influence or reputation'
+    TypicalEffect: 'Action checks'
+    Stackable: null
+  -
+    ID: 25
+    ModifierType: Synergy
+    Abbreviation: Syn
+    TypicalSource: 'Skill level of 5 or better'
+    TypicalEffect: 'Action checks'
+    Stackable: null
+  -
+    ID: 26
+    ModifierType: Template
+    Abbreviation: Tpl
+    TypicalSource: 'Racial template'
+    TypicalEffect: 'Ability scores, defenses, skill levels, action checks'
+    Stackable: 999
+  -
+    ID: 27
+    ModifierType: Weapon
+    Abbreviation: Wpn
+    TypicalSource: 'Weapon or shield (can be enhanced)'
+    TypicalEffect: 'Attack rolls, damage rolls'
+    Stackable: null
+  -
+    ID: 28
+    ModifierType: Unnamed
+    Abbreviation: Nil
+    TypicalSource: Any
+    TypicalEffect: Any
+    Stackable: 999
+prerequisites:
+  -
+    ID: 1
+    Prereq: 'Ability Score'
+    Example: 'Str>=15 AND Con>=12'
+    Description: 'The specified ability scores must have at least the specified values.'
+  -
+    ID: 2
+    Prereq: 'Social Class'
+    Example: SC>=2
+    Description: 'Social class must be 2 or better.'
+  -
+    ID: 3
+    Prereq: 'Wealth Class'
+    Example: WC<3
+    Description: 'Wealth class must be less than 3.'
+  -
+    ID: 4
+    Prereq: Alignment
+    Example: Align==G
+    Description: 'Alignment must be lawful good, neutral good, or chaotic good.'
+  -
+    ID: 5
+    Prereq: 'Racial Level'
+    Example: RL>=5
+    Description: 'Racial level must be 5 or better.'
+  -
+    ID: 6
+    Prereq: 'Class Level'
+    Example: ClL(Wiz)>=10
+    Description: 'Class level for the wizard class must be 10 or better.'
+  -
+    ID: 7
+    Prereq: 'Total Level'
+    Example: TL==8
+    Description: 'Total level must be exactly 8.'
+  -
+    ID: 8
+    Prereq: 'Challenge Level'
+    Example: CL<=5
+    Description: 'Challenge level must be 5 or less.'
+  -
+    ID: 9
+    Prereq: 'Skill Level'
+    Example: Skl(Acrob)>=8
+    Description: 'Skill level in Acrobatics skill must be 8 or better.'
+  -
+    ID: 10
+    Prereq: Race
+    Example: Race==Gnoll
+    Description: 'Must belong to the gnoll race.'
+  -
+    ID: 11
+    Prereq: 'Creature Type'
+    Example: CrType==Humanoid
+    Description: 'Must belong to the humanoid creature type.'
+  -
+    ID: 12
+    Prereq: 'Creature Subtype'
+    Example: CrSubt==Elf
+    Description: 'Must belong to the elven creature subtype.'
+  -
+    ID: 13
+    Prereq: Size
+    Example: Sz<=0
+    Description: 'Must be of size 0 (medium) or smaller.'
+  -
+    ID: 16
+    Prereq: 'Encumbrance Class'
+    Example: EC<=2
+    Description: 'Must have encumbrance class 2 or less.'
+  -
+    ID: 17
+    Prereq: Descriptor
+    Example: 'Desc(Fire) OR Desc(Cold)'
+    Description: 'Must have the Fire descriptor and/or the Cold descriptor.'
+  -
+    ID: 18
+    Prereq: Enemy
+    Example: Enemy==Dwarf
+    Description: 'Current enemy must be a dwarf.'
+  -
+    ID: 19
+    Prereq: Weapon
+    Example: Weapon==WpHvB
+    Description: 'Weapon being used must be a heavy blade.'
+  -
+    ID: 20
+    Prereq: Armor
+    Example: Armor==ArmMd
+    Description: 'Armor being worn must be medium type armor.'
+  -
+    ID: 21
+    Prereq: Condition
+    Example: Cond(Bloodied)
+    Description: 'Must have the bloodied condition.'
+  -
+    ID: 22
+    Prereq: Environment
+    Example: Env(Darkness)
+    Description: 'The current environment must be dark.'
+  -
+    ID: 23
+    Prereq: Casting
+    Example: Casting(music)
+    Description: 'Musical instrument must be used as somatic component and singing as verbal component.'
+descriptors:
+  -
+    ID: 1
+    Descriptor: Acid
+    Notation: '[Acid]'
+    Description: 'Spell/action: causes acid energy damage (or protects against it).'
+  -
+    ID: 2
+    Descriptor: Air
+    Notation: '[Air]'
+    Description: 'Spell/action/creature: related to the air element.'
+  -
+    ID: 3
+    Descriptor: Aquatic
+    Notation: '[Aquatic]'
+    Description: 'Creature: has native swim speed and does not have to make Athletics (Swim) checks to move through water; can breathe underwater (or at least hold its breath ten times longer than non-aquatic creatures).'
+  -
+    ID: 4
+    Descriptor: 'Attack of Opportunity'
+    Notation: '[AoO]'
+    Description: 'Action: using this action triggers attacks of opportunity from creatures that threaten you.'
+  -
+    ID: 5
+    Descriptor: Augmented
+    Notation: '[Augmented]'
+    Description: 'Creature: augmented with a template or special power.'
+  -
+    ID: 6
+    Descriptor: Boost
+    Notation: '[Boost]'
+    Description: 'Action: an action that can be boosted somehow with an additional investment of AP. A maximum of half your AP total can be used to boost a single action.'
+  -
+    ID: 7
+    Descriptor: Chaotic
+    Notation: '[Chaotic]'
+    Description: 'Creature/weapon/spell/trait: has a chaotic aura and can bypass DR susceptible to chaotic.'
+  -
+    ID: 8
+    Descriptor: Charm
+    Notation: '[Charm]'
+    Description: 'Spell/action: causes a charm effect.'
+  -
+    ID: 9
+    Descriptor: Cold
+    Notation: '[Cold]'
+    Description: 'Spell/action: causes cold energy damage (or protects against it).\nCreature: immune to cold and vulnerable to fire.'
+  -
+    ID: 10
+    Descriptor: Darkness
+    Notation: '[Dark]'
+    Description: 'Spell/action: creates a darkness or shadow effect.'
+  -
+    ID: 11
+    Descriptor: Dimension
+    Notation: '[Dimension]'
+    Description: 'Spell/action: creates or uses an extradimensional or extraplanar effect.'
+  -
+    ID: 12
+    Descriptor: Earth
+    Notation: '[Earth]'
+    Description: 'Spell/action/creature: related to the earth element.'
+  -
+    ID: 13
+    Descriptor: Electricity
+    Notation: '[Electric]'
+    Description: 'Spell/action: causes electrical energy damage (or protects against it).'
+  -
+    ID: 14
+    Descriptor: Evil
+    Notation: '[Evil]'
+    Description: 'Creature/weapon/spell/trait: has an evil aura and can bypass DR susceptible to evil.'
+  -
+    ID: 15
+    Descriptor: Fear
+    Notation: '[Fear]'
+    Description: 'Spell/action/trait: causes a fear effect.'
+  -
+    ID: 16
+    Descriptor: Fire
+    Notation: '[Fire]'
+    Description: 'Spell/action: causes fire energy damage (or protects against it), or is related to the fire element.\nCreature: immune to fire/heat and vulnerable to cold.'
+  -
+    ID: 17
+    Descriptor: Force
+    Notation: '[Force]'
+    Description: 'Spell/action: causes force damage (usually blunt physical damage) or creates a telekinetic effect.'
+  -
+    ID: 18
+    Descriptor: Good
+    Notation: '[Good]'
+    Description: 'Creature/weapon/spell/trait: has a good aura and can bypass DR susceptible to good.'
+  -
+    ID: 19
+    Descriptor: Illusion
+    Notation: '[Illusion]'
+    Description: 'Spell/action: creates an illusionary effect.'
+  -
+    ID: 20
+    Descriptor: Incorporeal
+    Notation: '[Incorporeal]'
+    Description: 'Spell/action: makes a target incorporeal.\nCreature: is or can become incorporeal.'
+  -
+    ID: 21
+    Descriptor: Language-dependent
+    Notation: '[Lang]'
+    Description: 'Spell/action: works only if the user and target can communicate using a shared language.'
+  -
+    ID: 22
+    Descriptor: Lawful
+    Notation: '[Lawful]'
+    Description: 'Creature/weapon/spell/trait: has a lawful aura and can bypass DR susceptible to lawful.'
+  -
+    ID: 23
+    Descriptor: Light
+    Notation: '[Light]'
+    Description: 'Spell/action: creates a light or color-based effect.'
+  -
+    ID: 24
+    Descriptor: Mind-affecting
+    Notation: '[Mind]'
+    Description: 'Spell/action: causes a mental effect. It does not work against creatures with Int 0 or Int -.'
+  -
+    ID: 25
+    Descriptor: Move
+    Notation: '[Move]'
+    Description: 'Action: a movement action that requires MP (or AP converted to MP).'
+  -
+    ID: 26
+    Descriptor: Necrotic
+    Notation: '[Necrotic]'
+    Description: 'Spell/action: causes necrotic energy damage (or protects against it).'
+  -
+    ID: 27
+    Descriptor: Poison
+    Notation: '[Poison]'
+    Description: 'Spell/action/weapon: is poisonous or creates a toxic effect.'
+  -
+    ID: 28
+    Descriptor: Radiant
+    Notation: '[Radiant]'
+    Description: 'Spell/action: causes radiant energy damage, protects against radiant energy, or uses radiant energy for healing.'
+  -
+    ID: 29
+    Descriptor: Secret
+    Notation: '[Secret]'
+    Description: 'Action: the DM should (usually) make a hidden roll for the character.'
+  -
+    ID: 30
+    Descriptor: Sleep
+    Notation: '[Sleep]'
+    Description: 'Spell/action: causes a sleep effect.'
+  -
+    ID: 31
+    Descriptor: Sonic
+    Notation: '[Sonic]'
+    Description: 'Spell/action: causes sonic energy damage (or protects against it).'
+  -
+    ID: 32
+    Descriptor: Supernatural
+    Notation: '[Su]'
+    Description: 'Action/trait: subject to anti-magic, dispelling, and counterspelling. Effects that are not supernatural may be exceptional in many ways, but they are not magical and therefore not subject to anti-magic or dispelling.'
+  -
+    ID: 33
+    Descriptor: 'Take 10/20'
+    Notation: '[T10/20]'
+    Description: 'Action: an action check that you can "take 10" and/or "take 20" on.'
+  -
+    ID: 34
+    Descriptor: Telepathy
+    Notation: '[Telepathy]'
+    Description: 'Spell/action/trait: causes a telepathic effect or uses telepathy.'
+  -
+    ID: 35
+    Descriptor: Teleport
+    Notation: '[Teleport]'
+    Description: 'Spell/action: uses a teleportation effect.'
+  -
+    ID: 36
+    Descriptor: Untrained
+    Notation: '[Untrained]'
+    Description: 'Action: can be attempted even by a creature with no levels in the appropriate skill.'
+  -
+    ID: 37
+    Descriptor: Water
+    Notation: '[Water]'
+    Description: 'Spell/action/creature: related to the water element.'
+  -
+    ID: 38
+    Descriptor: 'Magic Resistance'
+    Notation: '[MR]'
+    Description: "Spell/action: supernatural effect that is susceptible to a target's magic resistance."
+  -
+    ID: 39
+    Descriptor: Turning
+    Notation: '[Turn]'
+    Description: 'Spell/action: supernatural effect very similar to fear but unaffected by resistance to mind and fear effects.'
+  -
+    ID: 40
+    Descriptor: Scrying
+    Notation: '[Scry]'
+    Description: 'Spell/action: uses a scrying effect.'
+  -
+    ID: 41
+    Descriptor: Psychic
+    Notation: '[Psych]'
+    Description: 'Spell/action: causes psychic damage or protects against psychic damage.'
+distanceunits:
+  -
+    ID: 1
+    Name: Personal
+    ShortName: pers
+    SquaresFactor: 0
+    RangeDescription: 'The action affects only you.'
+  -
+    ID: 2
+    Name: Touch
+    ShortName: tch
+    SquaresFactor: 1
+    RangeDescription: 'You must  be able to touch or handle the target(s) with one or both hands (or similar primary attack form). Willing targets can be touched automatically, but unwilling targets require an attack roll (with appropriate modifiers for a natural attack).\nUnless otherwise specified, the action time includes the time required for touching one target. The AP cost for touching additional targets is the same as for a natural attack.'
+  -
+    ID: 3
+    Name: Reach
+    ShortName: rch
+    SquaresFactor: 1
+    RangeDescription: 'You must strike the target(s) of the action with a natural weapon or appropriate focus. Any natural weapon (hand, foot, claw, bite, etc.), even if covered with clothing or armor, can be used for the attack. Note that some actions with this range require two checks, first one to activate the action itself and then one for the reach attack.\nUnless otherwise specified, the action time includes the time required for one basic melee attack (with normal modifiers and dealing normal weapon damage). If the action allows more than one target, each additional attack costs full AP.'
+  -
+    ID: 4
+    Name: Ranged
+    ShortName: rng
+    SquaresFactor: 1
+    RangeDescription: 'The effect works similar to a ranged weapon and requires an attack roll against the DeC of each target (typically in addition to the action check itself).\nThe specified range is actually a range increment, and each multiple incurs a cumulative -2 attack penalty. The maximum range is ten range increments, unless otherwise specified.'
+  -
+    ID: 5
+    Name: 0
+    ShortName: 0
+    SquaresFactor: 0
+    RangeDescription: "You are the effect's point of origin (but the area can still affect other targets)."
+  -
+    ID: 6
+    Name: Squares
+    ShortName: sq
+    SquaresFactor: 1
+    RangeDescription: "The maximum range of the action's effect is the specified number of squares."
+  -
+    ID: 7
+    Name: Close
+    ShortName: cls
+    SquaresFactor: 10
+    RangeDescription: 'The maximum range is equal to 5 + (skill level / 2) squares.'
+  -
+    ID: 8
+    Name: Medium
+    ShortName: mdm
+    SquaresFactor: 40
+    RangeDescription: 'The maximum range is equal to 20 + (skill level x 2) squares.'
+  -
+    ID: 9
+    Name: Long
+    ShortName: lng
+    SquaresFactor: 160
+    RangeDescription: 'The maximum range is equal to 80 + (skill level x 8) squares.'
+  -
+    ID: 10
+    Name: Infinite
+    ShortName: inf
+    SquaresFactor: 1000000
+    RangeDescription: 'The effect can reach anywhere within the same plane of existence.'
+  -
+    ID: 11
+    Name: Extraplanar
+    ShortName: ext
+    SquaresFactor: 1000000000
+    RangeDescription: 'The effect can reach anywhere in any plane of existence.'
+timeunits:
+  -
+    ID: 1
+    Name: Years
+    ShortName: yrs
+    RoundsFactor: 5256000
+    ActionTimeDescription: null
+    DurationDescription: 'When the specified time expires, the effect ends.'
+  -
+    ID: 2
+    Name: Months
+    ShortName: mth
+    RoundsFactor: 403200
+    ActionTimeDescription: null
+    DurationDescription: 'When the specified time expires, the effect ends.'
+  -
+    ID: 3
+    Name: Weeks
+    ShortName: wks
+    RoundsFactor: 100800
+    ActionTimeDescription: 'For these long action times, full continuous concentration is neither possible nor required. If it is possible to spend part of the time on other activities, the percentage of time spent on the action is specified.'
+    DurationDescription: 'When the specified time expires, the effect ends.'
+  -
+    ID: 4
+    Name: Days
+    ShortName: d
+    RoundsFactor: 14400
+    ActionTimeDescription: 'For these long action times, full continuous concentration is neither possible nor required. If it is possible to spend part of the time on other activities, the percentage of time spent on the action is specified.'
+    DurationDescription: 'When the specified time expires, the effect ends.'
+  -
+    ID: 5
+    Name: Hours
+    ShortName: h
+    RoundsFactor: 600
+    ActionTimeDescription: 'For these long action times, full continuous concentration is neither possible nor required. If it is possible to spend part of the time on other activities, the percentage of time spent on the action is specified.'
+    DurationDescription: 'When the specified time expires, the effect ends.'
+  -
+    ID: 6
+    Name: Minutes
+    ShortName: min
+    RoundsFactor: 10
+    ActionTimeDescription: 'The specified number of minutes must be spent to complete or initiate the action.'
+    DurationDescription: 'The effect ends after the specified number of minutes (multiply by 10 to get the number of rounds).'
+  -
+    ID: 7
+    Name: Rounds
+    ShortName: 'x r'
+    RoundsFactor: 1
+    ActionTimeDescription: 'The specified number of complete rounds must be spent to complete or initiate the action. Partial rounds do not count. The action or effect takes place just before the start of your turn on the round after the specified number of rounds.'
+    DurationDescription: "The effect ends after the specified number of full rounds. The effect ends at the same initiative count that it started, but at the end of the activator's turn."
+  -
+    ID: 8
+    Name: 'Full round'
+    ShortName: r
+    RoundsFactor: 1
+    ActionTimeDescription: 'A complete round (all AP and MP for the round) must be spent to complete or initiate the action. The action or effect takes place at the end of your current turn.'
+    DurationDescription: null
+  -
+    ID: 9
+    Name: 'Partial round'
+    ShortName: '1/4 r'
+    RoundsFactor: 0
+    ActionTimeDescription: "It takes the specified fraction of a round to complete or initiate the action. Deduct the same fraction of the creature's action points and movement points (rounded up) for this round."
+    DurationDescription: null
+  -
+    ID: 10
+    Name: AP
+    ShortName: AP
+    RoundsFactor: 0
+    ActionTimeDescription: 'The specified number of action points must be spent to complete or initiate the action.\nIf you have an insufficient number of AP left of your turn, you can spend your remaining AP to initiate the action and pay the rest on your next turn. For many actions, interruption is then possible and may require skill checks to maintain concentration until the action is finished.'
+    DurationDescription: null
+  -
+    ID: 11
+    Name: MP
+    ShortName: MP
+    RoundsFactor: 0
+    ActionTimeDescription: 'The specified number of movement points must be spent to complete or initiate the action.\nIf you have an insufficient number of MP left of your turn, you cannot initiate the action.'
+    DurationDescription: null
+  -
+    ID: 12
+    Name: Encounter
+    ShortName: enc
+    RoundsFactor: 100
+    ActionTimeDescription: null
+    DurationDescription: 'The effect ends when the current encounter ends. If the action or effect is used outside of an encounter, the duration is limited to approximately 1 minute per skill level.'
+  -
+    ID: 13
+    Name: Instantaneous
+    ShortName: instant
+    RoundsFactor: 0
+    ActionTimeDescription: null
+    DurationDescription: 'The actual effect lasts only an instant, but its consequences may be long-lasting or permanent.'
+  -
+    ID: 14
+    Name: Permanent
+    ShortName: perm
+    RoundsFactor: 100000000
+    ActionTimeDescription: null
+    DurationDescription: 'The effect has unlimited duration. If it is magical in nature, however, it can still be dispelled.'
+  -
+    ID: 15
+    Name: Concentration
+    ShortName: conc
+    RoundsFactor: 0
+    ActionTimeDescription: null
+    DurationDescription: 'The effect lasts for as long as concentration is maintained (and sometimes an additional specified duration after that).\nWhile concentrating, you can spend only half your AP and MP each round on other actions (and only on actions without the concentration implement).\nAn action that triggers attacks of opportunity (AoO) will trigger another AoO at the beginning of each round of concentration. Every situation that can break your concentration will typically require a new skill check.'
+  -
+    ID: 16
+    Name: Reaction
+    ShortName: react
+    RoundsFactor: 0
+    ActionTimeDescription: "This means that the action can be performed as a reaction to another creature's action or some other triggering event. Unless otherwise specified, the reactive action is free and requires no AP to perform, but a creature can only perform one reactive action per triggering action, and each creature has a limited total number of reactions per round."
+    DurationDescription: null
+  -
+    ID: 17
+    Name: Ongoing
+    ShortName: ong
+    RoundsFactor: 0
+    ActionTimeDescription: null
+    DurationDescription: "The effect lasts as long as the specified cost is paid. The activator can dismiss the effect and stop paying the cost at any time (without a dismiss action), and the effect ends automatically if the activator becomes unable to pay the cost. However, the effect does not require any type of concentration; it continues even if the activator becomes unconscious or leaves the effect's range.\\nWhen the effect is activated from an item with a power pool, the ongoing cost is paid from the pool, and the item's owner chooses when to dismiss the effect. If the effect is triggered from an item without a power pool, the effect's surplus PP (if any) is used to power the effect, and the effect ends as soon as those PP run out."
+  -
+    ID: 18
+    Name: Passive
+    ShortName: passive
+    RoundsFactor: 0
+    ActionTimeDescription: 'This action is used passively in response to something else.'
+    DurationDescription: null
+encumbranceclasses:
+  -
+    ID: 0
+    MaxDexBonus: 99
+    EP: 0
+    SpeedMultLand: 1
+    SpeedMultAir: 1
+    WeightLimitFactor: 0.5
+    FatigueMult: 1
+  -
+    ID: 1
+    MaxDexBonus: 8
+    EP: 0
+    SpeedMultLand: 1
+    SpeedMultAir: 0.9
+    WeightLimitFactor: 1
+    FatigueMult: 1
+  -
+    ID: 2
+    MaxDexBonus: 6
+    EP: 0
+    SpeedMultLand: 1
+    SpeedMultAir: 0.8
+    WeightLimitFactor: 2
+    FatigueMult: 1
+  -
+    ID: 3
+    MaxDexBonus: 5
+    EP: -1
+    SpeedMultLand: 0.9
+    SpeedMultAir: 0.7
+    WeightLimitFactor: 3
+    FatigueMult: 1.5
+  -
+    ID: 4
+    MaxDexBonus: 4
+    EP: -2
+    SpeedMultLand: 0.8
+    SpeedMultAir: 0.6
+    WeightLimitFactor: 4
+    FatigueMult: 1.5
+  -
+    ID: 5
+    MaxDexBonus: 3
+    EP: -3
+    SpeedMultLand: 0.8
+    SpeedMultAir: 0.6
+    WeightLimitFactor: 5
+    FatigueMult: 1.5
+  -
+    ID: 6
+    MaxDexBonus: 3
+    EP: -4
+    SpeedMultLand: 0.7
+    SpeedMultAir: 0.5
+    WeightLimitFactor: 6
+    FatigueMult: 2
+  -
+    ID: 7
+    MaxDexBonus: 2
+    EP: -5
+    SpeedMultLand: 0.7
+    SpeedMultAir: 0.5
+    WeightLimitFactor: 7
+    FatigueMult: 2
+  -
+    ID: 8
+    MaxDexBonus: 1
+    EP: -6
+    SpeedMultLand: 0.6
+    SpeedMultAir: 0
+    WeightLimitFactor: 8
+    FatigueMult: 2
+  -
+    ID: 9
+    MaxDexBonus: 0
+    EP: -7
+    SpeedMultLand: 0.6
+    SpeedMultAir: 0
+    WeightLimitFactor: 9
+    FatigueMult: 3
+  -
+    ID: 10
+    MaxDexBonus: -1
+    EP: -8
+    SpeedMultLand: 0.5
+    SpeedMultAir: 0
+    WeightLimitFactor: 10
+    FatigueMult: 3
+  -
+    ID: 11
+    MaxDexBonus: -2
+    EP: -9
+    SpeedMultLand: 0.5
+    SpeedMultAir: 0
+    WeightLimitFactor: 12
+    FatigueMult: 3
+  -
+    ID: 12
+    MaxDexBonus: -3
+    EP: -10
+    SpeedMultLand: 0.4
+    SpeedMultAir: 0
+    WeightLimitFactor: 14
+    FatigueMult: 4
+  -
+    ID: 13
+    MaxDexBonus: -4
+    EP: -12
+    SpeedMultLand: 0.3
+    SpeedMultAir: 0
+    WeightLimitFactor: 16
+    FatigueMult: 4
+  -
+    ID: 14
+    MaxDexBonus: -5
+    EP: -15
+    SpeedMultLand: 0.2
+    SpeedMultAir: 0
+    WeightLimitFactor: 18
+    FatigueMult: 6
+  -
+    ID: 15
+    MaxDexBonus: -6
+    EP: -20
+    SpeedMultLand: 0
+    SpeedMultAir: 0
+    WeightLimitFactor: 20
+    FatigueMult: 8
+strweightlimits:
+  -
+    Str: 1
+    BaseWeightLimit: 0.5
+  -
+    Str: 2
+    BaseWeightLimit: 1
+  -
+    Str: 3
+    BaseWeightLimit: 1.5
+  -
+    Str: 4
+    BaseWeightLimit: 2
+  -
+    Str: 5
+    BaseWeightLimit: 2.5
+  -
+    Str: 6
+    BaseWeightLimit: 3
+  -
+    Str: 7
+    BaseWeightLimit: 3.5
+  -
+    Str: 8
+    BaseWeightLimit: 4
+  -
+    Str: 9
+    BaseWeightLimit: 4.5
+  -
+    Str: 10
+    BaseWeightLimit: 5
+  -
+    Str: 11
+    BaseWeightLimit: 5.5
+  -
+    Str: 12
+    BaseWeightLimit: 6.5
+  -
+    Str: 13
+    BaseWeightLimit: 7.5
+  -
+    Str: 14
+    BaseWeightLimit: 8.5
+  -
+    Str: 15
+    BaseWeightLimit: 10
+  -
+    Str: 16
+    BaseWeightLimit: 11.5
+  -
+    Str: 17
+    BaseWeightLimit: 13
+  -
+    Str: 18
+    BaseWeightLimit: 15
+  -
+    Str: 19
+    BaseWeightLimit: 17.5
+  -
+    Str: 20
+    BaseWeightLimit: 20
+  -
+    Str: 21
+    BaseWeightLimit: 23
+  -
+    Str: 22
+    BaseWeightLimit: 26
+  -
+    Str: 23
+    BaseWeightLimit: 30
+  -
+    Str: 24
+    BaseWeightLimit: 35
+  -
+    Str: 25
+    BaseWeightLimit: 40
+  -
+    Str: 26
+    BaseWeightLimit: 46
+  -
+    Str: 27
+    BaseWeightLimit: 52
+  -
+    Str: 28
+    BaseWeightLimit: 60
+  -
+    Str: 29
+    BaseWeightLimit: 70
+conditiontypes:
+  -
+    ID: 4
+    ConditionType: Disease
+  -
+    ID: 6
+    ConditionType: Drug
+  -
+    ID: 1
+    ConditionType: Dying
+  -
+    ID: 5
+    ConditionType: Insanity
+  -
+    ID: 3
+    ConditionType: Poison
+  -
+    ID: 2
+    ConditionType: Possession
+stagedconditions:
+  -
+    ID: 1
+    Name: 'Dying Condition'
+    Type: 1
+    Descriptors: null
+    Description: 'You fall unconscious and are at risk of dying.'
+    Trigger: 'You fall unconscious due to going below 0 HP.'
+    InitialEffect: 'You fall prone and drop anything held in hands.\nGo to stage 1.'
+    MaxDuration: null
+    Stage1: 'Bleeding out: After 1 r, lose 1 HP and make d20! check vs. Con (S - Stay at stage 1; F - Go to stage 2; EF - Go to stage 3).'
+    Stage2: 'Dying: After 1 h, lose 1 HP and make d20! check vs. Con (S - Stay at stage 2; OS - Go to stage 1; F - Go to stage 3; EF - Go to stage 4).'
+    Stage3: 'Stabilized: After 1 h, make d20! check vs. Con (S - Stay at stage 3; OS - Go to stage 2; F - Go to stage 4).'
+    Stage4: 'Disabled: You wake up at 0 HP and are no longer dying.'
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 2
+    Name: 'Affliction Poison'
+    Type: 3
+    Descriptors: '[Su, Poison]'
+    Description: 'You have been poisoned by Affliction magic.'
+    Trigger: 'You are the target of an Affliction poison effect.'
+    InitialEffect: 'Spell attack vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '10 r'
+    Stage1: 'Poisoned: After 1 r, lose d3 Con and make d20! + PL attack vs. Fort (S - Stay at stage 1; F - Poison neutralized).'
+    Stage2: null
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 3
+    Name: Arsenic
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from arsenic poisoning.'
+    Trigger: 'You have been exposed to arsenic through ingestion.'
+    InitialEffect: 'd20! + 3 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take 1 Con damage and make d20! + 3 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take d8 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 4
+    Name: 'Basilisk Blood'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from basilisk blood poisoning.'
+    Trigger: 'You have been exposed to basilisk blood through ingestion.'
+    InitialEffect: 'After 1 minute, make d20! + 10 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: null
+    Stage1: 'Poisoned: Suffer d6 Wis drain and make d20! + 10 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 hour, fall unconscious for d3 hours, then become raging mad and make d20! + 10 attack vs. Fort (S - Go to stage 3; F - Poison neutralized).'
+    Stage3: 'Raging mad: After 1 day, make d20! + 10 attack vs. Fort (S - Stay at stage 3; F - Poison neutralized).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 5
+    Name: 'Basilisk Venom'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from basilisk venom poisoning.'
+    Trigger: 'You have been exposed to basilisk venom through injury.'
+    InitialEffect: 'd20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Suffer d3 Dex drain and make d20! + 5 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 2d6 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 6
+    Name: 'Black Adder Venom'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from black adder venom poisoning.'
+    Trigger: 'You have been exposed to black adder venom through injury.'
+    InitialEffect: 'd20! + 1 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take d6 Con damage and make d20! + 1 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take d6 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 7
+    Name: 'Black Lotus Extract'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from black lotus poisoning.'
+    Trigger: 'You have been exposed to black lotus extract through contact.'
+    InitialEffect: 'd20! + 10 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take 3d6 Con damage and make d20! + 10 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 3d6 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 8
+    Name: Bloodroot
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from bloodroot poisoning.'
+    Trigger: 'You have been exposed to bloodroot through injury.'
+    InitialEffect: 'd20! + 2 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Instant
+    Stage1: 'Poisoned: Take d4 Con and d3 Wis damage.'
+    Stage2: null
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 9
+    Name: 'Blue Whinnis'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from blue whinnis poisoning.'
+    Trigger: 'You have been exposed to blue whinnis through injury.'
+    InitialEffect: 'd20! + 4 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take 1 Con damage and make d20! + 4 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, fall unconscious.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 10
+    Name: 'Burnt Othur Fumes'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from burnt othur fumes poisoning.'
+    Trigger: 'You have been exposed to burnt othur fumes through inhalation.'
+    InitialEffect: 'd20! + 8 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Suffer 1 Con drain and make d20! + 8 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 3d6 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 11
+    Name: 'Carrion Crawler Brain Juice'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from carrion crawler brain juice poisoning.'
+    Trigger: 'You have been exposed to carrion crawler brain juice through contact.'
+    InitialEffect: 'd20! + 3 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '12 min'
+    Stage1: 'Poisoned: You are dazed for 1 minute. Make d20! + 3 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, become paralyzed for 10 minutes.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 12
+    Name: 'Dark Reaver Powder'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from dark reaver powder poisoning.'
+    Trigger: 'You have been exposed to dark reaver powder through ingestion.'
+    InitialEffect: 'd20! + 8 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take 2d6 Con damage and make d20! + 8 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take d6 Con and d6 Str damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 13
+    Name: Deathblade
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from deathblade poisoning.'
+    Trigger: 'You have been exposed to deathblade through injury.'
+    InitialEffect: 'd20! + 10 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take d6 Con damage and make d20! + 10 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 2d6 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 14
+    Name: 'Dragon Bile'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from dragon bile poisoning.'
+    Trigger: 'You have been exposed to dragon bile through contact.'
+    InitialEffect: 'd20! + 16 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Instant
+    Stage1: 'Poisoned: Take 3d6 Str.'
+    Stage2: null
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 15
+    Name: 'Drow Poison'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from drow poison poisoning.'
+    Trigger: 'You have been exposed to drow poison through injury.'
+    InitialEffect: 'd20! + 3 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Poisoned: Take d6 Str damage and make d20! + 3 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, fall unconscious for 2d4 hours.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 16
+    Name: Firemilk
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from firemilk poisoning.'
+    Trigger: 'You have been exposed to firemilk through contact.'
+    InitialEffect: 'After 1 minute, make d20! + 0 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '12 min'
+    Stage1: 'Poisoned: Take d6 SP damage, enjoy double healing rates for 1 day, and make d20! + 0 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 10 minutes, take 1 Str damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 17
+    Name: 'Giant Wasp Poison'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from wasp poison poisoning.'
+    Trigger: 'You have been exposed to wasp poison through injury.'
+    InitialEffect: 'd20! + 8 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take d6 Dex damage and make d20! + 8 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take d6 Dex damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 18
+    Name: 'Greenblood Oil'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from greenblood oil poisoning.'
+    Trigger: 'You have been exposed to greenblood oil through injury.'
+    InitialEffect: 'd20! + 3 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take 1 Con damage and make d20! + 3 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take d2 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 19
+    Name: Greycap
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from greycap poisoning.'
+    Trigger: 'You have been exposed to greycap through ingestion.'
+    InitialEffect: 'After 6 hours, d20! + 8 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Poisoned: Take d6 Con damage and make d20! + 8 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 day, take d3 Wis damage and 1 Con drain, then make d20! + 8 attack vs. Fort (S - Stay at stage 2; F - Poison neutralized).'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 20
+    Name: 'Id Moss'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from id moss poisoning.'
+    Trigger: 'You have been exposed to id moss through ingestion.'
+    InitialEffect: 'd20! + 4 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take d4 Int damage and make d20! + 4 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 2d6 Int damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 21
+    Name: 'Insanity Mist'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from insanity mist poisoning.'
+    Trigger: 'You have been exposed to insanity mist through inhalation.'
+    InitialEffect: 'd20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take d4 Wis damage and make d20! + 5 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 2d6 Wis damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 22
+    Name: 'Large Scorpion Venom'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from scorpion venom poisoning.'
+    Trigger: 'You have been exposed to scorpion venom through injury.'
+    InitialEffect: 'd20! + 8 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take d6 Str damage and make d20! + 8 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take d6 Str damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 23
+    Name: 'Lich Dust'
+    Type: 3
+    Descriptors: '[Poison, Necrotic]'
+    Description: 'You are suffering from lich dust poisoning.'
+    Trigger: 'You have been exposed to lich dust through ingestion.'
+    InitialEffect: 'd20! + 7 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take 2d6 Str damage and make d20! + 7 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take d6 Str damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 24
+    Name: 'Malyss Root Paste'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from malyss root paste poisoning.'
+    Trigger: 'You have been exposed to malyss root paste through contact.'
+    InitialEffect: 'd20! + 6 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take 1 Dex damage and make d20! + 6 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 2d4 Dex damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 25
+    Name: 'Medium Spider Venom'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from spider venom poisoning.'
+    Trigger: 'You have been exposed to spider venom through injury.'
+    InitialEffect: 'd20! + 4 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take d4 Str damage and make d20! + 4 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take d4 Str damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 26
+    Name: 'Milk of the Poppy'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from poppy milk poisoning.'
+    Trigger: 'You have been exposed to poppy milk through ingestion.'
+    InitialEffect: 'After 1 minute, make d20! + 10 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Poisoned: Take d6 Wis damage and make d20! + 10 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 10 minutes, fall unconscious for d3 hours.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 27
+    Name: 'Myrish Fire'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from myrish fire poisoning.'
+    Trigger: 'You have been exposed to myrish fire through contact.'
+    InitialEffect: 'After 1 round, make d20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take d6 SP damage, enjoy double healing rates for 1 day, and make d20! + 5 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 1 Str and 1 Dex damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 28
+    Name: Nightshade
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from nightshade poisoning.'
+    Trigger: 'You have been exposed to nightshade through ingestion.'
+    InitialEffect: 'After 1 minute, make d20! + 3 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '1 h'
+    Stage1: 'Poisoned: Take d3 Wis damage and make d20! + 3 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 hour, take 2d6 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 29
+    Name: Nitharit
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from nitharit poisoning.'
+    Trigger: 'You have been exposed to nitharit through contact.'
+    InitialEffect: 'After 1 minute, make d20! + 3 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '1 min'
+    Stage1: 'Poisoned: Take 3d6 Con damage.'
+    Stage2: null
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 30
+    Name: 'Oil of Taggit'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from oil of taggit poisoning.'
+    Trigger: 'You have been exposed to oil of taggit through ingestion.'
+    InitialEffect: 'After 1 minute, make d20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Fall unconscious for 1 minute.'
+    Stage2: null
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 31
+    Name: 'Pennyroyal (Mild)'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from pennyroyal poisoning.'
+    Trigger: 'You have been exposed to pennyroyal through ingestion.'
+    InitialEffect: 'After 1 hour, make d20! + 0 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '3 h'
+    Stage1: 'Poisoned: Take 1 Con damage and make d20! + 0 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 2 hours, take d6 SP damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 32
+    Name: 'Pennyroyal (Strong)'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from pennyroyal poisoning.'
+    Trigger: 'You have been exposed to pennyroyal through ingestion.'
+    InitialEffect: 'After 30 minutes, make d20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 h'
+    Stage1: 'Poisoned: Suffer 1 Con drain and make d20! + 5 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 hour, take d6 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 33
+    Name: 'Purple Worm Poison'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from purple worm poisoning.'
+    Trigger: 'You have been exposed to purple worm poison through injury.'
+    InitialEffect: 'd20! + 14 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take d6 Str damage and make d20! + 14 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 2d6 Str damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 34
+    Name: 'Sassone Leaf Residue'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from sassone leaf residue poisoning.'
+    Trigger: 'You have been exposed to sassone leaf residue through contact.'
+    InitialEffect: 'd20! + 6 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take 2d12 HP damage and make d20! + 6 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take d6 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 35
+    Name: 'Shadow Essence'
+    Type: 3
+    Descriptors: '[Poison, Necrotic]'
+    Description: 'You are suffering from shadow essence poisoning.'
+    Trigger: 'You have been exposed to shadow essence through injury.'
+    InitialEffect: 'd20! + 7 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Suffer 1 Str drain and make d20! + 7 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 2d6 Str damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 36
+    Name: 'Sleep Gas'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from sleep gas poisoning.'
+    Trigger: 'You have been exposed to sleep gas through inhalation.'
+    InitialEffect: 'd20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Fall asleep for 1 minute and make d20! + 5 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: Continue sleeping for additional d4 minutes.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 37
+    Name: 'Small Centipede Poison'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from centipede venom poisoning.'
+    Trigger: 'You have been exposed to centipede venom through injury.'
+    InitialEffect: 'd20! + 1 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take d2 Dex damage and make d20! + 1 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take d2 Dex damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 38
+    Name: Strangler
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from strangler poisoning.'
+    Trigger: 'You have been exposed to strangler poison through ingestion.'
+    InitialEffect: 'd20! + 15 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 r'
+    Stage1: 'Poisoned: Take d6+4 Con damage and make d20! + 15 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 round, suffocate and go directly to 0 SP.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 39
+    Name: 'Striped Toadstool'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from toadstool poisoning.'
+    Trigger: 'You have been exposed to toadstool through ingestion.'
+    InitialEffect: 'd20! + 1 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take 1 Wis damage and make d20! + 1 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 2d6 Wis and d4 Int damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 40
+    Name: Sweetsleep
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from sweetsleep poisoning.'
+    Trigger: 'You have been exposed to sweetsleep through ingestion.'
+    InitialEffect: 'After 1 minute, make d20! + 2 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Poisoned: Take d3 Wis damage and make d20! + 2 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 30 minutes, fall unconscious for d3 hours.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 41
+    Name: 'Tansy (Mild)'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from tansy poisoning.'
+    Trigger: 'You have been exposed to tansy poison through ingestion.'
+    InitialEffect: 'After 1 minute, make d20! + 0 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '32 min'
+    Stage1: 'Poisoned: Take 1 Str damage and make d20! + 0 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 30 minutes, take d6 SP damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 42
+    Name: 'Tansy (Strong)'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from tansy poisoning.'
+    Trigger: 'You have been exposed to tansy poison through ingestion.'
+    InitialEffect: 'After 1 minute, make d20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '32 min'
+    Stage1: 'Poisoned: Take d4 Str damage and make d20! + 5 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 30 minutes, take 2d6 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 43
+    Name: 'Tears of Lys'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from tears of lys poisoning.'
+    Trigger: 'You have been exposed to tears of lys through ingestion.'
+    InitialEffect: 'After 1 hour, make d20! + 10 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Poisoned: Suffer d3 Str drain and make d20! + 10 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 day, suffer 2 Con and 1 Str drain, then make d20! + 10 attack vs. Fort (S - Stay at stage 2; F - Poison neutralized).'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 44
+    Name: 'Terinav Root'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from terinav root poisoning.'
+    Trigger: 'You have been exposed to terinav root through contact.'
+    InitialEffect: 'd20! + 6 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take d6 Dex damage and make d20! + 6 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 2d6 Dex damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 45
+    Name: 'Ungol Dust'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from ungol dust poisoning.'
+    Trigger: 'You have been exposed to ungol dust through inhalation.'
+    InitialEffect: 'd20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take 1 Cha damage and make d20! + 5 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take d6 Cha damage and 1 Cha drain.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 46
+    Name: 'Wasting Potion'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from wasting potion poisoning.'
+    Trigger: 'You have been exposed to wasting potion through ingestion.'
+    InitialEffect: 'd20! + 10 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '30 min'
+    Stage1: 'Poisoned: Take d6 Con damage and make d20! + 10 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 30 minutes, take d3 Con damage. Also gain a +4 metabolic bonus to Fort against other poisons.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 47
+    Name: "Widow's Blood"
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: "You are suffering from widow's blood poisoning."
+    Trigger: "You have been exposed to widow's blood through ingestion."
+    InitialEffect: 'After 1 minute, make d20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Poisoned: Suffer 3 Con drain and make d20! + 5 attack vs. Fort (S - Stay at stage 1; F - Poison neutralized).'
+    Stage2: null
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 48
+    Name: 'Wolfsbane (Contact)'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from wolfsbane poisoning.'
+    Trigger: 'You have been exposed to wolfsbane through contact.'
+    InitialEffect: 'd20! + 1 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take 1 Dex damage and make d20! + 1 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 1 Dex damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 49
+    Name: 'Wolfsbane (Ingested)'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from wolfsbane poisoning.'
+    Trigger: 'You have been exposed to wolfsbane through ingestion.'
+    InitialEffect: 'After 1 minute, make d20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 h'
+    Stage1: 'Poisoned: Take 1 Con damage and make d20! + 5 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 2 hours, take 1 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 50
+    Name: 'Wolfsbane (Inhaled)'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from wolfsbane poisoning.'
+    Trigger: 'You have been exposed to wolfsbane through inhalation.'
+    InitialEffect: 'After 1 minute, make d20! + 0 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take d3 Wis damage and make d20! + 0 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take d3 Dex damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 51
+    Name: 'Wyvern Poison'
+    Type: 3
+    Descriptors: '[Poison]'
+    Description: 'You are suffering from wyvern venom poisoning.'
+    Trigger: 'You have been exposed to wyvern venom through injury.'
+    InitialEffect: 'd20! + 7 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: '2 min'
+    Stage1: 'Poisoned: Take 2d6 Con damage and make d20! + 7 attack vs. Fort (S - Go to stage 2; F - Poison neutralized).'
+    Stage2: 'Poisoned: After 1 minute, take 2d6 Con damage.'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 52
+    Name: 'Aboleth Slime Disease'
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from aboleth slime disease.'
+    Trigger: 'You have been exposed to aboleth slime disease through injury.'
+    InitialEffect: 'd20! + 9 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Skin becomes clammy.\nAfter d4 minutes, make d20! + 9 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: 'Skin becomes slimy.\nAfter d4 minutes, make d20! + 9 attack vs. Fort (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Skin becomes clear. Lose d12 SP per minute unless skin is moistened. Lasts until cured.'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 53
+    Name: 'Blinding Sickness'
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from blinding sickness.'
+    Trigger: 'You have been exposed to blinding sickness through ingestion.'
+    InitialEffect: 'After d3 days, make d20! + 6 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Take d4 Str damage.\nAfter 1 day, make d20! + 6 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: 'Take d4 Str damage and get blurry vision.\nAfter 1 day, make d20! + 6 attack vs. Fort (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Permanent blindness (until cured).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 54
+    Name: 'Brain Flu'
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from brain flu.'
+    Trigger: 'You have been exposed to brain flu through injury.'
+    InitialEffect: 'After 1 day, make d20! + 3 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: '+5 DC for supernatural activation checks.\nAfter 1 day, make d20! + 3 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: '+10 DC for supernatural activation checks.\nAfter 1 day, make d20! + 3 attack vs. Fort (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Permanent +10 DC for supernatural activation checks (until cured).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 55
+    Name: 'Cackle Fever'
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from cackle fever.'
+    Trigger: 'You have been exposed to cackle fever through inhalation.'
+    InitialEffect: 'After 1 day, make d20! + 6 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Take d6 Wis damage.\nAfter 1 day, make d20! + 6 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: 'Take d6 Wis damage and become dazed.\nAfter 1 day, make d20! + 6 attack vs. Fort (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Catatonic (until cured).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 56
+    Name: 'Cerebral Parasites'
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from cerebral parasites.'
+    Trigger: 'You have been exposed to cerebral parasites through contact.'
+    InitialEffect: 'After d4 days, make d20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Take d8 PP damage.\nAfter 1 day, make d20! + 5 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: 'Take 2d8 PP damage.\nAfter 1 day, make d20! + 5 attack vs. Fort (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Unable to naturally recover PP (until cured).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 57
+    Name: 'Demon Fever'
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from demon fever.'
+    Trigger: 'You have been exposed to demon fever through injury.'
+    InitialEffect: 'After 1 day, make d20! + 8 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Take d6 Con damage.\nAfter 1 day, make d20! + 8 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: 'Take d6 Con damage.\nAfter 1 day, make d20! + 8 attack vs. Fort (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Suffer 1 Con drain.'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 58
+    Name: 'Devil Chills'
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from devil chills.'
+    Trigger: 'You have been exposed to devil chills through injury.'
+    InitialEffect: 'After d4 days, make d20! + 4 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Take d4 Str damage.\nAfter 1 day, make d20! + 4 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: 'Take d4 Str damage.\nAfter 1 day, make d20! + 4 attack vs. Fort (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Permanently dazed (until cured).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 59
+    Name: 'Filth Fever'
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from filth fever.'
+    Trigger: 'You have been exposed to filth fever through injury.'
+    InitialEffect: 'After d3 days, make d20! + 2 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Take d3 Dex and d3 Con damage.\nAfter 1 day, make d20! + 2 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: 'Take d3 Dex and d3 Con damage.\nAfter 1 day, make d20! + 2 attack vs. Fort (S/F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 60
+    Name: Mindfire
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from mindfire.'
+    Trigger: 'You have been exposed to mindfire through inhalation.'
+    InitialEffect: 'After 1 day, make d20! + 2 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Take d4 Int damage.\nAfter 1 day, make d20! + 2 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: 'Take d4 Int damage.\nAfter 1 day, make d20! + 2 attack vs. Fort (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Permanently dazed (until cured).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 61
+    Name: 'Mummy Rot'
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from mummy rot.'
+    Trigger: 'You have been exposed to mummy rot through contact.'
+    InitialEffect: 'After 1 day, make d20! + 10 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Take d6 Con damage.\nAfter 1 day, make d20! + 10 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: 'Take d6 Con damage.\nAfter 1 day, make d20! + 10 attack vs. Fort (S/F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 62
+    Name: 'Red Ache'
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from red ache.'
+    Trigger: 'You have been exposed to red ache through injury.'
+    InitialEffect: 'After d3 days, make d20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Take d6 Str damage.\nAfter 1 day, make d20! + 5 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: 'Take d6 Str damage.\nAfter 1 day, make d20! + 5 attack vs. Fort (S/F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 63
+    Name: Shakes
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from the shakes.'
+    Trigger: 'You have been exposed to the shakes through contact.'
+    InitialEffect: 'After 1 day, make d20! + 3 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Take d8 Dex damage.\nAfter 1 day, make d20! + 3 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: 'Take d8 Dex damage and get -4 penalty to base speed.\nAfter 1 day, make d20! + 3 attack vs. Fort (S/F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: null
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 64
+    Name: 'Slimy Doom'
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from slimy doom.'
+    Trigger: 'You have been exposed to slimy doom through contact.'
+    InitialEffect: 'After 1 day, make d20! + 4 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Take d4 Con damage.\nAfter 1 day, make d20! + 4 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Disease cured).'
+    Stage2: 'Take d4 Con damage.\nAfter 1 day, make d20! + 4 attack vs. Fort (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Suffer 1 Con drain.'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 65
+    Name: Possession
+    Type: 2
+    Descriptors: '[Su, MR, Mind]'
+    Description: 'Another soul is fighting you for control of your body.'
+    Trigger: 'You are exposed to possession by another soul.'
+    InitialEffect: 'Attack roll vs. Will (S - Go to stage 2; F - Possession attempt fails).'
+    MaxDuration: Varies
+    Stage1: 'Struggle continues, but defender is in control.\nAfter d4 rounds, make d20! + PL attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Attacker is expelled).'
+    Stage2: 'Struggle continues, but attacker is in control.\nAfter d4 rounds, make d20! + PL attack vs. Will (S - Stay at stage 2; OS - Go to stage 3; F - Go to stage 1).'
+    Stage3: 'Defender goes dormant, leaving attacker is in control.\nAfter 1 day, make d20! + PL attack vs. Will (S - Stay at stage 3; F - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+hpeffects:
+  -
+    ID: 1
+    CurrentHP: 'Full HP'
+    Description: 'The creature is uninjured.\n(The object or construct is undamaged.)'
+  -
+    ID: 2
+    CurrentHP: 'Half+1 to full HP'
+    Description: 'Injured: The creature is injured but suffers no special penalties.\n(Damaged: The object or construct is slightly damaged but still works normally.)'
+  -
+    ID: 3
+    CurrentHP: '1 to half HP'
+    Description: 'Bloodied: The creature is seriously injured.\n(Broken: The object or construct is damaged enough to suffer a -2 penalty on related actions.)'
+  -
+    ID: 4
+    CurrentHP: 0
+    Description: 'Disabled: The creature can only use half its AP/MP each round, and any action that costs SP or PP will also cause it the same number of HP (and probably render it unconscious).\n(Destroyed: Most objects, undead, constructs, and plants are destroyed at 0 HP.)'
+  -
+    ID: 5
+    CurrentHP: '-1 to -Con'
+    Description: 'Unconscious/dying: The creature automatically falls prone and drops anything held in its hands. See progression below.'
+  -
+    ID: 6
+    CurrentHP: '-Con'
+    Description: 'Dead: The creature is dead.'
+speffects:
+  -
+    ID: 1
+    CurrentSP: 'Full SP'
+    Description: 'The creature is in full vigor.'
+  -
+    ID: 2
+    CurrentSP: 'Half+1 to full SP'
+    Description: 'The creature is slightly fatigued but suffers no special penalties.'
+  -
+    ID: 3
+    CurrentSP: '1 to half SP'
+    Description: 'Fatigued: The creature is seriously fatigued. Many physical actions suffer a -2 penalty (see PAM).'
+  -
+    ID: 4
+    CurrentSP: 0
+    Description: 'Exhausted: The creature is near collapse. It can only use half its AP/MP each round, and further SP costs are converted to HP damage on a point-for-point basis. Each such SP cost or loss requires a Fortitude defense to avoid falling unconscious (d20! + SP cost vs. Fort). Many physical actions suffer a -6 penalty (PAM).'
+ppeffects:
+  -
+    ID: 1
+    CurrentPP: 'Full PP'
+    Description: 'The creature is in full mental vigor.'
+  -
+    ID: 2
+    CurrentPP: 'Half+1 to full PP'
+    Description: 'The creature is slightly tired but suffers no special penalties.'
+  -
+    ID: 3
+    CurrentPP: '1 to half PP'
+    Description: 'Tired: The creature is very tired. Many mental actions suffer a -2 penalty (see MAM).'
+  -
+    ID: 4
+    CurrentPP: 0
+    Description: 'Drained: The creature is mentally drained and near collapse. It can only use half its AP/MP each round, and further PP costs are converted to HP damage on a point-for-point basis. Each such PP cost or loss requires a Will defense to avoid falling unconscious (d20! + PP cost vs. Will). Many mental actions suffer a -6 penalty (MAM).'
+implementtypes:
+  -
+    ID: 1
+    Name: Concentration
+    ShortName: C
+    Description: 'You need a certain amount of focus and concentration to perform the action.\nIf you perform the action while you are already maintaining concentration on another action, you lose the earlier action.'
+  -
+    ID: 2
+    Name: Verbal
+    ShortName: V
+    Description: 'You need to be able to speak in a firm voice. Typically, you have to use a language, but the targets (if any) do not need to understand the language. Creatures without true languages (such as animals) cannot perform actions that require a verbal component.\nIf you are deafened, you suffer a -4 circumstance penalty on the action check.'
+  -
+    ID: 3
+    Name: Somatic
+    ShortName: S
+    Description: 'You need to be able to gesticulate clearly with one or more hands; at least one hand must be empty and free to move. However, some actions allow special foci to be used in place of hands; for example, wands can be used for arcane spellcasting and holy symbols for divine spellcasting.'
+  -
+    ID: 4
+    Name: Material
+    ShortName: M
+    Description: "You need to use one or more consumables. The action's activation time assumes that the material is easy to reach (in a belt pouch, for instance, and not in a backpack). Otherwise, add the time required to find and retrieve the material."
+  -
+    ID: 5
+    Name: Focus
+    ShortName: F
+    Description: 'You need a catalyst that is not consumed by the action. The action''s activation time assumes that the focus is easy to reach (in a belt pouch or around the neck, for instance, and not in a backpack).\nIf the exact type of focus is not specified, one can use any generic focus appropriate to the skill or skills used, such as a wand or staff for arcane spells, a holy symbol or rod for divine spells, a musical instrument for bardic music, etc.'
+  -
+    ID: 6
+    Name: Vision
+    ShortName: vis
+    Description: 'You need eyes or an equivalent sense of vision. Vision-related modifiers may apply to the action.'
+  -
+    ID: 7
+    Name: Hearing
+    ShortName: aud
+    Description: 'You need ears or an equivalent sense of hearing. Hearing-related modifiers may apply to the action.'
+  -
+    ID: 8
+    Name: Touch
+    ShortName: tch
+    Description: 'You need a sense of touch.'
+  -
+    ID: 9
+    Name: Smell
+    ShortName: sml
+    Description: 'You need a sense of smell.'
+targettypes:
+  -
+    ID: 1
+    Name: You
+    ShortName: you
+    Description: 'The action affects only you.'
+  -
+    ID: 2
+    Name: Target
+    ShortName: tgt
+    Description: 'Specifies the number and types of creatures or objects that can be affected.\nYou typically need both line of sight and line of effect to each target (unless the range specifies otherwise). Selection of a target requires no aiming and no ranged attack roll, however, and the effect only has to overcome the defense and resistance of the target(s).\nSome actions can only affect willing targets, but unconscious creatures are automatically considered willing for such actions.'
+  -
+    ID: 3
+    Name: Ray
+    ShortName: ray
+    Description: 'A ray is a ranged attack that can strike and affect a single creature or object.\nAll of the modifiers and conditions that apply to ranged weapon attacks also apply to ray attacks.\nA ray is always instantaneous, and any other duration specified is the duration of the effect (not of the ray itself).'
+  -
+    ID: 4
+    Name: Burst
+    ShortName: bst
+    Description: 'The effect radiates the specified distance from the point of origin. It does not flow around corners, so a target''s cover is calculated relative to the point of origin.\nA burst is always instantaneous, and any other duration specified is the duration of the effect (not of the burst itself).'
+  -
+    ID: 5
+    Name: Emanation
+    ShortName: emn
+    Description: 'The effect radiates the specified distance from the point of origin, just like a burst effect.\nEmanations, however, are generally non-instantaneous and last for the action''s specified duration.'
+  -
+    ID: 6
+    Name: Spread
+    ShortName: sprd
+    Description: 'The effect spreads or flows out the specified distance from the point of origin. It can flow around corners, through openings, and into areas that you cannot see, but it does not penetrate solid obstructions.\nSpreads typically last for the action''s specified duration.'
+  -
+    ID: 7
+    Name: Sphere
+    ShortName: sph
+    Description: 'A spherical volume with the point of origin at its center. Unless otherwise specified, the point of origin should be an intersection between squares.'
+  -
+    ID: 8
+    Name: Cone
+    ShortName: con
+    Description: 'Has its apex at the point of origin and spreads in a 90 degree cone in any desired direction. Unless otherwise specified, the point of origin should be an intersection between squares.'
+  -
+    ID: 9
+    Name: Cylinder
+    ShortName: cyl
+    Description: 'A cylinder-shaped volume with its center at the point of origin. Unless otherwise specified, the point of origin should be an intersection between squares. Many cylindrical volumes of effect have to be oriented with their circular surfaces parallel to the ground.'
+  -
+    ID: 10
+    Name: Line
+    ShortName: line
+    Description: 'A narrow cylinder stretching away from the point of origin in any desired direction.\nLine-shaped effects affect all squares that the line passes through.'
+  -
+    ID: 11
+    Name: Wall
+    ShortName: wall
+    Description: 'Wall areas are vertical planes of a specified material, shape, size, and thickness. Wall characteristics can vary widely, but unless otherwise specified, a wall is opaque and may not have curves or corners, and if its thickness is less than 1 square, it must be placed between squares (rather than through squares).\nCatching creatures "under" a wall area is usually quite hard, requiring an attack roll against Ref with exceptional success. Furthermore, many wall areas must be continuous and unbroken when formed, so creating them in a creature''s spacing would cause them to fail.'
+costtypes:
+  -
+    ID: 1
+    Name: Wealth
+    ShortName: sp
+    Description: 'The specified amount of coins or valuables has to be spent.'
+  -
+    ID: 2
+    Name: Health
+    ShortName: HP
+    Description: 'The action requires a certain amount of blood or is otherwise injurious, measured as a HP cost.'
+  -
+    ID: 3
+    Name: Fatigue
+    ShortName: SP
+    Description: 'The action is physically taxing and costs SP to perform.'
+  -
+    ID: 4
+    Name: Power
+    ShortName: PP
+    Description: 'You become mentally fatigued when performing the action, expressed as a PP cost.'
+  -
+    ID: 5
+    Name: Experience
+    ShortName: XP
+    Description: 'You have to spend a part of your soul and life energy to perform the action. This actually makes you forget a portion of your past life, and this in turn causes a reduction in XP (possibly even a reduction in level).\nAs a slightly less drastic alternative to spending your own XP, you can use residuum (pure life energy and magic in a liquid form). Life energy can also sometimes be drawn from permanent magical devices, from creatures other than yourself, and from some very rare and expensive material components.'
+activitylevels:
+  -
+    ID: 1
+    Name: 'Safe Rest'
+    Description: 'Resting in a safe and comfortable environment. Professional care can improve recovery rates further.\nMost equipment and armor are typically stowed away.\n50% of time awake can be spent learning spells, doing research, performing work-related activities, etc.'
+    RecoverHP: 2xTL/day
+    RecoverSP: 2xTL/h
+    RecoverPP: 2xTL/h
+    RecoverAbil: 2/day
+    OtherEffects: '-4 circumstance modifier to Perception-based actions (-10 modifier while sleeping)'
+  -
+    ID: 2
+    Name: 'Low Activity (Relaxed)'
+    Description: 'Non-strenuous work, or resting in a potentially unsafe or uncomfortable environment.\nHeavy equipment and armor are typically not worn.\n75% of time awake can be spent learning spells, research, crafting, etc.'
+    RecoverHP: TL/day
+    RecoverSP: TL/h
+    RecoverPP: TL/h
+    RecoverAbil: 1/day
+    OtherEffects: '-2 circumstance modifier to Perception-based actions'
+  -
+    ID: 3
+    Name: 'Medium Activity (Ready)'
+    Description: 'Normal activity, such as walking in friendly or neutral territory, active guard duty, normal physical labor, etc.\nAll armor and equipment are usually worn/carried.'
+    RecoverHP: TL/day
+    RecoverSP: TL/h
+    RecoverPP: TL/h
+    RecoverAbil: 1/day
+    OtherEffects: '-'
+  -
+    ID: 4
+    Name: 'High Activity (Alert)'
+    Description: 'Fatiguing or stressful activity, such as forced march, hard labor, combat, running, walking or sneaking through hostile territory, etc.\nAll armor and equipment are worn/carried.\nCreatures that perceive a possible threat will typically assume this level of activity, and they will often make preparations of encounter-level duration and perform active Spot and Listen checks each round.'
+    RecoverHP: '-'
+    RecoverSP: '-'
+    RecoverPP: '-'
+    RecoverAbil: '-'
+    OtherEffects: '+2 circumstance modifier to Perception-based actions'
+improvements:
+  -
+    ID: 1
+    Improvement: 'Improvement bonus to Str, Con, Dex, Int, Wis, or Cha'
+    Cost: '10 per +1'
+    MaxBonus: 5
+  -
+    ID: 2
+    Improvement: 'Improvement bonus to DeC'
+    Cost: '10 per +1'
+    MaxBonus: 5
+  -
+    ID: 3
+    Improvement: 'Improvement bonus to Fort, Ref, or Will'
+    Cost: '5 per +1'
+    MaxBonus: 5
+  -
+    ID: 4
+    Improvement: 'Improvement bonus to HP, SP, or PP'
+    Cost: '2 per +1'
+    MaxBonus: 25
+  -
+    ID: 5
+    Improvement: 'Improvement bonus to (non-prestige) skill level'
+    Cost: '10 per +1'
+    MaxBonus: 5
+improvementtraits:
+  -
+    ID: 1
+    Description: Strength
+    IPCost: 10
+    MaxBonus: 5
+    Trait: 'AbilMod { Qual=Str; Type=imp; }'
+  -
+    ID: 2
+    Description: Constitution
+    IPCost: 10
+    MaxBonus: 5
+    Trait: 'AbilMod { Qual=Con; Type=imp; }'
+  -
+    ID: 3
+    Description: Dexterity
+    IPCost: 10
+    MaxBonus: 5
+    Trait: 'AbilMod { Qual=Dex; Type=imp; }'
+  -
+    ID: 4
+    Description: Intelligence
+    IPCost: 10
+    MaxBonus: 5
+    Trait: 'AbilMod { Qual=Int; Type=imp; }'
+  -
+    ID: 5
+    Description: Wisdom
+    IPCost: 10
+    MaxBonus: 5
+    Trait: 'AbilMod { Qual=Wis; Type=imp; }'
+  -
+    ID: 6
+    Description: Charisma
+    IPCost: 10
+    MaxBonus: 5
+    Trait: 'AbilMod { Qual=Dex; Type=imp; }'
+  -
+    ID: 7
+    Description: DeC
+    IPCost: 10
+    MaxBonus: 5
+    Trait: 'DefMod { Qual=DeC; Type=imp; }'
+  -
+    ID: 8
+    Description: Fort
+    IPCost: 5
+    MaxBonus: 5
+    Trait: 'DefMod { Qual=Fort; Type=imp; }'
+  -
+    ID: 9
+    Description: Ref
+    IPCost: 5
+    MaxBonus: 5
+    Trait: 'DefMod { Qual=Ref; Type=imp; }'
+  -
+    ID: 10
+    Description: Will
+    IPCost: 5
+    MaxBonus: 5
+    Trait: 'DefMod { Qual=Will; Type=imp; }'
+  -
+    ID: 11
+    Description: HP
+    IPCost: 2
+    MaxBonus: 25
+    Trait: 'HeaMod { Qual=HP; Type=imp; }'
+  -
+    ID: 12
+    Description: SP
+    IPCost: 2
+    MaxBonus: 25
+    Trait: 'HeaMod { Qual=SP; Type=imp; }'
+  -
+    ID: 13
+    Description: PP
+    IPCost: 2
+    MaxBonus: 25
+    Trait: 'HeaMod { Qual=PP; Type=imp; }'
+improvementads:
+  -
+    ID: 1
+    Advantage: 'Reduce cultural or racial penalty'
+    Cost: 'Usually 10 per point'
+  -
+    ID: 2
+    Advantage: 'Disease immunity'
+    Cost: '2 per disease'
+  -
+    ID: 3
+    Advantage: 'Poison immunity'
+    Cost: '2 per poison'
+  -
+    ID: 4
+    Advantage: 'Longevity (add 50% to age ranges)'
+    Cost: 5
+  -
+    ID: 5
+    Advantage: 'Sleep immunity'
+    Cost: 5
+  -
+    ID: 6
+    Advantage: 'Magically gifted (+2 improvement bonus on all spell-related skill checks (not attacks), but same bonus applies to such checks against you)'
+    Cost: 5
+  -
+    ID: 7
+    Advantage: 'Magically resistant (+2 improvement bonus to MR but also -2 improvement penalty on all spell-related skill checks)'
+    Cost: 5
+  -
+    ID: 8
+    Advantage: 'Allied organization/individual'
+    Cost: 2
+  -
+    ID: 9
+    Advantage: 'Member of organization (bonus influence points)'
+    Cost: '1 per 2 infl'
+  -
+    ID: 10
+    Advantage: 'Permanent beneficial spell'
+    Cost: '1 per 2 PL'
+  -
+    ID: 11
+    Advantage: 'Special equipment (family heirloom)'
+    Cost: '1 per 500 sp'
+  -
+    ID: 12
+    Advantage: 'Good reputation (improvement bonus for some social actions)'
+    Cost: '2 for +4 bonus, 5 for +8, 10 for +12'
+  -
+    ID: 13
+    Advantage: 'Adapt to environmental effect (reduce penalties)'
+    Cost: 'Usually 5 per point'
+  -
+    ID: 14
+    Advantage: 'Unusual training (choose any class for background skills and racial levels)'
+    Cost: 15
+  -
+    ID: 15
+    Advantage: 'Lucky (start with additional fate points)'
+    Cost: '5 per fate point'
+improvementdisads:
+  -
+    ID: 1
+    Disadvantage: 'Disease (chronic)'
+    Cost: Varies
+  -
+    ID: 2
+    Disadvantage: 'Scars, disfiguring (-2 improvement penalty on some social actions; easily identified)'
+    Cost: -2
+  -
+    ID: 3
+    Disadvantage: 'Color blindness'
+    Cost: -2
+  -
+    ID: 4
+    Disadvantage: Allergy
+    Cost: -2
+  -
+    ID: 5
+    Disadvantage: 'Insanity or amnesia'
+    Cost: Varies
+  -
+    ID: 6
+    Disadvantage: Addiction
+    Cost: -2
+  -
+    ID: 7
+    Disadvantage: Phobia
+    Cost: '-2 for mild, -5 for severe'
+  -
+    ID: 8
+    Disadvantage: 'Low SC'
+    Cost: '-2 for SC -1, -5 for SC -2'
+  -
+    ID: 9
+    Disadvantage: 'Low WC'
+    Cost: '-2 for WC -1, -5 for WC -2'
+  -
+    ID: 10
+    Disadvantage: 'Duty to organization/individual'
+    Cost: -2
+  -
+    ID: 11
+    Disadvantage: 'Enemy organization/individual'
+    Cost: -2
+  -
+    ID: 12
+    Disadvantage: 'Bastardy (-2 improvement penalty on some social actions)'
+    Cost: -2
+  -
+    ID: 13
+    Disadvantage: 'Fury (you are easily provoked and fight with abandon; Will check required to inflict non-lethal damage or break off a fight)'
+    Cost: '-2 for +5 vs Will, -5 for +10'
+  -
+    ID: 14
+    Disadvantage: 'Crippled (one or more limbs)'
+    Cost: '-5 for -2 penalty with one limb, -10 for missing or useless limb'
+  -
+    ID: 15
+    Disadvantage: 'Mute (unable to communicate verbally or perform actions with a verbal component)'
+    Cost: -5
+  -
+    ID: 16
+    Disadvantage: 'Eyesight, impaired'
+    Cost: '-5 for -10 Spot penalty, -10 for blindness'
+  -
+    ID: 17
+    Disadvantage: 'Hearing, impaired'
+    Cost: '-5 for -10 Listen penalty, -10 for deafness'
+  -
+    ID: 18
+    Disadvantage: 'Dark secret (exposure would result in reduced SC or WC)'
+    Cost: Varies
+  -
+    ID: 19
+    Disadvantage: Obesity
+    Cost: '-2 per +1 EC'
+  -
+    ID: 20
+    Disadvantage: 'Distinguishing mark (hard to conceal and easily identified)'
+    Cost: -2
+  -
+    ID: 21
+    Disadvantage: 'Bad reputation (improvement penalty on some social actions)'
+    Cost: '-2 for -4 penalty, -5 for -8, -10 for -12'
+  -
+    ID: 22
+    Disadvantage: 'Permanent curse (debilitating spell)'
+    Cost: '-1 per 2 PL'
+playertypes:
+  -
+    ID: 4
+    PlayerType: 'Campaign Master'
+  -
+    ID: 3
+    PlayerType: 'Dungeon Master'
+  -
+    ID: 1
+    PlayerType: Player
+  -
+    ID: 2
+    PlayerType: 'Power Player'
+techlevelsm:
+  -
+    TL: 0
+    Year: Prehistory
+    Technologies: null
+  -
+    TL: 1
+    Year: '50,000 BC'
+    Technologies: null
+  -
+    TL: 2
+    Year: '20,000 BC'
+    Technologies: null
+  -
+    TL: 3
+    Year: '10,000 BC'
+    Technologies: null
+  -
+    TL: 4
+    Year: '5,000 BC'
+    Technologies: null
+  -
+    TL: 5
+    Year: '3,000 BC'
+    Technologies: null
+  -
+    TL: 6
+    Year: '1,500 BC'
+    Technologies: null
+  -
+    TL: 7
+    Year: 0
+    Technologies: Mithril
+  -
+    TL: 8
+    Year: 500
+    Technologies: null
+  -
+    TL: 9
+    Year: 1000
+    Technologies: null
+  -
+    TL: 10
+    Year: 1400
+    Technologies: Adamantium
+  -
+    TL: 11
+    Year: 1700
+    Technologies: null
+  -
+    TL: 12
+    Year: 1800
+    Technologies: null
+  -
+    TL: 13
+    Year: 1900
+    Technologies: null
+  -
+    TL: 14
+    Year: 1930
+    Technologies: null
+  -
+    TL: 15
+    Year: 1960
+    Technologies: null
+  -
+    TL: 16
+    Year: 1980
+    Technologies: null
+  -
+    TL: 17
+    Year: 2000
+    Technologies: null
+  -
+    TL: 18
+    Year: 2010
+    Technologies: null
+  -
+    TL: 19
+    Year: 2020
+    Technologies: null
+  -
+    TL: 20
+    Year: 2030
+    Technologies: null
+  -
+    TL: 21
+    Year: 2040
+    Technologies: null
+  -
+    TL: 22
+    Year: 2050
+    Technologies: null
+  -
+    TL: 23
+    Year: 2060
+    Technologies: null
+  -
+    TL: 24
+    Year: 2070
+    Technologies: null
+  -
+    TL: 25
+    Year: 2080
+    Technologies: null
+  -
+    TL: 26
+    Year: 2090
+    Technologies: null
+  -
+    TL: 27
+    Year: 2100
+    Technologies: null
+  -
+    TL: 28
+    Year: 2110
+    Technologies: null
+  -
+    TL: 29
+    Year: 2120
+    Technologies: null
+  -
+    TL: 30
+    Year: 2130
+    Technologies: null
+techlevelst:
+  -
+    TL: 0
+    Year: Prehistory
+    Technologies: 'Only natural tools, hunting and gathering'
+  -
+    TL: 1
+    Year: '50,000 BC'
+    Technologies: 'Wooden tools and weapons, simple spoken language, burial'
+  -
+    TL: 2
+    Year: '20,000 BC'
+    Technologies: 'Bow and arrow, hide armor, trading, pottery, fire'
+  -
+    TL: 3
+    Year: '10,000 BC'
+    Technologies: 'Stone tools and weapons, leather armor, simple agriculture, levers, canoes, slavery, primitive religion, husbandry and domestication, simple arithmetic, basic selective breeding'
+  -
+    TL: 4
+    Year: '5,000 BC'
+    Technologies: 'Bronze and copper tools, masonry, wind and water power, written language, wheel, beer, riding, sail, code of laws, geometry, government, taxation'
+  -
+    TL: 5
+    Year: '3,000 BC'
+    Technologies: 'Metal armor, feudalism, currency, astronomy, map making, bridge building, skis'
+  -
+    TL: 6
+    Year: '1,500 BC'
+    Technologies: 'Glass, first use of iron and steel, papyrus'
+  -
+    TL: 7
+    Year: 0
+    Technologies: 'Iron and steel tools, siege engines, use of sulfur and pitch in warfare, cement, paper, distilled liquor, amputations, simple prosthetics, sewers'
+  -
+    TL: 8
+    Year: 500
+    Technologies: 'Compass, stirrups, Greek fire'
+  -
+    TL: 9
+    Year: 1000
+    Technologies: 'First explosives, petroleum, navigation, banking and paper money, simple chemistry'
+  -
+    TL: 10
+    Year: 1400
+    Technologies: 'Matchlock firearms, steel crossbows, cannons, printing, global exploration, colonization, magnetism, simple physics, telescope, microscope, mechanical clocks, glass mirrors'
+  -
+    TL: 11
+    Year: 1700
+    Technologies: 'Flintlock firearms, simple steam engines, electricity, ironclad ships, lighter-than-air flight, compasses, anesthetics, sanitation, theory of natural selection'
+  -
+    TL: 12
+    Year: 1800
+    Technologies: 'Percussion firearms, dynamite, airguns, rubber, steam engines, industrialization, telegraphy, airships, parachute, alternating current electricity, simple batteries, propellers, vaccines, refrigeration, machine tools, theory of evolution'
+  -
+    TL: 13
+    Year: 1900
+    Technologies: 'Cartridge firearms, machine guns, explosive warheads, missile launchers, aluminum, concrete, combustion engines, airplanes, automobiles, submarines, radio, electricity network, telephony, primitive computers, radar, steam turbines, primitive jet engines, plastic surgery, antibiotics, mass production, induced mutations'
+  -
+    TL: 14
+    Year: 1930
+    Technologies: 'Submachine guns, flechette ammunition, nuclear fission, nuclear weapons, plastic, electronic computers, television, jet engines, hovercraft, solar energy, rangefinders, rotary-wing aircraft, electron microscope'
+  -
+    TL: 15
+    Year: 1960
+    Technologies: 'Light assault rifles, bullpup rifles, submunition warheads, hydrogen bomb, Kevlar, bulletproof glass, reactive armor, gas turbines, fuel cells, homopolar generators, laser, satellites, orbital spacecraft, composite materials, IR sensors, ramjets, organ transplants, industrial robotics, DNA discovered'
+  -
+    TL: 16
+    Year: 1980
+    Technologies: 'Autoburst firearms, rifle grenades, proximity mines, guided missiles, tasers, orbital shuttles, microchips, cellular phone network, global computer network, fiberoptics, legged vehicles, laser communicators, ladar, thermal sensors, sandcasters, magnetohydrodynamic turbines, turbofans, artificial skin growth, stealth materials, primitive cloning, primitive geneering, basic gene therapy, genome mapping, DNA forensics, robotic vehicles, orbital research'
+  -
+    TL: 17
+    Year: 2000
+    Technologies: 'Caseless ammunition, human cloning, inferior artificial organs, UAVs, airfoils'
+  -
+    TL: 18
+    Year: 2010
+    Technologies: 'Large laser weapons, large railguns, wireless tasers, electrostatic armor, robotic soldiers, powered exoskeletons, artificial organs, cybernetic limbs, organ cloning, designer drugs, 3D displays, nanotech materials, geneering, nerve splicing, Magnus spheres, millimeter wave scanners, detection of Earth-like planets'
+  -
+    TL: 19
+    Year: 2020
+    Technologies: 'Supercomputer AI, orbital laser weapons, large particle weapons, powered armor, self-repairing materials, robotic servants, ballistic airplanes, primitive vectorjets, cure for cancer, neural interface, biochips, 3D entertainment, autonomous cars, insectile UAVs, hive robotics, adaptive camouflage, orbital factories, solar sails, maglev trains, neutrino sensors, vat-grown meat, discovery of extraterrestrial life'
+  -
+    TL: 20
+    Year: 2030
+    Technologies: 'Personal AI, personal railguns, personal laser weapons, room-temperature superconduction, virtual "telepathy", VR entertainment, artificial wombs, growth tanks, morphing materials, biotech, advanced geneering, cold fusion, quantum entanglement communication (FTL), simple gravity manipulation, EMS radar, microscopic sensors, vectorjets, smart pathogens, private orbital stations'
+  -
+    TL: 21
+    Year: 2040
+    Technologies: 'Reflec armor, full immersion VR, software-based AI, brain scanning, non-invasive neural interfaces, nanotech robotics, memory enhancement, intelligence enhancement, nanoboosted immune system, antiagathics, universal vaccine, domed arkologies, underwater colonies, space elevator, didactic imprinting, cryogenic hibernation, vactrains, fusion energy'
+  -
+    TL: 22
+    Year: 2050
+    Technologies: 'Personal particle weapons, memory scanning, skill imprinting, cloaking, artificial gravity, contra-gravity, geneered animals, early star system colonization, monofilaments, simple androids, densitometers'
+  -
+    TL: 23
+    Year: 2060
+    Technologies: 'Universal fabricators, DNA reconstruction, inertial dampening'
+  -
+    TL: 24
+    Year: 2070
+    Technologies: 'Experimental jump drive, superdense materials'
+  -
+    TL: 25
+    Year: 2080
+    Technologies: 'Antimatter production, asteroid mining, jump drives, nuclear dampers'
+  -
+    TL: 26
+    Year: 2090
+    Technologies: 'Meson screens, tractor beams, meson weapons, nanoviruses'
+  -
+    TL: 27
+    Year: 2100
+    Technologies: 'Smart dust, neural activity sensors, wormhole detector'
+  -
+    TL: 28
+    Year: 2110
+    Technologies: 'Experimental stargate'
+  -
+    TL: 29
+    Year: 2120
+    Technologies: 'Gas giant refineries, jump drive tracker'
+  -
+    TL: 30
+    Year: 2130
+    Technologies: Stargates
+  -
+    TL: 31
+    Year: null
+    Technologies: 'Chrysalis machines, wormhole interdiction'
+  -
+    TL: 32
+    Year: null
+    Technologies: 'Meson communication'
+  -
+    TL: 33
+    Year: null
+    Technologies: 'Black force fields'
+  -
+    TL: 34
+    Year: null
+    Technologies: 'Repulsor beams'
+  -
+    TL: 35
+    Year: null
+    Technologies: Teleportation
+  -
+    TL: 36
+    Year: null
+    Technologies: 'White force fields'
+  -
+    TL: 37
+    Year: null
+    Technologies: 'Dimensional manipulation'
+  -
+    TL: 38
+    Year: null
+    Technologies: Terraforming
+  -
+    TL: 39
+    Year: null
+    Technologies: 'Dyson ringworlds'
+  -
+    TL: 40
+    Year: null
+    Technologies: 'Dyson sphereworlds'
+  -
+    TL: 41
+    Year: null
+    Technologies: 'Star manipulation'
+  -
+    TL: 42
+    Year: null
+    Technologies: 'Singularity manipulation'
+  -
+    TL: 43
+    Year: null
+    Technologies: Ascension
+  -
+    TL: 44
+    Year: null
+    Technologies: 'Time travel'

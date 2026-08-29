@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rules of Environment | RoL d20 Role-Playing System</title>
+    
+    <!-- Compiled Tailwind CSS & Site Styling -->
+    <link rel="stylesheet" href="http://localhost:8090/styles/tailwind.min.css">
+    <link rel="stylesheet" href="http://localhost:8090/styles/site.css">
+    <link rel="icon" href="http://localhost:8090/styles/reddragon.ico">
+
+    <!-- Local Alpine.js -->
+    <script defer src="http://localhost:8090/js/alpine.min.js"></script>
+
+    <style>
+        /* Site title in header */
+        .site-title {
+            color: #000000 !important;
+            text-shadow: 2px 2px 4px rgba(58, 79, 99, 0.7);
+            font-variant: small-caps;
+            font-weight: 800;
+        }
+
+        /* Modernized rulebook styling & Light headers on dark background */
+        h1, .rule-content h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #000000 !important;
+            text-shadow: .05em .05em 4px rgba(58, 79, 99, 0.7);
+            font-variant: small-caps;
+            margin-bottom: 1rem;
+        }
+
+        h2, .rule-content h2 {
+            background-color: #3a4f63 !important;
+            color: #ffffff !important;
+            padding: 6px 12px !important;
+            margin-top: 1.75rem !important;
+            margin-bottom: 0.75rem !important;
+            font-size: 1.4rem !important;
+            font-weight: 700 !important;
+            border-radius: 4px !important;
+            font-variant: small-caps;
+            border-bottom: none !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        h3, .rule-content h3 {
+            background-color: #3a4f63 !important;
+            color: #ffffff !important;
+            padding: 5px 10px !important;
+            margin-top: 1.5rem !important;
+            margin-bottom: 0.5rem !important;
+            font-size: 1.25rem !important;
+            font-weight: 600 !important;
+            border-radius: 3px !important;
+            font-variant: small-caps;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        h4, .rule-content h4 {
+            background-color: #556b82 !important;
+            color: #ffffff !important;
+            padding: 4px 8px !important;
+            margin-top: 1.25rem !important;
+            margin-bottom: 0.5rem !important;
+            font-size: 1.1rem !important;
+            font-weight: 600 !important;
+            border-radius: 3px !important;
+            font-variant: small-caps;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        h5, .rule-content h5 {
+            background-color: #64748b !important;
+            color: #ffffff !important;
+            padding: 3px 6px !important;
+            margin-top: 1rem !important;
+            margin-bottom: 0.25rem !important;
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            border-radius: 2px !important;
+            font-variant: small-caps;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Base typography - crisp black body text */
+        body, p, li, td, .rule-content p, .rule-content li, .rule-content td {
+            color: #000000 !important;
+        }
+
+        .rule-content p { line-height: 1.65; color: #000000 !important; margin-bottom: 1rem; }
+        .rule-content table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1.5rem; font-size: 0.875rem; }
+        .rule-content th, thead th { background-color: #3a4f63 !important; color: #ffffff !important; text-align: left; padding: 0.5rem 0.75rem; border: 1px solid #2c3e50; font-weight: 600; }
+        .rule-content td { padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; color: #000000 !important; }
+        .rule-content tr:nth-child(even) { background-color: #f8fafc; }
+        .rule-content caption { font-weight: 600; text-align: left; padding-bottom: 0.5rem; color: #000000; font-size: 1rem; }
+
+        /* Optional rules boxes - Vertically centered text and balanced spacing */
+        div.optionalrule, .rule-content div.optionalrule {
+            padding: 14px 18px !important;
+            border: 3px solid #777788 !important;
+            border-radius: 6px !important;
+            margin: 1.25rem 0.5rem !important;
+            background-color: #fafbfc !important;
+            box-shadow: 4px 4px 6px rgba(58, 79, 99, 0.25) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+        }
+
+        div.optionalrule p, .rule-content div.optionalrule p {
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1.6 !important;
+            color: #000000 !important;
+        }
+
+        div.optionalrule p + p, .rule-content div.optionalrule p + p {
+            margin-top: 0.75rem !important;
+        }
+
+        /* Bullet point lists and ordered lists */
+        .rule-content ul, main ul:not([class*="list-none"]):not([class*="divide"]):not([class*="pagination"]) {
+            list-style-type: disc !important;
+            margin-top: 0.75rem !important;
+            margin-bottom: 1rem !important;
+            padding-left: 2rem !important;
+        }
+        .rule-content ul ul, main ul ul:not([class*="list-none"]) {
+            list-style-type: circle !important;
+            margin-top: 0.25rem !important;
+            margin-bottom: 0.25rem !important;
+            padding-left: 1.5rem !important;
+        }
+        .rule-content ul ul ul, main ul ul ul:not([class*="list-none"]) {
+            list-style-type: square !important;
+            padding-left: 1.5rem !important;
+        }
+        .rule-content ol, main ol:not([class*="list-none"]):not([class*="pagination"]) {
+            list-style-type: decimal !important;
+            margin-top: 0.75rem !important;
+            margin-bottom: 1rem !important;
+            padding-left: 2rem !important;
+        }
+        .rule-content ol ol, main ol ol:not([class*="list-none"]) {
+            list-style-type: lower-alpha !important;
+            margin-top: 0.25rem !important;
+            margin-bottom: 0.25rem !important;
+            padding-left: 1.5rem !important;
+        }
+        .rule-content li, main ul:not([class*="list-none"]):not([class*="divide"]) > li, main ol:not([class*="list-none"]) > li {
+            margin-bottom: 0.35rem;
+            line-height: 1.6;
+            color: #000000 !important;
+            display: list-item !important;
+        }
+
+        /* Custom Elegant Dark Scrollbars for Sidebar */
+        nav, nav *, .sidebar-scroll, .sidebar-scroll * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(148, 163, 184, 0.25) transparent;
+        }
+
+        nav::-webkit-scrollbar,
+        nav *::-webkit-scrollbar,
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        nav::-webkit-scrollbar-track,
+        nav *::-webkit-scrollbar-track,
+        .sidebar-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        nav::-webkit-scrollbar-thumb,
+        nav *::-webkit-scrollbar-thumb,
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background-color: rgba(148, 163, 184, 0.25);
+            border-radius: 9999px;
+            transition: background-color 0.2s ease;
+        }
+
+        nav:hover::-webkit-scrollbar-thumb,
+        nav *:hover::-webkit-scrollbar-thumb,
+        .sidebar-scroll:hover::-webkit-scrollbar-thumb {
+            background-color: rgba(148, 163, 184, 0.45);
+        }
+
+        nav::-webkit-scrollbar-thumb:hover,
+        nav *::-webkit-scrollbar-thumb:hover,
+        .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(203, 213, 225, 0.7);
+        }
+
+        /* Subtle modern scrollbar for main content area */
+        main {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+        }
+        main::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        main::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        main::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 9999px;
+        }
+        main::-webkit-scrollbar-thumb:hover {
+            background-color: #94a3b8;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col bg-slate-100 text-black" x-data="{
+    searchOpen: false,
+    searchQuery: '',
+    searchResults: [],
+    searchLoading: false,
+    async performQuickSearch() {
+        if (this.searchQuery.length < 2) {
+            this.searchResults = [];
+            return;
+        }
+        this.searchLoading = true;
+        try {
+            const res = await fetch('http://localhost:8090/api/search/suggestions?q=' + encodeURIComponent(this.searchQuery));
+            this.searchResults = await res.json();
+        } catch (e) {
+            this.searchResults = [];
+        }
+        this.searchLoading = false;
+    }
+}" @keydown.window.ctrl.k.prevent="searchOpen = true" @keydown.window.escape="searchOpen = false">
+
+    <!-- Top Global Header -->
+    <header class="border-b-2 border-[#3a4f63] shadow-md px-4 py-2.5 flex items-center justify-between z-20" style="background: url('http://localhost:8090/styles/goldparchment.jpg') repeat #f0f0d9;">
+        <div class="flex items-center gap-3">
+            <a href="http://localhost:8090" class="flex items-center gap-2.5 hover:opacity-90 transition">
+                <img src="http://localhost:8090/styles/reddragon_sml.gif" alt="RoL d20 Dragon" class="h-10 w-auto object-contain" />
+                <span class="site-title text-2xl font-bold tracking-tight">RoL d20 System</span>
+            </a>
+            <span class="hidden md:inline text-xs text-slate-800 font-semibold border-l border-slate-400 pl-3">D&D 3.5E Streamlined Ruleset</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <!-- Global Search Trigger -->
+            <button @click="searchOpen = true" class="flex items-center gap-2 bg-white/90 hover:bg-white text-slate-800 px-3 py-1.5 rounded-md border border-slate-400 text-xs shadow-sm font-semibold transition">
+                <span>🔍 Search rules, spells...</span>
+                <kbd class="bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded border border-slate-300 font-mono text-[10px]">Ctrl+K</kbd>
+            </button>
+
+            <!-- Quick Utilities Links -->
+            <a href="http://localhost:8090/search" class="text-xs text-slate-900 hover:text-indigo-900 font-bold hidden sm:inline">Search</a>
+            <a href="http://localhost:8090/utilities/character-generator" class="text-xs bg-amber-700 hover:bg-amber-800 text-white font-bold px-2.5 py-1 rounded shadow-sm">PC Gen</a>
+
+            <!-- User Auth Bar -->
+            <div class="border-l border-slate-400 pl-3 flex items-center gap-2">
+                                    <div class="flex items-center gap-1.5 text-xs">
+                        <a href="http://localhost:8090/login" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-2.5 py-1 rounded border border-slate-400 shadow-sm transition">Log In</a>
+                        <a href="http://localhost:8090/register" class="bg-amber-800 hover:bg-amber-900 text-white font-bold px-2.5 py-1 rounded shadow-sm transition" style="background-color: #8b1a1a; color: #ffffff;">Register</a>
+                    </div>
+                            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <div class="flex-1 flex overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <nav class="w-64 bg-slate-900 text-slate-200 min-h-screen p-4 flex flex-col space-y-4 border-r border-slate-800 text-sm">
+    <div class="px-2 py-3 border-b border-slate-800 flex items-center justify-between">
+        <a href="http://localhost:8090" class="font-bold text-amber-400 text-lg flex items-center gap-2">
+            <img src="http://localhost:8090/styles/reddragon_sml.gif" alt="RoL d20" class="h-6 w-auto object-contain" />
+            <span>RoL d20</span>
+        </a>
+        <span class="text-xs bg-amber-900/60 text-amber-300 px-1.5 py-0.5 rounded border border-amber-700/50">v2.0</span>
+    </div>
+
+    <!-- Main Navigation Sections -->
+    <div class="space-y-6 flex-1 overflow-y-auto pr-1">
+        <!-- 1. Rules Section -->
+        <div>
+            <div class="text-xs uppercase font-semibold text-slate-400 tracking-wider mb-2 px-2">Ruleset Manual</div>
+            <ul class="space-y-1">
+                <!-- 1. Introduction -->
+                                <li>
+                    <a href="http://localhost:8090/rules/intro" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        1. Introduction
+                    </a>
+                                    </li>
+
+                <!-- 2. Core Mechanics -->
+                                <li>
+                    <a href="http://localhost:8090/rules/core" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        2. Core Mechanics
+                    </a>
+                                    </li>
+
+                <!-- 3. Character Generation -->
+                                <li>
+                    <a href="http://localhost:8090/rules/chargen" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        3. Character Generation
+                    </a>
+                                    </li>
+
+                <!-- 4. Rules of Engagement -->
+                                <li>
+                    <a href="http://localhost:8090/rules/encounters" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        4. Rules of Engagement
+                    </a>
+                                    </li>
+
+                <!-- 5. Rules of Combat -->
+                                <li>
+                    <a href="http://localhost:8090/rules/combat" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        5. Rules of Combat
+                    </a>
+                                    </li>
+
+                <!-- 6. Rules of Magic -->
+                                <li>
+                    <a href="http://localhost:8090/rules/magic" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        6. Rules of Magic
+                    </a>
+                                    </li>
+
+                <!-- 7. Rules of Environment -->
+                                <li>
+                    <a href="http://localhost:8090/rules/environment" class="block px-2.5 py-1.5 rounded transition bg-indigo-600 text-white font-semibold shadow-sm">
+                        7. Rules of Environment
+                    </a>
+                                            <ul class="border-l-2 border-indigo-400/50 ml-3.5 pl-2.5 my-1.5 space-y-1 text-xs">
+                            <li><a href="#Movement" class="text-slate-300 hover:text-white block py-0.5 transition">Movement and Travel</a></li>
+                            <li><a href="#Weather" class="text-slate-300 hover:text-white block py-0.5 transition">Weather & Climate</a></li>
+                            <li><a href="#Necessities" class="text-slate-300 hover:text-white block py-0.5 transition">Necessities</a></li>
+                            <li><a href="#VisionLight" class="text-slate-300 hover:text-white block py-0.5 transition">Vision and Light</a></li>
+                            <li><a href="#EnvironEffects" class="text-slate-300 hover:text-white block py-0.5 transition">Environmental Effects</a></li>
+                            <li><a href="#Falling" class="text-slate-300 hover:text-white block py-0.5 transition">Falling and Crushing</a></li>
+                            <li><a href="#NaturalFeatures" class="text-slate-300 hover:text-white block py-0.5 transition">Natural Features</a></li>
+                            <li><a href="#BuildingFeatures" class="text-slate-300 hover:text-white block py-0.5 transition">Dungeon Features</a></li>
+                            <li><a href="#Traps" class="text-slate-300 hover:text-white block py-0.5 transition">Traps</a></li>
+                            <li><a href="#SpecialEnvirons" class="text-slate-300 hover:text-white block py-0.5 transition">Special Environments</a></li>
+                            <li><a href="#Multiverse" class="text-slate-300 hover:text-white block py-0.5 transition">The Multiverse</a></li>
+                        </ul>
+                                    </li>
+
+                <!-- 8. Rules of Culture -->
+                                <li>
+                    <a href="http://localhost:8090/rules/culture" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        8. Rules of Culture
+                    </a>
+                                    </li>
+
+                <!-- Rules Index -->
+                                <li>
+                    <a href="http://localhost:8090/rules/index" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        Rules Index
+                    </a>
+                                    </li>
+            </ul>
+        </div>
+
+        <!-- 2. Reference Tables Section -->
+        <div>
+            <div class="text-xs uppercase font-semibold text-slate-400 tracking-wider mb-2 px-2">Reference Compendium</div>
+            <ul class="space-y-1">
+                <!-- 1. Skills -->
+                <li>
+                    <a href="http://localhost:8090/reference/skills" class="flex items-center justify-between px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        <span>⚔️ Skills</span>
+                        <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">216</span>
+                    </a>
+                                    </li>
+
+                <!-- 2. Actions -->
+                <li>
+                    <a href="http://localhost:8090/reference/actions" class="flex items-center justify-between px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        <span>⚡ Actions</span>
+                        <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">304</span>
+                    </a>
+                                    </li>
+
+                <!-- 3. Spells & Powers -->
+                <li>
+                    <a href="http://localhost:8090/reference/spells" class="flex items-center justify-between px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        <span>✨ Spells & Powers</span>
+                        <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">206</span>
+                    </a>
+                                    </li>
+
+                <!-- 4. Equipment & Items -->
+                <li>
+                    <a href="http://localhost:8090/reference/equipment" class="flex items-center justify-between px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        <span>🛡️ Equipment & Items</span>
+                        <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">625</span>
+                    </a>
+                                    </li>
+
+                <!-- 5. Bestiary & Races (Creatures) -->
+                <li>
+                    <a href="http://localhost:8090/reference/creatures" class="flex items-center justify-between px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        <span>🐲 Bestiary & Races</span>
+                        <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">449</span>
+                    </a>
+                                    </li>
+
+                <!-- 6. Cultures -->
+                <li>
+                    <a href="http://localhost:8090/reference/cultures" class="flex items-center justify-between px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        <span>🏛️ Cultures</span>
+                        <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">57</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 3. Utilities Section -->
+        <div>
+            <div class="text-xs uppercase font-semibold text-slate-400 tracking-wider mb-2 px-2">Player & GM Utilities</div>
+            <ul class="space-y-1">
+                <li>
+                    <a href="http://localhost:8090/utilities/character-generator" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        🧙‍♂️ Character Generator
+                    </a>
+                                    </li>
+                <li>
+                    <a href="http://localhost:8090/utilities/character-viewer" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        📜 Character Sheet Viewer
+                    </a>
+                </li>
+                <li>
+                    <a href="http://localhost:8090/utilities/npc-generator" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        👹 NPC Generator
+                    </a>
+                </li>
+                <li>
+                    <a href="http://localhost:8090/utilities/treasure-generator" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        💎 Treasure Generator
+                    </a>
+                </li>
+                <li>
+                    <a href="http://localhost:8090/utilities/campaign" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        🗺️ Campaign Tracker
+                    </a>
+                </li>
+                <li>
+                    <a href="http://localhost:8090/analysis" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        📊 Balance & DPR Analyzer
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Quick Search Tip -->
+    <div class="px-2.5 py-2 bg-slate-800/60 rounded border border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+        <span>Quick Search</span>
+        <kbd class="bg-slate-700 text-slate-200 px-1.5 py-0.5 rounded font-mono text-[10px]">Ctrl+K</kbd>
+    </div>
+</nav>
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="flex-1 overflow-y-auto p-6 md:p-8 bg-white shadow-inner scroll-smooth">
+            <div class="max-w-5xl mx-auto">
+                                <div class="rule-content prose max-w-none">
+    <h2 id="EnvironmentRules">Rules of Environment</h2>
+
+<h3 id="Movement">Movement and Travel</h3>
+<h4>Speed</h4>
+<p>
+    A creature’s 
+    <a href="/rules/core#AdjustedSpeed">adjusted speed</a> 
+    indicates the number of squares it can walk per round.
+    Jogging is equal to two times that speed, running is equal to three times, and sprinting is equal to four times the speed.
+</p>
+<p>
+    To convert squares per round into m/s, divide it by four. To convert it into km/h, multiply it by 1 (or 0.9, for better accuracy).
+</p>
+<p>
+    During a typical day spent walking, a creature can cover a number of km equal to its adjusted speed times eight.
+</p>
+
+    <p>
+        You can convert a creature’s adjusted speed to other units, according to the following formulae:
+    </p>
+
+    <table>
+        <caption>Speed Conversion</caption>
+        <thead><tr>
+            <th>Movement</th>
+            <th style="text-align:center">sq/round</th>
+            <th style="text-align:center">m/s</th>
+            <th style="text-align:center">km/h</th>
+            <th style="text-align:center">km/day</th>
+        </tr></thead>
+        <tbody><tr>
+            <td>Walking</td>
+            <td style="text-align:center">Speed × 1</td>
+            <td style="text-align:center">Speed × 0.25</td>
+            <td style="text-align:center">Speed × 1</td>
+            <td style="text-align:center">Speed × 8</td>
+        </tr>
+        <tr>
+            <td>Jogging</td>
+            <td style="text-align:center">Speed × 2</td>
+            <td style="text-align:center">Speed × 0.5</td>
+            <td style="text-align:center">Speed × 2</td>
+            <td style="text-align:center">Speed × 16</td>
+        </tr>
+        <tr>
+            <td>Running</td>
+            <td style="text-align:center">Speed × 3</td>
+            <td style="text-align:center">Speed × 0.75</td>
+            <td style="text-align:center">Speed × 3</td>
+            <td style="text-align:center">-</td>
+        </tr>
+        <tr>
+            <td>Sprinting</td>
+            <td style="text-align:center">Speed × 4</td>
+            <td style="text-align:center">Speed × 1</td>
+            <td style="text-align:center">Speed × 4</td>
+            <td style="text-align:center">-</td>
+        </tr></tbody>
+
+    </table>
+
+    <p>
+        Note that the conversion rates are somewhat simplified and not mathematically 100% accurate.
+    </p>
+     
+
+    <p>
+        This table shows precalculated values for many base speeds:
+    </p>
+
+    <table>
+        <caption>Movement Rates</caption>
+        <thead>
+            <tr>
+                <th style="text-align:center" rowspan="2">Speed</th>
+                <th style="text-align:center" colspan="4">Walk</th>
+                <th style="text-align:center" colspan="4">Jog</th>
+                <th style="text-align:center" colspan="3">Run</th>
+                <th style="text-align:center" colspan="3">Sprint</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">sq/r</th>
+                <th style="text-align:center">m/s</th>
+                <th style="text-align:center">km/h</th>
+                <th style="text-align:center">km/day</th>
+                <th style="text-align:center">sq/r</th>
+                <th style="text-align:center">m/s</th>
+                <th style="text-align:center">km/h</th>
+                <th style="text-align:center">km/day</th>
+                <th style="text-align:center">sq/r</th>
+                <th style="text-align:center">m/s</th>
+                <th style="text-align:center">km/h</th>
+                <th style="text-align:center">sq/r</th>
+                <th style="text-align:center">m/s</th>
+                <th style="text-align:center">km/h</th>
+            </tr>
+        </thead>
+        <tbody>
+    <tr><td style="text-align:center">2</td><td style="text-align:center">2</td><td style="text-align:center">0.5</td><td style="text-align:center">2</td><td style="text-align:center">16</td><td style="text-align:center">4</td><td style="text-align:center">1</td><td style="text-align:center">4</td><td style="text-align:center">32</td><td style="text-align:center">6</td><td style="text-align:center">1.5</td><td style="text-align:center">6</td><td style="text-align:center">8</td><td style="text-align:center">2</td><td style="text-align:center">8</td></tr><tr><td style="text-align:center">3</td><td style="text-align:center">3</td><td style="text-align:center">0.75</td><td style="text-align:center">3</td><td style="text-align:center">24</td><td style="text-align:center">6</td><td style="text-align:center">1.5</td><td style="text-align:center">6</td><td style="text-align:center">48</td><td style="text-align:center">9</td><td style="text-align:center">2.25</td><td style="text-align:center">9</td><td style="text-align:center">12</td><td style="text-align:center">3</td><td style="text-align:center">12</td></tr><tr><td style="text-align:center">4</td><td style="text-align:center">4</td><td style="text-align:center">1</td><td style="text-align:center">4</td><td style="text-align:center">32</td><td style="text-align:center">8</td><td style="text-align:center">2</td><td style="text-align:center">8</td><td style="text-align:center">64</td><td style="text-align:center">12</td><td style="text-align:center">3</td><td style="text-align:center">12</td><td style="text-align:center">16</td><td style="text-align:center">4</td><td style="text-align:center">16</td></tr><tr><td style="text-align:center">5</td><td style="text-align:center">5</td><td style="text-align:center">1.25</td><td style="text-align:center">5</td><td style="text-align:center">40</td><td style="text-align:center">10</td><td style="text-align:center">2.5</td><td style="text-align:center">10</td><td style="text-align:center">80</td><td style="text-align:center">15</td><td style="text-align:center">3.75</td><td style="text-align:center">15</td><td style="text-align:center">20</td><td style="text-align:center">5</td><td style="text-align:center">20</td></tr><tr><td style="text-align:center">6</td><td style="text-align:center">6</td><td style="text-align:center">1.5</td><td style="text-align:center">6</td><td style="text-align:center">48</td><td style="text-align:center">12</td><td style="text-align:center">3</td><td style="text-align:center">12</td><td style="text-align:center">96</td><td style="text-align:center">18</td><td style="text-align:center">4.5</td><td style="text-align:center">18</td><td style="text-align:center">24</td><td style="text-align:center">6</td><td style="text-align:center">24</td></tr><tr><td style="text-align:center">7</td><td style="text-align:center">7</td><td style="text-align:center">1.75</td><td style="text-align:center">7</td><td style="text-align:center">56</td><td style="text-align:center">14</td><td style="text-align:center">3.5</td><td style="text-align:center">14</td><td style="text-align:center">112</td><td style="text-align:center">21</td><td style="text-align:center">5.25</td><td style="text-align:center">21</td><td style="text-align:center">28</td><td style="text-align:center">7</td><td style="text-align:center">28</td></tr><tr><td style="text-align:center">8</td><td style="text-align:center">8</td><td style="text-align:center">2</td><td style="text-align:center">8</td><td style="text-align:center">64</td><td style="text-align:center">16</td><td style="text-align:center">4</td><td style="text-align:center">16</td><td style="text-align:center">128</td><td style="text-align:center">24</td><td style="text-align:center">6</td><td style="text-align:center">24</td><td style="text-align:center">32</td><td style="text-align:center">8</td><td style="text-align:center">32</td></tr><tr><td style="text-align:center">9</td><td style="text-align:center">9</td><td style="text-align:center">2.25</td><td style="text-align:center">9</td><td style="text-align:center">72</td><td style="text-align:center">18</td><td style="text-align:center">4.5</td><td style="text-align:center">18</td><td style="text-align:center">144</td><td style="text-align:center">27</td><td style="text-align:center">6.75</td><td style="text-align:center">27</td><td style="text-align:center">36</td><td style="text-align:center">9</td><td style="text-align:center">36</td></tr><tr><td style="text-align:center">10</td><td style="text-align:center">10</td><td style="text-align:center">2.5</td><td style="text-align:center">10</td><td style="text-align:center">80</td><td style="text-align:center">20</td><td style="text-align:center">5</td><td style="text-align:center">20</td><td style="text-align:center">160</td><td style="text-align:center">30</td><td style="text-align:center">7.5</td><td style="text-align:center">30</td><td style="text-align:center">40</td><td style="text-align:center">10</td><td style="text-align:center">40</td></tr><tr><td style="text-align:center">12</td><td style="text-align:center">12</td><td style="text-align:center">3</td><td style="text-align:center">12</td><td style="text-align:center">96</td><td style="text-align:center">24</td><td style="text-align:center">6</td><td style="text-align:center">24</td><td style="text-align:center">192</td><td style="text-align:center">36</td><td style="text-align:center">9</td><td style="text-align:center">36</td><td style="text-align:center">48</td><td style="text-align:center">12</td><td style="text-align:center">48</td></tr><tr><td style="text-align:center">14</td><td style="text-align:center">14</td><td style="text-align:center">3.5</td><td style="text-align:center">14</td><td style="text-align:center">112</td><td style="text-align:center">28</td><td style="text-align:center">7</td><td style="text-align:center">28</td><td style="text-align:center">224</td><td style="text-align:center">42</td><td style="text-align:center">10.5</td><td style="text-align:center">42</td><td style="text-align:center">56</td><td style="text-align:center">14</td><td style="text-align:center">56</td></tr><tr><td style="text-align:center">16</td><td style="text-align:center">16</td><td style="text-align:center">4</td><td style="text-align:center">16</td><td style="text-align:center">128</td><td style="text-align:center">32</td><td style="text-align:center">8</td><td style="text-align:center">32</td><td style="text-align:center">256</td><td style="text-align:center">48</td><td style="text-align:center">12</td><td style="text-align:center">48</td><td style="text-align:center">64</td><td style="text-align:center">16</td><td style="text-align:center">64</td></tr><tr><td style="text-align:center">18</td><td style="text-align:center">18</td><td style="text-align:center">4.5</td><td style="text-align:center">18</td><td style="text-align:center">144</td><td style="text-align:center">36</td><td style="text-align:center">9</td><td style="text-align:center">36</td><td style="text-align:center">288</td><td style="text-align:center">54</td><td style="text-align:center">13.5</td><td style="text-align:center">54</td><td style="text-align:center">72</td><td style="text-align:center">18</td><td style="text-align:center">72</td></tr><tr><td style="text-align:center">20</td><td style="text-align:center">20</td><td style="text-align:center">5</td><td style="text-align:center">20</td><td style="text-align:center">160</td><td style="text-align:center">40</td><td style="text-align:center">10</td><td style="text-align:center">40</td><td style="text-align:center">320</td><td style="text-align:center">60</td><td style="text-align:center">15</td><td style="text-align:center">60</td><td style="text-align:center">80</td><td style="text-align:center">20</td><td style="text-align:center">80</td></tr><tr><td style="text-align:center">25</td><td style="text-align:center">25</td><td style="text-align:center">6.25</td><td style="text-align:center">25</td><td style="text-align:center">200</td><td style="text-align:center">50</td><td style="text-align:center">12.5</td><td style="text-align:center">50</td><td style="text-align:center">400</td><td style="text-align:center">75</td><td style="text-align:center">18.75</td><td style="text-align:center">75</td><td style="text-align:center">100</td><td style="text-align:center">25</td><td style="text-align:center">100</td></tr><tr><td style="text-align:center">30</td><td style="text-align:center">30</td><td style="text-align:center">7.5</td><td style="text-align:center">30</td><td style="text-align:center">240</td><td style="text-align:center">60</td><td style="text-align:center">15</td><td style="text-align:center">60</td><td style="text-align:center">480</td><td style="text-align:center">90</td><td style="text-align:center">22.5</td><td style="text-align:center">90</td><td style="text-align:center">120</td><td style="text-align:center">30</td><td style="text-align:center">120</td></tr>    </tbody></table>
+     
+
+<dl>
+    <dt>Difficult terrain or obstacles:</dt>
+    <dd>×2 movement cost</dd>
+    <dt>Very difficult terrain:</dt>
+    <dd>×3 movement cost (or more)</dd>
+    <dt>Poor visibility (darkness, fog):</dt>
+    <dd>×2 movement cost</dd>
+</dl>
+<p>
+    You cannot run or sprint effectively in difficult terrain or poor visibility.
+</p>
+
+<h4>Movement Rules</h4>
+<p>
+    Most [Move]-actions are performed using movement points (MP) rather than action points (AP).
+    As described in earlier chapters, a creature's adjusted speed determines its number of available MP,
+    but the number of MP can also be increased by converting AP to MP.
+    For example, a creature with 20 AP and an adjusted speed of 4 automatically gets 4 MP per round, but it can also convert up to 4 AP into additional MP.
+</p>
+<p>
+    The following rules apply to all movement:
+</p>
+<ul>
+    <li>You can move diagonally past opponents and obstructions but not past corners.</li>
+    <li>You can move through or stop in (but not run/sprint/charge through) squares with helpless creatures.</li>
+    <li>You can move through (but not stop in or run/sprint/charge through) squares occupied by allies.</li>
+    <li>You cannot move through an opponent’s square (unless the opponent is helpless). Exceptions include tumbling and overrun actions.</li>
+    <li>A Tiny or smaller creature can move through occupied squares but provokes attacks of opportunity when doing so.</li>
+    <li>Any creature can move through squares occupied by a creature that is three or more sizes larger or smaller. However, this does provoke attacks of opportunity.</li>
+    <li>Flying and incorporeal creatures are not affected by obstructions on the ground.</li>
+    <li>For creatures that occupy multiple squares, the worst conditions apply.</li>
+    <li>Creatures can squeeze through areas half as wide as their normal space (or half as high as their height), but this costs double movement. While squeezing, you suffer a -4 circumstance penalty to attack rolls, DeC, and Ref. Spaces that are both narrow and low quadruple the MP cost and cause double the penalty.</li>
+    <li>If you accidentally end your movement in an illegal square, you instead end up in the square most recently moved through. If this square is also illegal, you fall prone in that square.</li>
+</ul>
+<p>
+    Obstructed/difficult terrain includes the following features:
+</p>
+<ul>
+    <li>Rubble or uneven ground</li>
+    <li>Undergrowth</li>
+    <li>Steep slopes (uphill generally worse than downhill)</li>
+    <li>Slippery ground</li>
+    <li>Stairs</li>
+    <li>Ladders</li>
+    <li>Shallow pools</li>
+    <li>Low walls</li>
+    <li>Broken pillars, statues, etc.</li>
+    <li>Darkness</li>
+    <li>Dense fog</li>
+</ul>
+<p>
+    If multiple conditions apply, the DM is free to increase the movement cost to &times;3, &times;4, or worse.
+</p>
+<p>
+    Some obstructions may require extra MP to traverse and also prevent creatures from stopping in the same square.
+</p>
+
+<h4>Overland Travel</h4>
+<p>
+    The speed of overland movement is described above, specified as the number of km covered per day.
+    The speed should be modified for the terrain and the quality of the road, as shown below:
+</p>
+
+
+    <table>
+        <caption>Overland Movement</caption>
+        <thead><tr>
+            <th>Terrain</th>
+            <th style="text-align:center">Highway Speed Mult.<sup>1</sup></th>
+            <th style="text-align:center">Road/Trail Speed Mult.<sup>2</sup></th>
+            <th style="text-align:center">Trackless Speed Mult.</th>
+            <th>Encounter Distance (sq)<sup>3</sup></th>
+            <th style="text-align:center">Getting Lost Mod<sup>4</sup></th>
+            <th style="text-align:center">Find Sustenance Mod</th>
+        </tr></thead>
+        <tbody>
+    <tr><td>Barren or badlands</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.75</td><td>6d6x4</td><td style="text-align:center">-3</td><td style="text-align:center">+2</td></tr><tr><td>Cleared or farmland</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.75</td><td>6d6x8</td><td style="text-align:center">-5</td><td style="text-align:center">0</td></tr><tr><td>Desert, rocky</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.75</td><td>6d6x(2 to 4)</td><td style="text-align:center">-3</td><td style="text-align:center">+4</td></tr><tr><td>Desert, sandy</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.5</td><td style="text-align:center">&times;0.5</td><td>6d6x(2 to 4)</td><td style="text-align:center">-3</td><td style="text-align:center">+5</td></tr><tr><td>Forest, dense</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.75</td><td style="text-align:center">&times;0.25</td><td>4d6</td><td style="text-align:center">+3</td><td style="text-align:center">0</td></tr><tr><td>Forest, medium</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.5</td><td>6d6</td><td style="text-align:center">0</td><td style="text-align:center">0</td></tr><tr><td>Forest, sparse</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.75</td><td>8d6</td><td style="text-align:center">-3</td><td style="text-align:center">0</td></tr><tr><td>Glacier</td><td style="text-align:center">&times;0.75</td><td style="text-align:center">&times;0.75</td><td style="text-align:center">&times;0.5</td><td>6d6x(2 to 4)</td><td style="text-align:center">-3</td><td style="text-align:center">+4</td></tr><tr><td>Hills</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.75</td><td style="text-align:center">&times;0.5</td><td>4d6x(1 to 2)</td><td style="text-align:center">-5</td><td style="text-align:center">+1</td></tr><tr><td>Jungle</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.75</td><td style="text-align:center">&times;0.25</td><td>4d6</td><td style="text-align:center">+3</td><td style="text-align:center">-1</td></tr><tr><td>Marsh</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.75</td><td style="text-align:center">&times;0.5</td><td>6d6x(1 to 2)</td><td style="text-align:center">-3</td><td style="text-align:center">+1</td></tr><tr><td>Moor</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.75</td><td>6d6x6</td><td style="text-align:center">-5</td><td style="text-align:center">+1</td></tr><tr><td>Mountains</td><td style="text-align:center">&times;0.75</td><td style="text-align:center">&times;0.5</td><td style="text-align:center">&times;0.25</td><td>6d6x2</td><td style="text-align:center">-3</td><td style="text-align:center">+2</td></tr><tr><td>Plains or grassland</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.75</td><td>6d6x8</td><td style="text-align:center">-5</td><td style="text-align:center">+1</td></tr><tr><td>Swamp</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.75</td><td style="text-align:center">&times;0.5</td><td>6d6x(1 to 2)</td><td style="text-align:center">-3</td><td style="text-align:center">+1</td></tr><tr><td>Tundra, frozen</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;0.75</td><td style="text-align:center">&times;0.75</td><td>6d6x4</td><td style="text-align:center">-3</td><td style="text-align:center">+3</td></tr><tr><td>Underwater</td><td style="text-align:center">&times;0</td><td style="text-align:center">&times;0</td><td style="text-align:center">&times;0</td><td>2d6x(1 to 4)</td><td style="text-align:center">0</td><td style="text-align:center">+1</td></tr><tr><td>Water surface</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;1</td><td style="text-align:center">&times;1</td><td>6d6x20</td><td style="text-align:center">0</td><td style="text-align:center">0</td></tr>    </tbody></table>
+
+    <p>
+        <sup>1</sup>Highway: straight, paved, and well-maintained road.<br/>
+        <sup>2</sup>Road: dirt track<br/>
+        <sup>2</sup>Trail: narrow dirt track (not suitable for vehicles)
+    </p>
+    <p>
+        <sup>3</sup>The encounter distance is the distance at which you typically have a good chance of spotting (as in the Spot action) a medium-sized creature that is not trying to hide.
+        Larger creatures (and also groups, vehicles, buildings, features, etc) can be detected at greater distances,
+        while smaller creatures typically remain undetected until they get closer.
+        Many other circumstances can affect encounter distance, such as visibility, weather conditions, how noisy a party is, etc.
+    </p>
+    <p>
+        <sup>4</sup>Roll once per day for getting lost while following a highway, road, or clear trail, and once per hour when not following a road.
+        When a character or party gets lost, determine actual direction randomly.
+        Roll a new check once per hour, to see if the party becomes aware of being lost.
+    </p>
+    <p>
+        Additional getting lost DC modifiers: map -4, road or trail -4, highway -8, poor visibility +4
+    </p>
+    <p>
+        For ship movement on lakes and rivers, add or subtract the speed of the current.
+    </p>
+
+     
+
+<p>
+    Overland movement is typically spread over 6 to 8 hours in a day. Rowing can usually be done for 10 hours per day,
+    while a well-crewed sailing ship often can travel 24 hours per day.
+</p>
+<p>
+    <em>Slow pace:</em> By moving at half the speed indicated for the terrain, you gain a +5 bonus on Survival checks to find food, navigate, etc.
+    You are also able to use Stealth actions to avoid discovery.
+</p>
+<p>
+    <em>Fast pace:</em> You can increase the indicated travel speed by 50%, but you then suffer a -5 penalty on Survival- and Perception-based action checks.
+</p>
+<p>
+    <em>Hustling:</em> When hustling, you move at twice your normal speed. After each full hour of hustling, you take (10 – Con mod) SP of damage.
+    If you are mounted, the mount takes full damage, and you take (5 - Con mod) SP of damage.
+    Furthermore, any Survival- and Perception-based action checks suffer a -8 penalty.
+</p>
+<p>
+    <em>Forced march:</em> If you spend more than 8 hours per day walking or hustling, you take an extra 5 SP of damage per additional hour.
+    If you are mounted, the mount takes full damage, and you take 2 SP per hour.
+</p>
+
+<h3 id="Weather">Weather</h3>
+
+    <table>
+        <caption>Random Weather</caption>
+        <thead><tr>
+            <th style="text-align:center">d%</th>
+            <th>Weather</th>
+            <th>Cold</th>
+            <th>Temperate</th>
+            <th>Warm Dry</th>
+            <th>Warm Humid</th>
+        </tr></thead>
+        <tbody>
+    <tr><td style="text-align:center">01-50</td><td>Unchanged</td><td>Same as day before</td><td>Same as day before</td><td>Same as day before</td><td>Same as day before</td></tr><tr><td style="text-align:center">51-70</td><td>Normal</td><td>Cold, calm</td><td>Normal for season</td><td>Hot, calm</td><td>Hot, calm</td></tr><tr><td style="text-align:center">71-80</td><td>Abnormal</td><td>Heat wave (30%) or cold snap (70%)</td><td>Heat wave (50%) or cold snap (50%)</td><td>Hot, windy</td><td>Hot, precipitation</td></tr><tr><td style="text-align:center">81-90</td><td>Inclement</td><td>Precipitation (snow)</td><td>Precipitation (appropriate for season)</td><td>Hot, windy</td><td>Hot, precipitation, windy</td></tr><tr><td style="text-align:center">91-99</td><td>Storm</td><td>Snowstorm</td><td>Thunderstorm or snowstorm</td><td>Duststorm</td><td>Downpour</td></tr><tr><td style="text-align:center">100</td><td>Powerful storm</td><td>Blizzard</td><td>Wndstorm, blizzard, hurricane, or tornado</td><td>Downpour</td><td>Hurricane or tornado</td></tr>    </tbody></table>
+
+    <p>
+        <em>Calm:</em> Winds of 0 to 5 m/s.<br/>
+        <em>Windy:</em> Winds of 5 to 15 m/s.<br/>
+        <em>Heat wave:</em> 5&deg; to 10&deg; C warmer than normal.<br/>
+        <em>Cold snap:</em> 5&deg; to 10&deg; C colder than normal.
+    </p>
+    <p>
+        On Earth-like planets, temperatures tend to drop by approximately 5&deg; C per 1000 m of elevation.
+    </p>
+    <p>
+        Depending on terrain and season, temperature can vary a great deal over the course of a day.
+    </p>
+    <p>
+        Precipitation is either fog (30%), rain/snow (60%), or hail/sleet (10%).
+        It typically lasts for 2d4 hours.
+    </p>
+
+     
+
+<h4>Weather Generation Tools</h4>
+<p>
+    <a href="https://donjon.bin.sh/d20/weather/">Random Weather Generator</a>
+</p>
+
+<h3 id="Necessities">Necessities</h3>
+<h4 id="Hunger">Hunger and Thirst</h4>
+<p>
+    Most medium-sized humanoids require 2 l of water (or other drinkable liquid) per day to avoid dehydration.
+    After 24 + Con hours with insufficient liquid, a creature suffers a +5 attack (+1 per additional check) vs. Fort once per h (S – 1d6 SP).
+    High temperatures typically increase water requirements and reduce the time before the first thirst check.
+</p>
+<p>
+    Most medium-sized humanoids require a minimum of 0.2 kg of food per day to avoid starvation.
+    After 3 days with insufficient food, a creature suffers a +5 attack (+1 per additional check) vs. Fort once per day (S – 1d6 SP).
+</p>
+<p>
+    Multiply the requirements by 0.25 per size category below medium and by 4 per size above.
+</p>
+<h4 id="Suffocation">Suffocation</h4>
+<p>
+    Most living creatures can easily hold their breath for Con rounds (if they have time to take a deep breath).
+    After that, they suffer a +0 attack (+1 per additional check) vs. Fort once per round (S – 1d6 SP).
+    Rounds involving combat or strenuous activity (with any action costing SP) count as double rounds.
+</p>
+<p>
+    Most medium-sized humanoids require the oxygen from 5 m<sup>3</sup> of air per hour.
+    The air is then depleted but still breathable for one more hour (causes 1d6 SP per 15 minutes).
+    A burning torch or lantern consumes the same amount of oxygen as a medium-sized creature.
+    Multiply the air requirements by 0.25 per size category below medium and by 4 per size above.
+</p>
+<h4 id="Sleep">Sleep</h4>
+<p>
+    Most humanoids need at least 6 h of sleep per day to avoid fatigue.
+</p>
+<p>
+    After 20 hours without sleep, a creature suffers a +0 attack (+1 per additional check) vs. Will
+    once per h (S – 1d6 PP, and if its current activity state is low, it falls asleep).
+</p>
+
+<h3 id="VisionLight">Vision and Light</h3>
+<p>
+    Illumination is one of the most important and common environmental effects to consider.
+    The following list describes the different levels of illumination, their effects, and typical situations:
+</p>
+<ul>
+    <li><em>Extreme Darkness:</em> Supernaturally enhanced darkness.<br/>
+        Creatures without non-visual senses are effectively blind (and regular darkvision is not sufficient).</li>
+    <li><em>Darkness:</em> Enclosed area or outside on a moonless night.<br/>
+        Creatures without darkvision or truesight are effectively blind.</li>
+    <li><em>Dim Light:</em> Lit by candle, inside a building with few and small windows, or outside on a moonlit night.<br/>
+        All creatures and objects enjoy concealment against creatures without darkvision or low-light vision.<br/>
+        Creatures with low-light vision treat dim light as normal light. They can see an additional "radius" around light sources as dim light.</li>
+    <li><em>Normal Light:</em> Lit by lantern, inside a building with windows, or outside on a cloudy day.<br/>
+        Creatures sensitive to light suffer normal penalties.</li>
+    <li><em>Bright Light:</em> Outside in direct sunlight.<br/>
+        Creatures sensitive to light suffer double penalties.</li>
+    <li><em>Blinding Light:</em> This level of light is typically caused by supernatural effects using radiant energy.</li>
+</ul>
+<p>
+    For areas with overlapping levels of light, simply apply the highest level.
+    It typically requires at least ten overlapping light sources of a certain level to combine into a higher level.
+    Ten lanterns in the same area could create bright light, for example, although each lantern only sheds normal light by itself.
+</p>
+
+    <p>
+        This table shows some typical sources of light:
+    </p>
+
+    <table>
+        <caption>Light Sources</caption>
+        <thead><tr>
+            <th>Light Source</th>
+            <th>Area and Level of Light</th>
+            <th>Duration</th>
+        </tr></thead>
+        <tbody>
+        <tr><td>Brazier</td><td>6 sq radius normal, 12 sq radius dim</td><td>8 h duration</td></tr><tr><td>Campfire</td><td>6 sq radius normal, 12 sq radius dim</td><td>8 h duration</td></tr><tr><td>Fire-based creature</td><td>1 sq radius per size category normal, double that of dim</td><td>Unlimited</td></tr><tr><td>Fireplace</td><td>4 sq radius normal, 8 sq radius dim</td><td>8 h/load duration</td></tr><tr><td>Forge</td><td>2 sq radius normal, 4 sq radius dim</td><td>8 h/load duration</td></tr><tr><td>Magma</td><td>24 sq radius normal, 48 sq radius dim</td><td>Unlimited</td></tr><tr><td>Phosphorescent fungi</td><td>12 sq radius dim</td><td>Unlimited</td></tr>    </tbody></table>
+     
+
+<h3 id="EnvironEffects">Environmental Effects</h3>
+
+    <table>
+        <caption>Environment Effects</caption>
+        <thead><tr>
+            <th>Environment</th>
+            <th>Effect</th>
+        </tr></thead>
+        <tbody>
+    <tr><td>Acid, strong</td><td>10d6 HP acid damage per round for immersion. 1d6 HP for minor exposure. Many strong acids also produce poisonous fumes (+5 attack vs. Fort once per round; S - 1d6 SP and become dazed for one round).</td></tr><tr><td>Atmosphere, toxic</td><td>When inhaled, causes 2d6 SP of poison damage per round. Might also act like fog.</td></tr><tr><td>Cold (-18&deg; to +4&deg; C)</td><td>Unprotected and non-resistant creatures suffer +5 attack vs. Fort once per hour (S - 1d6 SP). Increase the attack by +1 per check. In water, check once per minute. Also, while in water or wet, increase the attack by +10.</td></tr><tr><td>Cold, extreme (-50&deg; to -28&deg; C)</td><td>Unprotected and non-resistant creatures suffer a +5 attack (+1 per additional check) vs. Fort once per 10 min (S - 1d6 SP and 1d6 HP). In water, check once per minute. Also, while in water or wet, increase the attack by +10.</td></tr><tr><td>Cold, severe (-28&deg; to -18&deg; C)</td><td>Unprotected and non-resistant creatures suffer a +5 attack vs. Fort once per 10 min (S - 1d6 SP). Increase the attack by +1 per check. Winter clothing changes interval to once per hour. In water, check once per 3 rounds. Also, while in water or wet, increase the attack by +10.</td></tr><tr><td>Cold, unearthly (-50&deg; C or lower)</td><td>Unprotected and non-resistant creatures suffer a +5 attack (+1 per additional check) vs. Fort once per minute (S - 1d6 SP and 1d6 HP). In water, check once per round. Also, while in water or wet, increase the attack by +10.</td></tr><tr><td>Duststorm</td><td>Reduced visibility<sup>1</sup>. Leaves behind a thick deposit of fine dust and sand.</td></tr><tr><td>Fire</td><td>Up to 10d6 HP fire damage per round. 1d6 HP for minor exposure. Worn and carried equipment may also be damaged. Flammable items may catch fire.</td></tr><tr><td>Fog, dense</td><td>Extremely reduced visibility<sup>3</sup>.</td></tr><tr><td>Fog, light</td><td>Reduced visibility<sup>1</sup>.</td></tr><tr><td>Fog, medium</td><td>Very reduced visibility<sup>2</sup>.</td></tr><tr><td>Gravity, heavy</td><td>PAM and attack penalty -2 or more; increased weight of equipment; reduced weapon range; increased falling damage.</td></tr><tr><td>Gravity, low</td><td>PAM and attack penalty -2 to -6 until adapted; decreased weight of equipment; increased weapon range; reduced falling damage.</td></tr><tr><td>Gravity, none</td><td>PAM and attack penalty -6 until adapted; equipment has no weight but full inertia; weapon range only limited by friction; no falling damage.</td></tr><tr><td>Heat (32&deg; to 42&deg; C)</td><td>Unprotected and non-resistant creatures suffer a +5 attack (+1 per additional check; +4 against creatures with heavy armor or clothing) vs. Fort once per hour (S - 1d4 SP).</td></tr><tr><td>Heat, burning (100&deg; C or more)</td><td>Unprotected and non-resistant creatures suffer 2d6 HP of fire/heat damage per round. Combustible materials may catch fire.</td></tr><tr><td>Heat, extreme (60&deg; to 80&deg; C)</td><td>Unprotected and non-resistant creatures suffer a +5 attack (+1 per additional check; +4 against creatures with heavy armor or clothing) vs. Fort once per 10 min (S - 1d6 SP and 1d6 HP).</td></tr><tr><td>Heat, severe (42&deg; to 60&deg; C)</td><td>Unprotected and non-resistant creatures suffer a +5 attack (+1 per additional check; +4 against creatures with heavy armor or clothing) vs. Fort once per 10 min (S - 1d4 SP).</td></tr><tr><td>Heat, unearthly (80&deg; to 100&deg; C)</td><td>Unprotected and non-resistant creatures suffer a +5 attack (+1 per additional check; +4 against creatures with heavy armor or clothing) vs. Fort once per minute (S - 1d6 SP and 1d6 HP).</td></tr><tr><td>Ice</td><td>Counts as very slippery. See List of Equipment - Materials for the Break DC, DR, and HP of ice and calculate based on thickness.</td></tr><tr><td>Lava / magma</td><td>20d6 HP fire damage per round. 2d6 HP for minor exposure. Continues for 1d3 rounds at 1/2 damage. Flowing lava typically moves 3 to 12 squares per round.</td></tr><tr><td>Loud noise</td><td>-4 circumstance penalty on actions based on hearing.</td></tr><tr><td>Loud noise, extremely</td><td>-12 circumstance penalty on actions based on hearing. Sufficiently loud noise causes sonic energy damage.</td></tr><tr><td>Loud noise, very</td><td>-8 circumstance penalty on actions based on hearing.</td></tr><tr><td>Precipitation, downpour</td><td>PAM -2 and MAM -4; very reduced visibility<sup>2</sup>. Downpours can lead to floods.</td></tr><tr><td>Precipitation, hail</td><td>-4 circumstance penalty on actions based on hearing. On rare occasions, hail can become large enough to cause 1-2 HP of damage to unprotected creatures and items.</td></tr><tr><td>Precipitation, heavy rain</td><td>PAM -1 and MAM -2; reduced visibility<sup>1</sup>.</td></tr><tr><td>Precipitation, heavy snow</td><td>Reduced visibility<sup>1</sup>.</td></tr><tr><td>Precipitation, very heavy snow</td><td>Very reduced visibility<sup>2</sup>. Snowdrifts count as difficult or very difficult terrain.</td></tr><tr><td>Pressure, high</td><td>For actions that cost SP, multiply cost by 5 for unadapted creatures.</td></tr><tr><td>Pressure, low</td><td>For actions that cost SP, multiply cost by 2 for unadapted creatures (at altitudes above 2 km). Altitudes above 5 km also result in a +5 attack vs. Fort once per 6 h (S - 1 point of damage to each ability score).</td></tr><tr><td>Sandstorm</td><td>PAM -2 and MAM -5; very reduced visibility<sup>2</sup>; unprotected creatures suffer 1d3 SP per hour.</td></tr><tr><td>Smoke</td><td>Very reduced visibility<sup>2</sup>; +5 attack vs. Fort once per round (S - 1d6 SP and become dazed for one round).</td></tr><tr><td>Water, boiling</td><td>10d6 HP fire (actually heat) damage per round.</td></tr><tr><td>Water, flowing</td><td>Fast streams (2 to 8 sq of movement per round) count as rough water, while rapids (above 8 sq of movement per round) count as stormy water. Rapids can cause SP and HP damage due to rocks and flotsam, even with successful swimming checks.</td></tr><tr><td>Wind, hurricane (40 to 90 m/s)</td><td>PAM -2 and MAM -5; -20 attack penalty for ranged weapons (-8 for siege weapons); +10 attack vs. Fort each round (S - double movement cost against wind; ES - unable to move against wind for 1 r; CS - knocked prone and carried with wind); extinguish even protected flames; can fell trees; loose debris causes extremely reduced visibility<sup>3</sup>.<br/>Also note that exposure to winds can increase the effect of extreme temperatures, low as well as high.</td></tr><tr><td>Wind, severe (15 to 25 m/s)</td><td>-4 attack penalty for ranged weapons; +5 attack vs. Fort each round (S - double movement cost against wind; ES - unable to move against wind for 1 r; CS - knocked prone); extinguish unprotected candles and torches; loose debris causes reduced visibility<sup>1</sup>.<br/>Also note that exposure to winds can increase the effect of extreme temperatures, low as well as high.</td></tr><tr><td>Wind, stormy (25 to 40 m/s)</td><td>PAM -1 and MAM -2; -10 attack penalty for ranged weapons (-4 for siege weapons); +8 attack vs. Fort each round (S - double movement cost against wind; ES - unable to move against wind for 1 r; CS - knocked prone and carried with wind); extinguish even protected flames; loose debris causes very reduced visibility<sup>2</sup>.<br/>Also note that exposure to winds can increase the effect of extreme temperatures, low as well as high.</td></tr><tr><td>Wind, strong (10 to 15 m/s)</td><td>-2 attack penalty for ranged weapons; +0 attack vs. Fort each round (S - double movement cost against wind; CS - unable to move against wind for 1 r); extinguish unprotected candles.<br/>Also note that exposure to winds can increase the effect of extreme temperatures, low as well as high.</td></tr><tr><td>Wind, tornado (more than 90 m/s)</td><td>PAM -5 and MAM -10; -30 attack penalty for ranged weapons (-12 for siege weapons); +20 attack vs. Fort each round (S - 2d6 HP blunt damage and double movement cost against wind; ES - 4d6 HP blunt damage and unable to move against wind for 1 r; CS - 6d6 HP blunt damage, knocked prone, and carried with wind); extinguish even protected flames; loose debris causes extremely reduced visibility<sup>3</sup>.<br/>Also note that exposure to winds can increase the effect of extreme temperatures, low as well as high.</td></tr>    </tbody></table>
+
+    <p>
+        <sup>1</sup> Reduced visibility: -4 circumstance penalty on Search, Spot, and other vision-related actions.
+        Creatures 6 to 9 squares away have concealment, those 10 to 13 squares away have good concealment, and beyond that total concealment.<br/>
+        <sup>2</sup> Very reduced visibility: -8 circumstance penalty on vision-related actions.
+        Creatures 3 to 4 squares away have concealment, those 5 to 6 squares away have good concealment, and beyond that total concealment.<br/>
+        <sup>3</sup> Extremely reduced visibility: -12 circumstance penalty on vision-related actions.
+        Adjacent creatures have concealment. Creatures more than 1 square away have total concealment.<br/>
+        <sup>4</sup> No visibility: -20 circumstance penalty on vision-related actions.
+        All creatures have total concealment against those who depend on vision.
+    </p>
+     
+
+<p>
+    SP and HP caused by an environmental effect will not be recovered by natural means until the creature returns to a harmless environment.
+</p>
+
+<h3 id="Falling">Falling and Crushing</h3>
+<p>
+    When you fall or jump from a height, you risk taking damage.
+</p>
+<p>
+    <em>Base falling damage:</em> 1d6 HP of blunt damage per 2 squares (3 m) that you fall, to a maximum of 30d6 HP.
+    The falling creature also lands prone. A successful Acrobatics / Land Softly check can reduce the damage and prevent the prone condition.
+</p>
+<p>
+    If you land on a yielding surface, one d6 of damage changes from HP to SP (this can stack with the effect of Land Softly).
+</p>
+<p>
+    If you land on water (3+ meters of depth) or a very yielding surface, reduce actual falling height by 4 squares
+    for the purpose of damage calculations. Furthermore, convert the next 2 d6s of damage from HP to SP (this can stack with the effect of Land Softly).
+</p>
+<p>
+    When falling, most creatures reach terminal velocity in a single round. In the first round, it falls 120 squares (180 m).
+    It falls 240 squares (360 m) every round after that.
+</p>
+<p>
+    An object that crushes or falls on a creature deals damage based on its weight and the falling height.
+</p>
+<p>
+    <em>Crushing damage:</em> 1d6 HP of blunt damage per ((squares of falling height / 2; minimum 1, maximum 30) × (weight / 100 kg))
+</p>
+
+<h3 id="NaturalFeatures">Natural Features</h3>
+
+
+    <table>
+        <caption>Natural Features</caption>
+        <thead><tr>
+            <th>Terrain Feature</th>
+            <th>Effect</th>
+        </tr></thead>
+        <tbody>
+    <tr><td>Rubble, dense</td><td>Difficult terrain (x2 cost); -4 PAM.</td></tr><tr><td>Rubble, light</td><td>-2 PAM.</td></tr><tr><td>Slippery ground, slightly</td><td>-2 PAM.</td></tr><tr><td>Slippery ground, very</td><td>Difficult terrain (x2 cost and requires Balance checks); -4 PAM.</td></tr><tr><td>Slope, gradual</td><td>+1 attack bonus against downhill defenders.</td></tr><tr><td>Slope, steep</td><td>Difficult terrain (x2 cost); -2 PAM.</td></tr><tr><td>Stalagmite (or stalactite)</td><td>Can provide different levels of cover, depending on size; DC 20 for climbing.</td></tr><tr><td>Tree canopy, dense</td><td>Provides good concealment; DC 15 for climbing.</td></tr><tr><td>Tree canopy, sparse</td><td>Provides concealment; DC 15 for climbing.</td></tr><tr><td>Tree, massive</td><td>Fills entire square; provides good or total cover; DR: 5, HP: 600; DC 15 for climbing.</td></tr><tr><td>Tree, normal</td><td>Difficult terrain in one square (x2 cost); provides cover; DR: 5, HP: 150; DC 15 for climbing.</td></tr><tr><td>Undergrowth, heavy</td><td>Difficult terrain (x4 cost); -4 PAM; provides good concealment (-8 circumstance penalty on Search and Spot checks).</td></tr><tr><td>Undergrowth, light</td><td>Difficult terrain (x2 cost); -2 PAM; provides concealment (-4 circumstance penalty on Search and Spot checks).</td></tr><tr><td>Uneven ground, slightly</td><td>-2 PAM.</td></tr><tr><td>Uneven ground, very</td><td>Difficult terrain (x2 cost); -4 PAM.</td></tr><tr><td>Water or mud, 0.2-0.5 m deep</td><td>Difficult terrain (x2 cost); -2 PAM.</td></tr><tr><td>Water or mud, 0.5-1.0 m deep</td><td>Difficult terrain (x4 cost); -4 PAM; swimming is possible for M or smaller; provides cover for M or L size and good cover for S or smaller.</td></tr>    </tbody></table>
+     
+
+    <table>
+        <caption>Hazards</caption>
+        <thead><tr>
+            <th>Hazard</th>
+            <th style="text-align:center">EL</th>
+            <th>Details</th>
+        </tr></thead>
+        <tbody>
+    <tr><td>Avalanche (rock or snow)</td><td style="text-align:center">7</td><td>A typical avalanche is d6 x 20 squares wide. Snow and ice avalanches advance 100 sq per round, while rock and earth avalanches advance 50 sq per round.<br/>In bury zone, +5 attack vs. Ref (S - 8d6 HP B damage and buried under rubble; F - 1/2 damage and buried; OF - no damage).<br/>In slide zone, +5 attack vs. Ref (S - 3d6 HP B damage and buried under rubble; F - no damage). Buried characters take 1d6 SP per minute. Once buried, it takes a DC 25 Str check to escape.</td></tr><tr><td>Brown mold</td><td style="text-align:center">2</td><td>Draws heat from the environment, causing 3d6 SP of cold damage per round in 1 sq radius. Fire causes it to grow in size, but cold kills it.</td></tr><tr><td>Cave-in or ceiling collapse</td><td style="text-align:center">8</td><td>In bury zone, +5 attack vs. Ref (S - 8d6 HP B damage and buried under rubble; F - 1/2 damage and buried; OF - no damage).<br/>In slide zone, +5 attack vs. Ref (S - 3d6 HP B damage and buried under rubble; F - no damage). Buried characters take 1d6 SP per minute. Once buried, it takes a DC 25 Str check to escape.</td></tr><tr><td>Flood</td><td style="text-align:center">4</td><td>Typical floods can make streams and rivers 1d4 squares deeper and 1d4 x 50% wider. Flash floods can turn dry areas into rapids in a matter of minutes and typically last 3d4 hours. For creatures caught in the open when a flash flood strikes, +5 attack vs. Ref (S - 3d6 HP B damage; F - no damage).</td></tr><tr><td>Forest fire</td><td style="text-align:center">6</td><td>Can be spotted at a distance of 100 to 400 m, depending on Spot check. The heat can be felt at a distance of 30 m. Moderate winds can cause the fire to move downwind 24 squares per round. Each portion of forest remains ablaze for 2d4x10 minutes. Creatures caught in the fire take damage from both the fire and the smoke.</td></tr><tr><td>Green slime</td><td style="text-align:center">4</td><td>Detects movement and drops from the ceiling. Devours flesh and organic materials and dissolves metals on contact. It causes 1d6 Con damage per round of contact, and it deals 2d6 HP of damage per round to metal and wood (ignoring DR). It can be scraped off on the 1st round, but after that it must be frozen, burned, or cut off.</td></tr><tr><td>Lava bomb, large</td><td style="text-align:center">5</td><td>Molten rock hurled from volcano. +5 attack vs. Ref in 6 sq radius burst (S - 6d6 HP B and 6d6 HP fire damage; F - 1/2 damage; OF - no damage).</td></tr><tr><td>Lava bomb, small</td><td style="text-align:center">2</td><td>Molten rock hurled from volcano. +5 attack vs. Ref in 6 sq radius burst (S - 2d6 HP B and 2d6 HP fire damage; F - 1/2 damage; OF - no damage).</td></tr><tr><td>Pyroclastic flow</td><td style="text-align:center">10</td><td>A typical flow is d6 x 20 squares wide and advances 100 sq per round.<br/>In bury zone, +5 attack vs. Ref (S - 10d6 HP fire damage per round and buried; F - 1/2 damage and buried; OF - no damage).<br/>In slide zone, +5 attack vs. Ref (S - 2d6 HP fire damage per round and buried; F - no damage). Poisonous gas also causes 2d6 SP per round. Once buried, it takes a DC 25 Str check to escape.</td></tr><tr><td>Quicksand</td><td style="text-align:center">2</td><td>DC 15 to spot; requires DC 10 swim check to tread water (OS - move 1 square in any direction, F - sink below surface); DC 15 Str check to pull oneself or someone else out.</td></tr><tr><td>Yellow mold</td><td style="text-align:center">6</td><td>When disturbed, it releases spores in a 2 sq radius. +5 attack vs. Fort (S - 1d6 Con damage; CS - 3d6 Con damage). Fire destroys the mold, and sunlight renders it dormant.</td></tr>    </tbody></table>
+         
+
+<p>
+    Clearing rubble: In one minute, a (non-buried) character can clear rubble equal to five times his maximum carrying capacity.
+    One square typically contains 1000 kg of rubble. A suitable tool doubles the amount of clearing a character can do.
+</p>
+
+<h3 id="BuildingFeatures">Dungeon and Building Features</h3>
+
+<p>
+    Many standard building features (and their typical DR, HP, break DC, and climb DC) can be found in the
+    <a href="/reference/equipment">list of equipment</a>.
+</p>
+
+
+    <table>
+        <caption>Building Features</caption>
+        <thead><tr>
+            <th>Building Feature</th>
+            <th>Description and Effect</th>
+        </tr></thead>
+        <tbody>
+    <tr><td>Arrow slit</td><td>Provides good cover for adjacent creatures (relative to the other side).</td></tr><tr><td>Bridge, rope</td><td>Counts as difficult terrain; if only one supporting rope remains attached, make +5 attack against Ref for creatures on the bridge (S - creature falls), and movement requires DC 15 Climb check.</td></tr><tr><td>Door, secret</td><td>Disguised as part of a wall or other architectural feature, this door requires a Search check to detect (usual DC between 20 and 30).</td></tr><tr><td>Elevator</td><td>Can be mechanical or magical; typically ascends or descends 2 squares (3 m) per round.</td></tr><tr><td>Floor, flagstone</td><td>Most common dungeon floor.</td></tr><tr><td>Floor, hewn stone</td><td>Running and charging requires DC 10 Balance check.</td></tr><tr><td>Floor, natural stone</td><td>Typically counts as difficult terrain, and traversal of some parts may require Climb or Jump checks.</td></tr><tr><td>Floor, uneven flagstone</td><td>Running and charging requires DC 10 Balance check.</td></tr><tr><td>Ladders</td><td>DC 0 for climbing.</td></tr><tr><td>Stairs or ramp, normal</td><td>Counts as diagonal movement (×1.5 movement cost); attackers above a defender can gain +1 melee attack bonus for higher ground.</td></tr><tr><td>Stairs or ramp, steep</td><td>Counts as difficult terrain; higher ground melee attack bonus; running, charging, and fighting require Balance checks and may result in falls up to d4 squares.</td></tr><tr><td>Stairs, spiral</td><td>Same as normal or steep stairs; central support can provide cover for defenders that are above their attackers.</td></tr><tr><td>Statue</td><td>Can provide cover (depending on size); DC 15 for climbing.</td></tr><tr><td>Tapestry</td><td>Can provide up to total concealment (depending on size and position); DC 15 for climbing.</td></tr><tr><td>Wall, magically treated</td><td>Typically doubles DR and HP; +20 DC to break through.</td></tr><tr><td>Wall, reinforced</td><td>Masonry wall reinforced with iron bars; DR: 8; HP: 12/cm; +10 DC to break through; DC 15 for climbing.</td></tr><tr><td>Wall, shifting</td><td>Shifting walls are often parts of traps and secret doors; otherwise treat as walls of same material.</td></tr><tr><td>Wall, unworked stone</td><td>Usually at least 1.5 m thick; DR: 8, HP: 6/cm; DC 15 for climbing.</td></tr>    </tbody></table>
+     
+
+<h3 id="Traps">Traps</h3>
+<p>
+    Traps come in many different varieties, but they can be roughly categorized as either mechanical or magic.
+    Traps are also defined by other parameters, such as their trigger, their attack bonus and type, their damage, etc.
+</p>
+<p>
+    Detecting and defeating, or maybe just surviving, a trap can be as challenging as slaying monsters,
+    so adventurers are awarded experience points for the traps they encounter.
+    The table below shows how to calculate the EL of a trap, and as usual, each EL equals 300 XP.
+</p>
+
+    <table>
+        <caption>Traps and Trap Modifiers</caption>
+        <thead><tr>
+            <th>Trap Feature</th>
+            <th style="text-align:center">EL</th>
+            <th style="text-align:center">Cost</th>
+            <th>Details</th>
+        </tr></thead>
+        <tbody>
+    <tr><td>Pit trap</td><td style="text-align:center">1 per 4 sq depth</td><td style="text-align:center">100 gp per 4 sq depth</td><td>Search DC 20; Sabotage DC 20. Base attack +10 vs Ref. Damage according to falling rules.</td></tr><tr><td>Pit trap, spiked</td><td style="text-align:center">1</td><td style="text-align:center">+50 gp</td><td>As pit trap, but victims also suffer 1d4 spike attacks (+10 vs DeC; d6+2 HP P damage each).</td></tr><tr><td>Ranged weapon trap</td><td style="text-align:center">1 per 7 HP</td><td style="text-align:center">100 gp per 7 HP</td><td>Search DC 20; Sabotage DC 20. Base attack +10 vs DeC. Damage based on projectile, thrown, or falling weapon (with optional Str mod).</td></tr><tr><td>Melee weapon trap</td><td style="text-align:center">1 per 7 HP</td><td style="text-align:center">100 gp per 7 HP</td><td>Search DC 20; Sabotage DC 20. Base attack +10 vs DeC.</td></tr><tr><td>Poison trap</td><td style="text-align:center">Per poison</td><td style="text-align:center">Per poison</td><td>Can be an inhaled, injected, or contact poison.</td></tr><tr><td>Magic device trap</td><td style="text-align:center">1 per 7 HP</td><td style="text-align:center">Enchant Item</td><td>Search DC 25; Sabotage DC 25. Base attack +10.</td></tr><tr><td>Magic spell trap</td><td style="text-align:center">(PP cost)/2</td><td style="text-align:center">Varies</td><td>Varies</td></tr><tr><td>Easy to find</td><td style="text-align:center">-1</td><td style="text-align:center">-50 gp</td><td>-5 Search DC</td></tr><tr><td>Hard to find</td><td style="text-align:center">1</td><td style="text-align:center">+100 gp</td><td>+5 Search DC</td></tr><tr><td>Very hard to find</td><td style="text-align:center">2</td><td style="text-align:center">+200 gp</td><td>+10 Search DC</td></tr><tr><td>Easy to disable</td><td style="text-align:center">-1</td><td style="text-align:center">-50 gp</td><td>-5 Sabotage DC</td></tr><tr><td>Hard to disable</td><td style="text-align:center">1</td><td style="text-align:center">+100 gp</td><td>+5 Sabotage DC</td></tr><tr><td>Very hard to disable</td><td style="text-align:center">2</td><td style="text-align:center">+200 gp</td><td>+10 Sabotage DC</td></tr><tr><td>Attack penalty</td><td style="text-align:center">-1 per -5 att</td><td style="text-align:center">-50 gp per -1 att</td><td></td></tr><tr><td>Attack bonus</td><td style="text-align:center">+1 per +5 att</td><td style="text-align:center">+100 gp per +1 att</td><td></td></tr><tr><td>Never miss</td><td style="text-align:center">5</td><td style="text-align:center">+1000 gp</td><td>The trap's attack is impossible to avoid by normal means. For example, this could involve a crushing ceiling or contact poison gas.</td></tr><tr><td>Liquid</td><td style="text-align:center">5</td><td style="text-align:center">+100 gp</td><td>The trap involves liquid and has a chance of drowning the victims.</td></tr><tr><td>Multiple targets</td><td style="text-align:center">1</td><td style="text-align:center">+100 gp</td><td>The trap can affect more than one creature or square.</td></tr><tr><td>Onset delay</td><td style="text-align:center">2</td><td style="text-align:center">+100 gp</td><td>The trap has a delay of 1 or more rounds before it deals damage.</td></tr><tr><td>Location trigger</td><td style="text-align:center">0</td><td style="text-align:center">0</td><td>Triggered by weight in a certain location.</td></tr><tr><td>Proximity trigger</td><td style="text-align:center">0</td><td style="text-align:center">+100 gp</td><td>Trigger activates when a creature of a minimum size approaches within a certain distance. Magic triggers can be set to certain creature types.</td></tr><tr><td>Sound trigger</td><td style="text-align:center">1</td><td style="text-align:center">+100 gp</td><td>This is a magic trigger that responds to sound. It can make a Listen check with a +15 bonus once per round.</td></tr><tr><td>Visual trigger, basic</td><td style="text-align:center">1</td><td style="text-align:center">+200 gp</td><td>This is a magic trigger that can actually see. It can make a +15 Spot check within a 2 sq radius once per round.</td></tr><tr><td>Visual trigger, regular</td><td style="text-align:center">1</td><td style="text-align:center">+300 gp</td><td>Visual trigger that makes a +20 Spot once per round with line of sight.</td></tr><tr><td>Visual trigger, advanced</td><td style="text-align:center">2</td><td style="text-align:center">+500 gp</td><td>Visual trigger that makes a +25 Spot once per round with line of sight. It also has darkvision within 12 sq and can detect invisible creatures.</td></tr><tr><td>Touch trigger</td><td style="text-align:center">0</td><td style="text-align:center">0</td><td>Triggers when touched.</td></tr><tr><td>Timed trigger</td><td style="text-align:center">0</td><td style="text-align:center">+100 gp</td><td>Triggers periodically, whether creatures are present or not.</td></tr><tr><td>No reset</td><td style="text-align:center">0</td><td style="text-align:center">-50 gp</td><td>The trap can only trigger once.</td></tr><tr><td>Repair reset</td><td style="text-align:center">0</td><td style="text-align:center">-20 gp</td><td>The trap can be reset by using Crafting (trapmaking) to repair it. This takes one-fifth the time (and cost) of creating it.</td></tr><tr><td>Manual reset</td><td style="text-align:center">0</td><td style="text-align:center">0</td><td>The trap is easy to reset, but it has to be done manually.</td></tr><tr><td>Automatic reset</td><td style="text-align:center">0</td><td style="text-align:center">+50 gp</td><td>The trap resets automatically, immediately or after an interval.</td></tr><tr><td>Lock bypass</td><td style="text-align:center">0</td><td style="text-align:center">+10 gp</td><td>The trap can be bypassed with a Thievery (Open Lock) check against DC 30.</td></tr><tr><td>Hidden switch bypass</td><td style="text-align:center">0</td><td style="text-align:center">+20 gp</td><td>The trap can be bypassed by throwing a hidden switch (Search DC 25).</td></tr><tr><td>Hidden lock bypass</td><td style="text-align:center">0</td><td style="text-align:center">+30 gp</td><td>The trap can be bypassed by picking a hidden lock (Open Lock DC 30 and Search DC 25).</td></tr><tr><td>Portable</td><td style="text-align:center">0</td><td style="text-align:center">×3</td><td>The trap is portable and can be deployed with a full-round action. If the trap can be reset, it can be packed up and reused.</td></tr>    </tbody></table>
+     
+
+<p>
+    The Crafting (trapmaking) skill is used to craft and set mechanical traps,
+    the Enchant Item skill is used to craft and set magic device traps, and the appropriate spell is used to set a magic spell trap.
+</p>
+<p>
+    The <a href="https://www.d20srd.org/srd/traps.htm">3.5E DMG and SRD</a> have a large number of example traps.
+</p>
+
+<h3 id="SpecialEnvirons">Special Environments</h3>
+<h4>Mid-Air</h4>
+<ul>
+    <li>Fly speed must be used for movement. See the section about maneuverability for more details.</li>
+    <li>A flying creature that is knocked prone starts to fall. See the previous section for falling damage and falling velocity.</li>
+    <li>For a flier to halt an uncontrolled descent requires an Acrobatics skill check against DC 10.</li>
+    <li>Strong winds can affect movement.</li>
+    <li>Debris and swirling air currents constitute difficult terrain.</li>
+    <li>Winged creatures with sufficient maneuverability to hover can use their wings to create strong winds
+        (Large creatures can generate strong winds within 5 sq radius, Huge severe winds within 10 sq,
+        Gargantuan stormy winds within 15 sq, and Colossal hurricane winds within 20 sq).</li>
+    <li>Clouds can provide concealment, good concealment, or total concealment, depending on their thickness.</li>
+</ul>
+
+<h4>Underwater</h4>
+<p>
+    The following effects apply to creatures swimming in water or wading in water that is at least chest-deep.
+</p>
+<ul>
+    <li>Swim speed must be used for movement.</li>
+    <li>Environmental effects: current affects movement.</li>
+    <li>Slashing and blunt weapons suffer a -2 attack penalty and cause only half damage.</li>
+    <li>Thrown weapons do not work. Projectile weapons suffer -2 attack penalty per square.</li>
+    <li>Non-aquatic creatures using brawling attacks suffer a -2 attack penalty but deal normal damage (and have normal effects).</li>
+    <li>Aquatic monsters have a +2 attack advantage against non-aquatic ones.</li>
+    <li>Water provides concealment, good concealment, or even total concealment against attacks from above water, and vice versa.</li>
+    <li>Fire effects are reduced or negated.</li>
+    <li>Fire magic requires a spellcasting check (+10 difficulty) and creates superheated steam rather than fire.</li>
+</ul>
+
+    <p>
+        This table shows conditions and traits that can mitigate the underwater penalties:
+    </p>
+
+    <table>
+        <caption>Underwater Effects</caption>
+        <thead><tr>
+            <th>Condition</th>
+            <th style="text-align:center">S/B Weapon<sup>1</sup></th>
+            <th style="text-align:center">Natural Weapon<sup>2</sup></th>
+            <th style="text-align:center">Movement<sup>3</sup></th>
+            <th style="text-align:center">Off Balance<sup>4</sup></th>
+        </tr></thead>
+        <tbody>
+    <tr><td>Freedom of Movement</td><td style="text-align:center">0 / x1</td><td style="text-align:center">0 / x1</td><td style="text-align:center">1 MP/sq</td><td style="text-align:center">No</td></tr><tr><td>Native swim speed</td><td style="text-align:center">-2 / x1/2</td><td style="text-align:center">0 / x1</td><td style="text-align:center">1 MP/sq</td><td style="text-align:center">No</td></tr><tr><td>Successful swim check</td><td style="text-align:center">-2 / x1/2</td><td style="text-align:center">-2 / x1/2</td><td style="text-align:center">4 MP/sq</td><td style="text-align:center">No</td></tr><tr><td>Firm footing or braced</td><td style="text-align:center">-2 / x1/2</td><td style="text-align:center">-2 / x1/2</td><td style="text-align:center">2 MP/sq</td><td style="text-align:center">No</td></tr><tr><td>None of the above</td><td style="text-align:center">-2 / x1/2</td><td style="text-align:center">-2 / x1/2</td><td style="text-align:center">No move</td><td style="text-align:center">Yes</td></tr>    </tbody></table>
+
+    <p>
+        <sup>1</sup>S/B Weapon: Attack penalty and damage multiplier for slashing and blunt weapons.<br/>
+        <sup>2</sup>Natural Weapon: Attack penalty and damage multiplier for natural weapons.<br/>
+        <sup>3</sup>Movement: Movement cost per square.<br/>
+        <sup>4</sup>Off Balance: Creature is effectively flat-footed and can only use passive DeC.<br/>
+    </p>
+     
+
+<h3 id="Multiverse">The Multiverse</h3>
+<p>
+    The Multiverse is very much like the Universe we all live in.
+    There are clusters of galaxies, pulsars, black holes, billions and billions of stars, an even greater number of planets, and so forth.
+    Start with that, then add a few additional planes of existence, top them off with some extra dimensions as well,
+    and we will call everything the Multiverse. The Multiverse can be roughly divided into the purely physical planes
+    (also known as the elemental planes) and the purely spiritual planes (a number of heavens, hells, and limbos floating around in the Astral Plane),
+    with the regular Universe acting as a sort of buffer in between.
+    There is also an infinite number of smaller, less stable planes (commonly known as Demiplanes) floating around among the larger ones.
+    In addition, most of the known planes have “extradimensional” qualities (hyperspace, the Ethereal, the fifth dimension,
+    or whatever you prefer to call it) that can be accessed or utilized through advanced technology or magic.
+</p>
+<p>
+    The level of magic in a given location of the Universe is directly related to the metaphysical distance between the Universe
+    and other planes of existence. In locations where the planes are metaphysically close together, the normal laws of physics are weakened,
+    and magic is correspondingly strong. Greater distance between the planes leads to stronger laws of physics and weaker magic.
+    Planes other than the regular Universe each have their own level of magic (and strength of the laws), and the level can also vary locally within each plane.
+</p>
+<p>
+    Quite logically, travel between planes is much easier and requires less energy when those planes are closer together.
+    Accessing a plane’s extra dimensions is, generally speaking, much easier than accessing other planes of existence.
+    Finally, extraplanar and extradimensional travel is easier when there are few other forces acting on the individual or object.
+    For example, in areas with weak magic and strong laws, extraplanar travel is all but impossible,
+    and dimensional travel is possible but very costly in energy. FTL drives, stargates, and teleportation are all possible
+    but require huge amounts of energy. They will work best in areas where other forces are at a minimum,
+    preferably far away from the gravity well of any planet or moon. In areas with strong magic and weak laws, on the other hand,
+    magic can be used to quite easily access other dimensions and planes.
+</p>
+<p>
+    Extremely low ML: Stability and inertia is so high that life is practically impossible.<br/>
+    Very low ML: Standard universe without exotic technologies, such as FTL drives, artificial gravity, etc.<br/>
+    Low ML: Standard universe. FTL drives, artificial gravity, etc. are possible but power-hungry.<br/>
+    Medium ML: Same as low but very simple magic is also possible.<br/>
+    High ML: Low-fantasy world. Electronics and other advanced technology are unreliable.<br/>
+    Very high ML: High-fantasy world. Electronics and high-tech are virtually useless.<br/>
+    Extremely high ML: Pure magic. Most life is impossible, since a stray thought can lead to self-combustion.
+</p>
+
+<h4>The Physical or Elemental Planes</h4>
+<p>
+    The physical planes are infinite in number, and each one is thought to be infinite in size.
+    Each contains nothing but pure matter or energy, with the exception of the souls of travelers from other planes.
+    The souls of such travelers run the risk of spontaneously dispersing, unless they are protected.
+    The planes can be said to be arranged in order of energy content, from absolute zero temperature where every substance is frozen solid,
+    through liquids and gases, to plasma and the pure energy of photons.
+    Proceeding from the photon level, energy content again decreases, but at this end of the scale, it forms antimatter instead of matter.
+    The planar sages of medieval times have traditionally expressed the main levels of energy as earth (for solid matter),
+    water (for liquid matter), air (for gaseous matter), and fire (for plasma).
+    References to a plane of negative energy commonly refer to one or more of the planes of antimatter.
+    All in all, there is one physical plane for every physical substance at every possible level of energy.
+    A sufficiently proficient magician could theoretically conjure an infinite amount of diamonds from the physical planes,
+    but this would require quite a bit of magical energy.
+</p>
+<p>
+    The laws of physics do not work in the physical planes like they do in the regular Universe, especially the law of gravity.
+    For example, the elemental planes have no center of gravity. This prevents the substance from simply contracting into a great black hole.
+    It also means that anything that can move through the substance can do so freely in all three dimensions.
+</p>
+<p>
+    The physical planes are inhabited by elementals in various forms and sizes.
+    The absence of metaphysical energy means that they do not develop souls, but they usually have some degree of sentience and
+    quite a bit of control over their respective element.
+</p>
+
+<h4>The Spiritual Planes</h4>
+<p>
+    The spiritual planes are also infinite in number (at least in theory), but their lack of physical existence make them
+    indefinite and indeterminate in size. They seem to be somewhat arranged according to what one would normally consider aspects of personality,
+    including morality, ego, and so forth. Many of the spiritual planes have been claimed by one or more deities.
+    The deities are able to redefine and alter their planes by force of will,
+    and some of them have even created a virtual physical reality in imitation of the Universe.
+    Generally speaking, where the physical planes contain matter and physical energy, the spiritual planes consist of
+    thoughts, emotions, perceptions, ideas, and spiritual energy.
+</p>
+<p>
+    Examples of spiritual planes include the Seven Heavens, the Nine Hells, the Abyss, Tartarus, Paradise, Gehenna, Asgard, and many more.
+    In addition to the deities, they are inhabited by the lesser spirits more commonly known as angels, devils, and demons.
+</p>
+<p>
+    For some reason, free souls appear to be strongly attracted by the spiritual planes, particularly in locations where the level of magic is high.
+    When a creature dies, its soul will typically travel to a spiritual plane matching its dominant personality traits.
+    Over time, the soul will become absorbed by the plane itself or its native inhabitants. It is surmised that those inhabitants,
+    even the deities themselves, originally arose as collectives of souls.
+    That would mean that those deities were spontaneously created by the souls of the first sentient creatures rather than the other way around.
+</p>
+<p>
+    Inhabitants of the spiritual planes become more powerful when they contain a large amount of spiritual energy
+    (equivalent to a large number of souls). In other words,
+    it is in the interests of those inhabitants to have as many souls as possible joining their plane.
+    This is the main reason that the deities of the spiritual planes try to influence and gain worshipers in the regular Universe.
+    It also seems that worshipers automatically channel some of their spiritual energy to their patrons, even before dying and releasing their souls.
+    Most of those patrons will in turn reward their priests and other trusted worshipers with portions of spiritual energy
+    that can then be used to perform feats of magic.
+</p>
+
+<h4>The Universe</h4>
+<p>
+    Originally, the Universe was nothing but an empty void. It was not even a vacuum, because it had no extent and no dimensions whatsoever.
+    It acted simply as a sort of barrier between the physical and spiritual planes. However, even in this remote time,
+    the insulation of the Universe (its ML) flowed and fluctuated.
+    At one point in time, the ML reached a point where the physical and spiritual planes actually touched (in a metaphysical sense).
+    This created a momentary rift between the various planes, pouring enormous amounts of matter, energy,
+    and spiritual essence into the Universe in what is commonly referred to as the Big Bang.
+</p>
+
+<h4>The Ethereal Plane and the Demiplanes</h4>
+<p>
+    Most of the planes with a spatial extent (the physical planes and the Universe) have an extradimensional property.
+    This &quot;fifth dimension&quot; is also often referred to as hyperspace or the Ethereal plane.
+    The Ethereal links all of the physical planes and the Universe together, and can be used to travel between these planes.
+</p>
+<p>
+    Pure energy (light and heat) exists simultaneously in both the physical plane and the Ethereal, but matter generally does not.
+    As already mentioned, transferring physical objects into the Ethereal requires a high ML or a huge amount of energy.
+    Since the Ethereal overlaps and permeates the physical planes and energy exists in both,
+    Ethereal objects are visible from the physical plane and vice versa.
+    This also means that energy-based weapons (lasers and even flame-throwers) can be used against targets in the other dimension.
+    Gravity, on the other hand, does not carry into or from the Ethereal. So, unless special magical or technological means are used,
+    an object that turns Ethereal will soon drift away from whatever planet or spaceship it used to rest on.
+    Note that an ethereal object or creature easily can pass through most physical objects without encountering any resistance,
+    but materialization is only possible in gases, liquids, and other materials that are easily displaced.
+    Also note that momentum and inertia is generally retained by objects entering or leaving the Ethereal.
+</p>
+<p>
+    The spatial characteristics of the Ethereal plane can be folded, compressed, and/or expanded.
+    This means that the plane can be used for faster-than-light communication and travel and even for teleportation.
+    However, since electromagnetic radiation carries over into the Ethereal, one cannot safely pass through stars or even the molten core of planets.
+    To use the Ethereal for transportation to a totally different plane, one will first have to enter the deep Ethereal.
+    This is the part of the Ethereal that does not overlap with any physical plane,
+    and it can only be entered or exited through the use of energy inversely proportionate to the local ML.
+</p>
+<p>
+    The Ethereal is basically a complete vacuum, but there are a few islands of floating matter (asteroids)
+    that have spontaneously or artificially been transferred from the other planes. In addition,
+    some powerful magicians have been able to create their own demiplanes, small physical planes that can have almost any characteristics imaginable.
+    Among those rumored to exist are the demiplane of Shadow, the demiplane of Time, and many more.
+    Nevertheless, in areas of low ML, the energy required to enter or leave the plane ensures that encounters are incredibly rare.
+</p>
+
+<h4>The Astral Plane</h4>
+<p>
+    Just like the Ethereal links the Universe with the physical planes, the Astral links the Universe with the spiritual planes.
+    One might even say that the spiritual planes float around in the sea of the Astral plane.
+</p>
+<p>
+    Only a soul can enter the Astral plane, but the soul’s owner does not necessarily have to be dead for this to happen.
+    Magicians and psionicists can use their powers to release someone’s or their own soul from its body.
+    It is even possible that powerful dreams can temporarily transfer the soul into the Astral and thence into a spiritual plane.
+    In the latter case, the dream will often include weird encounters with the inhabitants of that plane.
+</p>
+</div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Embedded RolCalc Footer -->
+    <div x-data="{
+    expression: '',
+    previous: '',
+    result: '',
+    history: [],
+    loading: false,
+    async evaluate(expr = null) {
+        const toEval = expr !== null ? expr : this.expression;
+        if (!toEval) return;
+        this.loading = true;
+        try {
+            const res = await fetch('http://localhost:8090/api/calculator/evaluate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': ''
+                },
+                body: JSON.stringify({ expression: toEval })
+            });
+            const data = await res.json();
+            this.previous = toEval;
+            this.result = data.result;
+            this.history.unshift({ expr: toEval, res: data.result });
+            if (this.history.length > 5) this.history.pop();
+        } catch (e) {
+            this.result = 'Error';
+        }
+        this.loading = false;
+    },
+    quickRoll(dice) {
+        this.expression = dice;
+        this.evaluate(dice);
+    }
+}" class="bg-slate-900 border-t border-slate-800 text-slate-200 px-4 py-2.5 flex items-center justify-between shadow-lg text-sm z-30 sticky bottom-0">
+    <div class="flex items-center gap-3">
+        <span class="font-bold text-amber-400 flex items-center gap-1">🎲 <span>RolCalc</span></span>
+        
+        <!-- Expression input form -->
+        <form @submit.prevent="evaluate()" class="flex items-center gap-2">
+            <input type="text" x-model="expression" placeholder="e.g. 1d20+5, 3d6+2, (15+3)/5"
+                   class="bg-slate-800 border border-slate-700 rounded px-2.5 py-1 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500 w-56 font-mono">
+            <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-white font-medium px-3 py-1 rounded text-xs transition">
+                <span x-show="!loading">Roll / Calc</span>
+                <span x-show="loading" class="animate-spin">⏳</span>
+            </button>
+        </form>
+
+        <!-- Quick dice buttons -->
+        <div class="hidden md:flex items-center gap-1 text-xs">
+            <button @click="quickRoll('1d4')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d4</button>
+            <button @click="quickRoll('1d6')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d6</button>
+            <button @click="quickRoll('1d8')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d8</button>
+            <button @click="quickRoll('1d10')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d10</button>
+            <button @click="quickRoll('1d12')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d12</button>
+            <button @click="quickRoll('1d20')" class="bg-indigo-700 hover:bg-indigo-600 text-white px-2.5 py-1 rounded font-semibold border border-indigo-500">d20</button>
+            <button @click="quickRoll('1d100')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d100</button>
+        </div>
+    </div>
+
+    <!-- Results Display -->
+    <div class="flex items-center gap-3">
+        <template x-if="result">
+            <div class="flex items-center gap-2">
+                <span class="text-slate-400 text-xs" x-text="'[' + previous + '] ='"></span>
+                <span class="text-amber-400 font-bold font-mono text-base" x-text="result"></span>
+            </div>
+        </template>
+        <button @click="expression = ''; result = '';" class="text-slate-400 hover:text-slate-200 text-xs">Clear</button>
+    </div>
+</div>
+
+    <!-- Ctrl+K Quick Search Modal -->
+    <div x-show="searchOpen" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm p-4 md:p-12 flex justify-center items-start" style="display: none;">
+        <div @click.away="searchOpen = false" class="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden text-slate-200">
+            <!-- Search Header Input -->
+            <div class="p-4 border-b border-slate-800 flex items-center gap-3">
+                <span class="text-slate-400 text-lg">🔍</span>
+                <input type="text" x-model="searchQuery" @input.debounce.250ms="performQuickSearch()" x-ref="searchInput"
+                       placeholder="Search all rules, skills, spells, items, monsters..."
+                       class="bg-transparent text-white placeholder-slate-500 text-base focus:outline-none w-full">
+                <button @click="searchOpen = false" class="text-slate-400 hover:text-white text-sm font-semibold">✕</button>
+            </div>
+
+            <!-- Search Results Dropdown -->
+            <div class="max-h-96 overflow-y-auto p-2 divide-y divide-slate-800/50">
+                <div x-show="searchLoading" class="p-4 text-center text-slate-400 text-sm">
+                    Searching index...
+                </div>
+
+                <template x-if="searchResults.length > 0">
+                    <div>
+                        <template x-for="item in searchResults" :key="item.url">
+                            <a :href="item.url" class="block p-3 hover:bg-slate-800 rounded-lg transition group">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-amber-400 group-hover:text-amber-300" x-text="item.title"></span>
+                                    <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700" x-text="item.category"></span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-1 line-clamp-2" x-text="item.snippet"></p>
+                            </a>
+                        </template>
+                    </div>
+                </template>
+
+                <div x-show="!searchLoading && searchQuery.length >= 2 && searchResults.length === 0" class="p-6 text-center text-slate-400 text-sm">
+                    No matching rules, spells, or creatures found for "<span x-text="searchQuery"></span>".
+                </div>
+
+                <div x-show="searchQuery.length < 2" class="p-6 text-center text-slate-500 text-xs">
+                    Type at least 2 characters to search across all chapters and reference tables.
+                </div>
+            </div>
+
+            <!-- Footer actions -->
+            <div class="p-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                <span>Press <kbd class="bg-slate-800 px-1 py-0.5 rounded font-mono">ESC</kbd> to close</span>
+                <a :href="'http://localhost:8090/search?q=' + encodeURIComponent(searchQuery)" class="text-indigo-400 hover:underline">View all results &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Smooth scroll for in-page anchors inside main container
+            document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href').substring(1);
+                    if (!targetId) return;
+                    const targetElem = document.getElementById(targetId) || document.querySelector('[name="' + targetId + '"]');
+                    if (targetElem) {
+                        e.preventDefault();
+                        targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        if (history.pushState) {
+                            history.pushState(null, null, '#' + targetId);
+                        }
+                    }
+                });
+            });
+
+            // If page loaded with a hash, scroll to it
+            if (window.location.hash) {
+                const initialTarget = document.getElementById(window.location.hash.substring(1));
+                if (initialTarget) {
+                    setTimeout(() => initialTarget.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+campaigns:
+  -
+    ID: 1
+    Name: Shadowfell
+    SecretName: null
+    Description: null
+    GameMaster: 1
+    AbilityGenMethod: 1
+    StartingXP: 0
+    SuitabilityLevel: 3
+    OptionalRules: null
+  -
+    ID: 3
+    Name: 'Test Campaign'
+    SecretName: null
+    Description: Test
+    GameMaster: 1
+    AbilityGenMethod: 1
+    StartingXP: 0
+    SuitabilityLevel: 5
+    OptionalRules: None
+  -
+    ID: 4
+    Name: 'Test Campaign 2'
+    SecretName: null
+    Description: Test
+    GameMaster: 1
+    AbilityGenMethod: 14
+    StartingXP: 20000
+    SuitabilityLevel: 3
+    OptionalRules: Some
+  -
+    ID: 5
+    Name: 'Test Campaign 3'
+    SecretName: null
+    Description: Test
+    GameMaster: 1
+    AbilityGenMethod: 15
+    StartingXP: 200000
+    SuitabilityLevel: 4
+    OptionalRules: Some
+characters:
+  -
+    ID: 1
+    Name: 'Test Character'
+    Campaign: null
+    BaseStr: null
+    BaseCon: null
+    BaseDex: null
+    BaseInt: null
+    BaseWis: null
+    BaseCha: null
+    BaseRace: null
+    Templates: null
+    Gender: null
+    SizeAdjust: null
+    Culture: null
+    BackgndClass: null
+    ExperiencePts: null
+    RLMod: null
+    Classes: null
+    ImprovementPts: null
+    FatePts: null
+    Improvements: null
+    MentalAge: null
+    PhysicalAge: null
+    HeightFactor: null
+    WeightFactor: null
+    Skills: null
+    Specializations: null
+    Spells: null
+    SC: null
+    WC: null
+    InfluencePts: null
+    InfluenceDesc: null
+    ReputationDesc: null
+    Wealth: null
+    Equipment: null
+    Appearance: null
+    Personality: null
+    History: null
+    Family: null
+    Contacts: null
+    Traits: null
+  -
+    ID: 3
+    Name: Obarion
+    Campaign: 4
+    BaseStr: 18
+    BaseCon: 15
+    BaseDex: 13
+    BaseInt: 8
+    BaseWis: 10
+    BaseCha: 12
+    BaseRace: 12
+    Templates: 1;
+    Gender: 1
+    SizeAdjust: null
+    Culture: 9
+    BackgndClass: 8
+    ExperiencePts: 20000
+    RLMod: null
+    Classes: 11;11;11;11;11;
+    ImprovementPts: null
+    FatePts: null
+    Improvements: null
+    MentalAge: 27
+    PhysicalAge: 27
+    HeightFactor: 110
+    WeightFactor: 107
+    Skills: null
+    Specializations: null
+    Spells: null
+    SC: 0
+    WC: 0
+    InfluencePts: 42
+    InfluenceDesc: 'Temple of Tyr'
+    ReputationDesc: 'Honorable rep'
+    Wealth: 13000
+    Equipment: null
+    Appearance: 'Public appearance'
+    Personality: 'Winning personality'
+    History: 'Spoiled brat'
+    Family: 'Big family'
+    Contacts: 'What contacts'
+    Traits: null
+players:
+  -
+    ID: 1
+    Name: rol
+    Password: 6d645a0ca6a725a26f0b2e939fe98c44
+    Type: 4
+    DefaultPC: null
+  -
+    ID: 2
+    Name: test
+    Password: 098f6bcd4621d373cade4e832627b4f6
+    Type: 1
+    DefaultPC: null
+  -
+    ID: 3
+    Name: root
+    Password: 21232f297a57a5a743894a0e4a801fc3
+    Type: 1
+    DefaultPC: null

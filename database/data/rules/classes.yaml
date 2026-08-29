@@ -1,0 +1,1567 @@
+classes:
+  -
+    ID: 1
+    Name: Bard
+    Abbreviation: Brd
+    HPPerLevel: 6
+    SPPerLevel: 6
+    PPPerLevel: 8
+    InflPerLevel: 5
+    SkillPtsPerLevel: 18
+    KeyAbilities: 'Cha, Dex, Int'
+    Alignment: Non-Lawful
+    ClassTraits: null
+    SpellKnowledge: 'Bards typically learn new spells from a teacher, an arcane spellbook, personal development, etc.'
+    Notes: 'Most bards learn their trade as apprentices to a master bard or by attending a bardic college.'
+    Roles: 'Entertainer, performer, actor, teacher, advisor, diplomat, spy.'
+    OldRanks: 'Rhymer, Lyrist, Sonnateer, Skald, Racaraide, Jongleur, Troubador, Minstrel, Muse, Lorist, Bard, Master Bard'
+  -
+    ID: 2
+    Name: Cleric
+    Abbreviation: Clr
+    HPPerLevel: 8
+    SPPerLevel: 4
+    PPPerLevel: 8
+    InflPerLevel: 5
+    SkillPtsPerLevel: 18
+    KeyAbilities: 'Wis, Con, Cha'
+    Alignment: 'Any (same as deity)'
+    ClassTraits: null
+    SpellKnowledge: 'A cleric''s church will teach him most of the spells that he has sufficient divine skills to cast.\nMore unusual spells can be learned from a teacher, divine writings, personal prayers, etc.'
+    Notes: 'Most clerics are part of an ecclesiastical hierarchy, with obligations as well as benefits. Some, however, devote themselves to their deity or philosophy without joining the official church.\nClerics are common among nearly all races. Adventuring and crusading clerics are mostly seen among humans and dwarves, however.\nUnless the current situation prevents it, a cleric should pray regularly and observe all of the religion''s rituals and special holy days.\nA cleric who violates his deity or philosophy will lose the ability to channel divine energy (cast divine spells, turn undead, etc.) until he atones. He can still gain levels in the class and improve his divine skills, but they will be mostly useless until atonement.'
+    Roles: 'Priest, advisor, healer, diplomat, judge, warrior-priest.'
+    OldRanks: 'Acolyte, Adept, Priest, Curate, Prefect, Canon, Lama, Patriarch, High Priest'
+  -
+    ID: 3
+    Name: Druid
+    Abbreviation: Drd
+    HPPerLevel: 6
+    SPPerLevel: 6
+    PPPerLevel: 8
+    InflPerLevel: 5
+    SkillPtsPerLevel: 18
+    KeyAbilities: 'Wis, Dex'
+    Alignment: Neutral
+    ClassTraits: null
+    SpellKnowledge: 'A druid''s society will teach him most of the spells that he has sufficient divine skills to cast.\nMore unusual spells can be learned from a teacher, divine writings, personal prayers, etc.'
+    Notes: 'Druids revere nature and abhor unnatural creatures. They shun items of a technological or mechanical nature, and they take an oath to not wear metallic armor.\nNearly all druids, even the most solitary and isolated ones, are part of a global society. When the protection of nature requires it, a number of society members may cooperate, but at other times, they may compete with or even prey on each other. The society has a distinct hierarchy, but low-ranking members have few obligations towards their superiors.\nMost druids are elves, gnomes, humans, or half-elves.\nA druid who violates his deity, philosophy, or oaths of conduct will lose the ability to channel natural energy (cast divine spells, change shape, etc.) until he atones. He can still gain levels in the class and improve his druidic skills, but many of them will be mostly useless until atonement.'
+    Roles: 'Protector of nature.'
+    OldRanks: 'Aspirant, Ovate, Initiate of the 1st Circle - Initiate of the 9th Circle, Druid, Archdruid, The Great Druid'
+  -
+    ID: 4
+    Name: Fighter
+    Abbreviation: Ftr
+    HPPerLevel: 10
+    SPPerLevel: 8
+    PPPerLevel: 2
+    InflPerLevel: 5
+    SkillPtsPerLevel: 18
+    KeyAbilities: 'Str, Con, Dex'
+    Alignment: Any
+    ClassTraits: null
+    SpellKnowledge: null
+    Notes: 'Most fighters, as compared to warriors, have had some sort of formal training, usually in an army, an academy, a gladiator school, or at least a militia.\nFighters are common among all of the civilized and semi-civilized races.'
+    Roles: 'Mercenary, officer, soldier, guard, bodyguard, martial trainer, champion, hunter.'
+    OldRanks: 'Veteran, Warrior, Swordsman, Hero, Swashbuckler, Myrmidon, Champion, Superhero, Lord'
+  -
+    ID: 5
+    Name: Monk
+    Abbreviation: Mnk
+    HPPerLevel: 7
+    SPPerLevel: 7
+    PPPerLevel: 6
+    InflPerLevel: 5
+    SkillPtsPerLevel: 18
+    KeyAbilities: 'Wis, Dex, Str'
+    Alignment: Lawful
+    ClassTraits: null
+    SpellKnowledge: null
+    Notes: 'The martial artists known as monks usually gain their upbringing as well as training in rural monasteries or urban schools. In rare cases, a retired and reclusive master will consent to train gifted individuals. Competitions are common between different schools and masters.\nHumans, half-elves, half-orcs, and elves are the only races with a monk tradition.'
+    Roles: 'Martial artist, trainer, advisor, special forces soldier, constable, spy.'
+    OldRanks: 'Novice, Initiate, Brother, Disciple, Immaculate, Master, Superior Master, Master of Dragons, Master of the North Wind, Master of the West Wind, Master of the South Wind, Master of the East Wind, Master of Winter, Master of Autumn, Master of Summer, Master of Spring, Grand Master of Flowers'
+  -
+    ID: 6
+    Name: Psion
+    Abbreviation: Psn
+    HPPerLevel: 4
+    SPPerLevel: 6
+    PPPerLevel: 10
+    InflPerLevel: 5
+    SkillPtsPerLevel: 18
+    KeyAbilities: 'Wis, Int, Con'
+    Alignment: Any
+    ClassTraits: null
+    SpellKnowledge: 'Psions typically learn new psionic powers from a teacher, a psicrystal, personal meditation, etc.'
+    Notes: 'A majority of psions learn and develop their powers on their own. A few, however, grow up in communes or schools that can teach them the use of psionics.\nPsions are rare in many campaigns but can be found among most civilized races.'
+    Roles: 'Psion, telepath, seer, scholar, telekineticist, pyrokineticist'
+    OldRanks: null
+  -
+    ID: 7
+    Name: Psiwarrior
+    Abbreviation: PsW
+    HPPerLevel: 8
+    SPPerLevel: 6
+    PPPerLevel: 6
+    InflPerLevel: 5
+    SkillPtsPerLevel: 18
+    KeyAbilities: 'Str, Dex, Con'
+    Alignment: Chaotic
+    ClassTraits: null
+    SpellKnowledge: 'Psiwarriors typically learn new psionic powers from a teacher, a psicrystal, personal meditation, etc.'
+    Notes: 'Most psiwarriors grow up in communes, families, or schools of psions. Some discover and develop their powers on their own.\nPsiwarriors are rare in many campaigns but can be found among most civilized races.'
+    Roles: 'Warrior, scout, spy, bodyguard, teacher.'
+    OldRanks: null
+  -
+    ID: 8
+    Name: Ranger
+    Abbreviation: Rgr
+    HPPerLevel: 8
+    SPPerLevel: 8
+    PPPerLevel: 4
+    InflPerLevel: 5
+    SkillPtsPerLevel: 18
+    KeyAbilities: 'Dex, Str, Wis'
+    Alignment: Good
+    ClassTraits: null
+    SpellKnowledge: 'A ranger''s solitary meditation will teach him most of the spells that he has sufficient divine skills to cast.\nMore unusual spells can be learned from a druid teacher, personal prayers, etc.'
+    Notes: 'Some rangers receive formal training as military scouts or stealthy skirmishers, while others learn their skills from experienced hunters or retired rangers.\nRangers can be found among most civilized races, but they are most common among elves, half-elves, and humans.'
+    Roles: 'Warden, hunter, scout, spy, guerilla soldier.'
+    OldRanks: 'Runner, Strider, Scout, Courser, Tracker, Guide, Pathfinder, Ranger, Ranger Knight, Ranger Lord'
+  -
+    ID: 9
+    Name: Rogue
+    Abbreviation: Rog
+    HPPerLevel: 8
+    SPPerLevel: 8
+    PPPerLevel: 4
+    InflPerLevel: 5
+    SkillPtsPerLevel: 18
+    KeyAbilities: 'Dex, Int, Wis'
+    Alignment: Non-Lawful
+    ClassTraits: null
+    SpellKnowledge: null
+    Notes: 'The background and training of rogues varies as much as their reasons for adventuring. Some belong to and are trained by a secret (or not so secret) guild, others are self-taught, and a few learn from a more experienced mentor.\nRogues belonging to a guild or a mentor can expect obligations as well as benefits. Freelancers, on the other hand, will have to watch out for not only the law but competitors as well.\nRogues can be found among all the races and in almost any setting. Their roles vary from spies and troubleshooters to burglars, bandits, and thugs.'
+    Roles: 'Thief, burglar, smuggler, scout, spy, troubleshooter.'
+    OldRanks: 'Rogue (Apprentice), Footpad, Cutpurse, Robber, Burglar, Filcher, Sharper, Magsman, Thief, Master Thief\nBravo (Apprentice), Rutterkin, Waghalter, Murderer, Thug, Killer, Cutthroat, Executioner, Assassin, Expert Assassin, Senior Assassin, Chief Assassin, Prime Assassin, Grandmaster Assassin, Grandfather Assassin'
+  -
+    ID: 11
+    Name: Templar
+    Abbreviation: Tmp
+    HPPerLevel: 10
+    SPPerLevel: 6
+    PPPerLevel: 4
+    InflPerLevel: 5
+    SkillPtsPerLevel: 18
+    KeyAbilities: 'Cha, Str, Wis'
+    Alignment: 'Any (same as deity)'
+    ClassTraits: null
+    SpellKnowledge: 'A templar''s church will teach him most of the spells that he has sufficient divine skills to cast.\nMore unusual spells can be learned from a teacher, divine writings, personal prayers, etc.'
+    Notes: 'Templars are devoted to a deity or philosophy, and they follow a strict code of conduct appropriate to this devotion and the deity''s alignment. For example, a lawful good templar should respect life, protect the weak, help those in need, respect legitimate authority, never lie or cheat, and punish the wicked.\nMost templars are trained within the church of their deity or philosophy. Some, however, find their calling outside any official religion and simply follow their own conscience.\nMost templars are humans or half-elves, although a rare few are dwarves or elves.\nA templar who knowingly and willingly commits an act clearly opposite to his alignment loses all divine abilities forever. Those who violate their code of conduct lose all divine abilities until they have atoned.'
+    Roles: 'Knight, templar, champion, protector, bodyguard, justiciar.'
+    OldRanks: 'Gallant, Keeper, Protector, Defender, Warder, Guardian, Chevalier, Justicer, Paladin'
+  -
+    ID: 12
+    Name: Wizard
+    Abbreviation: Wiz
+    HPPerLevel: 4
+    SPPerLevel: 6
+    PPPerLevel: 10
+    InflPerLevel: 5
+    SkillPtsPerLevel: 18
+    KeyAbilities: 'Int/Cha, Dex, Con'
+    Alignment: Any
+    ClassTraits: null
+    SpellKnowledge: 'Wizards typically learn new spells from a teacher, an arcane spellbook, personal development, etc.'
+    Notes: 'The training of a wizard involves intensive study and practice, and this training usually takes place in an academy, school, or guild. In rural settings, potential students of the wizardly arts are more often trained by the village wizard or an eccentric hermit.\nMost sorcerers are individualists and develop their skills unaided. Some, however, are fortunate enough to be tutored by a more experienced practitioner. Sorcerers are rarely welcome in schools and guilds meant for wizards.\nWizards are most common among humans, elves, half-elves, and gnomes.'
+    Roles: 'War wizard, diviner, troubleshooter, advisor, scholar, teacher, artificer.'
+    OldRanks: 'Prestidigitator, Evoker, Conjurer, Theurgist, Thaumaturgist, Magicician, Enchanter, Warlock, Sorcerer, Necromancer, Wizard, Arch-Mage\nPrestidigitator, Minor Trickster, Trickster, Master Trickster, Cabalist, Visionist, Phantasmist, Apparitionist, Spellbinder, Illusionist'
+  -
+    ID: 13
+    Name: Adept
+    Abbreviation: Adp
+    HPPerLevel: 5
+    SPPerLevel: 5
+    PPPerLevel: 8
+    InflPerLevel: 4
+    SkillPtsPerLevel: 12
+    KeyAbilities: 'Wis, Con, Dex'
+    Alignment: Any
+    ClassTraits: null
+    SpellKnowledge: 'Adepts typically learn new spells from a teacher, an arcane spellbook, personal development, etc.'
+    Notes: null
+    Roles: 'Wise man, mystic, shaman, witch doctor, hedge wizard.'
+    OldRanks: null
+  -
+    ID: 14
+    Name: Aristocrat
+    Abbreviation: Ari
+    HPPerLevel: 8
+    SPPerLevel: 6
+    PPPerLevel: 4
+    InflPerLevel: 4
+    SkillPtsPerLevel: 12
+    KeyAbilities: 'Cha, Int, Dex, Str'
+    Alignment: Any
+    ClassTraits: null
+    SpellKnowledge: null
+    Notes: null
+    Roles: 'Noble, gentry, wealthy merchant, politician.'
+    OldRanks: null
+  -
+    ID: 15
+    Name: Commoner
+    Abbreviation: Com
+    HPPerLevel: 6
+    SPPerLevel: 8
+    PPPerLevel: 4
+    InflPerLevel: 4
+    SkillPtsPerLevel: 12
+    KeyAbilities: 'Str, Con, Dex'
+    Alignment: Any
+    ClassTraits: null
+    SpellKnowledge: null
+    Notes: null
+    Roles: 'Laborer, farmer, shopkeeper, servant, slave.'
+    OldRanks: null
+  -
+    ID: 16
+    Name: Expert
+    Abbreviation: Exp
+    HPPerLevel: 6
+    SPPerLevel: 6
+    PPPerLevel: 6
+    InflPerLevel: 4
+    SkillPtsPerLevel: 12
+    KeyAbilities: 'Int, Dex, Con'
+    Alignment: Any
+    ClassTraits: null
+    SpellKnowledge: null
+    Notes: null
+    Roles: 'Craftsman, sage, scholar, architect, barrister, merchant.'
+    OldRanks: null
+  -
+    ID: 17
+    Name: Warrior
+    Abbreviation: War
+    HPPerLevel: 8
+    SPPerLevel: 8
+    PPPerLevel: 2
+    InflPerLevel: 4
+    SkillPtsPerLevel: 12
+    KeyAbilities: 'Str, Con, Dex'
+    Alignment: Any
+    ClassTraits: null
+    SpellKnowledge: null
+    Notes: null
+    Roles: 'Hunter, soldier, guard, thug, savage.'
+    OldRanks: null
+classconfigs:
+  -
+    ID: 1
+    Name: Bard
+    ClassID: 1
+    PrimSkills: 'Acrob, Athle, Percp, Perfm, Steal, WpFnc, FSTri, ArcIl, BAff, BdKno, BdMus'
+    SecSkills: 'Know, Lingu, Psych, Compo, Thiev, WpGen, WpBow, WpBaM, ArmLt, ArcDi, ArcEn, ArcIm, DivLi, SplCr'
+    Equipment: 'LtArmor, MdWeapon, Crossbow, Instrument, AdventurerKit'
+    AbilityPrio: 'Cha, Dex, Int, Wis, Str, Con'
+    ShowPCGen: 1
+  -
+    ID: 2
+    Name: 'Diplomat Bard'
+    ClassID: 1
+    PrimSkills: 'Know, Lingu, Perfm, Psych, WpBaM, ArcDi, ArcEn, ArcIm, ArcIl, BAff, BdKno, BdMus, SplCr'
+    SecSkills: 'Percp, Compo, WpGen, ArmLt, FSTri, ArcAb, ArcCo, ArcTr, DivIn, DivLi'
+    Equipment: 'LtArmor, LtWeapon, Instrument, AdventurerKit'
+    AbilityPrio: 'Cha, Dex, Int, Wis, Str, Con'
+    ShowPCGen: 1
+  -
+    ID: 3
+    Name: 'Spy Bard'
+    ClassID: 1
+    PrimSkills: 'Athle, Lingu, Percp, Perfm, Psych, Steal, Thiev, WpLtB, FSTri, ArcEn, ArcIl, BdKno'
+    SecSkills: 'Acrob, Know, Compo, WpBaM, WpBow, WpGen, ArmLt, FSMob, ArcDi, DivLi, BAff, BdMus'
+    Equipment: 'LtArmor, MdWeapon, Crossbow, Instrument, AdventurerKit'
+    AbilityPrio: 'Cha, Dex, Int, Str, Con, Wis'
+    ShowPCGen: 1
+  -
+    ID: 4
+    Name: 'Cleric of Life'
+    ClassID: 2
+    PrimSkills: 'Heal, Psych, WpBaM, WpShd, ArmMd, DivBl, DivCh, DivIn, DivLi, DivPr, DivRe, DivSu, CAHea, EncIt, SplCr'
+    SecSkills: 'Percp, CmbIn, WpGen, DivEl, DivNa, DvPro'
+    Equipment: 'HvArmor, Shield, ClericWeapon, Crossbow, ClericFocus, AdventurerKit'
+    AbilityPrio: 'Wis, Cha, Con, Str, Dex, Int'
+    ShowPCGen: 1
+  -
+    ID: 5
+    Name: 'Cleric of Destruction'
+    ClassID: 2
+    PrimSkills: 'WpGen, WpFll, WpCrs, WpAre, WpShd, ArmHv, DivBl, DivDe, DivLi, DivPr, DivRe, CAChs, CADes'
+    SecSkills: 'Heal, Percp, Ride, CmbIn, FSPow, DivEl, DivIn, DvSmi, EncIt, SplCr'
+    Equipment: 'HvArmor, Shield, ClericWeapon, Crossbow, ClericFocus, AdventurerKit'
+    AbilityPrio: 'Wis, Con, Str, Cha, Dex, Int'
+    ShowPCGen: 1
+  -
+    ID: 6
+    Name: 'Cleric of Knowledge'
+    ClassID: 2
+    PrimSkills: 'Heal, Know, Psych, WpShd, ArmMd, DivBl, DivCh, DivIn, DivLi, DivPr, DivSu, CAKno, EncIt, SplCr'
+    SecSkills: 'Percp, CmbIn, WpGen, WpBaM, DivEl, DivRe, BdKno, CALaw'
+    Equipment: 'MdArmor, Shield, ClericWeapon, Crossbow, ClericFocus, AdventurerKit'
+    AbilityPrio: 'Wis, Cha, Int, Con, Str, Dex'
+    ShowPCGen: 1
+  -
+    ID: 7
+    Name: 'Cleric of War'
+    ClassID: 2
+    PrimSkills: 'WpGen, WpFll, WpCrs, WpAre, WpShd, ArmHv, Warfr, DivBl, DivDe, DivPr, DivRe, CAWar'
+    SecSkills: 'Heal, Percp, CmbIn, WpBaM, DivCh, DivEl, DivIn, DivLi, DivNa, DivSu, DvSmi, SplCr'
+    Equipment: 'HvArmor, Shield, ClericWeapon, Crossbow, ClericFocus, AdventurerKit'
+    AbilityPrio: 'Wis, Str, Cha, Con, Dex, Int'
+    ShowPCGen: 1
+  -
+    ID: 8
+    Name: Druid
+    ClassID: 3
+    PrimSkills: 'AnEmp, WpGen, DivAn, DivEl, DivIn, DivLi, DivNa, DivPl, DivPr, DAff, AniCm, WldSh'
+    SecSkills: 'Athle, Heal, Know, Percp, Compo, Surv, WpNat, WpAre, WpBaM, WpBrl, ArmLt, SplCr'
+    Equipment: 'LtArmor, Shield, DruidWeapon, Sling, DruidFocus, AdventurerKit'
+    AbilityPrio: 'Wis, Dex, Cha, Str, Con, Int'
+    ShowPCGen: 1
+  -
+    ID: 9
+    Name: Fighter
+    ClassID: 4
+    PrimSkills: 'Athle, WpGen, WpHvB, WpLtB, WpBow, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow, FSPre'
+    SecSkills: 'Craft, Ride, Percp, Surv, WpNat, WpAxe, WpExo, DaSns, FSTri, Warfr'
+    Equipment: 'HvArmor, Shield, HvWeapon, MdWeapon, Bow, AdventurerKit'
+    AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
+    ShowPCGen: 1
+  -
+    ID: 10
+    Name: 'Barbarian Fighter'
+    ClassID: 4
+    PrimSkills: 'Athle, Surv, WpNat, WpAxe, WpBow, WpExo, WpBrl, ArmMd, Bersk, CmbIn, DmRed, FSMob, FSPow'
+    SecSkills: 'Acrob, Craft, Percp, Ride, Steal, WpGen, WpShd, DaSns, FSPre, FSTri'
+    Equipment: 'MdArmor, HvWeapon, Bow, AdventurerKit'
+    AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
+    ShowPCGen: 1
+  -
+    ID: 11
+    Name: 'Duelist Fighter'
+    ClassID: 4
+    PrimSkills: 'Athle, WpFnc, WpLtB, WpCrs, WpGen, WpNat, ArmLt, CmbIn, DmRed, FSMob, FSMul, FSPre'
+    SecSkills: 'Acrob, Percp, Psych, Ride, Steal, WpExo, WpFir, WpBrl, WpShd, DaSns, FSPow, FSTri'
+    Equipment: 'LtArmor, MdWeapon, Crossbow, AdventurerKit'
+    AbilityPrio: 'Dex, Str, Con, Cha, Int, Wis'
+    ShowPCGen: 1
+  -
+    ID: 12
+    Name: Monk
+    ClassID: 5
+    PrimSkills: 'Acrob, Athle, WpNat, WpBrl, CmbIn, FSMob, FSMul, KiDef, KiMed, KiMob, KiOff, KiSFi'
+    SecSkills: 'Heal, Know, Percp, Psych, Compo, Steal, WpGen, WpExo, DaSns, FSPow, FSPre, FSTri'
+    Equipment: 'Clothing, MonkWeapon, Sling, AdventurerKit'
+    AbilityPrio: 'Wis, Dex, Str, Con, Int, Cha'
+    ShowPCGen: 1
+  -
+    ID: 13
+    Name: Seer
+    ClassID: 6
+    PrimSkills: 'Know, Compo, WpAre, WpBaM, WpRay, PsiCs, PsiMc, PsiPk, PsiPm, PsiPp, PsiTp, PACs, EncIt, PsCry, PsMob, SplCr'
+    SecSkills: 'Percp, Psych, WpGen, ArmLt'
+    Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
+    AbilityPrio: 'Wis, Int, Dex, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 14
+    Name: Shaper
+    ClassID: 6
+    PrimSkills: 'Know, Compo, WpAre, WpBaM, WpRay, PsiCs, PsiMc, PsiPk, PsiPm, PsiPp, PsiTp, PAMc, EncIt, PsCry, PsMob, SplCr'
+    SecSkills: 'Percp, Psych, WpGen, ArmLt'
+    Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 15
+    Name: Savant
+    ClassID: 6
+    PrimSkills: 'Know, Compo, WpAre, WpBaM, WpRay, PsiCs, PsiMc, PsiPk, PsiPm, PsiPp, PsiTp, PAPk, EncIt, PsCry, PsMob, SplCr'
+    SecSkills: 'Percp, Psych, WpGen, ArmLt'
+    Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
+    AbilityPrio: 'Int, Str, Wis, Dex, Con, Cha'
+    ShowPCGen: 1
+  -
+    ID: 16
+    Name: Egoist
+    ClassID: 6
+    PrimSkills: 'Know, Compo, WpAre, WpBaM, WpRay, PsiCs, PsiMc, PsiPk, PsiPm, PsiPp, PsiTp, PAPm, EncIt, PsCry, PsMob, SplCr'
+    SecSkills: 'Percp, Psych, WpGen, ArmLt'
+    Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
+    AbilityPrio: 'Con, Int, Wis, Str, Dex, Cha'
+    ShowPCGen: 1
+  -
+    ID: 17
+    Name: Nomad
+    ClassID: 6
+    PrimSkills: 'Know, Compo, WpAre, WpBaM, WpRay, PsiCs, PsiMc, PsiPk, PsiPm, PsiPp, PsiTp, PAPp, EncIt, PsCry, PsMob, SplCr'
+    SecSkills: 'Percp, Psych, WpGen, ArmLt'
+    Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
+    AbilityPrio: 'Dex, Int, Wis, Con, Str, Cha'
+    ShowPCGen: 1
+  -
+    ID: 18
+    Name: Telepath
+    ClassID: 6
+    PrimSkills: 'Know, Compo, WpAre, WpBaM, WpRay, PsiCs, PsiMc, PsiPk, PsiPm, PsiPp, PsiTp, PATp, EncIt, PsCry, PsMob, SplCr'
+    SecSkills: 'Percp, Psych, WpGen, ArmLt'
+    Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
+    AbilityPrio: 'Cha, Int, Wis, Dex, Con, Str'
+    ShowPCGen: 1
+  -
+    ID: 19
+    Name: Psiwarrior
+    ClassID: 7
+    PrimSkills: 'Athle, WpNat, WpHvB, WpGen, WpBrl, WpShd, WpBow, WpBaM, ArmMd, CmbIn, FSPow, PsMob, PsOff'
+    SecSkills: 'Percp, Compo, WpExo, WpRay, FSMob, PsiCs, PsiPk, PsiPm, PsiPp, PAPm'
+    Equipment: 'HvWeapon, MdWeapon, Bow, PsiFocus, AdventurerKit'
+    AbilityPrio: 'Str, Con, Dex, Wis, Int, Cha'
+    ShowPCGen: 1
+  -
+    ID: 20
+    Name: Ranger
+    ClassID: 8
+    PrimSkills: 'AnEmp, Athle, Percp, Steal, Surv, WpGen, WpHvB, WpBow, ArmLt, CmbIn, EnSpc, FSMul'
+    SecSkills: 'Acrob, Heal, Know, Ride, FSMob, FSPow, DivAn, DivIn, DivLi, DivNa, DAff, AniCm'
+    Equipment: 'LtArmor, MdWeapon, Bow, AdventurerKit'
+    AbilityPrio: 'Dex, Str, Wis, Con, Int, Cha'
+    ShowPCGen: 1
+  -
+    ID: 21
+    Name: 'Arcane Archer'
+    ClassID: 8
+    PrimSkills: 'Athle, Percp, WpGen, WpFnc, WpBow, WpAre, ArmLt, CmbIn, FSMob, AArch'
+    SecSkills: 'Acrob, Heal, Know, Ride, Steal, Surv, WpHvB, FSMul, FSPow, FSPre, ArcEn, ArcHy, ArcIm, ArcPy, DivIn, DivLi'
+    Equipment: 'LtArmor, MdWeapon, Bow, AdventurerKit'
+    AbilityPrio: 'Dex, Str, Wis, Con, Int, Cha'
+    ShowPCGen: 1
+  -
+    ID: 22
+    Name: Rogue
+    ClassID: 9
+    PrimSkills: 'Acrob, Athle, Percp, Compo, Steal, Thiev, WpGen, WpFnc, WpSmT, DaSns, FSMul, FSMob, VitAt'
+    SecSkills: 'Know, Psych, ArmLt, CmbIn, FSPow, FSTri, ArcDi, ArcIl, ArcTr, PsMag'
+    Equipment: 'LtArmor, Buckler, MdWeapon, Bow, Tools, AdventurerKit'
+    AbilityPrio: 'Dex, Int, Wis, Str, Cha, Con'
+    ShowPCGen: 1
+  -
+    ID: 23
+    Name: Sorcerer
+    ClassID: 12
+    PrimSkills: 'WpAre, WpBaM, WpRay, ArcAb, ArcAe, ArcCo, ArcDi, ArcEn, ArcHy, ArcLi, ArcNe, ArcPy, ArcTr, SAEle, Famil, SplCr'
+    SecSkills: 'Know, Compo, WpGen, EncIt'
+    Equipment: 'Clothing, SimpleWeapon, Crossbow, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Cha, Wis, Dex, Con, Int, Str'
+    ShowPCGen: 1
+  -
+    ID: 24
+    Name: 'Templar of Honor'
+    ClassID: 11
+    PrimSkills: 'Heal, Ride, WpGen, WpHvB, WpShd, WpSpr, ArmHv, CmbIn, FSPow, FSPre, DvMnt, DvPro, DvSmi'
+    SecSkills: 'Psych, Warfr, DivBl, DivIn, DivLi, DivPr, DivRe, DivSu, CAGoo, SplCr'
+    Equipment: 'HvArmor, Shield, MdWeapon, Bow, AdventurerKit, Mount'
+    AbilityPrio: 'Cha, Str, Wis, Con, Dex, Int'
+    ShowPCGen: 1
+  -
+    ID: 25
+    Name: 'Templar of Freedom'
+    ClassID: 11
+    PrimSkills: 'Heal, Ride, WpGen, WpHvB, WpShd, WpSpr, ArmHv, CmbIn, FSPow, FSPre, DvMnt, DvPro, DvSmi'
+    SecSkills: 'Psych, Warfr, DivBl, DivIn, DivLi, DivPr, DivRe, DivSu, CAGoo, SplCr'
+    Equipment: 'HvArmor, Shield, MdWeapon, Bow, AdventurerKit, Mount'
+    AbilityPrio: 'Cha, Str, Wis, Con, Dex, Int'
+    ShowPCGen: 1
+  -
+    ID: 26
+    Name: 'Templar of Tyranny'
+    ClassID: 11
+    PrimSkills: 'Ride, WpGen, WpHvB, WpShd, WpSpr, ArmHv, CmbIn, FSPow, FSPre, DvMnt, DvPro, DvSmi'
+    SecSkills: 'Heal, Psych, VitAt, Warfr, DivBl, DivDe, DivIn, DivPr, DivRe, DivSu, CAEvi, SplCr'
+    Equipment: 'HvArmor, Shield, MdWeapon, Bow, AdventurerKit, Mount'
+    AbilityPrio: 'Cha, Str, Wis, Con, Dex, Int'
+    ShowPCGen: 1
+  -
+    ID: 27
+    Name: 'Templar of Slaughter'
+    ClassID: 11
+    PrimSkills: 'Ride, WpGen, WpHvB, WpShd, WpSpr, ArmHv, CmbIn, FSPow, FSPre, DvMnt, DvPro, DvSmi'
+    SecSkills: 'Heal, Psych, VitAt, Warfr, DivBl, DivDe, DivIn, DivPr, DivRe, DivSu, CAEvi, SplCr'
+    Equipment: 'HvArmor, Shield, MdWeapon, Bow, AdventurerKit, Mount'
+    AbilityPrio: 'Cha, Str, Wis, Con, Dex, Int'
+    ShowPCGen: 1
+  -
+    ID: 28
+    Name: Wizard
+    ClassID: 12
+    PrimSkills: 'WpAre, ArcAb, ArcAe, ArcCo, ArcDi, ArcEn, ArcIm, ArcIl, ArcKi, ArcNe, ArcOu, ArcPy, ArcTr, WAGen'
+    SecSkills: 'Know, WpBaM, WpRay, ArcHy, ArcLi, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 29
+    Name: Abjurer
+    ClassID: 12
+    PrimSkills: 'WpBaM, ArcAb, ArcCo, ArcDi, ArcEn, ArcIm, ArcIl, ArcKi, ArcLi, ArcNe, ArcOu, ArcTr, WAGen, WAAbj'
+    SecSkills: 'Know, Compo, WpAre, WpRay, WpGen, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 30
+    Name: Aeromancer
+    ClassID: 12
+    PrimSkills: 'WpAre, WpRay, ArcAb, ArcAe, ArcCo, ArcDi, ArcHy, ArcIm, ArcKi, ArcOu, ArcPy, ArcTr, WAGen, WAAer'
+    SecSkills: 'Know, Compo, WpBaM, WpGen, ArcEn, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 31
+    Name: Diviner
+    ClassID: 12
+    PrimSkills: 'WpBaM, ArcAb, ArcAe, ArcCo, ArcDi, ArcEn, ArcIm, ArcIl, ArcKi, ArcNe, ArcOu, ArcTr, WAGen, WADiv'
+    SecSkills: 'Know, Compo, WpAre, WpRay, WpGen, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 32
+    Name: Hydromancer
+    ClassID: 12
+    PrimSkills: 'WpAre, WpRay, ArcAb, ArcAe, ArcCo, ArcDi, ArcHy, ArcIl, ArcKi, ArcLi, ArcOu, ArcTr, WAGen, WAHyd'
+    SecSkills: 'Know, Compo, WpBaM, WpGen, ArcEn, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 33
+    Name: Illuminist
+    ClassID: 12
+    PrimSkills: 'WpAre, WpRay, ArcAb, ArcAe, ArcDi, ArcHy, ArcIm, ArcIl, ArcKi, ArcOu, ArcPy, ArcTr, WAGen, WAIlm'
+    SecSkills: 'Know, Compo, WpBaM, WpGen, ArcEn, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 34
+    Name: Illusionist
+    ClassID: 12
+    PrimSkills: 'WpBaM, ArcAb, ArcAe, ArcDi, ArcEn, ArcHy, ArcIm, ArcIl, ArcKi, ArcOu, ArcPy, ArcTr, WAGen, WAIls'
+    SecSkills: 'Know, Compo, WpAre, WpRay, WpGen, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 35
+    Name: Kineticist
+    ClassID: 12
+    PrimSkills: 'WpBaM, ArcAb, ArcAe, ArcDi, ArcEn, ArcHy, ArcIm, ArcIl, ArcKi, ArcLi, ArcOu, ArcTr, WAGen, WAKin'
+    SecSkills: 'Know, Compo, WpAre, WpRay, WpGen, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 36
+    Name: Lithomancer
+    ClassID: 12
+    PrimSkills: 'WpAre, WpRay, ArcAb, ArcCo, ArcDi, ArcHy, ArcKi, ArcLi, ArcNe, ArcOu, ArcPy, ArcTr, WAGen, WALit'
+    SecSkills: 'Know, Compo, WpBaM, WpGen, ArcEn, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 37
+    Name: Ouranomancer
+    ClassID: 12
+    PrimSkills: 'WpBaM, ArcAb, ArcAe, ArcCo, ArcDi, ArcEn, ArcHy, ArcIm, ArcIl, ArcOu, ArcPy, ArcTr, WAGen, WAOur'
+    SecSkills: 'Know, Compo, WpAre, WpRay, WpGen, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 38
+    Name: Pyromancer
+    ClassID: 12
+    PrimSkills: 'WpAre, WpRay, ArcAe, ArcCo, ArcDi, ArcIm, ArcIl, ArcKi, ArcLi, ArcOu, ArcPy, ArcTr, WAGen, WAPyr'
+    SecSkills: 'Know, Compo, WpBaM, WpGen, ArcEn, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 39
+    Name: Transmuter
+    ClassID: 12
+    PrimSkills: 'WpBaM, ArcAb, ArcDi, ArcEn, ArcHy, ArcIm, ArcKi, ArcLi, ArcNe, ArcOu, ArcPy, ArcTr, WAGen, WATra'
+    SecSkills: 'Know, Compo, WpAre, WpRay, WpGen, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 40
+    Name: Conjurer
+    ClassID: 12
+    PrimSkills: 'WpBaM, ArcAb, ArcAe, ArcCo, ArcDi, ArcHy, ArcIm, ArcKi, ArcLi, ArcOu, ArcPy, ArcTr, WAGen, WACon'
+    SecSkills: 'Know, Compo, WpAre, WpRay, WpGen, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 41
+    Name: Enchanter
+    ClassID: 12
+    PrimSkills: 'WpBaM, ArcAb, ArcAe, ArcCo, ArcDi, ArcEn, ArcIm, ArcIl, ArcLi, ArcNe, ArcOu, ArcTr, WAGen, WAEnc'
+    SecSkills: 'Know, Compo, WpAre, WpRay, WpGen, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 42
+    Name: Necromancer
+    ClassID: 12
+    PrimSkills: 'WpAre, WpRay, ArcAb, ArcAe, ArcCo, ArcDi, ArcIl, ArcKi, ArcLi, ArcNe, ArcOu, ArcTr, WAGen, WANec'
+    SecSkills: 'Know, Compo, WpBaM, WpGen, ArcEn, EncIt, Famil, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 43
+    Name: Adept
+    ClassID: 13
+    PrimSkills: 'Heal, Know, Surv, WpLtB, WpBaM, SplCr, AAff'
+    SecSkills: 'Craft, Percp, WpGen, ArcIl, ArcTr, DivCh, DivIn, DivLi, DivPr, Famil'
+    Equipment: null
+    AbilityPrio: 'Wis, Con, Dex, Int, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 44
+    Name: Shaman
+    ClassID: 13
+    PrimSkills: 'AnEmp, Craft, Heal, Know, WpClb, AAff'
+    SecSkills: 'Percp, WpGen, WpBaM, CmbIn, DivAn, DivCh, DivIn, DivLi, DivNa, DivPr, DivRe, SplCr'
+    Equipment: null
+    AbilityPrio: 'Wis, Con, Dex, Int, Cha, Str'
+    ShowPCGen: 1
+  -
+    ID: 45
+    Name: 'Witch Doctor'
+    ClassID: 13
+    PrimSkills: 'Craft, Know, WpClb, WpStv, SplCr, AAff'
+    SecSkills: 'Heal, Percp, Ride, Compo, WpGen, WpBaM, ArcIl, ArcTr, DivIn, DivPr, EncIt, Famil'
+    Equipment: null
+    AbilityPrio: 'Wis, Int, Dex, Cha, Con, Str'
+    ShowPCGen: 1
+  -
+    ID: 46
+    Name: Soldier
+    ClassID: 4
+    PrimSkills: 'Athle, WpGen, WpHvB, WpLtB, WpCrs, WpShd, ArmMd, ArmHv, CmbIn, DmRed'
+    SecSkills: 'Craft, Percp, Ride, WpBow, DaSns, FSPow, FSPre, Warfr'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
+    ShowPCGen: 1
+  -
+    ID: 47
+    Name: Scout
+    ClassID: 8
+    PrimSkills: 'AnEmp, Athle, Percp, Steal, Surv, WpAxe, WpHvB, WpBow, ArmLt, CmbIn, EnSpc, FSMob, FSMul'
+    SecSkills: 'Craft, Heal, Know, Ride, WpGen, WpSmT, DaSns, DivAn, DivNa, AniCm'
+    Equipment: null
+    AbilityPrio: 'Dex, Con, Str, Wis, Int, Cha'
+    ShowPCGen: 1
+  -
+    ID: 48
+    Name: Smuggler
+    ClassID: 9
+    PrimSkills: 'Craft, Know, Percp, Steal, Thiev, WpLtB, WpSmT, DaSns, FSMul, PsMag'
+    SecSkills: 'Lingu, Psych, WpGen, ArmLt, FSMob, FSTri, ArcDi, ArcIl, ArcTr'
+    Equipment: null
+    AbilityPrio: 'Int, Dex, Cha, Wis, Str, Con'
+    ShowPCGen: 1
+  -
+    ID: 49
+    Name: Spy
+    ClassID: 9
+    PrimSkills: 'Acrob, Athle, Lingu, Percp, Compo, Steal, Thiev, WpFnc, WpSmT, DaSns, FSMul, VitAt'
+    SecSkills: 'Psych, WpGen, WpLtB, ArmLt, FSMob, FSTri, ArcIl, PsMag'
+    Equipment: null
+    AbilityPrio: 'Dex, Wis, Int, Cha, Str, Con'
+    ShowPCGen: 1
+  -
+    ID: 50
+    Name: Thug
+    ClassID: 9
+    PrimSkills: 'Athle, WpNat, WpBrl, WpGen, WpFnc, WpCrs, WpSmT, ArmLt, CmbIn, FSMul, FSTri, VitAt'
+    SecSkills: 'Psych, Steal, Thiev, FSMob, FSPow'
+    Equipment: null
+    AbilityPrio: 'Str, Dex, Con, Cha, Wis, Int'
+    ShowPCGen: 1
+  -
+    ID: 51
+    Name: Battlemage
+    ClassID: 12
+    PrimSkills: 'WpAre, WpBaM, WpRay, ArcAb, ArcAe, ArcCo, ArcDi, ArcEn, ArcIm, ArcNe, ArcPy, ArcTr, SAEle'
+    SecSkills: 'Know, WpGen, CmbIn, ArcHy, ArcIl, ArcKi, ArcLi, ArcOu, EncIt, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Cha, Wis, Dex, Str, Con, Int'
+    ShowPCGen: 1
+  -
+    ID: 52
+    Name: 'War Wizard'
+    ClassID: 12
+    PrimSkills: 'WpAre, WpBaM, WpRay, ArcAb, ArcAe, ArcDi, ArcHy, ArcIm, ArcIl, ArcKi, ArcLi, ArcOu, ArcPy, ArcTr, WAGen'
+    SecSkills: 'Know, WpGen, CmbIn, ArcCo, EncIt, SplCr'
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
+    AbilityPrio: 'Int, Dex, Wis, Con, Str, Cha'
+    ShowPCGen: 1
+  -
+    ID: 53
+    Name: Aristocrat
+    ClassID: 14
+    PrimSkills: 'Lingu, Ride, WpFnc, WpBow, WpFir, ArmLt, ArmMd'
+    SecSkills: 'Athle, Know, Percp, Perfm, Surv, WpGen, WpShd, FSPre, FSPow, Warfr'
+    Equipment: null
+    AbilityPrio: 'Cha, Int, Dex, Str, Con, Wis'
+    ShowPCGen: 1
+  -
+    ID: 54
+    Name: Politician
+    ClassID: 14
+    PrimSkills: 'Know, Lingu, Perfm, Psych'
+    SecSkills: 'Percp, Ride, WpFnc, WpGen, Warfr'
+    Equipment: null
+    AbilityPrio: 'Cha, Int, Wis, Con, Dex, Str'
+    ShowPCGen: 1
+  -
+    ID: 55
+    Name: Laborer
+    ClassID: 15
+    PrimSkills: 'Craft, Prof'
+    SecSkills: 'AnEmp, Athle, Surv, WpNat, WpBrl, WpGen'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Cha, Wis, Int'
+    ShowPCGen: 1
+  -
+    ID: 56
+    Name: Servant
+    ClassID: 15
+    PrimSkills: 'Percp, Prof'
+    SecSkills: 'Craft, Heal, Psych, Ride, WpGen'
+    Equipment: null
+    AbilityPrio: 'Wis, Int, Cha, Con, Dex, Str'
+    ShowPCGen: 1
+  -
+    ID: 57
+    Name: Merchant
+    ClassID: 16
+    PrimSkills: 'Craft, Prof, Ride'
+    SecSkills: 'Psych, WpGen, Surv'
+    Equipment: null
+    AbilityPrio: 'Wis, Cha, Int, Con, Dex, Str'
+    ShowPCGen: 1
+  -
+    ID: 58
+    Name: Craftsman
+    ClassID: 16
+    PrimSkills: 'Craft, Prof'
+    SecSkills: Know
+    Equipment: null
+    AbilityPrio: 'Str, Dex, Int, Wis, Cha, Con'
+    ShowPCGen: 1
+  -
+    ID: 59
+    Name: Sage
+    ClassID: 16
+    PrimSkills: 'Know, Lingu, Psych'
+    SecSkills: 'Craft, Heal, Perfm, Prof'
+    Equipment: null
+    AbilityPrio: 'Int, Wis, Cha, Dex, Con, Str'
+    ShowPCGen: 1
+  -
+    ID: 60
+    Name: Guard
+    ClassID: 17
+    PrimSkills: 'WpGen, WpLtB, WpCrs, ArmLt, ArmMd'
+    SecSkills: 'Percp, Ride, WpHvB, WpPlA, WpShd, CmbIn'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
+    ShowPCGen: 1
+  -
+    ID: 61
+    Name: Savage
+    ClassID: 17
+    PrimSkills: 'Athle, WpAxe, WpGen, WpClb, WpBow, WpSmT, ArmLt, CmbIn'
+    SecSkills: 'Percp, Ride, Steal, Surv, WpBrl, WpShd'
+    Equipment: null
+    AbilityPrio: 'Str, Dex, Con, Wis, Cha, Int'
+    ShowPCGen: 1
+  -
+    ID: 62
+    Name: 'Aggressive Beast'
+    ClassID: 17
+    PrimSkills: 'Athle, WpNat, WpBrl, CmbIn, FSMul'
+    SecSkills: 'Acrob, Percp, Steal, Surv'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
+    ShowPCGen: null
+  -
+    ID: 63
+    Name: 'Peaceful Beast'
+    ClassID: 15
+    PrimSkills: Athle
+    SecSkills: 'Percp, Surv, WpNat, WpBrl, CmbIn, FSMul'
+    Equipment: null
+    AbilityPrio: 'Dex, Con, Wis, Str, Cha, Int'
+    ShowPCGen: null
+  -
+    ID: 64
+    Name: Assassin
+    ClassID: 9
+    PrimSkills: 'Acrob, Athle, Percp, Steal, Thiev, WpNat, WpFnc, WpCrs, WpSmT, ArmLt, DaSns, FSMul, FSPre, VitAt'
+    SecSkills: 'Perfm, Psych, Compo, WpGen, CmbIn, FSMob, FSTri, ArcIl'
+    Equipment: null
+    AbilityPrio: 'Dex, Str, Int, Con, Wis, Cha'
+    ShowPCGen: 1
+  -
+    ID: 65
+    Name: Gladiator
+    ClassID: 4
+    PrimSkills: 'Athle, WpNat, WpGen, WpExo, WpBrl, WpHvB, WpSpr, WpShd, ArmLt, ArmMd, CmbIn, DmRed, FSMul, FSMob, FSPow'
+    SecSkills: 'Acrob, Bersk, DaSns, FSTri'
+    Equipment: null
+    AbilityPrio: 'Str, Dex, Con, Cha, Int, Wis'
+    ShowPCGen: 1
+  -
+    ID: 66
+    Name: Construct
+    ClassID: 4
+    PrimSkills: 'WpNat, WpBrl'
+    SecSkills: WpGen
+    Equipment: null
+    AbilityPrio: 'Str, Con, Wis, Cha, Dex, Int'
+    ShowPCGen: null
+  -
+    ID: 67
+    Name: Dragon
+    ClassID: 7
+    PrimSkills: 'Athle, Know, Lingu, Percp, Psych, WpNat, WpBrl, WpAre, WpBaM, CmbIn, DmRed, FSMul, FSPow, ArcDi, ArcEn, ArcIl, DracA'
+    SecSkills: 'Acrob, Craft, Perfm, Steal, Surv, WpRay, DaSns, ArcAb, ArcIm, ArcKi, ArcOu, ArcTr, DivAn, DivDe, DivLi, DivNa, DivPl, PsMag, SplCr'
+    Equipment: null
+    AbilityPrio: 'Cha, Str, Con, Int, Dex, Wis'
+    ShowPCGen: null
+  -
+    ID: 68
+    Name: Archer
+    ClassID: 4
+    PrimSkills: 'Athle, WpLtB, WpBow, WpCrs, ArmLt, ArmMd'
+    SecSkills: 'Craft, Percp, Ride, WGen, WpHvB, WpFir, WpShd, CmbIn, DmRed, DaSns, FSMob, Warfr'
+    Equipment: null
+    AbilityPrio: 'Dex, Str, Wis, Con, Int, Cha'
+    ShowPCGen: 1
+  -
+    ID: 69
+    Name: 'Trained Beast'
+    ClassID: 17
+    PrimSkills: 'Athle, WpNat, WpBrl, CmbIn, ArmLt, ArmMd, FSMul'
+    SecSkills: 'Acrob, Percp, Steal, Surv'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Int, Dex, Wis, Cha'
+    ShowPCGen: null
+  -
+    ID: 70
+    Name: Aboleth
+    ClassID: 1
+    PrimSkills: 'Athle, Know, Percp, WpNat, WpBrl, WpBaM, FSMul, ArcEn, ArcIl'
+    SecSkills: 'Psych, CmbIn'
+    Equipment: null
+    AbilityPrio: 'Cha, Wis, Con, Int, Str, Dex'
+    ShowPCGen: null
+  -
+    ID: 71
+    Name: 'Mindless Undead'
+    ClassID: 4
+    PrimSkills: 'WpNat, WpBrl'
+    SecSkills: 'Percp, WpGen'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Wis, Dex, Cha, Int'
+    ShowPCGen: null
+  -
+    ID: 72
+    Name: Undead
+    ClassID: 4
+    PrimSkills: 'Percp, Steal, WpNat, WpBrl, WpGen, CmbIn, FSMul'
+    SecSkills: 'Athle, Know, Psych, Surv'
+    Equipment: null
+    AbilityPrio: 'Str, Cha, Con, Wis, Dex, Int'
+    ShowPCGen: null
+  -
+    ID: 73
+    Name: 'Spellcaster Undead'
+    ClassID: 2
+    PrimSkills: 'Know, Percp, Psych, Steal, WpNat, WpAre, WpBaM, DivDe, DivIn, SplCr, CADea'
+    SecSkills: 'Athle, Surv, WpBrl, WpGen, WpRay, CmbIn, ArcIl, DivCh, DivEl, DivPr, DivRe, DivSu'
+    Equipment: null
+    AbilityPrio: 'Int, Wis, Cha, Dex, Str, Con'
+    ShowPCGen: null
+  -
+    ID: 74
+    Name: Angel
+    ClassID: 11
+    PrimSkills: 'Heal, Know, Percp, Psych, Steal, WpNat, WpGen, WpHvB, WpBow, WpAre, WpBaM, CmbIn, DaSns, FSPow, DivBl, DivIn, DivLi, DivPr, DivRe, DvSmi'
+    SecSkills: 'Acrob, Athle, Craft, WpBrl, Warfr, DivCh, DivEl, DivSu, CAGoo, SplCr'
+    Equipment: null
+    AbilityPrio: 'Wis, Cha, Str, Int, Con, Dex'
+    ShowPCGen: null
+  -
+    ID: 75
+    Name: Archon
+    ClassID: 11
+    PrimSkills: 'Know, Percp, Psych, Steal, WpNat, WpGen, WpHvB, WpRay, CmbIn, DaSns, FSPow, DivBl, DivIn, DvSmi'
+    SecSkills: 'Acrob, AnEmp, Athle, Perfm, Ride, WpBrl, Warfr, CAGoo, SplCr'
+    Equipment: null
+    AbilityPrio: 'Wis, Cha, Str, Int, Con, Dex'
+    ShowPCGen: null
+  -
+    ID: 76
+    Name: 'Smart Beast'
+    ClassID: 5
+    PrimSkills: 'Know, Percp, Psych, WpNat, WpBrl, CmbIn, FSMul'
+    SecSkills: 'Acrob, Athle, Heal, Steal, Surv'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Int, Dex, Wis, Cha'
+    ShowPCGen: null
+  -
+    ID: 77
+    Name: Demon
+    ClassID: 11
+    PrimSkills: 'Percp, Psych, Steal, WpNat, WpBrl, WpGen, WpHvB, WpExo, WpAre, WpBaM, CmbIn, DaSns, FSMul, FSPow, DivDe, DivRe, DivSu, DvSmi'
+    SecSkills: 'Acrob, Athle, Craft, Know, Surv, Thiev, WpShd, VitAt, ArcKi, DivCh, DivEl, DivIn, DivPr, CAEvi, PsMag, SplCr'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Cha, Int, Dex, Wis'
+    ShowPCGen: null
+  -
+    ID: 78
+    Name: Devil
+    ClassID: 11
+    PrimSkills: 'Percp, Psych, Steal, WpNat, WpBrl, WpGen, WpHvB, WpExo, WpPlA, WpAre, CmbIn, FSMul, FSPow, DivRe, DivSu'
+    SecSkills: 'Acrob, Athle, Craft, Know, Surv, Thiev, WpBow, WpBaM, ArcIl, ArcPy, DivCh, DivIn, CAEvi, DvSmi, SplCr'
+    Equipment: null
+    AbilityPrio: 'Cha, Str, Int, Wis, Con, Dex'
+    ShowPCGen: null
+  -
+    ID: 79
+    Name: 'Air Elemental'
+    ClassID: 17
+    PrimSkills: 'Percp, WpNat, WpBrl, CmbIn'
+    SecSkills: 'Athle, ArcAe, FSMul'
+    Equipment: null
+    AbilityPrio: 'Dex, Int, Wis, Str, Con, Cha'
+    ShowPCGen: null
+  -
+    ID: 80
+    Name: 'Earth Elemental'
+    ClassID: 17
+    PrimSkills: 'Percp, WpNat, WpBrl, CmbIn'
+    SecSkills: 'Athle, ArcLi, FSMul'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Wis, Int, Cha, Dex'
+    ShowPCGen: null
+  -
+    ID: 81
+    Name: 'Fire Elemental'
+    ClassID: 17
+    PrimSkills: 'Percp, WpNat, WpBrl, CmbIn'
+    SecSkills: 'Athle, ArcPy, FSMul'
+    Equipment: null
+    AbilityPrio: 'Dex, Int, Str, Cha, Con, Wis'
+    ShowPCGen: null
+  -
+    ID: 82
+    Name: 'Water Elemental'
+    ClassID: 17
+    PrimSkills: 'Percp, WpNat, WpBrl, CmbIn'
+    SecSkills: 'Athle, ArcHy, FSMul'
+    Equipment: null
+    AbilityPrio: 'Wis, Str, Cha, Con, Dex, Int'
+    ShowPCGen: null
+  -
+    ID: 83
+    Name: Hag
+    ClassID: 1
+    PrimSkills: 'Athle, Percp, WpNat, WpBaM, FSMob, FSPow, ArcEn, ArcIl'
+    SecSkills: 'Acrob, Know, Lingu, Perfm, Psych, Steal, Thiev, WpFnc, WpBow, ArcDi, ArcKi, DivLi, WAEnc, SplCr'
+    Equipment: null
+    AbilityPrio: 'Cha, Wis, Con, Dex, Str, Int'
+    ShowPCGen: null
+  -
+    ID: 84
+    Name: Yugoloth
+    ClassID: 11
+    PrimSkills: 'Percp, Psych, Steal, WpNat, WpBrl, WpGen, WpHvB, WpExo, WpPlA, WpAre, CmbIn, FSMul, FSPow, DivRe, DivSu'
+    SecSkills: 'Acrob, Athle, Craft, Know, Surv, Thiev, WpBow, WpBaM, ArcIl, ArcPy, DivCh, DivIn, CAEvi, DvSmi, SplCr'
+    Equipment: null
+    AbilityPrio: 'Cha, Str, Int, Wis, Con, Dex'
+    ShowPCGen: null
+  -
+    ID: 85
+    Name: 'Axe Fighter'
+    ClassID: 4
+    PrimSkills: 'Athle, WpGen, WpAxe, WpPlA, WpLtB, WpCrs, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow'
+    SecSkills: 'Craft, Ride, Percp, Surv, WpNat, WpHvB, WpExo, DaSns, FSTri, Warfr'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Cha, Wis, Int'
+    ShowPCGen: 1
+  -
+    ID: 86
+    Name: 'Mace Fighter'
+    ClassID: 4
+    PrimSkills: 'Athle, WpGen, WpClb, WpFll, WpLtB, WpCrs, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow'
+    SecSkills: 'Craft, Ride, Percp, Surv, WpNat, WpAxe, WpExo, DaSns, FSTri, Warfr'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Cha, Wis, Int'
+    ShowPCGen: 1
+  -
+    ID: 87
+    Name: 'Spear Fighter'
+    ClassID: 4
+    PrimSkills: 'Athle, WpGen, WpSpr, WpPlA, WpLtB, WpCrs, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow'
+    SecSkills: 'Craft, Ride, Percp, Surv, WpNat, WpAxe, WpExo, DaSns, FSTri, Warfr'
+    Equipment: null
+    AbilityPrio: 'Dex, Str, Con, Cha, Wis, Int'
+    ShowPCGen: 1
+  -
+    ID: 88
+    Name: Axeman
+    ClassID: 17
+    PrimSkills: 'WpGen, WpAxe, WpCrs, ArmLt, ArmMd'
+    SecSkills: 'Percp, Ride, WpLtB, WpPlA, WpShd, CmbIn'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
+    ShowPCGen: 1
+  -
+    ID: 89
+    Name: Maceman
+    ClassID: 17
+    PrimSkills: 'WpGen, WpClb, WpCrs, ArmLt, ArmMd'
+    SecSkills: 'Percp, Ride, WpLtB, WpPlA, WpShd, CmbIn'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
+    ShowPCGen: 1
+  -
+    ID: 90
+    Name: Spearman
+    ClassID: 17
+    PrimSkills: 'WpGen, WpSpr, WpCrs, ArmLt, ArmMd'
+    SecSkills: 'Percp, Ride, WpLtB, WpPlA, WpShd, CmbIn'
+    Equipment: null
+    AbilityPrio: 'Dex, Str, Con, Wis, Cha, Int'
+    ShowPCGen: 1
+  -
+    ID: 91
+    Name: Swordsman
+    ClassID: 17
+    PrimSkills: 'WpGen, WpHvB, WpCrs, ArmLt, ArmMd'
+    SecSkills: 'Percp, Ride, WpLtB, WpPlA, WpShd, CmbIn'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
+    ShowPCGen: 1
+  -
+    ID: 92
+    Name: 'Student of Elements'
+    ClassID: 5
+    PrimSkills: 'WpNat, WpBrl, FSMob, FSMul, KiDef, KiMed, KiMob, KiOff, KiSAi, KiSEa, KiSFi, KiSWa'
+    SecSkills: 'Acrob, Athle, Percp, Psych, Compo, Steal, WpGen, CmbIn, DaSns, FSPow, FSPre, FSTri'
+    Equipment: null
+    AbilityPrio: 'Wis, Dex, Str, Con, Int, Cha'
+    ShowPCGen: 1
+  -
+    ID: 93
+    Name: 'Student of Air'
+    ClassID: 5
+    PrimSkills: 'Acrob, Athle, WpNat, WpBrl, CmbIn, FSMob, FSMul, KiDef, KiMed, KiMob, KiOff, KiSAi'
+    SecSkills: 'Heal, Know, Percp, Psych, Compo, Steal, WpGen, WpExo, DaSns, FSPow, FSPre, FSTri'
+    Equipment: null
+    AbilityPrio: 'Dex, Wis, Str, Con, Int, Cha'
+    ShowPCGen: 1
+  -
+    ID: 94
+    Name: 'Student of Earth'
+    ClassID: 5
+    PrimSkills: 'Acrob, Athle, WpNat, WpBrl, CmbIn, FSPow, FSMul, KiDef, KiMed, KiMob, KiOff, KiSEa'
+    SecSkills: 'Heal, Know, Percp, Psych, Compo, Steal, WpGen, WpExo, DaSns, FSMob, FSPre, FSTri'
+    Equipment: null
+    AbilityPrio: 'Str, Wis, Con, Dex, Int, Cha'
+    ShowPCGen: 1
+  -
+    ID: 95
+    Name: 'Student of Fire'
+    ClassID: 5
+    PrimSkills: 'Acrob, Athle, WpNat, WpGen, CmbIn, FSPre, FSMul, KiDef, KiMed, KiMob, KiOff, KiSFi'
+    SecSkills: 'Heal, Know, Percp, Psych, Compo, Steal, WpBrl, WpExo, DaSns, FSPow, FSMob, FSTri'
+    Equipment: null
+    AbilityPrio: 'Dex, Wis, Str, Con, Int, Cha'
+    ShowPCGen: 1
+  -
+    ID: 96
+    Name: 'Student of Water'
+    ClassID: 5
+    PrimSkills: 'Acrob, Athle, WpNat, WpBrl, CmbIn, FSMob, FSMul, KiDef, KiMed, KiMob, KiOff, KiSWa'
+    SecSkills: 'Heal, Know, Percp, Psych, Compo, Steal, WpGen, WpExo, DaSns, FSPow, FSPre, FSTri'
+    Equipment: null
+    AbilityPrio: 'Wis, Dex, Str, Con, Int, Cha'
+    ShowPCGen: 1
+  -
+    ID: 97
+    Name: 'Giant Fighter'
+    ClassID: 4
+    PrimSkills: 'Athle, Surv, WpGen, WpAxe, WpClb, WpHvB, WpBow, WpBrl, ArmMd, ArmHv, CmbIn, FSPow, FSPre'
+    SecSkills: 'Craft, Ride, Percp, WpNat, WpLtB, WpShd, DaSns, DmRed, FSTri, Warfr'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
+    ShowPCGen: null
+  -
+    ID: 98
+    Name: 'Giant Warrior'
+    ClassID: 17
+    PrimSkills: 'Athle, WpAxe, WpGen, WpClb, WpBow, WpSmT, ArmLt, CmbIn'
+    SecSkills: 'Percp, Ride, Surv, WpBrl, WpShd, ArmMd'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
+    ShowPCGen: null
+  -
+    ID: 99
+    Name: 'Mindspy Psion'
+    ClassID: 6
+    PrimSkills: 'Know, Compo, WpAre, WpBaM, WpRay, PsiCs, PsiMc, PsiPk, PsiPm, PsiPp, PsiTp, PATp, PsCry, PsMob, SplCr, CmbTp'
+    SecSkills: 'Percp, Psych, WpGen, ArmLt'
+    Equipment: null
+    AbilityPrio: 'Cha, Int, Wis, Dex, Con, Str'
+    ShowPCGen: null
+  -
+    ID: 100
+    Name: 'Mindspy Psiwarrior'
+    ClassID: 7
+    PrimSkills: 'Athle, WpNat, WpHvB, WpGen, WpShd, WpBow, WpBaM, ArmMd, CmbIn, FSPow, PsMob, PsOff, CmbTp'
+    SecSkills: 'Percp, Compo, WpExo, WpRay, FSMob, PsiCs, PsiPk, PsiPm, PsiPp, PAPm'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Wis, Int, Cha'
+    ShowPCGen: null
+  -
+    ID: 101
+    Name: 'Mindspy Wizard'
+    ClassID: 12
+    PrimSkills: 'WpAre, ArcAb, ArcAe, ArcCo, ArcDi, ArcEn, ArcIm, ArcIl, ArcKi, ArcOu, ArcPy, ArcTr, WAGen, CmbTp'
+    SecSkills: 'Know, WpBaM, WpRay, ArcHy, ArcLi, EncIt, Famil, SplCr'
+    Equipment: null
+    AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
+    ShowPCGen: null
+  -
+    ID: 102
+    Name: 'Occult Slayer'
+    ClassID: 4
+    PrimSkills: 'WpGen, WpHvB, WpLtB, WpBow, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow, FSPre, MiOMa'
+    SecSkills: 'Athle, Ride, Percp, Surv, WpNat, WpAxe, WpExo, DaSns, FSTri, Warfr'
+    Equipment: null
+    AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
+    ShowPCGen: null
+companionimprovements:
+  -
+    ID: 1
+    SkillID: 162
+    CLMod: 2
+    StrMod: 1
+    DexMod: 1
+    IntMod: 0
+    HPMod: 10
+    DRMod: 2
+    AttMod: 1
+    DefMod: 1
+    APMod: 2
+    Traits: 'Defense { Qual=Evasion; Value=lesser; }'
+  -
+    ID: 2
+    SkillID: 162
+    CLMod: 5
+    StrMod: 2
+    DexMod: 2
+    IntMod: 0
+    HPMod: 20
+    DRMod: 4
+    AttMod: 2
+    DefMod: 2
+    APMod: 4
+    Traits: 'DefMod { Qual=Will; Type=enh; Value=+4; }'
+  -
+    ID: 3
+    SkillID: 162
+    CLMod: 8
+    StrMod: 3
+    DexMod: 3
+    IntMod: 0
+    HPMod: 30
+    DRMod: 6
+    AttMod: 3
+    DefMod: 3
+    APMod: 6
+    Traits: null
+  -
+    ID: 4
+    SkillID: 162
+    CLMod: 11
+    StrMod: 4
+    DexMod: 4
+    IntMod: 0
+    HPMod: 40
+    DRMod: 8
+    AttMod: 4
+    DefMod: 4
+    APMod: 8
+    Traits: null
+  -
+    ID: 5
+    SkillID: 162
+    CLMod: 14
+    StrMod: 5
+    DexMod: 5
+    IntMod: 0
+    HPMod: 50
+    DRMod: 10
+    AttMod: 5
+    DefMod: 5
+    APMod: 10
+    Traits: 'Defense { Qual=Evasion; Value=greater; }'
+  -
+    ID: 6
+    SkillID: 162
+    CLMod: 17
+    StrMod: 6
+    DexMod: 6
+    IntMod: 0
+    HPMod: 60
+    DRMod: 12
+    AttMod: 6
+    DefMod: 6
+    APMod: 12
+    Traits: null
+  -
+    ID: 7
+    SkillID: 167
+    CLMod: 2
+    StrMod: 1
+    DexMod: 0
+    IntMod: 3
+    HPMod: 10
+    DRMod: 4
+    AttMod: 1
+    DefMod: 1
+    APMod: 2
+    Traits: 'Defense { Qual=Evasion; Value=greater; }'
+  -
+    ID: 8
+    SkillID: 167
+    CLMod: 5
+    StrMod: 2
+    DexMod: 0
+    IntMod: 4
+    HPMod: 20
+    DRMod: 6
+    AttMod: 2
+    DefMod: 2
+    APMod: 4
+    Traits: 'SpdMod { Qual=Speed; Type=enh; Value=+2; }'
+  -
+    ID: 9
+    SkillID: 167
+    CLMod: 8
+    StrMod: 3
+    DexMod: 0
+    IntMod: 5
+    HPMod: 30
+    DRMod: 8
+    AttMod: 3
+    DefMod: 3
+    APMod: 6
+    Traits: 'ActAcc { Qual=Command Similar Creatures; }'
+  -
+    ID: 10
+    SkillID: 167
+    CLMod: 12
+    StrMod: 4
+    DexMod: 0
+    IntMod: 6
+    HPMod: 40
+    DRMod: 10
+    AttMod: 4
+    DefMod: 4
+    APMod: 8
+    Traits: 'DefMod { Qual=MR; Type=enh; Value=+lvl+5; }'
+  -
+    ID: 11
+    SkillID: 171
+    CLMod: 0
+    StrMod: 0
+    DexMod: 0
+    IntMod: 2
+    HPMod: 4
+    DRMod: 1
+    AttMod: 1
+    DefMod: 1
+    APMod: 1
+    Traits: 'Defense { Qual=Evasion; Value=greater; }'
+  -
+    ID: 12
+    SkillID: 171
+    CLMod: 2
+    StrMod: 0
+    DexMod: 0
+    IntMod: 3
+    HPMod: 8
+    DRMod: 2
+    AttMod: 2
+    DefMod: 2
+    APMod: 2
+    Traits: 'ActAcc { Qual=Deliver Touch; }'
+  -
+    ID: 13
+    SkillID: 171
+    CLMod: 4
+    StrMod: 0
+    DexMod: 0
+    IntMod: 4
+    HPMod: 12
+    DRMod: 3
+    AttMod: 3
+    DefMod: 3
+    APMod: 3
+    Traits: 'Comm { Qual=Speak; Value=master; }'
+  -
+    ID: 14
+    SkillID: 171
+    CLMod: 6
+    StrMod: 0
+    DexMod: 0
+    IntMod: 5
+    HPMod: 16
+    DRMod: 4
+    AttMod: 4
+    DefMod: 4
+    APMod: 4
+    Traits: 'Comm { Qual=Speak; Value=similar creatures; }'
+  -
+    ID: 15
+    SkillID: 171
+    CLMod: 8
+    StrMod: 0
+    DexMod: 0
+    IntMod: 6
+    HPMod: 20
+    DRMod: 5
+    AttMod: 5
+    DefMod: 5
+    APMod: 5
+    Traits: null
+  -
+    ID: 16
+    SkillID: 171
+    CLMod: 10
+    StrMod: 0
+    DexMod: 0
+    IntMod: 7
+    HPMod: 24
+    DRMod: 6
+    AttMod: 6
+    DefMod: 6
+    APMod: 6
+    Traits: 'DefMod { Qual=MR; Type=enh; Value=+lvl+5; }'
+  -
+    ID: 17
+    SkillID: 171
+    CLMod: 12
+    StrMod: 0
+    DexMod: 0
+    IntMod: 8
+    HPMod: 28
+    DRMod: 7
+    AttMod: 7
+    DefMod: 7
+    APMod: 7
+    Traits: null
+  -
+    ID: 18
+    SkillID: 171
+    CLMod: 14
+    StrMod: 0
+    DexMod: 0
+    IntMod: 9
+    HPMod: 32
+    DRMod: 8
+    AttMod: 8
+    DefMod: 8
+    APMod: 8
+    Traits: null
+  -
+    ID: 19
+    SkillID: 171
+    CLMod: 16
+    StrMod: 0
+    DexMod: 0
+    IntMod: 10
+    HPMod: 36
+    DRMod: 9
+    AttMod: 9
+    DefMod: 9
+    APMod: 9
+    Traits: null
+  -
+    ID: 20
+    SkillID: 171
+    CLMod: 18
+    StrMod: 0
+    DexMod: 0
+    IntMod: 11
+    HPMod: 40
+    DRMod: 10
+    AttMod: 10
+    DefMod: 10
+    APMod: 10
+    Traits: null
+  -
+    ID: 21
+    SkillID: 189
+    CLMod: 0
+    StrMod: null
+    DexMod: null
+    IntMod: 6
+    HPMod: 12
+    DRMod: 8
+    AttMod: 0
+    DefMod: 0
+    APMod: 11
+    Traits: 'SpdSpcl { Qual=SelfPropulsion; Type=Ground; Value=6; } Defense { Qual=Evasion; Value=greater; }'
+  -
+    ID: 22
+    SkillID: 189
+    CLMod: 2
+    StrMod: null
+    DexMod: null
+    IntMod: 7
+    HPMod: 16
+    DRMod: 9
+    AttMod: 0
+    DefMod: 0
+    APMod: 12
+    Traits: 'ActAcc { Qual=Deliver Touch; }'
+  -
+    ID: 23
+    SkillID: 189
+    CLMod: 4
+    StrMod: null
+    DexMod: null
+    IntMod: 8
+    HPMod: 20
+    DRMod: 10
+    AttMod: 0
+    DefMod: 0
+    APMod: 13
+    Traits: 'Comm { Qual=Telepathy; Type=2-way; Value=6sq; Req=Language; }'
+  -
+    ID: 24
+    SkillID: 189
+    CLMod: 6
+    StrMod: null
+    DexMod: null
+    IntMod: 9
+    HPMod: 24
+    DRMod: 11
+    AttMod: 0
+    DefMod: 0
+    APMod: 14
+    Traits: null
+  -
+    ID: 25
+    SkillID: 189
+    CLMod: 8
+    StrMod: null
+    DexMod: null
+    IntMod: 10
+    HPMod: 28
+    DRMod: 12
+    AttMod: 0
+    DefMod: 0
+    APMod: 15
+    Traits: 'SpdSpcl { Qual=SelfPropulsion; Type=Fly; Value=10; }'
+  -
+    ID: 26
+    SkillID: 189
+    CLMod: 10
+    StrMod: null
+    DexMod: null
+    IntMod: 11
+    HPMod: 32
+    DRMod: 13
+    AttMod: 0
+    DefMod: 0
+    APMod: 16
+    Traits: 'DefMod { Qual=MR; Type=enh; Value=+lvl+5; }'
+  -
+    ID: 27
+    SkillID: 189
+    CLMod: 12
+    StrMod: null
+    DexMod: null
+    IntMod: 12
+    HPMod: 36
+    DRMod: 14
+    AttMod: 0
+    DefMod: 0
+    APMod: 17
+    Traits: null
+  -
+    ID: 28
+    SkillID: 189
+    CLMod: 14
+    StrMod: null
+    DexMod: null
+    IntMod: 13
+    HPMod: 40
+    DRMod: 15
+    AttMod: 0
+    DefMod: 0
+    APMod: 18
+    Traits: null
+  -
+    ID: 29
+    SkillID: 189
+    CLMod: 16
+    StrMod: null
+    DexMod: null
+    IntMod: 14
+    HPMod: 44
+    DRMod: 16
+    AttMod: 0
+    DefMod: 0
+    APMod: 19
+    Traits: null
+  -
+    ID: 30
+    SkillID: 189
+    CLMod: 18
+    StrMod: null
+    DexMod: null
+    IntMod: 15
+    HPMod: 48
+    DRMod: 17
+    AttMod: 0
+    DefMod: 0
+    APMod: 20
+    Traits: null

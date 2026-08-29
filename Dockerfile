@@ -1,49 +1,58 @@
-FROM ubuntu:22.04
+FROM php:8.2-apache
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
 
-# Install Apache and precompiled PHP 8.1 with MySQL, OPcache, XML, and Mbstring
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    apache2 \
-    php8.1 \
-    php8.1-mysql \
-    php8.1-opcache \
-    php8.1-mbstring \
-    php8.1-xml \
-    libapache2-mod-php8.1 \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    libicu-dev \
+    zip \
+    unzip \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Enable required Apache modules
-RUN a2enmod rewrite headers speling remoteip
+# Install required PHP extensions for Laravel 11 and MySQL
+RUN docker-php-ext-configure intl \
+    && docker-php-ext-install -j$(nproc) \
+    pdo_mysql \
+    mbstring \
+    xml \
+    bcmath \
+    intl \
+    opcache \
+    zip
 
-# Configure Apache for Reverse Proxy, HTTPS detection, and Security
-RUN echo '<Directory /var/www/html>\n\
-    Options -Indexes +FollowSymLinks\n\
-    AllowOverride All\n\
-    Require all granted\n\
-    CheckSpelling On\n\
-    CheckCaseOnly On\n\
-</Directory>\n\
-RemoteIPHeader X-Forwarded-For\n\
-SetEnvIf X-Forwarded-Proto "^https$" HTTPS=on\n\
-Header always set Content-Security-Policy "upgrade-insecure-requests"\n' > /etc/apache2/conf-available/rold20-security.conf \
-    && a2enconf rold20-security
+# Enable Apache modules
+RUN a2enmod rewrite headers remoteip speling deflate expires
 
-# Support custom php.ini from docker/php.ini volume mount
-RUN mkdir -p /usr/local/etc/php/conf.d \
-    && ln -sf /usr/local/etc/php/conf.d/custom.ini /etc/php/8.1/apache2/conf.d/99-custom.ini
+# Copy virtual host configuration
+COPY docker/vhost.conf /etc/apache2/sites-available/000-default.conf
+
+# Allow overrides in apache2.conf
+RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+
+# Support custom php.ini from docker/php.ini
+COPY docker/php.ini /usr/local/etc/php/conf.d/99-custom.ini
 
 WORKDIR /var/www/html
 
-# Copy project files
+# Copy application files
 COPY . /var/www/html/
 
-# Set proper ownership and permissions for the web user
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+# Copy and setup entrypoint script
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN sed -i -e 's/\r$//' /usr/local/bin/entrypoint.sh \
+    && chmod +x /usr/local/bin/entrypoint.sh
+
+# Set ownership
+RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
 
-CMD ["apache2ctl", "-D", "FOREGROUND"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

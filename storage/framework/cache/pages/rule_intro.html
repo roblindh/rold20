@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction | RoL d20 Role-Playing System</title>
+    
+    <!-- Compiled Tailwind CSS & Site Styling -->
+    <link rel="stylesheet" href="http://localhost:8090/styles/tailwind.min.css">
+    <link rel="stylesheet" href="http://localhost:8090/styles/site.css">
+    <link rel="icon" href="http://localhost:8090/styles/reddragon.ico">
+
+    <!-- Local Alpine.js -->
+    <script defer src="http://localhost:8090/js/alpine.min.js"></script>
+
+    <style>
+        /* Site title in header */
+        .site-title {
+            color: #000000 !important;
+            text-shadow: 2px 2px 4px rgba(58, 79, 99, 0.7);
+            font-variant: small-caps;
+            font-weight: 800;
+        }
+
+        /* Modernized rulebook styling & Light headers on dark background */
+        h1, .rule-content h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #000000 !important;
+            text-shadow: .05em .05em 4px rgba(58, 79, 99, 0.7);
+            font-variant: small-caps;
+            margin-bottom: 1rem;
+        }
+
+        h2, .rule-content h2 {
+            background-color: #3a4f63 !important;
+            color: #ffffff !important;
+            padding: 6px 12px !important;
+            margin-top: 1.75rem !important;
+            margin-bottom: 0.75rem !important;
+            font-size: 1.4rem !important;
+            font-weight: 700 !important;
+            border-radius: 4px !important;
+            font-variant: small-caps;
+            border-bottom: none !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        h3, .rule-content h3 {
+            background-color: #3a4f63 !important;
+            color: #ffffff !important;
+            padding: 5px 10px !important;
+            margin-top: 1.5rem !important;
+            margin-bottom: 0.5rem !important;
+            font-size: 1.25rem !important;
+            font-weight: 600 !important;
+            border-radius: 3px !important;
+            font-variant: small-caps;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        h4, .rule-content h4 {
+            background-color: #556b82 !important;
+            color: #ffffff !important;
+            padding: 4px 8px !important;
+            margin-top: 1.25rem !important;
+            margin-bottom: 0.5rem !important;
+            font-size: 1.1rem !important;
+            font-weight: 600 !important;
+            border-radius: 3px !important;
+            font-variant: small-caps;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        h5, .rule-content h5 {
+            background-color: #64748b !important;
+            color: #ffffff !important;
+            padding: 3px 6px !important;
+            margin-top: 1rem !important;
+            margin-bottom: 0.25rem !important;
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            border-radius: 2px !important;
+            font-variant: small-caps;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Base typography - crisp black body text */
+        body, p, li, td, .rule-content p, .rule-content li, .rule-content td {
+            color: #000000 !important;
+        }
+
+        .rule-content p { line-height: 1.65; color: #000000 !important; margin-bottom: 1rem; }
+        .rule-content table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1.5rem; font-size: 0.875rem; }
+        .rule-content th, thead th { background-color: #3a4f63 !important; color: #ffffff !important; text-align: left; padding: 0.5rem 0.75rem; border: 1px solid #2c3e50; font-weight: 600; }
+        .rule-content td { padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; color: #000000 !important; }
+        .rule-content tr:nth-child(even) { background-color: #f8fafc; }
+        .rule-content caption { font-weight: 600; text-align: left; padding-bottom: 0.5rem; color: #000000; font-size: 1rem; }
+
+        /* Optional rules boxes - Vertically centered text and balanced spacing */
+        div.optionalrule, .rule-content div.optionalrule {
+            padding: 14px 18px !important;
+            border: 3px solid #777788 !important;
+            border-radius: 6px !important;
+            margin: 1.25rem 0.5rem !important;
+            background-color: #fafbfc !important;
+            box-shadow: 4px 4px 6px rgba(58, 79, 99, 0.25) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+        }
+
+        div.optionalrule p, .rule-content div.optionalrule p {
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1.6 !important;
+            color: #000000 !important;
+        }
+
+        div.optionalrule p + p, .rule-content div.optionalrule p + p {
+            margin-top: 0.75rem !important;
+        }
+
+        /* Bullet point lists and ordered lists */
+        .rule-content ul, main ul:not([class*="list-none"]):not([class*="divide"]):not([class*="pagination"]) {
+            list-style-type: disc !important;
+            margin-top: 0.75rem !important;
+            margin-bottom: 1rem !important;
+            padding-left: 2rem !important;
+        }
+        .rule-content ul ul, main ul ul:not([class*="list-none"]) {
+            list-style-type: circle !important;
+            margin-top: 0.25rem !important;
+            margin-bottom: 0.25rem !important;
+            padding-left: 1.5rem !important;
+        }
+        .rule-content ul ul ul, main ul ul ul:not([class*="list-none"]) {
+            list-style-type: square !important;
+            padding-left: 1.5rem !important;
+        }
+        .rule-content ol, main ol:not([class*="list-none"]):not([class*="pagination"]) {
+            list-style-type: decimal !important;
+            margin-top: 0.75rem !important;
+            margin-bottom: 1rem !important;
+            padding-left: 2rem !important;
+        }
+        .rule-content ol ol, main ol ol:not([class*="list-none"]) {
+            list-style-type: lower-alpha !important;
+            margin-top: 0.25rem !important;
+            margin-bottom: 0.25rem !important;
+            padding-left: 1.5rem !important;
+        }
+        .rule-content li, main ul:not([class*="list-none"]):not([class*="divide"]) > li, main ol:not([class*="list-none"]) > li {
+            margin-bottom: 0.35rem;
+            line-height: 1.6;
+            color: #000000 !important;
+            display: list-item !important;
+        }
+
+        /* Custom Elegant Dark Scrollbars for Sidebar */
+        nav, nav *, .sidebar-scroll, .sidebar-scroll * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(148, 163, 184, 0.25) transparent;
+        }
+
+        nav::-webkit-scrollbar,
+        nav *::-webkit-scrollbar,
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        nav::-webkit-scrollbar-track,
+        nav *::-webkit-scrollbar-track,
+        .sidebar-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        nav::-webkit-scrollbar-thumb,
+        nav *::-webkit-scrollbar-thumb,
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background-color: rgba(148, 163, 184, 0.25);
+            border-radius: 9999px;
+            transition: background-color 0.2s ease;
+        }
+
+        nav:hover::-webkit-scrollbar-thumb,
+        nav *:hover::-webkit-scrollbar-thumb,
+        .sidebar-scroll:hover::-webkit-scrollbar-thumb {
+            background-color: rgba(148, 163, 184, 0.45);
+        }
+
+        nav::-webkit-scrollbar-thumb:hover,
+        nav *::-webkit-scrollbar-thumb:hover,
+        .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(203, 213, 225, 0.7);
+        }
+
+        /* Subtle modern scrollbar for main content area */
+        main {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+        }
+        main::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        main::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        main::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 9999px;
+        }
+        main::-webkit-scrollbar-thumb:hover {
+            background-color: #94a3b8;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col bg-slate-100 text-black" x-data="{
+    searchOpen: false,
+    searchQuery: '',
+    searchResults: [],
+    searchLoading: false,
+    async performQuickSearch() {
+        if (this.searchQuery.length < 2) {
+            this.searchResults = [];
+            return;
+        }
+        this.searchLoading = true;
+        try {
+            const res = await fetch('http://localhost:8090/api/search/suggestions?q=' + encodeURIComponent(this.searchQuery));
+            this.searchResults = await res.json();
+        } catch (e) {
+            this.searchResults = [];
+        }
+        this.searchLoading = false;
+    }
+}" @keydown.window.ctrl.k.prevent="searchOpen = true" @keydown.window.escape="searchOpen = false">
+
+    <!-- Top Global Header -->
+    <header class="border-b-2 border-[#3a4f63] shadow-md px-4 py-2.5 flex items-center justify-between z-20" style="background: url('http://localhost:8090/styles/goldparchment.jpg') repeat #f0f0d9;">
+        <div class="flex items-center gap-3">
+            <a href="http://localhost:8090" class="flex items-center gap-2.5 hover:opacity-90 transition">
+                <img src="http://localhost:8090/styles/reddragon_sml.gif" alt="RoL d20 Dragon" class="h-10 w-auto object-contain" />
+                <span class="site-title text-2xl font-bold tracking-tight">RoL d20 System</span>
+            </a>
+            <span class="hidden md:inline text-xs text-slate-800 font-semibold border-l border-slate-400 pl-3">D&D 3.5E Streamlined Ruleset</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <!-- Global Search Trigger -->
+            <button @click="searchOpen = true" class="flex items-center gap-2 bg-white/90 hover:bg-white text-slate-800 px-3 py-1.5 rounded-md border border-slate-400 text-xs shadow-sm font-semibold transition">
+                <span>🔍 Search rules, spells...</span>
+                <kbd class="bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded border border-slate-300 font-mono text-[10px]">Ctrl+K</kbd>
+            </button>
+
+            <!-- Quick Utilities Links -->
+            <a href="http://localhost:8090/search" class="text-xs text-slate-900 hover:text-indigo-900 font-bold hidden sm:inline">Search</a>
+            <a href="http://localhost:8090/utilities/character-generator" class="text-xs bg-amber-700 hover:bg-amber-800 text-white font-bold px-2.5 py-1 rounded shadow-sm">PC Gen</a>
+
+            <!-- User Auth Bar -->
+            <div class="border-l border-slate-400 pl-3 flex items-center gap-2">
+                                    <div class="flex items-center gap-1.5 text-xs">
+                        <a href="http://localhost:8090/login" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-2.5 py-1 rounded border border-slate-400 shadow-sm transition">Log In</a>
+                        <a href="http://localhost:8090/register" class="bg-amber-800 hover:bg-amber-900 text-white font-bold px-2.5 py-1 rounded shadow-sm transition" style="background-color: #8b1a1a; color: #ffffff;">Register</a>
+                    </div>
+                            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <div class="flex-1 flex overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <nav class="w-64 bg-slate-900 text-slate-200 min-h-screen p-4 flex flex-col space-y-4 border-r border-slate-800 text-sm">
+    <div class="px-2 py-3 border-b border-slate-800 flex items-center justify-between">
+        <a href="http://localhost:8090" class="font-bold text-amber-400 text-lg flex items-center gap-2">
+            <img src="http://localhost:8090/styles/reddragon_sml.gif" alt="RoL d20" class="h-6 w-auto object-contain" />
+            <span>RoL d20</span>
+        </a>
+        <span class="text-xs bg-amber-900/60 text-amber-300 px-1.5 py-0.5 rounded border border-amber-700/50">v2.0</span>
+    </div>
+
+    <!-- Main Navigation Sections -->
+    <div class="space-y-6 flex-1 overflow-y-auto pr-1">
+        <!-- 1. Rules Section -->
+        <div>
+            <div class="text-xs uppercase font-semibold text-slate-400 tracking-wider mb-2 px-2">Ruleset Manual</div>
+            <ul class="space-y-1">
+                <!-- 1. Introduction -->
+                                <li>
+                    <a href="http://localhost:8090/rules/intro" class="block px-2.5 py-1.5 rounded transition bg-indigo-600 text-white font-semibold shadow-sm">
+                        1. Introduction
+                    </a>
+                                            <ul class="border-l-2 border-indigo-400/50 ml-3.5 pl-2.5 my-1.5 space-y-1 text-xs">
+                            <li><a href="#Motivation" class="text-slate-300 hover:text-white block py-0.5 transition">Motivation</a></li>
+                            <li><a href="#MainFeatures" class="text-slate-300 hover:text-white block py-0.5 transition">Key Changes & Features</a></li>
+                            <li><a href="#OptionalRules" class="text-slate-300 hover:text-white block py-0.5 transition">Optional Rules</a></li>
+                        </ul>
+                                    </li>
+
+                <!-- 2. Core Mechanics -->
+                                <li>
+                    <a href="http://localhost:8090/rules/core" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        2. Core Mechanics
+                    </a>
+                                    </li>
+
+                <!-- 3. Character Generation -->
+                                <li>
+                    <a href="http://localhost:8090/rules/chargen" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        3. Character Generation
+                    </a>
+                                    </li>
+
+                <!-- 4. Rules of Engagement -->
+                                <li>
+                    <a href="http://localhost:8090/rules/encounters" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        4. Rules of Engagement
+                    </a>
+                                    </li>
+
+                <!-- 5. Rules of Combat -->
+                                <li>
+                    <a href="http://localhost:8090/rules/combat" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        5. Rules of Combat
+                    </a>
+                                    </li>
+
+                <!-- 6. Rules of Magic -->
+                                <li>
+                    <a href="http://localhost:8090/rules/magic" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        6. Rules of Magic
+                    </a>
+                                    </li>
+
+                <!-- 7. Rules of Environment -->
+                                <li>
+                    <a href="http://localhost:8090/rules/environment" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        7. Rules of Environment
+                    </a>
+                                    </li>
+
+                <!-- 8. Rules of Culture -->
+                                <li>
+                    <a href="http://localhost:8090/rules/culture" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        8. Rules of Culture
+                    </a>
+                                    </li>
+
+                <!-- Rules Index -->
+                                <li>
+                    <a href="http://localhost:8090/rules/index" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        Rules Index
+                    </a>
+                                    </li>
+            </ul>
+        </div>
+
+        <!-- 2. Reference Tables Section -->
+        <div>
+            <div class="text-xs uppercase font-semibold text-slate-400 tracking-wider mb-2 px-2">Reference Compendium</div>
+            <ul class="space-y-1">
+                <!-- 1. Skills -->
+                <li>
+                    <a href="http://localhost:8090/reference/skills" class="flex items-center justify-between px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        <span>⚔️ Skills</span>
+                        <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">216</span>
+                    </a>
+                                    </li>
+
+                <!-- 2. Actions -->
+                <li>
+                    <a href="http://localhost:8090/reference/actions" class="flex items-center justify-between px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        <span>⚡ Actions</span>
+                        <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">304</span>
+                    </a>
+                                    </li>
+
+                <!-- 3. Spells & Powers -->
+                <li>
+                    <a href="http://localhost:8090/reference/spells" class="flex items-center justify-between px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        <span>✨ Spells & Powers</span>
+                        <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">206</span>
+                    </a>
+                                    </li>
+
+                <!-- 4. Equipment & Items -->
+                <li>
+                    <a href="http://localhost:8090/reference/equipment" class="flex items-center justify-between px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        <span>🛡️ Equipment & Items</span>
+                        <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">625</span>
+                    </a>
+                                    </li>
+
+                <!-- 5. Bestiary & Races (Creatures) -->
+                <li>
+                    <a href="http://localhost:8090/reference/creatures" class="flex items-center justify-between px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        <span>🐲 Bestiary & Races</span>
+                        <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">449</span>
+                    </a>
+                                    </li>
+
+                <!-- 6. Cultures -->
+                <li>
+                    <a href="http://localhost:8090/reference/cultures" class="flex items-center justify-between px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        <span>🏛️ Cultures</span>
+                        <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">57</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 3. Utilities Section -->
+        <div>
+            <div class="text-xs uppercase font-semibold text-slate-400 tracking-wider mb-2 px-2">Player & GM Utilities</div>
+            <ul class="space-y-1">
+                <li>
+                    <a href="http://localhost:8090/utilities/character-generator" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        🧙‍♂️ Character Generator
+                    </a>
+                                    </li>
+                <li>
+                    <a href="http://localhost:8090/utilities/character-viewer" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        📜 Character Sheet Viewer
+                    </a>
+                </li>
+                <li>
+                    <a href="http://localhost:8090/utilities/npc-generator" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        👹 NPC Generator
+                    </a>
+                </li>
+                <li>
+                    <a href="http://localhost:8090/utilities/treasure-generator" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        💎 Treasure Generator
+                    </a>
+                </li>
+                <li>
+                    <a href="http://localhost:8090/utilities/campaign" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        🗺️ Campaign Tracker
+                    </a>
+                </li>
+                <li>
+                    <a href="http://localhost:8090/analysis" class="block px-2.5 py-1.5 rounded transition text-slate-300 hover:bg-slate-800">
+                        📊 Balance & DPR Analyzer
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Quick Search Tip -->
+    <div class="px-2.5 py-2 bg-slate-800/60 rounded border border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+        <span>Quick Search</span>
+        <kbd class="bg-slate-700 text-slate-200 px-1.5 py-0.5 rounded font-mono text-[10px]">Ctrl+K</kbd>
+    </div>
+</nav>
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="flex-1 overflow-y-auto p-6 md:p-8 bg-white shadow-inner scroll-smooth">
+            <div class="max-w-5xl mx-auto">
+                                <div class="rule-content prose max-w-none">
+    <h2 id="Introduction">Introduction</h2>
+<p>
+    The RoL d20 set of role-playing rules is based on the
+    <a href="http://en.wikipedia.org/wiki/D20_system">d20 system</a> and
+    <a href="http://en.wikipedia.org/wiki/Dungeons_%26_Dragons">3.5E D&amp;D</a>,
+    with some additional inspiration from other d20 systems as well as
+    <a href="http://en.wikipedia.org/wiki/Dungeons_%26_Dragons">4E D&amp;D</a> and
+    <a href="http://en.wikipedia.org/wiki/Dungeons_%26_Dragons">5E D&amp;D</a>.
+    The RoL rules have been designed to be simpler and more flexible, but also
+    more realistic, than the original d20 rules.
+    However, the set of classes, character races, monsters, spells, and so forth
+    are basically the same, and the RoL rules try to remain
+    faithful to the heroic and high-fantasy feel of traditional D&amp;D.
+</p>
+
+<h3 id="Motivation">Motivation</h3>
+<p>There are a whole lot of reasons behind the design of these rather
+    extensive &quot;house rules&quot;. First, let me say that I really like the
+    regular d20 and D&amp;D rules; they are clear, consistent, and fairly
+    simple compared to most of the older RPG systems I have had the
+    privilege of playing. Still, I felt that the rules could be made even
+    simpler and more generic, and I also felt that many of the rules could
+    be made more realistic without making them more complicated or less
+    entertaining. In total, there are quite a few d20 rules that I'm not
+    satisfied with, many of which are actually a legacy from previous
+    versions of D&amp;D. Here are some examples:</p>
+<ul>
+    <li>The concepts of spell slots and spell memorization never really
+        appealed to me. What is the rationale in having a wizard be able to cast a
+        level 5 spell but not a level 1 spell, just because he has already
+        used up all of his level 1 spell slots for the day and &quot;lost&quot; them
+        from memory? I greatly prefer a system that uses some sort of power
+        points. I also wanted to avoid the long preparation times where spell
+        casters have to decide which spells to memorize for the day, while the
+        other players just sit around and wait.</li>
+    <li>I wanted a system where skills play a greater part for all
+        characters, not just for rogues and bards. By changing most of the
+        feats and class abilities into skills, I feel that I get a more
+        flexible and realistic system. Furthermore, I got rid of some really
+        uninteresting but nearly mandatory feats, such as Weapon Focus, Spell
+        Focus, and Combat Casting, by turning them into benefits granted
+        automatically by skills.</li>
+    <li>Also, turning feats and class abilities into skills makes it
+        possible for characters to choose how much or how little to specialize
+        in each ability. Even prestige classes have been replaced with skills,
+        so becoming a Shadowdancer, an Arcane Trickster, or similar type of
+        specialist no longer requires switching to a new class.</li>
+    <li>Another benefit is that the stacking of abilities between different
+        classes becomes more logical when that ability is based on a skill
+        shared between the classes. Even spell casters can now multi-class
+        without necessarily sacrificing their ability to cast higher level
+        spells (as long as the two classes share some of their supernatural
+        skills).</li>
+    <li>I've wondered why characters should get better only at attacking
+        when increasing their level, while very few classes get better at
+        defending themselves. So, I've changed the old Base Attack Bonus into
+        a much more generic system that can be used for defense as well as
+        offense. Also, increasing one's weapon skill will provide bonuses to
+        parrying as well as attacking.</li>
+    <li>I never liked the concept of armor making a character harder to hit
+        rather than soaking up some of the impact, so I have changed the armor
+        system to essentially provide the wearer with Damage Reduction instead.</li>
+    <li>I wanted to reduce the relatively easy access to resurrection
+        magic. I prefer the concept of fate points or hero points that is used
+        in many other systems to avoid a high frequency of character death.</li>
+</ul>
+
+<h3 id="MainFeatures">Key Changes and Features</h3>
+<p>This is a summary of the most important changes in these rules
+    compared to traditional 3.5E D&amp;D:</p>
+<ul>
+    <li>The core rules have been made more streamlined, consistent, and
+        generic, with regards to <a href="/rules/core#Actions">d20
+            checks</a>, <a href="/rules/core#Modifiers">modifiers</a>, and
+        <a href="/rules/core#Descriptors">descriptors</a>.</li>
+    <li>The rules are based on a more distinct definition of <a
+            href="/rules/core#Characteristics">core characteristics</a> and
+        their <a href="/rules/core#CharDependencies">dependencies</a>.</li>
+    <li>The old saving throws have been replaced with passive <a
+            href="/rules/core#DefenseScores">defense scores</a> (very
+        similar to D&amp;D 4E).</li>
+    <li>A set of <a href="/rules/core#SocialScores">social scores</a>
+        (social class, wealth class, influence, and reputation) has been
+        added.</li>
+    <li>The old level-based ability bonuses have been replaced with a more
+        generic <a href="/rules/core#ImprPts">improvement point</a>
+        system.</li>
+    <li><a href="/rules/core#FatePts">Fate points</a> have been
+        introduced to reduce the importance of resurrection magic.</li>
+    <li>Open-ended <a href="/rules/core#Actions">d20 checks</a> are
+        used for all skill checks, attack rolls, etc.</li>
+    <li>Most class traits, feats, and even monster abilities have been changed into
+        <a href="/reference/skills#Skills">skills</a>.</li>
+    <li>Racial traits have been separated into racial and cultural traits.</li>
+    <li>Some races have been changed into templates.</li>
+    <li>The Barbarian class has been changed into a set of skills available to the
+        Fighter class.</li>
+    <li>The Paladin and Blackguard classes have been changed into a more generic
+        Templar class.</li>
+    <li>Skills have been divided into
+        <a href="/reference/skills#SkillBenefits">skill benefits</a>
+        (bonuses provided by the skill) and
+        <a href="/reference/skills#SkillActions">skill actions</a>
+        (things you can do with the skill).</li>
+    <li>A system based on <a href="/rules/core#ActionPts">action
+            points</a> (increasing with level) has replaced all the old action
+        types.</li>
+    <li>The size of a weapon affects attack speed. Larger weapons are slower but
+        can provide attacks of opportunity against opponents with smaller weapons.</li>
+    <li>Both natural armor and manufactured armor now provide damage
+        resistance (instead of making the target harder to hit).</li>
+    <li>Weapons and shields provide a parry bonus based on weapon and
+        skill.</li>
+    <li>Low-level magic items have been replaced with additional levels of
+        high quality equipment.</li>
+    <li>Spells and most supernatural abilities are now powered either by
+        stamina points (physical stamina) or power points (mental stamina).</li>
+    <li>Spells have variable parameters and variations instead of a fixed
+        effect and spell level.</li>
+    <li>Spells make use of opposed checks and opposed power levels much
+        more than before.</li>
+    <li>The creation of magic items has been made more streamlined.</li>
+    <li><a href="/rules/magic#Residuum">Residuum</a> (from D&amp;D 4E)
+        has been adopted as an alternative to spending XP when creating magic
+        items.</li>
+    <li>Most costs, prices, treasures, etc. have been changed one
+        magnitude, from gold pieces to silver.</li>
+</ul>
+
+<h3 id="OptionalRules">Optional Rules</h3>
+<div class="optionalrule">
+    <p>
+        Boxes like this one contain rules that are to be considered optional.
+        They usually provide alternative or altered rules for DMs who want
+        campaigns with a special flavor.
+    </p>
+</div>
+</div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Embedded RolCalc Footer -->
+    <div x-data="{
+    expression: '',
+    previous: '',
+    result: '',
+    history: [],
+    loading: false,
+    async evaluate(expr = null) {
+        const toEval = expr !== null ? expr : this.expression;
+        if (!toEval) return;
+        this.loading = true;
+        try {
+            const res = await fetch('http://localhost:8090/api/calculator/evaluate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': ''
+                },
+                body: JSON.stringify({ expression: toEval })
+            });
+            const data = await res.json();
+            this.previous = toEval;
+            this.result = data.result;
+            this.history.unshift({ expr: toEval, res: data.result });
+            if (this.history.length > 5) this.history.pop();
+        } catch (e) {
+            this.result = 'Error';
+        }
+        this.loading = false;
+    },
+    quickRoll(dice) {
+        this.expression = dice;
+        this.evaluate(dice);
+    }
+}" class="bg-slate-900 border-t border-slate-800 text-slate-200 px-4 py-2.5 flex items-center justify-between shadow-lg text-sm z-30 sticky bottom-0">
+    <div class="flex items-center gap-3">
+        <span class="font-bold text-amber-400 flex items-center gap-1">🎲 <span>RolCalc</span></span>
+        
+        <!-- Expression input form -->
+        <form @submit.prevent="evaluate()" class="flex items-center gap-2">
+            <input type="text" x-model="expression" placeholder="e.g. 1d20+5, 3d6+2, (15+3)/5"
+                   class="bg-slate-800 border border-slate-700 rounded px-2.5 py-1 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500 w-56 font-mono">
+            <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-white font-medium px-3 py-1 rounded text-xs transition">
+                <span x-show="!loading">Roll / Calc</span>
+                <span x-show="loading" class="animate-spin">⏳</span>
+            </button>
+        </form>
+
+        <!-- Quick dice buttons -->
+        <div class="hidden md:flex items-center gap-1 text-xs">
+            <button @click="quickRoll('1d4')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d4</button>
+            <button @click="quickRoll('1d6')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d6</button>
+            <button @click="quickRoll('1d8')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d8</button>
+            <button @click="quickRoll('1d10')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d10</button>
+            <button @click="quickRoll('1d12')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d12</button>
+            <button @click="quickRoll('1d20')" class="bg-indigo-700 hover:bg-indigo-600 text-white px-2.5 py-1 rounded font-semibold border border-indigo-500">d20</button>
+            <button @click="quickRoll('1d100')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d100</button>
+        </div>
+    </div>
+
+    <!-- Results Display -->
+    <div class="flex items-center gap-3">
+        <template x-if="result">
+            <div class="flex items-center gap-2">
+                <span class="text-slate-400 text-xs" x-text="'[' + previous + '] ='"></span>
+                <span class="text-amber-400 font-bold font-mono text-base" x-text="result"></span>
+            </div>
+        </template>
+        <button @click="expression = ''; result = '';" class="text-slate-400 hover:text-slate-200 text-xs">Clear</button>
+    </div>
+</div>
+
+    <!-- Ctrl+K Quick Search Modal -->
+    <div x-show="searchOpen" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm p-4 md:p-12 flex justify-center items-start" style="display: none;">
+        <div @click.away="searchOpen = false" class="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden text-slate-200">
+            <!-- Search Header Input -->
+            <div class="p-4 border-b border-slate-800 flex items-center gap-3">
+                <span class="text-slate-400 text-lg">🔍</span>
+                <input type="text" x-model="searchQuery" @input.debounce.250ms="performQuickSearch()" x-ref="searchInput"
+                       placeholder="Search all rules, skills, spells, items, monsters..."
+                       class="bg-transparent text-white placeholder-slate-500 text-base focus:outline-none w-full">
+                <button @click="searchOpen = false" class="text-slate-400 hover:text-white text-sm font-semibold">✕</button>
+            </div>
+
+            <!-- Search Results Dropdown -->
+            <div class="max-h-96 overflow-y-auto p-2 divide-y divide-slate-800/50">
+                <div x-show="searchLoading" class="p-4 text-center text-slate-400 text-sm">
+                    Searching index...
+                </div>
+
+                <template x-if="searchResults.length > 0">
+                    <div>
+                        <template x-for="item in searchResults" :key="item.url">
+                            <a :href="item.url" class="block p-3 hover:bg-slate-800 rounded-lg transition group">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-amber-400 group-hover:text-amber-300" x-text="item.title"></span>
+                                    <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700" x-text="item.category"></span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-1 line-clamp-2" x-text="item.snippet"></p>
+                            </a>
+                        </template>
+                    </div>
+                </template>
+
+                <div x-show="!searchLoading && searchQuery.length >= 2 && searchResults.length === 0" class="p-6 text-center text-slate-400 text-sm">
+                    No matching rules, spells, or creatures found for "<span x-text="searchQuery"></span>".
+                </div>
+
+                <div x-show="searchQuery.length < 2" class="p-6 text-center text-slate-500 text-xs">
+                    Type at least 2 characters to search across all chapters and reference tables.
+                </div>
+            </div>
+
+            <!-- Footer actions -->
+            <div class="p-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                <span>Press <kbd class="bg-slate-800 px-1 py-0.5 rounded font-mono">ESC</kbd> to close</span>
+                <a :href="'http://localhost:8090/search?q=' + encodeURIComponent(searchQuery)" class="text-indigo-400 hover:underline">View all results &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Smooth scroll for in-page anchors inside main container
+            document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href').substring(1);
+                    if (!targetId) return;
+                    const targetElem = document.getElementById(targetId) || document.querySelector('[name="' + targetId + '"]');
+                    if (targetElem) {
+                        e.preventDefault();
+                        targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        if (history.pushState) {
+                            history.pushState(null, null, '#' + targetId);
+                        }
+                    }
+                });
+            });
+
+            // If page loaded with a hash, scroll to it
+            if (window.location.hash) {
+                const initialTarget = document.getElementById(window.location.hash.substring(1));
+                if (initialTarget) {
+                    setTimeout(() => initialTarget.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

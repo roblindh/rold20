@@ -1,0 +1,478 @@
+terraintypes:
+  -
+    ID: 1
+    Terrain: 'Barren or badlands'
+    HighwayMul: 1
+    RoadMul: 1
+    TracklessMul: 0.75
+    EncounterDist: 6d6x4
+    LostMod: -3
+    SustenanceMod: 2
+  -
+    ID: 2
+    Terrain: 'Cleared or farmland'
+    HighwayMul: 1
+    RoadMul: 1
+    TracklessMul: 0.75
+    EncounterDist: 6d6x8
+    LostMod: -5
+    SustenanceMod: 0
+  -
+    ID: 3
+    Terrain: 'Desert, sandy'
+    HighwayMul: 1
+    RoadMul: 0.5
+    TracklessMul: 0.5
+    EncounterDist: '6d6x(2 to 4)'
+    LostMod: -3
+    SustenanceMod: 5
+  -
+    ID: 4
+    Terrain: 'Desert, rocky'
+    HighwayMul: 1
+    RoadMul: 1
+    TracklessMul: 0.75
+    EncounterDist: '6d6x(2 to 4)'
+    LostMod: -3
+    SustenanceMod: 4
+  -
+    ID: 5
+    Terrain: 'Forest, medium'
+    HighwayMul: 1
+    RoadMul: 1
+    TracklessMul: 0.5
+    EncounterDist: 6d6
+    LostMod: 0
+    SustenanceMod: 0
+  -
+    ID: 6
+    Terrain: Glacier
+    HighwayMul: 0.75
+    RoadMul: 0.75
+    TracklessMul: 0.5
+    EncounterDist: '6d6x(2 to 4)'
+    LostMod: -3
+    SustenanceMod: 4
+  -
+    ID: 7
+    Terrain: Hills
+    HighwayMul: 1
+    RoadMul: 0.75
+    TracklessMul: 0.5
+    EncounterDist: '4d6x(1 to 2)'
+    LostMod: -5
+    SustenanceMod: 1
+  -
+    ID: 8
+    Terrain: Jungle
+    HighwayMul: 1
+    RoadMul: 0.75
+    TracklessMul: 0.25
+    EncounterDist: 4d6
+    LostMod: 3
+    SustenanceMod: -1
+  -
+    ID: 9
+    Terrain: Marsh
+    HighwayMul: 1
+    RoadMul: 0.75
+    TracklessMul: 0.5
+    EncounterDist: '6d6x(1 to 2)'
+    LostMod: -3
+    SustenanceMod: 1
+  -
+    ID: 10
+    Terrain: Moor
+    HighwayMul: 1
+    RoadMul: 1
+    TracklessMul: 0.75
+    EncounterDist: 6d6x6
+    LostMod: -5
+    SustenanceMod: 1
+  -
+    ID: 11
+    Terrain: Mountains
+    HighwayMul: 0.75
+    RoadMul: 0.5
+    TracklessMul: 0.25
+    EncounterDist: 6d6x2
+    LostMod: -3
+    SustenanceMod: 2
+  -
+    ID: 12
+    Terrain: 'Plains or grassland'
+    HighwayMul: 1
+    RoadMul: 1
+    TracklessMul: 0.75
+    EncounterDist: 6d6x8
+    LostMod: -5
+    SustenanceMod: 1
+  -
+    ID: 13
+    Terrain: Swamp
+    HighwayMul: 1
+    RoadMul: 0.75
+    TracklessMul: 0.5
+    EncounterDist: '6d6x(1 to 2)'
+    LostMod: -3
+    SustenanceMod: 1
+  -
+    ID: 14
+    Terrain: 'Tundra, frozen'
+    HighwayMul: 1
+    RoadMul: 0.75
+    TracklessMul: 0.75
+    EncounterDist: 6d6x4
+    LostMod: -3
+    SustenanceMod: 3
+  -
+    ID: 15
+    Terrain: Underwater
+    HighwayMul: 0
+    RoadMul: 0
+    TracklessMul: 0
+    EncounterDist: '2d6x(1 to 4)'
+    LostMod: 0
+    SustenanceMod: 1
+  -
+    ID: 16
+    Terrain: 'Forest, sparse'
+    HighwayMul: 1
+    RoadMul: 1
+    TracklessMul: 0.75
+    EncounterDist: 8d6
+    LostMod: -3
+    SustenanceMod: 0
+  -
+    ID: 17
+    Terrain: 'Forest, dense'
+    HighwayMul: 1
+    RoadMul: 0.75
+    TracklessMul: 0.25
+    EncounterDist: 4d6
+    LostMod: 3
+    SustenanceMod: 0
+  -
+    ID: 18
+    Terrain: 'Water surface'
+    HighwayMul: 1
+    RoadMul: 1
+    TracklessMul: 1
+    EncounterDist: 6d6x20
+    LostMod: 0
+    SustenanceMod: 0
+terraineffects:
+  -
+    ID: 1
+    Terrain: 'Rubble, dense'
+    Effect: 'Difficult terrain (x2 cost); -4 PAM.'
+  -
+    ID: 2
+    Terrain: 'Rubble, light'
+    Effect: '-2 PAM.'
+  -
+    ID: 3
+    Terrain: 'Slippery ground, slightly'
+    Effect: '-2 PAM.'
+  -
+    ID: 4
+    Terrain: 'Slippery ground, very'
+    Effect: 'Difficult terrain (x2 cost and requires Balance checks); -4 PAM.'
+  -
+    ID: 5
+    Terrain: 'Slope, gradual'
+    Effect: '+1 attack bonus against downhill defenders.'
+  -
+    ID: 6
+    Terrain: 'Slope, steep'
+    Effect: 'Difficult terrain (x2 cost); -2 PAM.'
+  -
+    ID: 7
+    Terrain: 'Tree canopy, dense'
+    Effect: 'Provides good concealment; DC 15 for climbing.'
+  -
+    ID: 8
+    Terrain: 'Tree canopy, sparse'
+    Effect: 'Provides concealment; DC 15 for climbing.'
+  -
+    ID: 9
+    Terrain: 'Tree, massive'
+    Effect: 'Fills entire square; provides good or total cover; DR: 5, HP: 600; DC 15 for climbing.'
+  -
+    ID: 10
+    Terrain: 'Tree, normal'
+    Effect: 'Difficult terrain in one square (x2 cost); provides cover; DR: 5, HP: 150; DC 15 for climbing.'
+  -
+    ID: 11
+    Terrain: 'Undergrowth, heavy'
+    Effect: 'Difficult terrain (x4 cost); -4 PAM; provides good concealment (-8 circumstance penalty on Search and Spot checks).'
+  -
+    ID: 12
+    Terrain: 'Undergrowth, light'
+    Effect: 'Difficult terrain (x2 cost); -2 PAM; provides concealment (-4 circumstance penalty on Search and Spot checks).'
+  -
+    ID: 13
+    Terrain: 'Uneven ground, slightly'
+    Effect: '-2 PAM.'
+  -
+    ID: 14
+    Terrain: 'Uneven ground, very'
+    Effect: 'Difficult terrain (x2 cost); -4 PAM.'
+  -
+    ID: 15
+    Terrain: 'Water or mud, 0.2-0.5 m deep'
+    Effect: 'Difficult terrain (x2 cost); -2 PAM.'
+  -
+    ID: 16
+    Terrain: 'Water or mud, 0.5-1.0 m deep'
+    Effect: 'Difficult terrain (x4 cost); -4 PAM; swimming is possible for M or smaller; provides cover for M or L size and good cover for S or smaller.'
+  -
+    ID: 17
+    Terrain: 'Stalagmite (or stalactite)'
+    Effect: 'Can provide different levels of cover, depending on size; DC 20 for climbing.'
+environmenteffects:
+  -
+    ID: 1
+    Environment: 'Precipitation, heavy rain'
+    Effect: 'PAM -1 and MAM -2; reduced visibility<sup>1</sup>.'
+  -
+    ID: 2
+    Environment: 'Precipitation, heavy snow'
+    Effect: 'Reduced visibility<sup>1</sup>.'
+  -
+    ID: 3
+    Environment: 'Fog, light'
+    Effect: 'Reduced visibility<sup>1</sup>.'
+  -
+    ID: 4
+    Environment: 'Fog, dense'
+    Effect: 'Extremely reduced visibility<sup>3</sup>.'
+  -
+    ID: 5
+    Environment: 'Gravity, heavy'
+    Effect: 'PAM and attack penalty -2 or more; increased weight of equipment; reduced weapon range; increased falling damage.'
+  -
+    ID: 6
+    Environment: 'Gravity, low'
+    Effect: 'PAM and attack penalty -2 to -6 until adapted; decreased weight of equipment; increased weapon range; reduced falling damage.'
+  -
+    ID: 7
+    Environment: 'Gravity, none'
+    Effect: 'PAM and attack penalty -6 until adapted; equipment has no weight but full inertia; weapon range only limited by friction; no falling damage.'
+  -
+    ID: 9
+    Environment: Sandstorm
+    Effect: 'PAM -2 and MAM -5; very reduced visibility<sup>2</sup>; unprotected creatures suffer 1d3 SP per hour.'
+  -
+    ID: 10
+    Environment: 'Cold (-18&deg; to +4&deg; C)'
+    Effect: 'Unprotected and non-resistant creatures suffer +5 attack vs. Fort once per hour (S - 1d6 SP). Increase the attack by +1 per check. In water, check once per minute. Also, while in water or wet, increase the attack by +10.'
+  -
+    ID: 11
+    Environment: 'Cold, severe (-28&deg; to -18&deg; C)'
+    Effect: 'Unprotected and non-resistant creatures suffer a +5 attack vs. Fort once per 10 min (S - 1d6 SP). Increase the attack by +1 per check. Winter clothing changes interval to once per hour. In water, check once per 3 rounds. Also, while in water or wet, increase the attack by +10.'
+  -
+    ID: 12
+    Environment: 'Cold, extreme (-50&deg; to -28&deg; C)'
+    Effect: 'Unprotected and non-resistant creatures suffer a +5 attack (+1 per additional check) vs. Fort once per 10 min (S - 1d6 SP and 1d6 HP). In water, check once per minute. Also, while in water or wet, increase the attack by +10.'
+  -
+    ID: 13
+    Environment: 'Heat (32&deg; to 42&deg; C)'
+    Effect: 'Unprotected and non-resistant creatures suffer a +5 attack (+1 per additional check; +4 against creatures with heavy armor or clothing) vs. Fort once per hour (S - 1d4 SP).'
+  -
+    ID: 14
+    Environment: 'Heat, severe (42&deg; to 60&deg; C)'
+    Effect: 'Unprotected and non-resistant creatures suffer a +5 attack (+1 per additional check; +4 against creatures with heavy armor or clothing) vs. Fort once per 10 min (S - 1d4 SP).'
+  -
+    ID: 15
+    Environment: 'Heat, extreme (60&deg; to 80&deg; C)'
+    Effect: 'Unprotected and non-resistant creatures suffer a +5 attack (+1 per additional check; +4 against creatures with heavy armor or clothing) vs. Fort once per 10 min (S - 1d6 SP and 1d6 HP).'
+  -
+    ID: 16
+    Environment: Fire
+    Effect: 'Up to 10d6 HP fire damage per round. 1d6 HP for minor exposure. Worn and carried equipment may also be damaged. Flammable items may catch fire.'
+  -
+    ID: 17
+    Environment: 'Water, boiling'
+    Effect: '10d6 HP fire (actually heat) damage per round.'
+  -
+    ID: 18
+    Environment: 'Lava / magma'
+    Effect: '20d6 HP fire damage per round. 2d6 HP for minor exposure. Continues for 1d3 rounds at 1/2 damage. Flowing lava typically moves 3 to 12 squares per round.'
+  -
+    ID: 19
+    Environment: Smoke
+    Effect: 'Very reduced visibility<sup>2</sup>; +5 attack vs. Fort once per round (S - 1d6 SP and become dazed for one round).'
+  -
+    ID: 20
+    Environment: 'Acid, strong'
+    Effect: '10d6 HP acid damage per round for immersion. 1d6 HP for minor exposure. Many strong acids also produce poisonous fumes (+5 attack vs. Fort once per round; S - 1d6 SP and become dazed for one round).'
+  -
+    ID: 21
+    Environment: 'Pressure, high'
+    Effect: 'For actions that cost SP, multiply cost by 5 for unadapted creatures.'
+  -
+    ID: 22
+    Environment: 'Pressure, low'
+    Effect: 'For actions that cost SP, multiply cost by 2 for unadapted creatures (at altitudes above 2 km). Altitudes above 5 km also result in a +5 attack vs. Fort once per 6 h (S - 1 point of damage to each ability score).'
+  -
+    ID: 23
+    Environment: 'Fog, medium'
+    Effect: 'Very reduced visibility<sup>2</sup>.'
+  -
+    ID: 24
+    Environment: 'Loud noise'
+    Effect: '-4 circumstance penalty on actions based on hearing.'
+  -
+    ID: 25
+    Environment: 'Loud noise, very'
+    Effect: '-8 circumstance penalty on actions based on hearing.'
+  -
+    ID: 26
+    Environment: 'Loud noise, extremely'
+    Effect: '-12 circumstance penalty on actions based on hearing. Sufficiently loud noise causes sonic energy damage.'
+  -
+    ID: 27
+    Environment: 'Wind, strong (10 to 15 m/s)'
+    Effect: '-2 attack penalty for ranged weapons; +0 attack vs. Fort each round (S - double movement cost against wind; CS - unable to move against wind for 1 r); extinguish unprotected candles.\nAlso note that exposure to winds can increase the effect of extreme temperatures, low as well as high.'
+  -
+    ID: 28
+    Environment: 'Wind, severe (15 to 25 m/s)'
+    Effect: '-4 attack penalty for ranged weapons; +5 attack vs. Fort each round (S - double movement cost against wind; ES - unable to move against wind for 1 r; CS - knocked prone); extinguish unprotected candles and torches; loose debris causes reduced visibility<sup>1</sup>.\nAlso note that exposure to winds can increase the effect of extreme temperatures, low as well as high.'
+  -
+    ID: 29
+    Environment: 'Wind, stormy (25 to 40 m/s)'
+    Effect: 'PAM -1 and MAM -2; -10 attack penalty for ranged weapons (-4 for siege weapons); +8 attack vs. Fort each round (S - double movement cost against wind; ES - unable to move against wind for 1 r; CS - knocked prone and carried with wind); extinguish even protected flames; loose debris causes very reduced visibility<sup>2</sup>.\nAlso note that exposure to winds can increase the effect of extreme temperatures, low as well as high.'
+  -
+    ID: 30
+    Environment: 'Wind, hurricane (40 to 90 m/s)'
+    Effect: 'PAM -2 and MAM -5; -20 attack penalty for ranged weapons (-8 for siege weapons); +10 attack vs. Fort each round (S - double movement cost against wind; ES - unable to move against wind for 1 r; CS - knocked prone and carried with wind); extinguish even protected flames; can fell trees; loose debris causes extremely reduced visibility<sup>3</sup>.\nAlso note that exposure to winds can increase the effect of extreme temperatures, low as well as high.'
+  -
+    ID: 31
+    Environment: 'Wind, tornado (more than 90 m/s)'
+    Effect: 'PAM -5 and MAM -10; -30 attack penalty for ranged weapons (-12 for siege weapons); +20 attack vs. Fort each round (S - 2d6 HP blunt damage and double movement cost against wind; ES - 4d6 HP blunt damage and unable to move against wind for 1 r; CS - 6d6 HP blunt damage, knocked prone, and carried with wind); extinguish even protected flames; loose debris causes extremely reduced visibility<sup>3</sup>.\nAlso note that exposure to winds can increase the effect of extreme temperatures, low as well as high.'
+  -
+    ID: 32
+    Environment: 'Water, flowing'
+    Effect: 'Fast streams (2 to 8 sq of movement per round) count as rough water, while rapids (above 8 sq of movement per round) count as stormy water. Rapids can cause SP and HP damage due to rocks and flotsam, even with successful swimming checks.'
+  -
+    ID: 33
+    Environment: 'Cold, unearthly (-50&deg; C or lower)'
+    Effect: 'Unprotected and non-resistant creatures suffer a +5 attack (+1 per additional check) vs. Fort once per minute (S - 1d6 SP and 1d6 HP). In water, check once per round. Also, while in water or wet, increase the attack by +10.'
+  -
+    ID: 34
+    Environment: 'Heat, unearthly (80&deg; to 100&deg; C)'
+    Effect: 'Unprotected and non-resistant creatures suffer a +5 attack (+1 per additional check; +4 against creatures with heavy armor or clothing) vs. Fort once per minute (S - 1d6 SP and 1d6 HP).'
+  -
+    ID: 35
+    Environment: 'Heat, burning (100&deg; C or more)'
+    Effect: 'Unprotected and non-resistant creatures suffer 2d6 HP of fire/heat damage per round. Combustible materials may catch fire.'
+  -
+    ID: 36
+    Environment: 'Precipitation, hail'
+    Effect: '-4 circumstance penalty on actions based on hearing. On rare occasions, hail can become large enough to cause 1-2 HP of damage to unprotected creatures and items.'
+  -
+    ID: 37
+    Environment: 'Precipitation, downpour'
+    Effect: 'PAM -2 and MAM -4; very reduced visibility<sup>2</sup>. Downpours can lead to floods.'
+  -
+    ID: 38
+    Environment: 'Precipitation, very heavy snow'
+    Effect: 'Very reduced visibility<sup>2</sup>. Snowdrifts count as difficult or very difficult terrain.'
+  -
+    ID: 39
+    Environment: Duststorm
+    Effect: 'Reduced visibility<sup>1</sup>. Leaves behind a thick deposit of fine dust and sand.'
+  -
+    ID: 40
+    Environment: Ice
+    Effect: 'Counts as very slippery. See List of Equipment - Materials for the Break DC, DR, and HP of ice and calculate based on thickness.'
+  -
+    ID: 41
+    Environment: 'Atmosphere, toxic'
+    Effect: 'When inhaled, causes 2d6 SP of poison damage per round. Might also act like fog.'
+underwatereffects:
+  -
+    ID: 1
+    Condition: 'Freedom of Movement'
+    SBWeapon: '0 / x1'
+    NatWeapon: '0 / x1'
+    Movement: '1 MP/sq'
+    Unbalanced: 'No'
+  -
+    ID: 2
+    Condition: 'Native swim speed'
+    SBWeapon: '-2 / x1/2'
+    NatWeapon: '0 / x1'
+    Movement: '1 MP/sq'
+    Unbalanced: 'No'
+  -
+    ID: 3
+    Condition: 'Successful swim check'
+    SBWeapon: '-2 / x1/2'
+    NatWeapon: '-2 / x1/2'
+    Movement: '4 MP/sq'
+    Unbalanced: 'No'
+  -
+    ID: 4
+    Condition: 'Firm footing or braced'
+    SBWeapon: '-2 / x1/2'
+    NatWeapon: '-2 / x1/2'
+    Movement: '2 MP/sq'
+    Unbalanced: 'No'
+  -
+    ID: 5
+    Condition: 'None of the above'
+    SBWeapon: '-2 / x1/2'
+    NatWeapon: '-2 / x1/2'
+    Movement: 'No move'
+    Unbalanced: 'Yes'
+weather:
+  -
+    ID: 1
+    Roll: 01-50
+    Weather: Unchanged
+    Cold: 'Same as day before'
+    Temperate: 'Same as day before'
+    WarmDry: 'Same as day before'
+    WarmHumid: 'Same as day before'
+  -
+    ID: 2
+    Roll: 51-70
+    Weather: Normal
+    Cold: 'Cold, calm'
+    Temperate: 'Normal for season'
+    WarmDry: 'Hot, calm'
+    WarmHumid: 'Hot, calm'
+  -
+    ID: 3
+    Roll: 71-80
+    Weather: Abnormal
+    Cold: 'Heat wave (30%) or cold snap (70%)'
+    Temperate: 'Heat wave (50%) or cold snap (50%)'
+    WarmDry: 'Hot, windy'
+    WarmHumid: 'Hot, precipitation'
+  -
+    ID: 4
+    Roll: 81-90
+    Weather: Inclement
+    Cold: 'Precipitation (snow)'
+    Temperate: 'Precipitation (appropriate for season)'
+    WarmDry: 'Hot, windy'
+    WarmHumid: 'Hot, precipitation, windy'
+  -
+    ID: 5
+    Roll: 91-99
+    Weather: Storm
+    Cold: Snowstorm
+    Temperate: 'Thunderstorm or snowstorm'
+    WarmDry: Duststorm
+    WarmHumid: Downpour
+  -
+    ID: 6
+    Roll: 100
+    Weather: 'Powerful storm'
+    Cold: Blizzard
+    Temperate: 'Wndstorm, blizzard, hurricane, or tornado'
+    WarmDry: Downpour
+    WarmHumid: 'Hurricane or tornado'

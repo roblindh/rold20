@@ -4,7 +4,7 @@
 <h4>Speed</h4>
 <p>
     A creature’s 
-    <a href="hb02_coremech.php#AdjustedSpeed">adjusted speed</a> 
+    <a href="/rules/core#AdjustedSpeed">adjusted speed</a> 
     indicates the number of squares it can walk per round.
     Jogging is equal to two times that speed, running is equal to three times, and sprinting is equal to four times the speed.
 </p>
@@ -225,7 +225,7 @@
 
 <p>
     Many standard building features (and their typical DR, HP, break DC, and climb DC) can be found in the
-    <a href="hb12a_equipment.php">list of equipment</a>.
+    <a href="/reference/equipment">list of equipment</a>.
 </p>
 
 <?php show_buildingfeatures(); ?> 

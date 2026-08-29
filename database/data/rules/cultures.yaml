@@ -1,0 +1,1006 @@
+cultures:
+  -
+    ID: 1
+    Name: 'Human, Occidental'
+    PCSuitability: 5
+    Traits: 'Gen { Qual=Improvement; Value=+10; } SpecMod { Qual=Common; Type=cultural; Value=+3; }'
+    ClassConfig: 55
+    ClassConfigSec: 58
+    ClassConfigTert: 60
+    Description: null
+    NameTable: NamesHuman
+  -
+    ID: 2
+    Name: 'Human, Oriental'
+    PCSuitability: 5
+    Traits: 'Gen { Qual=Improvement; Value=+10; } SpecMod { Qual=Common; Type=cultural; Value=+3; }'
+    ClassConfig: 55
+    ClassConfigSec: 58
+    ClassConfigTert: 60
+    Description: null
+    NameTable: NamesOriental
+  -
+    ID: 3
+    Name: 'Human, Arabian'
+    PCSuitability: 5
+    Traits: 'Gen { Qual=Improvement; Value=+10; } SpecMod { Qual=Common; Type=cultural; Value=+3; }'
+    ClassConfig: 55
+    ClassConfigSec: 58
+    ClassConfigTert: 60
+    Description: null
+    NameTable: NamesArabian
+  -
+    ID: 4
+    Name: 'Age of Stone'
+    PCSuitability: 3
+    Traits: 'Gen { Qual=Improvement; Value=+10; } SpecMod { Qual=Common; Type=cultural; Value=+3; }'
+    ClassConfig: 61
+    ClassConfigSec: 56
+    ClassConfigTert: 44
+    Description: null
+    NameTable: NamesPrimitive
+  -
+    ID: 5
+    Name: 'Age of Bronze'
+    PCSuitability: 4
+    Traits: 'Gen { Qual=Improvement; Value=+10; } SpecMod { Qual=Common; Type=cultural; Value=+3; }'
+    ClassConfig: 55
+    ClassConfigSec: 60
+    ClassConfigTert: 58
+    Description: null
+    NameTable: NamesGreek
+  -
+    ID: 6
+    Name: 'Age of Iron'
+    PCSuitability: 4
+    Traits: 'Gen { Qual=Improvement; Value=+10; } SpecMod { Qual=Common; Type=cultural; Value=+3; }'
+    ClassConfig: 55
+    ClassConfigSec: 60
+    ClassConfigTert: 58
+    Description: null
+    NameTable: NamesRoman
+  -
+    ID: 7
+    Name: Dwarven
+    PCSuitability: 5
+    Traits: 'SpecMod { Qual=Stonemasonry; Type=cultural; Value=+2; } SpecMod { Qual=Blacksmithing; Type=cultural; Value=+2; } SpecMod { Qual=Mountains; Type=cultural; Value=+2; } SpecMod { Qual=Offensive - Goblinoids; Type=cultural; Value=+2; } SpecMod { Qual=Defensive - Giants; Type=cultural; Value=+2; } SpecMod { Qual=Common; Type=cultural; Value=+2; } SpecMod { Qual=Dwarven; Type=cultural; Value=+3; }'
+    ClassConfig: 85
+    ClassConfigSec: 7
+    ClassConfigTert: 58
+    Description: null
+    NameTable: NamesDwarf
+  -
+    ID: 8
+    Name: Duergar
+    PCSuitability: 4
+    Traits: 'SpecMod { Qual=Stonemasonry; Type=cultural; Value=+2; } SpecMod { Qual=Blacksmithing; Type=cultural; Value=+2; } SpecMod { Qual=Underdark; Type=cultural; Value=+2; } SpecMod { Qual=Defensive - Giants; Type=cultural; Value=+2; } SpecMod { Qual=Undercommon; Type=cultural; Value=+2; } SpecMod { Qual=Dwarven; Type=cultural; Value=+3; }'
+    ClassConfig: 85
+    ClassConfigSec: 19
+    ClassConfigTert: 58
+    Description: null
+    NameTable: NamesDwarf
+  -
+    ID: 9
+    Name: Elven
+    PCSuitability: 5
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+2; } SpecMod { Qual=Elven; Type=cultural; Value=+3; }'
+    ClassConfig: 20
+    ClassConfigSec: 28
+    ClassConfigTert: 8
+    Description: null
+    NameTable: NamesElf
+  -
+    ID: 10
+    Name: Drow
+    PCSuitability: 4
+    Traits: 'SpecMod { Qual=Undercommon; Type=cultural; Value=+3; } SpecMod { Qual=Elven; Type=cultural; Value=+3; }'
+    ClassConfig: 11
+    ClassConfigSec: 5
+    ClassConfigTert: 28
+    Description: null
+    NameTable: NamesDrow
+  -
+    ID: 11
+    Name: Gnome
+    PCSuitability: 5
+    Traits: 'SpecMod { Qual=Offensive - Goblinoids; Type=cultural; Value=+2; } SpecMod { Qual=Defensive - Giants; Type=cultural; Value=+2; } SpecMod { Qual=Common; Type=cultural; Value=+2; } SpecMod { Qual=Gnome; Type=cultural; Value=+3; }'
+    ClassConfig: 1
+    ClassConfigSec: 34
+    ClassConfigTert: 58
+    Description: null
+    NameTable: NamesGnome
+  -
+    ID: 12
+    Name: Halfling
+    PCSuitability: 5
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+2; } SpecMod { Qual=Halfling; Type=cultural; Value=+3; }'
+    ClassConfig: 22
+    ClassConfigSec: 3
+    ClassConfigTert: 55
+    Description: null
+    NameTable: NamesHalfling
+  -
+    ID: 13
+    Name: Orc
+    PCSuitability: 4
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+1; } SpecMod { Qual=Orc; Type=cultural; Value=+3; }'
+    ClassConfig: 10
+    ClassConfigSec: 50
+    ClassConfigTert: 61
+    Description: null
+    NameTable: NamesOrc
+  -
+    ID: 14
+    Name: Dromite
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+3; }'
+    ClassConfig: 15
+    ClassConfigSec: 18
+    ClassConfigTert: 55
+    Description: null
+    NameTable: NamesInsect
+  -
+    ID: 15
+    Name: Githyanki
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+2; } SpecMod { Qual=Gith; Type=cultural; Value=+3; }'
+    ClassConfig: 19
+    ClassConfigSec: 9
+    ClassConfigTert: 16
+    Description: null
+    NameTable: NamesGith
+  -
+    ID: 16
+    Name: Githzerai
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+2; } SpecMod { Qual=Gith; Type=cultural; Value=+3; }'
+    ClassConfig: 13
+    ClassConfigSec: 12
+    ClassConfigTert: 19
+    Description: null
+    NameTable: NamesGith
+  -
+    ID: 17
+    Name: Giant
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+2; } SpecMod { Qual=Giant; Type=cultural; Value=+3; } SpecMod { Qual=Goblin; Type=cultural; Value=+1; } SpecMod { Qual=Orc; Type=cultural; Value=+1; }'
+    ClassConfig: 97
+    ClassConfigSec: 19
+    ClassConfigTert: 20
+    Description: null
+    NameTable: NamesDwarf
+  -
+    ID: 18
+    Name: Maenad
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+2; } SpecMod { Qual=Maenad; Type=cultural; Value=+3; }'
+    ClassConfig: 15
+    ClassConfigSec: 13
+    ClassConfigTert: 55
+    Description: null
+    NameTable: NamesHuman
+  -
+    ID: 19
+    Name: Thri-Kreen
+    PCSuitability: 3
+    Traits: 'SklMod { Qual=Danger Sense; Type=cultural; Value=+1; } SpecMod { Qual=Common; Type=cultural; Value=+1; } SpecMod { Qual=Thri-kreen; Type=cultural; Value=+3; }'
+    ClassConfig: 10
+    ClassConfigSec: 19
+    ClassConfigTert: 16
+    Description: null
+    NameTable: NamesInsect
+  -
+    ID: 20
+    Name: Xeph
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+2; } SpecMod { Qual=Xeph; Type=cultural; Value=+3; }'
+    ClassConfig: 19
+    ClassConfigSec: 22
+    ClassConfigTert: 55
+    Description: null
+    NameTable: NamesElf
+  -
+    ID: 21
+    Name: Svirfneblin
+    PCSuitability: 4
+    Traits: 'SpecMod { Qual=Underdark; Type=cultural; Value=+2; } SpecMod { Qual=Undercommon; Type=cultural; Value=+2; } SpecMod { Qual=Gnome; Type=cultural; Value=+3; }'
+    ClassConfig: 22
+    ClassConfigSec: 34
+    ClassConfigTert: 58
+    Description: null
+    NameTable: NamesGnome
+  -
+    ID: 22
+    Name: 'Beast, Aggressive'
+    PCSuitability: 1
+    Traits: null
+    ClassConfig: 62
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 23
+    Name: 'Beast, Docile'
+    PCSuitability: 1
+    Traits: null
+    ClassConfig: 63
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 24
+    Name: Construct
+    PCSuitability: 1
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+1; }'
+    ClassConfig: 66
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 25
+    Name: Dragon
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+3; } SpecMod { Qual=Draconic; Type=cultural; Value=+3; }'
+    ClassConfig: 67
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 26
+    Name: Undead
+    PCSuitability: 1
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+3; }'
+    ClassConfig: 72
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 27
+    Name: Beholder
+    PCSuitability: 2
+    Traits: 'SklMod { Qual=Knowledge; Type=cultural; Value=+2; } SpecMod { Qual=Common; Type=cultural; Value=+2; } SpecMod { Qual=Undercommon; Type=cultural; Value=+2; } SpecMod { Qual=Deep Speech; Type=cultural; Value=+2; } SpecMod { Qual=Beholder; Type=cultural; Value=+3; }'
+    ClassConfig: 76
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 28
+    Name: Elemental
+    PCSuitability: 1
+    Traits: 'SpecMod { Qual=Primordial; Type=cultural; Value=+3; } SpecMod { Qual=Aquan; Type=cultural; Value=+1; } SpecMod { Qual=Auran; Type=cultural; Value=+1; } SpecMod { Qual=Ignan; Type=cultural; Value=+1; } SpecMod { Qual=Terran; Type=cultural; Value=+1; }'
+    ClassConfig: 62
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 29
+    Name: Goblinoid
+    PCSuitability: 4
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+1; } SpecMod { Qual=Goblin; Type=cultural; Value=+3; }'
+    ClassConfig: 61
+    ClassConfigSec: 55
+    ClassConfigTert: 44
+    Description: null
+    NameTable: NamesGoblin
+  -
+    ID: 30
+    Name: 'Beast, Trained'
+    PCSuitability: 1
+    Traits: null
+    ClassConfig: 69
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 31
+    Name: Aboleth
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Undercommon; Type=cultural; Value=+2; } SpecMod { Qual=Deep Speech; Type=cultural; Value=+2; } SpecMod { Qual=Aquan; Type=cultural; Value=+2; } SpecMod { Qual=Aboleth; Type=cultural; Value=+3; }'
+    ClassConfig: 70
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 32
+    Name: 'Undead, Mindless'
+    PCSuitability: 0
+    Traits: null
+    ClassConfig: 71
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 33
+    Name: 'Undead, Spellcaster'
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+3; } SpecMod { Qual=Abyssal; Type=cultural; Value=+2; } SpecMod { Qual=Infernal; Type=cultural; Value=+2; }'
+    ClassConfig: 73
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 34
+    Name: Angel
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Celestial; Type=cultural; Value=+3; } SpecMod { Qual=Infernal; Type=cultural; Value=+2; } SpecMod { Qual=Draconic; Type=cultural; Value=+2; }'
+    ClassConfig: 74
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 35
+    Name: Archon
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Celestial; Type=cultural; Value=+3; } SpecMod { Qual=Infernal; Type=cultural; Value=+2; } SpecMod { Qual=Draconic; Type=cultural; Value=+2; }'
+    ClassConfig: 75
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 36
+    Name: 'Archon, Cleric'
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Celestial; Type=cultural; Value=+3; } SpecMod { Qual=Infernal; Type=cultural; Value=+2; } SpecMod { Qual=Draconic; Type=cultural; Value=+2; }'
+    ClassConfig: 4
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 37
+    Name: Centaur
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Sylvan; Type=cultural; Value=+3; } SpecMod { Qual=Elven; Type=cultural; Value=+2; }'
+    ClassConfig: 20
+    ClassConfigSec: 8
+    ClassConfigTert: 1
+    Description: null
+    NameTable: null
+  -
+    ID: 38
+    Name: Cloaker
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Undercommon; Type=cultural; Value=+3; } SpecMod { Qual=Deep Speech; Type=cultural; Value=+2; }'
+    ClassConfig: 22
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 39
+    Name: Demon
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Abyssal; Type=cultural; Value=+3; } SpecMod { Qual=Celestial; Type=cultural; Value=+2; } SpecMod { Qual=Draconic; Type=cultural; Value=+2; }'
+    ClassConfig: 77
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 40
+    Name: Devil
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Infernal; Type=cultural; Value=+3; } SpecMod { Qual=Celestial; Type=cultural; Value=+2; } SpecMod { Qual=Draconic; Type=cultural; Value=+2; }'
+    ClassConfig: 78
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 41
+    Name: Doppelganger
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+3; }'
+    ClassConfig: 22
+    ClassConfigSec: 3
+    ClassConfigTert: 11
+    Description: null
+    NameTable: null
+  -
+    ID: 42
+    Name: 'Elemental, Air'
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Auran; Type=cultural; Value=+3; } SpecMod { Qual=Primordial; Type=cultural; Value=+2; }'
+    ClassConfig: 79
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 43
+    Name: 'Elemental, Earth'
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Terran; Type=cultural; Value=+3; } SpecMod { Qual=Primordial; Type=cultural; Value=+2; }'
+    ClassConfig: 80
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 44
+    Name: 'Elemental, Fire'
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Ignan; Type=cultural; Value=+3; } SpecMod { Qual=Primordial; Type=cultural; Value=+2; }'
+    ClassConfig: 81
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 45
+    Name: 'Elemental, Water'
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Aquan; Type=cultural; Value=+3; } SpecMod { Qual=Primordial; Type=cultural; Value=+2; }'
+    ClassConfig: 82
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 46
+    Name: Gnoll
+    PCSuitability: 4
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+1; } SpecMod { Qual=Gnoll; Type=cultural; Value=+3; }'
+    ClassConfig: 20
+    ClassConfigSec: 61
+    ClassConfigTert: 10
+    Description: null
+    NameTable: NamesGoblin
+  -
+    ID: 47
+    Name: Grimlock
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+1; } SpecMod { Qual=Grimlock; Type=cultural; Value=+3; }'
+    ClassConfig: 10
+    ClassConfigSec: 22
+    ClassConfigTert: 61
+    Description: null
+    NameTable: null
+  -
+    ID: 48
+    Name: Hag
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+2; } SpecMod { Qual=Giant; Type=cultural; Value=+3; }'
+    ClassConfig: 83
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 49
+    Name: Lizardman
+    PCSuitability: 3
+    Traits: 'SklMod { Qual=Survival; Type=cultural; Value=+2; } SpecMod { Qual=Common; Type=cultural; Value=+1; } SpecMod { Qual=Draconic; Type=cultural; Value=+3; }'
+    ClassConfig: 10
+    ClassConfigSec: 61
+    ClassConfigTert: 22
+    Description: null
+    NameTable: null
+  -
+    ID: 50
+    Name: Fey
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Common; Type=cultural; Value=+2; } SpecMod { Qual=Sylvan; Type=cultural; Value=+3; }'
+    ClassConfig: 8
+    ClassConfigSec: 20
+    ClassConfigTert: 11
+    Description: null
+    NameTable: null
+  -
+    ID: 51
+    Name: Yugoloth
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Yugoloth; Type=cultural; Value=+3; } SpecMod { Qual=Abyssal; Type=cultural; Value=+2; } SpecMod { Qual=Infernal; Type=cultural; Value=+2; } SpecMod { Qual=Celestial; Type=cultural; Value=+2; } SpecMod { Qual=Draconic; Type=cultural; Value=+2; }'
+    ClassConfig: 84
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 52
+    Name: 'Dark One'
+    PCSuitability: 3
+    Traits: 'SpecMod { Qual=Darkspeak; Type=cultural; Value=+3; } SpecMod { Qual=Undercommon; Type=cultural; Value=+2; }'
+    ClassConfig: 22
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 53
+    Name: Aranea
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Sylvan; Type=cultural; Value=+3; } SpecMod { Qual=Common; Type=cultural; Value=+2; }'
+    ClassConfig: 1
+    ClassConfigSec: 23
+    ClassConfigTert: 3
+    Description: null
+    NameTable: null
+  -
+    ID: 54
+    Name: 'Spawn of Tiamat, Beast'
+    PCSuitability: 1
+    Traits: 'SpecMod { Qual=Draconic; Type=cultural; Value=+2; }'
+    ClassConfig: 76
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 55
+    Name: 'Spawn of Tiamat, Warrior'
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Draconic; Type=cultural; Value=+3; } SpecMod { Qual=Common; Type=cultural; Value=+2; }'
+    ClassConfig: 9
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 56
+    Name: 'Spawn of Tiamat, Stalker'
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Draconic; Type=cultural; Value=+3; } SpecMod { Qual=Common; Type=cultural; Value=+2; }'
+    ClassConfig: 22
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+  -
+    ID: 57
+    Name: 'Spawn of Tiamat, Spellcaster'
+    PCSuitability: 2
+    Traits: 'SpecMod { Qual=Draconic; Type=cultural; Value=+3; } SpecMod { Qual=Common; Type=cultural; Value=+2; }'
+    ClassConfig: 23
+    ClassConfigSec: null
+    ClassConfigTert: null
+    Description: null
+    NameTable: null
+socialclasses:
+  -
+    ID: -2
+    Examples: 'Wanted criminal'
+    AddressForm: '-'
+    InflMod: 0
+    CLMod: -1
+  -
+    ID: -1
+    Examples: 'Outcast, slave'
+    AddressForm: '-'
+    InflMod: 0
+    CLMod: -1
+  -
+    ID: 0
+    Examples: 'Peasant, laborer, hedge knight (sir), sellsword, apprentice'
+    AddressForm: 'Goodman / goodwife'
+    InflMod: 0
+    CLMod: 0
+  -
+    ID: 1
+    Examples: 'Sworn knight (sir), servant, lesser merchant, acolyte'
+    AddressForm: 'Sir / Lady (Sir)'
+    InflMod: 5
+    CLMod: 0
+  -
+    ID: 2
+    Examples: 'Retainer, landed knight (sir), merchant, master'
+    AddressForm: 'Sir / Lady (Sir)'
+    InflMod: 10
+    CLMod: 0
+  -
+    ID: 3
+    Examples: 'Minor noble (lord), greater knight (sir), greater merchant'
+    AddressForm: 'Lord / Lady (Lord)'
+    InflMod: 15
+    CLMod: 1
+  -
+    ID: 4
+    Examples: 'Major noble'
+    AddressForm: 'Milord / Milady'
+    InflMod: 20
+    CLMod: 2
+  -
+    ID: 5
+    Examples: 'Royal family'
+    AddressForm: Highness
+    InflMod: 25
+    CLMod: 3
+  -
+    ID: 6
+    Examples: 'King, queen, emperor, empress'
+    AddressForm: Majesty
+    InflMod: 30
+    CLMod: 4
+wealthclasses:
+  -
+    ID: -2
+    Description: 'Seriously in debt.'
+    RenewIncome: 0
+    MinInvest: 0
+    Expenses: 0
+  -
+    ID: -1
+    Description: 'Destitute; homeless and starving; no resources or possessions.'
+    RenewIncome: 0
+    MinInvest: '1 gp'
+    Expenses: 0
+  -
+    ID: 0
+    Description: 'Poor; lives with others or in a shack and eats very simple meals; a few cheap possessions.'
+    RenewIncome: 0
+    MinInvest: '2 gp'
+    Expenses: '0.1 sp/day'
+  -
+    ID: 1
+    Description: 'Stable; owns a small homestead (or lives with a master); may own a few luxuries or heirlooms; may have a couple of apprentices.'
+    RenewIncome: '0.1-1 sp/day'
+    MinInvest: '10 gp'
+    Expenses: '0.3 sp/day'
+  -
+    ID: 2
+    Description: 'Well off; claim to some land or owns profitable business; some large expenditures are possible; some stockpiled resources; may have numerous assistants and warehouses; a knight may have a small holdfast and a garrison.'
+    RenewIncome: '1-10 sp/day'
+    MinInvest: '500 gp'
+    Expenses: '3 sp/day'
+  -
+    ID: 3
+    Description: 'Wealthy; extensive holdings; stockpiled resources; could have a small fleet of ships or a major castle; may employ dozens or hundreds of men.'
+    RenewIncome: '10-100 sp/day'
+    MinInvest: '5000 gp'
+    Expenses: '30 sp/day'
+  -
+    ID: 4
+    Description: 'Very wealthy; multiple large properties or key territory; hundreds or thousands of vassals.'
+    RenewIncome: '10-100 gp/day'
+    MinInvest: '50,000 gp'
+    Expenses: '10 gp/day'
+  -
+    ID: 5
+    Description: 'Tremendously wealthy; enormous territory, with many holdings and assets; thousands or tens of thousands of vassals.'
+    RenewIncome: '100-1000 gp/day'
+    MinInvest: '500,000 gp'
+    Expenses: '100 gp/day'
+  -
+    ID: 6
+    Description: 'Fabulously wealthy; enormous territory and plum resources; can lend large sums to other lords and organizations.'
+    RenewIncome: '1000-10,000 gp/day'
+    MinInvest: '5,000,000 gp'
+    Expenses: '1000 gp/day'
+wealthperlevel:
+  -
+    Level: 1
+    PCWealth: 125
+    NPCWealth: 900
+  -
+    Level: 2
+    PCWealth: 900
+    NPCWealth: 2000
+  -
+    Level: 3
+    PCWealth: 2700
+    NPCWealth: 2500
+  -
+    Level: 4
+    PCWealth: 5400
+    NPCWealth: 3300
+  -
+    Level: 5
+    PCWealth: 9000
+    NPCWealth: 4300
+  -
+    Level: 6
+    PCWealth: 13000
+    NPCWealth: 5600
+  -
+    Level: 7
+    PCWealth: 19000
+    NPCWealth: 7200
+  -
+    Level: 8
+    PCWealth: 27000
+    NPCWealth: 9400
+  -
+    Level: 9
+    PCWealth: 36000
+    NPCWealth: 12000
+  -
+    Level: 10
+    PCWealth: 49000
+    NPCWealth: 16000
+  -
+    Level: 11
+    PCWealth: 66000
+    NPCWealth: 21000
+  -
+    Level: 12
+    PCWealth: 88000
+    NPCWealth: 27000
+  -
+    Level: 13
+    PCWealth: 110000
+    NPCWealth: 35000
+  -
+    Level: 14
+    PCWealth: 150000
+    NPCWealth: 45000
+  -
+    Level: 15
+    PCWealth: 200000
+    NPCWealth: 59000
+  -
+    Level: 16
+    PCWealth: 260000
+    NPCWealth: 77000
+  -
+    Level: 17
+    PCWealth: 340000
+    NPCWealth: 100000
+  -
+    Level: 18
+    PCWealth: 440000
+    NPCWealth: 130000
+  -
+    Level: 19
+    PCWealth: 580000
+    NPCWealth: 170000
+  -
+    Level: 20
+    PCWealth: 760000
+    NPCWealth: 220000
+  -
+    Level: 21
+    PCWealth: 975000
+    NPCWealth: 240000
+  -
+    Level: 22
+    PCWealth: 1200000
+    NPCWealth: 265000
+  -
+    Level: 23
+    PCWealth: 1500000
+    NPCWealth: 290000
+  -
+    Level: 24
+    PCWealth: 1800000
+    NPCWealth: 320000
+  -
+    Level: 25
+    PCWealth: 2100000
+    NPCWealth: 350000
+  -
+    Level: 26
+    PCWealth: 2500000
+    NPCWealth: 390000
+  -
+    Level: 27
+    PCWealth: 2900000
+    NPCWealth: 430000
+  -
+    Level: 28
+    PCWealth: 3300000
+    NPCWealth: 470000
+  -
+    Level: 29
+    PCWealth: 3800000
+    NPCWealth: 520000
+  -
+    Level: 30
+    PCWealth: 4300000
+    NPCWealth: 570000
+  -
+    Level: 31
+    PCWealth: 4900000
+    NPCWealth: 620000
+  -
+    Level: 32
+    PCWealth: 5600000
+    NPCWealth: 670000
+  -
+    Level: 33
+    PCWealth: 6300000
+    NPCWealth: 730000
+  -
+    Level: 34
+    PCWealth: 7000000
+    NPCWealth: 790000
+  -
+    Level: 35
+    PCWealth: 7900000
+    NPCWealth: 850000
+  -
+    Level: 36
+    PCWealth: 8800000
+    NPCWealth: 910000
+  -
+    Level: 37
+    PCWealth: 9900000
+    NPCWealth: 980000
+  -
+    Level: 38
+    PCWealth: 11000000
+    NPCWealth: 1050000
+  -
+    Level: 39
+    PCWealth: 12300000
+    NPCWealth: 1130000
+  -
+    Level: 40
+    PCWealth: 13600000
+    NPCWealth: 1220000
+towntypes:
+  -
+    ID: 1
+    DieRoll: 01-10
+    TownType: Thorp
+    Population: 20-80
+    GPLimit: '4 gp'
+    PowerMod: -1
+    CommunityMod: -3
+    Organizations: '0-1 temples'
+  -
+    ID: 2
+    DieRoll: 11-30
+    TownType: Hamlet
+    Population: 81-400
+    GPLimit: '10 gp'
+    PowerMod: 0
+    CommunityMod: -2
+    Organizations: '1 temple, ruler'
+  -
+    ID: 3
+    DieRoll: 31-50
+    TownType: Village
+    Population: 401-900
+    GPLimit: '20 gp'
+    PowerMod: 1
+    CommunityMod: -1
+    Organizations: '1-2 temples, ruler'
+  -
+    ID: 4
+    DieRoll: 51-65
+    TownType: 'Small town'
+    Population: '901-2,000'
+    GPLimit: '80 gp'
+    PowerMod: 2
+    CommunityMod: 0
+    Organizations: 'Temples, guilds, mayor…'
+  -
+    ID: 5
+    DieRoll: 66-75
+    TownType: 'Medium town'
+    Population: '2,001-5,000'
+    GPLimit: '200 gp'
+    PowerMod: 2
+    CommunityMod: 2
+    Organizations: 'Temples, guilds, nobles, mayor...'
+  -
+    ID: 6
+    DieRoll: 76-85
+    TownType: 'Large town'
+    Population: '5,001-12,000'
+    GPLimit: '500 gp'
+    PowerMod: 3
+    CommunityMod: 3
+    Organizations: 'Temples, guilds, nobles, mayor...'
+  -
+    ID: 7
+    DieRoll: 86-90
+    TownType: 'Small city'
+    Population: '12,001-30,000'
+    GPLimit: '1,500 gp'
+    PowerMod: '+4 (2 rolls)'
+    CommunityMod: '+6 (2 rolls)'
+    Organizations: 'Temples, guilds, nobles, mayor...'
+  -
+    ID: 8
+    DieRoll: 91-95
+    TownType: 'Medium city'
+    Population: '30,001-75,000'
+    GPLimit: '4,000 gp'
+    PowerMod: '+5 (3 rolls)'
+    CommunityMod: '+9 (3 rolls)'
+    Organizations: 'Temples, guilds, nobles, mayor...'
+  -
+    ID: 9
+    DieRoll: 96-99
+    TownType: 'Large city'
+    Population: '75,001-200,000'
+    GPLimit: '10,000 gp'
+    PowerMod: '+6 (4 rolls)'
+    CommunityMod: '+12 (4 rolls)'
+    Organizations: 'Temples, guilds, nobles, mayor...'
+  -
+    ID: 10
+    DieRoll: 100
+    TownType: Metropolis
+    Population: '200,001+'
+    GPLimit: '20,000 gp'
+    PowerMod: '+7 (5 rolls)'
+    CommunityMod: '+15 (5 rolls)'
+    Organizations: 'Temples, guilds, nobles, royalty...'
+buildingfeatures:
+  -
+    ID: 1
+    Feature: 'Wall, unworked stone'
+    Effect: 'Usually at least 1.5 m thick; DR: 8, HP: 6/cm; DC 15 for climbing.'
+  -
+    ID: 2
+    Feature: 'Wall, reinforced'
+    Effect: 'Masonry wall reinforced with iron bars; DR: 8; HP: 12/cm; +10 DC to break through; DC 15 for climbing.'
+  -
+    ID: 3
+    Feature: 'Wall, magically treated'
+    Effect: 'Typically doubles DR and HP; +20 DC to break through.'
+  -
+    ID: 4
+    Feature: 'Arrow slit'
+    Effect: 'Provides good cover for adjacent creatures (relative to the other side).'
+  -
+    ID: 5
+    Feature: 'Floor, flagstone'
+    Effect: 'Most common dungeon floor.'
+  -
+    ID: 6
+    Feature: 'Floor, uneven flagstone'
+    Effect: 'Running and charging requires DC 10 Balance check.'
+  -
+    ID: 7
+    Feature: 'Floor, hewn stone'
+    Effect: 'Running and charging requires DC 10 Balance check.'
+  -
+    ID: 8
+    Feature: 'Floor, natural stone'
+    Effect: 'Typically counts as difficult terrain, and traversal of some parts may require Climb or Jump checks.'
+  -
+    ID: 9
+    Feature: 'Door, secret'
+    Effect: 'Disguised as part of a wall or other architectural feature, this door requires a Search check to detect (usual DC between 20 and 30).'
+  -
+    ID: 10
+    Feature: 'Stairs or ramp, normal'
+    Effect: 'Counts as diagonal movement (×1.5 movement cost); attackers above a defender can gain +1 melee attack bonus for higher ground.'
+  -
+    ID: 11
+    Feature: 'Stairs or ramp, steep'
+    Effect: 'Counts as difficult terrain; higher ground melee attack bonus; running, charging, and fighting require Balance checks and may result in falls up to d4 squares.'
+  -
+    ID: 12
+    Feature: 'Stairs, spiral'
+    Effect: 'Same as normal or steep stairs; central support can provide cover for defenders that are above their attackers.'
+  -
+    ID: 13
+    Feature: 'Bridge, rope'
+    Effect: 'Counts as difficult terrain; if only one supporting rope remains attached, make +5 attack against Ref for creatures on the bridge (S - creature falls), and movement requires DC 15 Climb check.'
+  -
+    ID: 14
+    Feature: Statue
+    Effect: 'Can provide cover (depending on size); DC 15 for climbing.'
+  -
+    ID: 15
+    Feature: Tapestry
+    Effect: 'Can provide up to total concealment (depending on size and position); DC 15 for climbing.'
+  -
+    ID: 16
+    Feature: Elevator
+    Effect: 'Can be mechanical or magical; typically ascends or descends 2 squares (3 m) per round.'
+  -
+    ID: 17
+    Feature: Ladders
+    Effect: 'DC 0 for climbing.'
+  -
+    ID: 18
+    Feature: 'Wall, shifting'
+    Effect: 'Shifting walls are often parts of traps and secret doors; otherwise treat as walls of same material.'

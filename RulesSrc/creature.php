@@ -212,11 +212,17 @@ class cCreature {
 
     public static function GetLocalImagePath(int $id, string $name = ''): ?string {
         $extensions = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
-        $baseDir = dirname(__DIR__) . '/images/creatures/';
+        $baseDirs = [
+            dirname(__DIR__) . '/images/creatures/',
+            dirname(__DIR__) . '/public/images/creatures/',
+        ];
         
-        foreach ($extensions as $ext) {
-            if (file_exists($baseDir . $id . '.' . $ext)) {
-                return 'images/creatures/' . $id . '.' . $ext;
+        foreach ($baseDirs as $baseDir) {
+            if (!is_dir($baseDir)) continue;
+            foreach ($extensions as $ext) {
+                if (file_exists($baseDir . $id . '.' . $ext)) {
+                    return 'images/creatures/' . $id . '.' . $ext;
+                }
             }
         }
         
@@ -230,10 +236,13 @@ class cCreature {
                 strtolower(preg_replace('/\s+/', '_', $name)),
             ];
             $candidates = array_unique($candidates);
-            foreach ($candidates as $cand) {
-                foreach ($extensions as $ext) {
-                    if (file_exists($baseDir . $cand . '.' . $ext)) {
-                        return 'images/creatures/' . $cand . '.' . $ext;
+            foreach ($baseDirs as $baseDir) {
+                if (!is_dir($baseDir)) continue;
+                foreach ($candidates as $cand) {
+                    foreach ($extensions as $ext) {
+                        if (file_exists($baseDir . $cand . '.' . $ext)) {
+                            return 'images/creatures/' . $cand . '.' . $ext;
+                        }
                     }
                 }
             }

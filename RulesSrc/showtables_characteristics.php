@@ -388,8 +388,8 @@ function show_maneuverability() {
         <sup>9</sup>Descent &rarr; Ascent: The minimum number of horizontal squares needed to change from diving to climbing.
     </p>
     <p>
-        A flying/swimming creature that cannot hover is not allowed to make <a href="hb04_combat.php#AoO">attacks of opportunity</a>,
-        nor is it allowed to <a href="hb02_coremech.php#DefensiveActions">act defensively</a> in order to avoid attacks of opportunity.
+        A flying/swimming creature that cannot hover is not allowed to make <a href="/rules/combat#AoO">attacks of opportunity</a>,
+        nor is it allowed to <a href="/rules/core#DefensiveActions">act defensively</a> in order to avoid attacks of opportunity.
     </p>
     <?php
 }
@@ -403,7 +403,7 @@ function show_naturalattacks() {
     ?>
     <p>
         The following is a list of predefined natural attack forms and their
-        default traits (see <a href="hb12a_equipment.php">Equipment</a> chapter for explanation).
+        default traits (see <a href="/reference/equipment">Equipment</a> chapter for explanation).
         Please note that the traits are only default values for a medium-sized
         creature; many creatures will vary from these defaults.
     </p>

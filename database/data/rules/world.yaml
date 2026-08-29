@@ -1,0 +1,1717 @@
+deities:
+  -
+    ID: 1
+    Name: Akadi
+    Alias: null
+    Alignment: 'N'
+    Rank: G
+    Domains: 'Air, Illusion, Travel, Trickery'
+    FavoredWeapon: 'Heavy flail'
+    Portfolio: 'Elemental air, movement, speed, flying creatures'
+    Symbol: 'White cloud on blue background'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 2
+    Name: Auril
+    Alias: null
+    Alignment: NE
+    Rank: L
+    Domains: 'Air, Evil, Storm, Water'
+    FavoredWeapon: 'Battleaxe ("Icemaiden''s Caress")'
+    Portfolio: 'Cold, winter'
+    Symbol: 'White snowflake on gray diamond with white border'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 3
+    Name: Azuth
+    Alias: null
+    Alignment: LN
+    Rank: L
+    Domains: 'Illusion, Magic, Knowledge, Law, Spell'
+    FavoredWeapon: 'Quarterstaff ("The Old Staff")'
+    Portfolio: 'Wizards, mages, spellcasters in general'
+    Symbol: 'Human left hand pointing upward outlined in blue fire'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 4
+    Name: Bane
+    Alias: null
+    Alignment: LE
+    Rank: I
+    Domains: 'Destruction, Evil, Hatred, Law, Tyranny'
+    FavoredWeapon: 'Morningstar ("The Black Hand of Bane")'
+    Portfolio: 'Strife, hatred, tyranny, fear'
+    Symbol: 'Green rays squeezed forth from a black gauntleted fist'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 5
+    Name: Beshaba
+    Alias: null
+    Alignment: CE
+    Rank: I
+    Domains: 'Chaos, Evil, Fate, Luck, Trickery'
+    FavoredWeapon: 'Scourge ("Ill Fortune")'
+    Portfolio: 'Random mischief, misfortune, bad luck, accidents'
+    Symbol: 'Black antlers on a red field'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 6
+    Name: Chauntea
+    Alias: null
+    Alignment: NG
+    Rank: G
+    Domains: 'Animal, Earth, Good, Plant, Protection, Renewal'
+    FavoredWeapon: Scythe
+    Portfolio: 'Agriculture, farmers, gardeners, summer'
+    Symbol: 'Blooming rose on a sunburst wreath of golden grain'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 7
+    Name: Cyric
+    Alias: null
+    Alignment: CE
+    Rank: G
+    Domains: 'Chaos, Destruction, Evil, Illusion, Trickery'
+    FavoredWeapon: 'Longsword ("Razor''s Edge")'
+    Portfolio: 'Murder, lies, intrigue, deception, illusion'
+    Symbol: 'White jawless skull on black or purple sunburst'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 8
+    Name: Deneir
+    Alias: null
+    Alignment: NG
+    Rank: L
+    Domains: 'Good, Knowledge, Protection, Rune'
+    FavoredWeapon: Dagger
+    Portfolio: 'Glyphs, images, literature, scribes, cartography'
+    Symbol: 'Lit candle above purple eye with triangular pupil'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 9
+    Name: Eldath
+    Alias: null
+    Alignment: NG
+    Rank: L
+    Domains: 'Family, Good, Plant, Protection, Water'
+    FavoredWeapon: Net
+    Portfolio: 'Quiet places, springs, pools, peace, waterfalls'
+    Symbol: 'Waterfall plunging into a still pool'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 10
+    Name: 'Finder Wyvernspur'
+    Alias: null
+    Alignment: CN
+    Rank: D
+    Domains: 'Chaos, Charm, Renewal, Scalykind'
+    FavoredWeapon: 'Bastard sword ("Sword of Songs")'
+    Portfolio: 'Cycle of life, transformation of art, saurials'
+    Symbol: 'White harp on gray circle'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 11
+    Name: Garagos
+    Alias: null
+    Alignment: CN
+    Rank: D
+    Domains: 'Chaos, Destruction, Strength, War'
+    FavoredWeapon: 'Longsword ("The Tentacus")'
+    Portfolio: 'War, skill-at-arms, destruction, plunder'
+    Symbol: 'A counterclockwise pinwheel of five snaky arms clutching swords'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 12
+    Name: Gargauth
+    Alias: null
+    Alignment: LE
+    Rank: D
+    Domains: 'Charm, Evil, Law, Trickery'
+    FavoredWeapon: 'Dagger ("Corruptor")'
+    Portfolio: 'Betrayal, cruelty, political corruption, powerbrokers'
+    Symbol: 'Broken animal horn'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 13
+    Name: Gond
+    Alias: null
+    Alignment: 'N'
+    Rank: I
+    Domains: 'Craft, Earth, Fire, Knowledge, Metal, Planning'
+    FavoredWeapon: 'Warhammer ("Craftmaster")'
+    Portfolio: 'Artifice, craft, construction, smithwork'
+    Symbol: 'A toothed metal, bone, or wood cog with four spokes'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 14
+    Name: Grumbar
+    Alias: null
+    Alignment: 'N'
+    Rank: G
+    Domains: 'Cavern, Earth, Metal, Time'
+    FavoredWeapon: Warhammer
+    Portfolio: 'Elemental earth, solidity, changelessness, oaths'
+    Symbol: 'Mountains on purple'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 15
+    Name: 'Gwaeron Windstrom'
+    Alias: null
+    Alignment: NG
+    Rank: D
+    Domains: 'Animal, Good, Knowledge, Plant, Travel'
+    FavoredWeapon: 'Greatsword ("Flameheart")'
+    Portfolio: 'Tracking, rangers of the North'
+    Symbol: 'White star and brown pawprint on dark red "S"'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 16
+    Name: Helm
+    Alias: null
+    Alignment: LN
+    Rank: I
+    Domains: 'Law, Planning, Protection, Strength'
+    FavoredWeapon: 'Bastard sword ("Ever Watchful")'
+    Portfolio: 'Guardians, protectors, protection'
+    Symbol: 'Staring eye with blue pupil on upright left war gauntlet'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 17
+    Name: Hoar
+    Alias: null
+    Alignment: LN
+    Rank: D
+    Domains: 'Fate, Law, Retribution, Travel'
+    FavoredWeapon: 'Javelin ("Retribution''s Sting")'
+    Portfolio: 'Revenge, retribution, poetic justice'
+    Symbol: 'Black-gloved hand holding a coin with a two-faced head'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 18
+    Name: Ilmater
+    Alias: null
+    Alignment: LG
+    Rank: I
+    Domains: 'Good, Healing, Law, Strength, Suffering'
+    FavoredWeapon: Unarmed
+    Portfolio: 'Endurance, suffering, martyrdom, perseverance'
+    Symbol: 'Pair of white hands bound at the wrist with a red cord'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 19
+    Name: Istishia
+    Alias: null
+    Alignment: 'N'
+    Rank: G
+    Domains: 'Destruction, Ocean, Storm, Travel, Water'
+    FavoredWeapon: Warhammer
+    Portfolio: 'Elemental water, purification, wetness'
+    Symbol: 'Cresting wave'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 20
+    Name: Jergal
+    Alias: null
+    Alignment: LN
+    Rank: D
+    Domains: 'Death, Fate, Law, Rune, Suffering'
+    FavoredWeapon: Scythe
+    Portfolio: 'Fatalism, proper burial, guardian of tombs'
+    Symbol: 'Jawless skull and writing quill on scroll'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 21
+    Name: Kelemvor
+    Alias: null
+    Alignment: LN
+    Rank: G
+    Domains: 'Death, Fate, Law, Protection, Travel'
+    FavoredWeapon: 'Bastard sword ("Fatal Touch")'
+    Portfolio: 'Death, the dead'
+    Symbol: 'Upright skeletal arm holding the golden scales of justice'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 22
+    Name: Kossuth
+    Alias: null
+    Alignment: 'N (LN)'
+    Rank: G
+    Domains: 'Destruction, Fire, Renewal, Suffering'
+    FavoredWeapon: 'Spiked chain'
+    Portfolio: 'Elemental fire, purification through fire'
+    Symbol: 'A twining red flame'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 23
+    Name: Lathander
+    Alias: null
+    Alignment: NG
+    Rank: G
+    Domains: 'Good, Nobility, Protection, Renewal, Strength, Sun'
+    FavoredWeapon: 'Mace ("Dawnspeaker")'
+    Portfolio: 'Spring, dawn, birth, youth, vitality, athletics'
+    Symbol: 'Sunrise made of rose, red, and yellow gems'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 24
+    Name: Lliira
+    Alias: null
+    Alignment: CG
+    Rank: L
+    Domains: 'Chaos, Charm, Family, Good, Travel'
+    FavoredWeapon: 'Shuriken ("Sparkle")'
+    Portfolio: 'Joy, happiness, dance, festivals, freedom, liberty'
+    Symbol: 'A triangle of three six-pointed stars (orange, yellow, red)'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 25
+    Name: Loviatar
+    Alias: null
+    Alignment: LE
+    Rank: L
+    Domains: 'Evil, Law, Retribution, Strength, Suffering'
+    FavoredWeapon: 'Scourge ("Painbringer")'
+    Portfolio: 'Pain, hurt, agony, torment, suffering, torture'
+    Symbol: 'Nine-tailed barbed scourge'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 26
+    Name: Lurue
+    Alias: null
+    Alignment: CG
+    Rank: D
+    Domains: 'Animal, Chaos, Good, Healing'
+    FavoredWeapon: Shortspear
+    Portfolio: 'Talking beasts, intelligent nonhumanoid creatures'
+    Symbol: 'Silver-horned unicorn head before a crescent moon'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 27
+    Name: Malar
+    Alias: null
+    Alignment: CE
+    Rank: L
+    Domains: 'Animal, Chaos, Evil, Moon, Strength'
+    FavoredWeapon: 'Claw bracer'
+    Portfolio: 'Hunters, stalking, bloodlust, evil lycanthropes'
+    Symbol: 'Bestial claw with brown fur and curving bloody talons'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 28
+    Name: Mask
+    Alias: null
+    Alignment: NE
+    Rank: L
+    Domains: 'Darkness, Evil, Luck, Trickery'
+    FavoredWeapon: 'Longsword ("Stealthwhisper")'
+    Portfolio: 'Thieves, thievery, shadows'
+    Symbol: 'Black velvet mask tinged with red'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 29
+    Name: Mielikki
+    Alias: null
+    Alignment: NG
+    Rank: I
+    Domains: 'Animal, Good, Plant, Travel'
+    FavoredWeapon: 'Scimitar ("The Hornblade")'
+    Portfolio: 'Forests, forest creatures, rangers, dryads, autumn'
+    Symbol: "Golden-horned, blue-eyed unicorn's head facing left"
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 30
+    Name: Milil
+    Alias: null
+    Alignment: NG
+    Rank: L
+    Domains: 'Charm, Good, Knowledge, Nobility'
+    FavoredWeapon: 'Rapier ("Sharptongue")'
+    Portfolio: 'Poetry, song, eloquence'
+    Symbol: 'Five-stringed harp made of silver leaves'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 31
+    Name: Mystra
+    Alias: null
+    Alignment: 'NG (LN)'
+    Rank: G
+    Domains: 'Good, Illusion, Knowledge, Magic, Rune, Spell'
+    FavoredWeapon: Shuriken
+    Portfolio: 'Magic, spells, the Weave'
+    Symbol: 'Circle of seven blue-white stars with red mist flowing from the center'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 32
+    Name: Nobanion
+    Alias: null
+    Alignment: LG
+    Rank: D
+    Domains: 'Animal, Good, Law, Nobility'
+    FavoredWeapon: 'Heavy pick'
+    Portfolio: 'Royalty, lions and feline beasts, good beasts'
+    Symbol: "Male lion's head on a green shield"
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 33
+    Name: Oghma
+    Alias: null
+    Alignment: 'N'
+    Rank: G
+    Domains: 'Charm, Knowledge, Luck, Travel, Trickery'
+    FavoredWeapon: 'Longsword ("Mortal Strike")'
+    Portfolio: 'Knowledge, invention, inspiration, bards'
+    Symbol: 'Blank scroll'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 34
+    Name: 'Red Knight'
+    Alias: null
+    Alignment: LN
+    Rank: D
+    Domains: 'Law, Nobility, Planning, War'
+    FavoredWeapon: 'Longsword ("Checkmate")'
+    Portfolio: 'Strategy, planning, tactics'
+    Symbol: 'Red knight chess piece with stars for eyes'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 35
+    Name: Savras
+    Alias: null
+    Alignment: LN
+    Rank: D
+    Domains: 'Fate, Knowledge, Law, Magic, Spell'
+    FavoredWeapon: 'Dagger ("The Eye of Savras")'
+    Portfolio: 'Divination, fate, truth'
+    Symbol: 'Crystal ball containing many kinds of eyes'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 36
+    Name: Selûne
+    Alias: null
+    Alignment: CG
+    Rank: I
+    Domains: 'Chaos, Good, Moon, Protection, Travel'
+    FavoredWeapon: 'Heavy mace ("The Wand of Four Moons")'
+    Portfolio: 'Moon, stars, navigation, prophecy, questers, good and neutral lycanthropes'
+    Symbol: 'Pair of female eyes surrounded by seven silver stars'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 37
+    Name: Shar
+    Alias: null
+    Alignment: NE
+    Rank: G
+    Domains: 'Cavern, Darkness, Evil, Knowledge'
+    FavoredWeapon: 'Chakram ("The Disk of Night")'
+    Portfolio: 'Dark, night, loss, forgetfulness, unrevealed secrets, caverns, dungeons, the Underdark'
+    Symbol: 'Black disk with deep purple border'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 38
+    Name: Sharess
+    Alias: null
+    Alignment: CG
+    Rank: D
+    Domains: 'Chaos, Charm, Good, Travel, Trickery'
+    FavoredWeapon: 'Claw bracer'
+    Portfolio: 'Hedonism, sensual fulfillment, festhalls, cats'
+    Symbol: 'Feminine lips'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 39
+    Name: Shaundakul
+    Alias: null
+    Alignment: CN
+    Rank: L
+    Domains: 'Air, Chaos, Portal, Protection, Trade, Travel'
+    FavoredWeapon: 'Greatsword ("Sword of Shadows")'
+    Portfolio: 'Travel, exploration, caravans, portals'
+    Symbol: "A wind-walking bearded man in traveler's cape and boots"
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 40
+    Name: Shiallia
+    Alias: null
+    Alignment: NG
+    Rank: D
+    Domains: 'Animal, Good, Plant, Renewal'
+    FavoredWeapon: 'Quarterstaff ("Forest''s Friend")'
+    Portfolio: 'Woodland glades, woodland fertility, the High Forest, Neverwinter Wood'
+    Symbol: 'Golden acorn'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 41
+    Name: Siamorphe
+    Alias: null
+    Alignment: LN
+    Rank: D
+    Domains: 'Knowledge, Law, Nobility, Planning'
+    FavoredWeapon: 'Light mace ("Noble Might")'
+    Portfolio: 'Nobles, rightful rule of nobility, human royalty'
+    Symbol: 'Silver chalice with a golden sun on the side'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 42
+    Name: Silvanus
+    Alias: null
+    Alignment: 'N'
+    Rank: G
+    Domains: 'Animal, Plant, Protection, Renewal, Water'
+    FavoredWeapon: 'Maul ("The Great Mallet of Silvanus")'
+    Portfolio: 'Wild nature, druids'
+    Symbol: 'Green living oak leaf'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 43
+    Name: Sune
+    Alias: null
+    Alignment: CG
+    Rank: G
+    Domains: 'Chaos, Charm, Good, Protection'
+    FavoredWeapon: Whip
+    Portfolio: 'Beauty, love, passion'
+    Symbol: 'Face of a red-haired, ivory-skinned beautiful woman'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 44
+    Name: Talona
+    Alias: null
+    Alignment: CE
+    Rank: L
+    Domains: 'Chaos, Destruction, Evil, Suffering'
+    FavoredWeapon: Unarmed
+    Portfolio: 'Disease, poison'
+    Symbol: 'Three amber teardrops on a purple triangle'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 45
+    Name: Talos
+    Alias: null
+    Alignment: CE
+    Rank: G
+    Domains: 'Chaos, Destruction, Evil, Fire, Storm'
+    FavoredWeapon: Spear
+    Portfolio: 'Storms, destruction, rebellion, conflagrations, earthquakes, vortices'
+    Symbol: 'An explosive lightning strike'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 46
+    Name: Tempus
+    Alias: null
+    Alignment: CN
+    Rank: G
+    Domains: 'Chaos, Protection, Strength, War'
+    FavoredWeapon: 'Battleaxe ("Battle Prowess")'
+    Portfolio: 'War, battle, warriors'
+    Symbol: 'A flaming silver sword on a blood-red shield'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 47
+    Name: Tiamat
+    Alias: null
+    Alignment: LE
+    Rank: L
+    Domains: 'Evil, Law, Scalykind, Tyranny'
+    FavoredWeapon: 'Heavy pick'
+    Portfolio: 'Evil dragons, evil reptiles, greed, Chessenta'
+    Symbol: 'Five-headed dragon'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 48
+    Name: Torm
+    Alias: null
+    Alignment: LG
+    Rank: L
+    Domains: 'Good, Healing, Law, Protection, Strength'
+    FavoredWeapon: 'Greatsword ("Duty''s Bond")'
+    Portfolio: 'Duty, loyalty, obedience, paladins'
+    Symbol: 'Right-hand gauntlet held upright with palm forward'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 49
+    Name: Tymora
+    Alias: null
+    Alignment: CG
+    Rank: I
+    Domains: 'Chaos, Good, Luck, Protection, Travel'
+    FavoredWeapon: Shuriken
+    Portfolio: 'Good fortune, skill, victory, adventurers'
+    Symbol: "Silver coin with Tymora's face surrounded by shamrocks"
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 50
+    Name: Tyr
+    Alias: null
+    Alignment: LG
+    Rank: G
+    Domains: 'Good, Knowledge, Law, Retribution, War'
+    FavoredWeapon: 'Longsword ("Justiciar")'
+    Portfolio: Justice
+    Symbol: 'Balanced scales resting on a warhammer'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 51
+    Name: Ubtao
+    Alias: null
+    Alignment: 'N'
+    Rank: G
+    Domains: 'Planning, Plant, Protection, Scalykind'
+    FavoredWeapon: 'Heavy pick'
+    Portfolio: 'Creation, jungles, Chult, the Chultans, dinosaurs'
+    Symbol: Maze
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 52
+    Name: Ulutiu
+    Alias: null
+    Alignment: LN
+    Rank: D
+    Domains: 'Animal, Law, Ocean, Protection, Strength'
+    FavoredWeapon: 'Spear ("Harpoon of the Cold Sea")'
+    Portfolio: 'Glaciers, polar environments, arctic dwellers'
+    Symbol: 'Necklace of blue and white ice crystals'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 53
+    Name: Umberlee
+    Alias: null
+    Alignment: CE
+    Rank: I
+    Domains: 'Chaos, Destruction, Evil, Ocean, Storm, Water'
+    FavoredWeapon: 'Trident ("Drowning Death")'
+    Portfolio: 'Oceans, currents, waves, sea winds'
+    Symbol: 'Blue-green wave curling left and right'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 54
+    Name: Uthgar
+    Alias: null
+    Alignment: CN
+    Rank: D
+    Domains: 'Animal, Chaos, Retribution, Strength, War'
+    FavoredWeapon: Battleaxe
+    Portfolio: 'The Uthgardt barbarian tribes, physical strength'
+    Symbol: 'Beast totem spirit symbols'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 55
+    Name: Valkur
+    Alias: null
+    Alignment: CG
+    Rank: D
+    Domains: 'Air, Chaos, Good, Ocean, Protection'
+    FavoredWeapon: 'Cutlass ("The Captain''s Cutlass")'
+    Portfolio: 'Sailors, ships, favorable winds, naval combat'
+    Symbol: 'Cloud with three lightning bolts on a shield'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 56
+    Name: Velsharoon
+    Alias: null
+    Alignment: NE
+    Rank: D
+    Domains: 'Death, Evil, Magic, Undeath'
+    FavoredWeapon: 'Quarterstaff ("Skull Staff of the Necromancer")'
+    Portfolio: 'Necromancy, necromancers, evil liches, undeath'
+    Symbol: 'A crowned laughing lich skull on a black hexagon'
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 57
+    Name: Waukeen
+    Alias: null
+    Alignment: 'N'
+    Rank: L
+    Domains: 'Knowledge, Protection, Trade, Travel'
+    FavoredWeapon: Nunchaku
+    Portfolio: 'Trade, money, wealth'
+    Symbol: "Gold coin with Waukeen's profile facing left"
+    Pantheon: 2
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 58
+    Name: Anhur
+    Alias: null
+    Alignment: CG
+    Rank: L
+    Domains: 'Chaos, Good, Strength, Storm, War'
+    FavoredWeapon: 'Falchion ("Warhawk")'
+    Portfolio: 'War, conflict, physical prowess, thunder, rain'
+    Symbol: 'Hawk-headed falchion bound with a cord'
+    Pantheon: 3
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 59
+    Name: Geb
+    Alias: null
+    Alignment: 'N'
+    Rank: L
+    Domains: 'Cavern, Craft, Earth, Protection'
+    FavoredWeapon: 'Quarterstaff ("Stonemantle")'
+    Portfolio: 'The earth, miners, mines, mineral resources'
+    Symbol: Mountain
+    Pantheon: 3
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 60
+    Name: Hathor
+    Alias: null
+    Alignment: NG
+    Rank: L
+    Domains: 'Family, Fate, Good, Moon'
+    FavoredWeapon: Shortsword
+    Portfolio: 'Motherhood, folk music, dance, the moon, fate'
+    Symbol: "Horned cow's head wearing a lunar disk"
+    Pantheon: 3
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 61
+    Name: Horus-Re
+    Alias: null
+    Alignment: LG
+    Rank: G
+    Domains: 'Good, Law, Nobility, Retribution, Sun'
+    FavoredWeapon: Khopesh
+    Portfolio: 'The sun, vengeance, rulership, kings, life'
+    Symbol: "Hawk's head in pharaoh's crown before a solar circle"
+    Pantheon: 3
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 62
+    Name: Isis
+    Alias: null
+    Alignment: NG
+    Rank: I
+    Domains: 'Family, Good, Magic, Storm, Water'
+    FavoredWeapon: 'Punching dagger'
+    Portfolio: 'Weather, rivers, agriculture, love, marriage, good magic'
+    Symbol: 'Ankh and star on a lunar disk'
+    Pantheon: 3
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 63
+    Name: Nephthys
+    Alias: null
+    Alignment: CG
+    Rank: I
+    Domains: 'Chaos, Good, Protection, Trade'
+    FavoredWeapon: Whip
+    Portfolio: 'Wealth, trade, protector of children and the dead'
+    Symbol: 'Ankh above a golden offering bowl'
+    Pantheon: 3
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 64
+    Name: Osiris
+    Alias: null
+    Alignment: LG
+    Rank: I
+    Domains: 'Death, Good, Law, Plant, Retribution'
+    FavoredWeapon: 'Flail ("Just Reward")'
+    Portfolio: 'Vegetation, death, the dead, justice, harvest'
+    Symbol: 'White crown of Mulhorand over crossed crook and flail'
+    Pantheon: 3
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 65
+    Name: Sebek
+    Alias: null
+    Alignment: NE
+    Rank: D
+    Domains: 'Animal, Evil, Scalykind, Water'
+    FavoredWeapon: 'Spear ("The Sorrowful Spear")'
+    Portfolio: 'River hazards, crocodiles, werecrocodiles, wetlands'
+    Symbol: 'Crocodile head wearing horned and plumed headdress'
+    Pantheon: 3
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 66
+    Name: Set
+    Alias: null
+    Alignment: LE
+    Rank: I
+    Domains: 'Air, Darkness, Evil, Hatred, Law, Magic, Scalykind'
+    FavoredWeapon: 'Spear ("The Spear of Darkness")'
+    Portfolio: 'The desert, destruction, drought, night, rot, snakes, hate, betrayal, evil magic, ambition, poison, murder'
+    Symbol: 'Coiled cobra'
+    Pantheon: 3
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 67
+    Name: Thoth
+    Alias: null
+    Alignment: 'N'
+    Rank: I
+    Domains: 'Craft, Knowledge, Magic, Rune, Spell'
+    FavoredWeapon: 'Quarterstaff ("Knowledge Keeper")'
+    Portfolio: 'Neutral magic, scribes, knowledge, invention, secrets'
+    Symbol: 'Ankh above an ibis head'
+    Pantheon: 3
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 68
+    Name: Eilistraee
+    Alias: null
+    Alignment: CG
+    Rank: L
+    Domains: 'Chaos, Charm, Drow, Elf, Good, Moon, Portal'
+    FavoredWeapon: 'Bastard sword ("The Moonsword")'
+    Portfolio: 'Song, beauty, dance, swordwork, hunting, moonlight'
+    Symbol: 'Long-haired drow woman dancing before a full moon'
+    Pantheon: 4
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 69
+    Name: Ghaunadaur
+    Alias: null
+    Alignment: CE
+    Rank: L
+    Domains: 'Cavern, Chaos, Drow, Evil, Hatred, Slime'
+    FavoredWeapon: Warhammer
+    Portfolio: 'Oozes, slimes, jellies, outcasts, ropers, rebels'
+    Symbol: 'Purplish eye on purple, violet, and black circles'
+    Pantheon: 4
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 70
+    Name: Kiaransalee
+    Alias: null
+    Alignment: CE
+    Rank: D
+    Domains: 'Chaos, Drow, Evil, Retribution, Undeath'
+    FavoredWeapon: 'Dagger ("Cold Heart")'
+    Portfolio: 'Undead, vengeance'
+    Symbol: 'Female drow hand wearing silver rings'
+    Pantheon: 4
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 71
+    Name: Lolth
+    Alias: null
+    Alignment: CE
+    Rank: I
+    Domains: 'Chaos, Darkness, Destruction, Drow, Evil, Spider, Trickery'
+    FavoredWeapon: Dagger
+    Portfolio: 'Spiders, evil, darkness, chaos, assassins, drow'
+    Symbol: 'Black spider with female drow head hanging from a spiderweb'
+    Pantheon: 4
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 72
+    Name: Selvetarm
+    Alias: null
+    Alignment: CE
+    Rank: D
+    Domains: 'Chaos, Drow, Evil, Spider, War'
+    FavoredWeapon: 'Heavy mace ("Venommace")'
+    Portfolio: 'Drow warriors'
+    Symbol: 'Spider on a crossed sword and mace'
+    Pantheon: 4
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 73
+    Name: Vhaeraun
+    Alias: null
+    Alignment: CE
+    Rank: L
+    Domains: 'Chaos, Drow, Evil, Travel, Trickery'
+    FavoredWeapon: 'Shortsword ("Shadowflash")'
+    Portfolio: 'Thievery, drow males, evil activity on the surface'
+    Symbol: 'A pair of black glass lenses that form a mask'
+    Pantheon: 4
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 74
+    Name: Abbathor
+    Alias: null
+    Alignment: NE
+    Rank: I
+    Domains: 'Dwarf, Evil, Luck, Trade, Trickery'
+    FavoredWeapon: 'Dagger ("Heart of Avarice")'
+    Portfolio: Greed
+    Symbol: 'Jeweled dagger'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 75
+    Name: 'Berronar Truesilver'
+    Alias: null
+    Alignment: LG
+    Rank: I
+    Domains: 'Dwarf, Family, Good, Healing, Law, Protection'
+    FavoredWeapon: 'Heavy mace ("Wrath of Righteousness")'
+    Portfolio: 'Safety, honesty, home, healing, the dwarven family, records, marriage, faithfulness, loyalty, oaths'
+    Symbol: 'Two silver rings'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 76
+    Name: 'Clangeddin Silverbeard'
+    Alias: null
+    Alignment: LG
+    Rank: I
+    Domains: 'Dwarf, Good, Law, Strength, War'
+    FavoredWeapon: 'Battleaxe ("Giantbane")'
+    Portfolio: 'Battle, war, valor, bravery, honor in battle'
+    Symbol: 'Two crossed battleaxes'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 77
+    Name: 'Deep Duerra'
+    Alias: null
+    Alignment: LE
+    Rank: D
+    Domains: 'Dwarf, Evil, Law, Mentalism, War'
+    FavoredWeapon: 'Battleaxe ("Mindshatter")'
+    Portfolio: 'Psionics, conquest, expansion'
+    Symbol: 'Broken illithid skull'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 78
+    Name: 'Dugmaren Brightmantle'
+    Alias: null
+    Alignment: CG
+    Rank: L
+    Domains: 'Chaos, Craft, Dwarf, Good, Knowledge, Rune'
+    FavoredWeapon: 'Shortsword ("Sharptack")'
+    Portfolio: 'Scholarship, invention, discovery'
+    Symbol: 'Open book'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 79
+    Name: Dumathoin
+    Alias: null
+    Alignment: 'N'
+    Rank: I
+    Domains: 'Cavern, Craft, Dwarf, Earth, Knowledge, Metal, Protection'
+    FavoredWeapon: 'Maul ("Magmahammer")'
+    Portfolio: 'Buried wealth, ores, gems, mining, exploration, shield dwarves, guardian of the dead'
+    Symbol: 'Faceted gem inside a mountain'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 80
+    Name: 'Gorm Gulthyn'
+    Alias: null
+    Alignment: LG
+    Rank: L
+    Domains: 'Dwarf, Good, Law, Protection, War'
+    FavoredWeapon: 'Battleaxe ("Axegard")'
+    Portfolio: 'Guardian of all dwarves, defense, watchfulness'
+    Symbol: 'Shining bronze mask with eyeholes of flame'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 81
+    Name: 'Haela Brightaxe'
+    Alias: null
+    Alignment: CG
+    Rank: D
+    Domains: 'Chaos, Dwarf, Good, Luck, War'
+    FavoredWeapon: 'Greatsword ("Flamebolt")'
+    Portfolio: 'Luck in battle, joy of battle, dwarven fighters'
+    Symbol: 'Unsheathed sword wrapped in two spirals of flame'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 82
+    Name: Laduguer
+    Alias: null
+    Alignment: LE
+    Rank: I
+    Domains: 'Craft, Dwarf, Evil, Law, Magic, Metal, Protection'
+    FavoredWeapon: 'Warhammer ("Grimhammer")'
+    Portfolio: 'Magic weapon creation, artisans, magic, gray dwarves'
+    Symbol: 'Broken crossbow bolt on a shield'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 83
+    Name: 'Marthammor Duin'
+    Alias: null
+    Alignment: NG
+    Rank: L
+    Domains: 'Dwarf, Good, Protection, Travel'
+    FavoredWeapon: 'Heavy mace ("Glowhammer")'
+    Portfolio: 'Guides, explorers, expatriates, travelers, lightning'
+    Symbol: 'Upright mace in front of a fur-trimmed leather boot'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 84
+    Name: Moradin
+    Alias: null
+    Alignment: LG
+    Rank: G
+    Domains: 'Craft, Dwarf, Earth, Good, Law, Protection'
+    FavoredWeapon: 'Warhammer ("Soulhammer")'
+    Portfolio: 'Dwarves, creation, smithing, protection, metalcraft, stonework'
+    Symbol: 'Hammer and anvil'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 85
+    Name: Sharindlar
+    Alias: null
+    Alignment: CG
+    Rank: I
+    Domains: 'Chaos, Charm, Dwarf, Good, Healing, Moon'
+    FavoredWeapon: 'Whip ("Fleetbite")'
+    Portfolio: 'Healing, mercy, romantic love, fertility, dancing, courtship, the moon'
+    Symbol: 'Flame rising from a steel needle'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 86
+    Name: 'Thard Harr'
+    Alias: null
+    Alignment: CG
+    Rank: L
+    Domains: 'Animal, Chaos, Dwarf, Good, Plant'
+    FavoredWeapon: 'Spiked gauntlet'
+    Portfolio: 'Wild dwarves, jungle survival, hunting'
+    Symbol: 'Two crossed scaly clawed gauntlets of silvery-blue metal'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 87
+    Name: Vergadain
+    Alias: null
+    Alignment: 'N'
+    Rank: I
+    Domains: 'Dwarf, Luck, Trade, Trickery'
+    FavoredWeapon: 'Longsword ("Goldseeker")'
+    Portfolio: 'Wealth, luck, chance, nonevil thieves, suspicion, trickery, negotiation, sly cleverness'
+    Symbol: 'Gold piece'
+    Pantheon: 5
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 88
+    Name: 'Aerdrie Faenya'
+    Alias: null
+    Alignment: CG
+    Rank: I
+    Domains: 'Air, Animal, Chaos, Elf, Good, Storm'
+    FavoredWeapon: 'Quarterstaff ("Thunderbolt")'
+    Portfolio: 'Air, weather, avians, rain, fertility, avariels'
+    Symbol: 'Cloud with bird silhouette'
+    Pantheon: 6
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 89
+    Name: Angharradh
+    Alias: null
+    Alignment: CG
+    Rank: G
+    Domains: 'Chaos, Elf, Good, Knowledge, Plant, Protection, Renewal'
+    FavoredWeapon: 'Spear ("Duskshaft")'
+    Portfolio: 'Spring, fertility, planting, birth, defense, wisdom'
+    Symbol: 'Three interconnecting rings on a downward-pointing triangle'
+    Pantheon: 6
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 90
+    Name: 'Corellon Larethian'
+    Alias: null
+    Alignment: CG
+    Rank: G
+    Domains: 'Chaos, Elf, Good, Magic, Protection, War'
+    FavoredWeapon: 'Longsword ("Sahandrian")'
+    Portfolio: 'Magic, music, arts, crafts, war, the elven race, poetry, bards, warriors'
+    Symbol: 'Crescent moon'
+    Pantheon: 6
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 91
+    Name: 'Deep Sashelas'
+    Alias: null
+    Alignment: CG
+    Rank: I
+    Domains: 'Chaos, Elf, Good, Knowledge, Ocean, Water'
+    FavoredWeapon: 'Trident ("Trifork of the Deeps")'
+    Portfolio: 'Oceans, sea elves, creation, knowledge'
+    Symbol: Dolphin
+    Pantheon: 6
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 92
+    Name: 'Erevan Ilesere'
+    Alias: null
+    Alignment: CN
+    Rank: I
+    Domains: 'Chaos, Elf, Luck, Trickery'
+    FavoredWeapon: 'Shortsword ("Quickstrike")'
+    Portfolio: 'Mischief, change, rogues'
+    Symbol: 'Starburst with asymmetrical rays'
+    Pantheon: 6
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 93
+    Name: 'Fenmarel Mestarine'
+    Alias: null
+    Alignment: CN
+    Rank: L
+    Domains: 'Animal, Chaos, Elf, Plant, Travel'
+    FavoredWeapon: 'Dagger ("Thornbite")'
+    Portfolio: 'Feral elves, outcasts, scapegoats, isolation'
+    Symbol: 'Pair of elven eyes in the darkness'
+    Pantheon: 6
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 94
+    Name: 'Hanali Celanil'
+    Alias: null
+    Alignment: CG
+    Rank: I
+    Domains: 'Chaos, Charm, Elf, Good, Magic, Protection'
+    FavoredWeapon: Dagger
+    Portfolio: 'Love, romance, beauty, enchantments, magic item artistry, fine art, artists'
+    Symbol: 'Gold heart'
+    Pantheon: 6
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 95
+    Name: 'Labelas Enoreth'
+    Alias: null
+    Alignment: CG
+    Rank: I
+    Domains: 'Chaos, Elf, Good, Knowledge, Time'
+    FavoredWeapon: 'Quarterstaff ("The Timestave")'
+    Portfolio: 'Time, longevity, the moment of choice, history'
+    Symbol: 'Setting sun'
+    Pantheon: 6
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 96
+    Name: 'Rillifane Rallathil'
+    Alias: null
+    Alignment: CG
+    Rank: I
+    Domains: 'Chaos, Elf, Good, Plant, Protection'
+    FavoredWeapon: 'Quarterstaff ("The Oakstaff")'
+    Portfolio: 'Woodlands, nature, wild elves, druids'
+    Symbol: 'Oak tree'
+    Pantheon: 6
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 97
+    Name: 'Sehanine Moonbow'
+    Alias: null
+    Alignment: CG
+    Rank: I
+    Domains: 'Chaos, Elf, Good, Illusion, Knowledge, Moon, Travel'
+    FavoredWeapon: 'Quarterstaff ("Moonshaft")'
+    Portfolio: 'Mysticism, dreams, death, journeys, transcendence, the moon, the stars, the heavens, moon elves'
+    Symbol: 'Misty crescent above a full moon'
+    Pantheon: 6
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 98
+    Name: Shevarash
+    Alias: null
+    Alignment: CN
+    Rank: D
+    Domains: 'Chaos, Elf, Retribution, War'
+    FavoredWeapon: 'Longbow ("The Black Bow")'
+    Portfolio: 'Hatred of the drow, vengeance, crusades, loss'
+    Symbol: 'Broken arrow above a teardrop'
+    Pantheon: 6
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 99
+    Name: 'Solonor Thelandira'
+    Alias: null
+    Alignment: CG
+    Rank: I
+    Domains: 'Chaos, Elf, Good, Plant, War'
+    FavoredWeapon: 'Longbow ("Longshot")'
+    Portfolio: 'Archery, hunting, wilderness survival'
+    Symbol: 'Silver arrow with green fletching'
+    Pantheon: 6
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 100
+    Name: 'Baervan Wildwanderer'
+    Alias: null
+    Alignment: NG
+    Rank: I
+    Domains: 'Animal, Gnome, Good, Plant, Travel'
+    FavoredWeapon: 'Halfspear ("Whisperleaf")'
+    Portfolio: 'Illusions, deception, traps, wards'
+    Symbol: 'Cloak and dagger'
+    Pantheon: 7
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 101
+    Name: 'Baravar Cloakshadow'
+    Alias: null
+    Alignment: NG
+    Rank: L
+    Domains: 'Gnome, Good, Illusion, Protection, Trickery'
+    FavoredWeapon: 'Dagger ("Nightmare")'
+    Portfolio: 'Forests, travel, nature'
+    Symbol: "Raccoon's face"
+    Pantheon: 7
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 102
+    Name: 'Callarduran Smoothhands'
+    Alias: null
+    Alignment: 'N'
+    Rank: I
+    Domains: 'Cavern, Craft, Earth, Gnome'
+    FavoredWeapon: 'Battleaxe ("Spiderbane")'
+    Portfolio: 'Stone, the Underdark, mining, the svirfneblin'
+    Symbol: 'Gold ring with star symbol'
+    Pantheon: 7
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 103
+    Name: 'Flandal Steelskin'
+    Alias: null
+    Alignment: NG
+    Rank: I
+    Domains: 'Craft, Gnome, Good, Metal'
+    FavoredWeapon: 'Warhammer ("Rhondang")'
+    Portfolio: 'Mining, physical fitness, smithing, metalworking'
+    Symbol: 'Flaming hammer'
+    Pantheon: 7
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 104
+    Name: 'Gaerdal Ironhand'
+    Alias: null
+    Alignment: LG
+    Rank: L
+    Domains: 'Gnome, Good, Law, Protection, War'
+    FavoredWeapon: 'Warhammer ("Hammersong")'
+    Portfolio: 'Protection, humor, trickery, gem cutting, gnomes'
+    Symbol: 'Gold nugget'
+    Pantheon: 7
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 105
+    Name: 'Garl Glittergold'
+    Alias: null
+    Alignment: LG
+    Rank: G
+    Domains: 'Craft, Gnome, Good, Law, Protection, Trickery'
+    FavoredWeapon: 'Battleaxe ("Arumdina")'
+    Portfolio: 'Vigilance, combat, martial defense'
+    Symbol: 'Iron band'
+    Pantheon: 7
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 106
+    Name: 'Segojan Earthcaller'
+    Alias: null
+    Alignment: NG
+    Rank: I
+    Domains: 'Cavern, Earth, Gnome, Good'
+    FavoredWeapon: 'Heavy mace ("Earthcaller")'
+    Portfolio: 'Earth, nature, the dead'
+    Symbol: 'Glowing gemstone'
+    Pantheon: 7
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 107
+    Name: Urdlen
+    Alias: null
+    Alignment: CE
+    Rank: I
+    Domains: 'Chaos, Earth, Evil, Gnome, Hatred'
+    FavoredWeapon: 'Claw bracer'
+    Portfolio: 'Greed, bloodlust, evil, hatred, uncontrolled impulse, spriggans'
+    Symbol: 'White mole'
+    Pantheon: 7
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 108
+    Name: Arvoreen
+    Alias: null
+    Alignment: LG
+    Rank: I
+    Domains: 'Good, Halfling, Law, Protection, War'
+    FavoredWeapon: 'Shortsword ("Aegisheart")'
+    Portfolio: 'Defense, war, vigilance, halfling warriors, duty'
+    Symbol: 'Two short swords'
+    Pantheon: 8
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 109
+    Name: Brandobaris
+    Alias: null
+    Alignment: 'N'
+    Rank: L
+    Domains: 'Halfling, Luck, Travel, Trickery'
+    FavoredWeapon: 'Dagger ("Escape")'
+    Portfolio: 'Stealth, thievery, adventuring, halfling rogues'
+    Symbol: "Halfling's footprint"
+    Pantheon: 8
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 110
+    Name: Cyrrollalee
+    Alias: null
+    Alignment: LG
+    Rank: I
+    Domains: 'Family, Good, Halfling, Law'
+    FavoredWeapon: 'Club ("Camaradestave")'
+    Portfolio: 'Friendship, trust, the hearth, hospitality, crafts'
+    Symbol: 'Open door'
+    Pantheon: 8
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 111
+    Name: 'Sheela Peryroyl'
+    Alias: null
+    Alignment: 'N'
+    Rank: I
+    Domains: 'Air, Charm, Halfling, Plant'
+    FavoredWeapon: 'Sickle ("Oakthorn")'
+    Portfolio: 'Nature, agriculture, weather, song, dance, beauty, romantic love'
+    Symbol: Daisy
+    Pantheon: 8
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 112
+    Name: Urogalan
+    Alias: null
+    Alignment: LN
+    Rank: D
+    Domains: 'Death, Earth, Halfling, Law, Protection'
+    FavoredWeapon: 'Flail ("Doomthresher")'
+    Portfolio: 'Earth, death, protection of the dead'
+    Symbol: "Silhouette of a dog's head"
+    Pantheon: 8
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 113
+    Name: Yondalla
+    Alias: null
+    Alignment: LG
+    Rank: G
+    Domains: 'Family, Good, Halfling, Law, Protection'
+    FavoredWeapon: 'Shortsword ("Hornblade")'
+    Portfolio: 'Protection, bounty, halflings, children, security, leadership, wisdom, creation, family, tradition'
+    Symbol: 'Cornucopia on a shield'
+    Pantheon: 8
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 114
+    Name: Bahgtru
+    Alias: null
+    Alignment: CE
+    Rank: L
+    Domains: 'Chaos, Evil, Orc, Strength'
+    FavoredWeapon: 'Spiked gauntlet ("Crunch")'
+    Portfolio: 'Loyalty, stupidity, brute strength'
+    Symbol: 'Broken thighbone'
+    Pantheon: 9
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 115
+    Name: Gruumsh
+    Alias: null
+    Alignment: CE
+    Rank: G
+    Domains: 'Cavern, Chaos, Evil, Hatred, Orc, Strength, War'
+    FavoredWeapon: 'Spear ("The Bloodspear")'
+    Portfolio: 'Orcs, conquest, survival, strength, territory'
+    Symbol: 'Unwinking eye'
+    Pantheon: 9
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 116
+    Name: Ilneval
+    Alias: null
+    Alignment: NE
+    Rank: L
+    Domains: 'Destruction, Evil, Orc, Planning, War'
+    FavoredWeapon: 'Longsword ("Foe Smiter")'
+    Portfolio: 'War, combat, overwhelming numbers, strategy'
+    Symbol: 'Bloodied longsword'
+    Pantheon: 9
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 117
+    Name: Luthic
+    Alias: null
+    Alignment: NE
+    Rank: L
+    Domains: 'Cavern, Earth, Evil, Family, Healing, Orc'
+    FavoredWeapon: 'Claw bracer'
+    Portfolio: 'Caves, orc females, home, wisdom, fertility, healing, servitude'
+    Symbol: 'Orc rune for home'
+    Pantheon: 9
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 118
+    Name: Shargaas
+    Alias: null
+    Alignment: CE
+    Rank: L
+    Domains: 'Chaos, Darkness, Evil, Orc, Trickery'
+    FavoredWeapon: 'Shortsword ("Nightblade")'
+    Portfolio: 'Night, thieves, stealth, darkness, Underdark'
+    Symbol: 'Skull on a red crescent moon'
+    Pantheon: 9
+    HomePlane: null
+    OtherNotes: null
+  -
+    ID: 119
+    Name: Yurtrus
+    Alias: null
+    Alignment: NE
+    Rank: L
+    Domains: 'Death, Destruction, Evil, Orc, Suffering'
+    FavoredWeapon: Unarmed
+    Portfolio: 'Death, disease'
+    Symbol: 'White hands on dark background'
+    Pantheon: 9
+    HomePlane: null
+    OtherNotes: null
+pantheons:
+  -
+    ID: 4
+    Name: Drow
+  -
+    ID: 5
+    Name: Dwarven
+  -
+    ID: 6
+    Name: Elven
+  -
+    ID: 2
+    Name: Faerûnian
+  -
+    ID: 7
+    Name: Gnome
+  -
+    ID: 8
+    Name: Halfling
+  -
+    ID: 3
+    Name: Mulhorandi
+  -
+    ID: 1
+    Name: None
+  -
+    ID: 9
+    Name: Orc
+  -
+    ID: 10
+    Name: Philosophy
+planes:
+  -
+    ID: 1
+    Name: 'Material Plane'
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 2
+    Name: 'Ethereal Plane'
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 3
+    Name: 'Astral Plane'
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 4
+    Name: Feywild
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 5
+    Name: Shadowfell
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 6
+    Name: 'Elemental Plane of Air'
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 7
+    Name: 'Elemental Plane of Water'
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 8
+    Name: 'Elemental Plane of Earth'
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 9
+    Name: 'Elemental Plane of Fire'
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 10
+    Name: 'Positive Material Plane'
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 11
+    Name: 'Negative Material Plane'
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 12
+    Name: Celestia
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 13
+    Name: Bytopia
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 14
+    Name: Elysium
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 15
+    Name: Beastlands
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 16
+    Name: Arborea
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 17
+    Name: Ysgard
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 18
+    Name: Limbo
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 19
+    Name: Pandemonium
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 20
+    Name: Abyss
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 21
+    Name: Carceri
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 22
+    Name: Hades
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 23
+    Name: Gehenna
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 24
+    Name: Baator
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 25
+    Name: Acheron
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 26
+    Name: Mechanus
+    Alias: null
+    OtherNotes: null
+  -
+    ID: 27
+    Name: Arcadia
+    Alias: null
+    OtherNotes: null
+organizations: {  }
+organizationtypes: {  }

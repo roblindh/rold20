@@ -42,6 +42,13 @@ function application_start(): void {
     init_armorcats();
     init_vehiclecats();
 
+    // Fast memory/file cache for application data
+    $cacheFile = __DIR__ . '/../storage/framework/cache/app_data.php';
+    if (!isset($_APP) && file_exists($cacheFile)) {
+        $_APP = require $cacheFile;
+        return;
+    }
+
     // If data file exists, load application variables
     if (!isset($_APP) && file_exists(APP_DATA_FILE)) {
         // Read data file

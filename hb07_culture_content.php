@@ -109,7 +109,7 @@
 <p>
     Manufactured goods, on the other hand, can vary a lot more in quality, condition, and price.
     The price listed in the 
-    <a href="hb12_equipment.php">equipment lists</a> 
+    <a href="/reference/equipment">equipment lists</a> 
     is the typical price someone has to pay to buy the item from a merchant or craftsman.
     On the other hand, when a character (or other non-merchant) tries to sell such an item, the typical price is no more than 50% of the listed price.
 </p>
@@ -258,7 +258,7 @@
 <h4 id="Reputation">Reputation</h4>
 <p>
     An individual’s 
-    <a href="hb02_coremech.php#Reputation">reputation</a> 
+    <a href="/rules/core#Reputation">reputation</a> 
     will affect other people’s attitudes and may give bonuses or penalties to certain action checks
     (Psychology skill checks in particular). Note that a reputation will only have an effect on people who know and believe in the reputation.
     It is up to the DM to decide whether a reputation should apply to an action check, and also whether it should be a bonus or penalty.
@@ -274,7 +274,7 @@
 
 <h4 id="Influence">Influence</h4>
 <p>
-    <a href="hb02_coremech.php#Influence">Influence</a> 
+    <a href="/rules/core#Influence">Influence</a> 
     is a measure of your power over another individual or an organization. This power can be used to request favors,
     mobilize military forces, gather economic resources, etc.
 </p>
