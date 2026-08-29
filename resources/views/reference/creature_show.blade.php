@@ -6,10 +6,10 @@
 
 @section('content')
 <div class="space-y-6">
-    <div class="border-b border-slate-200 pb-4 flex items-center justify-between">
+    <div class="border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <div class="flex items-center gap-3">
-                <h1 class="text-3xl font-bold text-slate-900">{{ $creature->Name }}</h1>
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">{{ $creature->Name }}</h1>
                 <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-300 font-mono">
                     RL {{ $creature->BaseRL ?? 0 }}
                 </span>
@@ -19,9 +19,9 @@
                     </span>
                 @endif
             </div>
-            <p class="text-slate-500 text-sm mt-1">Environment: {{ $creature->Environment ?? 'Any' }} | Type: {{ $creature->TypeName ?? 'Creature' }}</p>
+            <p class="text-slate-500 text-xs sm:text-sm mt-1">Environment: {{ $creature->Environment ?? 'Any' }} | Type: {{ $creature->TypeName ?? 'Creature' }}</p>
         </div>
-        <a href="{{ route('reference.creatures') }}" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1">
+        <a href="{{ route('reference.creatures') }}" class="text-xs sm:text-sm text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1 shrink-0 self-start sm:self-auto">
             &larr; Back to Bestiary
         </a>
     </div>

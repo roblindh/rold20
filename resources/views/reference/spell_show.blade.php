@@ -2,25 +2,25 @@
 
 @section('content')
 <div class="space-y-6">
-    <div class="border-b border-slate-200 pb-4 flex items-center justify-between">
+    <div class="border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <div class="flex items-center gap-3">
-                <h1 class="text-3xl font-bold text-slate-900">{{ $spell->Name }}</h1>
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">{{ $spell->Name }}</h1>
                 @if($spell->Descriptors)
                     <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-300 font-mono">
                         {{ $spell->Descriptors }}
                     </span>
                 @endif
             </div>
-            <p class="text-slate-500 text-sm mt-1">Associated Skills: {{ $spell->Skills }}</p>
+            <p class="text-slate-500 text-xs sm:text-sm mt-1">Associated Skills: {{ $spell->Skills }}</p>
         </div>
-        <a href="{{ route('reference.spells') }}" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1">
+        <a href="{{ route('reference.spells') }}" class="text-xs sm:text-sm text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1 shrink-0 self-start sm:self-auto">
             &larr; Back to Spells
         </a>
     </div>
 
     <!-- Quick Stats Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4">
         <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
             <div class="text-xs text-slate-500 font-semibold uppercase">Action Time</div>
             <div class="text-base font-bold text-slate-900 mt-1">{{ $spell->ActionTime ?? '7 AP' }}</div>

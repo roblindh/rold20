@@ -36,7 +36,7 @@ if (-not (Test-Path $Destination)) {
     }
 }
 
-# Directories to exclude from deployment and deletion (protects other co-hosted projects)
+# Directories to exclude from deployment and deletion (protects other co-hosted projects and runtime state)
 $ExcludeDirs = @(
     ".git",
     ".phpunit.cache",
@@ -48,6 +48,8 @@ $ExcludeDirs = @(
     "container-station-data",
     "@Recycle",
     ".qpkg",
+    "storage",
+    "bootstrap/cache",
     "legacy",
     "RPGWorldAtlas",
     "rpgworldatlas",

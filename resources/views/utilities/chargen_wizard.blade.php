@@ -59,13 +59,13 @@
     </div>
 
     <!-- Step Progress Bar -->
-    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-        <div class="flex items-center justify-between text-xs font-semibold text-slate-500">
-            <span :class="step >= 1 ? 'text-indigo-600 font-bold' : ''">1. Identity & Basics</span>
-            <span :class="step >= 2 ? 'text-indigo-600 font-bold' : ''">2. Ability Scores</span>
-            <span :class="step >= 3 ? 'text-indigo-600 font-bold' : ''">3. Race & Class</span>
-            <span :class="step >= 4 ? 'text-indigo-600 font-bold' : ''">4. Skills & Points</span>
-            <span :class="step >= 5 ? 'text-indigo-600 font-bold' : ''">5. Final Review</span>
+    <div class="bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200">
+        <div class="flex items-center justify-between text-[10px] sm:text-xs font-semibold text-slate-500 gap-1">
+            <span :class="step >= 1 ? 'text-indigo-600 font-bold' : ''"><span class="sm:hidden">1. </span><span class="hidden sm:inline">1. </span><span class="hidden md:inline">Identity & </span>Basics</span>
+            <span :class="step >= 2 ? 'text-indigo-600 font-bold' : ''"><span class="sm:hidden">2. </span><span class="hidden sm:inline">2. </span>Abilities</span>
+            <span :class="step >= 3 ? 'text-indigo-600 font-bold' : ''"><span class="sm:hidden">3. </span><span class="hidden sm:inline">3. </span><span class="hidden md:inline">Race & </span>Class</span>
+            <span :class="step >= 4 ? 'text-indigo-600 font-bold' : ''"><span class="sm:hidden">4. </span><span class="hidden sm:inline">4. </span>Skills</span>
+            <span :class="step >= 5 ? 'text-indigo-600 font-bold' : ''"><span class="sm:hidden">5. </span><span class="hidden sm:inline">5. </span>Review</span>
         </div>
         <div class="w-full bg-slate-200 h-2 rounded-full mt-2 overflow-hidden">
             <div class="bg-indigo-600 h-full transition-all duration-300" :style="'width: ' + (step * 20) + '%'"></div>

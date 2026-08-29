@@ -26,7 +26,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('register') }}" method="POST" class="space-y-4">
+            <form action="{{ route('register', [], false) }}" method="POST" class="space-y-4">
                 @csrf
 
                 <!-- Account Type / Role Selection -->
@@ -85,7 +85,7 @@
 
             <div class="pt-4 border-t border-slate-200 text-center text-xs text-slate-600">
                 Already have an account? 
-                <a href="{{ route('login') }}" class="font-bold text-indigo-700 hover:text-indigo-900 underline">Log in here</a>
+                <a href="{{ route('login', [], false) }}" class="font-bold text-indigo-700 hover:text-indigo-900 underline">Log in here</a>
             </div>
         </div>
     </div>

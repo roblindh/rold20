@@ -34,7 +34,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('login') }}" method="POST" class="space-y-4">
+            <form action="{{ route('login', [], false) }}" method="POST" class="space-y-4">
                 @csrf
 
                 <!-- Username -->
@@ -70,7 +70,7 @@
 
             <div class="pt-4 border-t border-slate-200 text-center text-xs text-slate-600">
                 Don't have an account yet? 
-                <a href="{{ route('register') }}" class="font-bold text-indigo-700 hover:text-indigo-900 underline">Register here</a>
+                <a href="{{ route('register', [], false) }}" class="font-bold text-indigo-700 hover:text-indigo-900 underline">Register here</a>
             </div>
         </div>
     </div>

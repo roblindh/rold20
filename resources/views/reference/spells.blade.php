@@ -70,8 +70,8 @@
     </div>
 
     <!-- Filter & Live Search Toolbar -->
-    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row gap-4 items-center justify-between">
-        <div class="w-full md:w-80">
+    <div class="bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center justify-between">
+        <div class="w-full sm:w-72 md:w-80">
             <div class="relative">
                 <input type="text" x-model="search" @input.debounce.300ms="applyFilters()" placeholder="Live search spell name, effect..."
                        class="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
@@ -79,15 +79,15 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-3 w-full md:w-auto">
-            <select x-model="skill" @change="applyFilters()" class="bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-700 focus:outline-none focus:border-indigo-500">
+        <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+            <select x-model="skill" @change="applyFilters()" class="w-full sm:w-auto bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-700 focus:outline-none focus:border-indigo-500">
                 <option value="">All Disciplines / Traditions</option>
                 <option value="Arcane">Arcane</option>
                 <option value="Divine">Divine</option>
                 <option value="Psi">Psionic</option>
             </select>
 
-            <button @click="search = ''; skill = ''; applyFilters();" class="text-xs text-slate-500 hover:text-slate-800 underline">Reset</button>
+            <button @click="search = ''; skill = ''; applyFilters();" class="text-xs text-slate-500 hover:text-slate-800 underline shrink-0">Reset</button>
         </div>
     </div>
 

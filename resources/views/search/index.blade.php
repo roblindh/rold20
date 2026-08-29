@@ -11,22 +11,22 @@
     </div>
 
     <!-- Search Form -->
-    <form method="GET" action="{{ route('search') }}" class="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
-        <div class="flex flex-col md:flex-row gap-4">
+    <form method="GET" action="{{ route('search') }}" class="bg-slate-50 p-4 sm:p-6 rounded-xl border border-slate-200 space-y-4">
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <div class="flex-1 relative">
                 <input type="text" name="q" value="{{ $q }}" placeholder="Search any term (e.g. Grapple, Fireball, Aberration, Encumbrance)..."
-                       class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                <span class="absolute left-3.5 top-3 text-slate-400">🔍</span>
+                       class="w-full pl-10 pr-4 py-2 sm:py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                <span class="absolute left-3.5 top-2.5 sm:top-3 text-slate-400">🔍</span>
             </div>
-            <div class="w-full md:w-56">
-                <select name="category" class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
+            <div class="w-full sm:w-48 md:w-56">
+                <select name="category" class="w-full px-3 py-2 sm:py-2.5 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
                     <option value="">All Categories</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat }}" {{ $category === $cat ? 'selected' : '' }}>{{ $cat }}</option>
                     @endforeach
                 </select>
             </div>
-            <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-sm shadow transition">
+            <button type="submit" class="px-5 py-2 sm:py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-sm shadow transition shrink-0">
                 Search
             </button>
         </div>

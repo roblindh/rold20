@@ -37,8 +37,8 @@
     </div>
 
     <!-- Generator Controls -->
-    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-        <div>
+    <div class="bg-slate-50 p-4 sm:p-6 rounded-xl border border-slate-200 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 items-end">
+        <div class="sm:col-span-2 md:col-span-1">
             <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Base Creature</label>
             <select x-model="creature_id" @change="generateNpc()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
                 @foreach($creatures as $c)
@@ -53,9 +53,9 @@
                    class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
         </div>
 
-        <div>
-            <button @click="generateNpc()" class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-sm shadow transition">
-                ⚡ Generate Stat Block
+        <div class="sm:col-span-2 md:col-span-1">
+            <button @click="generateNpc()" class="w-full px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-sm shadow transition flex items-center justify-center gap-1.5">
+                <span>⚡</span> Generate Stat Block
             </button>
         </div>
     </div>

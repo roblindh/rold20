@@ -21,6 +21,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Dynamically bind root URL to incoming request host/scheme to avoid resolving to localhost on remote/mobile devices
+        if (isset($_SERVER['HTTP_HOST'])) {
+            $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') 
+                || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') 
+                ? 'https://' : 'http://';
+            \Illuminate\Support\Facades\URL::forceRootUrl($scheme . $_SERVER['HTTP_HOST']);
+        }
+
         \Illuminate\Pagination\Paginator::defaultView('vendor.pagination.tailwind');
         \Illuminate\Pagination\Paginator::defaultSimpleView('vendor.pagination.tailwind');
 

@@ -33,8 +33,8 @@
     </div>
 
     <!-- Generator Control -->
-    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col md:flex-row gap-4 items-end justify-between">
-        <div class="w-full md:w-64">
+    <div class="bg-slate-50 p-4 sm:p-6 rounded-xl border border-slate-200 flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-end justify-between">
+        <div class="w-full sm:w-64">
             <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Encounter Level (EL)</label>
             <select x-model="el" @change="rollTreasure()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
                 @foreach($levels as $lvl)
@@ -43,7 +43,7 @@
             </select>
         </div>
 
-        <button @click="rollTreasure()" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg text-sm shadow transition flex items-center gap-2">
+        <button @click="rollTreasure()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg text-sm shadow transition flex items-center justify-center gap-2">
             <span>🎲</span> Roll Random Hoard
         </button>
     </div>

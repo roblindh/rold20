@@ -11,7 +11,7 @@ class RolLink
     public static function rule(string $target, ?string $label = null, ?string $anchor = null): string
     {
         $label = $label ?? ucfirst($target);
-        $url = route("rules.$target");
+        $url = route("rules.$target", [], false);
         if ($anchor) {
             $url .= '#' . ltrim($anchor, '#');
         }
@@ -24,7 +24,7 @@ class RolLink
     public static function reference(string $type, string $name, ?string $label = null): string
     {
         $label = $label ?? $name;
-        $url = route("reference.$type.show", ['name' => urlencode($name)]);
+        $url = route("reference.$type.show", ['name' => urlencode($name)], false);
         return '<a class="ref-link text-amber-700 hover:text-amber-900 font-semibold underline" data-ref-type="' . e($type) . '" data-ref-name="' . e($name) . '" href="' . e($url) . '">' . e($label) . '</a>';
     }
 

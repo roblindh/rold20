@@ -218,6 +218,7 @@
     </style>
 </head>
 <body class="h-full flex flex-col bg-slate-100 text-black" x-data="{
+    mobileMenuOpen: false,
     searchOpen: false,
     searchQuery: '',
     searchResults: [],
@@ -229,7 +230,7 @@
         }
         this.searchLoading = true;
         try {
-            const res = await fetch('{{ route('api.search.suggestions') }}?q=' + encodeURIComponent(this.searchQuery));
+            const res = await fetch('{{ route('api.search.suggestions', [], false) }}?q=' + encodeURIComponent(this.searchQuery));
             this.searchResults = await res.json();
         } catch (e) {
             this.searchResults = [];
@@ -237,63 +238,89 @@
         this.searchLoading = false;
     }
 }" @keydown.window.ctrl.k.prevent="searchOpen = true" @keydown.window.escape="searchOpen = false">
+    <!-- Main Header -->
+    <header class="h-14 sm:h-16 border-b-2 border-slate-400 px-3 sm:px-6 flex items-center justify-between shadow-md shrink-0 select-none relative z-30"
+            style="background: url('{{ asset('styles/goldparchment.jpg') }}') repeat #f0f0d9;">
+        <div class="flex items-center gap-2 sm:gap-4">
+            <!-- Mobile Sidebar Hamburger Toggle Button -->
+            <button @click="mobileMenuOpen = !mobileMenuOpen" 
+                    type="button"
+                    class="md:hidden p-1.5 rounded-lg bg-slate-800/10 hover:bg-slate-800/20 text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-700 transition"
+                    aria-label="Toggle navigation menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
 
-    <!-- Top Global Header -->
-    <header class="border-b-2 border-[#3a4f63] shadow-md px-4 py-2.5 flex items-center justify-between z-20" style="background: url('{{ asset('styles/goldparchment.jpg') }}') repeat #f0f0d9;">
-        <div class="flex items-center gap-3">
-            <a href="{{ route('home') }}" class="flex items-center gap-2.5 hover:opacity-90 transition">
-                <img src="{{ asset('styles/reddragon_sml.gif') }}" alt="RoL d20 Dragon" class="h-10 w-auto object-contain" />
-                <span class="site-title text-2xl font-bold tracking-tight">RoL d20 System</span>
+            <a href="{{ route('home', [], false) }}" class="flex items-center gap-1.5 sm:gap-2.5 hover:opacity-90 transition">
+                <img src="{{ asset('styles/reddragon_sml.gif') }}" alt="RoL d20 Dragon" class="h-8 sm:h-10 w-auto object-contain" />
+                <span class="site-title text-xl sm:text-2xl font-bold tracking-tight">RoL d20</span>
             </a>
-            <span class="hidden md:inline text-xs text-slate-800 font-semibold border-l border-slate-400 pl-3">D&D 3.5E Streamlined Ruleset</span>
+            <span class="hidden lg:inline text-xs text-slate-800 font-semibold border-l border-slate-400 pl-3">D&D 3.5E Streamlined Ruleset</span>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5 sm:gap-3">
             <!-- Global Search Trigger -->
-            <button @click="searchOpen = true" class="flex items-center gap-2 bg-white/90 hover:bg-white text-slate-800 px-3 py-1.5 rounded-md border border-slate-400 text-xs shadow-sm font-semibold transition">
-                <span>🔍 Search rules, spells...</span>
-                <kbd class="bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded border border-slate-300 font-mono text-[10px]">Ctrl+K</kbd>
+            <button @click="searchOpen = true" class="flex items-center gap-1.5 sm:gap-2 bg-white/90 hover:bg-white text-slate-800 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md border border-slate-400 text-xs shadow-sm font-semibold transition">
+                <span>🔍 <span class="hidden sm:inline">Search rules...</span></span>
+                <kbd class="hidden md:inline bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded border border-slate-300 font-mono text-[10px]">Ctrl+K</kbd>
             </button>
 
             <!-- Quick Utilities Links -->
-            <a href="{{ route('search') }}" class="text-xs text-slate-900 hover:text-indigo-900 font-bold hidden sm:inline">Search</a>
-            <a href="{{ route('utilities.chargen') }}" class="text-xs bg-amber-700 hover:bg-amber-800 text-white font-bold px-2.5 py-1 rounded shadow-sm">PC Gen</a>
+            <a href="{{ route('search', [], false) }}" class="text-xs text-slate-900 hover:text-indigo-900 font-bold hidden md:inline">Search</a>
+            <a href="{{ route('utilities.chargen', [], false) }}" class="text-xs bg-amber-700 hover:bg-amber-800 text-white font-bold px-2 sm:px-2.5 py-1 rounded shadow-sm">PC Gen</a>
 
             <!-- User Auth Bar -->
-            <div class="border-l border-slate-400 pl-3 flex items-center gap-2">
+            <div class="border-l border-slate-400 pl-1.5 sm:pl-3 flex items-center gap-1.5 sm:gap-2">
                 @auth
-                    <div class="flex items-center gap-2 text-xs">
-                        <span class="inline-flex items-center gap-1 font-bold text-slate-900 bg-white/80 px-2 py-0.5 rounded border border-slate-300 shadow-sm">
+                    <div class="flex items-center gap-1.5 sm:gap-2 text-xs">
+                        <span class="inline-flex items-center gap-1 font-bold text-slate-900 bg-white/80 px-1.5 sm:px-2 py-0.5 rounded border border-slate-300 shadow-sm max-w-[100px] sm:max-w-none truncate">
                             @if(auth()->user()->isGM())
                                 <span title="Game Master">👑 GM</span>
                             @else
                                 <span title="Player">🧙‍♂️</span>
                             @endif
-                            <span>{{ auth()->user()->Name }}</span>
+                            <span class="truncate">{{ auth()->user()->Name }}</span>
                         </span>
-                        <a href="{{ route('logout') }}" class="text-xs text-red-800 hover:text-red-950 font-bold underline"
+                        <a href="{{ route('logout', [], false) }}" class="text-xs text-red-800 hover:text-red-950 font-bold underline"
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                        <form id="logout-form" action="{{ route('logout', [], false) }}" method="POST" class="hidden">
                             @csrf
                         </form>
                     </div>
                 @else
-                    <div class="flex items-center gap-1.5 text-xs">
-                        <a href="{{ route('login') }}" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-2.5 py-1 rounded border border-slate-400 shadow-sm transition">Log In</a>
-                        <a href="{{ route('register') }}" class="bg-amber-800 hover:bg-amber-900 text-white font-bold px-2.5 py-1 rounded shadow-sm transition" style="background-color: #8b1a1a; color: #ffffff;">Register</a>
+                    <div class="flex items-center gap-1 sm:gap-1.5 text-xs">
+                        <a href="{{ route('login', [], false) }}" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-2 sm:px-2.5 py-1 rounded border border-slate-400 shadow-sm transition">Log In</a>
+                        <a href="{{ route('register', [], false) }}" class="bg-amber-800 hover:bg-amber-900 text-white font-bold px-2 sm:px-2.5 py-1 rounded shadow-sm transition" style="background-color: #8b1a1a; color: #ffffff;">Register</a>
                     </div>
                 @endauth
             </div>
         </div>
+        </div>
     </header>
 
     <!-- Main Workspace Container -->
-    <div class="flex-1 flex overflow-hidden">
-        <!-- Sidebar Navigation -->
-        @include('layouts.partials.sidebar_toc')
+    <div class="flex-1 flex overflow-hidden relative">
+        <!-- Mobile Sidebar Backdrop Overlay -->
+        <div x-show="mobileMenuOpen" 
+             x-transition:enter="transition-opacity ease-out duration-200"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-in duration-150"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="mobileMenuOpen = false" 
+             class="fixed inset-0 bg-slate-950/70 z-40 md:hidden backdrop-blur-xs" 
+             style="display: none;"></div>
+
+        <!-- Sidebar Navigation (Drawer on Mobile, Static Sidebar on Desktop) -->
+        <aside :class="mobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'"
+               class="fixed inset-y-0 left-0 z-50 md:static md:z-auto transition-transform duration-200 ease-in-out flex flex-col">
+            @include('layouts.partials.sidebar_toc')
+        </aside>
 
         <!-- Main Content Area -->
-        <main id="main-content" class="flex-1 overflow-y-auto p-6 md:p-8 bg-white shadow-inner scroll-smooth">
+        <main id="main-content" class="flex-1 overflow-y-auto p-3.5 sm:p-6 md:p-8 bg-white shadow-inner scroll-smooth w-full">
             <div class="max-w-5xl mx-auto">
                 @if (session('status'))
                     <div class="mb-4 bg-emerald-50 border border-emerald-300 text-emerald-800 px-4 py-2.5 rounded text-xs font-semibold flex items-center justify-between shadow-sm">
@@ -353,7 +380,7 @@
             <!-- Footer actions -->
             <div class="p-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
                 <span>Press <kbd class="bg-slate-800 px-1 py-0.5 rounded font-mono">ESC</kbd> to close</span>
-                <a :href="'{{ route('search') }}?q=' + encodeURIComponent(searchQuery)" class="text-indigo-400 hover:underline">View all results &rarr;</a>
+                <a :href="'{{ route('search', [], false) }}?q=' + encodeURIComponent(searchQuery)" class="text-indigo-400 hover:underline">View all results &rarr;</a>
             </div>
         </div>
     </div>

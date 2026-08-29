@@ -5,58 +5,58 @@
     <!-- Page Header -->
     <div class="border-b border-slate-200 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-slate-900 flex items-center gap-2">
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 flex items-center gap-2">
                 <span>📊</span> Ruleset Balance & DPR Analysis Engine
             </h1>
-            <p class="text-slate-600 text-sm mt-1">
+            <p class="text-slate-600 text-xs sm:text-sm mt-1">
                 Mathematical benchmarks, damage per round (DPR) simulations, class level comparisons, and supernatural resource economy.
             </p>
         </div>
     </div>
 
     <!-- Overview Metrics Summary -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-            <div class="text-xs uppercase font-bold text-slate-500">Target Combat Length</div>
-            <div class="text-xl font-extrabold text-slate-900 mt-1">3 – 5 Rounds</div>
-            <p class="text-xs text-slate-500 mt-1">Standard encounter pacing for 4-player party.</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4">
+        <div class="bg-white border border-slate-200 rounded-xl p-3 sm:p-4 shadow-xs">
+            <div class="text-[10px] sm:text-xs uppercase font-bold text-slate-500">Target Combat Length</div>
+            <div class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">3 – 5 Rounds</div>
+            <p class="text-[11px] text-slate-500 mt-0.5">4-player party encounter pacing.</p>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-            <div class="text-xs uppercase font-bold text-slate-500">Martial Damage / AP</div>
-            <div class="text-xl font-extrabold text-indigo-600 mt-1">1.85 – 2.40 HP</div>
-            <p class="text-xs text-slate-500 mt-1">Baseline melee/ranged investment ratio.</p>
+        <div class="bg-white border border-slate-200 rounded-xl p-3 sm:p-4 shadow-xs">
+            <div class="text-[10px] sm:text-xs uppercase font-bold text-slate-500">Martial Damage / AP</div>
+            <div class="text-lg sm:text-xl font-extrabold text-indigo-600 mt-1">1.85 – 2.40 HP</div>
+            <p class="text-[11px] text-slate-500 mt-0.5">Baseline melee/ranged ratio.</p>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-            <div class="text-xs uppercase font-bold text-slate-500">Magic Burst / PP</div>
-            <div class="text-xl font-extrabold text-amber-600 mt-1">4.50 – 6.00 HP</div>
-            <p class="text-xs text-slate-500 mt-1">Damage-to-Power Point scaling factor.</p>
+        <div class="bg-white border border-slate-200 rounded-xl p-3 sm:p-4 shadow-xs">
+            <div class="text-[10px] sm:text-xs uppercase font-bold text-slate-500">Magic Burst / PP</div>
+            <div class="text-lg sm:text-xl font-extrabold text-amber-600 mt-1">4.50 – 6.00 HP</div>
+            <p class="text-[11px] text-slate-500 mt-0.5">Damage-to-Power Point scaling.</p>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-            <div class="text-xs uppercase font-bold text-slate-500">Average Hit Chance</div>
-            <div class="text-xl font-extrabold text-emerald-600 mt-1">55% – 65%</div>
-            <p class="text-xs text-slate-500 mt-1">Target accuracy vs equivalent CL monsters.</p>
+        <div class="bg-white border border-slate-200 rounded-xl p-3 sm:p-4 shadow-xs">
+            <div class="text-[10px] sm:text-xs uppercase font-bold text-slate-500">Average Hit Chance</div>
+            <div class="text-lg sm:text-xl font-extrabold text-emerald-600 mt-1">55% – 65%</div>
+            <p class="text-[11px] text-slate-500 mt-0.5">Target accuracy vs equal CL.</p>
         </div>
     </div>
 
     <!-- Navigation Tabs -->
-    <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-2 text-sm font-semibold">
-        <button @click="tab = 'dpr'" :class="tab === 'dpr' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg transition flex items-center gap-1.5">
-            <span>⚔️</span> Weapon DPR Matrix
+    <div class="flex flex-wrap sm:flex-nowrap gap-1.5 sm:gap-2 border-b border-slate-200 pb-2 text-xs sm:text-sm font-semibold overflow-x-auto">
+        <button @click="tab = 'dpr'" :class="tab === 'dpr' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition flex items-center gap-1 shrink-0">
+            <span>⚔️</span> Weapon DPR
         </button>
-        <button @click="tab = 'classes'" :class="tab === 'classes' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg transition flex items-center gap-1.5">
-            <span>🛡️</span> Class Level Comparisons
+        <button @click="tab = 'classes'" :class="tab === 'classes' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition flex items-center gap-1 shrink-0">
+            <span>🛡️</span> Class Levels
         </button>
-        <button @click="tab = 'spells'" :class="tab === 'spells' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg transition flex items-center gap-1.5">
-            <span>✨</span> Spell & Power Balance
+        <button @click="tab = 'spells'" :class="tab === 'spells' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition flex items-center gap-1 shrink-0">
+            <span>✨</span> Spell Balance
         </button>
-        <button @click="tab = 'species'" :class="tab === 'species' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg transition flex items-center gap-1.5">
-            <span>🐲</span> Species / Racial Baselines
+        <button @click="tab = 'species'" :class="tab === 'species' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition flex items-center gap-1 shrink-0">
+            <span>🐲</span> Species Baselines
         </button>
-        <button @click="tab = 'formulas'" :class="tab === 'formulas' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-4 py-2 rounded-lg transition flex items-center gap-1.5">
-            <span>📐</span> Design Math & Formulas
+        <button @click="tab = 'formulas'" :class="tab === 'formulas' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition flex items-center gap-1 shrink-0">
+            <span>📐</span> Design Math
         </button>
     </div>
 

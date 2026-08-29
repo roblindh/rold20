@@ -2,18 +2,18 @@
 
 @section('content')
 <div class="space-y-6">
-    <div class="border-b border-slate-200 pb-4 flex items-center justify-between">
+    <div class="border-b border-slate-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
             <div class="flex items-center gap-3">
-                <h1 class="text-3xl font-bold text-slate-900">{{ $item->Name }}</h1>
+                <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">{{ $item->Name }}</h1>
             </div>
-            <p class="text-slate-500 text-sm mt-1">
+            <p class="text-slate-500 text-xs sm:text-sm mt-1">
                 Type: {{ $item->TypeName ?? 'Mundane' }} {{ $item->SubtypeName ? '— ' . $item->SubtypeName : '' }} | 
                 Cost: {{ $item->Cost ? $item->Cost . ' sp' : '—' }} | 
                 Weight: {{ $item->Weight ? $item->Weight . ' kg' : '—' }}
             </p>
         </div>
-        <a href="{{ route('reference.equipment') }}" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1">
+        <a href="{{ route('reference.equipment') }}" class="text-xs sm:text-sm text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1 shrink-0 self-start sm:self-auto">
             &larr; Back to Equipment
         </a>
     </div>
