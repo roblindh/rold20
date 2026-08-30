@@ -75,32 +75,48 @@ class SyncRulesCommand extends Command
                 }
 
                 $sample = $records[0];
-                $pk = isset($sample['ID']) ? 'ID' : (isset($sample['Str']) ? 'Str' : (isset($sample['SkillID']) ? 'SkillID' : key($sample)));
-                $columns = array_keys($sample);
-                $updateColumns = array_values(array_diff($columns, [$pk]));
+                $hasId = isset($sample['ID']);
 
-                // Perform chunked upsert
-                $chunks = array_chunk($records, 100);
-                foreach ($chunks as $chunk) {
-                    // Convert any array/object values if any
-                    $cleanChunk = array_map(function ($row) {
-                        foreach ($row as $k => $v) {
-                            if (is_bool($v)) {
-                                $row[$k] = $v ? 1 : 0;
+                // If the table does not have a single 'ID' primary key (e.g. ref_skillaccess), truncate and bulk insert
+                if (!$hasId) {
+                    DB::table($refTable)->truncate();
+                    $chunks = array_chunk($records, 250);
+                    foreach ($chunks as $chunk) {
+                        $cleanChunk = array_map(function ($row) {
+                            foreach ($row as $k => $v) {
+                                if (is_bool($v)) {
+                                    $row[$k] = $v ? 1 : 0;
+                                }
                             }
-                        }
-                        return $row;
-                    }, $chunk);
+                            return $row;
+                        }, $chunk);
+                        DB::table($refTable)->insert($cleanChunk);
+                    }
+                } else {
+                    $pk = 'ID';
+                    $columns = array_keys($sample);
+                    $updateColumns = array_values(array_diff($columns, [$pk]));
 
-                    try {
-                        DB::table($refTable)->upsert($cleanChunk, [$pk], $updateColumns);
-                    } catch (\Exception $e) {
-                        // Fallback to delete and insert if upsert not supported for specific composite keys
+                    $chunks = array_chunk($records, 100);
+                    foreach ($chunks as $chunk) {
+                        $cleanChunk = array_map(function ($row) {
+                            foreach ($row as $k => $v) {
+                                if (is_bool($v)) {
+                                    $row[$k] = $v ? 1 : 0;
+                                }
+                            }
+                            return $row;
+                        }, $chunk);
+
                         try {
-                            DB::table($refTable)->truncate();
-                            DB::table($refTable)->insert($cleanChunk);
-                        } catch (\Exception $e2) {
-                            $this->error("  Error syncing $refTable: " . $e2->getMessage());
+                            DB::table($refTable)->upsert($cleanChunk, [$pk], $updateColumns);
+                        } catch (\Exception $e) {
+                            try {
+                                DB::table($refTable)->truncate();
+                                DB::table($refTable)->insert($cleanChunk);
+                            } catch (\Exception $e2) {
+                                $this->error("  Error syncing $refTable: " . $e2->getMessage());
+                            }
                         }
                     }
                 }

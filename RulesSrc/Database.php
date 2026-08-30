@@ -38,6 +38,15 @@ class Database
             return;
         }
 
+        if (class_exists('\Illuminate\Support\Facades\DB')) {
+            try {
+                $this->pdo = \Illuminate\Support\Facades\DB::connection()->getPdo();
+                if ($this->pdo !== null) {
+                    return;
+                }
+            } catch (\Throwable $t) {}
+        }
+
         try {
             $realHost = $host ?: (getenv('DB_HOST') ?: '127.0.0.1');
             $realPort = getenv('DB_PORT') ?: 3306;

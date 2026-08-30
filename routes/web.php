@@ -129,6 +129,9 @@ Route::get('/clear-cache', function () {
         \Illuminate\Support\Facades\Artisan::call('view:clear');
         \Illuminate\Support\Facades\Artisan::call('cache:clear');
         \Illuminate\Support\Facades\Artisan::call('route:clear');
+        if (request()->has('sync')) {
+            \Illuminate\Support\Facades\Artisan::call('rules:sync', ['--force' => true]);
+        }
     } catch (\Throwable $e) {
         // Continue manual unlinks if artisan encounters environment issue
     }

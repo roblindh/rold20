@@ -15,6 +15,8 @@ function show_classes() {
         <em>Skill Points per Level:</em> The amount of skill points gained per level in this class.<br/>
         <em>Key Ability Scores:</em> The key ability scores for this class. A character is recommended to choose classes that match his best ability scores.<br/>
         <em>Favored Alignment:</em> This is a typical and/or recommended moral alignment for the class.<br/>
+        <em>Available Primary Skills:</em> The skills that this class has primary access to (up to 1 skill point per level).<br/>
+        <em>Available Secondary Skills:</em> The skills that this class has secondary access to (up to 0.5 skill points per level).<br/>
         <em>Spell Knowledge:</em> Specifies how the class learns spells and other supernatural powers.<br/>
         <em>Role-Playing Notes:</em> Additional notes related to role-playing characters of this class.<br/>
         <em>Roles:</em> Some typical roles and professions that can be seen as varieties of this class.<br/>
@@ -23,6 +25,21 @@ function show_classes() {
     </p>
     <?php
     while ($row = $result->fetch()) {
+        $primSkillsQuery = "SELECT s.Name, s.Abbreviation FROM skillaccess sa JOIN skills s ON sa.SkillID = s.ID WHERE sa.ClassID = " . (int)$row['ID'] . " AND sa.Prim > 0 ORDER BY s.Name ASC";
+        $primResult = $db->query($primSkillsQuery);
+        $primSkillsList = [];
+        while ($primRow = $primResult->fetch()) {
+            $primSkillsList[] = $primRow['Name'] . " (" . $primRow['Abbreviation'] . ")";
+        }
+        $primSkillsStr = !empty($primSkillsList) ? implode(', ', $primSkillsList) : 'None';
+
+        $secSkillsQuery = "SELECT s.Name, s.Abbreviation FROM skillaccess sa JOIN skills s ON sa.SkillID = s.ID WHERE sa.ClassID = " . (int)$row['ID'] . " AND (sa.Prim = 0 OR sa.Prim IS NULL) ORDER BY s.Name ASC";
+        $secResult = $db->query($secSkillsQuery);
+        $secSkillsList = [];
+        while ($secRow = $secResult->fetch()) {
+            $secSkillsList[] = $secRow['Name'] . " (" . $secRow['Abbreviation'] . ")";
+        }
+        $secSkillsStr = !empty($secSkillsList) ? implode(', ', $secSkillsList) : 'None';
         ?>
         <br/>
         <table width="100%">
@@ -57,6 +74,14 @@ function show_classes() {
             <tr>
                 <td>Favored Alignment:</td>
                 <td><?php echo $row['Alignment']; ?></td>
+            </tr>
+            <tr>
+                <td>Available Primary Skills:</td>
+                <td><?php echo $primSkillsStr; ?></td>
+            </tr>
+            <tr>
+                <td>Available Secondary Skills:</td>
+                <td><?php echo $secSkillsStr; ?></td>
             </tr>
             <?php if ($row['SpellKnowledge']) { ?>
                 <tr>
