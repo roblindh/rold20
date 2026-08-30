@@ -119,11 +119,11 @@ function show_classes() {
                     </tr></thead>
                     <tbody>
                 <tr>
-                    <td>Primary Skills:</td>
+                    <td>Full Skill Progression:</td>
                     <td><?php echo format_text($row2['PrimSkills']); ?></td>
                 </tr>
                 <tr>
-                    <td>Secondary Skills:</td>
+                    <td>Half Skill Progression:</td>
                     <td><?php echo format_text($row2['SecSkills']); ?></td>
                 </tr>
             </tbody></table>
