@@ -216,118 +216,175 @@
             <div class="text-xs uppercase font-semibold text-slate-400 tracking-wider mb-2 px-2">Reference Compendium</div>
             <ul class="space-y-1">
                 <!-- 1. Skills -->
+                @php $isSkills = request()->routeIs('reference.skills*'); @endphp
                 <li>
-                    <a href="{{ route('reference.skills', [], false) }}" class="flex items-center justify-between px-2.5 py-1.5 rounded transition {{ request()->routeIs('reference.skills*') ? 'bg-amber-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
+                    <a href="{{ route('reference.skills', [], false) }}" class="flex items-center justify-between px-2.5 py-1.5 rounded transition {{ $isSkills ? 'bg-amber-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
                         <span>⚔️ Skills</span>
                         <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">216</span>
                     </a>
-                    @if(request()->routeIs('reference.skills*'))
+                    @if($isSkills)
                         <ul class="border-l-2 border-amber-400/50 ml-3.5 pl-2.5 my-1.5 space-y-1 text-xs">
-                            <li><a href="{{ route('reference.skills', [], false) }}?type=1" class="text-slate-300 hover:text-white block py-0.5 transition">General Skills</a></li>
-                            <li><a href="{{ route('reference.skills', [], false) }}?type=2" class="text-slate-300 hover:text-white block py-0.5 transition">Weapon Skills</a></li>
-                            <li><a href="{{ route('reference.skills', [], false) }}?type=3" class="text-slate-300 hover:text-white block py-0.5 transition">Special Combat</a></li>
-                            <li><a href="{{ route('reference.skills', [], false) }}?type=4" class="text-slate-300 hover:text-white block py-0.5 transition">Arcane Spell Skills</a></li>
-                            <li><a href="{{ route('reference.skills', [], false) }}?type=5" class="text-slate-300 hover:text-white block py-0.5 transition">Divine Spell Skills</a></li>
-                            <li><a href="{{ route('reference.skills', [], false) }}?type=6" class="text-slate-300 hover:text-white block py-0.5 transition">Psionic Power Skills</a></li>
-                            <li><a href="{{ route('reference.skills', [], false) }}?type=7" class="text-slate-300 hover:text-white block py-0.5 transition">Affinity Skills</a></li>
-                            <li><a href="{{ route('reference.skills', [], false) }}?type=8" class="text-slate-300 hover:text-white block py-0.5 transition">Supernatural Skills</a></li>
-                            <li><a href="{{ route('reference.skills', [], false) }}?type=9" class="text-slate-300 hover:text-white block py-0.5 transition">Creature Skills</a></li>
-                            <li><a href="{{ route('reference.skills', [], false) }}?type=10" class="text-slate-300 hover:text-white block py-0.5 transition">Prestige Skills</a></li>
+                            <li><a href="{{ route('reference.skills', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.skills') && !request()->routeIs('reference.skills.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-white' }}">🔍 Skills - Search</a></li>
+                            <li><a href="{{ route('reference.skills.list', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.skills.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-white' }}">📋 Skills - List</a></li>
+                            @if(request()->routeIs('reference.skills.list'))
+                                <li class="pt-1 border-t border-slate-800/50"><a href="#SkillTerminology" class="text-slate-400 hover:text-white block py-0.5">Skill Terminology</a></li>
+                                <li><a href="#SkillList" class="text-slate-400 hover:text-white block py-0.5">Skill Availability</a></li>
+                                <li><a href="#SkillDescriptions" class="text-slate-400 hover:text-white block py-0.5">Skill Descriptions</a></li>
+                            @else
+                                <li class="pt-1 border-t border-slate-800/50"><a href="{{ route('reference.skills', [], false) }}?type=1" class="text-slate-400 hover:text-white block py-0.5">General Skills</a></li>
+                                <li><a href="{{ route('reference.skills', [], false) }}?type=2" class="text-slate-400 hover:text-white block py-0.5">Weapon Skills</a></li>
+                                <li><a href="{{ route('reference.skills', [], false) }}?type=3" class="text-slate-400 hover:text-white block py-0.5">Special Combat</a></li>
+                                <li><a href="{{ route('reference.skills', [], false) }}?type=4" class="text-slate-400 hover:text-white block py-0.5">Arcane Spell Skills</a></li>
+                                <li><a href="{{ route('reference.skills', [], false) }}?type=5" class="text-slate-400 hover:text-white block py-0.5">Divine Spell Skills</a></li>
+                                <li><a href="{{ route('reference.skills', [], false) }}?type=6" class="text-slate-400 hover:text-white block py-0.5">Psionic Power Skills</a></li>
+                                <li><a href="{{ route('reference.skills', [], false) }}?type=7" class="text-slate-400 hover:text-white block py-0.5">Affinity Skills</a></li>
+                                <li><a href="{{ route('reference.skills', [], false) }}?type=8" class="text-slate-400 hover:text-white block py-0.5">Supernatural Skills</a></li>
+                                <li><a href="{{ route('reference.skills', [], false) }}?type=9" class="text-slate-400 hover:text-white block py-0.5">Creature Skills</a></li>
+                                <li><a href="{{ route('reference.skills', [], false) }}?type=10" class="text-slate-400 hover:text-white block py-0.5">Prestige Skills</a></li>
+                            @endif
                         </ul>
                     @endif
                 </li>
 
                 <!-- 2. Actions -->
+                @php $isActions = request()->routeIs('reference.actions*'); @endphp
                 <li>
-                    <a href="{{ route('reference.actions', [], false) }}" class="flex items-center justify-between px-2.5 py-1.5 rounded transition {{ request()->routeIs('reference.actions*') ? 'bg-amber-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
+                    <a href="{{ route('reference.actions', [], false) }}" class="flex items-center justify-between px-2.5 py-1.5 rounded transition {{ $isActions ? 'bg-amber-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
                         <span>⚡ Actions</span>
                         <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">304</span>
                     </a>
-                    @if(request()->routeIs('reference.actions*'))
+                    @if($isActions)
                         <ul class="border-l-2 border-amber-400/50 ml-3.5 pl-2.5 my-1.5 space-y-1 text-xs">
-                            <li><a href="{{ route('reference.actions', [], false) }}?category=1" class="text-slate-300 hover:text-white block py-0.5 transition">General Actions</a></li>
-                            <li><a href="{{ route('reference.actions', [], false) }}?category=2" class="text-slate-300 hover:text-white block py-0.5 transition">Movement Actions</a></li>
-                            <li><a href="{{ route('reference.actions', [], false) }}?category=3" class="text-slate-300 hover:text-white block py-0.5 transition">Melee Attack Actions</a></li>
-                            <li><a href="{{ route('reference.actions', [], false) }}?category=4" class="text-slate-300 hover:text-white block py-0.5 transition">Ranged Attack Actions</a></li>
-                            <li><a href="{{ route('reference.actions', [], false) }}?category=5" class="text-slate-300 hover:text-white block py-0.5 transition">Brawling Attack Actions</a></li>
-                            <li><a href="{{ route('reference.actions', [], false) }}?category=6" class="text-slate-300 hover:text-white block py-0.5 transition">Special Attack Actions</a></li>
-                            <li><a href="{{ route('reference.actions', [], false) }}?category=7" class="text-slate-300 hover:text-white block py-0.5 transition">Spellcasting Actions</a></li>
-                            <li><a href="{{ route('reference.actions', [], false) }}?category=8" class="text-slate-300 hover:text-white block py-0.5 transition">Equipment Actions</a></li>
-                            <li><a href="{{ route('reference.actions', [], false) }}?category=9" class="text-slate-300 hover:text-white block py-0.5 transition">Defense Actions</a></li>
-                            <li><a href="{{ route('reference.actions', [], false) }}?category=10" class="text-slate-300 hover:text-white block py-0.5 transition">Social Actions</a></li>
-                            <li><a href="{{ route('reference.actions', [], false) }}?category=11" class="text-slate-300 hover:text-white block py-0.5 transition">Supernatural Actions</a></li>
-                            <li><a href="{{ route('reference.actions', [], false) }}?category=12" class="text-slate-300 hover:text-white block py-0.5 transition">Special Creature Actions</a></li>
+                            <li><a href="{{ route('reference.actions', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.actions') && !request()->routeIs('reference.actions.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-white' }}">🔍 Actions - Search</a></li>
+                            <li><a href="{{ route('reference.actions.list', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.actions.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-white' }}">📋 Actions - List</a></li>
+                            @if(request()->routeIs('reference.actions.list'))
+                                <li class="pt-1 border-t border-slate-800/50"><a href="#CommonActions" class="text-slate-400 hover:text-white block py-0.5">List of Common Actions</a></li>
+                                <li><a href="#ActionDescriptions" class="text-slate-400 hover:text-white block py-0.5">Action Descriptions</a></li>
+                            @else
+                                <li class="pt-1 border-t border-slate-800/50"><a href="{{ route('reference.actions', [], false) }}?category=1" class="text-slate-400 hover:text-white block py-0.5">General Actions</a></li>
+                                <li><a href="{{ route('reference.actions', [], false) }}?category=2" class="text-slate-400 hover:text-white block py-0.5">Movement Actions</a></li>
+                                <li><a href="{{ route('reference.actions', [], false) }}?category=3" class="text-slate-400 hover:text-white block py-0.5">Melee Attack Actions</a></li>
+                                <li><a href="{{ route('reference.actions', [], false) }}?category=4" class="text-slate-400 hover:text-white block py-0.5">Ranged Attack Actions</a></li>
+                                <li><a href="{{ route('reference.actions', [], false) }}?category=5" class="text-slate-400 hover:text-white block py-0.5">Brawling Attack Actions</a></li>
+                                <li><a href="{{ route('reference.actions', [], false) }}?category=6" class="text-slate-400 hover:text-white block py-0.5">Special Attack Actions</a></li>
+                                <li><a href="{{ route('reference.actions', [], false) }}?category=7" class="text-slate-400 hover:text-white block py-0.5">Spellcasting Actions</a></li>
+                                <li><a href="{{ route('reference.actions', [], false) }}?category=8" class="text-slate-400 hover:text-white block py-0.5">Equipment Actions</a></li>
+                                <li><a href="{{ route('reference.actions', [], false) }}?category=9" class="text-slate-400 hover:text-white block py-0.5">Defense Actions</a></li>
+                                <li><a href="{{ route('reference.actions', [], false) }}?category=10" class="text-slate-400 hover:text-white block py-0.5">Social Actions</a></li>
+                                <li><a href="{{ route('reference.actions', [], false) }}?category=11" class="text-slate-400 hover:text-white block py-0.5">Supernatural Actions</a></li>
+                                <li><a href="{{ route('reference.actions', [], false) }}?category=12" class="text-slate-400 hover:text-white block py-0.5">Special Creature Actions</a></li>
+                            @endif
                         </ul>
                     @endif
                 </li>
 
                 <!-- 3. Spells & Powers -->
+                @php $isSpells = request()->routeIs('reference.spells*'); @endphp
                 <li>
-                    <a href="{{ route('reference.spells', [], false) }}" class="flex items-center justify-between px-2.5 py-1.5 rounded transition {{ request()->routeIs('reference.spells*') ? 'bg-amber-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
+                    <a href="{{ route('reference.spells', [], false) }}" class="flex items-center justify-between px-2.5 py-1.5 rounded transition {{ $isSpells ? 'bg-amber-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
                         <span>✨ Spells & Powers</span>
                         <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">206</span>
                     </a>
-                    @if(request()->routeIs('reference.spells*'))
+                    @if($isSpells)
                         <ul class="border-l-2 border-amber-400/50 ml-3.5 pl-2.5 my-1.5 space-y-1 text-xs">
-                            <li><a href="{{ route('reference.spells.by-skill', [], false) }}" class="text-amber-300 hover:text-white block py-0.5 font-semibold transition">✨ Spells by Skill Index</a></li>
-                            <li><a href="{{ route('reference.spells', [], false) }}?skill=Arcane" class="text-slate-300 hover:text-white block py-0.5 transition">Arcane Spells</a></li>
-                            <li><a href="{{ route('reference.spells', [], false) }}?skill=Divine" class="text-slate-300 hover:text-white block py-0.5 transition">Divine Spells</a></li>
-                            <li><a href="{{ route('reference.spells', [], false) }}?skill=Psi" class="text-slate-300 hover:text-white block py-0.5 transition">Psionic Powers</a></li>
+                            <li><a href="{{ route('reference.spells', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.spells') && !request()->routeIs('reference.spells.list') && !request()->routeIs('reference.spells.by-skill') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-white' }}">🔍 Spells - Search</a></li>
+                            <li><a href="{{ route('reference.spells.list', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.spells.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-white' }}">📋 Spells - List</a></li>
+                            <li><a href="{{ route('reference.spells.by-skill', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.spells.by-skill') ? 'text-amber-300 font-bold' : 'text-amber-400 hover:text-white' }}">✨ Spells by Skill Index</a></li>
+                            @if(request()->routeIs('reference.spells.list'))
+                                <li class="pt-1 border-t border-slate-800/50"><a href="#SpellList" class="text-slate-400 hover:text-white block py-0.5">Spell and Power Lists</a></li>
+                                <li><a href="#SpellDescriptions" class="text-slate-400 hover:text-white block py-0.5">Spell Descriptions</a></li>
+                            @else
+                                <li class="pt-1 border-t border-slate-800/50"><a href="{{ route('reference.spells', [], false) }}?skill=Arcane" class="text-slate-400 hover:text-white block py-0.5">Arcane Spells</a></li>
+                                <li><a href="{{ route('reference.spells', [], false) }}?skill=Divine" class="text-slate-400 hover:text-white block py-0.5">Divine Spells</a></li>
+                                <li><a href="{{ route('reference.spells', [], false) }}?skill=Psi" class="text-slate-400 hover:text-white block py-0.5">Psionic Powers</a></li>
+                            @endif
                         </ul>
                     @endif
                 </li>
 
                 <!-- 4. Equipment & Items -->
+                @php $isEquipment = request()->routeIs('reference.equipment*'); @endphp
                 <li>
-                    <a href="{{ route('reference.equipment', [], false) }}" class="flex items-center justify-between px-2.5 py-1.5 rounded transition {{ request()->routeIs('reference.equipment*') ? 'bg-amber-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
+                    <a href="{{ route('reference.equipment', [], false) }}" class="flex items-center justify-between px-2.5 py-1.5 rounded transition {{ $isEquipment ? 'bg-amber-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
                         <span>🛡️ Equipment & Items</span>
                         <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">625</span>
                     </a>
-                    @if(request()->routeIs('reference.equipment*'))
+                    @if($isEquipment)
                         <ul class="border-l-2 border-amber-400/50 ml-3.5 pl-2.5 my-1.5 space-y-1 text-xs">
-                            <li><a href="{{ route('reference.equipment', [], false) }}?type=1" class="text-slate-300 hover:text-white block py-0.5 transition">Trade Goods</a></li>
-                            <li><a href="{{ route('reference.equipment', [], false) }}?type=2" class="text-slate-300 hover:text-white block py-0.5 transition">Weapons & Shields</a></li>
-                            <li><a href="{{ route('reference.equipment', [], false) }}?type=3" class="text-slate-300 hover:text-white block py-0.5 transition">Armor & Clothing</a></li>
-                            <li><a href="{{ route('reference.equipment', [], false) }}?type=4" class="text-slate-300 hover:text-white block py-0.5 transition">Foci & Implements</a></li>
-                            <li><a href="{{ route('reference.equipment', [], false) }}?type=5" class="text-slate-300 hover:text-white block py-0.5 transition">Adventuring Gear</a></li>
-                            <li><a href="{{ route('reference.equipment', [], false) }}?type=6" class="text-slate-300 hover:text-white block py-0.5 transition">Mounts & Vehicles</a></li>
-                            <li><a href="{{ route('reference.equipment', [], false) }}?type=7" class="text-slate-300 hover:text-white block py-0.5 transition">Buildings</a></li>
-                            <li><a href="{{ route('reference.equipment', [], false) }}?type=8" class="text-slate-300 hover:text-white block py-0.5 transition">Services & Lodging</a></li>
-                            <li><a href="{{ route('reference.equipment', [], false) }}?type=9" class="text-slate-300 hover:text-white block py-0.5 transition">Valuables & Jewelry</a></li>
-                            <li><a href="{{ route('reference.equipment', [], false) }}?type=10" class="text-slate-300 hover:text-white block py-0.5 transition">Magic Items</a></li>
+                            <li><a href="{{ route('reference.equipment', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.equipment') && !request()->routeIs('reference.equipment.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-white' }}">🔍 Equipment - Search</a></li>
+                            <li><a href="{{ route('reference.equipment.list', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.equipment.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-white' }}">📋 Equipment - List</a></li>
+                            @if(request()->routeIs('reference.equipment.list'))
+                                <li class="pt-1 border-t border-slate-800/50"><a href="#MundaneItems" class="text-slate-400 hover:text-white block py-0.5">Mundane Items</a></li>
+                                <li><a href="#ComplexItems" class="text-slate-400 hover:text-white block py-0.5">Complex Items</a></li>
+                                <li><a href="#MundaneMods" class="text-slate-400 hover:text-white block py-0.5">Mundane Item Mods</a></li>
+                                <li><a href="#MagicMods" class="text-slate-400 hover:text-white block py-0.5">Magic Item Mods</a></li>
+                                <li><a href="#Materials" class="text-slate-400 hover:text-white block py-0.5">Materials</a></li>
+                            @else
+                                <li class="pt-1 border-t border-slate-800/50"><a href="{{ route('reference.equipment', [], false) }}?type=1" class="text-slate-400 hover:text-white block py-0.5">Trade Goods</a></li>
+                                <li><a href="{{ route('reference.equipment', [], false) }}?type=2" class="text-slate-400 hover:text-white block py-0.5">Weapons & Shields</a></li>
+                                <li><a href="{{ route('reference.equipment', [], false) }}?type=3" class="text-slate-400 hover:text-white block py-0.5">Armor & Clothing</a></li>
+                                <li><a href="{{ route('reference.equipment', [], false) }}?type=4" class="text-slate-400 hover:text-white block py-0.5">Foci & Implements</a></li>
+                                <li><a href="{{ route('reference.equipment', [], false) }}?type=5" class="text-slate-400 hover:text-white block py-0.5">Adventuring Gear</a></li>
+                                <li><a href="{{ route('reference.equipment', [], false) }}?type=6" class="text-slate-400 hover:text-white block py-0.5">Mounts & Vehicles</a></li>
+                                <li><a href="{{ route('reference.equipment', [], false) }}?type=7" class="text-slate-400 hover:text-white block py-0.5">Buildings</a></li>
+                                <li><a href="{{ route('reference.equipment', [], false) }}?type=8" class="text-slate-400 hover:text-white block py-0.5">Services & Lodging</a></li>
+                                <li><a href="{{ route('reference.equipment', [], false) }}?type=9" class="text-slate-400 hover:text-white block py-0.5">Valuables & Jewelry</a></li>
+                                <li><a href="{{ route('reference.equipment', [], false) }}?type=10" class="text-slate-400 hover:text-white block py-0.5">Magic Items</a></li>
+                            @endif
                         </ul>
                     @endif
                 </li>
 
                 <!-- 5. Bestiary & Races (Creatures) -->
+                @php $isCreatures = request()->routeIs('reference.creatures*'); @endphp
                 <li>
-                    <a href="{{ route('reference.creatures', [], false) }}" class="flex items-center justify-between px-2.5 py-1.5 rounded transition {{ request()->routeIs('reference.creatures*') ? 'bg-amber-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
+                    <a href="{{ route('reference.creatures', [], false) }}" class="flex items-center justify-between px-2.5 py-1.5 rounded transition {{ $isCreatures ? 'bg-amber-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
                         <span>🐲 Bestiary & Races</span>
                         <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">449</span>
                     </a>
-                    @if(request()->routeIs('reference.creatures*'))
+                    @if($isCreatures)
                         <ul class="border-l-2 border-amber-400/50 ml-3.5 pl-2.5 my-1.5 space-y-1 text-xs">
-                            <li><a href="{{ route('reference.creatures', [], false) }}?type=1" class="text-slate-300 hover:text-white block py-0.5 transition">Aberrations</a></li>
-                            <li><a href="{{ route('reference.creatures', [], false) }}?type=2" class="text-slate-300 hover:text-white block py-0.5 transition">Animals</a></li>
-                            <li><a href="{{ route('reference.creatures', [], false) }}?type=3" class="text-slate-300 hover:text-white block py-0.5 transition">Monstrous Animals</a></li>
-                            <li><a href="{{ route('reference.creatures', [], false) }}?type=4" class="text-slate-300 hover:text-white block py-0.5 transition">Constructs</a></li>
-                            <li><a href="{{ route('reference.creatures', [], false) }}?type=5" class="text-slate-300 hover:text-white block py-0.5 transition">Dragons</a></li>
-                            <li><a href="{{ route('reference.creatures', [], false) }}?type=6" class="text-slate-300 hover:text-white block py-0.5 transition">Elementals</a></li>
-                            <li><a href="{{ route('reference.creatures', [], false) }}?type=7" class="text-slate-300 hover:text-white block py-0.5 transition">Humanoids & Races</a></li>
-                            <li><a href="{{ route('reference.creatures', [], false) }}?type=8" class="text-slate-300 hover:text-white block py-0.5 transition">Monstrous Humanoids</a></li>
-                            <li><a href="{{ route('reference.creatures', [], false) }}?type=9" class="text-slate-300 hover:text-white block py-0.5 transition">Outsiders</a></li>
-                            <li><a href="{{ route('reference.creatures', [], false) }}?type=10" class="text-slate-300 hover:text-white block py-0.5 transition">Plants & Fungi</a></li>
-                            <li><a href="{{ route('reference.creatures', [], false) }}?type=11" class="text-slate-300 hover:text-white block py-0.5 transition">Undead</a></li>
+                            <li><a href="{{ route('reference.creatures', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.creatures') && !request()->routeIs('reference.creatures.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-white' }}">🔍 Bestiary - Search</a></li>
+                            <li><a href="{{ route('reference.creatures.list', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.creatures.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-white' }}">📋 Bestiary - List</a></li>
+                            @if(request()->routeIs('reference.creatures.list'))
+                                <li class="pt-1 border-t border-slate-800/50"><a href="#CreatureTypes" class="text-slate-400 hover:text-white block py-0.5">Creature Types</a></li>
+                                <li><a href="#CreatureList" class="text-slate-400 hover:text-white block py-0.5">Alphabetical Index</a></li>
+                                <li><a href="#CreatureDescriptions" class="text-slate-400 hover:text-white block py-0.5">Creature Descriptions</a></li>
+                                <li><a href="#Templates" class="text-slate-400 hover:text-white block py-0.5">Creature Templates</a></li>
+                            @else
+                                <li class="pt-1 border-t border-slate-800/50"><a href="{{ route('reference.creatures', [], false) }}?type=1" class="text-slate-400 hover:text-white block py-0.5">Aberrations</a></li>
+                                <li><a href="{{ route('reference.creatures', [], false) }}?type=2" class="text-slate-400 hover:text-white block py-0.5">Animals</a></li>
+                                <li><a href="{{ route('reference.creatures', [], false) }}?type=3" class="text-slate-400 hover:text-white block py-0.5">Monstrous Animals</a></li>
+                                <li><a href="{{ route('reference.creatures', [], false) }}?type=4" class="text-slate-400 hover:text-white block py-0.5">Constructs</a></li>
+                                <li><a href="{{ route('reference.creatures', [], false) }}?type=5" class="text-slate-400 hover:text-white block py-0.5">Dragons</a></li>
+                                <li><a href="{{ route('reference.creatures', [], false) }}?type=6" class="text-slate-400 hover:text-white block py-0.5">Elementals</a></li>
+                                <li><a href="{{ route('reference.creatures', [], false) }}?type=7" class="text-slate-400 hover:text-white block py-0.5">Humanoids & Races</a></li>
+                                <li><a href="{{ route('reference.creatures', [], false) }}?type=8" class="text-slate-400 hover:text-white block py-0.5">Monstrous Humanoids</a></li>
+                                <li><a href="{{ route('reference.creatures', [], false) }}?type=9" class="text-slate-400 hover:text-white block py-0.5">Outsiders</a></li>
+                                <li><a href="{{ route('reference.creatures', [], false) }}?type=10" class="text-slate-400 hover:text-white block py-0.5">Plants & Fungi</a></li>
+                                <li><a href="{{ route('reference.creatures', [], false) }}?type=11" class="text-slate-400 hover:text-white block py-0.5">Undead</a></li>
+                            @endif
                         </ul>
                     @endif
                 </li>
 
                 <!-- 6. Cultures -->
+                @php $isCultures = request()->routeIs('reference.cultures*'); @endphp
                 <li>
-                    <a href="{{ route('reference.cultures', [], false) }}" class="flex items-center justify-between px-2.5 py-1.5 rounded transition {{ request()->routeIs('reference.cultures*') ? 'bg-amber-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
+                    <a href="{{ route('reference.cultures', [], false) }}" class="flex items-center justify-between px-2.5 py-1.5 rounded transition {{ $isCultures ? 'bg-amber-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
                         <span>🏛️ Cultures</span>
                         <span class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">57</span>
                     </a>
+                    @if($isCultures)
+                        <ul class="border-l-2 border-amber-400/50 ml-3.5 pl-2.5 my-1.5 space-y-1 text-xs">
+                            <li><a href="{{ route('reference.cultures', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.cultures') && !request()->routeIs('reference.cultures.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-white' }}">🔍 Cultures - Search</a></li>
+                            <li><a href="{{ route('reference.cultures.list', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.cultures.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-white' }}">📋 Cultures - List</a></li>
+                            @if(request()->routeIs('reference.cultures.list'))
+                                <li class="pt-1 border-t border-slate-800/50"><a href="#CultureList" class="text-slate-400 hover:text-white block py-0.5">Alphabetical Index</a></li>
+                                <li><a href="#CultureDescriptions" class="text-slate-400 hover:text-white block py-0.5">Culture Descriptions</a></li>
+                            @endif
+                        </ul>
+                    @endif
                 </li>
             </ul>
         </div>

@@ -436,4 +436,53 @@ class ReferenceController extends Controller
 
         return view('reference.culture_show', compact('culture'));
     }
+
+    private function ensureRulesLoaded(): void
+    {
+        if (!function_exists('show_agecategories') && file_exists(base_path('RulesSrc/global.php'))) {
+            require_once base_path('RulesSrc/global.php');
+            if (function_exists('application_start')) {
+                application_start();
+            }
+        }
+    }
+
+    /**
+     * Complete catalogue list views with full information boxes
+     */
+    public function skillsList(): View
+    {
+        $this->ensureRulesLoaded();
+        return view('reference.skills_list');
+    }
+
+    public function actionsList(): View
+    {
+        $this->ensureRulesLoaded();
+        return view('reference.actions_list');
+    }
+
+    public function spellsList(): View
+    {
+        $this->ensureRulesLoaded();
+        return view('reference.spells_list');
+    }
+
+    public function equipmentList(): View
+    {
+        $this->ensureRulesLoaded();
+        return view('reference.equipment_list');
+    }
+
+    public function creaturesList(): View
+    {
+        $this->ensureRulesLoaded();
+        return view('reference.creatures_list');
+    }
+
+    public function culturesList(): View
+    {
+        $this->ensureRulesLoaded();
+        return view('reference.cultures_list');
+    }
 }

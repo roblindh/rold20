@@ -146,11 +146,13 @@ class cTrait {
                 if (isset($this->aParams["Qual"])) {
                     // For skill specializations, find the correct skill name
                     if ($this->type == "SpecAcc" || $this->type == "SpecMod") {
-                        foreach ($_APP['specializations'] as $iSpec) {
-                            if (strtoupper(trim($iSpec['Name'])) == strtoupper($this->aParams["Qual"])) {
-                                $str = str_replace("%q", $_APP['skills'][$iSpec['Skill']]['Name'] .
-                                        " (" . $this->aParams["Qual"] . ")", $str);
-                                break;
+                        if (!empty($_APP['specializations'])) {
+                            foreach ($_APP['specializations'] as $iSpec) {
+                                if (strtoupper(trim($iSpec['Name'])) == strtoupper($this->aParams["Qual"])) {
+                                    $str = str_replace("%q", $_APP['skills'][$iSpec['Skill']]['Name'] .
+                                            " (" . $this->aParams["Qual"] . ")", $str);
+                                    break;
+                                }
                             }
                         }
                     } else {

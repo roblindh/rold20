@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Cultures Compendium'])
+@extends('layouts.app', ['title' => 'Cultures - Search'])
 
 @section('content')
 <div class="space-y-6" x-data="{
@@ -10,23 +10,33 @@
         if (this.search) { params.set('search', this.search); } else { params.delete('search'); }
         params.delete('page');
         try {
-            const res = await fetch('{{ route('reference.cultures') }}?' + params.toString(), {
+            const res = await fetch('{{ route('reference.cultures', [], false) }}?' + params.toString(), {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
             });
             const data = await res.json();
             document.getElementById('cultures-table-container').innerHTML = data.html;
-            window.history.pushState({}, '', '{{ route('reference.cultures') }}' + (params.toString() ? '?' + params.toString() : ''));
+            window.history.pushState({}, '', '{{ route('reference.cultures', [], false) }}' + (params.toString() ? '?' + params.toString() : ''));
         } catch (e) {
             console.error('Filter error', e);
         }
         this.loading = false;
     }
 }">
+    <!-- View Switcher -->
+    <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
+        <a href="{{ route('reference.cultures', [], false) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition bg-amber-800 text-white shadow-sm" style="background-color: #8b1a1a;">
+            <span>🔍 Search View</span>
+        </a>
+        <a href="{{ route('reference.cultures.list', [], false) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition bg-slate-100 hover:bg-slate-200 text-slate-700">
+            <span>📋 Complete List &amp; Information Boxes</span>
+        </a>
+    </div>
+
     <!-- Page Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
             <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                <span>🏛️</span> Cultures & Civilizations
+                <span>🏛️</span> Cultures - Search
             </h1>
             <p class="text-slate-600 text-sm mt-1">Homelands, cultural skill proficiencies, native languages, and social structures.</p>
         </div>

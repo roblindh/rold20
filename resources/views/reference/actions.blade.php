@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Actions Compendium'])
+@extends('layouts.app', ['title' => 'Actions - Search'])
 
 @section('content')
 <div class="space-y-6" x-data="{
@@ -12,23 +12,33 @@
         if (this.category) { params.set('category', this.category); } else { params.delete('category'); }
         params.delete('page');
         try {
-            const res = await fetch('{{ route('reference.actions') }}?' + params.toString(), {
+            const res = await fetch('{{ route('reference.actions', [], false) }}?' + params.toString(), {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
             });
             const data = await res.json();
             document.getElementById('actions-table-container').innerHTML = data.html;
-            window.history.pushState({}, '', '{{ route('reference.actions') }}' + (params.toString() ? '?' + params.toString() : ''));
+            window.history.pushState({}, '', '{{ route('reference.actions', [], false) }}' + (params.toString() ? '?' + params.toString() : ''));
         } catch (e) {
             console.error('Filter error', e);
         }
         this.loading = false;
     }
 }">
+    <!-- View Switcher -->
+    <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
+        <a href="{{ route('reference.actions', [], false) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition bg-amber-800 text-white shadow-sm" style="background-color: #8b1a1a;">
+            <span>🔍 Search View</span>
+        </a>
+        <a href="{{ route('reference.actions.list', [], false) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition bg-slate-100 hover:bg-slate-200 text-slate-700">
+            <span>📋 Complete List &amp; Information Boxes</span>
+        </a>
+    </div>
+
     <!-- Page Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
             <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                <span>⚡</span> Actions Compendium
+                <span>⚡</span> Actions - Search
             </h1>
             <p class="text-slate-600 text-sm mt-1">Combat actions, standard reactions, skill activities, and special maneuvers.</p>
         </div>

@@ -32,25 +32,31 @@ Route::prefix('rules')->name('rules.')->group(function () {
     Route::get('/index', [RulesController::class, 'indexList'])->name('index');
 });
 
-// Reference tables (interactive search, sort, filter, pagination)
+// Reference tables (interactive search, sort, filter, pagination, and complete list views)
 Route::prefix('reference')->name('reference.')->group(function () {
     Route::get('/skills', [ReferenceController::class, 'skills'])->name('skills');
+    Route::get('/skills/list', [ReferenceController::class, 'skillsList'])->name('skills.list');
     Route::get('/skills/{name}', [ReferenceController::class, 'showSkill'])->name('skills.show');
 
     Route::get('/spells', [ReferenceController::class, 'spells'])->name('spells');
+    Route::get('/spells/list', [ReferenceController::class, 'spellsList'])->name('spells.list');
     Route::get('/spells/by-skill', [ReferenceController::class, 'spellsBySkill'])->name('spells.by-skill');
     Route::get('/spells/{name}', [ReferenceController::class, 'showSpell'])->name('spells.show');
 
     Route::get('/creatures', [ReferenceController::class, 'creatures'])->name('creatures');
+    Route::get('/creatures/list', [ReferenceController::class, 'creaturesList'])->name('creatures.list');
     Route::get('/creatures/{name}', [ReferenceController::class, 'showCreature'])->name('creatures.show');
 
     Route::get('/equipment', [ReferenceController::class, 'equipment'])->name('equipment');
+    Route::get('/equipment/list', [ReferenceController::class, 'equipmentList'])->name('equipment.list');
     Route::get('/equipment/{name}', [ReferenceController::class, 'showEquipment'])->name('equipment.show');
 
     Route::get('/actions', [ReferenceController::class, 'actions'])->name('actions');
+    Route::get('/actions/list', [ReferenceController::class, 'actionsList'])->name('actions.list');
     Route::get('/actions/{name}', [ReferenceController::class, 'showAction'])->name('actions.show');
 
     Route::get('/cultures', [ReferenceController::class, 'cultures'])->name('cultures');
+    Route::get('/cultures/list', [ReferenceController::class, 'culturesList'])->name('cultures.list');
     Route::get('/cultures/{name}', [ReferenceController::class, 'showCulture'])->name('cultures.show');
 });
 

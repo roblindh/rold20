@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Spells & Powers Compendium'])
+@extends('layouts.app', ['title' => 'Spells & Powers - Search'])
 
 @section('content')
 <div class="space-y-6" x-data="{
@@ -12,30 +12,40 @@
         if (this.skill) { params.set('skill', this.skill); } else { params.delete('skill'); }
         params.delete('page');
         try {
-            const res = await fetch('{{ route('reference.spells') }}?' + params.toString(), {
+            const res = await fetch('{{ route('reference.spells', [], false) }}?' + params.toString(), {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
             });
             const data = await res.json();
             document.getElementById('spells-table-container').innerHTML = data.html;
-            window.history.pushState({}, '', '{{ route('reference.spells') }}' + (params.toString() ? '?' + params.toString() : ''));
+            window.history.pushState({}, '', '{{ route('reference.spells', [], false) }}' + (params.toString() ? '?' + params.toString() : ''));
         } catch (e) {
             console.error('Filter error', e);
         }
         this.loading = false;
     }
 }">
+    <!-- View Switcher -->
+    <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
+        <a href="{{ route('reference.spells', [], false) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition bg-amber-800 text-white shadow-sm" style="background-color: #8b1a1a;">
+            <span>🔍 Search View</span>
+        </a>
+        <a href="{{ route('reference.spells.list', [], false) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition bg-slate-100 hover:bg-slate-200 text-slate-700">
+            <span>📋 Complete List &amp; Information Boxes</span>
+        </a>
+        <a href="{{ route('reference.spells.by-skill', [], false) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition bg-slate-100 hover:bg-slate-200 text-slate-700">
+            <span>✨ By Skill Index</span>
+        </a>
+    </div>
+
     <!-- Page Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
             <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                <span>✨</span> Spells & Supernatural Powers
+                <span>✨</span> Spells & Powers - Search
             </h1>
             <p class="text-slate-600 text-sm mt-1">Arcane spells, divine blessings, and psionic disciplines across all schools and power levels.</p>
         </div>
         <div class="flex items-center gap-2 text-xs">
-            <a href="{{ route('reference.spells.by-skill') }}" class="bg-amber-100 text-amber-900 px-3 py-1 rounded-full font-semibold border border-amber-300 hover:bg-amber-200 transition flex items-center gap-1">
-                <span>✨</span> Spells by Skill
-            </a>
             <span class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full font-semibold border border-indigo-200">{{ $spells->total() }} Total Spells</span>
         </div>
     </div>
