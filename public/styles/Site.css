@@ -809,8 +809,9 @@ body.modern-app, html.modern-app {
     overflow-y: auto !important;
     padding: 1.5rem !important;
     box-sizing: border-box !important;
-    background-color: #ffffff !important;
-    background-image: none !important;
+    background-color: #f0f0d9 !important;
+    background-image: url('goldparchment.jpg') !important;
+    background-repeat: repeat !important;
 }
 
 /* Sidebar Navigation Drawer */

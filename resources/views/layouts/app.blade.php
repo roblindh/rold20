@@ -313,7 +313,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <main id="main-content" class="flex-1 overflow-y-auto p-3.5 sm:p-6 md:p-8 bg-white shadow-inner scroll-smooth w-full">
+        <main id="main-content" class="flex-1 overflow-y-auto p-3.5 sm:p-6 md:p-8 shadow-inner scroll-smooth w-full">
             <div class="max-w-5xl mx-auto">
                 @if (session('status'))
                     <div class="mb-4 bg-emerald-50 border border-emerald-300 text-emerald-800 px-4 py-2.5 rounded text-xs font-semibold flex items-center justify-between shadow-sm">
