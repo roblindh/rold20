@@ -6,7 +6,7 @@ function render_creature_image_script() {
     $rendered = true;
     ?>
     <script>
-    function showCreatureImage(id, src, isLocal, externalUrl) {
+    function showCreatureImage(id, src, isLocal) {
         var span = document.getElementById('crimg' + id);
         if (!span) return;
         var imgUrl = (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('/')) ? src : '/' + src;
@@ -15,20 +15,17 @@ function render_creature_image_script() {
         html += 'onerror="this.onerror=null; this.style.display=\'none\'; document.getElementById(\'crerr' + id + '\').style.display=\'block\';"/>';
         html += '<div id="crerr' + id + '" style="display: none; color: #c00; font-size: 0.9em; margin-bottom: 5px; background: #fff0f0; border: 1px solid #ffcccc; padding: 4px 8px; border-radius: 4px;">';
         html += '⚠️ <strong>Image unavailable</strong> (remote link unreachable or blocked).';
-        if (externalUrl) {
-            html += ' <a href="' + externalUrl + '" target="_blank" rel="noopener noreferrer">Try opening direct link</a>.';
-        }
         html += '<br/>To supply a local image, place <code>' + id + '.jpg</code> (or <code>.png</code>) in <code>images/creatures/</code>.';
         html += '</div>';
-        html += '<button type="button" onclick="hideCreatureImage(' + id + ', \'' + src.replace(/'/g, "\\'") + '\', ' + isLocal + ', \'' + (externalUrl || '').replace(/'/g, "\\'") + '\')">Hide</button>';
+        html += '<button type="button" onclick="hideCreatureImage(' + id + ', \'' + src.replace(/'/g, "\\'") + '\', ' + isLocal + ')">Hide</button>';
         html += '</div>';
         span.innerHTML = html;
     }
 
-    function hideCreatureImage(id, src, isLocal, externalUrl) {
+    function hideCreatureImage(id, src, isLocal) {
         var span = document.getElementById('crimg' + id);
         if (!span) return;
-        span.innerHTML = '<button type="button" onclick="showCreatureImage(' + id + ', \'' + src.replace(/'/g, "\\'") + '\', ' + isLocal + ', \'' + (externalUrl || '').replace(/'/g, "\\'") + '\')">Show</button>';
+        span.innerHTML = '<button type="button" onclick="showCreatureImage(' + id + ', \'' + src.replace(/'/g, "\\'") + '\', ' + isLocal + ')">Show</button>';
     }
     </script>
     <?php
@@ -228,9 +225,8 @@ function show_creatureinfo($id, $fullinfo) {
         <tr><td>Image:</td>
         <td>
             <span id="crimg<?php echo $row['ID']; ?>">
-                <button type="button" onclick="showCreatureImage(<?php echo $row['ID']; ?>, '<?php echo addslashes(htmlspecialchars($resolvedUrl, ENT_QUOTES)); ?>', <?php echo $isLocal ? 'true' : 'false'; ?>, '<?php echo addslashes(htmlspecialchars($resolvedUrl, ENT_QUOTES)); ?>')">Show</button>
+                <button type="button" onclick="showCreatureImage(<?php echo $row['ID']; ?>, '<?php echo addslashes(htmlspecialchars($resolvedUrl, ENT_QUOTES)); ?>', <?php echo $isLocal ? 'true' : 'false'; ?>)">Show</button>
             </span>
-            &nbsp;<a href="<?php echo htmlspecialchars($resolvedUrl); ?>" target="_blank" rel="noopener noreferrer" style="font-size: 0.85em; text-decoration: underline;">[Direct Link]</a>
         </td></tr>
     <?php
     }
