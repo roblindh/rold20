@@ -8425,35 +8425,35 @@ return array (
   ),
   'conditiontypes' => 
   array (
-    4 => 
-    array (
-      'ID' => 4,
-      'ConditionType' => 'Disease',
-    ),
-    6 => 
-    array (
-      'ID' => 6,
-      'ConditionType' => 'Drug',
-    ),
     1 => 
     array (
       'ID' => 1,
       'ConditionType' => 'Dying',
     ),
-    5 => 
+    2 => 
     array (
-      'ID' => 5,
-      'ConditionType' => 'Insanity',
+      'ID' => 2,
+      'ConditionType' => 'Possession',
     ),
     3 => 
     array (
       'ID' => 3,
       'ConditionType' => 'Poison',
     ),
-    2 => 
+    4 => 
     array (
-      'ID' => 2,
-      'ConditionType' => 'Possession',
+      'ID' => 4,
+      'ConditionType' => 'Disease',
+    ),
+    5 => 
+    array (
+      'ID' => 5,
+      'ConditionType' => 'Insanity',
+    ),
+    6 => 
+    array (
+      'ID' => 6,
+      'ConditionType' => 'Drug',
     ),
   ),
   'creatures' => 
@@ -32230,15 +32230,15 @@ return array (
   ),
   'genders' => 
   array (
-    2 => 
-    array (
-      'ID' => 2,
-      'Name' => 'Female',
-    ),
     1 => 
     array (
       'ID' => 1,
       'Name' => 'Male',
+    ),
+    2 => 
+    array (
+      'ID' => 2,
+      'Name' => 'Female',
     ),
     3 => 
     array (
@@ -47232,11 +47232,6 @@ return array (
   ),
   'materialtypes' => 
   array (
-    3 => 
-    array (
-      'ID' => 3,
-      'Name' => 'Flexible',
-    ),
     1 => 
     array (
       'ID' => 1,
@@ -47247,15 +47242,20 @@ return array (
       'ID' => 2,
       'Name' => 'Liquid',
     ),
-    5 => 
+    3 => 
     array (
-      'ID' => 5,
-      'Name' => 'Metal',
+      'ID' => 3,
+      'Name' => 'Flexible',
     ),
     4 => 
     array (
       'ID' => 4,
       'Name' => 'Solid',
+    ),
+    5 => 
+    array (
+      'ID' => 5,
+      'Name' => 'Metal',
     ),
   ),
   'modifiers' => 
@@ -55726,6 +55726,1872 @@ return array (
       'Prereqs' => 'Skl(CmbIn)>=5 AND Skl(SplCr)>=5',
       'PrereqMaxLvl' => 'MIN(Skl(CmbIn)-5,Skl(SplCr)-5)',
       'Description' => 'Arcane Weaponry is a supernatural ability that lets you combine spellcasting with melee combat. This skill is most commonly taught among elves, half-elves, and other races that favor a combination of magic and martial training.\\nInspired by the 3.5E Eldritch Knight and Spellsword prestige classes.',
+    ),
+  ),
+  'specializations' => 
+  array (
+    1 => 
+    array (
+      'ID' => 1,
+      'Skill' => 4,
+      'Name' => 'Alchemy',
+      'Description' => 'Crafting of poisons and other chemical but non-magical substances.',
+      'Prereqs' => NULL,
+      'Traits' => 'Defense { Qual=PoisonRes; Type=skill; Value=+lvl/6; }',
+    ),
+    2 => 
+    array (
+      'ID' => 2,
+      'Skill' => 4,
+      'Name' => 'Armorsmithing',
+      'Description' => 'Crafting of metallic armor.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    3 => 
+    array (
+      'ID' => 3,
+      'Skill' => 4,
+      'Name' => 'Basketweaving',
+      'Description' => 'Crafting of baskets and other items woven of reeds.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    4 => 
+    array (
+      'ID' => 4,
+      'Skill' => 4,
+      'Name' => 'Blacksmithing',
+      'Description' => 'Crafting of metallic tools and items.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    5 => 
+    array (
+      'ID' => 5,
+      'Skill' => 4,
+      'Name' => 'Bookbinding',
+      'Description' => 'Crafting of books, paper, and non-magical scrolls.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    6 => 
+    array (
+      'ID' => 6,
+      'Skill' => 4,
+      'Name' => 'Bowmaking',
+      'Description' => 'Crafting of bows, arrows, crossbows, and bolts.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    7 => 
+    array (
+      'ID' => 7,
+      'Skill' => 4,
+      'Name' => 'Calligraphy',
+      'Description' => 'Artistic writing and illumination.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    8 => 
+    array (
+      'ID' => 8,
+      'Skill' => 4,
+      'Name' => 'Carpentry',
+      'Description' => 'Crafting of wooden tools and items.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    9 => 
+    array (
+      'ID' => 9,
+      'Skill' => 4,
+      'Name' => 'Cobbling',
+      'Description' => 'Crafting of shoes and boots.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    10 => 
+    array (
+      'ID' => 10,
+      'Skill' => 4,
+      'Name' => 'Gemcutting',
+      'Description' => 'Cutting of gems and crafting of jewelry.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    11 => 
+    array (
+      'ID' => 11,
+      'Skill' => 4,
+      'Name' => 'Glassworking',
+      'Description' => 'Glassblowing and crafting of glass items.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    12 => 
+    array (
+      'ID' => 12,
+      'Skill' => 4,
+      'Name' => 'Leatherworking',
+      'Description' => 'Crafting of leather clothing and armor.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    13 => 
+    array (
+      'ID' => 13,
+      'Skill' => 4,
+      'Name' => 'Locksmithing',
+      'Description' => 'Crafting of locks and other small mechanical items.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    14 => 
+    array (
+      'ID' => 14,
+      'Skill' => 4,
+      'Name' => 'Painting',
+      'Description' => 'Signmaking and/or artistic painting.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    15 => 
+    array (
+      'ID' => 15,
+      'Skill' => 4,
+      'Name' => 'Pottery',
+      'Description' => 'Crafting of pots, tiles, and other ceramic items.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    16 => 
+    array (
+      'ID' => 16,
+      'Skill' => 4,
+      'Name' => 'Sculpting',
+      'Description' => 'Artistic crafting of stone sculptures and statues.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    17 => 
+    array (
+      'ID' => 17,
+      'Skill' => 4,
+      'Name' => 'Shipmaking',
+      'Description' => 'Crafting of boats, ships, and naval items.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    18 => 
+    array (
+      'ID' => 18,
+      'Skill' => 4,
+      'Name' => 'Stonemasonry',
+      'Description' => 'Crafting of buildings and stone items.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    19 => 
+    array (
+      'ID' => 19,
+      'Skill' => 4,
+      'Name' => 'Tailoring',
+      'Description' => 'Crafting of clothing and other items of cloth.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    20 => 
+    array (
+      'ID' => 20,
+      'Skill' => 4,
+      'Name' => 'Trapmaking',
+      'Description' => 'Crafting of traps and large mechanical items.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    21 => 
+    array (
+      'ID' => 21,
+      'Skill' => 4,
+      'Name' => 'Weaponsmithing',
+      'Description' => 'Crafting of metallic and wooden weapons.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    22 => 
+    array (
+      'ID' => 22,
+      'Skill' => 4,
+      'Name' => 'Weaving',
+      'Description' => 'Crafting and dyeing of cloth, string, and rope.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    23 => 
+    array (
+      'ID' => 23,
+      'Skill' => 6,
+      'Name' => 'Arcana',
+      'Description' => 'Ancient mysteries, magic, arcane symbols and phrases, constructs, dragons, legendary arcane items',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    24 => 
+    array (
+      'ID' => 24,
+      'Skill' => 6,
+      'Name' => 'Architecture and Engineering',
+      'Description' => 'Buildings, aqueducts, bridges, fortifications',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    25 => 
+    array (
+      'ID' => 25,
+      'Skill' => 6,
+      'Name' => 'Dungeoneering',
+      'Description' => 'Aberrations, caverns, oozes, spelunking',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    26 => 
+    array (
+      'ID' => 26,
+      'Skill' => 6,
+      'Name' => 'Geography',
+      'Description' => 'Lands, terrain, climate, people',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    27 => 
+    array (
+      'ID' => 27,
+      'Skill' => 6,
+      'Name' => 'History',
+      'Description' => 'Royalty, wars, colonies, migrations, founding of cities',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    28 => 
+    array (
+      'ID' => 28,
+      'Skill' => 6,
+      'Name' => 'Local',
+      'Description' => 'Legends, personalities, inhabitants, laws, customs, traditions, (humanoids)',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    29 => 
+    array (
+      'ID' => 29,
+      'Skill' => 6,
+      'Name' => 'Nature',
+      'Description' => 'Animals, humanoids, monstrous animals, monstrous humanoids, plants, seasons and cycles, weather, vermin',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    30 => 
+    array (
+      'ID' => 30,
+      'Skill' => 6,
+      'Name' => 'Nobility and Royalty',
+      'Description' => 'Lineages, heraldry, family trees, mottoes, personalities',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    31 => 
+    array (
+      'ID' => 31,
+      'Skill' => 6,
+      'Name' => 'Psionics',
+      'Description' => 'Ancient mysteries, psionic traditions, psychic symbols and phrases, psionic creatures, legendary psionic items',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    32 => 
+    array (
+      'ID' => 32,
+      'Skill' => 6,
+      'Name' => 'Religion',
+      'Description' => 'Gods and goddesses, mythic history, ecclesiastic tradition, holy symbols, undead, legendary divine items',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    33 => 
+    array (
+      'ID' => 33,
+      'Skill' => 6,
+      'Name' => 'The Planes',
+      'Description' => 'The Inner and Outer Planes, the Astral Plane, the Ethereal Plane, outsiders, elementals',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    34 => 
+    array (
+      'ID' => 34,
+      'Skill' => 7,
+      'Name' => 'Abyssal',
+      'Description' => 'Demons, chaotic evil outsiders',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    35 => 
+    array (
+      'ID' => 35,
+      'Skill' => 7,
+      'Name' => 'Aquan',
+      'Description' => 'Water-based creatures',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    36 => 
+    array (
+      'ID' => 36,
+      'Skill' => 7,
+      'Name' => 'Auran',
+      'Description' => 'Air-based creatures',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    37 => 
+    array (
+      'ID' => 37,
+      'Skill' => 7,
+      'Name' => 'Celestial',
+      'Description' => 'Good outsiders',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    38 => 
+    array (
+      'ID' => 38,
+      'Skill' => 7,
+      'Name' => 'Common',
+      'Description' => 'Humans, halflings, half-elves, half-orcs, and many other humanoids',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    39 => 
+    array (
+      'ID' => 39,
+      'Skill' => 7,
+      'Name' => 'Common sign language',
+      'Description' => 'Rogues, mutes',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    40 => 
+    array (
+      'ID' => 40,
+      'Skill' => 7,
+      'Name' => 'Draconic',
+      'Description' => 'Kobolds, troglodytes, lizardfolk, dragons',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    41 => 
+    array (
+      'ID' => 41,
+      'Skill' => 7,
+      'Name' => 'Druidic (secret)',
+      'Description' => 'Druids',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    42 => 
+    array (
+      'ID' => 42,
+      'Skill' => 7,
+      'Name' => 'Dwarven',
+      'Description' => 'Dwarves',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    43 => 
+    array (
+      'ID' => 43,
+      'Skill' => 7,
+      'Name' => 'Elven',
+      'Description' => 'Elves',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    44 => 
+    array (
+      'ID' => 44,
+      'Skill' => 7,
+      'Name' => 'Giant',
+      'Description' => 'Ogres, giants',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    45 => 
+    array (
+      'ID' => 45,
+      'Skill' => 7,
+      'Name' => 'Gnome',
+      'Description' => 'Gnomes',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    46 => 
+    array (
+      'ID' => 46,
+      'Skill' => 7,
+      'Name' => 'Goblin',
+      'Description' => 'Goblins, hobgoblins, bugbears',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    47 => 
+    array (
+      'ID' => 47,
+      'Skill' => 7,
+      'Name' => 'Gnoll',
+      'Description' => 'Gnolls',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    48 => 
+    array (
+      'ID' => 48,
+      'Skill' => 7,
+      'Name' => 'Halfling',
+      'Description' => 'Halflings',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    49 => 
+    array (
+      'ID' => 49,
+      'Skill' => 7,
+      'Name' => 'Ignan',
+      'Description' => 'Fire-based creatures',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    50 => 
+    array (
+      'ID' => 50,
+      'Skill' => 7,
+      'Name' => 'Infernal',
+      'Description' => 'Devils, lawful evil outsiders',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    51 => 
+    array (
+      'ID' => 51,
+      'Skill' => 7,
+      'Name' => 'Orc',
+      'Description' => 'Orcs',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    52 => 
+    array (
+      'ID' => 52,
+      'Skill' => 7,
+      'Name' => 'Sylvan',
+      'Description' => 'Dryads, brownies, leprechauns',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    53 => 
+    array (
+      'ID' => 53,
+      'Skill' => 7,
+      'Name' => 'Terran',
+      'Description' => 'Earth-based creatures',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    54 => 
+    array (
+      'ID' => 54,
+      'Skill' => 7,
+      'Name' => 'Undercommon',
+      'Description' => 'Drow and other Underdark humanoids',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    55 => 
+    array (
+      'ID' => 55,
+      'Skill' => 7,
+      'Name' => 'Undercommon sign language',
+      'Description' => 'Drow',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    56 => 
+    array (
+      'ID' => 56,
+      'Skill' => 9,
+      'Name' => 'Acting',
+      'Description' => 'Drama, mime, makeup/disguise\\nAdditional skill points can be spent to develop fake identities (one persona per skill point). Each persona typically has its own social scores (WC, SC, influence, and reputation) that the character can choose to invest in.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    57 => 
+    array (
+      'ID' => 57,
+      'Skill' => 9,
+      'Name' => 'Comedy',
+      'Description' => 'Buffoonery/jesting, limericks, joke-telling',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    58 => 
+    array (
+      'ID' => 58,
+      'Skill' => 9,
+      'Name' => 'Dancing',
+      'Description' => 'Dancing, tumbling',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    59 => 
+    array (
+      'ID' => 59,
+      'Skill' => 9,
+      'Name' => 'Keyboard instruments',
+      'Description' => NULL,
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    60 => 
+    array (
+      'ID' => 60,
+      'Skill' => 9,
+      'Name' => 'Oratory',
+      'Description' => 'Epic, ode, storytelling, poetry',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    61 => 
+    array (
+      'ID' => 61,
+      'Skill' => 9,
+      'Name' => 'Percussion instruments',
+      'Description' => NULL,
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    62 => 
+    array (
+      'ID' => 62,
+      'Skill' => 9,
+      'Name' => 'Singing',
+      'Description' => 'Ballad, chanting, melody',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    63 => 
+    array (
+      'ID' => 63,
+      'Skill' => 9,
+      'Name' => 'String instruments',
+      'Description' => NULL,
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    64 => 
+    array (
+      'ID' => 64,
+      'Skill' => 9,
+      'Name' => 'Whistling',
+      'Description' => NULL,
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    65 => 
+    array (
+      'ID' => 65,
+      'Skill' => 9,
+      'Name' => 'Wind instruments',
+      'Description' => NULL,
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    66 => 
+    array (
+      'ID' => 66,
+      'Skill' => 10,
+      'Name' => 'Apothecary',
+      'Description' => 'Knows how to formulate and dispense herbs and tools to surgeons, doctors, and healers.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    67 => 
+    array (
+      'ID' => 67,
+      'Skill' => 10,
+      'Name' => 'Beggar',
+      'Description' => 'Knows how to beg people for food, money, and clothes.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    68 => 
+    array (
+      'ID' => 68,
+      'Skill' => 10,
+      'Name' => 'Boater',
+      'Description' => 'Knows how to handle and maintain small boats.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    69 => 
+    array (
+      'ID' => 69,
+      'Skill' => 10,
+      'Name' => 'Bookkeeper',
+      'Description' => 'Knows how to manage (and analyze) recordings of financial transactions.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    70 => 
+    array (
+      'ID' => 70,
+      'Skill' => 10,
+      'Name' => 'Brewer',
+      'Description' => 'Knows how to brew mead, wine, and stronger alcoholic beverages.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    71 => 
+    array (
+      'ID' => 71,
+      'Skill' => 10,
+      'Name' => 'Cook',
+      'Description' => 'Knows how to prepare and serve food and drink.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    72 => 
+    array (
+      'ID' => 72,
+      'Skill' => 10,
+      'Name' => 'Driver',
+      'Description' => 'Knows how to drive and maintain carts and wagons.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    73 => 
+    array (
+      'ID' => 73,
+      'Skill' => 10,
+      'Name' => 'Farmer',
+      'Description' => 'Knows how to grow and harvest grain and vegetables.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    74 => 
+    array (
+      'ID' => 74,
+      'Skill' => 10,
+      'Name' => 'Fisher',
+      'Description' => 'Knows how to find and catch fish and other aquatic creatures.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    75 => 
+    array (
+      'ID' => 75,
+      'Skill' => 10,
+      'Name' => 'Guide',
+      'Description' => 'Knows how to find places of interest in a city or neighborhood.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    76 => 
+    array (
+      'ID' => 76,
+      'Skill' => 10,
+      'Name' => 'Herbalist',
+      'Description' => 'Knows how to find, harvest, and use medicinal plants.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    77 => 
+    array (
+      'ID' => 77,
+      'Skill' => 10,
+      'Name' => 'Herder',
+      'Description' => 'Knows how to handle and butcher herd animals.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    78 => 
+    array (
+      'ID' => 78,
+      'Skill' => 10,
+      'Name' => 'Hunter',
+      'Description' => 'Knows how to track, hunt, butcher, and skin wild animals.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    79 => 
+    array (
+      'ID' => 79,
+      'Skill' => 10,
+      'Name' => 'Innkeeper',
+      'Description' => 'Knows how to run an inn and/or tavern.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    80 => 
+    array (
+      'ID' => 80,
+      'Skill' => 10,
+      'Name' => 'Lumberjack/woodcutter',
+      'Description' => 'Knows how to chop down trees and transport logs.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    81 => 
+    array (
+      'ID' => 81,
+      'Skill' => 10,
+      'Name' => 'Miller',
+      'Description' => 'Knows how to grind crops into flour.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    82 => 
+    array (
+      'ID' => 82,
+      'Skill' => 10,
+      'Name' => 'Miner',
+      'Description' => 'Knows how to find and extract ore and minerals from the ground.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    83 => 
+    array (
+      'ID' => 83,
+      'Skill' => 10,
+      'Name' => 'Porter',
+      'Description' => 'Knows how to pack and carry large amounts of gear.',
+      'Prereqs' => NULL,
+      'Traits' => 'Special { Qual=CarrCapMod; Type=skill; Value=lvl*5; }',
+    ),
+    84 => 
+    array (
+      'ID' => 84,
+      'Skill' => 10,
+      'Name' => 'Rancher',
+      'Description' => 'Knows how to raise, take care of, and butcher horses and livestock.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    85 => 
+    array (
+      'ID' => 85,
+      'Skill' => 10,
+      'Name' => 'Sailor',
+      'Description' => 'Knows how to handle, maintain, and run sailing ships.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    86 => 
+    array (
+      'ID' => 86,
+      'Skill' => 10,
+      'Name' => 'Scribe',
+      'Description' => 'Knows how to write or copy scrolls and books.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    87 => 
+    array (
+      'ID' => 87,
+      'Skill' => 10,
+      'Name' => 'Stablehand',
+      'Description' => 'Knows how to feed and care for riding animals.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    88 => 
+    array (
+      'ID' => 88,
+      'Skill' => 10,
+      'Name' => 'Tanner',
+      'Description' => 'Knows how to process skin and create leather.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    89 => 
+    array (
+      'ID' => 89,
+      'Skill' => 10,
+      'Name' => 'Teamster',
+      'Description' => 'Knows how to drove a team of draft animals and maintain a wagon.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    90 => 
+    array (
+      'ID' => 90,
+      'Skill' => 11,
+      'Name' => 'Gambling',
+      'Description' => 'Covers most forms of gambling where the ability to bluff and discern bluffs comes into play.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    91 => 
+    array (
+      'ID' => 91,
+      'Skill' => 11,
+      'Name' => 'Haggling',
+      'Description' => 'Covers haggling and other forms of financial transactions.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    92 => 
+    array (
+      'ID' => 92,
+      'Skill' => 11,
+      'Name' => 'Influence',
+      'Description' => 'How to convince or trick others into doing what you want them to do.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    93 => 
+    array (
+      'ID' => 93,
+      'Skill' => 11,
+      'Name' => 'Insight',
+      'Description' => 'How to discern lies and see the true motivations and feelings of others.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    94 => 
+    array (
+      'ID' => 94,
+      'Skill' => 11,
+      'Name' => 'Psychoanalysis',
+      'Description' => 'How to detect and treat mental conditions.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActAcc { Qual=Hypnotize; }',
+    ),
+    95 => 
+    array (
+      'ID' => 95,
+      'Skill' => 12,
+      'Name' => 'Land-Based',
+      'Description' => 'Horses, ponies, mules, donkeys, riding dogs, camels, unicorns',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    96 => 
+    array (
+      'ID' => 96,
+      'Skill' => 12,
+      'Name' => 'Large Land-Based',
+      'Description' => 'Elephants',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    97 => 
+    array (
+      'ID' => 97,
+      'Skill' => 12,
+      'Name' => 'Aerial',
+      'Description' => 'Griffons, hippogriffs, pegasi',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    98 => 
+    array (
+      'ID' => 98,
+      'Skill' => 12,
+      'Name' => 'Large Aerial',
+      'Description' => 'Dragons',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    99 => 
+    array (
+      'ID' => 99,
+      'Skill' => 12,
+      'Name' => 'Aquatic',
+      'Description' => 'Giant seahorses, dolphins, sharks',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    100 => 
+    array (
+      'ID' => 100,
+      'Skill' => 12,
+      'Name' => 'Large Aquatic',
+      'Description' => 'Whales, giant sharks',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    101 => 
+    array (
+      'ID' => 101,
+      'Skill' => 12,
+      'Name' => 'Climbing',
+      'Description' => 'Giant lizards, giant spiders',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    102 => 
+    array (
+      'ID' => 102,
+      'Skill' => 15,
+      'Name' => 'Aquatic',
+      'Description' => 'On (or below) the surface of seas and large lakes.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    103 => 
+    array (
+      'ID' => 103,
+      'Skill' => 15,
+      'Name' => 'Desert',
+      'Description' => 'Dry environments of sand or rock.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    104 => 
+    array (
+      'ID' => 104,
+      'Skill' => 15,
+      'Name' => 'Forest',
+      'Description' => 'Temperate environment of coniferous or deciduous trees.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    105 => 
+    array (
+      'ID' => 105,
+      'Skill' => 15,
+      'Name' => 'Jungle',
+      'Description' => 'Tropical and humid environment of trees and dense undergrowth.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    106 => 
+    array (
+      'ID' => 106,
+      'Skill' => 15,
+      'Name' => 'Moor/Hills',
+      'Description' => 'Temperate environment with small vegetation and rolling hills.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    107 => 
+    array (
+      'ID' => 107,
+      'Skill' => 15,
+      'Name' => 'Mountains',
+      'Description' => 'Rocky environment with cliffs and chasms.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    108 => 
+    array (
+      'ID' => 108,
+      'Skill' => 15,
+      'Name' => 'Plains',
+      'Description' => 'Open and flat environment with small vegetation, rivers, and streams.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    109 => 
+    array (
+      'ID' => 109,
+      'Skill' => 15,
+      'Name' => 'Swamp/Marsh',
+      'Description' => 'Humid environment with waterways, dense vegetation, and soggy ground.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    110 => 
+    array (
+      'ID' => 110,
+      'Skill' => 15,
+      'Name' => 'Tundra',
+      'Description' => 'Cold environment with little vegetation and frozen ground.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    111 => 
+    array (
+      'ID' => 111,
+      'Skill' => 15,
+      'Name' => 'Underdark',
+      'Description' => 'Underground environment with caves, tunnels, rivers, and fungoid vegetation.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    112 => 
+    array (
+      'ID' => 112,
+      'Skill' => 15,
+      'Name' => 'Planar - Aligned',
+      'Description' => 'You are more able to adapt to planes with a dominant alignment trait.',
+      'Prereqs' => 'Skl(Surv)>=10',
+      'Traits' => 'Special { Qual=PlanarUnaligned; }',
+    ),
+    113 => 
+    array (
+      'ID' => 113,
+      'Skill' => 15,
+      'Name' => 'Planar - Aquatic',
+      'Description' => 'You are more adept at traveling through planes of an aquatic nature.',
+      'Prereqs' => 'Skl(Surv)>=10',
+      'Traits' => 'SpdType { Qual=Swim; Value=2; }',
+    ),
+    114 => 
+    array (
+      'ID' => 114,
+      'Skill' => 15,
+      'Name' => 'Planar - Cavernous',
+      'Description' => 'You become more proficient in navigating through earth-based and cavernous planes.',
+      'Prereqs' => 'Skl(Surv)>=10',
+      'Traits' => 'Sns { Qual=Tremorsense; Value=6; }',
+    ),
+    115 => 
+    array (
+      'ID' => 115,
+      'Skill' => 15,
+      'Name' => 'Planar - Cold',
+      'Description' => 'You gain proficiency in traveling through planes of ice and extreme cold.',
+      'Prereqs' => 'Skl(Surv)>=10',
+      'Traits' => 'DefMod { Qual=ColdRes; Type=skill; Value=+lvl; }',
+    ),
+    116 => 
+    array (
+      'ID' => 116,
+      'Skill' => 15,
+      'Name' => 'Planar - Fiery',
+      'Description' => 'You become more proficient in traveling through planes of fire and extreme heat.',
+      'Prereqs' => 'Skl(Surv)>=10',
+      'Traits' => 'DefMod { Qual=FireRes; Type=skill; Value=+lvl; }',
+    ),
+    117 => 
+    array (
+      'ID' => 117,
+      'Skill' => 15,
+      'Name' => 'Planar - Shifting',
+      'Description' => 'You become more able to predict the shifting nature of planes such as Limbo and Shadowfell.',
+      'Prereqs' => 'Skl(Surv)>=10',
+      'Traits' => 'SpdType { Qual=Shifting; Value=1; }',
+    ),
+    118 => 
+    array (
+      'ID' => 118,
+      'Skill' => 15,
+      'Name' => 'Planar - Weightless',
+      'Description' => 'You become more proficient in moving through planes that have no gravity.',
+      'Prereqs' => 'Skl(Surv)>=10',
+      'Traits' => 'SpdType { Qual=Weightless; Value=1; }',
+    ),
+    119 => 
+    array (
+      'ID' => 119,
+      'Skill' => 15,
+      'Name' => 'Planar - Other',
+      'Description' => 'The player and the DM can agree on other planar specializations and benefits.',
+      'Prereqs' => 'Skl(Surv)>=10',
+      'Traits' => NULL,
+    ),
+    120 => 
+    array (
+      'ID' => 120,
+      'Skill' => 48,
+      'Name' => 'Offensive - Humans',
+      'Description' => 'Attack and damage bonuses against humans.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Human; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Human; }',
+    ),
+    121 => 
+    array (
+      'ID' => 121,
+      'Skill' => 48,
+      'Name' => 'Defensive - Humans',
+      'Description' => 'Defensive bonuses against humans.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Human; }',
+    ),
+    122 => 
+    array (
+      'ID' => 122,
+      'Skill' => 48,
+      'Name' => 'Offensive - Dwarves',
+      'Description' => 'Attack and damage bonuses against dwarves.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Dwarf; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Dwarf; }',
+    ),
+    123 => 
+    array (
+      'ID' => 123,
+      'Skill' => 48,
+      'Name' => 'Defensive - Dwarves',
+      'Description' => 'Defensive bonuses against dwarves.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Dwarf; }',
+    ),
+    124 => 
+    array (
+      'ID' => 124,
+      'Skill' => 48,
+      'Name' => 'Offensive - Elves',
+      'Description' => 'Attack and damage bonuses against elves.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Elf; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Elf; }',
+    ),
+    125 => 
+    array (
+      'ID' => 125,
+      'Skill' => 48,
+      'Name' => 'Defensive - Elves',
+      'Description' => 'Defensive bonuses against elves.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Elf; }',
+    ),
+    126 => 
+    array (
+      'ID' => 126,
+      'Skill' => 48,
+      'Name' => 'Offensive - Goblinoids',
+      'Description' => 'Attack and damage bonuses against goblinoid creatures.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Goblinoid; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Goblinoid; }',
+    ),
+    127 => 
+    array (
+      'ID' => 127,
+      'Skill' => 48,
+      'Name' => 'Defensive - Goblinoids',
+      'Description' => 'Defensive bonuses against goblinoid creatures.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Goblinoid; }',
+    ),
+    128 => 
+    array (
+      'ID' => 128,
+      'Skill' => 48,
+      'Name' => 'Offensive - Giants',
+      'Description' => 'Attack and damage bonuses against giants.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Giant; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Giant; }',
+    ),
+    129 => 
+    array (
+      'ID' => 129,
+      'Skill' => 48,
+      'Name' => 'Defensive - Giants',
+      'Description' => 'Defensive bonuses against giants.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Giant; }',
+    ),
+    130 => 
+    array (
+      'ID' => 130,
+      'Skill' => 48,
+      'Name' => 'Offensive - Dragons',
+      'Description' => 'Attack and damage bonuses against dragons.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Dragon; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Dragon; }',
+    ),
+    131 => 
+    array (
+      'ID' => 131,
+      'Skill' => 48,
+      'Name' => 'Defensive - Dragons',
+      'Description' => 'Defensive bonuses against dragons.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Dragon; }',
+    ),
+    132 => 
+    array (
+      'ID' => 132,
+      'Skill' => 7,
+      'Name' => 'Gith',
+      'Description' => 'Githyanki, githzerai',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    133 => 
+    array (
+      'ID' => 133,
+      'Skill' => 7,
+      'Name' => 'Maenad',
+      'Description' => 'Maenads',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    134 => 
+    array (
+      'ID' => 134,
+      'Skill' => 7,
+      'Name' => 'Thri-Kreen',
+      'Description' => 'Thri-kreen',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    135 => 
+    array (
+      'ID' => 135,
+      'Skill' => 7,
+      'Name' => 'Xeph',
+      'Description' => 'Xeph',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    136 => 
+    array (
+      'ID' => 136,
+      'Skill' => 170,
+      'Name' => 'Alchemy',
+      'Description' => 'Brew potions and oils.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActAcc { Qual=Identify Potion; }',
+    ),
+    137 => 
+    array (
+      'ID' => 137,
+      'Skill' => 170,
+      'Name' => 'Constructs',
+      'Description' => 'Animate constructs.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    138 => 
+    array (
+      'ID' => 138,
+      'Skill' => 170,
+      'Name' => 'Arcane Foci',
+      'Description' => 'Enchant arcane wands and staffs.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    139 => 
+    array (
+      'ID' => 139,
+      'Skill' => 170,
+      'Name' => 'Arcane Items',
+      'Description' => 'Enchant an item with arcane powers.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    140 => 
+    array (
+      'ID' => 140,
+      'Skill' => 170,
+      'Name' => 'Armor and Shields',
+      'Description' => 'Enhance suits of armor and shields.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    141 => 
+    array (
+      'ID' => 141,
+      'Skill' => 170,
+      'Name' => 'Divine Foci',
+      'Description' => 'Enchant divine symbols and rods.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    142 => 
+    array (
+      'ID' => 142,
+      'Skill' => 170,
+      'Name' => 'Divine Items',
+      'Description' => 'Enchant an item with divine powers.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    143 => 
+    array (
+      'ID' => 143,
+      'Skill' => 170,
+      'Name' => 'Psionic Foci',
+      'Description' => 'Enchant psionic dorjes and crowns.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    144 => 
+    array (
+      'ID' => 144,
+      'Skill' => 170,
+      'Name' => 'Psionic Items',
+      'Description' => 'Enchant an item with psionic powers.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    145 => 
+    array (
+      'ID' => 145,
+      'Skill' => 170,
+      'Name' => 'Weapons',
+      'Description' => 'Enhance weapons.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    146 => 
+    array (
+      'ID' => 146,
+      'Skill' => 170,
+      'Name' => 'Sentience',
+      'Description' => 'Imbue item with intelligence.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    147 => 
+    array (
+      'ID' => 147,
+      'Skill' => 170,
+      'Name' => 'Runes',
+      'Description' => 'Inscribe a rune.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    148 => 
+    array (
+      'ID' => 148,
+      'Skill' => 170,
+      'Name' => 'Constructions',
+      'Description' => 'Enchant buildings, walls, traps, and other constructions.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    149 => 
+    array (
+      'ID' => 149,
+      'Skill' => 170,
+      'Name' => 'Vehicles',
+      'Description' => 'Enchant vehicles.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    150 => 
+    array (
+      'ID' => 150,
+      'Skill' => 170,
+      'Name' => 'Scrollmaking',
+      'Description' => 'Scribe arcane or divine scrolls.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    151 => 
+    array (
+      'ID' => 151,
+      'Skill' => 20,
+      'Name' => 'Exotic Axes',
+      'Description' => 'Dwarven urgrosh, kama',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    152 => 
+    array (
+      'ID' => 152,
+      'Skill' => 20,
+      'Name' => 'Exotic Clubs',
+      'Description' => 'Gnome hooked hammer',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    153 => 
+    array (
+      'ID' => 153,
+      'Skill' => 20,
+      'Name' => 'Exotic Flails',
+      'Description' => 'Dire flail',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    154 => 
+    array (
+      'ID' => 154,
+      'Skill' => 20,
+      'Name' => 'Exotic Blades',
+      'Description' => 'Khopesh, sai, two-bladed sword',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    155 => 
+    array (
+      'ID' => 155,
+      'Skill' => 20,
+      'Name' => 'Exotic Pole Arms',
+      'Description' => NULL,
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    156 => 
+    array (
+      'ID' => 156,
+      'Skill' => 20,
+      'Name' => 'Exotic Missile Weapons',
+      'Description' => 'Blowgun',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    157 => 
+    array (
+      'ID' => 157,
+      'Skill' => 20,
+      'Name' => 'Exotic Thrown Weapons',
+      'Description' => 'Bolas, chakram',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    158 => 
+    array (
+      'ID' => 158,
+      'Skill' => 20,
+      'Name' => 'Exotic Whips and Entanglers',
+      'Description' => 'Net, scourge, spiked chain, whip',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    159 => 
+    array (
+      'ID' => 159,
+      'Skill' => 20,
+      'Name' => 'Exotic Spears',
+      'Description' => 'Siangham',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    166 => 
+    array (
+      'ID' => 166,
+      'Skill' => 48,
+      'Name' => 'Behavior - Humans',
+      'Description' => 'Behavioral bonuses against humans.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Human; }',
+    ),
+    168 => 
+    array (
+      'ID' => 168,
+      'Skill' => 48,
+      'Name' => 'Behavior - Dwarves',
+      'Description' => 'Behavioral bonuses against dwarves.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Dwarf; }',
+    ),
+    170 => 
+    array (
+      'ID' => 170,
+      'Skill' => 48,
+      'Name' => 'Behavior - Elves',
+      'Description' => 'Behavioral bonuses against elves.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Elf; }',
+    ),
+    172 => 
+    array (
+      'ID' => 172,
+      'Skill' => 48,
+      'Name' => 'Behavior - Goblinoids',
+      'Description' => 'Behavioral bonuses against goblinoid creatures.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Goblinoid; }',
+    ),
+    174 => 
+    array (
+      'ID' => 174,
+      'Skill' => 48,
+      'Name' => 'Behavior - Giants',
+      'Description' => 'Behavioral bonuses against giants.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Giant; }',
+    ),
+    176 => 
+    array (
+      'ID' => 176,
+      'Skill' => 48,
+      'Name' => 'Behavior - Dragons',
+      'Description' => 'Behavioral bonuses against dragons.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Dragon; }',
+    ),
+    178 => 
+    array (
+      'ID' => 178,
+      'Skill' => 7,
+      'Name' => 'Aboleth',
+      'Description' => 'Aboleth',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    179 => 
+    array (
+      'ID' => 179,
+      'Skill' => 7,
+      'Name' => 'Beholder',
+      'Description' => 'Beholders',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    180 => 
+    array (
+      'ID' => 180,
+      'Skill' => 7,
+      'Name' => 'Grimlock',
+      'Description' => 'Grimlocks',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    181 => 
+    array (
+      'ID' => 181,
+      'Skill' => 48,
+      'Name' => 'Offensive - Aberrations',
+      'Description' => 'Attack and damage bonuses against aberration creatures.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Aberration; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Aberration; }',
+    ),
+    182 => 
+    array (
+      'ID' => 182,
+      'Skill' => 48,
+      'Name' => 'Defensive - Aberrations',
+      'Description' => 'Defensive bonuses against aberration creatures.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Aberration; }',
+    ),
+    183 => 
+    array (
+      'ID' => 183,
+      'Skill' => 48,
+      'Name' => 'Behavior - Aberrations',
+      'Description' => 'Behavioral bonuses against aberration creatures.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Aberration; }',
+    ),
+    184 => 
+    array (
+      'ID' => 184,
+      'Skill' => 48,
+      'Name' => 'Offensive - Animals',
+      'Description' => 'Attack and damage bonuses against animals and plant creatures.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Animal; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Animal; }',
+    ),
+    185 => 
+    array (
+      'ID' => 185,
+      'Skill' => 48,
+      'Name' => 'Defensive - Animals',
+      'Description' => 'Defensive bonuses against animals and plant creatures.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Animal; }',
+    ),
+    186 => 
+    array (
+      'ID' => 186,
+      'Skill' => 48,
+      'Name' => 'Behavior - Animals',
+      'Description' => 'Behavioral bonuses against animals and plant creatures.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Animal; }',
+    ),
+    187 => 
+    array (
+      'ID' => 187,
+      'Skill' => 48,
+      'Name' => 'Offensive - Constructs',
+      'Description' => 'Attack and damage bonuses against constructs.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Construct; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Construct; }',
+    ),
+    188 => 
+    array (
+      'ID' => 188,
+      'Skill' => 48,
+      'Name' => 'Defensive - Constructs',
+      'Description' => 'Defensive bonuses against constructs.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Construct; }',
+    ),
+    189 => 
+    array (
+      'ID' => 189,
+      'Skill' => 48,
+      'Name' => 'Behavior - Constructs',
+      'Description' => 'Behavioral bonuses against constructs.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Construct; }',
+    ),
+    190 => 
+    array (
+      'ID' => 190,
+      'Skill' => 48,
+      'Name' => 'Offensive - Elementals',
+      'Description' => 'Attack and damage bonuses against elementals.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Elemental; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Elemental; }',
+    ),
+    191 => 
+    array (
+      'ID' => 191,
+      'Skill' => 48,
+      'Name' => 'Defensive - Elementals',
+      'Description' => 'Defensive bonuses against elementals.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Elemental; }',
+    ),
+    192 => 
+    array (
+      'ID' => 192,
+      'Skill' => 48,
+      'Name' => 'Behavior - Elementals',
+      'Description' => 'Behavioral bonuses against elementals.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Elemental; }',
+    ),
+    193 => 
+    array (
+      'ID' => 193,
+      'Skill' => 48,
+      'Name' => 'Offensive - Chaotic Outsiders',
+      'Description' => 'Attack and damage bonuses against chaotic outsiders.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Chaotic outsider; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Chaotic outsider; }',
+    ),
+    194 => 
+    array (
+      'ID' => 194,
+      'Skill' => 48,
+      'Name' => 'Defensive - Chaotic Outsiders',
+      'Description' => 'Defensive bonuses against chaotic outsiders.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Chaotic outsider; }',
+    ),
+    195 => 
+    array (
+      'ID' => 195,
+      'Skill' => 48,
+      'Name' => 'Behavior - Chaotic Outsiders',
+      'Description' => 'Behavioral bonuses against chaotic outsiders.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Chaotic outsider; }',
+    ),
+    196 => 
+    array (
+      'ID' => 196,
+      'Skill' => 48,
+      'Name' => 'Offensive - Evil Outsiders',
+      'Description' => 'Attack and damage bonuses against evil outsiders.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Evil outsider; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Evil outsider; }',
+    ),
+    197 => 
+    array (
+      'ID' => 197,
+      'Skill' => 48,
+      'Name' => 'Defensive - Evil Outsiders',
+      'Description' => 'Defensive bonuses against evil outsiders.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Evil outsider; }',
+    ),
+    198 => 
+    array (
+      'ID' => 198,
+      'Skill' => 48,
+      'Name' => 'Behavior - Evil Outsiders',
+      'Description' => 'Behavioral bonuses against evil outsiders.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Evil outsider; }',
+    ),
+    199 => 
+    array (
+      'ID' => 199,
+      'Skill' => 48,
+      'Name' => 'Offensive - Good Outsiders',
+      'Description' => 'Attack and damage bonuses against good outsiders.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Good outsider; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Good outsider; }',
+    ),
+    200 => 
+    array (
+      'ID' => 200,
+      'Skill' => 48,
+      'Name' => 'Defensive - Good Outsiders',
+      'Description' => 'Defensive bonuses against good outsiders.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Good outsider; }',
+    ),
+    201 => 
+    array (
+      'ID' => 201,
+      'Skill' => 48,
+      'Name' => 'Behavior - Good Outsiders',
+      'Description' => 'Behavioral bonuses against good outsiders.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Good outsider; }',
+    ),
+    202 => 
+    array (
+      'ID' => 202,
+      'Skill' => 48,
+      'Name' => 'Offensive - Lawful Outsiders',
+      'Description' => 'Attack and damage bonuses against lawful outsiders.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Lawful outsider; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Lawful outsider; }',
+    ),
+    203 => 
+    array (
+      'ID' => 203,
+      'Skill' => 48,
+      'Name' => 'Defensive - Lawful Outsiders',
+      'Description' => 'Defensive bonuses against lawful outsiders.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Lawful outsider; }',
+    ),
+    204 => 
+    array (
+      'ID' => 204,
+      'Skill' => 48,
+      'Name' => 'Behavior - Lawful Outsiders',
+      'Description' => 'Behavioral bonuses against lawful outsiders.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Lawful outsider; }',
+    ),
+    205 => 
+    array (
+      'ID' => 205,
+      'Skill' => 48,
+      'Name' => 'Offensive - Undead',
+      'Description' => 'Attack and damage bonuses against undead.',
+      'Prereqs' => NULL,
+      'Traits' => 'AttMod { Qual=Attack; Value=+(lvl+3)/4; Req=Enemy==Undead; } AttMod { Qual=Damage; Value=+(lvl+3)/4; Req=Enemy==Undead; }',
+    ),
+    206 => 
+    array (
+      'ID' => 206,
+      'Skill' => 48,
+      'Name' => 'Defensive - Undead',
+      'Description' => 'Defensive bonuses against undead.',
+      'Prereqs' => NULL,
+      'Traits' => 'DefMod { Qual=All; Value=+(lvl+3)/4; Req=Enemy==Undead; }',
+    ),
+    207 => 
+    array (
+      'ID' => 207,
+      'Skill' => 48,
+      'Name' => 'Behavior - Undead',
+      'Description' => 'Behavioral bonuses against undead.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActMod { Qual=Behavior; Value=+(lvl+2)/3; Req=Enemy==Undead; }',
+    ),
+    208 => 
+    array (
+      'ID' => 208,
+      'Skill' => 170,
+      'Name' => 'Empower',
+      'Description' => 'Imbue item with its own power pool.',
+      'Prereqs' => NULL,
+      'Traits' => 'ActAcc { Qual=Transfer Power to Pool; } ActAcc { Qual=Transfer Power from Pool; } ActAcc { Qual=Attune to Power Pool; }',
+    ),
+    209 => 
+    array (
+      'ID' => 209,
+      'Skill' => 7,
+      'Name' => 'Yugoloth',
+      'Description' => 'Yugoloths',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    210 => 
+    array (
+      'ID' => 210,
+      'Skill' => 7,
+      'Name' => 'Darkspeak',
+      'Description' => 'Dark Ones',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    211 => 
+    array (
+      'ID' => 211,
+      'Skill' => 7,
+      'Name' => 'Primordial',
+      'Description' => 'Common language for all elemental creatures',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    212 => 
+    array (
+      'ID' => 212,
+      'Skill' => 7,
+      'Name' => 'Deep Speech',
+      'Description' => 'Beholders, mind flayers, and many other Underdark aberrations',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    213 => 
+    array (
+      'ID' => 213,
+      'Skill' => 9,
+      'Name' => 'Entertaining',
+      'Description' => 'Fire-eating, juggling, parlour trickery',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    214 => 
+    array (
+      'ID' => 214,
+      'Skill' => 10,
+      'Name' => 'Cartography',
+      'Description' => 'Knows how to draw maps and survey land.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    215 => 
+    array (
+      'ID' => 215,
+      'Skill' => 4,
+      'Name' => 'Wagonmaking',
+      'Description' => 'Crafting of wagons, carts, wheels, and related items.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    216 => 
+    array (
+      'ID' => 216,
+      'Skill' => 4,
+      'Name' => 'Woodcarving',
+      'Description' => 'Artistic carving of wood.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    217 => 
+    array (
+      'ID' => 217,
+      'Skill' => 6,
+      'Name' => 'Science',
+      'Description' => 'Astronomy, physics, chemistry',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    218 => 
+    array (
+      'ID' => 218,
+      'Skill' => 3,
+      'Name' => 'Skating',
+      'Description' => 'Using skates to move on horizontal icy surfaces.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
+    ),
+    219 => 
+    array (
+      'ID' => 219,
+      'Skill' => 3,
+      'Name' => 'Skiing',
+      'Description' => 'Using skis to move through snow.',
+      'Prereqs' => NULL,
+      'Traits' => NULL,
     ),
   ),
   'skillspecs' => 

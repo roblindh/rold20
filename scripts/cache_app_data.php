@@ -49,6 +49,7 @@ $tables = [
     'skillaccess' => ['table' => 'ref_skillaccess', 'key' => 'SkillID'],
     'skillbenefits' => ['table' => 'ref_skillbenefits', 'key' => 'ID'],
     'skills' => ['table' => 'ref_skills', 'key' => 'ID'],
+    'specializations' => ['table' => 'ref_skillspecializations', 'key' => 'ID'],
     'skillspecs' => ['table' => 'ref_skillspecializations', 'key' => 'ID'],
     'skilltypes' => ['table' => 'ref_skilltypes', 'key' => 'ID'],
     'socialclasses' => ['table' => 'ref_socialclasses', 'key' => 'ID'],

@@ -146,15 +146,19 @@ class cTrait {
                 if (isset($this->aParams["Qual"])) {
                     // For skill specializations, find the correct skill name
                     if ($this->type == "SpecAcc" || $this->type == "SpecMod") {
-                        if (!empty($_APP['specializations'])) {
-                            foreach ($_APP['specializations'] as $iSpec) {
-                                if (strtoupper(trim($iSpec['Name'])) == strtoupper($this->aParams["Qual"])) {
-                                    $str = str_replace("%q", $_APP['skills'][$iSpec['Skill']]['Name'] .
-                                            " (" . $this->aParams["Qual"] . ")", $str);
+                        $specLabel = $this->aParams["Qual"];
+                        $specList = $_APP['specializations'] ?? ($_APP['skillspecs'] ?? []);
+                        if (!empty($specList)) {
+                            foreach ($specList as $iSpec) {
+                                if (strtoupper(trim($iSpec['Name'])) == strtoupper(trim($this->aParams["Qual"]))) {
+                                    $skillName = $_APP['skills'][$iSpec['Skill']]['Name'] ?? '';
+                                    $specLabel = ($skillName ? $skillName . " (" : "") . $this->aParams["Qual"] . ($skillName ? ")" : "");
                                     break;
                                 }
                             }
                         }
+                        $str = str_replace("%q", $specLabel, $str);
+                        $strBrief = str_replace("%q", $specLabel, $strBrief);
                     } else {
                         $str = str_replace("%q", $this->aParams["Qual"], $str);
                         $strBrief = str_replace("%q", $this->aParams["Qual"], $strBrief);
@@ -292,15 +296,17 @@ class cTrait {
                                 }
                             }
                         } else if ($this->type == "SpecAcc") {
-                            foreach ($_APP['specializations'] as $iSpec) {
-                                if (strtoupper(trim($iSpec['Name'])) == strtoupper($this->aParams["Qual"])) {
-                                    $traitEffects->aAccessSpecs[$iSkill["ID"]] = !($this->aParams["Value"] == "sec");
+                            $specList = $_APP['specializations'] ?? ($_APP['skillspecs'] ?? []);
+                            foreach ($specList as $iSpec) {
+                                if (strtoupper(trim($iSpec['Name'])) == strtoupper(trim($this->aParams["Qual"]))) {
+                                    $traitEffects->aAccessSpecs[$iSpec["ID"]] = !($this->aParams["Value"] == "sec");
                                     break;
                                 }
                             }
                         } else if ($this->type == "SpecMod") {
-                            foreach ($_APP['specializations'] as $iSpec) {
-                                if (strtoupper(trim($iSpec['Name'])) == strtoupper($this->aParams["Qual"])) {
+                            $specList = $_APP['specializations'] ?? ($_APP['skillspecs'] ?? []);
+                            foreach ($specList as $iSpec) {
+                                if (strtoupper(trim($iSpec['Name'])) == strtoupper(trim($this->aParams["Qual"]))) {
                                     $traitEffects->aModsSpecs[$iSpec["ID"]] = new cModifiers();
                                     $traitEffects->aModsSpecs[$iSpec["ID"]]->SetMod(cModifiers::GetModId(isset($this->aParams["Type"]) ? $this->aParams["Type"] : "nil"),
                                             $this->aParams["Value"]);
