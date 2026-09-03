@@ -301,7 +301,9 @@ function show_creatureinfo($id, $fullinfo) {
     ?>
         <tr><td>Stat Block(s):</td>
         <td><span id="crsb<?php echo $row['ID']; ?>">
-            <button onclick="showStatBlocks(<?php echo $row['ID']; ?>)">Show</button>
+            <button type="button" class="btn-action-view text-xs cursor-pointer px-2.5 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold rounded border border-amber-300 transition inline-flex items-center gap-1" onclick="showStatBlocks(<?php echo $row['ID']; ?>)">
+                <span>📜</span> <span>Show Stat Block</span>
+            </button>
         </span></td></tr>
     <?php
     }
@@ -324,15 +326,24 @@ function show_creatures($typeID) {
 
     ?>
     <script>
-    function showStatBlocks(creatureid) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById('crsb' + creatureid).innerHTML = this.responseText;
-            }
-        };
-        xmlhttp.open("GET", "scripts/getstatblock.php?creatureid=" + creatureid, true);
-        xmlhttp.send();
+    if (typeof showStatBlocks !== 'function') {
+        function showStatBlocks(creatureid) {
+            var target = document.getElementById('crsb' + creatureid);
+            if (!target) return;
+            target.innerHTML = '<span class="text-xs text-indigo-600 animate-pulse font-mono">Loading stat block...</span>';
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        target.innerHTML = this.responseText;
+                    } else {
+                        target.innerHTML = '<span class="text-xs text-red-600">Failed to load stat block.</span>';
+                    }
+                }
+            };
+            xmlhttp.open("GET", "/reference/creatures/" + creatureid + "/statblock", true);
+            xmlhttp.send();
+        }
     }
     </script>
     <?php

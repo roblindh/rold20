@@ -55,4 +55,46 @@
         <?php include base_path('hb13_creatures_content.php'); ?>
     </div>
 </div>
+
+<script>
+function showStatBlocks(creatureid) {
+    var target = document.getElementById('crsb' + creatureid);
+    if (!target) return;
+    
+    // Toggle check if already loaded
+    if (target.getAttribute('data-loaded') === 'true') {
+        var content = document.getElementById('crsb_content_' + creatureid);
+        var btnText = document.getElementById('crsb_btn_text_' + creatureid);
+        if (content) {
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                if (btnText) btnText.textContent = 'Hide Stat Block';
+            } else {
+                content.style.display = 'none';
+                if (btnText) btnText.textContent = 'Show Stat Block';
+            }
+            return;
+        }
+    }
+    
+    target.innerHTML = '<span class="text-xs text-indigo-600 animate-pulse font-mono flex items-center gap-1.5 py-1"><span>⏳</span> Generating stat blocks...</span>';
+    
+    fetch('/reference/creatures/' + creatureid + '/statblock')
+        .then(function(r) { return r.text(); })
+        .then(function(html) {
+            target.setAttribute('data-loaded', 'true');
+            target.innerHTML = '<div class="space-y-2 my-1">' +
+                '<div class="flex items-center gap-2">' +
+                    '<button type="button" onclick="showStatBlocks(' + creatureid + ')" class="btn-action-view text-xs cursor-pointer px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded border border-slate-300 transition inline-flex items-center gap-1">' +
+                        '<span>📜</span> <span id="crsb_btn_text_' + creatureid + '">Hide Stat Block</span>' +
+                    '</button>' +
+                '</div>' +
+                '<div id="crsb_content_' + creatureid + '">' + html + '</div>' +
+            '</div>';
+        })
+        .catch(function(err) {
+            target.innerHTML = '<span class="text-xs text-red-600 font-mono">Failed to load stat block.</span>';
+        });
+}
+</script>
 @endsection

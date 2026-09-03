@@ -303,6 +303,42 @@ class ReferenceController extends Controller
     }
 
     /**
+     * Return calculated stat blocks for a creature via AJAX
+     */
+    public function creatureStatBlock(Request $request, $id): \Illuminate\Http\Response
+    {
+        $this->ensureRulesLoaded();
+        $creatureId = (int)$id;
+        try {
+            $entity = new \cIndividual();
+            $rawSb = $entity->GetStatBlocksStr($creatureId);
+            if (!$rawSb) {
+                return response('<span class="text-xs text-slate-500 italic">No stat blocks configured for this creature.</span>');
+            }
+            $blocks = explode("\\n", trim($rawSb));
+            $html = '<div class="space-y-3 my-2 text-xs font-mono text-slate-900">';
+            foreach ($blocks as $b) {
+                if (trim($b) !== '') {
+                    $html .= '<div class="p-3 bg-amber-50/70 border border-amber-300 rounded-lg shadow-2xs leading-relaxed">' . $b . '</div>';
+                }
+            }
+            $html .= '</div>';
+            return response($html);
+        } catch (\Throwable $e) {
+            return response('<span class="text-xs text-red-600">Error generating stat block: ' . htmlspecialchars($e->getMessage()) . '</span>', 500);
+        }
+    }
+
+    /**
+     * Legacy endpoint for scripts/getstatblock.php?creatureid=...
+     */
+    public function creatureStatBlockLegacy(Request $request): \Illuminate\Http\Response
+    {
+        $id = $request->input('creatureid', $request->input('id', 0));
+        return $this->creatureStatBlock($request, $id);
+    }
+
+    /**
      * Equipment and Items reference table
      */
     public function equipment(Request $request): View|JsonResponse

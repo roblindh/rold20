@@ -48,6 +48,8 @@ Route::prefix('reference')->name('reference.')->group(function () {
 
     Route::get('/creatures', [ReferenceController::class, 'creatures'])->name('creatures');
     Route::get('/creatures/list', [ReferenceController::class, 'creaturesList'])->name('creatures.list');
+    Route::get('/creatures/{id}/statblock', [ReferenceController::class, 'creatureStatBlock'])->whereNumber('id')->name('creatures.statblock');
+    Route::get('/creatures/scripts/getstatblock.php', [ReferenceController::class, 'creatureStatBlockLegacy']);
     Route::get('/creatures/{name}', [ReferenceController::class, 'showCreature'])->name('creatures.show');
 
     Route::get('/equipment', [ReferenceController::class, 'equipment'])->name('equipment');
@@ -96,7 +98,10 @@ Route::post('/api/calculator/evaluate', [UtilityController::class, 'evaluateExpr
 // Balance Analysis utility
 Route::get('/analysis', [AnalysisController::class, 'index'])->name('analysis');
 
-// Legacy URL 301 Redirects
+// Legacy AJAX script endpoints
+Route::get('/scripts/getstatblock.php', [ReferenceController::class, 'creatureStatBlockLegacy']);
+
+// Legacy static page redirects
 $legacyRedirects = [
     '/hb01_intro.php' => '/rules/intro',
     '/hb02_coremech.php' => '/rules/core',

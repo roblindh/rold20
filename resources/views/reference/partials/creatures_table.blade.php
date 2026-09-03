@@ -15,7 +15,7 @@
             @forelse($creatures as $creature)
                 <tr class="hover:bg-slate-50 transition">
                     <td class="px-4 py-3 font-semibold text-indigo-900 whitespace-nowrap">
-                        <a href="{{ route('reference.creatures.show', ['name' => urlencode($creature->Name)]) }}" class="hover:underline text-indigo-600">
+                        <a href="{{ route('reference.creatures.show', ['name' => $creature->Name]) }}" class="hover:underline text-indigo-600">
                             {{ $creature->Name }}
                         </a>
                     </td>
@@ -29,7 +29,7 @@
                     <td class="px-3 py-3 text-center text-blue-700 font-semibold whitespace-nowrap">{{ $creature->DeC ?? '—' }}</td>
                     <td class="px-3 py-3 text-xs text-slate-600 whitespace-nowrap">{{ \App\Helpers\RolLink::cleanSnippet($creature->Environment ?? 'Any', 40) }}</td>
                     <td class="col-action px-3 py-3">
-                        <a href="{{ route('reference.creatures.show', ['name' => urlencode($creature->Name)]) }}" class="btn-action-view">
+                        <a href="{{ route('reference.creatures.show', ['name' => $creature->Name]) }}" class="btn-action-view">
                             <span>Stat Block</span> <span>&rarr;</span>
                         </a>
                     </td>
