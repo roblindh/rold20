@@ -74,7 +74,7 @@ class ReferenceController extends Controller
 
         $benefits = DB::table('ref_skillbenefits')->where('Skill', $skill->ID)->orderBy('SkillLevel')->get();
         $specializations = DB::table('ref_skillspecializations')->where('Skill', $skill->ID)->orderBy('Name')->get();
-        $classes = DB::table('ref_classes')->orderBy('SortOrder')->get();
+        $classes = DB::table('ref_classes')->orderBy('ID')->get();
         $access = DB::table('ref_skillaccess')->where('SkillID', $skill->ID)->pluck('Prim', 'ClassID')->toArray();
 
         $actions = DB::table('ref_actions')
