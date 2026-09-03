@@ -180,8 +180,8 @@
     </div>
 
     <!-- Create Campaign Modal -->
-    <div x-show="showCreateModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showCreateModal = false">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden" @click.outside="showCreateModal = false">
+    <div x-show="showCreateModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showCreateModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000]" @click.outside="showCreateModal = false">
             <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between" style="background: url('/styles/goldparchment.jpg') repeat #f0f0d9;">
                 <h3 class="font-bold text-black text-lg flex items-center gap-2">
                     <span>👑</span> Create New Campaign
@@ -250,8 +250,8 @@
     </div>
 
     <!-- Edit Campaign Modal -->
-    <div x-show="showEditModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showEditModal = false">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden" @click.outside="showEditModal = false">
+    <div x-show="showEditModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showEditModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000]" @click.outside="showEditModal = false">
             <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between" style="background: url('/styles/goldparchment.jpg') repeat #f0f0d9;">
                 <h3 class="font-bold text-black text-lg flex items-center gap-2">
                     <span>✏️</span> Edit Campaign: <span x-text="editCamp.Name" class="text-amber-900"></span>

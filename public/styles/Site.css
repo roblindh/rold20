@@ -837,7 +837,7 @@ body.modern-app, html.modern-app {
     background-color: rgba(2, 6, 23, 0.75);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    z-index: 990;
+    z-index: 40;
 }
 .sidebar-backdrop.active {
     display: block !important;
@@ -851,7 +851,7 @@ body.modern-app, html.modern-app {
     max-width: 85vw;
     background-color: #0f172a;
     color: #e2e8f0;
-    z-index: 1000;
+    z-index: 45;
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     box-sizing: border-box;
 }
@@ -912,6 +912,7 @@ body.modern-app, html.modern-app {
         min-height: 0 !important;
         box-shadow: none !important;
         flex-shrink: 0 !important;
+        z-index: 10 !important;
     }
     .sidebar-backdrop {
         display: none !important;
@@ -944,6 +945,7 @@ body.modern-app, html.modern-app {
         overflow-y: auto !important;
         transform: translateX(-100%) !important;
         box-shadow: none !important;
+        z-index: 45 !important;
     }
     .sidebar-drawer.drawer-open {
         transform: translateX(0) !important;

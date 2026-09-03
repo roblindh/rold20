@@ -337,8 +337,8 @@
     @include('layouts.partials.rolcalc_footer')
 
     <!-- Ctrl+K Quick Search Modal -->
-    <div x-show="searchOpen" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm p-4 md:p-12 flex justify-center items-start" style="display: none;">
-        <div @click.away="searchOpen = false" class="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden text-slate-200">
+    <div x-show="searchOpen" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm p-4 md:p-12 flex justify-center items-start">
+        <div @click.away="searchOpen = false" class="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden text-slate-200 relative z-[10000]">
             <!-- Search Header Input -->
             <div class="p-4 border-b border-slate-800 flex items-center gap-3">
                 <span class="text-slate-400 text-lg">🔍</span>
