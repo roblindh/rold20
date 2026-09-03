@@ -22,22 +22,22 @@
 @endphp
 
 <th class="px-3 py-3 {{ $align === 'center' ? 'text-center' : ($align === 'right' ? 'text-right' : 'text-left') }} {{ $class }}">
-    <a href="{{ $url }}" class="group inline-flex items-center gap-1.5 font-semibold text-slate-700 hover:text-indigo-600 transition select-none {{ $alignClass }}" title="Click to sort by {{ $label ?: $slot }} ({{ $nextDir === 'asc' ? 'Ascending A→Z' : 'Descending Z→A' }})">
-        <span>{{ $label ?: $slot }}</span>
+    <a href="{{ $url }}" class="group inline-flex items-center gap-1.5 font-bold text-white hover:text-amber-200 transition select-none {{ $alignClass }}" style="color: #ffffff !important;" title="Click to sort by {{ $label ?: $slot }} ({{ $nextDir === 'asc' ? 'Ascending A→Z' : 'Descending Z→A' }})">
+        <span class="hover:underline">{{ $label ?: $slot }}</span>
         @if($isSorted)
             @if($currentDir === 'asc')
-                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-700 bg-indigo-100/80 border border-indigo-200 px-1.5 py-0.5 rounded shadow-2xs">
-                    <span>▲</span>
-                    <span class="font-mono text-[10px] tracking-tight">A-Z</span>
+                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-amber-300 bg-slate-900/80 border border-amber-400/70 px-1.5 py-0.5 rounded shadow-xs">
+                    <span class="text-amber-300 text-xs leading-none">▲</span>
+                    <span class="font-mono text-[10px] tracking-tight text-amber-200">A-Z</span>
                 </span>
             @else
-                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-700 bg-indigo-100/80 border border-indigo-200 px-1.5 py-0.5 rounded shadow-2xs">
-                    <span>▼</span>
-                    <span class="font-mono text-[10px] tracking-tight">Z-A</span>
+                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-amber-300 bg-slate-900/80 border border-amber-400/70 px-1.5 py-0.5 rounded shadow-xs">
+                    <span class="text-amber-300 text-xs leading-none">▼</span>
+                    <span class="font-mono text-[10px] tracking-tight text-amber-200">Z-A</span>
                 </span>
             @endif
         @else
-            <span class="inline-block text-xs text-slate-300 group-hover:text-slate-500 transition opacity-0 group-hover:opacity-100">↕</span>
+            <span class="inline-block text-xs text-slate-300/60 group-hover:text-amber-300 transition opacity-60 group-hover:opacity-100">↕</span>
         @endif
     </a>
 </th>

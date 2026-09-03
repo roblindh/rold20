@@ -98,6 +98,8 @@
         .rule-content p { line-height: 1.65; color: #000000 !important; margin-bottom: 1rem; }
         .rule-content table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1.5rem; font-size: 0.875rem; }
         .rule-content th, thead th { background-color: #3a4f63 !important; color: #ffffff !important; text-align: left; padding: 0.5rem 0.75rem; border: 1px solid #2c3e50; font-weight: 600; }
+        .rule-content th a, thead th a, th a { color: #ffffff !important; text-decoration: none !important; }
+        .rule-content th a:hover, thead th a:hover, th a:hover { color: #fef08a !important; text-decoration: underline !important; }
         .rule-content td { padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; color: #000000 !important; }
         .rule-content tr:nth-child(even) { background-color: #f8fafc; }
         .rule-content caption { font-weight: 600; text-align: left; padding-bottom: 0.5rem; color: #000000; font-size: 1rem; }

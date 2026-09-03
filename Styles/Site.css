@@ -264,6 +264,18 @@ a:hover, a:active {
     text-decoration: underline;
 }
 
+/* High-contrast header link styling */
+th a, thead th a, .rule-content th a {
+    color: var(--color-white) !important;
+    text-decoration: none !important;
+}
+
+th a:hover, thead th a:hover, .rule-content th a:hover,
+th a:active, thead th a:active, .rule-content th a:active {
+    color: #fef08a !important;
+    text-decoration: underline !important;
+}
+
 
 /* Class Defaults */
 /* ============== */
