@@ -208,6 +208,14 @@
                         </div>
                     @endif
                 </li>
+
+                <!-- Complete Ruleset - Printable -->
+                @php $isPrintable = request()->routeIs('rules.printable'); @endphp
+                <li>
+                    <a href="{{ route('rules.printable', [], false) }}" class="block px-2.5 py-1.5 rounded transition {{ $isPrintable ? 'bg-indigo-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
+                        🖨️ Complete Ruleset - Printable
+                    </a>
+                </li>
             </ul>
         </div>
 

@@ -292,7 +292,7 @@ function show_traps() {
         echo '<td>' . $row['TrapFeature'] . '</td>';
         echo '<td style="text-align:center">' . $row['EL'] . '</td>';
         echo '<td style="text-align:center">' . $row['Cost'] . '</td>';
-        echo '<td>' . str_replace("\\n", "<br/>", $row['Details']) . '</td>';
+        echo '<td>' . str_replace("\\n", "<br/>", $row['Details'] ?? '') . '</td>';
         echo '</tr>';
     }
     ?>

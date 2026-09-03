@@ -30,6 +30,9 @@ Route::prefix('rules')->name('rules.')->group(function () {
     Route::get('/environment', [RulesController::class, 'environment'])->name('environment');
     Route::get('/culture', [RulesController::class, 'culture'])->name('culture');
     Route::get('/index', [RulesController::class, 'indexList'])->name('index');
+    Route::get('/printable', [RulesController::class, 'printable'])->name('printable');
+    Route::get('/all', [RulesController::class, 'printable']);
+    Route::get('/complete', [RulesController::class, 'printable']);
 });
 
 // Reference tables (interactive search, sort, filter, pagination, and complete list views)

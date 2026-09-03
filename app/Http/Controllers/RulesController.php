@@ -114,4 +114,10 @@ class RulesController extends Controller
     {
         return $this->renderChapter('index', 15, 'rules.index', 'Rules Index');
     }
+
+    public function printable(): Response
+    {
+        @set_time_limit(300);
+        return $this->renderChapter('printable', 0, 'rules.printable', 'Complete Ruleset - Printable');
+    }
 }
