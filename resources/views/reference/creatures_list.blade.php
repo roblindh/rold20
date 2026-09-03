@@ -1,4 +1,4 @@
-﻿@extends('layouts.app', ['title' => 'Bestiary & Races - List'])
+@extends('layouts.app', ['title' => 'Bestiary & Races - List'])
 
 @section('content')
 <div class="space-y-6">
@@ -10,6 +10,44 @@
         <a href="{{ route('reference.creatures.list', [], false) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition bg-amber-800 text-white shadow-sm" style="background-color: #8b1a1a;">
             <span>📋 Complete List &amp; Stat Blocks</span>
         </a>
+    </div>
+
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                <span>🐲</span> Bestiary & Races - List
+            </h1>
+            <p class="text-slate-600 text-sm mt-1">Complete catalogue of monsters, beasts, aberrations, and character races with exhaustive stat cards and descriptions.</p>
+        </div>
+    </div>
+
+    <!-- Ruleset Explanatory Guide -->
+    <div class="bg-indigo-50/50 border border-indigo-200 rounded-xl p-5 text-xs text-indigo-950 space-y-2 shadow-2xs">
+        <div class="font-bold text-sm text-indigo-900 flex items-center gap-1.5">
+            <span>🐲</span> Bestiary & Monster Stat Block Guide
+        </div>
+        <p class="leading-relaxed text-slate-700">
+            Creature entries define physical characteristics, combat capabilities, and racial statistics:
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-1">
+            <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
+                <span class="font-bold text-slate-900 block mb-0.5">Racial Level (RL)</span>
+                <span class="text-slate-600">Base level of an adult member of the species. Playable character races typically have RL 0, while monsters have innate hit dice.</span>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
+                <span class="font-bold text-slate-900 block mb-0.5">Hit Points (HP & SP)</span>
+                <span class="text-slate-600">Health Points determine physical survivability, while Stamina Points (SP) represent fatigue reserves and fatigue recovery.</span>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
+                <span class="font-bold text-slate-900 block mb-0.5">Defense Class (DeC)</span>
+                <span class="text-slate-600">Includes Active Defense (DeCa) and Passive Defense (DeCp), along with critical hit resistance and saving throws.</span>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
+                <span class="font-bold text-slate-900 block mb-0.5">Stat Blocks</span>
+                <span class="text-slate-600">Click <strong>Stat Block</strong> to generate full calculated sheets for common variant roles (e.g. Guard, Soldier, Archer, Shaman).</span>
+            </div>
+        </div>
     </div>
 
     <!-- Complete Bestiary Rules & Information Boxes -->
