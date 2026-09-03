@@ -127,12 +127,12 @@ if (Test-Path $DstConfigCache) {
     } catch {}
 }
 
-# Automatically trigger OPcache, in-container cache purge, and rules sync via HTTP if server is up
+# Automatically trigger OPcache, migrations, in-container cache purge, and rules sync via HTTP if server is up
 try {
-    $ResetUri = "http://ROL-NAS-MINI:8090/opcache_reset.php"
-    $Response = Invoke-WebRequest -Uri $ResetUri -UseBasicParsing -TimeoutSec 5 -ErrorAction SilentlyContinue
+    $ResetUri = "http://ROL-NAS-MINI:8090/opcache_reset.php?migrate=1"
+    $Response = Invoke-WebRequest -Uri $ResetUri -UseBasicParsing -TimeoutSec 15 -ErrorAction SilentlyContinue
     if ($Response.StatusCode -eq 200) {
-        Write-Host "Triggered OPcache reset & in-container cache purge via HTTP ($ResetUri)." -ForegroundColor Green
+        Write-Host "Triggered OPcache reset, database migrations & in-container cache purge via HTTP ($ResetUri)." -ForegroundColor Green
     }
 } catch {}
 
