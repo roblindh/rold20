@@ -5,370 +5,7 @@
     $initialCampId = request()->query('campaign', '');
 @endphp
 
-<div class="space-y-6" x-data="{
-    step: 1,
-    campaigns: @json($campaigns),
-    races: @json($races),
-    templates: @json($templates),
-    classes: @json($classes),
-    abilityMethods: @json($abilityMethods),
-    pointBuyCosts: { 3: -5, 4: -4, 5: -3, 6: -2, 7: -1, 8: 0, 9: 1, 10: 2, 11: 3, 12: 4, 13: 5, 14: 6, 15: 8, 16: 10, 17: 13, 18: 16 },
-    selectedCampaignObj: null,
-    
-    // Ability generation state
-    dragSourceAttr: null,
-    dragOverAttr: null,
-    rerollsRemaining: 0,
-    swapsRemaining: 0,
-    swapCountUsed: 0,
-    pointPoolMax: 25,
-    pointsSpent: 0,
-    pointsRemaining: 25,
-
-    character: {
-        Name: '',
-        CampaignID: '{{ $initialCampId }}',
-        Gender: 'Male',
-        Alignment: 'Neutral Good',
-        RaceID: 1,
-        TemplateID: '',
-        ClassID: 1,
-        StartingXP: 0,
-        Level: 1,
-        SuitabilityLevel: 3,
-        OptionalRules: 'None',
-        AbilityGenMethod: 2,
-        Strength: 8,
-        Constitution: 8,
-        Dexterity: 8,
-        Intelligence: 8,
-        Wisdom: 8,
-        Charisma: 8,
-        SkillPoints: 16,
-        ImprovementPoints: 10,
-        SelectedSkills: {}
-    },
-
-    init() {
-        this.onCampaignChanged();
-    },
-
-    calculateLevelFromXP(xp) {
-        xp = parseInt(xp) || 0;
-        let lvl = 1;
-        while (lvl * (lvl - 1) * 500 <= xp && lvl <= 20) {
-            lvl++;
-        }
-        return Math.max(1, lvl - 1);
-    },
-
-    get currentMethodObj() {
-        return this.abilityMethods.find(m => Number(m.ID) === Number(this.character.AbilityGenMethod)) || this.abilityMethods[0] || {};
-    },
-
-    get methodType() {
-        const gen = this.currentMethodObj.Generation || 'B:25';
-        return gen.charAt(0); // 'B' = Point Buy, 'F' = Fixed, 'R' = Rolled
-    },
-
-    onCampaignChanged() {
-        if (this.character.CampaignID) {
-            const found = this.campaigns.find(c => String(c.ID) === String(this.character.CampaignID));
-            if (found) {
-                this.selectedCampaignObj = found;
-                this.character.StartingXP = parseInt(found.StartingXP) || 0;
-                this.character.Level = this.calculateLevelFromXP(this.character.StartingXP);
-                this.character.SuitabilityLevel = found.SuitabilityLevel !== undefined ? parseInt(found.SuitabilityLevel) : 3;
-                this.character.OptionalRules = found.OptionalRules || 'None';
-                this.character.AbilityGenMethod = parseInt(found.AbilityGenMethod) || 2;
-            }
-        } else {
-            // Standalone Defaults: starting XP: 0, suitability level: 3, no optional rules
-            this.selectedCampaignObj = null;
-            this.character.StartingXP = 0;
-            this.character.Level = 1;
-            this.character.SuitabilityLevel = 3;
-            this.character.OptionalRules = 'None';
-            if (!this.character.AbilityGenMethod) {
-                this.character.AbilityGenMethod = 2;
-            }
-        }
-
-        this.initAbilityScores();
-
-        // Check if current selected race meets new suitability level
-        const currentRace = this.races.find(r => r.ID == this.character.RaceID);
-        if (currentRace && currentRace.PCSuitability < this.character.SuitabilityLevel) {
-            const validRace = this.races.find(r => r.PCSuitability >= this.character.SuitabilityLevel);
-            if (validRace) {
-                this.character.RaceID = validRace.ID;
-            }
-        }
-    },
-
-    onAbilityMethodSelected() {
-        this.initAbilityScores();
-    },
-
-    initAbilityScores() {
-        const method = this.currentMethodObj;
-        const gen = method.Generation || 'B:25';
-        const type = gen.charAt(0);
-
-        this.rerollsRemaining = parseInt(method.Reroll) || 0;
-        this.swapsRemaining = method.Rearrange == 1 ? 1 : (method.Rearrange == 2 ? 999 : 0);
-        this.swapCountUsed = 0;
-        this.dragSourceAttr = null;
-        this.dragOverAttr = null;
-
-        if (type === 'B') {
-            // Point Buy: B:25, B:15, B:35
-            this.pointPoolMax = parseInt(gen.substring(2)) || 25;
-            ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'].forEach(a => {
-                this.character[a] = 8;
-            });
-            this.calculatePointBuy();
-        } else if (type === 'F') {
-            // Fixed Array: F:15,14,13,12,10,8
-            const raw = gen.substring(2).split(',').map(n => parseInt(n.trim()));
-            const attrs = ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'];
-            attrs.forEach((a, idx) => {
-                this.character[a] = raw[idx] !== undefined ? raw[idx] : 10;
-            });
-            this.calculatePointBuy();
-        } else {
-            // Rolled dice pools
-            this.rollAllScores();
-        }
-    },
-
-    calculatePointBuy() {
-        let total = 0;
-        ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'].forEach(attr => {
-            const val = parseInt(this.character[attr]) || 8;
-            total += this.pointBuyCosts[val] !== undefined ? this.pointBuyCosts[val] : 0;
-        });
-        this.pointsSpent = total;
-        this.pointsRemaining = this.pointPoolMax - this.pointsSpent;
-    },
-
-    canIncAbility(attr) {
-        if (this.methodType !== 'B') return false;
-        const current = parseInt(this.character[attr]) || 8;
-        if (current >= 18) return false;
-        const nextCost = this.pointBuyCosts[current + 1] - this.pointBuyCosts[current];
-        return this.pointsRemaining >= nextCost;
-    },
-
-    canDecAbility(attr) {
-        if (this.methodType !== 'B') return false;
-        const current = parseInt(this.character[attr]) || 8;
-        return current > 3;
-    },
-
-    incAbility(attr) {
-        if (this.canIncAbility(attr)) {
-            this.character[attr]++;
-            this.calculatePointBuy();
-        }
-    },
-
-    decAbility(attr) {
-        if (this.canDecAbility(attr)) {
-            this.character[attr]--;
-            this.calculatePointBuy();
-        }
-    },
-
-    // Rolling Dice Engine
-    rollDice(num, sides, keepHighest = num) {
-        let rolls = [];
-        for (let i = 0; i < num; i++) {
-            rolls.push(Math.floor(Math.random() * sides) + 1);
-        }
-        rolls.sort((a, b) => b - a);
-        let sum = 0;
-        for (let k = 0; k < keepHighest && k < rolls.length; k++) {
-            sum += rolls[k];
-        }
-        return sum;
-    },
-
-    rollFormulaForMethod(methodId, slotIndex = 0) {
-        methodId = Number(methodId);
-        // Method 1, 4, 5: 4d6 drop lowest (keep 3)
-        if (methodId === 1 || methodId === 4 || methodId === 5) {
-            return this.rollDice(4, 6, 3);
-        }
-        // Method 6 (E-VI): pools: 6d6, 5d6, 4d6, 4d6, 3d6, 3d6
-        if (methodId === 6) {
-            const poolSizes = [6, 5, 4, 4, 3, 3];
-            return this.rollDice(poolSizes[slotIndex] || 4, 6, 3);
-        }
-        // Method 7 (A-I): 3d6
-        if (methodId === 7) {
-            return this.rollDice(3, 6, 3);
-        }
-        // Method 11 (A-V): pools: 4d6, 4d6, 3d6, 3d6, 2d8, 2d8
-        if (methodId === 11) {
-            if (slotIndex >= 4) return this.rollDice(2, 8, 2);
-            if (slotIndex >= 2) return this.rollDice(3, 6, 3);
-            return this.rollDice(4, 6, 3);
-        }
-        // Method 12, 15, 16: 5d6 drop 2 (keep 3)
-        if (methodId === 12 || methodId === 15 || methodId === 16) {
-            return this.rollDice(5, 6, 3);
-        }
-        // Method 17 (H-VI): pools: 9d6, 8d6, 7d6, 5d6, 4d6, 3d6
-        if (methodId === 17) {
-            const poolSizes = [9, 8, 7, 5, 4, 3];
-            return this.rollDice(poolSizes[slotIndex] || 5, 6, 3);
-        }
-        // Fallback standard 4d6 drop lowest
-        return this.rollDice(4, 6, 3);
-    },
-
-    rollAllScores() {
-        const attrs = ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'];
-        attrs.forEach((attr, idx) => {
-            this.character[attr] = this.rollFormulaForMethod(this.character.AbilityGenMethod, idx);
-        });
-        const method = this.currentMethodObj;
-        this.rerollsRemaining = parseInt(method.Reroll) || 0;
-        this.swapsRemaining = method.Rearrange == 1 ? 1 : (method.Rearrange == 2 ? 999 : 0);
-        this.swapCountUsed = 0;
-        this.calculatePointBuy();
-    },
-
-    rerollSingleScore(attr, slotIndex) {
-        if (this.rerollsRemaining <= 0) return;
-        const newScore = this.rollFormulaForMethod(this.character.AbilityGenMethod, slotIndex);
-        const methodId = Number(this.character.AbilityGenMethod);
-
-        // Method 5 and 16 specify: take the new roll if it is higher
-        if (methodId === 5 || methodId === 16) {
-            if (newScore > this.character[attr]) {
-                this.character[attr] = newScore;
-            }
-        } else {
-            this.character[attr] = newScore;
-        }
-
-        this.rerollsRemaining--;
-        this.calculatePointBuy();
-    },
-
-    // Drag, Drop & Swapping Logic
-    canSwapScores() {
-        const rearrange = this.currentMethodObj.Rearrange;
-        if (!rearrange || rearrange == 0) return false;
-        return this.swapsRemaining > 0;
-    },
-
-    swapScores(attr1, attr2) {
-        if (!attr1 || !attr2 || attr1 === attr2) return;
-        if (!this.canSwapScores()) return;
-
-        const tmp = this.character[attr1];
-        this.character[attr1] = this.character[attr2];
-        this.character[attr2] = tmp;
-
-        if (this.currentMethodObj.Rearrange == 1) {
-            this.swapsRemaining = 0;
-            this.swapCountUsed = 1;
-        }
-        this.calculatePointBuy();
-    },
-
-    onDragStart(attr, e) {
-        if (!this.canSwapScores()) {
-            e.preventDefault();
-            return;
-        }
-        this.dragSourceAttr = attr;
-        e.dataTransfer.setData('text/plain', attr);
-        e.dataTransfer.effectAllowed = 'move';
-    },
-
-    onDragOver(attr, e) {
-        if (this.canSwapScores() && this.dragSourceAttr && this.dragSourceAttr !== attr) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            this.dragOverAttr = attr;
-        }
-    },
-
-    onDragLeave(attr) {
-        if (this.dragOverAttr === attr) {
-            this.dragOverAttr = null;
-        }
-    },
-
-    onDrop(attr, e) {
-        e.preventDefault();
-        if (this.canSwapScores() && this.dragSourceAttr && this.dragSourceAttr !== attr) {
-            this.swapScores(this.dragSourceAttr, attr);
-        }
-        this.dragSourceAttr = null;
-        this.dragOverAttr = null;
-    },
-
-    get eligibleRaces() {
-        const suit = parseInt(this.character.SuitabilityLevel);
-        return this.races.filter(r => (parseInt(r.PCSuitability) >= suit));
-    },
-
-    get eligibleTemplates() {
-        const suit = parseInt(this.character.SuitabilityLevel);
-        return this.templates.filter(t => (parseInt(t.PCSuitability) >= suit));
-    },
-
-    getSelectedRace() {
-        return this.races.find(r => r.ID == this.character.RaceID) || {};
-    },
-
-    getSelectedClass() {
-        return this.classes.find(c => c.ID == this.character.ClassID) || {};
-    },
-
-    async saveCharacter() {
-        try {
-            const res = await fetch('{{ route('utilities.chargen.save', [], false) }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    Name: this.character.Name,
-                    CampaignID: this.character.CampaignID || null,
-                    RaceID: this.character.RaceID,
-                    TemplateID: this.character.TemplateID || null,
-                    ClassID: this.character.ClassID,
-                    Gender: this.character.Gender,
-                    Level: this.character.Level,
-                    StartingXP: this.character.StartingXP,
-                    AbilityGenMethod: this.character.AbilityGenMethod,
-                    Strength: this.character.Strength,
-                    Constitution: this.character.Constitution,
-                    Dexterity: this.character.Dexterity,
-                    Intelligence: this.character.Intelligence,
-                    Wisdom: this.character.Wisdom,
-                    Charisma: this.character.Charisma,
-                    Skills: this.character.SelectedSkills
-                })
-            });
-            const data = await res.json();
-            if (data.success) {
-                window.location.href = data.redirect_url;
-            } else {
-                alert(data.message || 'Error saving character.');
-            }
-        } catch (e) {
-            alert('Error saving character to server.');
-        }
-    }
-}">
+<div class="space-y-6" x-data="characterWizard()">
     <!-- Wizard Header -->
     <div class="border-b border-slate-200 pb-4">
         <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
@@ -491,7 +128,7 @@
                     <h2 class="text-lg font-bold text-slate-900">Step 2: Ability Scores</h2>
                     <template x-if="selectedCampaignObj">
                         <span class="bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-bold px-2 py-0.5 rounded">
-                            Locked by Campaign: <span x-text="selectedCampaignObj.Name"></span>
+                            Required by Campaign: <span x-text="selectedCampaignObj.Name"></span>
                         </span>
                     </template>
                 </div>
@@ -843,4 +480,373 @@
         </div>
     </div>
 </div>
+
+<script>
+function characterWizard() {
+    return {
+        step: 1,
+        campaigns: {!! json_encode($campaigns) !!},
+        races: {!! json_encode($races) !!},
+        templates: {!! json_encode($templates) !!},
+        classes: {!! json_encode($classes) !!},
+        abilityMethods: {!! json_encode($abilityMethods) !!},
+        pointBuyCosts: { 3: -5, 4: -4, 5: -3, 6: -2, 7: -1, 8: 0, 9: 1, 10: 2, 11: 3, 12: 4, 13: 5, 14: 6, 15: 8, 16: 10, 17: 13, 18: 16 },
+        selectedCampaignObj: null,
+        
+        // Ability generation state
+        dragSourceAttr: null,
+        dragOverAttr: null,
+        rerollsRemaining: 0,
+        swapsRemaining: 0,
+        swapCountUsed: 0,
+        pointPoolMax: 25,
+        pointsSpent: 0,
+        pointsRemaining: 25,
+
+        character: {
+            Name: '',
+            CampaignID: '{{ $initialCampId }}',
+            Gender: 'Male',
+            Alignment: 'Neutral Good',
+            RaceID: 1,
+            TemplateID: '',
+            ClassID: 1,
+            StartingXP: 0,
+            Level: 1,
+            SuitabilityLevel: 3,
+            OptionalRules: 'None',
+            AbilityGenMethod: 2,
+            Strength: 8,
+            Constitution: 8,
+            Dexterity: 8,
+            Intelligence: 8,
+            Wisdom: 8,
+            Charisma: 8,
+            SkillPoints: 16,
+            ImprovementPoints: 10,
+            SelectedSkills: {}
+        },
+
+        init() {
+            this.onCampaignChanged();
+        },
+
+        calculateLevelFromXP(xp) {
+            xp = parseInt(xp) || 0;
+            let lvl = 1;
+            while (lvl * (lvl - 1) * 500 <= xp && lvl <= 20) {
+                lvl++;
+            }
+            return Math.max(1, lvl - 1);
+        },
+
+        get currentMethodObj() {
+            return this.abilityMethods.find(m => Number(m.ID) === Number(this.character.AbilityGenMethod)) || this.abilityMethods[0] || {};
+        },
+
+        get methodType() {
+            const gen = this.currentMethodObj.Generation || 'B:25';
+            return gen.charAt(0); // 'B' = Point Buy, 'F' = Fixed, 'R' = Rolled
+        },
+
+        onCampaignChanged() {
+            if (this.character.CampaignID) {
+                const found = this.campaigns.find(c => String(c.ID) === String(this.character.CampaignID));
+                if (found) {
+                    this.selectedCampaignObj = found;
+                    this.character.StartingXP = parseInt(found.StartingXP) || 0;
+                    this.character.Level = this.calculateLevelFromXP(this.character.StartingXP);
+                    this.character.SuitabilityLevel = found.SuitabilityLevel !== undefined ? parseInt(found.SuitabilityLevel) : 3;
+                    this.character.OptionalRules = found.OptionalRules || 'None';
+                    this.character.AbilityGenMethod = parseInt(found.AbilityGenMethod) || 2;
+                }
+            } else {
+                // Standalone Defaults: starting XP: 0, suitability level: 3, no optional rules
+                this.selectedCampaignObj = null;
+                this.character.StartingXP = 0;
+                this.character.Level = 1;
+                this.character.SuitabilityLevel = 3;
+                this.character.OptionalRules = 'None';
+                if (!this.character.AbilityGenMethod) {
+                    this.character.AbilityGenMethod = 2;
+                }
+            }
+
+            this.initAbilityScores();
+
+            // Check if current selected race meets new suitability level
+            const currentRace = this.races.find(r => r.ID == this.character.RaceID);
+            if (currentRace && currentRace.PCSuitability < this.character.SuitabilityLevel) {
+                const validRace = this.races.find(r => r.PCSuitability >= this.character.SuitabilityLevel);
+                if (validRace) {
+                    this.character.RaceID = validRace.ID;
+                }
+            }
+        },
+
+        onAbilityMethodSelected() {
+            this.initAbilityScores();
+        },
+
+        initAbilityScores() {
+            const method = this.currentMethodObj;
+            const gen = method.Generation || 'B:25';
+            const type = gen.charAt(0);
+
+            this.rerollsRemaining = parseInt(method.Reroll) || 0;
+            this.swapsRemaining = method.Rearrange == 1 ? 1 : (method.Rearrange == 2 ? 999 : 0);
+            this.swapCountUsed = 0;
+            this.dragSourceAttr = null;
+            this.dragOverAttr = null;
+
+            if (type === 'B') {
+                // Point Buy: B:25, B:15, B:35
+                this.pointPoolMax = parseInt(gen.substring(2)) || 25;
+                ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'].forEach(a => {
+                    this.character[a] = 8;
+                });
+                this.calculatePointBuy();
+            } else if (type === 'F') {
+                // Fixed Array: F:15,14,13,12,10,8
+                const raw = gen.substring(2).split(',').map(n => parseInt(n.trim()));
+                const attrs = ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'];
+                attrs.forEach((a, idx) => {
+                    this.character[a] = raw[idx] !== undefined ? raw[idx] : 10;
+                });
+                this.calculatePointBuy();
+            } else {
+                // Rolled dice pools
+                this.rollAllScores();
+            }
+        },
+
+        calculatePointBuy() {
+            let total = 0;
+            ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'].forEach(attr => {
+                const val = parseInt(this.character[attr]) || 8;
+                total += this.pointBuyCosts[val] !== undefined ? this.pointBuyCosts[val] : 0;
+            });
+            this.pointsSpent = total;
+            this.pointsRemaining = this.pointPoolMax - this.pointsSpent;
+        },
+
+        canIncAbility(attr) {
+            if (this.methodType !== 'B') return false;
+            const current = parseInt(this.character[attr]) || 8;
+            if (current >= 18) return false;
+            const nextCost = this.pointBuyCosts[current + 1] - this.pointBuyCosts[current];
+            return this.pointsRemaining >= nextCost;
+        },
+
+        canDecAbility(attr) {
+            if (this.methodType !== 'B') return false;
+            const current = parseInt(this.character[attr]) || 8;
+            return current > 3;
+        },
+
+        incAbility(attr) {
+            if (this.canIncAbility(attr)) {
+                this.character[attr]++;
+                this.calculatePointBuy();
+            }
+        },
+
+        decAbility(attr) {
+            if (this.canDecAbility(attr)) {
+                this.character[attr]--;
+                this.calculatePointBuy();
+            }
+        },
+
+        // Rolling Dice Engine
+        rollDice(num, sides, keepHighest = num) {
+            let rolls = [];
+            for (let i = 0; i < num; i++) {
+                rolls.push(Math.floor(Math.random() * sides) + 1);
+            }
+            rolls.sort((a, b) => b - a);
+            let sum = 0;
+            for (let k = 0; k < keepHighest && k < rolls.length; k++) {
+                sum += rolls[k];
+            }
+            return sum;
+        },
+
+        rollFormulaForMethod(methodId, slotIndex = 0) {
+            methodId = Number(methodId);
+            // Method 1, 4, 5: 4d6 drop lowest (keep 3)
+            if (methodId === 1 || methodId === 4 || methodId === 5) {
+                return this.rollDice(4, 6, 3);
+            }
+            // Method 6 (E-VI): pools: 6d6, 5d6, 4d6, 4d6, 3d6, 3d6
+            if (methodId === 6) {
+                const poolSizes = [6, 5, 4, 4, 3, 3];
+                return this.rollDice(poolSizes[slotIndex] || 4, 6, 3);
+            }
+            // Method 7 (A-I): 3d6
+            if (methodId === 7) {
+                return this.rollDice(3, 6, 3);
+            }
+            // Method 11 (A-V): pools: 4d6, 4d6, 3d6, 3d6, 2d8, 2d8
+            if (methodId === 11) {
+                if (slotIndex >= 4) return this.rollDice(2, 8, 2);
+                if (slotIndex >= 2) return this.rollDice(3, 6, 3);
+                return this.rollDice(4, 6, 3);
+            }
+            // Method 12, 15, 16: 5d6 drop 2 (keep 3)
+            if (methodId === 12 || methodId === 15 || methodId === 16) {
+                return this.rollDice(5, 6, 3);
+            }
+            // Method 17 (H-VI): pools: 9d6, 8d6, 7d6, 5d6, 4d6, 3d6
+            if (methodId === 17) {
+                const poolSizes = [9, 8, 7, 5, 4, 3];
+                return this.rollDice(poolSizes[slotIndex] || 5, 6, 3);
+            }
+            // Fallback standard 4d6 drop lowest
+            return this.rollDice(4, 6, 3);
+        },
+
+        rollAllScores() {
+            const attrs = ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'];
+            attrs.forEach((attr, idx) => {
+                this.character[attr] = this.rollFormulaForMethod(this.character.AbilityGenMethod, idx);
+            });
+            const method = this.currentMethodObj;
+            this.rerollsRemaining = parseInt(method.Reroll) || 0;
+            this.swapsRemaining = method.Rearrange == 1 ? 1 : (method.Rearrange == 2 ? 999 : 0);
+            this.swapCountUsed = 0;
+            this.calculatePointBuy();
+        },
+
+        rerollSingleScore(attr, slotIndex) {
+            if (this.rerollsRemaining <= 0) return;
+            const newScore = this.rollFormulaForMethod(this.character.AbilityGenMethod, slotIndex);
+            const methodId = Number(this.character.AbilityGenMethod);
+
+            // Method 5 and 16 specify: take the new roll if it is higher
+            if (methodId === 5 || methodId === 16) {
+                if (newScore > this.character[attr]) {
+                    this.character[attr] = newScore;
+                }
+            } else {
+                this.character[attr] = newScore;
+            }
+
+            this.rerollsRemaining--;
+            this.calculatePointBuy();
+        },
+
+        // Drag, Drop & Swapping Logic
+        canSwapScores() {
+            const rearrange = this.currentMethodObj.Rearrange;
+            if (!rearrange || rearrange == 0) return false;
+            return this.swapsRemaining > 0;
+        },
+
+        swapScores(attr1, attr2) {
+            if (!attr1 || !attr2 || attr1 === attr2) return;
+            if (!this.canSwapScores()) return;
+
+            const tmp = this.character[attr1];
+            this.character[attr1] = this.character[attr2];
+            this.character[attr2] = tmp;
+
+            if (this.currentMethodObj.Rearrange == 1) {
+                this.swapsRemaining = 0;
+                this.swapCountUsed = 1;
+            }
+            this.calculatePointBuy();
+        },
+
+        onDragStart(attr, e) {
+            if (!this.canSwapScores()) {
+                e.preventDefault();
+                return;
+            }
+            this.dragSourceAttr = attr;
+            e.dataTransfer.setData('text/plain', attr);
+            e.dataTransfer.effectAllowed = 'move';
+        },
+
+        onDragOver(attr, e) {
+            if (this.canSwapScores() && this.dragSourceAttr && this.dragSourceAttr !== attr) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                this.dragOverAttr = attr;
+            }
+        },
+
+        onDragLeave(attr) {
+            if (this.dragOverAttr === attr) {
+                this.dragOverAttr = null;
+            }
+        },
+
+        onDrop(attr, e) {
+            e.preventDefault();
+            if (this.canSwapScores() && this.dragSourceAttr && this.dragSourceAttr !== attr) {
+                this.swapScores(this.dragSourceAttr, attr);
+            }
+            this.dragSourceAttr = null;
+            this.dragOverAttr = null;
+        },
+
+        get eligibleRaces() {
+            const suit = parseInt(this.character.SuitabilityLevel);
+            return this.races.filter(r => (parseInt(r.PCSuitability) >= suit));
+        },
+
+        get eligibleTemplates() {
+            const suit = parseInt(this.character.SuitabilityLevel);
+            return this.templates.filter(t => (parseInt(t.PCSuitability) >= suit));
+        },
+
+        getSelectedRace() {
+            return this.races.find(r => r.ID == this.character.RaceID) || {};
+        },
+
+        getSelectedClass() {
+            return this.classes.find(c => c.ID == this.character.ClassID) || {};
+        },
+
+        async saveCharacter() {
+            try {
+                const res = await fetch('{{ route('utilities.chargen.save', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        Name: this.character.Name,
+                        CampaignID: this.character.CampaignID || null,
+                        RaceID: this.character.RaceID,
+                        TemplateID: this.character.TemplateID || null,
+                        ClassID: this.character.ClassID,
+                        Gender: this.character.Gender,
+                        Level: this.character.Level,
+                        StartingXP: this.character.StartingXP,
+                        AbilityGenMethod: this.character.AbilityGenMethod,
+                        Strength: this.character.Strength,
+                        Constitution: this.character.Constitution,
+                        Dexterity: this.character.Dexterity,
+                        Intelligence: this.character.Intelligence,
+                        Wisdom: this.character.Wisdom,
+                        Charisma: this.character.Charisma,
+                        Skills: this.character.SelectedSkills
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.location.href = data.redirect_url;
+                } else {
+                    alert(data.message || 'Error saving character.');
+                }
+            } catch (e) {
+                alert('Error saving character to server.');
+            }
+        }
+    };
+}
+</script>
 @endsection
