@@ -27,7 +27,7 @@
                     <td class="px-3 py-3 text-center font-bold text-slate-700 whitespace-nowrap">{{ $creature->BaseRL ?? 0 }}</td>
                     <td class="px-3 py-3 text-center text-rose-700 font-semibold whitespace-nowrap">{{ $creature->HP ?? '—' }}</td>
                     <td class="px-3 py-3 text-center text-blue-700 font-semibold whitespace-nowrap">{{ $creature->DeC ?? '—' }}</td>
-                    <td class="px-3 py-3 text-xs text-slate-600 whitespace-nowrap">{{ $creature->Environment ?? 'Any' }}</td>
+                    <td class="px-3 py-3 text-xs text-slate-600 whitespace-nowrap">{{ \App\Helpers\RolLink::cleanSnippet($creature->Environment ?? 'Any', 40) }}</td>
                     <td class="col-action px-3 py-3">
                         <a href="{{ route('reference.creatures.show', ['name' => urlencode($creature->Name)]) }}" class="btn-action-view">
                             <span>Stat Block</span> <span>&rarr;</span>

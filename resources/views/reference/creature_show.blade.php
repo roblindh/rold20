@@ -99,19 +99,19 @@
                 @if(!empty($creature->Organization))
                     <div>
                         <span class="font-bold text-slate-900 block mb-1">Organization:</span>
-                        <p class="text-slate-700 text-xs">{{ $creature->Organization }}</p>
+                        <div class="text-slate-700 text-xs leading-relaxed">{!! \App\Helpers\RolLink::formatText($creature->Organization) !!}</div>
                     </div>
                 @endif
                 @if(!empty($creature->Appearance))
                     <div>
                         <span class="font-bold text-slate-900 block mb-1">Physical Appearance:</span>
-                        <p class="text-slate-700 whitespace-pre-line text-xs">{{ $creature->Appearance }}</p>
+                        <div class="text-slate-700 text-xs leading-relaxed">{!! \App\Helpers\RolLink::formatText($creature->Appearance) !!}</div>
                     </div>
                 @endif
                 @if(!empty($creature->Personality))
                     <div>
-                        <span class="font-bold text-slate-900 block mb-1">Personality & Behavior:</span>
-                        <p class="text-slate-700 whitespace-pre-line text-xs">{{ $creature->Personality }}</p>
+                        <span class="font-bold text-slate-900 block mb-1">Personality &amp; Behavior:</span>
+                        <div class="text-slate-700 text-xs leading-relaxed">{!! \App\Helpers\RolLink::formatText($creature->Personality) !!}</div>
                     </div>
                 @endif
             </div>

@@ -51,7 +51,7 @@
                             </a>
                         </div>
                         <p class="text-xs text-slate-600 leading-relaxed max-w-3xl">
-                            {{ $item->snippet }}
+                            {{ \App\Helpers\RolLink::cleanSnippet($item->snippet, 220) }}
                         </p>
                         <div class="text-[11px] text-slate-400 font-mono pt-1">
                             {{ $item->url }}

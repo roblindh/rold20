@@ -23,14 +23,14 @@
     <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
         @if(!empty($culture->Description))
             <div>
-                <h2 class="text-lg font-bold text-slate-900 mb-2">Description & Society</h2>
-                <p class="text-slate-700 leading-relaxed">{{ $culture->Description }}</p>
+                <h2 class="text-lg font-bold text-slate-900 mb-2">Description &amp; Society</h2>
+                <div class="text-slate-700 leading-relaxed text-sm">{!! \App\Helpers\RolLink::formatText($culture->Description) !!}</div>
             </div>
         @endif
 
         @if(!empty($culture->Traits))
             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm">
-                <span class="font-bold block text-slate-900 mb-1">Cultural Traits & Skill Modifiers:</span>
+                <span class="font-bold block text-slate-900 mb-1">Cultural Traits &amp; Skill Modifiers:</span>
                 <div class="text-xs text-slate-800 bg-white p-3 rounded-lg border border-slate-200 leading-relaxed space-y-1">
                     {!! \App\Helpers\RolLink::parseTraits($culture->Traits, false) !!}
                 </div>
@@ -40,7 +40,7 @@
         @if(!empty($culture->NameTable))
             <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-200 text-sm">
                 <span class="font-bold block text-amber-900 mb-1">Naming Conventions:</span>
-                <p class="text-xs text-amber-950 font-mono">{{ $culture->NameTable }}</p>
+                <div class="text-xs text-amber-950 font-mono leading-relaxed">{!! \App\Helpers\RolLink::formatText($culture->NameTable) !!}</div>
             </div>
         @endif
     </div>

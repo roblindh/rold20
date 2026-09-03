@@ -18,7 +18,7 @@
                             {{ $spell->Name }}
                         </a>
                     </td>
-                    <td class="px-3 py-3 text-xs text-slate-600 font-medium whitespace-nowrap">{{ Str::limit($spell->Skills, 35) }}</td>
+                    <td class="px-3 py-3 text-xs text-slate-600 font-medium whitespace-nowrap">{{ \App\Helpers\RolLink::cleanSnippet($spell->Skills, 35) }}</td>
                     <td class="px-3 py-3 text-xs whitespace-nowrap">
                         @if($spell->Descriptors)
                             <span class="bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-300 font-mono text-[11px]">
@@ -27,12 +27,12 @@
                         @endif
                     </td>
                     <td class="px-3 py-3 text-xs text-slate-600 font-mono whitespace-nowrap">
-                        <div>{{ $spell->Cost ?? '0 PP' }}</div>
-                        <div class="text-[11px] text-slate-400">{{ $spell->ActionTime ?? '7 AP' }}</div>
+                        <div>{{ \App\Helpers\RolLink::cleanSnippet($spell->Cost, 25) }}</div>
+                        <div class="text-[11px] text-slate-400">{{ \App\Helpers\RolLink::cleanSnippet($spell->ActionTime, 25) }}</div>
                     </td>
                     <td class="px-4 py-3 text-xs text-slate-700 col-description">
                         <div class="line-clamp-2 leading-relaxed">
-                            {{ Str::limit($spell->Description, 120) }}
+                            {{ \App\Helpers\RolLink::cleanSnippet($spell->Description, 120) }}
                         </div>
                     </td>
                     <td class="col-action px-3 py-3">

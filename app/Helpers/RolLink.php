@@ -124,4 +124,43 @@ class RolLink
             return e($natAttacks);
         }
     }
+
+    /**
+     * Format text by converting C-style escape sequences (\n, \t, etc.) into HTML
+     */
+    public static function formatText(?string $str): string
+    {
+        if ($str === null || trim($str) === '') {
+            return '';
+        }
+
+        // Normalize returns and escapes
+        $str = str_replace(["\\r\\n", "\r\n", "\\r", "\r"], "\n", $str);
+        $str = str_replace(["\\t", "\t"], "\t", $str);
+        $str = str_replace(["\\n", "\n"], "\n", $str);
+        $str = str_replace(['\"', "\\'"], ['"', "'"], $str);
+
+        // Escape HTML special characters to be XSS-safe, then convert newlines to <br/> and tabs to &emsp;
+        $escaped = e($str);
+        $escaped = str_replace("\t", '&emsp;&emsp;', $escaped);
+        $escaped = nl2br($escaped, false);
+
+        return $escaped;
+    }
+
+    /**
+     * Clean and truncate a text snippet for single/double-line table displays
+     */
+    public static function cleanSnippet(?string $str, int $limit = 140): string
+    {
+        if ($str === null || trim($str) === '') {
+            return '—';
+        }
+
+        $str = str_replace(["\\r\\n", "\r\n", "\\r", "\r", "\\n", "\n", "\\t", "\t"], ' ', $str);
+        $str = str_replace(['\"', "\\'"], ['"', "'"], $str);
+        $str = preg_replace('/\s+/', ' ', trim($str));
+
+        return \Illuminate\Support\Str::limit($str, $limit);
+    }
 }

@@ -77,7 +77,11 @@ function format_text(?string $str): string {
     if ($str === null || $str === '') {
         return '';
     }
-    return str_replace("\\n", "<br/>", $str);
+    $str = str_replace(["\\r\\n", "\r\n", "\\r", "\r"], "\n", $str);
+    $str = str_replace(["\\t", "\t"], "&emsp;", $str);
+    $str = str_replace(['\"', "\\'"], ['"', "'"], $str);
+    $str = str_replace(["\\n", "\n"], "<br/>", $str);
+    return $str;
 }
 
 ?>

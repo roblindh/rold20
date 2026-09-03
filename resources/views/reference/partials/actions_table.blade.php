@@ -23,11 +23,11 @@
                             {{ $action->CategoryName ?? 'Action' }}
                         </span>
                     </td>
-                    <td class="px-3 py-3 font-mono text-xs text-slate-600 whitespace-nowrap">{{ $action->ActionTime ?? '1 AP' }}</td>
-                    <td class="px-3 py-3 text-xs text-slate-600 whitespace-nowrap">{{ $action->ActionCheck ?? '—' }}</td>
+                    <td class="px-3 py-3 font-mono text-xs text-slate-600 whitespace-nowrap">{{ \App\Helpers\RolLink::cleanSnippet($action->ActionTime, 20) }}</td>
+                    <td class="px-3 py-3 text-xs text-slate-600 whitespace-nowrap">{{ \App\Helpers\RolLink::cleanSnippet($action->ActionCheck, 40) }}</td>
                     <td class="px-4 py-3 text-xs text-slate-700 col-description">
                         <div class="line-clamp-2 leading-relaxed">
-                            {{ Str::limit($action->Description, 120) }}
+                            {{ \App\Helpers\RolLink::cleanSnippet($action->Description, 120) }}
                         </div>
                     </td>
                     <td class="col-action px-3 py-3">

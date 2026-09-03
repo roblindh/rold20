@@ -19,14 +19,16 @@
 
     <!-- Description Card -->
     <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
-        <div>
-            <h2 class="text-lg font-bold text-slate-900 mb-2">Description</h2>
-            <p class="text-slate-700 leading-relaxed">{{ $skill->Description }}</p>
-        </div>
+        @if(!empty($skill->Description))
+            <div>
+                <h2 class="text-lg font-bold text-slate-900 mb-2">Description</h2>
+                <div class="text-slate-700 leading-relaxed text-sm">{!! \App\Helpers\RolLink::formatText($skill->Description) !!}</div>
+            </div>
+        @endif
 
-        @if($skill->Prereqs)
+        @if(!empty($skill->Prereqs))
             <div class="p-3 bg-amber-50 rounded-lg border border-amber-200 text-sm text-amber-900">
-                <span class="font-bold">Prerequisites:</span> {{ $skill->Prereqs }}
+                <span class="font-bold">Prerequisites:</span> {!! \App\Helpers\RolLink::formatText($skill->Prereqs) !!}
             </div>
         @endif
     </div>
@@ -52,8 +54,8 @@
                             @endphp
                             <tr>
                                 <td class="px-4 py-2.5 font-semibold text-slate-900 whitespace-nowrap">{{ $spec->Name }}</td>
-                                <td class="px-4 py-2.5 text-slate-600">{{ $spec->Description ?? '—' }}</td>
-                                <td class="px-4 py-2.5 text-xs text-slate-500 whitespace-nowrap">{{ $spec->Prereqs ?? '—' }}</td>
+                                <td class="px-4 py-2.5 text-slate-600 text-xs sm:text-sm">{!! \App\Helpers\RolLink::formatText($spec->Description ?? '—') !!}</td>
+                                <td class="px-4 py-2.5 text-xs text-slate-500 whitespace-nowrap">{!! \App\Helpers\RolLink::formatText($spec->Prereqs ?? '—') !!}</td>
                                 <td class="px-4 py-2.5 text-xs text-slate-700">{!! $specBenefits ?: '—' !!}</td>
                             </tr>
                         @endforeach

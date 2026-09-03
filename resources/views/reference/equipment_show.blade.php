@@ -23,7 +23,7 @@
         @if(!empty($item->Description))
             <div>
                 <h2 class="text-lg font-bold text-slate-900 mb-2">Description</h2>
-                <p class="text-slate-700 leading-relaxed">{{ $item->Description }}</p>
+                <div class="text-slate-700 leading-relaxed text-sm">{!! \App\Helpers\RolLink::formatText($item->Description) !!}</div>
             </div>
         @endif
 
@@ -39,7 +39,7 @@
         @if(!empty($item->Special))
             <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-200 text-sm">
                 <span class="font-bold block text-amber-900 mb-1">Special Properties:</span>
-                <p class="text-xs text-amber-950">{{ $item->Special }}</p>
+                <div class="text-xs text-amber-950 leading-relaxed">{!! \App\Helpers\RolLink::formatText($item->Special) !!}</div>
             </div>
         @endif
     </div>

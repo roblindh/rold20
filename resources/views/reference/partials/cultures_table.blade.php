@@ -16,10 +16,10 @@
                             {{ $culture->Name }}
                         </a>
                     </td>
-                    <td class="px-3 py-3 text-xs text-slate-600 font-mono whitespace-nowrap">{{ $culture->Languages ?? 'Common' }}</td>
+                    <td class="px-3 py-3 text-xs text-slate-600 font-mono whitespace-nowrap">{{ \App\Helpers\RolLink::cleanSnippet($culture->Languages ?? 'Common', 40) }}</td>
                     <td class="px-4 py-3 text-xs text-slate-700 col-description">
                         <div class="line-clamp-2 leading-relaxed">
-                            {{ Str::limit($culture->Description ?? '', 140) }}
+                            {{ \App\Helpers\RolLink::cleanSnippet($culture->Description ?? '', 140) }}
                         </div>
                     </td>
                     <td class="col-action px-3 py-3">

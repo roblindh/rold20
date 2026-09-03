@@ -27,10 +27,10 @@
                             {{ $skill->TypeName ?? 'General' }}
                         </span>
                     </td>
-                    <td class="px-4 py-3 text-xs text-slate-600 whitespace-nowrap">{{ $skill->Prereqs ?? '—' }}</td>
+                    <td class="px-4 py-3 text-xs text-slate-600 whitespace-nowrap">{{ \App\Helpers\RolLink::cleanSnippet($skill->Prereqs, 50) }}</td>
                     <td class="px-4 py-3 text-xs text-slate-700 col-description">
                         <div class="line-clamp-2 leading-relaxed">
-                            {{ Str::limit($skill->Description, 120) }}
+                            {{ \App\Helpers\RolLink::cleanSnippet($skill->Description, 120) }}
                         </div>
                     </td>
                     <td class="col-action px-3 py-3">
