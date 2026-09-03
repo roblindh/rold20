@@ -237,8 +237,8 @@
                 </div>
 
                 <div>
-                    <label for="create_camp_notes" class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Notes / House Rules</label>
-                    <textarea id="create_camp_notes" name="Notes" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="Private campaign notes, lore seeds, house rules..."></textarea>
+                    <label for="create_camp_notes" class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Notes</label>
+                    <textarea id="create_camp_notes" name="Notes" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="Private campaign notes, lore seeds..."></textarea>
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
@@ -301,8 +301,8 @@
                 </div>
 
                 <div>
-                    <label for="edit_camp_notes" class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Notes / House Rules</label>
-                    <textarea id="edit_camp_notes" name="Notes" x-model="editCamp.Notes" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
+                    <label for="edit_camp_notes" class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Notes</label>
+                    <textarea id="edit_camp_notes" name="Notes" x-model="editCamp.Notes" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="Private campaign notes, lore seeds..."></textarea>
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
