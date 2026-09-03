@@ -21,7 +21,7 @@ class UtilityController extends Controller
         $races = DB::table('ref_creatures')->select('ID', 'Name', 'NameInformal', 'PCSuitability', 'BaseRL', 'CreatureType', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj', 'GroundSpeed', 'FlySpeed', 'SwimSpeed', 'SizeClass')->orderBy('Name')->get();
         $templates = DB::table('ref_templates')->select('ID', 'Name', 'PCSuitability', 'RLModifier', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj')->orderBy('Name')->get();
         $classes = DB::table('ref_classes')->orderBy('Name')->get();
-        $abilityMethods = DB::table('ref_abilitygeneration')->orderBy('ID')->get();
+        $abilityMethods = DB::table('ref_abilitygeneration')->whereNotNull('Generation')->where('Generation', '!=', '')->orderBy('ID')->get();
         $pointBuyTable = DB::table('ref_abilitypointbuy')->orderBy('BaseAbility')->get();
         $skills = DB::table('ref_skills')->orderBy('Name')->get();
         $improvements = DB::table('ref_improvementtraits')->get();
@@ -38,9 +38,12 @@ class UtilityController extends Controller
             'Name' => 'required|string|max:100',
             'CampaignID' => 'nullable|integer',
             'RaceID' => 'nullable|integer',
+            'TemplateID' => 'nullable|integer',
             'ClassID' => 'nullable|integer',
             'Gender' => 'nullable|string',
             'Level' => 'nullable|integer',
+            'StartingXP' => 'nullable|integer',
+            'AbilityGenMethod' => 'nullable|integer',
             'Strength' => 'nullable|integer',
             'Constitution' => 'nullable|integer',
             'Dexterity' => 'nullable|integer',
@@ -54,7 +57,11 @@ class UtilityController extends Controller
             'Name' => $validated['Name'],
             'Campaign' => $request->input('Campaign') ?? $request->input('CampaignID') ?? null,
             'Player' => $playerId,
+            'AbilityGenMethod' => $request->input('AbilityGenMethod') ?? 2,
+            'ExperiencePts' => (int)($request->input('StartingXP') ?? $request->input('ExperiencePts') ?? 0),
             'BaseRace' => $request->input('RaceID', 1),
+            'Templates' => $request->input('TemplateID') ? (string)$request->input('TemplateID') : null,
+            'Gender' => $request->input('Gender', 'Male') === 'Female' ? 2 : 1,
             'BaseStr' => $request->input('Strength', 10),
             'BaseCon' => $request->input('Constitution', 10),
             'BaseDex' => $request->input('Dexterity', 10),
@@ -67,7 +74,7 @@ class UtilityController extends Controller
             'success' => true,
             'message' => 'Character saved successfully!',
             'character_id' => $charId,
-            'redirect_url' => route('utilities.charview', ['id' => $charId]),
+            'redirect_url' => route('utilities.charview', ['id' => $charId], false),
         ]);
     }
 
@@ -189,7 +196,7 @@ class UtilityController extends Controller
             ->get();
 
         $characters = DB::table('characters')->get();
-        $abilityMethods = DB::table('ref_abilitygeneration')->orderBy('ID')->get();
+        $abilityMethods = DB::table('ref_abilitygeneration')->whereNotNull('Generation')->where('Generation', '!=', '')->orderBy('ID')->get();
         $myCampaigns = \Illuminate\Support\Facades\Auth::check()
             ? $campaigns->where('GameMaster', \Illuminate\Support\Facades\Auth::id())
             : collect([]);

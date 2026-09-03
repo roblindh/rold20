@@ -7,12 +7,24 @@
 
 <div class="space-y-6" x-data="{
     step: 1,
-    campaigns: {{ json_encode($campaigns) }},
-    races: {{ json_encode($races) }},
-    templates: {{ json_encode($templates) }},
-    classes: {{ json_encode($classes) }},
-    abilityMethods: {{ json_encode($abilityMethods) }},
+    campaigns: @json($campaigns),
+    races: @json($races),
+    templates: @json($templates),
+    classes: @json($classes),
+    abilityMethods: @json($abilityMethods),
+    pointBuyCosts: { 3: -5, 4: -4, 5: -3, 6: -2, 7: -1, 8: 0, 9: 1, 10: 2, 11: 3, 12: 4, 13: 5, 14: 6, 15: 8, 16: 10, 17: 13, 18: 16 },
     selectedCampaignObj: null,
+    
+    // Ability generation state
+    dragSourceAttr: null,
+    dragOverAttr: null,
+    rerollsRemaining: 0,
+    swapsRemaining: 0,
+    swapCountUsed: 0,
+    pointPoolMax: 25,
+    pointsSpent: 0,
+    pointsRemaining: 25,
+
     character: {
         Name: '',
         CampaignID: '{{ $initialCampId }}',
@@ -26,23 +38,19 @@
         SuitabilityLevel: 3,
         OptionalRules: 'None',
         AbilityGenMethod: 2,
-        Strength: 10,
-        Constitution: 10,
-        Dexterity: 10,
-        Intelligence: 10,
-        Wisdom: 10,
-        Charisma: 10,
-        PointPoolMax: 25,
-        PointsRemaining: 25,
+        Strength: 8,
+        Constitution: 8,
+        Dexterity: 8,
+        Intelligence: 8,
+        Wisdom: 8,
+        Charisma: 8,
         SkillPoints: 16,
         ImprovementPoints: 10,
         SelectedSkills: {}
     },
-    pointCosts: { 8:0, 9:1, 10:2, 11:3, 12:4, 13:5, 14:6, 15:8, 16:10, 17:13, 18:16 },
 
     init() {
         this.onCampaignChanged();
-        this.calculatePointBuy();
     },
 
     calculateLevelFromXP(xp) {
@@ -54,6 +62,15 @@
         return Math.max(1, lvl - 1);
     },
 
+    get currentMethodObj() {
+        return this.abilityMethods.find(m => Number(m.ID) === Number(this.character.AbilityGenMethod)) || this.abilityMethods[0] || {};
+    },
+
+    get methodType() {
+        const gen = this.currentMethodObj.Generation || 'B:25';
+        return gen.charAt(0); // 'B' = Point Buy, 'F' = Fixed, 'R' = Rolled
+    },
+
     onCampaignChanged() {
         if (this.character.CampaignID) {
             const found = this.campaigns.find(c => String(c.ID) === String(this.character.CampaignID));
@@ -63,27 +80,21 @@
                 this.character.Level = this.calculateLevelFromXP(this.character.StartingXP);
                 this.character.SuitabilityLevel = found.SuitabilityLevel !== undefined ? parseInt(found.SuitabilityLevel) : 3;
                 this.character.OptionalRules = found.OptionalRules || 'None';
-                this.character.AbilityGenMethod = found.AbilityGenMethod || 2;
+                this.character.AbilityGenMethod = parseInt(found.AbilityGenMethod) || 2;
             }
         } else {
-            // Standalone Defaults requested by user: starting XP: 0, suitability level: 3, no optional rules
+            // Standalone Defaults: starting XP: 0, suitability level: 3, no optional rules
             this.selectedCampaignObj = null;
             this.character.StartingXP = 0;
             this.character.Level = 1;
             this.character.SuitabilityLevel = 3;
             this.character.OptionalRules = 'None';
-            this.character.AbilityGenMethod = 2;
+            if (!this.character.AbilityGenMethod) {
+                this.character.AbilityGenMethod = 2;
+            }
         }
 
-        // Adjust point buy budget based on ability generation method
-        if (this.character.AbilityGenMethod == 8) {
-            this.character.PointPoolMax = 15;
-        } else if (this.character.AbilityGenMethod == 13) {
-            this.character.PointPoolMax = 35;
-        } else {
-            this.character.PointPoolMax = 25;
-        }
-        this.calculatePointBuy();
+        this.initAbilityScores();
 
         // Check if current selected race meets new suitability level
         const currentRace = this.races.find(r => r.ID == this.character.RaceID);
@@ -93,6 +104,213 @@
                 this.character.RaceID = validRace.ID;
             }
         }
+    },
+
+    onAbilityMethodSelected() {
+        this.initAbilityScores();
+    },
+
+    initAbilityScores() {
+        const method = this.currentMethodObj;
+        const gen = method.Generation || 'B:25';
+        const type = gen.charAt(0);
+
+        this.rerollsRemaining = parseInt(method.Reroll) || 0;
+        this.swapsRemaining = method.Rearrange == 1 ? 1 : (method.Rearrange == 2 ? 999 : 0);
+        this.swapCountUsed = 0;
+        this.dragSourceAttr = null;
+        this.dragOverAttr = null;
+
+        if (type === 'B') {
+            // Point Buy: B:25, B:15, B:35
+            this.pointPoolMax = parseInt(gen.substring(2)) || 25;
+            ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'].forEach(a => {
+                this.character[a] = 8;
+            });
+            this.calculatePointBuy();
+        } else if (type === 'F') {
+            // Fixed Array: F:15,14,13,12,10,8
+            const raw = gen.substring(2).split(',').map(n => parseInt(n.trim()));
+            const attrs = ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'];
+            attrs.forEach((a, idx) => {
+                this.character[a] = raw[idx] !== undefined ? raw[idx] : 10;
+            });
+            this.calculatePointBuy();
+        } else {
+            // Rolled dice pools
+            this.rollAllScores();
+        }
+    },
+
+    calculatePointBuy() {
+        let total = 0;
+        ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'].forEach(attr => {
+            const val = parseInt(this.character[attr]) || 8;
+            total += this.pointBuyCosts[val] !== undefined ? this.pointBuyCosts[val] : 0;
+        });
+        this.pointsSpent = total;
+        this.pointsRemaining = this.pointPoolMax - this.pointsSpent;
+    },
+
+    canIncAbility(attr) {
+        if (this.methodType !== 'B') return false;
+        const current = parseInt(this.character[attr]) || 8;
+        if (current >= 18) return false;
+        const nextCost = this.pointBuyCosts[current + 1] - this.pointBuyCosts[current];
+        return this.pointsRemaining >= nextCost;
+    },
+
+    canDecAbility(attr) {
+        if (this.methodType !== 'B') return false;
+        const current = parseInt(this.character[attr]) || 8;
+        return current > 3;
+    },
+
+    incAbility(attr) {
+        if (this.canIncAbility(attr)) {
+            this.character[attr]++;
+            this.calculatePointBuy();
+        }
+    },
+
+    decAbility(attr) {
+        if (this.canDecAbility(attr)) {
+            this.character[attr]--;
+            this.calculatePointBuy();
+        }
+    },
+
+    // Rolling Dice Engine
+    rollDice(num, sides, keepHighest = num) {
+        let rolls = [];
+        for (let i = 0; i < num; i++) {
+            rolls.push(Math.floor(Math.random() * sides) + 1);
+        }
+        rolls.sort((a, b) => b - a);
+        let sum = 0;
+        for (let k = 0; k < keepHighest && k < rolls.length; k++) {
+            sum += rolls[k];
+        }
+        return sum;
+    },
+
+    rollFormulaForMethod(methodId, slotIndex = 0) {
+        methodId = Number(methodId);
+        // Method 1, 4, 5: 4d6 drop lowest (keep 3)
+        if (methodId === 1 || methodId === 4 || methodId === 5) {
+            return this.rollDice(4, 6, 3);
+        }
+        // Method 6 (E-VI): pools: 6d6, 5d6, 4d6, 4d6, 3d6, 3d6
+        if (methodId === 6) {
+            const poolSizes = [6, 5, 4, 4, 3, 3];
+            return this.rollDice(poolSizes[slotIndex] || 4, 6, 3);
+        }
+        // Method 7 (A-I): 3d6
+        if (methodId === 7) {
+            return this.rollDice(3, 6, 3);
+        }
+        // Method 11 (A-V): pools: 4d6, 4d6, 3d6, 3d6, 2d8, 2d8
+        if (methodId === 11) {
+            if (slotIndex >= 4) return this.rollDice(2, 8, 2);
+            if (slotIndex >= 2) return this.rollDice(3, 6, 3);
+            return this.rollDice(4, 6, 3);
+        }
+        // Method 12, 15, 16: 5d6 drop 2 (keep 3)
+        if (methodId === 12 || methodId === 15 || methodId === 16) {
+            return this.rollDice(5, 6, 3);
+        }
+        // Method 17 (H-VI): pools: 9d6, 8d6, 7d6, 5d6, 4d6, 3d6
+        if (methodId === 17) {
+            const poolSizes = [9, 8, 7, 5, 4, 3];
+            return this.rollDice(poolSizes[slotIndex] || 5, 6, 3);
+        }
+        // Fallback standard 4d6 drop lowest
+        return this.rollDice(4, 6, 3);
+    },
+
+    rollAllScores() {
+        const attrs = ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'];
+        attrs.forEach((attr, idx) => {
+            this.character[attr] = this.rollFormulaForMethod(this.character.AbilityGenMethod, idx);
+        });
+        const method = this.currentMethodObj;
+        this.rerollsRemaining = parseInt(method.Reroll) || 0;
+        this.swapsRemaining = method.Rearrange == 1 ? 1 : (method.Rearrange == 2 ? 999 : 0);
+        this.swapCountUsed = 0;
+        this.calculatePointBuy();
+    },
+
+    rerollSingleScore(attr, slotIndex) {
+        if (this.rerollsRemaining <= 0) return;
+        const newScore = this.rollFormulaForMethod(this.character.AbilityGenMethod, slotIndex);
+        const methodId = Number(this.character.AbilityGenMethod);
+
+        // Method 5 and 16 specify: take the new roll if it is higher
+        if (methodId === 5 || methodId === 16) {
+            if (newScore > this.character[attr]) {
+                this.character[attr] = newScore;
+            }
+        } else {
+            this.character[attr] = newScore;
+        }
+
+        this.rerollsRemaining--;
+        this.calculatePointBuy();
+    },
+
+    // Drag, Drop & Swapping Logic
+    canSwapScores() {
+        const rearrange = this.currentMethodObj.Rearrange;
+        if (!rearrange || rearrange == 0) return false;
+        return this.swapsRemaining > 0;
+    },
+
+    swapScores(attr1, attr2) {
+        if (!attr1 || !attr2 || attr1 === attr2) return;
+        if (!this.canSwapScores()) return;
+
+        const tmp = this.character[attr1];
+        this.character[attr1] = this.character[attr2];
+        this.character[attr2] = tmp;
+
+        if (this.currentMethodObj.Rearrange == 1) {
+            this.swapsRemaining = 0;
+            this.swapCountUsed = 1;
+        }
+        this.calculatePointBuy();
+    },
+
+    onDragStart(attr, e) {
+        if (!this.canSwapScores()) {
+            e.preventDefault();
+            return;
+        }
+        this.dragSourceAttr = attr;
+        e.dataTransfer.setData('text/plain', attr);
+        e.dataTransfer.effectAllowed = 'move';
+    },
+
+    onDragOver(attr, e) {
+        if (this.canSwapScores() && this.dragSourceAttr && this.dragSourceAttr !== attr) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            this.dragOverAttr = attr;
+        }
+    },
+
+    onDragLeave(attr) {
+        if (this.dragOverAttr === attr) {
+            this.dragOverAttr = null;
+        }
+    },
+
+    onDrop(attr, e) {
+        e.preventDefault();
+        if (this.canSwapScores() && this.dragSourceAttr && this.dragSourceAttr !== attr) {
+            this.swapScores(this.dragSourceAttr, attr);
+        }
+        this.dragSourceAttr = null;
+        this.dragOverAttr = null;
     },
 
     get eligibleRaces() {
@@ -113,41 +331,6 @@
         return this.classes.find(c => c.ID == this.character.ClassID) || {};
     },
 
-    calculatePointBuy() {
-        let cost = 0;
-        ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'].forEach(attr => {
-            let val = parseInt(this.character[attr]) || 10;
-            cost += this.pointCosts[val] !== undefined ? this.pointCosts[val] : (val - 8);
-        });
-        this.character.PointsRemaining = this.character.PointPoolMax - (cost - 12);
-    },
-
-    rollDice(method) {
-        const roll4d6dropLow = () => {
-            let rolls = [rand(6), rand(6), rand(6), rand(6)];
-            rolls.sort((a,b) => a - b);
-            return rolls[1] + rolls[2] + rolls[3];
-        };
-        const roll3d6 = () => rand(6) + rand(6) + rand(6);
-        const roll5d6drop2 = () => {
-            let rolls = [rand(6), rand(6), rand(6), rand(6), rand(6)];
-            rolls.sort((a,b) => a - b);
-            return rolls[2] + rolls[3] + rolls[4];
-        };
-        function rand(s) { return Math.floor(Math.random() * s) + 1; }
-
-        ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'].forEach(attr => {
-            if (this.character.AbilityGenMethod == 7) {
-                this.character[attr] = roll3d6();
-            } else if (this.character.AbilityGenMethod == 12 || this.character.AbilityGenMethod == 15) {
-                this.character[attr] = roll5d6drop2();
-            } else {
-                this.character[attr] = roll4d6dropLow();
-            }
-        });
-        this.calculatePointBuy();
-    },
-
     async saveCharacter() {
         try {
             const res = await fetch('{{ route('utilities.chargen.save', [], false) }}', {
@@ -165,6 +348,7 @@
                     Gender: this.character.Gender,
                     Level: this.character.Level,
                     StartingXP: this.character.StartingXP,
+                    AbilityGenMethod: this.character.AbilityGenMethod,
                     Strength: this.character.Strength,
                     Constitution: this.character.Constitution,
                     Dexterity: this.character.Dexterity,
@@ -211,7 +395,7 @@
     <div x-show="step === 1" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5">
         <div>
             <h2 class="text-lg font-bold text-slate-900">Step 1: Character Identity &amp; Campaign Selection</h2>
-            <p class="text-xs text-slate-600 mt-0.5">Select a campaign to automatically inherit its ability generation method, starting XP, and PC suitability tier.</p>
+            <p class="text-xs text-slate-600 mt-0.5">Select a campaign to inherit its ability generation method, starting XP, and PC suitability tier &mdash; or build a standalone character.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -286,7 +470,7 @@
                 <div class="bg-white p-2.5 rounded-lg border border-indigo-100 shadow-2xs">
                     <span class="text-[10px] font-bold text-slate-500 uppercase block">Ability Gen Method</span>
                     <span class="font-bold text-slate-900 text-xs truncate block" 
-                          x-text="abilityMethods.find(m => m.ID == character.AbilityGenMethod)?.MethodName || 'Method ' + character.AbilityGenMethod">
+                          x-text="currentMethodObj.MethodName || 'Method ' + character.AbilityGenMethod">
                     </span>
                 </div>
 
@@ -300,46 +484,174 @@
 
     <!-- Step 2: Ability Scores -->
     <div x-show="step === 2" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4" style="display: none;">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-                <h2 class="text-lg font-bold text-slate-900">Step 2: Ability Scores</h2>
-                <p class="text-xs text-slate-600">
-                    Method: <strong class="text-indigo-800" x-text="abilityMethods.find(m => m.ID == character.AbilityGenMethod)?.MethodName"></strong>
-                    <span class="text-slate-500 text-[11px] block" x-text="abilityMethods.find(m => m.ID == character.AbilityGenMethod)?.Description"></span>
-                </p>
-            </div>
+        <!-- Ability Method Header & Selection -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
+            <div class="space-y-1 flex-1">
+                <div class="flex items-center gap-2">
+                    <h2 class="text-lg font-bold text-slate-900">Step 2: Ability Scores</h2>
+                    <template x-if="selectedCampaignObj">
+                        <span class="bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-bold px-2 py-0.5 rounded">
+                            Locked by Campaign: <span x-text="selectedCampaignObj.Name"></span>
+                        </span>
+                    </template>
+                </div>
 
-            <div class="flex items-center gap-2">
-                <template x-if="character.AbilityGenMethod == 2 || character.AbilityGenMethod == 8 || character.AbilityGenMethod == 13">
-                    <div class="text-xs bg-amber-50 text-amber-900 border border-amber-300 px-3 py-1.5 rounded-lg font-bold">
-                        Point Buy Pool: <span x-text="character.PointsRemaining"></span> / <span x-text="character.PointPoolMax"></span>
+                <!-- Standalone Free Method Choice Selector -->
+                <template x-if="!selectedCampaignObj">
+                    <div class="pt-1 max-w-xl">
+                        <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Choose Ability Generation Method:</label>
+                        <select x-model="character.AbilityGenMethod" @change="onAbilityMethodSelected()"
+                                class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500">
+                            <template x-for="m in abilityMethods" :key="m.ID">
+                                <option :value="m.ID" x-text="m.MethodName + ': ' + m.Description.substring(0, 60) + '...'"></option>
+                            </template>
+                        </select>
                     </div>
                 </template>
-                <template x-if="character.AbilityGenMethod == 1 || character.AbilityGenMethod == 4 || character.AbilityGenMethod == 5 || character.AbilityGenMethod == 7 || character.AbilityGenMethod == 12 || character.AbilityGenMethod == 15">
-                    <button type="button" @click="rollDice()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm cursor-pointer flex items-center gap-1.5">
-                        <span>🎲</span> Roll Scores
+
+                <p class="text-xs text-slate-600 leading-relaxed pt-1" x-text="currentMethodObj.Description"></p>
+            </div>
+
+            <!-- Controls (Roll Button, Point Buy Counter, Swaps & Rerolls Counter) -->
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+                <!-- Point Buy Pool -->
+                <template x-if="methodType === 'B'">
+                    <div class="text-xs px-3.5 py-2 rounded-lg font-bold border flex items-center gap-2"
+                         :class="pointsRemaining >= 0 ? 'bg-amber-50 text-amber-950 border-amber-300' : 'bg-red-50 text-red-900 border-red-300'">
+                        <span>Point Pool:</span>
+                        <span class="font-mono text-sm" x-text="pointsRemaining"></span>
+                        <span class="text-slate-500 text-[11px]">/ <span x-text="pointPoolMax"></span></span>
+                    </div>
+                </template>
+
+                <!-- Reroll All Button for Rolled Methods -->
+                <template x-if="methodType === 'R'">
+                    <button type="button" @click="rollAllScores()" 
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3.5 py-2 rounded-lg shadow-sm cursor-pointer flex items-center gap-1.5 transition">
+                        <span>🎲</span> Roll All Abilities
                     </button>
+                </template>
+
+                <!-- Swaps Badge if limited -->
+                <template x-if="currentMethodObj.Rearrange == 1">
+                    <div class="text-xs px-3 py-1.5 rounded-lg font-bold border"
+                         :class="swapsRemaining > 0 ? 'bg-indigo-50 text-indigo-900 border-indigo-200' : 'bg-slate-100 text-slate-500 border-slate-200'">
+                        <span x-text="swapsRemaining > 0 ? '1 Score Swap Available' : '1 Swap Used'"></span>
+                    </div>
+                </template>
+
+                <!-- Individual Rerolls Available Badge -->
+                <template x-if="currentMethodObj.Reroll > 0">
+                    <div class="text-xs px-3 py-1.5 rounded-lg font-bold border"
+                         :class="rerollsRemaining > 0 ? 'bg-emerald-50 text-emerald-900 border-emerald-300' : 'bg-slate-100 text-slate-500 border-slate-200'">
+                        <span x-text="rerollsRemaining > 0 ? 'Score Rerolls: ' + rerollsRemaining : 'Score Rerolls: 0 (Used)'"></span>
+                    </div>
                 </template>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pt-2">
-            <template x-for="attr in ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma']" :key="attr">
-                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+        <!-- Rearranging Instructions -->
+        <template x-if="canSwapScores()">
+            <div class="bg-indigo-50/60 border border-indigo-200 text-indigo-900 px-3 py-2 rounded-lg text-xs flex items-center justify-between gap-2">
+                <span class="flex items-center gap-1.5">
+                    <span>💡</span>
+                    <span><strong>Rearrange Scores:</strong> Drag and drop any ability card onto another to swap their scores.</span>
+                </span>
+                <span class="text-[10px] text-indigo-700 font-mono" x-show="currentMethodObj.Rearrange == 1">
+                    (Limit: 1 swap)
+                </span>
+            </div>
+        </template>
+
+        <!-- Ability Cards Grid (Str, Con, Dex, Int, Wis, Cha) -->
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pt-1">
+            @php
+                $abilityNames = [
+                    'Strength' => ['abbr' => 'STR', 'idx' => 0],
+                    'Constitution' => ['abbr' => 'CON', 'idx' => 1],
+                    'Dexterity' => ['abbr' => 'DEX', 'idx' => 2],
+                    'Intelligence' => ['abbr' => 'INT', 'idx' => 3],
+                    'Wisdom' => ['abbr' => 'WIS', 'idx' => 4],
+                    'Charisma' => ['abbr' => 'CHA', 'idx' => 5],
+                ];
+            @endphp
+
+            @foreach($abilityNames as $attr => $meta)
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3 relative transition-all select-none"
+                     :class="{
+                         'cursor-grab active:cursor-grabbing hover:border-indigo-400 hover:shadow-md': canSwapScores(),
+                         'ring-2 ring-indigo-500 bg-indigo-50/80': dragOverAttr === '{{ $attr }}',
+                         'opacity-50 border-dashed': dragSourceAttr === '{{ $attr }}'
+                     }"
+                     :draggable="canSwapScores()"
+                     @dragstart="onDragStart('{{ $attr }}', $event)"
+                     @dragover="onDragOver('{{ $attr }}', $event)"
+                     @dragleave="onDragLeave('{{ $attr }}')"
+                     @drop="onDrop('{{ $attr }}', $event)">
+                     
+                    <!-- Card Header -->
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-700 uppercase" x-text="attr"></span>
+                        <div class="flex items-center gap-1.5">
+                            <template x-if="canSwapScores()">
+                                <span class="text-slate-400 text-xs cursor-grab" title="Drag to swap">⠿</span>
+                            </template>
+                            <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">{{ $attr }}</span>
+                        </div>
                         <span class="font-mono text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded"
-                              x-text="(Math.floor((character[attr] - 10)/2) >= 0 ? '+' : '') + Math.floor((character[attr] - 10)/2)"></span>
+                              x-text="(Math.floor((character['{{ $attr }}'] - 10)/2) >= 0 ? '+' : '') + Math.floor((character['{{ $attr }}'] - 10)/2)"></span>
                     </div>
-                    <div class="flex items-center justify-between">
-                        <button type="button" @click="if(character[attr] > 8) { character[attr]--; calculatePointBuy(); }"
-                                class="w-8 h-8 rounded bg-white border border-slate-300 hover:bg-slate-100 font-bold text-base cursor-pointer shadow-2xs">-</button>
-                        <span class="text-2xl font-bold font-mono text-slate-900" x-text="character[attr]"></span>
-                        <button type="button" @click="if(character[attr] < 18) { character[attr]++; calculatePointBuy(); }"
-                                class="w-8 h-8 rounded bg-white border border-slate-300 hover:bg-slate-100 font-bold text-base cursor-pointer shadow-2xs">+</button>
+
+                    <!-- Score Value & Increment / Decrement Buttons (Only on Point Buy) -->
+                    <div class="flex items-center justify-between gap-2">
+                        <!-- Decrement Button (Point Buy Only) -->
+                        <template x-if="methodType === 'B'">
+                            <button type="button" @click="decAbility('{{ $attr }}')"
+                                    :disabled="!canDecAbility('{{ $attr }}')"
+                                    :class="canDecAbility('{{ $attr }}') ? 'hover:bg-slate-100 text-slate-800 cursor-pointer shadow-2xs' : 'opacity-40 cursor-not-allowed text-slate-400'"
+                                    class="w-8 h-8 rounded bg-white border border-slate-300 font-bold text-base transition flex items-center justify-center">-</button>
+                        </template>
+
+                        <!-- Large Score Display -->
+                        <span class="text-3xl font-bold font-mono text-slate-900 mx-auto" x-text="character['{{ $attr }}']"></span>
+
+                        <!-- Increment Button (Point Buy Only) -->
+                        <template x-if="methodType === 'B'">
+                            <button type="button" @click="incAbility('{{ $attr }}')"
+                                    :disabled="!canIncAbility('{{ $attr }}')"
+                                    :class="canIncAbility('{{ $attr }}') ? 'hover:bg-slate-100 text-slate-800 cursor-pointer shadow-2xs' : 'opacity-40 cursor-not-allowed text-slate-400'"
+                                    class="w-8 h-8 rounded bg-white border border-slate-300 font-bold text-base transition flex items-center justify-center">+</button>
+                        </template>
                     </div>
+
+                    <!-- Single Score Reroll Button (Methods with limited rerolls) -->
+                    <template x-if="currentMethodObj.Reroll > 0">
+                        <div class="pt-1">
+                            <button type="button" @click="rerollSingleScore('{{ $attr }}', {{ $meta['idx'] }})"
+                                    :disabled="rerollsRemaining <= 0"
+                                    :class="rerollsRemaining > 0 ? 'bg-amber-100 hover:bg-amber-200 text-amber-950 border-amber-300 cursor-pointer' : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed opacity-60'"
+                                    class="w-full text-[11px] font-bold py-1 px-2 rounded border transition flex items-center justify-center gap-1">
+                                <span>🎲</span>
+                                <span x-text="rerollsRemaining > 0 ? 'Reroll Score' : 'Reroll Used'"></span>
+                            </button>
+                        </div>
+                    </template>
+
+                    <!-- Quick Touch-Friendly Swap Dropdown (For Mobile or Accessibility) -->
+                    <template x-if="canSwapScores()">
+                        <div class="pt-1">
+                            <select @change="if($event.target.value) { swapScores('{{ $attr }}', $event.target.value); $event.target.value = ''; }"
+                                    class="w-full text-[10px] text-slate-600 bg-white border border-slate-200 rounded px-1.5 py-0.5 cursor-pointer">
+                                <option value="">⇄ Swap with...</option>
+                                @foreach($abilityNames as $targetAttr => $targetMeta)
+                                    @if($targetAttr !== $attr)
+                                        <option value="{{ $targetAttr }}">{{ $targetAttr }} (<span x-text="character['{{ $targetAttr }}']"></span>)</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </template>
                 </div>
-            </template>
+            @endforeach
         </div>
     </div>
 
@@ -461,7 +773,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 border-b border-slate-200 pb-4">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 border-b border-slate-200 pb-4">
                 <div>
                     <span class="text-slate-500 text-xs block">Race / Species:</span>
                     <span class="font-semibold text-slate-800" x-text="getSelectedRace().Name || 'Human'"></span>
@@ -473,6 +785,10 @@
                 <div>
                     <span class="text-slate-500 text-xs block">Gender &amp; Alignment:</span>
                     <span class="font-semibold text-slate-800" x-text="character.Gender + ' / ' + character.Alignment"></span>
+                </div>
+                <div>
+                    <span class="text-slate-500 text-xs block">Ability Gen Method:</span>
+                    <span class="font-semibold text-indigo-800 text-xs" x-text="currentMethodObj.MethodName || 'Method ' + character.AbilityGenMethod"></span>
                 </div>
             </div>
 

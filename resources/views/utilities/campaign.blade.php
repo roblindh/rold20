@@ -205,8 +205,12 @@
                         <label for="create_camp_method" class="block text-xs font-bold uppercase text-slate-700 mb-1">Ability Gen Method</label>
                         <select id="create_camp_method" name="AbilityGenMethod" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
                             @foreach($abilityMethods as $method)
+                                @php
+                                    $desc = preg_replace('/\s+/', ' ', trim($method->Description));
+                                    $truncatedDesc = \Illuminate\Support\Str::limit($desc, 60, '...');
+                                @endphp
                                 <option value="{{ $method->ID }}" {{ $method->ID == 2 ? 'selected' : '' }}>
-                                    {{ $method->MethodName }}
+                                    {{ $method->MethodName }}: {{ $truncatedDesc }}
                                 </option>
                             @endforeach
                         </select>
@@ -270,8 +274,12 @@
                         <label for="edit_camp_method" class="block text-xs font-bold uppercase text-slate-700 mb-1">Ability Gen Method</label>
                         <select id="edit_camp_method" name="AbilityGenMethod" x-model="editCamp.AbilityGenMethod" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
                             @foreach($abilityMethods as $method)
+                                @php
+                                    $desc = preg_replace('/\s+/', ' ', trim($method->Description));
+                                    $truncatedDesc = \Illuminate\Support\Str::limit($desc, 60, '...');
+                                @endphp
                                 <option value="{{ $method->ID }}">
-                                    {{ $method->MethodName }}
+                                    {{ $method->MethodName }}: {{ $truncatedDesc }}
                                 </option>
                             @endforeach
                         </select>
