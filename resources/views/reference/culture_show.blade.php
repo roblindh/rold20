@@ -12,11 +12,36 @@
                     </span>
                 @endif
             </div>
-            <p class="text-slate-500 text-xs sm:text-sm mt-1">Culture ID: {{ $culture->ID }}</p>
+            <p class="text-slate-500 text-xs sm:text-sm mt-1">
+                @if(!empty($cultureClasses))
+                    Typical Classes: <span class="font-medium text-slate-800">{{ implode(', ', array_filter($cultureClasses)) }}</span> | 
+                @endif
+                Languages: <span class="font-medium text-slate-800">{{ $culture->Languages ?? 'Common' }}</span>
+            </p>
         </div>
         <a href="{{ route('reference.cultures') }}" class="text-xs sm:text-sm text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1 shrink-0 self-start sm:self-auto">
             &larr; Back to Cultures
         </a>
+    </div>
+
+    <!-- Quick Stats Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <div class="text-[11px] font-semibold text-slate-500 uppercase">Native Languages</div>
+            <div class="text-sm font-bold text-slate-900 mt-1">{{ $culture->Languages ?? 'Common' }}</div>
+        </div>
+        @if(!empty($cultureClasses))
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <div class="text-[11px] font-semibold text-slate-500 uppercase">Class Equivalences</div>
+                <div class="text-sm font-bold text-slate-900 mt-1">{{ implode(', ', array_filter($cultureClasses)) }}</div>
+            </div>
+        @endif
+        @if(isset($culture->StartingIP))
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <div class="text-[11px] font-semibold text-slate-500 uppercase">Starting Improvement Points</div>
+                <div class="text-sm font-bold text-slate-900 mt-1 font-mono">+{{ $culture->StartingIP }} IP</div>
+            </div>
+        @endif
     </div>
 
     <!-- Details Card -->
@@ -29,7 +54,7 @@
         @endif
 
         @if(!empty($culture->Traits))
-            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm">
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm space-y-1">
                 <span class="font-bold block text-slate-900 mb-1">Cultural Traits &amp; Skill Modifiers:</span>
                 <div class="text-xs text-slate-800 bg-white p-3 rounded-lg border border-slate-200 leading-relaxed space-y-1">
                     {!! \App\Helpers\RolLink::parseTraits($culture->Traits, false) !!}
@@ -38,7 +63,7 @@
         @endif
 
         @if(!empty($culture->NameTable))
-            <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-200 text-sm">
+            <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-200 text-sm space-y-1">
                 <span class="font-bold block text-amber-900 mb-1">Naming Conventions:</span>
                 <div class="text-xs text-amber-950 font-mono leading-relaxed">{!! \App\Helpers\RolLink::formatText($culture->NameTable) !!}</div>
             </div>

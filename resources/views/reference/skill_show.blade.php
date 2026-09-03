@@ -10,7 +10,10 @@
                     {{ $skill->Abbreviation }}
                 </span>
             </div>
-            <p class="text-slate-500 text-xs sm:text-sm mt-1">Skill Compendium Details</p>
+            <p class="text-slate-500 text-xs sm:text-sm mt-1">
+                Category: {{ $skill->TypeName ?? 'General Skill' }} | 
+                Type ID: {{ $skill->Type }}
+            </p>
         </div>
         <a href="{{ route('reference.skills') }}" class="text-xs sm:text-sm text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1 shrink-0 self-start sm:self-auto">
             &larr; Back to Skills
@@ -36,7 +39,7 @@
     <!-- Specializations -->
     @if(count($specializations) > 0)
         <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
-            <h2 class="text-lg font-bold text-slate-900">Specializations</h2>
+            <h2 class="text-lg font-bold text-slate-900">{{ $skill->Name }} Specializations</h2>
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-slate-200 text-sm">
                     <thead class="bg-slate-50 text-slate-700 font-semibold">
@@ -68,38 +71,102 @@
     <!-- Skill Benefits -->
     @if(count($benefits) > 0)
         <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
-            <h2 class="text-lg font-bold text-slate-900">Level Benefits</h2>
-            <div class="space-y-2">
-                @foreach($benefits as $ben)
+            <h2 class="text-lg font-bold text-slate-900">{{ $skill->Name }} Level Benefits</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200 text-sm">
+                    <thead class="bg-slate-50 text-slate-700 font-semibold">
+                        <tr>
+                            <th class="px-4 py-2.5 text-center w-24">Level</th>
+                            <th class="px-4 py-2.5 text-left">Benefits &amp; Modifiers</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @foreach($benefits as $ben)
+                            @php
+                                $benefitDesc = !empty($ben->Traits) 
+                                    ? \App\Helpers\RolLink::parseTraits($ben->Traits, false) 
+                                    : ($ben->Benefit ?? '—');
+                            @endphp
+                            <tr>
+                                <td class="px-4 py-2.5 text-center font-bold text-indigo-700 font-mono">{{ $ben->SkillLevel }}</td>
+                                <td class="px-4 py-2.5 text-xs sm:text-sm text-slate-800 leading-relaxed">{!! $benefitDesc !!}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
+    <!-- Skill-Related Actions -->
+    @if(isset($actions) && count($actions) > 0)
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span>⚡</span> {{ $skill->Name }} Actions ({{ count($actions) }})
+                </h2>
+                <span class="text-xs text-slate-500 font-medium">* Untrained actions marked</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200 text-sm">
+                    <thead class="bg-slate-50 text-slate-700 font-semibold">
+                        <tr>
+                            <th class="px-4 py-2.5 text-left">Action</th>
+                            <th class="px-3 py-2.5 text-left">Category</th>
+                            <th class="px-3 py-2.5 text-left">Time</th>
+                            <th class="px-4 py-2.5 text-left">Action Check</th>
+                            <th class="col-action px-3 py-2.5">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @foreach($actions as $act)
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-4 py-2.5 font-semibold text-indigo-900 whitespace-nowrap">
+                                    <a href="{{ route('reference.actions.show', ['name' => urlencode($act->Name)]) }}" class="hover:underline text-indigo-600">
+                                        {{ $act->Name }}{{ !str_contains($act->Descriptors ?? '', 'Untrained') ? '*' : '' }}
+                                    </a>
+                                </td>
+                                <td class="px-3 py-2.5 text-xs text-slate-600 whitespace-nowrap">
+                                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-xs border border-slate-200">
+                                        {{ $act->CategoryName ?? 'General' }}
+                                    </span>
+                                </td>
+                                <td class="px-3 py-2.5 text-xs font-mono text-slate-600 whitespace-nowrap">{{ $act->ActionTime ?? '1 AP' }}</td>
+                                <td class="px-4 py-2.5 text-xs font-mono text-slate-800">{!! \App\Helpers\RolLink::formatText($act->ActionCheck ?? '—') !!}</td>
+                                <td class="col-action px-3 py-2.5">
+                                    <a href="{{ route('reference.actions.show', ['name' => urlencode($act->Name)]) }}" class="btn-action-view">
+                                        <span>View</span> <span>&rarr;</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
+    <!-- Class Access Matrix -->
+    @if(count($classes) > 0 && !empty($access))
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-3">
+            <h2 class="text-lg font-bold text-slate-900">Class Access Matrix</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
+                @foreach($classes as $cls)
                     @php
-                        $benefitDesc = !empty($ben->Traits) 
-                            ? \App\Helpers\RolLink::parseTraits($ben->Traits, false) 
-                            : ($ben->Benefit ?? '—');
+                        $isPrim = isset($access[$cls->ID]) && $access[$cls->ID] == 1;
+                        $isSec = isset($access[$cls->ID]) && $access[$cls->ID] == 0;
                     @endphp
-                    <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm">
-                        <span class="font-bold text-indigo-700 whitespace-nowrap">Level {{ $ben->SkillLevel }}:</span>
-                        <div class="text-slate-800 text-xs sm:text-sm leading-relaxed">{!! $benefitDesc !!}</div>
+                    <div class="p-2.5 rounded-lg border text-center text-xs {{ $isPrim ? 'bg-emerald-50 border-emerald-300 text-emerald-950 font-bold' : ($isSec ? 'bg-slate-50 border-slate-200 text-slate-700 font-medium' : 'bg-slate-50/50 border-slate-100 text-slate-400') }}">
+                        <div class="font-mono text-xs uppercase tracking-wider text-slate-500">{{ $cls->Abbreviation }}</div>
+                        <div class="truncate text-slate-900 font-semibold mt-0.5">{{ $cls->Name }}</div>
+                        <div class="text-[11px] mt-1 {{ $isPrim ? 'text-emerald-700 font-bold' : ($isSec ? 'text-slate-600' : 'text-slate-400') }}">
+                            {{ $isPrim ? 'X (Primary)' : ($isSec ? '/ (Secondary)' : '—') }}
+                        </div>
                     </div>
                 @endforeach
             </div>
         </div>
     @endif
-
-    <!-- Class Access -->
-    @if(count($classes) > 0 && !empty($access))
-        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-3">
-            <h2 class="text-lg font-bold text-slate-900">Class Access</h2>
-            <div class="flex flex-wrap gap-2">
-                @foreach($classes as $cls)
-                    @if(isset($access[$cls->ID]))
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold {{ $access[$cls->ID] == 1 ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' : 'bg-slate-100 text-slate-700 border border-slate-300' }}">
-                            <span>{{ $cls->Name }}</span>
-                            <span class="text-[10px] uppercase font-bold {{ $access[$cls->ID] == 1 ? 'text-emerald-600' : 'text-slate-500' }}">({{ $access[$cls->ID] == 1 ? 'Primary' : 'Secondary' }})</span>
-                        </span>
-                    @endif
-                @endforeach
-            </div>
-        </div>
-    @endif
+</div>
 </div>
 @endsection

@@ -74,10 +74,18 @@ class ReferenceController extends Controller
 
         $benefits = DB::table('ref_skillbenefits')->where('Skill', $skill->ID)->orderBy('SkillLevel')->get();
         $specializations = DB::table('ref_skillspecializations')->where('Skill', $skill->ID)->orderBy('Name')->get();
-        $classes = DB::table('ref_classes')->get();
+        $classes = DB::table('ref_classes')->orderBy('SortOrder')->get();
         $access = DB::table('ref_skillaccess')->where('SkillID', $skill->ID)->pluck('Prim', 'ClassID')->toArray();
 
-        return view('reference.skill_show', compact('skill', 'benefits', 'specializations', 'classes', 'access'));
+        $actions = DB::table('ref_actions')
+            ->leftJoin('ref_actiontypes', 'ref_actions.Category', '=', 'ref_actiontypes.ID')
+            ->select('ref_actions.*', 'ref_actiontypes.Category as CategoryName')
+            ->where('ActionCheck', 'like', "%+ {$skill->Name}%")
+            ->orWhere('ActionCheck', 'like', "%+ {$skill->Abbreviation}%")
+            ->orderBy('ref_actions.Name')
+            ->get();
+
+        return view('reference.skill_show', compact('skill', 'benefits', 'specializations', 'classes', 'access', 'actions'));
     }
 
     /**
@@ -127,12 +135,13 @@ class ReferenceController extends Controller
 
     public function showSpell(string $name): View
     {
+        $this->ensureRulesLoaded();
         $name = urldecode($name);
         $spell = DB::table('ref_spells')->where('Name', $name)->first();
         if (!$spell) {
             abort(404, 'Spell not found');
         }
-        $options = DB::table('ref_spelloptions')->where('SpellID', $spell->ID)->get();
+        $options = DB::table('ref_spelloptions')->where('SpellID', $spell->ID)->orderBy('Name')->get();
 
         return view('reference.spell_show', compact('spell', 'options'));
     }
@@ -258,6 +267,27 @@ class ReferenceController extends Controller
             abort(404, 'Creature not found');
         }
 
+        global $_APP;
+
+        $sizeDesc = $_APP['sizecats'][$creature->SizeClass]['Description'] ?? ('Size ' . ($creature->SizeClass ?? 0));
+        $sizeAbbr = $_APP['sizecats'][$creature->SizeClass]['Abbreviation'] ?? '';
+        $bodyDesc = $_APP['bodycats'][$creature->BodyType]['Description'] ?? 'Generic';
+
+        $culture = null;
+        $cultureClasses = [];
+        if (!empty($creature->DefaultCulture) && isset($_APP['cultures'][$creature->DefaultCulture])) {
+            $culture = (object)$_APP['cultures'][$creature->DefaultCulture];
+            if (isset($_APP['classconfigs'][$culture->ClassConfig]['ClassID'])) {
+                $cultureClasses[] = $_APP['classes'][$_APP['classconfigs'][$culture->ClassConfig]['ClassID']]['Name'] ?? '';
+            }
+            if (!empty($culture->ClassConfigSec) && isset($_APP['classconfigs'][$culture->ClassConfigSec]['ClassID'])) {
+                $cultureClasses[] = $_APP['classes'][$_APP['classconfigs'][$culture->ClassConfigSec]['ClassID']]['Name'] ?? '';
+            }
+            if (!empty($culture->ClassConfigTert) && isset($_APP['classconfigs'][$culture->ClassConfigTert]['ClassID'])) {
+                $cultureClasses[] = $_APP['classes'][$_APP['classconfigs'][$culture->ClassConfigTert]['ClassID']]['Name'] ?? '';
+            }
+        }
+
         $statBlocksHtml = '';
         try {
             $entity = new \cIndividual();
@@ -269,7 +299,7 @@ class ReferenceController extends Controller
             $statBlocksHtml = '';
         }
 
-        return view('reference.creature_show', compact('creature', 'statBlocksHtml'));
+        return view('reference.creature_show', compact('creature', 'statBlocksHtml', 'sizeDesc', 'sizeAbbr', 'bodyDesc', 'culture', 'cultureClasses'));
     }
 
     /**
@@ -328,14 +358,22 @@ class ReferenceController extends Controller
         $item = DB::table('ref_items')
             ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
             ->leftJoin('ref_itemtypes', 'ref_itemsubtypes.Type', '=', 'ref_itemtypes.ID')
-            ->select('ref_items.*', 'ref_itemtypes.Name as TypeName', 'ref_itemsubtypes.Name as SubtypeName', 'ref_items.BaseValue as Cost', 'ref_items.BaseWeight as Weight')
+            ->leftJoin('ref_materials', 'ref_items.BaseMaterial', '=', 'ref_materials.ID')
+            ->select('ref_items.*', 'ref_itemtypes.Name as TypeName', 'ref_itemtypes.ID as TypeID', 'ref_itemsubtypes.Name as SubtypeName', 'ref_items.BaseValue as Cost', 'ref_items.BaseWeight as Weight', 'ref_materials.Name as MaterialName', 'ref_materials.SpecialInfo as MaterialSpecial')
             ->where('ref_items.Name', $name)
             ->first();
         if (!$item) {
             abort(404, 'Item not found');
         }
 
-        return view('reference.equipment_show', compact('item'));
+        global $_APP;
+        $sizeAbbr = isset($item->BaseSize) ? ($_APP['sizecats'][min(max((int)$item->BaseSize, -4), 4)]['Abbreviation'] ?? '-') : '-';
+        $sizeDesc = isset($item->BaseSize) ? ($_APP['sizecats'][min(max((int)$item->BaseSize, -4), 4)]['Description'] ?? '-') : '-';
+        
+        $itemDR = class_exists('\cItem') ? \cItem::GetDR($item->BaseMaterial) : '-';
+        $itemHP = class_exists('\cItem') ? \cItem::GetHP($item->BaseMaterial, $item->BaseSize) : '-';
+
+        return view('reference.equipment_show', compact('item', 'sizeAbbr', 'sizeDesc', 'itemDR', 'itemHP'));
     }
 
     /**
@@ -386,8 +424,13 @@ class ReferenceController extends Controller
 
     public function showAction(string $name): View
     {
+        $this->ensureRulesLoaded();
         $name = urldecode($name);
-        $action = DB::table('ref_actions')->where('Name', $name)->first();
+        $action = DB::table('ref_actions')
+            ->leftJoin('ref_actiontypes', 'ref_actions.Category', '=', 'ref_actiontypes.ID')
+            ->select('ref_actions.*', 'ref_actiontypes.Category as CategoryName')
+            ->where('ref_actions.Name', $name)
+            ->first();
         if (!$action) {
             abort(404, 'Action not found');
         }
@@ -435,7 +478,19 @@ class ReferenceController extends Controller
             abort(404, 'Culture not found');
         }
 
-        return view('reference.culture_show', compact('culture'));
+        global $_APP;
+        $cultureClasses = [];
+        if (!empty($culture->ClassConfig) && isset($_APP['classconfigs'][$culture->ClassConfig]['ClassID'])) {
+            $cultureClasses[] = $_APP['classes'][$_APP['classconfigs'][$culture->ClassConfig]['ClassID']]['Name'] ?? '';
+        }
+        if (!empty($culture->ClassConfigSec) && isset($_APP['classconfigs'][$culture->ClassConfigSec]['ClassID'])) {
+            $cultureClasses[] = $_APP['classes'][$_APP['classconfigs'][$culture->ClassConfigSec]['ClassID']]['Name'] ?? '';
+        }
+        if (!empty($culture->ClassConfigTert) && isset($_APP['classconfigs'][$culture->ClassConfigTert]['ClassID'])) {
+            $cultureClasses[] = $_APP['classes'][$_APP['classconfigs'][$culture->ClassConfigTert]['ClassID']]['Name'] ?? '';
+        }
+
+        return view('reference.culture_show', compact('culture', 'cultureClasses'));
     }
 
     private function ensureRulesLoaded(): void
