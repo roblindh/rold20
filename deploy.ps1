@@ -137,10 +137,10 @@ try {
 } catch {}
 
 try {
-    $SyncUri = "http://ROL-NAS-MINI:8090/clear-cache?sync=1"
-    $Response2 = Invoke-WebRequest -Uri $SyncUri -UseBasicParsing -TimeoutSec 15 -ErrorAction SilentlyContinue
+    $SyncUri = "http://ROL-NAS-MINI:8090/clear-cache?sync=1&reindex=1"
+    $Response2 = Invoke-WebRequest -Uri $SyncUri -UseBasicParsing -TimeoutSec 30 -ErrorAction SilentlyContinue
     if ($Response2.StatusCode -eq 200) {
-        Write-Host "Triggered rules database sync & cache clear via HTTP ($SyncUri)." -ForegroundColor Green
+        Write-Host "Triggered rules database sync, search reindex & cache clear via HTTP ($SyncUri)." -ForegroundColor Green
     }
 } catch {}
 

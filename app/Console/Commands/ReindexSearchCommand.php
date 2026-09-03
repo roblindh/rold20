@@ -52,7 +52,7 @@ class ReindexSearchCommand extends Command
 
                 if (empty($title)) continue;
 
-                $url = route($meta['route']);
+                $url = route($meta['route'], [], false);
                 if ($anchor) {
                     $url .= "#$anchor";
                 }
@@ -77,7 +77,7 @@ class ReindexSearchCommand extends Command
             DB::table('search_index')->insert([
                 'title' => $s->Name . ($s->Abbreviation ? " ({$s->Abbreviation})" : ''),
                 'category' => 'Skill',
-                'url' => route('reference.skills.show', ['name' => urlencode($s->Name)]),
+                'url' => route('reference.skills.show', ['name' => urlencode($s->Name)], false),
                 'snippet' => mb_substr($s->Description ?? '', 0, 200),
                 'content' => "{$s->Name} {$s->Abbreviation} {$s->Description} {$s->Prereqs}",
             ]);
@@ -91,7 +91,7 @@ class ReindexSearchCommand extends Command
             DB::table('search_index')->insert([
                 'title' => $sp->Name,
                 'category' => 'Spell / Power',
-                'url' => route('reference.spells.show', ['name' => urlencode($sp->Name)]),
+                'url' => route('reference.spells.show', ['name' => urlencode($sp->Name)], false),
                 'snippet' => mb_substr($sp->Description ?? '', 0, 200),
                 'content' => "{$sp->Name} {$sp->Skills} {$sp->Descriptors} {$sp->Description} {$sp->Options}",
             ]);
@@ -106,7 +106,7 @@ class ReindexSearchCommand extends Command
             DB::table('search_index')->insert([
                 'title' => $c->Name,
                 'category' => 'Creature',
-                'url' => route('reference.creatures.show', ['name' => urlencode($c->Name)]),
+                'url' => route('reference.creatures.show', ['name' => urlencode($c->Name)], false),
                 'snippet' => mb_substr($desc, 0, 200),
                 'content' => "{$c->Name} {$c->Environment} {$desc} {$c->Organization}",
             ]);
@@ -120,7 +120,7 @@ class ReindexSearchCommand extends Command
             DB::table('search_index')->insert([
                 'title' => $it->Name,
                 'category' => 'Equipment',
-                'url' => route('reference.equipment.show', ['name' => urlencode($it->Name)]),
+                'url' => route('reference.equipment.show', ['name' => urlencode($it->Name)], false),
                 'snippet' => mb_substr($it->Description ?? '', 0, 200),
                 'content' => "{$it->Name} {$it->Description} {$it->Traits}",
             ]);
@@ -134,7 +134,7 @@ class ReindexSearchCommand extends Command
             DB::table('search_index')->insert([
                 'title' => $act->Name,
                 'category' => 'Action',
-                'url' => route('reference.actions.show', ['name' => urlencode($act->Name)]),
+                'url' => route('reference.actions.show', ['name' => urlencode($act->Name)], false),
                 'snippet' => mb_substr($act->Description ?? '', 0, 200),
                 'content' => "{$act->Name} {$act->Description} {$act->Descriptors} {$act->Results}",
             ]);
@@ -148,7 +148,7 @@ class ReindexSearchCommand extends Command
             DB::table('search_index')->insert([
                 'title' => $cu->Name,
                 'category' => 'Culture',
-                'url' => route('reference.cultures.show', ['name' => urlencode($cu->Name)]),
+                'url' => route('reference.cultures.show', ['name' => urlencode($cu->Name)], false),
                 'snippet' => mb_substr($cu->Description ?? '', 0, 200),
                 'content' => "{$cu->Name} {$cu->Description}",
             ]);

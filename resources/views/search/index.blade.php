@@ -11,7 +11,7 @@
     </div>
 
     <!-- Search Form -->
-    <form method="GET" action="{{ route('search') }}" class="bg-slate-50 p-4 sm:p-6 rounded-xl border border-slate-200 space-y-4">
+    <form method="GET" action="{{ route('search', [], false) }}" class="bg-slate-50 p-4 sm:p-6 rounded-xl border border-slate-200 space-y-4">
         <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <div class="flex-1 relative">
                 <input type="text" name="q" value="{{ $q }}" placeholder="Search any term (e.g. Grapple, Fireball, Aberration, Encumbrance)..."

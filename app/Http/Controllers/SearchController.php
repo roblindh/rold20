@@ -31,7 +31,12 @@ class SearchController extends Controller
             $query->where('category', 'like', "%{$category}%");
         }
 
-        $results = $query->paginate(20)->withQueryString();
+        $results = $query->paginate(20)->withPath('/search')->withQueryString();
+        $results->getCollection()->transform(function ($item) {
+            $item->url = $this->formatUrl($item->url);
+            return $item;
+        });
+
         $categories = DB::table('search_index')->distinct()->pluck('category');
 
         return view('search.index', compact('q', 'category', 'results', 'categories'));
@@ -53,6 +58,32 @@ class SearchController extends Controller
             ->limit(10)
             ->get(['title', 'category', 'url', 'snippet']);
 
+        $results->transform(function ($item) {
+            $item->url = $this->formatUrl($item->url);
+            return $item;
+        });
+
         return response()->json($results);
+    }
+
+    /**
+     * Convert any absolute URL or localhost reference to a root-relative path
+     */
+    private function formatUrl(?string $url): string
+    {
+        if (empty($url)) {
+            return '/';
+        }
+
+        $parsed = parse_url($url);
+        $path = $parsed['path'] ?? '/';
+        if (!empty($parsed['query'])) {
+            $path .= '?' . $parsed['query'];
+        }
+        if (!empty($parsed['fragment'])) {
+            $path .= '#' . $parsed['fragment'];
+        }
+
+        return $path;
     }
 }

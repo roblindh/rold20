@@ -141,6 +141,9 @@ Route::get('/clear-cache', function () {
         if (request()->has('sync')) {
             \Illuminate\Support\Facades\Artisan::call('rules:sync', ['--force' => true]);
         }
+        if (request()->has('reindex') || request()->has('sync')) {
+            \Illuminate\Support\Facades\Artisan::call('search:reindex');
+        }
     } catch (\Throwable $e) {
         // Continue manual unlinks if artisan encounters environment issue
     }
