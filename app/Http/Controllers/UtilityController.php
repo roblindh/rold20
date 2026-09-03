@@ -18,7 +18,8 @@ class UtilityController extends Controller
     public function characterGenerator(Request $request): View
     {
         $campaigns = DB::table('campaigns')->get();
-        $races = DB::table('ref_creatures')->where('CreatureType', 7)->orderBy('Name')->get(); // Humanoids / PC races
+        $races = DB::table('ref_creatures')->select('ID', 'Name', 'NameInformal', 'PCSuitability', 'BaseRL', 'CreatureType', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj', 'GroundSpeed', 'FlySpeed', 'SwimSpeed', 'SizeClass')->orderBy('Name')->get();
+        $templates = DB::table('ref_templates')->select('ID', 'Name', 'PCSuitability', 'RLModifier', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj')->orderBy('Name')->get();
         $classes = DB::table('ref_classes')->orderBy('Name')->get();
         $abilityMethods = DB::table('ref_abilitygeneration')->orderBy('ID')->get();
         $pointBuyTable = DB::table('ref_abilitypointbuy')->orderBy('BaseAbility')->get();
@@ -27,7 +28,7 @@ class UtilityController extends Controller
         $equipment = DB::table('ref_items')->orderBy('Name')->get();
 
         return view('utilities.chargen_wizard', compact(
-            'campaigns', 'races', 'classes', 'abilityMethods', 'pointBuyTable', 'skills', 'improvements', 'equipment'
+            'campaigns', 'races', 'templates', 'classes', 'abilityMethods', 'pointBuyTable', 'skills', 'improvements', 'equipment'
         ));
     }
 
@@ -177,31 +178,104 @@ class UtilityController extends Controller
      */
     public function campaign(Request $request): View
     {
-        $campaigns = DB::table('campaigns')->get();
+        $campaigns = DB::table('campaigns')
+            ->leftJoin('players', 'campaigns.GameMaster', '=', 'players.ID')
+            ->leftJoin('ref_abilitygeneration', 'campaigns.AbilityGenMethod', '=', 'ref_abilitygeneration.ID')
+            ->select(
+                'campaigns.*',
+                'players.Name as GMName',
+                'ref_abilitygeneration.MethodName as AbilityGenMethodName'
+            )
+            ->get();
+
         $characters = DB::table('characters')->get();
+        $abilityMethods = DB::table('ref_abilitygeneration')->orderBy('ID')->get();
         $myCampaigns = \Illuminate\Support\Facades\Auth::check()
-            ? DB::table('campaigns')->where('GameMaster', \Illuminate\Support\Facades\Auth::id())->get()
+            ? $campaigns->where('GameMaster', \Illuminate\Support\Facades\Auth::id())
             : collect([]);
 
-        return view('utilities.campaign', compact('campaigns', 'characters', 'myCampaigns'));
+        return view('utilities.campaign', compact('campaigns', 'characters', 'myCampaigns', 'abilityMethods'));
     }
 
     public function createCampaign(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate([
             'Name' => 'required|string|max:50|unique:campaigns,Name',
-            'Description' => 'nullable|string|max:250',
-            'StartingXP' => 'nullable|integer',
+            'Description' => 'nullable|string|max:1000',
+            'AbilityGenMethod' => 'nullable|integer',
+            'StartingXP' => 'nullable|integer|min:0',
+            'SuitabilityLevel' => 'nullable|integer|min:0|max:5',
+            'OptionalRules' => 'nullable|string|max:500',
+            'Notes' => 'nullable|string|max:5000',
         ]);
 
         DB::table('campaigns')->insert([
             'Name' => $validated['Name'],
             'Description' => $validated['Description'] ?? '',
-            'StartingXP' => $validated['StartingXP'] ?? 0,
             'GameMaster' => \Illuminate\Support\Facades\Auth::id(),
+            'AbilityGenMethod' => (int)($validated['AbilityGenMethod'] ?? 2),
+            'StartingXP' => (int)($validated['StartingXP'] ?? 0),
+            'SuitabilityLevel' => (int)($validated['SuitabilityLevel'] ?? 3),
+            'OptionalRules' => !empty($validated['OptionalRules']) ? $validated['OptionalRules'] : 'None',
+            'Notes' => $validated['Notes'] ?? '',
         ]);
 
         return back()->with('status', "Campaign '{$validated['Name']}' created successfully!");
+    }
+
+    public function updateCampaign(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign) {
+            return back()->with('error', 'Campaign not found.');
+        }
+
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            $user = \Illuminate\Support\Facades\Auth::user();
+            if ($campaign->GameMaster !== $user->ID && !$user->isGM()) {
+                return back()->with('error', 'You are not authorized to edit this campaign.');
+            }
+        }
+
+        $validated = $request->validate([
+            'Description' => 'nullable|string|max:1000',
+            'AbilityGenMethod' => 'nullable|integer',
+            'StartingXP' => 'nullable|integer|min:0',
+            'SuitabilityLevel' => 'nullable|integer|min:0|max:5',
+            'OptionalRules' => 'nullable|string|max:500',
+            'Notes' => 'nullable|string|max:5000',
+        ]);
+
+        DB::table('campaigns')->where('ID', $id)->update([
+            'Description' => $validated['Description'] ?? '',
+            'AbilityGenMethod' => (int)($validated['AbilityGenMethod'] ?? $campaign->AbilityGenMethod ?? 2),
+            'StartingXP' => (int)($validated['StartingXP'] ?? $campaign->StartingXP ?? 0),
+            'SuitabilityLevel' => (int)($validated['SuitabilityLevel'] ?? $campaign->SuitabilityLevel ?? 3),
+            'OptionalRules' => !empty($validated['OptionalRules']) ? $validated['OptionalRules'] : 'None',
+            'Notes' => $validated['Notes'] ?? '',
+        ]);
+
+        return back()->with('status', "Campaign '{$campaign->Name}' updated successfully!");
+    }
+
+    public function deleteCampaign(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign) {
+            return back()->with('error', 'Campaign not found.');
+        }
+
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            $user = \Illuminate\Support\Facades\Auth::user();
+            if ($campaign->GameMaster !== $user->ID && !$user->isGM()) {
+                return back()->with('error', 'You are not authorized to delete this campaign.');
+            }
+        }
+
+        DB::table('characters')->where('Campaign', $id)->update(['Campaign' => null]);
+        DB::table('campaigns')->where('ID', $id)->delete();
+
+        return back()->with('status', "Campaign '{$campaign->Name}' deleted successfully.");
     }
 
     /**

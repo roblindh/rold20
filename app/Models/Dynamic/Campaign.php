@@ -17,4 +17,9 @@ class Campaign extends Model
     {
         return $this->hasMany(Character::class, 'Campaign', 'ID');
     }
+
+    public function gameMaster(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Player::class, 'GameMaster', 'ID');
+    }
 }

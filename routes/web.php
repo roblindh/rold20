@@ -82,6 +82,8 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
 
     Route::get('/campaign', [UtilityController::class, 'campaign'])->name('campaign');
     Route::post('/campaign/create', [UtilityController::class, 'createCampaign'])->name('campaign.create');
+    Route::post('/campaign/{id}/update', [UtilityController::class, 'updateCampaign'])->name('campaign.update');
+    Route::post('/campaign/{id}/delete', [UtilityController::class, 'deleteCampaign'])->name('campaign.delete');
 });
 
 // Search endpoints
