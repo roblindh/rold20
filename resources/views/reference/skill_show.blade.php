@@ -42,14 +42,19 @@
                             <th class="px-4 py-2.5 text-left">Specialization</th>
                             <th class="px-4 py-2.5 text-left">Description</th>
                             <th class="px-4 py-2.5 text-left">Prerequisites</th>
+                            <th class="px-4 py-2.5 text-left">Benefits</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @foreach($specializations as $spec)
+                            @php
+                                $specBenefits = !empty($spec->Traits) ? \App\Helpers\RolLink::parseTraits($spec->Traits, false) : '';
+                            @endphp
                             <tr>
-                                <td class="px-4 py-2.5 font-semibold text-slate-900">{{ $spec->Name }}</td>
+                                <td class="px-4 py-2.5 font-semibold text-slate-900 whitespace-nowrap">{{ $spec->Name }}</td>
                                 <td class="px-4 py-2.5 text-slate-600">{{ $spec->Description ?? '—' }}</td>
-                                <td class="px-4 py-2.5 text-xs text-slate-500">{{ $spec->Prereqs ?? '—' }}</td>
+                                <td class="px-4 py-2.5 text-xs text-slate-500 whitespace-nowrap">{{ $spec->Prereqs ?? '—' }}</td>
+                                <td class="px-4 py-2.5 text-xs text-slate-700">{!! $specBenefits ?: '—' !!}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -64,9 +69,14 @@
             <h2 class="text-lg font-bold text-slate-900">Level Benefits</h2>
             <div class="space-y-2">
                 @foreach($benefits as $ben)
+                    @php
+                        $benefitDesc = !empty($ben->Traits) 
+                            ? \App\Helpers\RolLink::parseTraits($ben->Traits, false) 
+                            : ($ben->Benefit ?? '—');
+                    @endphp
                     <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm">
                         <span class="font-bold text-indigo-700 whitespace-nowrap">Level {{ $ben->SkillLevel }}:</span>
-                        <span class="text-slate-700 font-mono text-xs">{{ $ben->Traits ?? $ben->Benefit ?? '—' }}</span>
+                        <div class="text-slate-800 text-xs sm:text-sm leading-relaxed">{!! $benefitDesc !!}</div>
                     </div>
                 @endforeach
             </div>

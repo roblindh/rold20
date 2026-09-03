@@ -40,5 +40,13 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('refLink', function ($expression) {
             return "<?php echo \App\Helpers\RolLink::reference($expression); ?>";
         });
+
+        Blade::directive('traits', function ($expression) {
+            return "<?php echo \App\Helpers\RolLink::parseTraits($expression); ?>";
+        });
+
+        Blade::directive('natAttacks', function ($expression) {
+            return "<?php echo \App\Helpers\RolLink::parseNaturalAttacks($expression); ?>";
+        });
     }
 }

@@ -28,9 +28,12 @@
                     </td>
                     <td class="px-3 py-3 text-right font-mono text-amber-700 font-medium whitespace-nowrap">{{ $item->Cost ? number_format((float)$item->Cost, 1) : '—' }}</td>
                     <td class="px-3 py-3 text-right font-mono text-slate-600 whitespace-nowrap">{{ $item->Weight ? number_format((float)$item->Weight, 1) : '—' }}</td>
-                    <td class="px-4 py-3 text-xs font-mono text-slate-700 col-description">
+                    <td class="px-4 py-3 text-xs text-slate-700 col-description">
                         <div class="line-clamp-2 leading-relaxed">
-                            {{ Str::limit((string)($item->Traits ?? $item->Special ?? $item->Description ?? ''), 100) }}
+                            @php
+                                $itemTraitDesc = !empty($item->Traits) ? \App\Helpers\RolLink::parseTraits($item->Traits, true) : null;
+                            @endphp
+                            {{ Str::limit((string)($itemTraitDesc ?? $item->Special ?? $item->Description ?? '—'), 120) }}
                         </div>
                     </td>
                     <td class="col-action px-3 py-3">

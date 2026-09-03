@@ -60,6 +60,7 @@ class ReferenceController extends Controller
 
     public function showSkill(string $name): View
     {
+        $this->ensureRulesLoaded();
         $name = urldecode($name);
         $skill = DB::table('ref_skills')
             ->leftJoin('ref_skilltypes', 'ref_skills.Type', '=', 'ref_skilltypes.ID')
@@ -245,6 +246,7 @@ class ReferenceController extends Controller
 
     public function showCreature(string $name): View
     {
+        $this->ensureRulesLoaded();
         $name = urldecode($name);
         $creature = DB::table('ref_creatures')
             ->leftJoin('ref_creaturesubtypes', 'ref_creatures.CreatureType', '=', 'ref_creaturesubtypes.ID')
@@ -258,10 +260,6 @@ class ReferenceController extends Controller
 
         $statBlocksHtml = '';
         try {
-            require_once base_path('RulesSrc/global.php');
-            require_once base_path('RulesSrc/rolcalc.php');
-            application_start();
-
             $entity = new \cIndividual();
             $rawSb = $entity->GetStatBlocksStr($creature->ID);
             if ($rawSb) {
@@ -279,6 +277,7 @@ class ReferenceController extends Controller
      */
     public function equipment(Request $request): View|JsonResponse
     {
+        $this->ensureRulesLoaded();
         $query = DB::table('ref_items')
             ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
             ->leftJoin('ref_itemtypes', 'ref_itemsubtypes.Type', '=', 'ref_itemtypes.ID')
@@ -324,6 +323,7 @@ class ReferenceController extends Controller
 
     public function showEquipment(string $name): View
     {
+        $this->ensureRulesLoaded();
         $name = urldecode($name);
         $item = DB::table('ref_items')
             ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
@@ -428,6 +428,7 @@ class ReferenceController extends Controller
 
     public function showCulture(string $name): View
     {
+        $this->ensureRulesLoaded();
         $name = urldecode($name);
         $culture = DB::table('ref_cultures')->where('Name', $name)->first();
         if (!$culture) {

@@ -31,7 +31,9 @@
         @if(!empty($culture->Traits))
             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm">
                 <span class="font-bold block text-slate-900 mb-1">Cultural Traits & Skill Modifiers:</span>
-                <p class="font-mono text-xs text-indigo-900 bg-white p-2.5 rounded border border-slate-200">{{ $culture->Traits }}</p>
+                <div class="text-xs text-slate-800 bg-white p-3 rounded-lg border border-slate-200 leading-relaxed space-y-1">
+                    {!! \App\Helpers\RolLink::parseTraits($culture->Traits, false) !!}
+                </div>
             </div>
         @endif
 

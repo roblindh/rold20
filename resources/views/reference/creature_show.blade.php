@@ -77,7 +77,9 @@
         @if(!empty($creature->NaturalAttacks))
             <div>
                 <h3 class="text-xs uppercase font-bold text-slate-400 tracking-wider mb-1">Natural Attacks</h3>
-                <p class="font-mono text-xs text-slate-800 bg-slate-50 p-2.5 rounded border border-slate-200">{{ $creature->NaturalAttacks }}</p>
+                <div class="text-xs text-slate-800 bg-slate-50 p-3 rounded-lg border border-slate-200 leading-relaxed space-y-1">
+                    {!! \App\Helpers\RolLink::parseNaturalAttacks($creature->NaturalAttacks, (int)($creature->SizeClass ?? 0)) !!}
+                </div>
             </div>
         @endif
 
@@ -85,7 +87,9 @@
         @if(!empty($creature->RacialTraits))
             <div>
                 <h3 class="text-xs uppercase font-bold text-slate-400 tracking-wider mb-1">Racial Traits & Special Abilities</h3>
-                <p class="font-mono text-xs text-indigo-900 bg-indigo-50/50 p-2.5 rounded border border-indigo-100">{{ $creature->RacialTraits }}</p>
+                <div class="text-xs text-indigo-950 bg-indigo-50/50 p-3 rounded-lg border border-indigo-100 leading-relaxed space-y-1">
+                    {!! \App\Helpers\RolLink::parseTraits($creature->RacialTraits, false) !!}
+                </div>
             </div>
         @endif
 

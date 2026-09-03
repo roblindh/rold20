@@ -106,6 +106,10 @@ class cTrait {
         global $_APP;
         global $aTraitDescriptions;
 
+        if (empty($aTraitDescriptions)) {
+            init_traits();
+        }
+
         if ($this->type == "Weapon")
             return "Weapon " . cTrait::GetWeaponStr(cTrait::ProcessWeapon(new cWeaponStats(), $this->aParams),
                             $this->aParams["Qual"], ($entity ? $entity->GetCurrentSize() : NULL), 0, $traitEffects);

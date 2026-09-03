@@ -46,4 +46,82 @@ class RolLink
 
         return $html;
     }
+
+    /**
+     * Parse trait string into a human-readable description
+     */
+    public static function parseTraits(?string $traits, bool $brief = false): string
+    {
+        if ($traits === null || trim($traits) === '') {
+            return '';
+        }
+
+        if (!class_exists('\cTraitEffects') || !function_exists('init_traits')) {
+            if (file_exists(base_path('RulesSrc/global.php'))) {
+                require_once base_path('RulesSrc/global.php');
+                if (function_exists('application_start')) {
+                    application_start();
+                }
+            }
+        }
+
+        if (function_exists('init_traits')) {
+            global $aTraitDescriptions;
+            if (empty($aTraitDescriptions)) {
+                init_traits();
+            }
+        }
+
+        try {
+            $desc = \cTraitEffects::StatGetTraitsDescription($traits, $brief);
+            $desc = trim($desc);
+            if ($desc === '' || str_contains($desc, 'ERROR!!!')) {
+                return e($traits);
+            }
+            if ($brief) {
+                return $desc;
+            }
+            $lines = array_filter(array_map('trim', preg_split('/(\\\\n|\r\n|\n|\r)/', $desc)));
+            if (count($lines) <= 1) {
+                return implode('', $lines);
+            }
+            return implode('<br/>', $lines);
+        } catch (\Throwable $e) {
+            return e($traits);
+        }
+    }
+
+    /**
+     * Parse natural attacks string into human-readable descriptions
+     */
+    public static function parseNaturalAttacks(?string $natAttacks, int $sizeClass = 0): string
+    {
+        if ($natAttacks === null || trim($natAttacks) === '') {
+            return '';
+        }
+
+        if (!class_exists('\cCreature')) {
+            if (file_exists(base_path('RulesSrc/global.php'))) {
+                require_once base_path('RulesSrc/global.php');
+                if (function_exists('application_start')) {
+                    application_start();
+                }
+            }
+        }
+
+        try {
+            $desc = \cCreature::GetNaturalAttacksDescription($natAttacks, $sizeClass);
+            $desc = trim($desc);
+            if ($desc === '') {
+                return e($natAttacks);
+            }
+            $lines = array_filter(array_map('trim', preg_split('/(\\\\n|\r\n|\n|\r)/', $desc)));
+            if (count($lines) <= 1) {
+                return implode('', $lines);
+            }
+            return implode('<br/>', $lines);
+        } catch (\Throwable $e) {
+            return e($natAttacks);
+        }
+    }
 }
