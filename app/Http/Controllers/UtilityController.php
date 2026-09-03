@@ -18,17 +18,33 @@ class UtilityController extends Controller
     public function characterGenerator(Request $request): View
     {
         $campaigns = DB::table('campaigns')->get();
-        $races = DB::table('ref_creatures')->select('ID', 'Name', 'NameInformal', 'PCSuitability', 'BaseRL', 'CreatureType', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj', 'GroundSpeed', 'FlySpeed', 'SwimSpeed', 'SizeClass')->orderBy('Name')->get();
-        $templates = DB::table('ref_templates')->select('ID', 'Name', 'PCSuitability', 'RLModifier', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj')->orderBy('Name')->get();
+        $races = DB::table('ref_creatures')->select(
+            'ID', 'Name', 'NameInformal', 'PCSuitability', 'BaseRL', 'CLModifier',
+            'CreatureType', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj',
+            'GroundSpeed', 'FlySpeed', 'SwimSpeed', 'SizeClass',
+            'AvgLengthM', 'AvgLengthF', 'AvgMassM', 'AvgMassF',
+            'AdultAge', 'MatureAge', 'OldAge', 'VenerableAge', 'DefaultCulture'
+        )->orderBy('Name')->get();
+        $templates = DB::table('ref_templates')->select(
+            'ID', 'Name', 'PCSuitability', 'RLModifier', 'CLModifier',
+            'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj'
+        )->orderBy('Name')->get();
+        $cultures = DB::table('ref_cultures')->select(
+            'ID', 'Name', 'PCSuitability', 'ClassConfig', 'ClassConfigSec', 'ClassConfigTert', 'Traits'
+        )->orderBy('Name')->get();
+        $classConfigs = DB::table('ref_classconfigs')->select('ID', 'Name', 'ClassID')->get()->keyBy('ID');
         $classes = DB::table('ref_classes')->orderBy('Name')->get();
         $abilityMethods = DB::table('ref_abilitygeneration')->whereNotNull('Generation')->where('Generation', '!=', '')->orderBy('ID')->get();
         $pointBuyTable = DB::table('ref_abilitypointbuy')->orderBy('BaseAbility')->get();
-        $skills = DB::table('ref_skills')->orderBy('Name')->get();
+        $skillTypes = DB::table('ref_skilltypes')->where('ID', '<=', 8)->orderBy('SortOrder')->get();
+        $skills = DB::table('ref_skills')->where('Type', '<=', 8)->orderBy('Type')->orderBy('Name')->get();
+        $skillAccess = DB::table('ref_skillaccess')->get();
         $improvements = DB::table('ref_improvementtraits')->get();
         $equipment = DB::table('ref_items')->orderBy('Name')->get();
 
         return view('utilities.chargen_wizard', compact(
-            'campaigns', 'races', 'templates', 'classes', 'abilityMethods', 'pointBuyTable', 'skills', 'improvements', 'equipment'
+            'campaigns', 'races', 'templates', 'cultures', 'classConfigs', 'classes', 'abilityMethods', 'pointBuyTable',
+            'skillTypes', 'skills', 'skillAccess', 'improvements', 'equipment'
         ));
     }
 
@@ -39,7 +55,10 @@ class UtilityController extends Controller
             'CampaignID' => 'nullable|integer',
             'RaceID' => 'nullable|integer',
             'TemplateID' => 'nullable|integer',
+            'CultureID' => 'nullable|integer',
+            'BackgroundClassID' => 'nullable|integer',
             'ClassID' => 'nullable|integer',
+            'Classes' => 'nullable',
             'Gender' => 'nullable|string',
             'Level' => 'nullable|integer',
             'StartingXP' => 'nullable|integer',
@@ -50,9 +69,82 @@ class UtilityController extends Controller
             'Intelligence' => 'nullable|integer',
             'Wisdom' => 'nullable|integer',
             'Charisma' => 'nullable|integer',
+            'MentalAge' => 'nullable|integer',
+            'PhysicalAge' => 'nullable|integer',
+            'HeightFactor' => 'nullable|numeric',
+            'WeightFactor' => 'nullable|numeric',
+            'Appearance' => 'nullable|string|max:2000',
+            'Personality' => 'nullable|string|max:2000',
+            'History' => 'nullable|string|max:5000',
         ]);
 
         $playerId = \Illuminate\Support\Facades\Auth::id() ?? $request->input('Player') ?? $request->input('PlayerID');
+        
+        // Format Classes as semicolon list for entity.php (e.g. "4;4;9")
+        $classesStr = '';
+        if ($request->has('Classes')) {
+            $classesData = $request->input('Classes');
+            if (is_array($classesData)) {
+                $classesStr = implode(';', array_filter(array_map('intval', $classesData)));
+            } else {
+                $classesStr = (string)$classesData;
+            }
+        }
+
+        // Format Improvements as semicolon list (e.g. "I1=+1;I7=+2")
+        $improvsStr = '';
+        if ($request->has('Improvements')) {
+            $improvData = $request->input('Improvements');
+            if (is_array($improvData)) {
+                $parts = [];
+                foreach ($improvData as $k => $v) {
+                    if ((int)$v > 0) {
+                        $parts[] = "I" . intval($k) . "=" . ((int)$v >= 0 ? '+' : '') . intval($v);
+                    }
+                }
+                $improvsStr = implode(';', $parts);
+            } else {
+                $improvsStr = (string)$improvData;
+            }
+        }
+
+        // Format Skills as semicolon list (e.g. "1=2.5;2=1")
+        $skillsStr = '';
+        if ($request->has('Skills')) {
+            $skillsData = $request->input('Skills');
+            if (is_array($skillsData)) {
+                $skillRanks = [];
+                if (isset($skillsData['BackgroundRates']) && is_array($skillsData['BackgroundRates'])) {
+                    $rl = (int)($request->input('TotalRL') ?? 0);
+                    $bgLvl = $rl + 1;
+                    foreach ($skillsData['BackgroundRates'] as $sId => $rate) {
+                        $r = (float)$rate * $bgLvl;
+                        if ($r > 0) {
+                            $skillRanks[$sId] = ($skillRanks[$sId] ?? 0) + $r;
+                        }
+                    }
+                }
+                if (isset($skillsData['LevelSkills']) && is_array($skillsData['LevelSkills'])) {
+                    foreach ($skillsData['LevelSkills'] as $lvlIndex => $lvlAllocations) {
+                        if (is_array($lvlAllocations)) {
+                            foreach ($lvlAllocations as $sId => $rank) {
+                                $skillRanks[$sId] = ($skillRanks[$sId] ?? 0) + (float)$rank;
+                            }
+                        }
+                    }
+                }
+                $parts = [];
+                foreach ($skillRanks as $sId => $rank) {
+                    if ($rank > 0) {
+                        $parts[] = intval($sId) . "=" . $rank;
+                    }
+                }
+                $skillsStr = implode(';', $parts);
+            } else {
+                $skillsStr = (string)$skillsData;
+            }
+        }
+
         $charId = DB::table('characters')->insertGetId([
             'Name' => $validated['Name'],
             'Campaign' => $request->input('Campaign') ?? $request->input('CampaignID') ?? null,
@@ -61,6 +153,9 @@ class UtilityController extends Controller
             'ExperiencePts' => (int)($request->input('StartingXP') ?? $request->input('ExperiencePts') ?? 0),
             'BaseRace' => $request->input('RaceID', 1),
             'Templates' => $request->input('TemplateID') ? (string)$request->input('TemplateID') : null,
+            'Culture' => $request->input('CultureID') ? (int)$request->input('CultureID') : null,
+            'BackgndClass' => $request->input('BackgroundClassID') ? (int)$request->input('BackgroundClassID') : null,
+            'Classes' => $classesStr,
             'Gender' => $request->input('Gender', 'Male') === 'Female' ? 2 : 1,
             'BaseStr' => $request->input('Strength', 10),
             'BaseCon' => $request->input('Constitution', 10),
@@ -68,6 +163,16 @@ class UtilityController extends Controller
             'BaseInt' => $request->input('Intelligence', 10),
             'BaseWis' => $request->input('Wisdom', 10),
             'BaseCha' => $request->input('Charisma', 10),
+            'ImprovementPts' => (int)$request->input('ImprovementPoints', 0),
+            'Improvements' => $improvsStr,
+            'Skills' => $skillsStr,
+            'MentalAge' => $request->input('MentalAge') ? (int)$request->input('MentalAge') : null,
+            'PhysicalAge' => $request->input('PhysicalAge') ? (int)$request->input('PhysicalAge') : null,
+            'HeightFactor' => $request->input('HeightFactor') ? (float)$request->input('HeightFactor') : null,
+            'WeightFactor' => $request->input('WeightFactor') ? (float)$request->input('WeightFactor') : null,
+            'Appearance' => $request->input('Appearance', ''),
+            'Personality' => $request->input('Personality', ''),
+            'History' => $request->input('History', ''),
         ]);
 
         return response()->json([
@@ -95,7 +200,13 @@ class UtilityController extends Controller
             ? DB::table('characters')->where('Player', \Illuminate\Support\Facades\Auth::id())->get()
             : collect([]);
 
-        return view('utilities.charview', compact('character', 'allCharacters', 'myCharacters'));
+        $race = ($character && $character->BaseRace) ? DB::table('ref_creatures')->where('ID', $character->BaseRace)->first() : null;
+        $culture = ($character && $character->Culture) ? DB::table('ref_cultures')->where('ID', $character->Culture)->first() : null;
+        $bgClass = ($character && $character->BackgndClass) ? DB::table('ref_classes')->where('ID', $character->BackgndClass)->first() : null;
+        $classesMap = DB::table('ref_classes')->get()->keyBy('ID');
+        $skillsMap = DB::table('ref_skills')->get()->keyBy('ID');
+
+        return view('utilities.charview', compact('character', 'allCharacters', 'myCharacters', 'race', 'culture', 'bgClass', 'classesMap', 'skillsMap'));
     }
 
     /**

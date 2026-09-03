@@ -7,32 +7,44 @@
 
 <div class="space-y-6" x-data="characterWizard()">
     <!-- Wizard Header -->
-    <div class="border-b border-slate-200 pb-4">
-        <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-            <span>🧙‍♂️</span> Character Generation Wizard
-        </h1>
-        <p class="text-slate-600 text-sm mt-1">Create a hero step-by-step with campaign rule enforcement, suitability filtering, and mathematical point tracking.</p>
+    <div class="border-b border-slate-200 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                <span>🧙‍♂️</span> Character Generation Wizard
+            </h1>
+            <p class="text-slate-600 text-sm mt-1">Multi-step hero generation with campaign rule enforcement, background skills, IP allocation, and level-by-level class progression.</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="text-xs bg-indigo-50 border border-indigo-200 text-indigo-900 px-3 py-1.5 rounded-lg font-bold">
+                Step <span x-text="step"></span> of 8: <span x-text="stepNames[step]"></span>
+            </span>
+        </div>
     </div>
 
-    <!-- Step Progress Bar -->
+    <!-- Step Progress Bar (8 Steps) -->
     <div class="bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200">
-        <div class="flex items-center justify-between text-[10px] sm:text-xs font-semibold text-slate-500 gap-1">
-            <span :class="step >= 1 ? 'text-indigo-600 font-bold' : ''"><span>1. </span><span>Identity &amp; Campaign</span></span>
-            <span :class="step >= 2 ? 'text-indigo-600 font-bold' : ''"><span>2. </span><span>Abilities</span></span>
-            <span :class="step >= 3 ? 'text-indigo-600 font-bold' : ''"><span>3. </span><span>Race &amp; Class</span></span>
-            <span :class="step >= 4 ? 'text-indigo-600 font-bold' : ''"><span>4. </span><span>Skills &amp; Points</span></span>
-            <span :class="step >= 5 ? 'text-indigo-600 font-bold' : ''"><span>5. </span><span>Review &amp; Save</span></span>
+        <div class="grid grid-cols-4 sm:grid-cols-8 text-center text-[10px] sm:text-xs font-semibold text-slate-500 gap-1">
+            <span :class="step >= 1 ? 'text-indigo-600 font-bold' : ''">1. Identity</span>
+            <span :class="step >= 2 ? 'text-indigo-600 font-bold' : ''">2. Abilities</span>
+            <span :class="step >= 3 ? 'text-indigo-600 font-bold' : ''">3. Race &amp; Culture</span>
+            <span :class="step >= 4 ? 'text-indigo-600 font-bold' : ''">4. Bg Skills</span>
+            <span :class="step >= 5 ? 'text-indigo-600 font-bold' : ''">5. IP Points</span>
+            <span :class="step >= 6 ? 'text-indigo-600 font-bold' : ''">6. Class &amp; Skills</span>
+            <span :class="step >= 7 ? 'text-indigo-600 font-bold' : ''">7. Details</span>
+            <span :class="step >= 8 ? 'text-indigo-600 font-bold' : ''">8. Review &amp; Save</span>
         </div>
-        <div class="w-full bg-slate-200 h-2 rounded-full mt-2 overflow-hidden">
-            <div class="bg-indigo-600 h-full transition-all duration-300" :style="'width: ' + (step * 20) + '%'"></div>
+        <div class="w-full bg-slate-200 h-2 rounded-full mt-2.5 overflow-hidden">
+            <div class="bg-indigo-600 h-full transition-all duration-300" :style="'width: ' + (step * 12.5) + '%'"></div>
         </div>
     </div>
 
-    <!-- Step 1: Basics & Campaign -->
+    <!-- ========================================================================= -->
+    <!-- STEP 1: IDENTITY & CAMPAIGN                                              -->
+    <!-- ========================================================================= -->
     <div x-show="step === 1" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5">
         <div>
             <h2 class="text-lg font-bold text-slate-900">Step 1: Character Identity &amp; Campaign Selection</h2>
-            <p class="text-xs text-slate-600 mt-0.5">Select a campaign to inherit its ability generation method, starting XP, and PC suitability tier &mdash; or build a standalone character.</p>
+            <p class="text-xs text-slate-600 mt-0.5">Select a campaign to inherit its starting XP, suitability tier, ability generation method, and optional rules.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -119,13 +131,14 @@
         </div>
     </div>
 
-    <!-- Step 2: Ability Scores -->
+    <!-- ========================================================================= -->
+    <!-- STEP 2: ABILITY SCORES                                                    -->
+    <!-- ========================================================================= -->
     <div x-show="step === 2" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4" style="display: none;">
-        <!-- Ability Method Header & Selection -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
             <div class="space-y-1 flex-1">
                 <div class="flex items-center gap-2">
-                    <h2 class="text-lg font-bold text-slate-900">Step 2: Ability Scores</h2>
+                    <h2 class="text-lg font-bold text-slate-900">Step 2: Base Ability Scores</h2>
                     <template x-if="selectedCampaignObj">
                         <span class="bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-bold px-2 py-0.5 rounded">
                             Required by Campaign: <span x-text="selectedCampaignObj.Name"></span>
@@ -151,7 +164,6 @@
 
             <!-- Controls (Roll Button, Point Buy Counter, Swaps & Rerolls Counter) -->
             <div class="flex flex-wrap items-center gap-2 shrink-0">
-                <!-- Point Buy Pool -->
                 <template x-if="methodType === 'B'">
                     <div class="text-xs px-3.5 py-2 rounded-lg font-bold border flex items-center gap-2"
                          :class="pointsRemaining >= 0 ? 'bg-amber-50 text-amber-950 border-amber-300' : 'bg-red-50 text-red-900 border-red-300'">
@@ -161,7 +173,6 @@
                     </div>
                 </template>
 
-                <!-- Reroll All Button for Rolled Methods -->
                 <template x-if="methodType === 'R'">
                     <button type="button" @click="rollAllScores()" 
                             class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3.5 py-2 rounded-lg shadow-sm cursor-pointer flex items-center gap-1.5 transition">
@@ -169,7 +180,6 @@
                     </button>
                 </template>
 
-                <!-- Swaps Badge if limited -->
                 <template x-if="currentMethodObj.Rearrange == 1">
                     <div class="text-xs px-3 py-1.5 rounded-lg font-bold border"
                          :class="swapsRemaining > 0 ? 'bg-indigo-50 text-indigo-900 border-indigo-200' : 'bg-slate-100 text-slate-500 border-slate-200'">
@@ -177,7 +187,6 @@
                     </div>
                 </template>
 
-                <!-- Individual Rerolls Available Badge -->
                 <template x-if="currentMethodObj.Reroll > 0">
                     <div class="text-xs px-3 py-1.5 rounded-lg font-bold border"
                          :class="rerollsRemaining > 0 ? 'bg-emerald-50 text-emerald-900 border-emerald-300' : 'bg-slate-100 text-slate-500 border-slate-200'">
@@ -186,19 +195,6 @@
                 </template>
             </div>
         </div>
-
-        <!-- Rearranging Instructions -->
-        <template x-if="canSwapScores()">
-            <div class="bg-indigo-50/60 border border-indigo-200 text-indigo-900 px-3 py-2 rounded-lg text-xs flex items-center justify-between gap-2">
-                <span class="flex items-center gap-1.5">
-                    <span>💡</span>
-                    <span><strong>Rearrange Scores:</strong> Drag and drop any ability card onto another to swap their scores.</span>
-                </span>
-                <span class="text-[10px] text-indigo-700 font-mono" x-show="currentMethodObj.Rearrange == 1">
-                    (Limit: 1 swap)
-                </span>
-            </div>
-        </template>
 
         <!-- Ability Cards Grid (Str, Con, Dex, Int, Wis, Cha) -->
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pt-1">
@@ -226,7 +222,6 @@
                      @dragleave="onDragLeave('{{ $attr }}')"
                      @drop="onDrop('{{ $attr }}', $event)">
                      
-                    <!-- Card Header -->
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-1.5">
                             <template x-if="canSwapScores()">
@@ -238,9 +233,7 @@
                               x-text="(Math.floor((character['{{ $attr }}'] - 10)/2) >= 0 ? '+' : '') + Math.floor((character['{{ $attr }}'] - 10)/2)"></span>
                     </div>
 
-                    <!-- Score Value & Increment / Decrement Buttons (Only on Point Buy) -->
                     <div class="flex items-center justify-between gap-2">
-                        <!-- Decrement Button (Point Buy Only) -->
                         <template x-if="methodType === 'B'">
                             <button type="button" @click="decAbility('{{ $attr }}')"
                                     :disabled="!canDecAbility('{{ $attr }}')"
@@ -248,10 +241,8 @@
                                     class="w-8 h-8 rounded bg-white border border-slate-300 font-bold text-base transition flex items-center justify-center">-</button>
                         </template>
 
-                        <!-- Large Score Display -->
                         <span class="text-3xl font-bold font-mono text-slate-900 mx-auto" x-text="character['{{ $attr }}']"></span>
 
-                        <!-- Increment Button (Point Buy Only) -->
                         <template x-if="methodType === 'B'">
                             <button type="button" @click="incAbility('{{ $attr }}')"
                                     :disabled="!canIncAbility('{{ $attr }}')"
@@ -260,7 +251,6 @@
                         </template>
                     </div>
 
-                    <!-- Single Score Reroll Button (Methods with limited rerolls) -->
                     <template x-if="currentMethodObj.Reroll > 0">
                         <div class="pt-1">
                             <button type="button" @click="rerollSingleScore('{{ $attr }}', {{ $meta['idx'] }})"
@@ -273,7 +263,6 @@
                         </div>
                     </template>
 
-                    <!-- Quick Touch-Friendly Swap Dropdown (For Mobile or Accessibility) -->
                     <template x-if="canSwapScores()">
                         <div class="pt-1">
                             <select @change="if($event.target.value) { swapScores('{{ $attr }}', $event.target.value); $event.target.value = ''; }"
@@ -292,26 +281,33 @@
         </div>
     </div>
 
-    <!-- Step 3: Race & Class (Filtered by Suitability Level) -->
+    <!-- ========================================================================= -->
+    <!-- STEP 3: RACE, TEMPLATE & CULTURE (With Level Limit Filtering)             -->
+    <!-- ========================================================================= -->
     <div x-show="step === 3" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5" style="display: none;">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
             <div>
-                <h2 class="text-lg font-bold text-slate-900">Step 3: Race, Template &amp; Class</h2>
-                <p class="text-xs text-slate-600">Only races and templates meeting the campaign suitability tier are shown.</p>
+                <h2 class="text-lg font-bold text-slate-900">Step 3: Race, Template &amp; Culture</h2>
+                <p class="text-xs text-slate-600">Races and templates are limited by campaign suitability tier and total level limit (<span class="font-bold text-indigo-700">Lvl <span x-text="character.Level"></span></span>).</p>
             </div>
-            <span class="text-xs bg-indigo-100 text-indigo-900 border border-indigo-300 px-2.5 py-1 rounded-md font-semibold self-start sm:self-auto">
-                Suitability Tier: <strong>Level <span x-text="character.SuitabilityLevel"></span>+</strong>
-                (<span x-text="eligibleRaces.length"></span> Races Available)
-            </span>
+            <div class="flex flex-wrap items-center gap-2 text-xs">
+                <span class="bg-indigo-100 text-indigo-900 border border-indigo-300 px-2.5 py-1 rounded-md font-semibold">
+                    Tier <span x-text="character.SuitabilityLevel"></span>+ &bull; Max RL+CL &le; <span x-text="character.Level"></span>
+                </span>
+                <span class="bg-emerald-100 text-emerald-900 border border-emerald-300 px-2.5 py-1 rounded-md font-semibold">
+                    <span x-text="eligibleRaces.length"></span> Races Available
+                </span>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <!-- Race Selection -->
             <div>
                 <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Character Race</label>
-                <select x-model="character.RaceID" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <select x-model="character.RaceID" @change="onRaceChanged()"
+                        class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                     <template x-for="r in eligibleRaces" :key="r.ID">
-                        <option :value="r.ID" x-text="r.Name + (r.NameInformal ? ' (' + r.NameInformal + ')' : '') + ' [Tier ' + r.PCSuitability + ']'"></option>
+                        <option :value="r.ID" x-text="r.Name + (r.NameInformal ? ' (' + r.NameInformal + ')' : '') + ' [RL ' + r.BaseRL + (r.CLModifier ? ' CL' + (r.CLModifier >= 0 ? '+' : '') + r.CLModifier : '') + ']'"></option>
                     </template>
                 </select>
 
@@ -319,9 +315,10 @@
                 <div class="mt-3 p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs space-y-1.5" x-data="{ r: {} }" x-effect="r = getSelectedRace()">
                     <div class="font-bold text-slate-900 text-sm flex items-center justify-between">
                         <span x-text="r.Name || 'Race'"></span>
-                        <span class="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded font-mono">
-                            Speed: <span x-text="r.GroundSpeed || 30"></span>'
-                        </span>
+                        <div class="flex items-center gap-2 text-[11px] font-mono">
+                            <span class="bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded">RL: <span x-text="r.BaseRL || 0"></span></span>
+                            <span class="bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Speed: <span x-text="r.GroundSpeed || 30"></span>'</span>
+                        </div>
                     </div>
                     <div class="grid grid-cols-6 gap-1 text-[11px] font-mono text-center pt-1 border-t border-slate-200">
                         <div>STR: <span class="font-bold" x-text="(r.StrAdj >= 0 ? '+' : '') + (r.StrAdj || 0)"></span></div>
@@ -332,133 +329,469 @@
                         <div>CHA: <span class="font-bold" x-text="(r.ChaAdj >= 0 ? '+' : '') + (r.ChaAdj || 0)"></span></div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Class Selection -->
-            <div>
-                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Primary Class</label>
-                <select x-model="character.ClassID" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                    @foreach($classes as $cls)
-                        <option value="{{ $cls->ID }}">{{ $cls->Name }} ({{ $cls->Abbreviation }})</option>
-                    @endforeach
-                </select>
-
-                <!-- Optional Template Selection -->
-                <div class="mt-3">
+                <!-- Template Selection -->
+                <div class="mt-4">
                     <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Optional Template (Heritage)</label>
-                    <select x-model="character.TemplateID" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <select x-model="character.TemplateID" @change="onTemplateChanged()"
+                            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                         <option value="">None / Pure Bloodline</option>
                         <template x-for="t in eligibleTemplates" :key="t.ID">
-                            <option :value="t.ID" x-text="t.Name + ' [Tier ' + t.PCSuitability + ']'"></option>
+                            <option :value="t.ID" x-text="t.Name + ' [RL ' + (t.RLModifier >= 0 ? '+' : '') + t.RLModifier + ']'"></option>
                         </template>
                     </select>
+                </div>
+            </div>
+
+            <!-- Culture & Background Class Selection -->
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Culture</label>
+                    <select x-model="character.CultureID" @change="onCultureChanged()"
+                            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        <template x-for="c in eligibleCultures" :key="c.ID">
+                            <option :value="c.ID" x-text="c.Name"></option>
+                        </template>
+                    </select>
+                    <p class="text-[11px] text-slate-500 mt-1">Default culture is automatically set from the selected race.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Background Class</label>
+                    <select x-model="character.BackgroundClassID" @change="onBackgroundClassChanged()"
+                            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        <template x-for="bc in availableBackgroundClasses" :key="bc.ID">
+                            <option :value="bc.ID" x-text="bc.Name + ' (' + bc.SkillPtsPerLevel + ' SP/lvl)'"></option>
+                        </template>
+                    </select>
+                    <p class="text-[11px] text-slate-500 mt-1">Background class options are strictly determined by your chosen culture.</p>
+                </div>
+
+                <!-- Level Allocation Breakdown Card -->
+                <div class="p-3 bg-indigo-50/80 border border-indigo-200 rounded-lg text-xs space-y-1.5">
+                    <div class="font-bold text-indigo-950 flex items-center justify-between">
+                        <span>📊 Character Level Allocation</span>
+                        <span class="font-mono text-indigo-700">Total Level: <span x-text="character.Level"></span></span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center font-mono text-[11px] pt-1 border-t border-indigo-200/60">
+                        <div class="bg-white p-1.5 rounded border border-indigo-100">
+                            <span class="text-[10px] text-slate-500 block">Racial (RL)</span>
+                            <span class="font-bold text-slate-900" x-text="totalRL"></span>
+                        </div>
+                        <div class="bg-white p-1.5 rounded border border-indigo-100">
+                            <span class="text-[10px] text-slate-500 block">Effective (EL)</span>
+                            <span class="font-bold text-slate-900" x-text="totalEL"></span>
+                        </div>
+                        <div class="bg-white p-1.5 rounded border border-indigo-100">
+                            <span class="text-[10px] text-slate-500 block">Class Levels</span>
+                            <span class="font-bold text-emerald-700" x-text="remainingClassLevels"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Step 4: Skills & Improvements -->
+    <!-- ========================================================================= -->
+    <!-- STEP 4: BACKGROUND SKILLS (RL + 1 Levels of Background Class)              -->
+    <!-- ========================================================================= -->
     <div x-show="step === 4" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4" style="display: none;">
-        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
             <div>
-                <h2 class="text-lg font-bold text-slate-900">Step 4: Skills &amp; Improvement Points</h2>
-                <p class="text-xs text-slate-600">Allocate starting points granted by level, class, and intelligence.</p>
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span>📚</span> Step 4: Background Skills
+                </h2>
+                <p class="text-xs text-slate-600 mt-0.5">
+                    Allocate skill points for <strong class="text-indigo-900"><span x-text="totalRL + 1"></span> level(s)</strong> of your background class (<span class="font-bold text-slate-800" x-text="getSelectedBackgroundClass().Name"></span>).
+                </p>
+                <p class="text-[11px] text-slate-500 mt-0.5">
+                    Primary skills can be assigned 0, 0.5, or 1.0 point per level (max <span x-text="totalRL + 1"></span>.0). Secondary skills can be assigned 0 or 0.5 points per level (max <span x-text="(totalRL + 1) * 0.5"></span>).
+                </p>
             </div>
-            <div class="flex items-center gap-2 text-xs font-bold">
-                <span class="bg-indigo-50 border border-indigo-200 text-indigo-900 px-3 py-1.5 rounded-lg">
-                    Skill Points: <span x-text="(parseInt(character.Level) + 3) * (4 + Math.max(0, Math.floor((character.Intelligence - 10)/2)))"></span>
-                </span>
-                <span class="bg-amber-50 border border-amber-200 text-amber-900 px-3 py-1.5 rounded-lg">
-                    IP: <span x-text="parseInt(character.Level) * 10"></span>
-                </span>
+            
+            <!-- Skill Points Pool Counter -->
+            <div class="flex items-center gap-2 shrink-0">
+                <div class="text-xs px-3.5 py-2 rounded-lg font-bold border flex items-center gap-2"
+                     :class="bgSkillPointsRemaining >= 0 ? 'bg-indigo-50 text-indigo-950 border-indigo-300' : 'bg-red-50 text-red-900 border-red-300'">
+                    <span>Background SP Pool:</span>
+                    <span class="font-mono text-sm" x-text="bgSkillPointsRemaining"></span>
+                    <span class="text-slate-500 text-[11px]">/ <span x-text="totalBgSkillPoints"></span></span>
+                </div>
             </div>
         </div>
 
-        <p class="text-xs text-slate-600 leading-relaxed">
-            Your character begins with foundational proficiencies. Primary class skills cost 1 SP per rank; secondary cross-class skills cost 2 SP per rank.
-        </p>
+        <!-- Search / Filter bar -->
+        <div class="flex items-center gap-3">
+            <input type="text" x-model="skillSearchQuery" placeholder="Filter skills by name..."
+                   class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs w-full sm:w-72 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            <select x-model="selectedSkillTypeFilter" class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-white text-slate-800">
+                <option value="0">All Skill Types</option>
+                <template x-for="st in skillTypes" :key="st.ID">
+                    <option :value="st.ID" x-text="st.Name"></option>
+                </template>
+            </select>
+        </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-72 overflow-y-auto p-2 border border-slate-200 rounded-lg bg-slate-50">
-            @foreach($skills->take(24) as $s)
-                <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 text-xs hover:bg-indigo-50 cursor-pointer transition">
-                    <input type="checkbox" x-model="character.SelectedSkills['{{ $s->ID }}']" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
-                    <span class="font-semibold text-slate-800 truncate">{{ $s->Name }}</span>
-                </label>
-            @endforeach
+        <!-- Scrollable Skills List categorized -->
+        <div class="max-h-96 overflow-y-auto pr-1 border border-slate-200 rounded-xl divide-y divide-slate-200 bg-slate-50">
+            <template x-for="st in filteredSkillTypes" :key="st.ID">
+                <div class="p-3" x-show="getSkillsForType(st.ID).length > 0">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center justify-between" x-text="st.Name"></h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                        <template x-for="s in getSkillsForType(st.ID)" :key="s.ID">
+                            <div class="p-2.5 bg-white rounded-lg border border-slate-200 shadow-2xs flex items-center justify-between gap-2">
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-xs font-semibold text-slate-900 truncate" x-text="s.Name"></span>
+                                        <span class="text-[9px] px-1 py-0.2 rounded font-bold"
+                                              :class="isBgSkillPrimary(s.ID) ? 'bg-indigo-100 text-indigo-800' : 'bg-slate-100 text-slate-600'"
+                                              x-text="isBgSkillPrimary(s.ID) ? 'PRIMARY' : 'SEC'">
+                                        </span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-mono">
+                                        Assigned: <span class="font-bold text-slate-800" x-text="getBgSkillRank(s.ID)"></span>
+                                        / <span x-text="getBgSkillMax(s.ID)"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Rank Allocation Buttons -->
+                                <div class="flex items-center gap-1 shrink-0">
+                                    <!-- 0 Option -->
+                                    <button type="button" @click="setBgSkillRate(s.ID, 0)"
+                                            :class="getBgSkillRate(s.ID) === 0 ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'"
+                                            class="w-7 h-6 rounded text-[11px] font-mono transition cursor-pointer">0</button>
+                                    
+                                    <!-- 0.5 Option -->
+                                    <button type="button" @click="setBgSkillRate(s.ID, 0.5)"
+                                            :disabled="!canSetBgSkillRate(s.ID, 0.5)"
+                                            :class="getBgSkillRate(s.ID) === 0.5 ? 'bg-indigo-600 text-white font-bold' : (canSetBgSkillRate(s.ID, 0.5) ? 'bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer' : 'bg-slate-50 text-slate-400 cursor-not-allowed opacity-50')"
+                                            class="w-8 h-6 rounded text-[11px] font-mono transition">&frac12;</button>
+
+                                    <!-- 1.0 Option (Primary Only) -->
+                                    <template x-if="isBgSkillPrimary(s.ID)">
+                                        <button type="button" @click="setBgSkillRate(s.ID, 1.0)"
+                                                :disabled="!canSetBgSkillRate(s.ID, 1.0)"
+                                                :class="getBgSkillRate(s.ID) === 1.0 ? 'bg-indigo-600 text-white font-bold' : (canSetBgSkillRate(s.ID, 1.0) ? 'bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer' : 'bg-slate-50 text-slate-400 cursor-not-allowed opacity-50')"
+                                                class="w-7 h-6 rounded text-[11px] font-mono transition">1</button>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
         </div>
     </div>
 
-    <!-- Step 5: Summary & Final Review -->
-    <div x-show="step === 5" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5" style="display: none;">
-        <h2 class="text-lg font-bold text-slate-900">Step 5: Character Review &amp; Save</h2>
+    <!-- ========================================================================= -->
+    <!-- STEP 5: IMPROVEMENT POINTS (IP ALLOCATION)                                -->
+    <!-- ========================================================================= -->
+    <div x-show="step === 5" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4" style="display: none;">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
+            <div>
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span>💎</span> Step 5: Improvement Points (IP)
+                </h2>
+                <p class="text-xs text-slate-600 mt-0.5">Spend your improvement point budget to enhance base characteristics, defenses, health pools, or skills.</p>
+            </div>
+            
+            <div class="flex items-center gap-2 shrink-0">
+                <div class="text-xs px-3.5 py-2 rounded-lg font-bold border flex items-center gap-2"
+                     :class="ipRemaining >= 0 ? 'bg-amber-50 text-amber-950 border-amber-300' : 'bg-red-50 text-red-900 border-red-300'">
+                    <span>IP Remaining:</span>
+                    <span class="font-mono text-sm" x-text="ipRemaining"></span>
+                    <span class="text-slate-500 text-[11px]">/ <span x-text="totalIP"></span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Improvement Traits Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
+            <template x-for="trait in improvements" :key="trait.ID">
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2 flex items-center justify-between gap-3">
+                    <div>
+                        <span class="font-bold text-xs text-slate-800 block" x-text="trait.Description"></span>
+                        <div class="text-[10px] text-slate-500 font-mono">
+                            Cost: <span class="font-bold text-indigo-700" x-text="trait.IPCost"></span> IP
+                            &bull; Max: +<span x-text="trait.MaxBonus"></span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" @click="decIP(trait.ID)"
+                                :disabled="!canDecIP(trait.ID)"
+                                :class="canDecIP(trait.ID) ? 'hover:bg-slate-200 text-slate-800 cursor-pointer' : 'opacity-40 cursor-not-allowed text-slate-400'"
+                                class="w-7 h-7 rounded bg-white border border-slate-300 font-bold text-sm transition flex items-center justify-center">-</button>
+                        <span class="font-mono text-base font-bold text-slate-900 w-6 text-center" x-text="'+' + getIPBonus(trait.ID)"></span>
+                        <button type="button" @click="incIP(trait.ID)"
+                                :disabled="!canIncIP(trait.ID)"
+                                :class="canIncIP(trait.ID) ? 'hover:bg-slate-200 text-slate-800 cursor-pointer' : 'opacity-40 cursor-not-allowed text-slate-400'"
+                                class="w-7 h-7 rounded bg-white border border-slate-300 font-bold text-sm transition flex items-center justify-center">+</button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- STEP 6: CLASS & SKILLS (LEVEL-BY-LEVEL PROGRESSION)                       -->
+    <!-- ========================================================================= -->
+    <div x-show="step === 6" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5" style="display: none;">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
+            <div>
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span>⚔️</span> Step 6: Class &amp; Skill Progression (Level-by-Level)
+                </h2>
+                <p class="text-xs text-slate-600 mt-0.5">Select a class for each class level and assign that level's skill points.</p>
+            </div>
+            <div class="text-xs bg-indigo-50 border border-indigo-200 text-indigo-900 px-3 py-1.5 rounded-lg font-bold">
+                Class Levels: <span x-text="remainingClassLevels"></span> / <span x-text="character.Level"></span> Total
+            </div>
+        </div>
+
+        <!-- If No Class Levels Needed -->
+        <template x-if="remainingClassLevels === 0">
+            <div class="p-6 bg-indigo-50/70 border border-indigo-200 rounded-xl text-center space-y-2">
+                <span class="text-3xl">🛡️</span>
+                <h3 class="text-sm font-bold text-indigo-950">No Additional Class Levels Required</h3>
+                <p class="text-xs text-slate-600 max-w-md mx-auto">
+                    Your starting level (<span x-text="character.Level"></span>) is fully provided by your racial levels and template (RL <span x-text="totalRL"></span> + CL <span x-text="totalCL"></span>). You can proceed directly to Additional Details!
+                </p>
+            </div>
+        </template>
+
+        <!-- If Class Levels Available -->
+        <template x-if="remainingClassLevels > 0">
+            <div class="space-y-4">
+                <!-- Level Tabs Selector -->
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1">
+                    <template x-for="lvl in remainingClassLevels" :key="lvl">
+                        <button type="button" @click="activeClassLevelTab = lvl"
+                                :class="activeClassLevelTab === lvl ? 'bg-indigo-600 text-white font-bold shadow-sm' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
+                                class="px-3 py-1.5 rounded-lg text-xs transition cursor-pointer flex items-center gap-1.5 shrink-0">
+                            <span>Level <span x-text="lvl"></span>:</span>
+                            <span class="text-[11px] opacity-90" x-text="getClassForLevel(lvl).Name"></span>
+                        </button>
+                    </template>
+                </div>
+
+                <!-- Active Level Configuration Card -->
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm font-bold text-slate-900">Class for Level <span x-text="activeClassLevelTab"></span>:</span>
+                            <select :value="character.ClassLevels[activeClassLevelTab - 1] || 1"
+                                    @change="setClassForLevel(activeClassLevelTab, $event.target.value)"
+                                    class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500">
+                                @foreach($classes as $cls)
+                                    <option value="{{ $cls->ID }}">{{ $cls->Name }} ({{ $cls->SkillPtsPerLevel }} SP/lvl)</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- SP for this level -->
+                        <div class="text-xs px-3 py-1.5 rounded-lg font-bold border flex items-center gap-2"
+                             :class="getLevelSkillPointsRemaining(activeClassLevelTab) >= 0 ? 'bg-indigo-50 text-indigo-950 border-indigo-300' : 'bg-red-50 text-red-900 border-red-300'">
+                            <span>Level <span x-text="activeClassLevelTab"></span> SP:</span>
+                            <span class="font-mono text-sm" x-text="getLevelSkillPointsRemaining(activeClassLevelTab)"></span>
+                            <span class="text-slate-500 text-[11px]">/ <span x-text="getLevelSkillPointsTotal(activeClassLevelTab)"></span></span>
+                        </div>
+                    </div>
+
+                    <!-- Level Skill Allocation List -->
+                    <div class="max-h-80 overflow-y-auto pr-1 border border-slate-200 rounded-xl divide-y divide-slate-200 bg-white">
+                        <template x-for="st in filteredSkillTypes" :key="st.ID">
+                            <div class="p-3" x-show="getSkillsForType(st.ID).length > 0">
+                                <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-2" x-text="st.Name"></h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                                    <template x-for="s in getSkillsForType(st.ID)" :key="s.ID">
+                                        <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between gap-2 text-xs">
+                                            <div class="min-w-0 flex-1">
+                                                <div class="flex items-center gap-1.5">
+                                                    <span class="font-semibold text-slate-900 truncate" x-text="s.Name"></span>
+                                                    <span class="text-[9px] px-1 py-0.2 rounded font-bold"
+                                                          :class="isLevelSkillPrimary(activeClassLevelTab, s.ID) ? 'bg-indigo-100 text-indigo-800' : 'bg-slate-100 text-slate-600'"
+                                                          x-text="isLevelSkillPrimary(activeClassLevelTab, s.ID) ? 'PRIM' : 'SEC'">
+                                                    </span>
+                                                </div>
+                                                <div class="text-[10px] text-slate-500 font-mono">
+                                                    Level Rank: +<span class="font-bold text-slate-800" x-text="getLevelSkillRank(activeClassLevelTab, s.ID)"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex items-center gap-1 shrink-0">
+                                                <button type="button" @click="decLevelSkill(activeClassLevelTab, s.ID)"
+                                                        :disabled="getLevelSkillRank(activeClassLevelTab, s.ID) <= 0"
+                                                        :class="getLevelSkillRank(activeClassLevelTab, s.ID) > 0 ? 'hover:bg-slate-200 text-slate-800 cursor-pointer' : 'opacity-40 cursor-not-allowed text-slate-400'"
+                                                        class="w-6 h-6 rounded bg-white border border-slate-300 font-bold text-xs transition flex items-center justify-center">-</button>
+                                                <button type="button" @click="incLevelSkill(activeClassLevelTab, s.ID)"
+                                                        :disabled="!canIncLevelSkill(activeClassLevelTab, s.ID)"
+                                                        :class="canIncLevelSkill(activeClassLevelTab, s.ID) ? 'hover:bg-slate-200 text-slate-800 cursor-pointer' : 'opacity-40 cursor-not-allowed text-slate-400'"
+                                                        class="w-6 h-6 rounded bg-white border border-slate-300 font-bold text-xs transition flex items-center justify-center">+</button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- STEP 7: ADDITIONAL DETAILS (AGE, SIZE, PERSONALITY, HISTORY)              -->
+    <!-- ========================================================================= -->
+    <div x-show="step === 7" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5" style="display: none;">
+        <div>
+            <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <span>🎭</span> Step 7: Physical &amp; Personal Details
+            </h2>
+            <p class="text-xs text-slate-600 mt-0.5">Customize physical characteristics, age benchmarks, personality traits, and background lore.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Age & Size -->
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Physical Age (Years)</label>
+                        <input type="number" x-model="character.PhysicalAge" min="1"
+                               class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Mental Age (Years)</label>
+                        <input type="number" x-model="character.MentalAge" min="1"
+                               class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- Race Age Milestones Guide -->
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs space-y-1" x-data="{ r: {} }" x-effect="r = getSelectedRace()">
+                    <span class="font-bold text-slate-800 block text-[11px] uppercase">Racial Age Milestones for <span x-text="r.Name"></span>:</span>
+                    <div class="grid grid-cols-4 gap-1 text-center font-mono text-[11px] pt-1">
+                        <div class="bg-white p-1 rounded border border-slate-200">Adult: <span class="font-bold" x-text="r.AdultAge || 18"></span></div>
+                        <div class="bg-white p-1 rounded border border-slate-200">Mature: <span class="font-bold" x-text="r.MatureAge || 35"></span></div>
+                        <div class="bg-white p-1 rounded border border-slate-200">Old: <span class="font-bold" x-text="r.OldAge || 55"></span></div>
+                        <div class="bg-white p-1 rounded border border-slate-200">Venerable: <span class="font-bold" x-text="r.VenerableAge || 70"></span></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Height Factor (1.0 = avg)</label>
+                        <input type="number" x-model="character.HeightFactor" step="0.05" min="0.5" max="2.0"
+                               class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Weight Factor (1.0 = avg)</label>
+                        <input type="number" x-model="character.WeightFactor" step="0.05" min="0.5" max="3.0"
+                               class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lore Text Areas -->
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Appearance</label>
+                    <textarea x-model="character.Appearance" rows="2" placeholder="Eye color, hair, scars, distinguishing features..."
+                              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Personality &amp; Habits</label>
+                    <textarea x-model="character.Personality" rows="2" placeholder="Mannerisms, motivations, ideals, flaws..."
+                              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Background Lore &amp; History</label>
+                    <textarea x-model="character.History" rows="2" placeholder="Origin, family ties, past adventures..."
+                              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- STEP 8: REVIEW & SAVE                                                     -->
+    <!-- ========================================================================= -->
+    <div x-show="step === 8" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5" style="display: none;">
+        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <span>📜</span> Step 8: Final Review &amp; Database Save
+        </h2>
 
         <div class="border border-slate-200 rounded-xl p-5 bg-slate-50 text-sm space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-b border-slate-200 pb-4">
+            <!-- Header Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 border-b border-slate-200 pb-4">
                 <div>
                     <span class="text-slate-500 text-xs block">Character Name:</span>
                     <span class="font-bold text-slate-900 text-base" x-text="character.Name || 'Unnamed Hero'"></span>
                 </div>
                 <div>
                     <span class="text-slate-500 text-xs block">Campaign:</span>
-                    <span class="font-bold text-indigo-700 text-sm" x-text="selectedCampaignObj ? selectedCampaignObj.Name : 'Standalone (No Campaign)'"></span>
+                    <span class="font-bold text-indigo-700 text-sm" x-text="selectedCampaignObj ? selectedCampaignObj.Name : 'Standalone'"></span>
                 </div>
                 <div>
-                    <span class="text-slate-500 text-xs block">Starting XP &amp; Level:</span>
+                    <span class="text-slate-500 text-xs block">Total Level &amp; XP:</span>
                     <span class="font-bold text-slate-900 text-sm">
                         Level <span x-text="character.Level"></span> (<span x-text="Number(character.StartingXP).toLocaleString()"></span> XP)
                     </span>
                 </div>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 border-b border-slate-200 pb-4">
-                <div>
-                    <span class="text-slate-500 text-xs block">Race / Species:</span>
-                    <span class="font-semibold text-slate-800" x-text="getSelectedRace().Name || 'Human'"></span>
-                </div>
-                <div>
-                    <span class="text-slate-500 text-xs block">Class:</span>
-                    <span class="font-semibold text-slate-800" x-text="getSelectedClass().Name || 'Fighter'"></span>
-                </div>
                 <div>
                     <span class="text-slate-500 text-xs block">Gender &amp; Alignment:</span>
-                    <span class="font-semibold text-slate-800" x-text="character.Gender + ' / ' + character.Alignment"></span>
-                </div>
-                <div>
-                    <span class="text-slate-500 text-xs block">Ability Gen Method:</span>
-                    <span class="font-semibold text-indigo-800 text-xs" x-text="currentMethodObj.MethodName || 'Method ' + character.AbilityGenMethod"></span>
+                    <span class="font-semibold text-slate-800 text-sm" x-text="character.Gender + ' / ' + character.Alignment"></span>
                 </div>
             </div>
 
-            <!-- Ability Scores Summary Grid -->
-            <div>
-                <span class="text-slate-500 text-xs block mb-2 font-bold uppercase">Final Base Ability Scores:</span>
-                <div class="grid grid-cols-6 gap-2 text-center text-xs font-mono">
-                    <div class="bg-white p-2 rounded border border-slate-200 shadow-2xs">
-                        <span class="text-slate-500 text-[10px] block">STR</span>
-                        <span class="font-bold text-slate-900 text-sm" x-text="character.Strength"></span>
-                    </div>
-                    <div class="bg-white p-2 rounded border border-slate-200 shadow-2xs">
-                        <span class="text-slate-500 text-[10px] block">CON</span>
-                        <span class="font-bold text-slate-900 text-sm" x-text="character.Constitution"></span>
-                    </div>
-                    <div class="bg-white p-2 rounded border border-slate-200 shadow-2xs">
-                        <span class="text-slate-500 text-[10px] block">DEX</span>
-                        <span class="font-bold text-slate-900 text-sm" x-text="character.Dexterity"></span>
-                    </div>
-                    <div class="bg-white p-2 rounded border border-slate-200 shadow-2xs">
-                        <span class="text-slate-500 text-[10px] block">INT</span>
-                        <span class="font-bold text-slate-900 text-sm" x-text="character.Intelligence"></span>
-                    </div>
-                    <div class="bg-white p-2 rounded border border-slate-200 shadow-2xs">
-                        <span class="text-slate-500 text-[10px] block">WIS</span>
-                        <span class="font-bold text-slate-900 text-sm" x-text="character.Wisdom"></span>
-                    </div>
-                    <div class="bg-white p-2 rounded border border-slate-200 shadow-2xs">
-                        <span class="text-slate-500 text-[10px] block">CHA</span>
-                        <span class="font-bold text-slate-900 text-sm" x-text="character.Charisma"></span>
-                    </div>
+            <!-- Heritage & Background Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 border-b border-slate-200 pb-4 text-xs">
+                <div>
+                    <span class="text-slate-500 block">Race / Species:</span>
+                    <span class="font-bold text-slate-800" x-text="getSelectedRace().Name"></span>
+                </div>
+                <div>
+                    <span class="text-slate-500 block">Template:</span>
+                    <span class="font-bold text-slate-800" x-text="getSelectedTemplate().Name || 'None'"></span>
+                </div>
+                <div>
+                    <span class="text-slate-500 block">Culture:</span>
+                    <span class="font-bold text-slate-800" x-text="getSelectedCulture().Name"></span>
+                </div>
+                <div>
+                    <span class="text-slate-500 block">Background Class:</span>
+                    <span class="font-bold text-slate-800" x-text="getSelectedBackgroundClass().Name"></span>
                 </div>
             </div>
+
+            <!-- Final Ability Scores Summary Grid -->
+            <div>
+                <span class="text-slate-500 text-xs block mb-2 font-bold uppercase">Final Calculated Ability Scores:</span>
+                <div class="grid grid-cols-6 gap-2 text-center text-xs font-mono">
+                    <template x-for="attr in ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma']" :key="attr">
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200 shadow-2xs">
+                            <span class="text-slate-500 text-[10px] block uppercase" x-text="attr.substring(0, 3)"></span>
+                            <span class="font-bold text-slate-900 text-base" x-text="getFinalAbility(attr)"></span>
+                            <span class="text-[10px] text-indigo-700 block font-semibold"
+                                  x-text="(getAbilityModifier(attr) >= 0 ? '+' : '') + getAbilityModifier(attr)"></span>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Class Progression Summary -->
+            <template x-if="remainingClassLevels > 0">
+                <div class="border-t border-slate-200 pt-3">
+                    <span class="text-slate-500 text-xs block mb-1.5 font-bold uppercase">Class Levels Progression:</span>
+                    <div class="flex flex-wrap gap-2">
+                        <template x-for="lvl in remainingClassLevels" :key="lvl">
+                            <span class="bg-white border border-indigo-200 px-2.5 py-1 rounded-md text-xs font-mono text-indigo-900 font-semibold shadow-2xs">
+                                Lvl <span x-text="lvl"></span>: <span x-text="getClassForLevel(lvl).Name"></span>
+                            </span>
+                        </template>
+                    </div>
+                </div>
+            </template>
         </div>
     </div>
 
@@ -469,11 +802,11 @@
             &larr; Previous Step
         </button>
         <div class="ml-auto flex items-center gap-3">
-            <button type="button" x-show="step < 5" @click="if(step === 1 && !character.Name) { alert('Please enter a character name'); return; } step++;"
+            <button type="button" x-show="step < 8" @click="nextStep()"
                     class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg text-sm transition cursor-pointer shadow-sm">
                 Next Step &rarr;
             </button>
-            <button type="button" x-show="step === 5" @click="saveCharacter()"
+            <button type="button" x-show="step === 8" @click="saveCharacter()"
                     class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-sm shadow transition cursor-pointer">
                 💾 Save Character to Database
             </button>
@@ -485,15 +818,34 @@
 function characterWizard() {
     return {
         step: 1,
+        stepNames: {
+            1: 'Identity & Campaign',
+            2: 'Abilities',
+            3: 'Race & Culture',
+            4: 'Background Skills',
+            5: 'Improvement Points',
+            6: 'Class & Skills',
+            7: 'Personal Details',
+            8: 'Review & Save'
+        },
+
         campaigns: {!! json_encode($campaigns) !!},
         races: {!! json_encode($races) !!},
         templates: {!! json_encode($templates) !!},
+        cultures: {!! json_encode($cultures) !!},
+        classConfigs: {!! json_encode($classConfigs) !!},
         classes: {!! json_encode($classes) !!},
         abilityMethods: {!! json_encode($abilityMethods) !!},
         pointBuyCosts: { 3: -5, 4: -4, 5: -3, 6: -2, 7: -1, 8: 0, 9: 1, 10: 2, 11: 3, 12: 4, 13: 5, 14: 6, 15: 8, 16: 10, 17: 13, 18: 16 },
+        skillTypes: {!! json_encode($skillTypes) !!},
+        skills: {!! json_encode($skills) !!},
+        skillAccess: {!! json_encode($skillAccess) !!},
+        improvements: {!! json_encode($improvements) !!},
+
         selectedCampaignObj: null,
-        
-        // Ability generation state
+        skillAccessMap: {},
+
+        // Ability Generation State
         dragSourceAttr: null,
         dragOverAttr: null,
         rerollsRemaining: 0,
@@ -503,6 +855,11 @@ function characterWizard() {
         pointsSpent: 0,
         pointsRemaining: 25,
 
+        // Skills State
+        skillSearchQuery: '',
+        selectedSkillTypeFilter: '0',
+        activeClassLevelTab: 1,
+
         character: {
             Name: '',
             CampaignID: '{{ $initialCampId }}',
@@ -510,7 +867,8 @@ function characterWizard() {
             Alignment: 'Neutral Good',
             RaceID: 1,
             TemplateID: '',
-            ClassID: 1,
+            CultureID: 1,
+            BackgroundClassID: 15, // Commoner default
             StartingXP: 0,
             Level: 1,
             SuitabilityLevel: 3,
@@ -522,12 +880,34 @@ function characterWizard() {
             Intelligence: 8,
             Wisdom: 8,
             Charisma: 8,
-            SkillPoints: 16,
-            ImprovementPoints: 10,
-            SelectedSkills: {}
+            
+            // Background Skills rates: { [skillId]: rate (0, 0.5, 1.0) }
+            BgSkillRates: {},
+            
+            // IP allocations: { [traitId]: bonus }
+            IPAllocations: {},
+            
+            // Class progression: [ classIdLvl1, classIdLvl2, ... ]
+            ClassLevels: [1],
+            
+            // Class Level Skill allocations: { [levelIndex_1based]: { [skillId]: rank } }
+            LevelSkills: {},
+
+            PhysicalAge: 20,
+            MentalAge: 20,
+            HeightFactor: 1.0,
+            WeightFactor: 1.0,
+            Appearance: '',
+            Personality: '',
+            History: ''
         },
 
         init() {
+            // Build skill access map for O(1) primary/secondary checks
+            this.skillAccess.forEach(sa => {
+                this.skillAccessMap[sa.SkillID + '_' + sa.ClassID] = parseInt(sa.Prim) || 0;
+            });
+
             this.onCampaignChanged();
         },
 
@@ -546,7 +926,7 @@ function characterWizard() {
 
         get methodType() {
             const gen = this.currentMethodObj.Generation || 'B:25';
-            return gen.charAt(0); // 'B' = Point Buy, 'F' = Fixed, 'R' = Rolled
+            return gen.charAt(0);
         },
 
         onCampaignChanged() {
@@ -561,7 +941,6 @@ function characterWizard() {
                     this.character.AbilityGenMethod = parseInt(found.AbilityGenMethod) || 2;
                 }
             } else {
-                // Standalone Defaults: starting XP: 0, suitability level: 3, no optional rules
                 this.selectedCampaignObj = null;
                 this.character.StartingXP = 0;
                 this.character.Level = 1;
@@ -573,17 +952,59 @@ function characterWizard() {
             }
 
             this.initAbilityScores();
+            this.validateRaceAndCulture();
+        },
 
-            // Check if current selected race meets new suitability level
-            const currentRace = this.races.find(r => r.ID == this.character.RaceID);
-            if (currentRace && currentRace.PCSuitability < this.character.SuitabilityLevel) {
-                const validRace = this.races.find(r => r.PCSuitability >= this.character.SuitabilityLevel);
-                if (validRace) {
-                    this.character.RaceID = validRace.ID;
+        validateRaceAndCulture() {
+            const validRaces = this.eligibleRaces;
+            if (!validRaces.find(r => r.ID == this.character.RaceID) && validRaces.length > 0) {
+                this.character.RaceID = validRaces[0].ID;
+            }
+            this.onRaceChanged();
+        },
+
+        onRaceChanged() {
+            const race = this.getSelectedRace();
+            if (race && race.DefaultCulture) {
+                const cult = this.cultures.find(c => c.ID == race.DefaultCulture);
+                if (cult && cult.PCSuitability >= this.character.SuitabilityLevel) {
+                    this.character.CultureID = cult.ID;
                 }
+            }
+            this.onCultureChanged();
+        },
+
+        onTemplateChanged() {
+            // Re-check remaining class levels
+            this.syncClassLevels();
+        },
+
+        onCultureChanged() {
+            const availBg = this.availableBackgroundClasses;
+            if (availBg.length > 0) {
+                if (!availBg.find(bc => bc.ID == this.character.BackgroundClassID)) {
+                    this.character.BackgroundClassID = availBg[0].ID;
+                }
+            }
+            this.syncClassLevels();
+        },
+
+        onBackgroundClassChanged() {
+            // Reset background skill rates when background class changes
+            this.character.BgSkillRates = {};
+        },
+
+        syncClassLevels() {
+            const count = this.remainingClassLevels;
+            while (this.character.ClassLevels.length < count) {
+                this.character.ClassLevels.push(4); // default Fighter
+            }
+            if (this.character.ClassLevels.length > count) {
+                this.character.ClassLevels = this.character.ClassLevels.slice(0, count);
             }
         },
 
+        // --- Ability Scores Methods ---
         onAbilityMethodSelected() {
             this.initAbilityScores();
         },
@@ -600,14 +1021,12 @@ function characterWizard() {
             this.dragOverAttr = null;
 
             if (type === 'B') {
-                // Point Buy: B:25, B:15, B:35
                 this.pointPoolMax = parseInt(gen.substring(2)) || 25;
                 ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'].forEach(a => {
                     this.character[a] = 8;
                 });
                 this.calculatePointBuy();
             } else if (type === 'F') {
-                // Fixed Array: F:15,14,13,12,10,8
                 const raw = gen.substring(2).split(',').map(n => parseInt(n.trim()));
                 const attrs = ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'];
                 attrs.forEach((a, idx) => {
@@ -615,7 +1034,6 @@ function characterWizard() {
                 });
                 this.calculatePointBuy();
             } else {
-                // Rolled dice pools
                 this.rollAllScores();
             }
         },
@@ -658,7 +1076,6 @@ function characterWizard() {
             }
         },
 
-        // Rolling Dice Engine
         rollDice(num, sides, keepHighest = num) {
             let rolls = [];
             for (let i = 0; i < num; i++) {
@@ -674,41 +1091,21 @@ function characterWizard() {
 
         rollFormulaForMethod(methodId, slotIndex = 0) {
             methodId = Number(methodId);
-            // Method 1, 4, 5: 4d6 drop lowest (keep 3)
-            if (methodId === 1 || methodId === 4 || methodId === 5) {
-                return this.rollDice(4, 6, 3);
-            }
-            // Method 6 (E-VI): pools: 6d6, 5d6, 4d6, 4d6, 3d6, 3d6
-            if (methodId === 6) {
-                const poolSizes = [6, 5, 4, 4, 3, 3];
-                return this.rollDice(poolSizes[slotIndex] || 4, 6, 3);
-            }
-            // Method 7 (A-I): 3d6
-            if (methodId === 7) {
-                return this.rollDice(3, 6, 3);
-            }
-            // Method 11 (A-V): pools: 4d6, 4d6, 3d6, 3d6, 2d8, 2d8
+            if (methodId === 1 || methodId === 4 || methodId === 5) return this.rollDice(4, 6, 3);
+            if (methodId === 6) return this.rollDice([6, 5, 4, 4, 3, 3][slotIndex] || 4, 6, 3);
+            if (methodId === 7) return this.rollDice(3, 6, 3);
             if (methodId === 11) {
                 if (slotIndex >= 4) return this.rollDice(2, 8, 2);
                 if (slotIndex >= 2) return this.rollDice(3, 6, 3);
                 return this.rollDice(4, 6, 3);
             }
-            // Method 12, 15, 16: 5d6 drop 2 (keep 3)
-            if (methodId === 12 || methodId === 15 || methodId === 16) {
-                return this.rollDice(5, 6, 3);
-            }
-            // Method 17 (H-VI): pools: 9d6, 8d6, 7d6, 5d6, 4d6, 3d6
-            if (methodId === 17) {
-                const poolSizes = [9, 8, 7, 5, 4, 3];
-                return this.rollDice(poolSizes[slotIndex] || 5, 6, 3);
-            }
-            // Fallback standard 4d6 drop lowest
+            if (methodId === 12 || methodId === 15 || methodId === 16) return this.rollDice(5, 6, 3);
+            if (methodId === 17) return this.rollDice([9, 8, 7, 5, 4, 3][slotIndex] || 5, 6, 3);
             return this.rollDice(4, 6, 3);
         },
 
         rollAllScores() {
-            const attrs = ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'];
-            attrs.forEach((attr, idx) => {
+            ['Strength', 'Constitution', 'Dexterity', 'Intelligence', 'Wisdom', 'Charisma'].forEach((attr, idx) => {
                 this.character[attr] = this.rollFormulaForMethod(this.character.AbilityGenMethod, idx);
             });
             const method = this.currentMethodObj;
@@ -723,34 +1120,24 @@ function characterWizard() {
             const newScore = this.rollFormulaForMethod(this.character.AbilityGenMethod, slotIndex);
             const methodId = Number(this.character.AbilityGenMethod);
 
-            // Method 5 and 16 specify: take the new roll if it is higher
             if (methodId === 5 || methodId === 16) {
-                if (newScore > this.character[attr]) {
-                    this.character[attr] = newScore;
-                }
+                if (newScore > this.character[attr]) this.character[attr] = newScore;
             } else {
                 this.character[attr] = newScore;
             }
-
             this.rerollsRemaining--;
             this.calculatePointBuy();
         },
 
-        // Drag, Drop & Swapping Logic
         canSwapScores() {
-            const rearrange = this.currentMethodObj.Rearrange;
-            if (!rearrange || rearrange == 0) return false;
-            return this.swapsRemaining > 0;
+            return (this.currentMethodObj.Rearrange > 0) && this.swapsRemaining > 0;
         },
 
         swapScores(attr1, attr2) {
-            if (!attr1 || !attr2 || attr1 === attr2) return;
-            if (!this.canSwapScores()) return;
-
+            if (!attr1 || !attr2 || attr1 === attr2 || !this.canSwapScores()) return;
             const tmp = this.character[attr1];
             this.character[attr1] = this.character[attr2];
             this.character[attr2] = tmp;
-
             if (this.currentMethodObj.Rearrange == 1) {
                 this.swapsRemaining = 0;
                 this.swapCountUsed = 1;
@@ -759,10 +1146,7 @@ function characterWizard() {
         },
 
         onDragStart(attr, e) {
-            if (!this.canSwapScores()) {
-                e.preventDefault();
-                return;
-            }
+            if (!this.canSwapScores()) { e.preventDefault(); return; }
             this.dragSourceAttr = attr;
             e.dataTransfer.setData('text/plain', attr);
             e.dataTransfer.effectAllowed = 'move';
@@ -777,9 +1161,7 @@ function characterWizard() {
         },
 
         onDragLeave(attr) {
-            if (this.dragOverAttr === attr) {
-                this.dragOverAttr = null;
-            }
+            if (this.dragOverAttr === attr) this.dragOverAttr = null;
         },
 
         onDrop(attr, e) {
@@ -791,22 +1173,299 @@ function characterWizard() {
             this.dragOverAttr = null;
         },
 
+        // --- Computed Properties for Level & Heritage ---
         get eligibleRaces() {
-            const suit = parseInt(this.character.SuitabilityLevel);
-            return this.races.filter(r => (parseInt(r.PCSuitability) >= suit));
+            const suit = parseInt(this.character.SuitabilityLevel) || 3;
+            const lvl = parseInt(this.character.Level) || 1;
+            return this.races.filter(r => {
+                const raceCost = (parseInt(r.BaseRL) || 0) + (parseInt(r.CLModifier) || 0);
+                return (parseInt(r.PCSuitability) >= suit) && (raceCost <= lvl);
+            });
         },
 
         get eligibleTemplates() {
-            const suit = parseInt(this.character.SuitabilityLevel);
-            return this.templates.filter(t => (parseInt(t.PCSuitability) >= suit));
+            const suit = parseInt(this.character.SuitabilityLevel) || 3;
+            const lvl = parseInt(this.character.Level) || 1;
+            const race = this.getSelectedRace();
+            const raceCost = (parseInt(race.BaseRL) || 0) + (parseInt(race.CLModifier) || 0);
+            const remainingBudget = lvl - raceCost;
+
+            return this.templates.filter(t => {
+                const tplCost = (parseInt(t.RLModifier) || 0) + (parseInt(t.CLModifier) || 0);
+                return (parseInt(t.PCSuitability) >= suit) && (tplCost <= remainingBudget);
+            });
+        },
+
+        get eligibleCultures() {
+            const suit = parseInt(this.character.SuitabilityLevel) || 3;
+            return this.cultures.filter(c => parseInt(c.PCSuitability) >= suit);
         },
 
         getSelectedRace() {
-            return this.races.find(r => r.ID == this.character.RaceID) || {};
+            return this.races.find(r => r.ID == this.character.RaceID) || this.races[0] || {};
         },
 
-        getSelectedClass() {
-            return this.classes.find(c => c.ID == this.character.ClassID) || {};
+        getSelectedTemplate() {
+            return this.templates.find(t => t.ID == this.character.TemplateID) || {};
+        },
+
+        getSelectedCulture() {
+            return this.cultures.find(c => c.ID == this.character.CultureID) || this.cultures[0] || {};
+        },
+
+        get availableBackgroundClasses() {
+            const cult = this.getSelectedCulture();
+            if (!cult) return [];
+            const ids = [cult.ClassConfig, cult.ClassConfigSec, cult.ClassConfigTert].filter(Boolean);
+            const classIds = [];
+            ids.forEach(cfgId => {
+                if (this.classConfigs[cfgId] && this.classConfigs[cfgId].ClassID) {
+                    classIds.push(this.classConfigs[cfgId].ClassID);
+                }
+            });
+            return this.classes.filter(cls => classIds.includes(cls.ID));
+        },
+
+        getSelectedBackgroundClass() {
+            return this.classes.find(cls => cls.ID == this.character.BackgroundClassID) || this.availableBackgroundClasses[0] || this.classes[0] || {};
+        },
+
+        get totalRL() {
+            const race = this.getSelectedRace();
+            const tpl = this.getSelectedTemplate();
+            return (parseInt(race.BaseRL) || 0) + (parseInt(tpl.RLModifier) || 0);
+        },
+
+        get totalCL() {
+            const race = this.getSelectedRace();
+            const tpl = this.getSelectedTemplate();
+            return (parseInt(race.CLModifier) || 0) + (parseInt(tpl.CLModifier) || 0);
+        },
+
+        get totalEL() {
+            return this.totalRL + this.totalCL;
+        },
+
+        get remainingClassLevels() {
+            return Math.max(0, parseInt(this.character.Level) - this.totalEL);
+        },
+
+        // --- Final Stats with Adjustments ---
+        getFinalAbility(attr) {
+            let base = parseInt(this.character[attr]) || 10;
+            const race = this.getSelectedRace();
+            const tpl = this.getSelectedTemplate();
+            const attrShort = attr.substring(0, 3);
+            
+            if (race[attrShort + 'Adj']) base += parseInt(race[attrShort + 'Adj']);
+            if (tpl[attrShort + 'Adj']) base += parseInt(tpl[attrShort + 'Adj']);
+
+            // Add IP improvements (traits 1..6)
+            const traitIndexMap = { Strength: 1, Constitution: 2, Dexterity: 3, Intelligence: 4, Wisdom: 5, Charisma: 6 };
+            const traitId = traitIndexMap[attr];
+            if (traitId && this.character.IPAllocations[traitId]) {
+                base += parseInt(this.character.IPAllocations[traitId]);
+            }
+            return base;
+        },
+
+        getAbilityModifier(attr) {
+            const score = this.getFinalAbility(attr);
+            return Math.floor((score - 10) / 2);
+        },
+
+        // --- Background Skills Logic (Step 4) ---
+        get totalBgSkillPoints() {
+            const bgClass = this.getSelectedBackgroundClass();
+            const intMod = Math.max(0, this.getAbilityModifier('Intelligence'));
+            const levels = this.totalRL + 1;
+            return levels * ((parseInt(bgClass.SkillPtsPerLevel) || 12) + intMod);
+        },
+
+        get bgSkillPointsSpent() {
+            let spent = 0;
+            const levels = this.totalRL + 1;
+            for (const skillId in this.character.BgSkillRates) {
+                const rate = parseFloat(this.character.BgSkillRates[skillId]) || 0;
+                spent += rate * levels;
+            }
+            return spent;
+        },
+
+        get bgSkillPointsRemaining() {
+            return this.totalBgSkillPoints - this.bgSkillPointsSpent;
+        },
+
+        isBgSkillPrimary(skillId) {
+            const bgClass = this.getSelectedBackgroundClass();
+            return this.skillAccessMap[skillId + '_' + bgClass.ID] === 1;
+        },
+
+        getBgSkillRate(skillId) {
+            return this.character.BgSkillRates[skillId] !== undefined ? this.character.BgSkillRates[skillId] : 0;
+        },
+
+        getBgSkillRank(skillId) {
+            const rate = this.getBgSkillRate(skillId);
+            return (rate * (this.totalRL + 1)).toFixed(1).replace(/\.0$/, '');
+        },
+
+        getBgSkillMax(skillId) {
+            const maxRate = this.isBgSkillPrimary(skillId) ? 1.0 : 0.5;
+            return (maxRate * (this.totalRL + 1)).toFixed(1).replace(/\.0$/, '');
+        },
+
+        canSetBgSkillRate(skillId, newRate) {
+            const currentRate = this.getBgSkillRate(skillId);
+            const delta = (newRate - currentRate) * (this.totalRL + 1);
+            return this.bgSkillPointsRemaining >= delta;
+        },
+
+        setBgSkillRate(skillId, rate) {
+            if (this.canSetBgSkillRate(skillId, rate)) {
+                this.character.BgSkillRates[skillId] = rate;
+            }
+        },
+
+        get filteredSkillTypes() {
+            if (this.selectedSkillTypeFilter === '0') return this.skillTypes;
+            return this.skillTypes.filter(st => String(st.ID) === String(this.selectedSkillTypeFilter));
+        },
+
+        getSkillsForType(typeId) {
+            let list = this.skills.filter(s => s.Type == typeId);
+            if (this.skillSearchQuery.trim()) {
+                const q = this.skillSearchQuery.toLowerCase();
+                list = list.filter(s => s.Name.toLowerCase().includes(q));
+            }
+            return list;
+        },
+
+        // --- Improvement Points Logic (Step 5) ---
+        get totalIP() {
+            return parseInt(this.character.Level) * 10;
+        },
+
+        get ipSpent() {
+            let spent = 0;
+            this.improvements.forEach(t => {
+                const count = this.character.IPAllocations[t.ID] || 0;
+                spent += count * (parseInt(t.IPCost) || 10);
+            });
+            return spent;
+        },
+
+        get ipRemaining() {
+            return this.totalIP - this.ipSpent;
+        },
+
+        getIPBonus(traitId) {
+            return this.character.IPAllocations[traitId] || 0;
+        },
+
+        canIncIP(traitId) {
+            const trait = this.improvements.find(t => t.ID == traitId);
+            if (!trait) return false;
+            const current = this.character.IPAllocations[traitId] || 0;
+            if (current >= parseInt(trait.MaxBonus)) return false;
+            return this.ipRemaining >= parseInt(trait.IPCost);
+        },
+
+        canDecIP(traitId) {
+            return (this.character.IPAllocations[traitId] || 0) > 0;
+        },
+
+        incIP(traitId) {
+            if (this.canIncIP(traitId)) {
+                this.character.IPAllocations[traitId] = (this.character.IPAllocations[traitId] || 0) + 1;
+            }
+        },
+
+        decIP(traitId) {
+            if (this.canDecIP(traitId)) {
+                this.character.IPAllocations[traitId]--;
+            }
+        },
+
+        // --- Level-by-Level Class & Skill Progression (Step 6) ---
+        getClassForLevel(lvl) {
+            const classId = this.character.ClassLevels[lvl - 1] || 1;
+            return this.classes.find(c => c.ID == classId) || this.classes[0] || {};
+        },
+
+        setClassForLevel(lvl, classId) {
+            this.character.ClassLevels[lvl - 1] = parseInt(classId);
+            // Clear skills for this level if class changed
+            if (this.character.LevelSkills[lvl]) {
+                delete this.character.LevelSkills[lvl];
+            }
+        },
+
+        getLevelSkillPointsTotal(lvl) {
+            const cls = this.getClassForLevel(lvl);
+            const intMod = Math.max(0, this.getAbilityModifier('Intelligence'));
+            return (parseInt(cls.SkillPtsPerLevel) || 18) + intMod;
+        },
+
+        getLevelSkillPointsSpent(lvl) {
+            const allocations = this.character.LevelSkills[lvl] || {};
+            let spent = 0;
+            const cls = this.getClassForLevel(lvl);
+            for (const skillId in allocations) {
+                const rank = parseFloat(allocations[skillId]) || 0;
+                const isPrim = this.skillAccessMap[skillId + '_' + cls.ID] === 1;
+                spent += isPrim ? rank : rank * 2;
+            }
+            return spent;
+        },
+
+        getLevelSkillPointsRemaining(lvl) {
+            return this.getLevelSkillPointsTotal(lvl) - this.getLevelSkillPointsSpent(lvl);
+        },
+
+        isLevelSkillPrimary(lvl, skillId) {
+            const cls = this.getClassForLevel(lvl);
+            return this.skillAccessMap[skillId + '_' + cls.ID] === 1;
+        },
+
+        getLevelSkillRank(lvl, skillId) {
+            const allocations = this.character.LevelSkills[lvl] || {};
+            return allocations[skillId] || 0;
+        },
+
+        canIncLevelSkill(lvl, skillId) {
+            const current = this.getLevelSkillRank(lvl, skillId);
+            const isPrim = this.isLevelSkillPrimary(lvl, skillId);
+            const maxRankForLevel = isPrim ? 1.0 : 0.5;
+            if (current >= maxRankForLevel) return false;
+            
+            const cost = isPrim ? 0.5 : 1.0;
+            return this.getLevelSkillPointsRemaining(lvl) >= cost;
+        },
+
+        incLevelSkill(lvl, skillId) {
+            if (this.canIncLevelSkill(lvl, skillId)) {
+                if (!this.character.LevelSkills[lvl]) this.character.LevelSkills[lvl] = {};
+                this.character.LevelSkills[lvl][skillId] = (this.character.LevelSkills[lvl][skillId] || 0) + 0.5;
+            }
+        },
+
+        decLevelSkill(lvl, skillId) {
+            if (this.character.LevelSkills[lvl] && this.character.LevelSkills[lvl][skillId] > 0) {
+                this.character.LevelSkills[lvl][skillId] -= 0.5;
+                if (this.character.LevelSkills[lvl][skillId] <= 0) {
+                    delete this.character.LevelSkills[lvl][skillId];
+                }
+            }
+        },
+
+        // --- Wizard Flow & Next Step Verification ---
+        nextStep() {
+            if (this.step === 1 && !this.character.Name) {
+                alert('Please enter a character name to proceed.');
+                return;
+            }
+            this.step++;
         },
 
         async saveCharacter() {
@@ -822,18 +1481,33 @@ function characterWizard() {
                         CampaignID: this.character.CampaignID || null,
                         RaceID: this.character.RaceID,
                         TemplateID: this.character.TemplateID || null,
-                        ClassID: this.character.ClassID,
+                        CultureID: this.character.CultureID,
+                        BackgroundClassID: this.character.BackgroundClassID,
+                        Classes: this.character.ClassLevels,
                         Gender: this.character.Gender,
                         Level: this.character.Level,
                         StartingXP: this.character.StartingXP,
+                        TotalRL: this.totalRL,
                         AbilityGenMethod: this.character.AbilityGenMethod,
-                        Strength: this.character.Strength,
-                        Constitution: this.character.Constitution,
-                        Dexterity: this.character.Dexterity,
-                        Intelligence: this.character.Intelligence,
-                        Wisdom: this.character.Wisdom,
-                        Charisma: this.character.Charisma,
-                        Skills: this.character.SelectedSkills
+                        Strength: this.getFinalAbility('Strength'),
+                        Constitution: this.getFinalAbility('Constitution'),
+                        Dexterity: this.getFinalAbility('Dexterity'),
+                        Intelligence: this.getFinalAbility('Intelligence'),
+                        Wisdom: this.getFinalAbility('Wisdom'),
+                        Charisma: this.getFinalAbility('Charisma'),
+                        ImprovementPoints: this.ipSpent,
+                        Improvements: this.character.IPAllocations,
+                        Skills: {
+                            BackgroundRates: this.character.BgSkillRates,
+                            LevelSkills: this.character.LevelSkills
+                        },
+                        MentalAge: this.character.MentalAge,
+                        PhysicalAge: this.character.PhysicalAge,
+                        HeightFactor: this.character.HeightFactor,
+                        WeightFactor: this.character.WeightFactor,
+                        Appearance: this.character.Appearance,
+                        Personality: this.character.Personality,
+                        History: this.character.History
                     })
                 });
                 const data = await res.json();
