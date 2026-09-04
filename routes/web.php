@@ -70,6 +70,7 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::get('/character-generator', [UtilityController::class, 'characterGenerator'])->name('chargen');
     Route::get('/chargen', [UtilityController::class, 'characterGenerator']);
     Route::post('/character-generator/save', [UtilityController::class, 'saveCharacter'])->name('chargen.save');
+    Route::post('/chargen/save', [UtilityController::class, 'saveCharacter']);
 
     Route::get('/character-viewer/{id?}', [UtilityController::class, 'characterViewer'])->name('charview');
     Route::get('/charview/{id?}', [UtilityController::class, 'characterViewer']);

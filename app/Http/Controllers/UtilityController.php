@@ -43,7 +43,13 @@ class UtilityController extends Controller
         $improvements = DB::table('ref_improvementtraits')->get();
         $wealthPerLevel = DB::table('ref_wealthperlevel')->orderBy('Level')->get();
         $itemTypes = DB::table('ref_itemtypes')->orderBy('SortOrder')->get();
-        $equipment = DB::table('ref_items')->where('ShowPCGen', 1)->orWhereNotNull('BaseValue')->orderBy('Name')->get();
+        $equipment = DB::table('ref_items')
+            ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
+            ->select('ref_items.*', 'ref_itemsubtypes.Type as ItemTypeID', 'ref_itemsubtypes.Name as SubtypeName')
+            ->where('ref_items.ShowPCGen', 1)
+            ->orWhereNotNull('ref_items.BaseValue')
+            ->orderBy('ref_items.Name')
+            ->get();
         $spells = DB::table('ref_spells')->orderBy('Name')->get();
         $spellOptions = DB::table('ref_spelloptions')->orderBy('SpellID')->orderBy('ID')->get();
 
@@ -58,34 +64,34 @@ class UtilityController extends Controller
     {
         $validated = $request->validate([
             'Name' => 'required|string|max:100',
-            'CampaignID' => 'nullable|integer',
-            'RaceID' => 'nullable|integer',
-            'TemplateID' => 'nullable|integer',
-            'CultureID' => 'nullable|integer',
-            'BackgroundClassID' => 'nullable|integer',
-            'ClassID' => 'nullable|integer',
+            'CampaignID' => 'nullable',
+            'RaceID' => 'nullable',
+            'TemplateID' => 'nullable',
+            'CultureID' => 'nullable',
+            'BackgroundClassID' => 'nullable',
+            'ClassID' => 'nullable',
             'Classes' => 'nullable',
             'Gender' => 'nullable|string',
-            'Level' => 'nullable|integer',
-            'StartingXP' => 'nullable|integer',
-            'AbilityGenMethod' => 'nullable|integer',
+            'Level' => 'nullable',
+            'StartingXP' => 'nullable',
+            'AbilityGenMethod' => 'nullable',
             'Strength' => 'nullable|integer',
             'Constitution' => 'nullable|integer',
             'Dexterity' => 'nullable|integer',
             'Intelligence' => 'nullable|integer',
             'Wisdom' => 'nullable|integer',
             'Charisma' => 'nullable|integer',
-            'MentalAge' => 'nullable|integer',
-            'PhysicalAge' => 'nullable|integer',
-            'HeightFactor' => 'nullable|numeric',
-            'WeightFactor' => 'nullable|numeric',
+            'MentalAge' => 'nullable',
+            'PhysicalAge' => 'nullable',
+            'HeightFactor' => 'nullable',
+            'WeightFactor' => 'nullable',
             'Appearance' => 'nullable|string|max:2000',
             'Personality' => 'nullable|string|max:2000',
             'History' => 'nullable|string|max:5000',
             'Family' => 'nullable|string|max:2000',
             'Contacts' => 'nullable|string|max:2000',
-            'Wealth' => 'nullable|integer',
-            'LeftoverIP' => 'nullable|integer',
+            'Wealth' => 'nullable',
+            'LeftoverIP' => 'nullable',
         ]);
 
         $playerId = \Illuminate\Support\Facades\Auth::id() ?? $request->input('Player') ?? $request->input('PlayerID');
@@ -183,48 +189,71 @@ class UtilityController extends Controller
         $leftoverIP = (int)($request->input('LeftoverIP') ?? $request->input('ImprovementPoints') ?? 0);
         $wealth = (int)($request->input('Wealth') ?? 0);
 
-        $charId = DB::table('characters')->insertGetId([
-            'Name' => $validated['Name'],
-            'Campaign' => $request->input('Campaign') ?? $request->input('CampaignID') ?? null,
-            'Player' => $playerId,
-            'AbilityGenMethod' => $request->input('AbilityGenMethod') ?? 2,
-            'ExperiencePts' => (int)($request->input('StartingXP') ?? $request->input('ExperiencePts') ?? 0),
-            'BaseRace' => $request->input('RaceID', 1),
-            'Templates' => $request->input('TemplateID') ? (string)$request->input('TemplateID') : null,
-            'Culture' => $request->input('CultureID') ? (int)$request->input('CultureID') : null,
-            'BackgndClass' => $request->input('BackgroundClassID') ? (int)$request->input('BackgroundClassID') : null,
-            'Classes' => $classesStr,
-            'Gender' => $request->input('Gender', 'Male') === 'Female' ? 2 : 1,
-            'BaseStr' => $request->input('Strength', 10),
-            'BaseCon' => $request->input('Constitution', 10),
-            'BaseDex' => $request->input('Dexterity', 10),
-            'BaseInt' => $request->input('Intelligence', 10),
-            'BaseWis' => $request->input('Wisdom', 10),
-            'BaseCha' => $request->input('Charisma', 10),
-            'ImprovementPts' => $leftoverIP,
-            'Improvements' => $improvsStr,
-            'Skills' => $skillsStr,
-            'Specializations' => $specsStr,
-            'Spells' => $spellsStr,
-            'Equipment' => $equipStr,
-            'Wealth' => $wealth,
-            'MentalAge' => $request->input('MentalAge') ? (int)$request->input('MentalAge') : null,
-            'PhysicalAge' => $request->input('PhysicalAge') ? (int)$request->input('PhysicalAge') : null,
-            'HeightFactor' => $request->input('HeightFactor') ? (float)$request->input('HeightFactor') : null,
-            'WeightFactor' => $request->input('WeightFactor') ? (float)$request->input('WeightFactor') : null,
-            'Appearance' => $request->input('Appearance', ''),
-            'Personality' => $request->input('Personality', ''),
-            'History' => $request->input('History', ''),
-            'Family' => $request->input('Family', ''),
-            'Contacts' => $request->input('Contacts', ''),
-        ]);
+        try {
+            $existing = DB::table('characters')->where('Name', $validated['Name'])->first();
+            if ($existing) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'A character with the name "' . $validated['Name'] . '" already exists. Please choose a different name.',
+                ], 422);
+            }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Character saved successfully!',
-            'character_id' => $charId,
-            'redirect_url' => route('utilities.charview', ['id' => $charId], false),
-        ]);
+            $cid = $request->input('CampaignID') ?? $request->input('Campaign');
+            $campaignVal = ((int)$cid > 0) ? (int)$cid : null;
+            $cultureVal = ((int)$request->input('CultureID') > 0) ? (int)$request->input('CultureID') : null;
+            $bgClassVal = ((int)$request->input('BackgroundClassID') > 0) ? (int)$request->input('BackgroundClassID') : null;
+            $tid = $request->input('TemplateID');
+            $templateVal = ((int)$tid > 0) ? (string)$tid : null;
+
+            $charId = DB::table('characters')->insertGetId([
+                'Name' => $validated['Name'],
+                'Campaign' => $campaignVal,
+                'Player' => $playerId,
+                'AbilityGenMethod' => $request->input('AbilityGenMethod') ? (int)$request->input('AbilityGenMethod') : 2,
+                'ExperiencePts' => (int)($request->input('StartingXP') ?? $request->input('ExperiencePts') ?? 0),
+                'BaseRace' => (int)$request->input('RaceID', 1) ?: 1,
+                'Templates' => $templateVal,
+                'Culture' => $cultureVal,
+                'BackgndClass' => $bgClassVal,
+                'Classes' => $classesStr,
+                'Gender' => $request->input('Gender', 'Male') === 'Female' ? 2 : 1,
+                'BaseStr' => (int)$request->input('Strength', 10),
+                'BaseCon' => (int)$request->input('Constitution', 10),
+                'BaseDex' => (int)$request->input('Dexterity', 10),
+                'BaseInt' => (int)$request->input('Intelligence', 10),
+                'BaseWis' => (int)$request->input('Wisdom', 10),
+                'BaseCha' => (int)$request->input('Charisma', 10),
+                'ImprovementPts' => $leftoverIP,
+                'Improvements' => $improvsStr,
+                'Skills' => $skillsStr,
+                'Specializations' => $specsStr,
+                'Spells' => $spellsStr,
+                'Equipment' => $equipStr,
+                'Wealth' => $wealth,
+                'MentalAge' => is_numeric($request->input('MentalAge')) ? (int)$request->input('MentalAge') : null,
+                'PhysicalAge' => is_numeric($request->input('PhysicalAge')) ? (int)$request->input('PhysicalAge') : null,
+                'HeightFactor' => is_numeric($request->input('HeightFactor')) ? (float)$request->input('HeightFactor') : null,
+                'WeightFactor' => is_numeric($request->input('WeightFactor')) ? (float)$request->input('WeightFactor') : null,
+                'Appearance' => (string)$request->input('Appearance', ''),
+                'Personality' => (string)$request->input('Personality', ''),
+                'History' => (string)$request->input('History', ''),
+                'Family' => (string)$request->input('Family', ''),
+                'Contacts' => (string)$request->input('Contacts', ''),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Character saved successfully!',
+                'character_id' => $charId,
+                'redirect_url' => route('utilities.charview', ['id' => $charId], false),
+            ]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Character save error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error saving character: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

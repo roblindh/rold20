@@ -69,7 +69,7 @@ if (isset($_GET['migrate']) || isset($_GET['sync'])) {
 if (isset($_GET['log']) || isset($_GET['debug'])) {
     if (file_exists($logFile)) {
         $lines = file($logFile);
-        $results['recent_logs'] = array_slice($lines, -40);
+        $results['recent_logs'] = array_slice($lines, -150);
     }
 }
 

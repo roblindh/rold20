@@ -814,7 +814,12 @@
                     <template x-for="item in filteredShopItems" :key="item.ID">
                         <div class="p-2.5 flex items-center justify-between gap-2 hover:bg-slate-50 text-xs">
                             <div class="min-w-0 flex-1">
-                                <span class="font-bold text-slate-900 truncate block" x-text="item.Name"></span>
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="font-bold text-slate-900 truncate" x-text="item.Name"></span>
+                                    <template x-if="item.SubtypeName">
+                                        <span class="text-[10px] text-slate-400 font-medium" x-text="'(' + item.SubtypeName + ')'"></span>
+                                    </template>
+                                </div>
                                 <span class="text-[10px] text-slate-500 font-mono" x-text="'Cost: ' + (item.BaseValue || 0) + ' sp | Wt: ' + (item.BaseWeight || 0) + ' kg'"></span>
                             </div>
                             <button type="button" @click="addItemToInventory(item)"
@@ -1549,7 +1554,7 @@ function characterWizard() {
 
         // --- Improvements Logic (Step 4) ---
         get totalIP() {
-            return parseInt(this.character.Level) * 10;
+            return parseInt(this.character.Level) * 5;
         },
 
         get ipSpent() {
@@ -1790,13 +1795,104 @@ function characterWizard() {
             return this.skills.filter(s => [4, 5, 6, 8].includes(parseInt(s.Type)) && this.getConsolidatedSkillRank(s.ID) > 0);
         },
 
-        get eligibleSpells() {
-            const trainedNames = this.trainedSpellSkills.map(s => s.Name.toLowerCase());
-            return this.spells.filter(sp => {
-                if (!sp.Skills) return false;
-                const reqSkills = sp.Skills.toLowerCase();
-                return trainedNames.some(name => reqSkills.includes(name) || reqSkills.includes(name.replace('arcane - ', '').replace('divine - ', '').replace('psi - ', '')));
+        parseSpellBaseCost(costStr) {
+            if (!costStr) return 0;
+            const normalized = costStr.replace(/\\r\\n|\\r|\\n|\r\n|\r/g, '\n');
+            const lines = normalized.split('\n');
+            const costs = [];
+            for (let line of lines) {
+                line = line.trim();
+                if (!line || line.startsWith('+') || line.startsWith('-')) continue;
+                const m = line.match(/^(\d+)\s*PP/i);
+                if (m) {
+                    costs.push(parseInt(m[1]));
+                }
+            }
+            if (costs.length > 0) {
+                return Math.min(...costs);
+            }
+            const fallback = normalized.match(/(\d+)\s*PP/i);
+            if (fallback) return parseInt(fallback[1]);
+            return 1;
+        },
+
+        isSpellEligible(sp) {
+            if (!sp || !sp.Skills) return false;
+            const baseCost = this.parseSpellBaseCost(sp.Cost);
+            const normalizedSkills = sp.Skills.replace(/\\r\\n|\\r|\\n|\r\n|\r/g, '\n');
+            const lines = normalizedSkills.split('\n');
+
+            // Map trained spell skills by lowercase name to rank
+            const trainedMap = {};
+            this.skills.forEach(s => {
+                const rank = this.getConsolidatedSkillRank(s.ID);
+                if (rank > 0) {
+                    trainedMap[s.Name.toLowerCase().trim()] = rank;
+                }
             });
+
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+
+                let lineCost = baseCost;
+                const costMatch = line.match(/\(\+(\d+)\s*PP(?:\s+cost)?\)/i);
+                if (costMatch) {
+                    lineCost += parseInt(costMatch[1]);
+                }
+
+                // Remove parenthetical annotations
+                let cleanLine = line.replace(/\([^)]*\)/g, '').trim();
+                if (!cleanLine) continue;
+
+                let prefix = '';
+                const prefixMatch = cleanLine.match(/^(Arcane|Divine|Psi|Cleric Affinity|Ki)\s*-\s*/i);
+                if (prefixMatch) {
+                    prefix = prefixMatch[1] + ' - ';
+                    cleanLine = cleanLine.substring(prefixMatch[0].length);
+                }
+
+                const parts = cleanLine.split(/\s+and\s+|\s+or\s+|,\s*/i);
+                let lineQualified = true;
+                let matchedAnyInPart = false;
+
+                for (let part of parts) {
+                    part = part.trim();
+                    if (!part) continue;
+
+                    const candidateName = part.includes(' - ') ? part : (prefix + part);
+                    const candidateLower = candidateName.toLowerCase().trim();
+
+                    let rank = 0;
+                    let found = false;
+                    for (const sName in trainedMap) {
+                        if (sName === candidateLower ||
+                            sName === part.toLowerCase().trim() ||
+                            sName.endsWith(' - ' + part.toLowerCase().trim())) {
+                            rank = trainedMap[sName];
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found || rank < lineCost || rank <= 0) {
+                        lineQualified = false;
+                        break;
+                    } else {
+                        matchedAnyInPart = true;
+                    }
+                }
+
+                if (lineQualified && matchedAnyInPart) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
+
+        get eligibleSpells() {
+            return this.spells.filter(sp => this.isSpellEligible(sp));
         },
 
         isSpellLearned(spellId) {
@@ -1874,12 +1970,12 @@ function characterWizard() {
 
         get filteredShopItems() {
             let list = this.equipment;
-            if (this.selectedItemTypeFilter !== '0') {
-                list = list.filter(it => it.Subtype == this.selectedItemTypeFilter);
+            if (this.selectedItemTypeFilter && this.selectedItemTypeFilter !== '0' && this.selectedItemTypeFilter !== 0) {
+                list = list.filter(it => it.ItemTypeID == this.selectedItemTypeFilter);
             }
             if (this.itemSearchQuery.trim()) {
                 const q = this.itemSearchQuery.toLowerCase();
-                list = list.filter(it => it.Name.toLowerCase().includes(q));
+                list = list.filter(it => it.Name.toLowerCase().includes(q) || (it.SubtypeName && it.SubtypeName.toLowerCase().includes(q)));
             }
             return list;
         },
@@ -1981,11 +2077,13 @@ function characterWizard() {
 
         async saveCharacter() {
             try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
                 const res = await fetch('{{ route('utilities.chargen.save', [], false) }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
                     },
                     body: JSON.stringify({
                         Name: this.character.Name,
@@ -2028,14 +2126,28 @@ function characterWizard() {
                         Contacts: this.character.Contacts
                     })
                 });
-                const data = await res.json();
-                if (data.success) {
+                const data = await res.json().catch(() => null);
+                if (res.ok && data && data.success) {
                     window.location.href = data.redirect_url;
                 } else {
-                    alert(data.message || 'Error saving character.');
+                    let errMsg = 'Error saving character.';
+                    if (data && data.message) {
+                        errMsg = data.message;
+                        if (data.errors) {
+                            errMsg += '\n' + Object.values(data.errors).flat().join('\n');
+                        }
+                    } else if (res.status === 419) {
+                        errMsg = 'Session expired (CSRF mismatch). Please refresh the page and try again.';
+                    } else if (res.status === 404) {
+                        errMsg = 'Save endpoint not found (404).';
+                    } else if (res.status >= 500) {
+                        errMsg = 'Server error occurred while saving character.';
+                    }
+                    alert(errMsg);
                 }
             } catch (e) {
-                alert('Error saving character to server.');
+                console.error(e);
+                alert('Error connecting to server to save character: ' + (e.message || e));
             }
         }
     };

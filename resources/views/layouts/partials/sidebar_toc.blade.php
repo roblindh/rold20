@@ -405,15 +405,6 @@
                     <a href="{{ route('utilities.chargen', [], false) }}" class="block px-2.5 py-1.5 rounded transition {{ request()->routeIs('utilities.chargen*') ? 'bg-emerald-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
                         🧙‍♂️ Character Generator
                     </a>
-                    @if(request()->routeIs('utilities.chargen*'))
-                        <ul class="border-l-2 border-emerald-400/50 ml-3.5 pl-2.5 my-1.5 space-y-1 text-xs">
-                            <li><a href="#step-1" class="text-slate-300 hover:text-white block py-0.5 transition">1. Identity & Concept</a></li>
-                            <li><a href="#step-2" class="text-slate-300 hover:text-white block py-0.5 transition">2. Ability Scores</a></li>
-                            <li><a href="#step-3" class="text-slate-300 hover:text-white block py-0.5 transition">3. Race & Class</a></li>
-                            <li><a href="#step-4" class="text-slate-300 hover:text-white block py-0.5 transition">4. Skills & Points</a></li>
-                            <li><a href="#step-5" class="text-slate-300 hover:text-white block py-0.5 transition">5. Review & Save</a></li>
-                        </ul>
-                    @endif
                 </li>
                 <li>
                     <a href="{{ route('utilities.charview', [], false) }}" class="block px-2.5 py-1.5 rounded transition {{ request()->routeIs('utilities.charview*') ? 'bg-emerald-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
