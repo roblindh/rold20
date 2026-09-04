@@ -39,12 +39,18 @@ class UtilityController extends Controller
         $skillTypes = DB::table('ref_skilltypes')->where('ID', '<=', 8)->orderBy('SortOrder')->get();
         $skills = DB::table('ref_skills')->where('Type', '<=', 8)->orderBy('Type')->orderBy('Name')->get();
         $skillAccess = DB::table('ref_skillaccess')->get();
+        $skillSpecializations = DB::table('ref_skillspecializations')->orderBy('Skill')->orderBy('Name')->get();
         $improvements = DB::table('ref_improvementtraits')->get();
-        $equipment = DB::table('ref_items')->orderBy('Name')->get();
+        $wealthPerLevel = DB::table('ref_wealthperlevel')->orderBy('Level')->get();
+        $itemTypes = DB::table('ref_itemtypes')->orderBy('SortOrder')->get();
+        $equipment = DB::table('ref_items')->where('ShowPCGen', 1)->orWhereNotNull('BaseValue')->orderBy('Name')->get();
+        $spells = DB::table('ref_spells')->orderBy('Name')->get();
+        $spellOptions = DB::table('ref_spelloptions')->orderBy('SpellID')->orderBy('ID')->get();
 
         return view('utilities.chargen_wizard', compact(
             'campaigns', 'races', 'templates', 'cultures', 'classConfigs', 'classes', 'abilityMethods', 'pointBuyTable',
-            'skillTypes', 'skills', 'skillAccess', 'improvements', 'equipment'
+            'skillTypes', 'skills', 'skillAccess', 'skillSpecializations', 'improvements',
+            'wealthPerLevel', 'itemTypes', 'equipment', 'spells', 'spellOptions'
         ));
     }
 
@@ -76,6 +82,10 @@ class UtilityController extends Controller
             'Appearance' => 'nullable|string|max:2000',
             'Personality' => 'nullable|string|max:2000',
             'History' => 'nullable|string|max:5000',
+            'Family' => 'nullable|string|max:2000',
+            'Contacts' => 'nullable|string|max:2000',
+            'Wealth' => 'nullable|integer',
+            'LeftoverIP' => 'nullable|integer',
         ]);
 
         $playerId = \Illuminate\Support\Facades\Auth::id() ?? $request->input('Player') ?? $request->input('PlayerID');
@@ -145,6 +155,34 @@ class UtilityController extends Controller
             }
         }
 
+        // Format Specializations
+        $specsStr = '';
+        if ($request->has('Specializations')) {
+            $specsData = $request->input('Specializations');
+            if (is_array($specsData)) {
+                $specsStr = implode(';', array_filter(array_map('intval', $specsData)));
+            } else {
+                $specsStr = (string)$specsData;
+            }
+        }
+
+        // Format Spells
+        $spellsStr = '';
+        if ($request->has('Spells')) {
+            $spellsData = $request->input('Spells');
+            $spellsStr = is_array($spellsData) ? json_encode($spellsData) : (string)$spellsData;
+        }
+
+        // Format Equipment
+        $equipStr = '';
+        if ($request->has('Equipment')) {
+            $equipData = $request->input('Equipment');
+            $equipStr = is_array($equipData) ? json_encode($equipData) : (string)$equipData;
+        }
+
+        $leftoverIP = (int)($request->input('LeftoverIP') ?? $request->input('ImprovementPoints') ?? 0);
+        $wealth = (int)($request->input('Wealth') ?? 0);
+
         $charId = DB::table('characters')->insertGetId([
             'Name' => $validated['Name'],
             'Campaign' => $request->input('Campaign') ?? $request->input('CampaignID') ?? null,
@@ -163,9 +201,13 @@ class UtilityController extends Controller
             'BaseInt' => $request->input('Intelligence', 10),
             'BaseWis' => $request->input('Wisdom', 10),
             'BaseCha' => $request->input('Charisma', 10),
-            'ImprovementPts' => (int)$request->input('ImprovementPoints', 0),
+            'ImprovementPts' => $leftoverIP,
             'Improvements' => $improvsStr,
             'Skills' => $skillsStr,
+            'Specializations' => $specsStr,
+            'Spells' => $spellsStr,
+            'Equipment' => $equipStr,
+            'Wealth' => $wealth,
             'MentalAge' => $request->input('MentalAge') ? (int)$request->input('MentalAge') : null,
             'PhysicalAge' => $request->input('PhysicalAge') ? (int)$request->input('PhysicalAge') : null,
             'HeightFactor' => $request->input('HeightFactor') ? (float)$request->input('HeightFactor') : null,
@@ -173,6 +215,8 @@ class UtilityController extends Controller
             'Appearance' => $request->input('Appearance', ''),
             'Personality' => $request->input('Personality', ''),
             'History' => $request->input('History', ''),
+            'Family' => $request->input('Family', ''),
+            'Contacts' => $request->input('Contacts', ''),
         ]);
 
         return response()->json([
