@@ -1,0 +1,39 @@
+# To Do - Other / Finalization
+
+- [ ] Documentation
+  - [ ] Check spelling and grammar.
+  - [ ] Check spelling and capitalization conventions. Capitalize names of planes? Capitalize magic items?
+  - [ ] Check punctuation conventions (for abbreviations).
+  - [ ] Check layout and style conventions.
+  - [ ] Check new naming conventions. Defenses instead of saves. MR instead of SR. SP instead of FP. DR instead of hardness. Natural DR instead of Base DR or Racial DR. DR versus... rather than DR/... Persistent/insidious damage instead of ability drain. DM and not GM. Change skill check to action check?
+  - [ ] Check conversion of saves to attacks vs. defenses. Old DC x should be an attack of +(x-10). Increase to +(2*(x-10))?
+  - [ ] Check that all open-ended rolls use the “d20!” notation.
+  - [ ] Specify both skill and action when referring to skill actions and action checks? Syntax? Action (Skill)?
+  - [ ] Make sure prices and treasure are adjusted to sp/gp conversion. Increased cost of permanent magic items?
+  - [ ] Update the characteristics dependency chart.
+  - [ ] Update the character (and NPC) generation sequence. Update the levelling up sequence.
+  - [ ] Captions for all figures and tables.
+  - [ ] More examples. Use special style or border?
+  - [ ] Add important terms/abbreviations to both glossary and index.
+    - [ ] Clearly define related terms such as “action check”, “attack roll”, “weapon attack roll”, etc.
+  - [ ] Check existing hyperlinks. Hard to do for automatically generated content.
+  - [ ] Go through document and list all main features in introduction.
+  - [ ] Update documentation based on programmatic algorithms and database content.
+- [ ] Rules
+  - [ ] Valid modifier categories on most bonuses and penalties.
+  - [ ] Valid descriptors and parameters on all actions and spells.
+  - [ ] Valid conditions on all actions, spells, etc.
+  - [ ] Add missing conditions to PAM/MAM table.
+- [ ] Cleanup
+  - [ ] Check which modifiers, descriptors, and conditions are used. Remove the ones not being used.
+  - [ ] Clean up database (null allowed, descriptions, unused fields/tables, remove string padding).
+  - [ ] Clean up forms and layout (visually). Add filters and tree lists to reduce the clutter in large lists (creature types, skills, etc).
+  - [ ] Check layout of all tables. Add more columns or make them 2-up?
+  - [ ] Document source code thoroughly.
+  - [ ] Check for dead source code.
+- [ ] Error checking and protection
+  - [ ] Add appropriate validators to forms.
+- [ ] Testing
+- [ ] Tools
+  - [ ] Set up admin pages for the most interesting data tables (classes, skills, actions, items, creatures, templates). NAS MySQL tool good enough for this?
+  - [ ] Editable admin page for skill availability?

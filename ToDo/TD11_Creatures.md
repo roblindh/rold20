@@ -1,0 +1,41 @@
+# To Do - Creatures
+
+- [ ] Characteristics
+  - [ ] Age categories: see GoT for more.
+- [ ] Types and subtypes (see descriptions in MM 3.5E 295-297)
+  - [ ] Animal
+    - [ ] Subtype vermin (Mindless; darkvision 12 sq?); also subtype of Monstrous Animal.
+  - [ ] Monstrous Humanoid
+    - [ ] Fey (low-light vision).
+    - [ ] Giant (low-light vision).
+  - [ ] Outsider (rename to extraplanar or spirit?)
+    - [ ] Divide subtypes into first good/neutral/evil and then into lawful/neutral/chaotic?
+    - [ ] How to combine with information field for home plane(s)?
+  - [ ] Plants and Fungi
+    - [ ] Ooze (blind but with blindsight or life sense).
+    - [ ] Plant (Low-light vision or life sense?).
+- [ ] **Advancement**
+  - [ ] Remember that CL should be 1 or 2 levels higher than old CR for most creatures (except NPCs). Do this by increasing RL or CLMod?
+  - [ ] Reevaluate current CLMod for most creatures. RL generally more powerful than HD in my rules, RL and CL should be more closely aligned.
+  - [ ] **Advancement by RL/HD: Increase in HD and size. Not possible for all creature types. See details on each creature.**
+    - [ ] Aberration, construct, elemental, fey, giant, humanoid, ooze, plant, undead, vermin: +1 CR per 4 HD increase.
+    - [ ] Animal, magical beast, monstrous humanoid: +1 CR per 3 HD increase.
+    - [ ] Dragon, outsider, non-associated class levels: +1 CR per 2 HD/level increase.
+    - [ ] Turn it around... For each type, how many HD does the creature gain per +1 CR?
+    - [ ] **Associated class levels: +1 CR per level increase.**
+    - [ ] **Size increased to large or larger: +1 CR. Add size (or size/2) as a generic modifier to CL?**
+    - [ ] **Special traits or abilities that improve combat effectiveness: +1 to +2 CR.**
+  - [ ] **Advancement by templates: Each template has its own requirements. Templates are either acquired or inherited (or both). See MM 3.5E p291+ for template rules. Improve or simplify rules?**
+  - [ ] Increase in HD or ClL can provide improvement points as well. Automatic allocation?
+  - [ ] **Varied, elite or heroic (rather than average) ability scores. Varied: 13, 12, 11, 10, 9, 8. Elite: 15, 14, 13, 12, 10, 8 (+1 CR). Heroic: 18, 16, 15, 14, 12, 10 (+2 CR). -1 CR for average scores?**
+  - [ ] **Increase treasure for creatures with increased ECL. Also increase it for higher SC and WC?**
+- [ ] Specific creatures
+  - [ ] Horse base speed: 12 or 15? Consider that a well-trained and unencumbered human can be better than a horse over long distances, especially in warm climates. Better Con and/or Athletics skill for human?
+  - [ ] Cheetah base speed: 30? But fairly low Con/SP?
+- [ ] **For each creature, add a link to SRD entry? (For images and more wordy descriptions.)**
+- [ ] More class configs: Military Officer/Commander, Bandit Leader, Bandit Thug, City Guard Captain, City Guardsman, Clergyman, Craftsman, Healer, Hunter, Jailor, Knight, Man-at-Arms, Merchant, Minstrel, Noble Lady, Noble Lord, Pirate, Raider, Ranger, Sage, Savage Chief, Scholar, Slave, Cavalry. Preferably have natural progressions, such as the same class config for bandit, bandit lieutenant, bandit captain, and bandit chieftain.
+- [ ] More special cultures and class configs for creatures, such as stalking animal, brawling demon, peaceful elemental, etc. Current classes sufficient for such a selection?
+- [ ] Note special spacing for swarms and other creatures with a "fluid" volume. In CoreMech?
+- [ ] Special: unusual type of regeneration for hydra.
+- [ ] See DMG 4E p176+ for more creature templates.
+- [ ] Chosen of Mystra template (from FRCS): +10 PP per level?, spell immunities, immunity to disease, aging, poison, and disintegration, no need to sleep, detect magic within LoS, silver fire, +10 enhancement bonus to Con. Generic Chosen template? Better as unique class or skill than template?

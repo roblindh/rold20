@@ -1045,12 +1045,13 @@ class cIndividual extends cEntity {
         $totWeight = 0;
 
         foreach ($this->lPossessions as $iPossession) {
+            $baseWeight = (isset($iPossession->Item) && isset($_APP['items'][$iPossession->Item]['BaseWeight'])) ? $_APP['items'][$iPossession->Item]['BaseWeight'] : 0;
             switch ($iPossession->lLocation[$config]) {
                 case ITEM_CARRIED:
-                    $totWeight += $iPossession->Quantity * $_APP['items'][$iPossession->Item]['BaseWeight'];
+                    $totWeight += $iPossession->Quantity * $baseWeight;
                     break;
                 case ITEM_EQUIPPED:
-                    $totWeight += $iPossession->Quantity * $_APP['items'][$iPossession->Item]['BaseWeight'] / 2;
+                    $totWeight += $iPossession->Quantity * $baseWeight / 2;
                     break;
             }
         }
@@ -1505,10 +1506,14 @@ class cIndividual extends cEntity {
             $iPossession->UpdateState();
             switch ($iPossession->lLocation[$this->EquipConfig]) {
                 case ITEM_CARRIED:
-                    $this->TraitEffects->ProcessTraits($_APP['items'][$iPossession->Item]['Traits'], $iPossession->GetPowerLevel(), $this);
+                    if (isset($iPossession->Item) && !empty($_APP['items'][$iPossession->Item]['Traits'])) {
+                        $this->TraitEffects->ProcessTraits($_APP['items'][$iPossession->Item]['Traits'], $iPossession->GetPowerLevel(), $this);
+                    }
                     break;
                 case ITEM_EQUIPPED:
-                    $this->TraitEffects->ProcessTraits($_APP['items'][$iPossession->Item]['Traits'], $iPossession->GetPowerLevel(), $this);
+                    if (isset($iPossession->Item) && !empty($_APP['items'][$iPossession->Item]['Traits'])) {
+                        $this->TraitEffects->ProcessTraits($_APP['items'][$iPossession->Item]['Traits'], $iPossession->GetPowerLevel(), $this);
+                    }
                     // Check for equipped weapons and shields
                     if ($iPossession->GetItemType() == 2) {
                         if ($iPossession->TraitEffects->WeaponStats) {
@@ -1669,6 +1674,19 @@ class cIndividual extends cEntity {
                     break;
                 case "Cha":
                     $this->BaseAbilities->Scores[A_CHA] = (int) trim(substr($iParam, $i + 1));
+                    break;
+                case "Gender":
+                    $genderVal = trim(substr($iParam, $i + 1));
+                    if (is_numeric($genderVal)) {
+                        $this->Gender = (int) $genderVal;
+                    } else {
+                        foreach ($_APP['genders'] ?? [] as $iGender) {
+                            if (strcasecmp($iGender['Name'] ?? '', $genderVal) === 0) {
+                                $this->Gender = (int) $iGender['ID'];
+                                break;
+                            }
+                        }
+                    }
                     break;
                 case "AgeCat":
                     switch (trim(substr($iParam, $i + 1))) {
@@ -2278,14 +2296,14 @@ class cPossession extends cEntity {
     public function GetBaseSize() {
         global $_APP;
 
-        return $_APP['items'][$this->Item]['BaseSize'];
+        return (isset($this->Item) && isset($_APP['items'][$this->Item]['BaseSize'])) ? $_APP['items'][$this->Item]['BaseSize'] : 0;
     }
 
     public function GetAdjustedSize() {
         global $_APP;
         $size = $this->GetBaseSize();
         foreach ($this->lMods as $iMod) {
-            $size += $_APP['itemmodsmundane'][$iMod]['SizeMod'];
+            $size += $_APP['itemmodsmundane'][$iMod]['SizeMod'] ?? 0;
         }
 
         return $size;
@@ -2299,13 +2317,18 @@ class cPossession extends cEntity {
         global $_APP;
         $mul = 1.0;
         $add = 0.0;
-        $matmul = $_APP['materials'][$this->GetMaterial()]['Density'] / $_APP['materials'][$this->GetBaseMaterial()]['Density'];
+        $baseMat = $this->GetBaseMaterial();
+        $currMat = $this->GetMaterial();
+        $baseDensity = (isset($baseMat) && isset($_APP['materials'][$baseMat]['Density']) && $_APP['materials'][$baseMat]['Density'] > 0) ? $_APP['materials'][$baseMat]['Density'] : 1.0;
+        $currDensity = (isset($currMat) && isset($_APP['materials'][$currMat]['Density'])) ? $_APP['materials'][$currMat]['Density'] : $baseDensity;
+        $matmul = $currDensity / $baseDensity;
         foreach ($this->lMods as $iMod) {
-            $add += $_APP['itemmodsmundane'][$iMod]['WeightAdd'];
-            $mul *= $_APP['itemmodsmundane'][$iMod]['WeightMul'];
+            $add += $_APP['itemmodsmundane'][$iMod]['WeightAdd'] ?? 0;
+            $mul *= $_APP['itemmodsmundane'][$iMod]['WeightMul'] ?? 1.0;
         }
 
-        return round($_APP['items'][$this->Item]['BaseWeight'] * $matmul * $mul + $add, 1);
+        $baseWeight = (isset($this->Item) && isset($_APP['items'][$this->Item]['BaseWeight'])) ? $_APP['items'][$this->Item]['BaseWeight'] : 0;
+        return round($baseWeight * $matmul * $mul + $add, 1);
     }
 
     public function GetValue() {
@@ -2313,43 +2336,31 @@ class cPossession extends cEntity {
         $mul = 1.0;
         $add = 0.0;
         foreach ($this->lMods as $iMod) {
-            $add += $_APP['itemmodsmundane'][$iMod]['ValueAdd'];
-            $mul *= $_APP['itemmodsmundane'][$iMod]['ValueMul'];
+            $add += $_APP['itemmodsmundane'][$iMod]['ValueAdd'] ?? 0;
+            $mul *= $_APP['itemmodsmundane'][$iMod]['ValueMul'] ?? 1.0;
         }
 
-        $value = $_APP['items'][$this->Item]['BaseValue'] * $mul + $add;
-        if ($this->GetMaterial() != $this->GetBaseMaterial())
-            $value += $mul * ($this->GetWeight() * $_APP['materials'][$this->GetMaterial()]['BaseValue'] -
-                    $_APP['items'][$this->Item]['BaseWeight'] * $_APP['materials'][$this->GetBaseMaterial()]['BaseValue']);
-        $value += $this->GetMinPL() * $this->GetPowerLevel() * $_APP['itemsubtypes'][$this->GetItemSubtype()]['PLValueMul'];
+        $baseValue = (isset($this->Item) && isset($_APP['items'][$this->Item]['BaseValue'])) ? $_APP['items'][$this->Item]['BaseValue'] : 0;
+        $baseWeight = (isset($this->Item) && isset($_APP['items'][$this->Item]['BaseWeight'])) ? $_APP['items'][$this->Item]['BaseWeight'] : 0;
+        $baseMat = $this->GetBaseMaterial();
+        $currMat = $this->GetMaterial();
+
+        $value = $baseValue * $mul + $add;
+        if ($currMat != $baseMat) {
+            $currMatVal = (isset($currMat) && isset($_APP['materials'][$currMat]['BaseValue'])) ? $_APP['materials'][$currMat]['BaseValue'] : 0;
+            $baseMatVal = (isset($baseMat) && isset($_APP['materials'][$baseMat]['BaseValue'])) ? $_APP['materials'][$baseMat]['BaseValue'] : 0;
+            $value += $mul * ($this->GetWeight() * $currMatVal - $baseWeight * $baseMatVal);
+        }
+        $subType = $this->GetItemSubtype();
+        $plMul = (isset($subType) && isset($_APP['itemsubtypes'][$subType]['PLValueMul'])) ? $_APP['itemsubtypes'][$subType]['PLValueMul'] : 0;
+        $value += $this->GetMinPL() * $this->GetPowerLevel() * $plMul;
 
         return round($value, 1);
     }
 
-    /* 	public function GetValueOld()
-      {
-      global $_APP;
-      $mul = 1.0;
-      $add = 0.0;
-      $matmul = ($_APP['materials'][$this->GetMaterial()]['Density'] * $_APP['materials'][$this->GetMaterial()]['BaseValue']) /
-      ($_APP['materials'][$this->GetBaseMaterial()]['Density'] * $_APP['materials'][$this->GetBaseMaterial()]['BaseValue']);
-      foreach ($this->lMods as $iMod)
-      {
-      $add += $_APP['itemmodsmundane'][$iMod]['ValueAdd'];
-      $mul *= $_APP['itemmodsmundane'][$iMod]['ValueMul'];
-      }
-
-      $value = $_APP['items'][$this->Item]['BaseValue'] * ($matmul/2 - 0.5 + $mul) + $add;
-      $value += $this->GetWeight() * $_APP['materials'][$this->GetMaterial()]['BaseValue'] -
-      $_APP['items'][$this->Item]['BaseWeight'] * $_APP['materials'][$this->GetBaseMaterial()]['BaseValue'];
-      $value += $this->GetMinPL() * $this->GetPowerLevel() * $_APP['itemsubtypes'][$this->GetItemSubtype()]['PLValueMul'];
-
-      return round($value, 1);
-      } */
-
     public function GetECMod() {
         global $_APP;
-        $ecmod = $_APP['items'][$this->Item]['ECMod'];
+        $ecmod = (isset($this->Item) && isset($_APP['items'][$this->Item]['ECMod'])) ? $_APP['items'][$this->Item]['ECMod'] : 0;
         $ecmod -= ($this->TraitEffects->ModsEC != NULL) ? $this->TraitEffects->ModsEC->Total() : 0;
 
         return max($ecmod, 0);
@@ -2358,7 +2369,7 @@ class cPossession extends cEntity {
     public function GetBaseMaterial() {
         global $_APP;
 
-        return $_APP['items'][$this->Item]['BaseMaterial'];
+        return (isset($this->Item) && isset($_APP['items'][$this->Item]['BaseMaterial'])) ? $_APP['items'][$this->Item]['BaseMaterial'] : 0;
     }
 
     public function GetMaterial() {
@@ -2410,22 +2421,28 @@ class cPossession extends cEntity {
         parent::UpdateState();
 
         // Material traits
-        if ($_APP['materials'][$this->GetMaterial()]['Traits'])
-            $this->TraitEffects->ProcessTraits($_APP['materials'][$this->GetMaterial()]['Traits'], 0, $this);
+        $mat = $this->GetMaterial();
+        if (isset($mat) && !empty($_APP['materials'][$mat]['Traits'])) {
+            $this->TraitEffects->ProcessTraits($_APP['materials'][$mat]['Traits'], 0, $this);
+        }
 
         // Base item traits
-        if ($_APP['items'][$this->Item]['Traits'])
+        if (isset($this->Item) && !empty($_APP['items'][$this->Item]['Traits'])) {
             $this->TraitEffects->ProcessTraits($_APP['items'][$this->Item]['Traits'], 0, $this);
+        }
 
         // Modification traits
         foreach ($this->lMods as $iMod) {
-            if ($_APP['itemmodsmundane'][$iMod]['Traits'])
+            if (isset($iMod) && !empty($_APP['itemmodsmundane'][$iMod]['Traits'])) {
                 $this->TraitEffects->ProcessTraits($_APP['itemmodsmundane'][$iMod]['Traits'], 0, $this);
+            }
         }
         foreach ($this->lModsMagic as $idx => $iMod) {
-            if ($_APP['itemmodsmagic'][$iMod]['Traits'])
+            if (isset($iMod) && !empty($_APP['itemmodsmagic'][$iMod]['Traits'])) {
+                $parX = $this->lModsParX[$idx] ?? '';
                 $this->TraitEffects->ProcessTraits(
-                        str_replace("(x)", $this->lModsParX[$idx], $_APP['itemmodsmagic'][$iMod]['Traits']), 0, $this);
+                        str_replace("(x)", $parX, $_APP['itemmodsmagic'][$iMod]['Traits']), 0, $this);
+            }
         }
 
         // Active spells and effects
@@ -2449,10 +2466,13 @@ class cPossession extends cEntity {
             if (($i = strpos($iParam, "=")) === FALSE)
                 continue;
 
-            switch (trim(substr($iParam, 0, $i))) {
+            $pKey = trim(substr($iParam, 0, $i));
+            $pVal = trim(substr($iParam, $i + 1));
+
+            switch ($pKey) {
                 case "Item":
                     foreach ($_APP['items'] as $iItem) {
-                        if ($iItem['Name'] == substr($iParam, $i + 1)) {
+                        if (strcasecmp($iItem['Name'], $pVal) === 0) {
                             $this->Item = $iItem['ID'];
                             break;
                         }
@@ -2460,14 +2480,14 @@ class cPossession extends cEntity {
                     break;
                 case "Material":
                     foreach ($_APP['materials'] as $iMaterial) {
-                        if ($iMaterial['Name'] == substr($iParam, $i + 1)) {
+                        if (strcasecmp($iMaterial['Name'], $pVal) === 0) {
                             $this->OverrideMaterial = $iMaterial['ID'];
                             break;
                         }
                     }
                     break;
                 case "Mod":
-                    $aModParams = explode("&", substr($iParam, $i + 1));
+                    $aModParams = array_map('trim', explode("&", $pVal));
                     foreach ($_APP['itemmodsmundane'] as $iMod) {
                         if ($iMod['Abbreviation'] == $aModParams[0] || $iMod['Description'] == $aModParams[0]) {
                             $this->lMods[] = $iMod['ID'];

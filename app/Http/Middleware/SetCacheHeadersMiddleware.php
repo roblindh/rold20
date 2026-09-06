@@ -17,6 +17,16 @@ class SetCacheHeadersMiddleware
         $response = $next($request);
 
         if ($request->isMethod('GET') && $response->getStatusCode() === 200) {
+            // Do not cache interactive pages, generators, auth, campaign, or authenticated sessions
+            if (
+                $request->is('utilities*', 'campaign*', 'login*', 'register*', 'logout*', 'clear-cache*') ||
+                auth()->check()
+            ) {
+                $response->headers->set('Cache-Control', 'no-cache, private, must-revalidate');
+                $response->headers->remove('ETag');
+                return $response;
+            }
+
             $etag = '"' . md5($response->getContent() ?: '') . '"';
             $response->headers->set('ETag', $etag);
             $response->headers->set('Cache-Control', 'public, max-age=300, must-revalidate');

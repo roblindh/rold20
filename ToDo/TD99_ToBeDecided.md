@@ -1,0 +1,379 @@
+# To Be Decided
+
+## Core Mechanics
+
+- [ ] Characteristics
+  - [ ] Health Scores
+    - [ ] **\*\*Really keep the rule for “reserved” HP/SP/PP? Is it needed? If removed, update HB02 - Action Checks - Action Cost.\*\***
+  - [ ] Resistance Scores
+    - [ ] Change energy resistance to be more similar to DR?
+    - [ ] Replace “Conditional DR” with increased DR and vulnerabilities?
+    - [ ] Damage resistance - make damage resistance more effective against SP damage?
+    - [ ] Change MR to be more similar to DR?
+    - [ ] Change MR to be more like a defense bonus (DeC and saves) against magic?
+    - [ ] Change MR to not protect against supernatural energy damage?
+- [ ] Fate points
+  - [ ] Separate into fate and fortune points, fate points for life-or-death situations, and fortune points for gaining a one-time bonus to action checks or defenses? Fortune points should then be renewed regularly and automatically. Suitable as an optional rule?
+- [ ] Actions
+  - [ ] Should rays be more like projectile weapons with range increments? The weapon skill can grant appropriate bonuses (including Improved Range).
+  - [ ] Should breath weapons and other area attacks have reduced effect with range?
+  - [ ] Should breath weapons (and other similar abilities) have a cooldown time instead of a SP/PP cost? Or random recharge as in 4E/5E?
+- [ ] Incorporate advantaged/disadvantaged rule from D\&D 5E? Similar to existing (but rare) reroll feature?
+- [ ] Should the skill roll to act "defensively" be more difficult against skilled opponents?
+- [ ] Use half the character level instead of action points as bonus on ability checks? Original rules, however, say that ability checks should be used for things not dependent on skill and level.
+- [ ] Modifiers
+  - [ ] Is exception to allow stacking of template modifiers really needed? Maybe even combine racial and template modifiers?
+  - [ ] Try to improve separation between source and purpose?
+  - [ ] Reduce and simplify the number of modifier types?
+    - [ ] Keep material modifier or change it into an enhancement modifier?
+- [ ] Conditions
+  - [ ] Add more fatigue and exhaustion rules? But without adding a lot of complexity.
+    - [ ] Make the cinematic optional rule a part of Damage Reduction or Combat Instincts skill? Create similar skill(s) for PP and SP?
+  - [ ] Are the following conditions still useful: Blown away, Checked, Knocked down (by wind)?
+- [ ] Traits and special abilities
+  - [ ] Replace Evasion and Improved Evasion with racial skill in Acrobatics? Same on Enhance Mobility spell and Ring of Evasion?
+  - [ ] Teleport: How to avoid scry-and-die? Add a delay and “warning” (image and sound?) to long-range teleports? Automatically dispel all existing effects? Same for Planar Travel?
+  - [ ] Energy drain - keep it as cost of level, XP? Replace it with permanent HP/SP/PP reduction?
+  - [ ] Regeneration - should it convert some damage types to SP?
+  - [ ] Introduce auras as a well-defined generic rules concept? Always free or ongoing cost? What about multiple overlapping auras, either from separate characters or Bard/Templar combos? Also use auras for some spells? Don’t confuse this with alignment and magic auras.
+- [ ] Try to provide different levels of abstraction, where few details would be enough for stock monsters and NPCs but more details could be generated for PCs and important NPCs. For example, a single attack skill could be provided for a stock NPC, but that skill could be split into detailed subskills for an important NPC. Ideally, this should be a two-way dependency – generating the subskills randomly from the base skill as well as calculating an equivalent base skill from a set of subskills. Compare this with the attribute groups I used in BURPS.
+
+## Character Generation
+
+- [ ] Race
+  - [ ] **\*\*Make cultural traits more balanced between races.\*\***
+  - [ ] Rename race and template to ancestry?
+- [ ] Culture and background class
+  - [ ] Instead of granting skills for RL + 1 levels of background class, add +1 RL to every creature and treat it as a regular level in all ways?
+- [ ] Improvement Points
+  - [ ] Combine ads/disads with ECL and improvement points? Compensate an ECL race with flaws or more improvement points for all others?
+  - [ ] Retroactive adjustment of IP? If an advantage or disadvantage is lost, should the IP be adjusted immediately? What about keeping track of features that are available both for IP and through other means, such as permanent-duration spells?
+  - [ ] **\*\*Allow improvement points for gaining access to prestige skills?\*\***
+  - [ ] Optional rule: Allow redistribution of some IP each level?
+  - [ ] Combine improvement points with other characteristic(s), such as fate points?
+- [ ] Replace inherited templates with bloodlines of varying strength (minor, medium, major)? Especially ones where CL modifier is larger than 1. See UA/SRD.
+  - [ ] Gradual assumption of templates, one RL at a time? How would this affect metamorphosis skills?
+- [ ] Keep some penalties for multi-classing? Reintroduce racial favored classes?
+- [ ] Skill points
+  - [ ] x skill points per level for everyone or modify by Int mod? Modifying with Int reintroduces the problem with temporary and permanent Int improvements. Add Int mod bonus skills/specializations only for 1st level? Or use Int mod only for specializations?
+  - [ ] To keep more separation between classes, divide skill points awarded per level into separate categories? Martial, magic, generic? Or say that x skill points must be spent on primary skills and y on secondary skills.
+  - [ ] Use skill points for alternative things – converting to IP, buying "feats"?, increasing base attributes?, buying social standing and contacts (see GoT)?
+- [ ] Optional rule for removing the use of experience points? How to handle magic item creation and other XP costs?
+
+## Encounters
+
+## Combat
+
+- [ ] Action points
+  - [ ] Increase AP cost of attack bonus for Fort and Will attacks?
+  - [ ] Movement still too expensive, compared to bonuses and other actions?
+    - [ ] Make movement actions cheaper, such as 2 or 3 MP per AP? Part of Mobility skill?
+    - [ ] Reward unusually successful actions with bonus MP?
+  - [ ] Attack and damage bonuses too cheap? Change the AP-to-bonus ratio?
+  - [ ] Reward unusually successful actions with temporary bonus AP?
+  - [ ] Current system has the risk of making any spell that grants bonus AP too powerful.
+  - [ ] **Action alternative 1: Action Points per round**
+    - [ ] With action points used for defense, how to avoid extremely good saves out of combat? The same problem exists for any spell caster who spends a round casting only non-attack spells.
+    - [ ] Should it be possible to use AP to increase supernatural damage (SDB)? Area attacks or just single-target attacks?
+    - [ ] Can AP be used to boost non-attack spells? Boost PL? Boost spellcasting check?
+    - [ ] Akimbo attacks: different speeds for different weapon type combos?; different attack penalties based on style skill and weapon types?
+    - [ ] Should actions other than combat actions become faster with increasing skill?
+  - [ ] Action alternative 2: BAB, BMB, BDB (based on creature type and/or class)
+    - [ ] Using BCB for defense as well, how to make rogues and monks better at defense than offense? Other skills?
+    - [ ] At the beginning of each round, you can move points from your BCB attack bonus to defense and/or damage. This reduces bonuses for all attacks (and may reduce the number of attacks accordingly). Should it be possible to go below 0?
+    - [ ] 1 round = standard + move + minor + x free.
+    - [ ] Standard action allows a single attack with main weapon.
+    - [ ] Full round allows a number of main weapon attacks as determined by level.
+    - [ ] A character has +1 action bonus per level. Each round, the character can divide this bonus between a number of actions (maximum number of actions is determined by level, but certain skills can increase the number). Unused points count as a defensive bonus against all attacks. If you are flat-footed, count one half of the action bonus for defense. If you are sleeping or unconscious, count no action bonus for defense. Unused points can also be used to improve attacks of opportunity, but those points will not count as a defensive bonus against any subsequent attacks.
+    - [ ] Each of those main weapon attacks can be exchanged for improved defense or 5' step.
+    - [ ] Standard can be converted to move, minor, or x attack actions
+    - [ ] Move can be converted to minor.
+    - [ ] Can an attack action be converted to additional minor actions?
+    - [ ] Skill in multi-attack allows additional attacks with secondary weapon(s) (even natural ones, such as feet and claws). Should this cost combat bonus? Can these be exchanged for improved defense? Default is reduced Str damage bonus, but this should disappear with improved skill.
+    - [ ] Logically, it should be possible to attack multiple opponents while moving, all in a single round. Allow attack actions to be "inserted" within a move action?
+    - [ ] Suggestion: As a full round, you get the number of attack actions determined by your level (increase this by 1). Each of these actions can be used for attack, added defense, or to move 1 square (up to base speed). Add a minor action?
+    - [ ] Any reason to keep total defense action? Yes, but let a character convert attack actions to extra defense bonus (+2 per attack).
+  - [ ] Any AP alternative has to cover...
+    - [ ] Increasing number of attacks with level.
+    - [ ] Additional attacks for multiple weapons, natural or artificial.
+    - [ ] Choice of focus on attack, damage, or defense.
+    - [ ] Similar system for physical and magical combat.
+    - [ ] Non-attack actions should not allow disproportionate defense bonus.
+  - [ ] Values that should increase with level somehow...
+    - [ ] Physical attack rolls (also through skill and weapon).
+    - [ ] Physical damage rolls? (also through skill and weapon).
+    - [ ] Magical attack rolls (also through skill and implements).
+    - [ ] Magical damage rolls? (also through skill and implements?)
+    - [ ] DeC (also through deflection magic and parry skills).
+    - [ ] NDD Defenses (also through resistance magic).
+    - [ ] DR (also through armor or magic).
+  - [ ] Other action types: immediate reaction? swift action?
+- [ ] Threatening and attacks of opportunity
+  - [ ] Keep the difference between supernatural and spell-like abilities? Or enough with the AoO descriptor?
+  - [ ] Should AoO apply to all spells or only those with S, M, and F implements?
+  - [ ] Replace AoO with a limited number of reaction actions?
+    - [ ] Give everybody 2+Dex mod reactions per round?
+    - [ ] Use for parrying in addition to or instead of just a DeC parry bonus? Compare Shield Block in Pf2E. Define parry as a reaction-type action, where high success can result in riposte?
+    - [ ] Specify triggers as in Pf2E?
+- [ ] Parrying
+  - [ ] Should Str modifier affect how much damage one can parry? Maybe a successful parry should reduce damage by the maximum amount dealt by the parrying weapon (but with a modifier for shields, for example)? On the other hand, it should be possible to just deflect an attack (using more Dex than Str).
+  - [ ] Should the redirection of attacks due to CF be easier to do with an empty hand than with a shield or weapon parry?
+- [ ] **Should it be possible to focus defense against a particular creature or weapon (or even a particular attack)? Consider movie fights where someone desperately avoids the most dangerous weapon, while accepting several non-lethal hits from secondary attacks. Would also tend to increase the duration of one-on-one duel combats. Dedicating AP bonuses to specific actions would solve this. Could also be part of a Fighting Style skill?**
+  - [ ] **Simplest solution could be to add a new option for using AP defensively: DeB bonus of +2 per AP against a single attack (used as a reaction with saved/unused AP).**
+- [ ] Too much work for players to keep track of SP when each attack and many moves has a small cost? Good way to simplify?
+
+## Magic
+
+- [ ] Spellcasting
+  - [ ] Replace “Redirect Spell” action and ongoing costs with “Sustain Spell” action?
+  - [ ] Casting spells as rituals (as in 5E), with decreased PP cost but increased casting time?
+- [ ] Consider changing some duration spells (and other actions) to a pay-PP-per-round model. Compare with games like Skyrim.
+- [ ] Find a better solution for “buff spamming” than ongoing costs and reserved PP?
+  - [ ] AP cost each round for sustaining ongoing spells?
+- [ ] Optional rule for spell learning: Learn Spell checks required even for those “free” spells gained from skill levels.
+- [ ] New spells
+  - [ ] Spell (or option) for hijacking/redirecting a scrying on a person or object?
+  - [ ] Add spells for crit resistance? Or add this to existing DeC- and DR-boosting spells?
+  - [ ] Add spells for permanent/instantaneous bonuses, such as inherent ability bonuses? Similar to improvements?
+  - [ ] New spells from 5E: Banishing Smite, new effects on Bestow Curse, Blade Ward, Branding Smite, Circle of Power (aura), Cloud of Daggers, Compelled Duel, Compulsion (control target’s movement), Conjure Barrage/Volley, Contagion (Flesh Rot and Seizure as new diseases), Cordon of Arrows, Crown of Madness, Crusader’s Mantle (aura), Demiplane, Dissonant Whispers, Druidcraft, Eldritch Blast (very similar to Force Missile), Ensnaring Strike, Flaming Sphere, Friends (as new option for Control Emotions?), Gate (not new), Glibness, Grasping Vine, Guardian of Faith, Guiding Bolt, Hail of Thorns, Harm (dealing insidious damage?), Haste (dazed condition when spell ends/dispelled), Heat Metal (add check to hold onto objects affected by Control Temperature?), Hellish Rebuke, Heroism (temporary HP renewed each round), Hex, Holy Aura, Hunger of Hadar, Hunter’s Mark, Knock (add loud noise or enough that it’s no longer automatic), Lightning Arrow, Maze (not new), Meteor Swarm (new effect), Pass without Trace (not new; part of Commune with Nature or Control Plants), Phantasmal Force (as option to Manipulate Senses?; move Phantasmal Killer to same?), Plane Shift (as used against unwilling target), Poison Spray, Power Word Heal, Project Image (new usage), Ray of Sickness, Regenerate (consolidate functionality of Regeneration, Heal Wounds - Regen, and Metabolic Trance - Regen), Revivify, Searing Smite, Spirit Guardians, Staggering Smite, Swift Quiver, permanent Teleportation destinations identified with unique sigil combinations, Thorn Whip, Thunderous Smite, add pushback to Blade Barrier weapons and Force Missile?, Tsunami, Vicious Mockery, Wind Wall (new effect for Control Air?), Witch Bolt, Wrathful Smite
+- [ ] Existing spells
+  - [ ] Force Missile: How to apply the ray weapon skill damage bonus?
+  - [ ] Metabolic Trance: Use this instead of the Regeneration spell? Require the Stasis option for all effects?
+  - [ ] Summon Tentacles: Add some option for increasing the power of the tentacles with skill level?
+  - [ ] Apply the Color Spray mechanism to more spell results?
+  - [ ] Split Wall of Energy into separate spells, just like Bolt and Touch spells?
+  - [ ] Use Bolt of … to create sling-compatible ammo (like Otiluke’s Freezing Sphere)? Other types of ammo?
+  - [ ] Check if more spells should treat larger creatures as “multiple” targets (as Teleport).
+  - [ ] Change existing “save or die” spells to also cause “damage” (to HP/SP/PP)? How to handle this with charm and hold effects?
+- [ ] Note that Psions should be better at mental effects than both wizards and clerics. Add to PP cost for arcane and divine casters?
+- [ ] Researching new spells and powers. The lack of spell levels means a new calculation for cost, time, and difficulty is required. What about researching new options for existing spells? Reuse the traits table used for magic item modifications to calculate PP cost (and difficulty) of new spells?
+- [ ] Use the attunement rules from 5E or investiture from Pf2E (including limited number of attuned items)?
+- [ ] Alternative way to boost or limit certain schools within some wards or planes? Bonuses and penalties to skills or descriptors?
+- [ ] Ritualistic magic?
+  - [ ] Change spells with XP costs into rituals?
+- [ ] Circle magic (see Red Wizard prestige class)?
+  - [ ] Special skill or something all spellcasters can do?
+  - [ ] Draw power from other participants that lasts even after the circle is split up?
+  - [ ] Compare with the psionic power for cooperation - metamind.
+  - [ ] Useful for gaining a spellcasting bonus or even reach very high PL (item creation, for example).
+- [ ] How to explain the FR weave and shadow weave?
+  - [ ] Dead magic zones could mean low ML, while wild magic could mean high ML.
+  - [ ] Maybe FR was originally plagued by great variation in ML. The weave serves to stabilize ML at a "safe" and useful level.
+  - [ ] The shadow weave could be similar but more closely connected to the Plane of Shadow rather than the Ethereal Plane. This should make shadow-based spells easier to cast and more powerful, while other spells are more unreliable. Special skill(s) to access shadow weave?
+  - [ ] The benefits and penalties of using the shadow weave should be similar to being in Shadowfell.
+- [ ] How to explain special FR stuff like mythals, mythallars, and heavy magic? Heavy magic is described as something similar to residuum.
+- [ ] Should the concept of schools and subschools for spells be reintroduced?
+- [ ] Change division of arcane/divine/psi to arcane/divine/primal/occult/psi?
+- [ ] Spellcasting
+  - [ ] Some modifiers could be generic (e.g. non-verbal, non-somatic)?
+  - [ ] Simplify PP cost calculations and spellcasting procedure?
+  - [ ] Different spellcasting parameter costs for different classes/skills?
+  - [ ] Add a limit of one instance of each spell per target? Isn’t it enough with non-stacking modifier types? Consider the following spells: Affliction, Attack of the Beast, Call Lightning, Antimagic, Divine Aura, Energy Resistance, Enhance … Ability, Enhance Senses, Foresight, Manipulate Time. What about magic items and special abilities that duplicate only part of a spell?
+  - [ ] Allow multiple effects to be combined in a single casting? From different skills? Multi-Spell similar to Multi-Attack?
+- [ ] Alternative bonuses for using two-handed spellcasting (or two-handed focus)?
+  - [ ] Count as 1 skill level higher (with spell, affinity, or weapon skill)
+  - [ ] Attack and/or damage bonus
+  - [ ] Increase PP discount
+- [ ] Spell resistance and anti-magic
+  - [ ] Different types of magic resistance? Some that offer protection but also makes casting and using magic more difficult?
+  - [ ] Perhaps even introduce natural herbs and items that provide local and temporary reduction in ML?
+- [ ] Consider the old idea about noun and verb. Every effect could require at least two skills, one for what to affect and one for how to affect it.
+- [ ] Add cantrip spells that cost 0 PP (like 4E/5E)?
+  - [ ] Allow PP cost reduction to 0 for spells with 1 PP total cost? Require a certain minimum skill level? Spells above 1 PP too at higher skill levels? Suitable as a high-level benefit for affinity skills?
+  - [ ] It’s a difficult balance to make them neither too powerful nor too weak (boring and useless).
+  - [ ] Since a fighter’s attacks are ultimately limited by SP, it makes sense to also limit spellcasters with PP.
+  - [ ] Maybe better as an optional rule? If allowing physical attacks for 0 SP, let each supernatural affinity skill reduce a limited number of base-1-PP spells to 0 PP (but only with default parameters)?
+
+## Environment
+
+- [ ] Pervasive magical energy added as an environmental danger? Is this different from a high ML -> wild magic? Similar to the plane of positive or negative energy?
+- [ ] Planar environments
+  - [ ] Turn the shadow plane (Shadowfell?) into more than just a demiplane? Turn it into a true darker and more sinister twin of the prime? Also add the Feywild as a bright twin, brilliant and mysterious with arcane power? Connection between Shadowfell and the Shadow Weave?
+  - [ ] Shadowfell as a plane in between the prime and negative planes, and Feywild as a plane in between the prime and positive planes? Does make a lot of sense.
+  - [ ] **Check Dimension and Teleport descriptors. Decide whether some planes will make certain effects impossible or just very difficult.**
+
+## Social
+
+- [ ] More rules for contacts, friends, enemies, etc.
+  - [ ] Should there be a skill for establishing a web of contacts or enough with influence rules? Or addition to current influence rules? Could allow automatic and "remote" information-gathering through a web of contacts/spies. Other benefits not already covered by influence?
+- [ ] Consider which social values should be used for organizations as well as individuals. See BURPS p 112-114.
+- [ ] Should fake identities give bonuses to Bluff and Information-Gathering? Synergy bonus?
+- [ ] Turn the influence concept into a Persuade skill check (Psychology skill), where influence is used as a bonus? Or just a synergy bonus? Or two possible checks, one using skill and one using influence? Anyway, they have similar results, DCs, and modifiers.
+
+## Skills
+
+- [ ] Extend skill benefits above level 30 as well? Check creatures with RL > 30.
+- [ ] Add extra crit resistance to existing DeC- and DR-boosting skills?
+- [ ] Weapons
+  - [ ] Rename some? Such as Weapons - Shields to Shield Use, Weapons - Area/B&M/Rays to ???, Weapons - Brawling to ???
+- [ ] Fighting styles
+  - [ ] Mobility: DeC bonus?, use environment/walls to gain bonuses (even notice and use undocumented/unspecified terrain features)?
+  - [ ] Akimbo: Further reductions in AP cost? Simplify selection of akimbo attacks and AP cost calculation? Automatic generation of stats for most likely combinations?
+  - [ ] Precision: Crit range/multiplier?, Hold the Line (AoO against charging)?, Reduce target DeC and/or saves with Precision Attack?
+  - [ ] Tricks: Distract opponent (other than Feint)?, AoO against creatures who miss you?
+  - [ ] Fighting style for ranged attacks (with bonuses similar to Power and Precision styles)?
+  - [ ] Skill for granting opportunity attacks even when the target is spending time to act defensively (already part of Mind over Magic)? Also for disengaging movement?
+  - [ ] Skill for granting opportunity attacks (or parries) when an adjacent creature is being attacked?
+- [ ] Vital Attack
+  - [ ] Change VA back from pure bonus to special action? Limiting to once per round and/or adding a cost of AP or SP could allow an increase in damage potential. Or even two separate actions, one for true surprise attacks and one for in-combat precision attacks?
+- [ ] Warfare
+  - [ ] Benefit or action for preparing a battlefield? Offensive/defensive bonuses for troops/allies after preparing for 1 day or more?
+  - [ ] Benefit or action to keep track of nearby allies? Bonus to Perception check to see/hear allies. Automatic status?
+  - [ ] Improved flanking bonus?
+  - [ ] Inspiring Speech: provide temporary bonus or temporary HP/SP? How often and how long duration?
+  - [ ] Special rules for coordinated ranged weapon volleys? Axes, spears, arrows, bullets, etc? Requiring morale check? Calculate more as an area effect based on or influenced by commander’s skill? Reduce or nullify some defensive bonuses? Similar rule could be used for suppression with automatic weapons? Note that one key advantage of such a volley against a group of enemies is the increased chance of a “miss” hitting another valid target. Or treat this as a normal attack against a larger target (or a swarm)?
+  - [ ] Separate rules for formations? Based on Aid Another?
+- [ ] Monk skill updates: Instead of free attack speed reduction with Study of Air, give it a low SP/PP cost (and call it Flurry of Blows). Add vertical move and water walk to Ki - Mobility? Add other actions with SP/PP cost for 1-round parry boost, move boost, AP boost, Athletics/Acrobatics skill boost?
+  - [ ] Note that the base damage never changes for regular weapons, regardless of skill. Should it really do so for unarmed monks? Why not just have a better natural weapon progression for attack, damage, and parry?
+    - [ ] Previous benefit: AttMod { Qual=DmgDice; Value=+(lvl+3)/4; Req=Weapon==WpNat; }
+- [ ] Paladin skill updates: Change current Divine Smiting auras into a choice between protection (NDD bonus for allies), courage (resistance against fear), devotion (resistance against charm), warding (energy resistance), and purity (radiant or necrotic damage against undead and outsiders)? See the spells Aura of Life, Purity, and Vitality in 5E.
+- [ ] Divine Providence/Smiting: Make more useful also for Lawful/Chaotic
+- [ ] Also replace some Bard actions with auras? Energy shield, energy resistance, attack and damage bonuses, DeC and resistance bonuses, DR bonus against non-magic, improved healing, presence (Psychology skill bonuses), Perception skill bonuses, for example?
+- [ ] Totem skill (inspired by 5E barbarian): One animal or several (or separate skills)?; Beast sense and Speak with Animals?; Features related to creature?; Commune with Nature?
+- [ ] New class and/or skill(s) for Warlock class? Or new benefits to existing skills? How to handle Invocations?
+  - [ ] What’s the intended niche for Warlock? Spellcaster with full power but fewer spells than even sorcerer? More HP, armor and weapon-focus than most arcane spellcasters. Enough skill overlap with Bard to motivate this as just a Bard affinity skill or maybe prestige skill? Completely new spells or very limited set of existing spells with high PP discount? Big focus on Eldritch Blast and curses. Suggested pacts: archfey (charm, fear, teleport, illusions, dreams), fiend (fire, curses, luck, vampiric damage, energy resistance), Great Old One (insanity, rage, divination/scrying, telepathy, telekinesis, psychic damage and resistance). Suggested foci: familiar (+1 level?, telepathy, share senses), tome (extra cantrips/spells), weapon (similar to Soulknife; psychic or necrotic damage?). Suggested invocations: improved Eldritch Blast (damage, range, multiple targets, pushing), mage armor, jump/levitate/fly, speak with animals/plants/dead, charm/dominate, hold person/monster, darkvision/darksight, confusion, detect magic (true seeing at high level), comprehend languages, temporary HP, share senses, disguise self, alter self, summoning, haste/slow, illusions, invisibility, polymorph other, curse/bane, scrying.
+- [ ] New benefits for Arcane Trickery: spell casting and attack bonuses when target only allowed passive DeC? Feint providing more spell bonuses? Stealth bonuses due to instinctive illusory magic?
+- [ ] New skill for Wild Mage/Wilder? Lucky feature (reroll d20)? Optional or always roll on Wild Magic table (but with a bonus or reroll)? Other luck bonuses? Luck penalties for hostile spell targets?
+- [ ] More ideas for Arcane Weaponry (inspired by Eldritch Knight, Duskblade, Bladesinger, Spellsword, Spellblade, Arcane Warrior, and Arcane Weapon Master): Weapon Bond (summon and dismiss), Relaxed EC requirements for arcane affinities, “Combat Casting” concentration bonus, Enhance Weapon (attack, damage), Enhance Armor/Shield (DeC, DR), Multi-Attack with weapon and spell, deliver spell through weapon (with spellcasting and/or attack bonus), short-range Teleport. Compatible with Monk as well as Fighter?
+- [ ] More for Combat Caster skill
+  - [ ] Allow somatic spellcasting with hands holding weapons or shields?
+  - [ ] Improved defensive casting?
+  - [ ] Makes it easier to use spells for AoO and other reactions?
+- [ ] Supernatural skills
+  - [ ] More benefits on affinity skills around level 9? Such as healing spells affecting the caster for free for Cleric Affinity - Life (see 5E cleric). Ability bonus also for researching/creating affinity-related spells.
+  - [ ] Sorcerer - Aberration: bonus with polymorph and/or psychic attacks?
+  - [ ] Sorcerer - Abyssal/Celestial: bonus with summonings?
+  - [ ] Sorcerer - Arcane: bonus on spellcasting checks?
+  - [ ] Sorcerer - Draconic/Elemental: bonus with energy-based spells of the right type?
+  - [ ] Sorcerer - Fey: bonus with charm spells?
+  - [ ] Sorcerer - Infernal: bonus with charm, fear, or summoning spells?
+  - [ ] Sorcerer - Undead: bypass certain undead resistances/immunities? Treat undead as living targets?
+  - [ ] Wizard abjuration: casting abjuration spells also creates a ward with temporary HP?; ward on other creatures?; bonuses for counterspelling and/or dispelling?; spell resistance and/or energy resistance?
+  - [ ] Wizard conjuration: short-range teleport?; free concentration on conjuration spells?; bonuses for summoned creatures?
+  - [ ] Wizard divination: foretelling (reroll some d20 rolls)?; free use of darkvision, see ethereal/invisible, and comprehend languages?; bonus to initiative and resistance against surprise?
+  - [ ] Wizard enchantment: hypnotic gaze?; sanctuary effect?; discrete enchantment spells (target unaware)?; reflect enchantment effects?; emotional auras (similar to bard effects)?
+  - [ ] Wizard evocation: sculpt area spell (automatic or evasion effect)?; bonus damage on evocations?; increase damage further in exchange for HP/SP damage to self?; reroll 1s for damage on evocations?
+  - [ ] Wizard illusion: modify active illusions?; reactive mirror image or displacement?; make parts of an illusion temporarily real?; free concentration for illusions?
+  - [ ] Wizard necromancy: vampiric regeneration when killing with necromancy?; undead minions (with increased HP)?; necrotic resistance?; rebuke undead?; life sense?
+  - [ ] Wizard transmutation: alchemy skill bonus?; polymorph bonuses?; healing based on powers of Philosopher’s Stone?; spontaneous/instantaneous ability bonus for ability and/or skill checks?
+  - [ ] Some of these benefits may be better suited for supernatural weapon skills?
+  - [ ] Skill and spell selection
+    - [ ] Arcane Earth/Terra - Synergy bonus to artifice?
+    - [ ] Arcane Transmutation (Enhance Objects?)
+  - [ ] Magic category changes: illumination into light/radiant and shadow/necrotic?, enchantment into emotion/mind offense/mind defense?
+    - [ ] Where a single skill is appropriate for both aspects, limitations/bonuses/penalties can be based on descriptors instead ([Light]/[Dark] or [Radiant]/[Necrotic]).
+  - [ ] Simplify the calculation of PP cost reduction from supernatural affinity skills?
+    - [ ] Main purpose is to provide additional spells based on affinity skill level and primary ability score.
+    - [ ] Alternative: Give a special pool of temporary PP that can only be used for “affinity-spells”. Regeneration rate? One pool per affinity or shared?
+    - [ ] Alternative: Provide bonus PP for “affinity-spells” instead of cost reduction. Not really simpler, though.
+  - [ ] Change turn undead, rebuke, etc into spells, so that they can require more skills than just a Cleric Affinity? Add prereq of good/evil to the ActionAccess? Compensation for neutral clerics?
+  - [ ] Add alignment-based magic skills: Good, Evil, Lawful, Chaotic?
+  - [ ] Try to separate arcane skill/experience more from strength? Make it possible for a low-level wizard to have an aptitude for strong (but not so accurate) magic? Or make this possible through the use of IP?
+  - [ ] Enchant Item: Concept of learnable "recipes" (similar to spells)? To achieve separation between arcane, divine, and psionic crafting? Or enough requirement to know the spell(s) connected to each item power/bonus? Use ideas from EVE’s blueprint system, with different quality levels of blueprints? This would introduce actions for creating recipes as well as improving them. Similar system could be used for some non-magical items.
+  - [ ] Let a high level of Crafting be used to create simple magic items?
+  - [ ] Replace the Enchant Item skill level requirement with a combination of Enchant Item and Crafting?
+  - [ ] Some item creation requirements could be optional (but increasing the difficulty if lacking)?
+  - [ ] Bardic Music: More specific bonuses like those in 5E Bardic Inspiration? Either bonus to an ally or penalty to an enemy.
+  - [ ] Bardic Music: Consider the modifier types. Should Inspire Competence really provide morale bonus?
+  - [ ] More Metamorphosis skills: Aberration (see Pathfinder Sorcerer), Undead (separate from Incorporeal skill?; see Pathfinder Sorcerer).
+  - [ ] Metamorphosis skill for “epicness” and divine ascension? Requirement of TL 20 or more? Multiple epic metamorphosis skills with different “paths” (martial, arcane, divine, psionic/ki/meditation, trickery)? Used by some monsters as well?
+  - [ ] Shadowdancing: Action Summon Shadow Companion not yet defined. Treat as familiar or summoning spell?
+  - [ ] Add shadow as a skill (with some illusion spells plus shadow conjuration and shadow evocation)? Or use Shadow Weave skill instead?
+  - [ ] Many uses of warding and enchantment need to be dependent on other skills.
+  - [ ] New “prestige” skill for divine casters using the recipient’s PP for buff spells? Unbalanced?
+  - [ ] Prestige skill for advanced Wild Shape? Quicker activation; Monstrous animals; Use PP directly to heal self; Attacks count as magical?
+  - [ ] Reintroduce Psionic Focus?
+- [ ] Consider adding one (or more) “signature skill” for each class, which gets full progression automatically and for free. For example, Weapons - General for fighters, Spellcraft for wizards, etc. Optional rule?
+- [ ] Add ability or synergy requirements to pass certain skill ranks? Maybe even a base ability score (or multiple scores) for each skill, setting a skill level limit equal to the ability score? Or split into more interdependent skills with fewer skill levels, as in EVE.
+- [ ] Reduce the number of skills by using specializations more for weapons? Maybe reduce to Light Melee, Heavy Melee, Thrown, and Projectile? Would also make sure that a fighter gets some skill bonus even for non-specialized weapons. However, may be hard to avoid making other classes too good relative to fighters.
+- [ ] Do the same skill reduction (but increase in specializations) for arcane, divine, and psi? Maybe a solution for both light and darkness belonging to Illumination skill?
+- [ ] Add skills that determine the limit of AP bonuses? A defensive skill for maximum DeB, offensive skill for maximum AB and DaB for weapons, another for supernatural attacks, etc? Replace the x1.5 to x2 AP bonus for FS - Single Weapon?
+- [ ] Change prestige skill prerequisites from skill levels to class levels (or total level)? This would make it easier to generate high-level characters without selecting skills level-by-level. Remove armor skill prerequisites? Class level requirements work less well for multi-classing characters (such as a Ftr/Rgr combo qualifying for a combat prestige skill).
+- [ ] Change skill benefits into separate tiers instead of fixed levels? At regular skill level intervals, one can buy a new skill benefit of the appropriate tier. More similar to feats but also more complex and less deterministic.
+- [ ] **Rethink some classic traits and abilities**
+  - [ ] Why does Vital Attack cause xd6 extra damage (instead of letting the rogue increase the chance and effect of critical hits)? It could even let the rogue make a coup de grace on opponents with conditions other than helpless? Why only a damage bonus and no attack bonus?
+  - [ ] **Same for Enemy Specialization skill?**
+  - [ ] **Change turn undead from a “fear” effect to damage? Also to heal living creatures?**
+
+## Actions
+
+- [ ] Multiple ability mods to some actions, such as Str and Dex for Climb and Dex and Int for Lockpicking?
+- [ ] New actions for Healing and Composure to provide temporary SP/PP for others and self, respectively?
+- [ ] Add generic actions for self-healing, such as the 4E Second Wind? Optional rule?
+  - [ ] Second Wind (9 AP): Transfer up to 5 points/TL (max 25 points) from one health point score to another.
+  - [ ] Healing Word (part of Heal skill?; 3 AP; 1 PP): Allow target within Close range to spend 3 AP and take his Second Wind action.
+
+## Equipment
+
+- [ ] Materials
+  - [ ] Consider materials and their resistances to energy. Does it make more sense to have a DR against some energy types as well? Or should their resistance work more like energy resistance for creatures? Better yet, make it possible to have both kinds of resistance (percentage as well as “DR”) for creatures as well as objects.
+  - [ ] Replace damage bonus for adamantine with armor-piercing property (ignore some DR)?
+- [ ] Weapons
+  - [ ] Number of required hands special for projectile weapons (or just bows; optional parameter for minimum number of hands)?
+  - [ ] Alternative for projectile weapon/ammunition bonuses: Use only the highest enhancement bonus (do not add them).
+- [ ] Magic items
+  - [ ] For spells, specify which variations are available or should the default be all variations?
+  - [ ] Pool size: Maximum/starting amount of PP? 100?
+  - [ ] Implements can reduce PP cost or provide additional PP.
+  - [ ] Implemented as skill bonus to affinity skill?
+  - [ ] Overtaxing a PP source can cause it to break?
+  - [ ] Potions and oils: Maximum total PP or just very expensive to go beyond 5 PP?
+  - [ ] Scrolls: Some PP cost paid by reader?
+  - [ ] Weapons: Unlimited special ammo?
+  - [ ] Wands/holy symbols/dorjes
+    - [ ] Natural weapon touch attack bonus?
+    - [ ] Reduction in PP costs?
+    - [ ] Preprogrammed single spell/power: no VSM, CT 9 AP or less, dur. prepr?, range prepr?, target prepr?
+    - [ ] Wielder must be able to cast the power himself?
+    - [ ] Or have x levels in the right affinity skill?
+  - [ ] Staves/psicrowns
+    - [ ] Preprogrammed powers, a fixed level in skill(s), or a bonus to wielder’s skill(s)?
+    - [ ] Cast at a fixed PL or based on wielder’s skill level?
+    - [ ] Spell skill level and attack skill level?
+    - [ ] Wielder must be able to cast the powers himself?
+    - [ ] Or affinity skill requirement?
+    - [ ] Note that the psicrown is the only implement not held in a hand; is this ok?
+  - [ ] Rings, Misc
+    - [ ] Activated items (e.g. command words). x AP to activate. AoO: no.
+    - [ ] Extradimensional Pocket: Create more spells for this as well.
+    - [ ] Or use same one as Extradimensional Shelter?
+    - [ ] Flying: Some provide the Fly power while others serve as a flying mount.
+    - [ ] Protection: Combined deflection and resistance bonus.
+    - [ ] Spell Absorption: Store PP in pool.
+    - [ ] Add this to Antimagic spell?
+    - [ ] Spell Storing: Store powers up to a max PP total.
+    - [ ] Cast at what level?
+    - [ ] X-Ray Vision: Add spell for this?
+    - [ ] Or add to Enhance Senses?
+- [ ] Item creation
+  - [ ] Any magical item modifications that should have a cost not based on PL addition?
+  - [ ] Provide mechanism for creating items of very high PL?
+    - [ ] Typically, as a cooperative creation or through the use of special sites/sources.
+    - [ ] Bonus to Enchant Item skill level?
+    - [ ] Even reduction in cost?
+    - [ ] Use diminishing returns to avoid pitfalls based on hundreds of low-level casters, for example?
+  - [ ] High skill in magic item creation should allow larger PP pool and item PL than normal.
+    - [ ] Reduced cost as well?
+  - [ ] Constructs
+    - [ ] Imbue Intelligence combined with Create Construct for homonculi?
+    - [ ] Maybe required for most constructs?
+    - [ ] Note that some items (such as Figurines of Wondrous Power) probably should be constructs?
+    - [ ] Are some of the Figurines constructs and some connections to extraplanar creatures?
+- [ ] Can non-weapon foci be non-magical?
+- [ ] What about special materials? E.g. a masterwork wand or an outstanding mithril holy symbol?
+
+## Creatures
+
+- [ ] Culture and class configurations
+  - [ ] Selecting class equivalence for special races and templates, such as dragons? Special and exclusive monster classes (substantially better than normal PC classes for some creatures)? Or "multi-classing"?
+- [ ] **Advancement**
+  - [ ] NPC classes count as 1 level less? Class levels that don't build on the monster's existing strengths should increase the CR less?
+  - [ ] More advancement types?
+- [ ] Rules for creatures as PC races
+  - [ ] Total level should be roughly equivalent to both CR and ECL? The main discrepancy comes with HD 0 to 1 creatures with many special abilities.
+  - [ ] See DMG 3.5E p172+.
+- [ ] For attack size and speed, count swarms as their full size or the size of each member?
+- [ ] For some advanced and intelligent creatures, add Ki skills to improve their natural attacks?
+- [ ] Consider whether constructs should have natural recovery of HP/SP/PP. Special trait?
+- [ ] Ranger as default class for some elven subraces, wizard for others? Separate cultures? Separate cultures for male and female drow? Or have different gender-specific default classes in cultures?
+- [ ] Class configs with min-max-type goals, such as maximize DeC, weapon damage, etc?

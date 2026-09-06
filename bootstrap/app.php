@@ -15,6 +15,22 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
         $middleware->validateCsrfTokens(except: [
             'api/*',
+            'utilities/character-generator/*',
+            'utilities/chargen/*',
+            'utilities/npc-generator/*',
+            'utilities/npcgen/*',
+            'utilities/item-generator/*',
+            'utilities/itemgen/*',
+            'utilities/treasure-generator/*',
+            'utilities/treasuregen/*',
+            'character-generator/*',
+            'chargen/*',
+            'npc-generator/*',
+            'npcgen/*',
+            'item-generator/*',
+            'itemgen/*',
+            'treasure-generator/*',
+            'treasuregen/*',
         ]);
         $middleware->web(append: [
             \App\Http\Middleware\SetCacheHeadersMiddleware::class,

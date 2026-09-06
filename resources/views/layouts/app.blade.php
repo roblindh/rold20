@@ -223,6 +223,23 @@
         main::-webkit-scrollbar-thumb:hover {
             background-color: #94a3b8;
         }
+        /* Solid Theme Action Buttons */
+        .btn-theme-brown {
+            background-color: #8b4513 !important;
+            color: #ffffff !important;
+            border: 1px solid #5c2e0b !important;
+        }
+        .btn-theme-brown:hover {
+            background-color: #70370e !important;
+        }
+        .btn-theme-blue {
+            background-color: #3a4f63 !important;
+            color: #ffffff !important;
+            border: 1px solid #243340 !important;
+        }
+        .btn-theme-blue:hover {
+            background-color: #2c3e50 !important;
+        }
     </style>
 </head>
 <body class="h-full flex flex-col bg-slate-100 text-black" x-data="{
@@ -275,7 +292,7 @@
 
             <!-- Quick Utilities Links -->
             <a href="{{ route('search', [], false) }}" class="text-xs text-slate-900 hover:text-indigo-900 font-bold hidden md:inline">Search</a>
-            <a href="{{ route('utilities.chargen', [], false) }}" class="text-xs bg-amber-700 hover:bg-amber-800 text-white font-bold px-2 sm:px-2.5 py-1 rounded shadow-sm">PC Gen</a>
+            <a href="{{ route('utilities.chargen', [], false) }}" class="text-xs bg-amber-700 hover:bg-amber-800 text-white font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md border border-amber-900 shadow-sm transition hover:shadow inline-flex items-center gap-1">🧙‍♂️ PC Gen</a>
 
             <!-- User Auth Bar -->
             <div class="border-l border-slate-400 pl-1.5 sm:pl-3 flex items-center gap-1.5 sm:gap-2">
@@ -327,6 +344,24 @@
                     <div class="mb-4 bg-emerald-50 border border-emerald-300 text-emerald-800 px-4 py-2.5 rounded text-xs font-semibold flex items-center justify-between shadow-sm">
                         <span>✨ {{ session('status') }}</span>
                         <button onclick="this.parentElement.remove()" class="text-emerald-600 hover:text-emerald-900 font-bold text-sm">×</button>
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="mb-4 bg-red-50 border border-red-300 text-red-800 px-4 py-2.5 rounded text-xs font-semibold flex items-center justify-between shadow-sm">
+                        <span>⚠️ {{ session('error') }}</span>
+                        <button onclick="this.parentElement.remove()" class="text-red-600 hover:text-red-900 font-bold text-sm">×</button>
+                    </div>
+                @endif
+                @if (isset($errors) && $errors->any())
+                    <div class="mb-4 bg-red-50 border border-red-300 text-red-800 px-4 py-2.5 rounded text-xs font-semibold space-y-1 shadow-sm">
+                        <div class="font-bold flex items-center gap-1.5">
+                            <span>⚠️</span> Please fix the following errors:
+                        </div>
+                        <ul class="list-disc pl-5 text-[11px] space-y-0.5">
+                            @foreach ($errors->all() as $err)
+                                <li>{{ $err }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
                 @yield('content')

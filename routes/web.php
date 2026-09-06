@@ -78,6 +78,16 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::get('/npc-generator', [UtilityController::class, 'npcGenerator'])->name('npcgen');
     Route::get('/npcgen', [UtilityController::class, 'npcGenerator']);
     Route::post('/npc-generator/generate', [UtilityController::class, 'generateNpc'])->name('npcgen.generate');
+    Route::post('/npcgen/generate', [UtilityController::class, 'generateNpc']);
+    Route::post('/npc-generator/abilities', [UtilityController::class, 'generateNpcAbilities'])->name('npcgen.abilities');
+    Route::post('/npcgen/abilities', [UtilityController::class, 'generateNpcAbilities']);
+    Route::post('/npc-generator/save-to-campaign', [UtilityController::class, 'saveNpcToCampaign'])->name('npcgen.save-to-campaign');
+    Route::post('/npcgen/save-to-campaign', [UtilityController::class, 'saveNpcToCampaign']);
+
+    Route::get('/item-generator', [UtilityController::class, 'itemGenerator'])->name('itemgen');
+    Route::get('/itemgen', [UtilityController::class, 'itemGenerator']);
+    Route::post('/item-generator/generate', [UtilityController::class, 'generateItem'])->name('itemgen.generate');
+    Route::post('/itemgen/generate', [UtilityController::class, 'generateItem']);
 
     Route::get('/treasure-generator', [UtilityController::class, 'treasureGenerator'])->name('treasuregen');
     Route::get('/treasuregen', [UtilityController::class, 'treasureGenerator']);
@@ -87,6 +97,8 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/campaign/create', [UtilityController::class, 'createCampaign'])->name('campaign.create');
     Route::post('/campaign/{id}/update', [UtilityController::class, 'updateCampaign'])->name('campaign.update');
     Route::post('/campaign/{id}/delete', [UtilityController::class, 'deleteCampaign'])->name('campaign.delete');
+    Route::post('/campaign/{id}/add-character', [UtilityController::class, 'addCharacterToCampaign'])->name('campaign.add-character');
+    Route::post('/campaign/{id}/remove-character', [UtilityController::class, 'removeCharacterFromCampaign'])->name('campaign.remove-character');
 });
 
 // Search endpoints
@@ -133,6 +145,8 @@ $legacyRedirects = [
     '/charview.php' => '/utilities/charview',
     '/npcgen.php' => '/utilities/npcgen',
     '/treasuregen.php' => '/utilities/treasuregen',
+    '/util_itemgen.php' => '/utilities/itemgen',
+    '/itemgen.php' => '/utilities/itemgen',
 ];
 
 foreach ($legacyRedirects as $oldUrl => $newUrl) {

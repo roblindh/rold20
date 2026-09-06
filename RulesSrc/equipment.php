@@ -41,13 +41,22 @@ class cItem {
     public static function GetType($id) {
         global $_APP;
 
-        return $_APP['itemsubtypes'][$_APP['items'][$id]['Subtype']]['Type'];
+        if (isset($id) && isset($_APP['items'][$id]['Subtype'])) {
+            $subtype = $_APP['items'][$id]['Subtype'];
+            if (isset($_APP['itemsubtypes'][$subtype]['Type'])) {
+                return $_APP['itemsubtypes'][$subtype]['Type'];
+            }
+        }
+        return 0;
     }
 
     public static function GetSubtype($id) {
         global $_APP;
 
-        return $_APP['items'][$id]['Subtype'];
+        if (isset($id) && isset($_APP['items'][$id]['Subtype'])) {
+            return $_APP['items'][$id]['Subtype'];
+        }
+        return 0;
     }
 
 }

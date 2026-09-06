@@ -1,0 +1,28 @@
+# To Do - Core Mechanics
+
+- [ ] Notation for numerics and calculations
+  - [ ] Support (and notation) for conditional logic? See descriptors.
+  - [ ] Support and notation for predefined variables and constants? See descriptors.
+- [ ] Alignment
+  - [ ] What about classes, spells, items, etc. limited to certain alignments? Variable chance? Diplomacy type check?
+  - [ ] New way of determining alignment auras? What about entities having both Divine - Life and Divine - Death, for example? Having some characters/creatures with conflicting auras could actually be a good thing (maybe with a rephrasing of detect evil to detect profane or a more generic detect aura, for example).
+- [ ] Body Type and Natural Attacks
+  - [ ] Separate names for body location and attack?; arm/fist or punch, leg/foot or kick, leg/claw, head/headbutt, head/bite, etc.; multiple attack options per body location, such as fist and elbow for arm, gore and bite for head, etc?
+  - [ ] Should body locations without attacks be specified somewhere? A tertiary level in addition to primary and secondary (never to be used for attacks)? Only count primary attack forms when grappling?
+- [ ] Fate points
+  - [ ] Let fate points be used for exceptional actions, such as bestowing a dying curse on someone? Or maybe letting a blacksmith or warrior forge a magical weapon? Fate Point worth x XP/PP (multiplied by TL)?
+  - [ ] See Tome of Sorrows II (p 8-9).
+- [ ] Descriptors
+  - [ ] Add descriptor for actions and spells that only affect creatures able to see the effect?
+  - [ ] Add descriptor for actions that can only be done once per round?
+- [ ] Actions
+  - [ ] Simplify the rules for concentration and breaking of concentration?
+  - [ ] Multiple levels of concentration? For example, you can maintain a touch spell to touch/attack multiple targets. Basically, an attack requires concentration but an unopposed touch does not. Or does a held touch spell really require concentration?
+  - [ ] Use residuum/XP to achieve Permanent/Instantaneous effects without reducing available PP? This means that item creation can be made much more generic. For example, Enchant Weapon is normally limited duration; can be given Permanent duration by reducing PP; can be made Instantaneous by spending XP or residuum. Really allow Instantaneous spells to create magic items in mere seconds, or greatly increase activation time when spending XP to make spells instantaneous? How to prevent large number of effects on a single item?
+- [ ] Add "level check" to the list of possible d20 checks? If so, replace with skill level rather than character level?
+- [ ] Modifiers
+  - [ ] Use modifier categories for penalties as well as bonuses.
+- [ ] Conditions
+  - [ ] See Tome of Sorrows I (p 48-51) for more diseases.
+  - [ ] Mental trauma and illness? See BURPS p 81. See 5E DMG p259-260 for madness.
+  - [ ] Insanities (pfgm251+)

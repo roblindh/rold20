@@ -79,7 +79,7 @@
 
 <h3 id="CharacterTemplates">Character Templates</h3>
 <p>
-    In addition to the base races, you can apply one of the listed templates to a base race,
+    In addition to the base races, you can apply one or more of the listed templates to a base race,
     but note that most templates have a CL modifier and may not be allowed for low-level campaigns.
     Most of the templates represent an unusual bloodline somewhere among one’s ancestors.
     For example, your character can be a half-dragon human, in other words a human with draconic blood, also known as a dragonborn.

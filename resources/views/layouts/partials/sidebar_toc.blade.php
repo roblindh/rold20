@@ -366,7 +366,7 @@
                                 <li><a href="{{ route('reference.creatures', [], false) }}?type=4" class="text-slate-400 hover:text-white block py-0.5">Constructs</a></li>
                                 <li><a href="{{ route('reference.creatures', [], false) }}?type=5" class="text-slate-400 hover:text-white block py-0.5">Dragons</a></li>
                                 <li><a href="{{ route('reference.creatures', [], false) }}?type=6" class="text-slate-400 hover:text-white block py-0.5">Elementals</a></li>
-                                <li><a href="{{ route('reference.creatures', [], false) }}?type=7" class="text-slate-400 hover:text-white block py-0.5">Humanoids & Races</a></li>
+                                <li><a href="{{ route('reference.creatures', [], false) }}?type=7" class="text-slate-400 hover:text-white block py-0.5">Humanoids</a></li>
                                 <li><a href="{{ route('reference.creatures', [], false) }}?type=8" class="text-slate-400 hover:text-white block py-0.5">Monstrous Humanoids</a></li>
                                 <li><a href="{{ route('reference.creatures', [], false) }}?type=9" class="text-slate-400 hover:text-white block py-0.5">Outsiders</a></li>
                                 <li><a href="{{ route('reference.creatures', [], false) }}?type=10" class="text-slate-400 hover:text-white block py-0.5">Plants & Fungi</a></li>
@@ -417,18 +417,23 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('utilities.itemgen', [], false) }}" class="block px-2.5 py-1.5 rounded transition {{ request()->routeIs('utilities.itemgen*') ? 'bg-emerald-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
+                        🗡️ Item Generator
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('utilities.treasuregen', [], false) }}" class="block px-2.5 py-1.5 rounded transition {{ request()->routeIs('utilities.treasuregen*') ? 'bg-emerald-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
                         💎 Treasure Generator
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('utilities.campaign', [], false) }}" class="block px-2.5 py-1.5 rounded transition {{ request()->routeIs('utilities.campaign*') ? 'bg-emerald-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
-                        🗺️ Campaign Tracker
+                        🗺️ Campaign Administration
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('analysis', [], false) }}" class="block px-2.5 py-1.5 rounded transition {{ request()->routeIs('analysis*') ? 'bg-purple-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
-                        📊 Balance & DPR Analyzer
+                        📊 Analysis & Balance
                     </a>
                 </li>
             </ul>

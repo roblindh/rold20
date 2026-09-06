@@ -1,0 +1,69 @@
+# To Do - Equipment
+
+- [ ] Weapons
+  - [ ] Advanced siege engines (pf435+)
+- [ ] Poisons and drugs
+  - [ ] The Fort DC could be modified by dosage and time elapsed.
+  - [ ] Add rules for addiction, tolerance, and withdrawal (tolerance applies to poisons as well as drugs).
+  - [ ] Different levels as attacks vs Will.
+  - [ ] Reduced efficiency with increased use?
+  - [ ] Treat addiction as disease (also with regards to magical healing).
+  - [ ] New attack vs. Fort (at +2 per use or dose) when taking drug to increase addiction stage.
+  - [ ] New attack once per day (after abstaining) to reduce stage.
+  - [ ] Penalty to Con, Str, Dex, and/or Wis at different stages (temporarily mitigated when taking the drug?).
+  - [ ] Attack vs. Wis to avoid using the drug again (also part of each addiction stage?).
+  - [ ] Aether: inhaled, moderate addiction, +6 vs Fort, 20 sp/dose, spellcasting bonus +1 but can’t take 10 for 1 h, d2 Con damage
+  - [ ] Dwarven Fire Ale: ingested, moderate addiction, +10 vs Fort, 50 sp/dose, berserking bonus and cold res 5 for 1 h, d2 Con damage
+  - [ ] Elven Absinthe: ingested, moderate addiction, +6 vs Fort, 500 sp/dose, d4 Cha bonus for 1 h, d4 Con damage
+  - [ ] Flayleaf: inhaled or ingested, minor addiction, +2 vs Fort, 10 sp/dose, +2 bonus against mind attacks for 1 h, 1 Wis and 2d6 SP damage
+  - [ ] Opium: inhaled, ingested, or injury, major addiction, +10 vs Fort, 25 sp/dose, +d8 temp HP and +2 Fort save bonus for 1 h, d4 Con, d4 Wis, and 2d6 SP damage
+  - [ ] Pesh: ingested or inhaled, moderate addiction, +10 vs Fort, 15 sp/dose, +d2 bonus to Str and -2 against mind attacks for 1 h, d2 Con, d2 Wis, and d6 SP damage
+  - [ ] Scour: ingested or inhaled, major addiction, +14 vs Fort, 45 sp/dose, +d4 Dex bonus and -d4 Wis penalty for 3 h, d6 Con damage
+  - [ ] Shiver: injury or ingested, major addiction, +8 vs Fort, 500 sp/dose, immune to fear for d4 min and +8 vs Fort or fall asleep for d4 h, d2 Con damage
+  - [ ] Zerk: injury, minor addiction, +8 vs Fort, 50 sp/dose, +1 bonus to initiative and +d2 Str for 1 h, d2 Con damage
+  - [ ] Alcohol: ingested, minor or moderate addiction?, sickened?
+  - [ ] Poison-specific antidotes?
+- [ ] More equipment and services
+  - [ ] Skis, skates, crampons, snowshoes.
+  - [ ] Also add appropriate actions to Survival or Athletics skill (specializations?).
+  - [ ] Tattoos, castration, prosthesis (hooks, peg legs), maps, bank loans (based on WC).
+  - [ ] Add more typical taxes, tolls, and fees.
+  - [ ] Should teleportation circles be common enough to be available as a service in cities and some organizations?
+  - [ ] What about other magical as well as mundane message and transportation services?
+  - [ ] See my old house rules for more items, materials, and poisons.
+- [ ] Other ships and boats: barque, bireme, brig, clipper, curragh, cutter, dhow, dinghy, dory, fireboat, galleon, gondola, hooker, houseboat, jolly boat, junk, koch, knaar, lifeboat, longboat, lugger, narrow-boat, pinnace, pontoon, punt, sampan, schooner, scow, sloop, tall ship, trawler, windjammer, yacht, yawl.
+  - [ ] Ship prices: 10 sp/ton for civilian vessels, 20 sp/ton for warships, 30+ sp/ton for exceptional/royal ships
+  - [ ] [Ship Prices Link](https://www.realmshelps.net/stores/ships.shtml)
+- [ ] Buildings and businesses
+  - [ ] See 5E DMG p127-128 for expenses/income, typical hirelings/guards, etc.
+- [ ] List current magic items as “Modified Items”.
+  - [ ] Specify them as item + modifications (similar to creature configs for stat blocks).
+- [ ] Add constructs to equipment lists (under specific/modified magic items).
+- [ ] Not yet handled: Apparatus, Broom of Flying, Carpet of Flying, Dimensional Shackles, Figurines, Feather Token, Golem Manual, Hand of Glory, Ioun Stones, Iron Bands of Binding, Iron Flask, Manuals/Tomes, Mirrors, Ring Gates, Stone Horse, Well of Many Worlds, Bracelet of Friends, Crown of Blasting, Darkskull, Monk’s Robe
+- [ ] Add Pearls/Beads as single-use ranged spell attacks (as Bead of Force).
+  - [ ] Usable with slings?
+- [ ] Magic items
+  - [ ] Magic item characteristics: Base price, Prerequisites to use, Type and location.
+- [ ] Intelligent items
+  - [ ] Senses and communication: empathy, speech (languages?), telepathy, vision, darkvision, life sense, reading
+  - [ ] Powers: spellcasting, skills, sprout limbs and move, shapechanging, fly, teleport
+  - [ ] Special purpose, such as defeat specific alignment, defeat specific class, defeat specific creature, defeat specific religion
+  - [ ] Treat artifacts and intelligent items as NPCs, and note that they will have a starting attitude towards PCs.
+- [ ] Alternative magic items, sentient items, and artifacts (5E DMG p150+).
+- [ ] Random tables for weapons, armor, and shields.
+- [ ] See DMG p216, 222, 223.
+- [ ] Make the lists dynamic and flexible.
+- [ ] Don't forget clothing and natural weapons (boots, gloves, and gauntlets).
+- [ ] Random background for magic items (5E DMG p142+).
+- [ ] Maybe culture and region (and tech level) should be used as a filter on equipment lists.
+- [ ] Item creation
+  - [ ] A bonus with creating “standard” items is that all their powers are considered “themed” (50% cost for all powers except one).
+  - [ ] When designing new items, a more strict interpretation is in order.
+  - [ ] Gradual reduction of cost when creating a new item a second time, a third, and so forth?
+  - [ ] Similar system would work for creating prototypes of non-magical but complex items.
+  - [ ] Should it really cost residuum/XP to create potions, scrolls, power stones, and even other non-permanent items?
+  - [ ] Magic item PL and cost calculation: Break out “number of uses” factor?
+  - [ ] Multiply base by “single use”, “charges”, “permanent” factor?
+  - [ ] Consider which magic item modifications should affect PL (and cost indirectly) or just cost.
+- [ ] Item (including special items like vehicles and magic ones) – classification (combinations possible), base cost, prerequisites (e.g. culture, TL), carrying capacity, movement rate(s), maneuverability, fuel consumption, material(s), skill modifiers, special abilities.
+  - [ ] Item instance (similar to entity, actually).
