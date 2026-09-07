@@ -48,7 +48,7 @@
 
     <!-- Complete Cultures Rules & Information Boxes -->
     <div class="rule-content prose max-w-none">
-        <?php include base_path('hb14_cultures_content.php'); ?>
+        <?php include resource_path('views/rules/content/hb14_cultures_content.php'); ?>
     </div>
 </div>
 @endsection

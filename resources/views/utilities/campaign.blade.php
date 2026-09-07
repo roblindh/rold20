@@ -204,6 +204,59 @@
                         <p class="text-xs text-slate-400 italic">No NPCs stored in this campaign yet. Click "Generate NPC" to create and store monsters &amp; NPCs.</p>
                     @endif
                 </div>
+
+                <!-- Campaign Vault & Treasure Cache -->
+                @php
+                    $vaultItems = [];
+                    if (!empty($camp->Vault)) {
+                        $rawVault = $camp->Vault;
+                        if (str_starts_with($rawVault, '[')) {
+                            $vaultItems = json_decode($rawVault, true) ?? [];
+                        }
+                    }
+                @endphp
+                <div class="pt-3 border-t border-slate-200 space-y-2.5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                        <span class="font-bold text-slate-800 flex items-center gap-1.5">
+                            <span>💎</span>
+                            <span>Campaign Vault &amp; Treasure ({{ count($vaultItems) }}):</span>
+                        </span>
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <a href="{{ route('utilities.itemgen', [], false) }}" class="bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-[11px] px-3 py-1.5 rounded-md border border-indigo-900 shadow-xs transition inline-flex items-center gap-1 cursor-pointer">
+                                <span>🗡️</span> Generate Item
+                            </a>
+                            <a href="{{ route('utilities.treasuregen', [], false) }}" class="bg-amber-700 hover:bg-amber-800 text-white font-bold text-[11px] px-3 py-1.5 rounded-md border border-amber-900 shadow-xs transition inline-flex items-center gap-1 cursor-pointer">
+                                <span>🎲</span> Roll Hoard
+                            </a>
+                        </div>
+                    </div>
+                    @if(!empty($vaultItems))
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            @foreach($vaultItems as $vIdx => $vItem)
+                                <div class="inline-flex items-center bg-indigo-50/70 text-indigo-950 text-xs px-2.5 py-1 rounded-md border border-indigo-300 shadow-xs hover:border-indigo-400 transition">
+                                    <span class="font-semibold" title="{{ $vItem['config'] ?? '' }}">
+                                        ✨ {{ $vItem['name'] ?? 'Item' }}
+                                        <span class="text-indigo-600 font-normal text-[10px]">({{ number_format($vItem['value'] ?? 0) }} sp | PL {{ $vItem['pl'] ?? 0 }})</span>
+                                    </span>
+                                    @if($isMyCamp)
+                                        <form action="{{ route('utilities.campaign.vault.remove', ['id' => $camp->ID], false) }}" method="POST" class="inline ml-1.5 pl-1.5 border-l border-indigo-300" onsubmit="return confirm('Remove \'{{ addslashes($vItem['name'] ?? 'Item') }}\' from Campaign Vault?');">
+                                            @csrf
+                                            <input type="hidden" name="item_index" value="{{ $vIdx }}">
+                                            @if(isset($vItem['id']))
+                                                <input type="hidden" name="item_id" value="{{ $vItem['id'] }}">
+                                            @endif
+                                            <button type="submit" class="text-slate-400 hover:text-red-600 font-bold text-xs cursor-pointer leading-none" title="Remove from Vault">
+                                                &times;
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-xs text-slate-400 italic">No magic items or treasure stored in vault yet.</p>
+                    @endif
+                </div>
             </div>
         @empty
             <div class="col-span-2 p-8 text-center bg-slate-50 border border-slate-200 rounded-xl text-slate-500 text-sm">

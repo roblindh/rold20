@@ -33,9 +33,12 @@ class ReindexSearchCommand extends Command
 
         $this->info("Indexing rules content files...");
         foreach ($rulesFiles as $file => $meta) {
-            $path = base_path($file);
+            $path = resource_path('views/rules/content/' . $file);
             if (!file_exists($path)) {
-                continue;
+                $path = base_path($file);
+                if (!file_exists($path)) {
+                    continue;
+                }
             }
 
             $content = file_get_contents($path);

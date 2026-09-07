@@ -427,6 +427,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('utilities.combattracker', [], false) }}" class="block px-2.5 py-1.5 rounded transition {{ request()->routeIs('*combattracker*') || request()->is('utilities/combat*') ? 'bg-emerald-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
+                        ⚔️ Combat Tracker
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('utilities.campaign', [], false) }}" class="block px-2.5 py-1.5 rounded transition {{ request()->routeIs('utilities.campaign*') ? 'bg-emerald-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800' }}">
                         🗺️ Campaign Administration
                     </a>

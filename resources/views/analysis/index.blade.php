@@ -217,7 +217,7 @@
                 <!-- Level Select -->
                 <div class="flex items-center gap-1.5 shrink-0">
                     <span class="text-xs font-bold text-slate-600 mr-1">Level:</span>
-                    @foreach([1, 6, 11, 21] as $lvl)
+                    @foreach([1, 6, 11, 16, 21, 26] as $lvl)
                         <a href="?tab=classes&class_lvl={{ $lvl }}" 
                            class="px-3 py-1.5 text-xs rounded-lg font-bold transition {{ ($classLvl ?? 1) === $lvl ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">
                             Lvl {{ $lvl }}
@@ -354,7 +354,7 @@
                     <!-- Level Select -->
                     <div class="flex items-center gap-1.5">
                         <span class="text-xs font-bold text-slate-600">Level:</span>
-                        @foreach([1, 5, 10, 15, 20] as $lvl)
+                        @foreach([1, 6, 11, 16, 21, 26] as $lvl)
                             <a href="?tab=weapons&weapon_lvl={{ $lvl }}" 
                                class="px-2.5 py-1 text-xs rounded-lg font-bold transition {{ ($weaponLvl ?? 1) === $lvl ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">
                                 Lvl {{ $lvl }}
@@ -474,7 +474,7 @@
                 <!-- Level Select -->
                 <div class="flex items-center gap-1.5 shrink-0">
                     <span class="text-xs font-bold text-slate-600 mr-1">Level:</span>
-                    @foreach([1, 6, 11, 21] as $lvl)
+                    @foreach([1, 6, 11, 16, 21, 26] as $lvl)
                         <a href="?tab=spellcost&spell_lvl={{ $lvl }}" 
                            class="px-3 py-1.5 text-xs rounded-lg font-bold transition {{ ($spellLvl ?? 1) === $lvl ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">
                             Lvl {{ $lvl }}

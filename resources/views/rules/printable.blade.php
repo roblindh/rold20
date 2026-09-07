@@ -48,98 +48,98 @@
     <div class="rule-content prose max-w-none space-y-12">
         <!-- Chapter 1: Introduction -->
         <section id="chapter-1" class="ruleset-chapter pt-4">
-            <?php include base_path('hb01_intro_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb01_intro_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Chapter 2: Core Mechanics -->
         <section id="chapter-2" class="ruleset-chapter pt-4">
-            <?php include base_path('hb02_coremech_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb02_coremech_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Chapter 3: Character Generation -->
         <section id="chapter-3" class="ruleset-chapter pt-4">
-            <?php include base_path('hb03_chargen_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb03_chargen_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Chapter 4: Rules of Engagement -->
         <section id="chapter-4" class="ruleset-chapter pt-4">
-            <?php include base_path('hb08_encounters_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb08_encounters_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Chapter 5: Rules of Combat -->
         <section id="chapter-5" class="ruleset-chapter pt-4">
-            <?php include base_path('hb04_combat_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb04_combat_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Chapter 6: Rules of Magic -->
         <section id="chapter-6" class="ruleset-chapter pt-4">
-            <?php include base_path('hb05_magic_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb05_magic_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Chapter 7: Rules of Environment -->
         <section id="chapter-7" class="ruleset-chapter pt-4">
-            <?php include base_path('hb06_environment_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb06_environment_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Chapter 8: Rules of Culture -->
         <section id="chapter-8" class="ruleset-chapter pt-4">
-            <?php include base_path('hb07_culture_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb07_culture_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Compendium: Skills -->
         <section id="compendium-skills" class="ruleset-chapter compendium-section pt-4">
-            <?php include base_path('hb09_skills_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb09_skills_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Compendium: Actions -->
         <section id="compendium-actions" class="ruleset-chapter compendium-section pt-4">
-            <?php include base_path('hb10_actions_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb10_actions_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Compendium: Spells & Powers -->
         <section id="compendium-spells" class="ruleset-chapter compendium-section pt-4">
-            <?php include base_path('hb11_spells_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb11_spells_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Compendium: Equipment & Items -->
         <section id="compendium-equipment" class="ruleset-chapter compendium-section pt-4">
-            <?php include base_path('hb12_equipment_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb12_equipment_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Compendium: Bestiary & Creatures -->
         <section id="compendium-creatures" class="ruleset-chapter compendium-section pt-4">
-            <?php include base_path('hb13_creatures_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb13_creatures_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />
 
         <!-- Compendium: Cultures -->
         <section id="compendium-cultures" class="ruleset-chapter compendium-section pt-4">
-            <?php include base_path('hb14_cultures_content.php'); ?>
+            <?php include resource_path('views/rules/content/hb14_cultures_content.php'); ?>
         </section>
     </div>
 

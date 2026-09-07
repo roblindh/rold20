@@ -2,6 +2,6 @@
 
 @section('content')
 <div class="rule-content prose max-w-none">
-    <?php include base_path('hb04_combat_content.php'); ?>
+    <?php include resource_path('views/rules/content/hb04_combat_content.php'); ?>
 </div>
 @endsection

@@ -1,3 +1,0 @@
-<?php
-application_end();
-?> 

@@ -858,96 +858,118 @@ class UtilityController extends Controller
             'mods_html' => $modsHtml,
         ];
 
+        // Campaigns & Characters for saving generated items
+        $campaigns = DB::table('campaigns')->orderBy('Name')->get();
+        $characters = DB::table('characters')->where(function($q) {
+            $q->whereNull('IsNPC')->orWhere('IsNPC', 0);
+        })->orderBy('Name')->get();
+
         return view('utilities.itemgen', compact(
             'items',
             'materials',
             'mundaneMods',
             'magicMods',
             'defaultItemId',
-            'initialResult'
+            'initialResult',
+            'campaigns',
+            'characters'
         ));
     }
 
     /**
-     * Generate Item Stat Box using cPossession Engine
+     * AJAX endpoint to generate item statbox & config string using cPossession
      */
     public function generateItem(Request $request): JsonResponse
     {
-        try {
-            global $_APP;
-            if (!isset($_APP) || empty($_APP)) {
-                require_once base_path('page_start.php');
-            }
+        global $_APP;
+        if (!isset($_APP) || empty($_APP)) {
+            require_once base_path('page_start.php');
+        }
 
-            $itemId = (int)$request->input('item_id', 88);
-            if ($itemId <= 0 || !isset($_APP['items'][$itemId])) {
-                $itemId = 88;
-                if (!isset($_APP['items'][$itemId])) {
-                    $itemId = array_key_first($_APP['items'] ?? [1 => []]) ?? 1;
+        try {
+            $itemId = (int)$request->input('item_id', 0);
+            $baseItemName = $request->input('base_item');
+            if (!$itemId && !empty($baseItemName)) {
+                foreach ($_APP['items'] ?? [] as $id => $it) {
+                    if (strcasecmp($it['Name'] ?? '', $baseItemName) === 0) {
+                        $itemId = (int)$id;
+                        break;
+                    }
                 }
             }
-
-            $baseItemName = $_APP['items'][$itemId]['Name'] ?? 'Item';
-            $description = trim((string)$request->input('description', ''));
-            if ($description === '') {
-                $description = $baseItemName;
+            if (!$itemId) {
+                $itemId = 88; // Default Longsword
             }
 
-            $materialId = (int)$request->input('material_id', 0);
+            $baseItem = $_APP['items'][$itemId] ?? ['Name' => 'Sword, long-'];
+            $baseName = $baseItem['Name'] ?? 'Item';
+
+            $description = trim($request->input('description', ''));
+            if (empty($description)) {
+                $description = $baseName;
+            }
+
+            $configParts = ["Item=" . $baseName];
+
+            // Material
+            $matId = (int)$request->input('material_id', 0);
+            $matName = $request->input('material');
+            if (!$matId && !empty($matName)) {
+                foreach ($_APP['materials'] ?? [] as $id => $mat) {
+                    if (strcasecmp($mat['Name'] ?? '', $matName) === 0) {
+                        $matId = (int)$id;
+                        break;
+                    }
+                }
+            }
+            if ($matId > 0 && isset($_APP['materials'][$matId])) {
+                $configParts[] = "Mat=" . $_APP['materials'][$matId]['Name'];
+            }
+
+            // Mundane Mods
             $mundaneMods = $request->input('mundane_mods', []);
-            $magicMods = $request->input('magic_mods', []);
-
-            // Build config string
-            $config = $description . " (";
-            $config .= "Item=" . $baseItemName . ": ";
-
-            if ($materialId > 0 && isset($_APP['materials'][$materialId])) {
-                $config .= "Material=" . $_APP['materials'][$materialId]['Name'] . ": ";
-            }
-
             if (is_array($mundaneMods)) {
-                foreach ($mundaneMods as $mId) {
-                    $mId = (int)(is_array($mId) ? ($mId['id'] ?? $mId['mod_id'] ?? 0) : $mId);
-                    if ($mId > 0 && isset($_APP['itemmodsmundane'][$mId])) {
-                        $config .= "Mod=" . $_APP['itemmodsmundane'][$mId]['Abbreviation'] . ": ";
+                foreach ($mundaneMods as $m) {
+                    if (is_numeric($m) && isset($_APP['itemmodsmundane'][(int)$m])) {
+                        $configParts[] = "Mod=" . $_APP['itemmodsmundane'][(int)$m]['Abbreviation'];
+                    } elseif (is_string($m) && !empty($m)) {
+                        $configParts[] = "Mod=" . $m;
                     }
                 }
             }
 
+            // Magic Mods
+            $magicMods = $request->input('magic_mods', []);
             if (is_array($magicMods)) {
                 foreach ($magicMods as $m) {
-                    if (!is_array($m)) continue;
-                    $mId = (int)($m['mod_id'] ?? $m['id'] ?? 0);
-                    if ($mId <= 0 || !isset($_APP['itemmodsmagic'][$mId])) continue;
-
-                    $abbr = $_APP['itemmodsmagic'][$mId]['Abbreviation'];
-                    $x = isset($m['x']) && trim((string)$m['x']) !== '' ? (float)$m['x'] : null;
-                    $y = isset($m['y']) ? trim((string)$m['y']) : '';
-                    $mul = isset($m['mul']) ? (string)$m['mul'] : '1';
-
-                    $modStr = "Mod=" . $abbr;
-                    if ($x !== null && $x != 0) {
-                        $modStr .= "&x=" . (is_float($x) && floor($x) != $x ? $x : (int)$x);
+                    $modAbbr = '';
+                    $modId = isset($m['mod_id']) ? (int)$m['mod_id'] : 0;
+                    if ($modId > 0 && isset($_APP['itemmodsmagic'][$modId])) {
+                        $modAbbr = $_APP['itemmodsmagic'][$modId]['Abbreviation'];
+                    } elseif (!empty($m['mod'])) {
+                        $modAbbr = $m['mod'];
                     }
-                    if ($y !== '') {
-                        $modStr .= "&y=" . $y;
+                    if (!empty($modAbbr)) {
+                        $pStr = "Mod=" . $modAbbr;
+                        if (!empty($m['x'])) {
+                            $pStr .= "&x=" . urlencode((string)$m['x']);
+                        }
+                        if (!empty($m['y'])) {
+                            $pStr .= "&y=" . urlencode((string)$m['y']);
+                        }
+                        if (isset($m['mul']) && $m['mul'] !== '1' && $m['mul'] !== 1 && $m['mul'] !== '') {
+                            $pStr .= "&mul=" . urlencode((string)$m['mul']);
+                        }
+                        $configParts[] = $pStr;
                     }
-                    if ($mul === '0.5' || $mul === 'x0.5') {
-                        $modStr .= "&mul=0.5";
-                    } elseif ($mul === '0.1' || $mul === 'x0.1') {
-                        $modStr .= "&mul=0.1";
-                    } elseif ($mul === '0' || $mul === '0.0' || $mul === 'x0') {
-                        $modStr .= "&mul=0";
-                    }
-                    $modStr .= ": ";
-                    $config .= $modStr;
                 }
             }
 
-            $config .= ")";
+            $innerConfig = implode(': ', $configParts) . (count($configParts) > 0 ? ': ' : '');
+            $configString = $description . " (" . $innerConfig . ")";
 
             $entity = new \cPossession();
-            $entity->GenerateItem($config);
+            $entity->GenerateItem($configString);
 
             $sizeIdx = min(max($entity->GetCurrentSize(), -4), 4);
             $sizeAbbr = $_APP['sizecats'][$sizeIdx]['Abbreviation'] ?? 'M';
@@ -969,9 +991,8 @@ class UtilityController extends Controller
             $modsRaw = $entity->GetModsStr();
             $modsHtml = str_replace(["\r\n", "\n", "\\n"], "<br/>", htmlspecialchars($modsRaw, ENT_QUOTES, 'UTF-8'));
 
-            $itemData = [
-                'entity' => $entity,
-                'configString' => $config,
+            $resultData = [
+                'config_string' => $configString,
                 'name' => $entity->Name,
                 'value' => $entity->GetValue(),
                 'weight' => $entity->GetWeight(),
@@ -988,32 +1009,160 @@ class UtilityController extends Controller
                 'mods_html' => $modsHtml,
             ];
 
-            return response()->json([
+            return response()->json(array_merge([
                 'success' => true,
-                'config_string' => $config,
-                'name' => $entity->Name,
-                'value' => $entity->GetValue(),
-                'weight' => $entity->GetWeight(),
-                'size' => "{$sizeName} ({$sizeAbbr})",
-                'size_name' => $sizeName,
-                'size_abbr' => $sizeAbbr,
-                'ec' => $entity->GetECMod(),
-                'pl' => $entity->GetPowerLevel(),
-                'dr' => $entity->GetDR(),
-                'hp' => $entity->GetHPTotal(),
-                'traits' => $traitsRaw,
-                'traits_html' => $traitsHtml,
-                'mods' => $modsRaw,
-                'mods_html' => $modsHtml,
-                'html' => view('utilities.partials.item_statbox', $itemData)->render(),
-            ]);
+                'html' => view('utilities.partials.item_statbox', array_merge($resultData, [
+                    'name' => $entity->Name,
+                    'value' => $entity->GetValue(),
+                    'weight' => $entity->GetWeight(),
+                    'size' => "{$sizeName} ({$sizeAbbr})",
+                    'ec' => $entity->GetECMod(),
+                    'pl' => $entity->GetPowerLevel(),
+                    'dr' => $entity->GetDR(),
+                    'hp' => $entity->GetHPTotal(),
+                    'traits' => $traitsRaw,
+                    'traits_html' => $traitsHtml,
+                    'mods' => $modsRaw,
+                    'mods_html' => $modsHtml,
+                    'configString' => $configString,
+                ]))->render(),
+            ], $resultData));
         } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'error' => 'Error generating item: ' . $e->getMessage(),
-                'config_string' => $config ?? '',
+                'config_string' => $configString ?? '',
             ], 500);
         }
+    }
+
+    /**
+     * Save generated item to a Character's inventory
+     */
+    public function saveItemToCharacter(Request $request): JsonResponse
+    {
+        $charId = (int)$request->input('character_id', 0);
+        $character = DB::table('characters')->where('ID', $charId)->first();
+        if (!$character) {
+            return response()->json(['success' => false, 'message' => 'Character not found.'], 404);
+        }
+
+        $itemData = [
+            'id' => uniqid('item_'),
+            'name' => $request->input('name', 'Custom Item'),
+            'config' => $request->input('config_string', ''),
+            'value' => (float)$request->input('value', 0),
+            'weight' => (float)$request->input('weight', 0),
+            'size' => $request->input('size', 'Medium (M)'),
+            'ec' => (int)$request->input('ec', 0),
+            'pl' => (string)$request->input('pl', '0'),
+            'dr' => (string)$request->input('dr', '0'),
+            'hp' => (int)$request->input('hp', 1),
+            'traits' => $request->input('traits', ''),
+            'mods' => $request->input('mods', ''),
+            'added_at' => date('Y-m-d H:i:s'),
+        ];
+
+        $currentEquip = [];
+        if (!empty($character->Equipment)) {
+            $raw = $character->Equipment;
+            if (str_starts_with($raw, '[')) {
+                $currentEquip = json_decode($raw, true) ?? [];
+            } else {
+                $currentEquip = [['name' => $raw, 'config' => $raw]];
+            }
+        }
+        $currentEquip[] = $itemData;
+
+        DB::table('characters')->where('ID', $charId)->update([
+            'Equipment' => json_encode($currentEquip),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => "Item '{$itemData['name']}' added to {$character->Name}'s inventory!",
+        ]);
+    }
+
+    /**
+     * Save generated item to a Campaign's Vault / Loot Cache
+     */
+    public function saveItemToCampaign(Request $request): JsonResponse
+    {
+        $campaignId = (int)$request->input('campaign_id', 0);
+        $campaign = DB::table('campaigns')->where('ID', $campaignId)->first();
+        if (!$campaign) {
+            return response()->json(['success' => false, 'message' => 'Campaign not found.'], 404);
+        }
+
+        $itemData = [
+            'id' => uniqid('vault_'),
+            'name' => $request->input('name', 'Custom Item'),
+            'config' => $request->input('config_string', ''),
+            'value' => (float)$request->input('value', 0),
+            'weight' => (float)$request->input('weight', 0),
+            'size' => $request->input('size', 'Medium (M)'),
+            'ec' => (int)$request->input('ec', 0),
+            'pl' => (string)$request->input('pl', '0'),
+            'dr' => (string)$request->input('dr', '0'),
+            'hp' => (int)$request->input('hp', 1),
+            'traits' => $request->input('traits', ''),
+            'mods' => $request->input('mods', ''),
+            'added_at' => date('Y-m-d H:i:s'),
+        ];
+
+        $currentVault = [];
+        if (!empty($campaign->Vault)) {
+            $raw = $campaign->Vault;
+            if (str_starts_with($raw, '[')) {
+                $currentVault = json_decode($raw, true) ?? [];
+            }
+        }
+        $currentVault[] = $itemData;
+
+        DB::table('campaigns')->where('ID', $campaignId)->update([
+            'Vault' => json_encode($currentVault),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => "Item '{$itemData['name']}' stored in {$campaign->Name}'s Campaign Vault!",
+        ]);
+    }
+
+    /**
+     * Remove an item from a Campaign Vault
+     */
+    public function removeVaultItemFromCampaign(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign) {
+            return back()->with('error', 'Campaign not found.');
+        }
+
+        $itemIdx = $request->input('item_index');
+        $itemId = $request->input('item_id');
+
+        $currentVault = [];
+        if (!empty($campaign->Vault)) {
+            $raw = $campaign->Vault;
+            if (str_starts_with($raw, '[')) {
+                $currentVault = json_decode($raw, true) ?? [];
+            }
+        }
+
+        if ($itemId !== null) {
+            $currentVault = array_values(array_filter($currentVault, fn($it) => ($it['id'] ?? '') !== $itemId));
+        } elseif ($itemIdx !== null && isset($currentVault[(int)$itemIdx])) {
+            unset($currentVault[(int)$itemIdx]);
+            $currentVault = array_values($currentVault);
+        }
+
+        DB::table('campaigns')->where('ID', $id)->update([
+            'Vault' => json_encode($currentVault),
+        ]);
+
+        return back()->with('status', 'Vault item removed successfully.');
     }
 
     /**
@@ -1022,25 +1171,310 @@ class UtilityController extends Controller
     public function treasureGenerator(Request $request): View
     {
         $levels = range(1, 20);
-        return view('utilities.treasuregen', compact('levels'));
+        $campaigns = DB::table('campaigns')->orderBy('Name')->get();
+        $characters = DB::table('characters')->where(function($q) {
+            $q->whereNull('IsNPC')->orWhere('IsNPC', 0);
+        })->orderBy('Name')->get();
+
+        return view('utilities.treasuregen', compact('levels', 'campaigns', 'characters'));
     }
 
+    /**
+     * Roll Procedural Treasure Hoard with cPossession engine
+     */
     public function rollTreasure(Request $request): JsonResponse
     {
-        $el = (int)$request->input('el', 1);
-        $random = DB::table('ref_treasurerandom')->where('EL', $el)->inRandomOrder()->first();
-        $mundane = DB::table('ref_treasuremundane')->inRandomOrder()->limit(rand(1, 3))->get();
-        $magic = DB::table('ref_treasuremagic')->inRandomOrder()->limit(rand(0, 2))->get();
+        global $_APP;
+        if (!isset($_APP) || empty($_APP)) {
+            require_once base_path('page_start.php');
+        }
 
-        $gold = rand(10, 50) * $el;
-        $silver = rand(50, 200) * $el;
+        $el = max(1, min(20, (int)$request->input('el', 1)));
+
+        // 1. Currency calculations scaled to EL
+        $gold = rand(10, 40) * $el * ($el >= 10 ? 2 : 1) + rand(5, 20);
+        $silver = rand(50, 150) * $el + rand(20, 80);
+        $platinum = $el >= 6 ? rand(1, 8) * ($el - 4) : 0;
+
+        // 2. Mundane goods / Art objects
+        $mundaneCount = rand(1, 3);
+        $mundane = DB::table('ref_treasuremundane')->inRandomOrder()->limit($mundaneCount)->get();
+
+        // 3. Procedural Magic Items using cPossession
+        $magicItems = [];
+        $magicCount = rand(0, min(3, max(1, (int)ceil($el / 5))));
+
+        $adventureSubtypes = [
+            'Melee Weapons', 'Projectile Weapons', 'Shields', 'Light Armor', 'Medium Armor', 'Heavy Armor',
+            'Headwear', 'Handwear', 'Footwear', 'Cloaks', 'Rings', 'Necklaces', 'Belts & Girdles', 'Bracelets',
+            'Eyewear', 'Implements', 'Wands', 'Scrolls', 'Alchemy'
+        ];
+
+        $candidateItems = collect($_APP['items'] ?? [])
+            ->filter(function($it) use ($_APP, $adventureSubtypes) {
+                if (!is_array($it) || empty($it['Name']) || empty($it['BaseValue'])) return false;
+                $st = $it['Subtype'] ?? 0;
+                $stName = $_APP['itemsubtypes'][$st]['Name'] ?? '';
+                return in_array($stName, $adventureSubtypes);
+            })
+            ->values()
+            ->all();
+
+        $magicMods = collect($_APP['itemmodsmagic'] ?? [])
+            ->filter(fn($m) => is_array($m) && !empty($m['Abbreviation']) && !empty($m['Description']))
+            ->values()
+            ->all();
+
+        if (!empty($candidateItems)) {
+            for ($k = 0; $k < $magicCount; $k++) {
+                try {
+                    $baseItem = $candidateItems[array_rand($candidateItems)];
+                    $baseName = $baseItem['Name'];
+
+                    $chosenMods = [];
+                    if (!empty($magicMods)) {
+                        $modCount = rand(1, min(3, max(1, (int)ceil($el / 6))));
+                        $shuffled = $magicMods;
+                        shuffle($shuffled);
+                        for ($i = 0; $i < min($modCount, count($shuffled)); $i++) {
+                            $m = $shuffled[$i];
+                            $abbr = $m['Abbreviation'];
+                            $x = null;
+                            if (str_contains($m['Description'], '(x)') || str_contains($m['SpecialInfo'] ?? '', '(x)')) {
+                                $x = max(1, min(5, (int)ceil($el / 4)));
+                            }
+                            $chosenMods[] = "Mod=" . $abbr . ($x ? "&x=$x" : "");
+                        }
+                    }
+
+                    $config = $baseName . " (Item=" . $baseName . ": " . implode(": ", $chosenMods) . ($chosenMods ? ": " : "") . ")";
+                    $entity = new \cPossession();
+                    $entity->GenerateItem($config);
+
+                    $sizeIdx = min(max($entity->GetCurrentSize(), -4), 4);
+                    $sizeAbbr = $_APP['sizecats'][$sizeIdx]['Abbreviation'] ?? 'M';
+
+                    $rawTraits = isset($_APP['items'][$entity->Item]['Traits']) ? $entity->TraitEffects->ProcessTraits($_APP['items'][$entity->Item]['Traits'], 0, $entity) : '';
+                    $rawMods = $entity->GetModsStr();
+
+                    $magicItems[] = [
+                        'name' => $entity->Name,
+                        'config_string' => $config,
+                        'value' => $entity->GetValue(),
+                        'weight' => $entity->GetWeight(),
+                        'size' => $sizeAbbr,
+                        'ec' => $entity->GetECMod(),
+                        'pl' => $entity->GetPowerLevel(),
+                        'dr' => $entity->GetDR(),
+                        'hp' => $entity->GetHPTotal(),
+                        'traits' => $rawTraits,
+                        'traits_html' => str_replace(["\r\n", "\n", "\\n"], "<br/>", htmlspecialchars($rawTraits, ENT_QUOTES, 'UTF-8')),
+                        'mods' => $rawMods,
+                        'mods_html' => str_replace(["\r\n", "\n", "\\n"], "<br/>", htmlspecialchars($rawMods, ENT_QUOTES, 'UTF-8')),
+                    ];
+                } catch (\Throwable $t) {}
+            }
+        }
+
+        $campaigns = DB::table('campaigns')->orderBy('Name')->get();
+        $characters = DB::table('characters')->where(function($q) {
+            $q->whereNull('IsNPC')->orWhere('IsNPC', 0);
+        })->orderBy('Name')->get();
 
         return response()->json([
             'success' => true,
-            'coins' => compact('gold', 'silver'),
+            'coins' => compact('gold', 'silver', 'platinum'),
             'mundane' => $mundane,
-            'magic' => $magic,
-            'html' => view('utilities.partials.treasure_result', compact('el', 'gold', 'silver', 'mundane', 'magic'))->render(),
+            'magic' => $magicItems,
+            'html' => view('utilities.partials.treasure_result', compact('el', 'gold', 'silver', 'platinum', 'mundane', 'magicItems', 'campaigns', 'characters'))->render(),
+        ]);
+    }
+
+    /**
+     * Interactive Combat & Initiative Tracker Utility
+     */
+    public function combatTracker(Request $request): View
+    {
+        $campaigns = DB::table('campaigns')->orderBy('Name')->get();
+        $selectedCampaignId = $request->query('campaign') ? (int)$request->query('campaign') : null;
+
+        $races = DB::table('ref_creatures')->get()->keyBy('ID');
+        $classesMap = DB::table('ref_classes')->get()->keyBy('ID');
+
+        $formatChar = function ($c, $type = 'pc') use ($races, $classesMap) {
+            $raceId = $c->BaseRace ?? (isset($c->Race) ? $c->Race : 1);
+            $race = $races[$raceId] ?? null;
+            $xp = (int)($c->ExperiencePts ?? 0);
+            $tl = 1;
+            while ($tl * ($tl - 1) * 500 <= $xp && $tl <= 20) {
+                $tl++;
+            }
+            $totalLevel = max(1, $tl - 1);
+
+            $str = max(1, (int)($c->BaseStr ?? 10) + (int)($race->StrAdj ?? 0));
+            $con = max(1, (int)($c->BaseCon ?? 10) + (int)($race->ConAdj ?? 0));
+            $dex = max(1, (int)($c->BaseDex ?? 10) + (int)($race->DexAdj ?? 0));
+            $int = max(3, (int)($c->BaseInt ?? 10) + (int)($race->IntAdj ?? 0));
+            $wis = max(1, (int)($c->BaseWis ?? 10) + (int)($race->WisAdj ?? 0));
+            $cha = max(1, (int)($c->BaseCha ?? 10) + (int)($race->ChaAdj ?? 0));
+
+            $strMod = (int)floor(($str - 10) / 2);
+            $conMod = (int)floor(($con - 10) / 2);
+            $dexMod = (int)floor(($dex - 10) / 2);
+            $intMod = (int)floor(($int - 10) / 2);
+            $wisMod = (int)floor(($wis - 10) / 2);
+            $chaMod = (int)floor(($cha - 10) / 2);
+
+            $hp = max(1, $con + 5 * $totalLevel);
+            $sp = max(1, $str + $con + 8 * $totalLevel);
+            $pp = max(0, $wis + $cha);
+
+            $decPassive = 10 + min(0, $dexMod) + $totalLevel;
+            $decActive = $decPassive + max(0, $dexMod);
+
+            $fort = 10 + $strMod + $conMod + $totalLevel;
+            $ref = 10 + $dexMod + $intMod + $totalLevel;
+            $will = 10 + $wisMod + $chaMod + $totalLevel;
+
+            return [
+                'id' => ($type === 'npc' ? 'npc_' : 'pc_') . $c->ID,
+                'db_id' => $c->ID,
+                'name' => $c->Name,
+                'campaign_id' => $c->Campaign ? (int)$c->Campaign : null,
+                'type' => $type,
+                'level' => $totalLevel,
+                'race_name' => $race ? $race->Name : 'Humanoid',
+                'hp_max' => $hp,
+                'hp_curr' => $hp,
+                'sp_max' => $sp,
+                'sp_curr' => $sp,
+                'pp_max' => $pp,
+                'pp_curr' => $pp,
+                'ap_max' => 10 + $totalLevel,
+                'ap_curr' => 10 + $totalLevel,
+                'init_mod' => $dexMod,
+                'init_roll' => null,
+                'init_total' => null,
+                'deca' => $decActive,
+                'decp' => $decPassive,
+                'dr' => (int)($race->DR ?? 0),
+                'mr' => (int)($race->MR ?? 0),
+                'fort' => $fort,
+                'ref' => $ref,
+                'will' => $will,
+                'speed' => (int)($race->GroundSpeed ?? 30) . "'",
+                'conditions' => [],
+                'notes' => '',
+            ];
+        };
+
+        $rawPCs = DB::table('characters')
+            ->where(function($q) {
+                $q->whereNull('IsNPC')->orWhere('IsNPC', 0);
+            })
+            ->orderBy('Name')
+            ->get();
+
+        $rawNPCs = DB::table('characters')
+            ->where('IsNPC', 1)
+            ->orderBy('Name')
+            ->get();
+
+        $characters = $rawPCs->map(fn($c) => $formatChar($c, 'pc'))->values()->all();
+        $npcs = $rawNPCs->map(fn($c) => $formatChar($c, 'npc'))->values()->all();
+
+        $rawCreatures = DB::table('ref_creatures')
+            ->select('ID', 'Name', 'BaseRL', 'CLModifier', 'GroundSpeed', 'FlySpeed', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj', 'DR', 'MR')
+            ->orderBy('Name')
+            ->get();
+
+        $creatures = $rawCreatures->map(function ($cr) {
+            $rl = max(1, (int)($cr->BaseRL ?? $cr->CLModifier ?? 1));
+            $str = max(1, 10 + (int)($cr->StrAdj ?? 0));
+            $con = max(1, 10 + (int)($cr->ConAdj ?? 0));
+            $dex = max(1, 10 + (int)($cr->DexAdj ?? 0));
+            $int = max(1, 10 + (int)($cr->IntAdj ?? 0));
+            $wis = max(1, 10 + (int)($cr->WisAdj ?? 0));
+            $cha = max(1, 10 + (int)($cr->ChaAdj ?? 0));
+
+            $strMod = (int)floor(($str - 10) / 2);
+            $conMod = (int)floor(($con - 10) / 2);
+            $dexMod = (int)floor(($dex - 10) / 2);
+            $intMod = (int)floor(($int - 10) / 2);
+            $wisMod = (int)floor(($wis - 10) / 2);
+            $chaMod = (int)floor(($cha - 10) / 2);
+
+            $hp = max(1, $con + 5 * $rl);
+            $sp = max(1, $str + $con + 8 * $rl);
+            $pp = max(0, $wis + $cha);
+
+            $decPassive = 10 + min(0, $dexMod) + $rl;
+            $decActive = $decPassive + max(0, $dexMod);
+
+            $fort = 10 + $strMod + $conMod + $rl;
+            $ref = 10 + $dexMod + $intMod + $rl;
+            $will = 10 + $wisMod + $chaMod + $rl;
+
+            return [
+                'id' => $cr->ID,
+                'name' => $cr->Name,
+                'level' => $rl,
+                'hp_max' => $hp,
+                'sp_max' => $sp,
+                'pp_max' => $pp,
+                'ap_max' => 10 + $rl,
+                'init_mod' => $dexMod,
+                'deca' => $decActive,
+                'decp' => $decPassive,
+                'dr' => (int)($cr->DR ?? 0),
+                'mr' => (int)($cr->MR ?? 0),
+                'fort' => $fort,
+                'ref' => $ref,
+                'will' => $will,
+                'speed' => ($cr->GroundSpeed ?? 30) . "'" . ($cr->FlySpeed ? ", Fly " . $cr->FlySpeed . "'" : ""),
+            ];
+        })->values()->all();
+
+        $conditionsList = [
+            ['name' => 'Blinded', 'desc' => 'Cannot see. -4 DeCa, fails sight-based perception checks, attackers gain +4 on attack rolls against target.'],
+            ['name' => 'Charmed', 'desc' => 'Treats charmer as a trusted friend and ally.'],
+            ['name' => 'Clobbered', 'desc' => 'Takes half actions only; -2 to attack and defense rolls for 1 round.'],
+            ['name' => 'Compelled', 'desc' => 'Forced to obey instructions of commanding creature.'],
+            ['name' => 'Confused', 'desc' => 'Acts unpredictably; roll on confusion table each turn.'],
+            ['name' => 'Dazed', 'desc' => 'Unable to act normally; loses turn but can defend.'],
+            ['name' => 'Deafened', 'desc' => 'Cannot hear. -4 initiative, fails hearing checks, 20% spell failure for vocal spells.'],
+            ['name' => 'Disabled', 'desc' => 'HP at 0. Can take single standard action but doing so causes 1 HP loss.'],
+            ['name' => 'Drained', 'desc' => 'PP reduced to 0. Cannot cast spells or use psychic powers.'],
+            ['name' => 'Dying', 'desc' => 'Negative HP. Unconscious, loses 1 HP per round until stabilized at -10 or death.'],
+            ['name' => 'Entangled', 'desc' => 'Movement halved, -2 to attacks, -4 to DEX, cannot run or charge.'],
+            ['name' => 'Exhausted', 'desc' => 'Moves at half speed, -6 effective STR/DEX, cannot run.'],
+            ['name' => 'Fatigued', 'desc' => 'Cannot run or charge, -2 effective STR/DEX.'],
+            ['name' => 'Flat-Footed', 'desc' => 'Uses DeCp (passive defense) instead of DeCa; cannot make reactions.'],
+            ['name' => 'Frightened', 'desc' => 'Must flee from source of fear; -2 to attacks, saves, checks.'],
+            ['name' => 'Grappled', 'desc' => 'Cannot move, -4 DEX, -2 attacks (except grapple/light weapons).'],
+            ['name' => 'Helpless', 'desc' => 'Completely at mercy of foes. DeC is 10 + size mod; subject to coup de grace.'],
+            ['name' => 'Injured', 'desc' => 'Suffered significant bodily injury; penalties apply to relevant actions.'],
+            ['name' => 'Nauseated', 'desc' => 'Stomach distress; can only take single move action per turn.'],
+            ['name' => 'Panicked', 'desc' => 'Drops held items and flees blindly at maximum speed.'],
+            ['name' => 'Paralyzed', 'desc' => 'Frozen in place, effective STR/DEX of 0, helpless.'],
+            ['name' => 'Petrified', 'desc' => 'Turned to solid stone, unconscious and unaware.'],
+            ['name' => 'Pinned', 'desc' => 'Held immobilized in grapple; helpless against attacks from outsiders.'],
+            ['name' => 'Prone', 'desc' => 'Lying on ground; -4 melee attacks, +4 defense against ranged, -4 defense against melee.'],
+            ['name' => 'Shaken', 'desc' => '-2 penalty on attack rolls, saving throws, and skill checks.'],
+            ['name' => 'Sickened', 'desc' => '-2 penalty on attack rolls, damage rolls, saving throws, and skill checks.'],
+            ['name' => 'Slowed', 'desc' => 'Can take only single action each turn; speed halved; -1 to DeCa and Ref.'],
+            ['name' => 'Stunned', 'desc' => 'Drops items, cannot act, -2 to DeCa, loses DEX bonus to defense.'],
+            ['name' => 'Tired', 'desc' => 'SP reduced to 0; -2 on all physical actions, cannot sprint.'],
+            ['name' => 'Unconscious', 'desc' => 'Knocked out, helpless, unaware of surroundings.'],
+        ];
+
+        return view('utilities.combat_tracker', [
+            'campaigns' => $campaigns,
+            'selectedCampaignId' => $selectedCampaignId,
+            'characters' => $characters,
+            'npcs' => $npcs,
+            'creatures' => $creatures,
+            'conditionsList' => $conditionsList,
         ]);
     }
 
@@ -1276,12 +1710,16 @@ class UtilityController extends Controller
         $expr = trim($expr);
         if (empty($expr)) return '0';
 
-        // Parse dice format like 3d6+2 or $20 or 4d6k3
+        // Parse single standard dice format like 3d6+2 or d20 or 4d6-1 with detailed breakdowns
         if (preg_match('/^(\d+)?d(\d+)(?:([+-])(\d+))?$/i', $expr, $m)) {
             $numDice = !empty($m[1]) ? (int)$m[1] : 1;
             $sides = (int)$m[2];
             $op = $m[3] ?? null;
             $mod = isset($m[4]) ? (int)$m[4] : 0;
+
+            if ($sides <= 0 || $numDice <= 0 || $numDice > 100) {
+                return "Invalid dice range";
+            }
 
             $rolls = [];
             $sum = 0;
@@ -1297,16 +1735,32 @@ class UtilityController extends Controller
             return "$sum (" . implode('+', $rolls) . ($op ? " $op $mod" : "") . ")";
         }
 
-        // Fallback simple math evaluation safely
-        if (preg_match('/^[\d\s\+\-\*\/\(\)\.]+$/', $expr)) {
-            try {
-                $val = eval("return ($expr);");
-                return (string)$val;
-            } catch (\Throwable $t) {
-                return "Error";
+        // Safe mathematical & dice evaluation using cExpressionParser
+        try {
+            if (!class_exists('\cExpressionParser')) {
+                require_once base_path('RulesSrc/rolcalc.php');
             }
-        }
+            $parser = new \cExpressionParser();
+            
+            // Convert any remaining standard dice notation 'NdS' to '$S' or evaluate arithmetic
+            $convertedExpr = preg_replace_callback('/(\d+)?d(\d+)/i', function ($dm) {
+                $count = !empty($dm[1]) ? (int)$dm[1] : 1;
+                $sides = (int)$dm[2];
+                if ($sides <= 0 || $count <= 0 || $count > 100) return '0';
+                $rolls = [];
+                for ($i = 0; $i < $count; $i++) {
+                    $rolls[] = rand(1, $sides);
+                }
+                return '(' . implode('+', $rolls) . ')';
+            }, $expr);
 
-        return $expr;
+            $val = $parser->Evaluate($convertedExpr);
+            if ($val === null) {
+                return "Invalid expression";
+            }
+            return is_float($val) && floor($val) != $val ? (string)round($val, 4) : (string)$val;
+        } catch (\Throwable $t) {
+            return "Error: " . $t->getMessage();
+        }
     }
 }

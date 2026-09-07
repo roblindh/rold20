@@ -48,7 +48,7 @@
 
     <!-- Complete Skills Rules & Information Boxes -->
     <div class="rule-content prose max-w-none">
-        <?php include base_path('hb09_skills_content.php'); ?>
+        <?php include resource_path('views/rules/content/hb09_skills_content.php'); ?>
     </div>
 </div>
 @endsection

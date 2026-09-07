@@ -50,9 +50,9 @@
         </div>
     </div>
 
-    <!-- Complete Bestiary Rules & Information Boxes -->
+    <!-- Complete Creatures Rules & Information Boxes -->
     <div class="rule-content prose max-w-none">
-        <?php include base_path('hb13_creatures_content.php'); ?>
+        <?php include resource_path('views/rules/content/hb13_creatures_content.php'); ?>
     </div>
 </div>
 

@@ -5,7 +5,21 @@
             <span class="text-xl">📜</span>
             <span class="font-bold text-sm sm:text-base text-amber-400">Generated Stat Block</span>
         </div>
-        <div class="flex items-center gap-2" x-data="{ copiedSb: false, copiedCfg: false }">
+        <div class="flex items-center gap-2" x-data="{ copiedSb: false, copiedCfg: false, copiedMd: false }">
+            <button type="button" 
+                    @click="
+                        if ($refs.statblockContent) {
+                            const rawText = $refs.statblockContent.innerText || $refs.statblockContent.textContent || '';
+                            const md = `### Stat Block\n\`\`\`text\n${rawText.trim()}\n\`\`\`\n**Configuration:**\n\`${$refs.configStringText ? $refs.configStringText.value : ''}\``;
+                            navigator.clipboard.writeText(md);
+                            copiedMd = true;
+                            setTimeout(() => copiedMd = false, 2000);
+                        }
+                    "
+                    class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                <span x-show="!copiedMd">📝 Markdown</span>
+                <span x-show="copiedMd" class="text-emerald-400 font-bold">✓ Copied!</span>
+            </button>
             <button type="button" 
                     @click="
                         if ($refs.statblockContent) {
@@ -16,8 +30,8 @@
                             setTimeout(() => copiedSb = false, 2000);
                         }
                     "
-                    class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
-                <span x-show="!copiedSb">📋 Copy Stat Block</span>
+                    class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                <span x-show="!copiedSb">📋 Plaintext</span>
                 <span x-show="copiedSb" class="text-emerald-400 font-bold">✓ Copied!</span>
             </button>
             <button type="button" 
@@ -28,8 +42,8 @@
                             setTimeout(() => copiedCfg = false, 2000);
                         }
                     "
-                    class="px-3 py-1.5 bg-indigo-900/60 hover:bg-indigo-800 text-indigo-200 hover:text-white rounded-lg text-xs font-semibold border border-indigo-700 flex items-center gap-1.5 transition cursor-pointer">
-                <span x-show="!copiedCfg">⚙️ Copy Config</span>
+                    class="px-2.5 py-1.5 bg-indigo-900/60 hover:bg-indigo-800 text-indigo-200 hover:text-white rounded-lg text-xs font-semibold border border-indigo-700 flex items-center gap-1.5 transition cursor-pointer">
+                <span x-show="!copiedCfg">⚙️ Config</span>
                 <span x-show="copiedCfg" class="text-emerald-400 font-bold">✓ Copied!</span>
             </button>
         </div>

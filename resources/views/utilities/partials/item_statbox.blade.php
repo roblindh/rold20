@@ -8,7 +8,27 @@
                 <span class="text-xs text-slate-400">Power Level: <strong class="text-indigo-300">{{ $pl ?? 0 }}</strong> | Value: <strong class="text-amber-300">{{ number_format($value ?? 0, ($value ?? 0) == floor($value ?? 0) ? 0 : 1) }} sp</strong></span>
             </div>
         </div>
-        <div class="flex items-center gap-2" x-data="{ copiedCfg: false, copiedStats: false }">
+        <div class="flex items-center gap-2" x-data="{ copiedCfg: false, copiedStats: false, copiedMd: false }">
+            @php
+                $mdExport = "### " . ($name ?? 'Generated Item') . "\n"
+                    . "- **Value:** " . number_format($value ?? 0, ($value ?? 0) == floor($value ?? 0) ? 0 : 1) . " sp\n"
+                    . "- **Weight:** " . ($weight ?? 0) . " kg | **Size:** " . ($size ?? 'Medium (M)') . "\n"
+                    . "- **Power Level (PL):** " . ($pl ?? 0) . " | **EC:** " . (($ec ?? 0) >= 0 ? '+' . ($ec ?? 0) : ($ec ?? 0)) . "\n"
+                    . "- **DR:** " . ($dr ?? 0) . " | **HP:** " . ($hp ?? 0)
+                    . (!empty($traits) ? "\n- **Traits:** " . strip_tags(str_replace('<br/>', '; ', $traits_html ?? $traits)) : '')
+                    . (!empty($mods) ? "\n- **Modifications:** " . strip_tags(str_replace('<br/>', '; ', $mods_html ?? $mods)) : '')
+                    . "\n\n```text\n" . ($configString ?? '') . "\n```";
+            @endphp
+            <button type="button" 
+                    @click="
+                        navigator.clipboard.writeText({{ json_encode($mdExport) }});
+                        copiedMd = true;
+                        setTimeout(() => copiedMd = false, 2000);
+                    "
+                    class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                <span x-show="!copiedMd">📝 Markdown</span>
+                <span x-show="copiedMd" class="text-emerald-400 font-bold">✓ Copied!</span>
+            </button>
             <button type="button" 
                     @click="
                         if ($refs.itemSummaryText) {
@@ -19,20 +39,18 @@
                             setTimeout(() => copiedStats = false, 2000);
                         }
                     "
-                    class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
-                <span x-show="!copiedStats">📋 Copy Stats</span>
+                    class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                <span x-show="!copiedStats">📋 Text</span>
                 <span x-show="copiedStats" class="text-emerald-400 font-bold">✓ Copied!</span>
             </button>
             <button type="button" 
                     @click="
-                        if ($refs.itemConfigText) {
-                            navigator.clipboard.writeText($refs.itemConfigText.value || '');
-                            copiedCfg = true;
-                            setTimeout(() => copiedCfg = false, 2000);
-                        }
+                        navigator.clipboard.writeText({{ json_encode($configString ?? '') }});
+                        copiedCfg = true;
+                        setTimeout(() => copiedCfg = false, 2000);
                     "
-                    class="px-3 py-1.5 bg-indigo-900/60 hover:bg-indigo-800 text-indigo-200 hover:text-white rounded-lg text-xs font-semibold border border-indigo-700 flex items-center gap-1.5 transition cursor-pointer">
-                <span x-show="!copiedCfg">⚙️ Copy Config</span>
+                    class="px-2.5 py-1.5 bg-indigo-900/60 hover:bg-indigo-800 text-indigo-200 hover:text-white rounded-lg text-xs font-semibold border border-indigo-700 flex items-center gap-1.5 transition cursor-pointer">
+                <span x-show="!copiedCfg">⚙️ Config</span>
                 <span x-show="copiedCfg" class="text-emerald-400 font-bold">✓ Copied!</span>
             </button>
         </div>

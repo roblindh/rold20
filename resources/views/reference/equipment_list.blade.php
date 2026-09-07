@@ -52,7 +52,7 @@
 
     <!-- Complete Equipment Rules & Information Boxes -->
     <div class="rule-content prose max-w-none">
-        <?php include base_path('hb12_equipment_content.php'); ?>
+        <?php include resource_path('views/rules/content/hb12_equipment_content.php'); ?>
     </div>
 </div>
 @endsection

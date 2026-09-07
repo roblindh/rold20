@@ -342,6 +342,115 @@
             }
         @endphp
 
+        <!-- Character Sheet Action Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900 text-white p-3 rounded-xl shadow-xs" x-data="{ copiedMd: false, copiedTxt: false }">
+            <div class="flex items-center gap-2">
+                <span class="text-lg">🧙‍♂️</span>
+                <span class="font-bold text-sm text-amber-400">{{ $character->Name }}</span>
+                <span class="text-xs text-slate-400 font-mono">Level {{ $totalLevel }} {{ $race->Name ?? 'Hero' }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" 
+                        @click="
+                            const md = $refs.charMarkdown ? $refs.charMarkdown.value : '';
+                            navigator.clipboard.writeText(md);
+                            copiedMd = true;
+                            setTimeout(() => copiedMd = false, 2000);
+                        "
+                        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                    <span x-show="!copiedMd">📝 Copy Markdown Sheet</span>
+                    <span x-show="copiedMd" class="text-emerald-400 font-bold">✓ Copied!</span>
+                </button>
+                <button type="button" 
+                        @click="
+                            const txt = $refs.charPlaintext ? $refs.charPlaintext.value : '';
+                            navigator.clipboard.writeText(txt);
+                            copiedTxt = true;
+                            setTimeout(() => copiedTxt = false, 2000);
+                        "
+                        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                    <span x-show="!copiedTxt">📋 Copy Text</span>
+                    <span x-show="copiedTxt" class="text-emerald-400 font-bold">✓ Copied!</span>
+                </button>
+                <button type="button" 
+                        onclick="window.print()"
+                        class="px-3 py-1.5 bg-indigo-900/70 hover:bg-indigo-800 text-indigo-200 hover:text-white rounded-lg text-xs font-semibold border border-indigo-700 flex items-center gap-1.5 transition cursor-pointer">
+                    <span>🖨️ Print Sheet</span>
+                </button>
+            </div>
+
+            <!-- Hidden Export Text Buffers -->
+            <textarea x-ref="charMarkdown" class="hidden" style="display: none !important;" readonly># {{ $character->Name }}
+**Heritage:** {{ $isFemale ? 'Female' : 'Male' }} {{ $race->Name ?? 'Humanoid' }}@if($templatesSummaryStr !== 'None') ({{ $templatesSummaryStr }})@endif | **Culture:** {{ $culture->Name ?? 'Unknown' }} ({{ $bgClass->Name ?? 'Commoner' }}) | **Class(es):** {{ $classesDisplayStr }}
+**Level:** TL {{ $totalLevel }} (RL {{ $racialLevel }}, CL {{ $challengeLevel }}) | **XP:** {{ number_format($xp) }} | **Fate Pts:** {{ $character->FatePts ?? 3 }}
+
+## Ability Scores
+| Ability | Score | Mod | Base |
+|---|---|---|---|
+| STR | {{ $str }} | {{ ($strMod >= 0 ? '+' : '') . $strMod }} | {{ $baseStr }} |
+| CON | {{ $con }} | {{ ($conMod >= 0 ? '+' : '') . $conMod }} | {{ $baseCon }} |
+| DEX | {{ $dex }} | {{ ($dexMod >= 0 ? '+' : '') . $dexMod }} | {{ $baseDex }} |
+| INT | {{ $int }} | {{ ($intMod >= 0 ? '+' : '') . $intMod }} | {{ $baseInt }} |
+| WIS | {{ $wis }} | {{ ($wisMod >= 0 ? '+' : '') . $wisMod }} | {{ $baseWis }} |
+| CHA | {{ $cha }} | {{ ($chaMod >= 0 ? '+' : '') . $chaMod }} | {{ $baseCha }} |
+
+## Combat & Defenses
+- **Initiative:** {{ ($initMod >= 0 ? '+' : '') . $initMod }} | **AP:** {{ $actionPoints }} | **MP:** {{ $movementPoints }} | **Reactions:** {{ $reactions }}
+- **Speed:** {{ $speedDisplay }} | **Size:** {{ $sizeStr }} ({{ $spacingStr }} / {{ $reachStr }} sq) | **Body:** {{ $bodyTypeStr }}
+- **Defenses:** DeCa {{ $decActive }} | DeCp {{ $decPassive }} | Crit +{{ $critRes }} | DR {{ $dr }} | MR {{ $mr }}
+- **Saves:** Fort +{{ $fort }} | Ref +{{ $ref }} | Will +{{ $will }}
+- **Health:** HP {{ $hp }} / {{ $hp }} | SP {{ $sp }} / {{ $sp }} | PP {{ $pp }} / {{ $pp }}
+
+## Skills
+@forelse($skillsList as $sId => $rank)
+@if($rank > 0 && isset($skillsMap[$sId]))
+- **{{ $skillsMap[$sId]->Name }}:** +{{ $rank }}
+@endif
+@empty
+- None
+@endforelse
+
+## Specializations & Languages
+@forelse($specializationsList as $specId => $rank)
+@if($rank > 0 && isset($specializationsMap[$specId]))
+- **{{ $specializationsMap[$specId]->Name }}:** {{ $rank }}
+@endif
+@empty
+- None
+@endforelse
+
+## Equipment & Wealth (Wealth: {{ $wealth }} sp)
+@forelse($equipmentList as $it)
+- {{ $it['Name'] ?? 'Item' }} (Qty: {{ $it['Qty'] ?? 1 }}, {{ ((int)($it['BaseValue'] ?? 0) * (int)($it['Qty'] ?? 1)) }} sp)
+@empty
+- None
+@endforelse
+
+## Spells
+@forelse($spellsList as $spellId => $optIds)
+@if(isset($spellsMap[$spellId]))
+- **{{ $spellsMap[$spellId]->Name }}** (Cost: {{ $spellsMap[$spellId]->Cost }})
+@endif
+@empty
+- None
+@endforelse
+</textarea>
+
+            <textarea x-ref="charPlaintext" class="hidden" style="display: none !important;" readonly>{{ $character->Name }}
+Heritage: {{ $isFemale ? 'Female' : 'Male' }} {{ $race->Name ?? 'Humanoid' }}@if($templatesSummaryStr !== 'None') ({{ $templatesSummaryStr }})@endif | Culture: {{ $culture->Name ?? 'Unknown' }} | Classes: {{ $classesDisplayStr }}
+Level: TL {{ $totalLevel }} (RL {{ $racialLevel }}, CL {{ $challengeLevel }}) | XP: {{ number_format($xp) }} | Fate Pts: {{ $character->FatePts ?? 3 }}
+
+STR: {{ $str }} ({{ ($strMod >= 0 ? '+' : '') . $strMod }}) | CON: {{ $con }} ({{ ($conMod >= 0 ? '+' : '') . $conMod }}) | DEX: {{ $dex }} ({{ ($dexMod >= 0 ? '+' : '') . $dexMod }})
+INT: {{ $int }} ({{ ($intMod >= 0 ? '+' : '') . $intMod }}) | WIS: {{ $wis }} ({{ ($wisMod >= 0 ? '+' : '') . $wisMod }}) | CHA: {{ $cha }} ({{ ($chaMod >= 0 ? '+' : '') . $chaMod }})
+
+Init: {{ ($initMod >= 0 ? '+' : '') . $initMod }} | AP: {{ $actionPoints }} | MP: {{ $movementPoints }} | Reactions: {{ $reactions }}
+Speed: {{ $speedDisplay }} | Size: {{ $sizeStr }} | Body: {{ $bodyTypeStr }}
+DeCa: {{ $decActive }} | DeCp: {{ $decPassive }} | Crit: +{{ $critRes }} | DR: {{ $dr }} | MR: {{ $mr }}
+Fort: +{{ $fort }} | Ref: +{{ $ref }} | Will: +{{ $will }}
+HP: {{ $hp }} / {{ $hp }} | SP: {{ $sp }} / {{ $sp }} | PP: {{ $pp }} / {{ $pp }}
+</textarea>
+        </div>
+
         <!-- Authentic Classic D&D Character Sheet -->
         <div class="p-2 sm:p-4 bg-slate-100 rounded-2xl border border-slate-300 shadow-sm space-y-4">
             <!-- Header Block -->

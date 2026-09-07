@@ -12,17 +12,17 @@ class AnalysisController extends Controller
     public function index(Request $request): View
     {
         $classLvl = (int)$request->input('class_lvl', 1);
-        if (!in_array($classLvl, [1, 6, 11, 21])) {
+        if (!in_array($classLvl, [1, 6, 11, 16, 21, 26])) {
             $classLvl = 1;
         }
 
         $weaponLvl = (int)$request->input('weapon_lvl', 1);
-        if (!in_array($weaponLvl, [1, 5, 10, 15, 20])) {
+        if (!in_array($weaponLvl, [1, 6, 11, 16, 21, 26])) {
             $weaponLvl = 1;
         }
 
         $spellLvl = (int)$request->input('spell_lvl', 1);
-        if (!in_array($spellLvl, [1, 6, 11, 21])) {
+        if (!in_array($spellLvl, [1, 6, 11, 16, 21, 26])) {
             $spellLvl = 1;
         }
 

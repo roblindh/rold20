@@ -263,6 +263,65 @@
                 @include('utilities.partials.item_statbox', $initialResult)
             </div>
 
+            <!-- Save to Character or Campaign Vault Card -->
+            <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <span class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                        <span>💾</span> Save Generated Item
+                    </span>
+                    <div class="flex items-center gap-1 text-xs">
+                        <button type="button" @click="saveTab = 'character'" :class="saveTab === 'character' ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-600'" class="px-2 py-1 rounded transition cursor-pointer">
+                            Character
+                        </button>
+                        <button type="button" @click="saveTab = 'campaign'" :class="saveTab === 'campaign' ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-600'" class="px-2 py-1 rounded transition cursor-pointer">
+                            Campaign Vault
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Status Alerts -->
+                <div x-show="saveMessage" x-text="saveMessage" class="p-2 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg text-xs font-semibold"></div>
+                <div x-show="saveError" x-text="saveError" class="p-2 bg-rose-50 text-rose-800 border border-rose-200 rounded-lg text-xs font-semibold"></div>
+
+                <!-- Save to Character -->
+                <div x-show="saveTab === 'character'" class="space-y-2">
+                    <label class="block text-xs font-semibold text-slate-700">Target Character Sheet</label>
+                    <div class="flex items-center gap-2">
+                        <select x-model="selectedCharId" class="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            @forelse($characters as $char)
+                                <option value="{{ $char->ID }}">{{ $char->Name }} (ID: {{ $char->ID }})</option>
+                            @empty
+                                <option value="">No characters created yet</option>
+                            @endforelse
+                        </select>
+                        <button type="button" @click="saveToChar()" :disabled="saving || !selectedCharId"
+                                class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold rounded-lg text-xs transition shadow-xs flex items-center gap-1 cursor-pointer">
+                            <span x-show="!saving">Add to Sheet</span>
+                            <span x-show="saving">Saving...</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Save to Campaign Vault -->
+                <div x-show="saveTab === 'campaign'" class="space-y-2">
+                    <label class="block text-xs font-semibold text-slate-700">Target Campaign Vault</label>
+                    <div class="flex items-center gap-2">
+                        <select x-model="selectedCampaignId" class="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            @forelse($campaigns as $camp)
+                                <option value="{{ $camp->ID }}">{{ $camp->Name }}</option>
+                            @empty
+                                <option value="">No campaigns found</option>
+                            @endforelse
+                        </select>
+                        <button type="button" @click="saveToCamp()" :disabled="saving || !selectedCampaignId"
+                                class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-bold rounded-lg text-xs transition shadow-xs flex items-center gap-1 cursor-pointer">
+                            <span x-show="!saving">Store in Vault</span>
+                            <span x-show="saving">Saving...</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Quick Tips Card -->
             <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs text-slate-600 space-y-1.5">
                 <div class="font-bold text-slate-800 uppercase tracking-wider text-[11px] flex items-center gap-1">
@@ -287,8 +346,9 @@ function itemGeneratorWizard() {
         materialId: 0,
         mundaneMods: [],
         magicMods: [],
-        statboxHtml: `{!! addslashes(view('utilities.partials.item_statbox', $initialResult)->render()) !!}`,
-        configString: `{!! addslashes($initialResult['config_string']) !!}`,
+        statboxHtml: @json(view('utilities.partials.item_statbox', $initialResult)->render()),
+        configString: @json($initialResult['config_string']),
+        latestItem: @json($initialResult),
         loading: false,
         error: null,
 
@@ -297,6 +357,14 @@ function itemGeneratorWizard() {
         materials: @json($materials),
         mundaneModsList: @json($mundaneMods),
         magicModsList: @json($magicMods),
+
+        // Save to Character / Campaign State
+        saveTab: 'character',
+        selectedCharId: '{{ $characters->first()?->ID ?? '' }}',
+        selectedCampaignId: '{{ $campaigns->first()?->ID ?? '' }}',
+        saving: false,
+        saveMessage: null,
+        saveError: null,
 
         init() {
             // Auto update base description if needed
@@ -421,11 +489,92 @@ function itemGeneratorWizard() {
 
                 this.statboxHtml = data.html;
                 this.configString = data.config_string;
+                this.latestItem = data;
             } catch (err) {
                 console.error('Error generating item:', err);
                 this.error = err.message || 'An unexpected error occurred during item generation.';
             } finally {
                 this.loading = false;
+            }
+        },
+
+        async saveToChar() {
+            if (!this.selectedCharId) return;
+            this.saving = true;
+            this.saveMessage = null;
+            this.saveError = null;
+            try {
+                const res = await fetch('{{ route("utilities.itemgen.save-to-character", [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify({
+                        character_id: this.selectedCharId,
+                        name: this.description || 'Custom Item',
+                        config_string: this.configString,
+                        value: this.latestItem?.value || 0,
+                        weight: this.latestItem?.weight || 0,
+                        size: this.latestItem?.size || 'Medium (M)',
+                        ec: this.latestItem?.ec || 0,
+                        pl: this.latestItem?.pl || '0',
+                        dr: this.latestItem?.dr || '0',
+                        hp: this.latestItem?.hp || 1,
+                        traits: this.latestItem?.traits || '',
+                        mods: this.latestItem?.mods || ''
+                    })
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) throw new Error(data.message || 'Failed to save item.');
+                this.saveMessage = data.message;
+                setTimeout(() => this.saveMessage = null, 4000);
+            } catch (e) {
+                this.saveError = e.message;
+                setTimeout(() => this.saveError = null, 4000);
+            } finally {
+                this.saving = false;
+            }
+        },
+
+        async saveToCamp() {
+            if (!this.selectedCampaignId) return;
+            this.saving = true;
+            this.saveMessage = null;
+            this.saveError = null;
+            try {
+                const res = await fetch('{{ route("utilities.itemgen.save-to-campaign", [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify({
+                        campaign_id: this.selectedCampaignId,
+                        name: this.description || 'Custom Item',
+                        config_string: this.configString,
+                        value: this.latestItem?.value || 0,
+                        weight: this.latestItem?.weight || 0,
+                        size: this.latestItem?.size || 'Medium (M)',
+                        ec: this.latestItem?.ec || 0,
+                        pl: this.latestItem?.pl || '0',
+                        dr: this.latestItem?.dr || '0',
+                        hp: this.latestItem?.hp || 1,
+                        traits: this.latestItem?.traits || '',
+                        mods: this.latestItem?.mods || ''
+                    })
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) throw new Error(data.message || 'Failed to store item.');
+                this.saveMessage = data.message;
+                setTimeout(() => this.saveMessage = null, 4000);
+            } catch (e) {
+                this.saveError = e.message;
+                setTimeout(() => this.saveError = null, 4000);
+            } finally {
+                this.saving = false;
             }
         }
     };

@@ -88,10 +88,17 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::get('/itemgen', [UtilityController::class, 'itemGenerator']);
     Route::post('/item-generator/generate', [UtilityController::class, 'generateItem'])->name('itemgen.generate');
     Route::post('/itemgen/generate', [UtilityController::class, 'generateItem']);
+    Route::post('/item-generator/save-to-character', [UtilityController::class, 'saveItemToCharacter'])->name('itemgen.save-to-character');
+    Route::post('/itemgen/save-to-character', [UtilityController::class, 'saveItemToCharacter']);
+    Route::post('/item-generator/save-to-campaign', [UtilityController::class, 'saveItemToCampaign'])->name('itemgen.save-to-campaign');
+    Route::post('/itemgen/save-to-campaign', [UtilityController::class, 'saveItemToCampaign']);
 
     Route::get('/treasure-generator', [UtilityController::class, 'treasureGenerator'])->name('treasuregen');
     Route::get('/treasuregen', [UtilityController::class, 'treasureGenerator']);
     Route::post('/treasure-generator/roll', [UtilityController::class, 'rollTreasure'])->name('treasuregen.roll');
+
+    Route::get('/combat-tracker', [UtilityController::class, 'combatTracker'])->name('combattracker');
+    Route::get('/combat', [UtilityController::class, 'combatTracker']);
 
     Route::get('/campaign', [UtilityController::class, 'campaign'])->name('campaign');
     Route::post('/campaign/create', [UtilityController::class, 'createCampaign'])->name('campaign.create');
@@ -99,7 +106,10 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/campaign/{id}/delete', [UtilityController::class, 'deleteCampaign'])->name('campaign.delete');
     Route::post('/campaign/{id}/add-character', [UtilityController::class, 'addCharacterToCampaign'])->name('campaign.add-character');
     Route::post('/campaign/{id}/remove-character', [UtilityController::class, 'removeCharacterFromCampaign'])->name('campaign.remove-character');
+    Route::post('/campaign/{id}/vault/remove', [UtilityController::class, 'removeVaultItemFromCampaign'])->name('campaign.vault.remove');
 });
+
+Route::get('/combat-tracker', [UtilityController::class, 'combatTracker']);
 
 // Search endpoints
 Route::get('/search', [SearchController::class, 'search'])->name('search');

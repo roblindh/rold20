@@ -19,3 +19,6 @@ composer.phar
 !/storage/framework/sessions/.gitignore
 !/storage/framework/views/.gitignore
 !/storage/logs/.gitignore
+/database/*.sqlite
+/database/*.sqlite-journal
+legacy/

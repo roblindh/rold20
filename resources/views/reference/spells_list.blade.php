@@ -56,7 +56,7 @@
 
     <!-- Complete Spells Rules & Information Boxes -->
     <div class="rule-content prose max-w-none">
-        <?php include base_path('hb11_spells_content.php'); ?>
+        <?php include resource_path('views/rules/content/hb11_spells_content.php'); ?>
     </div>
 </div>
 @endsection
