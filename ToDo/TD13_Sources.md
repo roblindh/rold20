@@ -2,6 +2,9 @@
 
 ## 3E/3.5E
 
+- [x] PHB
+- [x] DMG
+- [x] MM
 - [ ] PHB II
 - [ ] DMG II
 - [ ] UA

@@ -12,9 +12,16 @@
     - [ ] Change MR to be more similar to DR?
     - [ ] Change MR to be more like a defense bonus (DeC and saves) against magic?
     - [ ] Change MR to not protect against supernatural energy damage?
+- [ ] Alignment
+  - [ ] What about classes, spells, items, etc. limited to certain alignments? Variable chance? Diplomacy type check?
+  - [ ] New way of determining alignment auras? What about entities having both Divine - Life and Divine - Death, for example? Having some characters/creatures with conflicting auras could actually be a good thing (maybe with a rephrasing of detect evil to detect profane or a more generic detect aura, for example).
 - [ ] Fate points
   - [ ] Separate into fate and fortune points, fate points for life-or-death situations, and fortune points for gaining a one-time bonus to action checks or defenses? Fortune points should then be renewed regularly and automatically. Suitable as an optional rule?
+  - [ ] Let fate points be used for exceptional actions, such as bestowing a dying curse on someone? Or maybe letting a blacksmith or warrior forge a magical weapon? Fate Point worth x XP/PP (multiplied by TL)?
 - [ ] Actions
+  - [ ] Simplify the rules for concentration and breaking of concentration?
+  - [ ] Multiple levels of concentration? For example, you can maintain a touch spell to touch/attack multiple targets. Basically, an attack requires concentration but an unopposed touch does not. Or does a held touch spell really require concentration?
+  - [ ] Use residuum/XP to achieve Permanent/Instantaneous effects without reducing available PP? This means that item creation can be made much more generic. For example, Enchant Weapon is normally limited duration; can be given Permanent duration by reducing PP; can be made Instantaneous by spending XP or residuum. Really allow Instantaneous spells to create magic items in mere seconds, or greatly increase activation time when spending XP to make spells instantaneous? How to prevent large number of effects on a single item?
   - [ ] Should rays be more like projectile weapons with range increments? The weapon skill can grant appropriate bonuses (including Improved Range).
   - [ ] Should breath weapons and other area attacks have reduced effect with range?
   - [ ] Should breath weapons (and other similar abilities) have a cooldown time instead of a SP/PP cost? Or random recharge as in 4E/5E?
