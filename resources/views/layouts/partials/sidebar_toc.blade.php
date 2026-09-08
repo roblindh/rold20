@@ -338,9 +338,16 @@
         </div>
     </div>
 
-    <!-- Quick Search Tip -->
-    <div class="px-2.5 py-2 bg-slate-950/80 rounded border border-amber-900/30 text-xs text-slate-400 flex items-center justify-between">
-        <span class="font-serif">Quick Search</span>
-        <kbd class="bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded font-mono text-[10px] border border-amber-900/40">Ctrl+K</kbd>
+    <!-- Quick Search Box -->
+    <div class="pt-2 border-t border-amber-900/30 shrink-0">
+        <button type="button" 
+                @click="searchOpen = true" 
+                class="sidebar-search-trigger" 
+                title="Search all rules, skills, spells, items (Ctrl+K)"
+                aria-label="Quick Search">
+            <span class="sidebar-search-icon">🔍</span>
+            <span class="sidebar-search-placeholder">Quick Search...</span>
+            <span class="sidebar-search-badge">Ctrl+K</span>
+        </button>
     </div>
 </nav>

@@ -45,7 +45,7 @@
         }
         this.searchLoading = false;
     }
-}" @keydown.window.ctrl.k.prevent="searchOpen = true" @keydown.window.escape="searchOpen = false">
+}" x-init="$watch('searchOpen', val => { if(val) { $nextTick(() => { if($refs.searchInput) { $refs.searchInput.focus(); $refs.searchInput.select(); } }); } })" @keydown.window.ctrl.k.prevent="searchOpen = true" @keydown.window.escape="searchOpen = false">
     <!-- Main Header -->
     <header class="modern-header flex items-center justify-between shadow-md select-none relative z-30">
         <div class="flex items-center gap-2 sm:gap-4">
@@ -170,7 +170,7 @@
             <!-- Search Header Input -->
             <div class="p-4 border-b border-slate-800 flex items-center gap-3">
                 <span class="text-slate-400 text-lg">🔍</span>
-                <input type="text" x-model="searchQuery" @input.debounce.250ms="performQuickSearch()" x-ref="searchInput"
+                <input type="text" x-model="searchQuery" @input.debounce.250ms="performQuickSearch()" @keydown.enter="if (searchQuery.trim()) { window.location.href = '{{ route('search', [], false) }}?q=' + encodeURIComponent(searchQuery); }" x-ref="searchInput"
                        placeholder="Search all rules, skills, spells, items, monsters..."
                        class="bg-transparent text-white placeholder-slate-500 text-base focus:outline-none w-full">
                 <button @click="searchOpen = false" class="text-slate-400 hover:text-white text-sm font-semibold">✕</button>
