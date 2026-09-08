@@ -1,6 +1,37 @@
-<h2 id="Index">Index</h2>
+<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+    <h2 id="Index" class="m-0">Index</h2>
+    <a href="#OptionalRules" class="btn-rol-primary text-xs py-1 px-3">
+        <span>⚡ Jump to Optional Rules</span>
+    </a>
+</div>
 
-<br/>
+<div class="parchment-inset p-2.5 mb-4 flex flex-wrap items-center justify-center gap-1.5 text-xs font-bold font-mono">
+    <span class="text-slate-500 mr-1 font-sans text-xs uppercase tracking-wider">Jump to:</span>
+    <a href="#letter-A" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">A</a>
+    <a href="#letter-B" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">B</a>
+    <a href="#letter-C" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">C</a>
+    <a href="#letter-D" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">D</a>
+    <a href="#letter-E" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">E</a>
+    <a href="#letter-F" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">F</a>
+    <a href="#letter-G" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">G</a>
+    <a href="#letter-H" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">H</a>
+    <a href="#letter-I" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">I</a>
+    <a href="#letter-J" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">J</a>
+    <a href="#letter-K" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">K</a>
+    <a href="#letter-L" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">L</a>
+    <a href="#letter-M" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">M</a>
+    <a href="#letter-N" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">N</a>
+    <a href="#letter-O" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">O</a>
+    <a href="#letter-P" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">P</a>
+    <a href="#letter-Q" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">Q</a>
+    <a href="#letter-R" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">R</a>
+    <a href="#letter-S" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">S</a>
+    <a href="#letter-T" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">T</a>
+    <a href="#letter-U" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">U</a>
+    <a href="#letter-V" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">V</a>
+    <a href="#letter-W" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">W</a>
+    <a href="#OptionalRules" class="px-2.5 py-0.5 bg-amber-600 hover:bg-amber-700 text-white rounded font-sans transition">Optional Rules</a>
+</div>
 <table><tbody>
     <tr valign="top">
         <td>
@@ -408,34 +439,158 @@
 
 <h3 id="OptionalRules">Optional Rules</h3>
 
-<h4>Increased Character Variety</h4>
-<h5><a href="/rules/core#SecretInfluence">Secret Influences</a></h5>
-<h5><a href="/rules/core#Advantages">Advantages and Disadvantages</a></h5>
-<h5><a href="/rules/core#RandomAdvantages">Random Advantages and Disadvantages</a></h5>
-<h5><a href="/rules/chargen#OptionalSkillRules">Out-of-Class Skill Access</a></h5>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
+    <!-- Increased Character Variety -->
+    <div class="parchment-card p-4 space-y-2.5">
+        <h4 class="font-bold text-sm text-amber-950 font-display uppercase tracking-wider pb-1.5 border-b border-amber-900/20 m-0">
+            Increased Character Variety
+        </h4>
+        <ul class="space-y-1.5 text-sm list-none p-0 m-0">
+            <li>
+                <a href="/rules/core#SecretInfluence" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Secret Influences
+                </a>
+            </li>
+            <li>
+                <a href="/rules/core#Advantages" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Advantages and Disadvantages
+                </a>
+            </li>
+            <li>
+                <a href="/rules/core#RandomAdvantages" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Random Advantages and Disadvantages
+                </a>
+            </li>
+            <li>
+                <a href="/rules/chargen#OptionalSkillRules" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Out-of-Class Skill Access
+                </a>
+            </li>
+        </ul>
+    </div>
 
-<h4>Increased Realistic Feel</h4>
-<h5><a href="/rules/chargen#AverageChars">Average Characters</a></h5>
-<h5><a href="/rules/core#HealthScores">Decreased Health Points</a></h5>
-<h5><a href="/rules/core#AlternativeHealthEffects">Increased Health Penalties</a></h5>
-<h5><a href="/rules/core#EquipmentChars">Encumbrance Increases Fatigue</a></h5>
-<h5><a href="/rules/core#Healing">Percentage Healing</a></h5>
-<h5><a href="/rules/chargen#ExperienceAndLevel">Level Training</a></h5>
+    <!-- Increased Realistic Feel -->
+    <div class="parchment-card p-4 space-y-2.5">
+        <h4 class="font-bold text-sm text-amber-950 font-display uppercase tracking-wider pb-1.5 border-b border-amber-900/20 m-0">
+            Increased Realistic Feel
+        </h4>
+        <ul class="space-y-1.5 text-sm list-none p-0 m-0">
+            <li>
+                <a href="/rules/chargen#AverageChars" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Average Characters
+                </a>
+            </li>
+            <li>
+                <a href="/rules/core#HealthScores" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Decreased Health Points
+                </a>
+            </li>
+            <li>
+                <a href="/rules/core#AlternativeHealthEffects" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Increased Health Penalties
+                </a>
+            </li>
+            <li>
+                <a href="/rules/core#EquipmentChars" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Encumbrance Increases Fatigue
+                </a>
+            </li>
+            <li>
+                <a href="/rules/core#Healing" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Percentage Healing
+                </a>
+            </li>
+            <li>
+                <a href="/rules/chargen#ExperienceAndLevel" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Level Training
+                </a>
+            </li>
+        </ul>
+    </div>
 
-<h4>Increased Cinematic Feel</h4>
-<h5><a href="/rules/chargen#HeroicChars">Heroic Characters</a></h5>
-<h5><a href="/rules/core#CinematicLuck">Cinematic Luck</a></h5>
-<h5><a href="/rules/core#AlternativeHealthEffects">Decreased Health Penalties</a></h5>
-<h5><a href="/rules/core#Recovery">Fast Recovery</a></h5>
+    <!-- Increased Cinematic Feel -->
+    <div class="parchment-card p-4 space-y-2.5">
+        <h4 class="font-bold text-sm text-amber-950 font-display uppercase tracking-wider pb-1.5 border-b border-amber-900/20 m-0">
+            Increased Cinematic Feel
+        </h4>
+        <ul class="space-y-1.5 text-sm list-none p-0 m-0">
+            <li>
+                <a href="/rules/chargen#HeroicChars" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Heroic Characters
+                </a>
+            </li>
+            <li>
+                <a href="/rules/core#CinematicLuck" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Cinematic Luck
+                </a>
+            </li>
+            <li>
+                <a href="/rules/core#AlternativeHealthEffects" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Decreased Health Penalties
+                </a>
+            </li>
+            <li>
+                <a href="/rules/core#Recovery" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Fast Recovery
+                </a>
+            </li>
+        </ul>
+    </div>
 
-<h4>Simplified Rules</h4>
-<h5><a href="/rules/chargen#OptionalSkillRules">Retraining Skills</a></h5>
-<h5><a href="/rules/combat#FixedAP">Fixed AP Distribution</a></h5>
+    <!-- Simplified Rules -->
+    <div class="parchment-card p-4 space-y-2.5">
+        <h4 class="font-bold text-sm text-amber-950 font-display uppercase tracking-wider pb-1.5 border-b border-amber-900/20 m-0">
+            Simplified Rules
+        </h4>
+        <ul class="space-y-1.5 text-sm list-none p-0 m-0">
+            <li>
+                <a href="/rules/chargen#OptionalSkillRules" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Retraining Skills
+                </a>
+            </li>
+            <li>
+                <a href="/rules/combat#FixedAP" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Fixed AP Distribution
+                </a>
+            </li>
+        </ul>
+    </div>
 
-<h4>More Varied Rules</h4>
-<h5><a href="/rules/combat#InitiativeAP">Initiative-Modified AP</a></h5>
-<h5><a href="/rules/combat#Escalation">Escalated Combat</a></h5>
+    <!-- More Varied Rules -->
+    <div class="parchment-card p-4 space-y-2.5">
+        <h4 class="font-bold text-sm text-amber-950 font-display uppercase tracking-wider pb-1.5 border-b border-amber-900/20 m-0">
+            More Varied Rules
+        </h4>
+        <ul class="space-y-1.5 text-sm list-none p-0 m-0">
+            <li>
+                <a href="/rules/combat#InitiativeAP" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Initiative-Modified AP
+                </a>
+            </li>
+            <li>
+                <a href="/rules/combat#Escalation" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Escalated Combat
+                </a>
+            </li>
+        </ul>
+    </div>
 
-<h4>Other Optional Rules</h4>
-<h5><a href="/rules/encounters#FasterAdvancement">Faster Character Advancement</a></h5>
-<h5><a href="/rules/encounters#SlowerAdvancement">Slower Character Advancement</a></h5>
+    <!-- Other Optional Rules -->
+    <div class="parchment-card p-4 space-y-2.5">
+        <h4 class="font-bold text-sm text-amber-950 font-display uppercase tracking-wider pb-1.5 border-b border-amber-900/20 m-0">
+            Other Optional Rules
+        </h4>
+        <ul class="space-y-1.5 text-sm list-none p-0 m-0">
+            <li>
+                <a href="/rules/encounters#FasterAdvancement" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Faster Character Advancement
+                </a>
+            </li>
+            <li>
+                <a href="/rules/encounters#SlowerAdvancement" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">▸</span> Slower Character Advancement
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

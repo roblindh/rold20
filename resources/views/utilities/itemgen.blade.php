@@ -41,21 +41,21 @@
 
 <div class="space-y-4" x-data="itemGeneratorWizard()">
     <!-- Header -->
-    <div class="border-b border-slate-200 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div class="border-b border-amber-900/20 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
-                <span>🗡️</span> Item & Magic Item Generator
+            <h1 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                <span>🗡️</span> Item &amp; Magic Item Generator
             </h1>
-            <p class="text-slate-600 text-xs mt-0.5">Generate customized mundane, masterwork, and magical items with calculated Value, Weight, Power Level (PL), Encumbrance Class (EC), DR, and HP.</p>
+            <p class="text-stone-700 text-xs mt-0.5">Generate customized mundane, masterwork, and magical items with calculated Value, Weight, Power Level (PL), Encumbrance Class (EC), DR, and HP.</p>
         </div>
         <div class="flex items-center gap-2 shrink-0">
             <button type="button" @click="generateItem()" :disabled="loading"
-                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-bold rounded-lg text-xs sm:text-sm shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                    class="btn-rol-primary">
                 <span x-show="!loading">⚡ Generate Item</span>
                 <span x-show="loading" class="animate-spin">⏳</span>
             </button>
             <button type="button" @click="resetForm()"
-                    class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-xs sm:text-sm transition cursor-pointer">
+                    class="btn-rol-secondary">
                 Reset
             </button>
         </div>
@@ -150,35 +150,35 @@
             </div>
 
             <!-- 3. Magical Modifications -->
-            <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-3">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <div class="parchment-card p-3.5 space-y-3">
+                <div class="flex items-center justify-between border-b border-amber-900/10 pb-2">
                     <div>
-                        <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                        <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider font-display">
                             3. Magical Modifications & Enchants
                         </label>
                         <span class="text-[11px] text-slate-500">Add enhancement bonuses, spells, pools, and power levels</span>
                     </div>
                     <button type="button" @click="addMagicMod()"
-                            class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-bold border border-indigo-300 transition flex items-center gap-1 cursor-pointer">
+                            class="btn-rol-secondary text-xs py-1 px-2.5 flex items-center gap-1 cursor-pointer">
                         <span>➕ Add Magic Mod</span>
                     </button>
                 </div>
 
                 <template x-if="magicMods.length === 0">
-                    <div class="py-2.5 text-center text-xs text-slate-400 italic bg-slate-50/50 rounded-lg border border-dashed border-slate-200">
+                    <div class="py-2.5 text-center text-xs text-slate-500 italic bg-amber-50/50 rounded-lg border border-dashed border-amber-900/20">
                         No magical modifications added (mundane item). Click "+ Add Magic Mod" to enchant with spells, bonuses, or attributes.
                     </div>
                 </template>
 
                 <div class="space-y-2.5">
                     <template x-for="(mmod, index) in magicMods" :key="index">
-                        <div class="bg-slate-50/80 p-2.5 rounded-lg border border-slate-200 space-y-1.5">
+                        <div class="bg-amber-50/60 p-2.5 rounded-lg border border-amber-900/15 space-y-1.5">
                             <div class="itemgen-magic-row">
-                                <span class="text-xs font-bold text-slate-400 w-5 text-center" x-text="(index + 1) + '.'"></span>
+                                <span class="text-xs font-bold text-amber-900/70 w-5 text-center font-display" x-text="(index + 1) + '.'"></span>
                                 
                                 <!-- Magic Mod Dropdown -->
                                 <select x-model.number="mmod.mod_id" @change="onMagicModSelect(mmod)"
-                                        class="flex-1 min-w-[180px] px-2.5 py-1 bg-white border border-slate-300 rounded text-xs font-medium text-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                                        class="flex-1 min-w-[180px] px-2.5 py-1 bg-white border border-amber-900/25 rounded text-xs font-medium text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500">
                                     <option value="0">-- Select Magic Mod --</option>
                                     @foreach($magicMods as $m)
                                         <option value="{{ $m['id'] }}">{{ $m['description'] }}</option>
@@ -187,25 +187,25 @@
 
                                 <!-- X Numeric Parameter -->
                                 <div class="flex items-center gap-1">
-                                    <span class="text-[11px] font-bold text-slate-600">x:</span>
+                                    <span class="text-[11px] font-bold text-slate-700">x:</span>
                                     <input type="text" x-model="mmod.x" @input.debounce.300ms="generateItem()"
                                            placeholder="e.g. 1, 2"
-                                           class="w-16 px-1.5 py-1 bg-white border border-slate-300 rounded text-xs font-mono text-center text-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                                           class="w-16 px-1.5 py-1 bg-white border border-amber-900/25 rounded text-xs font-mono text-center text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500">
                                 </div>
 
                                 <!-- Y Text Parameter -->
                                 <div class="flex items-center gap-1">
-                                    <span class="text-[11px] font-bold text-slate-600">y:</span>
+                                    <span class="text-[11px] font-bold text-slate-700">y:</span>
                                     <input type="text" x-model="mmod.y" @input.debounce.300ms="generateItem()"
                                            placeholder="e.g. Fire, Spell"
-                                           class="w-24 sm:w-28 px-1.5 py-1 bg-white border border-slate-300 rounded text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                                           class="w-24 sm:w-28 px-1.5 py-1 bg-white border border-amber-900/25 rounded text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500">
                                 </div>
 
                                 <!-- Multiplier Select -->
                                 <div class="flex items-center gap-1">
-                                    <span class="text-[11px] font-bold text-slate-600">PL:</span>
+                                    <span class="text-[11px] font-bold text-slate-700">PL:</span>
                                     <select x-model="mmod.mul" @change="generateItem()"
-                                            class="px-1.5 py-1 bg-white border border-slate-300 rounded text-xs font-bold text-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                                            class="px-1.5 py-1 bg-white border border-amber-900/25 rounded text-xs font-bold text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500">
                                         <option value="1">×1 (100%)</option>
                                         <option value="0.5">×0.5 (50%)</option>
                                         <option value="0.1">×0.1 (10%)</option>
@@ -215,14 +215,14 @@
 
                                 <!-- Remove Button -->
                                 <button type="button" @click="removeMagicMod(index)" title="Remove Magic Modification"
-                                        class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded text-xs font-bold border border-rose-200 transition cursor-pointer ml-auto">
+                                        class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded text-xs font-bold border border-rose-200 transition cursor-pointer ml-auto">
                                     ✕
                                 </button>
                             </div>
 
                             <!-- Mod Info / Hint Text if available -->
                             <template x-if="getMagicModInfo(mmod.mod_id)">
-                                <div class="text-[11px] text-slate-500 italic pl-7 pr-2 font-sans" x-text="getMagicModInfo(mmod.mod_id)"></div>
+                                <div class="text-[11px] text-slate-600 italic pl-7 pr-2 font-sans" x-text="getMagicModInfo(mmod.mod_id)"></div>
                             </template>
                         </div>
                     </template>
@@ -232,12 +232,12 @@
             <!-- Action Bar -->
             <div class="flex items-center justify-between gap-3 pt-2">
                 <button type="button" @click="generateItem()" :disabled="loading"
-                        class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-bold rounded-xl text-sm shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
+                        class="flex-1 btn-rol-primary py-2.5 text-sm flex items-center justify-center gap-2 cursor-pointer">
                     <span x-show="!loading">⚡ Generate Stat Box & Config</span>
                     <span x-show="loading" class="animate-spin">⏳ Calculating...</span>
                 </button>
                 <button type="button" @click="resetForm()"
-                        class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition cursor-pointer">
+                        class="btn-rol-secondary px-4 py-2.5 text-sm cursor-pointer">
                     Reset
                 </button>
             </div>
@@ -264,16 +264,16 @@
             </div>
 
             <!-- Save to Character or Campaign Vault Card -->
-            <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs space-y-3">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                    <span class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+            <div class="parchment-card p-4 space-y-3">
+                <div class="flex items-center justify-between border-b border-amber-900/10 pb-2">
+                    <span class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5 font-display">
                         <span>💾</span> Save Generated Item
                     </span>
                     <div class="flex items-center gap-1 text-xs">
-                        <button type="button" @click="saveTab = 'character'" :class="saveTab === 'character' ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-600'" class="px-2 py-1 rounded transition cursor-pointer">
+                        <button type="button" @click="saveTab = 'character'" :class="saveTab === 'character' ? 'btn-rol-primary font-bold' : 'btn-rol-secondary opacity-80'" class="px-2.5 py-1 text-xs cursor-pointer">
                             Character
                         </button>
-                        <button type="button" @click="saveTab = 'campaign'" :class="saveTab === 'campaign' ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-600'" class="px-2 py-1 rounded transition cursor-pointer">
+                        <button type="button" @click="saveTab = 'campaign'" :class="saveTab === 'campaign' ? 'btn-rol-primary font-bold' : 'btn-rol-secondary opacity-80'" class="px-2.5 py-1 text-xs cursor-pointer">
                             Campaign Vault
                         </button>
                     </div>
@@ -287,7 +287,7 @@
                 <div x-show="saveTab === 'character'" class="space-y-2">
                     <label class="block text-xs font-semibold text-slate-700">Target Character Sheet</label>
                     <div class="flex items-center gap-2">
-                        <select x-model="selectedCharId" class="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <select x-model="selectedCharId" class="flex-1 px-3 py-1.5 bg-white border border-amber-900/25 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-amber-500">
                             @forelse($characters as $char)
                                 <option value="{{ $char->ID }}">{{ $char->Name }} (ID: {{ $char->ID }})</option>
                             @empty
@@ -295,7 +295,7 @@
                             @endforelse
                         </select>
                         <button type="button" @click="saveToChar()" :disabled="saving || !selectedCharId"
-                                class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold rounded-lg text-xs transition shadow-xs flex items-center gap-1 cursor-pointer">
+                                class="btn-rol-success px-3.5 py-1.5 text-xs flex items-center gap-1 cursor-pointer">
                             <span x-show="!saving">Add to Sheet</span>
                             <span x-show="saving">Saving...</span>
                         </button>
@@ -306,7 +306,7 @@
                 <div x-show="saveTab === 'campaign'" class="space-y-2">
                     <label class="block text-xs font-semibold text-slate-700">Target Campaign Vault</label>
                     <div class="flex items-center gap-2">
-                        <select x-model="selectedCampaignId" class="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <select x-model="selectedCampaignId" class="flex-1 px-3 py-1.5 bg-white border border-amber-900/25 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-amber-500">
                             @forelse($campaigns as $camp)
                                 <option value="{{ $camp->ID }}">{{ $camp->Name }}</option>
                             @empty
@@ -314,7 +314,7 @@
                             @endforelse
                         </select>
                         <button type="button" @click="saveToCamp()" :disabled="saving || !selectedCampaignId"
-                                class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-bold rounded-lg text-xs transition shadow-xs flex items-center gap-1 cursor-pointer">
+                                class="btn-rol-primary px-3.5 py-1.5 text-xs flex items-center gap-1 cursor-pointer">
                             <span x-show="!saving">Store in Vault</span>
                             <span x-show="saving">Saving...</span>
                         </button>
@@ -323,7 +323,7 @@
             </div>
 
             <!-- Quick Tips Card -->
-            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs text-slate-600 space-y-1.5">
+            <div class="parchment-inset p-3.5 text-xs text-slate-600 space-y-1.5">
                 <div class="font-bold text-slate-800 uppercase tracking-wider text-[11px] flex items-center gap-1">
                     <span>💡</span> Item Generator Tips
                 </div>

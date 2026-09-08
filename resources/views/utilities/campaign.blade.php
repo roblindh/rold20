@@ -3,23 +3,23 @@
 @section('content')
 <div class="space-y-6" x-data="campaignAdmin()">
     <!-- Header -->
-    <div class="border-b border-slate-200 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="border-b border-amber-900/20 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <h1 class="text-2xl font-bold flex items-center gap-2">
                 <span>🗺️</span> Campaign Administration
             </h1>
-            <p class="text-slate-600 text-sm mt-1">Manage active campaigns, party settings, PC suitability tiers, and player characters.</p>
+            <p class="text-stone-700 text-sm mt-1">Manage active campaigns, party settings, PC suitability tiers, and player characters.</p>
         </div>
         <div>
             @auth
                 @if(auth()->user()->isGM())
-                    <button @click="showCreateModal = true" class="bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs sm:text-sm px-4 py-2 sm:px-5 sm:py-2.5 rounded-lg shadow-md border border-amber-900 flex items-center gap-2 transition hover:shadow-lg cursor-pointer">
+                    <button @click="showCreateModal = true" class="btn-rol-primary">
                         <span>➕</span>
                         <span>Create New Campaign</span>
                     </button>
                 @endif
             @else
-                <a href="{{ route('login', [], false) }}" class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-4 py-2 rounded-lg shadow-md transition">
+                <a href="{{ route('login', [], false) }}" class="btn-rol-secondary">
                     <span>👑</span>
                     <span>Log in as GM to Create Campaigns</span>
                 </a>
@@ -38,18 +38,18 @@
                 }
                 $campNpcs = isset($npcs) ? $npcs->where('Campaign', $camp->ID) : collect();
             @endphp
-            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4 relative overflow-hidden flex flex-col justify-between">
+            <div class="parchment-card p-5 shadow-md space-y-4 relative overflow-hidden flex flex-col justify-between">
                 <div>
                     <div class="flex items-start justify-between gap-2">
                         <div>
-                            <div class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <div class="text-lg font-bold text-amber-950 font-serif flex items-center gap-2">
                                 <span>🏰</span>
                                 <span>{{ $camp->Name }}</span>
                             </div>
-                            <div class="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
-                                <span>GM: <strong class="text-slate-700">{{ $camp->GMName ?? 'Game Master' }}</strong></span>
+                            <div class="flex items-center gap-2 text-xs text-stone-600 mt-0.5">
+                                <span>GM: <strong class="text-stone-800">{{ $camp->GMName ?? 'Game Master' }}</strong></span>
                                 @if(auth()->check() && $camp->GameMaster === auth()->id())
-                                    <span class="bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded text-[10px] border border-amber-300">My Campaign</span>
+                                    <span class="bg-amber-900/10 text-amber-950 font-bold px-1.5 py-0.5 rounded text-[10px] border border-amber-800/30">My Campaign</span>
                                 @endif
                             </div>
                         </div>
@@ -57,12 +57,12 @@
                         @if($isMyCamp)
                             <div class="flex items-center gap-1.5 shrink-0">
                                 <button type="button" @click="openEditModal({{ json_encode($camp) }})" 
-                                        class="text-xs bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-bold px-2.5 py-1.5 rounded-md border border-slate-300 transition cursor-pointer flex items-center gap-1 shadow-xs">
+                                        class="btn-rol-secondary text-xs py-1 px-2.5">
                                     <span>✏️</span> Edit
                                 </button>
                                 <form action="{{ route('utilities.campaign.delete', ['id' => $camp->ID], false) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete campaign \'{{ addslashes($camp->Name) }}\'?');" class="inline">
                                     @csrf
-                                    <button type="submit" class="text-xs bg-red-50 hover:bg-red-100 text-red-700 font-bold px-2.5 py-1.5 rounded-md border border-red-200 transition cursor-pointer shadow-xs" title="Delete Campaign">
+                                    <button type="submit" class="btn-rol-danger text-xs py-1 px-2.5" title="Delete Campaign">
                                         🗑️
                                     </button>
                                 </form>
@@ -71,30 +71,30 @@
                     </div>
 
                     @if(!empty($camp->Description))
-                        <p class="text-xs text-slate-600 leading-relaxed mt-2.5">{{ $camp->Description }}</p>
+                        <p class="text-xs text-stone-700 leading-relaxed mt-2.5">{{ $camp->Description }}</p>
                     @else
-                        <p class="text-xs text-slate-400 italic mt-2.5">No description provided.</p>
+                        <p class="text-xs text-stone-500 italic mt-2.5">No description provided.</p>
                     @endif
 
                     <!-- Campaign Parameters Badge Grid -->
                     <div class="grid grid-cols-2 gap-2 pt-3 text-xs">
-                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-2">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase block">Ability Gen</span>
-                            <span class="font-semibold text-slate-800">
+                        <div class="parchment-inset p-2">
+                            <span class="text-[10px] font-bold text-stone-600 uppercase block">Ability Gen</span>
+                            <span class="font-semibold text-stone-900">
                                 {{ $camp->AbilityGenMethodName ?? ('Method ' . ($camp->AbilityGenMethod ?? 2)) }}
                             </span>
                         </div>
-                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-2">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase block">Starting XP</span>
-                            <span class="font-semibold text-slate-800">
+                        <div class="parchment-inset p-2">
+                            <span class="text-[10px] font-bold text-stone-600 uppercase block">Starting XP</span>
+                            <span class="font-semibold text-stone-900">
                                 {{ number_format((int)($camp->StartingXP ?? 0)) }} XP
                             </span>
                         </div>
-                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-2">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase block">Suitability Tier</span>
-                            <span class="font-semibold text-slate-800">
+                        <div class="parchment-inset p-2">
+                            <span class="text-[10px] font-bold text-stone-600 uppercase block">Suitability Tier</span>
+                            <span class="font-semibold text-stone-900">
                                 Level {{ $camp->SuitabilityLevel ?? 3 }}
-                                <span class="text-[10px] text-slate-500">
+                                <span class="text-[10px] text-stone-500">
                                     @if(($camp->SuitabilityLevel ?? 3) >= 5) (Core Only)
                                     @elseif(($camp->SuitabilityLevel ?? 3) == 4) (Civilized)
                                     @elseif(($camp->SuitabilityLevel ?? 3) == 3) (Standard PC)
@@ -105,9 +105,9 @@
                                 </span>
                             </span>
                         </div>
-                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-2">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase block">Optional Rules</span>
-                            <span class="font-semibold text-slate-800 truncate block" title="{{ $camp->OptionalRules ?? 'None' }}">
+                        <div class="parchment-inset p-2">
+                            <span class="text-[10px] font-bold text-stone-600 uppercase block">Optional Rules</span>
+                            <span class="font-semibold text-stone-900 truncate block" title="{{ $camp->OptionalRules ?? 'None' }}">
                                 {{ $camp->OptionalRules ?? 'None' }}
                             </span>
                         </div>
@@ -115,50 +115,50 @@
 
                     <!-- GM Notes (if any and authorized) -->
                     @if(!empty($camp->Notes) && $isMyCamp)
-                        <div class="mt-3 bg-amber-50/60 border border-amber-200 rounded-lg p-2.5 text-xs text-amber-950">
+                        <div class="mt-3 parchment-inset p-2.5 text-xs text-amber-950">
                             <div class="font-bold text-[11px] text-amber-900 uppercase flex items-center gap-1 mb-1">
                                 <span>📝</span> GM Notes
                             </div>
-                            <p class="leading-relaxed whitespace-pre-line text-slate-700">{{ $camp->Notes }}</p>
+                            <p class="leading-relaxed whitespace-pre-line text-stone-800">{{ $camp->Notes }}</p>
                         </div>
                     @endif
                 </div>
 
                 <!-- Characters & Party Management in this campaign -->
-                <div class="pt-3 border-t border-slate-200 space-y-2.5">
+                <div class="pt-3 border-t border-amber-900/20 space-y-2.5">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                        <span class="font-bold text-slate-800 flex items-center gap-1.5">
+                        <span class="font-bold text-stone-900 flex items-center gap-1.5">
                             <span>👥</span>
                             <span>Party Members ({{ $campChars->count() }}):</span>
                         </span>
                         <div class="flex items-center gap-1.5 flex-wrap">
                             @if($isMyCamp && $campChars->isNotEmpty())
-                                <button type="button" @click="openAwardModal({{ json_encode($camp) }}, {{ json_encode($campChars->values()->all()) }})" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] px-3 py-1.5 rounded-md border border-emerald-900 shadow-xs transition inline-flex items-center gap-1 cursor-pointer">
+                                <button type="button" @click="openAwardModal({{ json_encode($camp) }}, {{ json_encode($campChars->values()->all()) }})" class="btn-rol-success text-xs py-1 px-2.5">
                                     <span>🎁</span> Grant XP &amp; Treasure
                                 </button>
                             @endif
-                            <a href="{{ route('utilities.chargen', [], false) }}?campaign={{ $camp->ID }}" class="bg-amber-700 hover:bg-amber-800 text-white font-bold text-[11px] px-3 py-1.5 rounded-md border border-amber-900 shadow-xs transition inline-flex items-center gap-1 cursor-pointer">
-                                <span>➕</span> Generate New PC
+                            <a href="{{ route('utilities.chargen', [], false) }}?campaign={{ $camp->ID }}" class="btn-rol-primary text-xs py-1 px-2.5">
+                                <span>➕</span> Generate PC
                             </a>
-                            <button type="button" @click="openAddPcModal({{ json_encode(['ID' => $camp->ID, 'Name' => $camp->Name]) }})" class="bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-[11px] px-3 py-1.5 rounded-md border border-slate-300 shadow-xs transition inline-flex items-center gap-1 cursor-pointer">
-                                <span>📥</span> Add Existing PC
+                            <button type="button" @click="openAddPcModal({{ json_encode(['ID' => $camp->ID, 'Name' => $camp->Name]) }})" class="btn-rol-secondary text-xs py-1 px-2.5">
+                                <span>📥</span> Add PC
                             </button>
                         </div>
                     </div>
                     @if($campChars->isNotEmpty())
                         <div class="flex flex-wrap gap-1.5 pt-1">
                             @foreach($campChars as $c)
-                                <div class="inline-flex items-center bg-slate-50 text-slate-800 text-xs px-2.5 py-1 rounded-md border border-slate-300 shadow-xs hover:border-slate-400 transition">
-                                    <a href="{{ route('utilities.charview', ['id' => $c->ID], false) }}" class="flex items-center gap-1 font-semibold hover:text-indigo-900 hover:underline" title="View Character Sheet">
+                                <div class="inline-flex items-center parchment-inset text-stone-800 text-xs px-2.5 py-1 rounded-md shadow-xs">
+                                    <a href="{{ route('utilities.charview', ['id' => $c->ID], false) }}" class="flex items-center gap-1 font-semibold text-amber-950 hover:text-amber-700 hover:underline" title="View Character Sheet">
                                         <span>🧙‍♂️</span>
                                         <span>{{ $c->Name }}</span>
-                                        <span class="text-slate-500 text-[10px] font-normal">({{ $c->ClassSummary ?? 'Lvl ' . ($c->Level ?? 1) }}, {{ $c->RaceName ?? 'Humanoid' }})</span>
+                                        <span class="text-stone-500 text-[10px] font-normal">({{ $c->ClassSummary ?? 'Lvl ' . ($c->Level ?? 1) }}, {{ $c->RaceName ?? 'Humanoid' }})</span>
                                     </a>
                                     @if($isMyCamp)
-                                        <form action="{{ route('utilities.campaign.remove-character', ['id' => $camp->ID], false) }}" method="POST" class="inline ml-1.5 pl-1.5 border-l border-slate-300" onsubmit="return confirm('Remove \'{{ addslashes($c->Name) }}\' from campaign \'{{ addslashes($camp->Name) }}\'?');">
+                                        <form action="{{ route('utilities.campaign.remove-character', ['id' => $camp->ID], false) }}" method="POST" class="inline ml-1.5 pl-1.5 border-l border-amber-900/20" onsubmit="return confirm('Remove \'{{ addslashes($c->Name) }}\' from campaign \'{{ addslashes($camp->Name) }}\'?');">
                                             @csrf
                                             <input type="hidden" name="CharacterID" value="{{ $c->ID }}">
-                                            <button type="submit" class="text-slate-400 hover:text-red-600 font-bold text-xs cursor-pointer leading-none" title="Remove from campaign">
+                                            <button type="submit" class="text-stone-400 hover:text-red-700 font-bold text-xs cursor-pointer leading-none" title="Remove from campaign">
                                                 &times;
                                             </button>
                                         </form>
@@ -167,19 +167,19 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-xs text-slate-400 italic">No characters assigned to this campaign yet.</p>
+                        <p class="text-xs text-stone-500 italic">No characters assigned to this campaign yet.</p>
                     @endif
                 </div>
 
                 <!-- Campaign NPCs & Monsters -->
-                <div class="pt-3 border-t border-slate-200 space-y-2.5">
+                <div class="pt-3 border-t border-amber-900/20 space-y-2.5">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                        <span class="font-bold text-slate-800 flex items-center gap-1.5">
+                        <span class="font-bold text-stone-900 flex items-center gap-1.5">
                             <span>👹</span>
                             <span>Campaign NPCs &amp; Monsters ({{ $campNpcs->count() }}):</span>
                         </span>
                         <div class="flex items-center gap-1.5 flex-wrap">
-                            <a href="{{ route('utilities.npcgen', [], false) }}?campaign={{ $camp->ID }}" class="bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-[11px] px-3 py-1.5 rounded-md border border-indigo-900 shadow-xs transition inline-flex items-center gap-1 cursor-pointer">
+                            <a href="{{ route('utilities.npcgen', [], false) }}?campaign={{ $camp->ID }}" class="btn-rol-secondary text-xs py-1 px-2.5">
                                 <span>➕</span> Generate NPC
                             </a>
                         </div>
@@ -187,17 +187,17 @@
                     @if($campNpcs->isNotEmpty())
                         <div class="flex flex-wrap gap-1.5 pt-1">
                             @foreach($campNpcs as $npc)
-                                <div class="inline-flex items-center bg-amber-50/80 text-amber-950 text-xs px-2.5 py-1 rounded-md border border-amber-300 shadow-xs hover:border-amber-400 transition">
-                                    <button type="button" @click="openNpcModal({{ json_encode($npc) }})" class="flex items-center gap-1 font-semibold text-amber-950 hover:text-indigo-900 hover:underline cursor-pointer" title="View Stat Block">
+                                <div class="inline-flex items-center parchment-inset text-amber-950 text-xs px-2.5 py-1 rounded-md shadow-xs">
+                                    <button type="button" @click="openNpcModal({{ json_encode($npc) }})" class="flex items-center gap-1 font-semibold text-amber-950 hover:text-amber-700 hover:underline cursor-pointer" title="View Stat Block">
                                         <span>👹</span>
                                         <span>{{ $npc->Name }}</span>
-                                        <span class="text-slate-600 text-[10px] font-normal">({{ $npc->RaceName ?? 'NPC' }})</span>
+                                        <span class="text-stone-500 text-[10px] font-normal">({{ $npc->RaceName ?? 'NPC' }})</span>
                                     </button>
                                     @if($isMyCamp)
-                                        <form action="{{ route('utilities.campaign.remove-character', ['id' => $camp->ID], false) }}" method="POST" class="inline ml-1.5 pl-1.5 border-l border-amber-300" onsubmit="return confirm('Remove NPC \'{{ addslashes($npc->Name) }}\' from campaign \'{{ addslashes($camp->Name) }}\'?');">
+                                        <form action="{{ route('utilities.campaign.remove-character', ['id' => $camp->ID], false) }}" method="POST" class="inline ml-1.5 pl-1.5 border-l border-amber-900/20" onsubmit="return confirm('Remove NPC \'{{ addslashes($npc->Name) }}\' from campaign \'{{ addslashes($camp->Name) }}\'?');">
                                             @csrf
                                             <input type="hidden" name="CharacterID" value="{{ $npc->ID }}">
-                                            <button type="submit" class="text-slate-400 hover:text-red-600 font-bold text-xs cursor-pointer leading-none" title="Remove NPC from campaign">
+                                            <button type="submit" class="text-stone-400 hover:text-red-700 font-bold text-xs cursor-pointer leading-none" title="Remove NPC from campaign">
                                                 &times;
                                             </button>
                                         </form>
@@ -206,7 +206,7 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-xs text-slate-400 italic">No NPCs stored in this campaign yet. Click "Generate NPC" to create and store monsters &amp; NPCs.</p>
+                        <p class="text-xs text-stone-500 italic">No NPCs stored in this campaign yet. Click "Generate NPC" to create and store monsters &amp; NPCs.</p>
                     @endif
                 </div>
 
@@ -220,17 +220,17 @@
                         }
                     }
                 @endphp
-                <div class="pt-3 border-t border-slate-200 space-y-2.5">
+                <div class="pt-3 border-t border-amber-900/20 space-y-2.5">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                        <span class="font-bold text-slate-800 flex items-center gap-1.5">
+                        <span class="font-bold text-stone-900 flex items-center gap-1.5">
                             <span>💎</span>
                             <span>Campaign Vault &amp; Treasure ({{ count($vaultItems) }}):</span>
                         </span>
                         <div class="flex items-center gap-1.5 flex-wrap">
-                            <a href="{{ route('utilities.itemgen', [], false) }}" class="bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-[11px] px-3 py-1.5 rounded-md border border-indigo-900 shadow-xs transition inline-flex items-center gap-1 cursor-pointer">
+                            <a href="{{ route('utilities.itemgen', [], false) }}" class="btn-rol-secondary text-xs py-1 px-2.5">
                                 <span>🗡️</span> Generate Item
                             </a>
-                            <a href="{{ route('utilities.treasuregen', [], false) }}" class="bg-amber-700 hover:bg-amber-800 text-white font-bold text-[11px] px-3 py-1.5 rounded-md border border-amber-900 shadow-xs transition inline-flex items-center gap-1 cursor-pointer">
+                            <a href="{{ route('utilities.treasuregen', [], false) }}" class="btn-rol-primary text-xs py-1 px-2.5">
                                 <span>🎲</span> Roll Hoard
                             </a>
                         </div>

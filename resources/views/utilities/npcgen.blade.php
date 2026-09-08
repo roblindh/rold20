@@ -61,21 +61,21 @@
 
 <div class="space-y-4" x-data="npcGeneratorWizard()">
     <!-- Header -->
-    <div class="border-b border-slate-200 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div class="border-b border-amber-900/20 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
                 <span>👹</span> Non-Player Character (NPC) Generator
             </h1>
-            <p class="text-slate-600 text-xs mt-0.5">Configure base creature traits, abilities, templates, classes, social standings, and equipment to produce official stat blocks.</p>
+            <p class="text-stone-700 text-xs mt-0.5">Configure base creature traits, abilities, templates, classes, social standings, and equipment to produce official stat blocks.</p>
         </div>
         <div class="flex items-center gap-2 shrink-0">
             <button type="button" @click="generateNpc()" :disabled="loading"
-                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-bold rounded-lg text-xs sm:text-sm shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                    class="btn-rol-primary">
                 <span x-show="!loading">⚡ Generate Stat Block</span>
                 <span x-show="loading" class="animate-spin">⏳</span>
             </button>
             <button type="button" @click="resetForm()"
-                    class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-xs sm:text-sm transition cursor-pointer">
+                    class="btn-rol-secondary">
                 Reset
             </button>
         </div>

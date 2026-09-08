@@ -9,13 +9,14 @@ class RulesController extends Controller
 {
     private function renderChapter(string $slug, int $chapterNum, string $view, string $title): Response
     {
+        $isLocalOrDebug = app()->environment('local') || config('app.debug') || request()->has('nocache');
         $tmpFile = "/tmp/rold20_cache/rule_{$slug}.html";
         $cachedFile = storage_path("framework/cache/pages/rule_{$slug}.html");
         
         $html = null;
-        if (file_exists($tmpFile)) {
+        if (!$isLocalOrDebug && file_exists($tmpFile)) {
             $html = file_get_contents($tmpFile);
-        } elseif (file_exists($cachedFile)) {
+        } elseif (!$isLocalOrDebug && file_exists($cachedFile)) {
             $html = file_get_contents($cachedFile);
             if (is_dir('/tmp/rold20_cache')) {
                 @file_put_contents($tmpFile, $html);
@@ -28,12 +29,14 @@ class RulesController extends Controller
                 }
             }
             $html = view($view, ['chapter' => $chapterNum, 'title' => $title])->render();
-            if (!is_dir(dirname($cachedFile))) {
-                @mkdir(dirname($cachedFile), 0777, true);
-            }
-            @file_put_contents($cachedFile, $html);
-            if (is_dir('/tmp/rold20_cache')) {
-                @file_put_contents($tmpFile, $html);
+            if (!$isLocalOrDebug) {
+                if (!is_dir(dirname($cachedFile))) {
+                    @mkdir(dirname($cachedFile), 0777, true);
+                }
+                @file_put_contents($cachedFile, $html);
+                if (is_dir('/tmp/rold20_cache')) {
+                    @file_put_contents($tmpFile, $html);
+                }
             }
         }
 

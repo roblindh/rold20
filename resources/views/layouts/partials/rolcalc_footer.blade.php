@@ -31,15 +31,15 @@
         this.expression = dice;
         this.evaluate(dice);
     }
-}" class="bg-slate-900 border-t border-slate-800 text-slate-200 px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2 shadow-lg text-xs sm:text-sm z-30 sticky bottom-0">
+}" class="bg-slate-900 border-t-2 border-amber-900/40 text-slate-200 px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2 shadow-2xl text-xs sm:text-sm z-30 sticky bottom-0 select-none">
     <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-        <span class="font-bold text-amber-400 flex items-center gap-1 shrink-0">🎲 <span class="hidden sm:inline">RolCalc</span></span>
+        <span class="font-bold text-amber-400 flex items-center gap-1 shrink-0 font-serif">🎲 <span class="hidden sm:inline">RolCalc</span></span>
         
         <!-- Expression input form -->
         <form @submit.prevent="evaluate()" class="flex items-center gap-1.5 flex-1 max-w-[200px] sm:max-w-xs md:max-w-sm">
             <input type="text" x-model="expression" placeholder="e.g. 1d20+5, 3d6+2"
-                   class="bg-slate-800 border border-slate-700 rounded px-2 sm:px-2.5 py-1 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500 w-full font-mono">
-            <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-white font-medium px-2 sm:px-3 py-1 rounded text-xs transition shrink-0">
+                   class="bg-slate-950 border border-amber-900/40 rounded px-2 sm:px-2.5 py-1 text-xs sm:text-sm text-amber-100 placeholder-slate-500 focus:outline-none focus:border-amber-500 w-full font-mono">
+            <button type="submit" class="btn-rol-primary text-xs py-1 px-2.5 sm:px-3 shrink-0">
                 <span x-show="!loading">Roll</span>
                 <span x-show="loading" class="animate-spin">⏳</span>
             </button>
@@ -47,13 +47,13 @@
 
         <!-- Quick dice buttons -->
         <div class="hidden lg:flex items-center gap-1 text-xs">
-            <button @click="quickRoll('1d4')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d4</button>
-            <button @click="quickRoll('1d6')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d6</button>
-            <button @click="quickRoll('1d8')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d8</button>
-            <button @click="quickRoll('1d10')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d10</button>
-            <button @click="quickRoll('1d12')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d12</button>
-            <button @click="quickRoll('1d20')" class="bg-indigo-700 hover:bg-indigo-600 text-white px-2.5 py-1 rounded font-semibold border border-indigo-500">d20</button>
-            <button @click="quickRoll('1d100')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-slate-300 border border-slate-700">d100</button>
+            <button @click="quickRoll('1d4')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d4</button>
+            <button @click="quickRoll('1d6')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d6</button>
+            <button @click="quickRoll('1d8')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d8</button>
+            <button @click="quickRoll('1d10')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d10</button>
+            <button @click="quickRoll('1d12')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d12</button>
+            <button @click="quickRoll('1d20')" class="btn-rol-primary py-0.5 px-2.5 rounded font-bold">d20</button>
+            <button @click="quickRoll('1d100')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d100</button>
         </div>
     </div>
 
@@ -62,9 +62,9 @@
         <template x-if="result">
             <div class="flex items-center gap-1 sm:gap-2">
                 <span class="text-slate-400 text-xs hidden md:inline" x-text="'[' + previous + '] ='"></span>
-                <span class="text-amber-400 font-bold font-mono text-sm sm:text-base" x-text="result"></span>
+                <span class="text-amber-400 font-bold font-mono text-sm sm:text-base bg-slate-950 px-2 py-0.5 rounded border border-amber-900/50" x-text="result"></span>
             </div>
         </template>
-        <button @click="expression = ''; result = '';" class="text-slate-400 hover:text-slate-200 text-xs px-1">Clear</button>
+        <button @click="expression = ''; result = '';" class="text-slate-400 hover:text-amber-200 text-xs px-1 underline transition">Clear</button>
     </div>
 </div>

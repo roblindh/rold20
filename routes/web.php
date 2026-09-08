@@ -203,6 +203,13 @@ Route::get('/clear-cache', function () {
         }
     }
 
+    $pagesPath = storage_path('framework/cache/pages');
+    if (is_dir($pagesPath)) {
+        foreach (glob($pagesPath . '/*.html') as $file) {
+            @unlink($file);
+        }
+    }
+
     if (function_exists('opcache_reset')) {
         @opcache_reset();
     }

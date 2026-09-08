@@ -213,19 +213,27 @@ class QueryResult
 {
     private $statement = null;
     private $results = null;
+    private $index = 0;
 
     public function __construct($statement)
     {
         $this->statement = $statement;
+        $this->results = $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
      * Fetch next row as associative array
      * 
-     * @return array|null
+     * @return array|false
      */
     public function fetch()
     {
+        if ($this->results !== null) {
+            if ($this->index < count($this->results)) {
+                return $this->results[$this->index++];
+            }
+            return false;
+        }
         return $this->statement->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -236,6 +244,11 @@ class QueryResult
      */
     public function fetchAll()
     {
+        if ($this->results !== null) {
+            $remaining = array_slice($this->results, $this->index);
+            $this->index = count($this->results);
+            return $remaining;
+        }
         return $this->statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -246,6 +259,9 @@ class QueryResult
      */
     public function rowCount()
     {
+        if ($this->results !== null) {
+            return count($this->results);
+        }
         return $this->statement->rowCount();
     }
 
@@ -253,7 +269,7 @@ class QueryResult
      * Iterator support for while loops
      * Usage: while ($row = $result->fetch())
      * 
-     * @return array|null Next row or null when done
+     * @return array|false Next row or false when done
      */
     public function __invoke()
     {

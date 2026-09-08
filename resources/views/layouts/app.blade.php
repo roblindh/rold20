@@ -6,6 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? 'RoL d20' }} | RoL d20 Role-Playing System</title>
     
+    <!-- Google Fonts for High-Fantasy Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Cinzel+Decorative:wght@700&family=Marcellus&display=swap" rel="stylesheet">
+
     <!-- Compiled Tailwind CSS & Site Styling -->
     <link rel="stylesheet" href="/styles/tailwind.min.css">
     <link rel="stylesheet" href="/styles/Site.css">
@@ -18,256 +23,10 @@
 
     <!-- Local Alpine.js -->
     <script defer src="/js/alpine.min.js"></script>
-
-    <style>
-        /* Site title in header */
-        .site-title {
-            color: #000000 !important;
-            text-shadow: 2px 2px 4px rgba(58, 79, 99, 0.7);
-            font-variant: small-caps;
-            font-weight: 800;
-        }
-
-        /* Modernized rulebook styling & Light headers on dark background */
-        h1, .rule-content h1 {
-            font-size: 1.85rem;
-            font-weight: 700;
-            color: #000000 !important;
-            text-shadow: .05em .05em 4px rgba(58, 79, 99, 0.7);
-            font-variant: small-caps;
-            margin-bottom: 1rem;
-        }
-
-        h2, .rule-content h2 {
-            background-color: #3a4f63 !important;
-            color: #ffffff !important;
-            padding: 6px 12px !important;
-            margin-top: 1.75rem !important;
-            margin-bottom: 0.75rem !important;
-            font-size: 1.4rem !important;
-            font-weight: 700 !important;
-            border-radius: 4px !important;
-            font-variant: small-caps;
-            border-bottom: none !important;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-        }
-
-        h3, .rule-content h3 {
-            background-color: #3a4f63 !important;
-            color: #ffffff !important;
-            padding: 5px 10px !important;
-            margin-top: 1.5rem !important;
-            margin-bottom: 0.5rem !important;
-            font-size: 1.25rem !important;
-            font-weight: 600 !important;
-            border-radius: 3px !important;
-            font-variant: small-caps;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-        }
-
-        h4, .rule-content h4 {
-            background-color: #556b82 !important;
-            color: #ffffff !important;
-            padding: 4px 8px !important;
-            margin-top: 1.25rem !important;
-            margin-bottom: 0.5rem !important;
-            font-size: 1.1rem !important;
-            font-weight: 600 !important;
-            border-radius: 3px !important;
-            font-variant: small-caps;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        h5, .rule-content h5 {
-            background-color: #64748b !important;
-            color: #ffffff !important;
-            padding: 3px 6px !important;
-            margin-top: 1rem !important;
-            margin-bottom: 0.25rem !important;
-            font-size: 1rem !important;
-            font-weight: 600 !important;
-            border-radius: 2px !important;
-            font-variant: small-caps;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Base typography - crisp black body text */
-        body, p, li, td, .rule-content p, .rule-content li, .rule-content td {
-            color: #000000;
-        }
-        .rule-content p, .rule-content li, .rule-content td {
-            color: #000000 !important;
-        }
-
-        /* Character sheet table headers and cells */
-        td.cvheader, th.cvheader, .cvheader, td.cvheader *, th.cvheader *, .cvheader * {
-            background-color: #000000 !important;
-            color: #ffffff !important;
-            font-size: 1.05em !important;
-            font-weight: 700 !important;
-            font-variant: small-caps !important;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
-        }
-        td.cvlabel, th.cvlabel, .cvlabel {
-            background-color: #ffffff !important;
-            color: #000000 !important;
-            font-size: 0.8em !important;
-            font-weight: 700 !important;
-            font-variant: small-caps !important;
-        }
-        td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
-            background-color: #f0f0d9 !important;
-            color: #000000 !important;
-        }
-
-        .rule-content p { line-height: 1.65; color: #000000 !important; margin-bottom: 1rem; }
-        .rule-content table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1.5rem; font-size: 0.875rem; }
-        .rule-content th, thead th { background-color: #3a4f63 !important; color: #ffffff !important; text-align: left; padding: 0.5rem 0.75rem; border: 1px solid #2c3e50; font-weight: 600; }
-        .rule-content th a, thead th a, th a { color: #ffffff !important; text-decoration: none !important; }
-        .rule-content th a:hover, thead th a:hover, th a:hover { color: #fef08a !important; text-decoration: underline !important; }
-        .rule-content td { padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; color: #000000 !important; }
-        .rule-content tr:nth-child(even) { background-color: #f8fafc; }
-        .rule-content caption { font-weight: 600; text-align: left; padding-bottom: 0.5rem; color: #000000; font-size: 1rem; }
-
-        /* Optional rules boxes - Vertically centered text and balanced spacing */
-        div.optionalrule, .rule-content div.optionalrule {
-            padding: 14px 18px !important;
-            border: 3px solid #777788 !important;
-            border-radius: 6px !important;
-            margin: 1.25rem 0.5rem !important;
-            background-color: #fafbfc !important;
-            box-shadow: 4px 4px 6px rgba(58, 79, 99, 0.25) !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-        }
-
-        div.optionalrule p, .rule-content div.optionalrule p {
-            margin: 0 !important;
-            padding: 0 !important;
-            line-height: 1.6 !important;
-            color: #000000 !important;
-        }
-
-        div.optionalrule p + p, .rule-content div.optionalrule p + p {
-            margin-top: 0.75rem !important;
-        }
-
-        /* Bullet point lists and ordered lists */
-        .rule-content ul, main ul:not([class*="list-none"]):not([class*="divide"]):not([class*="pagination"]) {
-            list-style-type: disc !important;
-            margin-top: 0.75rem !important;
-            margin-bottom: 1rem !important;
-            padding-left: 2rem !important;
-        }
-        .rule-content ul ul, main ul ul:not([class*="list-none"]) {
-            list-style-type: circle !important;
-            margin-top: 0.25rem !important;
-            margin-bottom: 0.25rem !important;
-            padding-left: 1.5rem !important;
-        }
-        .rule-content ul ul ul, main ul ul ul:not([class*="list-none"]) {
-            list-style-type: square !important;
-            padding-left: 1.5rem !important;
-        }
-        .rule-content ol, main ol:not([class*="list-none"]):not([class*="pagination"]) {
-            list-style-type: decimal !important;
-            margin-top: 0.75rem !important;
-            margin-bottom: 1rem !important;
-            padding-left: 2rem !important;
-        }
-        .rule-content ol ol, main ol ol:not([class*="list-none"]) {
-            list-style-type: lower-alpha !important;
-            margin-top: 0.25rem !important;
-            margin-bottom: 0.25rem !important;
-            padding-left: 1.5rem !important;
-        }
-        .rule-content li, main ul:not([class*="list-none"]):not([class*="divide"]) > li, main ol:not([class*="list-none"]) > li {
-            margin-bottom: 0.35rem;
-            line-height: 1.6;
-            color: #000000 !important;
-            display: list-item !important;
-        }
-
-        /* Custom Elegant Dark Scrollbars for Sidebar */
-        nav, nav *, .sidebar-scroll, .sidebar-scroll * {
-            scrollbar-width: thin;
-            scrollbar-color: rgba(148, 163, 184, 0.25) transparent;
-        }
-
-        nav::-webkit-scrollbar,
-        nav *::-webkit-scrollbar,
-        .sidebar-scroll::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-
-        nav::-webkit-scrollbar-track,
-        nav *::-webkit-scrollbar-track,
-        .sidebar-scroll::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        nav::-webkit-scrollbar-thumb,
-        nav *::-webkit-scrollbar-thumb,
-        .sidebar-scroll::-webkit-scrollbar-thumb {
-            background-color: rgba(148, 163, 184, 0.25);
-            border-radius: 9999px;
-            transition: background-color 0.2s ease;
-        }
-
-        nav:hover::-webkit-scrollbar-thumb,
-        nav *:hover::-webkit-scrollbar-thumb,
-        .sidebar-scroll:hover::-webkit-scrollbar-thumb {
-            background-color: rgba(148, 163, 184, 0.45);
-        }
-
-        nav::-webkit-scrollbar-thumb:hover,
-        nav *::-webkit-scrollbar-thumb:hover,
-        .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(203, 213, 225, 0.7);
-        }
-
-        /* Subtle modern scrollbar for main content area */
-        main {
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 transparent;
-        }
-        main::-webkit-scrollbar {
-            width: 7px;
-            height: 7px;
-        }
-        main::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        main::-webkit-scrollbar-thumb {
-            background-color: #cbd5e1;
-            border-radius: 9999px;
-        }
-        main::-webkit-scrollbar-thumb:hover {
-            background-color: #94a3b8;
-        }
-        /* Solid Theme Action Buttons */
-        .btn-theme-brown {
-            background-color: #8b4513 !important;
-            color: #ffffff !important;
-            border: 1px solid #5c2e0b !important;
-        }
-        .btn-theme-brown:hover {
-            background-color: #70370e !important;
-        }
-        .btn-theme-blue {
-            background-color: #3a4f63 !important;
-            color: #ffffff !important;
-            border: 1px solid #243340 !important;
-        }
-        .btn-theme-blue:hover {
-            background-color: #2c3e50 !important;
-        }
-    </style>
 </head>
-<body class="h-full flex flex-col bg-slate-100 text-black" x-data="{
+<body class="h-full flex flex-col bg-slate-950 text-slate-900" x-data="{
     mobileMenuOpen: false,
+    sidebarCollapsed: false,
     searchOpen: false,
     searchQuery: '',
     searchResults: [],
@@ -300,29 +59,39 @@
                 </svg>
             </button>
 
+            <!-- Desktop Sidebar Collapse Toggle -->
+            <button @click="sidebarCollapsed = !sidebarCollapsed"
+                    type="button"
+                    class="hidden md:inline-flex items-center justify-center p-1.5 rounded text-slate-800 hover:text-amber-900 hover:bg-amber-100/50 transition border border-amber-900/20"
+                    :title="sidebarCollapsed ? 'Expand Navigation Sidebar' : 'Collapse Navigation Sidebar'">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                </svg>
+            </button>
+
             <a href="{{ route('home', [], false) }}" class="flex items-center gap-1.5 sm:gap-2.5 hover:opacity-90 transition">
-                <img src="/styles/reddragon_sml.gif" alt="RoL d20 Dragon" class="h-8 sm:h-10 w-auto object-contain" />
+                <img src="/styles/reddragon_sml.gif" alt="RoL d20 Dragon" class="h-8 sm:h-10 w-auto object-contain drop-shadow" />
                 <span class="site-title text-xl sm:text-2xl font-bold tracking-tight">RoL d20</span>
             </a>
-            <span class="hidden lg:inline text-xs text-slate-800 font-semibold border-l border-slate-400 pl-3">D&D 3.5E Streamlined Ruleset</span>
+            <span class="hidden lg:inline text-xs text-amber-950 font-semibold border-l border-amber-800/30 pl-3 font-serif italic">Streamlined 3.5E High-Fantasy RPG</span>
         </div>
 
         <div class="flex items-center gap-1.5 sm:gap-3">
             <!-- Global Search Trigger -->
-            <button @click="searchOpen = true" class="flex items-center gap-1.5 sm:gap-2 bg-white/90 hover:bg-white text-slate-800 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md border border-slate-400 text-xs shadow-sm font-semibold transition">
+            <button @click="searchOpen = true" class="flex items-center gap-1.5 sm:gap-2 bg-amber-50/90 hover:bg-white text-slate-900 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md border border-amber-800/30 text-xs shadow-sm font-semibold transition">
                 <span>🔍 <span class="hidden sm:inline">Search rules...</span></span>
-                <kbd class="hidden md:inline bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded border border-slate-300 font-mono text-[10px]">Ctrl+K</kbd>
+                <kbd class="hidden md:inline bg-amber-200/60 text-amber-950 px-1.5 py-0.5 rounded border border-amber-300 font-mono text-[10px]">Ctrl+K</kbd>
             </button>
 
             <!-- Quick Utilities Links -->
-            <a href="{{ route('search', [], false) }}" class="text-xs text-slate-900 hover:text-indigo-900 font-bold hidden md:inline">Search</a>
-            <a href="{{ route('utilities.chargen', [], false) }}" class="text-xs bg-amber-700 hover:bg-amber-800 text-white font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md border border-amber-900 shadow-sm transition hover:shadow inline-flex items-center gap-1">🧙‍♂️ PC Gen</a>
+            <a href="{{ route('search', [], false) }}" class="text-xs text-amber-950 hover:text-amber-800 font-bold hidden md:inline">Compendium Search</a>
+            <a href="{{ route('utilities.chargen', [], false) }}" class="btn-rol-primary text-xs py-1 px-2.5 sm:px-3">🧙‍♂️ PC Gen</a>
 
             <!-- User Auth Bar -->
-            <div class="border-l border-slate-400 pl-1.5 sm:pl-3 flex items-center gap-1.5 sm:gap-2">
+            <div class="border-l border-amber-800/30 pl-1.5 sm:pl-3 flex items-center gap-1.5 sm:gap-2">
                 @auth
                     <div class="flex items-center gap-1.5 sm:gap-2 text-xs">
-                        <span class="inline-flex items-center gap-1 font-bold text-slate-900 bg-white/80 px-1.5 sm:px-2 py-0.5 rounded border border-slate-300 shadow-sm max-w-[100px] sm:max-w-none truncate">
+                        <span class="inline-flex items-center gap-1 font-bold text-slate-900 bg-amber-100/80 px-2 py-0.5 rounded border border-amber-300 shadow-sm max-w-[100px] sm:max-w-none truncate">
                             @if(auth()->user()->isGM())
                                 <span title="Game Master">👑 GM</span>
                             @else
@@ -338,8 +107,8 @@
                     </div>
                 @else
                     <div class="flex items-center gap-1 sm:gap-1.5 text-xs">
-                        <a href="{{ route('login', [], false) }}" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-2 sm:px-2.5 py-1 rounded border border-slate-400 shadow-sm transition">Log In</a>
-                        <a href="{{ route('register', [], false) }}" class="bg-amber-800 hover:bg-amber-900 text-white font-bold px-2 sm:px-2.5 py-1 rounded shadow-sm transition" style="background-color: #8b1a1a; color: #ffffff;">Register</a>
+                        <a href="{{ route('login', [], false) }}" class="btn-rol-secondary text-xs py-1 px-2 sm:px-2.5">Log In</a>
+                        <a href="{{ route('register', [], false) }}" class="btn-rol-danger text-xs py-1 px-2 sm:px-2.5">Register</a>
                     </div>
                 @endauth
             </div>
@@ -355,9 +124,8 @@
              :class="{ 'active': mobileMenuOpen }"
              style="display: none;"></div>
 
-        <!-- Sidebar Navigation (Drawer on Mobile, Static Sidebar on Desktop) -->
-        <aside class="sidebar-drawer"
-               :class="{ 'drawer-open': mobileMenuOpen }">
+        <aside class="sidebar-drawer transition-all duration-200"
+               :class="{ 'drawer-open': mobileMenuOpen, 'md:w-0 md:min-w-0 md:overflow-hidden md:border-none': sidebarCollapsed }">
             @include('layouts.partials.sidebar_toc')
         </aside>
 

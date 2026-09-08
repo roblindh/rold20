@@ -3,19 +3,19 @@
 @section('content')
 <div class="space-y-6" x-data="combatTrackerApp()" x-init="initApp()">
     <!-- Header & Breadcrumb -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-4 gap-4">
+    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-amber-900/20 pb-4 gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <h1 class="text-2xl font-bold flex items-center gap-2">
                 <span>⚔️</span> Combat &amp; Initiative Tracker
             </h1>
-            <p class="text-slate-600 text-sm mt-1">Real-time encounter management, initiative order, Action Points (AP), dual-ability defenses, health dials (HP/SP/PP), and condition tracking.</p>
+            <p class="text-stone-700 text-sm mt-1">Real-time encounter management, initiative order, Action Points (AP), dual-ability defenses, health dials (HP/SP/PP), and condition tracking.</p>
         </div>
 
         <!-- Quick Campaign Selector -->
         <div class="flex flex-wrap items-center gap-2">
-            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Campaign:</label>
+            <label class="text-xs font-bold text-amber-950 uppercase tracking-wider">Campaign:</label>
             <select x-model="selectedCampaignId" @change="loadCampaignParty()"
-                    class="bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-800 focus:ring-2 focus:ring-indigo-500 shadow-2xs">
+                    class="bg-amber-50/80 border border-amber-900/30 rounded-lg px-3 py-1.5 text-sm font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs">
                 <option value="">-- Standalone Encounter --</option>
                 @foreach($campaigns as $camp)
                     <option value="{{ $camp->ID }}" {{ $selectedCampaignId == $camp->ID ? 'selected' : '' }}>
@@ -24,19 +24,19 @@
                 @endforeach
             </select>
             <button type="button" @click="loadCampaignParty()" x-show="selectedCampaignId"
-                    class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-bold border border-indigo-200 transition flex items-center gap-1 cursor-pointer">
+                    class="btn-rol-secondary text-xs py-1 px-3">
                 <span>🔄</span> Import Party
             </button>
         </div>
     </div>
 
     <!-- Encounter Control Banner (Round, Turn, Global Actions) -->
-    <div class="bg-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-md flex flex-col lg:flex-row items-center justify-between gap-4 border border-slate-800">
+    <div class="bg-linear-to-r from-slate-900 via-slate-800 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-md flex flex-col lg:flex-row items-center justify-between gap-4 border border-amber-500/30">
         <!-- Round & Active Turn Status -->
         <div class="flex flex-wrap items-center gap-4 sm:gap-6">
             <!-- Round Counter -->
-            <div class="flex items-center gap-2 bg-slate-800/80 px-4 py-2 rounded-xl border border-slate-700">
-                <span class="text-xs uppercase tracking-wider text-slate-400 font-bold">Round</span>
+            <div class="flex items-center gap-2 bg-slate-950/80 px-4 py-2 rounded-xl border border-amber-500/40 shadow-inner">
+                <span class="text-xs uppercase tracking-wider text-amber-300 font-bold">Round</span>
                 <span class="text-2xl font-black text-amber-400 font-mono" x-text="round">1</span>
                 <div class="flex flex-col gap-0.5 ml-2">
                     <button type="button" @click="round = Math.max(1, round + 1); logEvent('Advanced to Round ' + round)" class="text-slate-400 hover:text-white text-xs px-1 hover:bg-slate-700 rounded">▲</button>
@@ -46,17 +46,17 @@
 
             <!-- Active Turn Display -->
             <div class="space-y-0.5">
-                <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Active Turn</div>
+                <div class="text-xs text-amber-200/70 uppercase tracking-wider font-semibold">Active Turn</div>
                 <div class="flex items-center gap-2">
                     <template x-if="activeCombatant">
                         <div class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span class="font-bold text-base sm:text-lg text-white" x-text="activeCombatant.name"></span>
-                            <span class="text-xs px-2 py-0.5 rounded-full font-bold"
+                            <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse shadow-sm"></span>
+                            <span class="font-bold text-base sm:text-lg text-amber-200 font-serif" x-text="activeCombatant.name"></span>
+                            <span class="text-xs px-2.5 py-0.5 rounded-full font-bold"
                                   :class="{
-                                      'bg-indigo-500/30 text-indigo-300 border border-indigo-400/40': activeCombatant.type === 'pc',
-                                      'bg-amber-500/30 text-amber-300 border border-amber-400/40': activeCombatant.type === 'npc',
-                                      'bg-rose-500/30 text-rose-300 border border-rose-400/40': activeCombatant.type === 'monster'
+                                      'bg-sky-900/60 text-sky-200 border border-sky-400/50': activeCombatant.type === 'pc',
+                                      'bg-amber-900/60 text-amber-200 border border-amber-400/50': activeCombatant.type === 'npc',
+                                      'bg-rose-900/60 text-rose-200 border border-rose-400/50': activeCombatant.type === 'monster'
                                   }"
                                   x-text="activeCombatant.type.toUpperCase()"></span>
                         </div>
@@ -71,19 +71,19 @@
         <!-- Turn Stepper & Global Controls -->
         <div class="flex flex-wrap items-center gap-2">
             <button type="button" @click="prevTurn()" :disabled="combatants.length === 0"
-                    class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 text-slate-200 hover:text-white rounded-xl text-sm font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                    class="btn-rol-secondary disabled:opacity-40">
                 <span>◀</span> Prev Turn
             </button>
             <button type="button" @click="nextTurn()" :disabled="combatants.length === 0"
-                    class="px-4 py-2 bg-amber-500 hover:bg-amber-400 disabled:opacity-40 text-slate-950 font-bold rounded-xl text-sm shadow-sm flex items-center gap-1.5 transition cursor-pointer">
+                    class="btn-rol-primary disabled:opacity-40">
                 <span>▶</span> Next Turn
             </button>
             <button type="button" @click="rollAllInitiative()" :disabled="combatants.length === 0"
-                    class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white rounded-xl text-sm font-semibold shadow-sm flex items-center gap-1.5 transition cursor-pointer">
+                    class="btn-rol-secondary disabled:opacity-40">
                 <span>🎲</span> Roll All Init
             </button>
             <button type="button" @click="resetCombat()"
-                    class="px-3 py-2 bg-slate-800 hover:bg-rose-900/60 text-slate-400 hover:text-rose-200 rounded-xl text-xs font-semibold border border-slate-700 transition cursor-pointer">
+                    class="btn-rol-danger">
                 <span>🔄</span> Reset
             </button>
         </div>
@@ -94,60 +94,60 @@
         <!-- Initiative Ladder & Combatant Cards (8 cols) -->
         <div class="lg:col-span-8 space-y-4">
             <!-- Add Combatant Action Bar -->
-            <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2 shadow-2xs">
+            <div class="parchment-card p-3 flex flex-wrap items-center justify-between gap-2 shadow-sm">
                 <div class="flex flex-wrap items-center gap-2">
                     <!-- Quick Add PC Dropdown -->
                     <div class="relative" x-data="{ open: false }">
                         <button type="button" @click="open = !open" 
-                                class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-bold border border-indigo-200 flex items-center gap-1.5 transition cursor-pointer">
+                                class="btn-rol-secondary text-xs py-1.5 px-3">
                             <span>🧙‍♂️</span> Add PC <span class="text-[10px]">▼</span>
                         </button>
                         <div x-show="open" @click.outside="open = false" x-cloak
-                             class="absolute left-0 mt-1 w-64 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-30 max-h-60 overflow-y-auto">
+                             class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-30 max-h-60 overflow-y-auto">
                             <template x-for="pc in availablePCs" :key="pc.id">
                                 <button type="button" @click="addCombatant(pc); open = false"
-                                        class="w-full text-left px-3 py-2 hover:bg-indigo-50 text-xs font-medium text-slate-800 flex items-center justify-between border-b border-slate-100 last:border-0">
+                                        class="w-full text-left px-3 py-2 hover:bg-amber-100 text-xs font-medium text-stone-900 flex items-center justify-between border-b border-amber-900/10 last:border-0 cursor-pointer">
                                     <span x-text="pc.name"></span>
-                                    <span class="text-[10px] text-slate-400 font-mono" x-text="'Lvl ' + pc.level"></span>
+                                    <span class="text-[10px] text-stone-500 font-mono" x-text="'Lvl ' + pc.level"></span>
                                 </button>
                             </template>
-                            <div x-show="availablePCs.length === 0" class="px-3 py-2 text-xs text-slate-400 italic">No PCs available</div>
+                            <div x-show="availablePCs.length === 0" class="px-3 py-2 text-xs text-stone-500 italic">No PCs available</div>
                         </div>
                     </div>
 
                     <!-- Quick Add NPC Dropdown -->
                     <div class="relative" x-data="{ open: false }">
                         <button type="button" @click="open = !open" 
-                                class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-lg text-xs font-bold border border-amber-200 flex items-center gap-1.5 transition cursor-pointer">
+                                class="btn-rol-secondary text-xs py-1.5 px-3">
                             <span>👤</span> Add Saved NPC <span class="text-[10px]">▼</span>
                         </button>
                         <div x-show="open" @click.outside="open = false" x-cloak
-                             class="absolute left-0 mt-1 w-64 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-30 max-h-60 overflow-y-auto">
+                             class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-30 max-h-60 overflow-y-auto">
                             <template x-for="npc in availableNPCs" :key="npc.id">
                                 <button type="button" @click="addCombatant(npc); open = false"
-                                        class="w-full text-left px-3 py-2 hover:bg-amber-50 text-xs font-medium text-slate-800 flex items-center justify-between border-b border-slate-100 last:border-0">
+                                        class="w-full text-left px-3 py-2 hover:bg-amber-100 text-xs font-medium text-stone-900 flex items-center justify-between border-b border-amber-900/10 last:border-0 cursor-pointer">
                                     <span x-text="npc.name"></span>
-                                    <span class="text-[10px] text-slate-400 font-mono" x-text="'Lvl ' + npc.level"></span>
+                                    <span class="text-[10px] text-stone-500 font-mono" x-text="'Lvl ' + npc.level"></span>
                                 </button>
                             </template>
-                            <div x-show="availableNPCs.length === 0" class="px-3 py-2 text-xs text-slate-400 italic">No saved NPCs</div>
+                            <div x-show="availableNPCs.length === 0" class="px-3 py-2 text-xs text-stone-500 italic">No saved NPCs</div>
                         </div>
                     </div>
 
                     <!-- Add Monster Modal Trigger -->
                     <button type="button" @click="showMonsterModal = true" 
-                            class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg text-xs font-bold border border-rose-200 flex items-center gap-1.5 transition cursor-pointer">
+                            class="btn-rol-secondary text-xs py-1.5 px-3">
                         <span>👹</span> Add Monster Reference...
                     </button>
 
                     <!-- Add Custom Combatant Modal Trigger -->
                     <button type="button" @click="showCustomModal = true" 
-                            class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold border border-slate-300 flex items-center gap-1.5 transition cursor-pointer">
+                            class="btn-rol-secondary text-xs py-1.5 px-3">
                         <span>➕</span> Custom...
                     </button>
                 </div>
 
-                <div class="text-xs text-slate-500 font-mono">
+                <div class="text-xs text-stone-600 font-mono font-bold">
                     <span x-text="combatants.length"></span> Combatants
                 </div>
             </div>
@@ -395,57 +395,57 @@
         <!-- GM Toolkit Sidebar (4 cols) -->
         <div class="lg:col-span-4 space-y-6">
             <!-- Quick Dice Roller -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                    <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+            <div class="parchment-card p-4 space-y-3">
+                <div class="flex items-center justify-between border-b border-amber-900/10 pb-2">
+                    <div class="font-bold text-sm text-slate-900 flex items-center gap-1.5 font-display uppercase tracking-wider">
                         <span>🎲</span> GM Dice Roller
-                    </h3>
-                    <span class="text-[11px] text-slate-400 font-mono">Live Evaluator</span>
+                    </div>
+                    <span class="text-[11px] text-amber-900/60 font-mono">Live Evaluator</span>
                 </div>
 
                 <!-- Dice Preset Buttons -->
                 <div class="grid grid-cols-4 gap-1.5">
-                    <button type="button" @click="rollDiceFormula('1d4')" class="px-2 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-mono text-xs font-bold text-slate-700 transition">d4</button>
-                    <button type="button" @click="rollDiceFormula('1d6')" class="px-2 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-mono text-xs font-bold text-slate-700 transition">d6</button>
-                    <button type="button" @click="rollDiceFormula('1d8')" class="px-2 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-mono text-xs font-bold text-slate-700 transition">d8</button>
-                    <button type="button" @click="rollDiceFormula('1d10')" class="px-2 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-mono text-xs font-bold text-slate-700 transition">d10</button>
-                    <button type="button" @click="rollDiceFormula('1d12')" class="px-2 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-mono text-xs font-bold text-slate-700 transition">d12</button>
-                    <button type="button" @click="rollDiceFormula('1d20')" class="px-2 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg font-mono text-xs font-bold transition">d20</button>
-                    <button type="button" @click="rollDiceFormula('1d100')" class="px-2 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-mono text-xs font-bold text-slate-700 transition">d100</button>
-                    <button type="button" @click="rollDiceFormula('3d6')" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-lg font-mono text-xs font-bold transition">3d6</button>
+                    <button type="button" @click="rollDiceFormula('1d4')" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100/80 rounded-lg font-mono text-xs font-bold text-slate-700 border border-amber-900/15 transition">d4</button>
+                    <button type="button" @click="rollDiceFormula('1d6')" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100/80 rounded-lg font-mono text-xs font-bold text-slate-700 border border-amber-900/15 transition">d6</button>
+                    <button type="button" @click="rollDiceFormula('1d8')" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100/80 rounded-lg font-mono text-xs font-bold text-slate-700 border border-amber-900/15 transition">d8</button>
+                    <button type="button" @click="rollDiceFormula('1d10')" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100/80 rounded-lg font-mono text-xs font-bold text-slate-700 border border-amber-900/15 transition">d10</button>
+                    <button type="button" @click="rollDiceFormula('1d12')" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100/80 rounded-lg font-mono text-xs font-bold text-slate-700 border border-amber-900/15 transition">d12</button>
+                    <button type="button" @click="rollDiceFormula('1d20')" class="px-2 py-1.5 bg-amber-200/60 hover:bg-amber-200 text-amber-950 border border-amber-900/30 rounded-lg font-mono text-xs font-bold transition">d20</button>
+                    <button type="button" @click="rollDiceFormula('1d100')" class="px-2 py-1.5 bg-amber-50 hover:bg-amber-100/80 rounded-lg font-mono text-xs font-bold text-slate-700 border border-amber-900/15 transition">d100</button>
+                    <button type="button" @click="rollDiceFormula('3d6')" class="px-2 py-1.5 bg-amber-200/60 hover:bg-amber-200 text-amber-950 border border-amber-900/30 rounded-lg font-mono text-xs font-bold transition">3d6</button>
                 </div>
 
                 <!-- Custom Expression Input -->
                 <div class="flex items-center gap-1.5">
                     <input type="text" x-model="customDiceExpr" @keydown.enter.prevent="rollDiceFormula(customDiceExpr)"
                            placeholder="e.g. 2d6+4, 1d20+8"
-                           class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                           class="w-full px-3 py-1.5 bg-white border border-amber-900/25 rounded-lg text-xs font-mono text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500" />
                     <button type="button" @click="rollDiceFormula(customDiceExpr)"
-                            class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition cursor-pointer">
+                            class="btn-rol-primary px-3 py-1.5 text-xs font-bold transition cursor-pointer">
                         Roll
                     </button>
                 </div>
 
                 <!-- Latest Dice Result -->
-                <div x-show="latestRollResult" class="p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-0.5 text-center">
-                    <div class="text-[11px] text-amber-800 font-mono" x-text="latestRollResult.expr"></div>
+                <div x-show="latestRollResult" class="p-3 bg-amber-100/60 border border-amber-900/20 rounded-xl space-y-0.5 text-center">
+                    <div class="text-[11px] text-amber-900 font-mono" x-text="latestRollResult.expr"></div>
                     <div class="text-xl font-black text-slate-900 font-mono" x-text="latestRollResult.result"></div>
                 </div>
             </div>
 
             <!-- Combat Event History Log -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                    <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+            <div class="parchment-card p-4 space-y-3">
+                <div class="flex items-center justify-between border-b border-amber-900/10 pb-2">
+                    <div class="font-bold text-sm text-slate-900 flex items-center gap-1.5 font-display uppercase tracking-wider">
                         <span>📜</span> Combat Log
-                    </h3>
-                    <button type="button" @click="eventLog = []" class="text-[11px] text-slate-400 hover:text-slate-600">Clear</button>
+                    </div>
+                    <button type="button" @click="eventLog = []" class="text-[11px] text-amber-900/60 hover:text-amber-900">Clear</button>
                 </div>
 
                 <div class="space-y-1.5 max-h-56 overflow-y-auto font-mono text-xs pr-1">
                     <template x-for="(ev, idx) in eventLog" :key="idx">
-                        <div class="p-1.5 bg-slate-50 border border-slate-100 rounded text-slate-700 text-[11px] flex items-start gap-1.5">
-                            <span class="text-slate-400 text-[10px]" x-text="ev.time"></span>
+                        <div class="p-1.5 bg-white/60 border border-amber-900/15 rounded text-slate-700 text-[11px] flex items-start gap-1.5">
+                            <span class="text-slate-500 text-[10px]" x-text="ev.time"></span>
                             <span x-text="ev.msg"></span>
                         </div>
                     </template>
@@ -454,19 +454,19 @@
             </div>
 
             <!-- Conditions Reference Quick Cheatsheet -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3" x-data="{ condSearch: '' }">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                    <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+            <div class="parchment-card p-4 space-y-3" x-data="{ condSearch: '' }">
+                <div class="flex items-center justify-between border-b border-amber-900/10 pb-2">
+                    <div class="font-bold text-sm text-slate-900 flex items-center gap-1.5 font-display uppercase tracking-wider">
                         <span>📋</span> Rules Conditions Guide
-                    </h3>
+                    </div>
                 </div>
 
                 <input type="text" x-model="condSearch" placeholder="Filter conditions..."
-                       class="w-full px-3 py-1 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500" />
+                       class="w-full px-3 py-1 bg-white border border-amber-900/25 rounded-lg text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500" />
 
                 <div class="space-y-2 max-h-72 overflow-y-auto pr-1 text-xs">
                     <template x-for="c in filteredConditions(condSearch)" :key="c.name">
-                        <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg space-y-0.5">
+                        <div class="p-2 bg-amber-50/50 border border-amber-900/15 rounded-lg space-y-0.5">
                             <div class="font-bold text-slate-900 text-xs" x-text="c.name"></div>
                             <div class="text-[11px] text-slate-600 leading-tight" x-text="c.desc"></div>
                         </div>

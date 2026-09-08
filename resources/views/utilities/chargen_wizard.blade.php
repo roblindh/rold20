@@ -1,71 +1,53 @@
 @extends('layouts.app', ['title' => 'Character Generation Wizard'])
 
 @section('content')
-<style>
-    /* Classic Character Sheet Table Typography & Colors */
-    td.cvheader, th.cvheader, .cvheader, td.cvheader *, th.cvheader *, .cvheader * {
-        background-color: #000000 !important;
-        color: #ffffff !important;
-        font-size: 1.05em !important;
-        font-weight: 700 !important;
-        font-variant: small-caps !important;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
-    }
-    td.cvlabel, th.cvlabel, .cvlabel {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-        font-size: 0.8em !important;
-        font-weight: 700 !important;
-        font-variant: small-caps !important;
-    }
-    td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
-        background-color: #f0f0d9 !important;
-        color: #000000 !important;
-    }
-</style>
 @php
     $initialCampId = request()->query('campaign', '');
 @endphp
 
 <div class="space-y-6" x-data="characterWizard()">
     <!-- Wizard Header -->
-    <div class="border-b border-slate-200 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="border-b border-amber-900/20 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <h1 class="text-2xl font-bold flex items-center gap-2">
                 <span>🧙‍♂️</span> Character Generation Wizard
             </h1>
-            <p class="text-slate-600 text-sm mt-1">Hero creation with background skills, improvements, level-by-level class progression, spell learning, equipment shopping, and lore.</p>
+            <p class="text-stone-700 text-sm mt-1">Hero creation with background skills, improvements, level-by-level class progression, spell learning, equipment shopping, and lore.</p>
         </div>
         <div class="flex items-center gap-2">
-            <span class="text-xs bg-indigo-50 border border-indigo-200 text-indigo-900 px-3 py-1.5 rounded-lg font-bold">
+            <span class="text-xs bg-amber-900/10 border border-amber-800/30 text-amber-950 px-3 py-1.5 rounded-lg font-bold">
                 Step <span x-text="step"></span> of 10: <span x-text="stepNames[step]"></span>
             </span>
         </div>
     </div>
 
-    <!-- Step Progress Bar (10 Steps) -->
-    <div class="bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200">
-        <div class="grid grid-cols-5 sm:grid-cols-10 text-center text-[10px] sm:text-xs font-semibold text-slate-500 gap-1">
-            <span :class="step >= 1 ? 'text-indigo-600 font-bold' : ''">1. Identity</span>
-            <span :class="step >= 2 ? 'text-indigo-600 font-bold' : ''">2. Ability Scores</span>
-            <span :class="step >= 3 ? 'text-indigo-600 font-bold' : ''">3. Race &amp; Culture</span>
-            <span :class="step >= 4 ? 'text-indigo-600 font-bold' : ''">4. Improvements</span>
-            <span :class="step >= 5 ? 'text-indigo-600 font-bold' : ''">5. Bg Skills</span>
-            <span :class="step >= 6 ? 'text-indigo-600 font-bold' : ''">6. Class Skills</span>
-            <span :class="step >= 7 ? 'text-indigo-600 font-bold' : ''">7. Spells</span>
-            <span :class="step >= 8 ? 'text-indigo-600 font-bold' : ''">8. Equipment</span>
-            <span :class="step >= 9 ? 'text-indigo-600 font-bold' : ''">9. Details</span>
-            <span :class="step >= 10 ? 'text-indigo-600 font-bold' : ''">10. Review</span>
+    <!-- Step Progress Ribbon (10 Steps) -->
+    <div class="parchment-card p-3 sm:p-4 shadow-sm">
+        <div class="wizard-ribbon">
+            <template x-for="(name, num) in stepNames" :key="num">
+                <div class="wizard-step-item"
+                     :class="{
+                         'active': step == num,
+                         'completed': step > num,
+                         'opacity-60': step < num
+                     }"
+                     @click="if(num <= step || true) { /* navigation allowed if validated */ }">
+                    <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold"
+                          :class="step == num ? 'bg-amber-400 text-slate-900' : (step > num ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-700')"
+                          x-text="step > num ? '✓' : num"></span>
+                    <span x-text="name"></span>
+                </div>
+            </template>
         </div>
-        <div class="w-full bg-slate-200 h-2 rounded-full mt-2.5 overflow-hidden">
-            <div class="bg-indigo-600 h-full transition-all duration-300" :style="'width: ' + (step * 10) + '%'"></div>
+        <div class="w-full bg-amber-950/20 h-2 rounded-full mt-3 overflow-hidden border border-amber-900/20">
+            <div class="bg-linear-to-r from-amber-600 to-amber-500 h-full transition-all duration-300 shadow-xs" :style="'width: ' + (step * 10) + '%'"></div>
         </div>
     </div>
 
     <!-- ========================================================================= -->
     <!-- STEP 1: IDENTITY & CAMPAIGN                                              -->
     <!-- ========================================================================= -->
-    <div x-show="step === 1" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5">
+    <div x-show="step === 1" class="parchment-card p-6 shadow-md space-y-5">
         <div>
             <h2 class="text-lg font-bold text-slate-900">Step 1: Character Identity &amp; Campaign Selection</h2>
             <p class="text-xs text-slate-600 mt-0.5">Select a campaign to inherit its starting XP, suitability tier, ability generation method, and optional rules.</p>
@@ -152,7 +134,7 @@
     <!-- ========================================================================= -->
     <!-- STEP 2: ABILITY SCORES                                                    -->
     <!-- ========================================================================= -->
-    <div x-show="step === 2" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4" style="display: none;">
+    <div x-show="step === 2" class="parchment-card p-6 shadow-md space-y-4" style="display: none;">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
             <div class="space-y-1 flex-1">
                 <div class="flex items-center gap-2">
@@ -302,7 +284,7 @@
     <!-- ========================================================================= -->
     <!-- STEP 3: RACE, TEMPLATES & CULTURE (Multiple Templates & Size Category)     -->
     <!-- ========================================================================= -->
-    <div x-show="step === 3" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5" style="display: none;">
+    <div x-show="step === 3" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
             <div>
                 <h2 class="text-lg font-bold text-slate-900">Step 3: Race, Templates &amp; Culture</h2>
@@ -463,7 +445,7 @@
     <!-- ========================================================================= -->
     <!-- STEP 4: IMPROVEMENTS (Compact 2-Column Grid & Uniform Buttons)            -->
     <!-- ========================================================================= -->
-    <div x-show="step === 4" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4" style="display: none;">
+    <div x-show="step === 4" class="parchment-card p-6 shadow-md space-y-4" style="display: none;">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
             <div>
                 <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
@@ -514,7 +496,7 @@
     <!-- ========================================================================= -->
     <!-- STEP 5: BACKGROUND SKILLS & SPECIALIZATIONS (Cumulative Rank Display)     -->
     <!-- ========================================================================= -->
-    <div x-show="step === 5" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-4" style="display: none;">
+    <div x-show="step === 5" class="parchment-card p-6 shadow-md space-y-4" style="display: none;">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
             <div>
                 <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
@@ -632,7 +614,7 @@
     <!-- ========================================================================= -->
     <!-- STEP 6: CLASS & CLASS SKILLS (Copy Level Allocation & Cumulative Ranks)   -->
     <!-- ========================================================================= -->
-    <div x-show="step === 6" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5" style="display: none;">
+    <div x-show="step === 6" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
             <div>
                 <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
@@ -779,7 +761,7 @@
     <!-- ========================================================================= -->
     <!-- STEP 7: SPELLS & PSI POWERS                                               -->
     <!-- ========================================================================= -->
-    <div x-show="step === 7" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5" style="display: none;">
+    <div x-show="step === 7" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
         <template x-if="step === 7">
             <div class="space-y-5">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
@@ -872,7 +854,7 @@
     <!-- ========================================================================= -->
     <!-- STEP 8: EQUIPMENT & STARTING WEALTH (Uniform Buttons)                      -->
     <!-- ========================================================================= -->
-    <div x-show="step === 8" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5" style="display: none;">
+    <div x-show="step === 8" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
         <template x-if="step === 8">
             <div class="space-y-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4">
@@ -988,7 +970,7 @@
     <!-- ========================================================================= -->
     <!-- STEP 9: PERSONAL & SOCIAL DETAILS (Religion, Deity, Reputation, etc.)    -->
     <!-- ========================================================================= -->
-    <div x-show="step === 9" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-5" style="display: none;">
+    <div x-show="step === 9" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
         <template x-if="step === 9">
             <div class="space-y-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
@@ -1128,7 +1110,7 @@
     <!-- ========================================================================= -->
     <!-- STEP 10: REVIEW & SAVE (Classic D&D Character Sheet Style)                -->
     <!-- ========================================================================= -->
-    <div x-show="step === 10" class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-6" style="display: none;">
+    <div x-show="step === 10" class="parchment-card p-6 shadow-md space-y-6" style="display: none;">
         <template x-if="step === 10">
             <div class="space-y-4">
                 <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
@@ -1527,19 +1509,19 @@
     </div>
 
     <!-- Wizard Navigation Buttons -->
-    <div class="flex items-center justify-between border-t border-slate-200 pt-5">
-        <button type="button" x-show="step > 1" @click="step--"
-                class="px-5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-sm transition cursor-pointer">
+    <div class="flex items-center justify-between border-t border-amber-900/20 pt-5">
+        <button type="button" x-show="step > 1" x-cloak @click="step--"
+                class="btn-rol-secondary">
             &larr; Previous Step
         </button>
         <div class="ml-auto flex items-center gap-3">
-            <button type="button" x-show="step < 10" @click="nextStep()"
-                    class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg text-sm transition cursor-pointer shadow-sm">
-                Next Step &rarr;
+            <button type="button" x-show="step < 10" x-cloak @click="nextStep()"
+                    class="btn-rol-primary">
+                <span>Next Step</span> <span>&rarr;</span>
             </button>
-            <button type="button" x-show="step === 10" @click="saveCharacter()"
-                    class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-sm shadow transition cursor-pointer flex items-center gap-2">
-                <span>💾</span> Save Character to Database
+            <button type="button" x-show="step === 10" x-cloak @click="saveCharacter()"
+                    class="btn-rol-success">
+                <span>💾</span> <span>Save Character to Database</span>
             </button>
         </div>
     </div>
