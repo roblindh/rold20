@@ -1,6 +1,28 @@
 @extends('layouts.app', ['title' => 'Character Generation Wizard'])
 
 @section('content')
+<style>
+    /* Classic Character Sheet Table Typography & Colors */
+    td.cvheader, th.cvheader, .cvheader, td.cvheader *, th.cvheader *, .cvheader * {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        font-size: 1.05em !important;
+        font-weight: 700 !important;
+        font-variant: small-caps !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
+    }
+    td.cvlabel, th.cvlabel, .cvlabel {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-size: 0.8em !important;
+        font-weight: 700 !important;
+        font-variant: small-caps !important;
+    }
+    td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
+        background-color: #f0f0d9 !important;
+        color: #000000 !important;
+    }
+</style>
 @php
     $initialCampId = request()->query('campaign', '');
 @endphp

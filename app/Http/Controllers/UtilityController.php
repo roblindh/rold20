@@ -348,11 +348,528 @@ class UtilityController extends Controller
         $player = ($character && $character->Player) ? DB::table('players')->where('ID', $character->Player)->first() : null;
         $dm = ($campaign && $campaign->GameMaster) ? DB::table('players')->where('ID', $campaign->GameMaster)->first() : null;
 
+        // Reference Data & Party Assets for Interactive Modals
+        $classes = DB::table('ref_classes')->orderBy('Name')->get();
+        $skillAccess = DB::table('ref_skillaccess')->get();
+        $skillTypes = DB::table('ref_skilltypes')->whereIn('ID', [1, 2, 3, 4, 5, 6, 7, 8, 10])->orderBy('SortOrder')->get();
+        $skills = DB::table('ref_skills')->whereIn('Type', [1, 2, 3, 4, 5, 6, 7, 8, 10])->orderBy('Type')->orderBy('Name')->get();
+        $skillSpecializations = DB::table('ref_skillspecializations')->orderBy('Skill')->orderBy('Name')->get();
+        $improvements = DB::table('ref_improvementtraits')->get();
+        $itemTypes = DB::table('ref_itemtypes')->orderBy('SortOrder')->get();
+        $equipment = DB::table('ref_items')
+            ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
+            ->select('ref_items.*', 'ref_itemsubtypes.Type as ItemTypeID', 'ref_itemsubtypes.Name as SubtypeName')
+            ->where('ref_items.ShowPCGen', 1)
+            ->orWhereNotNull('ref_items.BaseValue')
+            ->orderBy('ref_items.Name')
+            ->get();
+        $spells = DB::table('ref_spells')->orderBy('Name')->get();
+        $spellOptions = DB::table('ref_spelloptions')->orderBy('SpellID')->orderBy('ID')->get();
+
+        $partyMembers = ($character && $character->Campaign)
+            ? DB::table('characters')
+                ->where('Campaign', $character->Campaign)
+                ->where('ID', '!=', $character->ID)
+                ->where(function($q) { $q->whereNull('IsNPC')->orWhere('IsNPC', 0); })
+                ->orderBy('Name')
+                ->get()
+            : collect([]);
+
+        $campaignVaultFunds = 0;
+        $campaignVaultItems = [];
+        if ($campaign && !empty($campaign->Vault)) {
+            $rawVault = $campaign->Vault;
+            if (str_starts_with($rawVault, '{')) {
+                $parsedVault = json_decode($rawVault, true) ?? [];
+                $campaignVaultFunds = (int)($parsedVault['funds'] ?? 0);
+                $campaignVaultItems = $parsedVault['items'] ?? [];
+            } elseif (str_starts_with($rawVault, '[')) {
+                $campaignVaultItems = json_decode($rawVault, true) ?? [];
+            }
+        }
+
         return view('utilities.charview', compact(
             'character', 'allCharacters', 'myCharacters', 'race', 'templates', 'template', 'culture', 'bgClass',
             'classesMap', 'skillsMap', 'specializationsMap', 'improvementsMap', 'spellsMap', 'spellOptionsMap', 'itemsMap',
-            'pantheonsMap', 'deitiesMap', 'sizesMap', 'bodyTypesMap', 'creatureSubtypes', 'ages', 'campaign', 'player', 'dm'
+            'pantheonsMap', 'deitiesMap', 'sizesMap', 'bodyTypesMap', 'creatureSubtypes', 'ages', 'campaign', 'player', 'dm',
+            'classes', 'skillAccess', 'skillTypes', 'skills', 'skillSpecializations', 'improvements',
+            'itemTypes', 'equipment', 'spells', 'spellOptions', 'partyMembers', 'campaignVaultFunds', 'campaignVaultItems'
         ));
+    }
+
+    /**
+     * Level up character
+     */
+    public function levelUpCharacter(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return back()->with('error', 'Character not found.');
+        }
+
+        $validated = $request->validate([
+            'class_id' => 'required|integer|exists:ref_classes,ID',
+            'improvements' => 'nullable|array',
+            'skills' => 'nullable|array',
+            'specializations' => 'nullable|array',
+            'spells' => 'nullable|array',
+            'leftover_ip' => 'nullable|integer|min:0',
+        ]);
+
+        $newClassId = (int)$validated['class_id'];
+        
+        // Calculate levels and XP requirement
+        $xp = (int)($character->ExperiencePts ?? 0);
+        $currentClasses = !empty($character->Classes) ? array_filter(array_map('intval', explode(';', (string)$character->Classes))) : [];
+        $currentLvl = count($currentClasses);
+        $targetLvl = $currentLvl + 1;
+        $reqXp = $targetLvl * ($targetLvl - 1) * 500;
+        
+        if ($xp < $reqXp) {
+            return back()->with('error', "Insufficient XP for level up. Required: {$reqXp} XP, Current: {$xp} XP.");
+        }
+
+        // 1. Append class
+        $currentClasses[] = $newClassId;
+        $newClassesStr = implode(';', $currentClasses);
+
+        // 2. Improvements
+        $existingImprovements = [];
+        if (!empty($character->Improvements)) {
+            $rawImp = $character->Improvements;
+            $parts = explode(';', $rawImp);
+            foreach ($parts as $p) {
+                if (str_contains($p, '=')) {
+                    [$traitKey, $val] = explode('=', $p, 2);
+                    $tId = (int)str_replace('I', '', $traitKey);
+                    $existingImprovements[$tId] = (int)$val;
+                }
+            }
+        }
+        if (!empty($validated['improvements'])) {
+            foreach ($validated['improvements'] as $tId => $inc) {
+                if ((int)$inc > 0) {
+                    $existingImprovements[(int)$tId] = ($existingImprovements[(int)$tId] ?? 0) + (int)$inc;
+                }
+            }
+        }
+        $impParts = [];
+        foreach ($existingImprovements as $tId => $val) {
+            if ($val != 0) {
+                $impParts[] = "I" . intval($tId) . "=" . ($val >= 0 ? '+' : '') . intval($val);
+            }
+        }
+        $newImprovementsStr = implode(';', $impParts);
+
+        // 3. Skills
+        $existingSkills = [];
+        if (!empty($character->Skills)) {
+            $rawSkills = $character->Skills;
+            $pairs = explode(';', $rawSkills);
+            foreach ($pairs as $pair) {
+                if (str_contains($pair, '=')) {
+                    [$sId, $rank] = explode('=', $pair, 2);
+                    $existingSkills[(int)$sId] = (float)$rank;
+                }
+            }
+        }
+        if (!empty($validated['skills'])) {
+            foreach ($validated['skills'] as $sId => $addRank) {
+                if ((float)$addRank > 0) {
+                    $existingSkills[(int)$sId] = ($existingSkills[(int)$sId] ?? 0) + (float)$addRank;
+                }
+            }
+        }
+        $skillParts = [];
+        foreach ($existingSkills as $sId => $rank) {
+            if ($rank > 0) {
+                $skillParts[] = intval($sId) . "=" . $rank;
+            }
+        }
+        $newSkillsStr = implode(';', $skillParts);
+
+        // 4. Specializations
+        $existingSpecs = [];
+        if (!empty($character->Specializations)) {
+            $rawSpecs = $character->Specializations;
+            $parts = explode(';', $rawSpecs);
+            foreach ($parts as $p) {
+                if (str_contains($p, '=')) {
+                    [$spId, $r] = explode('=', $p, 2);
+                    $existingSpecs[(int)$spId] = (int)$r;
+                } elseif (is_numeric($p) && (int)$p > 0) {
+                    $existingSpecs[(int)$p] = 1;
+                }
+            }
+        }
+        if (!empty($validated['specializations'])) {
+            foreach ($validated['specializations'] as $spId => $r) {
+                if ((int)$r > 0) {
+                    $existingSpecs[(int)$spId] = ($existingSpecs[(int)$spId] ?? 0) + (int)$r;
+                }
+            }
+        }
+        $specParts = [];
+        foreach ($existingSpecs as $spId => $r) {
+            if ($r > 0) {
+                $specParts[] = intval($spId) . "=" . $r;
+            }
+        }
+        $newSpecsStr = implode(';', $specParts);
+
+        // 5. Spells
+        $existingSpells = [];
+        if (!empty($character->Spells)) {
+            $raw = $character->Spells;
+            if (str_starts_with($raw, '{')) {
+                $existingSpells = json_decode($raw, true) ?? [];
+            }
+        }
+        if (!empty($validated['spells'])) {
+            foreach ($validated['spells'] as $spId => $opts) {
+                $existingSpells[(string)$spId] = is_array($opts) ? array_values(array_map('intval', $opts)) : [];
+            }
+        }
+        $newSpellsStr = json_encode($existingSpells);
+
+        $leftoverIp = (int)($validated['leftover_ip'] ?? 0);
+
+        DB::table('characters')->where('ID', $id)->update([
+            'Classes' => $newClassesStr,
+            'Improvements' => $newImprovementsStr,
+            'ImprovementPts' => $leftoverIp,
+            'Skills' => $newSkillsStr,
+            'Specializations' => $newSpecsStr,
+            'Spells' => $newSpellsStr,
+        ]);
+
+        return back()->with('status', "Congratulations! {$character->Name} has advanced to Level {$targetLvl}!");
+    }
+
+    /**
+     * Modify character profile
+     */
+    public function modifyCharacterProfile(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return back()->with('error', 'Character not found.');
+        }
+
+        $validated = $request->validate([
+            'Name' => 'required|string|max:100',
+            'PhysicalAge' => 'nullable|integer|min:1|max:5000',
+            'MentalAge' => 'nullable|integer|min:1|max:5000',
+            'Personality' => 'nullable|string|max:2000',
+            'Appearance' => 'nullable|string|max:2000',
+            'InfluenceDesc' => 'nullable|string|max:2000',
+            'InfluencePts' => 'nullable|integer|min:0',
+            'ReputationDesc' => 'nullable|string|max:2000',
+            'Reputation' => 'nullable|integer',
+        ]);
+
+        if ($validated['Name'] !== $character->Name) {
+            $exists = DB::table('characters')->where('Name', $validated['Name'])->where('ID', '!=', $id)->first();
+            if ($exists) {
+                return back()->with('error', "A character named '{$validated['Name']}' already exists.");
+            }
+        }
+
+        DB::table('characters')->where('ID', $id)->update([
+            'Name' => $validated['Name'],
+            'PhysicalAge' => $validated['PhysicalAge'] ?? $character->PhysicalAge,
+            'MentalAge' => $validated['MentalAge'] ?? $character->MentalAge,
+            'Personality' => $validated['Personality'] ?? '',
+            'Appearance' => $validated['Appearance'] ?? '',
+            'InfluenceDesc' => $validated['InfluenceDesc'] ?? '',
+            'InfluencePts' => isset($validated['InfluencePts']) ? (int)$validated['InfluencePts'] : $character->InfluencePts,
+            'ReputationDesc' => $validated['ReputationDesc'] ?? '',
+            'Reputation' => isset($validated['Reputation']) ? (int)$validated['Reputation'] : $character->Reputation,
+        ]);
+
+        return back()->with('status', "Profile details for '{$validated['Name']}' updated successfully!");
+    }
+
+    /**
+     * Trade money and items with party members or Campaign Vault
+     */
+    public function tradePartyAssets(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return back()->with('error', 'Character not found.');
+        }
+
+        if (empty($character->Campaign)) {
+            return back()->with('error', 'Character is not currently assigned to a campaign party.');
+        }
+
+        $campaignId = (int)$character->Campaign;
+        $campaign = DB::table('campaigns')->where('ID', $campaignId)->first();
+        if (!$campaign) {
+            return back()->with('error', 'Campaign not found.');
+        }
+
+        $tradeType = $request->input('trade_type');
+
+        // Parse Vault
+        $rawVault = $campaign->Vault;
+        $vaultFunds = 0;
+        $vaultItems = [];
+        if (!empty($rawVault)) {
+            if (str_starts_with($rawVault, '{')) {
+                $parsed = json_decode($rawVault, true) ?? [];
+                $vaultFunds = (int)($parsed['funds'] ?? 0);
+                $vaultItems = $parsed['items'] ?? [];
+            } elseif (str_starts_with($rawVault, '[')) {
+                $vaultItems = json_decode($rawVault, true) ?? [];
+            }
+        }
+
+        // Parse Character Equipment
+        $charEquip = [];
+        if (!empty($character->Equipment)) {
+            $raw = $character->Equipment;
+            if (str_starts_with($raw, '[')) {
+                $charEquip = json_decode($raw, true) ?? [];
+            } else {
+                $charEquip = [['name' => $raw, 'config' => $raw]];
+            }
+        }
+
+        $currentCharWealth = (int)($character->Wealth ?? 0);
+
+        return DB::transaction(function() use ($request, $character, $campaign, $tradeType, $vaultFunds, $vaultItems, $charEquip, $currentCharWealth, $campaignId, $id) {
+            if ($tradeType === 'give_money') {
+                $targetId = (int)$request->input('target_character_id');
+                $amount = (int)$request->input('amount', 0);
+                if ($amount <= 0) return back()->with('error', 'Invalid amount specified.');
+                if ($amount > $currentCharWealth) return back()->with('error', 'Insufficient funds.');
+
+                $targetChar = DB::table('characters')->where('ID', $targetId)->where('Campaign', $campaignId)->first();
+                if (!$targetChar) return back()->with('error', 'Target party member not found.');
+
+                DB::table('characters')->where('ID', $id)->update(['Wealth' => $currentCharWealth - $amount]);
+                DB::table('characters')->where('ID', $targetId)->update(['Wealth' => (int)($targetChar->Wealth ?? 0) + $amount]);
+
+                return back()->with('status', "Transferred {$amount} sp from {$character->Name} to {$targetChar->Name}.");
+            }
+
+            if ($tradeType === 'give_money_vault') {
+                $amount = (int)$request->input('amount', 0);
+                if ($amount <= 0) return back()->with('error', 'Invalid amount specified.');
+                if ($amount > $currentCharWealth) return back()->with('error', 'Insufficient funds.');
+
+                DB::table('characters')->where('ID', $id)->update(['Wealth' => $currentCharWealth - $amount]);
+                DB::table('campaigns')->where('ID', $campaignId)->update([
+                    'Vault' => json_encode(['funds' => $vaultFunds + $amount, 'items' => $vaultItems])
+                ]);
+
+                return back()->with('status', "Deposited {$amount} sp from {$character->Name} into the Campaign Vault.");
+            }
+
+            if ($tradeType === 'take_money_vault') {
+                $amount = (int)$request->input('amount', 0);
+                if ($amount <= 0) return back()->with('error', 'Invalid amount specified.');
+                if ($amount > $vaultFunds) return back()->with('error', 'Insufficient funds in Campaign Vault.');
+
+                DB::table('characters')->where('ID', $id)->update(['Wealth' => $currentCharWealth + $amount]);
+                DB::table('campaigns')->where('ID', $campaignId)->update([
+                    'Vault' => json_encode(['funds' => $vaultFunds - $amount, 'items' => $vaultItems])
+                ]);
+
+                return back()->with('status', "Withdrew {$amount} sp from Campaign Vault to {$character->Name}.");
+            }
+
+            if ($tradeType === 'give_item') {
+                $targetId = (int)$request->input('target_character_id');
+                $itemIdx = (int)$request->input('item_index');
+                if (!isset($charEquip[$itemIdx])) return back()->with('error', 'Item not found in inventory.');
+
+                $targetChar = DB::table('characters')->where('ID', $targetId)->where('Campaign', $campaignId)->first();
+                if (!$targetChar) return back()->with('error', 'Target party member not found.');
+
+                $itemToTransfer = $charEquip[$itemIdx];
+                unset($charEquip[$itemIdx]);
+                $charEquip = array_values($charEquip);
+
+                $targetEquip = [];
+                if (!empty($targetChar->Equipment)) {
+                    $raw = $targetChar->Equipment;
+                    if (str_starts_with($raw, '[')) {
+                        $targetEquip = json_decode($raw, true) ?? [];
+                    } else {
+                        $targetEquip = [['name' => $raw, 'config' => $raw]];
+                    }
+                }
+                $targetEquip[] = $itemToTransfer;
+
+                DB::table('characters')->where('ID', $id)->update(['Equipment' => json_encode($charEquip)]);
+                DB::table('characters')->where('ID', $targetId)->update(['Equipment' => json_encode($targetEquip)]);
+
+                $itemName = $itemToTransfer['name'] ?? 'Item';
+                return back()->with('status', "Gave '{$itemName}' to {$targetChar->Name}.");
+            }
+
+            if ($tradeType === 'give_item_vault') {
+                $itemIdx = (int)$request->input('item_index');
+                if (!isset($charEquip[$itemIdx])) return back()->with('error', 'Item not found in inventory.');
+
+                $itemToTransfer = $charEquip[$itemIdx];
+                unset($charEquip[$itemIdx]);
+                $charEquip = array_values($charEquip);
+
+                $vaultItems[] = $itemToTransfer;
+
+                DB::table('characters')->where('ID', $id)->update(['Equipment' => json_encode($charEquip)]);
+                DB::table('campaigns')->where('ID', $campaignId)->update([
+                    'Vault' => json_encode(['funds' => $vaultFunds, 'items' => $vaultItems])
+                ]);
+
+                $itemName = $itemToTransfer['name'] ?? 'Item';
+                return back()->with('status', "Deposited '{$itemName}' into Campaign Vault.");
+            }
+
+            if ($tradeType === 'take_item_vault') {
+                $itemIdx = (int)$request->input('item_index');
+                if (!isset($vaultItems[$itemIdx])) return back()->with('error', 'Item not found in Campaign Vault.');
+
+                $itemToTake = $vaultItems[$itemIdx];
+                unset($vaultItems[$itemIdx]);
+                $vaultItems = array_values($vaultItems);
+
+                $charEquip[] = $itemToTake;
+
+                DB::table('characters')->where('ID', $id)->update(['Equipment' => json_encode($charEquip)]);
+                DB::table('campaigns')->where('ID', $campaignId)->update([
+                    'Vault' => json_encode(['funds' => $vaultFunds, 'items' => $vaultItems])
+                ]);
+
+                $itemName = $itemToTake['name'] ?? 'Item';
+                return back()->with('status', "Took '{$itemName}' from Campaign Vault into {$character->Name}'s inventory.");
+            }
+
+            return back()->with('error', 'Unknown trade action.');
+        });
+    }
+
+    /**
+     * Buy items with character's wealth
+     */
+    public function buyCharacterItems(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return back()->with('error', 'Character not found.');
+        }
+
+        $validated = $request->validate([
+            'items' => 'required|array|min:1',
+            'items.*.id' => 'required|integer|exists:ref_items,ID',
+            'items.*.qty' => 'required|integer|min:1|max:100',
+        ]);
+
+        $currentWealth = (int)($character->Wealth ?? 0);
+        $totalCost = 0;
+        $itemsToAdd = [];
+
+        $itemIds = array_column($validated['items'], 'id');
+        $catalog = DB::table('ref_items')
+            ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
+            ->whereIn('ref_items.ID', $itemIds)
+            ->select('ref_items.*', 'ref_itemsubtypes.Name as SubtypeName')
+            ->get()
+            ->keyBy('ID');
+
+        foreach ($validated['items'] as $it) {
+            $ref = $catalog[$it['id']] ?? null;
+            if (!$ref) continue;
+            $qty = (int)$it['qty'];
+            $unitPrice = (float)($ref->BaseValue ?? 0);
+            $totalCost += (int)round($unitPrice * $qty);
+
+            $itemsToAdd[] = [
+                'id' => uniqid('item_'),
+                'item_id' => $ref->ID,
+                'name' => $ref->Name . ($qty > 1 ? " (x{$qty})" : ''),
+                'Name' => $ref->Name,
+                'qty' => $qty,
+                'Qty' => $qty,
+                'unit_price' => $unitPrice,
+                'value' => (float)$unitPrice * $qty,
+                'BaseValue' => $unitPrice,
+                'weight' => (float)($ref->Weight ?? 0) * $qty,
+                'size' => $ref->Size ?? 'Medium (M)',
+                'dr' => (string)($ref->DR ?? 0),
+                'config' => $ref->Name,
+                'added_at' => date('Y-m-d H:i:s'),
+            ];
+        }
+
+        if ($totalCost > $currentWealth) {
+            return back()->with('error', "Insufficient funds. Total cost is {$totalCost} sp, but {$character->Name} only has {$currentWealth} sp.");
+        }
+
+        $charEquip = [];
+        if (!empty($character->Equipment)) {
+            $raw = $character->Equipment;
+            if (str_starts_with($raw, '[')) {
+                $charEquip = json_decode($raw, true) ?? [];
+            } else {
+                $charEquip = [['name' => $raw, 'config' => $raw]];
+            }
+        }
+        foreach ($itemsToAdd as $item) {
+            $charEquip[] = $item;
+        }
+
+        DB::table('characters')->where('ID', $id)->update([
+            'Wealth' => $currentWealth - $totalCost,
+            'Equipment' => json_encode($charEquip),
+        ]);
+
+        return back()->with('status', "Successfully purchased items for {$totalCost} sp! New balance: " . ($currentWealth - $totalCost) . " sp.");
+    }
+
+    /**
+     * Learn spells and variations
+     */
+    public function learnCharacterSpells(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return back()->with('error', 'Character not found.');
+        }
+
+        $validated = $request->validate([
+            'spells' => 'required|array|min:1',
+            'spells.*.spell_id' => 'required|integer|exists:ref_spells,ID',
+            'spells.*.options' => 'nullable|array',
+        ]);
+
+        $existingSpells = [];
+        if (!empty($character->Spells)) {
+            $raw = $character->Spells;
+            if (str_starts_with($raw, '{')) {
+                $existingSpells = json_decode($raw, true) ?? [];
+            }
+        }
+
+        $newCount = 0;
+        foreach ($validated['spells'] as $sp) {
+            $sId = (string)$sp['spell_id'];
+            $options = isset($sp['options']) ? array_values(array_map('intval', $sp['options'])) : [];
+            if (!isset($existingSpells[$sId])) {
+                $newCount++;
+            }
+            $existingSpells[$sId] = $options;
+        }
+
+        DB::table('characters')->where('ID', $id)->update([
+            'Spells' => json_encode($existingSpells),
+        ]);
+
+        return back()->with('status', "Successfully updated spells for {$character->Name} ({$newCount} new spell(s) learned)!");
     }
 
     /**
@@ -1551,7 +2068,14 @@ class UtilityController extends Controller
             ? $campaigns->where('GameMaster', \Illuminate\Support\Facades\Auth::id())
             : collect([]);
 
-        return view('utilities.campaign', compact('campaigns', 'campaignsJson', 'characters', 'npcs', 'unassignedCharacters', 'myCampaigns', 'abilityMethods'));
+        $equipmentCatalog = DB::table('ref_items')
+            ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
+            ->select('ref_items.*', 'ref_itemsubtypes.Name as SubtypeName')
+            ->whereNotNull('ref_items.Name')
+            ->orderBy('ref_items.Name')
+            ->get();
+
+        return view('utilities.campaign', compact('campaigns', 'campaignsJson', 'characters', 'npcs', 'unassignedCharacters', 'myCampaigns', 'abilityMethods', 'equipmentCatalog'));
     }
 
     public function createCampaign(Request $request): \Illuminate\Http\RedirectResponse
@@ -1687,6 +2211,174 @@ class UtilityController extends Controller
         ]);
 
         return back()->with('status', "Character '{$character->Name}' has been removed from campaign '{$campaign->Name}'.");
+    }
+
+    /**
+     * Award XP, monetary treasure, and items to a campaign party
+     */
+    public function awardCampaign(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign) {
+            return back()->with('error', 'Campaign not found.');
+        }
+
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            $user = \Illuminate\Support\Facades\Auth::user();
+            if ($campaign->GameMaster !== $user->ID && !$user->isGM()) {
+                return back()->with('error', 'You are not authorized to award XP or treasure for this campaign.');
+            }
+        }
+
+        $validated = $request->validate([
+            'total_xp' => 'nullable|integer|min:0',
+            'divide_xp_equally' => 'nullable',
+            'char_bonus_xp' => 'nullable|array',
+            'total_silver' => 'nullable|integer|min:0',
+            'treasure_mode' => 'nullable|string|in:equal,custom,vault',
+            'char_silver' => 'nullable|array',
+            'vault_silver' => 'nullable|integer|min:0',
+            'items' => 'nullable|array',
+        ]);
+
+        $campChars = DB::table('characters')->where('Campaign', $id)->where(function($q) {
+            $q->whereNull('IsNPC')->orWhere('IsNPC', 0);
+        })->get();
+
+        $charCount = $campChars->count();
+        $totalXp = (int)($validated['total_xp'] ?? 0);
+        $divideXpEqually = !isset($validated['divide_xp_equally']) || (bool)$validated['divide_xp_equally'];
+        $equalXp = ($charCount > 0 && $divideXpEqually) ? (int)floor($totalXp / $charCount) : 0;
+        $bonuses = $validated['char_bonus_xp'] ?? [];
+
+        $totalSilver = (int)($validated['total_silver'] ?? 0);
+        $treasureMode = $validated['treasure_mode'] ?? 'equal';
+        $customSilver = $validated['char_silver'] ?? [];
+        $vaultSilverToAdd = (int)($validated['vault_silver'] ?? 0);
+
+        if ($treasureMode === 'equal' && $charCount > 0) {
+            $equalSilver = (int)floor($totalSilver / $charCount);
+        } else {
+            $equalSilver = 0;
+        }
+
+        if ($treasureMode === 'vault') {
+            $vaultSilverToAdd += $totalSilver;
+        }
+
+        $awardedItems = $validated['items'] ?? [];
+
+        DB::transaction(function() use ($campChars, $equalXp, $bonuses, $treasureMode, $equalSilver, $customSilver, $awardedItems, $vaultSilverToAdd, $id, $campaign) {
+            // Process each character
+            foreach ($campChars as $char) {
+                $charId = $char->ID;
+                $xpGain = $equalXp + (int)($bonuses[$charId] ?? 0);
+                
+                $silverGain = 0;
+                if ($treasureMode === 'equal') {
+                    $silverGain = $equalSilver;
+                } elseif ($treasureMode === 'custom') {
+                    $silverGain = (int)($customSilver[$charId] ?? 0);
+                }
+
+                // Check items assigned to this character
+                $charItems = [];
+                foreach ($awardedItems as $it) {
+                    if (isset($it['assign_to']) && (int)$it['assign_to'] === $charId) {
+                        $charItems[] = [
+                            'id' => uniqid('item_'),
+                            'name' => $it['name'] ?? 'Awarded Item',
+                            'config' => $it['config'] ?? ($it['name'] ?? 'Item'),
+                            'value' => (float)($it['value'] ?? 0),
+                            'weight' => (float)($it['weight'] ?? 0),
+                            'size' => $it['size'] ?? 'Medium (M)',
+                            'ec' => (int)($it['ec'] ?? 0),
+                            'pl' => (string)($it['pl'] ?? '0'),
+                            'dr' => (string)($it['dr'] ?? '0'),
+                            'hp' => (int)($it['hp'] ?? 1),
+                            'traits' => $it['traits'] ?? '',
+                            'mods' => $it['mods'] ?? '',
+                            'added_at' => date('Y-m-d H:i:s'),
+                        ];
+                    }
+                }
+
+                $equip = [];
+                if (!empty($char->Equipment)) {
+                    $raw = $char->Equipment;
+                    if (str_starts_with($raw, '[')) {
+                        $equip = json_decode($raw, true) ?? [];
+                    } else {
+                        $equip = [['name' => $raw, 'config' => $raw]];
+                    }
+                }
+                foreach ($charItems as $ci) {
+                    $equip[] = $ci;
+                }
+
+                $updates = [
+                    'ExperiencePts' => max(0, (int)($char->ExperiencePts ?? 0) + $xpGain),
+                    'Wealth' => max(0, (int)($char->Wealth ?? 0) + $silverGain),
+                ];
+                if (!empty($charItems)) {
+                    $updates['Equipment'] = json_encode($equip);
+                }
+
+                DB::table('characters')->where('ID', $charId)->update($updates);
+            }
+
+            // Process Vault items and Vault Silver
+            $vaultItemsToAdd = [];
+            foreach ($awardedItems as $it) {
+                if (!isset($it['assign_to']) || $it['assign_to'] === 'vault' || empty($it['assign_to'])) {
+                    $vaultItemsToAdd[] = [
+                        'id' => uniqid('vault_'),
+                        'name' => $it['name'] ?? 'Awarded Item',
+                        'config' => $it['config'] ?? ($it['name'] ?? 'Item'),
+                        'value' => (float)($it['value'] ?? 0),
+                        'weight' => (float)($it['weight'] ?? 0),
+                        'size' => $it['size'] ?? 'Medium (M)',
+                        'ec' => (int)($it['ec'] ?? 0),
+                        'pl' => (string)($it['pl'] ?? '0'),
+                        'dr' => (string)($it['dr'] ?? '0'),
+                        'hp' => (int)($it['hp'] ?? 1),
+                        'traits' => $it['traits'] ?? '',
+                        'mods' => $it['mods'] ?? '',
+                        'added_at' => date('Y-m-d H:i:s'),
+                    ];
+                }
+            }
+
+            if ($vaultSilverToAdd > 0 || !empty($vaultItemsToAdd)) {
+                $rawVault = $campaign->Vault;
+                $currentFunds = 0;
+                $currentItems = [];
+
+                if (!empty($rawVault)) {
+                    if (str_starts_with($rawVault, '{')) {
+                        $parsed = json_decode($rawVault, true) ?? [];
+                        $currentFunds = (int)($parsed['funds'] ?? 0);
+                        $currentItems = $parsed['items'] ?? [];
+                    } elseif (str_starts_with($rawVault, '[')) {
+                        $currentItems = json_decode($rawVault, true) ?? [];
+                    }
+                }
+
+                $newFunds = $currentFunds + $vaultSilverToAdd;
+                $newItems = array_merge($currentItems, $vaultItemsToAdd);
+
+                $newVaultJson = json_encode([
+                    'funds' => $newFunds,
+                    'items' => $newItems,
+                ]);
+
+                DB::table('campaigns')->where('ID', $id)->update([
+                    'Vault' => $newVaultJson,
+                ]);
+            }
+        });
+
+        return back()->with('status', 'XP, treasure, and loot awarded to the party successfully!');
     }
 
     /**

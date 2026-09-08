@@ -74,6 +74,16 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
 
     Route::get('/character-viewer/{id?}', [UtilityController::class, 'characterViewer'])->name('charview');
     Route::get('/charview/{id?}', [UtilityController::class, 'characterViewer']);
+    Route::post('/character-viewer/{id}/level-up', [UtilityController::class, 'levelUpCharacter'])->name('charview.levelup');
+    Route::post('/charview/{id}/level-up', [UtilityController::class, 'levelUpCharacter']);
+    Route::post('/character-viewer/{id}/modify-profile', [UtilityController::class, 'modifyCharacterProfile'])->name('charview.modify');
+    Route::post('/charview/{id}/modify-profile', [UtilityController::class, 'modifyCharacterProfile']);
+    Route::post('/character-viewer/{id}/trade', [UtilityController::class, 'tradePartyAssets'])->name('charview.trade');
+    Route::post('/charview/{id}/trade', [UtilityController::class, 'tradePartyAssets']);
+    Route::post('/character-viewer/{id}/buy-items', [UtilityController::class, 'buyCharacterItems'])->name('charview.buy-items');
+    Route::post('/charview/{id}/buy-items', [UtilityController::class, 'buyCharacterItems']);
+    Route::post('/character-viewer/{id}/learn-spells', [UtilityController::class, 'learnCharacterSpells'])->name('charview.learn-spells');
+    Route::post('/charview/{id}/learn-spells', [UtilityController::class, 'learnCharacterSpells']);
 
     Route::get('/npc-generator', [UtilityController::class, 'npcGenerator'])->name('npcgen');
     Route::get('/npcgen', [UtilityController::class, 'npcGenerator']);
@@ -107,6 +117,7 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/campaign/{id}/add-character', [UtilityController::class, 'addCharacterToCampaign'])->name('campaign.add-character');
     Route::post('/campaign/{id}/remove-character', [UtilityController::class, 'removeCharacterFromCampaign'])->name('campaign.remove-character');
     Route::post('/campaign/{id}/vault/remove', [UtilityController::class, 'removeVaultItemFromCampaign'])->name('campaign.vault.remove');
+    Route::post('/campaign/{id}/award', [UtilityController::class, 'awardCampaign'])->name('campaign.award');
 });
 
 Route::get('/combat-tracker', [UtilityController::class, 'combatTracker']);

@@ -64,10 +64,10 @@ class ReferenceShowAndCompendiumEnhancementsTest extends TestCase
         $response = $this->app->handle(\Illuminate\Http\Request::create('/analysis?lvl=5', 'GET'));
         $this->assertEquals(200, $response->getStatusCode());
         $content = $response->getContent();
-        $this->assertStringContainsString('Ruleset Balance & DPR Analysis Engine', $content);
-        $this->assertStringContainsString('Weapon DPR Matrix', $content);
-        $this->assertStringContainsString('Class Level Comparisons', $content);
-        $this->assertStringContainsString('Spell & Power Balance', $content);
+        $this->assertStringContainsString('Ruleset Analysis & Balance', $content);
+        $this->assertStringContainsString('Weapon DPR & DPAP', $content);
+        $this->assertStringContainsString('Class Comparison', $content);
+        $this->assertStringContainsString('Spell DPR', $content);
     }
 
     public function testTableOfContentsActionCategoriesFilterProperly(): void

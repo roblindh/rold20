@@ -132,6 +132,11 @@
                             <span>Party Members ({{ $campChars->count() }}):</span>
                         </span>
                         <div class="flex items-center gap-1.5 flex-wrap">
+                            @if($isMyCamp && $campChars->isNotEmpty())
+                                <button type="button" @click="openAwardModal({{ json_encode($camp) }}, {{ json_encode($campChars->values()->all()) }})" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] px-3 py-1.5 rounded-md border border-emerald-900 shadow-xs transition inline-flex items-center gap-1 cursor-pointer">
+                                    <span>🎁</span> Grant XP &amp; Treasure
+                                </button>
+                            @endif
                             <a href="{{ route('utilities.chargen', [], false) }}?campaign={{ $camp->ID }}" class="bg-amber-700 hover:bg-amber-800 text-white font-bold text-[11px] px-3 py-1.5 rounded-md border border-amber-900 shadow-xs transition inline-flex items-center gap-1 cursor-pointer">
                                 <span>➕</span> Generate New PC
                             </a>
@@ -511,6 +516,229 @@
             </div>
         </div>
     </div>
+
+    <!-- Grant XP & Treasure to Party Modal -->
+    <div x-show="showAwardModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showAwardModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col" @click.outside="showAwardModal = false">
+            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
+                <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
+                    <span>🎁</span>
+                    <span>Grant XP &amp; Treasure — <strong x-text="awardCamp.Name"></strong></span>
+                    <span class="text-xs bg-emerald-700 text-emerald-100 font-mono px-2 py-0.5 rounded ml-2" x-text="awardParty.length + ' Party Members'"></span>
+                </div>
+                <button @click="showAwardModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
+            </div>
+
+            <form :action="'{{ route('utilities.campaign.award', ['id' => '__ID__'], false) }}'.replace('__ID__', awardCamp.ID)" method="POST" class="p-6 overflow-y-auto space-y-6 flex-1">
+                @csrf
+                
+                <!-- 1. XP AWARD SECTION -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                            <span>⭐</span> Experience Points (XP)
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="inline-flex items-center gap-1.5 text-xs text-slate-700 font-semibold cursor-pointer">
+                                <input type="checkbox" name="divide_xp_equally" value="1" x-model="awardData.divide_xp_equally" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                                <span>Divide Total Equally (<span x-text="awardParty.length ? Math.floor((awardData.total_xp || 0) / awardParty.length) : 0"></span> XP/ea)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="sm:col-span-1">
+                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Total Party XP</label>
+                            <input type="number" name="total_xp" x-model.number="awardData.total_xp" min="0" step="50" placeholder="e.g. 2000"
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black font-mono font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            <span class="text-[11px] text-slate-500 mt-1 block">Pool XP to split among members</span>
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Party Members XP Allocation</label>
+                            <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                                <template x-for="c in awardParty" :key="c.ID">
+                                    <div class="flex items-center justify-between bg-white border border-slate-200 p-2.5 rounded-lg text-xs gap-2">
+                                        <div class="min-w-0 flex-1">
+                                            <div class="font-bold text-slate-800 truncate" x-text="c.Name"></div>
+                                            <div class="text-[10px] text-slate-500 font-mono">
+                                                Current: <span x-text="parseInt(c.ExperiencePts || 0).toLocaleString()"></span> XP (Lvl <span x-text="c.Level || 1"></span>)
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center gap-2 shrink-0">
+                                            <div class="flex items-center gap-1">
+                                                <span class="text-[10px] text-slate-500 font-semibold">+Bonus:</span>
+                                                <input type="number" :name="'char_bonus_xp[' + c.ID + ']'" x-model.number="awardData.char_bonus_xp[c.ID]" min="0" step="25" placeholder="0"
+                                                       class="w-20 px-2 py-1 border border-slate-300 rounded text-xs text-black font-mono font-bold focus:ring-1 focus:ring-emerald-500 text-right">
+                                            </div>
+
+                                            <div class="text-right min-w-24">
+                                                <span class="text-emerald-700 font-bold font-mono block text-xs" x-text="'+' + getCharXpAward(c.ID).toLocaleString() + ' XP'"></span>
+                                                <span class="text-[10px] font-mono text-slate-600 block" x-text="'New: ' + getCharNewXp(c).toLocaleString()"></span>
+                                                <template x-if="getCharNewLevel(c) > (c.Level || 1)">
+                                                    <span class="inline-block text-[9px] bg-amber-100 text-amber-900 border border-amber-300 px-1 rounded font-bold">✨ Lvl <span x-text="getCharNewLevel(c)"></span> Ready!</span>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. MONETARY TREASURE SECTION -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                            <span>💰</span> Monetary Treasure (Silver Pieces - sp)
+                        </div>
+                        <div class="flex items-center gap-3 text-xs">
+                            <label class="inline-flex items-center gap-1 text-slate-700 font-semibold cursor-pointer">
+                                <input type="radio" name="treasure_mode" value="equal" x-model="awardData.treasure_mode" class="text-amber-600 focus:ring-amber-500">
+                                <span>Equal Split</span>
+                            </label>
+                            <label class="inline-flex items-center gap-1 text-slate-700 font-semibold cursor-pointer">
+                                <input type="radio" name="treasure_mode" value="custom" x-model="awardData.treasure_mode" class="text-amber-600 focus:ring-amber-500">
+                                <span>Custom Per Member</span>
+                            </label>
+                            <label class="inline-flex items-center gap-1 text-slate-700 font-semibold cursor-pointer">
+                                <input type="radio" name="treasure_mode" value="vault" x-model="awardData.treasure_mode" class="text-amber-600 focus:ring-amber-500">
+                                <span>Deposit All to Party Vault</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="sm:col-span-1">
+                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Total Silver Award (sp)</label>
+                            <input type="number" name="total_silver" x-model.number="awardData.total_silver" min="0" step="10" placeholder="e.g. 500"
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black font-mono font-bold focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <span class="text-[11px] text-slate-500 mt-1 block" x-show="awardData.treasure_mode === 'equal'">
+                                = <strong x-text="awardParty.length ? Math.floor((awardData.total_silver || 0) / awardParty.length) : 0"></strong> sp per member
+                            </span>
+                            <span class="text-[11px] text-amber-700 font-semibold mt-1 block" x-show="awardData.treasure_mode === 'vault'">
+                                All <span x-text="(awardData.total_silver || 0).toLocaleString()"></span> sp will be deposited into the Campaign Vault!
+                            </span>
+                        </div>
+
+                        <div class="sm:col-span-2" x-show="awardData.treasure_mode === 'custom'">
+                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Custom Coin per Member</label>
+                            <div class="space-y-2 max-h-36 overflow-y-auto pr-1">
+                                <template x-for="c in awardParty" :key="c.ID">
+                                    <div class="flex items-center justify-between bg-white border border-slate-200 p-2 rounded-lg text-xs">
+                                        <span class="font-bold text-slate-800" x-text="c.Name"></span>
+                                        <div class="flex items-center gap-1.5">
+                                            <input type="number" :name="'char_silver[' + c.ID + ']'" x-model.number="awardData.char_silver[c.ID]" min="0" step="5" placeholder="0"
+                                                   class="w-24 px-2 py-1 border border-slate-300 rounded text-xs text-black font-mono font-bold focus:ring-1 focus:ring-amber-500 text-right">
+                                            <span class="text-slate-500 font-mono">sp</span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-2" x-show="awardData.treasure_mode !== 'custom'">
+                            <div class="bg-amber-50/60 border border-amber-200 rounded-lg p-3 text-xs text-amber-950 space-y-1">
+                                <div class="font-bold flex items-center justify-between">
+                                    <span>💎 Vault Coin Deposit (Optional Extra):</span>
+                                </div>
+                                <div class="flex items-center gap-2 pt-1">
+                                    <input type="number" name="vault_silver" x-model.number="awardData.vault_silver" min="0" step="10" placeholder="Extra sp to vault..."
+                                           class="w-36 px-2.5 py-1.5 border border-amber-300 bg-white rounded text-xs text-black font-mono font-bold focus:ring-1 focus:ring-amber-500">
+                                    <span class="text-slate-600 text-[11px]">sp will be stored directly in Party Vault pool</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. ITEMS & LOOT REWARDS SECTION -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                            <span>🗡️</span> Items &amp; Magic Loot Awards (<span x-text="awardData.items.length"></span>)
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select x-model="selectedCatalogItemId" class="text-xs px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white text-slate-800">
+                                <option value="">-- Choose from Equipment Catalog --</option>
+                                @if(isset($equipmentCatalog))
+                                    @foreach($equipmentCatalog as $eq)
+                                        <option value="{{ $eq->ID }}" data-name="{{ $eq->Name }}" data-value="{{ $eq->BaseValue ?? 0 }}" data-weight="{{ $eq->Weight ?? 0 }}" data-pl="{{ $eq->PowerLevel ?? 0 }}" data-dr="{{ $eq->DR ?? 0 }}">
+                                            {{ $eq->Name }} ({{ number_format((int)($eq->BaseValue ?? 0)) }} sp, {{ $eq->SubtypeName ?? 'Gear' }})
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <button type="button" @click="addItemFromCatalog()" :disabled="!selectedCatalogItemId" class="bg-indigo-700 hover:bg-indigo-800 disabled:opacity-50 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition cursor-pointer">
+                                ➕ Add Item
+                            </button>
+                            <button type="button" @click="addCustomItem()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs px-3 py-1.5 rounded-lg transition cursor-pointer">
+                                ✏️ Custom
+                            </button>
+                        </div>
+                    </div>
+
+                    <template x-if="awardData.items.length === 0">
+                        <div class="p-4 bg-white border border-dashed border-slate-300 rounded-lg text-xs text-slate-500 text-center">
+                            No items queued for award. Use the equipment selector above or add custom loot.
+                        </div>
+                    </template>
+
+                    <div class="space-y-2.5 max-h-56 overflow-y-auto pr-1">
+                        <template x-for="(it, idx) in awardData.items" :key="idx">
+                            <div class="bg-white border border-slate-200 p-3 rounded-lg text-xs space-y-2 shadow-2xs">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2 flex-1">
+                                        <input type="text" :name="'items[' + idx + '][name]'" x-model="it.name" placeholder="Item Name" required
+                                               class="font-bold text-slate-900 border border-slate-300 px-2 py-1 rounded text-xs w-full max-w-xs focus:ring-1 focus:ring-indigo-500">
+                                        <input type="hidden" :name="'items[' + idx + '][config]'" :value="it.config || it.name">
+                                        <input type="hidden" :name="'items[' + idx + '][weight]'" :value="it.weight || 0">
+                                        <input type="hidden" :name="'items[' + idx + '][size]'" :value="it.size || 'Medium (M)'">
+                                        <input type="hidden" :name="'items[' + idx + '][ec]'" :value="it.ec || 0">
+                                        <input type="hidden" :name="'items[' + idx + '][pl]'" :value="it.pl || '0'">
+                                        <input type="hidden" :name="'items[' + idx + '][dr]'" :value="it.dr || '0'">
+                                        <input type="hidden" :name="'items[' + idx + '][hp]'" :value="it.hp || 1">
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[10px] text-slate-500">Value:</span>
+                                            <input type="number" :name="'items[' + idx + '][value]'" x-model.number="it.value" min="0" step="1"
+                                                   class="w-20 px-1.5 py-1 border border-slate-300 rounded text-xs text-right font-mono">
+                                            <span class="text-[10px] text-slate-500">sp</span>
+                                        </div>
+
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[10px] text-slate-700 font-bold">Assign to:</span>
+                                            <select :name="'items[' + idx + '][assign_to]'" x-model="it.assign_to"
+                                                    class="border border-slate-300 rounded px-2 py-1 text-xs bg-indigo-50/70 font-semibold text-indigo-950 focus:ring-1 focus:ring-indigo-500">
+                                                <option value="vault">💎 Party Pool (Campaign Vault)</option>
+                                                <template x-for="c in awardParty" :key="c.ID">
+                                                    <option :value="c.ID" x-text="'🧙‍♂️ ' + c.Name"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+
+                                        <button type="button" @click="removeItem(idx)" class="text-red-500 hover:text-red-700 font-bold px-1.5 py-0.5 rounded cursor-pointer leading-none" title="Remove item">&times;</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-3 border-t border-slate-200">
+                    <button type="button" @click="showAwardModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-800 cursor-pointer">Cancel</button>
+                    <button type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-lg shadow-md border border-emerald-900 transition flex items-center gap-2 cursor-pointer">
+                        <span>✨</span>
+                        <span>Grant Rewards to Party</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -527,8 +755,22 @@ function campaignAdmin() {
         showEditModal: false,
         showAddPcModal: false,
         showNpcModal: false,
+        showAwardModal: false,
         activeNpc: null,
         addPcCamp: { ID: null, Name: '' },
+        awardCamp: { ID: null, Name: '' },
+        awardParty: [],
+        selectedCatalogItemId: '',
+        awardData: {
+            total_xp: 0,
+            divide_xp_equally: true,
+            char_bonus_xp: {},
+            total_silver: 0,
+            treasure_mode: 'equal',
+            char_silver: {},
+            vault_silver: 0,
+            items: []
+        },
         selectedCharId: '',
         createCamp: {
             Name: '',
@@ -585,6 +827,77 @@ function campaignAdmin() {
         openNpcModal(npc) {
             this.activeNpc = npc;
             this.showNpcModal = true;
+        },
+        openAwardModal(camp, chars) {
+            this.awardCamp = {
+                ID: camp.ID,
+                Name: camp.Name
+            };
+            this.awardParty = chars || [];
+            this.awardData = {
+                total_xp: 0,
+                divide_xp_equally: true,
+                char_bonus_xp: {},
+                total_silver: 0,
+                treasure_mode: 'equal',
+                char_silver: {},
+                vault_silver: 0,
+                items: []
+            };
+            this.selectedCatalogItemId = '';
+            this.showAwardModal = true;
+        },
+        calculateLevelFromXp(xp) {
+            let tl = 1;
+            while (tl * (tl - 1) * 500 <= xp && tl <= 20) {
+                tl++;
+            }
+            return Math.max(1, tl - 1);
+        },
+        getCharXpAward(charId) {
+            const equal = (this.awardData.divide_xp_equally && this.awardParty.length > 0)
+                ? Math.floor((this.awardData.total_xp || 0) / this.awardParty.length)
+                : 0;
+            const bonus = parseInt(this.awardData.char_bonus_xp[charId] || 0) || 0;
+            return equal + bonus;
+        },
+        getCharNewXp(char) {
+            const curr = parseInt(char.ExperiencePts || 0) || 0;
+            return curr + this.getCharXpAward(char.ID);
+        },
+        getCharNewLevel(char) {
+            return this.calculateLevelFromXp(this.getCharNewXp(char));
+        },
+        addItemFromCatalog() {
+            if (!this.selectedCatalogItemId) return;
+            const selectEl = document.querySelector('select[x-model="selectedCatalogItemId"]');
+            const opt = selectEl ? selectEl.options[selectEl.selectedIndex] : null;
+            if (!opt) return;
+
+            this.awardData.items.push({
+                name: opt.getAttribute('data-name') || opt.text,
+                config: opt.getAttribute('data-name') || opt.text,
+                value: parseFloat(opt.getAttribute('data-value')) || 0,
+                weight: parseFloat(opt.getAttribute('data-weight')) || 0,
+                pl: opt.getAttribute('data-pl') || '0',
+                dr: opt.getAttribute('data-dr') || '0',
+                assign_to: 'vault'
+            });
+            this.selectedCatalogItemId = '';
+        },
+        addCustomItem() {
+            this.awardData.items.push({
+                name: 'Custom Treasure Item',
+                config: 'Custom Item',
+                value: 50,
+                weight: 1,
+                pl: '0',
+                dr: '0',
+                assign_to: 'vault'
+            });
+        },
+        removeItem(idx) {
+            this.awardData.items.splice(idx, 1);
         }
     };
 }

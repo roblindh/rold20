@@ -1,7 +1,29 @@
 @extends('layouts.app', ['title' => 'Character Sheet Viewer'])
 
 @section('content')
-<div class="space-y-6">
+<style>
+    /* Classic Character Sheet Table Typography & Colors */
+    td.cvheader, th.cvheader, .cvheader, td.cvheader *, th.cvheader *, .cvheader * {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        font-size: 1.05em !important;
+        font-weight: 700 !important;
+        font-variant: small-caps !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
+    }
+    td.cvlabel, th.cvlabel, .cvlabel {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-size: 0.8em !important;
+        font-weight: 700 !important;
+        font-variant: small-caps !important;
+    }
+    td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
+        background-color: #f0f0d9 !important;
+        color: #000000 !important;
+    }
+</style>
+<div class="space-y-6" x-data="characterViewerApp()">
     <!-- Page Header & Character Switcher -->
     <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-4 gap-4">
         <div>
@@ -176,6 +198,9 @@
                 }
             }
             $classesDisplayStr = !empty($classSummary) ? implode(', ', $classSummary) : ($racialLevel > 0 ? 'Racial Paragon' : 'None');
+            $actualClassCount = count($classIdsList);
+            $nextLevelReqXp = ($actualClassCount + 1) * $actualClassCount * 500;
+            $canLevelUp = ($totalLevel > $actualClassCount && $totalLevel <= 20) || ($xp >= $nextLevelReqXp && $actualClassCount < 20);
 
             // --- 3. Speed, Size & Senses ---
             $initMod = $dexMod + ($improvementsAllocated[14] ?? 0);
@@ -344,12 +369,40 @@
 
         <!-- Character Sheet Action Bar -->
         <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900 text-white p-3 rounded-xl shadow-xs" x-data="{ copiedMd: false, copiedTxt: false }">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
                 <span class="text-lg">🧙‍♂️</span>
                 <span class="font-bold text-sm text-amber-400">{{ $character->Name }}</span>
-                <span class="text-xs text-slate-400 font-mono">Level {{ $totalLevel }} {{ $race->Name ?? 'Hero' }}</span>
+                <span class="text-xs text-slate-400 font-mono">Level {{ $totalLevel }} {{ $race->Name ?? 'Hero' }} ({{ number_format($xp) }} XP)</span>
             </div>
-            <div class="flex items-center gap-2">
+
+            <!-- Action Buttons Group -->
+            <div class="flex items-center gap-2 flex-wrap">
+                @if($canLevelUp)
+                    <button type="button" @click="showLevelUpModal = true" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold border border-emerald-400 flex items-center gap-1.5 transition cursor-pointer shadow-xs animate-pulse" title="Ready to advance to Level {{ $actualClassCount + 1 }}!">
+                        <span>⬆️ Level Up!</span>
+                    </button>
+                @else
+                    <button type="button" disabled class="px-3 py-1.5 bg-slate-800 text-slate-500 rounded-lg text-xs font-medium border border-slate-700 flex items-center gap-1.5 cursor-not-allowed opacity-60" title="Need {{ number_format(max(0, $nextLevelReqXp - $xp)) }} more XP to reach Level {{ $actualClassCount + 1 }}">
+                        <span>⬆️ Level Up</span>
+                    </button>
+                @endif
+
+                <button type="button" @click="showModifyModal = true" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                    <span>✏️ Modify</span>
+                </button>
+
+                <button type="button" @click="showTradeModal = true" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                    <span>🤝 Party Trade</span>
+                </button>
+
+                <button type="button" @click="showBuyItemsModal = true" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                    <span>🛍️ Buy Items</span>
+                </button>
+
+                <button type="button" @click="showLearnSpellsModal = true" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                    <span>✨ Learn Spells</span>
+                </button>
+
                 <button type="button" 
                         @click="
                             const md = $refs.charMarkdown ? $refs.charMarkdown.value : '';
@@ -357,9 +410,9 @@
                             copiedMd = true;
                             setTimeout(() => copiedMd = false, 2000);
                         "
-                        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
-                    <span x-show="!copiedMd">📝 Copy Markdown Sheet</span>
-                    <span x-show="copiedMd" class="text-emerald-400 font-bold">✓ Copied!</span>
+                        class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1 transition cursor-pointer" title="Copy Markdown">
+                    <span x-show="!copiedMd">📝 MD</span>
+                    <span x-show="copiedMd" class="text-emerald-400 font-bold">✓</span>
                 </button>
                 <button type="button" 
                         @click="
@@ -368,14 +421,14 @@
                             copiedTxt = true;
                             setTimeout(() => copiedTxt = false, 2000);
                         "
-                        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
-                    <span x-show="!copiedTxt">📋 Copy Text</span>
-                    <span x-show="copiedTxt" class="text-emerald-400 font-bold">✓ Copied!</span>
+                        class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1 transition cursor-pointer" title="Copy Plaintext">
+                    <span x-show="!copiedTxt">📋 Text</span>
+                    <span x-show="copiedTxt" class="text-emerald-400 font-bold">✓</span>
                 </button>
                 <button type="button" 
                         onclick="window.print()"
-                        class="px-3 py-1.5 bg-indigo-900/70 hover:bg-indigo-800 text-indigo-200 hover:text-white rounded-lg text-xs font-semibold border border-indigo-700 flex items-center gap-1.5 transition cursor-pointer">
-                    <span>🖨️ Print Sheet</span>
+                        class="px-2.5 py-1.5 bg-indigo-900/70 hover:bg-indigo-800 text-indigo-200 hover:text-white rounded-lg text-xs font-semibold border border-indigo-700 flex items-center gap-1 transition cursor-pointer" title="Print Sheet">
+                    <span>🖨️</span>
                 </button>
             </div>
 
@@ -823,9 +876,9 @@ HP: {{ $hp }} / {{ $hp }} | SP: {{ $sp }} / {{ $sp }} | PP: {{ $pp }} / {{ $pp }
                                     </tr>
                                     @forelse($equipmentList as $it)
                                         <tr>
-                                            <td class="cvlist">{{ $it['Name'] ?? 'Item' }}</td>
-                                            <td class="cvlist cvcenter font-mono">{{ $it['Qty'] ?? 1 }}</td>
-                                            <td class="cvlist cvcenter font-mono">{{ ((int)($it['BaseValue'] ?? 0) * (int)($it['Qty'] ?? 1)) }} sp</td>
+                                            <td class="cvlist">{{ $it['Name'] ?? $it['name'] ?? 'Item' }}</td>
+                                            <td class="cvlist cvcenter font-mono">{{ $it['Qty'] ?? $it['qty'] ?? 1 }}</td>
+                                            <td class="cvlist cvcenter font-mono">{{ ((int)($it['BaseValue'] ?? $it['value'] ?? $it['unit_price'] ?? 0) * (int)($it['Qty'] ?? $it['qty'] ?? 1)) }} sp</td>
                                         </tr>
                                     @empty
                                         <tr><td class="cvlist" colspan="3">No equipment purchased.</td></tr>
@@ -870,6 +923,12 @@ HP: {{ $hp }} / {{ $hp }} | SP: {{ $sp }} / {{ $sp }} | PP: {{ $pp }} / {{ $pp }
                 </tbody>
             </table>
         </div>
+        <!-- Modals Partial Inclusions -->
+        @include('utilities.partials.charview.modal_levelup')
+        @include('utilities.partials.charview.modal_modify')
+        @include('utilities.partials.charview.modal_partytrade')
+        @include('utilities.partials.charview.modal_buyitems')
+        @include('utilities.partials.charview.modal_learnspells')
     @else
         <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-3">
             <span class="text-5xl">🧙‍♂️</span>
@@ -883,4 +942,187 @@ HP: {{ $hp }} / {{ $hp }} | SP: {{ $sp }} / {{ $sp }} | PP: {{ $pp }} / {{ $pp }
         </div>
     @endif
 </div>
+
+<script>
+function characterViewerApp() {
+    const rawClasses = @json($classes ?? []);
+    const rawSkillAccess = @json($skillAccess ?? []);
+    const rawSkills = @json($skills ?? []);
+    const rawImprovements = @json($improvements ?? []);
+    const rawEquipment = @json($equipment ?? []);
+    const rawSpells = @json($spells ?? []);
+    const rawSpellOptions = @json($spellOptions ?? []);
+    const knownSpellIds = @json(isset($spellsList) ? array_keys($spellsList) : []);
+    const characterSkills = @json($skillsList ?? []);
+    const initialClassId = {{ (isset($classIdsList) && !empty($classIdsList)) ? end($classIdsList) : (($classes ?? collect([]))->first()->ID ?? 1) }};
+    const initialLeftoverIp = {{ (isset($character) && $character) ? (int)($character->ImprovementPts ?? 0) : 0 }};
+    const currentWealth = {{ isset($wealth) ? (int)$wealth : ((isset($character) && $character) ? (int)($character->Wealth ?? 0) : 0) }};
+
+    // Build lookup maps
+    const classesMap = {};
+    (rawClasses || []).forEach(c => { classesMap[c.ID] = c; });
+
+    const skillAccessByClass = {};
+    (rawSkillAccess || []).forEach(sa => {
+        if (!skillAccessByClass[sa.ClassID]) skillAccessByClass[sa.ClassID] = {};
+        skillAccessByClass[sa.ClassID][sa.SkillID] = sa.AccessType;
+    });
+
+    const skillsMap = {};
+    (rawSkills || []).forEach(s => { skillsMap[s.ID] = s; });
+
+    // Mark known spells
+    const spellsWithKnown = (rawSpells || []).map(sp => ({
+        ...sp,
+        isKnown: knownSpellIds.includes(parseInt(sp.ID)) || knownSpellIds.includes(String(sp.ID))
+    }));
+
+    return {
+        // Modal visibility
+        showLevelUpModal: false,
+        showModifyModal: false,
+        showTradeModal: false,
+        showBuyItemsModal: false,
+        showLearnSpellsModal: false,
+
+        // Level Up state
+        lvlStep: 1,
+        lvlData: {
+            selectedClassId: initialClassId,
+            remainingIp: 5 + initialLeftoverIp,
+            remainingSp: classesMap[initialClassId] ? parseInt(classesMap[initialClassId].SkillPtsPerLevel || classesMap[initialClassId].SkillPts || 2) : 2,
+            improvements: {},
+            skills: {},
+            selectedSpells: {}
+        },
+
+        onLvlClassChanged(clsId, spPerLvl) {
+            this.lvlData.selectedClassId = clsId;
+            this.lvlData.skills = {};
+            this.lvlData.remainingSp = spPerLvl || (classesMap[clsId] ? parseInt(classesMap[clsId].SkillPtsPerLevel || 2) : 2);
+        },
+
+        get availableClassSkills() {
+            const clsId = this.lvlData.selectedClassId;
+            const accessForClass = skillAccessByClass[clsId] || {};
+            
+            return (rawSkills || []).map(s => {
+                const accessCode = accessForClass[s.ID];
+                let accessType = 'Cross-Class';
+                if (accessCode == 1 || accessCode === '1' || accessCode === 'Primary') {
+                    accessType = 'Primary';
+                } else if (accessCode == 2 || accessCode === '2' || accessCode === 'Secondary') {
+                    accessType = 'Secondary';
+                } else {
+                    accessType = 'Secondary';
+                }
+                const currRank = characterSkills[s.ID] || characterSkills[String(s.ID)] || 0;
+                return {
+                    ID: s.ID,
+                    Name: s.Name,
+                    AccessType: accessType,
+                    CurrentRank: currRank
+                };
+            });
+        },
+
+        adjustImprovement(impId, delta, cost) {
+            cost = cost || 1;
+            const current = this.lvlData.improvements[impId] || 0;
+            const next = current + delta;
+            if (next < 0) return;
+            if (delta > 0 && this.lvlData.remainingIp < cost) return;
+
+            this.lvlData.improvements[impId] = next;
+            this.lvlData.remainingIp -= (delta * cost);
+        },
+
+        adjustSkill(skillId, delta, accessType) {
+            const current = this.lvlData.skills[skillId] || 0;
+            const next = current + delta;
+            if (next < 0) return;
+            if (delta > 0 && this.lvlData.remainingSp < delta) return;
+
+            this.lvlData.skills[skillId] = Math.round(next * 10) / 10;
+            this.lvlData.remainingSp = Math.round((this.lvlData.remainingSp - delta) * 10) / 10;
+        },
+
+        // Buy Items Shop State
+        buySearchQuery: '',
+        buySelectedType: '',
+        shopCatalog: rawEquipment || [],
+        cartItems: [],
+
+        get filteredShopItems() {
+            let list = this.shopCatalog;
+            if (this.buySelectedType) {
+                list = list.filter(it => it.ItemTypeID == this.buySelectedType || it.Type == this.buySelectedType);
+            }
+            if (this.buySearchQuery.trim()) {
+                const q = this.buySearchQuery.toLowerCase();
+                list = list.filter(it => 
+                    (it.Name && it.Name.toLowerCase().includes(q)) ||
+                    (it.SubtypeName && it.SubtypeName.toLowerCase().includes(q))
+                );
+            }
+            return list;
+        },
+
+        addItemToCart(item) {
+            const existing = this.cartItems.find(c => c.id === item.ID);
+            if (existing) {
+                existing.qty++;
+            } else {
+                this.cartItems.push({
+                    id: item.ID,
+                    name: item.Name,
+                    unit_price: parseFloat(item.BaseValue || 0),
+                    qty: 1
+                });
+            }
+        },
+
+        removeCartItem(index) {
+            this.cartItems.splice(index, 1);
+        },
+
+        get cartTotalCost() {
+            return this.cartItems.reduce((acc, it) => acc + (it.unit_price * it.qty), 0);
+        },
+
+        get remainingWealth() {
+            return currentWealth - this.cartTotalCost;
+        },
+
+        // Learn Spells State
+        spellSearchQuery: '',
+        spellFilterType: '',
+        spellsCatalog: spellsWithKnown,
+        spellOptions: rawSpellOptions || [],
+        spellsToLearn: {},
+
+        get filteredSpellCatalog() {
+            let list = this.spellsCatalog;
+            if (this.spellFilterType) {
+                list = list.filter(sp => (sp.School && sp.School.toLowerCase().includes(this.spellFilterType.toLowerCase())) ||
+                                         (sp.Type && sp.Type.toLowerCase().includes(this.spellFilterType.toLowerCase())));
+            }
+            if (this.spellSearchQuery.trim()) {
+                const q = this.spellSearchQuery.toLowerCase();
+                list = list.filter(sp => 
+                    (sp.Name && sp.Name.toLowerCase().includes(q)) ||
+                    (sp.School && sp.School.toLowerCase().includes(q)) ||
+                    (sp.Summary && sp.Summary.toLowerCase().includes(q)) ||
+                    (sp.Description && sp.Description.toLowerCase().includes(q))
+                );
+            }
+            return list;
+        },
+
+        getSpellOptionsFor(spellId) {
+            return (this.spellOptions || []).filter(opt => opt.SpellID == spellId);
+        }
+    };
+}
+</script>
 @endsection
