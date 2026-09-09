@@ -157,8 +157,10 @@
     spend to perform a certain action.
     Typically, a high-level character or monster has more AP to spend per round
     than one of low level.
-    For a low-level character, 1 AP is roughly equivalent to 0.5 seconds, while
-    for a high-level character, it can be as short as 0.15 seconds.
+    Since a creature's AP increases with level, there is no fixed conversion rate
+    between AP and seconds.
+    For a low-level character, 1 AP would be roughly equivalent to 0.5 seconds,
+    while for a high-level character, it would be as short as 0.15 seconds.
 </p>
 <p>
     <em>Movement Points (MP):</em> Movement Points are similar to Action Points

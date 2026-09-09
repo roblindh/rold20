@@ -1,7 +1,7 @@
 <nav @click="if ($event.target.closest('a')) mobileMenuOpen = false" class="w-full bg-slate-900 text-slate-200 h-full p-3.5 flex flex-col space-y-3.5 border-r border-amber-900/30 text-sm overflow-hidden select-none">
     <div class="px-2 py-2.5 border-b border-amber-900/30 flex items-center justify-between">
         <a href="{{ route('home', [], false) }}" class="font-bold text-amber-400 text-base flex items-center gap-2 tracking-wide font-serif">
-            <img src="/styles/reddragon_sml.gif" alt="RoL d20" class="h-6 w-auto object-contain" />
+            <img src="/styles/golddragon_sml.png" alt="RoL d20" class="h-6 w-auto object-contain" />
             <span>RoL d20</span>
         </a>
         <div class="flex items-center gap-2">

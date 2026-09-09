@@ -70,7 +70,7 @@
             </button>
 
             <a href="{{ route('home', [], false) }}" class="flex items-center gap-1.5 sm:gap-2.5 hover:opacity-90 transition">
-                <img src="/styles/reddragon_sml.gif" alt="RoL d20 Dragon" class="h-8 sm:h-10 w-auto object-contain drop-shadow" />
+                <img src="/styles/golddragon_sml.png" alt="RoL d20 Gold Dragon" class="h-8 sm:h-10 w-auto object-contain drop-shadow" />
                 <span class="site-title text-xl sm:text-2xl font-bold tracking-tight">RoL d20</span>
             </a>
             <span class="hidden lg:inline text-xs text-amber-950 font-semibold border-l border-amber-800/30 pl-3 font-serif italic">Streamlined 3.5E High-Fantasy RPG</span>
