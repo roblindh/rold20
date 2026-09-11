@@ -34,4 +34,12 @@ class Character extends Model
     {
         return $this->belongsTo(RefCreature::class, 'RaceID', 'ID');
     }
+
+    /**
+     * Calculate full entity state across 6-stage pipeline.
+     */
+    public function getCalculatedState(int $config = \App\Services\Entity\EquipmentManager::CONFIG_COMBAT): array
+    {
+        return \App\Services\Entity\EntityEngine::calculate($this, $config);
+    }
 }

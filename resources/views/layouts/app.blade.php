@@ -157,6 +157,18 @@
                     </div>
                 @endif
                 @yield('content')
+
+                <!-- Site Legal & Licensing Footer -->
+                <footer class="site-legal-footer mt-16 pt-6 pb-4 border-t border-amber-900/20 text-center text-xs font-serif bg-transparent">
+                    <p class="mb-1.5 text-slate-700 font-sans">
+                        <strong>RoL d20 Role-Playing System</strong> &copy; {{ date('Y') }} &bull;
+                        <a href="{{ route('rules.legal', [], false) }}" class="text-amber-900 hover:text-amber-950 underline font-semibold">Legal &amp; Open Game License (OGL)</a> &bull;
+                        <a href="{{ route('rules.intro', [], false) }}" class="text-slate-700 hover:text-slate-950 underline">Introduction</a>
+                    </p>
+                    <p class="text-[11px] text-slate-600 max-w-2xl mx-auto font-sans leading-normal">
+                        RoL d20 is published under the Open Game License (OGL v1.0a) and Creative Commons Attribution 4.0 International (CC-BY-4.0). Not affiliated with or endorsed by Wizards of the Coast LLC.
+                    </p>
+                </footer>
             </div>
         </main>
     </div>

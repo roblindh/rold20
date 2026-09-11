@@ -29,6 +29,7 @@ class ReindexSearchCommand extends Command
             'hb07_culture_content.php' => ['route' => 'rules.culture', 'chapter' => 'Culture & Civilization'],
             'hb08_encounters_content.php' => ['route' => 'rules.encounters', 'chapter' => 'Encounter Rules'],
             'hb15_index_content.php' => ['route' => 'rules.index', 'chapter' => 'Index'],
+            'hb16_legal_content.php' => ['route' => 'rules.legal', 'chapter' => 'Legal & Licensing'],
         ];
 
         $this->info("Indexing rules content files...");

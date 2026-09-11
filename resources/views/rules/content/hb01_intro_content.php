@@ -90,3 +90,11 @@
         for Dungeon Masters seeking to tailor campaign pacing, lethality, or thematic flavor.
     </p>
 </div>
+
+<h3 id="LegalNotices">Legal &amp; Open Gaming License</h3>
+<p>
+    RoL d20 is published under open gaming standards, utilizing the Open Game License (OGL v1.0a) and 
+    Creative Commons Attribution 4.0 International (CC-BY-4.0). 
+    For detailed content designations, product identity declarations, and full license texts, please refer to the 
+    <a href="/rules/legal">Legal &amp; Licensing</a> chapter.
+</p>

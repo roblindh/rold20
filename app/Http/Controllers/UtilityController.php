@@ -388,8 +388,11 @@ class UtilityController extends Controller
             }
         }
 
+        $activeConfig = max(0, min(4, (int)$request->query('config', 0)));
+        $calculatedState = $character ? \App\Services\Entity\EntityEngine::calculate($character, $activeConfig) : null;
+
         return view('utilities.charview', compact(
-            'character', 'allCharacters', 'myCharacters', 'race', 'templates', 'template', 'culture', 'bgClass',
+            'character', 'calculatedState', 'activeConfig', 'allCharacters', 'myCharacters', 'race', 'templates', 'template', 'culture', 'bgClass',
             'classesMap', 'skillsMap', 'specializationsMap', 'improvementsMap', 'spellsMap', 'spellOptionsMap', 'itemsMap',
             'pantheonsMap', 'deitiesMap', 'sizesMap', 'bodyTypesMap', 'creatureSubtypes', 'ages', 'campaign', 'player', 'dm',
             'classes', 'skillAccess', 'skillTypes', 'skills', 'skillSpecializations', 'improvements',

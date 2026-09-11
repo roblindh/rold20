@@ -183,6 +183,22 @@
                     @endif
                 </li>
 
+                <!-- Legal & Licensing -->
+                @php $isLegal = request()->routeIs('rules.legal') || request()->is('legal') || (isset($chapter) && $chapter == 16); @endphp
+                <li class="list-none p-0 m-0">
+                    <a href="{{ route('rules.legal', [], false) }}" class="sidebar-nav-item {{ $isLegal ? 'active' : '' }}">
+                        <span>⚖️ Legal &amp; Licensing</span>
+                    </a>
+                    @if($isLegal)
+                        <ul class="border-l-2 border-amber-600/40 ml-3.5 pl-2.5 my-1.5 space-y-0.5 text-xs list-none">
+                            <li><a href="#OpenGameContent" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Content Designation</a></li>
+                            <li><a href="#TrademarkDisclaimer" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Disclaimers</a></li>
+                            <li><a href="#CreativeCommons" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Creative Commons</a></li>
+                            <li><a href="#OGL" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Open Game License</a></li>
+                        </ul>
+                    @endif
+                </li>
+
                 <!-- Complete Ruleset - Printable -->
                 @php $isPrintable = request()->routeIs('rules.printable'); @endphp
                 <li class="list-none p-0 m-0">

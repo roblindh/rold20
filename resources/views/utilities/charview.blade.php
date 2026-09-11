@@ -45,130 +45,40 @@
 
     @if($character)
         @php
+            $cfg = $activeConfig ?? (int)request('config', 0);
+            $calc = $calculatedState ?? \App\Services\Entity\EntityEngine::calculate($character, $cfg);
+
             // --- 1. Base & Adjusted Ability Scores ---
-            $baseStr = (int)($character->BaseStr ?? 10);
-            $baseCon = (int)($character->BaseCon ?? 10);
-            $baseDex = (int)($character->BaseDex ?? 10);
-            $baseInt = (int)($character->BaseInt ?? 10);
-            $baseWis = (int)($character->BaseWis ?? 10);
-            $baseCha = (int)($character->BaseCha ?? 10);
+            $baseStr = $calc['base_abilities']['Str'];
+            $baseCon = $calc['base_abilities']['Con'];
+            $baseDex = $calc['base_abilities']['Dex'];
+            $baseInt = $calc['base_abilities']['Int'];
+            $baseWis = $calc['base_abilities']['Wis'];
+            $baseCha = $calc['base_abilities']['Cha'];
 
-            // Parse Improvements (I1=+1;I7=+2 or JSON)
-            $improvementsAllocated = [];
-            if (!empty($character->Improvements)) {
-                $rawImp = $character->Improvements;
-                if (str_starts_with($rawImp, '{')) {
-                    $jsonImp = json_decode($rawImp, true) ?? [];
-                    foreach ($jsonImp as $tId => $bonus) {
-                        $improvementsAllocated[(int)$tId] = (int)$bonus;
-                    }
-                } else {
-                    $parts = explode(';', $rawImp);
-                    foreach ($parts as $p) {
-                        if (str_contains($p, '=')) {
-                            [$traitKey, $val] = explode('=', $p, 2);
-                            $tId = (int)str_replace('I', '', $traitKey);
-                            $improvementsAllocated[$tId] = (int)$val;
-                        }
-                    }
-                }
-            }
+            $str = $calc['final_abilities']['Str'];
+            $con = $calc['final_abilities']['Con'];
+            $dex = $calc['final_abilities']['Dex'];
+            $int = $calc['final_abilities']['Int'];
+            $wis = $calc['final_abilities']['Wis'];
+            $cha = $calc['final_abilities']['Cha'];
 
-            // Racial Adjustments
-            $adjStr = (int)($race->StrAdj ?? 0);
-            $adjCon = (int)($race->ConAdj ?? 0);
-            $adjDex = (int)($race->DexAdj ?? 0);
-            $adjInt = (int)($race->IntAdj ?? 0);
-            $adjWis = (int)($race->WisAdj ?? 0);
-            $adjCha = (int)($race->ChaAdj ?? 0);
-
-            // Templates Adjustments
-            if (isset($templates) && $templates->isNotEmpty()) {
-                foreach ($templates as $tmpl) {
-                    $adjStr += (int)($tmpl->StrAdj ?? 0);
-                    $adjCon += (int)($tmpl->ConAdj ?? 0);
-                    $adjDex += (int)($tmpl->DexAdj ?? 0);
-                    $adjInt += (int)($tmpl->IntAdj ?? 0);
-                    $adjWis += (int)($tmpl->WisAdj ?? 0);
-                    $adjCha += (int)($tmpl->ChaAdj ?? 0);
-                }
-            }
-
-            // Age category calculation
-            $adultAge = (int)($race->AdultAge ?? 18);
-            $matureAge = (int)($race->MatureAge ?? ($adultAge * 2));
-            $oldAge = (int)($race->OldAge ?? ($adultAge * 3));
-            $venerableAge = (int)($race->VenerableAge ?? ($adultAge * 4));
-
-            $physAge = (int)($character->PhysicalAge ?? $adultAge);
-            $mentAge = (int)($character->MentalAge ?? $adultAge);
-
-            $getAgeCat = function($age) use ($adultAge, $matureAge, $oldAge, $venerableAge) {
-                if ($age < $adultAge * 0.5) return 'Child';
-                if ($age < $adultAge) return 'Juvenile';
-                if ($age < $matureAge) return 'Adult';
-                if ($age < $oldAge) return 'Mature';
-                if ($age < $venerableAge) return 'Old';
-                return 'Venerable';
-            };
-
-            $physAgeCat = $getAgeCat($physAge);
-            $mentAgeCat = $getAgeCat($mentAge);
-
-            $ageMods = [
-                'Child' => ['str' => -4, 'con' => -2, 'dex' => 2, 'int' => 0, 'wis' => -4, 'cha' => 0],
-                'Juvenile' => ['str' => -2, 'con' => 0, 'dex' => 0, 'int' => 0, 'wis' => -2, 'cha' => 0],
-                'Adult' => ['str' => 0, 'con' => 0, 'dex' => 0, 'int' => 0, 'wis' => 0, 'cha' => 0],
-                'Mature' => ['str' => -1, 'con' => -1, 'dex' => -1, 'int' => 1, 'wis' => 1, 'cha' => 1],
-                'Old' => ['str' => -3, 'con' => -3, 'dex' => -3, 'int' => 2, 'wis' => 2, 'cha' => 2],
-                'Venerable' => ['str' => -6, 'con' => -6, 'dex' => -6, 'int' => 3, 'wis' => 3, 'cha' => 3],
-            ];
-
-            $physMod = $ageMods[$physAgeCat] ?? $ageMods['Adult'];
-            $mentMod = $ageMods[$mentAgeCat] ?? $ageMods['Adult'];
-
-            // Final Ability Scores
-            $str = max(1, $baseStr + $adjStr + ($improvementsAllocated[1] ?? 0) + $physMod['str']);
-            $con = max(1, $baseCon + $adjCon + ($improvementsAllocated[2] ?? 0) + $physMod['con']);
-            $dex = max(1, $baseDex + $adjDex + ($improvementsAllocated[3] ?? 0) + $physMod['dex']);
-            $int = max(3, $baseInt + $adjInt + ($improvementsAllocated[4] ?? 0) + $mentMod['int']);
-            $wis = max(1, $baseWis + $adjWis + ($improvementsAllocated[5] ?? 0) + $mentMod['wis']);
-            $cha = max(1, $baseCha + $adjCha + ($improvementsAllocated[6] ?? 0) + $mentMod['cha']);
-
-            $strMod = (int)floor(($str - 10) / 2);
-            $conMod = (int)floor(($con - 10) / 2);
-            $dexMod = (int)floor(($dex - 10) / 2);
-            $intMod = (int)floor(($int - 10) / 2);
-            $wisMod = (int)floor(($wis - 10) / 2);
-            $chaMod = (int)floor(($cha - 10) / 2);
+            $strMod = $calc['ability_modifiers']['Str'];
+            $conMod = $calc['ability_modifiers']['Con'];
+            $dexMod = $calc['ability_modifiers']['Dex'];
+            $intMod = $calc['ability_modifiers']['Int'];
+            $wisMod = $calc['ability_modifiers']['Wis'];
+            $chaMod = $calc['ability_modifiers']['Cha'];
 
             // --- 2. Levels Breakdown ---
             $xp = (int)($character->ExperiencePts ?? 0);
-            $tl = 1;
-            while ($tl * ($tl - 1) * 500 <= $xp && $tl <= 20) {
-                $tl++;
-            }
-            $totalLevel = max(1, $tl - 1);
-
-            $racialLevel = (int)($race->BaseRL ?? 0);
-            $challengeLevel = (int)($race->CLModifier ?? 0);
-            if (isset($templates)) {
-                foreach ($templates as $tmpl) {
-                    $racialLevel += (int)($tmpl->RLModifier ?? 0);
-                    $challengeLevel += (int)($tmpl->CLModifier ?? 0);
-                }
-            }
+            $totalLevel = $calc['heritage']['total_level'];
+            $racialLevel = $calc['heritage']['racial_level'];
+            $challengeLevel = $calc['heritage']['challenge_level'];
 
             $classSummary = [];
-            $classIdsList = [];
-            if (!empty($character->Classes)) {
-                $rawClasses = $character->Classes;
-                if (str_starts_with($rawClasses, '[')) {
-                    $classIdsList = json_decode($rawClasses, true) ?? [];
-                } else {
-                    $classIdsList = explode(';', $rawClasses);
-                }
-                $classIdsList = array_filter(array_map('intval', $classIdsList));
+            $classIdsList = $calc['heritage']['class_ids'];
+            if (!empty($classIdsList)) {
                 $counts = array_count_values($classIdsList);
                 foreach ($counts as $cId => $count) {
                     $cName = $classesMap[$cId]->Name ?? "Class #$cId";
@@ -181,78 +91,53 @@
             $canLevelUp = ($totalLevel > $actualClassCount && $totalLevel <= 20) || ($xp >= $nextLevelReqXp && $actualClassCount < 20);
 
             // --- 3. Speed, Size & Senses ---
-            $initMod = $dexMod + ($improvementsAllocated[14] ?? 0);
-            $actionPoints = 10 + $totalLevel;
-            $reactions = (int)floor($actionPoints / 10) + ($improvementsAllocated[16] ?? 0);
-            
-            $groundSpeed = (int)($race->GroundSpeed ?? 30);
-            if (isset($templates)) {
-                foreach ($templates as $tmpl) {
-                    if (!empty($tmpl->GroundSpeed) && (int)$tmpl->GroundSpeed > $groundSpeed) {
-                        $groundSpeed = (int)$tmpl->GroundSpeed;
-                    }
-                }
-            }
-            $groundSpeed += ($improvementsAllocated[15] ?? 0);
-            $movementPoints = $groundSpeed;
+            $initMod = $calc['defenses']['init_mod'];
+            $actionPoints = $calc['actions']['ap'];
+            $reactions = $calc['actions']['reactions'];
+            $movementPoints = $calc['speeds']['ground'];
+            $groundSpeed = $calc['speeds']['ground'];
 
             $speedDisplay = $groundSpeed . "' Ground";
-            if (!empty($race->FlySpeed)) $speedDisplay .= ", Fly " . $race->FlySpeed . "'";
-            if (!empty($race->SwimSpeed)) $speedDisplay .= ", Swim " . $race->SwimSpeed . "'";
+            if (!empty($calc['speeds']['fly'])) $speedDisplay .= ", Fly " . $calc['speeds']['fly'] . "'";
+            if (!empty($calc['speeds']['swim'])) $speedDisplay .= ", Swim " . $calc['speeds']['swim'] . "'";
 
-            $sizeClass = (int)($race->SizeClass ?? 0);
-            $sizeCat = $sizesMap[$sizeClass] ?? null;
-            $sizeStr = $sizeCat ? ($sizeCat->Description . ' (' . $sizeCat->Abbreviation . ')') : 'Medium (M)';
-            $spacingStr = $sizeCat ? $sizeCat->Space : '1x1 sq';
-            $reachStr = $sizeCat ? $sizeCat->Reach : 1;
+            $sizeStr = $calc['heritage']['size_name'] . ' (' . ($sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M') . ')';
+            $spacingStr = $calc['heritage']['space'] . ' sq';
+            $reachStr = $calc['heritage']['reach'];
 
-            $bodyTypeObj = $bodyTypesMap[$race->BodyType ?? 1] ?? null;
+            $bodyTypeObj = $bodyTypesMap[$calc['heritage']['body_type_id'] ?? 1] ?? null;
             $bodyTypeStr = $bodyTypeObj ? $bodyTypeObj->Description : 'Biped';
 
             // --- 4. Dual-Ability Defenses ---
-            $combatMod = (int)($sizeCat->CombatMod ?? 0);
-            $dr = (int)($race->DR ?? 0);
-            if (isset($templates)) {
-                foreach ($templates as $tmpl) {
-                    if (isset($tmpl->DR)) $dr = max($dr, (int)$tmpl->DR);
-                }
-            }
-            $dr += ($improvementsAllocated[18] ?? 0);
+            $dr = $calc['defenses']['dr'];
+            $mr = $calc['defenses']['mr'];
+            $decPassive = $calc['defenses']['dec_passive'];
+            $decActive = $calc['defenses']['dec_active'];
+            $critRes = $calc['defenses']['crit_res'];
 
-            $mr = (int)($race->MR ?? 0);
-            if (isset($templates)) {
-                foreach ($templates as $tmpl) {
-                    if (isset($tmpl->MR)) $mr = max($mr, (int)$tmpl->MR);
-                }
-            }
-            $mr += ($improvementsAllocated[19] ?? 0);
-
-            $decPassive = 10 + min(0, $dexMod) + $totalLevel + $combatMod + ($improvementsAllocated[7] ?? 0);
-            $decActive = $decPassive + max(0, $dexMod);
-            $critRes = 20 + $dr + ($improvementsAllocated[17] ?? 0);
-
-            $fort = 10 + $strMod + $conMod + $totalLevel + ($improvementsAllocated[8] ?? 0);
-            $ref = 10 + $dexMod + $intMod + $totalLevel + ($improvementsAllocated[9] ?? 0);
-            $will = 10 + $wisMod + $chaMod + $totalLevel + ($improvementsAllocated[10] ?? 0);
+            $fort = $calc['defenses']['fort'];
+            $ref = $calc['defenses']['ref'];
+            $will = $calc['defenses']['will'];
 
             // --- 5. Health Pools ---
-            $hp = $con + ($improvementsAllocated[11] ?? 0);
-            $sp = $str + $con + ($improvementsAllocated[12] ?? 0);
-            $pp = $wis + $cha + ($improvementsAllocated[13] ?? 0);
+            $hp = $calc['health']['hp']['total'];
+            $hpCurrent = $calc['health']['hp']['current'];
+            $sp = $calc['health']['sp']['total'];
+            $spCurrent = $calc['health']['sp']['current'];
+            $pp = $calc['health']['pp']['total'];
+            $ppCurrent = $calc['health']['pp']['current'];
+            $activeConditions = $calc['health']['conditions'];
 
-            if ($bgClass) {
-                $hp += (int)($bgClass->HitPtsPerLevel ?? $bgClass->HPPerLevel ?? 5) * $racialLevel;
-                $sp += (int)($bgClass->StamPtsPerLevel ?? $bgClass->SPPerLevel ?? 8) * $racialLevel;
-                $pp += (int)($bgClass->PowPtsPerLevel ?? $bgClass->PPPerLevel ?? 0) * $racialLevel;
-            }
-
-            foreach ($classIdsList as $cId) {
-                if (isset($classesMap[$cId])) {
-                    $hp += (int)($classesMap[$cId]->HitPtsPerLevel ?? $classesMap[$cId]->HPPerLevel ?? 5);
-                    $sp += (int)($classesMap[$cId]->StamPtsPerLevel ?? $classesMap[$cId]->SPPerLevel ?? 8);
-                    $pp += (int)($classesMap[$cId]->PowPtsPerLevel ?? $classesMap[$cId]->PPPerLevel ?? 0);
+            // Resistances string
+            $activeResistances = [];
+            foreach ($calc['defenses']['resistances'] as $resType => $resVal) {
+                if ($resVal >= 999) {
+                    $activeResistances[] = "{$resType} Imm";
+                } elseif ($resVal > 0) {
+                    $activeResistances[] = "{$resType} Res {$resVal}";
                 }
             }
+            $resistancesDisplayStr = !empty($activeResistances) ? implode(', ', $activeResistances) : 'None';
 
             // --- 6. Parse Skills ---
             $skillsList = [];
@@ -331,6 +216,15 @@
 
             // --- 10. Physical & Social Attributes ---
             $isFemale = $character->Gender == 2 || $character->Gender === 'Female';
+            $physAge = (int)$calc['heritage']['physical_age'];
+            $mentAge = (int)$calc['heritage']['mental_age'];
+            $physAgeCat = match($calc['heritage']['physical_age_cat']) {
+                1 => 'Child', 2 => 'Juvenile', 3 => 'Adult', 4 => 'Mature', 5 => 'Old', default => 'Venerable'
+            };
+            $mentAgeCat = match($calc['heritage']['mental_age_cat']) {
+                1 => 'Child', 2 => 'Juvenile', 3 => 'Adult', 4 => 'Mature', 5 => 'Old', default => 'Venerable'
+            };
+
             $avgHeight = ($isFemale && $race && $race->AvgLengthF) ? (float)$race->AvgLengthF : (($race && $race->AvgLengthM) ? (float)$race->AvgLengthM : 175);
             $avgWeight = ($isFemale && $race && $race->AvgMassF) ? (float)$race->AvgMassF : (($race && $race->AvgMassM) ? (float)$race->AvgMassM : 70);
             $calcHeight = !empty($character->HeightFactor) ? round($avgHeight * (float)$character->HeightFactor) : round($avgHeight);
@@ -347,10 +241,23 @@
 
         <!-- Character Sheet Action Bar -->
         <div class="flex flex-wrap items-center justify-between gap-3 bg-linear-to-r from-slate-900 via-slate-800 to-slate-900 border border-amber-500/30 p-3 rounded-xl shadow-md text-white" x-data="{ copiedMd: false, copiedTxt: false }">
-            <div class="flex items-center gap-2 flex-wrap">
+            <div class="flex items-center gap-3 flex-wrap">
                 <span class="text-lg">🧙‍♂️</span>
-                <span class="font-bold text-sm text-amber-300 font-serif">{{ $character->Name }}</span>
-                <span class="text-xs text-amber-200/80 font-mono">Level {{ $totalLevel }} {{ $race->Name ?? 'Hero' }} ({{ number_format($xp) }} XP)</span>
+                <div>
+                    <span class="font-bold text-sm text-amber-300 font-serif">{{ $character->Name }}</span>
+                    <span class="text-xs text-amber-200/80 font-mono ml-2">Level {{ $totalLevel }} {{ $race->Name ?? 'Hero' }} ({{ number_format($xp) }} XP)</span>
+                </div>
+
+                <!-- Equipment Preset Switcher -->
+                <div class="flex items-center gap-1 bg-amber-950/70 p-1 rounded-lg border border-amber-500/30 text-xs">
+                    <span class="text-amber-300/80 px-1 font-bold font-serif">Preset:</span>
+                    @foreach(\App\Services\Entity\EquipmentManager::CONFIG_NAMES as $cfgId => $cfgName)
+                        <a href="{{ request()->fullUrlWithQuery(['config' => $cfgId]) }}" 
+                           class="px-2 py-0.5 rounded transition {{ $activeConfig === $cfgId ? 'bg-amber-500 text-stone-900 font-bold shadow-xs' : 'text-amber-200/80 hover:bg-amber-900/50' }}">
+                            {{ $cfgName }}
+                        </a>
+                    @endforeach
+                </div>
             </div>
 
             <!-- Action Buttons Group -->
@@ -673,9 +580,9 @@ HP: {{ $hp }} / {{ $hp }} | SP: {{ $sp }} / {{ $sp }} | PP: {{ $pp }} / {{ $pp }
                                 <td class="cvmdm cvcenter" colspan="3">{{ $mr }}</td>
                             </tr>
                             <tr><td class="cvlabel" colspan="6">Resistances &amp; Immunities</td></tr>
-                            <tr><td class="cvsml" colspan="6">None</td></tr>
+                            <tr><td class="cvsml" colspan="6">{{ $resistancesDisplayStr }}</td></tr>
                             <tr><td class="cvlabel" colspan="6">Special Defenses</td></tr>
-                            <tr><td class="cvsml" colspan="6">None</td></tr>
+                            <tr><td class="cvsml" colspan="6">DR {{ $dr }}, MR {{ $mr }}, Crit +{{ $critRes }}</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -706,15 +613,168 @@ HP: {{ $hp }} / {{ $hp }} | SP: {{ $sp }} / {{ $sp }} | PP: {{ $pp }} / {{ $pp }
                                 <td class="cvlabel cvcenter">Current</td>
                             </tr>
                             <tr>
-                                <td class="cvmdm cvcenter">{{ $hp }}</td>
-                                <td class="cvmdm cvcenter">{{ $sp }}</td>
-                                <td class="cvmdm cvcenter">{{ $pp }}</td>
+                                <td class="cvmdm cvcenter">{{ $hpCurrent }}</td>
+                                <td class="cvmdm cvcenter">{{ $spCurrent }}</td>
+                                <td class="cvmdm cvcenter">{{ $ppCurrent }}</td>
                             </tr>
                             <tr><td class="cvlabel" colspan="3">Conditions</td></tr>
-                            <tr><td class="cvsml" colspan="3">Normal</td></tr>
+                            <tr>
+                                <td class="cvsml" colspan="3">
+                                    @if(!empty($activeConditions))
+                                        <span class="text-red-700 font-bold">{{ implode(', ', $activeConditions) }}</span>
+                                    @else
+                                        <span class="text-emerald-800">Normal</span>
+                                    @endif
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            <!-- Combat & Attacks Matrix Row -->
+            <div class="mt-4" x-data="{ twoHandedMode: {} }">
+                <table class="charviewsection border-collapse w-full">
+                    <tbody>
+                        <tr>
+                            <td class="cvheader cvcenter" colspan="7">
+                                ⚔️ Combat &amp; Attack Matrix (Active Preset: {{ \App\Services\Entity\EquipmentManager::CONFIG_NAMES[$activeConfig] ?? 'Combat' }})
+                            </td>
+                        </tr>
+                        @if(!empty($calc['attacks']['weapons']))
+                            <tr class="bg-amber-100/60">
+                                <td class="cvlabel">Equipped Weapon</td>
+                                <td class="cvlabel cvcenter" style="width: 16%;">Wielding Mode</td>
+                                <td class="cvlabel cvcenter" style="width: 10%;">Speed (AP)</td>
+                                <td class="cvlabel cvcenter" style="width: 12%;">Attack Bonus</td>
+                                <td class="cvlabel cvcenter" style="width: 18%;">Damage (Avg)</td>
+                                <td class="cvlabel cvcenter" style="width: 14%;">Critical</td>
+                                <td class="cvlabel cvcenter" style="width: 14%;">Reach / Range</td>
+                            </tr>
+                            @foreach($calc['attacks']['weapons'] as $wId => $wpn)
+                                <tr x-init="twoHandedMode['{{ $wId }}'] = false">
+                                    <td class="cvlist font-bold text-amber-950">
+                                        🗡️ {{ $wpn['name'] }}
+                                        @if($wpn['parry_mod'] > 0)
+                                            <span class="text-xs text-amber-700 font-normal">(Parry +{{ $wpn['parry_mod'] }})</span>
+                                        @endif
+                                    </td>
+                                    <td class="cvlist cvcenter">
+                                        @if(!$wpn['is_ranged'])
+                                            <button type="button" 
+                                                    @click="twoHandedMode['{{ $wId }}'] = !twoHandedMode['{{ $wId }}']"
+                                                    class="text-xs px-2 py-0.5 rounded border transition"
+                                                    :class="twoHandedMode['{{ $wId }}'] ? 'bg-amber-800 text-white border-amber-900 font-bold' : 'bg-stone-100 text-stone-700 border-stone-300'">
+                                                <span x-text="twoHandedMode['{{ $wId }}'] ? '2-Handed (+2 Str)' : '1-Handed'"></span>
+                                            </button>
+                                        @else
+                                            <span class="text-xs text-stone-600 font-mono">Ranged</span>
+                                        @endif
+                                    </td>
+                                    <td class="cvlist cvcenter font-mono font-bold">{{ $wpn['ap'] }} AP</td>
+                                    <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
+                                        {{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }}
+                                    </td>
+                                    <td class="cvlist cvcenter font-mono font-bold">
+                                        <span x-show="!twoHandedMode['{{ $wId }}']">
+                                            {{ $wpn['one_handed']['damage'] }} <span class="text-xs text-stone-500 font-normal">({{ $wpn['one_handed']['avg_damage'] }})</span>
+                                        </span>
+                                        <span x-show="twoHandedMode['{{ $wId }}']" class="text-amber-900 font-extrabold">
+                                            {{ $wpn['two_handed']['damage'] }} <span class="text-xs text-amber-700 font-normal">({{ $wpn['two_handed']['avg_damage'] }})</span>
+                                        </span>
+                                    </td>
+                                    <td class="cvlist cvcenter font-mono text-xs">
+                                        {{ $wpn['crit_range'] }}-20 (&times;{{ $wpn['crit_multiplier'] }})
+                                    </td>
+                                    <td class="cvlist cvcenter text-xs font-mono">
+                                        {{ $wpn['is_ranged'] ? $wpn['range'] . ' m' : $reachStr . ' sq' }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+
+                        @if(!empty($calc['attacks']['akimbo']))
+                            <tr class="bg-amber-100/60">
+                                <td class="cvlabel" colspan="2">Akimbo Attack Combination</td>
+                                <td class="cvlabel cvcenter">AP Cost</td>
+                                <td class="cvlabel cvcenter">Penalties</td>
+                                <td class="cvlabel cvcenter" colspan="3">Combined Main / Off-Hand Strikes</td>
+                            </tr>
+                            @foreach($calc['attacks']['akimbo'] as $ak)
+                                <tr>
+                                    <td class="cvlist font-bold text-indigo-950" colspan="2">
+                                        ⚔️⚔️ {{ $ak['name'] }}
+                                    </td>
+                                    <td class="cvlist cvcenter font-mono font-bold">{{ $ak['ap'] }} AP</td>
+                                    <td class="cvlist cvcenter font-mono text-red-700 font-bold">{{ $ak['attack_penalty'] }}</td>
+                                    <td class="cvlist cvcenter text-xs font-mono" colspan="3">
+                                        Main: <span class="font-bold text-emerald-800">{{ ($ak['main_attack'] >= 0 ? '+' : '') . $ak['main_attack'] }}</span> ({{ $ak['main_damage'] }}) &bull;
+                                        Off: <span class="font-bold text-emerald-800">{{ ($ak['off_attack'] >= 0 ? '+' : '') . $ak['off_attack'] }}</span> ({{ $ak['off_damage'] }})
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+
+                        @if(!empty($calc['attacks']['natural']))
+                            <tr class="bg-amber-100/60">
+                                <td class="cvlabel" colspan="2">Natural Attack</td>
+                                <td class="cvlabel cvcenter">Speed (AP)</td>
+                                <td class="cvlabel cvcenter">Attack Bonus</td>
+                                <td class="cvlabel cvcenter" colspan="3">Damage</td>
+                            </tr>
+                            @foreach($calc['attacks']['natural'] as $nat)
+                                <tr>
+                                    <td class="cvlist font-bold" colspan="2">
+                                        🐾 {{ $nat['name'] }} <span class="text-xs text-stone-500 font-normal">({{ $nat['primary'] ? 'Primary' : 'Secondary -4' }})</span>
+                                    </td>
+                                    <td class="cvlist cvcenter font-mono font-bold">{{ $nat['ap'] }} AP</td>
+                                    <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
+                                        {{ ($nat['attack_bonus'] >= 0 ? '+' : '') . $nat['attack_bonus'] }}
+                                    </td>
+                                    <td class="cvlist cvcenter font-mono" colspan="3">{{ $nat['damage'] }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+
+                        <!-- Brawling Attack -->
+                        <tr>
+                            <td class="cvlist text-stone-700" colspan="2">
+                                👊 {{ $calc['attacks']['brawling']['name'] }}
+                            </td>
+                            <td class="cvlist cvcenter font-mono font-bold">{{ $calc['attacks']['brawling']['ap'] }} AP</td>
+                            <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
+                                {{ ($calc['attacks']['brawling']['attack_bonus'] >= 0 ? '+' : '') . $calc['attacks']['brawling']['attack_bonus'] }}
+                            </td>
+                            <td class="cvlist cvcenter font-mono" colspan="3">{{ $calc['attacks']['brawling']['damage'] }}</td>
+                        </tr>
+
+                        <!-- Spellcaster Attacks -->
+                        <tr class="bg-indigo-50/80">
+                            <td class="cvlabel font-bold text-indigo-900" colspan="2">Spellcaster Actions</td>
+                            <td class="cvlabel cvcenter">Ray / Touch</td>
+                            <td class="cvlabel cvcenter">Area DC</td>
+                            <td class="cvlabel cvcenter">Body DC (Fort)</td>
+                            <td class="cvlabel cvcenter" colspan="2">Mind DC (Will)</td>
+                        </tr>
+                        <tr>
+                            <td class="cvlist text-indigo-950 font-serif" colspan="2">
+                                ✨ Supernatural &amp; Arcane Casting
+                            </td>
+                            <td class="cvlist cvcenter font-mono font-bold text-indigo-800">
+                                {{ ($calc['attacks']['spells']['ray_touch']['attack_bonus'] >= 0 ? '+' : '') . $calc['attacks']['spells']['ray_touch']['attack_bonus'] }}
+                            </td>
+                            <td class="cvlist cvcenter font-mono font-bold text-indigo-800">
+                                DC {{ $calc['attacks']['spells']['area_dc']['dc'] }}
+                            </td>
+                            <td class="cvlist cvcenter font-mono font-bold text-indigo-800">
+                                DC {{ $calc['attacks']['spells']['body_fort_dc']['dc'] }}
+                            </td>
+                            <td class="cvlist cvcenter font-mono font-bold text-indigo-800" colspan="2">
+                                DC {{ $calc['attacks']['spells']['mind_will_dc']['dc'] }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <!-- Physical, Social & Personality Details Table -->
@@ -828,20 +888,52 @@ HP: {{ $hp }} / {{ $hp }} | SP: {{ $sp }} / {{ $sp }} | PP: {{ $pp }} / {{ $pp }
                 <div class="charview-col">
                     <table class="charviewsection border-collapse">
                         <tbody>
-                            <tr><td class="cvheader cvcenter" colspan="3">Equipment &amp; Possessions (Wealth: {{ $wealth }} sp)</td></tr>
+                            <tr>
+                                <td class="cvheader cvcenter" colspan="4">
+                                    Equipment &amp; Possessions ({{ \App\Services\Entity\EquipmentManager::CONFIG_NAMES[$activeConfig] ?? 'Combat' }})
+                                </td>
+                            </tr>
+                            <tr class="bg-stone-200/60">
+                                <td class="cvsml" colspan="4">
+                                    <div class="flex items-center justify-between text-xs px-1 text-stone-700">
+                                        <span><strong>Weight:</strong> {{ $calc['equipment']['total_weight'] }} kg</span>
+                                        <span><strong>Encumbrance:</strong> Class {{ $calc['equipment']['effective_ec'] }} (EP: {{ $calc['equipment']['encumbrance_penalty'] }}, Max Dex: {{ $calc['equipment']['max_dex_bonus'] < 90 ? '+' . $calc['equipment']['max_dex_bonus'] : 'None' }})</span>
+                                        <span><strong>Wealth:</strong> {{ $wealth }} sp</span>
+                                    </div>
+                                </td>
+                            </tr>
                             <tr>
                                 <td class="cvlabel">Item</td>
-                                <td class="cvlabel cvcenter" style="width: 15%;">Qty</td>
-                                <td class="cvlabel cvcenter" style="width: 25%;">Cost</td>
+                                <td class="cvlabel cvcenter" style="width: 15%;">State</td>
+                                <td class="cvlabel cvcenter" style="width: 12%;">Qty</td>
+                                <td class="cvlabel cvcenter" style="width: 20%;">Cost</td>
                             </tr>
                             @forelse($equipmentList as $it)
                                 <tr>
-                                    <td class="cvlist">{{ $it['Name'] ?? $it['name'] ?? 'Item' }}</td>
+                                    <td class="cvlist">
+                                        <span class="font-bold text-stone-900">{{ $it['Name'] ?? $it['name'] ?? 'Item' }}</span>
+                                        @if(!empty($it['slot']))
+                                            <span class="text-xs text-amber-800 font-mono">({{ $it['slot'] }})</span>
+                                        @endif
+                                    </td>
+                                    <td class="cvlist cvcenter text-xs font-mono">
+                                        @php
+                                            $loc = $it['locations'][$activeConfig] ?? $it['location'] ?? 1;
+                                            $locName = match((int)$loc) {
+                                                2 => 'Equipped',
+                                                0 => 'Stowed',
+                                                default => 'Carried',
+                                            };
+                                        @endphp
+                                        <span class="{{ $loc == 2 ? 'text-amber-900 font-bold' : ($loc == 0 ? 'text-stone-400' : 'text-stone-700') }}">
+                                            {{ $locName }}
+                                        </span>
+                                    </td>
                                     <td class="cvlist cvcenter font-mono">{{ $it['Qty'] ?? $it['qty'] ?? 1 }}</td>
                                     <td class="cvlist cvcenter font-mono">{{ ((int)($it['BaseValue'] ?? $it['value'] ?? $it['unit_price'] ?? 0) * (int)($it['Qty'] ?? $it['qty'] ?? 1)) }} sp</td>
                                 </tr>
                             @empty
-                                <tr><td class="cvlist" colspan="3">No equipment purchased.</td></tr>
+                                <tr><td class="cvlist" colspan="4">No equipment purchased.</td></tr>
                             @endforelse
                         </tbody>
                     </table>

@@ -118,6 +118,11 @@ class RulesController extends Controller
         return $this->renderChapter('index', 15, 'rules.index', 'Rules Index');
     }
 
+    public function legal(): Response
+    {
+        return $this->renderChapter('legal', 16, 'rules.legal', 'Legal & Licensing');
+    }
+
     public function printable(): Response
     {
         @set_time_limit(300);
