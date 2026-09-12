@@ -101,30 +101,52 @@
 
             <!-- 2. Base Ability Scores (Row 1: STR, CON, DEX | Row 2: INT, WIS, CHA) -->
             <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-2">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 border-b border-slate-100 pb-2">
+                <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-2 border-b border-slate-100 pb-2">
                     <div>
                         <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
                             2. Base Ability Scores
                         </label>
                         <span class="text-[11px] text-slate-500">Base scores before racial, template, and age modifiers</span>
                     </div>
-                    <!-- 3 Random Generation Tier Buttons -->
-                    <div class="flex items-center gap-1.5 shrink-0">
-                        <button type="button" @click="rollAbilities('average')" :disabled="rollingAbil"
-                                class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-md text-xs font-bold transition cursor-pointer"
-                                title="Roll 3d6 per score prioritized by class/background">
-                            🎲 Average
-                        </button>
-                        <button type="button" @click="rollAbilities('elite')" :disabled="rollingAbil"
-                                class="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-md text-xs font-bold transition cursor-pointer"
-                                title="Roll 4d6 discard lowest per score prioritized by class/background">
-                            🎲 Elite
-                        </button>
-                        <button type="button" @click="rollAbilities('heroic')" :disabled="rollingAbil"
-                                class="px-2 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-300 rounded-md text-xs font-bold transition cursor-pointer"
-                                title="Roll 5d6 total 3 highest per score prioritized by class/background">
-                            🎲 Heroic
-                        </button>
+                    <!-- 6 Generation & Preset Buttons -->
+                    <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+                        <!-- Fixed Score Presets -->
+                        <div class="inline-flex rounded-md shadow-2xs" role="group">
+                            <button type="button" @click="setAbilities(10)"
+                                    class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-l-md text-xs font-semibold transition cursor-pointer"
+                                    title="Set all base scores to 10 (Average)">
+                                Average
+                            </button>
+                            <button type="button" @click="setAbilities(12)"
+                                    class="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border-t border-b border-r border-amber-300 text-xs font-semibold transition cursor-pointer"
+                                    title="Set all base scores to 12 (Elite)">
+                                Elite
+                            </button>
+                            <button type="button" @click="setAbilities(14)"
+                                    class="px-2 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border-t border-b border-r border-indigo-300 rounded-r-md text-xs font-semibold transition cursor-pointer"
+                                    title="Set all base scores to 14 (Heroic)">
+                                Heroic
+                            </button>
+                        </div>
+
+                        <!-- Random Roll Tiers -->
+                        <div class="inline-flex rounded-md shadow-2xs" role="group">
+                            <button type="button" @click="rollAbilities('average')" :disabled="rollingAbil"
+                                    class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-l-md text-xs font-bold transition cursor-pointer flex items-center gap-1"
+                                    title="Roll 3d6 per score prioritized by class/background (Average - Random)">
+                                <span>🎲</span> Average - Random
+                            </button>
+                            <button type="button" @click="rollAbilities('elite')" :disabled="rollingAbil"
+                                    class="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border-t border-b border-r border-amber-300 text-xs font-bold transition cursor-pointer flex items-center gap-1"
+                                    title="Roll 4d6 discard lowest per score prioritized by class/background (Elite - Random)">
+                                <span>🎲</span> Elite - Random
+                            </button>
+                            <button type="button" @click="rollAbilities('heroic')" :disabled="rollingAbil"
+                                    class="px-2 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border-t border-b border-r border-indigo-300 rounded-r-md text-xs font-bold transition cursor-pointer flex items-center gap-1"
+                                    title="Roll 5d6 total 3 highest per score prioritized by class/background (Heroic - Random)">
+                                <span>🎲</span> Heroic - Random
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -176,7 +198,14 @@
                     <select x-model.number="creature_id" @change="onCreatureChanged()"
                             class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         @foreach($creatures as $c)
-                            <option value="{{ $c->ID }}">{{ $c->Name }} (RL {{ $c->BaseRL ?? 0 }}{{ !empty($c->CLModifier) ? ', CL +' . $c->CLModifier : '' }})</option>
+                            @php
+                                $clPart = '';
+                                if ($c->CLModifier !== null && $c->CLModifier !== '' && (int)$c->CLModifier !== 0) {
+                                    $clVal = (int)$c->CLModifier;
+                                    $clPart = ', CL ' . ($clVal > 0 ? '+' : '') . $clVal;
+                                }
+                            @endphp
+                            <option value="{{ $c->ID }}">{{ $c->Name }} (RL {{ $c->BaseRL ?? 0 }}{{ $clPart }})</option>
                         @endforeach
                     </select>
                 </div>
@@ -206,7 +235,16 @@
                                         class="flex-1 px-2 py-1 bg-slate-50 border border-slate-300 rounded-md text-[11px] font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500">
                                     <option value="0">-- Select Template --</option>
                                     @foreach($templates as $tpl)
-                                        <option value="{{ $tpl->ID }}">{{ $tpl->Name }} (RL {{ ($tpl->RLModifier >= 0 ? '+' : '') . $tpl->RLModifier }})</option>
+                                        @php
+                                            $rlMod = (int)($tpl->RLModifier ?? 0);
+                                            $rlStr = 'RL ' . ($rlMod >= 0 ? '+' : '') . $rlMod;
+                                            $clStr = '';
+                                            if ($tpl->CLModifier !== null && $tpl->CLModifier !== '') {
+                                                $clMod = (int)$tpl->CLModifier;
+                                                $clStr = ', CL ' . ($clMod >= 0 ? '+' : '') . $clMod;
+                                            }
+                                        @endphp
+                                        <option value="{{ $tpl->ID }}">{{ $tpl->Name }} ({{ $rlStr }}{{ $clStr }})</option>
                                     @endforeach
                                 </select>
                                 <button type="button" @click="removeTemplate(idx)"
@@ -571,6 +609,16 @@ function npcGeneratorWizard() {
 
         removeClass(index) {
             this.classes.splice(index, 1);
+        },
+
+        setAbilities(score) {
+            const val = Number(score) || 10;
+            this.str = val;
+            this.con = val;
+            this.dex = val;
+            this.int = val;
+            this.wis = val;
+            this.cha = val;
         },
 
         async rollAbilities(tier) {

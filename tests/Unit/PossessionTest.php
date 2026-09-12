@@ -58,12 +58,12 @@ class PossessionTest extends TestCase
     }
 
     /**
-     * Test possession default SP and PP are zero
+     * Test possession SP and PP are null (no stamina/power points for objects)
      */
-    public function test_sp_and_pp_total_zero(): void
+    public function test_sp_and_pp_total_null(): void
     {
-        $this->assertSame(0, $this->possession->GetSPTotal());
-        $this->assertSame(0, $this->possession->GetPPTotal());
+        $this->assertNull($this->possession->GetSPTotal());
+        $this->assertNull($this->possession->GetPPTotal());
     }
 
     /**

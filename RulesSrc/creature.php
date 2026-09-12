@@ -123,30 +123,46 @@ class cCreature {
         return null;
     }
 
-    public static function GetCreatureGroup(int $id): mixed {
+    public static function GetCreatureGroup(?int $id = null): mixed {
         global $_APP;
 
-        return $_APP['creaturesubtypes'][$_APP['creatures'][$id]['CreatureType']]['GroupID'];
+        if ($id === null || !isset($_APP['creatures'][$id])) {
+            return 0;
+        }
+        $cType = $_APP['creatures'][$id]['CreatureType'] ?? null;
+        if ($cType !== null && isset($_APP['creaturesubtypes'][$cType]['GroupID'])) {
+            return $_APP['creaturesubtypes'][$cType]['GroupID'];
+        }
+        return 0;
     }
 
-    public static function GetCreatureType(int $id): mixed {
+    public static function GetCreatureType(?int $id = null): mixed {
         global $_APP;
 
-        return $_APP['creatures'][$id]['CreatureType'];
+        if ($id === null || !isset($_APP['creatures'][$id])) {
+            return 0;
+        }
+        return $_APP['creatures'][$id]['CreatureType'] ?? 0;
     }
 
-    public static function GetBodyType(int $id): mixed {
+    public static function GetBodyType(?int $id = null): mixed {
         global $_APP;
 
-        return $_APP['creatures'][$id]['BodyType'];
+        if ($id === null || !isset($_APP['creatures'][$id])) {
+            return 0;
+        }
+        return $_APP['creatures'][$id]['BodyType'] ?? 0;
     }
 
-    public static function HasGenders(int $id): bool {
+    public static function HasGenders(?int $id = null): bool {
         global $_APP;
+        if ($id === null || !isset($_APP['creatures'][$id])) {
+            return false;
+        }
         $creature = $_APP['creatures'][$id];
 
-        return (($creature['AvgLengthM'] != 0 && $creature['AvgLengthF'] != 0) ||
-                ($creature['AvgLengthM'] == 0 && $creature['AvgLengthF'] == 0));
+        return ((($creature['AvgLengthM'] ?? 0) != 0 && ($creature['AvgLengthF'] ?? 0) != 0) ||
+                (($creature['AvgLengthM'] ?? 0) == 0 && ($creature['AvgLengthF'] ?? 0) == 0));
     }
 
     public static function GetXPValue(int $challengelevel): int {
@@ -154,8 +170,12 @@ class cCreature {
                 ($challengelevel == 2 ? 225 : (($challengelevel - 2) * 300)))));
     }
 
-    public static function ParseNaturalAttacks(string $natatts): array {
+    public static function ParseNaturalAttacks(?string $natatts = null): array {
         global $_APP;
+
+        if ($natatts === null || trim($natatts) === '') {
+            return [];
+        }
 
         $aAtts = explode("}", $natatts);
         $lAtts = array();

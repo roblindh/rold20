@@ -36,7 +36,9 @@ class cEntity {
         global $_APP;
 
         $adjAbil = $this->GetBaseAbility($id);
-        $adjAbil = max(1, $adjAbil);
+        if ($adjAbil !== NULL) {
+            $adjAbil = max(1, $adjAbil);
+        }
 
         return $adjAbil;
     }
@@ -44,12 +46,13 @@ class cEntity {
     public function GetAbility($id) {
         $abil = $this->GetAdjustedAbility($id);
 
-        if ($abil != NULL) {
+        if ($abil !== NULL) {
             $abil += ($this->TraitEffects->ModsAbil[$id] != NULL) ? $this->TraitEffects->ModsAbil[$id]->Total() : 0;
             $abil = max(0, $abil);
+            return (int) $abil;
         }
 
-        return (int) $abil;
+        return NULL;
     }
 
     public function GetEncumbranceClass($config = 0) {
@@ -58,6 +61,10 @@ class cEntity {
 
     public function GetAbilMod($id) {
         global $_APP;
+
+        if ($this->GetAbility($id) === NULL) {
+            return 0;
+        }
 
         $abilmod = AbilMod($this->GetAbility($id));
         // For Dex ability, limit the modifier for encumbrance class
@@ -68,7 +75,7 @@ class cEntity {
     }
 
     public function GetHPTotal() {
-        $hp = ($this->GetAbility(A_CON) == NULL) ? 10 : $this->GetAbility(A_CON);
+        $hp = ($this->GetAbility(A_CON) === NULL) ? 10 : $this->GetAbility(A_CON);
         $hp += ($this->TraitEffects->ModsHP != NULL) ? $this->TraitEffects->ModsHP->Total() : 0;
 
         return (int) $hp;
@@ -79,33 +86,41 @@ class cEntity {
     }
 
     public function GetSPTotal() {
-        $sp = 0;
-
-        if ($this->GetAbility(A_CON) != NULL) {
-            $sp = $this->GetAbility(A_CON);
-            $sp += ($this->TraitEffects->ModsSP != NULL) ? $this->TraitEffects->ModsSP->Total() : 0;
+        if ($this->GetAbility(A_CON) === NULL) {
+            return NULL;
         }
+
+        $sp = $this->GetAbility(A_CON);
+        $sp += ($this->TraitEffects->ModsSP != NULL) ? $this->TraitEffects->ModsSP->Total() : 0;
 
         return (int) $sp;
     }
 
     public function GetSPCurrent() {
-        return $this->GetSPTotal() - $this->Conditions->SPDamage + $this->Conditions->SPTemp;
+        $spTotal = $this->GetSPTotal();
+        if ($spTotal === NULL) {
+            return NULL;
+        }
+        return $spTotal - $this->Conditions->SPDamage + $this->Conditions->SPTemp;
     }
 
     public function GetPPTotal() {
-        $pp = 0;
-
-        if ($this->GetAbility(A_WIS) != NULL) {
-            $pp = $this->GetAbility(A_WIS);
-            $pp += ($this->TraitEffects->ModsPP != NULL) ? $this->TraitEffects->ModsPP->Total() : 0;
+        if ($this->GetAbility(A_WIS) === NULL) {
+            return NULL;
         }
+
+        $pp = $this->GetAbility(A_WIS);
+        $pp += ($this->TraitEffects->ModsPP != NULL) ? $this->TraitEffects->ModsPP->Total() : 0;
 
         return (int) $pp;
     }
 
     public function GetPPCurrent() {
-        return $this->GetPPTotal() - $this->Conditions->PPDamage + $this->Conditions->PPTemp;
+        $ppTotal = $this->GetPPTotal();
+        if ($ppTotal === NULL) {
+            return NULL;
+        }
+        return $ppTotal - $this->Conditions->PPDamage + $this->Conditions->PPTemp;
     }
 
     public function GetDeCPassive() {
@@ -264,6 +279,7 @@ class cIndividual extends cEntity {
     public $Gender;
     public $Culture;
     public $OverrideRacialClass;
+    public $OverrideClassConfig;
     public $XP;
     public $RacialLevelMod;
     public $lClassLevels;
@@ -320,6 +336,7 @@ class cIndividual extends cEntity {
         $this->Gender = NULL;
         $this->Culture = NULL;
         $this->OverrideRacialClass = NULL;
+        $this->OverrideClassConfig = NULL;
 
         $this->XP = 0;
         $this->RacialLevelMod = 0;
@@ -497,7 +514,8 @@ class cIndividual extends cEntity {
             }
 
             $ageCat = ($id <= A_DEX) ? $this->GetPhysicalAgeCat() : $this->GetMentalAgeCat();
-            $agingType = $_APP['creaturesubtypes'][$creature['CreatureType']]['AgingType'] ?? 0;
+            $cType = $creature['CreatureType'] ?? 0;
+            $agingType = $_APP['creaturesubtypes'][$cType]['AgingType'] ?? 0;
             switch ($agingType) {
                 case 1: // Normal aging
                     $adjAbil += cCreature::GetAgeCatAbilAdj($ageCat, $id);
@@ -534,16 +552,18 @@ class cIndividual extends cEntity {
     public function GetSPTotal() {
         global $_APP;
 
+        if ($this->GetAbility(A_CON) === NULL) {
+            return NULL;
+        }
+
         $sp = parent::GetSPTotal();
-        if ($this->GetAbility(A_CON) !== NULL) {
-            $racialClass = $this->GetRacialClass();
-            if (isset($_APP['classes'][$racialClass]['SPPerLevel'])) {
-                $sp += $_APP['classes'][$racialClass]['SPPerLevel'] * $this->GetRacialLevel();
-            }
-            foreach ($this->lClassLevels as $iClassLevel) {
-                if (isset($_APP['classes'][$iClassLevel]['SPPerLevel'])) {
-                    $sp += $_APP['classes'][$iClassLevel]['SPPerLevel'];
-                }
+        $racialClass = $this->GetRacialClass();
+        if (isset($_APP['classes'][$racialClass]['SPPerLevel'])) {
+            $sp += $_APP['classes'][$racialClass]['SPPerLevel'] * $this->GetRacialLevel();
+        }
+        foreach ($this->lClassLevels as $iClassLevel) {
+            if (isset($_APP['classes'][$iClassLevel]['SPPerLevel'])) {
+                $sp += $_APP['classes'][$iClassLevel]['SPPerLevel'];
             }
         }
 
@@ -553,16 +573,18 @@ class cIndividual extends cEntity {
     public function GetPPTotal() {
         global $_APP;
 
+        if ($this->GetAbility(A_WIS) === NULL) {
+            return NULL;
+        }
+
         $pp = parent::GetPPTotal();
-        if ($this->GetAbility(A_WIS) !== NULL) {
-            $racialClass = $this->GetRacialClass();
-            if (isset($_APP['classes'][$racialClass]['PPPerLevel'])) {
-                $pp += $_APP['classes'][$racialClass]['PPPerLevel'] * $this->GetRacialLevel();
-            }
-            foreach ($this->lClassLevels as $iClassLevel) {
-                if (isset($_APP['classes'][$iClassLevel]['PPPerLevel'])) {
-                    $pp += $_APP['classes'][$iClassLevel]['PPPerLevel'];
-                }
+        $racialClass = $this->GetRacialClass();
+        if (isset($_APP['classes'][$racialClass]['PPPerLevel'])) {
+            $pp += $_APP['classes'][$racialClass]['PPPerLevel'] * $this->GetRacialLevel();
+        }
+        foreach ($this->lClassLevels as $iClassLevel) {
+            if (isset($_APP['classes'][$iClassLevel]['PPPerLevel'])) {
+                $pp += $_APP['classes'][$iClassLevel]['PPPerLevel'];
             }
         }
 
@@ -789,10 +811,18 @@ class cIndividual extends cEntity {
         global $_APP;
         $class = 15;
 
-        if ($this->OverrideRacialClass != NULL)
-            $class = $this->OverrideRacialClass;
-        else if ($this->Culture != NULL)
-            $class = $_APP['classconfigs'][$_APP['cultures'][$this->Culture]['ClassConfig']]['ClassID'];
+        if ($this->OverrideRacialClass != NULL) {
+            if (isset($_APP['classes'][$this->OverrideRacialClass])) {
+                $class = $this->OverrideRacialClass;
+            } elseif (isset($_APP['classconfigs'][$this->OverrideRacialClass]['ClassID'])) {
+                $class = $_APP['classconfigs'][$this->OverrideRacialClass]['ClassID'];
+            }
+        } else if ($this->Culture != NULL) {
+            $cfgId = $_APP['cultures'][$this->Culture]['ClassConfig'] ?? 0;
+            if (isset($_APP['classconfigs'][$cfgId]['ClassID'])) {
+                $class = $_APP['classconfigs'][$cfgId]['ClassID'];
+            }
+        }
 
         return $class;
     }
@@ -800,16 +830,21 @@ class cIndividual extends cEntity {
     public function GetRacialLevel() {
         global $_APP;
 
-        $rl = $_APP['creatures'][$this->BaseRace]['BaseRL'];
-        switch ($_APP['creaturesubtypes'][$this->GetCreatureType()]['AgingType']) {
+        $rl = (int)($_APP['creatures'][$this->BaseRace]['BaseRL'] ?? 0);
+        switch ($_APP['creaturesubtypes'][$this->GetCreatureType()]['AgingType'] ?? 1) {
             case 1: // Normal aging
-                $rl *= $_APP['agecats'][$this->GetPhysicalAgeCat()]['RLMult'];
+                $rl *= ($_APP['agecats'][$this->GetPhysicalAgeCat()]['RLMult'] ?? 1);
                 break;
             case 2: // Special aging
-                $rl *= $_APP['agecats'][$this->GetPhysicalAgeCat()]['RLMultSN'];
+                $rl *= ($_APP['agecats'][$this->GetPhysicalAgeCat()]['RLMultSN'] ?? 1);
                 break;
         }
         $rl += $this->RacialLevelMod;
+        foreach ($this->lTemplates as $iTemplate) {
+            if (isset($_APP['templates'][$iTemplate]['RLModifier']) && $_APP['templates'][$iTemplate]['RLModifier'] !== null && $_APP['templates'][$iTemplate]['RLModifier'] !== '') {
+                $rl += (int)$_APP['templates'][$iTemplate]['RLModifier'];
+            }
+        }
 
         return (int) $rl;
     }
@@ -833,11 +868,13 @@ class cIndividual extends cEntity {
     public function GetChallengeLevel() {
         global $_APP;
 
-        $cl = $this->GetTotalLevel() + $_APP['creatures'][$this->BaseRace]['CLModifier'] +
-                ($this->SocialClass ? $_APP['socialclasses'][$this->SocialClass]['CLMod'] : 0) +
+        $cl = $this->GetTotalLevel() + (int)($_APP['creatures'][$this->BaseRace]['CLModifier'] ?? 0) +
+                ($this->SocialClass ? (int)($_APP['socialclasses'][$this->SocialClass]['CLMod'] ?? 0) : 0) +
                 $this->SizeAdjust;
         foreach ($this->lTemplates as $iTemplate) {
-            $cl += $_APP['templates'][$iTemplate]['CLModifier'];
+            if (isset($_APP['templates'][$iTemplate]['CLModifier']) && $_APP['templates'][$iTemplate]['CLModifier'] !== null && $_APP['templates'][$iTemplate]['CLModifier'] !== '') {
+                $cl += (int)$_APP['templates'][$iTemplate]['CLModifier'];
+            }
         }
 
         return (int) $cl;
@@ -877,10 +914,11 @@ class cIndividual extends cEntity {
     public function GetBaseSize() {
         global $_APP;
 
-        $basesize = $_APP['creatures'][$this->CurrentRace]['SizeClass'];
+        $basesize = (int)($_APP['creatures'][$this->CurrentRace]['SizeClass'] ?? 0);
         foreach ($this->lTemplates as $iTemplate) {
-            if (isset($_APP['templates']['SizeAdj']))
-                $baseSize += $_APP['templates']['SizeAdj'];
+            if (!empty($_APP['templates'][$iTemplate]['SizeAdj'])) {
+                $basesize += (int)$_APP['templates'][$iTemplate]['SizeAdj'];
+            }
         }
 
         return $basesize;
@@ -888,16 +926,18 @@ class cIndividual extends cEntity {
 
     public function GetAdjustedSize() {
         global $_APP;
-        $creature = $_APP['creatures'][$this->CurrentRace];
+        $creature = ($this->CurrentRace !== null) ? ($_APP['creatures'][$this->CurrentRace] ?? null) : null;
         $baseSize = $this->GetBaseSize();
 
-        switch ($_APP['creaturesubtypes'][$creature['CreatureType']]['AgingType']) {
-            case 1: // Normal aging
-                $baseSize += $_APP['agecats'][$this->GetPhysicalAgeCat()]['SizeAdj'];
-                break;
-            case 2: // Special aging
-                $baseSize += $_APP['agecats'][$this->GetPhysicalAgeCat()]['SizeAdjSN'];
-                break;
+        if ($creature && isset($creature['CreatureType']) && isset($_APP['creaturesubtypes'][$creature['CreatureType']]['AgingType'])) {
+            switch ($_APP['creaturesubtypes'][$creature['CreatureType']]['AgingType']) {
+                case 1: // Normal aging
+                    $baseSize += $_APP['agecats'][$this->GetPhysicalAgeCat()]['SizeAdj'] ?? 0;
+                    break;
+                case 2: // Special aging
+                    $baseSize += $_APP['agecats'][$this->GetPhysicalAgeCat()]['SizeAdjSN'] ?? 0;
+                    break;
+            }
         }
 
         return $baseSize;
@@ -975,15 +1015,21 @@ class cIndividual extends cEntity {
     public function GetPhysicalAgeCat() {
         global $_APP;
 
-        if ($this->PhysicalAge < (0.5 * $_APP['creatures'][$this->BaseRace]['AdultAge']))
+        $race = $this->BaseRace ?? $this->CurrentRace;
+        $adult = $_APP['creatures'][$race]['AdultAge'] ?? 18;
+        $mature = $_APP['creatures'][$race]['MatureAge'] ?? 35;
+        $old = $_APP['creatures'][$race]['OldAge'] ?? 53;
+        $venerable = $_APP['creatures'][$race]['VenerableAge'] ?? 70;
+
+        if ($this->PhysicalAge < (0.5 * $adult))
             return 1;
-        else if ($this->PhysicalAge < $_APP['creatures'][$this->BaseRace]['AdultAge'])
+        else if ($this->PhysicalAge < $adult)
             return 2;
-        else if ($this->PhysicalAge < $_APP['creatures'][$this->BaseRace]['MatureAge'])
+        else if ($this->PhysicalAge < $mature)
             return 3;
-        else if ($this->PhysicalAge < $_APP['creatures'][$this->BaseRace]['OldAge'])
+        else if ($this->PhysicalAge < $old)
             return 4;
-        else if ($this->PhysicalAge < $_APP['creatures'][$this->BaseRace]['VenerableAge'])
+        else if ($this->PhysicalAge < $venerable)
             return 5;
         else
             return 6;
@@ -992,15 +1038,21 @@ class cIndividual extends cEntity {
     public function GetMentalAgeCat() {
         global $_APP;
 
-        if ($this->MentalAge < (0.5 * $_APP['creatures'][$this->BaseRace]['AdultAge']))
+        $race = $this->BaseRace ?? $this->CurrentRace;
+        $adult = $_APP['creatures'][$race]['AdultAge'] ?? 18;
+        $mature = $_APP['creatures'][$race]['MatureAge'] ?? 35;
+        $old = $_APP['creatures'][$race]['OldAge'] ?? 53;
+        $venerable = $_APP['creatures'][$race]['VenerableAge'] ?? 70;
+
+        if ($this->MentalAge < (0.5 * $adult))
             return 1;
-        else if ($this->MentalAge < $_APP['creatures'][$this->BaseRace]['AdultAge'])
+        else if ($this->MentalAge < $adult)
             return 2;
-        else if ($this->MentalAge < $_APP['creatures'][$this->BaseRace]['MatureAge'])
+        else if ($this->MentalAge < $mature)
             return 3;
-        else if ($this->MentalAge < $_APP['creatures'][$this->BaseRace]['OldAge'])
+        else if ($this->MentalAge < $old)
             return 4;
-        else if ($this->MentalAge < $_APP['creatures'][$this->BaseRace]['VenerableAge'])
+        else if ($this->MentalAge < $venerable)
             return 5;
         else
             return 6;
@@ -1454,40 +1506,58 @@ class cIndividual extends cEntity {
         parent::UpdateState();
 
         // Parse natural attacks
-        $this->lNaturalAttacks = cCreature::ParseNaturalAttacks($_APP['creatures'][$this->CurrentRace]['NaturalAttacks']);
+        $this->lNaturalAttacks = cCreature::ParseNaturalAttacks($_APP['creatures'][$this->CurrentRace]['NaturalAttacks'] ?? '');
 
         // Creature type/group traits
-        $this->TraitEffects->ProcessTraits($_APP['creaturetypes'][$this->GetCreatureGroup()]['GroupTraits'],
-                $this->GetRacialLevel(), $this);
-        $this->TraitEffects->ProcessTraits($_APP['creaturesubtypes'][$this->GetCreatureType()]['TypeTraits'],
-                $this->GetRacialLevel(), $this);
-        // Racial traits
-        $this->TraitEffects->ProcessTraits($_APP['creatures'][$this->BaseRace]['RacialTraits'],
-                $this->GetRacialLevel(), $this);
-        // Template traits
-        foreach ($this->lTemplates as $iTemplate)
-            $this->TraitEffects->ProcessTraits($_APP['templates'][$iTemplate]['RacialTraits'],
+        $grp = $this->GetCreatureGroup();
+        if ($grp && isset($_APP['creaturetypes'][$grp]['GroupTraits'])) {
+            $this->TraitEffects->ProcessTraits($_APP['creaturetypes'][$grp]['GroupTraits'],
                     $this->GetRacialLevel(), $this);
+        }
+        $cType = $this->GetCreatureType();
+        if ($cType && isset($_APP['creaturesubtypes'][$cType]['TypeTraits'])) {
+            $this->TraitEffects->ProcessTraits($_APP['creaturesubtypes'][$cType]['TypeTraits'],
+                    $this->GetRacialLevel(), $this);
+        }
+        // Racial traits
+        if (isset($_APP['creatures'][$this->BaseRace]['RacialTraits'])) {
+            $this->TraitEffects->ProcessTraits($_APP['creatures'][$this->BaseRace]['RacialTraits'],
+                    $this->GetRacialLevel(), $this);
+        }
+        // Template traits
+        foreach ($this->lTemplates as $iTemplate) {
+            if (isset($_APP['templates'][$iTemplate]['RacialTraits'])) {
+                $this->TraitEffects->ProcessTraits($_APP['templates'][$iTemplate]['RacialTraits'],
+                        $this->GetRacialLevel(), $this);
+            }
+        }
         // Cultural traits
-        if ($this->Culture > 0)
+        if ($this->Culture > 0 && isset($_APP['cultures'][$this->Culture]['Traits'])) {
             $this->TraitEffects->ProcessTraits($_APP['cultures'][$this->Culture]['Traits'],
                     $this->GetRacialLevel(), $this);
+        }
 
         // Class traits of all classes
-        foreach ($_APP['classes'] as $classID => $iClass) {
-            if (($lvl = $this->GetClassLevel($classID)) > 0)
-                $this->TraitEffects->ProcessTraits($_APP['classes'][$classID]['ClassTraits'], $lvl, $this);
+        if (!empty($_APP['classes']) && is_array($_APP['classes'])) {
+            foreach ($_APP['classes'] as $classID => $iClass) {
+                if (($lvl = $this->GetClassLevel($classID)) > 0 && !empty($iClass['ClassTraits']))
+                    $this->TraitEffects->ProcessTraits($iClass['ClassTraits'], $lvl, $this);
+            }
         }
 
         // Traits for all skills and skill levels
-        foreach ($_APP['skillbenefits'] as $iBenefit) {
-            if (($lvl = $this->GetSkillLevel($iBenefit['Skill'])) >= $iBenefit['SkillLevel'])
-                $this->TraitEffects->ProcessTraits($iBenefit['Traits'], $lvl, $this);
+        if (!empty($_APP['skillbenefits']) && is_array($_APP['skillbenefits'])) {
+            foreach ($_APP['skillbenefits'] as $iBenefit) {
+                if (($lvl = $this->GetSkillLevel($iBenefit['Skill'])) >= $iBenefit['SkillLevel'] && !empty($iBenefit['Traits']))
+                    $this->TraitEffects->ProcessTraits($iBenefit['Traits'], $lvl, $this);
+            }
         }
         // Traits for all skill specializations
-        foreach ($_APP['specializations'] as $specID => $iSpec) {
-            if (($lvl = $this->GetSpecLevel($specID)) > 0)
-                $this->TraitEffects->ProcessTraits($iSpec['Traits'], $lvl, $this);
+        if (!empty($_APP['specializations']) && is_array($_APP['specializations'])) {
+            foreach ($_APP['specializations'] as $specID => $iSpec) {
+                if (($lvl = $this->GetSpecLevel($specID)) > 0 && !empty($iSpec['Traits']))
+                    $this->TraitEffects->ProcessTraits($iSpec['Traits'], $lvl, $this);
+            }
         }
 
         // Character-specific traits
@@ -1495,8 +1565,11 @@ class cIndividual extends cEntity {
         $this->TraitEffects->ProcessTraits($this->CharTraits, $this->GetTotalLevel(), $this);
 
         // Always add parry modifiers for natural attacks
-        $this->TraitEffects->ModsPar->SetMod(cModifiers::GetModId("Skl"),
-                $this->TraitEffects->ModsWeapPar[WeaponCat("Nat")]->Total());
+        $natIdx = WeaponCat("Nat");
+        if (isset($this->TraitEffects->ModsWeapPar[$natIdx])) {
+            $this->TraitEffects->ModsPar->SetMod(cModifiers::GetModId("Skl"),
+                    $this->TraitEffects->ModsWeapPar[$natIdx]->Total());
+        }
 
         // Equipment traits
         $this->lWeapons = array();
@@ -1648,8 +1721,9 @@ class cIndividual extends cEntity {
         $this->Name = trim(substr($configStr, 0, $i));
         $this->SetBaseRace($creatureId);
         $this->SetCurrentRace($creatureId);
-        $this->Culture = $creature['DefaultCulture'];
-        $this->MentalAge = $this->PhysicalAge = 1.2 * $creature['AdultAge'];
+        $this->Culture = $creature['DefaultCulture'] ?? 0;
+        $adultAge = $creature['AdultAge'] ?? 18;
+        $this->MentalAge = $this->PhysicalAge = 1.2 * $adultAge;
         $aParams = explode(";", substr($configStr, $i + 1));
 
         foreach ($aParams as $iParam) {
@@ -1691,26 +1765,27 @@ class cIndividual extends cEntity {
                 case "AgeCat":
                     switch (trim(substr($iParam, $i + 1))) {
                         case "Child":
-                            $this->MentalAge = $this->PhysicalAge = 0.4 * $creature['AdultAge'];
+                            $this->MentalAge = $this->PhysicalAge = 0.4 * ($creature['AdultAge'] ?? 18);
                             break;
                         case "Juvenile":
-                            $this->MentalAge = $this->PhysicalAge = 0.8 * $creature['AdultAge'];
+                            $this->MentalAge = $this->PhysicalAge = 0.8 * ($creature['AdultAge'] ?? 18);
                             break;
                         case "Mature":
-                            $this->MentalAge = $this->PhysicalAge = 0.8 * $creature['OldAge'];
+                            $this->MentalAge = $this->PhysicalAge = 0.8 * ($creature['OldAge'] ?? 53);
                             break;
                         case "Old":
-                            $this->MentalAge = $this->PhysicalAge = 0.8 * $creature['VenerableAge'];
+                            $this->MentalAge = $this->PhysicalAge = 0.8 * ($creature['VenerableAge'] ?? 70);
                             break;
                         case "Venerable":
-                            $this->MentalAge = $this->PhysicalAge = 1.2 * $creature['VenerableAge'];
+                            $this->MentalAge = $this->PhysicalAge = 1.2 * ($creature['VenerableAge'] ?? 70);
                             break;
                     }
                     break;
                 case "BackgndClass":
-                    foreach ($_APP['classconfigs'] as $iClassConfig) {
+                    foreach ($_APP['classconfigs'] ?? [] as $iClassConfig) {
                         if ($iClassConfig['Name'] == trim(substr($iParam, $i + 1))) {
-                            $this->OverrideRacialClass = $iClassConfig['ID'];
+                            $this->OverrideClassConfig = $iClassConfig['ID'];
+                            $this->OverrideRacialClass = $iClassConfig['ClassID'] ?? $iClassConfig['ID'];
                             break;
                         }
                     }
@@ -1723,9 +1798,9 @@ class cIndividual extends cEntity {
                     $this->SizeAdjust = (int) trim(substr($iParam, $i + 1));
                     break;
                 case "Shape":
-                    $creature = trim(substr($iParam, $i + 1));
-                    foreach ($_APP['creatures'] as $iCreature) {
-                        if ($iCreature['Name'] == $creature || $iCreature['NameInformal'] == $creature) {
+                    $creatureName = trim(substr($iParam, $i + 1));
+                    foreach ($_APP['creatures'] ?? [] as $iCreature) {
+                        if ($iCreature['Name'] == $creatureName || ($iCreature['NameInformal'] ?? '') == $creatureName) {
                             $this->SetCurrentRace($iCreature['ID']);
                             break;
                         }
@@ -1733,9 +1808,9 @@ class cIndividual extends cEntity {
                     break;
                 case "Template":
                     $template = trim(substr($iParam, $i + 1));
-                    if ($template != "None") {
+                    if ($template != "None" && !empty($_APP['templates'])) {
                         foreach ($_APP['templates'] as $iTemplate) {
-                            if ($iTemplate['Name'] == $template || $iTemplate['NameInformal'] == $template) {
+                            if ($iTemplate['Name'] == $template || ($iTemplate['NameInformal'] ?? '') == $template) {
                                 $this->lTemplates[] = $iTemplate['ID'];
                                 break;
                             }
@@ -1743,7 +1818,7 @@ class cIndividual extends cEntity {
                     }
                     break;
                 case "Culture":
-                    foreach ($_APP['cultures'] as $iCulture) {
+                    foreach ($_APP['cultures'] ?? [] as $iCulture) {
                         if ($iCulture['Name'] == trim(substr($iParam, $i + 1))) {
                             $this->Culture = $iCulture['ID'];
                             break;
@@ -1751,7 +1826,7 @@ class cIndividual extends cEntity {
                     }
                     break;
                 case "Class":
-                    foreach ($_APP['classconfigs'] as $iClassConfig) {
+                    foreach ($_APP['classconfigs'] ?? [] as $iClassConfig) {
                         if ($iClassConfig['Name'] == trim(substr($iParam, $i + 1))) {
                             $classConfig = $iClassConfig['ID'];
                             break;
@@ -1761,14 +1836,14 @@ class cIndividual extends cEntity {
                 case "Level":
                 case "Lvl":
                     $classLevel = (int) trim(substr($iParam, $i + 1));
-                    if ($classConfig != NULL && $classLevel > 0) {
+                    if ($classConfig != NULL && $classLevel > 0 && !empty($_APP['classconfigs'][$classConfig])) {
                         for ($j = 0; $j < $classLevel; $j++)
                             $this->lClassLevels[] = $_APP['classconfigs'][$classConfig]['ClassID'];
-                        foreach ($_APP['skills'] as $iSkill) {
-                            if (strpos($_APP['classconfigs'][$classConfig]['PrimSkills'], $iSkill['Abbreviation']) !== FALSE)
+                        foreach ($_APP['skills'] ?? [] as $iSkill) {
+                            if (strpos($_APP['classconfigs'][$classConfig]['PrimSkills'] ?? '', $iSkill['Abbreviation']) !== FALSE)
                                 $this->lSkillLevels[$iSkill['ID']] = $classLevel +
                                         (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
-                            else if (strpos($_APP['classconfigs'][$classConfig]['SecSkills'], $iSkill['Abbreviation']) !== FALSE)
+                            else if (strpos($_APP['classconfigs'][$classConfig]['SecSkills'] ?? '', $iSkill['Abbreviation']) !== FALSE)
                                 $this->lSkillLevels[$iSkill['ID']] = $classLevel / 2 +
                                         (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
                         }
@@ -1797,15 +1872,17 @@ class cIndividual extends cEntity {
             }
         }
 
-        $classConfig = $this->OverrideRacialClass > 0 ? $this->OverrideRacialClass :
-                $_APP['cultures'][$this->Culture]['ClassConfig'];
-        foreach ($_APP['skills'] as $iSkill) {
-            if (strpos($_APP['classconfigs'][$classConfig]['PrimSkills'], $iSkill['Abbreviation']) !== FALSE)
-                $this->lSkillLevels[$iSkill['ID']] = $this->GetRacialLevel() + 1 +
-                        (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
-            else if (strpos($_APP['classconfigs'][$classConfig]['SecSkills'], $iSkill['Abbreviation']) !== FALSE)
-                $this->lSkillLevels[$iSkill['ID']] = ($this->GetRacialLevel() + 1) / 2 +
-                        (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
+        $classConfig = ($this->OverrideClassConfig > 0) ? $this->OverrideClassConfig :
+                ($_APP['cultures'][$this->Culture]['ClassConfig'] ?? 0);
+        if ($classConfig > 0 && !empty($_APP['classconfigs'][$classConfig]) && !empty($_APP['skills'])) {
+            foreach ($_APP['skills'] as $iSkill) {
+                if (isset($_APP['classconfigs'][$classConfig]['PrimSkills']) && strpos($_APP['classconfigs'][$classConfig]['PrimSkills'], $iSkill['Abbreviation']) !== FALSE)
+                    $this->lSkillLevels[$iSkill['ID']] = $this->GetRacialLevel() + 1 +
+                            (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
+                else if (isset($_APP['classconfigs'][$classConfig]['SecSkills']) && strpos($_APP['classconfigs'][$classConfig]['SecSkills'], $iSkill['Abbreviation']) !== FALSE)
+                    $this->lSkillLevels[$iSkill['ID']] = ($this->GetRacialLevel() + 1) / 2 +
+                            (isset($this->lSkillLevels[$iSkill['ID']]) ? $this->lSkillLevels[$iSkill['ID']] : 0);
+            }
         }
 
         $this->UpdateState();
@@ -2059,7 +2136,7 @@ class cIndividual extends cEntity {
         $statBlock .= "; " . $_APP['sizecats'][$this->GetCurrentSize()]['Abbreviation'] . " " .
                 $_APP['creaturesubtypes'][$this->GetCreatureType()]['Name'];
         $statBlock .= "; RL " . $this->GetRacialLevel();
-        $statBlock .= "; HP " . $this->GetHPTotal() . ", SP " . $this->GetSPTotal() . ", PP " . $this->GetPPTotal();
+        $statBlock .= "; HP " . $this->GetHPTotal() . ", SP " . ($this->GetSPTotal() !== null ? $this->GetSPTotal() : "–") . ", PP " . ($this->GetPPTotal() !== null ? $this->GetPPTotal() : "–");
         $statBlock .= "; Init " . signedstr($this->GetInitMod());
         $statBlock .= "; Spd " . $this->GetSpeedStr();
         $statBlock .= "; DeCa/p " . $this->GetDeCActive() . "/" . $this->GetDeCPassive() .
@@ -2143,12 +2220,12 @@ class cIndividual extends cEntity {
         // TODO: Also show list of special actions
         $statBlock .= "; AL " . $_APP['creatures'][$this->BaseRace]['Alignment'];
         //$statBlock .= "; ML " . $_APP['creatures'][$this->BaseRace]['Morale'];
-        $statBlock .= "; Str " . (($this->GetAbility(A_STR) == NULL) ? "-" : $this->GetAbility(A_STR)) .
-                ", Con " . (($this->GetAbility(A_CON) == NULL) ? "-" : $this->GetAbility(A_CON)) .
-                ", Dex " . (($this->GetAbility(A_DEX) == NULL) ? "-" : $this->GetAbility(A_DEX)) .
-                ", Int " . (($this->GetAbility(A_INT) == NULL) ? "-" : $this->GetAbility(A_INT)) .
-                ", Wis " . (($this->GetAbility(A_WIS) == NULL) ? "-" : $this->GetAbility(A_WIS)) .
-                ", Cha " . (($this->GetAbility(A_CHA) == NULL) ? "-" : $this->GetAbility(A_CHA));
+        $statBlock .= "; Str " . (($this->GetAbility(A_STR) === NULL) ? "–" : $this->GetAbility(A_STR)) .
+                ", Con " . (($this->GetAbility(A_CON) === NULL) ? "–" : $this->GetAbility(A_CON)) .
+                ", Dex " . (($this->GetAbility(A_DEX) === NULL) ? "–" : $this->GetAbility(A_DEX)) .
+                ", Int " . (($this->GetAbility(A_INT) === NULL) ? "–" : $this->GetAbility(A_INT)) .
+                ", Wis " . (($this->GetAbility(A_WIS) === NULL) ? "–" : $this->GetAbility(A_WIS)) .
+                ", Cha " . (($this->GetAbility(A_CHA) === NULL) ? "–" : $this->GetAbility(A_CHA));
         $statBlock .= ".<br/>";
 
         if (count($this->lSkillLevels) > 0) {
@@ -2254,7 +2331,9 @@ class cPossession extends cEntity {
         global $_APP;
 
         $adjAbil = $this->GetBaseAbility($id);
-        $adjAbil = max(1, $adjAbil);
+        if ($adjAbil !== NULL) {
+            $adjAbil = max(1, $adjAbil);
+        }
 
         return $adjAbil;
     }
@@ -2264,11 +2343,11 @@ class cPossession extends cEntity {
     }
 
     public function GetSPTotal() {
-        return 0;
+        return NULL;
     }
 
     public function GetPPTotal() {
-        return 0;
+        return NULL;
     }
 
     public function GetFort() {

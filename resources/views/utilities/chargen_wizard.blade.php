@@ -31,7 +31,7 @@
                          'completed': step > num,
                          'opacity-60': step < num
                      }"
-                     @click="if(num <= step || true) { /* navigation allowed if validated */ }">
+                     @click="if(num <= step || true) { step = parseInt(num); if (step === 10) fetchPreviewState(); }">
                     <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold"
                           :class="step == num ? 'bg-amber-400 text-slate-900' : (step > num ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-700')"
                           x-text="step > num ? '✓' : num"></span>
@@ -270,7 +270,7 @@
                                 <option value="">⇄ Swap with...</option>
                                 @foreach($abilityNames as $targetAttr => $targetMeta)
                                     @if($targetAttr !== $attr)
-                                        <option value="{{ $targetAttr }}">{{ $targetAttr }} (<span x-text="character['{{ $targetAttr }}']"></span>)</option>
+                                        <option value="{{ $targetAttr }}">{{ $targetAttr }}</option>
                                     @endif
                                 @endforeach
                             </select>
@@ -324,12 +324,12 @@
                         </div>
                     </div>
                     <div class="grid grid-cols-6 gap-1 text-[11px] font-mono text-center pt-1.5 border-t border-slate-200">
-                        <div class="bg-white p-1 rounded border border-slate-200">STR <span class="font-bold block" x-text="(r.StrAdj >= 0 ? '+' : '') + (r.StrAdj || 0)"></span></div>
-                        <div class="bg-white p-1 rounded border border-slate-200">CON <span class="font-bold block" x-text="(r.ConAdj >= 0 ? '+' : '') + (r.ConAdj || 0)"></span></div>
-                        <div class="bg-white p-1 rounded border border-slate-200">DEX <span class="font-bold block" x-text="(r.DexAdj >= 0 ? '+' : '') + (r.DexAdj || 0)"></span></div>
-                        <div class="bg-white p-1 rounded border border-slate-200">INT <span class="font-bold block" x-text="(r.IntAdj >= 0 ? '+' : '') + (r.IntAdj || 0)"></span></div>
-                        <div class="bg-white p-1 rounded border border-slate-200">WIS <span class="font-bold block" x-text="(r.WisAdj >= 0 ? '+' : '') + (r.WisAdj || 0)"></span></div>
-                        <div class="bg-white p-1 rounded border border-slate-200">CHA <span class="font-bold block" x-text="(r.ChaAdj >= 0 ? '+' : '') + (r.ChaAdj || 0)"></span></div>
+                        <div class="bg-white p-1 rounded border border-slate-200">STR <span class="font-bold block" x-text="r.StrAdj === null ? '–' : ((r.StrAdj >= 0 ? '+' : '') + (r.StrAdj || 0))"></span></div>
+                        <div class="bg-white p-1 rounded border border-slate-200">CON <span class="font-bold block" x-text="r.ConAdj === null ? '–' : ((r.ConAdj >= 0 ? '+' : '') + (r.ConAdj || 0))"></span></div>
+                        <div class="bg-white p-1 rounded border border-slate-200">DEX <span class="font-bold block" x-text="r.DexAdj === null ? '–' : ((r.DexAdj >= 0 ? '+' : '') + (r.DexAdj || 0))"></span></div>
+                        <div class="bg-white p-1 rounded border border-slate-200">INT <span class="font-bold block" x-text="r.IntAdj === null ? '–' : ((r.IntAdj >= 0 ? '+' : '') + (r.IntAdj || 0))"></span></div>
+                        <div class="bg-white p-1 rounded border border-slate-200">WIS <span class="font-bold block" x-text="r.WisAdj === null ? '–' : ((r.WisAdj >= 0 ? '+' : '') + (r.WisAdj || 0))"></span></div>
+                        <div class="bg-white p-1 rounded border border-slate-200">CHA <span class="font-bold block" x-text="r.ChaAdj === null ? '–' : ((r.ChaAdj >= 0 ? '+' : '') + (r.ChaAdj || 0))"></span></div>
                     </div>
                 </div>
 
@@ -380,12 +380,12 @@
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-6 gap-1 text-[10px] font-mono text-center pt-1 border-t border-purple-200/60">
-                                    <div class="bg-white p-1 rounded border border-purple-100">STR <span class="font-bold block" x-text="(t.StrAdj >= 0 ? '+' : '') + (t.StrAdj || 0)"></span></div>
-                                    <div class="bg-white p-1 rounded border border-purple-100">CON <span class="font-bold block" x-text="(t.ConAdj >= 0 ? '+' : '') + (t.ConAdj || 0)"></span></div>
-                                    <div class="bg-white p-1 rounded border border-purple-100">DEX <span class="font-bold block" x-text="(t.DexAdj >= 0 ? '+' : '') + (t.DexAdj || 0)"></span></div>
-                                    <div class="bg-white p-1 rounded border border-purple-100">INT <span class="font-bold block" x-text="(t.IntAdj >= 0 ? '+' : '') + (t.IntAdj || 0)"></span></div>
-                                    <div class="bg-white p-1 rounded border border-purple-100">WIS <span class="font-bold block" x-text="(t.WisAdj >= 0 ? '+' : '') + (t.WisAdj || 0)"></span></div>
-                                    <div class="bg-white p-1 rounded border border-purple-100">CHA <span class="font-bold block" x-text="(t.ChaAdj >= 0 ? '+' : '') + (t.ChaAdj || 0)"></span></div>
+                                    <div class="bg-white p-1 rounded border border-purple-100">STR <span class="font-bold block" x-text="t.StrAdj === null ? '–' : ((t.StrAdj >= 0 ? '+' : '') + (t.StrAdj || 0))"></span></div>
+                                    <div class="bg-white p-1 rounded border border-purple-100">CON <span class="font-bold block" x-text="t.ConAdj === null ? '–' : ((t.ConAdj >= 0 ? '+' : '') + (t.ConAdj || 0))"></span></div>
+                                    <div class="bg-white p-1 rounded border border-purple-100">DEX <span class="font-bold block" x-text="t.DexAdj === null ? '–' : ((t.DexAdj >= 0 ? '+' : '') + (t.DexAdj || 0))"></span></div>
+                                    <div class="bg-white p-1 rounded border border-purple-100">INT <span class="font-bold block" x-text="t.IntAdj === null ? '–' : ((t.IntAdj >= 0 ? '+' : '') + (t.IntAdj || 0))"></span></div>
+                                    <div class="bg-white p-1 rounded border border-purple-100">WIS <span class="font-bold block" x-text="t.WisAdj === null ? '–' : ((t.WisAdj >= 0 ? '+' : '') + (t.WisAdj || 0))"></span></div>
+                                    <div class="bg-white p-1 rounded border border-purple-100">CHA <span class="font-bold block" x-text="t.ChaAdj === null ? '–' : ((t.ChaAdj >= 0 ? '+' : '') + (t.ChaAdj || 0))"></span></div>
                                 </div>
                             </div>
                         </template>
@@ -991,14 +991,28 @@
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Physical Age (Years)</label>
-                                <input type="number" x-model="character.PhysicalAge" min="1"
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase">Physical Age (Years)</label>
+                                    <span class="text-[10px] text-slate-500 font-mono" x-text="getMinPhysicalAge() + '–' + getMaxPhysicalAge() + ' yrs'"></span>
+                                </div>
+                                <input type="number" x-model.number="character.PhysicalAge" :min="getMinPhysicalAge()" :max="getMaxPhysicalAge()"
+                                       :class="{'border-red-500 ring-1 ring-red-500 bg-red-50/50': isPhysicalAgeInvalid()}"
                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                                <template x-if="isPhysicalAgeInvalid()">
+                                    <p class="text-[11px] text-red-600 mt-1 font-semibold" x-text="'Must be between ' + getMinPhysicalAge() + ' (Adult) and ' + getMaxPhysicalAge() + ' (150% Venerable).'"></p>
+                                </template>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Mental Age (Years)</label>
-                                <input type="number" x-model="character.MentalAge" min="1"
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase">Mental Age (Years)</label>
+                                    <span class="text-[10px] text-slate-500 font-mono" x-text="getMinPhysicalAge() + '–' + getMaxPhysicalAge() + ' yrs'"></span>
+                                </div>
+                                <input type="number" x-model.number="character.MentalAge" :min="getMinPhysicalAge()" :max="getMaxPhysicalAge()"
+                                       :class="{'border-red-500 ring-1 ring-red-500 bg-red-50/50': isMentalAgeInvalid()}"
                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                                <template x-if="isMentalAgeInvalid()">
+                                    <p class="text-[11px] text-red-600 mt-1 font-semibold" x-text="'Must be between ' + getMinPhysicalAge() + ' (Adult) and ' + getMaxPhysicalAge() + ' (150% Venerable).'"></p>
+                                </template>
                             </div>
                         </div>
 
@@ -1015,18 +1029,32 @@
 
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">
-                                    Height Factor (<span x-text="calculatedHeightCm + ' cm'"></span>)
-                                </label>
-                                <input type="number" x-model="character.HeightFactor" step="0.01" min="0.5" max="2.0"
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase">
+                                        Height Factor (<span x-text="calculatedHeightCm + ' cm'"></span>)
+                                    </label>
+                                    <span class="text-[10px] text-slate-500 font-mono">0.60–1.50</span>
+                                </div>
+                                <input type="number" x-model.number="character.HeightFactor" step="0.01" min="0.6" max="1.5"
+                                       :class="{'border-red-500 ring-1 ring-red-500 bg-red-50/50': isHeightFactorInvalid()}"
                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                                <template x-if="isHeightFactorInvalid()">
+                                    <p class="text-[11px] text-red-600 mt-1 font-semibold">Must be between 0.60 and 1.50.</p>
+                                </template>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">
-                                    Weight Factor (<span x-text="calculatedWeightKg + ' kg'"></span>)
-                                </label>
-                                <input type="number" x-model="character.WeightFactor" step="0.01" min="0.5" max="3.0"
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase">
+                                        Weight Factor (<span x-text="calculatedWeightKg + ' kg'"></span>)
+                                    </label>
+                                    <span class="text-[10px] text-slate-500 font-mono">0.60–3.00</span>
+                                </div>
+                                <input type="number" x-model.number="character.WeightFactor" step="0.01" min="0.6" max="3.0"
+                                       :class="{'border-red-500 ring-1 ring-red-500 bg-red-50/50': isWeightFactorInvalid()}"
                                        class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                                <template x-if="isWeightFactorInvalid()">
+                                    <p class="text-[11px] text-red-600 mt-1 font-semibold">Must be between 0.60 and 3.00.</p>
+                                </template>
                             </div>
                         </div>
 
@@ -1210,9 +1238,9 @@
                                             @foreach($abilKeys as $attr => $abbr)
                                                 <tr>
                                                     <td class="cvlabel cvcenter">{{ $abbr }}</td>
-                                                    <td class="cvmdm cvcenter" x-text="(Math.floor((getFinalAbility('{{ $attr }}') - 10)/2) >= 0 ? '+' : '') + Math.floor((getFinalAbility('{{ $attr }}') - 10)/2)"></td>
-                                                    <td class="cvsml cvcenter" x-text="character['{{ $attr }}']"></td>
-                                                    <td class="cvmdm cvcenter" x-text="getFinalAbility('{{ $attr }}')"></td>
+                                                    <td class="cvmdm cvcenter" x-text="(calculatedState?.ability_modifiers?.['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] !== undefined && calculatedState?.ability_modifiers?.['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] !== null) ? ((calculatedState.ability_modifiers['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] >= 0 ? '+' : '') + calculatedState.ability_modifiers['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}']) : (getAbilityModifier('{{ $attr }}') !== null ? ((getAbilityModifier('{{ $attr }}') >= 0 ? '+' : '') + getAbilityModifier('{{ $attr }}')) : '–')"></td>
+                                                    <td class="cvsml cvcenter" x-text="character['{{ $attr }}'] ?? '–'"></td>
+                                                    <td class="cvmdm cvcenter" x-text="calculatedState?.final_abilities?.['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] !== undefined ? (calculatedState.final_abilities['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] ?? '–') : (getFinalAbility('{{ $attr }}') !== null ? getFinalAbility('{{ $attr }}') : '–')"></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -1231,13 +1259,13 @@
                                                 <td class="cvlabel cvcenter">React</td>
                                             </tr>
                                             <tr>
-                                                <td class="cvmdm cvcenter" x-text="(calcInitMod() >= 0 ? '+' : '') + calcInitMod()"></td>
-                                                <td class="cvmdm cvcenter" x-text="calcActionPts()"></td>
-                                                <td class="cvmdm cvcenter" x-text="calcMP()"></td>
-                                                <td class="cvmdm cvcenter" x-text="calcReactions()"></td>
+                                                <td class="cvmdm cvcenter" x-text="(calculatedState?.defenses?.init_mod !== undefined ? (calculatedState.defenses.init_mod >= 0 ? '+' : '') + calculatedState.defenses.init_mod : (calcInitMod() >= 0 ? '+' : '') + calcInitMod())"></td>
+                                                <td class="cvmdm cvcenter" x-text="calculatedState?.actions?.ap ?? calcActionPts()"></td>
+                                                <td class="cvmdm cvcenter" x-text="calculatedState?.actions?.mp ?? calculatedState?.speeds?.ground ?? calcMP()"></td>
+                                                <td class="cvmdm cvcenter" x-text="calculatedState?.actions?.reactions ?? calcReactions()"></td>
                                             </tr>
                                             <tr><td class="cvlabel" colspan="4">Speed</td></tr>
-                                            <tr><td class="cvsml" colspan="4" x-text="calcSpeedStr()"></td></tr>
+                                            <tr><td class="cvsml" colspan="4" x-text="calculatedState?.speeds ? 'Ground ' + calculatedState.speeds.ground + ' sq' : calcSpeedStr()"></td></tr>
                                             <tr><td class="cvlabel" colspan="4">Body Type</td></tr>
                                             <tr><td class="cvsml" colspan="4" x-text="calcBodyType()"></td></tr>
                                             <tr>
@@ -1245,8 +1273,8 @@
                                                 <td class="cvlabel cvcenter" colspan="2">Spacing / Reach</td>
                                             </tr>
                                             <tr>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="calcSizeCategory()"></td>
-                                                <td class="cvsml cvcenter" colspan="2" x-text="calcSpacing() + ' / ' + calcReach() + ' sq'"></td>
+                                                <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.heritage?.size_name ?? calcSizeCategory()"></td>
+                                                <td class="cvsml cvcenter" colspan="2" x-text="(calculatedState?.heritage ? calculatedState.heritage.space + ' / ' + calculatedState.heritage.reach : calcSpacing() + ' / ' + calcReach()) + ' sq'"></td>
                                             </tr>
                                             <tr><td class="cvlabel" colspan="4">Special Senses</td></tr>
                                             <tr><td class="cvsml" colspan="4">Standard Vision</td></tr>
@@ -1265,9 +1293,9 @@
                                                 <td class="cvlabel cvcenter" colspan="2">Crit</td>
                                             </tr>
                                             <tr>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="calcDeCActive()"></td>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="calcDeCPassive()"></td>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="'+' + calcCritRes()"></td>
+                                                <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.defenses?.dec_active ?? calcDeCActive()"></td>
+                                                <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.defenses?.dec_passive ?? calcDeCPassive()"></td>
+                                                <td class="cvmdm cvcenter" colspan="2" x-text="'+' + (calculatedState?.defenses?.crit_res ?? calcCritRes())"></td>
                                             </tr>
                                             <tr>
                                                 <td class="cvlabel cvcenter" colspan="2">Fort</td>
@@ -1275,17 +1303,17 @@
                                                 <td class="cvlabel cvcenter" colspan="2">Will</td>
                                             </tr>
                                             <tr>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="calcFort()"></td>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="calcRef()"></td>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="calcWill()"></td>
+                                                <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.defenses?.fort !== undefined ? (calculatedState.defenses.fort < 999 ? calculatedState.defenses.fort : '–') : (calcFort() < 999 ? calcFort() : '–')"></td>
+                                                <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.defenses?.ref ?? calcRef()"></td>
+                                                <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.defenses?.will !== undefined ? (calculatedState.defenses.will < 999 ? calculatedState.defenses.will : '–') : (calcWill() < 999 ? calcWill() : '–')"></td>
                                             </tr>
                                             <tr>
                                                 <td class="cvlabel cvcenter" colspan="3">DR</td>
                                                 <td class="cvlabel cvcenter" colspan="3">MR</td>
                                             </tr>
                                             <tr>
-                                                <td class="cvmdm cvcenter" colspan="3" x-text="calcDR()"></td>
-                                                <td class="cvmdm cvcenter" colspan="3" x-text="calcMR()"></td>
+                                                <td class="cvmdm cvcenter" colspan="3" x-text="calculatedState?.defenses?.dr ?? calcDR()"></td>
+                                                <td class="cvmdm cvcenter" colspan="3" x-text="calculatedState?.defenses?.mr ?? calcMR()"></td>
                                             </tr>
                                             <tr><td class="cvlabel" colspan="6">Resistances and Immunities</td></tr>
                                             <tr><td class="cvsml" colspan="6">None</td></tr>
@@ -1311,9 +1339,9 @@
                                                 <td class="cvlabel cvcenter">Max</td>
                                             </tr>
                                             <tr>
-                                                <td class="cvmdm cvcenter" x-text="calcHP()"></td>
-                                                <td class="cvmdm cvcenter" x-text="calcSP()"></td>
-                                                <td class="cvmdm cvcenter" x-text="calcPP()"></td>
+                                                <td class="cvmdm cvcenter" x-text="calculatedState?.health?.hp?.total ?? calcHP()"></td>
+                                                <td class="cvmdm cvcenter" x-text="calculatedState?.health?.sp?.total !== undefined ? (calculatedState.health.sp.total ?? '–') : (calcSP() !== null ? calcSP() : '–')"></td>
+                                                <td class="cvmdm cvcenter" x-text="calculatedState?.health?.pp?.total !== undefined ? (calculatedState.health.pp.total ?? '–') : (calcPP() !== null ? calcPP() : '–')"></td>
                                             </tr>
                                             <tr>
                                                 <td class="cvlabel cvcenter">Current</td>
@@ -1321,9 +1349,9 @@
                                                 <td class="cvlabel cvcenter">Current</td>
                                             </tr>
                                             <tr>
-                                                <td class="cvmdm cvcenter" x-text="calcHP()"></td>
-                                                <td class="cvmdm cvcenter" x-text="calcSP()"></td>
-                                                <td class="cvmdm cvcenter" x-text="calcPP()"></td>
+                                                <td class="cvmdm cvcenter" x-text="calculatedState?.health?.hp?.current ?? calculatedState?.health?.hp?.total ?? calcHP()"></td>
+                                                <td class="cvmdm cvcenter" x-text="calculatedState?.health?.sp?.current !== undefined ? (calculatedState.health.sp.current ?? '–') : (calcSP() !== null ? calcSP() : '–')"></td>
+                                                <td class="cvmdm cvcenter" x-text="calculatedState?.health?.pp?.current !== undefined ? (calculatedState.health.pp.current ?? '–') : (calcPP() !== null ? calcPP() : '–')"></td>
                                             </tr>
                                             <tr><td class="cvlabel" colspan="3">Conditions</td></tr>
                                             <tr><td class="cvsml" colspan="3">Normal</td></tr>
@@ -1603,6 +1631,10 @@ function characterWizard() {
         // Shop State
         itemSearchQuery: '',
         selectedItemTypeFilter: '0',
+
+        // Canonical Server-Side Entity Engine State
+        calculatedState: null,
+        isCalculatingPreview: false,
 
         character: {
             Name: '',
@@ -2099,14 +2131,29 @@ function characterWizard() {
 
         // --- Final Ability Scores with Adjustments ---
         getFinalAbility(attr) {
-            let base = parseInt(this.character[attr]) || 10;
             const race = this.getSelectedRace();
             const attrShort = attr.substring(0, 3);
             
-            if (race[attrShort + 'Adj']) base += parseInt(race[attrShort + 'Adj']);
+            if (race && race[attrShort + 'Adj'] === null) {
+                return null;
+            }
+            for (const t of this.getSelectedTemplates()) {
+                if (t[attrShort + 'Adj'] === null) {
+                    return null;
+                }
+            }
+
+            let base = parseInt(this.character[attr]);
+            if (isNaN(base)) base = 10;
+            
+            if (race && race[attrShort + 'Adj'] !== undefined && race[attrShort + 'Adj'] !== null) {
+                base += parseInt(race[attrShort + 'Adj']);
+            }
             
             this.getSelectedTemplates().forEach(t => {
-                if (t[attrShort + 'Adj']) base += parseInt(t[attrShort + 'Adj']);
+                if (t[attrShort + 'Adj'] !== undefined && t[attrShort + 'Adj'] !== null) {
+                    base += parseInt(t[attrShort + 'Adj']);
+                }
             });
 
             // Add IP improvements (traits 1..6)
@@ -2133,6 +2180,7 @@ function characterWizard() {
 
         getAbilityModifier(attr) {
             const score = this.getFinalAbility(attr);
+            if (score === null) return null;
             return Math.floor((score - 10) / 2);
         },
 
@@ -2834,23 +2882,59 @@ function characterWizard() {
             return d ? d.Name : '';
         },
 
-        rollRandomPhysicalAttributes() {
+        getMinPhysicalAge() {
             const race = this.getSelectedRace();
-            const adultAge = parseInt(race.AdultAge) || 18;
+            return Math.max(1, parseInt(race.AdultAge) || 18);
+        },
+
+        getMaxPhysicalAge() {
+            const race = this.getSelectedRace();
+            const adult = Math.max(1, parseInt(race.AdultAge) || 18);
+            const venerable = Math.max(adult, parseInt(race.VenerableAge) || (adult * 4));
+            return Math.floor(venerable * 1.5);
+        },
+
+        isPhysicalAgeInvalid() {
+            const val = Number(this.character.PhysicalAge);
+            return isNaN(val) || val < this.getMinPhysicalAge() || val > this.getMaxPhysicalAge();
+        },
+
+        isMentalAgeInvalid() {
+            const val = Number(this.character.MentalAge);
+            return isNaN(val) || val < this.getMinPhysicalAge() || val > this.getMaxPhysicalAge();
+        },
+
+        isHeightFactorInvalid() {
+            const val = Number(this.character.HeightFactor);
+            return isNaN(val) || val < 0.6 || val > 1.5;
+        },
+
+        isWeightFactorInvalid() {
+            const val = Number(this.character.WeightFactor);
+            return isNaN(val) || val < 0.6 || val > 3.0;
+        },
+
+        rollRandomPhysicalAttributes() {
+            const adultAge = this.getMinPhysicalAge();
+            const maxAge = this.getMaxPhysicalAge();
             
             const d20Roll = Math.floor(Math.random() * 20) + 1;
             const ageMultiplier = (100 + d20Roll) / 100.0;
-            const rolledAge = Math.round(adultAge * ageMultiplier);
+            let rolledAge = Math.round(adultAge * ageMultiplier);
+            if (rolledAge < adultAge) rolledAge = adultAge;
+            if (rolledAge > maxAge) rolledAge = maxAge;
             this.character.PhysicalAge = rolledAge;
             this.character.MentalAge = rolledAge;
 
             const height5d10 = this.rollDice(5, 10, 5);
-            const heightMultiplier = (75 + height5d10) / 100.0;
+            let heightMultiplier = (75 + height5d10) / 100.0;
+            heightMultiplier = Math.max(0.6, Math.min(1.5, heightMultiplier));
             this.character.HeightFactor = parseFloat(heightMultiplier.toFixed(2));
 
             const weight5d10 = this.rollDice(5, 10, 5);
             const weightFactorBase = (75 + weight5d10) / 100.0;
-            const totalWeightMultiplier = heightMultiplier * weightFactorBase;
+            let totalWeightMultiplier = heightMultiplier * weightFactorBase;
+            totalWeightMultiplier = Math.max(0.6, Math.min(3.0, totalWeightMultiplier));
             this.character.WeightFactor = parseFloat(totalWeightMultiplier.toFixed(2));
         },
 
@@ -2990,13 +3074,13 @@ function characterWizard() {
             const race = this.getSelectedRace();
             const sc = this.sizeCats[race.SizeClass];
             const sizeCombatMod = sc ? (parseInt(sc.CombatMod) || 0) : 0;
-            const dexMod = this.getAbilityModifier('Dexterity');
+            const dexMod = this.getAbilityModifier('Dexterity') || 0;
             const decIp = this.getIPBonus(7) || 0;
             return 10 + Math.min(0, dexMod) + parseInt(this.character.Level) + sizeCombatMod + decIp;
         },
 
         calcDeCActive() {
-            const dexMod = this.getAbilityModifier('Dexterity');
+            const dexMod = this.getAbilityModifier('Dexterity') || 0;
             return this.calcDeCPassive() + Math.max(0, dexMod);
         },
 
@@ -3005,15 +3089,27 @@ function characterWizard() {
         },
 
         calcFort() {
-            return 10 + this.getAbilityModifier('Strength') + this.getAbilityModifier('Constitution') + parseInt(this.character.Level) + (this.getIPBonus(8) || 0);
+            const con = this.getFinalAbility('Constitution');
+            if (con === null) return 999;
+            const strMod = this.getAbilityModifier('Strength') || 0;
+            const conMod = this.getAbilityModifier('Constitution') || 0;
+            return 10 + strMod + conMod + parseInt(this.character.Level) + (this.getIPBonus(8) || 0);
         },
 
         calcRef() {
-            return 10 + this.getAbilityModifier('Dexterity') + this.getAbilityModifier('Intelligence') + parseInt(this.character.Level) + (this.getIPBonus(9) || 0);
+            const dex = this.getFinalAbility('Dexterity');
+            if (dex === null) return 0;
+            const dexMod = this.getAbilityModifier('Dexterity') || 0;
+            const intMod = this.getAbilityModifier('Intelligence') || 0;
+            return 10 + dexMod + intMod + parseInt(this.character.Level) + (this.getIPBonus(9) || 0);
         },
 
         calcWill() {
-            return 10 + this.getAbilityModifier('Wisdom') + this.getAbilityModifier('Charisma') + parseInt(this.character.Level) + (this.getIPBonus(10) || 0);
+            const int = this.getFinalAbility('Intelligence');
+            if (int === null) return 999;
+            const wisMod = this.getAbilityModifier('Wisdom') || 0;
+            const chaMod = this.getAbilityModifier('Charisma') || 0;
+            return 10 + wisMod + chaMod + parseInt(this.character.Level) + (this.getIPBonus(10) || 0);
         },
 
         calcDR() {
@@ -3036,20 +3132,30 @@ function characterWizard() {
             return mr;
         },
 
+        getSizeHPMult() {
+            const race = this.getSelectedRace();
+            const sc = this.sizeCats[race.SizeClass];
+            return sc ? (parseFloat(sc.HPMult) || 1.0) : 1.0;
+        },
+
         calcHP() {
-            let hp = this.getFinalAbility('Constitution');
+            const con = this.getFinalAbility('Constitution');
+            let hp = (con !== null) ? con : 10;
+            const sizeHPMult = this.getSizeHPMult();
             const bgClass = this.getSelectedBackgroundClass();
-            hp += (parseInt(bgClass.HPPerLevel) || 5) * this.totalRL;
+            hp += Math.round((parseInt(bgClass.HPPerLevel) || 6) * this.totalRL * sizeHPMult);
             this.character.ClassLevels.forEach(cId => {
                 const cls = this.classesById[cId];
-                hp += (cls ? (parseInt(cls.HPPerLevel) || 5) : 5);
+                hp += (cls ? (parseInt(cls.HPPerLevel) || 6) : 6);
             });
             hp += (this.getIPBonus(11) || 0);
             return hp;
         },
 
         calcSP() {
-            let sp = this.getFinalAbility('Strength') + this.getFinalAbility('Constitution');
+            const con = this.getFinalAbility('Constitution');
+            if (con === null) return null;
+            let sp = con;
             const bgClass = this.getSelectedBackgroundClass();
             sp += (parseInt(bgClass.SPPerLevel) || 8) * this.totalRL;
             this.character.ClassLevels.forEach(cId => {
@@ -3061,12 +3167,14 @@ function characterWizard() {
         },
 
         calcPP() {
-            let pp = this.getFinalAbility('Wisdom') + this.getFinalAbility('Charisma');
+            const wis = this.getFinalAbility('Wisdom');
+            if (wis === null) return null;
+            let pp = wis;
             const bgClass = this.getSelectedBackgroundClass();
-            pp += (parseInt(bgClass.PPPerLevel) || 0) * this.totalRL;
+            pp += (parseInt(bgClass.PPPerLevel) || 4) * this.totalRL;
             this.character.ClassLevels.forEach(cId => {
                 const cls = this.classesById[cId];
-                pp += (cls ? (parseInt(cls.PPPerLevel) || 0) : 0);
+                pp += (cls ? (parseInt(cls.PPPerLevel) || 4) : 4);
             });
             pp += (this.getIPBonus(13) || 0);
             return pp;
@@ -3102,10 +3210,95 @@ function characterWizard() {
                 }
             }
 
+            // Validation for Physical & Mental Attributes (Step 9)
+            if (this.step === 9) {
+                if (this.isPhysicalAgeInvalid()) {
+                    alert(`Physical Age (${this.character.PhysicalAge}) must be between lowest adult age (${this.getMinPhysicalAge()}) and 150% of venerable age (${this.getMaxPhysicalAge()}).`);
+                    return;
+                }
+                if (this.isMentalAgeInvalid()) {
+                    alert(`Mental Age (${this.character.MentalAge}) must be between lowest adult age (${this.getMinPhysicalAge()}) and 150% of venerable age (${this.getMaxPhysicalAge()}).`);
+                    return;
+                }
+                if (this.isHeightFactorInvalid()) {
+                    alert(`Height Factor (${this.character.HeightFactor}) must be between 0.60 and 1.50.`);
+                    return;
+                }
+                if (this.isWeightFactorInvalid()) {
+                    alert(`Weight Factor (${this.character.WeightFactor}) must be between 0.60 and 3.00.`);
+                    return;
+                }
+            }
+
             this.step++;
+            if (this.step === 10) {
+                this.fetchPreviewState();
+            }
+        },
+
+        async fetchPreviewState() {
+            this.isCalculatingPreview = true;
+            try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+                const payload = {
+                    _token: csrfToken,
+                    Name: this.character.Name,
+                    CampaignID: this.character.CampaignID || null,
+                    RaceID: this.character.RaceID,
+                    TemplateIDs: this.character.TemplateIDs,
+                    CultureID: this.character.CultureID,
+                    BackgroundClassID: this.character.BackgroundClassID,
+                    Classes: this.character.ClassLevels,
+                    Gender: this.character.Gender,
+                    Alignment: this.character.Alignment,
+                    Level: this.character.Level,
+                    StartingXP: this.character.StartingXP,
+                    TotalRL: this.totalRL,
+                    Strength: this.character.Strength,
+                    Constitution: this.character.Constitution,
+                    Dexterity: this.character.Dexterity,
+                    Intelligence: this.character.Intelligence,
+                    Wisdom: this.character.Wisdom,
+                    Charisma: this.character.Charisma,
+                    Improvements: this.character.IPAllocations,
+                    Skills: {
+                        BackgroundRates: this.character.BgSkillRates,
+                        LevelSkills: this.character.LevelSkills
+                    },
+                    Specializations: this.character.Specializations,
+                    Spells: this.character.LearnedSpells,
+                    Equipment: this.character.Inventory,
+                    MentalAge: this.character.MentalAge,
+                    PhysicalAge: this.character.PhysicalAge,
+                    HeightFactor: this.character.HeightFactor,
+                    WeightFactor: this.character.WeightFactor
+                };
+                const res = await fetch('{{ route('utilities.chargen.preview', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json().catch(() => null);
+                if (data && data.success && data.calculated) {
+                    this.calculatedState = data.calculated;
+                }
+            } catch (e) {
+                console.warn('Entity calculation preview error:', e);
+            } finally {
+                this.isCalculatingPreview = false;
+            }
         },
 
         async saveCharacter() {
+            if (this.isPhysicalAgeInvalid() || this.isMentalAgeInvalid() || this.isHeightFactorInvalid() || this.isWeightFactorInvalid()) {
+                alert('Please ensure Physical Age, Mental Age, Height Factor, and Weight Factor are within their valid ranges before saving.');
+                this.step = 9;
+                return;
+            }
             try {
                 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
                 const res = await fetch('{{ route('utilities.chargen.save', [], false) }}', {
@@ -3136,12 +3329,12 @@ function characterWizard() {
                         StartingXP: this.character.StartingXP,
                         TotalRL: this.totalRL,
                         AbilityGenMethod: this.character.AbilityGenMethod,
-                        Strength: this.getFinalAbility('Strength'),
-                        Constitution: this.getFinalAbility('Constitution'),
-                        Dexterity: this.getFinalAbility('Dexterity'),
-                        Intelligence: this.getFinalAbility('Intelligence'),
-                        Wisdom: this.getFinalAbility('Wisdom'),
-                        Charisma: this.getFinalAbility('Charisma'),
+                        Strength: this.character.Strength,
+                        Constitution: this.character.Constitution,
+                        Dexterity: this.character.Dexterity,
+                        Intelligence: this.character.Intelligence,
+                        Wisdom: this.character.Wisdom,
+                        Charisma: this.character.Charisma,
                         LeftoverIP: this.ipRemaining,
                         ImprovementPoints: this.ipSpent,
                         Improvements: this.character.IPAllocations,

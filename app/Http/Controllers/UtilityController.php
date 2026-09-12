@@ -96,10 +96,10 @@ class UtilityController extends Controller
             'Intelligence' => 'nullable|integer',
             'Wisdom' => 'nullable|integer',
             'Charisma' => 'nullable|integer',
-            'MentalAge' => 'nullable',
-            'PhysicalAge' => 'nullable',
-            'HeightFactor' => 'nullable',
-            'WeightFactor' => 'nullable',
+            'MentalAge' => 'nullable|numeric|min:1',
+            'PhysicalAge' => 'nullable|numeric|min:1',
+            'HeightFactor' => 'nullable|numeric|min:0.6|max:1.5',
+            'WeightFactor' => 'nullable|numeric|min:0.6|max:3.0',
             'Appearance' => 'nullable|string|max:2000',
             'Personality' => 'nullable|string|max:2000',
             'History' => 'nullable|string|max:5000',
@@ -108,6 +108,33 @@ class UtilityController extends Controller
             'Wealth' => 'nullable',
             'LeftoverIP' => 'nullable',
         ]);
+
+        if ($request->filled('RaceID')) {
+            $race = DB::table('ref_creatures')->where('ID', (int)$request->input('RaceID'))->first();
+            if ($race) {
+                $minAge = max(1, (int)($race->AdultAge ?? 18));
+                $venerable = max($minAge, (int)($race->VenerableAge ?? ($minAge * 4)));
+                $maxAge = (int)floor($venerable * 1.5);
+                if ($request->filled('PhysicalAge')) {
+                    $pAge = (int)$request->input('PhysicalAge');
+                    if ($pAge < $minAge || $pAge > $maxAge) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => "Physical Age ({$pAge}) must be between {$minAge} and {$maxAge} years for {$race->Name}."
+                        ], 422);
+                    }
+                }
+                if ($request->filled('MentalAge')) {
+                    $mAge = (int)$request->input('MentalAge');
+                    if ($mAge < $minAge || $mAge > $maxAge) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => "Mental Age ({$mAge}) must be between {$minAge} and {$maxAge} years for {$race->Name}."
+                        ], 422);
+                    }
+                }
+            }
+        }
 
         $playerId = \Illuminate\Support\Facades\Auth::id() ?? $request->input('Player') ?? $request->input('PlayerID');
         
@@ -296,6 +323,31 @@ class UtilityController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error saving character: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Real-time Entity Preview Calculation for Character Generator and Tools
+     */
+    public function calculatePreview(Request $request): JsonResponse
+    {
+        try {
+            $payload = $request->all();
+            $config = (int)$request->input('config', 0);
+            $calculated = \App\Services\Entity\EntityEngine::calculate($payload, $config);
+
+            return new JsonResponse([
+                'success' => true,
+                'calculated' => $calculated,
+            ]);
+        } catch (\Throwable $e) {
+            if (class_exists(\Illuminate\Support\Facades\Log::class) && \Illuminate\Support\Facades\Facade::getFacadeApplication()) {
+                \Illuminate\Support\Facades\Log::error('Character preview calculation error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            }
+            return new JsonResponse([
+                'success' => false,
+                'error' => 'Error calculating character preview: ' . $e->getMessage(),
             ], 500);
         }
     }

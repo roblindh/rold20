@@ -503,34 +503,53 @@ class cTrait {
                                 break;
                             case "Attack":
                                 if (isset($this->aParams["Req"])) {
-                                    if (substr($this->aParams["Req"], 0, 4) == "Weap")
-                                        $traitEffects->ModsWeapAtt[WeaponCat($this->aParams["Req"])]->SetMod(
+                                    if (substr($this->aParams["Req"], 0, 4) == "Weap") {
+                                        $cat = WeaponCat($this->aParams["Req"]);
+                                        if (!isset($traitEffects->ModsWeapAtt[$cat])) {
+                                            $traitEffects->ModsWeapAtt[$cat] = new cModifiers();
+                                        }
+                                        $traitEffects->ModsWeapAtt[$cat]->SetMod(
                                                 cModifiers::GetModId(isset($this->aParams["Type"]) ? $this->aParams["Type"] : "nil"),
                                                 (int) $parser->Evaluate(strtoupper($this->aParams["Value"])));
+                                    }
                                 } else
                                     $traitEffects->ModsAtt->SetMod(cModifiers::GetModId(isset($this->aParams["Type"]) ? $this->aParams["Type"] : "nil"),
                                             (int) $parser->Evaluate(strtoupper($this->aParams["Value"])));
                                 break;
                             case "Parry":
                                 if (isset($this->aParams["Req"])) {
-                                    if (substr($this->aParams["Req"], 0, 4) == "Weap")
-                                        $traitEffects->ModsWeapPar[WeaponCat($this->aParams["Req"])]->SetMod(
+                                    if (substr($this->aParams["Req"], 0, 4) == "Weap") {
+                                        $cat = WeaponCat($this->aParams["Req"]);
+                                        if (!isset($traitEffects->ModsWeapPar[$cat])) {
+                                            $traitEffects->ModsWeapPar[$cat] = new cModifiers();
+                                        }
+                                        $traitEffects->ModsWeapPar[$cat]->SetMod(
                                                 cModifiers::GetModId(isset($this->aParams["Type"]) ? $this->aParams["Type"] : "nil"),
                                                 (int) $parser->Evaluate(strtoupper($this->aParams["Value"])));
-                                    else if (substr($this->aParams["Req"], 0, 5) == "Armor")
-                                        $traitEffects->ModsArmorDeC[ArmorCat($this->aParams["Req"])]->SetMod(
+                                    } else if (substr($this->aParams["Req"], 0, 5) == "Armor") {
+                                        $cat = ArmorCat($this->aParams["Req"]);
+                                        if (!isset($traitEffects->ModsArmorDeC[$cat])) {
+                                            $traitEffects->ModsArmorDeC[$cat] = new cModifiers();
+                                        }
+                                        $traitEffects->ModsArmorDeC[$cat]->SetMod(
                                                 cModifiers::GetModId(isset($this->aParams["Type"]) ? $this->aParams["Type"] : "nil"),
                                                 (int) $parser->Evaluate(strtoupper($this->aParams["Value"])));
+                                    }
                                 } else
                                     $traitEffects->ModsPar->SetMod(cModifiers::GetModId(isset($this->aParams["Type"]) ? $this->aParams["Type"] : "nil"),
                                             (int) $parser->Evaluate(strtoupper($this->aParams["Value"])));
                                 break;
                             case "Damage":
                                 if (isset($this->aParams["Req"])) {
-                                    if (substr($this->aParams["Req"], 0, 4) == "Weap")
-                                        $traitEffects->ModsWeapDmg[(int) WeaponCat($this->aParams["Req"])]->SetMod(
+                                    if (substr($this->aParams["Req"], 0, 4) == "Weap") {
+                                        $cat = (int) WeaponCat($this->aParams["Req"]);
+                                        if (!isset($traitEffects->ModsWeapDmg[$cat])) {
+                                            $traitEffects->ModsWeapDmg[$cat] = new cModifiers();
+                                        }
+                                        $traitEffects->ModsWeapDmg[$cat]->SetMod(
                                                 cModifiers::GetModId(isset($this->aParams["Type"]) ? $this->aParams["Type"] : "nil"),
                                                 (int) $parser->Evaluate(strtoupper($this->aParams["Value"])));
+                                    }
                                 } else
                                     $traitEffects->ModsDmg->SetMod(cModifiers::GetModId(isset($this->aParams["Type"]) ? $this->aParams["Type"] : "nil"),
                                             (int) $parser->Evaluate(strtoupper($this->aParams["Value"])));
@@ -540,20 +559,30 @@ class cTrait {
                                 break;
                             case "AttSpd":
                                 if (isset($this->aParams["Req"])) {
-                                    if (substr($this->aParams["Req"], 0, 4) == "Weap")
-                                        $traitEffects->ModsWeapAttSpd[WeaponCat($this->aParams["Req"])]->SetMod(
+                                    if (substr($this->aParams["Req"], 0, 4) == "Weap") {
+                                        $cat = WeaponCat($this->aParams["Req"]);
+                                        if (!isset($traitEffects->ModsWeapAttSpd[$cat])) {
+                                            $traitEffects->ModsWeapAttSpd[$cat] = new cModifiers();
+                                        }
+                                        $traitEffects->ModsWeapAttSpd[$cat]->SetMod(
                                                 cModifiers::GetModId(isset($this->aParams["Type"]) ? $this->aParams["Type"] : "nil"),
                                                 (int) $parser->Evaluate(strtoupper($this->aParams["Value"])));
+                                    }
                                 } else
                                     $traitEffects->ModsAttSpd->SetMod(cModifiers::GetModId(isset($this->aParams["Type"]) ? $this->aParams["Type"] : "nil"),
                                             (int) $parser->Evaluate(strtoupper($this->aParams["Value"])));
                                 break;
                             case "ImprCrit":
                                 if (isset($this->aParams["Req"])) {
-                                    if (substr($this->aParams["Req"], 0, 4) == "Weap")
-                                        $traitEffects->ModsWeapCrit[WeaponCat($this->aParams["Req"])]->SetMod(
+                                    if (substr($this->aParams["Req"], 0, 4) == "Weap") {
+                                        $cat = WeaponCat($this->aParams["Req"]);
+                                        if (!isset($traitEffects->ModsWeapCrit[$cat])) {
+                                            $traitEffects->ModsWeapCrit[$cat] = new cModifiers();
+                                        }
+                                        $traitEffects->ModsWeapCrit[$cat]->SetMod(
                                                 cModifiers::GetModId(isset($this->aParams["Type"]) ? $this->aParams["Type"] : "nil"),
                                                 (int) $parser->Evaluate(strtoupper($this->aParams["Value"])));
+                                    }
                                 } else
                                     $traitEffects->ModsCrit->SetMod(cModifiers::GetModId(isset($this->aParams["Type"]) ? $this->aParams["Type"] : "nil"),
                                             (int) $parser->Evaluate(strtoupper($this->aParams["Value"])));
@@ -1497,6 +1526,23 @@ class cTraitEffects {
         $this->ModsManeuver = new cModifiers();
         $this->ModsAP = new cModifiers();
         $this->ModsInit = new cModifiers();
+        global $aWeaponCats, $aArmorCats;
+
+        if (empty($aWeaponCats) && function_exists('init_weaponcats')) {
+            init_weaponcats();
+        }
+        if (empty($aArmorCats) && function_exists('init_armorcats')) {
+            init_armorcats();
+        }
+
+        $this->ModsWeapAtt = [];
+        $this->ModsWeapDmg = [];
+        $this->ModsWeapPar = [];
+        $this->ModsWeapEC = [];
+        $this->ModsWeapAttSpd = [];
+        $this->ModsWeapCrit = [];
+        $this->ModsArmorDeC = [];
+        $this->ModsArmorEC = [];
 
         if (is_array($aWeaponCats)) {
             foreach ($aWeaponCats as $i => $cat) {

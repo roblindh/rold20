@@ -13,6 +13,7 @@ class EntityEngine
     protected static ?array $creaturesCache = null;
     protected static ?array $templatesCache = null;
     protected static ?array $classesCache = null;
+    protected static ?array $classConfigsCache = null;
     protected static ?array $skillsCache = null;
     protected static ?array $specializationsCache = null;
     protected static ?array $improvementsCache = null;
@@ -38,6 +39,7 @@ class EntityEngine
             self::$creaturesCache = DB::table('ref_creatures')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$templatesCache = DB::table('ref_templates')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$classesCache = DB::table('ref_classes')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
+            self::$classConfigsCache = DB::table('ref_classconfigs')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$skillsCache = DB::table('ref_skills')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$specializationsCache = DB::table('ref_skillspecializations')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$improvementsCache = DB::table('ref_improvementtraits')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
@@ -71,6 +73,7 @@ class EntityEngine
         self::$creaturesCache = $appData['creatures'] ?? [];
         self::$templatesCache = $appData['templates'] ?? [];
         self::$classesCache = $appData['classes'] ?? [];
+        self::$classConfigsCache = $appData['classconfigs'] ?? [];
         self::$skillsCache = $appData['skills'] ?? [];
         self::$specializationsCache = $appData['skillspecializations'] ?? $appData['specializations'] ?? [];
         self::$improvementsCache = $appData['improvementtraits'] ?? [];
@@ -112,28 +115,49 @@ class EntityEngine
         // =========================================================================
         // STAGE 1: BASE ENTITY & HERITAGE RESOLUTION
         // =========================================================================
-        $baseStr = (int)($e->BaseStr ?? $e->Str ?? 10);
-        $baseCon = (int)($e->BaseCon ?? $e->Con ?? 10);
-        $baseDex = (int)($e->BaseDex ?? $e->Dex ?? 10);
-        $baseInt = (int)($e->BaseInt ?? $e->Int ?? 10);
-        $baseWis = (int)($e->BaseWis ?? $e->Wis ?? 10);
-        $baseCha = (int)($e->BaseCha ?? $e->Cha ?? 10);
+        $parseBaseAbil = function($val) {
+            if ($val === null || $val === '' || $val === '-' || $val === '–' || $val === '&ndash;') {
+                return null;
+            }
+            return (int)$val;
+        };
+
+        $baseStr = $parseBaseAbil($e->BaseStr ?? $e->Str ?? $e->Strength ?? 10);
+        $baseCon = $parseBaseAbil($e->BaseCon ?? $e->Con ?? $e->Constitution ?? 10);
+        $baseDex = $parseBaseAbil($e->BaseDex ?? $e->Dex ?? $e->Dexterity ?? 10);
+        $baseInt = $parseBaseAbil($e->BaseInt ?? $e->Int ?? $e->Intelligence ?? 10);
+        $baseWis = $parseBaseAbil($e->BaseWis ?? $e->Wis ?? $e->Wisdom ?? 10);
+        $baseCha = $parseBaseAbil($e->BaseCha ?? $e->Cha ?? $e->Charisma ?? 10);
 
         $raceId = (int)($e->BaseRace ?? $e->RaceID ?? $e->Race ?? 1);
         $race = self::$creaturesCache[$raceId] ?? null;
 
         // Parse Templates
         $templateIds = [];
-        if (!empty($e->Templates)) {
-            $tParts = is_array($e->Templates) ? $e->Templates : explode(';', (string)$e->Templates);
-            $templateIds = array_values(array_filter(array_map('intval', $tParts)));
+        $rawTemplates = $e->Templates ?? $e->TemplateIDs ?? $e->TemplateID ?? [];
+        if (!empty($rawTemplates)) {
+            if (is_numeric($rawTemplates)) {
+                $templateIds = [(int)$rawTemplates];
+            } elseif (is_array($rawTemplates)) {
+                $templateIds = array_values(array_filter(array_map('intval', $rawTemplates)));
+            } else {
+                $tParts = explode(';', (string)$rawTemplates);
+                $templateIds = array_values(array_filter(array_map('intval', $tParts)));
+            }
         }
 
         // Parse Classes
         $classIds = [];
-        if (!empty($e->Classes)) {
-            $cParts = is_array($e->Classes) ? $e->Classes : explode(';', (string)$e->Classes);
-            $classIds = array_values(array_filter(array_map('intval', $cParts)));
+        $rawClasses = $e->Classes ?? $e->ClassLevels ?? $e->ClassID ?? [];
+        if (!empty($rawClasses)) {
+            if (is_numeric($rawClasses)) {
+                $classIds = [(int)$rawClasses];
+            } elseif (is_array($rawClasses)) {
+                $classIds = array_values(array_filter(array_map('intval', $rawClasses)));
+            } else {
+                $cParts = explode(';', (string)$rawClasses);
+                $classIds = array_values(array_filter(array_map('intval', $cParts)));
+            }
         }
 
         // Physical & Mental Age
@@ -169,10 +193,23 @@ class EntityEngine
             $rlMult = ($agingType === 2) ? (float)($ageRow['RLMultSN'] ?? 1.0) : (float)($ageRow['RLMult'] ?? 1.0);
         }
         $racialLevel = max(0, (int)round($baseRL * $rlMult) + $rlMod);
+        foreach ($templateIds as $tId) {
+            $t = self::$templatesCache[$tId] ?? null;
+            if ($t && isset($t['RLModifier']) && $t['RLModifier'] !== null && $t['RLModifier'] !== '') {
+                $racialLevel += (int)$t['RLModifier'];
+            }
+        }
+
         $classLevelCount = count($classIds);
         $totalLevel = $racialLevel + $classLevelCount;
         $powerLevel = $totalLevel; // Can be extended with tier modifiers
         $challengeLevel = $totalLevel + (int)($race['CLModifier'] ?? 0);
+        foreach ($templateIds as $tId) {
+            $t = self::$templatesCache[$tId] ?? null;
+            if ($t && isset($t['CLModifier']) && $t['CLModifier'] !== null && $t['CLModifier'] !== '') {
+                $challengeLevel += (int)$t['CLModifier'];
+            }
+        }
 
         // Base Size & Body Type
         $baseSizeId = (int)($race['SizeClass'] ?? 0); // 0 = Medium
@@ -182,42 +219,134 @@ class EntityEngine
         $bodyTypeId = (int)($race['BodyType'] ?? 1);
         $bodyTypeRow = self::$bodyTypesCache[$bodyTypeId] ?? ['WeightMult' => 1.0, 'ReachMod' => 0];
 
-        // Racial & Template adjustments to ability scores
-        $adjStr = $baseStr + (int)($race['BaseStrAdj'] ?? 0);
-        $adjCon = $baseCon + (int)($race['BaseConAdj'] ?? 0);
-        $adjDex = $baseDex + (int)($race['BaseDexAdj'] ?? 0);
-        $adjInt = $baseInt + (int)($race['BaseIntAdj'] ?? 0);
-        $adjWis = $baseWis + (int)($race['BaseWisAdj'] ?? 0);
-        $adjCha = $baseCha + (int)($race['BaseChaAdj'] ?? 0);
+        // Determine if abilities exist (No Score detection)
+        $hasStr = ($baseStr !== null) && ($race === null || !array_key_exists('StrAdj', $race) || $race['StrAdj'] !== null);
+        $hasCon = ($baseCon !== null) && ($race === null || !array_key_exists('ConAdj', $race) || $race['ConAdj'] !== null);
+        $hasDex = ($baseDex !== null) && ($race === null || !array_key_exists('DexAdj', $race) || $race['DexAdj'] !== null);
+        $hasInt = ($baseInt !== null) && ($race === null || !array_key_exists('IntAdj', $race) || $race['IntAdj'] !== null);
+        $hasWis = ($baseWis !== null) && ($race === null || !array_key_exists('WisAdj', $race) || $race['WisAdj'] !== null);
+        $hasCha = ($baseCha !== null) && ($race === null || !array_key_exists('ChaAdj', $race) || $race['ChaAdj'] !== null);
 
         foreach ($templateIds as $tId) {
             $t = self::$templatesCache[$tId] ?? null;
             if ($t) {
-                $adjStr += (int)($t['StrAdj'] ?? 0);
-                $adjCon += (int)($t['ConAdj'] ?? 0);
-                $adjDex += (int)($t['DexAdj'] ?? 0);
-                $adjInt += (int)($t['IntAdj'] ?? 0);
-                $adjWis += (int)($t['WisAdj'] ?? 0);
-                $adjCha += (int)($t['ChaAdj'] ?? 0);
-                $challengeLevel += (int)($t['CLModifier'] ?? 0);
+                if (array_key_exists('StrAdj', $t) && $t['StrAdj'] === null) $hasStr = false;
+                if (array_key_exists('ConAdj', $t) && $t['ConAdj'] === null) $hasCon = false;
+                if (array_key_exists('DexAdj', $t) && $t['DexAdj'] === null) $hasDex = false;
+                if (array_key_exists('IntAdj', $t) && $t['IntAdj'] === null) $hasInt = false;
+                if (array_key_exists('WisAdj', $t) && $t['WisAdj'] === null) $hasWis = false;
+                if (array_key_exists('ChaAdj', $t) && $t['ChaAdj'] === null) $hasCha = false;
             }
         }
 
-        // Relative size ability adjustments if size is adjusted
-        if ($sizeAdjust !== 0) {
-            $currSize = self::$sizesCache[$currentSizeId] ?? [];
-            $baseSize = self::$sizesCache[$baseSizeId] ?? [];
-            $adjStr += ((int)($currSize['RelativeStr'] ?? 0) - (int)($baseSize['RelativeStr'] ?? 0));
-            $adjCon += ((int)($currSize['RelativeCon'] ?? 0) - (int)($baseSize['RelativeCon'] ?? 0));
-            $adjDex += ((int)($currSize['RelativeDex'] ?? 0) - (int)($baseSize['RelativeDex'] ?? 0));
+        $physAgeRow = self::$agesCache[$physicalAgeCat] ?? [];
+        $mentAgeRow = self::$agesCache[$mentalAgeCat] ?? [];
+
+        // Racial & Template adjustments to ability scores
+        $adjStr = null;
+        if ($hasStr) {
+            $adjStr = (int)$baseStr + (int)($race['StrAdj'] ?? $race['BaseStrAdj'] ?? 0);
+            foreach ($templateIds as $tId) {
+                $t = self::$templatesCache[$tId] ?? null;
+                if ($t) $adjStr += (int)($t['StrAdj'] ?? 0);
+            }
+            if ($agingType === 2) {
+                $adjStr += (int)($physAgeRow['StrAdjSN'] ?? 0);
+            } elseif ($agingType === 1) {
+                $adjStr += (int)($physAgeRow['StrAdj'] ?? 0);
+            }
+            if ($sizeAdjust !== 0) {
+                $currSize = self::$sizesCache[$currentSizeId] ?? [];
+                $baseSize = self::$sizesCache[$baseSizeId] ?? [];
+                $adjStr += ((int)($currSize['RelativeStr'] ?? 0) - (int)($baseSize['RelativeStr'] ?? 0));
+            }
+            $adjStr = max(1, $adjStr);
         }
 
-        $adjStr = max(1, $adjStr);
-        $adjCon = max(1, $adjCon);
-        $adjDex = max(1, $adjDex);
-        $adjInt = max(1, $adjInt);
-        $adjWis = max(1, $adjWis);
-        $adjCha = max(1, $adjCha);
+        $adjCon = null;
+        if ($hasCon) {
+            $adjCon = (int)$baseCon + (int)($race['ConAdj'] ?? $race['BaseConAdj'] ?? 0);
+            foreach ($templateIds as $tId) {
+                $t = self::$templatesCache[$tId] ?? null;
+                if ($t) $adjCon += (int)($t['ConAdj'] ?? 0);
+            }
+            if ($agingType === 2) {
+                $adjCon += (int)($physAgeRow['ConAdjSN'] ?? 0);
+            } elseif ($agingType === 1) {
+                $adjCon += (int)($physAgeRow['ConAdj'] ?? 0);
+            }
+            if ($sizeAdjust !== 0) {
+                $currSize = self::$sizesCache[$currentSizeId] ?? [];
+                $baseSize = self::$sizesCache[$baseSizeId] ?? [];
+                $adjCon += ((int)($currSize['RelativeCon'] ?? 0) - (int)($baseSize['RelativeCon'] ?? 0));
+            }
+            $adjCon = max(1, $adjCon);
+        }
+
+        $adjDex = null;
+        if ($hasDex) {
+            $adjDex = (int)$baseDex + (int)($race['DexAdj'] ?? $race['BaseDexAdj'] ?? 0);
+            foreach ($templateIds as $tId) {
+                $t = self::$templatesCache[$tId] ?? null;
+                if ($t) $adjDex += (int)($t['DexAdj'] ?? 0);
+            }
+            if ($agingType === 2) {
+                $adjDex += (int)($physAgeRow['DexAdjSN'] ?? 0);
+            } elseif ($agingType === 1) {
+                $adjDex += (int)($physAgeRow['DexAdj'] ?? 0);
+            }
+            if ($sizeAdjust !== 0) {
+                $currSize = self::$sizesCache[$currentSizeId] ?? [];
+                $baseSize = self::$sizesCache[$baseSizeId] ?? [];
+                $adjDex += ((int)($currSize['RelativeDex'] ?? 0) - (int)($baseSize['RelativeDex'] ?? 0));
+            }
+            $adjDex = max(1, $adjDex);
+        }
+
+        $adjInt = null;
+        if ($hasInt) {
+            $adjInt = (int)$baseInt + (int)($race['IntAdj'] ?? $race['BaseIntAdj'] ?? 0);
+            foreach ($templateIds as $tId) {
+                $t = self::$templatesCache[$tId] ?? null;
+                if ($t) $adjInt += (int)($t['IntAdj'] ?? 0);
+            }
+            if ($agingType === 2) {
+                $adjInt += (int)($mentAgeRow['IntAdjSN'] ?? 0);
+            } elseif ($agingType === 1) {
+                $adjInt += (int)($mentAgeRow['IntAdj'] ?? 0);
+            }
+            $adjInt = max(1, $adjInt);
+        }
+
+        $adjWis = null;
+        if ($hasWis) {
+            $adjWis = (int)$baseWis + (int)($race['WisAdj'] ?? $race['BaseWisAdj'] ?? 0);
+            foreach ($templateIds as $tId) {
+                $t = self::$templatesCache[$tId] ?? null;
+                if ($t) $adjWis += (int)($t['WisAdj'] ?? 0);
+            }
+            if ($agingType === 2) {
+                $adjWis += (int)($mentAgeRow['WisAdjSN'] ?? 0);
+            } elseif ($agingType === 1) {
+                $adjWis += (int)($mentAgeRow['WisAdj'] ?? 0);
+            }
+            $adjWis = max(1, $adjWis);
+        }
+
+        $adjCha = null;
+        if ($hasCha) {
+            $adjCha = (int)$baseCha + (int)($race['ChaAdj'] ?? $race['BaseChaAdj'] ?? 0);
+            foreach ($templateIds as $tId) {
+                $t = self::$templatesCache[$tId] ?? null;
+                if ($t) $adjCha += (int)($t['ChaAdj'] ?? 0);
+            }
+            if ($agingType === 2) {
+                $adjCha += (int)($mentAgeRow['ChaAdjSN'] ?? 0);
+            } elseif ($agingType === 1) {
+                $adjCha += (int)($mentAgeRow['ChaAdj'] ?? 0);
+            }
+            $adjCha = max(1, $adjCha);
+        }
 
         // =========================================================================
         // STAGE 2: TRAIT & MODIFIER INGESTION
@@ -227,12 +356,12 @@ class EntityEngine
             'TL' => $totalLevel,
             'RL' => $racialLevel,
             'LVL' => $totalLevel,
-            'STR' => $adjStr,
-            'CON' => $adjCon,
-            'DEX' => $adjDex,
-            'INT' => $adjInt,
-            'WIS' => $adjWis,
-            'CHA' => $adjCha,
+            'STR' => $adjStr ?? 10,
+            'CON' => $adjCon ?? 10,
+            'DEX' => $adjDex ?? 10,
+            'INT' => $adjInt ?? 10,
+            'WIS' => $adjWis ?? 10,
+            'CHA' => $adjCha ?? 10,
             'STRMOD' => self::calculateAbilityModifier($adjStr),
             'CONMOD' => self::calculateAbilityModifier($adjCon),
             'DEXMOD' => self::calculateAbilityModifier($adjDex),
@@ -245,19 +374,120 @@ class EntityEngine
 
         // Parse Skills & Specializations into context
         $skillLevels = [];
-        if (!empty($e->Skills)) {
-            $sParts = is_array($e->Skills) ? $e->Skills : explode(';', (string)$e->Skills);
+        $rawSkills = $e->Skills ?? [];
+        if (is_string($rawSkills) && str_starts_with(trim($rawSkills), '{')) {
+            $rawSkills = json_decode($rawSkills, true) ?? [];
+        }
+
+        if (!empty($rawSkills) && is_array($rawSkills)) {
+            if (isset($rawSkills['BackgroundRates']) || isset($rawSkills['LevelSkills'])) {
+                $bgLvl = max(1, $racialLevel);
+                if (isset($rawSkills['BackgroundRates']) && is_array($rawSkills['BackgroundRates'])) {
+                    foreach ($rawSkills['BackgroundRates'] as $sId => $r) {
+                        $sIdInt = (int)$sId;
+                        if ($sIdInt > 0) {
+                            $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + ((float)$r * $bgLvl);
+                        }
+                    }
+                }
+                if (isset($rawSkills['LevelSkills']) && is_array($rawSkills['LevelSkills'])) {
+                    foreach ($rawSkills['LevelSkills'] as $lvlAlloc) {
+                        if (is_array($lvlAlloc)) {
+                            foreach ($lvlAlloc as $sId => $r) {
+                                $sIdInt = (int)$sId;
+                                if ($sIdInt > 0) {
+                                    $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + (float)$r;
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                foreach ($rawSkills as $k => $v) {
+                    if (is_numeric($k)) {
+                        if (is_array($v)) {
+                            $sIdInt = (int)($v['id'] ?? $v['SkillID'] ?? 0);
+                            $lvl = (int)($v['rank'] ?? $v['Rank'] ?? $v['level'] ?? 0);
+                        } elseif (is_numeric($v)) {
+                            $sIdInt = (int)$k;
+                            $lvl = (int)$v;
+                        } elseif (is_string($v) && str_contains($v, '=')) {
+                            [$sIdStr, $lvlStr] = explode('=', $v, 2);
+                            $sIdInt = (int)$sIdStr;
+                            $lvl = (int)$lvlStr;
+                        } else {
+                            continue;
+                        }
+                        if ($sIdInt > 0) {
+                            $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + $lvl;
+                        }
+                    } elseif (is_string($k) && is_numeric($v)) {
+                        $sIdInt = (int)$k;
+                        if ($sIdInt > 0) {
+                            $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + (int)$v;
+                        }
+                    }
+                }
+            }
+        } elseif (!empty($rawSkills) && is_string($rawSkills)) {
+            $sParts = explode(';', (string)$rawSkills);
             foreach ($sParts as $sp) {
                 if (str_contains($sp, '=')) {
                     [$sId, $lvl] = explode('=', $sp, 2);
                     $sIdInt = (int)$sId;
-                    $skillLevels[$sIdInt] = (int)$lvl;
-                    $sName = self::$skillsCache[$sIdInt]['Abbreviation'] ?? self::$skillsCache[$sIdInt]['Name'] ?? null;
-                    if ($sName) {
-                        $context['skills'][$sName] = (int)$lvl;
-                        $context['skills'][$sIdInt] = (int)$lvl;
+                    if ($sIdInt > 0) {
+                        $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + (int)$lvl;
                     }
                 }
+            }
+        }
+
+        // Support separate BgSkillRates / LevelSkills properties from Chargen Wizard
+        if (!empty($e->BgSkillRates) && is_array($e->BgSkillRates)) {
+            $bgLvl = max(1, $racialLevel);
+            foreach ($e->BgSkillRates as $sId => $r) {
+                $sIdInt = (int)$sId;
+                if ($sIdInt > 0) {
+                    $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + ((float)$r * $bgLvl);
+                }
+            }
+        }
+        if (!empty($e->LevelSkills) && is_array($e->LevelSkills)) {
+            foreach ($e->LevelSkills as $lvlAlloc) {
+                if (is_array($lvlAlloc)) {
+                    foreach ($lvlAlloc as $sId => $r) {
+                        $sIdInt = (int)$sId;
+                        if ($sIdInt > 0) {
+                            $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + (float)$r;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Support separate BackgroundSkills and ClassSkills maps from Chargen Wizard
+        if (!empty($e->BackgroundSkills) && is_array($e->BackgroundSkills)) {
+            foreach ($e->BackgroundSkills as $sId => $rank) {
+                $sIdInt = (int)$sId;
+                if ($sIdInt > 0) {
+                    $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + (int)$rank;
+                }
+            }
+        }
+        if (!empty($e->ClassSkills) && is_array($e->ClassSkills)) {
+            foreach ($e->ClassSkills as $sId => $rank) {
+                $sIdInt = (int)$sId;
+                if ($sIdInt > 0) {
+                    $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + (int)$rank;
+                }
+            }
+        }
+
+        foreach ($skillLevels as $sIdInt => $lvl) {
+            $sName = self::$skillsCache[$sIdInt]['Abbreviation'] ?? self::$skillsCache[$sIdInt]['Name'] ?? null;
+            if ($sName) {
+                $context['skills'][$sName] = $lvl;
+                $context['skills'][$sIdInt] = $lvl;
             }
         }
 
@@ -277,7 +507,7 @@ class EntityEngine
         }
 
         // Ingest Cultural Traits
-        $cultureId = (int)($e->Culture ?? 0);
+        $cultureId = (int)($e->Culture ?? $e->CultureID ?? 0);
         if ($cultureId > 0 && isset(self::$culturesCache[$cultureId])) {
             $cult = self::$culturesCache[$cultureId];
             if (!empty($cult['Traits'])) {
@@ -296,9 +526,30 @@ class EntityEngine
         }
 
         // Ingest Improvements
-        if (!empty($e->Improvements)) {
-            $iParts = is_array($e->Improvements) ? $e->Improvements : explode(';', (string)$e->Improvements);
-            foreach ($iParts as $ip) {
+        $rawImprovements = $e->Improvements ?? $e->IPAllocations ?? [];
+        if (is_string($rawImprovements) && str_starts_with(trim($rawImprovements), '{')) {
+            $rawImprovements = json_decode($rawImprovements, true) ?? [];
+        }
+        if (!empty($rawImprovements)) {
+            $iPairs = [];
+            if (is_array($rawImprovements)) {
+                foreach ($rawImprovements as $k => $val) {
+                    if (is_numeric($k)) {
+                        if (is_string($val) && str_contains($val, '=')) {
+                            $iPairs[] = $val;
+                        } else {
+                            $iPairs[] = "I{$k}=" . ($val >= 0 ? '+' : '') . intval($val);
+                        }
+                    } elseif (is_string($k)) {
+                        $keyStr = str_starts_with($k, 'I') || str_starts_with($k, 'S') ? $k : "I{$k}";
+                        $iPairs[] = "{$keyStr}=" . ($val >= 0 ? '+' : '') . intval($val);
+                    }
+                }
+            } else {
+                $iPairs = explode(';', (string)$rawImprovements);
+            }
+
+            foreach ($iPairs as $ip) {
                 if (str_contains($ip, '=')) {
                     [$tKey, $val] = explode('=', $ip, 2);
                     $valInt = (int)$val;
@@ -320,12 +571,12 @@ class EntityEngine
         }
 
         // Compute Final Ability Scores
-        $finalStr = max(0, $adjStr + (int)$modifierEngine->getTotal('Str'));
-        $finalCon = max(0, $adjCon + (int)$modifierEngine->getTotal('Con'));
-        $finalDex = max(0, $adjDex + (int)$modifierEngine->getTotal('Dex'));
-        $finalInt = max(0, $adjInt + (int)$modifierEngine->getTotal('Int'));
-        $finalWis = max(0, $adjWis + (int)$modifierEngine->getTotal('Wis'));
-        $finalCha = max(0, $adjCha + (int)$modifierEngine->getTotal('Cha'));
+        $finalStr = ($adjStr !== null) ? max(0, $adjStr + (int)$modifierEngine->getTotal('Str')) : null;
+        $finalCon = ($adjCon !== null) ? max(0, $adjCon + (int)$modifierEngine->getTotal('Con')) : null;
+        $finalDex = ($adjDex !== null) ? max(0, $adjDex + (int)$modifierEngine->getTotal('Dex')) : null;
+        $finalInt = ($adjInt !== null) ? max(0, $adjInt + (int)$modifierEngine->getTotal('Int')) : null;
+        $finalWis = ($adjWis !== null) ? max(0, $adjWis + (int)$modifierEngine->getTotal('Wis')) : null;
+        $finalCha = ($adjCha !== null) ? max(0, $adjCha + (int)$modifierEngine->getTotal('Cha')) : null;
 
         $strMod = self::calculateAbilityModifier($finalStr);
         $conMod = self::calculateAbilityModifier($finalCon);
@@ -335,12 +586,12 @@ class EntityEngine
         $chaMod = self::calculateAbilityModifier($finalCha);
 
         // Update context with final scores and mods
-        $context['STR'] = $finalStr;
-        $context['CON'] = $finalCon;
-        $context['DEX'] = $finalDex;
-        $context['INT'] = $finalInt;
-        $context['WIS'] = $finalWis;
-        $context['CHA'] = $finalCha;
+        $context['STR'] = $finalStr ?? 10;
+        $context['CON'] = $finalCon ?? 10;
+        $context['DEX'] = $finalDex ?? 10;
+        $context['INT'] = $finalInt ?? 10;
+        $context['WIS'] = $finalWis ?? 10;
+        $context['CHA'] = $finalCha ?? 10;
         $context['STRMOD'] = $strMod;
         $context['CONMOD'] = $conMod;
         $context['DEXMOD'] = $dexModRaw;
@@ -398,7 +649,7 @@ class EntityEngine
         $totalWeight = $equipmentManager->calculateTotalWeight($config);
         $weightEC = EquipmentManager::calculateWeightEC(
             $totalWeight,
-            $finalStr,
+            $finalStr ?? 0,
             $currentSizeId,
             $bodyTypeId,
             self::$weightLimitsCache,
@@ -418,52 +669,88 @@ class EntityEngine
         $speedMultAir = (float)($encRow['SpeedMultAir'] ?? 1.0);
 
         // Apply Max Dex Bonus cap to Dex modifier
-        $dexMod = min($dexModRaw, $maxDexBonus);
+        $dexMod = ($finalDex !== null) ? min($dexModRaw, $maxDexBonus) : 0;
         $context['DEXMOD'] = $dexMod;
 
         // =========================================================================
         // STAGE 4: DEFENSES & TRI-POOL HEALTH (HP / SP / PP)
         // =========================================================================
         // Tri-Pool Health
-        $racialClassId = (int)($race['RacialClass'] ?? 15);
-        $racialClass = self::$classesCache[$racialClassId] ?? [];
-        $hpPerLevelRacial = (int)($racialClass['HPPerLevel'] ?? 0);
-        $spPerLevelRacial = (int)($racialClass['SPPerLevel'] ?? 0);
-        $ppPerLevelRacial = (int)($racialClass['PPPerLevel'] ?? 0);
+        $bgClassId = (int)($e->BackgndClass ?? $e->BackgroundClassID ?? 0);
+        $bgClass = null;
+        if ($bgClassId > 0 && isset(self::$classesCache[$bgClassId])) {
+            $bgClass = self::$classesCache[$bgClassId];
+        } elseif ($bgClassId > 0 && isset(self::$classConfigsCache[$bgClassId])) {
+            $clsId = (int)(self::$classConfigsCache[$bgClassId]['ClassID'] ?? 0);
+            if ($clsId > 0 && isset(self::$classesCache[$clsId])) {
+                $bgClass = self::$classesCache[$clsId];
+            }
+        } elseif ($cultureId > 0 && isset(self::$culturesCache[$cultureId])) {
+            $cfgId = (int)(self::$culturesCache[$cultureId]['ClassConfig'] ?? 0);
+            $clsId = (int)(self::$classConfigsCache[$cfgId]['ClassID'] ?? 0);
+            if ($clsId > 0 && isset(self::$classesCache[$clsId])) {
+                $bgClass = self::$classesCache[$clsId];
+            }
+        }
+        if (!$bgClass) {
+            $bgClass = self::$classesCache[15] ?? [];
+        }
+
+        $hpPerLevelRacial = (int)($bgClass['HPPerLevel'] ?? 6);
+        $spPerLevelRacial = (int)($bgClass['SPPerLevel'] ?? 8);
+        $ppPerLevelRacial = (int)($bgClass['PPPerLevel'] ?? 4);
 
         $sizeHPMult = (float)($sizeRow['HPMult'] ?? 1.0);
 
-        // Base HP = Con score + Racial Level * HPPerLevel + Class Levels * HPPerLevel
-        $hpTotal = $finalCon + (int)round($hpPerLevelRacial * $racialLevel * $sizeHPMult);
-        $spTotal = $finalCon + ($spPerLevelRacial * $racialLevel);
-        $ppTotal = $finalWis + ($ppPerLevelRacial * $racialLevel);
-
+        // Base HP = Con score (or 10 if No Con) + Racial Level * HPPerLevel + Class Levels * HPPerLevel
+        $baseHpFromCon = ($finalCon === null) ? 10 : $finalCon;
+        $hpTotal = $baseHpFromCon + (int)round($hpPerLevelRacial * $racialLevel * $sizeHPMult);
         foreach ($classIds as $cId) {
             $cls = self::$classesCache[$cId] ?? [];
             $hpTotal += (int)($cls['HPPerLevel'] ?? 0);
-            $spTotal += (int)($cls['SPPerLevel'] ?? 0);
-            $ppTotal += (int)($cls['PPPerLevel'] ?? 0);
         }
-
         $hpTotal += (int)$modifierEngine->getTotal('HP');
-        $spTotal += (int)$modifierEngine->getTotal('SP');
-        $ppTotal += (int)$modifierEngine->getTotal('PP');
-
         $hpTotal = max(1, $hpTotal);
-        $spTotal = max(0, $spTotal);
-        $ppTotal = max(0, $ppTotal);
 
         $hpDamage = (int)($e->HPDamage ?? 0);
         $hpTemp = (int)($e->HPTemp ?? 0);
         $hpCurrent = $hpTotal - $hpDamage + $hpTemp;
 
-        $spDamage = (int)($e->SPDamage ?? 0);
-        $spTemp = (int)($e->SPTemp ?? 0);
-        $spCurrent = $spTotal - $spDamage + $spTemp;
+        // SP calculation (null / No Score if No Con)
+        $spTotal = null;
+        $spCurrent = null;
+        $spDamage = 0;
+        $spTemp = 0;
+        if ($finalCon !== null) {
+            $spTotal = $finalCon + ($spPerLevelRacial * $racialLevel);
+            foreach ($classIds as $cId) {
+                $cls = self::$classesCache[$cId] ?? [];
+                $spTotal += (int)($cls['SPPerLevel'] ?? 0);
+            }
+            $spTotal += (int)$modifierEngine->getTotal('SP');
+            $spTotal = max(0, $spTotal);
+            $spDamage = (int)($e->SPDamage ?? 0);
+            $spTemp = (int)($e->SPTemp ?? 0);
+            $spCurrent = $spTotal - $spDamage + $spTemp;
+        }
 
-        $ppDamage = (int)($e->PPDamage ?? 0);
-        $ppTemp = (int)($e->PPTemp ?? 0);
-        $ppCurrent = $ppTotal - $ppDamage + $ppTemp;
+        // PP calculation (null / No Score if No Wis)
+        $ppTotal = null;
+        $ppCurrent = null;
+        $ppDamage = 0;
+        $ppTemp = 0;
+        if ($finalWis !== null) {
+            $ppTotal = $finalWis + ($ppPerLevelRacial * $racialLevel);
+            foreach ($classIds as $cId) {
+                $cls = self::$classesCache[$cId] ?? [];
+                $ppTotal += (int)($cls['PPPerLevel'] ?? 0);
+            }
+            $ppTotal += (int)$modifierEngine->getTotal('PP');
+            $ppTotal = max(0, $ppTotal);
+            $ppDamage = (int)($e->PPDamage ?? 0);
+            $ppTemp = (int)($e->PPTemp ?? 0);
+            $ppCurrent = $ppTotal - $ppDamage + $ppTemp;
+        }
 
         // Conditions
         $conditions = [];
@@ -474,13 +761,13 @@ class EntityEngine
                 $conditions[] = 'Bloodied';
             } elseif ($hpDamage === $hpTotal) {
                 $conditions[] = 'Disabled';
-            } elseif ($hpDamage < $hpTotal + $finalCon) {
+            } elseif ($hpDamage < $hpTotal + ($finalCon ?? 10)) {
                 $conditions[] = 'Unconscious';
             } else {
                 $conditions[] = 'Dead';
             }
         }
-        if ($spDamage > 0) {
+        if ($spTotal !== null && $spDamage > 0) {
             if ($spDamage < $spTotal / 2) {
                 $conditions[] = 'Slightly fatigued';
             } elseif ($spDamage < $spTotal) {
@@ -489,7 +776,7 @@ class EntityEngine
                 $conditions[] = 'Exhausted';
             }
         }
-        if ($ppDamage > 0) {
+        if ($ppTotal !== null && $ppDamage > 0) {
             if ($ppDamage < $ppTotal / 2) {
                 $conditions[] = 'Slightly tired';
             } elseif ($ppDamage < $ppTotal) {
@@ -498,12 +785,12 @@ class EntityEngine
                 $conditions[] = 'Drained';
             }
         }
-        if ($finalStr === 0) $conditions[] = 'Paralyzed (Str 0)';
-        if ($finalCon === 0) $conditions[] = 'Dead (Con 0)';
-        if ($finalDex === 0) $conditions[] = 'Paralyzed (Dex 0)';
-        if ($finalInt === 0) $conditions[] = 'Comatose (Int 0)';
-        if ($finalWis === 0) $conditions[] = 'Comatose (Wis 0)';
-        if ($finalCha === 0) $conditions[] = 'Catatonic (Cha 0)';
+        if ($finalStr !== null && $finalStr === 0) $conditions[] = 'Paralyzed (Str 0)';
+        if ($finalCon !== null && $finalCon === 0) $conditions[] = 'Dead (Con 0)';
+        if ($finalDex !== null && $finalDex === 0) $conditions[] = 'Paralyzed (Dex 0)';
+        if ($finalInt !== null && $finalInt === 0) $conditions[] = 'Comatose (Int 0)';
+        if ($finalWis !== null && $finalWis === 0) $conditions[] = 'Comatose (Wis 0)';
+        if ($finalCha !== null && $finalCha === 0) $conditions[] = 'Catatonic (Cha 0)';
 
         // Defenses
         $sizeCombatMod = (int)($sizeRow['CombatMod'] ?? 0);
@@ -517,13 +804,13 @@ class EntityEngine
         $decActive = $decPassive + max($dexMod, 0) + $parryMod + $dodgeMod;
 
         // Fortitude = 10 + StrMod + ConMod + TotalLevel + Fort mods (or 999 if no Con)
-        $fort = ($finalCon <= 0) ? 999 : (10 + $strMod + $conMod + $totalLevel + (int)$modifierEngine->getTotal('Fort'));
+        $fort = ($finalCon === null) ? 999 : (10 + $strMod + $conMod + $totalLevel + (int)$modifierEngine->getTotal('Fort'));
 
         // Reflex = 10 + DexMod + IntMod + TotalLevel + Ref mods (or 0 if no Dex)
-        $ref = ($finalDex <= 0) ? 0 : (10 + $dexMod + $intMod + $totalLevel + (int)$modifierEngine->getTotal('Ref'));
+        $ref = ($finalDex === null) ? 0 : (10 + $dexMod + $intMod + $totalLevel + (int)$modifierEngine->getTotal('Ref'));
 
         // Will = 10 + WisMod + ChaMod + TotalLevel + Will mods (or 999 if no Int)
-        $will = ($finalInt <= 0) ? 999 : (10 + $wisMod + $chaMod + $totalLevel + (int)$modifierEngine->getTotal('Will'));
+        $will = ($finalInt === null) ? 999 : (10 + $wisMod + $chaMod + $totalLevel + (int)$modifierEngine->getTotal('Will'));
 
         // Damage Resistance (DR) & Magic Resistance (MR)
         $racialDR = (int)($race['DR'] ?? 0);
@@ -560,7 +847,7 @@ class EntityEngine
         ];
 
         // Initiative Modifier
-        $initMod = $dexMod + (int)$modifierEngine->getTotal('Init');
+        $initMod = ($finalDex === null) ? 0 : ($dexMod + (int)$modifierEngine->getTotal('Init'));
 
         // =========================================================================
         // STAGE 5: MOVEMENT SPEEDS, ACTIONS & REACTIONS
@@ -580,9 +867,9 @@ class EntityEngine
 
         $speedMod = (int)$modifierEngine->getTotal('Speed');
 
-        $groundSpeed = ($finalDex <= 0) ? 0 : max(0, (int)round(($baseGroundSpeed + $speedMod) * $speedMultLand));
-        $swimSpeed = ($finalDex <= 0 || $baseSwimSpeed <= 0) ? 0 : max(0, (int)round(($baseSwimSpeed + $speedMod) * $speedMultLand));
-        $flySpeed = ($finalDex <= 0 || $baseFlySpeed <= 0) ? 0 : max(0, (int)round(($baseFlySpeed + $speedMod) * $speedMultAir));
+        $groundSpeed = ($finalDex === null || $finalDex <= 0) ? 0 : max(0, (int)round(($baseGroundSpeed + $speedMod) * $speedMultLand));
+        $swimSpeed = ($finalDex === null || $finalDex <= 0 || $baseSwimSpeed <= 0) ? 0 : max(0, (int)round(($baseSwimSpeed + $speedMod) * $speedMultLand));
+        $flySpeed = ($finalDex === null || $finalDex <= 0 || $baseFlySpeed <= 0) ? 0 : max(0, (int)round(($baseFlySpeed + $speedMod) * $speedMultAir));
 
         $actionPoints = 10 + $totalLevel;
         $reactions = (int)floor($actionPoints / 10);
@@ -781,9 +1068,13 @@ class EntityEngine
                 'Int' => $finalInt, 'Wis' => $finalWis, 'Cha' => $finalCha,
             ],
             'ability_modifiers' => [
-                'Str' => $strMod, 'Con' => $conMod, 'Dex' => $dexMod,
-                'Int' => $intMod, 'Wis' => $wisMod, 'Cha' => $chaMod,
-                'DexRaw' => $dexModRaw,
+                'Str' => $finalStr !== null ? $strMod : null,
+                'Con' => $finalCon !== null ? $conMod : null,
+                'Dex' => $finalDex !== null ? $dexMod : null,
+                'Int' => $finalInt !== null ? $intMod : null,
+                'Wis' => $finalWis !== null ? $wisMod : null,
+                'Cha' => $finalCha !== null ? $chaMod : null,
+                'DexRaw' => $finalDex !== null ? $dexModRaw : null,
             ],
             'modifiers_engine' => $modifierEngine,
 
@@ -802,9 +1093,27 @@ class EntityEngine
 
             // Stage 4: Health & Defenses
             'health' => [
-                'hp' => ['total' => $hpTotal, 'current' => $hpCurrent, 'damage' => $hpDamage, 'temp' => $hpTemp],
-                'sp' => ['total' => $spTotal, 'current' => $spCurrent, 'damage' => $spDamage, 'temp' => $spTemp],
-                'pp' => ['total' => $ppTotal, 'current' => $ppCurrent, 'damage' => $ppDamage, 'temp' => $ppTemp],
+                'hp' => [
+                    'total' => $hpTotal,
+                    'current' => $hpCurrent,
+                    'damage' => $hpDamage,
+                    'temp' => $hpTemp,
+                    'display' => (string)$hpTotal,
+                ],
+                'sp' => [
+                    'total' => $spTotal,
+                    'current' => $spCurrent,
+                    'damage' => $spDamage,
+                    'temp' => $spTemp,
+                    'display' => $spTotal !== null ? (string)$spTotal : '–',
+                ],
+                'pp' => [
+                    'total' => $ppTotal,
+                    'current' => $ppCurrent,
+                    'damage' => $ppDamage,
+                    'temp' => $ppTemp,
+                    'display' => $ppTotal !== null ? (string)$ppTotal : '–',
+                ],
                 'conditions' => $conditions,
             ],
             'defenses' => [
@@ -828,6 +1137,7 @@ class EntityEngine
             ],
             'actions' => [
                 'ap' => $actionPoints,
+                'mp' => $groundSpeed,
                 'reactions' => $reactions,
             ],
 

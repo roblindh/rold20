@@ -55,12 +55,12 @@
         <div>
             <h3 class="text-xs uppercase font-bold text-slate-400 tracking-wider mb-2">Racial Ability Adjustments</h3>
             <div class="grid grid-cols-6 gap-2 text-center text-xs">
-                <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">STR</div><div class="font-bold text-sm text-slate-900">{{ ($creature->StrAdj ?? 0) >= 0 ? '+' : '' }}{{ $creature->StrAdj ?? 0 }}</div></div>
-                <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">CON</div><div class="font-bold text-sm text-slate-900">{{ ($creature->ConAdj ?? 0) >= 0 ? '+' : '' }}{{ $creature->ConAdj ?? 0 }}</div></div>
-                <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">DEX</div><div class="font-bold text-sm text-slate-900">{{ ($creature->DexAdj ?? 0) >= 0 ? '+' : '' }}{{ $creature->DexAdj ?? 0 }}</div></div>
-                <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">INT</div><div class="font-bold text-sm text-slate-900">{{ ($creature->IntAdj ?? 0) >= 0 ? '+' : '' }}{{ $creature->IntAdj ?? 0 }}</div></div>
-                <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">WIS</div><div class="font-bold text-sm text-slate-900">{{ ($creature->WisAdj ?? 0) >= 0 ? '+' : '' }}{{ $creature->WisAdj ?? 0 }}</div></div>
-                <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">CHA</div><div class="font-bold text-sm text-slate-900">{{ ($creature->ChaAdj ?? 0) >= 0 ? '+' : '' }}{{ $creature->ChaAdj ?? 0 }}</div></div>
+                <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">STR</div><div class="font-bold text-sm text-slate-900">{{ $creature->StrAdj !== null ? (($creature->StrAdj >= 0 ? '+' : '') . $creature->StrAdj) : '–' }}</div></div>
+                <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">CON</div><div class="font-bold text-sm text-slate-900">{{ $creature->ConAdj !== null ? (($creature->ConAdj >= 0 ? '+' : '') . $creature->ConAdj) : '–' }}</div></div>
+                <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">DEX</div><div class="font-bold text-sm text-slate-900">{{ $creature->DexAdj !== null ? (($creature->DexAdj >= 0 ? '+' : '') . $creature->DexAdj) : '–' }}</div></div>
+                <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">INT</div><div class="font-bold text-sm text-slate-900">{{ $creature->IntAdj !== null ? (($creature->IntAdj >= 0 ? '+' : '') . $creature->IntAdj) : '–' }}</div></div>
+                <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">WIS</div><div class="font-bold text-sm text-slate-900">{{ $creature->WisAdj !== null ? (($creature->WisAdj >= 0 ? '+' : '') . $creature->WisAdj) : '–' }}</div></div>
+                <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">CHA</div><div class="font-bold text-sm text-slate-900">{{ $creature->ChaAdj !== null ? (($creature->ChaAdj >= 0 ? '+' : '') . $creature->ChaAdj) : '–' }}</div></div>
             </div>
         </div>
 

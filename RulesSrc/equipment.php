@@ -237,24 +237,32 @@ class cVehicleStats {
 
 function WeaponCat($str) {
     global $aWeaponCats;
-
-    foreach ($aWeaponCats as $i => $iCat) {
-        if (strpos($str, $iCat) !== FALSE)
-            break;
+    if (empty($aWeaponCats) && function_exists('init_weaponcats')) {
+        init_weaponcats();
     }
-
-    return $i;
+    if (is_array($aWeaponCats)) {
+        foreach ($aWeaponCats as $i => $iCat) {
+            if (strpos($str, $iCat) !== FALSE) {
+                return $i;
+            }
+        }
+    }
+    return 0;
 }
 
 function ArmorCat($str) {
     global $aArmorCats;
-
-    foreach ($aArmorCats as $i => $iCat) {
-        if (strpos($str, $iCat) !== FALSE)
-            break;
+    if (empty($aArmorCats) && function_exists('init_armorcats')) {
+        init_armorcats();
     }
-
-    return $i;
+    if (is_array($aArmorCats)) {
+        foreach ($aArmorCats as $i => $iCat) {
+            if (strpos($str, $iCat) !== FALSE) {
+                return $i;
+            }
+        }
+    }
+    return 0;
 }
 
 ?>

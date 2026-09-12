@@ -74,6 +74,8 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::get('/chargen', [UtilityController::class, 'characterGenerator']);
     Route::post('/character-generator/save', [UtilityController::class, 'saveCharacter'])->name('chargen.save');
     Route::post('/chargen/save', [UtilityController::class, 'saveCharacter']);
+    Route::post('/character-generator/calculate-preview', [UtilityController::class, 'calculatePreview'])->name('chargen.preview');
+    Route::post('/chargen/preview', [UtilityController::class, 'calculatePreview']);
 
     Route::get('/character-viewer/{id?}', [UtilityController::class, 'characterViewer'])->name('charview');
     Route::get('/charview/{id?}', [UtilityController::class, 'characterViewer']);

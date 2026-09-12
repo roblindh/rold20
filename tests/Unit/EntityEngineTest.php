@@ -107,4 +107,183 @@ class EntityEngineTest extends TestCase
         $this->assertEquals(4, $calc['health']['pp']['current']); // 14 - 10
         $this->assertContains('Tired', $calc['health']['conditions']);
     }
+
+    public function test_chargen_wizard_draft_payload_calculation(): void
+    {
+        $draft = [
+            'Name' => 'Valerie Swiftblade',
+            'Strength' => 14,
+            'Constitution' => 12,
+            'Dexterity' => 16,
+            'Intelligence' => 10,
+            'Wisdom' => 10,
+            'Charisma' => 8,
+            'RaceID' => 1, // Human (BaseRL = 0)
+            'CultureID' => 1,
+            'BackgroundClassID' => 15,
+            'ClassLevels' => [4, 4], // Level 2 Fighter (HP+10 each, SP+8 each, PP+2 each)
+            'PhysicalAge' => 22,
+            'MentalAge' => 22,
+            'IPAllocations' => [
+                7 => 1, // Improvement 7: DeC Active +1
+            ],
+            'Skills' => [
+                'BackgroundRates' => [1 => 0.5],
+                'LevelSkills' => [
+                    1 => [1 => 2],
+                    2 => [1 => 2],
+                ],
+            ],
+        ];
+
+        $calc = EntityEngine::calculate($draft);
+
+        // Heritage
+        $this->assertEquals(0, $calc['heritage']['racial_level']);
+        $this->assertEquals(2, $calc['heritage']['total_level']);
+
+        // Abilities (Human young adult: no racial/age penalty)
+        $this->assertEquals(14, $calc['final_abilities']['Str']);
+        $this->assertEquals(12, $calc['final_abilities']['Con']);
+        $this->assertEquals(16, $calc['final_abilities']['Dex']);
+        $this->assertEquals(3, $calc['ability_modifiers']['Dex']);
+
+        // Tri-Pool Health
+        // HP = Con (12) + 2*Fighter HPPerLevel (2*10=20) = 32
+        $this->assertEquals(32, $calc['health']['hp']['total']);
+        // SP = Con (12) + 2*Fighter SPPerLevel (2*8=16) = 28
+        $this->assertEquals(28, $calc['health']['sp']['total']);
+        // PP = Wis (10) + 2*Fighter PPPerLevel (2*2=4) = 14
+        $this->assertEquals(14, $calc['health']['pp']['total']);
+
+        // Dual-Ability Defenses
+        // Passive DeC = 10 + min(0, dexMod) + Level(2) + Imp(1) = 13
+        $this->assertEquals(13, $calc['defenses']['dec_passive']);
+        // Active DeC = 13 + max(0, dexMod=3) = 16
+        $this->assertEquals(16, $calc['defenses']['dec_active']);
+
+        // Actions & Speed
+        $this->assertGreaterThanOrEqual(10, $calc['actions']['ap']);
+        $this->assertGreaterThanOrEqual(6, $calc['speeds']['ground']);
+        $this->assertEquals($calc['speeds']['ground'], $calc['actions']['mp']);
+    }
+
+    public function test_aging_adjustments_affect_abilities_and_health(): void
+    {
+        // Venerable human (e.g. age 80): Str -3, Con -3, Dex -3, Int +3, Wis +3, Cha +3
+        $venerableCharacter = [
+            'Strength' => 14,
+            'Constitution' => 14,
+            'Dexterity' => 14,
+            'Intelligence' => 10,
+            'Wisdom' => 10,
+            'Charisma' => 10,
+            'RaceID' => 1,
+            'ClassLevels' => [1],
+            'PhysicalAge' => 85, // Venerable
+            'MentalAge' => 85,
+        ];
+
+        $calc = EntityEngine::calculate($venerableCharacter);
+
+        // Check age adjustments applied
+        $this->assertLessThan(14, $calc['final_abilities']['Str']);
+        $this->assertLessThan(14, $calc['final_abilities']['Con']);
+        $this->assertGreaterThan(10, $calc['final_abilities']['Wis']);
+        $this->assertGreaterThan(10, $calc['final_abilities']['Int']);
+
+        // HP reflects aged Constitution score
+        $expectedCon = $calc['final_abilities']['Con'];
+        $this->assertEquals($expectedCon + 6, $calc['health']['hp']['total']);
+    }
+
+    public function test_calculate_preview_controller_endpoint(): void
+    {
+        $controller = new \App\Http\Controllers\UtilityController();
+        $request = \Illuminate\Http\Request::create('/utilities/chargen/preview', 'POST', [
+            'Name' => 'Garrick Preview',
+            'Strength' => 16,
+            'Constitution' => 14,
+            'Dexterity' => 12,
+            'Intelligence' => 10,
+            'Wisdom' => 10,
+            'Charisma' => 10,
+            'RaceID' => 1,
+            'CultureID' => 1,
+            'BackgroundClassID' => 15,
+            'ClassLevels' => [4], // Level 1 Fighter
+            'PhysicalAge' => 25,
+            'MentalAge' => 25,
+        ]);
+
+        $response = $controller->calculatePreview($request);
+        $data = $response->getData(true);
+
+        $this->assertTrue($data['success']);
+        $this->assertEquals(16, $data['calculated']['final_abilities']['Str']);
+        $this->assertEquals(24, $data['calculated']['health']['hp']['total']); // 14 + 10
+        $this->assertEquals(22, $data['calculated']['health']['sp']['total']); // 14 + 8
+        $this->assertEquals(12, $data['calculated']['health']['pp']['total']); // 10 + 2
+    }
+
+    public function test_no_score_handling_for_clay_golem(): void
+    {
+        $golem = [
+            'BaseRace' => 163, // Clay Golem (ConAdj = null, IntAdj = null)
+            'Name' => 'Clay Golem',
+        ];
+
+        $calc = EntityEngine::calculate($golem);
+
+        $this->assertNull($calc['final_abilities']['Con']);
+        $this->assertNull($calc['final_abilities']['Int']);
+        $this->assertNull($calc['ability_modifiers']['Con']);
+        $this->assertNull($calc['ability_modifiers']['Int']);
+
+        // Base HP from Con is 10 (instead of Con score)
+        $this->assertGreaterThanOrEqual(10, $calc['health']['hp']['total']);
+
+        // SP is null / No Score, rendered as '–'
+        $this->assertNull($calc['health']['sp']['total']);
+        $this->assertNull($calc['health']['sp']['current']);
+        $this->assertEquals('–', $calc['health']['sp']['display']);
+
+        // Fortitude is 999 (immune), Will is 999 (immune)
+        $this->assertEquals(999, $calc['defenses']['fort']);
+        $this->assertEquals(999, $calc['defenses']['will']);
+    }
+
+    public function test_no_score_handling_for_skeleton_template(): void
+    {
+        $skeletonHuman = [
+            'BaseRace' => 1,
+            'Templates' => [30], // Skeleton (ConAdj = null, IntAdj = null)
+            'Name' => 'Human Skeleton',
+        ];
+
+        $calc = EntityEngine::calculate($skeletonHuman);
+
+        $this->assertNull($calc['final_abilities']['Con']);
+        $this->assertNull($calc['final_abilities']['Int']);
+        $this->assertNull($calc['health']['sp']['total']);
+        $this->assertEquals('–', $calc['health']['sp']['display']);
+        $this->assertEquals(999, $calc['defenses']['fort']);
+        $this->assertEquals(999, $calc['defenses']['will']);
+    }
+
+    public function test_no_score_handling_for_incorporeal_spectre(): void
+    {
+        $spectre = [
+            'BaseRace' => 266, // Spectre (StrAdj = null, ConAdj = null)
+            'Name' => 'Spectre',
+        ];
+
+        $calc = EntityEngine::calculate($spectre);
+
+        $this->assertNull($calc['final_abilities']['Str']);
+        $this->assertNull($calc['final_abilities']['Con']);
+        $this->assertNull($calc['health']['sp']['total']);
+        $this->assertEquals('–', $calc['health']['sp']['display']);
+        $this->assertEquals(999, $calc['defenses']['fort']);
+    }
 }

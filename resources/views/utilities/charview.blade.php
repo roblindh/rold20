@@ -325,19 +325,19 @@
 ## Ability Scores
 | Ability | Score | Mod | Base |
 |---|---|---|---|
-| STR | {{ $str }} | {{ ($strMod >= 0 ? '+' : '') . $strMod }} | {{ $baseStr }} |
-| CON | {{ $con }} | {{ ($conMod >= 0 ? '+' : '') . $conMod }} | {{ $baseCon }} |
-| DEX | {{ $dex }} | {{ ($dexMod >= 0 ? '+' : '') . $dexMod }} | {{ $baseDex }} |
-| INT | {{ $int }} | {{ ($intMod >= 0 ? '+' : '') . $intMod }} | {{ $baseInt }} |
-| WIS | {{ $wis }} | {{ ($wisMod >= 0 ? '+' : '') . $wisMod }} | {{ $baseWis }} |
-| CHA | {{ $cha }} | {{ ($chaMod >= 0 ? '+' : '') . $chaMod }} | {{ $baseCha }} |
+| STR | {{ $str ?? '–' }} | {{ $strMod !== null ? ($strMod >= 0 ? '+' : '') . $strMod : '–' }} | {{ $baseStr ?? '–' }} |
+| CON | {{ $con ?? '–' }} | {{ $conMod !== null ? ($conMod >= 0 ? '+' : '') . $conMod : '–' }} | {{ $baseCon ?? '–' }} |
+| DEX | {{ $dex ?? '–' }} | {{ $dexMod !== null ? ($dexMod >= 0 ? '+' : '') . $dexMod : '–' }} | {{ $baseDex ?? '–' }} |
+| INT | {{ $int ?? '–' }} | {{ $intMod !== null ? ($intMod >= 0 ? '+' : '') . $intMod : '–' }} | {{ $baseInt ?? '–' }} |
+| WIS | {{ $wis ?? '–' }} | {{ $wisMod !== null ? ($wisMod >= 0 ? '+' : '') . $wisMod : '–' }} | {{ $baseWis ?? '–' }} |
+| CHA | {{ $cha ?? '–' }} | {{ $chaMod !== null ? ($chaMod >= 0 ? '+' : '') . $chaMod : '–' }} | {{ $baseCha ?? '–' }} |
 
 ## Combat & Defenses
 - **Initiative:** {{ ($initMod >= 0 ? '+' : '') . $initMod }} | **AP:** {{ $actionPoints }} | **MP:** {{ $movementPoints }} | **Reactions:** {{ $reactions }}
 - **Speed:** {{ $speedDisplay }} | **Size:** {{ $sizeStr }} ({{ $spacingStr }} / {{ $reachStr }} sq) | **Body:** {{ $bodyTypeStr }}
 - **Defenses:** DeCa {{ $decActive }} | DeCp {{ $decPassive }} | Crit +{{ $critRes }} | DR {{ $dr }} | MR {{ $mr }}
 - **Saves:** Fort +{{ $fort }} | Ref +{{ $ref }} | Will +{{ $will }}
-- **Health:** HP {{ $hp }} / {{ $hp }} | SP {{ $sp }} / {{ $sp }} | PP {{ $pp }} / {{ $pp }}
+- **Health:** HP {{ $hp }} / {{ $hpCurrent }} | SP {{ $sp !== null ? $sp . ' / ' . $spCurrent : '–' }} | PP {{ $pp !== null ? $pp . ' / ' . $ppCurrent : '–' }}
 
 ## Skills
 @forelse($skillsList as $sId => $rank)
@@ -378,14 +378,14 @@
 Heritage: {{ $isFemale ? 'Female' : 'Male' }} {{ $race->Name ?? 'Humanoid' }}@if($templatesSummaryStr !== 'None') ({{ $templatesSummaryStr }})@endif | Culture: {{ $culture->Name ?? 'Unknown' }} | Classes: {{ $classesDisplayStr }}
 Level: TL {{ $totalLevel }} (RL {{ $racialLevel }}, CL {{ $challengeLevel }}) | XP: {{ number_format($xp) }} | Fate Pts: {{ $character->FatePts ?? 3 }}
 
-STR: {{ $str }} ({{ ($strMod >= 0 ? '+' : '') . $strMod }}) | CON: {{ $con }} ({{ ($conMod >= 0 ? '+' : '') . $conMod }}) | DEX: {{ $dex }} ({{ ($dexMod >= 0 ? '+' : '') . $dexMod }})
-INT: {{ $int }} ({{ ($intMod >= 0 ? '+' : '') . $intMod }}) | WIS: {{ $wis }} ({{ ($wisMod >= 0 ? '+' : '') . $wisMod }}) | CHA: {{ $cha }} ({{ ($chaMod >= 0 ? '+' : '') . $chaMod }})
+STR: {{ $str ?? '–' }} ({{ $strMod !== null ? ($strMod >= 0 ? '+' : '') . $strMod : '–' }}) | CON: {{ $con ?? '–' }} ({{ $conMod !== null ? ($conMod >= 0 ? '+' : '') . $conMod : '–' }}) | DEX: {{ $dex ?? '–' }} ({{ $dexMod !== null ? ($dexMod >= 0 ? '+' : '') . $dexMod : '–' }})
+INT: {{ $int ?? '–' }} ({{ $intMod !== null ? ($intMod >= 0 ? '+' : '') . $intMod : '–' }}) | WIS: {{ $wis ?? '–' }} ({{ $wisMod !== null ? ($wisMod >= 0 ? '+' : '') . $wisMod : '–' }}) | CHA: {{ $cha ?? '–' }} ({{ $chaMod !== null ? ($chaMod >= 0 ? '+' : '') . $chaMod : '–' }})
 
 Init: {{ ($initMod >= 0 ? '+' : '') . $initMod }} | AP: {{ $actionPoints }} | MP: {{ $movementPoints }} | Reactions: {{ $reactions }}
 Speed: {{ $speedDisplay }} | Size: {{ $sizeStr }} | Body: {{ $bodyTypeStr }}
 DeCa: {{ $decActive }} | DeCp: {{ $decPassive }} | Crit: +{{ $critRes }} | DR: {{ $dr }} | MR: {{ $mr }}
 Fort: +{{ $fort }} | Ref: +{{ $ref }} | Will: +{{ $will }}
-HP: {{ $hp }} / {{ $hp }} | SP: {{ $sp }} / {{ $sp }} | PP: {{ $pp }} / {{ $pp }}
+HP: {{ $hp }} / {{ $hpCurrent }} | SP: {{ $sp !== null ? $sp . ' / ' . $spCurrent : '–' }} | PP: {{ $pp !== null ? $pp . ' / ' . $ppCurrent : '–' }}
 </textarea>
         </div>
 
@@ -473,39 +473,39 @@ HP: {{ $hp }} / {{ $hp }} | SP: {{ $sp }} / {{ $sp }} | PP: {{ $pp }} / {{ $pp }
                             </tr>
                             <tr>
                                 <td class="cvlabel cvcenter">STR</td>
-                                <td class="cvmdm cvcenter">{{ ($strMod >= 0 ? '+' : '') . $strMod }}</td>
-                                <td class="cvsml cvcenter">{{ $baseStr }}</td>
-                                <td class="cvmdm cvcenter">{{ $str }}</td>
+                                <td class="cvmdm cvcenter">{{ $strMod !== null ? ($strMod >= 0 ? '+' : '') . $strMod : '–' }}</td>
+                                <td class="cvsml cvcenter">{{ $baseStr ?? '–' }}</td>
+                                <td class="cvmdm cvcenter">{{ $str ?? '–' }}</td>
                             </tr>
                             <tr>
                                 <td class="cvlabel cvcenter">CON</td>
-                                <td class="cvmdm cvcenter">{{ ($conMod >= 0 ? '+' : '') . $conMod }}</td>
-                                <td class="cvsml cvcenter">{{ $baseCon }}</td>
-                                <td class="cvmdm cvcenter">{{ $con }}</td>
+                                <td class="cvmdm cvcenter">{{ $conMod !== null ? ($conMod >= 0 ? '+' : '') . $conMod : '–' }}</td>
+                                <td class="cvsml cvcenter">{{ $baseCon ?? '–' }}</td>
+                                <td class="cvmdm cvcenter">{{ $con ?? '–' }}</td>
                             </tr>
                             <tr>
                                 <td class="cvlabel cvcenter">DEX</td>
-                                <td class="cvmdm cvcenter">{{ ($dexMod >= 0 ? '+' : '') . $dexMod }}</td>
-                                <td class="cvsml cvcenter">{{ $baseDex }}</td>
-                                <td class="cvmdm cvcenter">{{ $dex }}</td>
+                                <td class="cvmdm cvcenter">{{ $dexMod !== null ? ($dexMod >= 0 ? '+' : '') . $dexMod : '–' }}</td>
+                                <td class="cvsml cvcenter">{{ $baseDex ?? '–' }}</td>
+                                <td class="cvmdm cvcenter">{{ $dex ?? '–' }}</td>
                             </tr>
                             <tr>
                                 <td class="cvlabel cvcenter">INT</td>
-                                <td class="cvmdm cvcenter">{{ ($intMod >= 0 ? '+' : '') . $intMod }}</td>
-                                <td class="cvsml cvcenter">{{ $baseInt }}</td>
-                                <td class="cvmdm cvcenter">{{ $int }}</td>
+                                <td class="cvmdm cvcenter">{{ $intMod !== null ? ($intMod >= 0 ? '+' : '') . $intMod : '–' }}</td>
+                                <td class="cvsml cvcenter">{{ $baseInt ?? '–' }}</td>
+                                <td class="cvmdm cvcenter">{{ $int ?? '–' }}</td>
                             </tr>
                             <tr>
                                 <td class="cvlabel cvcenter">WIS</td>
-                                <td class="cvmdm cvcenter">{{ ($wisMod >= 0 ? '+' : '') . $wisMod }}</td>
-                                <td class="cvsml cvcenter">{{ $baseWis }}</td>
-                                <td class="cvmdm cvcenter">{{ $wis }}</td>
+                                <td class="cvmdm cvcenter">{{ $wisMod !== null ? ($wisMod >= 0 ? '+' : '') . $wisMod : '–' }}</td>
+                                <td class="cvsml cvcenter">{{ $baseWis ?? '–' }}</td>
+                                <td class="cvmdm cvcenter">{{ $wis ?? '–' }}</td>
                             </tr>
                             <tr>
                                 <td class="cvlabel cvcenter">CHA</td>
-                                <td class="cvmdm cvcenter">{{ ($chaMod >= 0 ? '+' : '') . $chaMod }}</td>
-                                <td class="cvsml cvcenter">{{ $baseCha }}</td>
-                                <td class="cvmdm cvcenter">{{ $cha }}</td>
+                                <td class="cvmdm cvcenter">{{ $chaMod !== null ? ($chaMod >= 0 ? '+' : '') . $chaMod : '–' }}</td>
+                                <td class="cvsml cvcenter">{{ $baseCha ?? '–' }}</td>
+                                <td class="cvmdm cvcenter">{{ $cha ?? '–' }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -567,9 +567,9 @@ HP: {{ $hp }} / {{ $hp }} | SP: {{ $sp }} / {{ $sp }} | PP: {{ $pp }} / {{ $pp }
                                 <td class="cvlabel cvcenter" colspan="2">Will</td>
                             </tr>
                             <tr>
-                                <td class="cvmdm cvcenter" colspan="2">{{ $fort }}</td>
-                                <td class="cvmdm cvcenter" colspan="2">{{ $ref }}</td>
-                                <td class="cvmdm cvcenter" colspan="2">{{ $will }}</td>
+                                <td class="cvmdm cvcenter" colspan="2">{{ ($fort !== null && $fort < 999) ? $fort : '–' }}</td>
+                                <td class="cvmdm cvcenter" colspan="2">{{ $ref ?? '0' }}</td>
+                                <td class="cvmdm cvcenter" colspan="2">{{ ($will !== null && $will < 999) ? $will : '–' }}</td>
                             </tr>
                             <tr>
                                 <td class="cvlabel cvcenter" colspan="3">DR</td>
@@ -604,8 +604,8 @@ HP: {{ $hp }} / {{ $hp }} | SP: {{ $sp }} / {{ $sp }} | PP: {{ $pp }} / {{ $pp }
                             </tr>
                             <tr>
                                 <td class="cvmdm cvcenter">{{ $hp }}</td>
-                                <td class="cvmdm cvcenter">{{ $sp }}</td>
-                                <td class="cvmdm cvcenter">{{ $pp }}</td>
+                                <td class="cvmdm cvcenter">{{ $sp ?? '–' }}</td>
+                                <td class="cvmdm cvcenter">{{ $pp ?? '–' }}</td>
                             </tr>
                             <tr>
                                 <td class="cvlabel cvcenter">Current</td>
@@ -614,8 +614,8 @@ HP: {{ $hp }} / {{ $hp }} | SP: {{ $sp }} / {{ $sp }} | PP: {{ $pp }} / {{ $pp }
                             </tr>
                             <tr>
                                 <td class="cvmdm cvcenter">{{ $hpCurrent }}</td>
-                                <td class="cvmdm cvcenter">{{ $spCurrent }}</td>
-                                <td class="cvmdm cvcenter">{{ $ppCurrent }}</td>
+                                <td class="cvmdm cvcenter">{{ $spCurrent ?? '–' }}</td>
+                                <td class="cvmdm cvcenter">{{ $ppCurrent ?? '–' }}</td>
                             </tr>
                             <tr><td class="cvlabel" colspan="3">Conditions</td></tr>
                             <tr>
