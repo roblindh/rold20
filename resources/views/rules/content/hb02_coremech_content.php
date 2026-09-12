@@ -1,266 +1,140 @@
 <h2 id="CoreMechanics">Core Rules</h2>
 <p>
-    The RoL d20 rules are quite extensive and replace a large portion of the
-    normal d20 and D&amp;D 3.5E rules. 
-    Nevertheless, for the few areas not covered by this document, the regular 
-    <a href="http://www.d20srd.org">d20 rules</a> 
-    still apply.
-    But don't forget... The DM is always right and can override any rule, even the RoL rules.
+    The RoL d20 rules provide a comprehensive framework that streamlines and replaces large portions of traditional 
+    d20 and D&amp;D 3.5E mechanics. For areas not explicitly covered in this document, standard 
+    <a href="http://www.d20srd.org" target="_blank" rel="noopener noreferrer">d20 System Reference rules</a> 
+    remain applicable. As always, the Dungeon Master holds ultimate authority to adapt, adjudicate, or override any rule 
+    to best serve the campaign and narrative flow.
 </p>
 <p>
-    The main purpose of rules in a role-playing game is to provide a common
-    framework for the players (and the DM).
+    The rules serve two primary purposes:
 </p>
-<p>
-    First of all, it defines a set of characteristics that are used to describe
-    player characters, non-player characters,
-    monsters, and even inanimate objects. For example, they let you know how
-    strong, quick, or intelligent your character is,
-    in absolute numbers. In other words, it is easy to tell whether your
-    character is stronger than an average orc or smarter
-    than the village wizard.
-    All in all, there are quite a number of characteristics that define a
-    character (or any DM-controlled creature for that matter).
-    Some characteristics are generated randomly, while others are chosen by the
-    player. Quite a few are simply calculated and derived from other characteristics.
-    Some will remain constant throughout the character's career, while others
-    will change frequently.
-    Some are relatively obscure and abstract, with little or no effect in a
-    typical gaming session, while others provide well-defined modifiers
-    to actions the character performs on a regular basis.
-</p>
-<p>
-    Second, the rules define which actions your
-    character can perform, your chances of success or
-    failure, and how long those actions take to perform. Of course, the rules
-    cannot cover every possible action, so it is
-    the duty of the DM to adjudicate the cases not already covered by the rules.
-</p>
+<ul>
+    <li><strong>Defining Characteristics:</strong> Establishing concrete numerical attributes for player characters, non-player characters, creatures, and objects (such as physical strength, agility, or intelligence), enabling clear comparisons and consistent resolution.</li>
+    <li><strong>Resolving Actions:</strong> Governing the actions creatures can perform, their execution time, and their likelihood of success or failure.</li>
+</ul>
 
 <h3 id="FundamentalRules">Fundamentals</h3>
 
-<h4 id="DiceRolling">Dice-Rolling</h4>
+<h4 id="DiceRolling">Dice Rolling</h4>
 <p>
-    <em>Dice:</em> The traditional role-playing notation for dice is used in the RoL rules.
-    In other words, &quot;3d6+5&quot; means &quot;roll three six-sided dice,
-    calculate their sum, and add five&quot;.
+    <em>Standard Notation:</em> RoL d20 uses standard tabletop dice notation. For example, <code>3d6+5</code> means 
+    "roll three six-sided dice, sum their results, and add 5."
 </p>
 <p>
-    <em>Open-Ended Dice:</em> In some situations (those involving d20 checks,
-    in particular) RoL d20 makes use of open-ended dice rolling.
-    The notation used for open-ended rolls consists of an exclamation mark after the die size.
-    For example, &quot;d20!+12&quot; means &quot;roll a d20 and add 12 to the result&quot; as usual.
-    In addition to this, each die that rolls the maximum result (20 in this case)
-    should be rerolled and added to the final result.
-    And each die that rolls the minimum result (usually 1) subtracts &quot;die size+1&quot;
-    from the result and should then be rerolled.
+    <em>Open-Ended Dice (d20!):</em> Most d20 checks utilize open-ended (exploding) dice rolls, indicated by an exclamation mark (<code>!</code>). 
+    Whenever a die rolls its maximum natural result (such as a natural 20 on a d20), it "explodes": roll the die again and add the new result to the total. 
+    If that roll is also the maximum, continue rolling and adding. 
+    Conversely, if a die rolls a natural 1, subtract the die size plus one (e.g., &minus;21 for a d20) from the total, roll again, and subtract the new roll.
 </p>
 <p>
-    <em id="DamageDice">Dice Increase and Decrease:</em> Some skills, spells, and other effects can either increase or decrease the damage dice of a weapon.
-    Such an increase or decrease follows these steps:
+    <em id="DamageDice">Dice Scaling Progression:</em> Effects that step damage dice up or down follow this standard progression:
 </p>
-<p>
+<p class="font-mono text-xs bg-slate-100 p-2 rounded border border-slate-300">
     1 &harr; d2 &harr; d3 &harr; d4 &harr; d6 &harr; d8 &harr; d10 &harr; 2d6 (or d12) &harr; 2d8 &harr; 2d10 (or d20) &harr; 4d6 &harr; 5d6 &harr; 6d6 ...
 </p>
 <p>
-    In general, treat multiple dice separately. For example, increasing 3d8 results in a progression of 3d10, then 6d6, 7d6, etc.
+    In general, scale multiple dice independently. For example, stepping up <code>3d8</code> results in <code>3d10</code>, then <code>6d6</code>, <code>7d6</code>, etc.
 </p>
 
 <h4 id="Mathematics">Mathematics</h4>
 <p>
-    <em>Units:</em> Measurements in this document are given in metric units.
-    However, to avoid major confusion with D&amp;D, most distances, areas, and
-    volumes are measured in squares.
-    The size of one square (or more accurately one of its edges) is equal to 5 feet or 1.5 m.
-    One square is also the appropriate spacing for a man-sized creature in combat situations.
+    <em>Units:</em> Measurements are given in metric units. However, to maintain seamless compatibility with tabletop grid maps, 
+    distances, areas, and ranges are primarily measured in <strong>squares</strong>. 
+    One square (a 5-foot or 1.5-meter edge) represents the standard space occupied by a Medium (human-sized) creature in combat.
 </p>
 <p>
-    For diagonal movement and measurements of distance, every other square
-    (starting with the second one) counts double.
+    For diagonal movement and distance measurements, every other square (starting with the second) counts as two squares.
 </p>
 <p>
     <em>Rounding:</em> Unless otherwise specified, always round fractions down.
 </p>
 <p>
-    <em>Multiplication:</em> When applying a single multiplier to a die roll or
-    number, just multiply normally.
-    In some rare cases, such as a spell multiplying a weapon's damage combined
-    with a critical hit,
-    several multiplicative modifiers will apply to a single base number.
-    Such modifiers should, when applied to an abstract value, be added rather
-    than multiplied together, and all multipliers except the first should be reduced by one.
-    For example, a &times;2 modifier combined with a &times;3 modifier will result
-    in a total of &times;4 (2+(3-1)) rather than &times;6.
-    When applying several multiplicative modifiers to a &quot;real&quot; value
-    (such as a weight or distance),
-    normal math should be used and all the multipliers multiplied together.
+    <em>Multiplication &amp; Stacking Multipliers:</em> When applying a single multiplier to a value or die roll, multiply normally. 
+    When multiple multiplicative modifiers apply to a single abstract game value (such as a spell multiplying weapon damage combined with a critical hit), 
+    add the multipliers together rather than multiplying them, reducing each multiplier beyond the first by 1:
+</p>
+<p class="font-mono text-xs bg-slate-100 p-2 rounded border border-slate-300">
+    Total Multiplier = First Multiplier + (Second Multiplier &minus; 1) + (Third Multiplier &minus; 1) ...
+</p>
+<p>
+    For example, combining a &times;2 multiplier with a &times;3 multiplier yields a &times;4 total (<code>2 + [3 &minus; 1]</code>), rather than &times;6. 
+    When applying multiple multipliers to real-world physical values (such as weight, carrying capacity, or distance), multiply them normally.
 </p>
 
 <h4 id="Stacking">Stacking</h4>
 <p>
-    Characteristics and modifiers of the same type do not generally stack.
-    However, please check the section about <a href="#Modifiers">modifiers</a>
-    for exceptions to this rule.
+    Characteristics, bonuses, and modifiers of the same named type do not stack unless explicitly stated (see <a href="#Modifiers">Modifiers</a>).
 </p>
 <p>
-    The same rule applies to most non-instantaneous spell effects and special abilities.
-    Unless otherwise specified (or otherwise dictated by logic), when two similar
-    or identical effects affect
-    the same creature or area at the same time, only the most powerful of them applies.
-    Note, however, that determining the similarity of two effects is not always
-    trivial and is ultimately up to the DM.
-</p>
-<p>
-    For example, let us say that a creature is first charmed by a wizard's spell,
-    then charmed again by a vampire's gaze,
-    and finally compelled by a cursed magic item.
-    In most cases, two charm effects can coexist without conflict, but if the creature in this case
-    is forced to make a choice between aiding the wizard or the vampire, the most powerful charm will apply.
-    The compulsion, however, is defined by the rules as a more powerful version of a charm effect,
-    so in this example it will trump both of the charm effects. 
-</p>
-<p>
-    Also note that a single spell can have multiple effects, and unless otherwise specified,
-    the same spell can be cast multiple times on the same target. The spell
-    Enhance Senses, for example, can be cast
-    several times at a single target, once to give low-light vision, another to give darkvision, etc. 
+    Similarly, when two similar or identical ongoing supernatural effects affect the same creature or area simultaneously, 
+    only the most potent effect applies. For instance, if a creature is targeted by multiple charm effects, the highest-powered charm 
+    governs their behavior; a direct compulsion effect overrules general charms. 
+    Distinct effects from the same spell (such as multiple sensory enhancements from <em>Enhance Senses</em>) coexist normally.
 </p>
 
 <h4 id="Timing">Timing</h4>
 <p>
-    Time in a role-playing game is quite fluid, just as it is in movies and
-    literature. When the DM and players agree that few
-    interesting things are taking place, then days, months, or even years of
-    game time can pass in a second of real time.
-    During a complicated situation, on the other hand, a large number of
-    characters may be performing a variety of actions in
-    just a few seconds of game time, but this can take hours of real time to play out.
+    Time in a role-playing game flows fluidly. Routine travel, downtime, or uneventful periods can cover days or weeks in seconds of real time, 
+    while tactical scenes are tracked in precise increments:
 </p>
-<p>
-    Every action takes a certain amount of game time to perform. For slower
-    actions, the time is measured in &quot;normal&quot; time units:
-    minutes (min), hours (h), days, weeks, months, or years. Faster actions,
-    however, are measured in rounds or action points rather than seconds.
-</p>
-<p>
-    <em>Round (r):</em> A round is a unit of time roughly equal to 6 seconds.
-    In other words, 10 rounds equal one minute.
-    During each round, a character can perform either a single full-round action
-    or a combination of faster actions.
-    Note, however, that a full-round action can be combined with one or more
-    free actions (those that take 0 AP to perform).
-</p>
-<p>
-    <em>Action Points (AP):</em> Action Points is a measure of how much a
-    creature can do in a single round.
-    When a time is specified in AP, it reflects the number of AP a creature must
-    spend to perform a certain action.
-    Typically, a high-level character or monster has more AP to spend per round
-    than one of low level.
-    Since a creature's AP increases with level, there is no fixed conversion rate
-    between AP and seconds.
-    For a low-level character, 1 AP would be roughly equivalent to 0.5 seconds,
-    while for a high-level character, it would be as short as 0.15 seconds.
-</p>
-<p>
-    <em>Movement Points (MP):</em> Movement Points are similar to Action Points
-    but are tied to a creature's rate of movement.
-    Movement Points can be used only for movement actions (those with the [Move] descriptor).
-    A creature's amount of available MP is determined by its speed characteristic,
-    but a limited number of AP can also be converted into extra MP.
-    When a time is specified in MP, it reflects the number of MP a creature must
-    spend to perform a certain action.
-</p>
-<p>
-    <em>Encounter (enc):</em> An encounter is not a fixed amount of time, but it
-    is typically somewhere between half a minute and half an hour.
-    It can be an entire combat, from start to finish, a fast-paced chase through
-    a forest, a friendly five-minute chat between characters,
-    a few minutes spent climbing a wall, etc.
-    In situations where an encounter's duration cannot be clearly defined, this
-    time unit is typically limited at one minute per skill level
-    (or TL, when skill level is not applicable).
-</p>
+<ul>
+    <li><em>Standard Time:</em> Slower non-combat actions are measured in minutes (min), hours (h), days, weeks, months, or years.</li>
+    <li><em>Round (r):</em> A combat round represents approximately 6 seconds of game time (10 rounds equal 1 minute). During each round, a creature can perform a full-round action or a combination of faster actions.</li>
+    <li><em>Action Points (AP):</em> Action Points measure how much a creature can accomplish in a single round. Actions cost a designated amount of AP. High-level characters have larger AP pools, allowing them to act with greater speed and flexibility.</li>
+    <li><em>Movement Points (MP):</em> A specialized resource tied to a creature's speed, spent exclusively on actions bearing the [Move] descriptor. A creature may also convert limited AP into additional MP.</li>
+    <li><em>Encounter (enc):</em> A distinct scene of dramatic conflict (a combat encounter, a chase, or high-stakes negotiations), typically spanning from 30 seconds to several minutes. When an encounter duration is not self-evident, it defaults to 1 minute per skill level (or Total Level).</li>
+</ul>
 
 <h3 id="RaceChars">Racial Characteristics</h3>
 <p>
-    <em>Race/Creature:</em> This is the species an individual belongs to. Some races will also have a variety of subraces.
-    For example, sylvan and drow elves are two subraces of the elven race, with very different racial traits and temperaments.
+    <em>Race / Species:</em> The biological species to which an individual belongs. Many races feature subraces with distinct racial traits and cultural temperaments (such as sylvan elves and drow).
 </p>
 <p>
-    <em>Creature type and subtype:</em> Each creature belongs to a specific creature type and subtype.
-    This will sometimes affect or determine the efficiency of special powers, spells, and magic items.
-    For example, some magic weapons deal greater damage to certain creature types,
-    and some skills teach you how to better track and fight specific creature types.
+    <em>Creature Type and Subtype:</em> Every creature belongs to a specific type and subtype (e.g., <em>Humanoid [Elf]</em>, <em>Undead</em>, <em>Dragon</em>). This classification determines interactions with spells, magic weapons (such as bane enhancements), and specialized skills (such as tracking or favored enemy bonuses).
 </p>
 <p>
-    <em>Template:</em> This is a special racial modification that can be added on top of a base race.
-    Vampiricism and lycanthropy are two well-known examples of templates.
+    <em>Template:</em> A specialized physiological or supernatural modification applied on top of a base race. <em>Vampirism</em> and <em>Lycanthropy</em> are common examples of templates.
 </p>
 <p>
-    <em>Culture:</em> This represents the upbringing and background of a creature.
-    Most importantly, it determines which class or classes to use for racial levels and when choosing background skills.
+    <em>Culture:</em> The societal upbringing, environment, and traditions of a creature. Culture determines available background skills and specifies which class profiles are used for racial levels.
 </p>
 <p>
-    <em>Gender:</em> There is usually very little difference between male and female as far as the rules are concerned.
-    For most races, the only technical difference is in height and weight calculations.
-    Still, there are a few races where the two genders are distinctly different with regards to ability adjustments and other traits.
+    <em>Gender:</em> For most races, gender carries no mechanical differences beyond average height and weight variances. A few specialized races or creatures may feature distinct gender-based traits or ability modifiers as noted in their descriptions.
 </p>
 <p>
-    In these rules (as in the original ones), the words ‘he’, ‘him’, and ‘his’ will often refer to both genders, in an attempt to make the text somewhat easier to read.
-</p>
-
-<p>
-    <em>Age:</em> This is just what it sounds like, the number of years a creature has been alive.
-    In a few rare cases, a creature may suffer unnatural aging or may even be able to halt or reverse natural aging.
-    If that is the case, it becomes necessary to track physical and mental age separately.
+    <em>Age:</em> The chronological age of a creature in years. If a creature undergoes unnatural aging or temporal manipulation, physical age and mental age are tracked separately.
 </p>
 <p>
-    <em>Age category:</em> A creature’s age and race determine which age category it belongs to.
-    Age category, in turn, will affect ability scores and racial level for most creature types, as shown in the table below.
+    <em>Age Category:</em> A creature's age and race determine its age category (from Child to Venerable), which applies progressive modifiers to physical and mental ability scores as shown below.
 </p>
 
 <?php show_agecategories(); ?> 
 
 <h3 id="LevelChars">Level Characteristics</h3>
 <p>
-    One of the most crucial characteristics of any creature is its level. Level is quite simply a rough indication of how powerful and skilled a creature is.
-    For many intelligent creatures, time and experience will lead to a gradual increase in level.
-    This, in turn, will lead to more health points, improved skills, and many other benefits.
+    Level is the primary measure of a creature's overall power, combat prowess, and experience. As characters overcome challenges and gain experience, their level increases, granting more health points, improved skills, higher action points, and versatile improvement points.
 </p>
 <p>
-    <em>Experience Points (XP):</em> This is a measure of how much total experience a character has accumulated in his lifetime.
-    When a character defeats opponents and overcomes other challenges, the DM will reward him with an appropriate number of XP.
-    The number of XP determines when a creature gains a level, as shown on the table below.
+    <em>Experience Points (XP):</em> A measure of total experience accumulated over an adventurer's career. Overcoming encounters, defeating adversaries, and completing story milestones earn XP. Reaching specific XP thresholds grants new character levels.
 </p>
 <p>
-    <em>Class:</em> This is a creature's profession or vocation (if any).
-    Although classes are primarily associated with the more intelligent and civilized races,
-    even dumb animals can sometimes gain a few levels in the Warrior class and improve their combat skills.
-    Some creatures will adopt more than one class, and this is referred to as multi-classing.
+    <em>Class:</em> A creature's vocation or martial/magical discipline. While classes are primarily pursued by civilized humanoids, natural beasts or trained war animals can also possess levels in martial classes (such as Warrior). Characters who pursue multiple disciplines are considered multi-classed.
 </p>
 <p>
-    <em>Class Level (ClL):</em> This is the number of levels a creature has in a certain class.
-    A creature can also have different levels in a number of separate classes.
-    Class levels are most commonly shown as the abbreviation for the class followed by the level.
-    For example, 5 levels in the fighter class is abbreviated as Ftr5, while 6 rogue levels combined with 3 wizard levels are abbreviated as Rog6/Wiz3.
+    <em>Class Level (ClL):</em> The number of levels a creature possesses in a specific class. Class levels are commonly written using the class abbreviation followed by the level number (e.g., <code>Ftr5</code> for a 5th-level Fighter, or <code>Rog6/Wiz3</code> for a multi-class Rogue 6 / Wizard 3).
 </p>
 <p>
-    <em>Racial Level (RL):</em> Many creatures are so physically powerful that just belonging to their race counts as a certain number of &quot;bonus&quot; levels.
-    For example, an ogre that is also a level 5 fighter is a more powerful and dangerous opponent than a human level 5 fighter,
-    and this is represented by a number of racial ogre levels.
-    Racial levels are technically treated as levels in one of the classes associated with the creature's culture.
+    <em>Racial Level (RL):</em> Innately powerful monsters possess racial levels that reflect their natural physical and magical superiority. For example, an ogre with 5 Fighter levels is significantly more dangerous than a human 5th-level Fighter due to innate ogre racial levels. Racial levels function mechanically as levels in a class associated with the creature's culture.
 </p>
 <p>
-    <em>Total Level (TL):</em> A creature’s total level is simply the sum of all its class and racial levels.
+    <em>Total Level (TL):</em> A creature's total level is the combined sum of all its class and racial levels:
 </p>
 <p>
     <dfn>TL = &sum;ClL + RL</dfn>
 </p>
 <p>
-    <em>Challenge Level (CL):</em> This is a measure of how challenging a creature is as an opponent.
-    In many cases, CL is equal to TL, but sometimes a creature has special abilities, social class, etc.
-    that can make it more (or less) dangerous than its TL would indicate.
+    <em>Challenge Level (CL):</em> An evaluation of a creature's combat threat. While often equal to Total Level, exceptional supernatural traits, legendary equipment, or extreme social standing can modify Challenge Level above or below TL:
 </p>
 <p>
     <dfn>CL = TL + CL modifier</dfn>
@@ -269,54 +143,37 @@
 <?php show_experiencelevels(); ?> 
 
 <p>
-    <em id="ActionPts">Action Points (AP):</em> Action Points is a measure of how much a creature can do in a single round.
-    The available amount of AP is determined by TL, so for a character this amount will typically increase as the character
-    gains experience and becomes more skilled.
-    During combat, action points can be used to perform a wide variety of attacks and other actions.
+    <em id="ActionPts">Action Points (AP):</em> Action Points represent a creature's capacity for activity within a single 6-second round. A creature's base AP pool scales with Total Level (TL), allowing seasoned veterans to perform more actions, attacks, and reactions each round.
 </p>
 <p>
-    <em id="SkillPts">Skill Points:</em> As a creature gains levels, it also gains skill points (determined by the class).
-    These points can be used to learn new skills or improve already known skills.
-    Skill points have to be spent when the level is gained, and they can’t be saved for future use.
+    <em id="SkillPts">Skill Points:</em> Gained upon leveling up (as determined by class), skill points are spent immediately to acquire new skills or improve existing ranks.
 </p>
 <p>
-    <em id="ImprPts">Improvement Points (IP):</em> Characters and other exceptional creatures gain 5 improvement points per level,
-    and these can be used to improve a wide variety of characteristics (see <a href="/rules/chargen#Improvements">Character Generation</a> chapter).
-    Improvement points can be saved and accumulated for future use.
+    <em id="ImprPts">Improvement Points (IP):</em> Player characters and exceptional creatures gain 5 Improvement Points per level. IP can be spent immediately or banked to improve ability scores, defenses, and special capabilities (see the <a href="/rules/chargen#Improvements">Character Generation</a> chapter).
 </p>
-
 <p>
-    <em>Power Level (PL):</em> Power Level is used for all supernatural creatures, objects, and effects,
-    and it is a measure of how supernatural they are.
-    A high PL makes the creature, object, or effect easier to detect with magic and supernatural senses but
-    also more resistant to dispelling, anti-magic, and wild magic.
-    Most supernatural creatures have a PL equal to their TL, objects have a PL based on their supernatural powers,
-    and supernatural effects have a PL based on their PP cost.
+    <em>Power Level (PL):</em> Measures the supernatural potency of creatures, magical items, and ongoing spells. Higher PL increases resilience against dispelling and countermagic, though it also makes the effect more conspicuous to magical detection.
 </p>
 
 <h3 id="AbilityScores">Ability Scores</h3>
 <p>
-    The six ability scores, Strength, Constitution, Dexterity, Intelligence, Wisdom, and Charisma, are among the most basic and important
-    characteristics for any character or creature. They affect almost everything a creature does, and a good ability score can give as much
-    bonus as several levels of training in a skill.
+    The six core ability scores—<strong>Strength</strong>, <strong>Constitution</strong>, <strong>Dexterity</strong>, <strong>Intelligence</strong>, <strong>Wisdom</strong>, and <strong>Charisma</strong>—form the foundation of every creature's physical and mental capabilities. High ability scores grant bonuses that amplify skills, attacks, damage, and defenses.
 </p>
 
 <?php show_abilityscores(); ?> 
 
 <p>
-    Each ability score is calculated from a base ability score, which is then modified for race, age, and other factors.
-    A base ability score can be said to represent an individual's raw potential compared to the average for his or her race and age.
-    It is typically a random &quot;bell&quot; distribution between 3 and 18, and once generated for a character or creature, it will never change.
-    An (actual) ability score, however, will often have modifiers that make it different from the base score.
-    Some modifiers, such as race and age, tend to remain constant over long periods of time, wbile others, such as magic and disease, tend to be temporary.
-    The main reason that you should keep track of both the base and actual ability scores is that a character’s race can change in the world of D&amp;D.
-    For example, assume that you have a human druid with a low base Strength score of 5. If he shapeshifts into a grizzly bear, he will gain a +16 racial bonus to strength,
-    giving him an actual Strength score of 21. This would be significantly stronger than any unaided human.
-    but the druid will still be relatively weak for a grizzly (base ability score is still the same).
+    Each ability score is derived from an underlying <strong>base ability score</strong>, which is modified by race, age, templates, and ongoing effects:
+</p>
+<ul>
+    <li><strong>Base Ability Score:</strong> Represents an individual's innate raw potential relative to their species (typically ranging from 3 to 18 for standard individuals). Once generated, a base score remains permanent.</li>
+    <li><strong>Actual Ability Score:</strong> The current functional score after applying racial traits, aging modifiers, magic items, and temporary buffs or afflictions.</li>
+</ul>
+<p>
+    Distinguishing between base and actual scores is crucial when characters change form. For example, consider a druid with a low base Strength of 5. If they shapeshift into a grizzly bear, they gain a +16 racial Strength bonus, resulting in an actual Strength of 21. While formidable compared to an ordinary human, the druid remains relatively weak for a grizzly because their underlying base score remains 5.
 </p>
 <p>
-    Ability score modifiers are always calculated from the actual ability scores, according to the formula or table below.
-    Those modifiers are then used for a wide variety of skill checks, ability checks, attack rolls, damage rolls, defenses, etc.
+    Ability score modifiers are calculated directly from actual ability scores:
 </p>
 <p>
     <dfn>Base ability score = 3 to 18 (using 3d6 for average individuals)</dfn>
@@ -332,51 +189,45 @@
 
 <h3 id="HealthScores">Health Points</h3>
 <p>
-    <em>Hit Points (HP):</em> Represent how much physical damage a creature can take before falling unconscious or dying.
+    Vitality and endurance are tracked across three specialized health pools:
+</p>
+<p>
+    <em>Hit Points (HP):</em> Measures physical bodily health and structural integrity. Depletion to 0 HP results in unconsciousness and impending death.
 </p>
 <p>
     <dfn>HP = Con + (HP bonus per class and level) + (HP bonus per race and level) &times; size factor + other modifiers</dfn>
 </p>
 <p>
-    <em>Stamina Points (SP):</em> Represent how much physical fatigue a creature can take before becoming exhausted or passing out.
+    <em>Stamina Points (SP):</em> Measures physical endurance and athletic reserve. SP absorbs non-lethal strikes and fuels strenuous martial maneuvers before true physical injury occurs.
 </p>
 <p>
     <dfn>SP = Con + (SP bonus per class/race and level) + other modifiers</dfn>
 </p>
 <p>
-    <em>Power Points (PP):</em> Represent how much mental fatigue a creature can take before passing out.
+    <em>Power Points (PP):</em> Measures mental fortitude, psychic reserve, and supernatural focus. PP fuels spellcasting, psionic powers, and mental resistance.
 </p>
 <p>
     <dfn>PP = Wis + (PP bonus per class/race and level) + other modifiers</dfn>
 </p>
 <p>
-    An increase or decrease of a creature’s Con or Wis scores (even a temporary change) immediately leads to a corresponding
-    increase or decrease in both maximum and current HP, SP, and/or PP.
-    If the creature is already injured or fatigued, an ability decrease can potentially lead to unconsciousness or even death.
+    <strong>Ability Score Fluctuations:</strong> Any permanent or temporary modification to a creature's Constitution or Wisdom score immediately adjusts both its maximum and current HP, SP, or PP. If an injured creature suffers a Constitution penalty, the sudden drop in HP can result in immediate unconsciousness or death.
 </p>
 <p>
-    The durability of an object is represented as HP, but very few objects have SP or PP. When an object is reduced to 0 HP, it is destroyed.
+    <strong>Inanimate Objects:</strong> Objects possess Hit Points reflecting structural integrity (destroyed at 0 HP), but generally lack Stamina or Power Points.
 </p>
 <p>
-    <em>Temporary Health Points:</em> Some effects can grant temporary HP, SP, or PP. These are added to the creature’s current score and are lost before regular points.
-    If the effect ends before all the temporary points have been lost, the creature’s current score drops back to its old, unenhanced value.
-    Temporary points can never be healed, naturally or supernaturally.
-    Also note that multiple effects that grant temporary health points will not stack; only the highest value counts.
+    <em>Temporary Health Points:</em> Temporary HP, SP, or PP provide a protective cushion lost before standard points. Temporary points cannot be replenished through healing and expire when their source effect ends. Multiple sources of temporary health points do not stack; only the highest value applies.
 </p>
 <div class="optionalrule">
     <p>
-        <em>Reduced Health Points</em> (optional rule for more realistic campaigns):
-        DMs who want faster and more dangerous combat encounters may consider reducing the health points of all creatures.
-        Simply reduce the health points granted by class and racial levels by a given fraction (25% or 50%, for example).
-        Another option would be to reduce the health points only of certain creature types, such as humanoids.
+        <em>Reduced Health Points</em> (optional rule for gritty campaigns):
+        DMs seeking faster, higher-lethality combat may reduce the health points granted by class and racial levels by a fixed percentage (e.g., 25% or 50%), or apply reductions exclusively to specific creature types such as humanoids.
     </p>
 </div>
 <div class="optionalrule">
     <p>
-        <em>Random Health Points</em> (optional rule for more varied characters):
-        For DMs (and players) who want more variation in the health points of characters, NPCs, and other creatures,
-        consider replacing the fixed health point bonuses per level with random dice rolls of similar size.
-        For example, a fighter might receive 2d8 HP, 2d6 SP, and d4 PP per level.
+        <em>Random Health Points</em> (optional rule for classic variance):
+        To introduce classic variability, replace fixed level-up health point bonuses with randomized dice rolls (e.g., a Fighter gaining <code>2d8 HP</code>, <code>2d6 SP</code>, and <code>1d4 PP</code> per level).
     </p>
 </div>
 
@@ -384,7 +235,7 @@
 
 <h4 id="DefenseClass">Defense Class</h4>
 <p>
-    <em>Defense Class (DeC):</em> A measure of how difficult a creature (or object) is to hit with physical attacks.
+    <em>Defense Class (DeC):</em> A measure of how difficult a creature or object is to strike with physical attacks. Defense Class is split into passive and active values:
 </p>
 <p>
     <dfn>DeCp (passive DeC) = 10 + Dex mod (if negative) + TL (total level) + size mod + deflection bonus + other modifiers</dfn>
@@ -393,567 +244,390 @@
     <dfn>DeCa (active DeC) = DeCp + Dex mod (if positive) + parry bonus + dodge bonus + other modifiers</dfn>
 </p>
 <p>
-    The active DeC is used against attacks that you are aware of and can actively try to avoid.
-    The passive DeC is used in other situations, such as when you are flat-footed or surprised, when being attacked
-    by an invisible creature, when you have become entangled or paralyzed, etc.
+    <strong>Active DeC (DeCa)</strong> is used against attacks the defender is aware of and actively able to avoid or deflect.
+    <strong>Passive DeC (DeCp)</strong> is used whenever the defender is unable to actively react—such as when flat-footed, surprised, attacked by an unseen or invisible opponent, or incapacitated by conditions like entanglement or paralysis.
 </p>
 <p>
-    The parry bonus can actually be a combination of multiple bonus types.  
-    Weapons (natural as well as manufactured ones) and shields usually provide parry bonuses.
-    As your skill with a weapon or shield improves, so does the parry bonus you gain from it.
-    Magic can also enhance the parrying ability of a weapon or shield.
-    Parry bonuses from multiple weapons (or a weapon and shield, or even two shields) do not stack.
-    Apply only the highest parry bonus of the ones provided by weapons and shields that are held in &quot;primary attack forms&quot; (see below),
-    where the parry bonus for each weapon or shield is the sum of the item's parry bonus and the parry bonus from your skill with that weapon.
-    Note that none of the parry-based bonuses apply when calculating passive DeC.
+    <em>Parry Bonuses:</em> Weapons (both manufactured and natural) and shields provide parry bonuses that scale as skill with the item improves. Magic can further enhance an item's parrying capability. Parry bonuses from multiple weapons or shields do not stack; a creature applies only the single highest parry bonus among weapons and shields wielded in <em>primary attack forms</em> (calculated as the item's inherent parry bonus plus the wielder's weapon skill parry bonus). Parry bonuses never apply to passive DeC.
 </p>
 <p>
-    Certain attacks may have the ability to bypass or ignore specific modifiers to DeC.
-    For example, an incorporeal attacker typically ignores non-magical objects and can therefore ignore a target's
-    parry bonus for non-magical weapons (including the skill-based parry bonuses for such weapons). 
+    Certain specialized attacks can bypass specific defensive modifiers. For example, an incorporeal attacker ignores non-magical physical barriers, bypassing non-magical weapon and shield parry bonuses (including skill-based parry bonuses tied to those items).
 </p>
 <p>
-    DeC can also be calculated for inanimate objects, but they have a Dex of 0 (-5 penalty) and are helpless (-4 penalty).
-    In other words, their DeC = 1 + size mod. Note, however, that most objects are resistant or immune to critical hits and coup de grace.
+    <em>Inanimate Objects:</em> Objects have an effective Dexterity of 0 (&minus;5 penalty) and are considered helpless (&minus;4 penalty), resulting in a base <code>DeC = 1 + size mod</code>. Most inanimate objects are inherently immune to critical hits and coup de grace attempts.
 </p>
 
 <h4 id="FortRefWill">Fortitude, Reflex, and Will</h4>
 <p>
-    <em>Fortitude defense (Fort):</em> A measure of how resistant a creature is to attacks against its health and stamina.
+    <em>Fortitude Defense (Fort):</em> A measure of physical resilience, stamina, and biological endurance against toxins, diseases, massive physical shock, and metabolic strain.
 </p>
 <p>
     <dfn>Fort = 10 + Str mod + Con mod + TL (total level) + skill mod + other modifiers</dfn>
 </p>
 <p>
-    <em>Reflex defense (Ref):</em> A measure of how good a creature is at avoiding physical area-effect attacks.
+    <em>Reflex Defense (Ref):</em> A measure of agility, physical reaction speed, and spatial awareness used to evade area-of-effect hazards, explosions, and breath weapons.
 </p>
 <p>
     <dfn>Ref = 10 + Dex mod + Int mod + TL (total level) + skill mod + other modifiers</dfn>
 </p>
 <p>
-    <em>Will defense (Will):</em> A measure of how resistant a creature is to attacks against its emotions or intellect.
+    <em>Will Defense (Will):</em> A measure of mental discipline, willpower, and psychological fortitude against enchantments, fear, illusions, and mental domination.
 </p>
 <p>
     <dfn>Will = 10 + Wis mod + Cha mod + TL (total level) + skill mod + other modifiers</dfn>
 </p>
 <p>
-    Most inanimate objects have no Con, Int, or Wis, and their Dex is 0.
-    Effectively, this means that they are immune to attacks against Fort and Will, and they have a Ref defense of 5.
+    Most inanimate objects lack Constitution, Intelligence, and Wisdom scores, and have a Dexterity of 0. Consequently, objects are immune to effects targeting Fortitude and Will (unless an effect specifically targets objects), and have a static Reflex defense of 5 (<code>10 &minus; 5</code>).
 </p>
 <p>
-    DeC, Fort, Ref, and Will are sometimes grouped together and referred to simply as <em>Defenses</em>.
-    Fort, Ref, and Will are sometimes referred to as <em>Non-DeC Defenses</em> or <em>NDD</em>.
+    DeC, Fort, Ref, and Will are collectively referred to as <strong>Defenses</strong>. Fortitude, Reflex, and Will are often specifically termed <strong>Non-DeC Defenses (NDD)</strong>.
 </p>
 
 <h4 id="DamageResistance">Damage Resistance</h4>
 <p>
-    <em>Damage Resistance (DR):</em> This reflects how resistant a creature (or an object) is to 
-    <a href="/rules/combat#PhysDmg">physical damage</a>, 
-    regardless of whether the damage is caused by weapons, claws, teeth, crushing boulders, or a fall from a great height.
-    The damage resistance does not apply to energy damage. Every time the creature takes physical damage,
-    the damage is reduced by an amount equal to the creature's DR.
+    <em>Damage Resistance (DR):</em> Reflects how effectively a creature or object absorbs or deflects <a href="/rules/combat#PhysDmg">physical damage</a>—whether delivered by manufactured weapons, claws, crushing boulders, or falling from heights. DR does not apply to energy or psychic damage. Whenever physical damage is sustained, incoming damage is reduced by an amount equal to the creature's DR.
 </p>
 <p>
-    DR can reduce HP as well as SP damage, as long as the source is physical.
-    If an attack causes both HP and SP damage, DR will first reduce the SP damage, and then the HP damage.
+    DR absorbs both Stamina Point (SP) and Health Point (HP) physical damage. If an attack inflicts both SP and HP damage simultaneously, DR is applied first against SP damage, with any remaining DR reducing HP damage.
 </p>
 <p>
-    Damage Resistance can be granted by thick skin, hard scales, suits of armor, and protective cover.
-    DR provided by armor and/or cover is applied separately from and before any DR provided by natural armor or innate resistance.
+    Damage Resistance can be granted by thick hides, scales, worn armor, or physical cover:
 </p>
 <p>
     <dfn>DR = Natural DR + armor bonus + cover bonus + other modifiers</dfn>
 </p>
 <p>
-    Natural DR is determined by a creature's race but can be further affected by templates, magic, etc.
+    DR provided by armor and cover applies separately and takes effect alongside innate or natural DR. Natural DR is determined by race and can be further augmented by templates, feats, or magic.
 </p>
 <p>
-    In addition to reducing physical damage, DR reduces the risk of suffering critical hits from attacks against DeC.
-    DR adds directly to critical hit resistance (see below).
+    <em>Critical Protection:</em> In addition to mitigating damage, DR directly reinforces protection against critical hits targeting DeC by adding directly to Critical Hit Resistance (see below).
 </p>
 <p>
-    When DR manages to negate all physical damage from an attack, most secondary effects of the attack are also negated.
-    This includes effects based on poison, disease, and most special abilities, but it does not apply to touch attacks or energy damage.
-    Also note that the defender does not have to roll any skill checks to maintain concentration on difficult tasks when all damage is negated.
+    <em>Negating Secondary Effects:</em> When DR reduces all physical damage from an attack to zero, most rider effects dependent on physical penetration are also negated. This includes injury-delivered poisons, diseases, blood drain, and many physical monster abilities (though touch attacks and energy riders are unaffected). Additionally, a defender taking zero damage is not required to make concentration checks to maintain active spells or tasks.
 </p>
 <p>
-    Vulnerability to a type of physical damage, type of weapon, or material means that the creature suffers
-    additional damage, typically 50% or 100% extra, whenever exposed to that type of damage.
-    The extra damage is calculated after any other modifiers due to defenses, magical protection, etc.
-</p>
-
-<p>
-    <em>Conditional DR:</em> Some creatures receive a DR bonus against specific types of weapons or damage.
-    For example, a creature with a natural DR of 5 and +5 DR bonus against non-magical weapons has an effective DR of 10 against unenchanted weapons.
-    Other typical conditional DR bonuses are based on alignment (good, evil, lawful, or chaotic),
-    damage types (bludgeoning, piercing, or slashing), and materials (adamantine, alchemical silver, cold iron, etc).
-    Some DR bonuses may even be based on multiple combined conditions, such as +10 DR against non-good and non-silver
-    (a bonus that would be circumvented by weapons that are good-aligned, silvered, or both).
+    <em>Vulnerability:</em> A creature vulnerable to a specific physical damage type (e.g., bludgeoning, piercing, slashing) or material takes additional damage—typically +50% or +100% extra—from that source. Vulnerability multipliers are calculated after all reductions from DR and magical protections have been applied.
 </p>
 <p>
-    With regard to conditional DR bonuses against non-magical weapons, a weapon with any sort of supernatural enchantment will
-    circumvent the DR bonus, but non-magical enhancement bonuses are not enough to circumvent such bonuses.
-    Creatures with supernatural racial traits treat all of their natural attacks as magical against this type of conditional DR bonus.
+    <em>Conditional DR:</em> Some creatures possess specialized DR bonuses that apply only against certain weapons or materials, or are bypassed by specific properties:
 </p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Materials &amp; Alignments:</strong> Common conditional DR types include material bypasses (adamantine, alchemical silver, cold iron) or alignment bypasses (good, evil, lawful, chaotic). For example, a creature with natural DR 5 and <code>+5 DR vs. non-silver</code> has an effective DR 10 against standard weapons, but only DR 5 against silvered weapons.</li>
+    <li><strong>Magical Bypasses:</strong> Conditional DR against non-magical weapons is bypassed by any weapon possessing a supernatural or magical enchantment. Non-magical masterwork bonuses do not bypass magical DR. Supernatural creatures treat their natural attacks as magical for bypassing this DR.</li>
+    <li><strong>Projectiles:</strong> For ranged attacks, either the launcher's properties, the ammunition's properties, or both may satisfy bypass conditions.</li>
+</ul>
 <p>
-    With regard to projectile weapons, either the weapon properties or the projectile properties (or both) may be used to
-    circumvent conditional DR bonuses.
-</p>
-
-<p>
-    <em>Penetrating Hits:</em> When an attack beats a defense by 10 or more (also known as an exceptional success),
-    the damage resistance (if any) is halved against that attack.
+    <em>Penetrating Hits:</em> When an attack roll beats the target's defense by 10 or more (an exceptional success), the target's damage resistance is halved against that strike.
 </p>
 
 <h4 id="CritResistance">Critical Hit Resistance</h4>
 <p>
-    <em>Critical Hit Resistance (CritRes):</em> Resistance or immunity to critical hits means that a creature has unusually few sensitive areas
-    or that such areas are more effectively protected against physical attacks.
-    Although an attack roll that beats DeC by 20 or more would normally result in a critical success,
-    critical hit resistance adds directly to the levels of success required to achieve a critical hit.
-    It applies to any attack against DeC that can achieve critical hits, but it does not apply
-    to attacks against Fort, Ref, or Will defenses.
+    <em>Critical Hit Resistance (CritRes):</em> Represents anatomy with few vital pressure points or exceptionally reinforced structures that diffuse lethal blows. While an attack roll beating DeC by 20 or more normally scores a critical hit, Critical Hit Resistance increases this threshold. CritRes applies to all attacks against DeC capable of scoring critical hits, but does not apply to attacks targeting Fort, Ref, or Will.
 </p>
 <p>
     <dfn>CritRes = DR + racial mod + other modifiers</dfn>
 </p>
 <p>
-    For example, if a creature has DeC 15, DR 5, and a racial critical hit resistance of 10, an attack result of 15 is enough for a normal hit,
-    but a result of 50 (15+5+10+20) or better is required for a critical hit.
+    <em>Example:</em> A creature with DeC 15, DR 5, and a racial CritRes modifier of +10 requires an attack roll of 15 to hit normally, but requires a total result of 50 (<code>15 DeC + 20 base crit threshold + 5 DR + 10 racial = 50</code>) to suffer a critical hit.
 </p>
 <p>
-    Objects and creatures that have racial Critical Hit Resistance of 10 or better take only half damage from piercing attacks (after reduction for DR).
-    The reason is that piercing damage is based more than other damage types on striking sensitive areas.
+    <em>Piercing Resistance:</em> Inanimate objects and creatures with a racial Critical Hit Resistance of 10 or higher take only half damage from piercing attacks (calculated after DR reduction), as piercing damage relies heavily on penetrating distinct vital organs.
 </p>
 
 <h4 id="EnergyResistance">Energy Resistances</h4>
 <p>
-    <em>Energy Resistance (Acid, Cold, Electricity, Fire, Necrotic, Radiant and/or Sonic Res):</em> Resistance to a type of 
-    <a href="/rules/combat#EnergyDmg">energy damage</a>, 
-    reduces the amount of damage taken when exposed to the specified energy type.
-    The reduction in damage is made after any other modifiers due to defenses, evasion, magical protection, etc.
-    The number indicated for an energy resistance is the maximum sum of HP and SP that can be resisted or absorbed each round.
+    <em>Energy Resistance (Acid, Cold, Electricity, Fire, Necrotic, Radiant, Sonic):</em> Reduces the amount of damage sustained when exposed to the specified <a href="/rules/combat#EnergyDmg">energy damage</a> type. Damage reduction applies after all defense, evasion, and magical modifiers. An energy resistance score indicates the maximum combined total of HP and SP damage the creature can absorb each round against that energy type.
 </p>
 <p>
-    Energy resistance can reduce HP as well as SP damage, as long as the source is an energy-based attack. If an attack causes both HP and SP damage,
-    energy resistance will first reduce the SP damage, and then the HP damage.
+    Energy resistance mitigates both Stamina Point (SP) and Health Point (HP) energy damage. If an attack inflicts both SP and HP energy damage simultaneously, resistance reduces SP damage first before absorbing HP damage.
 </p>
 <p>
-    Immunity is equivalent to infinite resistance. The creature never takes any damage from the specified type of energy.
-    Immunity also protects against other effects based on the appropriate energy type,
-    such as ability damage caused by necrotic energy, blindness caused by radiant energy, and can even prevent
-    healing provided by [Radiant]-based healing. 
+    <em>Immunity:</em> Complete immunity functions as infinite resistance, negating all damage and associated secondary effects of that energy type (such as necrotic ability damage or radiant blindness), and may also prevent beneficial effects based on that energy type (such as radiant healing).
 </p>
 <p>
-    Vulnerability to a type of energy damage means that the creature suffers additional damage,
-    typically 50% or 100% extra, whenever exposed to that type of damage.
-    The extra damage is calculated after any other modifiers due to defenses, magical protection, etc.
+    <em>Vulnerability:</em> Vulnerability causes a creature to take +50% or +100% additional damage from that energy type, calculated after any applicable resistances and magical wards.
 </p>
 <p>
-    Unless otherwise specified, energy resistance, immunity, and vulnerability does not extend to the creature’s equipment.
-</p>
-
-<p>
-    <em>Psychic Resistance (Psychic Res):</em> Resistance to <a href="/rules/combat#PsychicDmg">psychic damage</a>,
-    reduces the amount of PP damage taken when exposed to psychic attacks.
-    The reduction in damage is made after any other modifiers due to defenses, magical protection, etc.
-    The number indicated for psychic resistance is the maximum PP damage that can be resisted or absorbed each round.
+    Unless explicitly specified, energy resistance, immunity, and vulnerability do not protect a creature's worn or carried equipment.
 </p>
 <p>
-    Immunity is equivalent to infinite resistance. The creature never takes any damage (or suffers other penalties) from psychic attacks.
+    <em>Psychic Resistance (Psychic Res):</em> Reduces Psyche Point (PP) damage taken from <a href="/rules/combat#PsychicDmg">psychic attacks</a>. Psychic resistance represents the maximum PP damage absorbed per round. Psychic immunity completely negates psychic damage and mental status penalties, whereas psychic vulnerability increases incoming PP damage by +50% or +100%.
 </p>
 <p>
-    Vulnerability to psychic damage means that the creature suffers additional damage,
-    typically 50% or 100% extra, whenever exposed to psychic attacks.
-    The extra damage is calculated after any other modifiers due to defenses, magical protection, etc.
-</p>
-
-<p>
-    <em>Penetrating Hits:</em> When an attack beats a defense by 10 or more (also known as an exceptional success),
-    the energy resistance (if any) is halved against that attack.
+    <em>Penetrating Hits:</em> When an energy or psychic attack beats the target's defense by 10 or more (an exceptional success), the target's applicable resistance is halved against that attack.
 </p>
 
 <h4 id="MagicResistance">Magic Resistance</h4>
 <p>
-    <em id="MagicRes">Magic Resistance (MR):</em> Resistance to magic makes a creature more difficult to affect with many spells and supernatural attacks.
-    The creature does not have to be aware of such an attack. The creature can voluntarily and temporarily lower its magic resistance,
-    but this requires conscious effort, and it cannot do so selectively for some effects and not for others.
+    <em id="MagicRes">Magic Resistance (MR):</em> Makes a creature inherently resistant to hostile spells, psionic powers, and supernatural abilities. MR functions automatically without requiring awareness on the defender's part. A creature can voluntarily lower its magic resistance through a conscious act of will, but cannot do so selectively for some magical effects while maintaining it against others.
 </p>
 <p>
-    As with other resistances, MR from multiple sources do not stack. Only the highest MR counts.
+    Magic resistance from multiple sources does not stack; only the highest value applies.
 </p>
 <p>
-    MR works by increasing the difficulty of any spellcasting check (or similar supernatural activation check) that directly affects the protected creature.
-    Please refer to the <a href="/rules/magic">Rules of Magic</a> chapter for more details about spellcasting.
+    <em>How MR Works:</em> Magic Resistance directly increases the difficulty of any spellcasting or supernatural activation check made against the protected creature. For complete casting rules, see the <a href="/rules/magic">Rules of Magic</a> chapter.
 </p>
 <p>
-    Magic resistance applies to most magic spells, psionic powers, and spell-like effects that target the creature in question,
-    but it never applies to the creature’s own spells, powers, items, and abilities.
-    Note that magic resistance only applies against actions and spells that have the [MR] descriptor.
-    Generally speaking, magic resistance does not normally protect against indirect effects, such as damage caused by an enchanted weapon,
-    attacks from a summoned creature, or being entangled by enchanted plants.
-    Nor does it protect against magically enhanced senses or illusion magic, since such effects normally apply to the caster or the illusion, respectively.
-    Magic resistance can protect against existing and active effects, whenever the resistant creature is first exposed to that effect.
+    <em>Scope of Protection:</em> Magic resistance applies to spells, powers, and spell-like abilities with the <code>[MR]</code> descriptor that directly target or encompass the creature. It never impedes the creature's own spells, magical gear, or innate abilities. MR does not protect against indirect magical phenomena, such as strikes from enchanted weapons, attacks from summoned monsters, or physical entanglements created by magically manipulated terrain. It likewise does not negate sensory enhancements or illusions that affect the caster or ambient environment. When a creature with MR enters an existing ongoing area-of-effect spell, MR is tested upon initial entry.
 </p>
 <p>
-    Magic resistance protects only the creature with the ability. It does not negate the magic itself nor protect others that are subject to the same magic.
-</p>
-<p>
-    Magic immunity is effectively the same as infinite magic resistance, but it is often limited to certain types or levels of magic.
+    MR protects only the individual possessing it—it does not dispel the magic or shield adjacent allies. Magic immunity functions as infinite MR, though it is often restricted to specific spell levels, schools, or descriptors.
 </p>
 
 <h4 id="SpecialResistance">Special Resistances</h4>
 <p>
-    <em id="AbilDmgRes">Ability Damage Resistance:</em> Reduces the effect of every instance of <a href="#AbilityDamage">ability damage</a> by the specified amount.
-    Some creatures even enjoy complete immunity to ability damage.
+    <em id="AbilDmgRes">Ability Damage Resistance:</em> Reduces the penalty of every instance of <a href="#AbilityDamage">ability damage</a> by the specified amount. Certain creatures possess complete immunity to ability damage.
 </p>
-
 <p>
-    <em>Specific Resistance:</em> Many creatures have resistance or immunity to specific effects, such as charm, fear, sleep, all mind attacks, traps, etc.
-    This type of resistance provides a bonus to any defense against such an attack.
+    <em>Specific Resistance:</em> Many creatures possess targeted resistance or immunity against specific conditions (such as charm, fear, sleep, mental compulsions, or traps), granting a direct bonus to all defenses against such effects.
 </p>
 
 <h3 id="BodyChars">Body Characteristics</h3>
 
 <h4 id="Size">Size</h4>
 <p>
-    <em>Size category (Sz):</em> Every creature or object will receive certain modifiers based on its size, as shown on the table below.
-    For many objects, the object’s own size category is specified ("object size") as well as the size category of the creature meant to use it ("made-for-size").
-    For example, a dagger made for a Medium-sized wielder is itself just a Tiny object.
+    <em>Size Category (Sz):</em> Every creature and object belongs to a size category that provides specific modifiers to attack rolls, defenses, carrying capacity, space, and stealth, as detailed in the table below. For manufactured gear and weapons, rules distinguish between the item's physical dimensions (<em>object size</em>) and the creature size it is proportioned for (<em>made-for-size</em>). For example, a dagger crafted for a Medium humanoid is itself a Tiny object.
 </p>
 
 <?php show_sizecategories(); ?>
 
 <h4 id="BodyType">Body Type</h4>
 <p>
-    <em>Body type (Body):</em> This is a description of a creature's shape and body configuration.
+    <em>Body Type (Body):</em> Describes a creature's anatomical configuration and physical posture (e.g., bipedal, quadrupedal, avian, serpentine). Body type dictates limb availability, equipment slot configuration, stability against trip attacks, and carrying capacity multipliers.
 </p>
 
 <?php show_bodytypes(); ?>
 
 <h4 id="SpacingReach">Spacing and Reach</h4>
+<p>
+    A creature's size and anatomy determine its combat space (the grid area it controls) and natural reach (the distance it can strike without moving), as illustrated below:
+</p>
 <div class="my-4 space-y-4">
-    <img src="/images/Reach1.gif" alt="Spacing and Reach" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
-    <img src="/images/Reach2.gif" alt="Spacing and Reach" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
-    <img src="/images/Reach3.gif" alt="Spacing and Reach" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
+    <img src="/images/Reach1.gif" alt="Spacing and Reach Diagram 1" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
+    <img src="/images/Reach2.gif" alt="Spacing and Reach Diagram 2" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
+    <img src="/images/Reach3.gif" alt="Spacing and Reach Diagram 3" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
 </div>
 
 <h4 id="NaturalAttacks">Natural Attacks</h4>
 <p>
-    <em>Natural attacks:</em> Each race has a number of natural attack forms, primary as well as secondary ones.
-    For example, most humanoids have two arms that count as primary attack forms, while the two legs and one head count as secondary. 
+    <em>Natural Attacks:</em> Each creature's physiology grants natural attack forms categorized into <strong>primary</strong> and <strong>secondary</strong> attacks. For example, most humanoid creatures possess two arms that serve as primary attack forms, while their legs and head function as secondary attack forms.
 </p>
 <p>
-    Primary attack forms tend to have better attack and damage modifiers than secondary ones,
-    and many actions and special abilities can only be performed with primary attack forms.
+    Primary attack forms benefit from full attack and damage bonuses and can be used to execute complex weapon maneuvers and standard actions. Secondary attack forms typically suffer attack penalties and reduced damage modifiers.
 </p>
 
 <?php show_naturalattacks(); ?>
 
 <p>
-    For some creatures, a natural attack may have special effects other than causing damage.
-    Common examples are poison (usually as a separate attack against Fort if the original attack causes damage),
-    grapple (the creature can choose to initiate a grapple for free if the original attack is successful),
-    trip (make a free trip attack if the original attack is successful), etc.
+    Certain creatures possess natural attacks that inflict specialized riders upon a hit:
 </p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Poison:</strong> Triggers a secondary attack against Fortitude whenever physical damage is dealt.</li>
+    <li><strong>Grab / Grapple:</strong> Allows the creature to immediately initiate a grapple maneuver as a free action upon striking.</li>
+    <li><strong>Trip:</strong> Allows a free trip attempt against the target upon a successful hit.</li>
+</ul>
 
 <h3 id="MovementChars">Movement Characteristics</h3>
 
 <h4 id="Speed">Speed and Movement Points</h4>
 <p>
-    <em id="BaseSpeed">Base speed:</em> Most creatures (and some objects) have at least one mode of movement.
-    The speed characteristic specifies the creature’s natural modes of movement as well as the base speed of each.
-    For some creatures and movement modes, the characteristic will also include a maneuverability specification;
-    this affects maximum acceleration, turning rate, etc.
+    <em id="BaseSpeed">Base Speed:</em> Specifies a creature's natural locomotion modes and default speed in squares per round. Certain modes also specify an inherent maneuverability rating governing turning radius and momentum:
 </p>
-<ul>
-    <li>Ground: The default mode of movement for most creatures is ground movement.</li>
-    <li>Fly: The creature can move through the air at the specified speed.</li>
-    <li>Swim: The creature can move through water at the specified speed.
-        Creatures with a natural swim speed gain a +8 racial bonus on Swim actions,
-        and they can always "take 10" on those actions.</li>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Ground:</strong> The standard terrestrial movement mode for most walking creatures.</li>
+    <li><strong>Fly:</strong> Locomotion through the air at the indicated speed and maneuverability.</li>
+    <li><strong>Swim:</strong> Locomotion through aquatic environments. Creatures with a natural swim speed gain a +8 racial bonus on Swim checks and can always choose to "take 10" on such checks.</li>
 </ul>
 <p>
-    Many creatures will also have more unusual modes of movement, based on either their Ground, Fly, or Swim speed,
-    but with a different MP cost per square of movement.
-    For example, most humanoid creatures have the ability to climb, using its ground speed but paying 4 MP per square.
-    Some skills may also grant special modes of movement, such as the Athletics skill granting a ground-based swim speed even to
-    creatures without a natural swim speed.
+    <em>Auxiliary Movement Modes:</em> Many creatures can use alternative movement forms based on their Ground, Fly, or Swim speed at an altered Movement Point (MP) cost per square:
+</p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Climbing:</strong> Most humanoids can climb surfaces using their Ground speed at a cost of 4 MP per square moved.</li>
+    <li><strong>Burrowing:</strong> Movement through soil or earth based on Ground speed (typically requiring higher MP per square). Burrowing does not permit charging, running, or sprinting, and leaves behind no usable tunnel unless explicitly specified.</li>
+</ul>
+<p>
+    <em id="AdjustedSpeed">Adjusted Speed (Spd):</em> A creature's base speed after applying modifiers from encumbrance class, worn armor, feats, skills, and magical enhancements.
 </p>
 <p>
-    Burrowing is a special mode of movement possessed by some creatures, and it is always based on the creature's ground speed
-    (but usually with a higher MP cost per square of movement). Burrowing does not allow running, sprinting, or charging.
-    Unless otherwise specified, a burrowing creature does not leave behind a tunnel other creatures can use.
-</p>
-<p>
-    <em id="AdjustedSpeed">Adjusted speed (Spd):</em> This is a creature's base speed adjusted for encumbrance, armor, skills, magic, etc.
-</p>
-
-<p>
-    <em id="MovementPoints">Movement points (MP):</em> Each round, a creature gets a number of MP equal to its adjusted speed
-    (based on the speed characteristic appropriate for its current environment).
-    These can be used for a variety of movement actions.
-    Furthermore, a number of AP up to a maximum of the creature's adjusted speed can be converted into additional MP.
+    <em id="MovementPoints">Movement Points (MP):</em> At the start of each round, a creature receives MP equal to its adjusted speed for its current environment. MP is expended to execute tactical movement actions. In addition, a character can convert Action Points (AP) into additional MP on a 1-for-1 basis, up to a maximum equal to their adjusted speed per round.
 </p>
 
 <h4 id="Maneuverability">Maneuverability</h4>
 <p>
-    <em>Maneuverability:</em> This determines how fast a creature can accelerate, decelerate, or change direction while moving.
-    Maneuverability is rarely a limitation for normal ground movement, but it comes into play during unusually complex situations,
-    such as rapid movement across ice, combat while flying, driving a wagon, etc.
+    <em>Maneuverability:</em> Governs how rapidly a moving creature or vehicle can accelerate, brake, bank, and change direction. While rarely restrictive for simple ground movement, maneuverability becomes critical during aerial combat, high-speed vehicle operation, swimming through turbulent rapids, or maneuvering across slick ice.
 </p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Default Ground Maneuverability:</strong> 5 (Perfect)</li>
+    <li><strong>Default Swimming Maneuverability:</strong> 4 (Good)</li>
+    <li><strong>Default Flying Maneuverability:</strong> 3 (Average)</li>
+</ul>
 <p>
-    Default maneuverability for ground movement: 5 (perfect)<br/>
-    Default maneuverability for swimming: 4 (good)<br/>
-    Default maneuverability for flying: 3 (average)<br/>
+    The following environmental and operational conditions modify maneuverability:
 </p>
-<p>
-    The following conditions can affect maneuverability:
-</p>
-<p>
-    Wheeled vehicle on ground: -2<br/>
-    Running (&times;3 movement): -1<br/>
-    Sprinting (&times;4 movement): -2<br/>
-    Difficult terrain (including strong winds when flying or strong currents when swimming): -1<br/>
-    Slippery ground: -1<br/>
-    Very slippery ground: -2<br/>
-</p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Wheeled Ground Vehicle:</strong> &minus;2</li>
+    <li><strong>Running (&times;3 Movement):</strong> &minus;1</li>
+    <li><strong>Sprinting (&times;4 Movement):</strong> &minus;2</li>
+    <li><strong>Difficult Terrain, Strong Winds, or Turbid Currents:</strong> &minus;1</li>
+    <li><strong>Slippery Ground:</strong> &minus;1</li>
+    <li><strong>Very Slippery Ground (Ice):</strong> &minus;2</li>
+</ul>
 
 <?php show_maneuverability(); ?>
 
 <p>
-    Here are a few maneuverability examples:<br/>
-    An ogre trying to run across ice: 5 - 1 (running) - 2 (ice) = 2 (poor)<br/>
-    A tiny fish swimming in a strong current: 4 + 1 (size) - 1 (currents) = 4 (good)<br/>
-    A gargantuan-sized dragon flying at normal speed: 3 - 1 (size) = 2 (poor)<br/>
-    A huge-sized, four-wheeled wagon moving along a good road: 5 - 1 (size) - 1 (four-wheeled) = 3 (average)<br/>
+    <em>Maneuverability Examples:</em>
 </p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Ogre running across ice:</strong> <code>5 (base) &minus; 1 (running) &minus; 2 (ice) = 2 (Poor)</code></li>
+    <li><strong>Tiny fish swimming in strong current:</strong> <code>4 (base) + 1 (size) &minus; 1 (current) = 4 (Good)</code></li>
+    <li><strong>Gargantuan dragon in normal flight:</strong> <code>3 (base) &minus; 1 (size) = 2 (Poor)</code></li>
+    <li><strong>Huge four-wheeled wagon on a clear road:</strong> <code>5 (base) &minus; 1 (size) &minus; 1 (four-wheeled) = 3 (Average)</code></li>
+</ul>
 
 <h3 id="PersonalityChars">Personality Characteristics</h3>
 <p>
-    <em id="Alignment">Alignment:</em> This is a rough representation of a creature’s personality and its moral and ethical outlook on life.
-    It is based on two separate scales, one going from good to evil, and another going from lawful to chaotic.
-    Each of the two scales actually covers a wide range of behaviors, but alignment is often simplified by dividing it into just nine separate categories.
+    <em id="Alignment">Alignment:</em> A broad representation of a creature's moral (Good vs. Evil) and ethical (Lawful vs. Chaotic) outlook on the multiverse. While each axis encompasses a wide spectrum of personal philosophies, alignment is traditionally categorized into nine archetypes.
 </p>
 <p>
-    Players should be free to role-play their characters any way they want, so alignment should primarily be used for monsters and NPCs.
-    It is a useful guideline for a DM when role-playing a wide variety of strange creatures.
-</p>
-<p>
-    In addition to alignment, players are encouraged to decide on (or randomly generate)
-    other personality traits, mannerisms, and life goals for their characters.
+    Alignment serves primarily as an illustrative guide for Dungeon Masters adjudicating monsters, planar entities, and non-player characters. Players are encouraged to role-play their characters freely and define distinct personality traits, ideals, bonds, and flaws that transcend rigid categorization.
 </p>
 
 <?php show_alignmentdescriptions(); ?> 
 
 <p>
-    In some cases, the rules will refer to alignments opposed to or compatible with a base alignment.
+    When rules, spells, or abilities interact with alignments, they use the following classifications:
 </p>
-<p>
-    <em>Opposed alignment:</em> Any alignment opposite to the base alignment along one or both scales.
-</p>
-<p>
-    <em>Diametrically opposed alignment:</em> An alignment opposite to the base alignment along both scales.
-</p>
-<p>
-    <em>Compatible alignment:</em> An alignment within one step of the base alignment along one (but not both) scales.
-</p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Opposed Alignment:</strong> Any alignment opposite to the base alignment along one or both axes (e.g., Lawful Good is opposed by Lawful Evil, Chaotic Good, and Chaotic Evil).</li>
+    <li><strong>Diametrically Opposed Alignment:</strong> An alignment opposite to the base alignment along both axes simultaneously (e.g., Lawful Good vs. Chaotic Evil).</li>
+    <li><strong>Compatible Alignment:</strong> An alignment within one step of the base alignment along one axis while matching the other (e.g., Neutral Good is compatible with Lawful Good and Chaotic Good).</li>
+</ul>
 
 <?php show_alignmentrelations(); ?>
 
 <p>
-    Whenever the rules specify that a bonus, action, or spell effect is limited to a specific alignment or set of alignments,
-    this does not apply to the relatively weak moral tendencies exhibited by most normal creatures.
-    Such effects should only be applied to creatures with a detectable alignment aura, meaning those with an alignment descriptor,
-    those that have certain skills (typically divine ones), and those that are described as <b>always</b> having a certain alignment.
+    <em>Cosmic Alignment Auras:</em> Whenever rules, spells, or magical items restrict effects or grant bonuses based on alignment, they do not trigger off the mild, nuanced inclinations of ordinary mortals. Such mechanics interact exclusively with creatures possessing a pronounced cosmic alignment aura—including extraplanar outsiders, champions with dedicated divine class features, and creatures defined as inherently aligned with a specific philosophy.
 </p>
 
 <h3 id="SocialScores">Social Characteristics</h3>
 <p>
-    Social scores are primarily used for creatures that belong to a &quot;civilized&quot; race, but it is also quite possible for
-    other creatures to gain widespread influence and repute. For example, a venerable dragon may be known and feared
-    across several countries, and a beholder can secretly be in control of a city’s guild of thieves.
+    Social scores measure standing, authority, and connections within civilized societies and regional hierarchies. Highly influential monsters and planar entities can also wield substantial social weight—such as an ancient dragon terrorizing kingdoms or an aberrant mastermind covertly commanding an underworld syndicate.
 </p>
 
 <h4 id="SocialClass">Social Class</h4>
 <p>
-    <em>Social Class (SC):</em> A creature’s social class is a measure of its status and power in society.
-    Note that this refers to the creature’s own society - an orc king will have a high SC even if neighboring countries may regard him as a criminal.
+    <em>Social Class (SC):</em> Measures an individual's recognized rank, authority, and prestige within their specific society. An orc warlord may possess a commanding Social Class among their clan, even if neighboring civilized nations regard them as an outlaw.
 </p>
 <p>
-    SC will change as a result of campaign events, but it does not automatically increase as a character gains experience and levels.
-    For example, after performing a quest for the king, a character may be rewarded with land, title, and an increase in SC.
-    Or he may commit a crime and suffer a reduction in SC.
+    Social Class reflects tangible narrative accomplishments rather than automatic level progression. Characters increase their SC through deeds of renown, royal appointments, marriage, or acquiring land, and may lose SC through infamy, exile, or treason.
 </p>
 
 <?php show_socialclasses(); ?>
 
 <p>
-    Minor noble title examples: baronet, baron, viscount, sheik
-    <br/>
-    Major noble title examples: count, earl, marquis/margrave, duke, archduke, emir, pasha, satrap
-    <br/>
-    Ruling noble title examples: king, queen, emperor, prince, raja, maharaja, basileus, sultan, caliph, shah, tsar, polemarch
+    <em>Noble &amp; Societal Titles:</em>
 </p>
-<p>
-    Most societies will also have a large number of special positions and titles
-    (sheriffs, magistrates, advisors, cardinals, prophets, etc.)
-    that can grant status and power on par with minor and major nobles.
-</p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Minor Nobles:</strong> Baronet, Baron, Viscount, Sheikh, Chieftain.</li>
+    <li><strong>Major Nobles:</strong> Count, Earl, Marquis/Margrave, Duke, Archduke, Emir, Pasha, Satrap.</li>
+    <li><strong>Ruling Sovereigns:</strong> King, Queen, Emperor, Sovereign Prince, Raja, Maharaja, Basileus, Sultan, Caliph, Shah, Tsar, Polemarch.</li>
+    <li><strong>Institutional Offices:</strong> Magistrates, Sheriffs, Royal Chancellors, High Cardinals, Grand Inquisitors, and Guildmasters wield status and executive power comparable to minor and major nobles.</li>
+</ul>
 
 <h4 id="WealthClass">Wealth Class</h4>
 <p>
-    <em>Wealth Class (WC):</em> This is a measure of a creature’s (or an organization’s) resources, assets, holdings, and sources of income
-    rather than a simple tally of its treasure and hard cash.
-    WC above 0 will actually generate an automatic income and can be treated as a renewable resource.
+    <em>Wealth Class (WC):</em> Represents an individual's or institution's productive economic capital, landholdings, commercial investments, and recurring revenue streams, rather than loose coin carried in a pouch. A Wealth Class above 0 generates sustainable recurring income.
 </p>
 <p>
-    A creature’s WC also determines the amount of money that other individuals and organizations are prepared to lend to him.
-    The exact limit may vary, but the maximum total loan should be roughly the same as the minimum investment required to reach the class (see the table below).
+    Wealth Class also dictates an entity's institutional credit limit. Financial institutions, guilds, and wealthy patrons will typically extend total credit up to the minimum capital investment threshold of that Wealth Class.
 </p>
 <p>
-    By default, a creature born to a certain SC will have a WC at the same level.
+    By default, a character born or appointed to a given Social Class starts with a matching Wealth Class.
 </p>
 
 <?php show_wealthclasses(); ?>
 
 <p>
-    A large purchase (on the order of 100 times the daily income) can temporarily decrease a creature’s WC.
-    Likewise, a large windfall (of a similar magnitude) can temporarily increase a creature’s WC.
-    Such decreases and increases will last 2d4 months.
-</p>
-<p>
-    Major events (earthquakes, city fires, drought, good or bad weather, wars, new mines or resources, etc.)
-    can cause the WC of both individuals and organizations to fluctuate by as much as ±2.
+    <em>Financial Fluctuations:</em> Massive expenditures (approaching 100 times daily revenue) or sudden major windfalls cause temporary Wealth Class fluctuations lasting <code>2d4 months</code>. Major macroeconomic events (wars, natural disasters, plagues, trade embargos, or gold rushes) can shift individual and guild WC by up to &plusmn;2.
 </p>
 
 <h4 id="Influence">Influence</h4>
 <p>
-    <em id="Influence">Influence (Infl):</em> This is a measure of a creature’s affiliation with and power over another individual,
-    an organization, a family or clan, or even a region.
-    It is not unusual for an individual to have multiple separate influences, each over a separate entity.
-    For example, a high-ranking member of a guild will have influence in that guild, but he may also wield some influence in the city
-    where he lives and over a couple of government officials he knows well.
-    Note that influence is not always based on friendship and loyalty; it can also be based on fear, blackmail, bribes, etc.
+    <em id="Influence">Influence (Infl):</em> Quantifies an individual's leverage, political capital, favors, and authority over specific people, organizations, aristocratic families, or administrative regions. A character often maintains distinct Influence ratings with multiple independent factions (e.g., rank within a thieves' guild, goodwill with the city guard, and leverage over local magistrates). Influence can be built on loyalty, shared ideology, patronage, debt, or coercion.
 </p>
 <p>
-    It should be noted that influence is not strictly one-way. Increased power and influence over an organization will often lead to
-    more responsibilities, duties, and obligations as well as privileges.
-    Although you can use influence in an organization to command those of a lower rank or request favors from those of equal rank,
-    you have a duty or obligation to obey commands from those of higher rank.
-    Also, a friendly relationship between two or more individuals will usually result in mutual influences between those individuals.
-</p>
-<p>
-    Unless otherwise specified, a creature has a total number of influence points based on Cha and level.
-    However, this can be further affected by the creature’s SC, various campaign events, character actions,
-    or even the demise of an individual or organization with which one has influence.
+    <em>Bilateral Obligations:</em> Influence is inherently reciprocal. While elevated influence grants authority to command subordinates and demand institutional favors, it simultaneously imposes duties, obligations, and the expectation of obedience to superiors within the hierarchy.
 </p>
 <p>
     <dfn>Total Infl = Cha + (Infl bonus per class/race and level) + SC bonus + other modifiers</dfn>
 </p>
 <p>
-    Most creatures (especially player characters) should be able to decide themselves how to distribute their
-    influence points (and also what that influence is based on).
-    Nevertheless, there are some limitations, and every decision has to be approved by the DM.
-    Influence points gained from level should be spent mostly on an organization or individual associated with the creature’s class.
-    For example, a cleric will gain influence in his church, a rogue in his thieves’ guild or network of contacts, etc.
-    Influence points gained from SC should be spent on the focus of and reason for that social status.
-    For example, most nobles have been born into their role, title, and status, so their SC-based influence should be spent within
-    their family and household.
-    Note that a society will often have cultural traditions that may affect influence; for example, a noble who joins the clergy
-    may in some societies lose his name, title, and some or all of the power granted by his family name.
+    <em>Allocating Influence:</em> Players choose how to distribute their Influence pool subject to DM approval:
 </p>
-<p>
-    Except under extreme circumstances, a maximum of 20 influence points can be spent on a single individual.
-    For organizations and families, influence is normally limited to 10 points for non-members, but it is unlimited for members.
-</p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Level-Based Influence:</strong> Must be invested in institutions and contacts aligned with the character's class training (e.g., clerics investing in temples, rogues in underworld networks, fighters in military retinues).</li>
+    <li><strong>Social Class Influence:</strong> Invested in the institutions and family dynasties that underpin the character's social rank.</li>
+    <li><strong>Influence Limits:</strong> An individual can receive a maximum of 20 Influence points from a single character. For organizations and noble houses, non-members are capped at 10 Influence points, whereas sworn members have no investment limit.</li>
+</ul>
 
 <div class="optionalrule">
     <p>
-        <em id="SecretInfluence">Secret Influences</em> (optional rule for more varied characters): DMs who want more intrigue in their campaign
-        can reserve the right to secretly allocate a certain portion of each character's influence on their behalf.
-        This could mean that the characters have allies of which they are not fully aware, but it could also mean that the characters
-        have less influence over certain individuals or organizations than they expect.
+        <em id="SecretInfluence">Secret Influences</em> (optional rule for intrigue campaigns): DMs managing high-intrigue games may secretly allocate a portion of a character's Influence points. This represents unrevealed benefactors, hidden family connections, double agents, or over-estimated sway with unreliable contacts.
     </p>
 </div>
 
 <h4 id="Reputation">Reputation</h4>
 <p>
-    <em id="Reputation">Reputation (Rep):</em> This determines how famous or infamous a creature is and also the reason for its fame.
-    A creature’s total reputation is typically divided into a couple of separate qualities that the creature is best known for.
-    Some qualities may be rather generic descriptions, such as bold, brave, carouser, clever, dangerous, dedicated, fierce,
-    generous, honest, honorable, loyal, rake, strong, stubborn, valiant, well-educated, wise, etc.
-    Qualities can also be quite specific, such as sea’s master, berserker, horse lord, magi, defender of the crown,
-    sheriff of Nulb, or slayer of Rork the Robber-Baron.
+    <em id="Reputation">Reputation (Rep):</em> Measures the geographic reach of an individual's renown or infamy, as well as the specific titles and deeds they are known for. Total reputation is distributed among distinct descriptive qualities—ranging from broad archetypes (<em>"Honorable Knight"</em>, <em>"Cunning Rake"</em>, <em>"Fierce Berserker"</em>) to specific accolades (<em>"Troll Slayer"</em>, <em>"Defender of the Crown"</em>, <em>"Scourge of the High Seas"</em>).
 </p>
 <p>
     <dfn>Total Rep = TL (total level) + SC + WC + other modifiers</dfn>
 </p>
 <p>
-    A creature with a total reputation of 1 to 5 is typically known within its village or neighborhood,
-    6 to 10 within a city or county, 11 to 15 within a nation, 16 to 20 within the neighboring countries,
-    and 21 or more within the known world. Use this only as a rough guideline, however.
-    An undead dragon that has been buried and dormant in a desert for thousands of years
-    is not likely to be very famous (except maybe to bards and historians).
+    <em>Geographic Scope of Renown:</em>
+</p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Rep 1–5:</strong> Known within a home village, neighborhood, or local guildhouse.</li>
+    <li><strong>Rep 6–10:</strong> Recognized across a city, barony, or county.</li>
+    <li><strong>Rep 11–15:</strong> Renowned throughout an entire kingdom or sovereign realm.</li>
+    <li><strong>Rep 16–20:</strong> Celebrated across neighboring nations and continental trade leagues.</li>
+    <li><strong>Rep 21+:</strong> Legendary figure known across the known world and planar cosmologies.</li>
+</ul>
+<p>
+    <em>Evolution of Renown:</em> As a character's deeds expand, narrow titles often generalize into broader legendary identities (e.g., a local <em>"Troll Slayer"</em> evolving into a continental <em>"Bold Champion"</em>). Acting repeatedly contrary to an established reputation diminishes it over time. Note that reputation reflects public perception and folklore rather than objective truth.
 </p>
 <p>
-    Reputation points granted by SC and WC should be assigned to appropriate qualities, such as powerful, rich, royal advisor,
-    smuggler lord, merchant king, etc. Characters should choose how to distribute their own level-based reputation points,
-    but this distribution is always subject to DM approval.
-</p>
-<p>
-    Reputation and reputation qualities can and will change over time. As a reputation grows and time passes,
-    the quality will often become more generalized. For example, a warrior who first gains fame as a ‘troll slayer’
-    may change the reputation quality to a more generic ‘bold warrior’ as his fame continues to grow.
-    Many campaign events can grant positive or negative reputations, regardless of an individual’s level or intentions.
-    Repeatedly acting against one’s reputation, such as a ‘bold warrior’ acting cowardly, will inevitably lower it.
-</p>
-<p>
-    Note that reputation represents what people think and not necessarily what is true.
-</p>
-<p>
-    In addition to the social scores described above, players are encouraged to come up with
-    (or randomly generate) background history, family and close relatives, friends and enemies,
-    etc. for their characters.
+    In addition to these social scores, players are encouraged to develop rich backgrounds, family lineages, close allies, and bitter rivals to anchor their characters in the campaign world.
 </p>
 
 <h3 id="EquipmentChars">Equipment Characteristics</h3>
 <p>
-    <em>Encumbrance class (EC):</em> This is a measure of how much a creature is encumbered by the weight of equipment carried,
-    armor worn, and even his own obesity. Encumbrance class is calculated separately for weight carried and equipment worn,
-    and the actual class to use is the worst of the two results. Encumbrance class due to weight is described below,
-    and that due to armor and other equipped items is described in the equipment chapter.
+    <em>Encumbrance Class (EC):</em> Measures the physical restriction imposed by the total weight of carried gear, worn armor, and extreme bodily bulk. Encumbrance Class is evaluated separately for total carried weight and for worn armor/equipment; a creature's active EC is always the <strong>worse (higher) of the two values</strong>. Weight-based encumbrance is detailed below, while armor-based encumbrance is covered in the Equipment chapter.
 </p>
 
 <?php show_encumbranceclasses(); ?> 
 
 <p>
-    <em>Weight limit:</em> The following table shows the weight limits (in kg) of a medium-sized, bipedal creature.
-    Given the creature’s Strength score, it shows the upper weight limit of each encumbrance class.
-    To calculate weight-based encumbrance class, add the weight of equipment and any physical overweight.
-    Then look at the row in the following table that matches the creature’s Strength, and find the lowest weight (in kg)
-    that is equal to or higher than the creature’s carried weight. The column for that weight tells you the creature’s weight-based encumbrance class.
+    <em>Weight Limits:</em> The table below establishes the threshold weight limits (in kg) for a Medium-sized bipedal creature based on its Strength score:
 </p>
-<p>
-    Weight limits should be multiplied by a factor based on the creature’s size (see the Size Category table) and body shape (see the Body Category table).
-</p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Calculating Weight EC:</strong> Sum the total weight of carried gear and excess body weight. Locate the creature's Strength row in the table, and find the lowest column weight that equals or exceeds the carried weight to determine the resulting Encumbrance Class.</li>
+    <li><strong>Size &amp; Body Multipliers:</strong> Scale all base weight limits by the creature's Size Category multiplier and Body Type multiplier.</li>
+</ul>
 
 <?php show_encumbrancelimits(); ?> 
 
 <p>
-    A humanoid creature can press its EC 10 maximum load above its head, but this will prevent it from moving more than 1 square per round or performing any other actions.
+    <em>Feats of Strength &amp; Extreme Loads:</em>
 </p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Overhead Press:</strong> A creature can press its EC 10 maximum load overhead, but movement is restricted to 1 square per round and no other actions may be taken.</li>
+    <li><strong>Deadlift:</strong> A creature can lift its EC 15 maximum load off the ground, but movement is restricted to 1 square per round and no other actions may be taken.</li>
+    <li><strong>Pushing and Dragging:</strong> Loads pushed or dragged across level surfaces count as only <strong>1/5</strong> their actual weight for encumbrance. Smooth surfaces and wheeled carriages reduce this to <strong>1/10</strong>, while rough terrain or steep inclines increase effective weight to <strong>1/2</strong>.</li>
+</ul>
 <p>
-    A creature can lift its EC 15 maximum load off the ground, but this will prevent it from moving more than 1 square per round or performing any other actions.
-</p>
-<p>
-    Loads being pushed or dragged across the ground count as only one fifth their actual weight for encumbrance purposes.
-    Favorable conditions (or wheels) change this to one tenth, while unfavorable conditions change it to one half.
-</p>
-<p>
-    In order to reduce one’s encumbrance class in combat or escape situations, it can be a good idea
-    to carry heavy but less valuable equipment in containers that can be easily dropped.
-    If this is the case, the recommendation is to keep track of both encumbrance classes (with full load as well as with reduced load).
+    <em>Combat Load Management:</em> To minimize encumbrance penalties during sudden ambushes or tactical retreats, adventurers frequently store heavy camp supplies in quick-release packs that can be jettisoned as a minor action. In such cases, tracking both full traveling load EC and stripped combat load EC is recommended.
 </p>
 
 <h3 id="OtherChars">Other Characteristics</h3>
