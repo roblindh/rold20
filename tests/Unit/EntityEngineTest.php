@@ -286,4 +286,98 @@ class EntityEngineTest extends TestCase
         $this->assertEquals('–', $calc['health']['sp']['display']);
         $this->assertEquals(999, $calc['defenses']['fort']);
     }
+
+    public function test_social_influence_and_reputation_calculations(): void
+    {
+        // 1. Level 1 character (Human Fighter, Cha 14, SC 1, WC 1)
+        // Cha: 14, Racial Infl: 0, Fighter L1: +5, SC 1: +5 Infl => Total Infl = 24
+        // TL: 1, SC: 1, WC: 1 => Total Rep = 3
+        $char1 = [
+            'Name' => 'Knight Errant',
+            'BaseStr' => 14,
+            'BaseCha' => 14,
+            'BaseRace' => 1, // Human (BaseRL 0)
+            'Classes' => '1', // Level 1 Fighter (InflPerLevel: 5)
+            'Culture' => 1,
+            'SC' => 1, // Retainer/Sworn Knight (+5 InflMod)
+            'WC' => 1,
+        ];
+
+        $calc1 = EntityEngine::calculate($char1);
+        $this->assertEquals(24, $calc1['social']['influence_total']);
+        $this->assertEquals(3, $calc1['social']['reputation_total']);
+        $this->assertEquals(1, $calc1['social']['social_class']);
+        $this->assertEquals(1, $calc1['social']['wealth_class']);
+
+        // 2. High-level Noble character (Human Paladin L5, Cha 16, SC 4, WC 3)
+        // Cha: 16, Racial Infl: 0, 5 levels of Paladin/Fighter (5 * 5 = 25), SC 4 (+20 InflMod) => Total Infl = 61
+        // TL: 5, SC: 4, WC: 3 => Total Rep = 12
+        $char2 = [
+            'Name' => 'Lord Commander',
+            'BaseStr' => 16,
+            'BaseCha' => 16,
+            'BaseRace' => 1,
+            'Classes' => '1;1;1;1;1', // 5 class levels
+            'SC' => 4, // Major Noble (+20 InflMod, +2 CLMod)
+            'WC' => 3, // Wealthy
+        ];
+
+        $calc2 = EntityEngine::calculate($char2);
+        $this->assertEquals(61, $calc2['social']['influence_total']);
+        $this->assertEquals(12, $calc2['social']['reputation_total']);
+        $this->assertEquals(4, $calc2['social']['social_class']);
+        $this->assertEquals(3, $calc2['social']['wealth_class']);
+        // Challenge Level includes SC 4 CLMod (+2)
+        $this->assertEquals(7, $calc2['heritage']['challenge_level']); // TL 5 + SC CLMod 2 = 7
+    }
+
+    public function test_encumbrance_class_and_penalty_calculations(): void
+    {
+        // Str 10: Base weight capacity = 5.0 kg (EC 1 threshold)
+        // EC 0 (x0.5): <= 2.5 kg
+        // EC 1 (x1.0): <= 5.0 kg (EP: 0)
+        // EC 2 (x2.0): <= 10.0 kg (EP: 0)
+        // EC 3 (x3.0): <= 15.0 kg (EP: -1, MaxDex: 5)
+        // EC 4 (x4.0): <= 20.0 kg (EP: -2, MaxDex: 4)
+        $charLight = [
+            'Name' => 'Light Carrier',
+            'BaseStr' => 10,
+            'BaseDex' => 16, // +3 Dex
+            'BaseRace' => 1,
+            'Possessions' => [
+                [
+                    'id' => 1,
+                    'name' => 'Backpack',
+                    'unit_weight' => 2.0,
+                    'locations' => [0 => EquipmentManager::LOCATION_CARRIED],
+                ],
+            ],
+        ];
+
+        $calcLight = EntityEngine::calculate($charLight);
+        $this->assertEquals(2.0, $calcLight['equipment']['total_weight']);
+        $this->assertEquals(0, $calcLight['equipment']['effective_ec']);
+        $this->assertEquals(0, $calcLight['equipment']['encumbrance_penalty']);
+        $this->assertEquals(3, $calcLight['ability_modifiers']['Dex']); // Full dex bonus
+
+        $charHeavy = [
+            'Name' => 'Heavy Carrier',
+            'BaseStr' => 10,
+            'BaseDex' => 16, // +3 Dex (+3 modifier)
+            'BaseRace' => 1,
+            'Possessions' => [
+                [
+                    'id' => 1,
+                    'name' => 'Heavy Chest',
+                    'unit_weight' => 18.0,
+                    'locations' => [0 => EquipmentManager::LOCATION_CARRIED],
+                ],
+            ],
+        ];
+
+        $calcHeavy = EntityEngine::calculate($charHeavy);
+        $this->assertEquals(18.0, $calcHeavy['equipment']['total_weight']);
+        $this->assertEquals(4, $calcHeavy['equipment']['effective_ec']); // 18kg is between 15kg (EC 3) and 20kg (EC 4)
+        $this->assertEquals(-2, $calcHeavy['equipment']['encumbrance_penalty']);
+    }
 }

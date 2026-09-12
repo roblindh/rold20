@@ -5708,7 +5708,7 @@ creatures:
     FlySpeed: 30
     DR: 18
     MR: 0
-    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d8 acid HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=AcidRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }'
+    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d8 acid HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=AcidRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }'
     DefaultCulture: 25
     Appearance: 'A winged, reptilian creature whose scales are mostly dull ebony and dark gray. Its head looks decidedly like a skull with deep-socketed eyes and wide, flat nasal opening. It has forward-curving horns and a spinal crest that peaks behind the head and tapers down the neck. An acidic smell surrounds it.'
     Personality: 'Fearsome, cunning, and covetous predator. Aggressive, vain, and nasty. They are greedy and especially fond of gold and platinum coins.'
@@ -5754,7 +5754,7 @@ creatures:
     FlySpeed: 30
     DR: 20
     MR: 0
-    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d10 electricity HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ElectricRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } SpdType { Qual=Burrow; Value=2; }'
+    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d10 electricity HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ElectricRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } SpdType { Qual=Burrow; Value=2; }'
     DefaultCulture: 25
     Appearance: null
     Personality: null
@@ -5800,7 +5800,7 @@ creatures:
     FlySpeed: 30
     DR: 19
     MR: 0
-    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d8 acid HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=AcidRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }'
+    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d8 acid HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=AcidRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }'
     DefaultCulture: 25
     Appearance: null
     Personality: null
@@ -5846,7 +5846,7 @@ creatures:
     FlySpeed: 30
     DR: 21
     MR: 0
-    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d12 fire HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=FireRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }'
+    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d12 fire HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=FireRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }'
     DefaultCulture: 25
     Appearance: null
     Personality: null
@@ -5892,7 +5892,7 @@ creatures:
     FlySpeed: 40
     DR: 17
     MR: 0
-    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d6 cold HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ColdRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } SpdType { Qual=Burrow; Value=2; }'
+    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d6 cold HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ColdRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } SpdType { Qual=Burrow; Value=2; }'
     DefaultCulture: 25
     Appearance: null
     Personality: null
@@ -5938,7 +5938,7 @@ creatures:
     FlySpeed: 40
     DR: 18
     MR: 0
-    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d8 fire HP; } ActAcc { Qual=Mental Breath; Target=RL/2 sq cone; Dmg=Sleep for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=FireRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } SpdType { Qual=Burrow; Value=2; }'
+    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d8 fire HP; } ActAcc { Qual=Mental Breath; Target=RL/2 sq cone; Dmg=Sleep for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=FireRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } SpdType { Qual=Burrow; Value=2; }'
     DefaultCulture: 25
     Appearance: null
     Personality: null
@@ -5984,7 +5984,7 @@ creatures:
     FlySpeed: 30
     DR: 20
     MR: 0
-    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d10 electricity HP; } ActAcc { Qual=Mental Breath; Target=RL/2 sq cone; Dmg=Repulsion for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ElectricRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } ActAcc { Qual=Change Shape; Effect=Grade II to S/M animal or humanoid; Cost=10 SP; }'
+    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d10 electricity HP; } ActAcc { Qual=Mental Breath; Target=RL/2 sq cone; Dmg=Repulsion for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ElectricRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } ActAcc { Qual=Change Shape; Effect=Grade II to S/M animal or humanoid; Cost=10 SP; }'
     DefaultCulture: 25
     Appearance: null
     Personality: null
@@ -6030,7 +6030,7 @@ creatures:
     FlySpeed: 30
     DR: 19
     MR: 0
-    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d8 acid HP; } ActAcc { Qual=Poison Breath; Target=RL/2 sq cone; Dmg=Slow for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=1; } DefMod { Qual=AcidRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }'
+    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d8 acid HP; } ActAcc { Qual=Poison Breath; Target=RL/2 sq cone; Dmg=Slow for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=1; } DefMod { Qual=AcidRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }'
     DefaultCulture: 25
     Appearance: null
     Personality: null
@@ -6076,7 +6076,7 @@ creatures:
     FlySpeed: 40
     DR: 22
     MR: 0
-    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d12 fire HP; } ActAcc { Qual=Poison Breath; Target=RL/2 sq cone; Dmg=RL/4 Str; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=FireRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } ActAcc { Qual=Change Shape; Effect=Grade II to S/M animal or humanoid; Cost=10 SP; }'
+    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d12 fire HP; } ActAcc { Qual=Poison Breath; Target=RL/2 sq cone; Dmg=RL/4 Str; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=FireRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } ActAcc { Qual=Change Shape; Effect=Grade II to S/M animal or humanoid; Cost=10 SP; }'
     DefaultCulture: 25
     Appearance: null
     Personality: null
@@ -6122,7 +6122,7 @@ creatures:
     FlySpeed: 30
     DR: 21
     MR: 0
-    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d10 cold HP; } ActAcc { Qual=Poison Breath; Target=RL/2 sq cone; Dmg=Paralysis for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ColdRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } ActAcc { Qual=Change Shape; Effect=Grade II to S/M animal or humanoid; Cost=10 SP; }'
+    RacialTraits: 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d10 cold HP; } ActAcc { Qual=Poison Breath; Target=RL/2 sq cone; Dmg=Paralysis for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ColdRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } ActAcc { Qual=Change Shape; Effect=Grade II to S/M animal or humanoid; Cost=10 SP; }'
     DefaultCulture: 25
     Appearance: null
     Personality: null

@@ -253,7 +253,10 @@ class EquipmentManager
             $baseWeightLimit = (float)($weightLimitsTable[$curStr]['BaseWeightLimit'] ?? 50.0);
         } else {
             try {
-                $row = DB::table('ref_weightlimits')->where('Str', $curStr)->first();
+                $row = DB::table('ref_strweightlimits')->where('Str', $curStr)->first();
+                if (!$row) {
+                    $row = DB::table('ref_weightlimits')->where('Str', $curStr)->first();
+                }
                 if ($row && isset($row->BaseWeightLimit)) {
                     $baseWeightLimit = (float)$row->BaseWeightLimit;
                 }
@@ -292,15 +295,19 @@ class EquipmentManager
         $encRows = $encumbranceTable ?? [];
         if (empty($encRows)) {
             try {
-                $encRows = DB::table('ref_encumbrance')->orderBy('ID')->get()->toArray();
+                $encRows = DB::table('ref_encumbranceclasses')->orderBy('ID')->get()->toArray();
             } catch (\Throwable $e) {
-                $encRows = [
-                    ['ID' => 0, 'WeightLimitFactor' => 0.33],
-                    ['ID' => 1, 'WeightLimitFactor' => 0.66],
-                    ['ID' => 2, 'WeightLimitFactor' => 1.00],
-                    ['ID' => 3, 'WeightLimitFactor' => 1.50],
-                    ['ID' => 4, 'WeightLimitFactor' => 2.00],
-                ];
+                try {
+                    $encRows = DB::table('ref_encumbrance')->orderBy('ID')->get()->toArray();
+                } catch (\Throwable $e2) {
+                    $encRows = [
+                        ['ID' => 0, 'WeightLimitFactor' => 0.5],
+                        ['ID' => 1, 'WeightLimitFactor' => 1.0],
+                        ['ID' => 2, 'WeightLimitFactor' => 2.0],
+                        ['ID' => 3, 'WeightLimitFactor' => 3.0],
+                        ['ID' => 4, 'WeightLimitFactor' => 4.0],
+                    ];
+                }
             }
         }
         $ecClass = 0;

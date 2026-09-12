@@ -886,14 +886,36 @@
                     </span>
                 </div>
 
-                <!-- Inventory Summary Bar -->
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs font-mono">
-                    <div class="flex items-center gap-4">
-                        <span>Items in Inventory: <strong class="text-slate-900" x-text="inventoryItemCount"></strong></span>
-                        <span>Total Weight: <strong class="text-slate-900" x-text="inventoryTotalWeight.toFixed(1) + ' kg'"></strong></span>
+                <!-- Encumbrance & Mobility Status Bar -->
+                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-xs">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="font-bold text-slate-900 flex items-center gap-1">
+                                <span>⚖️</span> Encumbrance Status:
+                            </span>
+                            <span class="px-2 py-0.5 rounded text-[11px] font-bold font-mono"
+                                  :class="calcEffectiveEC() === 0 ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : (calcEffectiveEC() <= 2 ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-red-100 text-red-900 border border-red-300')"
+                                  x-text="'EC ' + calcEffectiveEC() + ' (' + (calcEffectiveEC() === 0 ? 'Unencumbered' : (calcEffectiveEC() === 1 ? 'Light' : (calcEffectiveEC() === 2 ? 'Medium' : 'Heavy'))) + ')'">
+                            </span>
+                            <span class="px-2 py-0.5 rounded text-[11px] font-bold font-mono"
+                                  :class="calcEncumbrancePenalty() === 0 ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-red-100 text-red-900 border border-red-300'"
+                                  x-text="'EP: ' + calcEncumbrancePenalty()">
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-3 text-slate-700 font-mono text-[11px]">
+                            <span>Max Dex: <strong class="text-slate-900" x-text="calcMaxDexBonus() < 90 ? '+' + calcMaxDexBonus() : 'None'"></strong></span>
+                            <span>Land Speed: <strong class="text-slate-900" x-text="Math.round(calcSpeedMultiplier() * 100) + '%'"></strong></span>
+                        </div>
                     </div>
-                    <div>
-                        <span>Total Spent: <strong class="text-indigo-700" x-text="inventoryTotalCost + ' sp'"></strong></span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-0.5 font-mono text-[11px] text-slate-600">
+                        <div>Weight: <strong class="text-slate-900" x-text="inventoryTotalWeight.toFixed(1) + ' kg'"></strong></div>
+                        <div>Base Cap: <strong class="text-slate-900" x-text="calcBaseWeightCapacity().toFixed(1) + ' kg'"></strong></div>
+                        <div>Weight EC: <strong class="text-slate-900" x-text="'EC ' + calcWeightEC()"></strong></div>
+                        <div>Equip EC: <strong class="text-slate-900" x-text="'EC ' + calcEquipEC()"></strong></div>
+                    </div>
+                    <div class="flex items-center justify-between pt-1 border-t border-slate-200/70 text-[11px] font-mono">
+                        <div>Items in Cart: <strong class="text-slate-900" x-text="inventoryItemCount"></strong></div>
+                        <div>Total Spent: <strong class="text-indigo-700" x-text="inventoryTotalCost + ' sp'"></strong></div>
                     </div>
                 </div>
 
@@ -1080,24 +1102,56 @@
                             </div>
                         </div>
 
-                        <!-- Social Stats: Reputation & Influence -->
+                        <!-- Social Standing: Social Class & Wealth Class -->
                         <div class="grid grid-cols-2 gap-3 pt-1">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Reputation (Score &amp; Notes)</label>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Social Class (SC)</label>
+                                <select x-model.number="character.SocialClass" @change="updateSocialScores()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black bg-white focus:ring-2 focus:ring-indigo-500">
+                                    <template x-for="sc in socialClasses" :key="sc.ID">
+                                        <option :value="sc.ID" x-text="'SC ' + (sc.ID >= 0 ? '+' : '') + sc.ID + ': ' + sc.Examples + (sc.InflMod > 0 ? ' (+' + sc.InflMod + ' Infl)' : '')"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Wealth Class (WC)</label>
+                                <select x-model.number="character.WealthClass" @change="updateSocialScores()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black bg-white focus:ring-2 focus:ring-indigo-500">
+                                    <template x-for="wc in wealthClasses" :key="wc.ID">
+                                        <option :value="wc.ID" x-text="'WC ' + (wc.ID >= 0 ? '+' : '') + wc.ID + ': ' + (wc.Description ? wc.Description.substring(0, 32) + '...' : '')"></option>
+                                    </template>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Social Scores: Reputation & Influence -->
+                        <div class="grid grid-cols-2 gap-3 pt-1">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase">Reputation (Rep)</label>
+                                    <button type="button" @click="character.Reputation = calcTotalReputation()" class="text-[10px] text-indigo-700 hover:underline cursor-pointer">Auto-Calc</button>
+                                </div>
                                 <div class="space-y-1.5">
-                                    <input type="number" x-model="character.Reputation" placeholder="Score (e.g. 0)"
-                                           class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500">
+                                    <input type="number" x-model.number="character.Reputation" placeholder="Score (e.g. 0)"
+                                           class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 font-mono font-bold">
                                     <input type="text" x-model="character.ReputationDesc" placeholder="e.g. Local Hero, Feared Bounty Hunter"
                                            class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500">
+                                    <p class="text-[10px] text-slate-500 font-mono">
+                                        Formula: TL (<span x-text="(calculatedTotalRL || 0) + (character.ClassLevels || []).length"></span>) + SC (<span x-text="character.SocialClass || 0"></span>) + WC (<span x-text="character.WealthClass || 0"></span>) = <strong class="text-indigo-900" x-text="calcTotalReputation()"></strong>
+                                    </p>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Influence (Points &amp; Notes)</label>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="block text-xs font-semibold text-slate-700 uppercase">Influence Points (Infl)</label>
+                                    <button type="button" @click="character.InfluencePts = calcTotalInfluence()" class="text-[10px] text-indigo-700 hover:underline cursor-pointer">Auto-Calc</button>
+                                </div>
                                 <div class="space-y-1.5">
-                                    <input type="number" x-model="character.InfluencePts" placeholder="Points (e.g. 0)"
-                                           class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500">
+                                    <input type="number" x-model.number="character.InfluencePts" placeholder="Points (e.g. 0)"
+                                           class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 font-mono font-bold">
                                     <input type="text" x-model="character.InfluenceDesc" placeholder="e.g. Merchants Guild, High Council"
                                            class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500">
+                                    <p class="text-[10px] text-slate-500 font-mono">
+                                        Formula: Cha (<span x-text="getFinalAbility('Charisma') !== null ? (getFinalAbility('Charisma') || 0) : 0"></span>) + Lvl Infl (<span x-text="calcLvlInfluence()"></span>) + SC (<span x-text="calcSCInfluence()"></span>) = <strong class="text-indigo-900" x-text="calcTotalInfluence()"></strong>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -1401,21 +1455,25 @@
                                 <td style="width: 50%; vertical-align: top;">
                                     <table class="charviewsection w-full border-collapse">
                                         <tbody>
-                                            <tr><td class="cvheader cvcenter" colspan="2">Social Details, Wealth &amp; Lore</td></tr>
-                                            <tr>
-                                                <td class="cvlabel cvcenter" style="width: 50%;">Reputation</td>
-                                                <td class="cvlabel cvcenter" style="width: 50%;">Influence Points</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvmdm cvcenter" x-text="(character.Reputation || 0) + (character.ReputationDesc ? ' (' + character.ReputationDesc + ')' : '')"></td>
-                                                <td class="cvmdm cvcenter" x-text="(character.InfluencePts || 0) + (character.InfluenceDesc ? ' (' + character.InfluenceDesc + ')' : '')"></td>
-                                            </tr>
-                                            <tr><td class="cvlabel" colspan="2">Family &amp; Relatives</td></tr>
-                                            <tr><td class="cvsml" colspan="2" x-text="character.Family || 'Not specified'"></td></tr>
-                                            <tr><td class="cvlabel" colspan="2">Connections &amp; Contacts</td></tr>
-                                            <tr><td class="cvsml" colspan="2" x-text="character.Contacts || 'Not specified'"></td></tr>
-                                            <tr><td class="cvlabel" colspan="2">Background History</td></tr>
-                                            <tr><td class="cvsml" colspan="2" x-text="character.History || 'Not specified'"></td></tr>
+                                             <tr><td class="cvheader cvcenter" colspan="4">Social Details, Wealth &amp; Lore</td></tr>
+                                             <tr>
+                                                 <td class="cvlabel cvcenter" style="width: 25%;">SC</td>
+                                                 <td class="cvlabel cvcenter" style="width: 25%;">WC</td>
+                                                 <td class="cvlabel cvcenter" style="width: 25%;">Reputation</td>
+                                                 <td class="cvlabel cvcenter" style="width: 25%;">Infl Pts</td>
+                                             </tr>
+                                             <tr>
+                                                 <td class="cvmdm cvcenter" x-text="character.SocialClass ?? 0"></td>
+                                                 <td class="cvmdm cvcenter" x-text="character.WealthClass ?? 0"></td>
+                                                 <td class="cvmdm cvcenter" x-text="(calculatedState?.social?.reputation_total ?? character.Reputation ?? 0) + (character.ReputationDesc ? ' (' + character.ReputationDesc + ')' : '')"></td>
+                                                 <td class="cvmdm cvcenter" x-text="(calculatedState?.social?.influence_total ?? character.InfluencePts ?? 0) + (character.InfluenceDesc ? ' (' + character.InfluenceDesc + ')' : '')"></td>
+                                             </tr>
+                                             <tr><td class="cvlabel" colspan="4">Family &amp; Relatives</td></tr>
+                                             <tr><td class="cvsml" colspan="4" x-text="character.Family || 'Not specified'"></td></tr>
+                                             <tr><td class="cvlabel" colspan="4">Connections &amp; Contacts</td></tr>
+                                             <tr><td class="cvsml" colspan="4" x-text="character.Contacts || 'Not specified'"></td></tr>
+                                             <tr><td class="cvlabel" colspan="4">Background History</td></tr>
+                                             <tr><td class="cvsml" colspan="4" x-text="character.History || 'Not specified'"></td></tr>
                                         </tbody>
                                     </table>
                                 </td>
@@ -1595,6 +1653,10 @@ function characterWizard() {
         alignments: {!! json_encode($alignments) !!},
         sizeCats: {!! json_encode($sizeCats) !!},
         bodyTypes: {!! json_encode($bodyTypes) !!},
+        socialClasses: {!! json_encode($socialClasses) !!},
+        wealthClasses: {!! json_encode($wealthClasses) !!},
+        encumbranceTable: {!! json_encode($encumbranceTable) !!},
+        weightLimitsTable: {!! json_encode($weightLimitsTable) !!},
 
         selectedCampaignObj: null,
         skillAccessMap: {},
@@ -1609,6 +1671,10 @@ function characterWizard() {
         spellOptionsBySpellId: {},
         specializationsById: {},
         specializationsBySkillId: {},
+        socialClassesById: {},
+        wealthClassesById: {},
+        encumbranceById: {},
+        weightLimitsByStr: {},
 
         // Ability Generation State
         dragSourceAttr: null,
@@ -1643,6 +1709,8 @@ function characterWizard() {
             Alignment: 'Neutral Good',
             Religion: '',
             Deity: '',
+            SocialClass: 0,
+            WealthClass: 0,
             Reputation: 0,
             ReputationDesc: '',
             InfluencePts: 0,
@@ -1692,6 +1760,14 @@ function characterWizard() {
             this.cultures.forEach(c => { this.culturesById[c.ID] = c; });
             this.templates.forEach(t => { this.templatesById[t.ID] = t; });
             this.spells.forEach(s => { this.spellsById[s.ID] = s; });
+            this.socialClasses.forEach(s => { this.socialClassesById[s.ID] = s; });
+            this.wealthClasses.forEach(w => { this.wealthClassesById[w.ID] = w; });
+            this.encumbranceTable.forEach(e => { this.encumbranceById[e.ID] = e; });
+            if (Array.isArray(this.weightLimitsTable)) {
+                this.weightLimitsTable.forEach(w => { this.weightLimitsByStr[w.Str] = w; });
+            } else if (typeof this.weightLimitsTable === 'object' && this.weightLimitsTable !== null) {
+                this.weightLimitsByStr = this.weightLimitsTable;
+            }
 
             this.spellOptions.forEach(o => {
                 this.spellOptionsById[o.ID] = o;
@@ -1735,6 +1811,7 @@ function characterWizard() {
             this.onCampaignChanged();
             this.rollRandomPhysicalAttributes();
             this.initStartingWealth();
+            this.updateSocialScores();
         },
 
         calculateLevelFromXP(xp) {
@@ -2849,6 +2926,9 @@ function characterWizard() {
                     Name: item.Name,
                     BaseValue: item.BaseValue || 0,
                     BaseWeight: item.BaseWeight || 0,
+                    ECMod: item.ECMod || 0,
+                    ItemTypeID: item.ItemTypeID || 0,
+                    SubtypeName: item.SubtypeName || '',
                     Qty: 1
                 });
             }
@@ -2862,6 +2942,132 @@ function characterWizard() {
                     this.character.Inventory = this.character.Inventory.filter(i => i.ID != itemId);
                 }
             }
+        },
+
+        // --- Encumbrance & Mobility Calculations (Step 8) ---
+        calcBaseWeightCapacity() {
+            let str = this.getFinalAbility('Strength');
+            if (str === null || str === undefined || isNaN(str)) {
+                str = parseInt(this.character.Strength) || 10;
+            }
+            if (str <= 0) return 0.5;
+
+            let curStr = str;
+            let highStrMult = 1;
+            while (curStr >= 30) {
+                curStr -= 10;
+                highStrMult *= 4;
+            }
+
+            const wlRow = this.weightLimitsByStr[curStr] || (Array.isArray(this.weightLimitsTable) ? this.weightLimitsTable.find(w => w.Str == curStr) : null);
+            const baseLimit = wlRow ? (parseFloat(wlRow.BaseWeightLimit) || 5.0) : Math.max(1.0, curStr * 0.5);
+
+            const race = this.getSelectedRace();
+            const sizeId = Math.max(-4, Math.min(4, parseInt(race?.SizeClass || 0)));
+            const sizeMult = (this.sizeCats[sizeId] && this.sizeCats[sizeId].WeightMult) ? parseFloat(this.sizeCats[sizeId].WeightMult) : 1.0;
+            const bodyId = parseInt(race?.BodyType || 1);
+            const bodyMult = (this.bodyTypes[bodyId] && this.bodyTypes[bodyId].WeightMult) ? parseFloat(this.bodyTypes[bodyId].WeightMult) : 1.0;
+
+            return baseLimit * highStrMult * sizeMult * bodyMult;
+        },
+
+        calcWeightEC() {
+            const weight = this.inventoryTotalWeight;
+            const cap = this.calcBaseWeightCapacity();
+            if (cap <= 0) return 10;
+
+            const encList = [...this.encumbranceTable].sort((a, b) => parseInt(a.ID) - parseInt(b.ID));
+            let weightEC = 0;
+            for (const enc of encList) {
+                const factor = parseFloat(enc.WeightLimitFactor) || 1.0;
+                const ecId = parseInt(enc.ID);
+                if (weight <= cap * factor) {
+                    weightEC = ecId;
+                    break;
+                }
+                weightEC = ecId;
+            }
+            return weightEC;
+        },
+
+        calcEquipEC() {
+            let equipEC = 0;
+            this.character.Inventory.forEach(item => {
+                const ecMod = parseInt(item.ECMod) || 0;
+                const qty = parseInt(item.Qty) || 1;
+                if (ecMod > 0) {
+                    equipEC += ecMod * qty;
+                }
+            });
+            return equipEC;
+        },
+
+        calcEffectiveEC() {
+            return Math.max(this.calcWeightEC(), this.calcEquipEC());
+        },
+
+        calcEncumbrancePenalty() {
+            const ec = this.calcEffectiveEC();
+            const enc = this.encumbranceById[ec] || this.encumbranceTable.find(e => parseInt(e.ID) === ec);
+            return enc ? (parseInt(enc.EP) || 0) : 0;
+        },
+
+        calcMaxDexBonus() {
+            const ec = this.calcEffectiveEC();
+            const enc = this.encumbranceById[ec] || this.encumbranceTable.find(e => parseInt(e.ID) === ec);
+            return enc ? (parseInt(enc.MaxDexBonus) ?? 99) : 99;
+        },
+
+        calcSpeedMultiplier() {
+            const ec = this.calcEffectiveEC();
+            const enc = this.encumbranceById[ec] || this.encumbranceTable.find(e => parseInt(e.ID) === ec);
+            return enc ? (parseFloat(enc.SpeedMultLand) || 1.0) : 1.0;
+        },
+
+        // --- Social Details & Standing (Step 9) ---
+        calcLvlInfluence() {
+            const bgClass = this.getSelectedBackgroundClass() || (this.classesById[15] || { InflPerLevel: 4 });
+            const racialLvl = this.totalRL || 0;
+            const rInfl = racialLvl * (parseInt(bgClass.InflPerLevel) || 4);
+            const cInfl = (this.character.ClassLevels || []).reduce((sum, cId) => sum + (this.classesById[cId]?.InflPerLevel ? parseInt(this.classesById[cId].InflPerLevel) : 5), 0);
+            return rInfl + cInfl;
+        },
+
+        calcSCInfluence() {
+            const sc = parseInt(this.character.SocialClass) || 0;
+            const scRow = this.socialClassesById[sc] || this.socialClasses.find(s => parseInt(s.ID) === sc);
+            const mod = scRow ? (parseInt(scRow.InflMod) || 0) : 0;
+            return mod >= 0 ? '+' + mod : '' + mod;
+        },
+
+        calcTotalInfluence() {
+            let cha = this.getFinalAbility('Charisma');
+            if (cha === null || cha === undefined || isNaN(cha)) {
+                cha = parseInt(this.character.Charisma) || 10;
+            }
+            if (cha === null) return 0;
+
+            let total = cha;
+            total += this.calcLvlInfluence();
+
+            const sc = parseInt(this.character.SocialClass) || 0;
+            const scRow = this.socialClassesById[sc] || this.socialClasses.find(s => parseInt(s.ID) === sc);
+            const scInfl = scRow ? (parseInt(scRow.InflMod) || 0) : 0;
+            total += scInfl;
+
+            return total;
+        },
+
+        calcTotalReputation() {
+            const totalLevel = (this.totalRL || 0) + (this.character.ClassLevels || []).length;
+            const sc = parseInt(this.character.SocialClass) || 0;
+            const wc = parseInt(this.character.WealthClass) || 0;
+            return totalLevel + sc + wc;
+        },
+
+        updateSocialScores() {
+            this.character.InfluencePts = this.calcTotalInfluence();
+            this.character.Reputation = this.calcTotalReputation();
         },
 
         // --- Personal Details (Step 9) ---
@@ -3251,6 +3457,16 @@ function characterWizard() {
                     Classes: this.character.ClassLevels,
                     Gender: this.character.Gender,
                     Alignment: this.character.Alignment,
+                    Religion: this.character.Religion || null,
+                    Deity: this.character.Deity || null,
+                    SC: this.character.SocialClass || 0,
+                    SocialClass: this.character.SocialClass || 0,
+                    WC: this.character.WealthClass || 0,
+                    WealthClass: this.character.WealthClass || 0,
+                    Reputation: this.character.Reputation || 0,
+                    ReputationDesc: this.character.ReputationDesc || '',
+                    InfluencePts: this.character.InfluencePts || 0,
+                    InfluenceDesc: this.character.InfluenceDesc || '',
                     Level: this.character.Level,
                     StartingXP: this.character.StartingXP,
                     TotalRL: this.totalRL,
@@ -3321,6 +3537,10 @@ function characterWizard() {
                         Alignment: this.character.Alignment,
                         Religion: this.character.Religion || null,
                         Deity: this.character.Deity || null,
+                        SC: this.character.SocialClass || 0,
+                        SocialClass: this.character.SocialClass || 0,
+                        WC: this.character.WealthClass || 0,
+                        WealthClass: this.character.WealthClass || 0,
                         Reputation: this.character.Reputation || 0,
                         ReputationDesc: this.character.ReputationDesc || '',
                         InfluencePts: this.character.InfluencePts || 0,

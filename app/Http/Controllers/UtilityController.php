@@ -58,12 +58,17 @@ class UtilityController extends Controller
         $alignments = DB::table('ref_alignments')->orderBy('ID')->get();
         $sizeCats = DB::table('ref_sizes')->orderBy('ID')->get()->keyBy('ID');
         $bodyTypes = DB::table('ref_bodytypes')->orderBy('ID')->get()->keyBy('ID');
+        $socialClasses = DB::table('ref_socialclasses')->orderBy('ID')->get();
+        $wealthClasses = DB::table('ref_wealthclasses')->orderBy('ID')->get();
+        $encumbranceTable = DB::table('ref_encumbranceclasses')->orderBy('ID')->get();
+        $weightLimitsTable = DB::table('ref_strweightlimits')->orderBy('Str')->get()->keyBy('Str');
 
         return view('utilities.chargen_wizard', compact(
             'campaigns', 'races', 'templates', 'cultures', 'classConfigs', 'classes', 'abilityMethods', 'pointBuyTable',
             'skillTypes', 'skills', 'skillAccess', 'skillSpecializations', 'improvements',
             'wealthPerLevel', 'itemTypes', 'equipment', 'spells', 'spellOptions',
-            'pantheons', 'deities', 'alignments', 'sizeCats', 'bodyTypes'
+            'pantheons', 'deities', 'alignments', 'sizeCats', 'bodyTypes',
+            'socialClasses', 'wealthClasses', 'encumbranceTable', 'weightLimitsTable'
         ));
     }
 
@@ -83,6 +88,10 @@ class UtilityController extends Controller
             'Alignment' => 'nullable|string',
             'Religion' => 'nullable',
             'Deity' => 'nullable',
+            'SC' => 'nullable',
+            'SocialClass' => 'nullable',
+            'WC' => 'nullable',
+            'WealthClass' => 'nullable',
             'Reputation' => 'nullable',
             'ReputationDesc' => 'nullable|string',
             'InfluencePts' => 'nullable',
@@ -284,6 +293,8 @@ class UtilityController extends Controller
                 'Alignment' => (string)($request->input('Alignment') ?? 'Neutral Good'),
                 'Religion' => is_numeric($request->input('Religion')) ? (int)$request->input('Religion') : null,
                 'Deity' => is_numeric($request->input('Deity')) ? (int)$request->input('Deity') : null,
+                'SC' => is_numeric($request->input('SC') ?? $request->input('SocialClass')) ? (int)($request->input('SC') ?? $request->input('SocialClass')) : 0,
+                'WC' => is_numeric($request->input('WC') ?? $request->input('WealthClass')) ? (int)($request->input('WC') ?? $request->input('WealthClass')) : 0,
                 'Reputation' => is_numeric($request->input('Reputation')) ? (int)$request->input('Reputation') : null,
                 'ReputationDesc' => (string)$request->input('ReputationDesc', ''),
                 'InfluencePts' => is_numeric($request->input('InfluencePts')) ? (int)$request->input('InfluencePts') : null,

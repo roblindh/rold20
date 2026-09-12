@@ -25,6 +25,8 @@ class EntityEngine
     protected static ?array $agesCache = null;
     protected static ?array $culturesCache = null;
     protected static ?array $subtypesCache = null;
+    protected static ?array $socialClassesCache = null;
+    protected static ?array $wealthClassesCache = null;
 
     /**
      * Load and cache static reference tables.
@@ -52,11 +54,13 @@ class EntityEngine
                 ->toArray();
             self::$sizesCache = DB::table('ref_sizes')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$bodyTypesCache = DB::table('ref_bodytypes')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
-            self::$encumbranceCache = DB::table('ref_encumbrance')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
-            self::$weightLimitsCache = DB::table('ref_weightlimits')->get()->keyBy('Str')->map(fn($r) => (array)$r)->toArray();
+            self::$encumbranceCache = DB::table('ref_encumbranceclasses')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
+            self::$weightLimitsCache = DB::table('ref_strweightlimits')->get()->keyBy('Str')->map(fn($r) => (array)$r)->toArray();
             self::$agesCache = DB::table('ref_ages')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$culturesCache = DB::table('ref_cultures')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$subtypesCache = DB::table('ref_creaturesubtypes')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
+            self::$socialClassesCache = DB::table('ref_socialclasses')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
+            self::$wealthClassesCache = DB::table('ref_wealthclasses')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             return;
         } catch (\Throwable $e) {
             // Fallback for standalone/test environments
@@ -80,13 +84,15 @@ class EntityEngine
         self::$itemsCache = $appData['items'] ?? [];
         self::$sizesCache = $appData['sizes'] ?? $appData['sizecats'] ?? [];
         self::$bodyTypesCache = $appData['bodytypes'] ?? $appData['bodycats'] ?? [];
-        self::$encumbranceCache = $appData['encumbrance'] ?? [];
-        self::$weightLimitsCache = isset($appData['weightlimits'])
-            ? array_column($appData['weightlimits'], null, 'Str')
-            : [];
+        self::$encumbranceCache = $appData['encumbranceclasses'] ?? $appData['encumbrance'] ?? [];
+        self::$weightLimitsCache = isset($appData['strweightlimits'])
+            ? $appData['strweightlimits']
+            : (isset($appData['weightlimits']) ? array_column($appData['weightlimits'], null, 'Str') : []);
         self::$agesCache = $appData['ages'] ?? $appData['agecats'] ?? [];
         self::$culturesCache = $appData['cultures'] ?? [];
         self::$subtypesCache = $appData['creaturesubtypes'] ?? [];
+        self::$socialClassesCache = $appData['socialclasses'] ?? [];
+        self::$wealthClassesCache = $appData['wealthclasses'] ?? [];
     }
 
     /**
@@ -1029,6 +1035,66 @@ class EntityEngine
             ],
         ];
 
+        // Stage 7: Social Standing, Influence & Reputation
+        $sc = (int)($e->SC ?? $e->SocialClass ?? 0);
+        $wc = (int)($e->WC ?? $e->WealthClass ?? 0);
+        $repDesc = (string)($e->ReputationDesc ?? $e->ReputationStr ?? '');
+        $inflDesc = (string)($e->InfluenceDesc ?? $e->InfluenceStr ?? '');
+
+        // Influence calculation: Total Infl = Cha + (Infl bonus per class/race and level) + SC bonus + other modifiers
+        $inflTotal = 0;
+        $inflBreakdown = [
+            'cha' => 0,
+            'racial_levels' => 0,
+            'class_levels' => 0,
+            'sc_bonus' => 0,
+            'modifiers' => 0,
+        ];
+        if ($finalCha !== null) {
+            $inflTotal = (int)$finalCha;
+            $inflBreakdown['cha'] = (int)$finalCha;
+
+            // Racial level infl bonus
+            $racialInflPerLvl = (int)($bgClass['InflPerLevel'] ?? 4);
+            $racialInfl = $racialLevel * $racialInflPerLvl;
+            $inflTotal += $racialInfl;
+            $inflBreakdown['racial_levels'] = $racialInfl;
+
+            // Class level infl bonus
+            $classInfl = 0;
+            foreach ($classIds as $cId) {
+                $cls = self::$classesCache[$cId] ?? null;
+                $clsInfl = (int)($cls['InflPerLevel'] ?? 5);
+                $classInfl += $clsInfl;
+            }
+            $inflTotal += $classInfl;
+            $inflBreakdown['class_levels'] = $classInfl;
+
+            // Social class bonus
+            $scRow = self::$socialClassesCache[$sc] ?? null;
+            $scInfl = (int)($scRow['InflMod'] ?? 0);
+            $inflTotal += $scInfl;
+            $inflBreakdown['sc_bonus'] = $scInfl;
+
+            // Trait / improvement modifiers
+            $traitInfl = (int)$modifierEngine->getTotal('Infl') + (int)$modifierEngine->getTotal('Influence');
+            $inflTotal += $traitInfl;
+            $inflBreakdown['modifiers'] = $traitInfl;
+        }
+
+        // Reputation calculation: Total Rep = TL + SC + WC + other modifiers
+        $repModifiers = (int)$modifierEngine->getTotal('Rep') + (int)$modifierEngine->getTotal('Reputation');
+        $repTotal = $totalLevel + $sc + $wc + $repModifiers;
+        $repBreakdown = [
+            'total_level' => $totalLevel,
+            'social_class' => $sc,
+            'wealth_class' => $wc,
+            'modifiers' => $repModifiers,
+        ];
+
+        $scClMod = (int)(self::$socialClassesCache[$sc]['CLMod'] ?? 0);
+        $challengeLevel += $scClMod;
+
         // Return master calculation result object
         return [
             // Stage 1 & Heritage
@@ -1148,6 +1214,25 @@ class EntityEngine
                 'natural' => $naturalAttacks,
                 'brawling' => $brawlingAttack,
                 'spells' => $spellAttacks,
+            ],
+
+            // Stage 7: Social Details & Standing
+            'social' => [
+                'social_class' => $sc,
+                'wealth_class' => $wc,
+                'social_class_name' => self::$socialClassesCache[$sc]['Examples'] ?? "Class {$sc}",
+                'social_class_address' => self::$socialClassesCache[$sc]['AddressForm'] ?? '',
+                'social_class_infl_mod' => (int)(self::$socialClassesCache[$sc]['InflMod'] ?? 0),
+                'social_class_cl_mod' => $scClMod,
+                'wealth_class_description' => self::$wealthClassesCache[$wc]['Description'] ?? '',
+                'influence_total' => $inflTotal,
+                'influence_used' => (int)($e->InflUsed ?? 0),
+                'influence_current' => $inflTotal - (int)($e->InflUsed ?? 0),
+                'influence_desc' => $inflDesc,
+                'influence_breakdown' => $inflBreakdown,
+                'reputation_total' => $repTotal,
+                'reputation_desc' => $repDesc,
+                'reputation_breakdown' => $repBreakdown,
             ],
         ];
     }

@@ -26,6 +26,7 @@ class ModifierStackingEngine
         'Inh' => ['name' => 'Inherent',     'abbr' => 'Inh', 'cap' => 5],
         'Ins' => ['name' => 'Insight',      'abbr' => 'Ins', 'cap' => null],
         'Lck' => ['name' => 'Luck',         'abbr' => 'Lck', 'cap' => null],
+        'Mat' => ['name' => 'Material',     'abbr' => 'Mat', 'cap' => null],
         'Met' => ['name' => 'Metabolic',    'abbr' => 'Met', 'cap' => null],
         'Mrl' => ['name' => 'Morale',       'abbr' => 'Mrl', 'cap' => null],
         'Par' => ['name' => 'Parry',        'abbr' => 'Par', 'cap' => 999],

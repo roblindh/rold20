@@ -816,21 +816,25 @@ HP: {{ $hp }} / {{ $hpCurrent }} | SP: {{ $sp !== null ? $sp . ' / ' . $spCurren
                 <div class="charview-col">
                     <table class="charviewsection border-collapse">
                         <tbody>
-                            <tr><td class="cvheader cvcenter" colspan="2">Social Details, Wealth &amp; Lore</td></tr>
+                            <tr><td class="cvheader cvcenter" colspan="4">Social Details, Wealth &amp; Lore</td></tr>
                             <tr>
-                                <td class="cvlabel cvcenter" style="width: 50%;">Reputation</td>
-                                <td class="cvlabel cvcenter" style="width: 50%;">Influence Points</td>
+                                <td class="cvlabel cvcenter" style="width: 25%;">SC</td>
+                                <td class="cvlabel cvcenter" style="width: 25%;">WC</td>
+                                <td class="cvlabel cvcenter" style="width: 25%;">Reputation</td>
+                                <td class="cvlabel cvcenter" style="width: 25%;">Infl Pts</td>
                             </tr>
                             <tr>
-                                <td class="cvmdm cvcenter">{{ $character->Reputation ?? 0 }} {{ $character->ReputationDesc ? '(' . $character->ReputationDesc . ')' : '' }}</td>
-                                <td class="cvmdm cvcenter">{{ $character->InfluencePts ?? 0 }} {{ $character->InfluenceDesc ? '(' . $character->InfluenceDesc . ')' : '' }}</td>
+                                <td class="cvmdm cvcenter">{{ $character->SC ?? $character->SocialClass ?? 0 }}</td>
+                                <td class="cvmdm cvcenter">{{ $character->WC ?? $character->WealthClass ?? 0 }}</td>
+                                <td class="cvmdm cvcenter">{{ $calc['social']['reputation_total'] ?? ($character->Reputation ?? 0) }} {{ $character->ReputationDesc ? '(' . $character->ReputationDesc . ')' : '' }}</td>
+                                <td class="cvmdm cvcenter">{{ $calc['social']['influence_total'] ?? ($character->InfluencePts ?? 0) }} {{ $character->InfluenceDesc ? '(' . $character->InfluenceDesc . ')' : '' }}</td>
                             </tr>
-                            <tr><td class="cvlabel" colspan="2">Family &amp; Relatives</td></tr>
-                            <tr><td class="cvsml" colspan="2">{{ $character->Family ?: 'Not specified' }}</td></tr>
-                            <tr><td class="cvlabel" colspan="2">Connections &amp; Contacts</td></tr>
-                            <tr><td class="cvsml" colspan="2">{{ $character->Contacts ?: 'Not specified' }}</td></tr>
-                            <tr><td class="cvlabel" colspan="2">Background History</td></tr>
-                            <tr><td class="cvsml" colspan="2">{{ $character->History ?: 'Not specified' }}</td></tr>
+                            <tr><td class="cvlabel" colspan="4">Family &amp; Relatives</td></tr>
+                            <tr><td class="cvsml" colspan="4">{{ $character->Family ?: 'Not specified' }}</td></tr>
+                            <tr><td class="cvlabel" colspan="4">Connections &amp; Contacts</td></tr>
+                            <tr><td class="cvsml" colspan="4">{{ $character->Contacts ?: 'Not specified' }}</td></tr>
+                            <tr><td class="cvlabel" colspan="4">Background History</td></tr>
+                            <tr><td class="cvsml" colspan="4">{{ $character->History ?: 'Not specified' }}</td></tr>
                         </tbody>
                     </table>
                 </div>

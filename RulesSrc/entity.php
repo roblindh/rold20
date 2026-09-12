@@ -1064,9 +1064,14 @@ class cIndividual extends cEntity {
 
         if ($this->GetAbility(A_CHA) != NULL) {
             $infl = $this->GetAbility(A_CHA);
-            $infl += $_APP['classes'][$this->GetRacialClass()]['InflPerLevel'] * $this->GetRacialLevel();
+            $racialClass = $this->GetRacialClass();
+            $inflPerLvl = isset($_APP['classes'][$racialClass]['InflPerLevel']) ? $_APP['classes'][$racialClass]['InflPerLevel'] : 4;
+            $infl += $inflPerLvl * $this->GetRacialLevel();
             foreach ($this->lClassLevels as $iClassLevel) {
-                $infl += $_APP['classes'][$iClassLevel]['InflPerLevel'];
+                $infl += isset($_APP['classes'][$iClassLevel]['InflPerLevel']) ? $_APP['classes'][$iClassLevel]['InflPerLevel'] : 5;
+            }
+            if ($this->SocialClass && isset($_APP['socialclasses'][$this->SocialClass]['InflMod'])) {
+                $infl += (int)$_APP['socialclasses'][$this->SocialClass]['InflMod'];
             }
             $infl += ($this->TraitEffects->ModsInfl != NULL) ? $this->TraitEffects->ModsInfl->Total() : 0;
         }
@@ -1079,7 +1084,9 @@ class cIndividual extends cEntity {
     }
 
     public function GetReputation() {
-        return $this->GetTotalLevel() + $this->SocialClass + $this->WealthClass;
+        $rep = $this->GetTotalLevel() + (int)$this->SocialClass + (int)$this->WealthClass;
+        $rep += ($this->TraitEffects->ModsRep != NULL) ? $this->TraitEffects->ModsRep->Total() : 0;
+        return (int) $rep;
     }
 
     public function GetSkillLevel($id) {
