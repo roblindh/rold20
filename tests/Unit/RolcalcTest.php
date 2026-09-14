@@ -231,4 +231,74 @@ class RolcalcTest extends TestCase
             $this->assertLessThanOrEqual(18, $val);
         }
     }
+
+    /**
+     * Test EDICE / OPENDICE function in cExpressionParser
+     */
+    public function test_edice_function(): void
+    {
+        for ($i = 0; $i < 20; $i++) {
+            $val = (int) $this->parser->Evaluate("EDICE(1, 20)");
+            $this->assertIsInt($val);
+        }
+    }
+
+    /**
+     * Test RollOpenEndedDie method on cExpressionParser
+     */
+    public function test_roll_open_ended_die(): void
+    {
+        $this->assertEquals(1, $this->parser->RollOpenEndedDie(1));
+
+        $hasPositive = false;
+        for ($i = 0; $i < 50; $i++) {
+            $val = $this->parser->RollOpenEndedDie(20);
+            $this->assertIsInt($val);
+            if ($val > 0) $hasPositive = true;
+        }
+        $this->assertTrue($hasPositive);
+    }
+
+    /**
+     * Test UtilityController dice evaluation for standard and exploding dice notations
+     */
+    public function test_utility_controller_evaluate_expression(): void
+    {
+        $controller = new \App\Http\Controllers\UtilityController();
+
+        // 1. Standard d20
+        $req = new \Illuminate\Http\Request(['expression' => '1d20']);
+        $resp = $controller->evaluateExpression($req);
+        $data = json_decode($resp->getContent(), true);
+        $this->assertArrayHasKey('result', $data);
+        $this->assertMatchesRegularExpression('/^\d+ \(\d+\)$/', $data['result']);
+
+        // 2. Exploding d20!
+        $req = new \Illuminate\Http\Request(['expression' => 'd20!']);
+        $resp = $controller->evaluateExpression($req);
+        $data = json_decode($resp->getContent(), true);
+        $this->assertArrayHasKey('result', $data);
+        $this->assertNotEmpty($data['result']);
+
+        // 3. Exploding with modifier: 1d20!+5
+        $req = new \Illuminate\Http\Request(['expression' => '1d20!+5']);
+        $resp = $controller->evaluateExpression($req);
+        $data = json_decode($resp->getContent(), true);
+        $this->assertArrayHasKey('result', $data);
+        $this->assertStringContainsString('+ 5', $data['result']);
+
+        // 4. Multiple exploding dice: 3d6! - 2
+        $req = new \Illuminate\Http\Request(['expression' => '3d6! - 2']);
+        $resp = $controller->evaluateExpression($req);
+        $data = json_decode($resp->getContent(), true);
+        $this->assertArrayHasKey('result', $data);
+        $this->assertStringContainsString('- 2', $data['result']);
+
+        // 5. Compound arithmetic with exploding dice
+        $req = new \Illuminate\Http\Request(['expression' => '2 * (d20! + 4)']);
+        $resp = $controller->evaluateExpression($req);
+        $data = json_decode($resp->getContent(), true);
+        $this->assertArrayHasKey('result', $data);
+        $this->assertIsNumeric($data['result']);
+    }
 }

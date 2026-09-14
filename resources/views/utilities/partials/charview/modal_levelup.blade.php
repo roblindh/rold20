@@ -7,7 +7,7 @@
                 <span>⬆️</span>
                 <span>Level Up Progression — {{ $character->Name }}</span>
                 <span class="text-xs bg-amber-500 text-slate-950 font-bold px-2 py-0.5 rounded ml-2">
-                    Advancing to Level {{ $totalLevel + 1 }}
+                    Advancing to Level {{ $challengeLevel + 1 }}@if($challengeLevel !== $totalLevel) (TL {{ $totalLevel + 1 }})@endif
                 </span>
             </div>
             <button @click="showLevelUpModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>

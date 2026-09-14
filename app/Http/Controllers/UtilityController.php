@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Models\Dynamic\Character;
 use App\Models\Dynamic\Campaign;
+use App\Services\AI\GeminiImageService;
 
 class UtilityController extends Controller
 {
@@ -26,7 +27,7 @@ class UtilityController extends Controller
             'AdultAge', 'MatureAge', 'OldAge', 'VenerableAge', 'DefaultCulture'
         )->orderBy('Name')->get();
         $templates = DB::table('ref_templates')->select(
-            'ID', 'Name', 'PCSuitability', 'RLModifier', 'CLModifier',
+            'ID', 'Name', 'NameInformal', 'PCSuitability', 'RLModifier', 'CLModifier',
             'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj',
             'GroundSpeed', 'FlySpeed', 'SwimSpeed'
         )->orderBy('Name')->get();
@@ -58,17 +59,19 @@ class UtilityController extends Controller
         $alignments = DB::table('ref_alignments')->orderBy('ID')->get();
         $sizeCats = DB::table('ref_sizes')->orderBy('ID')->get()->keyBy('ID');
         $bodyTypes = DB::table('ref_bodytypes')->orderBy('ID')->get()->keyBy('ID');
+        $creatureSubtypes = DB::table('ref_creaturesubtypes')->get()->keyBy('ID');
         $socialClasses = DB::table('ref_socialclasses')->orderBy('ID')->get();
         $wealthClasses = DB::table('ref_wealthclasses')->orderBy('ID')->get();
         $encumbranceTable = DB::table('ref_encumbranceclasses')->orderBy('ID')->get();
         $weightLimitsTable = DB::table('ref_strweightlimits')->orderBy('Str')->get()->keyBy('Str');
+        $refActions = DB::table('ref_actions')->where('ShowPCGen', '>=', 2)->orderBy('Name')->get();
 
         return view('utilities.chargen_wizard', compact(
             'campaigns', 'races', 'templates', 'cultures', 'classConfigs', 'classes', 'abilityMethods', 'pointBuyTable',
             'skillTypes', 'skills', 'skillAccess', 'skillSpecializations', 'improvements',
             'wealthPerLevel', 'itemTypes', 'equipment', 'spells', 'spellOptions',
-            'pantheons', 'deities', 'alignments', 'sizeCats', 'bodyTypes',
-            'socialClasses', 'wealthClasses', 'encumbranceTable', 'weightLimitsTable'
+            'pantheons', 'deities', 'alignments', 'sizeCats', 'bodyTypes', 'creatureSubtypes',
+            'socialClasses', 'wealthClasses', 'encumbranceTable', 'weightLimitsTable', 'refActions'
         ));
     }
 
@@ -366,11 +369,14 @@ class UtilityController extends Controller
     /**
      * Character Sheet Viewer
      */
-    public function characterViewer(Request $request, ?int $id = null): View
+    public function characterViewer(Request $request, ?int $id = null): View|\Illuminate\Http\RedirectResponse
     {
         $character = null;
-        if ($id) {
+        if ($id !== null) {
             $character = DB::table('characters')->where('ID', $id)->first();
+            if (!$character) {
+                return redirect()->route('utilities.charview')->with('warning', "Character #{$id} was not found.");
+            }
         } else {
             $character = DB::table('characters')->orderBy('ID', 'desc')->first();
         }
@@ -453,13 +459,16 @@ class UtilityController extends Controller
 
         $activeConfig = max(0, min(4, (int)$request->query('config', 0)));
         $calculatedState = $character ? \App\Services\Entity\EntityEngine::calculate($character, $activeConfig) : null;
+        $refActions = DB::table('ref_actions')->where('ShowPCGen', '>=', 2)->orderBy('Name')->get();
+        $commonActions = $character ? \App\Services\Entity\EntityEngine::getCommonActions($character, $refActions, $calculatedState) : [];
 
         return view('utilities.charview', compact(
             'character', 'calculatedState', 'activeConfig', 'allCharacters', 'myCharacters', 'race', 'templates', 'template', 'culture', 'bgClass',
             'classesMap', 'skillsMap', 'specializationsMap', 'improvementsMap', 'spellsMap', 'spellOptionsMap', 'itemsMap',
             'pantheonsMap', 'deitiesMap', 'sizesMap', 'bodyTypesMap', 'creatureSubtypes', 'ages', 'campaign', 'player', 'dm',
             'classes', 'skillAccess', 'skillTypes', 'skills', 'skillSpecializations', 'improvements',
-            'itemTypes', 'equipment', 'spells', 'spellOptions', 'partyMembers', 'campaignVaultFunds', 'campaignVaultItems'
+            'itemTypes', 'equipment', 'spells', 'spellOptions', 'partyMembers', 'campaignVaultFunds', 'campaignVaultItems',
+            'refActions', 'commonActions'
         ));
     }
 
@@ -484,18 +493,19 @@ class UtilityController extends Controller
 
         $newClassId = (int)$validated['class_id'];
         
-        // Calculate levels and XP requirement
+        // Calculate levels and XP requirement using EntityEngine
         $xp = (int)($character->ExperiencePts ?? 0);
-        $currentClasses = !empty($character->Classes) ? array_filter(array_map('intval', explode(';', (string)$character->Classes))) : [];
-        $currentLvl = count($currentClasses);
-        $targetLvl = $currentLvl + 1;
-        $reqXp = $targetLvl * ($targetLvl - 1) * 500;
+        $calc = \App\Services\Entity\EntityEngine::calculate($character);
+        $currentCL = (int)($calc['heritage']['challenge_level'] ?? 1);
+        $targetLvl = $currentCL + 1;
+        $reqXp = \App\Services\Entity\EntityEngine::getXPRequiredForLevel($targetLvl);
         
         if ($xp < $reqXp) {
-            return back()->with('error', "Insufficient XP for level up. Required: {$reqXp} XP, Current: {$xp} XP.");
+            return back()->with('error', "Insufficient XP for level up. Required: " . number_format($reqXp) . " XP for Level {$targetLvl}, Current: " . number_format($xp) . " XP.");
         }
 
         // 1. Append class
+        $currentClasses = \App\Services\Entity\EntityEngine::parseClassIds($character->Classes ?? '');
         $currentClasses[] = $newClassId;
         $newClassesStr = implode(';', $currentClasses);
 
@@ -843,7 +853,7 @@ class UtilityController extends Controller
         $catalog = DB::table('ref_items')
             ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
             ->whereIn('ref_items.ID', $itemIds)
-            ->select('ref_items.*', 'ref_itemsubtypes.Name as SubtypeName')
+            ->select('ref_items.*', 'ref_itemsubtypes.Type as ItemTypeID', 'ref_itemsubtypes.Name as SubtypeName')
             ->get()
             ->keyBy('ID');
 
@@ -854,9 +864,15 @@ class UtilityController extends Controller
             $unitPrice = (float)($ref->BaseValue ?? 0);
             $totalCost += (int)round($unitPrice * $qty);
 
+            $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($ref);
+            $isContainer = \App\Services\Entity\EquipmentManager::isContainer($ref);
+            $uid = uniqid('item_');
+
             $itemsToAdd[] = [
-                'id' => uniqid('item_'),
+                'id' => $uid,
+                'uid' => $uid,
                 'item_id' => $ref->ID,
+                'ID' => $ref->ID,
                 'name' => $ref->Name . ($qty > 1 ? " (x{$qty})" : ''),
                 'Name' => $ref->Name,
                 'qty' => $qty,
@@ -865,9 +881,22 @@ class UtilityController extends Controller
                 'value' => (float)$unitPrice * $qty,
                 'BaseValue' => $unitPrice,
                 'weight' => (float)($ref->Weight ?? 0) * $qty,
+                'BaseWeight' => (float)($ref->Weight ?? 0),
                 'size' => $ref->Size ?? 'Medium (M)',
                 'dr' => (string)($ref->DR ?? 0),
                 'config' => $ref->Name,
+                'location' => $defaultLoc,
+                'Location' => $defaultLoc,
+                'locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
+                'Locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
+                'container_id' => null,
+                'ContainerID' => null,
+                'is_container' => $isContainer,
+                'IsContainer' => $isContainer,
+                'ItemTypeID' => $ref->ItemTypeID ?? $ref->Type ?? null,
+                'Subtype' => $ref->Subtype ?? null,
+                'SubtypeName' => $ref->SubtypeName ?? null,
+                'ECMod' => (int)($ref->ECMod ?? 0),
                 'added_at' => date('Y-m-d H:i:s'),
             ];
         }
@@ -882,7 +911,7 @@ class UtilityController extends Controller
             if (str_starts_with($raw, '[')) {
                 $charEquip = json_decode($raw, true) ?? [];
             } else {
-                $charEquip = [['name' => $raw, 'config' => $raw]];
+                $charEquip = [['name' => $raw, 'Name' => $raw, 'config' => $raw, 'location' => 1]];
             }
         }
         foreach ($itemsToAdd as $item) {
@@ -895,6 +924,190 @@ class UtilityController extends Controller
         ]);
 
         return back()->with('status', "Successfully purchased items for {$totalCost} sp! New balance: " . ($currentWealth - $totalCost) . " sp.");
+    }
+
+    /**
+     * Update a single equipment item's placement or container
+     */
+    public function updateEquipmentPlacement(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return back()->with('error', 'Character not found.');
+        }
+
+        $validated = $request->validate([
+            'item_index' => 'nullable|integer',
+            'item_uid' => 'nullable|string',
+            'item_id' => 'nullable|string',
+            'location' => 'required|integer|in:0,1,2',
+            'config' => 'nullable|integer|min:0|max:4',
+            'container_id' => 'nullable|string',
+        ]);
+
+        $config = (int)($validated['config'] ?? 0);
+        $newLoc = (int)$validated['location'];
+
+        $rawEquip = $character->Equipment;
+        $charEquip = [];
+        if (!empty($rawEquip)) {
+            if (str_starts_with($rawEquip, '[')) {
+                $charEquip = json_decode($rawEquip, true) ?? [];
+            } else {
+                $charEquip = [['name' => $rawEquip, 'Name' => $rawEquip, 'location' => 1]];
+            }
+        }
+
+        $targetIdx = null;
+        if (!empty($validated['item_uid'])) {
+            foreach ($charEquip as $idx => $it) {
+                if (($it['uid'] ?? '') === $validated['item_uid'] || ($it['id'] ?? '') === $validated['item_uid']) {
+                    $targetIdx = $idx;
+                    break;
+                }
+            }
+        }
+        if ($targetIdx === null && isset($validated['item_index'])) {
+            $targetIdx = (int)$validated['item_index'];
+        }
+
+        if ($targetIdx === null || !isset($charEquip[$targetIdx])) {
+            return back()->with('error', 'Item not found in inventory.');
+        }
+
+        $item = &$charEquip[$targetIdx];
+
+        // Check allowed locations
+        $allowed = \App\Services\Entity\EquipmentManager::getAllowedLocations($item);
+        if (!in_array($newLoc, $allowed, true)) {
+            $locName = \App\Services\Entity\EquipmentManager::getLocationName($newLoc);
+            return back()->with('error', "Cannot set item to {$locName}. This item type cannot be placed there.");
+        }
+
+        // Update locations array
+        $locations = $item['locations'] ?? $item['Locations'] ?? [];
+        if (!is_array($locations)) {
+            $locations = [];
+        }
+        for ($c = 0; $c < 5; $c++) {
+            if (!isset($locations[$c])) {
+                $locations[$c] = (int)($item['location'] ?? $item['Location'] ?? 1);
+            }
+        }
+        $locations[$config] = $newLoc;
+        $item['locations'] = $locations;
+        $item['Locations'] = $locations;
+        $item['location'] = $locations[0];
+        $item['Location'] = $locations[0];
+
+        if ($request->has('container_id')) {
+            $cId = $request->input('container_id');
+            $cId = ($cId === '' || $cId === 'none') ? null : (string)$cId;
+            $item['container_id'] = $cId;
+            $item['ContainerID'] = $cId;
+        }
+
+        DB::table('characters')->where('ID', $id)->update([
+            'Equipment' => json_encode($charEquip),
+        ]);
+
+        $itemName = $item['Name'] ?? $item['name'] ?? 'Item';
+        $cfgName = \App\Services\Entity\EquipmentManager::CONFIG_NAMES[$config] ?? "Preset #{$config}";
+        $locName = \App\Services\Entity\EquipmentManager::getLocationName($newLoc);
+        return back()->with('status', "Updated '{$itemName}' placement to {$locName} in {$cfgName} preset.");
+    }
+
+    /**
+     * Manage all character equipment (bulk presets, custom items, delete items, container assignments)
+     */
+    public function manageCharacterEquipment(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return back()->with('error', 'Character not found.');
+        }
+
+        $validated = $request->validate([
+            'items' => 'nullable|array',
+            'items.*.uid' => 'nullable|string',
+            'items.*.id' => 'nullable|string',
+            'items.*.item_id' => 'nullable|integer',
+            'items.*.name' => 'required|string|max:150',
+            'items.*.qty' => 'required|integer|min:1|max:1000',
+            'items.*.unit_price' => 'nullable|numeric|min:0',
+            'items.*.unit_weight' => 'nullable|numeric|min:0',
+            'items.*.locations' => 'nullable|array',
+            'items.*.container_id' => 'nullable|string',
+            'items.*.is_container' => 'nullable|boolean',
+            'items.*.item_type_id' => 'nullable|integer',
+            'items.*.subtype' => 'nullable|integer',
+            'wealth' => 'nullable|integer|min:0',
+        ]);
+
+        $updatedEquip = [];
+        if (!empty($validated['items'])) {
+            foreach ($validated['items'] as $it) {
+                $uid = $it['uid'] ?? $it['id'] ?? uniqid('item_');
+                $name = trim($it['name']);
+                $qty = max(1, (int)$it['qty']);
+                $unitPrice = isset($it['unit_price']) ? (float)$it['unit_price'] : 0.0;
+                $unitWeight = isset($it['unit_weight']) ? (float)$it['unit_weight'] : 0.0;
+
+                $itemRef = [
+                    'Name' => $name,
+                    'name' => $name,
+                    'ItemTypeID' => $it['item_type_id'] ?? null,
+                    'Subtype' => $it['subtype'] ?? null,
+                ];
+                $allowed = \App\Services\Entity\EquipmentManager::getAllowedLocations($itemRef);
+                $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($itemRef);
+                $isContainer = !empty($it['is_container']) || \App\Services\Entity\EquipmentManager::isContainer($itemRef);
+
+                $locations = [];
+                for ($c = 0; $c < 5; $c++) {
+                    $requestedLoc = isset($it['locations'][$c]) ? (int)$it['locations'][$c] : $defaultLoc;
+                    $locations[$c] = in_array($requestedLoc, $allowed, true) ? $requestedLoc : $defaultLoc;
+                }
+
+                $cId = !empty($it['container_id']) && $it['container_id'] !== 'none' ? (string)$it['container_id'] : null;
+
+                $updatedEquip[] = [
+                    'uid' => $uid,
+                    'id' => $uid,
+                    'item_id' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
+                    'ID' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
+                    'Name' => $name,
+                    'name' => $name,
+                    'Qty' => $qty,
+                    'qty' => $qty,
+                    'BaseValue' => $unitPrice,
+                    'unit_price' => $unitPrice,
+                    'value' => $unitPrice * $qty,
+                    'BaseWeight' => $unitWeight,
+                    'weight' => $unitWeight * $qty,
+                    'location' => $locations[0],
+                    'Location' => $locations[0],
+                    'locations' => $locations,
+                    'Locations' => $locations,
+                    'container_id' => $cId,
+                    'ContainerID' => $cId,
+                    'is_container' => $isContainer,
+                    'IsContainer' => $isContainer,
+                    'ItemTypeID' => $it['item_type_id'] ?? null,
+                    'Subtype' => $it['subtype'] ?? null,
+                    'added_at' => $it['added_at'] ?? date('Y-m-d H:i:s'),
+                ];
+            }
+        }
+
+        $updateData = ['Equipment' => json_encode($updatedEquip)];
+        if (isset($validated['wealth'])) {
+            $updateData['Wealth'] = (int)$validated['wealth'];
+        }
+
+        DB::table('characters')->where('ID', $id)->update($updateData);
+
+        return back()->with('status', 'Equipment inventory and presets updated successfully.');
     }
 
     /**
@@ -936,6 +1149,163 @@ class UtilityController extends Controller
         ]);
 
         return back()->with('status', "Successfully updated spells for {$character->Name} ({$newCount} new spell(s) learned)!");
+    }
+
+    /**
+     * Generate portrait images using Gemini / Google Imagen 3
+     */
+    public function generateCharacterPortraits(Request $request, int $id): JsonResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Character not found.',
+            ], 404);
+        }
+
+        $calc = \App\Services\Entity\EntityEngine::calculate($character);
+        $race = DB::table('ref_creatures')->where('ID', $character->BaseRace ?? 1)->first();
+        $classesMap = DB::table('ref_classes')->pluck('Name', 'ID')->toArray();
+
+        $templates = [];
+        if (!empty($character->Templates)) {
+            $tIds = is_array($character->Templates) ? $character->Templates : explode(';', (string)$character->Templates);
+            $templates = DB::table('ref_templates')->whereIn('ID', $tIds)->pluck('Name')->toArray();
+        }
+
+        $lookups = [
+            'race_name' => $race ? $race->Name : 'Humanoid',
+            'templates' => $templates,
+            'classes_map' => $classesMap,
+        ];
+
+        // Synthesize prompt or use user-provided prompt
+        $prompt = $request->input('prompt');
+        if (empty($prompt)) {
+            $prompt = GeminiImageService::generatePromptFromCharacter($character, $calc, $lookups);
+        }
+
+        $apiKey = $request->input('api_key');
+        $provider = (string)($request->input('provider') ?? 'auto');
+        $sampleCount = max(1, min(4, (int)($request->input('sample_count') ?? 4)));
+
+        try {
+            $images = GeminiImageService::generateImages($prompt, $apiKey, $sampleCount, $provider);
+            return response()->json([
+                'success' => true,
+                'prompt' => $prompt,
+                'images' => $images,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'prompt' => $prompt,
+                'message' => $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    /**
+     * Save selected portrait image to character
+     */
+    public function saveCharacterPortrait(Request $request, int $id): JsonResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Character not found.',
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'image_data' => 'required|string',
+            'mime_type' => 'nullable|string',
+        ]);
+
+        try {
+            $mime = $validated['mime_type'] ?? 'image/jpeg';
+            $imagePath = GeminiImageService::savePortraitFromBase64($validated['image_data'], $id, $mime);
+
+            return response()->json([
+                'success' => true,
+                'image_path' => $imagePath,
+                'message' => 'Character portrait updated successfully!',
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to save character portrait: ' . $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    /**
+     * Upload custom portrait image for character
+     */
+    public function uploadCharacterPortrait(Request $request, int $id): JsonResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Character not found.',
+            ], 404);
+        }
+
+        $request->validate([
+            'portrait' => 'required|image|max:5120', // Max 5MB
+        ]);
+
+        try {
+            $file = $request->file('portrait');
+            $imagePath = GeminiImageService::savePortraitFromFile($file, $id);
+
+            return response()->json([
+                'success' => true,
+                'image_path' => $imagePath,
+                'message' => 'Character portrait uploaded successfully!',
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to upload character portrait: ' . $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    /**
+     * Save character portrait from external URL
+     */
+    public function saveCharacterPortraitUrl(Request $request, int $id): JsonResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Character not found.',
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'url' => 'required|url',
+        ]);
+
+        try {
+            $imagePath = GeminiImageService::savePortraitFromUrl($validated['url'], $id);
+
+            return response()->json([
+                'success' => true,
+                'image_path' => $imagePath,
+                'message' => 'Character portrait imported successfully!',
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to import character portrait: ' . $e->getMessage(),
+            ], 400);
+        }
     }
 
     /**
@@ -2091,16 +2461,16 @@ class UtilityController extends Controller
 
         $allProcessed = $rawCharacters->map(function ($c) use ($allClasses) {
             $classList = [];
-            if (!empty($c->Classes)) {
-                $cIds = explode(';', $c->Classes);
-                $counts = array_count_values(array_filter(array_map('trim', $cIds)));
+            $classIds = \App\Services\Entity\EntityEngine::parseClassIds($c->Classes ?? '');
+            if (!empty($classIds)) {
+                $counts = array_count_values($classIds);
                 foreach ($counts as $cid => $cnt) {
                     $cName = $allClasses[$cid] ?? "Class $cid";
                     $classList[] = "$cName $cnt";
                 }
             }
             $c->ClassSummary = !empty($classList) ? implode(' / ', $classList) : 'Adventurer';
-            $c->Level = !empty($c->Classes) ? max(1, count(array_filter(explode(';', $c->Classes)))) : 1;
+            $c->Level = !empty($classIds) ? count($classIds) : 1;
             return $c;
         });
 
@@ -2457,40 +2827,49 @@ class UtilityController extends Controller
         // Evaluate standard dice / arithmetic expressions
         $result = $this->evaluateDiceString($expr);
 
-        return response()->json([
+        return new JsonResponse([
             'expression' => $expr,
             'result' => $result,
         ]);
     }
 
+    /**
+     * Evaluate dice notations and expressions (supporting open-ended / exploding dice with '!').
+     */
     private function evaluateDiceString(string $expr): string
     {
         $expr = trim($expr);
         if (empty($expr)) return '0';
 
-        // Parse single standard dice format like 3d6+2 or d20 or 4d6-1 with detailed breakdowns
-        if (preg_match('/^(\d+)?d(\d+)(?:([+-])(\d+))?$/i', $expr, $m)) {
+        // Parse single standard or exploding dice format like 3d6+2, d20!, 1d20!+5, 4d6!-1 with detailed breakdowns
+        if (preg_match('/^(\d+)?d(\d+)(!)?(?:\s*([+-])\s*(\d+))?$/i', $expr, $m)) {
             $numDice = !empty($m[1]) ? (int)$m[1] : 1;
             $sides = (int)$m[2];
-            $op = $m[3] ?? null;
-            $mod = isset($m[4]) ? (int)$m[4] : 0;
+            $exploding = !empty($m[3]);
+            $op = $m[4] ?? null;
+            $mod = isset($m[5]) ? (int)$m[5] : 0;
 
             if ($sides <= 0 || $numDice <= 0 || $numDice > 100) {
                 return "Invalid dice range";
             }
 
-            $rolls = [];
+            $rollsText = [];
             $sum = 0;
             for ($i = 0; $i < $numDice; $i++) {
-                $r = rand(1, $sides);
-                $rolls[] = $r;
-                $sum += $r;
+                $roll = $this->rollSingleDie($sides, $exploding);
+                $rollsText[] = $roll['text'];
+                $sum += $roll['total'];
             }
 
             if ($op === '+') $sum += $mod;
             if ($op === '-') $sum -= $mod;
 
-            return "$sum (" . implode('+', $rolls) . ($op ? " $op $mod" : "") . ")";
+            $breakdown = implode(' + ', $rollsText);
+            if ($op) {
+                $breakdown .= " $op $mod";
+            }
+
+            return "$sum ($breakdown)";
         }
 
         // Safe mathematical & dice evaluation using cExpressionParser
@@ -2500,16 +2879,18 @@ class UtilityController extends Controller
             }
             $parser = new \cExpressionParser();
             
-            // Convert any remaining standard dice notation 'NdS' to '$S' or evaluate arithmetic
-            $convertedExpr = preg_replace_callback('/(\d+)?d(\d+)/i', function ($dm) {
+            // Convert any remaining standard dice notation 'NdS' or 'NdS!' to evaluated numeric sum
+            $convertedExpr = preg_replace_callback('/(\d+)?d(\d+)(!)?/i', function ($dm) {
                 $count = !empty($dm[1]) ? (int)$dm[1] : 1;
                 $sides = (int)$dm[2];
+                $exploding = !empty($dm[3]);
                 if ($sides <= 0 || $count <= 0 || $count > 100) return '0';
-                $rolls = [];
+                $sum = 0;
                 for ($i = 0; $i < $count; $i++) {
-                    $rolls[] = rand(1, $sides);
+                    $roll = $this->rollSingleDie($sides, $exploding);
+                    $sum += $roll['total'];
                 }
-                return '(' . implode('+', $rolls) . ')';
+                return '(' . $sum . ')';
             }, $expr);
 
             $val = $parser->Evaluate($convertedExpr);
@@ -2520,5 +2901,73 @@ class UtilityController extends Controller
         } catch (\Throwable $t) {
             return "Error: " . $t->getMessage();
         }
+    }
+
+    /**
+     * Roll a single die, optionally with open-ended (exploding / fumbling) rules.
+     *
+     * In RoL d20 Core Mechanics:
+     * - On natural maximum (e.g. 20 on d20): die explodes upwards, rerolling and adding until a non-max is rolled.
+     * - On natural 1: die fumbles downwards, rerolling and subtracting die size for each 1 (i.e. roll - sides * ones).
+     *
+     * @return array{total: int, rolls: int[], type: string, text: string}
+     */
+    private function rollSingleDie(int $sides, bool $exploding = false): array
+    {
+        if ($sides <= 1) {
+            return ['total' => 1, 'rolls' => [1], 'type' => 'normal', 'text' => '1'];
+        }
+
+        if (!$exploding) {
+            $r = rand(1, $sides);
+            return ['total' => $r, 'rolls' => [$r], 'type' => 'normal', 'text' => (string)$r];
+        }
+
+        $r = rand(1, $sides);
+        if ($r === $sides) {
+            // Upward explosion
+            $rolls = [$r];
+            $sum = $r;
+            $limit = 20; // safety iteration limit
+            while ($r === $sides && --$limit > 0) {
+                $r = rand(1, $sides);
+                $rolls[] = $r;
+                $sum += $r;
+            }
+            $rollsStr = implode('!+', array_slice($rolls, 0, -1)) . '!+' . end($rolls);
+            return [
+                'total' => $sum,
+                'rolls' => $rolls,
+                'type' => 'explode_up',
+                'text' => '[' . $rollsStr . '=' . $sum . ']'
+            ];
+        }
+
+        if ($r === 1) {
+            // Downward fumble
+            $rolls = [$r];
+            $onesCount = 1;
+            $limit = 20; // safety iteration limit
+            while (--$limit > 0) {
+                $r = rand(1, $sides);
+                $rolls[] = $r;
+                if ($r === 1) {
+                    $onesCount++;
+                } else {
+                    break;
+                }
+            }
+            $sum = $r - ($onesCount * $sides);
+            $onesStr = str_repeat('1!', $onesCount);
+            $subVal = $onesCount * $sides;
+            return [
+                'total' => $sum,
+                'rolls' => $rolls,
+                'type' => 'explode_down',
+                'text' => '[' . $onesStr . '->' . $r . '-' . $subVal . '=' . $sum . ']'
+            ];
+        }
+
+        return ['total' => $r, 'rolls' => [$r], 'type' => 'normal', 'text' => (string)$r];
     }
 }

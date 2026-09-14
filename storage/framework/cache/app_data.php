@@ -1024,7 +1024,7 @@ return array (
       'Difficulties' => 'Dodge through threatened squares: 5 + enemy TL (one check against all enemies)\\nDodge through squares with enemies: 15 + enemy TL (one check against all enemies)\\nMultiple threatening enemies: +2 per enemy beyond the first\\nSloped or angled surface: +2',
       'Modifiers' => 'Fast dodge (1 MP instead of 2 MP): -10\\nAcrobatics synergy: +1 syn per 5 lvls\\nAthletics synergy: +1 syn per 5 lvls',
       'APBoost' => '+1 action check bonus per AP',
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     39 => 
     array (
@@ -1087,7 +1087,7 @@ return array (
       'Difficulties' => 'Land softly: 15',
       'Modifiers' => 'Deliberate jump: +5\\nAthletics synergy: +1 syn per 5 lvls',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     42 => 
     array (
@@ -1108,7 +1108,7 @@ return array (
       'Difficulties' => 'Run/charge on uneven ground or slope: 10',
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     43 => 
     array (
@@ -1255,7 +1255,7 @@ return array (
       'Difficulties' => NULL,
       'Modifiers' => 'Speed modifier: -12 + 2 x (base speed in squares)\\nLand on feet: -5\\nPole vaulting: -5\\nAcrobatics synergy: +1 syn per 5 lvls',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     50 => 
     array (
@@ -1276,7 +1276,7 @@ return array (
       'Difficulties' => 'Less than 60 degree incline, or knotted rope and wall: 0\\nRope and wall, or knotted rope: 5\\nRigging, or surface with edges: 10\\nSurface with handholds, unknotted rope, or pulling oneself up on a ledge: 15\\nUneven surface, typical dungeon wall: 20\\nNatural cliff, or brick wall: 25\\nOverhang, or ceiling with handholds: 25\\nSmooth, flat, vertical surface: 40\\nIf you can create your own handholds (with pitons or an axe), the DC becomes 15, but this takes 1 min per handhold.\\nRappel down with rope and climber\'s kit: 10 for 1 MP per sq, 20 for 1/2 MP per sq\\nBracing against opposite wall: -10\\nBracing against corner wall: -5\\nSlippery: +5\\nCatch yourself when falling: +15 (F - You continue falling)\\nCatch someone else falling: +10 (F - You fail to catch the target; OF - Both you and the target fall)',
       'Modifiers' => 'Fast climb (halve MP per sq): -5\\nVery fast climb (1 MP per sq): -20\\nRetain active DeC while climbing: -20\\nRacial climb speed: +8 racial\\nClimber\'s kit: +2 circ\\nAcrobatics synergy: +1 syn per 5 lvls\\nSurvival synergy: +1 syn per 5 lvls',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     51 => 
     array (
@@ -1297,7 +1297,7 @@ return array (
       'Difficulties' => 'Calm water: 10\\nRough water: 15\\nStormy water: 20 (taking 10 is not possible)\\nFast-moving water: 15 (rocks and cascades can deal physical damage)',
       'Modifiers' => 'Racial swim speed: +8 racial\\nSurvival synergy: +1 syn per 5 lvls',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     52 => 
     array (
@@ -1465,7 +1465,7 @@ return array (
       'Difficulties' => 'First aid: 15\\nTreat slowing wounds: 15',
       'Modifiers' => 'Healer\'s kit: +2 circ',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     60 => 
     array (
@@ -1507,7 +1507,7 @@ return array (
       'Difficulties' => 'Death due to HP damage: Number of negative HP\\nDeath due to a failed defense: Killing attack\'s PL + 10',
       'Modifiers' => 'Healer\'s kit: +2 circ',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     62 => 
     array (
@@ -1696,7 +1696,7 @@ return array (
       'Difficulties' => 'Notice creature: 0 or opposed Stealth (Move Silently) check\\nAmbient noise: +5 or more\\nThrough a door or wooden wall: +5\\nThrough a stone wall: +15',
       'Modifiers' => 'Distance: -1 per 2 squares (-1 per 4 sq over water and -1 per 6 sq underwater)\\nListener distracted: -5\\nListener sleeping: -10\\nNon-aquatic listener underwater: -10\\nDanger Sense synergy: +1 syn per 5 lvls',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     71 => 
     array (
@@ -1738,7 +1738,7 @@ return array (
       'Difficulties' => 'Find an item amongst junk: 10\\nNotice a typical secret door: 20\\nNotice a well-hidden secret door: 30\\nFind a trap: Trap\'s Search DC\\nSearch someone for weapons: +4 vs. opposing Thievery (Legerdemain)',
       'Modifiers' => 'Passive searching: -10 (or use the Spot action); reduce penalty to -5 at skill level 10\\nUsing vision only: -2\\nUsing touch only: -4\\nDanger Sense synergy against traps: +1 syn per 3 lvls',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     73 => 
     array (
@@ -1780,7 +1780,7 @@ return array (
       'Difficulties' => 'Notice creature, object, or feature: (0 + 2 x size-based Att/DeC mod) or opposed Stealth (Hide)',
       'Modifiers' => 'Distance: -1 for 2 sq, -2 for 5 sq, -4 for 10 sq, -6 for 20 sq, -8 for 40 sq, -10 for 100 sq, -12 for 200 sq, -14 for 400 sq, -16 for 800 sq, -18 for 1600 sq, -20 for 3200 sq, etc.\\nSpotter distracted: -5\\nDanger Sense synergy: +1 syn per 5 lvls',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     75 => 
     array (
@@ -1927,7 +1927,7 @@ return array (
       'Difficulties' => 'Looking for general news: 10\\nLooking for specific rumors: 15+\\nLooking for an individual: 15+\\nLearn about individual\'s/organization\'s SC and WC: 20\\nLearn about individual\'s/organization\'s main enemies and allies: 25\\nLearn about individual\'s/organization\'s influences: 30',
       'Modifiers' => 'Information about individual: + individual\'s reputation\\nInformation about organization: + organization\'s reputation\\nKnowledge (Local) synergy: +1 syn per 5 lvls',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     82 => 
     array (
@@ -1948,7 +1948,7 @@ return array (
       'Difficulties' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     83 => 
     array (
@@ -2032,7 +2032,7 @@ return array (
       'Difficulties' => 'Hunch: 20 (gut assessment of a social situation)\\nSense enchantment (charm): 25\\nSense enchantm. (compulsion): 15',
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     87 => 
     array (
@@ -2179,7 +2179,7 @@ return array (
       'Difficulties' => NULL,
       'Modifiers' => 'Activity (use the worst one each round for activity thus far):\\n+10 for stationary object or non-living creature\\n+5 for stationary living creature\\n0 for moving slowly (x2 MP cost)\\n-5 for moving full speed (normal MP cost)\\n-20 for running, attacking, or charging\\nCarrying light source at least as bright as the ambient light:\\n-5 for same brightness\\n-10 per step of difference\\nVisibility:\\nCover, concealment, and invisibility provide the same bonus as for DeC vs. melee.\\nWhen moving away from a square that provides cover and/or concealment, you continue to enjoy part of the Hide bonus for a short distance (reduce the bonus by 5 per square moved).',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     94 => 
     array (
@@ -2200,7 +2200,7 @@ return array (
       'Difficulties' => NULL,
       'Modifiers' => 'Activity (use the worst one each round for activity thus far):\\n+20 for stationary non-living creature\\n+10 for stationary living creature\\n+5 for whispering\\n0 for moving slowly (x2 MP cost)\\n-5 for moving full speed (normal MP cost)\\n-10 for speaking or using verbal actions\\n-20 for running, attacking, or charging\\nEnvironment:\\n-2 for noisy surface\\n-5 for very noisy surface\\n+5 for swimming underwater\\n+10 for flying',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     95 => 
     array (
@@ -2599,7 +2599,7 @@ return array (
       'Difficulties' => 'Break down barrier: Barrier\'s DC',
       'Modifiers' => 'Break barrier with charge: +2',
       'APBoost' => '+1 attack bonus per AP',
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     114 => 
     array (
@@ -4531,7 +4531,7 @@ return array (
       'Difficulties' => 'Request shelter (small party): 12\\nGain access to news and gossip: 12\\nRequest lodging (large party or extended stay): 15\\nFresh supplies and horses (small party): 18\\nMedicines and treatment for wounded: 18\\nConfirm rights, legitimacy, or resolve minor dispute: 18\\nLend use of expert: 20\\nConfirm rights, legitimacy, or resolve significant dispute: 20\\nRequest protection from lesser authority: 25\\nConfirm rights, legitimacy, or resolve major dispute: 25\\nLend use of small company or several experts: 30\\nRequest protection from equal authority: 35\\nLend use of major military force: 35\\nRequest protection from greater authority: 40',
       'Modifiers' => 'Using group influence against individual target: -10\\nDifference in SC (social class): ±4 per rank\\nTarget has family ties or sworn direct service to you: +5\\nTarget has friendly attitude: +5\\nTarget has hostile attitude: -5\\nPerform service for target: Varies\\nBribe, gift, or blackmail: Varies\\nDanger or inconvenience for target: Varies\\nApplicable reputation: +1/2 or -1/2 reputation value\\nHelpful influence from third party: +(Up to the third party\'s influence)\\nOpposing influence from third party: -(Up to the third party\'s influence)\\nClearing debt (works only on individuals): By permanently reducing your influence, you gain a corresponding bonus.',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     209 => 
     array (
@@ -6421,7 +6421,7 @@ return array (
       'Difficulties' => 'Notice living creature: 10 or opposed Survival check\\nRotting garbage: -10\\nSmoke or fire: 0',
       'Modifiers' => 'Distance: -1 per square\\nSmeller distracted: -5\\nSmeller sleeping: -10\\nNon-aquatic smeller underwater: -20\\nDanger Sense synergy: +1 syn per 5 lvls',
       'APBoost' => NULL,
-      'ShowPCGen' => 1,
+      'ShowPCGen' => 2,
     ),
     299 => 
     array (
@@ -13771,7 +13771,7 @@ return array (
       'FlySpeed' => 30,
       'DR' => 18,
       'MR' => 0,
-      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d8 acid HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=AcidRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }',
+      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d8 acid HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=AcidRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }',
       'DefaultCulture' => 25,
       'Appearance' => 'A winged, reptilian creature whose scales are mostly dull ebony and dark gray. Its head looks decidedly like a skull with deep-socketed eyes and wide, flat nasal opening. It has forward-curving horns and a spinal crest that peaks behind the head and tapers down the neck. An acidic smell surrounds it.',
       'Personality' => 'Fearsome, cunning, and covetous predator. Aggressive, vain, and nasty. They are greedy and especially fond of gold and platinum coins.',
@@ -13819,7 +13819,7 @@ return array (
       'FlySpeed' => 30,
       'DR' => 20,
       'MR' => 0,
-      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d10 electricity HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ElectricRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } SpdType { Qual=Burrow; Value=2; }',
+      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d10 electricity HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ElectricRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } SpdType { Qual=Burrow; Value=2; }',
       'DefaultCulture' => 25,
       'Appearance' => NULL,
       'Personality' => NULL,
@@ -13867,7 +13867,7 @@ return array (
       'FlySpeed' => 30,
       'DR' => 19,
       'MR' => 0,
-      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d8 acid HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=AcidRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }',
+      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d8 acid HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=AcidRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }',
       'DefaultCulture' => 25,
       'Appearance' => NULL,
       'Personality' => NULL,
@@ -13915,7 +13915,7 @@ return array (
       'FlySpeed' => 30,
       'DR' => 21,
       'MR' => 0,
-      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d12 fire HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=FireRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }',
+      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d12 fire HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=FireRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }',
       'DefaultCulture' => 25,
       'Appearance' => NULL,
       'Personality' => NULL,
@@ -13963,7 +13963,7 @@ return array (
       'FlySpeed' => 40,
       'DR' => 17,
       'MR' => 0,
-      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d6 cold HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ColdRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } SpdType { Qual=Burrow; Value=2; }',
+      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d6 cold HP; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ColdRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } SpdType { Qual=Burrow; Value=2; }',
       'DefaultCulture' => 25,
       'Appearance' => NULL,
       'Personality' => NULL,
@@ -14011,7 +14011,7 @@ return array (
       'FlySpeed' => 40,
       'DR' => 18,
       'MR' => 0,
-      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d8 fire HP; } ActAcc { Qual=Mental Breath; Target=RL/2 sq cone; Dmg=Sleep for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=FireRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } SpdType { Qual=Burrow; Value=2; }',
+      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d8 fire HP; } ActAcc { Qual=Mental Breath; Target=RL/2 sq cone; Dmg=Sleep for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=FireRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } SpdType { Qual=Burrow; Value=2; }',
       'DefaultCulture' => 25,
       'Appearance' => NULL,
       'Personality' => NULL,
@@ -14059,7 +14059,7 @@ return array (
       'FlySpeed' => 30,
       'DR' => 20,
       'MR' => 0,
-      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d10 electricity HP; } ActAcc { Qual=Mental Breath; Target=RL/2 sq cone; Dmg=Repulsion for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ElectricRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } ActAcc { Qual=Change Shape; Effect=Grade II to S/M animal or humanoid; Cost=10 SP; }',
+      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d10 electricity HP; } ActAcc { Qual=Mental Breath; Target=RL/2 sq cone; Dmg=Repulsion for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ElectricRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } ActAcc { Qual=Change Shape; Effect=Grade II to S/M animal or humanoid; Cost=10 SP; }',
       'DefaultCulture' => 25,
       'Appearance' => NULL,
       'Personality' => NULL,
@@ -14107,7 +14107,7 @@ return array (
       'FlySpeed' => 30,
       'DR' => 19,
       'MR' => 0,
-      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d8 acid HP; } ActAcc { Qual=Poison Breath; Target=RL/2 sq cone; Dmg=Slow for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=1; } DefMod { Qual=AcidRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }',
+      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL sq line; Dmg=(RL/2)d8 acid HP; } ActAcc { Qual=Poison Breath; Target=RL/2 sq cone; Dmg=Slow for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=1; } DefMod { Qual=AcidRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; }',
       'DefaultCulture' => 25,
       'Appearance' => NULL,
       'Personality' => NULL,
@@ -14155,7 +14155,7 @@ return array (
       'FlySpeed' => 40,
       'DR' => 22,
       'MR' => 0,
-      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d12 fire HP; } ActAcc { Qual=Poison Breath; Target=RL/2 sq cone; Dmg=RL/4 Str; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=FireRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } ActAcc { Qual=Change Shape; Effect=Grade II to S/M animal or humanoid; Cost=10 SP; }',
+      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d12 fire HP; } ActAcc { Qual=Poison Breath; Target=RL/2 sq cone; Dmg=RL/4 Str; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=FireRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } ActAcc { Qual=Change Shape; Effect=Grade II to S/M animal or humanoid; Cost=10 SP; }',
       'DefaultCulture' => 25,
       'Appearance' => NULL,
       'Personality' => NULL,
@@ -14203,7 +14203,7 @@ return array (
       'FlySpeed' => 30,
       'DR' => 21,
       'MR' => 0,
-      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d10 cold HP; } ActAcc { Qual=Poison Breath; Target=RL/2 sq cone; Dmg=Paralysis for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ColdRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } ActAcc { Qual=Change Shape; Effect=Grade II to S/M animal or humanoid; Cost=10 SP; }',
+      'RacialTraits' => 'Sns { Qual=LowLightVision; Value=4; } Sns { Qual=Darkvision; Value=24; } Sns { Qual=Blindsense; Value=greater; } DefMod { Qual=MR; Type=racial; Value=+RL/2; } Defense { Qual=ParalysisRes; Value=+999; } Defense { Qual=SleepRes; Value=+999; } Special { Qual=FearAura; Effect=+RL/2+ChaMod vs Will - Shaken; Target=RL sq rad; } ActAcc { Qual=Energy Breath; Target=RL/2 sq cone; Dmg=(RL/2)d10 cold HP; } ActAcc { Qual=Poison Breath; Target=RL/2 sq cone; Dmg=Paralysis for enc; } Affinity { Qual=Arcane; Abil=Cha; PPRed=1; } SpdType { Qual=Climb; Value=3; } DefMod { Qual=ColdRes; Value=+999; } DefMod { Qual=DR; Value=+10; Req=non-magic; } ActAcc { Qual=Change Shape; Effect=Grade II to S/M animal or humanoid; Cost=10 SP; }',
       'DefaultCulture' => 25,
       'Appearance' => NULL,
       'Personality' => NULL,

@@ -87,8 +87,20 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/charview/{id}/trade', [UtilityController::class, 'tradePartyAssets']);
     Route::post('/character-viewer/{id}/buy-items', [UtilityController::class, 'buyCharacterItems'])->name('charview.buy-items');
     Route::post('/charview/{id}/buy-items', [UtilityController::class, 'buyCharacterItems']);
+    Route::post('/character-viewer/{id}/equipment/placement', [UtilityController::class, 'updateEquipmentPlacement'])->name('charview.equipment.placement');
+    Route::post('/charview/{id}/equipment/placement', [UtilityController::class, 'updateEquipmentPlacement']);
+    Route::post('/character-viewer/{id}/manage-equipment', [UtilityController::class, 'manageCharacterEquipment'])->name('charview.manage-equipment');
+    Route::post('/charview/{id}/manage-equipment', [UtilityController::class, 'manageCharacterEquipment']);
     Route::post('/character-viewer/{id}/learn-spells', [UtilityController::class, 'learnCharacterSpells'])->name('charview.learn-spells');
     Route::post('/charview/{id}/learn-spells', [UtilityController::class, 'learnCharacterSpells']);
+    Route::post('/character-viewer/{id}/generate-portraits', [UtilityController::class, 'generateCharacterPortraits'])->name('charview.generate-portraits');
+    Route::post('/charview/{id}/generate-portraits', [UtilityController::class, 'generateCharacterPortraits']);
+    Route::post('/character-viewer/{id}/save-portrait', [UtilityController::class, 'saveCharacterPortrait'])->name('charview.save-portrait');
+    Route::post('/charview/{id}/save-portrait', [UtilityController::class, 'saveCharacterPortrait']);
+    Route::post('/character-viewer/{id}/upload-portrait', [UtilityController::class, 'uploadCharacterPortrait'])->name('charview.upload-portrait');
+    Route::post('/charview/{id}/upload-portrait', [UtilityController::class, 'uploadCharacterPortrait']);
+    Route::post('/character-viewer/{id}/save-portrait-url', [UtilityController::class, 'saveCharacterPortraitUrl'])->name('charview.save-portrait-url');
+    Route::post('/charview/{id}/save-portrait-url', [UtilityController::class, 'saveCharacterPortraitUrl']);
 
     Route::get('/npc-generator', [UtilityController::class, 'npcGenerator'])->name('npcgen');
     Route::get('/npcgen', [UtilityController::class, 'npcGenerator']);

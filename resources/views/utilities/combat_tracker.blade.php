@@ -31,7 +31,7 @@
     </div>
 
     <!-- Encounter Control Banner (Round, Turn, Global Actions) -->
-    <div class="bg-linear-to-r from-slate-900 via-slate-800 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-md flex flex-col lg:flex-row items-center justify-between gap-4 border border-amber-500/30">
+    <div class="charview-action-bar text-white rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col lg:flex-row items-center justify-between gap-4 border border-amber-500/30">
         <!-- Round & Active Turn Status -->
         <div class="flex flex-wrap items-center gap-4 sm:gap-6">
             <!-- Round Counter -->

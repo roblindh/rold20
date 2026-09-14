@@ -166,15 +166,20 @@
 <style>
     @media print {
         .ruleset-chapter {
-            page-break-before: always;
-            break-before: page;
+            page-break-before: always !important;
+            break-before: page !important;
+        }
+        .ruleset-chapter:first-of-type,
+        #chapter-1 {
+            page-break-before: auto !important;
+            break-before: auto !important;
         }
         .chapter-divider {
             display: none !important;
         }
-        table, .optionalrule, .statblock {
-            page-break-inside: avoid;
-            break-inside: avoid;
+        table, tr, img, .optionalrule, .statblock, .rule-box {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
         }
     }
 </style>

@@ -11,10 +11,12 @@ class EntityEngine
      * Cache reference tables for fast calculation
      */
     protected static ?array $creaturesCache = null;
+    protected static ?array $creatureTypesCache = null;
     protected static ?array $templatesCache = null;
     protected static ?array $classesCache = null;
     protected static ?array $classConfigsCache = null;
     protected static ?array $skillsCache = null;
+    protected static ?array $skillBenefitsCache = null;
     protected static ?array $specializationsCache = null;
     protected static ?array $improvementsCache = null;
     protected static ?array $itemsCache = null;
@@ -27,6 +29,283 @@ class EntityEngine
     protected static ?array $subtypesCache = null;
     protected static ?array $socialClassesCache = null;
     protected static ?array $wealthClassesCache = null;
+    protected static ?array $actionsCache = null;
+
+    /**
+     * Complete mapping of weapon category abbreviations to Skill ID, code, and name.
+     */
+    public const WEAPON_SKILL_MAP = [
+        'Nat' => ['skill_id' => 17, 'code' => 'WpNat', 'name' => 'Weapons - Natural'],
+        'Brl' => ['skill_id' => 18, 'code' => 'WpBrl', 'name' => 'Weapons - Brawling'],
+        'Gen' => ['skill_id' => 19, 'code' => 'WpGen', 'name' => 'Weapons - Generic'],
+        'Exo' => ['skill_id' => 20, 'code' => 'WpExo', 'name' => 'Weapons - Exotic'],
+        'Axe' => ['skill_id' => 21, 'code' => 'WpAxe', 'name' => 'Weapons - Axes'],
+        'Clb' => ['skill_id' => 22, 'code' => 'WpClb', 'name' => 'Weapons - Clubs'],
+        'Fnc' => ['skill_id' => 23, 'code' => 'WpFnc', 'name' => 'Weapons - Fencing'],
+        'Fll' => ['skill_id' => 24, 'code' => 'WpFll', 'name' => 'Weapons - Flails'],
+        'HvB' => ['skill_id' => 25, 'code' => 'WpHvB', 'name' => 'Weapons - Heavy Blades'],
+        'LtB' => ['skill_id' => 26, 'code' => 'WpLtB', 'name' => 'Weapons - Light Blades'],
+        'PlA' => ['skill_id' => 27, 'code' => 'WpPlA', 'name' => 'Weapons - Pole Arms'],
+        'Shd' => ['skill_id' => 28, 'code' => 'WpShd', 'name' => 'Weapons - Shields'],
+        'Spr' => ['skill_id' => 29, 'code' => 'WpSpr', 'name' => 'Weapons - Spears'],
+        'Stv' => ['skill_id' => 30, 'code' => 'WpStv', 'name' => 'Weapons - Staves'],
+        'Bow' => ['skill_id' => 31, 'code' => 'WpBow', 'name' => 'Weapons - Bows'],
+        'Crs' => ['skill_id' => 32, 'code' => 'WpCrs', 'name' => 'Weapons - Crossbows'],
+        'Fir' => ['skill_id' => 33, 'code' => 'WpFir', 'name' => 'Weapons - Firearms'],
+        'Sln' => ['skill_id' => 34, 'code' => 'WpSln', 'name' => 'Weapons - Slings'],
+        'SmT' => ['skill_id' => 35, 'code' => 'WpSmT', 'name' => 'Weapons - Small Thrown'],
+        'Are' => ['skill_id' => 36, 'code' => 'WpAre', 'name' => 'Weapons - Area Attacks'],
+        'BaM' => ['skill_id' => 37, 'code' => 'WpBaM', 'name' => 'Weapons - Body & Mind Attacks'],
+        'Ray' => ['skill_id' => 38, 'code' => 'WpRay', 'name' => 'Weapons - Ray Attacks'],
+        'Sie' => ['skill_id' => 39, 'code' => 'WpSie', 'name' => 'Weapons - Siege'],
+    ];
+
+    /**
+     * Complete mapping of armor category abbreviations to Skill ID, code, and name.
+     */
+    public const ARMOR_SKILL_MAP = [
+        'Lt' => ['skill_id' => 40, 'code' => 'ArmLt', 'name' => 'Armor - Light'],
+        'Md' => ['skill_id' => 41, 'code' => 'ArmMd', 'name' => 'Armor - Medium'],
+        'Hv' => ['skill_id' => 42, 'code' => 'ArmHv', 'name' => 'Armor - Heavy'],
+    ];
+
+    /**
+     * Evaluate weapon skill benefits for a given weapon Qual string (e.g. 'Gen || LtB') or array of categories.
+     * Takes the highest bonus of each type (attack, damage, parry, att_spd, crit_rng, ec_red)
+     * and the union of all special maneuvers granted by any trained weapon skill associated with the weapon.
+     */
+    public static function evaluateWeaponSkillsForQual(string|array $qual, array $effectiveSkillRanks, array $context = []): array
+    {
+        self::loadReferenceTables();
+
+        $tokens = is_array($qual) ? $qual : array_map('trim', preg_split('/(\|\||,)/', (string)$qual));
+
+        $bestAtt = 0;
+        $bestDmg = 0;
+        $bestParry = 0;
+        $bestAttSpd = 0;
+        $bestCritRng = 0;
+        $bestECRed = 0;
+        $allManeuvers = [];
+        $matchedSkills = [];
+
+        foreach ($tokens as $token) {
+            $token = trim($token);
+            if (empty($token)) continue;
+
+            $skillInfo = self::WEAPON_SKILL_MAP[$token] ?? null;
+            if (!$skillInfo) {
+                foreach (self::WEAPON_SKILL_MAP as $mapToken => $info) {
+                    if (strcasecmp($info['code'], $token) === 0 || strcasecmp($mapToken, $token) === 0 || (is_numeric($token) && (int)$token === $info['skill_id'])) {
+                        $skillInfo = $info;
+                        break;
+                    }
+                }
+            }
+
+            if (!$skillInfo) continue;
+
+            $skillId = $skillInfo['skill_id'];
+            $skillCode = $skillInfo['code'];
+            $userRank = (float)($effectiveSkillRanks[$skillId] ?? 0);
+            if ($userRank <= 0) continue;
+
+            $matchedSkills[$skillId] = [
+                'name' => $skillInfo['name'],
+                'code' => $skillCode,
+                'rank' => $userRank,
+            ];
+
+            $skContext = array_merge($context, [
+                'lvl' => (int)floor($userRank),
+                'LVL' => (int)floor($userRank),
+                'SkillLvl' => (int)floor($userRank),
+            ]);
+
+            if (self::$skillBenefitsCache !== null) {
+                foreach (self::$skillBenefitsCache as $sb) {
+                    $sbSkill = (int)($sb['Skill'] ?? $sb['SkillID'] ?? 0);
+                    if ($sbSkill !== $skillId) continue;
+
+                    $reqLvl = (int)($sb['SkillLevel'] ?? $sb['Lvl'] ?? 1);
+                    if ($userRank < $reqLvl) continue;
+
+                    $traitsStr = $sb['Traits'] ?? $sb['Trait'] ?? '';
+                    if (empty($traitsStr)) continue;
+
+                    $parsed = TraitEvaluator::parse($traitsStr);
+                    foreach ($parsed as $tr) {
+                        $type = $tr['type'];
+                        $params = $tr['params'];
+                        $q = $params['Qual'] ?? '';
+                        $valStr = (string)($params['Value'] ?? '0');
+
+                        if ($type === 'AttMod') {
+                            if ($q === 'Attack') {
+                                $evalVal = (int)floor((float)TraitEvaluator::evaluateExpression($valStr, $skContext));
+                                $bestAtt = max($bestAtt, $evalVal);
+                            } elseif ($q === 'Damage') {
+                                $evalVal = (int)floor((float)TraitEvaluator::evaluateExpression($valStr, $skContext));
+                                $bestDmg = max($bestDmg, $evalVal);
+                            } elseif ($q === 'AttSpd') {
+                                $evalVal = (int)floor((float)TraitEvaluator::evaluateExpression($valStr, $skContext));
+                                $bestAttSpd = max($bestAttSpd, $evalVal);
+                            }
+                        } elseif ($type === 'DefMod' && str_contains($q, 'Parry')) {
+                            $evalVal = (int)floor((float)TraitEvaluator::evaluateExpression($valStr, $skContext));
+                            $bestParry = max($bestParry, $evalVal);
+                        } elseif ($type === 'Attack') {
+                            if ($q === 'ImprCrit') {
+                                $evalVal = (int)floor((float)TraitEvaluator::evaluateExpression($valStr, $skContext));
+                                $bestCritRng = max($bestCritRng, $evalVal);
+                            } else {
+                                $desc = $q;
+                                if (!empty($params['Value'])) {
+                                    $desc .= ' ' . $params['Value'];
+                                }
+                                $allManeuvers[] = [
+                                    'qual' => $q,
+                                    'value' => $params['Value'] ?? null,
+                                    'description' => $desc,
+                                    'raw' => $tr,
+                                ];
+                            }
+                        } elseif ($type === 'SpdSpcl' && $q === 'ECRed') {
+                            $evalVal = (int)floor((float)TraitEvaluator::evaluateExpression($valStr, $skContext));
+                            $bestECRed = max($bestECRed, $evalVal);
+                        }
+                    }
+                }
+            }
+        }
+
+        $uniqueManeuvers = [];
+        foreach ($allManeuvers as $man) {
+            $k = strtolower($man['qual'] . '_' . ($man['value'] ?? ''));
+            if (!isset($uniqueManeuvers[$k])) {
+                $uniqueManeuvers[$k] = $man;
+            }
+        }
+
+        return [
+            'attack_bonus' => $bestAtt,
+            'damage_bonus' => $bestDmg,
+            'parry_bonus' => $bestParry,
+            'att_spd_bonus' => $bestAttSpd,
+            'crit_rng_bonus' => $bestCritRng,
+            'ec_red' => $bestECRed,
+            'maneuvers' => array_values($uniqueManeuvers),
+            'matched_skills' => $matchedSkills,
+        ];
+    }
+
+    /**
+     * Evaluate armor skill benefits for a given armor Qual string (e.g. 'Lt || Md') or array of categories.
+     * Takes the best combination of benefits: highest parry bonus (applied to DeCa),
+     * highest EC reduction, highest DonArmor value, and union of special features (like ArmorSleep).
+     */
+    public static function evaluateArmorSkillsForQual(string|array $qual, array $effectiveSkillRanks, array $context = []): array
+    {
+        self::loadReferenceTables();
+
+        $tokens = is_array($qual) ? $qual : array_map('trim', preg_split('/(\|\||,)/', (string)$qual));
+
+        $bestParry = 0;
+        $bestECRed = 0;
+        $bestDonArmor = 0;
+        $allSpecialTraits = [];
+        $matchedSkills = [];
+
+        foreach ($tokens as $token) {
+            $token = trim($token);
+            if (empty($token)) continue;
+
+            $skillInfo = self::ARMOR_SKILL_MAP[$token] ?? null;
+            if (!$skillInfo) {
+                foreach (self::ARMOR_SKILL_MAP as $mapToken => $info) {
+                    if (strcasecmp($info['code'], $token) === 0 || strcasecmp($mapToken, $token) === 0 || (is_numeric($token) && (int)$token === $info['skill_id'])) {
+                        $skillInfo = $info;
+                        break;
+                    }
+                }
+            }
+
+            if (!$skillInfo) continue;
+
+            $skillId = $skillInfo['skill_id'];
+            $skillCode = $skillInfo['code'];
+            $userRank = (float)($effectiveSkillRanks[$skillId] ?? 0);
+            if ($userRank <= 0) continue;
+
+            $matchedSkills[$skillId] = [
+                'name' => $skillInfo['name'],
+                'code' => $skillCode,
+                'rank' => $userRank,
+            ];
+
+            $skContext = array_merge($context, [
+                'lvl' => (int)floor($userRank),
+                'LVL' => (int)floor($userRank),
+                'SkillLvl' => (int)floor($userRank),
+            ]);
+
+            if (self::$skillBenefitsCache !== null) {
+                foreach (self::$skillBenefitsCache as $sb) {
+                    $sbSkill = (int)($sb['Skill'] ?? $sb['SkillID'] ?? 0);
+                    if ($sbSkill !== $skillId) continue;
+
+                    $reqLvl = (int)($sb['SkillLevel'] ?? $sb['Lvl'] ?? 1);
+                    if ($userRank < $reqLvl) continue;
+
+                    $traitsStr = $sb['Traits'] ?? $sb['Trait'] ?? '';
+                    if (empty($traitsStr)) continue;
+
+                    $parsed = TraitEvaluator::parse($traitsStr);
+                    foreach ($parsed as $tr) {
+                        $type = $tr['type'];
+                        $params = $tr['params'];
+                        $q = $params['Qual'] ?? '';
+                        $valStr = (string)($params['Value'] ?? '0');
+
+                        if ($type === 'DefMod' && str_contains($q, 'Parry')) {
+                            $evalVal = (int)floor((float)TraitEvaluator::evaluateExpression($valStr, $skContext));
+                            $bestParry = max($bestParry, $evalVal);
+                        } elseif ($type === 'SpdSpcl' && $q === 'ECRed') {
+                            $evalVal = (int)floor((float)TraitEvaluator::evaluateExpression($valStr, $skContext));
+                            $bestECRed = max($bestECRed, $evalVal);
+                        } elseif ($type === 'Special' && $q === 'DonArmor') {
+                            $evalVal = (int)floor((float)TraitEvaluator::evaluateExpression($valStr, $skContext));
+                            $bestDonArmor = max($bestDonArmor, $evalVal);
+                        } elseif ($type === 'Special') {
+                            $allSpecialTraits[] = [
+                                'qual' => $q,
+                                'value' => $params['Value'] ?? null,
+                                'description' => $q,
+                                'raw' => $tr,
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+
+        $uniqueSpecial = [];
+        foreach ($allSpecialTraits as $st) {
+            $k = strtolower($st['qual']);
+            if (!isset($uniqueSpecial[$k])) {
+                $uniqueSpecial[$k] = $st;
+            }
+        }
+
+        return [
+            'parry_bonus' => $bestParry,
+            'ec_red' => $bestECRed,
+            'don_armor' => $bestDonArmor,
+            'special_traits' => array_values($uniqueSpecial),
+            'traits' => array_values($uniqueSpecial),
+            'matched_skills' => $matchedSkills,
+        ];
+    }
 
     /**
      * Load and cache static reference tables.
@@ -39,10 +318,12 @@ class EntityEngine
 
         try {
             self::$creaturesCache = DB::table('ref_creatures')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
+            self::$creatureTypesCache = DB::table('ref_creaturetypes')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$templatesCache = DB::table('ref_templates')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$classesCache = DB::table('ref_classes')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$classConfigsCache = DB::table('ref_classconfigs')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$skillsCache = DB::table('ref_skills')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
+            self::$skillBenefitsCache = DB::table('ref_skillbenefits')->get()->map(fn($r) => (array)$r)->toArray();
             self::$specializationsCache = DB::table('ref_skillspecializations')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$improvementsCache = DB::table('ref_improvementtraits')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$itemsCache = DB::table('ref_items')
@@ -61,6 +342,40 @@ class EntityEngine
             self::$subtypesCache = DB::table('ref_creaturesubtypes')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$socialClassesCache = DB::table('ref_socialclasses')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$wealthClassesCache = DB::table('ref_wealthclasses')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
+            self::$actionsCache = DB::table('ref_actions')->where('ShowPCGen', '>=', 2)->orderBy('Name')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
+
+            if (empty(self::$itemsCache) || empty(self::$creaturesCache)) {
+                $cacheFile = dirname(__DIR__, 3) . '/storage/framework/cache/app_data.php';
+                $appData = [];
+                if (file_exists($cacheFile)) {
+                    $appData = require $cacheFile;
+                } elseif (isset($GLOBALS['_APP']) && is_array($GLOBALS['_APP'])) {
+                    $appData = $GLOBALS['_APP'];
+                }
+
+                if (empty(self::$creaturesCache)) self::$creaturesCache = $appData['creatures'] ?? [];
+                if (empty(self::$creatureTypesCache)) self::$creatureTypesCache = $appData['creaturetypes'] ?? [];
+                if (empty(self::$templatesCache)) self::$templatesCache = $appData['templates'] ?? [];
+                if (empty(self::$classesCache)) self::$classesCache = $appData['classes'] ?? [];
+                if (empty(self::$classConfigsCache)) self::$classConfigsCache = $appData['classconfigs'] ?? [];
+                if (empty(self::$skillsCache)) self::$skillsCache = $appData['skills'] ?? [];
+                if (empty(self::$skillBenefitsCache)) self::$skillBenefitsCache = $appData['skillbenefits'] ?? [];
+                if (empty(self::$specializationsCache)) self::$specializationsCache = $appData['skillspecializations'] ?? $appData['specializations'] ?? [];
+                if (empty(self::$improvementsCache)) self::$improvementsCache = $appData['improvementtraits'] ?? [];
+                if (empty(self::$itemsCache)) self::$itemsCache = $appData['items'] ?? [];
+                if (empty(self::$sizesCache)) self::$sizesCache = $appData['sizes'] ?? $appData['sizecats'] ?? [];
+                if (empty(self::$bodyTypesCache)) self::$bodyTypesCache = $appData['bodytypes'] ?? $appData['bodycats'] ?? [];
+                if (empty(self::$encumbranceCache)) self::$encumbranceCache = $appData['encumbranceclasses'] ?? $appData['encumbrance'] ?? [];
+                if (empty(self::$weightLimitsCache)) self::$weightLimitsCache = isset($appData['strweightlimits']) ? $appData['strweightlimits'] : (isset($appData['weightlimits']) ? array_column($appData['weightlimits'], null, 'Str') : []);
+                if (empty(self::$agesCache)) self::$agesCache = $appData['ages'] ?? $appData['agecats'] ?? [];
+                if (empty(self::$culturesCache)) self::$culturesCache = $appData['cultures'] ?? [];
+                if (empty(self::$subtypesCache)) self::$subtypesCache = $appData['creaturesubtypes'] ?? [];
+                if (empty(self::$socialClassesCache)) self::$socialClassesCache = $appData['socialclasses'] ?? [];
+                if (empty(self::$wealthClassesCache)) self::$wealthClassesCache = $appData['wealthclasses'] ?? [];
+                if (empty(self::$actionsCache)) self::$actionsCache = $appData['actions'] ?? [];
+            }
+
+            self::ensureRulesInitialized();
             return;
         } catch (\Throwable $e) {
             // Fallback for standalone/test environments
@@ -75,10 +390,12 @@ class EntityEngine
         }
 
         self::$creaturesCache = $appData['creatures'] ?? [];
+        self::$creatureTypesCache = $appData['creaturetypes'] ?? [];
         self::$templatesCache = $appData['templates'] ?? [];
         self::$classesCache = $appData['classes'] ?? [];
         self::$classConfigsCache = $appData['classconfigs'] ?? [];
         self::$skillsCache = $appData['skills'] ?? [];
+        self::$skillBenefitsCache = $appData['skillbenefits'] ?? [];
         self::$specializationsCache = $appData['skillspecializations'] ?? $appData['specializations'] ?? [];
         self::$improvementsCache = $appData['improvementtraits'] ?? [];
         self::$itemsCache = $appData['items'] ?? [];
@@ -93,421 +410,192 @@ class EntityEngine
         self::$subtypesCache = $appData['creaturesubtypes'] ?? [];
         self::$socialClassesCache = $appData['socialclasses'] ?? [];
         self::$wealthClassesCache = $appData['wealthclasses'] ?? [];
+        self::$actionsCache = $appData['actions'] ?? [];
     }
 
     /**
-     * Compute ability score modifier standard formula: floor((score - 10) / 2)
+     * Master Entity Calculation Pipeline.
      */
-    public static function calculateAbilityModifier(?int $score): int
-    {
-        if ($score === null) {
-            return 0;
-        }
-        return (int) floor(($score - 10) / 2);
-    }
-
-    /**
-     * Master 6-stage calculation pipeline.
-     *
-     * @param object|array $entity Character model, creature data, or character array
-     * @param int $config Active equipment configuration (0=Combat, 1=Travel, 2=Rest, 3=Sleep, 4=Formal)
-     * @return array Full calculated entity state
-     */
-    public static function calculate(object|array $entity, int $config = EquipmentManager::CONFIG_COMBAT): array
+    public static function calculate(mixed $entity, int $config = EquipmentManager::CONFIG_COMBAT): array
     {
         self::loadReferenceTables();
+
         $e = is_array($entity) ? (object)$entity : $entity;
 
         // =========================================================================
-        // STAGE 1: BASE ENTITY & HERITAGE RESOLUTION
+        // STAGE 1: HERITAGE, TEMPLATES, CLASSES & AGING
         // =========================================================================
-        $parseBaseAbil = function($val) {
-            if ($val === null || $val === '' || $val === '-' || $val === '–' || $val === '&ndash;') {
-                return null;
-            }
-            return (int)$val;
-        };
+        $raceId = (int)($e->BaseRace ?? $e->RaceID ?? 1);
+        $race = self::$creaturesCache[$raceId] ?? self::$creaturesCache[1] ?? [];
+        $subtypeId = (int)($race['CreatureType'] ?? $race['Subtype'] ?? 1);
+        $subtype = self::$subtypesCache[$subtypeId] ?? [];
+        $groupId = (int)($subtype['GroupID'] ?? 7);
 
-        $baseStr = $parseBaseAbil($e->BaseStr ?? $e->Str ?? $e->Strength ?? 10);
-        $baseCon = $parseBaseAbil($e->BaseCon ?? $e->Con ?? $e->Constitution ?? 10);
-        $baseDex = $parseBaseAbil($e->BaseDex ?? $e->Dex ?? $e->Dexterity ?? 10);
-        $baseInt = $parseBaseAbil($e->BaseInt ?? $e->Int ?? $e->Intelligence ?? 10);
-        $baseWis = $parseBaseAbil($e->BaseWis ?? $e->Wis ?? $e->Wisdom ?? 10);
-        $baseCha = $parseBaseAbil($e->BaseCha ?? $e->Cha ?? $e->Charisma ?? 10);
-
-        $raceId = (int)($e->BaseRace ?? $e->RaceID ?? $e->Race ?? 1);
-        $race = self::$creaturesCache[$raceId] ?? null;
-
-        // Parse Templates
+        // Templates
+        $rawTemplates = $e->Templates ?? $e->TemplateID ?? [];
         $templateIds = [];
-        $rawTemplates = $e->Templates ?? $e->TemplateIDs ?? $e->TemplateID ?? [];
-        if (!empty($rawTemplates)) {
-            if (is_numeric($rawTemplates)) {
-                $templateIds = [(int)$rawTemplates];
-            } elseif (is_array($rawTemplates)) {
-                $templateIds = array_values(array_filter(array_map('intval', $rawTemplates)));
-            } else {
-                $tParts = explode(';', (string)$rawTemplates);
-                $templateIds = array_values(array_filter(array_map('intval', $tParts)));
-            }
+        if (is_numeric($rawTemplates) && $rawTemplates > 0) {
+            $templateIds[] = (int)$rawTemplates;
+        } elseif (is_string($rawTemplates) && !empty($rawTemplates)) {
+            $templateIds = array_map('intval', explode(';', $rawTemplates));
+        } elseif (is_array($rawTemplates)) {
+            $templateIds = array_map('intval', $rawTemplates);
         }
 
-        // Parse Classes
-        $classIds = [];
+        // Apply Template Group / Type overrides (e.g. Lich, Skeleton, Vampire, Half-Dragon)
+        foreach ($templateIds as $tId) {
+            $t = self::$templatesCache[$tId] ?? null;
+            if ($t) {
+                if (!empty($t['AdjustedGroup'])) {
+                    $groupId = (int)$t['AdjustedGroup'];
+                }
+                if (!empty($t['AdjustedType'])) {
+                    $subtypeId = (int)$t['AdjustedType'];
+                    $subtype = self::$subtypesCache[$subtypeId] ?? $subtype;
+                }
+            }
+        }
+        $creatureType = self::$creatureTypesCache[$groupId] ?? [];
+
+        // Classes & Levels
         $rawClasses = $e->Classes ?? $e->ClassLevels ?? $e->ClassID ?? [];
-        if (!empty($rawClasses)) {
-            if (is_numeric($rawClasses)) {
-                $classIds = [(int)$rawClasses];
-            } elseif (is_array($rawClasses)) {
-                $classIds = array_values(array_filter(array_map('intval', $rawClasses)));
-            } else {
-                $cParts = explode(';', (string)$rawClasses);
-                $classIds = array_values(array_filter(array_map('intval', $cParts)));
-            }
-        }
+        $classIds = self::parseClassIds($rawClasses);
 
-        // Physical & Mental Age
-        $physicalAge = (float)($e->PhysicalAge ?? $race['AdultAge'] ?? 20);
-        $mentalAge = (float)($e->MentalAge ?? $race['AdultAge'] ?? 20);
+        $racialLevel = (int)($race['BaseRL'] ?? 0);
+        $totalLevel = $racialLevel + count($classIds);
 
-        $adultAge = (float)($race['AdultAge'] ?? 20);
-        $matureAge = (float)($race['MatureAge'] ?? 40);
-        $oldAge = (float)($race['OldAge'] ?? 60);
-        $venerableAge = (float)($race['VenerableAge'] ?? 80);
-
-        $getAgeCat = function(float $age) use ($adultAge, $matureAge, $oldAge, $venerableAge) {
-            if ($age < (0.5 * $adultAge)) return 1; // Child
-            if ($age < $adultAge) return 2;         // Juvenile
-            if ($age < $matureAge) return 3;        // Young Adult / Mature
-            if ($age < $oldAge) return 4;           // Middle Age
-            if ($age < $venerableAge) return 5;     // Old
-            return 6;                              // Venerable
-        };
-
-        $physicalAgeCat = $getAgeCat($physicalAge);
-        $mentalAgeCat = $getAgeCat($mentalAge);
-
-        // Racial Level (RL)
-        $baseRL = (int)($race['BaseRL'] ?? 0);
-        $rlMod = (int)($e->RLMod ?? $e->RacialLevelMod ?? 0);
-        $subtype = self::$subtypesCache[$race['CreatureType'] ?? 1] ?? null;
-        $agingType = (int)($subtype['AgingType'] ?? 1);
-
-        $rlMult = 1.0;
-        if (isset(self::$agesCache[$physicalAgeCat])) {
-            $ageRow = self::$agesCache[$physicalAgeCat];
-            $rlMult = ($agingType === 2) ? (float)($ageRow['RLMultSN'] ?? 1.0) : (float)($ageRow['RLMult'] ?? 1.0);
-        }
-        $racialLevel = max(0, (int)round($baseRL * $rlMult) + $rlMod);
+        // Challenge Level calculation
+        $clModifier = (int)($race['CLModifier'] ?? 0);
         foreach ($templateIds as $tId) {
             $t = self::$templatesCache[$tId] ?? null;
-            if ($t && isset($t['RLModifier']) && $t['RLModifier'] !== null && $t['RLModifier'] !== '') {
-                $racialLevel += (int)$t['RLModifier'];
+            if ($t) {
+                $clModifier += (int)($t['CLModifier'] ?? 0);
             }
         }
+        $challengeLevel = $totalLevel + $clModifier;
+        $powerLevel = $totalLevel * 2;
 
-        $classLevelCount = count($classIds);
-        $totalLevel = $racialLevel + $classLevelCount;
-        $powerLevel = $totalLevel; // Can be extended with tier modifiers
-        $challengeLevel = $totalLevel + (int)($race['CLModifier'] ?? 0);
+        // Size & Body Type
+        $baseSizeId = (int)($race['Size'] ?? 0);
+        $sizeMod = 0;
         foreach ($templateIds as $tId) {
             $t = self::$templatesCache[$tId] ?? null;
-            if ($t && isset($t['CLModifier']) && $t['CLModifier'] !== null && $t['CLModifier'] !== '') {
-                $challengeLevel += (int)$t['CLModifier'];
+            if ($t && isset($t['SizeAdj'])) {
+                $sizeMod += (int)$t['SizeAdj'];
             }
         }
+        $currentSizeId = max(-4, min(4, $baseSizeId + $sizeMod));
+        $sizeRow = self::$sizesCache[$currentSizeId] ?? ['CombatMod' => 0, 'Space' => 1.5, 'Reach' => 1.5, 'HPMult' => 1.0, 'WeightMult' => 1.0, 'Abbreviation' => 'M', 'Name' => 'Medium'];
 
-        // Base Size & Body Type
-        $baseSizeId = (int)($race['SizeClass'] ?? 0); // 0 = Medium
-        $sizeAdjust = (int)($e->SizeAdjust ?? 0);
-        $currentSizeId = max(-4, min(4, $baseSizeId + $sizeAdjust));
-        $sizeRow = self::$sizesCache[$currentSizeId] ?? (self::$sizesCache[0] ?? ['CombatMod' => 0, 'Space' => 1.5, 'Reach' => 1.5, 'WeightMult' => 1.0, 'HPMult' => 1.0]);
         $bodyTypeId = (int)($race['BodyType'] ?? 1);
-        $bodyTypeRow = self::$bodyTypesCache[$bodyTypeId] ?? ['WeightMult' => 1.0, 'ReachMod' => 0];
+        $bodyTypeRow = self::$bodyTypesCache[$bodyTypeId] ?? ['ReachMod' => 0, 'Description' => 'Biped'];
 
-        // Determine if abilities exist (No Score detection)
-        $hasStr = ($baseStr !== null) && ($race === null || !array_key_exists('StrAdj', $race) || $race['StrAdj'] !== null);
-        $hasCon = ($baseCon !== null) && ($race === null || !array_key_exists('ConAdj', $race) || $race['ConAdj'] !== null);
-        $hasDex = ($baseDex !== null) && ($race === null || !array_key_exists('DexAdj', $race) || $race['DexAdj'] !== null);
-        $hasInt = ($baseInt !== null) && ($race === null || !array_key_exists('IntAdj', $race) || $race['IntAdj'] !== null);
-        $hasWis = ($baseWis !== null) && ($race === null || !array_key_exists('WisAdj', $race) || $race['WisAdj'] !== null);
-        $hasCha = ($baseCha !== null) && ($race === null || !array_key_exists('ChaAdj', $race) || $race['ChaAdj'] !== null);
+        // Aging
+        $physicalAge = (int)($e->PhysicalAge ?? $e->Age ?? 25);
+        $mentalAge = (int)($e->MentalAge ?? $e->Age ?? 25);
+        $physicalAgeCat = self::calculateAgeCategory($raceId, $physicalAge);
+        $mentalAgeCat = self::calculateAgeCategory($raceId, $mentalAge);
+        $ageMods = self::calculateAgeModifiers($physicalAgeCat, $mentalAgeCat);
+
+        // =========================================================================
+        // STAGE 2: BASE & ADJUSTED ABILITIES
+        // =========================================================================
+        $baseStr = isset($e->BaseStr) ? (int)$e->BaseStr : (isset($e->Strength) ? (int)$e->Strength : (isset($e->Str) ? (int)$e->Str : 10));
+        $baseCon = isset($e->BaseCon) ? (int)$e->BaseCon : (isset($e->Constitution) ? (int)$e->Constitution : (isset($e->Con) ? (int)$e->Con : 10));
+        $baseDex = isset($e->BaseDex) ? (int)$e->BaseDex : (isset($e->Dexterity) ? (int)$e->Dexterity : (isset($e->Dex) ? (int)$e->Dex : 10));
+        $baseInt = isset($e->BaseInt) ? (int)$e->BaseInt : (isset($e->Intelligence) ? (int)$e->Intelligence : (isset($e->Int) ? (int)$e->Int : 10));
+        $baseWis = isset($e->BaseWis) ? (int)$e->BaseWis : (isset($e->Wisdom) ? (int)$e->Wisdom : (isset($e->Wis) ? (int)$e->Wis : 10));
+        $baseCha = isset($e->BaseCha) ? (int)$e->BaseCha : (isset($e->Charisma) ? (int)$e->Charisma : (isset($e->Cha) ? (int)$e->Cha : 10));
+
+        // Check for 'No Score' (null in ref_creatures or templates)
+        $noStr = array_key_exists('StrAdj', $race) && $race['StrAdj'] === null;
+        $noCon = array_key_exists('ConAdj', $race) && $race['ConAdj'] === null;
+        $noDex = array_key_exists('DexAdj', $race) && $race['DexAdj'] === null;
+        $noInt = array_key_exists('IntAdj', $race) && $race['IntAdj'] === null;
+        $noWis = array_key_exists('WisAdj', $race) && $race['WisAdj'] === null;
+        $noCha = array_key_exists('ChaAdj', $race) && $race['ChaAdj'] === null;
 
         foreach ($templateIds as $tId) {
             $t = self::$templatesCache[$tId] ?? null;
             if ($t) {
-                if (array_key_exists('StrAdj', $t) && $t['StrAdj'] === null) $hasStr = false;
-                if (array_key_exists('ConAdj', $t) && $t['ConAdj'] === null) $hasCon = false;
-                if (array_key_exists('DexAdj', $t) && $t['DexAdj'] === null) $hasDex = false;
-                if (array_key_exists('IntAdj', $t) && $t['IntAdj'] === null) $hasInt = false;
-                if (array_key_exists('WisAdj', $t) && $t['WisAdj'] === null) $hasWis = false;
-                if (array_key_exists('ChaAdj', $t) && $t['ChaAdj'] === null) $hasCha = false;
+                if (array_key_exists('StrAdj', $t) && $t['StrAdj'] === null) $noStr = true;
+                if (array_key_exists('ConAdj', $t) && $t['ConAdj'] === null) $noCon = true;
+                if (array_key_exists('DexAdj', $t) && $t['DexAdj'] === null) $noDex = true;
+                if (array_key_exists('IntAdj', $t) && $t['IntAdj'] === null) $noInt = true;
+                if (array_key_exists('WisAdj', $t) && $t['WisAdj'] === null) $noWis = true;
+                if (array_key_exists('ChaAdj', $t) && $t['ChaAdj'] === null) $noCha = true;
             }
         }
 
-        $physAgeRow = self::$agesCache[$physicalAgeCat] ?? [];
-        $mentAgeRow = self::$agesCache[$mentalAgeCat] ?? [];
+        // Racial Ability Adjustments
+        $adjStr = $noStr ? null : ($baseStr + (int)($race['StrAdj'] ?? 0) + ($ageMods['Str'] ?? 0));
+        $adjCon = $noCon ? null : ($baseCon + (int)($race['ConAdj'] ?? 0) + ($ageMods['Con'] ?? 0));
+        $adjDex = $noDex ? null : ($baseDex + (int)($race['DexAdj'] ?? 0) + ($ageMods['Dex'] ?? 0));
+        $adjInt = $noInt ? null : ($baseInt + (int)($race['IntAdj'] ?? 0) + ($ageMods['Int'] ?? 0));
+        $adjWis = $noWis ? null : ($baseWis + (int)($race['WisAdj'] ?? 0) + ($ageMods['Wis'] ?? 0));
+        $adjCha = $noCha ? null : ($baseCha + (int)($race['ChaAdj'] ?? 0) + ($ageMods['Cha'] ?? 0));
 
-        // Racial & Template adjustments to ability scores
-        $adjStr = null;
-        if ($hasStr) {
-            $adjStr = (int)$baseStr + (int)($race['StrAdj'] ?? $race['BaseStrAdj'] ?? 0);
-            foreach ($templateIds as $tId) {
-                $t = self::$templatesCache[$tId] ?? null;
-                if ($t) $adjStr += (int)($t['StrAdj'] ?? 0);
+        // Template Adjustments
+        foreach ($templateIds as $tId) {
+            $t = self::$templatesCache[$tId] ?? null;
+            if ($t) {
+                if ($adjStr !== null && isset($t['StrAdj'])) $adjStr += (int)$t['StrAdj'];
+                if ($adjCon !== null && isset($t['ConAdj'])) $adjCon += (int)$t['ConAdj'];
+                if ($adjDex !== null && isset($t['DexAdj'])) $adjDex += (int)$t['DexAdj'];
+                if ($adjInt !== null && isset($t['IntAdj'])) $adjInt += (int)$t['IntAdj'];
+                if ($adjWis !== null && isset($t['WisAdj'])) $adjWis += (int)$t['WisAdj'];
+                if ($adjCha !== null && isset($t['ChaAdj'])) $adjCha += (int)$t['ChaAdj'];
             }
-            if ($agingType === 2) {
-                $adjStr += (int)($physAgeRow['StrAdjSN'] ?? 0);
-            } elseif ($agingType === 1) {
-                $adjStr += (int)($physAgeRow['StrAdj'] ?? 0);
-            }
-            if ($sizeAdjust !== 0) {
-                $currSize = self::$sizesCache[$currentSizeId] ?? [];
-                $baseSize = self::$sizesCache[$baseSizeId] ?? [];
-                $adjStr += ((int)($currSize['RelativeStr'] ?? 0) - (int)($baseSize['RelativeStr'] ?? 0));
-            }
-            $adjStr = max(1, $adjStr);
         }
 
-        $adjCon = null;
-        if ($hasCon) {
-            $adjCon = (int)$baseCon + (int)($race['ConAdj'] ?? $race['BaseConAdj'] ?? 0);
-            foreach ($templateIds as $tId) {
-                $t = self::$templatesCache[$tId] ?? null;
-                if ($t) $adjCon += (int)($t['ConAdj'] ?? 0);
-            }
-            if ($agingType === 2) {
-                $adjCon += (int)($physAgeRow['ConAdjSN'] ?? 0);
-            } elseif ($agingType === 1) {
-                $adjCon += (int)($physAgeRow['ConAdj'] ?? 0);
-            }
-            if ($sizeAdjust !== 0) {
-                $currSize = self::$sizesCache[$currentSizeId] ?? [];
-                $baseSize = self::$sizesCache[$baseSizeId] ?? [];
-                $adjCon += ((int)($currSize['RelativeCon'] ?? 0) - (int)($baseSize['RelativeCon'] ?? 0));
-            }
-            $adjCon = max(1, $adjCon);
-        }
-
-        $adjDex = null;
-        if ($hasDex) {
-            $adjDex = (int)$baseDex + (int)($race['DexAdj'] ?? $race['BaseDexAdj'] ?? 0);
-            foreach ($templateIds as $tId) {
-                $t = self::$templatesCache[$tId] ?? null;
-                if ($t) $adjDex += (int)($t['DexAdj'] ?? 0);
-            }
-            if ($agingType === 2) {
-                $adjDex += (int)($physAgeRow['DexAdjSN'] ?? 0);
-            } elseif ($agingType === 1) {
-                $adjDex += (int)($physAgeRow['DexAdj'] ?? 0);
-            }
-            if ($sizeAdjust !== 0) {
-                $currSize = self::$sizesCache[$currentSizeId] ?? [];
-                $baseSize = self::$sizesCache[$baseSizeId] ?? [];
-                $adjDex += ((int)($currSize['RelativeDex'] ?? 0) - (int)($baseSize['RelativeDex'] ?? 0));
-            }
-            $adjDex = max(1, $adjDex);
-        }
-
-        $adjInt = null;
-        if ($hasInt) {
-            $adjInt = (int)$baseInt + (int)($race['IntAdj'] ?? $race['BaseIntAdj'] ?? 0);
-            foreach ($templateIds as $tId) {
-                $t = self::$templatesCache[$tId] ?? null;
-                if ($t) $adjInt += (int)($t['IntAdj'] ?? 0);
-            }
-            if ($agingType === 2) {
-                $adjInt += (int)($mentAgeRow['IntAdjSN'] ?? 0);
-            } elseif ($agingType === 1) {
-                $adjInt += (int)($mentAgeRow['IntAdj'] ?? 0);
-            }
-            $adjInt = max(1, $adjInt);
-        }
-
-        $adjWis = null;
-        if ($hasWis) {
-            $adjWis = (int)$baseWis + (int)($race['WisAdj'] ?? $race['BaseWisAdj'] ?? 0);
-            foreach ($templateIds as $tId) {
-                $t = self::$templatesCache[$tId] ?? null;
-                if ($t) $adjWis += (int)($t['WisAdj'] ?? 0);
-            }
-            if ($agingType === 2) {
-                $adjWis += (int)($mentAgeRow['WisAdjSN'] ?? 0);
-            } elseif ($agingType === 1) {
-                $adjWis += (int)($mentAgeRow['WisAdj'] ?? 0);
-            }
-            $adjWis = max(1, $adjWis);
-        }
-
-        $adjCha = null;
-        if ($hasCha) {
-            $adjCha = (int)$baseCha + (int)($race['ChaAdj'] ?? $race['BaseChaAdj'] ?? 0);
-            foreach ($templateIds as $tId) {
-                $t = self::$templatesCache[$tId] ?? null;
-                if ($t) $adjCha += (int)($t['ChaAdj'] ?? 0);
-            }
-            if ($agingType === 2) {
-                $adjCha += (int)($mentAgeRow['ChaAdjSN'] ?? 0);
-            } elseif ($agingType === 1) {
-                $adjCha += (int)($mentAgeRow['ChaAdj'] ?? 0);
-            }
-            $adjCha = max(1, $adjCha);
-        }
-
-        // =========================================================================
-        // STAGE 2: TRAIT & MODIFIER INGESTION
-        // =========================================================================
+        // Initialize Modifier Engine
         $modifierEngine = new ModifierStackingEngine();
         $context = [
             'TL' => $totalLevel,
             'RL' => $racialLevel,
-            'LVL' => $totalLevel,
-            'STR' => $adjStr ?? 10,
-            'CON' => $adjCon ?? 10,
-            'DEX' => $adjDex ?? 10,
-            'INT' => $adjInt ?? 10,
-            'WIS' => $adjWis ?? 10,
-            'CHA' => $adjCha ?? 10,
-            'STRMOD' => self::calculateAbilityModifier($adjStr),
-            'CONMOD' => self::calculateAbilityModifier($adjCon),
-            'DEXMOD' => self::calculateAbilityModifier($adjDex),
-            'INTMOD' => self::calculateAbilityModifier($adjInt),
-            'WISMOD' => self::calculateAbilityModifier($adjWis),
-            'CHAMOD' => self::calculateAbilityModifier($adjCha),
-            'SIZE' => $currentSizeId,
-            'skills' => [],
+            'CL' => $challengeLevel,
+            'STRMOD' => $adjStr !== null ? (int)floor(($adjStr - 10) / 2) : 0,
+            'CONMOD' => $adjCon !== null ? (int)floor(($adjCon - 10) / 2) : 0,
+            'DEXMOD' => $adjDex !== null ? (int)floor(($adjDex - 10) / 2) : 0,
+            'INTMOD' => $adjInt !== null ? (int)floor(($adjInt - 10) / 2) : 0,
+            'WISMOD' => $adjWis !== null ? (int)floor(($adjWis - 10) / 2) : 0,
+            'CHAMOD' => $adjCha !== null ? (int)floor(($adjCha - 10) / 2) : 0,
         ];
 
-        // Parse Skills & Specializations into context
-        $skillLevels = [];
-        $rawSkills = $e->Skills ?? [];
-        if (is_string($rawSkills) && str_starts_with(trim($rawSkills), '{')) {
-            $rawSkills = json_decode($rawSkills, true) ?? [];
-        }
-
-        if (!empty($rawSkills) && is_array($rawSkills)) {
-            if (isset($rawSkills['BackgroundRates']) || isset($rawSkills['LevelSkills'])) {
-                $bgLvl = max(1, $racialLevel);
-                if (isset($rawSkills['BackgroundRates']) && is_array($rawSkills['BackgroundRates'])) {
-                    foreach ($rawSkills['BackgroundRates'] as $sId => $r) {
-                        $sIdInt = (int)$sId;
-                        if ($sIdInt > 0) {
-                            $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + ((float)$r * $bgLvl);
-                        }
-                    }
-                }
-                if (isset($rawSkills['LevelSkills']) && is_array($rawSkills['LevelSkills'])) {
-                    foreach ($rawSkills['LevelSkills'] as $lvlAlloc) {
-                        if (is_array($lvlAlloc)) {
-                            foreach ($lvlAlloc as $sId => $r) {
-                                $sIdInt = (int)$sId;
-                                if ($sIdInt > 0) {
-                                    $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + (float)$r;
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                foreach ($rawSkills as $k => $v) {
-                    if (is_numeric($k)) {
-                        if (is_array($v)) {
-                            $sIdInt = (int)($v['id'] ?? $v['SkillID'] ?? 0);
-                            $lvl = (int)($v['rank'] ?? $v['Rank'] ?? $v['level'] ?? 0);
-                        } elseif (is_numeric($v)) {
-                            $sIdInt = (int)$k;
-                            $lvl = (int)$v;
-                        } elseif (is_string($v) && str_contains($v, '=')) {
-                            [$sIdStr, $lvlStr] = explode('=', $v, 2);
-                            $sIdInt = (int)$sIdStr;
-                            $lvl = (int)$lvlStr;
-                        } else {
-                            continue;
-                        }
-                        if ($sIdInt > 0) {
-                            $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + $lvl;
-                        }
-                    } elseif (is_string($k) && is_numeric($v)) {
-                        $sIdInt = (int)$k;
-                        if ($sIdInt > 0) {
-                            $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + (int)$v;
-                        }
-                    }
-                }
-            }
-        } elseif (!empty($rawSkills) && is_string($rawSkills)) {
-            $sParts = explode(';', (string)$rawSkills);
-            foreach ($sParts as $sp) {
-                if (str_contains($sp, '=')) {
-                    [$sId, $lvl] = explode('=', $sp, 2);
-                    $sIdInt = (int)$sId;
-                    if ($sIdInt > 0) {
-                        $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + (int)$lvl;
-                    }
-                }
-            }
-        }
-
-        // Support separate BgSkillRates / LevelSkills properties from Chargen Wizard
-        if (!empty($e->BgSkillRates) && is_array($e->BgSkillRates)) {
-            $bgLvl = max(1, $racialLevel);
-            foreach ($e->BgSkillRates as $sId => $r) {
-                $sIdInt = (int)$sId;
-                if ($sIdInt > 0) {
-                    $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + ((float)$r * $bgLvl);
-                }
-            }
-        }
-        if (!empty($e->LevelSkills) && is_array($e->LevelSkills)) {
-            foreach ($e->LevelSkills as $lvlAlloc) {
-                if (is_array($lvlAlloc)) {
-                    foreach ($lvlAlloc as $sId => $r) {
-                        $sIdInt = (int)$sId;
-                        if ($sIdInt > 0) {
-                            $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + (float)$r;
-                        }
-                    }
-                }
-            }
-        }
-
-        // Support separate BackgroundSkills and ClassSkills maps from Chargen Wizard
-        if (!empty($e->BackgroundSkills) && is_array($e->BackgroundSkills)) {
-            foreach ($e->BackgroundSkills as $sId => $rank) {
-                $sIdInt = (int)$sId;
-                if ($sIdInt > 0) {
-                    $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + (int)$rank;
-                }
-            }
-        }
-        if (!empty($e->ClassSkills) && is_array($e->ClassSkills)) {
-            foreach ($e->ClassSkills as $sId => $rank) {
-                $sIdInt = (int)$sId;
-                if ($sIdInt > 0) {
-                    $skillLevels[$sIdInt] = ($skillLevels[$sIdInt] ?? 0) + (int)$rank;
-                }
-            }
-        }
-
-        foreach ($skillLevels as $sIdInt => $lvl) {
-            $sName = self::$skillsCache[$sIdInt]['Abbreviation'] ?? self::$skillsCache[$sIdInt]['Name'] ?? null;
-            if ($sName) {
-                $context['skills'][$sName] = $lvl;
-                $context['skills'][$sIdInt] = $lvl;
-            }
-        }
+        // Track raw traits for categorization later
+        $rawTraitCollections = [];
 
         // Ingest Racial Traits
-        if (!empty($race['RacialTraits'])) {
-            $parsed = TraitEvaluator::parse($race['RacialTraits']);
-            TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $race['Name'] ?? 'Racial Heritage', 'character');
+        $raceTraits = $race['RacialTraits'] ?? $race['Traits'] ?? '';
+        if (!empty($raceTraits)) {
+            $rawTraitCollections[] = ['source' => $race['NameInformal'] ?? $race['Name'] ?? 'Race', 'traits' => $raceTraits];
+            $parsed = TraitEvaluator::parse($raceTraits);
+            TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $race['NameInformal'] ?? 'Race', 'character');
+        }
+
+        // Ingest Creature Group Traits (Constructs, Undead, Elementals, Plants & Fungi immunities, etc.)
+        $groupTraits = $creatureType['GroupTraits'] ?? '';
+        if (!empty($groupTraits)) {
+            $rawTraitCollections[] = ['source' => $creatureType['Name'] ?? 'Creature Group', 'traits' => $groupTraits];
+            $parsed = TraitEvaluator::parse($groupTraits);
+            TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $creatureType['Name'] ?? 'Creature Group', 'character');
+        }
+
+        // Ingest Creature Subtype Traits
+        $typeTraits = $subtype['TypeTraits'] ?? $subtype['Traits'] ?? '';
+        if (!empty($typeTraits)) {
+            $rawTraitCollections[] = ['source' => $subtype['Name'] ?? 'Subtype', 'traits' => $typeTraits];
+            $parsed = TraitEvaluator::parse($typeTraits);
+            TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $subtype['Name'] ?? 'Subtype', 'character');
         }
 
         // Ingest Template Traits
         foreach ($templateIds as $tId) {
             $t = self::$templatesCache[$tId] ?? null;
-            if ($t && !empty($t['RacialTraits'])) {
-                $parsed = TraitEvaluator::parse($t['RacialTraits']);
+            $tTraits = $t ? ($t['RacialTraits'] ?? $t['Traits'] ?? '') : '';
+            if (!empty($tTraits)) {
+                $rawTraitCollections[] = ['source' => $t['NameInformal'] ?? $t['Name'] ?? 'Template', 'traits' => $tTraits];
+                $parsed = TraitEvaluator::parse($tTraits);
                 TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $t['NameInformal'] ?? 'Template', 'character');
             }
         }
@@ -517,6 +605,7 @@ class EntityEngine
         if ($cultureId > 0 && isset(self::$culturesCache[$cultureId])) {
             $cult = self::$culturesCache[$cultureId];
             if (!empty($cult['Traits'])) {
+                $rawTraitCollections[] = ['source' => $cult['Name'] ?? 'Culture', 'traits' => $cult['Traits']];
                 $parsed = TraitEvaluator::parse($cult['Traits']);
                 TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $cult['Name'] ?? 'Culture', 'character');
             }
@@ -525,13 +614,16 @@ class EntityEngine
         // Ingest Class Traits
         foreach ($classIds as $cId) {
             $cls = self::$classesCache[$cId] ?? null;
-            if ($cls && !empty($cls['ClassTraits'])) {
-                $parsed = TraitEvaluator::parse($cls['ClassTraits']);
+            $clsTraits = $cls ? ($cls['ClassTraits'] ?? $cls['Traits'] ?? '') : '';
+            if (!empty($clsTraits)) {
+                $rawTraitCollections[] = ['source' => $cls['Name'] ?? 'Class', 'traits' => $clsTraits];
+                $parsed = TraitEvaluator::parse($clsTraits);
                 TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $cls['Name'] ?? 'Class', 'character');
             }
         }
 
         // Ingest Improvements
+        $improvementsList = [];
         $rawImprovements = $e->Improvements ?? $e->IPAllocations ?? [];
         if (is_string($rawImprovements) && str_starts_with(trim($rawImprovements), '{')) {
             $rawImprovements = json_decode($rawImprovements, true) ?? [];
@@ -559,45 +651,251 @@ class EntityEngine
                 if (str_contains($ip, '=')) {
                     [$tKey, $val] = explode('=', $ip, 2);
                     $valInt = (int)$val;
+                    if ($valInt <= 0) continue;
                     if (str_starts_with($tKey, 'I')) {
                         $tId = (int)substr($tKey, 1);
                         $impDef = self::$improvementsCache[$tId] ?? null;
                         if ($impDef && !empty($impDef['Trait'])) {
                             $traitStr = str_replace('}', "Value={$valInt}; Type=Imp; }", $impDef['Trait']);
                             $parsed = TraitEvaluator::parse($traitStr);
-                            TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $impDef['Name'] ?? 'Improvement', 'character');
+                            TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $impDef['Description'] ?? 'Improvement', 'character');
+                            $improvementsList[] = [
+                                'name' => ($impDef['Description'] ?? 'Improvement') . " +" . $valInt,
+                                'value' => $valInt,
+                            ];
                         }
-                    } elseif (str_starts_with($tKey, 'S')) {
-                        $sId = (int)substr($tKey, 1);
-                        $sName = self::$skillsCache[$sId]['Name'] ?? "Skill #{$sId}";
-                        $modifierEngine->addModifier('Skill_' . $sName, $valInt, 'Imp', 'Improvement');
                     }
                 }
             }
         }
 
-        // Compute Final Ability Scores
-        $finalStr = ($adjStr !== null) ? max(0, $adjStr + (int)$modifierEngine->getTotal('Str')) : null;
-        $finalCon = ($adjCon !== null) ? max(0, $adjCon + (int)$modifierEngine->getTotal('Con')) : null;
-        $finalDex = ($adjDex !== null) ? max(0, $adjDex + (int)$modifierEngine->getTotal('Dex')) : null;
-        $finalInt = ($adjInt !== null) ? max(0, $adjInt + (int)$modifierEngine->getTotal('Int')) : null;
-        $finalWis = ($adjWis !== null) ? max(0, $adjWis + (int)$modifierEngine->getTotal('Wis')) : null;
-        $finalCha = ($adjCha !== null) ? max(0, $adjCha + (int)$modifierEngine->getTotal('Cha')) : null;
+        // =========================================================================
+        // STAGE 2B: PARSE SKILLS & APPLY ref_skillbenefits TRAITS & SPECIALIZATIONS
+        // =========================================================================
+        $rawSkills = $e->Skills ?? [];
+        $rawSpecs = $e->Specializations ?? $e->SkillSpecializations ?? null;
+        $skillRanks = self::parseSkillRanks($rawSkills);
+        $specializationsList = self::parseSpecializations($rawSkills, $rawSpecs);
 
-        $strMod = self::calculateAbilityModifier($finalStr);
-        $conMod = self::calculateAbilityModifier($finalCon);
-        $dexModRaw = self::calculateAbilityModifier($finalDex);
-        $intMod = self::calculateAbilityModifier($finalInt);
-        $wisMod = self::calculateAbilityModifier($finalWis);
-        $chaMod = self::calculateAbilityModifier($finalCha);
+        // Calculate effective skill ranks (base allocated ranks + SklMod from race/templates/culture)
+        $effectiveSkillRanks = [];
+        if (self::$skillsCache !== null) {
+            foreach (self::$skillsCache as $sId => $skDef) {
+                $rawRank = (float)($skillRanks[$sId] ?? 0);
+                $skName = $skDef['Name'] ?? '';
+                $modRank = (float)$modifierEngine->getTotal('Skill_' . $skName) + (float)$modifierEngine->getTotal('Skill_' . $sId);
+                $effRank = $rawRank + $modRank;
+                if ($effRank > 0) {
+                    $effectiveSkillRanks[$sId] = $effRank;
+                }
+            }
+        } else {
+            foreach ($skillRanks as $sId => $rawRank) {
+                $effectiveSkillRanks[$sId] = $rawRank;
+            }
+        }
 
-        // Update context with final scores and mods
-        $context['STR'] = $finalStr ?? 10;
-        $context['CON'] = $finalCon ?? 10;
-        $context['DEX'] = $finalDex ?? 10;
-        $context['INT'] = $finalInt ?? 10;
-        $context['WIS'] = $finalWis ?? 10;
-        $context['CHA'] = $finalCha ?? 10;
+        $weaponSkillAttack = [];
+        $weaponSkillDamage = [];
+        $weaponSkillParry = [];
+        $armorSkillParry = [];
+        $armorSkillECRed = [];
+        $affinityDiscounts = [];
+
+        if (self::$skillBenefitsCache !== null) {
+            foreach (self::$skillBenefitsCache as $sb) {
+                $sId = (int)($sb['Skill'] ?? $sb['SkillID'] ?? 0);
+                $reqLvl = (int)($sb['SkillLevel'] ?? $sb['Lvl'] ?? 1);
+                $userRank = (float)($effectiveSkillRanks[$sId] ?? 0);
+                $traitsStr = $sb['Traits'] ?? $sb['Trait'] ?? $sb['Benefit'] ?? '';
+
+                if ($userRank >= $reqLvl && !empty($traitsStr)) {
+                    $skDef = self::$skillsCache[$sId] ?? ['Name' => "Skill #{$sId}"];
+                    $skName = $skDef['Name'] ?? 'Skill';
+                    $skContext = array_merge($context, ['lvl' => (int)floor($userRank)]);
+                    $parsed = TraitEvaluator::parse($traitsStr);
+
+                    TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $skContext, $skName, 'character');
+
+                    $rawTraitCollections[] = [
+                        'source' => "Skill: {$skName} (Rank " . floor($userRank) . ")",
+                        'traits' => $traitsStr,
+                        'lvl' => (int)floor($userRank),
+                    ];
+
+                    foreach ($parsed as $tr) {
+                        $type = $tr['type'];
+                        $params = $tr['params'];
+
+                        // Weapon category scaling
+                        if ($type === 'AttMod' || $type === 'DmgMod' || $type === 'DefMod') {
+                            $qual = $params['Qual'] ?? '';
+                            $valStr = (string)($params['Value'] ?? '0');
+                            $evalVal = (float)TraitEvaluator::evaluateExpression($valStr, $skContext);
+
+                            if ($type === 'AttMod') {
+                                $weaponSkillAttack[$qual] = ($weaponSkillAttack[$qual] ?? 0) + $evalVal;
+                            } elseif ($type === 'DmgMod') {
+                                $weaponSkillDamage[$qual] = ($weaponSkillDamage[$qual] ?? 0) + $evalVal;
+                            } elseif ($type === 'DefMod' && str_contains($qual, 'Parry')) {
+                                if (str_contains($qual, 'HvB')) $weaponSkillParry['HvB'] = ($weaponSkillParry['HvB'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'LtB')) $weaponSkillParry['LtB'] = ($weaponSkillParry['LtB'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'Axe')) $weaponSkillParry['Axe'] = ($weaponSkillParry['Axe'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'PlA')) $weaponSkillParry['PlA'] = ($weaponSkillParry['PlA'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'Spr')) $weaponSkillParry['Spr'] = ($weaponSkillParry['Spr'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'Stv')) $weaponSkillParry['Stv'] = ($weaponSkillParry['Stv'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'Fnc')) $weaponSkillParry['Fnc'] = ($weaponSkillParry['Fnc'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'Fll')) $weaponSkillParry['Fll'] = ($weaponSkillParry['Fll'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'Clb')) $weaponSkillParry['Clb'] = ($weaponSkillParry['Clb'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'Exo')) $weaponSkillParry['Exo'] = ($weaponSkillParry['Exo'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'Shd')) $weaponSkillParry['Shd'] = ($weaponSkillParry['Shd'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'ArmHv')) $armorSkillParry['ArmHv'] = ($armorSkillParry['ArmHv'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'ArmMd')) $armorSkillParry['ArmMd'] = ($armorSkillParry['ArmMd'] ?? 0) + $evalVal;
+                                elseif (str_contains($qual, 'ArmLt')) $armorSkillParry['ArmLt'] = ($armorSkillParry['ArmLt'] ?? 0) + $evalVal;
+                                else $weaponSkillParry['General'] = ($weaponSkillParry['General'] ?? 0) + $evalVal;
+                            }
+                        }
+
+                        // Armor Encumbrance Reductions
+                        if ($type === 'StatMod' && ($params['Qual'] ?? '') === 'EC') {
+                            $qual = $params['Type'] ?? '';
+                            $valStr = (string)($params['Value'] ?? '0');
+                            $evalVal = abs((float)TraitEvaluator::evaluateExpression($valStr, $skContext));
+                            $armorSkillECRed[$qual] = max($armorSkillECRed[$qual] ?? 0, $evalVal);
+                        }
+
+                        // Affinity discounts (PPRed formula)
+                        if ($type === 'Affinity') {
+                            $qual = $params['Qual'] ?? '';
+                            $ppRedStr = $params['PPRed'] ?? '';
+                            if (!empty($ppRedStr)) {
+                                $discVal = max(0, (int)floor((float)TraitEvaluator::evaluateExpression($ppRedStr, $skContext)));
+                                if ($discVal > 0) {
+                                    $affinityDiscounts[$qual] = max($affinityDiscounts[$qual] ?? 0, $discVal);
+                                    $affinityDiscounts[$skName] = max($affinityDiscounts[$skName] ?? 0, $discVal);
+                                    if (str_contains($qual, ' - ')) {
+                                        $school = trim(explode(' - ', $qual, 2)[1]);
+                                        $affinityDiscounts[$school] = max($affinityDiscounts[$school] ?? 0, $discVal);
+                                    }
+                                }
+                            }
+                        }
+
+                        // SpecMod discounts (e.g. SpecMod { Qual=CostDiscount; Value=-1; })
+                        if ($type === 'SpecMod' && str_contains($params['Qual'] ?? '', 'CostDiscount')) {
+                            $discVal = abs((int)TraitEvaluator::evaluateExpression((string)($params['Value'] ?? '-1'), $skContext));
+                            $affinityDiscounts[$skName] = max($affinityDiscounts[$skName] ?? 0, $discVal);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Ingest all traits from learned Skill Specializations
+        if (self::$specializationsCache !== null) {
+            foreach ($specializationsList as $specId => $specRank) {
+                if ($specRank <= 0) continue;
+                $specDef = self::$specializationsCache[$specId] ?? null;
+                if (!$specDef) continue;
+
+                $specTraitsStr = $specDef['Traits'] ?? '';
+                if (empty($specTraitsStr)) continue;
+
+                $parentSkillId = (int)($specDef['Skill'] ?? 0);
+                $parentSkillRank = (float)($effectiveSkillRanks[$parentSkillId] ?? $skillRanks[$parentSkillId] ?? $specRank);
+                $specName = $specDef['Name'] ?? "Spec #{$specId}";
+
+                $specContext = array_merge($context, [
+                    'lvl' => (int)floor($parentSkillRank),
+                    'LVL' => (int)floor($parentSkillRank),
+                    'speclvl' => (int)floor($specRank),
+                ]);
+
+                $parsed = TraitEvaluator::parse($specTraitsStr);
+                TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $specContext, "Spec: {$specName}", 'character');
+
+                $rawTraitCollections[] = [
+                    'source' => "Specialization: {$specName}",
+                    'traits' => $specTraitsStr,
+                    'lvl' => (int)floor($parentSkillRank),
+                ];
+
+                foreach ($parsed as $tr) {
+                    $type = $tr['type'];
+                    $params = $tr['params'];
+
+                    // SpecMod discounts
+                    if ($type === 'SpecMod' && str_contains($params['Qual'] ?? '', 'CostDiscount')) {
+                        $discVal = abs((int)TraitEvaluator::evaluateExpression((string)($params['Value'] ?? '-1'), $specContext));
+                        $affinityDiscounts[$specName] = max($affinityDiscounts[$specName] ?? 0, $discVal);
+                    }
+                }
+            }
+        }
+
+        // Ingest Active Spells / Active Effects
+        $rawActiveSpells = $e->ActiveSpells ?? $e->ActiveEffects ?? $e->SpellsActive ?? [];
+        if (is_string($rawActiveSpells) && (str_starts_with(trim($rawActiveSpells), '[') || str_starts_with(trim($rawActiveSpells), '{'))) {
+            $rawActiveSpells = json_decode($rawActiveSpells, true) ?? [];
+        }
+        if (!empty($rawActiveSpells)) {
+            if (is_string($rawActiveSpells)) {
+                $parsed = TraitEvaluator::parse($rawActiveSpells);
+                TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, 'Active Spells', 'character');
+                $rawTraitCollections[] = ['source' => 'Active Spells', 'traits' => $rawActiveSpells];
+            } elseif (is_array($rawActiveSpells)) {
+                foreach ($rawActiveSpells as $spellItem) {
+                    if (is_string($spellItem) && !empty(trim($spellItem))) {
+                        $parsed = TraitEvaluator::parse($spellItem);
+                        TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, 'Active Spell', 'character');
+                        $rawTraitCollections[] = ['source' => 'Active Spell', 'traits' => $spellItem];
+                    } elseif (is_array($spellItem)) {
+                        $spellName = $spellItem['name'] ?? $spellItem['Name'] ?? 'Active Spell';
+                        $spellTraits = $spellItem['traits'] ?? $spellItem['Traits'] ?? '';
+                        if (!empty($spellTraits)) {
+                            $parsed = TraitEvaluator::parse($spellTraits);
+                            TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $spellName, 'character');
+                            $rawTraitCollections[] = ['source' => $spellName, 'traits' => $spellTraits];
+                        }
+                    }
+                }
+            }
+        }
+
+        // Ingest Entity / Monster / Custom Traits
+        $rawCustomTraits = $e->CustomTraits ?? $e->Traits ?? $e->EntityTraits ?? $e->SpecialTraits ?? '';
+        if (!empty($rawCustomTraits)) {
+            if (is_string($rawCustomTraits)) {
+                $parsed = TraitEvaluator::parse($rawCustomTraits);
+                TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, 'Traits', 'character');
+                $rawTraitCollections[] = ['source' => 'Traits', 'traits' => $rawCustomTraits];
+            } elseif (is_array($rawCustomTraits)) {
+                foreach ($rawCustomTraits as $ct) {
+                    if (is_string($ct) && !empty(trim($ct))) {
+                        $parsed = TraitEvaluator::parse($ct);
+                        TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, 'Trait', 'character');
+                        $rawTraitCollections[] = ['source' => 'Trait', 'traits' => $ct];
+                    }
+                }
+            }
+        }
+
+        // Final Ability Scores (Base + Racial + Template + Age + Modifiers)
+        $finalStr = $adjStr !== null ? max(0, $adjStr + (int)$modifierEngine->getTotal('Str')) : null;
+        $finalCon = $adjCon !== null ? max(0, $adjCon + (int)$modifierEngine->getTotal('Con')) : null;
+        $finalDex = $adjDex !== null ? max(0, $adjDex + (int)$modifierEngine->getTotal('Dex')) : null;
+        $finalInt = $adjInt !== null ? max(0, $adjInt + (int)$modifierEngine->getTotal('Int')) : null;
+        $finalWis = $adjWis !== null ? max(0, $adjWis + (int)$modifierEngine->getTotal('Wis')) : null;
+        $finalCha = $adjCha !== null ? max(0, $adjCha + (int)$modifierEngine->getTotal('Cha')) : null;
+
+        // Ability Modifiers
+        $strMod = $finalStr !== null ? (int)floor(($finalStr - 10) / 2) : 0;
+        $conMod = $finalCon !== null ? (int)floor(($finalCon - 10) / 2) : 0;
+        $dexModRaw = $finalDex !== null ? (int)floor(($finalDex - 10) / 2) : 0;
+        $intMod = $finalInt !== null ? (int)floor(($finalInt - 10) / 2) : 0;
+        $wisMod = $finalWis !== null ? (int)floor(($finalWis - 10) / 2) : 0;
+        $chaMod = $finalCha !== null ? (int)floor(($finalCha - 10) / 2) : 0;
+
         $context['STRMOD'] = $strMod;
         $context['CONMOD'] = $conMod;
         $context['DEXMOD'] = $dexModRaw;
@@ -606,52 +904,93 @@ class EntityEngine
         $context['CHAMOD'] = $chaMod;
 
         // =========================================================================
-        // STAGE 3: EQUIPMENT, INVENTORY & ENCUMBRANCE
+        // STAGE 3: EQUIPMENT, WEAPONS & ENCUMBRANCE
         // =========================================================================
-        $equipmentManager = new EquipmentManager($config);
-
-        // Populate EquipmentManager from character inventory or JSON
-        $inventoryRaw = $e->Possessions ?? $e->Equipment ?? $e->Inventory ?? [];
-        if (is_string($inventoryRaw) && !empty($inventoryRaw)) {
-            $inventoryRaw = json_decode($inventoryRaw, true) ?? [];
+        $equipmentManager = new EquipmentManager();
+        $rawPossessions = $e->Possessions ?? $e->Equipment ?? $e->Inventory ?? [];
+        if (is_string($rawPossessions) && (str_starts_with(trim($rawPossessions), '[') || str_starts_with(trim($rawPossessions), '{'))) {
+            $rawPossessions = json_decode($rawPossessions, true) ?? [];
         }
 
-        if (is_array($inventoryRaw)) {
-            foreach ($inventoryRaw as $itemRow) {
-                if (is_array($itemRow)) {
-                    $itemId = (int)($itemRow['item_id'] ?? $itemRow['Item'] ?? $itemRow['id'] ?? 0);
-                    $refItem = self::$itemsCache[$itemId] ?? [];
-                    $equipmentManager->addItem(array_merge($itemRow, [
-                        'item_id' => $itemId,
-                        'name' => $itemRow['name'] ?? $refItem['Name'] ?? 'Item',
-                        'unit_weight' => (float)($itemRow['unit_weight'] ?? $refItem['BaseWeight'] ?? 0.0),
-                        'unit_value' => (float)($itemRow['unit_value'] ?? $refItem['BaseValue'] ?? 0.0),
-                        'ref_data' => $refItem,
-                    ]));
+        if (!empty($rawPossessions) && is_array($rawPossessions)) {
+            foreach ($rawPossessions as $pItem) {
+                $refId = (int)($pItem['item_id'] ?? $pItem['ref_id'] ?? $pItem['ID'] ?? (is_numeric($pItem['id'] ?? null) ? $pItem['id'] : 0));
+                $refItem = self::$itemsCache[$refId] ?? [];
+                $uId = $pItem['uid'] ?? $pItem['id'] ?? (string)$refId;
+                $itemType = (int)($pItem['item_type'] ?? $pItem['ItemTypeID'] ?? $refItem['ItemTypeID'] ?? $refItem['Type'] ?? 1);
+                $subtype = (int)($pItem['subtype'] ?? $pItem['Subtype'] ?? $refItem['Subtype'] ?? 0);
+                $name = $pItem['name'] ?? $pItem['Name'] ?? $refItem['Name'] ?? 'Item';
+
+                // Determine locations array
+                $rawLoc = $pItem['location'] ?? $pItem['Location'] ?? null;
+                $rawLocs = $pItem['locations'] ?? $pItem['Locations'] ?? null;
+                if ($rawLocs !== null && is_array($rawLocs)) {
+                    $locations = $rawLocs;
+                } elseif ($rawLoc !== null) {
+                    $locVal = (int)$rawLoc;
+                    $locations = array_fill(0, 5, $locVal);
+                } else {
+                    if (in_array($itemType, [2, 3, 4, 9, 10])) {
+                        $locations = array_fill(0, 5, EquipmentManager::LOCATION_EQUIPPED);
+                    } elseif (in_array($itemType, [6, 7, 8]) || in_array($subtype, [25, 26, 27, 29, 30, 32, 33, 34, 57, 58, 71])) {
+                        $locations = array_fill(0, 5, EquipmentManager::LOCATION_STOWED);
+                    } else {
+                        $locations = array_fill(0, 5, EquipmentManager::LOCATION_CARRIED);
+                    }
+                }
+
+                $equipmentManager->addItem([
+                    'id' => $uId,
+                    'uid' => $uId,
+                    'ref_id' => $refId,
+                    'name' => $name,
+                    'item_type' => $itemType,
+                    'slot' => $pItem['slot'] ?? $refItem['DefaultSlot'] ?? 'carried',
+                    'unit_weight' => (float)($pItem['unit_weight'] ?? $pItem['BaseWeight'] ?? $pItem['Weight'] ?? $refItem['Weight'] ?? 0.0),
+                    'quantity' => (int)($pItem['quantity'] ?? $pItem['qty'] ?? $pItem['Qty'] ?? 1),
+                    'qty' => (int)($pItem['quantity'] ?? $pItem['qty'] ?? $pItem['Qty'] ?? 1),
+                    'locations' => $locations,
+                    'container_id' => $pItem['container_id'] ?? $pItem['ContainerID'] ?? null,
+                    'is_container' => !empty($pItem['is_container']) || !empty($pItem['IsContainer']),
+                    'ec_mod' => (int)($pItem['ec_mod'] ?? $refItem['ECMod'] ?? 0),
+                    'ref_data' => $refItem,
+                    'custom_traits' => $pItem['custom_traits'] ?? '',
+                ]);
+            }
+        }
+
+        // Apply traits of items according to location (equipped/carried/stowed)
+        foreach ($equipmentManager->getItems() as $pItem) {
+            $loc = $pItem['locations'][$config] ?? EquipmentManager::LOCATION_CARRIED;
+            $scope = match ($loc) {
+                EquipmentManager::LOCATION_EQUIPPED => (!empty($pItem['container_id'])) ? 'carrier' : (in_array((int)($pItem['item_type'] ?? 1), [2, 3]) ? 'wielder' : 'wearer'),
+                EquipmentManager::LOCATION_CARRIED => 'carrier',
+                EquipmentManager::LOCATION_STOWED => 'owner',
+                default => 'owner',
+            };
+
+            $itemTraits = trim(($pItem['ref_data']['Traits'] ?? '') . ' ' . ($pItem['custom_traits'] ?? ''));
+            if (!empty($itemTraits)) {
+                $parsed = TraitEvaluator::parse($itemTraits);
+                TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $pItem['name'] ?? 'Equipment', $scope);
+
+                // Track in raw trait collections if applicable to character
+                $applicableForChar = false;
+                foreach ($parsed as $ptr) {
+                    $target = strtolower($ptr['params']['Target'] ?? 'wearer');
+                    if (TraitEvaluator::isScopeApplicable($target, $scope)) {
+                        $applicableForChar = true;
+                        break;
+                    }
+                }
+                if ($applicableForChar) {
+                    $scopeLabel = ucfirst($scope);
+                    $rawTraitCollections[] = ['source' => ($pItem['name'] ?? 'Item') . " ({$scopeLabel})", 'traits' => $itemTraits];
                 }
             }
         }
 
-        // Apply item traits to modifier engine based on active config
-        foreach ($equipmentManager->getItems() as $pItem) {
-            $loc = $pItem['locations'][$config] ?? EquipmentManager::LOCATION_CARRIED;
-            if ($loc === EquipmentManager::LOCATION_STOWED) {
-                continue;
-            }
-
-            $scope = ($loc === EquipmentManager::LOCATION_EQUIPPED) ? 'wearer' : 'carrier';
-            if (in_array($pItem['slot'] ?? '', ['main_hand', 'off_hand'])) {
-                $scope = 'wielder';
-            }
-
-            $itemTraits = $pItem['ref_data']['Traits'] ?? $pItem['custom_traits'] ?? '';
-            if (!empty($itemTraits)) {
-                $parsed = TraitEvaluator::parse($itemTraits);
-                TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $pItem['name'] ?? 'Equipment', $scope);
-            }
-        }
-
-        // Calculate Weights & Encumbrance
+        // Calculate Weights & Encumbrance (with armor skill EC reductions)
         $totalWeight = $equipmentManager->calculateTotalWeight($config);
         $weightEC = EquipmentManager::calculateWeightEC(
             $totalWeight,
@@ -664,7 +1003,36 @@ class EntityEngine
             self::$bodyTypesCache
         );
 
-        $equipEC = $equipmentManager->calculateEquipmentEC($config);
+        // Calculate Equipment EC with per-item weapon & armor skill EC reductions
+        $equipEC = 0;
+        foreach ($equipmentManager->getItems() as $item) {
+            $loc = $item['locations'][$config] ?? $item['location'] ?? EquipmentManager::LOCATION_STOWED;
+            if ($loc !== EquipmentManager::LOCATION_EQUIPPED || !empty($item['container_id'])) {
+                continue;
+            }
+            $baseEC = (int)($item['ref_data']['ECMod'] ?? $item['ECMod'] ?? $item['ec_mod'] ?? 0);
+            if ($baseEC <= 0) {
+                continue;
+            }
+
+            $traits = TraitEvaluator::parse(($item['ref_data']['Traits'] ?? '') . ' ' . ($item['custom_traits'] ?? ''));
+            $itemECRed = 0;
+            foreach ($traits as $tr) {
+                if ($tr['type'] === 'Armor') {
+                    $qual = $tr['params']['Qual'] ?? '';
+                    $armEval = self::evaluateArmorSkillsForQual($qual, $effectiveSkillRanks, $context);
+                    $itemECRed = max($itemECRed, (int)($armEval['ec_red'] ?? 0));
+                } elseif ($tr['type'] === 'Weapon') {
+                    $qual = $tr['params']['Qual'] ?? '';
+                    $weapEval = self::evaluateWeaponSkillsForQual($qual, $effectiveSkillRanks, $context);
+                    $itemECRed = max($itemECRed, (int)($weapEval['ec_red'] ?? 0));
+                }
+            }
+
+            $effectiveItemEC = max(0, $baseEC - $itemECRed);
+            $equipEC += ($item['quantity'] ?? $item['qty'] ?? 1) * $effectiveItemEC;
+        }
+
         $effectiveEC = max($weightEC, $equipEC) + (int)$modifierEngine->getTotal('EC');
         $effectiveEC = max(0, min(10, $effectiveEC));
 
@@ -679,9 +1047,8 @@ class EntityEngine
         $context['DEXMOD'] = $dexMod;
 
         // =========================================================================
-        // STAGE 4: DEFENSES & TRI-POOL HEALTH (HP / SP / PP)
+        // STAGE 4: DEFENSES, PARRY RULES & TRI-POOL HEALTH (HP / SP / PP)
         // =========================================================================
-        // Tri-Pool Health
         $bgClassId = (int)($e->BackgndClass ?? $e->BackgroundClassID ?? 0);
         $bgClass = null;
         if ($bgClassId > 0 && isset(self::$classesCache[$bgClassId])) {
@@ -804,10 +1171,93 @@ class EntityEngine
         // Passive DeC = 10 + min(DexMod, 0) + TotalLevel + SizeCombatMod + DeC mods
         $decPassive = 10 + min($dexMod, 0) + $totalLevel + $sizeCombatMod + (int)$modifierEngine->getTotal('DeC');
 
-        // Active DeC = Passive DeC + max(DexMod, 0) + Parry mods + Dodge mods
-        $parryMod = (int)$modifierEngine->getTotal('Par');
+        // Parry Rule: Evaluate parry bonus for all wielded weapons & shields, apply the best to DeCa
+        $primaryParryCandidates = [];
+        $wieldedParryList = [];
+
+        // 1. Natural attack / Brawling parry
+        $natSkills = self::evaluateWeaponSkillsForQual('Nat || Brl', $effectiveSkillRanks, $context);
+        $natParry = (int)($natSkills['parry_bonus'] ?? 0);
+        $primaryParryCandidates[] = $natParry;
+        $wieldedParryList[] = [
+            'name' => 'Unarmed / Natural',
+            'parry_bonus' => $natParry,
+            'inherent_par' => 0,
+            'skill_par' => $natParry,
+            'category' => 'Brl',
+        ];
+
+        // 2. Equipped Weapons & Shields parry
+        foreach ($equipmentManager->getItems() as $it) {
+            $loc = $it['locations'][$config] ?? $it['location'] ?? EquipmentManager::LOCATION_CARRIED;
+            if ($loc !== EquipmentManager::LOCATION_EQUIPPED || !empty($it['container_id'])) {
+                continue;
+            }
+            $ref = $it['ref_data'] ?? [];
+            $traits = TraitEvaluator::parse($ref['Traits'] ?? $it['custom_traits'] ?? '');
+            $inherentPar = 0;
+            $weapQual = '';
+            $isWieldedCombatItem = false;
+            foreach ($traits as $tr) {
+                if ($tr['type'] === 'Weapon' || $tr['type'] === 'Armor') {
+                    if (isset($tr['params']['ParMod'])) {
+                        $inherentPar += (int)$tr['params']['ParMod'];
+                        $isWieldedCombatItem = true;
+                    }
+                    if (!empty($tr['params']['Qual'])) {
+                        $weapQual = $tr['params']['Qual'];
+                        $isWieldedCombatItem = true;
+                    }
+                    if (($tr['params']['ArmorType'] ?? '') === 'Shield') {
+                        $isWieldedCombatItem = true;
+                        if (empty($weapQual)) $weapQual = 'Shd';
+                    }
+                }
+                if ($tr['type'] === 'DefMod' && ($tr['params']['Qual'] ?? '') === 'Parry') {
+                    $inherentPar += (int)($tr['params']['Value'] ?? 0);
+                    $isWieldedCombatItem = true;
+                }
+            }
+
+            if ($isWieldedCombatItem) {
+                $wSkills = self::evaluateWeaponSkillsForQual($weapQual ?: 'Gen', $effectiveSkillRanks, $context);
+                $skillPar = (int)($wSkills['parry_bonus'] ?? 0);
+                $totItemPar = $inherentPar + $skillPar;
+                $primaryParryCandidates[] = $totItemPar;
+                $wieldedParryList[] = [
+                    'id' => $it['id'],
+                    'name' => $it['name'],
+                    'parry_bonus' => $totItemPar,
+                    'inherent_par' => $inherentPar,
+                    'skill_par' => $skillPar,
+                    'category' => $weapQual,
+                ];
+            }
+        }
+
+        // 3. Armor skill parry (if any armor worn)
+        $maxArmorPar = 0;
+        foreach ($equipmentManager->getItems() as $it) {
+            $loc = $it['locations'][$config] ?? $it['location'] ?? EquipmentManager::LOCATION_CARRIED;
+            if ($loc !== EquipmentManager::LOCATION_EQUIPPED || !empty($it['container_id'])) {
+                continue;
+            }
+            $ref = $it['ref_data'] ?? [];
+            $traits = TraitEvaluator::parse($ref['Traits'] ?? $it['custom_traits'] ?? '');
+            foreach ($traits as $tr) {
+                if ($tr['type'] === 'Armor' && !empty($tr['params']['Qual'])) {
+                    $armEval = self::evaluateArmorSkillsForQual($tr['params']['Qual'], $effectiveSkillRanks, $context);
+                    $maxArmorPar = max($maxArmorPar, (int)($armEval['parry_bonus'] ?? 0));
+                }
+            }
+        }
+
+        $bestParryBonus = !empty($primaryParryCandidates) ? max($primaryParryCandidates) : 0;
+        $bestParryBonus += $maxArmorPar;
+
+        // Active DeC = Passive DeC + max(DexMod, 0) + bestParryBonus + Dodge mods
         $dodgeMod = (int)$modifierEngine->getTotal('Dodge');
-        $decActive = $decPassive + max($dexMod, 0) + $parryMod + $dodgeMod;
+        $decActive = $decPassive + max($dexMod, 0) + $bestParryBonus + $dodgeMod;
 
         // Fortitude = 10 + StrMod + ConMod + TotalLevel + Fort mods (or 999 if no Con)
         $fort = ($finalCon === null) ? 999 : (10 + $strMod + $conMod + $totalLevel + (int)$modifierEngine->getTotal('Fort'));
@@ -840,6 +1290,7 @@ class EntityEngine
         $mr = max(0, $racialMR + $templateMR + (int)$modifierEngine->getTotal('MR'));
 
         $critRes = $dr + (int)$modifierEngine->getTotal('CritRes');
+        $critScore = 20 + $critRes;
 
         // Energy Resistances
         $energyResistances = [
@@ -852,7 +1303,7 @@ class EntityEngine
             'Sonic' => (int)$modifierEngine->getTotal('SonicRes'),
         ];
 
-        // Initiative Modifier
+        // Initiative Modifier (DexMod + Combat Instincts / Init mods)
         $initMod = ($finalDex === null) ? 0 : ($dexMod + (int)$modifierEngine->getTotal('Init'));
 
         // =========================================================================
@@ -877,8 +1328,80 @@ class EntityEngine
         $swimSpeed = ($finalDex === null || $finalDex <= 0 || $baseSwimSpeed <= 0) ? 0 : max(0, (int)round(($baseSwimSpeed + $speedMod) * $speedMultLand));
         $flySpeed = ($finalDex === null || $finalDex <= 0 || $baseFlySpeed <= 0) ? 0 : max(0, (int)round(($baseFlySpeed + $speedMod) * $speedMultAir));
 
+        // Speed multipliers (Climb, Swim, Burrow MP multiplier)
+        $climbMult = 999;
+        $swimMult = 999;
+        $burrowMult = 999;
+
+        foreach ($rawTraitCollections as $tc) {
+            $parsed = TraitEvaluator::parse($tc['traits'] ?? '');
+            foreach ($parsed as $tr) {
+                if ($tr['type'] === 'SpdType') {
+                    $q = strtolower($tr['params']['Qual'] ?? '');
+                    $v = (int)($tr['params']['Value'] ?? 0);
+                    if ($v > 0) {
+                        if (str_contains($q, 'climb')) {
+                            $climbMult = min($climbMult, $v);
+                        } elseif (str_contains($q, 'swim')) {
+                            $swimMult = min($swimMult, $v);
+                        } elseif (str_contains($q, 'burrow')) {
+                            $burrowMult = min($burrowMult, $v);
+                        }
+                    }
+                }
+            }
+        }
+
+        // If Swimming skill is trained (Skill 3), default swim multiplier is 4 MP
+        if (($effectiveSkillRanks[3] ?? 0) > 0 && $swimMult > 4) {
+            $swimMult = 4;
+        }
+
+        $speedParts = [];
+        $groundDisplay = "{$groundSpeed} sq Ground";
+        if ($climbMult > 0 && $climbMult < 999) {
+            $groundDisplay .= " (Climb ×{$climbMult} MP)";
+        }
+        if ($swimMult > 0 && $swimMult < 999 && $swimSpeed <= 0) {
+            $groundDisplay .= " (Swim ×{$swimMult} MP)";
+        }
+        if ($burrowMult > 0 && $burrowMult < 999) {
+            $groundDisplay .= " (Burrow ×{$burrowMult} MP)";
+        }
+        $speedParts[] = $groundDisplay;
+
+        if ($swimSpeed > 0) {
+            $speedParts[] = "Swim {$swimSpeed} sq";
+        }
+        if ($flySpeed > 0) {
+            $speedParts[] = "Fly {$flySpeed} sq";
+        }
+        $speedDisplayStr = implode(', ', $speedParts);
+
         $actionPoints = 10 + $totalLevel;
-        $reactions = (int)floor($actionPoints / 10);
+        $refModBonus = (int)($modifierEngine->getTotal('Reactions') + $modifierEngine->getTotal('RefMod'));
+        $reactions = (int)floor($actionPoints / 10) + $refModBonus;
+
+        // Action Modifiers (EP, PAM, MAM)
+        $pam = 0;
+        if ($spTotal !== null && $spTotal > 0) {
+            if ($spDamage >= $spTotal) {
+                $pam -= 6;
+            } elseif ($spDamage >= ($spTotal / 2.0)) {
+                $pam -= 2;
+            }
+        }
+        $pam += (int)$modifierEngine->getTotal('PAM');
+
+        $mam = 0;
+        if ($ppTotal !== null && $ppTotal > 0) {
+            if ($ppDamage >= $ppTotal) {
+                $mam -= 6;
+            } elseif ($ppDamage >= ($ppTotal / 2.0)) {
+                $mam -= 2;
+            }
+        }
+        $mam += (int)$modifierEngine->getTotal('MAM');
 
         // =========================================================================
         // STAGE 6: COMBAT & ATTACK STAT MATRIX
@@ -886,152 +1409,536 @@ class EntityEngine
         $weaponsMatrix = [];
         $akimboAttacks = [];
         $naturalAttacks = [];
+        $naturalCombos = [];
+        $availableElements = [];
 
-        // 1. Equipped Weapons Matrix (1H vs 2H toggle, versatile options)
+        // 1. Equipped Weapons Matrix (1H vs 2H toggle, weapon size, reach, skill bonuses)
         $equippedWeapons = $equipmentManager->getEquippedWeapons($config);
-        foreach ($equippedWeapons as $wId => $wItem) {
-            $ref = $wItem['ref_data'] ?? [];
-            $traits = TraitEvaluator::parse($ref['Traits'] ?? $wItem['custom_traits'] ?? '');
+        $sizeAbbrMap = [-4=>'F', -3=>'D', -2=>'T', -1=>'S', 0=>'M', 1=>'L', 2=>'H', 3=>'G', 4=>'C'];
+        $charPossessions = $equipmentManager->getItems();
+        $abilityModsMap = [
+            'Str' => $strMod,
+            'Con' => $conMod,
+            'Dex' => $dexMod,
+            'Int' => $intMod,
+            'Wis' => $wisMod,
+            'Cha' => $chaMod,
+        ];
+        $charDmgMod = (int)$modifierEngine->getTotal('Dmg');
+        $charAttMod = (int)$modifierEngine->getTotal('Att');
 
-            $dmgStr = '1d6';
+        foreach ($equippedWeapons as $wId => $wItem) {
+            $wRef = $wItem['ref_data'] ?? [];
+            $traits = TraitEvaluator::parse($wRef['Traits'] ?? $wItem['custom_traits'] ?? '');
+
+            $dmgTraitStr = '';
             $critRng = 0;
             $critMul = 0;
             $parMod = 0;
-            $attModBonus = 0;
-            $dmgBonus = 0;
             $onlyRanged = false;
             $range = 0;
-            $is2H = false;
+            $minReach = 0;
+            $maxReach = 1;
+            $weapQual = 'Gen';
+            $ammoRequired = '';
+            $attModTrait = '';
 
             foreach ($traits as $tr) {
                 if ($tr['type'] === 'Weapon') {
-                    $dmgStr = $tr['params']['Damage'] ?? $dmgStr;
+                    $dmgTraitStr = $tr['params']['Dmg'] ?? $tr['params']['Damage'] ?? $dmgTraitStr;
                     $critRng = (int)($tr['params']['CritRng'] ?? 0);
                     $critMul = (int)($tr['params']['CritMul'] ?? 0);
                     $parMod = (int)($tr['params']['ParMod'] ?? 0);
                     $range = (int)($tr['params']['Range'] ?? 0);
+                    $minReach = (int)($tr['params']['MinReach'] ?? 0);
+                    $maxReach = (int)($tr['params']['MaxReach'] ?? 1);
                     $onlyRanged = !empty($tr['params']['OnlyRanged']);
+                    $ammoRequired = $tr['params']['Ammo'] ?? '';
+                    $attModTrait = $tr['params']['AttMod'] ?? '';
+                    if (!empty($tr['params']['Qual'])) {
+                        $weapQual = $tr['params']['Qual'];
+                    }
                 }
             }
 
-            $wRelSize = (int)($ref['BaseSize'] ?? 0);
-            $baseAP = max(5, 8 + $currentSizeId + $wRelSize) - (int)$modifierEngine->getTotal('AttSpd');
+            // Weapon's own size category
+            $weaponSizeVal = (int)($wRef['BaseSize'] ?? 0);
+            $weaponSizeAbbr = $sizeAbbrMap[$weaponSizeVal] ?? 'M';
 
-            // 1-Handed Attack
-            $attBonus1H = $strMod + $sizeCombatMod + (int)$modifierEngine->getTotal('Att');
-            $dmgBonus1H = $strMod + (int)$modifierEngine->getTotal('Dmg');
-            $dmgDisplay1H = $dmgStr . ($dmgBonus1H >= 0 ? '+' . $dmgBonus1H : (string)$dmgBonus1H);
+            // Evaluate weapon skills associated with this weapon
+            $wSkills = self::evaluateWeaponSkillsForQual($weapQual, $effectiveSkillRanks, $context);
+            $skillAttBonus = (int)($wSkills['attack_bonus'] ?? 0);
+            $skillDmgBonus = (int)($wSkills['damage_bonus'] ?? 0);
+            $skillAttSpdBonus = (int)($wSkills['att_spd_bonus'] ?? 0);
+            $skillCritRngBonus = (int)($wSkills['crit_rng_bonus'] ?? 0);
+            $maneuvers = $wSkills['maneuvers'] ?? [];
 
-            // 2-Handed Attack (+2 Str damage bonus)
-            $dmgBonus2H = $strMod + 2 + (int)$modifierEngine->getTotal('Dmg');
-            $dmgDisplay2H = $dmgStr . ($dmgBonus2H >= 0 ? '+' . $dmgBonus2H : (string)$dmgBonus2H);
+            $baseAP = max(5, 8 + $currentSizeId + $weaponSizeVal - $skillAttSpdBonus) - (int)$modifierEngine->getTotal('AttSpd');
+            $isProjectile = !empty($ammoRequired) || ((int)($wRef['Subtype'] ?? 0) === 7);
 
-            $weaponsMatrix[$wId] = [
-                'id' => $wId,
-                'name' => $wItem['name'] ?? 'Weapon',
-                'slot' => $wItem['slot'] ?? 'main_hand',
-                'ap' => $baseAP,
-                'is_ranged' => $onlyRanged,
-                'range' => $range,
-                'crit_range' => 20 - $critRng,
-                'crit_multiplier' => 2 + $critMul,
-                'parry_mod' => $parMod,
-                'one_handed' => [
+            if ($isProjectile) {
+                $compatibleAmmo = [];
+                $defaultAmmo = null;
+
+                // Parse weapon flat dmg mod if any
+                $weaponFlatDmg = 0;
+                if (preg_match('/^([+-]?\d+)$/', trim($dmgTraitStr), $fm)) {
+                    $weaponFlatDmg = (int)$fm[1];
+                }
+
+                // Weapon AttMod offset
+                $weaponAttVal = 0;
+                if (preg_match('/DexMod\s*([+-]\s*\d+)?/i', $attModTrait, $am)) {
+                    $weaponAttVal = isset($am[1]) ? (int)str_replace(' ', '', $am[1]) : 0;
+                } elseif (is_numeric($attModTrait)) {
+                    $weaponAttVal = (int)$attModTrait;
+                }
+
+                if (!empty(self::$itemsCache)) {
+                    foreach (self::$itemsCache as $cRefId => $it) {
+                        if ((int)($it['Subtype'] ?? 0) !== 8) continue;
+                        $aTraits = TraitEvaluator::parse($it['Traits'] ?? '');
+                        foreach ($aTraits as $at) {
+                            if ($at['type'] === 'Ammo' && (!empty($ammoRequired) ? (strcasecmp($at['params']['Qual'] ?? '', $ammoRequired) === 0) : true)) {
+                                $aDmgStr = $at['params']['Dmg'] ?? '';
+                                $aRange = (int)($at['params']['Range'] ?? 0);
+                                $aCritMul = (int)($at['params']['CritMul'] ?? 0);
+                                $aCritRng = (int)($at['params']['CritRng'] ?? 0);
+                                $aAttMod = (int)($at['params']['AttMod'] ?? 0);
+
+                                $parsedAmmoDmg = self::parseWeaponDamageFormula(
+                                    $aDmgStr,
+                                    $abilityModsMap,
+                                    $skillDmgBonus + $weaponFlatDmg,
+                                    $charDmgMod,
+                                    false
+                                );
+
+                                $totalRange = $aRange + $range;
+                                $netCritRng = 20 - ($critRng + $aCritRng + $skillCritRngBonus);
+                                $netCritMul = 2 + $critMul + $aCritMul;
+                                $ammoAttCheck = $dexMod + $sizeCombatMod + $weaponAttVal + $aAttMod + $skillAttBonus + $charAttMod;
+
+                                // Check inventory possession
+                                $inInv = false;
+                                $invQty = 0;
+                                foreach ($charPossessions as $cPos) {
+                                    $posRefId = (int)($cPos['ref_id'] ?? $cPos['id'] ?? 0);
+                                    if ($posRefId === (int)$it['ID']) {
+                                        $inInv = true;
+                                        $invQty += (int)($cPos['quantity'] ?? $cPos['qty'] ?? 1);
+                                    }
+                                }
+
+                                $ammoObj = [
+                                    'id' => (string)$it['ID'],
+                                    'name' => $it['Name'],
+                                    'in_inventory' => $inInv,
+                                    'inventory_qty' => $invQty,
+                                    'damage' => $parsedAmmoDmg['display'],
+                                    'avg_damage' => $parsedAmmoDmg['avg_damage'],
+                                    'range' => "{$totalRange} m",
+                                    'range_meters' => $totalRange,
+                                    'crit_range' => $netCritRng,
+                                    'crit_multiplier' => $netCritMul,
+                                    'crit_display' => ($netCritRng < 20 ? "{$netCritRng}-20" : "20") . " (&times;{$netCritMul})",
+                                    'attack_bonus' => $ammoAttCheck,
+                                ];
+                                $compatibleAmmo[] = $ammoObj;
+
+                                if ($defaultAmmo === null || ($inInv && !$defaultAmmo['in_inventory'])) {
+                                    $defaultAmmo = $ammoObj;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if ($defaultAmmo === null) {
+                    $defaultAmmo = [
+                        'id' => 'standard',
+                        'name' => 'Standard Ammo',
+                        'in_inventory' => false,
+                        'inventory_qty' => 0,
+                        'damage' => '1d8',
+                        'avg_damage' => 4.5,
+                        'range' => ($range > 0 ? "{$range} m" : '16 m'),
+                        'range_meters' => $range > 0 ? $range : 16,
+                        'crit_range' => 20 - $critRng,
+                        'crit_multiplier' => 2 + $critMul,
+                        'crit_display' => '20 (&times;2)',
+                        'attack_bonus' => $dexMod + $sizeCombatMod + $skillAttBonus + $charAttMod,
+                    ];
+                }
+
+                $weaponsMatrix[$wId] = [
+                    'id' => $wId,
+                    'name' => $wItem['name'] ?? 'Weapon',
+                    'slot' => $wItem['slot'] ?? 'main_hand',
+                    'size_abbr' => $weaponSizeAbbr,
+                    'ap' => $baseAP,
+                    'is_ranged' => true,
+                    'is_projectile' => true,
+                    'ammo_required' => $ammoRequired,
+                    'compatible_ammo' => $compatibleAmmo,
+                    'default_ammo_id' => (string)$defaultAmmo['id'],
+                    'range' => $defaultAmmo['range_meters'],
+                    'reach' => $defaultAmmo['range'],
+                    'crit_range' => $defaultAmmo['crit_range'],
+                    'crit_multiplier' => $defaultAmmo['crit_multiplier'],
+                    'parry_mod' => $parMod,
+                    'maneuvers' => $maneuvers,
+                    'maneuvers_str' => !empty($maneuvers) ? implode(', ', array_column($maneuvers, 'description')) : '',
+                    'matched_skills' => $wSkills['matched_skills'] ?? [],
+                    'one_handed' => [
+                        'attack_bonus' => $defaultAmmo['attack_bonus'],
+                        'damage' => $defaultAmmo['damage'],
+                        'avg_damage' => $defaultAmmo['avg_damage'],
+                    ],
+                    'two_handed' => [
+                        'attack_bonus' => $defaultAmmo['attack_bonus'],
+                        'damage' => $defaultAmmo['damage'],
+                        'avg_damage' => $defaultAmmo['avg_damage'],
+                    ],
+                ];
+
+                $availableElements[] = [
+                    'id' => 'weapon_' . $wId,
+                    'type' => 'weapon',
+                    'name' => ($wItem['name'] ?? 'Weapon') . ' (2H)',
+                    'is_2h' => true,
+                    'ap' => $baseAP,
+                    'attack_bonus' => $defaultAmmo['attack_bonus'],
+                    'bonus' => $defaultAmmo['attack_bonus'],
+                    'damage' => $defaultAmmo['damage'],
+                    'avg_damage' => $defaultAmmo['avg_damage'],
+                    'reach' => $defaultAmmo['range'],
+                    'crit' => $defaultAmmo['crit_display'],
+                ];
+            } else {
+                // Melee / Shields
+                $statAtt = $onlyRanged ? $dexMod : $strMod;
+                $attBonus1H = $statAtt + $sizeCombatMod + $skillAttBonus + $charAttMod;
+
+                $parsed1H = self::parseWeaponDamageFormula(
+                    $dmgTraitStr,
+                    $abilityModsMap,
+                    $skillDmgBonus,
+                    $charDmgMod,
+                    false,
+                    !$onlyRanged
+                );
+
+                $parsed2H = self::parseWeaponDamageFormula(
+                    $dmgTraitStr,
+                    $abilityModsMap,
+                    $skillDmgBonus,
+                    $charDmgMod,
+                    true,
+                    !$onlyRanged
+                );
+
+                $reachDisplay = $onlyRanged ? "{$range} m" : ($minReach . '-' . max(0, $maxReach + (int)($sizeRow['Reach'] ?? 1.5) - 1) . ' sq');
+                $netCritRng = $critRng + $skillCritRngBonus;
+
+                $weaponsMatrix[$wId] = [
+                    'id' => $wId,
+                    'name' => $wItem['name'] ?? 'Weapon',
+                    'slot' => $wItem['slot'] ?? 'main_hand',
+                    'size_abbr' => $weaponSizeAbbr,
+                    'ap' => $baseAP,
+                    'is_ranged' => $onlyRanged,
+                    'is_projectile' => false,
+                    'range' => $range,
+                    'reach' => $reachDisplay,
+                    'crit_range' => 20 - $netCritRng,
+                    'crit_multiplier' => 2 + $critMul,
+                    'parry_mod' => $parMod,
+                    'maneuvers' => $maneuvers,
+                    'maneuvers_str' => !empty($maneuvers) ? implode(', ', array_column($maneuvers, 'description')) : '',
+                    'matched_skills' => $wSkills['matched_skills'] ?? [],
+                    'one_handed' => [
+                        'attack_bonus' => $attBonus1H,
+                        'damage' => $parsed1H['display'],
+                        'avg_damage' => $parsed1H['avg_damage'],
+                    ],
+                    'two_handed' => [
+                        'attack_bonus' => $attBonus1H,
+                        'damage' => $parsed2H['display'],
+                        'avg_damage' => $parsed2H['avg_damage'],
+                    ],
+                ];
+
+                // Add to available elements list
+                $is2H = $onlyRanged || ($weaponSizeVal >= $currentSizeId);
+                $availableElements[] = [
+                    'id' => 'weapon_' . $wId,
+                    'type' => 'weapon',
+                    'name' => ($wItem['name'] ?? 'Weapon') . ($is2H ? ' (2H)' : ' (1H)'),
+                    'is_2h' => $is2H,
+                    'ap' => $baseAP,
                     'attack_bonus' => $attBonus1H,
-                    'damage' => $dmgDisplay1H,
-                    'avg_damage' => self::calculateAverageDamage($dmgStr, $dmgBonus1H),
-                ],
-                'two_handed' => [
-                    'attack_bonus' => $attBonus1H,
-                    'damage' => $dmgDisplay2H,
-                    'avg_damage' => self::calculateAverageDamage($dmgStr, $dmgBonus2H),
-                ],
-            ];
-        }
-
-        // 2. Akimbo Combinations (if two weapons equipped)
-        if (count($weaponsMatrix) >= 2) {
-            $wList = array_values($weaponsMatrix);
-            $w1 = $wList[0];
-            $w2 = $wList[1];
-
-            $akimboAP = max(5, $w1['ap'] + $w2['ap'] - 2);
-            $akimboPenRed = (int)$modifierEngine->getTotal('MultiAttackPenRed');
-            $akimboAttackPen = max(0, 4 - $akimboPenRed);
-
-            $akimboAttacks[] = [
-                'name' => "Akimbo: {$w1['name']} & {$w2['name']}",
-                'ap' => $akimboAP,
-                'attack_penalty' => -$akimboAttackPen,
-                'main_attack' => ($w1['one_handed']['attack_bonus'] - $akimboAttackPen),
-                'off_attack' => ($w2['one_handed']['attack_bonus'] - $akimboAttackPen),
-                'main_damage' => $w1['one_handed']['damage'],
-                'off_damage' => $w2['one_handed']['damage'],
-            ];
-        }
-
-        // 3. Natural Attacks (from race)
-        if (!empty($race['NaturalAttacks'])) {
-            $natBlocks = explode(';', (string)$race['NaturalAttacks']);
-            foreach ($natBlocks as $nb) {
-                $nb = trim($nb);
-                if (empty($nb)) continue;
-
-                $natName = $nb;
-                $natDmg = '1d4';
-                $isPrimary = true;
-                $natAP = max(5, 8 + $currentSizeId);
-
-                $attBonusNat = $strMod + $sizeCombatMod + (int)$modifierEngine->getTotal('Att');
-                $dmgBonusNat = $strMod + (int)$modifierEngine->getTotal('Dmg');
-
-                $naturalAttacks[] = [
-                    'name' => $natName,
-                    'primary' => $isPrimary,
-                    'ap' => $natAP,
-                    'attack_bonus' => $attBonusNat,
-                    'damage' => $natDmg . ($dmgBonusNat >= 0 ? '+' . $dmgBonusNat : (string)$dmgBonusNat),
+                    'bonus' => $attBonus1H,
+                    'damage' => $is2H ? $parsed2H['display'] : $parsed1H['display'],
+                    'avg_damage' => $is2H ? $parsed2H['avg_damage'] : $parsed1H['avg_damage'],
+                    'reach' => $reachDisplay,
+                    'crit' => (20 - $netCritRng) . '-20 (x' . (2 + $critMul) . ')',
                 ];
             }
         }
 
-        // 4. Brawling / Unarmed Strike
-        $brawlingDmg = ($currentSizeId >= 5) ? '1d3' : '1d2';
-        $brawlingAP = max(5, 8 + $currentSizeId);
+        // 2. Custom Multi-Attack & Akimbo Routines are configured by the player in Configure Matrix (none created automatically)
+        $akimboAttacks = [];
+
+        // 3. Natural Attacks (from race)
+        if (!empty($race['NaturalAttacks'])) {
+            $rawNat = (string)$race['NaturalAttacks'];
+            if (preg_match('/(Bite|Claw|Gore|Hoof|Hooves|Sting|Tail|Tentacle|Slam|Pincer|Talons|Constrict|Rake|Dmg\s*=|AttMod\s*=|Damage\s*=)/i', $rawNat)) {
+                $natBlocks = explode(';', $rawNat);
+                $natSkills = self::evaluateWeaponSkillsForQual('Nat', $effectiveSkillRanks, $context);
+                $natAttSkill = (int)($natSkills['attack_bonus'] ?? 0);
+                $natDmgSkill = (int)($natSkills['damage_bonus'] ?? 0);
+                $natAttSpdSkill = (int)($natSkills['att_spd_bonus'] ?? 0);
+                $natCritRngSkill = (int)($natSkills['crit_rng_bonus'] ?? 0);
+
+                foreach ($natBlocks as $nIdx => $nb) {
+                    $nb = trim($nb);
+                    if (empty($nb)) continue;
+                    if (preg_match('/^\d*\s*(Arm|Leg|Head|Torso|Wing|Tail)\s*\{\s*\}$/i', $nb)) {
+                        continue;
+                    }
+                    if (!preg_match('/(Bite|Claw|Gore|Hoof|Hooves|Sting|Tail|Tentacle|Slam|Pincer|Talons|Constrict|Rake|Dmg\s*=|AttMod\s*=|Damage\s*=)/i', $nb)) {
+                        continue;
+                    }
+
+                    $attackName = trim(preg_replace('/\{[^}]*\}/', '', $nb));
+                    if (empty($attackName)) {
+                        $attackName = $nb;
+                    }
+
+                    $natTraits = TraitEvaluator::parse($nb);
+                    $natDmgStr = '1d4+StrMod B';
+                    $natCritRng = 0;
+                    $natCritMul = 0;
+
+                    foreach ($natTraits as $tr) {
+                        if ($tr['type'] === 'Weapon' || $tr['type'] === 'Attack') {
+                            $natDmgStr = $tr['params']['Dmg'] ?? $tr['params']['Damage'] ?? $natDmgStr;
+                            $natCritRng = (int)($tr['params']['CritRng'] ?? 0);
+                            $natCritMul = (int)($tr['params']['CritMul'] ?? 0);
+                        }
+                    }
+
+                    $parsedNatDmg = self::parseWeaponDamageFormula(
+                        $natDmgStr,
+                        $abilityModsMap,
+                        $natDmgSkill,
+                        (int)$modifierEngine->getTotal('Dmg'),
+                        false
+                    );
+
+                    $natAtt = $strMod + $sizeCombatMod + $natAttSkill + (int)$modifierEngine->getTotal('Att');
+                    $natAP = max(4, 7 + $currentSizeId - $natAttSpdSkill);
+                    $netNatCritRng = 20 - ($natCritRng + $natCritRngSkill);
+                    $netNatCritMul = 2 + $natCritMul;
+
+                    $naturalAttacks[] = [
+                        'name' => $attackName,
+                        'primary' => true,
+                        'ap' => $natAP,
+                        'attack_bonus' => $natAtt,
+                        'damage' => $parsedNatDmg['display'],
+                        'reach' => '0-1 sq',
+                        'crit' => ($netNatCritRng < 20 ? "{$netNatCritRng}-20" : "20") . " (x{$netNatCritMul})",
+                        'maneuvers' => $natSkills['maneuvers'] ?? [],
+                    ];
+
+                    $availableElements[] = [
+                        'id' => 'natural_' . $nIdx,
+                        'type' => 'natural',
+                        'name' => $attackName,
+                        'ap' => $natAP,
+                        'attack_bonus' => $natAtt,
+                        'damage' => $parsedNatDmg['display'],
+                        'avg_damage' => $parsedNatDmg['avg_damage'],
+                        'reach' => '0-1 sq',
+                        'crit' => ($netNatCritRng < 20 ? "{$netNatCritRng}-20" : "20") . " (x{$netNatCritMul})",
+                    ];
+                }
+            }
+        }
+
+        // Natural Attack Combos (if 2+ natural attacks exist)
+        if (count($naturalAttacks) >= 2) {
+            $totalNatAP = 0;
+            $penRed = (int)$modifierEngine->getTotal('MultiAttackPenRed');
+            $secondaryPen = max(0, 2 - $penRed);
+            $comboParts = [];
+
+            foreach ($naturalAttacks as $idx => $na) {
+                $totalNatAP += (int)($na['ap'] ?? 6);
+                $isPrimary = ($idx === 0);
+                $att = $isPrimary ? $na['attack_bonus'] : ($na['attack_bonus'] - $secondaryPen);
+                $comboParts[] = [
+                    'name' => $na['name'],
+                    'attack_bonus' => $att,
+                    'damage' => $na['damage'],
+                    'is_primary' => $isPrimary,
+                ];
+            }
+            $comboAP = max(5, $totalNatAP - (count($naturalAttacks) - 1) * 2);
+            $naturalCombos[] = [
+                'name' => 'Full Natural Attack (' . implode(' + ', array_column($naturalAttacks, 'name')) . ')',
+                'ap' => $comboAP,
+                'attacks' => $comboParts,
+                'summary' => implode(' / ', array_map(fn($p) => ($p['attack_bonus'] >= 0 ? '+' : '') . $p['attack_bonus'] . ' (' . $p['damage'] . ')', $comboParts)),
+            ];
+        }
+
+        // 4. Default Brawling / Unarmed Strikes & Attack Elements
+        $brlSkills = self::evaluateWeaponSkillsForQual('Brl || Gen', $effectiveSkillRanks, $context);
+        $brlAttBonus = (int)($brlSkills['attack_bonus'] ?? 0);
+        $brlDmgBonus = (int)($brlSkills['damage_bonus'] ?? 0);
+        $brlAttSpdBonus = (int)($brlSkills['att_spd_bonus'] ?? 0);
+
         $brawlingAttack = [
-            'name' => 'Unarmed Strike / Brawling',
-            'ap' => $brawlingAP,
-            'attack_bonus' => ($strMod + $sizeCombatMod + (int)$modifierEngine->getTotal('Att')),
-            'damage' => $brawlingDmg . ($strMod >= 0 ? '+' . $strMod : (string)$strMod),
+            'name' => 'Unarmed Strike / Punch',
+            'ap' => max(4, 6 + $currentSizeId - $brlAttSpdBonus),
+            'attack_bonus' => $strMod + $sizeCombatMod + $brlAttBonus + (int)$modifierEngine->getTotal('Att'),
+            'damage' => '1d3' . (($strMod + $brlDmgBonus) >= 0 ? '+' . ($strMod + $brlDmgBonus) : (string)($strMod + $brlDmgBonus)),
+            'reach' => '0-1 sq',
+            'crit' => '20/x2',
+            'maneuvers' => $brlSkills['maneuvers'] ?? [],
         ];
 
-        // 5. Spellcaster Attacks Matrix
-        $spellcastingSkillLvl = $context['skills']['Spellcraft'] ?? $context['skills']['Arcana'] ?? $context['skills']['Magic'] ?? 0;
-        $casterAttackRay = $dexMod + $spellcastingSkillLvl + (int)$modifierEngine->getTotal('Att_Ray');
-        $casterAttackAreaDC = 10 + $intMod + $totalLevel;
-        $casterAttackFortDC = 10 + $conMod + $totalLevel;
-        $casterAttackWillDC = 10 + $wisMod + $totalLevel;
+        // Add Unarmed Strikes to available elements for Combo Builder
+        $availableElements[] = [
+            'id' => 'unarmed_punch_r',
+            'type' => 'unarmed',
+            'name' => 'Right Punch / Fist',
+            'ap' => max(4, 6 + $currentSizeId - $brlAttSpdBonus),
+            'attack_bonus' => $brawlingAttack['attack_bonus'],
+            'damage' => $brawlingAttack['damage'],
+            'avg_damage' => self::calculateAverageDamage('1d3', $strMod + $brlDmgBonus + (int)$modifierEngine->getTotal('Dmg')),
+            'reach' => '0-1 sq',
+            'crit' => '20/x2',
+        ];
+        $availableElements[] = [
+            'id' => 'unarmed_punch_l',
+            'type' => 'unarmed',
+            'name' => 'Left Punch / Fist',
+            'ap' => max(4, 6 + $currentSizeId - $brlAttSpdBonus),
+            'attack_bonus' => $brawlingAttack['attack_bonus'],
+            'damage' => $brawlingAttack['damage'],
+            'avg_damage' => self::calculateAverageDamage('1d3', $strMod + $brlDmgBonus + (int)$modifierEngine->getTotal('Dmg')),
+            'reach' => '0-1 sq',
+            'crit' => '20/x2',
+        ];
+        $kickDmgBonus = $strMod + 1 + $brlDmgBonus + (int)$modifierEngine->getTotal('Dmg');
+        $availableElements[] = [
+            'id' => 'unarmed_kick_r',
+            'type' => 'unarmed',
+            'name' => 'Right Kick',
+            'ap' => max(4, 7 + $currentSizeId - $brlAttSpdBonus),
+            'attack_bonus' => $brawlingAttack['attack_bonus'],
+            'damage' => '1d4' . ($kickDmgBonus >= 0 ? '+' . $kickDmgBonus : (string)$kickDmgBonus),
+            'avg_damage' => self::calculateAverageDamage('1d4', $kickDmgBonus),
+            'reach' => '0-1 sq',
+            'crit' => '20/x2',
+        ];
+        $availableElements[] = [
+            'id' => 'unarmed_kick_l',
+            'type' => 'unarmed',
+            'name' => 'Left Kick',
+            'ap' => max(4, 7 + $currentSizeId - $brlAttSpdBonus),
+            'attack_bonus' => $brawlingAttack['attack_bonus'],
+            'damage' => '1d4' . ($kickDmgBonus >= 0 ? '+' . $kickDmgBonus : (string)$kickDmgBonus),
+            'avg_damage' => self::calculateAverageDamage('1d4', $kickDmgBonus),
+            'reach' => '0-1 sq',
+            'crit' => '20/x2',
+        ];
+        $headbuttDmgBonus = $strMod + $brlDmgBonus + (int)$modifierEngine->getTotal('Dmg');
+        $availableElements[] = [
+            'id' => 'unarmed_headbutt',
+            'type' => 'unarmed',
+            'name' => 'Headbutt',
+            'ap' => max(4, 6 + $currentSizeId - $brlAttSpdBonus),
+            'attack_bonus' => $brawlingAttack['attack_bonus'],
+            'damage' => '1d3' . ($headbuttDmgBonus >= 0 ? '+' . $headbuttDmgBonus : (string)$headbuttDmgBonus),
+            'avg_damage' => self::calculateAverageDamage('1d3', $headbuttDmgBonus),
+            'reach' => '0-1 sq',
+            'crit' => '20/x2',
+        ];
+
+        // 5. Grapple Maneuver (Grp)
+        $sizeGrappleMod = (int)($sizeRow['GrappleMod'] ?? 0);
+        $grappleAP = max(4, 8 + $currentSizeId - $brlAttSpdBonus) - (int)$modifierEngine->getTotal('AttSpd');
+        $grappleReach = '0-' . max(1, (int)round((float)($sizeRow['Reach'] ?? 1.5))) . ' sq';
+        $grappleDexAtt = $dexMod + $sizeCombatMod + $brlAttBonus + (int)$modifierEngine->getTotal('Att');
+        $grappleStrAtt = $strMod + $sizeGrappleMod + $brlAttBonus + (int)$modifierEngine->getTotal('Att');
+        $grappleDmgBonus = $strMod + $sizeGrappleMod + $brlDmgBonus + (int)$modifierEngine->getTotal('Dmg');
+        $grappleDmgDisplay = '1d3' . ($grappleDmgBonus >= 0 ? '+' . $grappleDmgBonus : (string)$grappleDmgBonus);
+
+        $grappleAttack = [
+            'name' => 'Grapple',
+            'category' => 'Brawling / Maneuver',
+            'ap' => $grappleAP,
+            'reach' => $grappleReach,
+            'dex_attack' => $grappleDexAtt,
+            'str_attack' => $grappleStrAtt,
+            'attack_bonus' => $grappleDexAtt,
+            'damage' => $grappleDmgDisplay,
+            'avg_damage' => round(2.0 + $grappleDmgBonus, 1),
+            'crit' => '20/x2',
+            'size_grapple_mod' => $sizeGrappleMod,
+        ];
+
+        // 6. Caster Spell Attacks Matrix
+        $raySkills = self::evaluateWeaponSkillsForQual('Ray || Gen', $effectiveSkillRanks, $context);
+        $areSkills = self::evaluateWeaponSkillsForQual('Are || Gen', $effectiveSkillRanks, $context);
+        $bamSkills = self::evaluateWeaponSkillsForQual('BaM || Gen', $effectiveSkillRanks, $context);
+
+        $casterAttackRay = $dexMod + $sizeCombatMod + (int)($raySkills['attack_bonus'] ?? 0) + (int)$modifierEngine->getTotal('AttRay');
+        $casterAttackArea = $dexMod + $sizeCombatMod + (int)($areSkills['attack_bonus'] ?? 0) + (int)$modifierEngine->getTotal('AttArea');
+        $casterAttackBody = $dexMod + $sizeCombatMod + (int)($bamSkills['attack_bonus'] ?? 0) + (int)$modifierEngine->getTotal('AttBody');
+        $casterAttackMind = $intMod + (int)($bamSkills['attack_bonus'] ?? 0) + (int)$modifierEngine->getTotal('AttMind');
 
         $spellAttacks = [
-            'ray_touch' => [
-                'name' => 'Ray / Touch Attack',
+            'ray' => [
+                'name' => 'Ray Attack',
+                'size_class' => $sizeRow['Abbreviation'] ?? 'M',
+                'ap' => 'Var',
+                'range' => 'Var',
                 'attack_bonus' => $casterAttackRay,
-                'stat_used' => 'Dexterity + Spellcraft',
+                'damage' => 'Var',
+                'crit' => 'Var',
             ],
-            'area_dc' => [
-                'name' => 'Area Spell DC',
-                'dc' => $casterAttackAreaDC,
-                'stat_used' => 'Intelligence / Casting Mod',
+            'area' => [
+                'name' => 'Area Attack',
+                'size_class' => $sizeRow['Abbreviation'] ?? 'M',
+                'ap' => 'Var',
+                'range' => 'Var',
+                'attack_bonus' => $casterAttackArea,
+                'damage' => 'Var',
+                'crit' => 'Var',
             ],
-            'body_fort_dc' => [
-                'name' => 'Body Spell DC (Fortitude)',
-                'dc' => $casterAttackFortDC,
-                'stat_used' => 'Constitution / Casting Mod',
+            'body' => [
+                'name' => 'Body Attack',
+                'size_class' => $sizeRow['Abbreviation'] ?? 'M',
+                'ap' => 'Var',
+                'range' => 'Var',
+                'attack_bonus' => $casterAttackBody,
+                'damage' => 'Var',
+                'crit' => 'Var',
             ],
-            'mind_will_dc' => [
-                'name' => 'Mind Spell DC (Will)',
-                'dc' => $casterAttackWillDC,
-                'stat_used' => 'Wisdom / Casting Mod',
+            'mind' => [
+                'name' => 'Mind Attack',
+                'size_class' => $sizeRow['Abbreviation'] ?? 'M',
+                'ap' => 'Var',
+                'range' => 'Var',
+                'attack_bonus' => $casterAttackMind,
+                'damage' => 'Var',
+                'crit' => 'Var',
             ],
         ];
 
@@ -1041,212 +1948,1364 @@ class EntityEngine
         $repDesc = (string)($e->ReputationDesc ?? $e->ReputationStr ?? '');
         $inflDesc = (string)($e->InfluenceDesc ?? $e->InfluenceStr ?? '');
 
-        // Influence calculation: Total Infl = Cha + (Infl bonus per class/race and level) + SC bonus + other modifiers
+        $scRow = self::$socialClassesCache[$sc] ?? null;
+        $scCLMod = (int)($scRow['CLMod'] ?? 0);
+        $challengeLevel += $scCLMod;
+
         $inflTotal = 0;
-        $inflBreakdown = [
-            'cha' => 0,
-            'racial_levels' => 0,
-            'class_levels' => 0,
-            'sc_bonus' => 0,
-            'modifiers' => 0,
-        ];
         if ($finalCha !== null) {
             $inflTotal = (int)$finalCha;
-            $inflBreakdown['cha'] = (int)$finalCha;
-
-            // Racial level infl bonus
             $racialInflPerLvl = (int)($bgClass['InflPerLevel'] ?? 4);
-            $racialInfl = $racialLevel * $racialInflPerLvl;
-            $inflTotal += $racialInfl;
-            $inflBreakdown['racial_levels'] = $racialInfl;
-
-            // Class level infl bonus
-            $classInfl = 0;
+            $inflTotal += ($racialLevel * $racialInflPerLvl);
             foreach ($classIds as $cId) {
                 $cls = self::$classesCache[$cId] ?? null;
-                $clsInfl = (int)($cls['InflPerLevel'] ?? 5);
-                $classInfl += $clsInfl;
+                $inflTotal += (int)($cls['InflPerLevel'] ?? 5);
             }
-            $inflTotal += $classInfl;
-            $inflBreakdown['class_levels'] = $classInfl;
-
-            // Social class bonus
-            $scRow = self::$socialClassesCache[$sc] ?? null;
-            $scInfl = (int)($scRow['InflMod'] ?? 0);
-            $inflTotal += $scInfl;
-            $inflBreakdown['sc_bonus'] = $scInfl;
-
-            // Trait / improvement modifiers
-            $traitInfl = (int)$modifierEngine->getTotal('Infl') + (int)$modifierEngine->getTotal('Influence');
-            $inflTotal += $traitInfl;
-            $inflBreakdown['modifiers'] = $traitInfl;
+            $inflTotal += (int)($scRow['InflMod'] ?? 0);
+            $inflTotal += (int)$modifierEngine->getTotal('Infl');
         }
 
-        // Reputation calculation: Total Rep = TL + SC + WC + other modifiers
-        $repModifiers = (int)$modifierEngine->getTotal('Rep') + (int)$modifierEngine->getTotal('Reputation');
-        $repTotal = $totalLevel + $sc + $wc + $repModifiers;
-        $repBreakdown = [
-            'total_level' => $totalLevel,
-            'social_class' => $sc,
-            'wealth_class' => $wc,
-            'modifiers' => $repModifiers,
-        ];
+        $repTotal = $totalLevel + $sc + $wc + (int)$modifierEngine->getTotal('Rep');
 
-        $scClMod = (int)(self::$socialClassesCache[$sc]['CLMod'] ?? 0);
-        $challengeLevel += $scClMod;
+        // Categorize all traits
+        $categorizedTraits = self::categorizeTraits($rawTraitCollections, $improvementsList, (int)($e->ImprovementPts ?? 0), $context);
 
-        // Return master calculation result object
+        // Languages extraction (Cultural/Racial granted + Linguistics specializations)
+        $languages = self::extractLanguages($rawTraitCollections, $specializationsList);
+
+        // Build trained skills summary list with effective rank and total bonus
+        $trainedSkillsSummary = [];
+        $abilMap = [0 => 'Str', 1 => 'Con', 2 => 'Dex', 3 => 'Int', 4 => 'Wis', 5 => 'Cha'];
+        if (self::$skillsCache !== null) {
+            foreach (self::$skillsCache as $sId => $skDef) {
+                $effRank = $effectiveSkillRanks[$sId] ?? 0;
+                if ($effRank > 0) {
+                    $baseRank = (float)($skillRanks[$sId] ?? 0);
+                    $bonusRank = $effRank - $baseRank;
+                    $abKey = $abilMap[$skDef['Abil'] ?? 0] ?? 'Str';
+                    $abMod = match ($abKey) {
+                        'Str' => $strMod,
+                        'Con' => $conMod,
+                        'Dex' => $dexMod,
+                        'Int' => $intMod,
+                        'Wis' => $wisMod,
+                        'Cha' => $chaMod,
+                        default => 0,
+                    };
+                    $trainedSkillsSummary[$sId] = [
+                        'id' => $sId,
+                        'name' => $skDef['Name'] ?? "Skill #{$sId}",
+                        'base_rank' => $baseRank,
+                        'bonus_rank' => $bonusRank,
+                        'effective_rank' => $effRank,
+                        'rank' => (string)((floor($effRank) == $effRank) ? (int)$effRank : $effRank),
+                        'ability_key' => $abKey,
+                        'ability_mod' => $abMod,
+                        'total_bonus' => ($effRank + $abMod),
+                    ];
+                }
+            }
+        }
+
         return [
-            // Stage 1 & Heritage
             'heritage' => [
                 'race_id' => $raceId,
-                'race_name' => $race['NameInformal'] ?? $race['Name'] ?? 'Unknown Race',
+                'race_name' => $race['Name'] ?? 'Humanoid',
+                'race_name_informal' => $race['NameInformal'] ?: ($race['Name'] ?? 'Humanoid'),
+                'creature_subtype_name' => $subtype['Name'] ?? 'Humanoid',
                 'template_ids' => $templateIds,
-                'culture_id' => $cultureId,
+                'template_names_informal' => !empty($templateIds) ? collect($templateIds)->map(fn($tId) => self::$templatesCache[$tId]['NameInformal'] ?? self::$templatesCache[$tId]['Name'] ?? "Template #$tId")->join(', ') : 'None',
                 'class_ids' => $classIds,
                 'racial_level' => $racialLevel,
                 'total_level' => $totalLevel,
-                'power_level' => $powerLevel,
                 'challenge_level' => $challengeLevel,
+                'power_level' => $powerLevel,
                 'size_id' => $currentSizeId,
                 'size_name' => $sizeRow['Name'] ?? 'Medium',
-                'size_combat_mod' => $sizeCombatMod,
-                'space' => $sizeRow['Space'] ?? 1.5,
-                'reach' => ($sizeRow['Reach'] ?? 1.5) + ($bodyTypeRow['ReachMod'] ?? 0),
+                'size_abbr' => $sizeRow['Abbreviation'] ?? 'M',
                 'body_type_id' => $bodyTypeId,
+                'body_type_name' => $bodyTypeRow['Description'] ?? 'Biped',
                 'physical_age' => $physicalAge,
-                'physical_age_cat' => $physicalAgeCat,
                 'mental_age' => $mentalAge,
+                'physical_age_cat' => $physicalAgeCat,
                 'mental_age_cat' => $mentalAgeCat,
+                'space' => (float)($sizeRow['Space'] ?? 1.5) . 'x' . (float)($sizeRow['Space'] ?? 1.5) . ' sq',
+                'reach' => (float)($sizeRow['Reach'] ?? 1.5),
             ],
-
-            // Stage 2: Ability Scores
             'base_abilities' => [
                 'Str' => $baseStr, 'Con' => $baseCon, 'Dex' => $baseDex,
                 'Int' => $baseInt, 'Wis' => $baseWis, 'Cha' => $baseCha,
-            ],
-            'adjusted_abilities' => [
-                'Str' => $adjStr, 'Con' => $adjCon, 'Dex' => $adjDex,
-                'Int' => $adjInt, 'Wis' => $adjWis, 'Cha' => $adjCha,
             ],
             'final_abilities' => [
                 'Str' => $finalStr, 'Con' => $finalCon, 'Dex' => $finalDex,
                 'Int' => $finalInt, 'Wis' => $finalWis, 'Cha' => $finalCha,
             ],
             'ability_modifiers' => [
-                'Str' => $finalStr !== null ? $strMod : null,
-                'Con' => $finalCon !== null ? $conMod : null,
-                'Dex' => $finalDex !== null ? $dexMod : null,
-                'Int' => $finalInt !== null ? $intMod : null,
-                'Wis' => $finalWis !== null ? $wisMod : null,
-                'Cha' => $finalCha !== null ? $chaMod : null,
-                'DexRaw' => $finalDex !== null ? $dexModRaw : null,
+                'Str' => ($finalStr !== null) ? $strMod : null,
+                'Con' => ($finalCon !== null) ? $conMod : null,
+                'Dex' => ($finalDex !== null) ? $dexMod : null,
+                'Int' => ($finalInt !== null) ? $intMod : null,
+                'Wis' => ($finalWis !== null) ? $wisMod : null,
+                'Cha' => ($finalCha !== null) ? $chaMod : null,
             ],
             'modifiers_engine' => $modifierEngine,
-
-            // Stage 3: Equipment & Encumbrance
-            'equipment' => [
-                'active_config' => $config,
-                'active_config_name' => EquipmentManager::CONFIG_NAMES[$config] ?? 'Combat',
-                'total_weight' => $totalWeight,
-                'equipment_ec' => $equipEC,
-                'weight_ec' => $weightEC,
-                'effective_ec' => $effectiveEC,
-                'encumbrance_penalty' => $encPenalty,
-                'max_dex_bonus' => $maxDexBonus,
-                'manager' => $equipmentManager,
-            ],
-
-            // Stage 4: Health & Defenses
-            'health' => [
-                'hp' => [
-                    'total' => $hpTotal,
-                    'current' => $hpCurrent,
-                    'damage' => $hpDamage,
-                    'temp' => $hpTemp,
-                    'display' => (string)$hpTotal,
-                ],
-                'sp' => [
-                    'total' => $spTotal,
-                    'current' => $spCurrent,
-                    'damage' => $spDamage,
-                    'temp' => $spTemp,
-                    'display' => $spTotal !== null ? (string)$spTotal : '–',
-                ],
-                'pp' => [
-                    'total' => $ppTotal,
-                    'current' => $ppCurrent,
-                    'damage' => $ppDamage,
-                    'temp' => $ppTemp,
-                    'display' => $ppTotal !== null ? (string)$ppTotal : '–',
-                ],
-                'conditions' => $conditions,
-            ],
             'defenses' => [
                 'dec_passive' => $decPassive,
                 'dec_active' => $decActive,
+                'parry_bonus' => $bestParryBonus,
+                'wielded_parries' => $wieldedParryList,
+                'armor_parry_bonus' => $maxArmorPar,
+                'crit_res' => $critRes,
+                'crit_score' => $critScore,
                 'fort' => $fort,
                 'ref' => $ref,
                 'will' => $will,
                 'dr' => $dr,
                 'mr' => $mr,
-                'crit_res' => $critRes,
                 'resistances' => $energyResistances,
                 'init_mod' => $initMod,
             ],
-
-            // Stage 5: Speeds & Actions
+            'health' => [
+                'hp' => ['total' => $hpTotal, 'current' => $hpCurrent, 'damage' => $hpDamage, 'temp' => $hpTemp, 'display' => ($hpTotal !== null) ? (string)$hpTotal : '–'],
+                'sp' => ['total' => $spTotal, 'current' => $spCurrent, 'damage' => $spDamage, 'temp' => $spTemp, 'display' => ($spTotal !== null) ? (string)$spTotal : '–'],
+                'pp' => ['total' => $ppTotal, 'current' => $ppCurrent, 'damage' => $ppDamage, 'temp' => $ppTemp, 'display' => ($ppTotal !== null) ? (string)$ppTotal : '–'],
+                'ability_damage' => ['Str' => 0, 'Con' => 0, 'Dex' => 0, 'Int' => 0, 'Wis' => 0, 'Cha' => 0],
+                'conditions' => $conditions,
+            ],
             'speeds' => [
                 'ground' => $groundSpeed,
                 'swim' => $swimSpeed,
                 'fly' => $flySpeed,
+                'climb_mult' => ($climbMult < 999 ? $climbMult : null),
+                'swim_mult' => ($swimMult < 999 ? $swimMult : null),
+                'burrow_mult' => ($burrowMult < 999 ? $burrowMult : null),
+                'display' => $speedDisplayStr,
             ],
             'actions' => [
                 'ap' => $actionPoints,
-                'mp' => $groundSpeed,
                 'reactions' => $reactions,
+                'mp' => $groundSpeed,
             ],
-
-            // Stage 6: Attacks & Combat
+            'action_modifiers' => [
+                'ep' => $encPenalty,
+                'pam' => $pam,
+                'mam' => $mam,
+            ],
+            'equipment' => [
+                'total_weight' => $totalWeight,
+                'weight_ec' => $weightEC,
+                'equipment_ec' => $equipEC,
+                'effective_ec' => $effectiveEC,
+                'encumbrance_penalty' => $encPenalty,
+                'max_dex_bonus' => $maxDexBonus,
+            ],
             'attacks' => [
                 'weapons' => $weaponsMatrix,
                 'akimbo' => $akimboAttacks,
                 'natural' => $naturalAttacks,
+                'natural_combos' => $naturalCombos,
                 'brawling' => $brawlingAttack,
+                'grapple' => $grappleAttack,
                 'spells' => $spellAttacks,
+                'available_elements' => $availableElements,
             ],
-
-            // Stage 7: Social Details & Standing
+            'skills' => $effectiveSkillRanks,
+            'skill_ranks' => $skillRanks,
+            'trained_skills' => $trainedSkillsSummary,
             'social' => [
+                'sc' => $sc,
+                'wc' => $wc,
                 'social_class' => $sc,
                 'wealth_class' => $wc,
-                'social_class_name' => self::$socialClassesCache[$sc]['Examples'] ?? "Class {$sc}",
-                'social_class_address' => self::$socialClassesCache[$sc]['AddressForm'] ?? '',
-                'social_class_infl_mod' => (int)(self::$socialClassesCache[$sc]['InflMod'] ?? 0),
-                'social_class_cl_mod' => $scClMod,
-                'wealth_class_description' => self::$wealthClassesCache[$wc]['Description'] ?? '',
                 'influence_total' => $inflTotal,
-                'influence_used' => (int)($e->InflUsed ?? 0),
-                'influence_current' => $inflTotal - (int)($e->InflUsed ?? 0),
                 'influence_desc' => $inflDesc,
-                'influence_breakdown' => $inflBreakdown,
                 'reputation_total' => $repTotal,
                 'reputation_desc' => $repDesc,
-                'reputation_breakdown' => $repBreakdown,
             ],
+            'traits' => $categorizedTraits,
+            'affinity_discounts' => $affinityDiscounts,
+            'languages' => $languages,
         ];
     }
 
     /**
-     * Helper to compute average damage of dice string + modifier.
+     * Calculate multi-attack combo from selected attack element components (2 to 5 attacks).
      */
-    protected static function calculateAverageDamage(string $diceStr, int $mod): float
+    public static function buildMultiAttackCombo(array $selectedElements, int $multiAttackPenRed = 0): array
     {
-        if (preg_match('/^(\d+)d(\d+)$/i', trim($diceStr), $m)) {
-            $n = (int)$m[1];
-            $d = (int)$m[2];
-            return ($n * ($d + 1) / 2.0) + $mod;
+        $count = count($selectedElements);
+        if ($count < 2) return [];
+
+        $totalAP = 0;
+        foreach ($selectedElements as $el) {
+            $totalAP += (int)($el['ap'] ?? 6);
         }
-        return (float)((int)$diceStr + $mod);
+        $comboAP = max(5, $totalAP - ($count - 1) * 2);
+
+        // Standard multi-attack penalty: 4 for 2 attacks, 6 for 3 attacks, 8 for 4 attacks, 10 for 5 attacks, reduced by MultiAttackPenRed
+        $basePenalty = match ($count) {
+            2 => 4,
+            3 => 6,
+            4 => 8,
+            5 => 10,
+            default => ($count * 2),
+        };
+        $effectivePenalty = max(0, $basePenalty - $multiAttackPenRed);
+
+        $comboAttacks = [];
+        $names = [];
+        $summaryParts = [];
+
+        foreach ($selectedElements as $idx => $el) {
+            $rawAtt = (int)($el['attack_bonus'] ?? 0);
+            $netAtt = $rawAtt - $effectivePenalty;
+            $names[] = $el['name'] ?? "Attack #" . ($idx + 1);
+            $dmgStr = $el['damage'] ?? '1d4';
+            $summaryParts[] = ($netAtt >= 0 ? '+' : '') . $netAtt . ' (' . $dmgStr . ')';
+            $comboAttacks[] = [
+                'index' => $idx + 1,
+                'name' => $el['name'] ?? "Attack #" . ($idx + 1),
+                'raw_attack' => $rawAtt,
+                'penalty' => -$effectivePenalty,
+                'attack_bonus' => $netAtt,
+                'damage' => $dmgStr,
+                'avg_damage' => $el['avg_damage'] ?? 2.5,
+                'reach' => $el['reach'] ?? '0-1 sq',
+                'crit' => $el['crit'] ?? '20/x2',
+            ];
+        }
+
+        return [
+            'name' => 'Combo (' . $count . ' Attacks: ' . implode(' + ', $names) . ')',
+            'count' => $count,
+            'ap' => $comboAP,
+            'penalty' => -$effectivePenalty,
+            'attacks' => $comboAttacks,
+            'summary' => implode(' / ', $summaryParts),
+        ];
+    }
+
+    /**
+     * Categorize character traits into distinct buckets for sheet presentation.
+     */
+    public static function categorizeTraits(array $traitCollections, array $improvementsList = [], int $remainingIp = 0, array $context = []): array
+    {
+        $senses = [];
+        $movement = [];
+        $defenses = [];
+        $attacks = [];
+        $special = [];
+
+        // Ensure cTraitEffects is initialized
+        self::ensureRulesInitialized();
+
+        $ignoredElementalRes = ['acidres', 'coldres', 'electricres', 'elecres', 'fireres', 'necroticres', 'necrores', 'radiantres', 'sonicres'];
+        $ignoredDefMods = ['dec', 'fort', 'ref', 'will', 'dr', 'mr', 'parry', 'ndd', 'hp', 'sp', 'pp', 'all', ...$ignoredElementalRes];
+
+        foreach ($traitCollections as $col) {
+            $traitsStr = $col['traits'] ?? '';
+            if (empty($traitsStr)) continue;
+
+            $colContext = $context;
+            if (isset($col['lvl'])) {
+                $colContext['lvl'] = $col['lvl'];
+                $colContext['LVL'] = $col['lvl'];
+            }
+
+            $parsed = TraitEvaluator::parse($traitsStr);
+            foreach ($parsed as $tr) {
+                $type = $tr['type'];
+                $params = $tr['params'];
+                $qualLower = strtolower($params['Qual'] ?? $params['Type'] ?? '');
+
+                // Filter out purely numerical traits already represented in specific sheet boxes:
+                if (in_array($type, ['AbilMod', 'StatMod', 'SklMod', 'SpecMod', 'SkillPts', 'Improvement', 'ActAcc', 'SplAcc', 'Affinity', 'InitMod', 'Weapon', 'Armor'])) {
+                    continue;
+                }
+                if ($type === 'Special' && in_array($qualLower, ['initmod', 'haste'])) {
+                    continue;
+                }
+                if ($type === 'Attack' && in_array($qualLower, ['refmod'])) {
+                    continue;
+                }
+                if ($type === 'AttMod' && !str_contains($qualLower, 'multiattackpenred')) {
+                    continue;
+                }
+                if ($type === 'DefMod' && in_array($qualLower, $ignoredDefMods)) {
+                    continue;
+                }
+                if ($type === 'HeaMod' && in_array($qualLower, ['hp', 'sp', 'pp', 'hpmod', 'spmod', 'ppmod', 'fasthealsp', 'fasthealhp', 'fasthealpp'])) {
+                    continue;
+                }
+                if (in_array($type, ['SpdType', 'SpdMod', 'SpeedMod']) || in_array($qualLower, ['speed', 'climb', 'swim', 'burrow', 'fly', 'maneuver', 'ecred', 'encumbranceres', 'immobile', 'immobility'])) {
+                    // Only keep qualitative mobility traits
+                    if (!in_array($qualLower, ['mobility', 'stealthy', 'terrainmove', 'springattack', 'acrobrun', 'acrobcharge', 'reactivemove', 'erraticmove', 'balanced'])) {
+                        continue;
+                    }
+                }
+
+                // Evaluate expressions in params
+                $evalParams = [];
+                foreach ($params as $k => $v) {
+                    if (in_array($k, ['Value', 'Range', 'PPRed'])) {
+                        $evalVal = TraitEvaluator::evaluateExpression((string)$v, $colContext);
+                        if (is_numeric($evalVal)) {
+                            $intVal = (floor((float)$evalVal) == (float)$evalVal) ? (int)$evalVal : round((float)$evalVal, 1);
+                            $origStr = (string)$v;
+                            if (str_starts_with($origStr, '+') || (in_array($type, ['Defense', 'DefMod', 'HeaMod', 'SpdSpcl']) && $intVal > 0 && !in_array($qualLower, ['sleepres', 'paralysisres', 'poisonres', 'diseaseres', 'darkvision', 'lowlightvision', 'lowlight']))) {
+                                $evalParams[$k] = '+' . $intVal;
+                            } else {
+                                $evalParams[$k] = (string)$intVal;
+                            }
+                        } else {
+                            $evalParams[$k] = $evalVal;
+                        }
+                    } else {
+                        $evalParams[$k] = $v;
+                    }
+                }
+
+                $paramParts = [];
+                foreach ($evalParams as $k => $v) {
+                    if ($k === 'Target' && strtolower((string)$v) === 'wearer') continue;
+                    if ($k === 'Type' && strtolower((string)$v) === 'nil') continue;
+                    $paramParts[] = "{$k}={$v}";
+                }
+                $evalTraitStr = $type . ' { ' . implode('; ', $paramParts) . '; }';
+
+                // Format brief description using legacy cTraitEffects if available
+                $desc = '';
+                try {
+                    if (class_exists('\cTraitEffects') && method_exists('\cTraitEffects', 'StatGetTraitsDescription')) {
+                        $desc = trim(str_replace(["\\n", "\n", "\r"], '', \cTraitEffects::StatGetTraitsDescription($evalTraitStr, true)));
+                    }
+                } catch (\Throwable $e) {}
+
+                if (empty($desc) || str_contains($desc, 'ERROR') || str_starts_with(trim($desc), '{')) {
+                    $desc = self::formatBriefTraitFallback($type, $params, $evalParams);
+                }
+
+                // Clean up trailing "/ T: Wearer", "(Nil)", and excess whitespace from description
+                if (!empty($desc)) {
+                    $desc = preg_replace('/\s*\(\s*nil\s*\)/i', '', $desc);
+                    $desc = preg_replace('/\s*\/\s*T:\s*wearer\b/i', '', $desc);
+                    $desc = preg_replace('/\s+/', ' ', $desc);
+                    $desc = trim($desc);
+                }
+
+                if (empty($desc)) {
+                    $qual = $params['Qual'] ?? $params['Type'] ?? '';
+                    $val = $evalParams['Value'] ?? $params['Value'] ?? '';
+                    $desc = $qual . ($val ? " {$val}" : '');
+                }
+
+                $itemObj = [
+                    'name' => $desc,
+                    'raw' => $evalTraitStr,
+                    'source' => $col['source'] ?? '',
+                ];
+
+                // Categorize into the 5 buckets
+                // 1. Senses
+                if (in_array($type, ['Sns', 'SenseMod', 'SnsMod']) || in_array($qualLower, ['darkvision', 'darksight', 'lowlight', 'lowlightvision', 'blindsense', 'tremorsense', 'scent', 'blindfight', 'blind-fight', 'lifesense', 'truesight', 'lightsensitive', 'lightsensitivity'])) {
+                    $senses[] = $itemObj;
+                }
+                // 2. Defenses
+                elseif (in_array($type, ['Defense', 'ResMod', 'ImmuneMod']) || str_ends_with($qualLower, 'res') || str_ends_with($qualLower, 'imm') || in_array($qualLower, ['dodge', 'evasion', 'deathward', 'holygrace', 'fastheal', 'regenerate', 'sleepres', 'fearres', 'diseaseres', 'poisonres', 'charmres', 'feyres', 'fallres', 'illusionres', 'mentalres', 'paralysisres', 'petrificationres', 'polymorphres', 'psychres', 'suffocateres', 'trapres', 'ageres', 'telepathyres'])) {
+                    $defenses[] = $itemObj;
+                }
+                // 3. Attacks
+                elseif (in_array($type, ['Attack', 'SpecialAttack']) || str_contains($qualLower, 'multiattackpenred') || in_array($qualLower, ['vitalattack', 'rangedvitalattack', 'sneakattack', 'powerattack', 'precisionattack', 'acrobaticstrike', '2hnddmg', 'imprsec', 'monkeygrip', 'mountedcharge', 'cleave', 'greatcleave', 'ptblank', 'pointblankshot', 'preciseshot', 'rapidshot', 'manyshot', 'imprchargedmg', 'refmod'])) {
+                    $attacks[] = $itemObj;
+                }
+                // 4. Movement
+                elseif (in_array($qualLower, ['mobility', 'stealthy', 'terrainmove', 'springattack', 'acrobrun', 'acrobcharge', 'reactivemove', 'erraticmove', 'balanced'])) {
+                    $movement[] = $itemObj;
+                }
+                // 5. Special Traits
+                else {
+                    $special[] = $itemObj;
+                }
+            }
+        }
+
+        // Deduplicate and filter empty items
+        $dedup = function(array $items): array {
+            $unique = [];
+            foreach ($items as $it) {
+                $name = trim($it['name'] ?? '');
+                if (empty($name)) continue;
+                $k = strtolower($name);
+                if (!isset($unique[$k])) {
+                    $unique[$k] = $it;
+                }
+            }
+            return array_values($unique);
+        };
+
+        $sensesList = $dedup($senses);
+        $movementList = $dedup($movement);
+        $defensesList = $dedup($defenses);
+        $attacksList = $dedup($attacks);
+        $specialList = $dedup($special);
+
+        $buildStr = function(array $items, string $default): string {
+            if (empty($items)) return $default;
+            $names = array_column($items, 'name');
+            return implode(', ', array_filter($names));
+        };
+
+        return [
+            'senses' => $sensesList,
+            'movement' => $movementList,
+            'defenses' => $defensesList,
+            'attacks' => $attacksList,
+            'special' => $specialList,
+            'senses_str' => $buildStr($sensesList, 'Standard Vision'),
+            'movement_str' => $buildStr($movementList, 'None'),
+            'defenses_str' => $buildStr($defensesList, 'None'),
+            'attacks_str' => $buildStr($attacksList, 'None'),
+            'special_str' => $buildStr($specialList, 'None'),
+            'improvements' => $improvementsList,
+            'remaining_ip' => $remainingIp,
+        ];
+    }
+
+    /**
+     * Extract structured languages list from cultural/racial traits and linguistics specializations.
+     */
+    public static function extractLanguages(array $traitCollections, array $specializationsList = []): array
+    {
+        $languages = [];
+
+        // 1. Cultural & Racial granted languages (SpecMod { Qual=... })
+        foreach ($traitCollections as $col) {
+            $parsed = TraitEvaluator::parse($col['traits'] ?? '');
+            foreach ($parsed as $tr) {
+                if ($tr['type'] === 'SpecMod') {
+                    $qual = $tr['params']['Qual'] ?? '';
+                    $val = (int)($tr['params']['Value'] ?? 1);
+                    // Check if qual is a known language in ref_skillspecializations under Linguistics (Skill 7)
+                    if (self::$specializationsCache !== null) {
+                        foreach (self::$specializationsCache as $sp) {
+                            if ((int)($sp['Skill'] ?? 0) === 7 && strcasecmp(trim($sp['Name']), trim($qual)) === 0) {
+                                $languages[$sp['Name']] = max($languages[$sp['Name']] ?? 0, $val);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 2. Purchased Linguistics specializations
+        if (self::$specializationsCache !== null) {
+            foreach ($specializationsList as $specId => $rank) {
+                if ($rank > 0 && isset(self::$specializationsCache[$specId])) {
+                    $sp = self::$specializationsCache[$specId];
+                    if ((int)($sp['Skill'] ?? 0) === 7) {
+                        $languages[$sp['Name']] = max($languages[$sp['Name']] ?? 0, (int)$rank);
+                    }
+                }
+            }
+        }
+
+        // Always ensure Common is present at minimum level 1 if no language found
+        if (empty($languages)) {
+            $languages['Common'] = 3;
+        }
+
+        $result = [];
+        foreach ($languages as $name => $lvl) {
+            $lvlName = match($lvl) {
+                1 => 'Basic',
+                2 => 'Fluent',
+                3 => 'Native',
+                default => "Level {$lvl}",
+            };
+            $result[] = [
+                'name' => $name,
+                'level' => $lvl,
+                'level_name' => $lvlName,
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Parse classes input into flat array of class IDs.
+     */
+    public static function parseClassIds(mixed $raw): array
+    {
+        if (empty($raw)) return [];
+        if (is_numeric($raw)) return [(int)$raw];
+        
+        if (is_string($raw)) {
+            $trimmed = trim($raw);
+            if (str_starts_with($trimmed, '{') || str_starts_with($trimmed, '[')) {
+                $decoded = json_decode($trimmed, true);
+                if (is_array($decoded)) {
+                    return self::parseClassIds($decoded);
+                }
+            }
+            $parts = explode(';', $raw);
+            $res = [];
+            foreach ($parts as $p) {
+                $p = trim($p);
+                if (empty($p)) continue;
+                if (str_contains($p, '=')) {
+                    [$cId, $cnt] = explode('=', $p, 2);
+                    for ($i = 0; $i < (int)$cnt; $i++) $res[] = (int)$cId;
+                } elseif (is_numeric($p)) {
+                    $res[] = (int)$p;
+                }
+            }
+            return $res;
+        }
+
+        if (is_array($raw)) {
+            $isAssoc = !array_is_list($raw);
+            $res = [];
+            if ($isAssoc) {
+                foreach ($raw as $cId => $cnt) {
+                    if (is_numeric($cId) && is_numeric($cnt)) {
+                        for ($i = 0; $i < (int)$cnt; $i++) $res[] = (int)$cId;
+                    }
+                }
+                return $res;
+            }
+            foreach ($raw as $v) {
+                if (is_numeric($v)) {
+                    $res[] = (int)$v;
+                } elseif (is_array($v) && isset($v['ClassID'])) {
+                    $cnt = (int)($v['Level'] ?? 1);
+                    for ($i = 0; $i < $cnt; $i++) $res[] = (int)$v['ClassID'];
+                } elseif (is_string($v) && str_contains($v, '=')) {
+                    [$cId, $cnt] = explode('=', $v, 2);
+                    for ($i = 0; $i < (int)$cnt; $i++) $res[] = (int)$cId;
+                }
+            }
+            return $res;
+        }
+
+        return [];
+    }
+
+    /**
+     * Parse skill ranks input (string, JSON, or array) into normalized [skillId => rank] map.
+     */
+    public static function parseSkillRanks(mixed $raw): array
+    {
+        if (empty($raw)) return [];
+
+        if (is_string($raw)) {
+            $trimmed = trim($raw);
+            if (str_starts_with($trimmed, '{') || str_starts_with($trimmed, '[')) {
+                $decoded = json_decode($trimmed, true);
+                if (is_array($decoded)) {
+                    return self::parseSkillRanks($decoded);
+                }
+            }
+            $ranks = [];
+            $parts = explode(';', $trimmed);
+            foreach ($parts as $p) {
+                $p = trim($p);
+                if (empty($p)) continue;
+                if (str_contains($p, '=')) {
+                    [$sId, $val] = explode('=', $p, 2);
+                    $ranks[(int)$sId] = (float)$val;
+                } elseif (is_numeric($p)) {
+                    $ranks[(int)$p] = 1.0;
+                }
+            }
+            return $ranks;
+        }
+
+        if (is_array($raw)) {
+            $ranks = [];
+            if (isset($raw['BackgroundRates']) || isset($raw['LevelSkills'])) {
+                $bgRates = $raw['BackgroundRates'] ?? [];
+                $lvlSkills = $raw['LevelSkills'] ?? [];
+                foreach ($bgRates as $sId => $rate) {
+                    $ranks[(int)$sId] = (float)$rate;
+                }
+                foreach ($lvlSkills as $lvlMap) {
+                    if (is_array($lvlMap)) {
+                        foreach ($lvlMap as $sId => $r) {
+                            $ranks[(int)$sId] = ($ranks[(int)$sId] ?? 0) + (float)$r;
+                        }
+                    }
+                }
+                return $ranks;
+            }
+
+            foreach ($raw as $k => $v) {
+                if (is_numeric($k) && is_numeric($v)) {
+                    $ranks[(int)$k] = (float)$v;
+                } elseif (is_array($v) && isset($v['SkillID'])) {
+                    $ranks[(int)$v['SkillID']] = (float)($v['Rank'] ?? $v['rank'] ?? 1.0);
+                }
+            }
+            return $ranks;
+        }
+
+        return [];
+    }
+
+    /**
+     * Parse specializations input into [specId => rank] map.
+     */
+    public static function parseSpecializations(mixed $rawSkills, mixed $rawSpecs = null): array
+    {
+        $specs = [];
+        if (is_array($rawSkills) && isset($rawSkills['Specializations']) && is_array($rawSkills['Specializations'])) {
+            foreach ($rawSkills['Specializations'] as $k => $v) {
+                if (is_numeric($k)) $specs[(int)$k] = (int)$v;
+            }
+        }
+        if (!empty($rawSpecs)) {
+            if (is_string($rawSpecs)) {
+                $trimmed = trim($rawSpecs);
+                if (str_starts_with($trimmed, '{') || str_starts_with($trimmed, '[')) {
+                    $decoded = json_decode($trimmed, true);
+                    if (is_array($decoded)) {
+                        foreach ($decoded as $k => $v) {
+                            if (is_numeric($k)) $specs[(int)$k] = (int)$v;
+                        }
+                    }
+                } else {
+                    $parts = explode(';', $trimmed);
+                    foreach ($parts as $p) {
+                        $p = trim($p);
+                        if (empty($p)) continue;
+                        if (str_contains($p, '=')) {
+                            [$sId, $val] = explode('=', $p, 2);
+                            $specs[(int)$sId] = (int)$val;
+                        }
+                    }
+                }
+            } elseif (is_array($rawSpecs)) {
+                foreach ($rawSpecs as $k => $v) {
+                    if (is_numeric($k)) $specs[(int)$k] = (int)$v;
+                }
+            }
+        }
+        return $specs;
+    }
+
+    /**
+     * Calculate PP discount for a spell skill line matching active affinity skills.
+     */
+    public static function getSpellSkillDiscount(string $skillLine, array $affinityDiscounts): int
+    {
+        if (empty($affinityDiscounts) || empty(trim($skillLine))) {
+            return 0;
+        }
+
+        $skillLine = trim($skillLine);
+        $bestDiscount = 0;
+
+        if (isset($affinityDiscounts[$skillLine])) {
+            $bestDiscount = max($bestDiscount, (int)$affinityDiscounts[$skillLine]);
+        }
+
+        foreach ($affinityDiscounts as $affKey => $discVal) {
+            $discVal = (int)$discVal;
+            if ($discVal <= 0) continue;
+
+            if (strcasecmp($affKey, $skillLine) === 0) {
+                $bestDiscount = max($bestDiscount, $discVal);
+            } elseif (stripos($skillLine, $affKey) !== false) {
+                $bestDiscount = max($bestDiscount, $discVal);
+            }
+        }
+
+        return $bestDiscount;
+    }
+
+    /**
+     * Parse weapon or ammo damage formula string into structured components and evaluated display.
+     * Handles expressions such as "d10+StrMod S", "2d8+StrMod S", "d6+StrMod B SP", "d4+1+StrMod B",
+     * "d4+StrMod/2 B", "d8 S", "d10 P", "+4", "Entangle", etc.
+     */
+    public static function parseWeaponDamageFormula(
+        string $rawDmg,
+        array $abilityMods = [],
+        int $skillDmg = 0,
+        int $charDmg = 0,
+        bool $isTwoHanded = false,
+        bool $addDefaultStrMod = false
+    ): array {
+        $rawDmg = trim($rawDmg);
+        if (empty($rawDmg)) {
+            $baseBonus = $skillDmg + $charDmg + ($isTwoHanded ? 2 : 0) + (int)($abilityMods['Str'] ?? 0);
+            $bStr = $baseBonus > 0 ? "+{$baseBonus}" : ($baseBonus < 0 ? (string)$baseBonus : '');
+            return [
+                'dice' => '1d6',
+                'bonus' => $baseBonus,
+                'damage_type' => '',
+                'display' => '1d6' . $bStr,
+                'avg_damage' => self::calculateAverageDamage('1d6', $baseBonus),
+            ];
+        }
+
+        // Special cases like Entangle
+        if (stripos($rawDmg, 'Entangle') !== false) {
+            return [
+                'dice' => '',
+                'bonus' => 0,
+                'damage_type' => 'Special',
+                'display' => 'Entangle',
+                'avg_damage' => 0.0,
+            ];
+        }
+
+        // Flat modifier only like "+4" or "+1"
+        if (preg_match('/^([+-]?\d+)$/', $rawDmg, $m)) {
+            $flatVal = (int)$m[1];
+            $totalBonus = $flatVal + $skillDmg + $charDmg;
+            return [
+                'is_flat_mod' => true,
+                'flat_mod' => $flatVal,
+                'dice' => '',
+                'bonus' => $totalBonus,
+                'damage_type' => '',
+                'display' => ($totalBonus >= 0 ? '+' : '') . $totalBonus,
+                'avg_damage' => (float)$totalBonus,
+            ];
+        }
+
+        // Complex strings like "d10 fire, d6 splash" or "4d6 fire in 2 sq radius"
+        if (stripos($rawDmg, 'splash') !== false || stripos($rawDmg, 'radius') !== false || stripos($rawDmg, 'line') !== false) {
+            return [
+                'dice' => $rawDmg,
+                'bonus' => 0,
+                'damage_type' => 'Special',
+                'display' => $rawDmg,
+                'avg_damage' => 0.0,
+            ];
+        }
+
+        // Extract dice: e.g. "d10", "2d8", "1d6", "4d10"
+        $dice = '1d6';
+        $remainder = $rawDmg;
+        if (preg_match('/^(\d*d\d+)(.*)$/i', $rawDmg, $dm)) {
+            $dice = $dm[1];
+            if (str_starts_with(strtolower($dice), 'd')) {
+                $dice = '1' . $dice;
+            }
+            $remainder = $dm[2];
+        }
+
+        $bonus = 0;
+        $hasExplicitAbility = false;
+
+        // Check for ability mods
+        if (preg_match('/StrMod\/2/i', $remainder)) {
+            $str = (int)($abilityMods['Str'] ?? 0);
+            $bonus += (int)floor($str / 2.0);
+            $hasExplicitAbility = true;
+            $remainder = preg_replace('/[+-]?\s*StrMod\/2/i', '', $remainder);
+        } elseif (preg_match('/StrMod/i', $remainder)) {
+            $str = (int)($abilityMods['Str'] ?? 0);
+            if ($isTwoHanded) {
+                $str += 2; // +2 Str bonus for 2-handed use
+            }
+            $bonus += $str;
+            $hasExplicitAbility = true;
+            $remainder = preg_replace('/[+-]?\s*StrMod/i', '', $remainder);
+        }
+
+        if (preg_match('/DexMod\/2/i', $remainder)) {
+            $dex = (int)($abilityMods['Dex'] ?? 0);
+            $bonus += (int)floor($dex / 2.0);
+            $hasExplicitAbility = true;
+            $remainder = preg_replace('/[+-]?\s*DexMod\/2/i', '', $remainder);
+        } elseif (preg_match('/DexMod/i', $remainder)) {
+            $dex = (int)($abilityMods['Dex'] ?? 0);
+            $bonus += $dex;
+            $hasExplicitAbility = true;
+            $remainder = preg_replace('/[+-]?\s*DexMod/i', '', $remainder);
+        }
+
+        if (preg_match('/IntMod/i', $remainder)) {
+            $bonus += (int)($abilityMods['Int'] ?? 0);
+            $hasExplicitAbility = true;
+            $remainder = preg_replace('/[+-]?\s*IntMod/i', '', $remainder);
+        }
+        if (preg_match('/WisMod/i', $remainder)) {
+            $bonus += (int)($abilityMods['Wis'] ?? 0);
+            $hasExplicitAbility = true;
+            $remainder = preg_replace('/[+-]?\s*WisMod/i', '', $remainder);
+        }
+        if (preg_match('/ChaMod/i', $remainder)) {
+            $bonus += (int)($abilityMods['Cha'] ?? 0);
+            $hasExplicitAbility = true;
+            $remainder = preg_replace('/[+-]?\s*ChaMod/i', '', $remainder);
+        }
+        if (preg_match('/ConMod/i', $remainder)) {
+            $bonus += (int)($abilityMods['Con'] ?? 0);
+            $hasExplicitAbility = true;
+            $remainder = preg_replace('/[+-]?\s*ConMod/i', '', $remainder);
+        }
+
+        // If no explicit ability was in the formula, but addDefaultStrMod is requested (for melee weapons)
+        if (!$hasExplicitAbility && $addDefaultStrMod) {
+            $str = (int)($abilityMods['Str'] ?? 0);
+            if ($isTwoHanded) {
+                $str += 2;
+            }
+            $bonus += $str;
+        }
+
+        // Parse any numeric offsets e.g. +1, -2
+        if (preg_match_all('/([+-]?\s*\d+)/', $remainder, $numMatches)) {
+            foreach ($numMatches[1] as $nm) {
+                $bonus += (int)str_replace(' ', '', $nm);
+            }
+            $remainder = preg_replace('/[+-]?\s*\d+/', '', $remainder);
+        }
+
+        $dmgType = trim(trim($remainder), '+- ');
+
+        // Add skill damage bonus and character damage bonus
+        $totalBonus = $bonus + $skillDmg + $charDmg;
+
+        $bonusStr = '';
+        if ($totalBonus > 0) {
+            $bonusStr = '+' . $totalBonus;
+        } elseif ($totalBonus < 0) {
+            $bonusStr = (string)$totalBonus;
+        }
+
+        $display = $dice . $bonusStr;
+        if (!empty($dmgType)) {
+            $display .= ' ' . $dmgType;
+        }
+
+        $avg = self::calculateAverageDamage($dice, $totalBonus);
+
+        return [
+            'dice' => $dice,
+            'bonus' => $totalBonus,
+            'damage_type' => $dmgType,
+            'display' => $display,
+            'avg_damage' => $avg,
+        ];
+    }
+
+    /**
+     * Calculate average damage from a dice expression e.g. "1d8+3" -> 7.5
+     */
+    public static function calculateAverageDamage(string $diceExpr, int $bonus = 0): float
+    {
+        $total = (float)$bonus;
+        if (preg_match_all('/(\d+)d(\d+)/i', $diceExpr, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $m) {
+                $count = (int)$m[1];
+                $sides = (int)$m[2];
+                $total += $count * (($sides + 1) / 2.0);
+            }
+        }
+        return round($total, 1);
+    }
+
+    /**
+     * XP required for a given target Challenge Level.
+     */
+    public static function getXPRequiredForLevel(int $level): int
+    {
+        if ($level <= 1) return 0;
+        return (int)(500 * ($level - 1) * $level);
+    }
+
+    /**
+     * Calculate XP level based on current XP.
+     */
+    public static function getXPLevel(int $xp): int
+    {
+        if ($xp < 1000) return 1;
+        $lvl = 1;
+        while (self::getXPRequiredForLevel($lvl + 1) <= $xp && $lvl < 100) {
+            $lvl++;
+        }
+        return $lvl;
+    }
+
+    /**
+     * Check if character can level up.
+     */
+    public static function canLevelUp(int $currentXp, int $currentLevel): bool
+    {
+        $nextLevel = $currentLevel + 1;
+        $reqXp = self::getXPRequiredForLevel($nextLevel);
+        return $currentXp >= $reqXp;
+    }
+
+    /**
+     * Get Common Actions list with parsed checks and action times.
+     */
+    public static function getCommonActions(mixed $first = [], mixed $second = null, mixed $third = null, mixed $fourth = null): array
+    {
+        self::loadReferenceTables();
+
+        if (is_object($first) || (is_array($first) && (isset($first['ID']) || isset($first['RaceID']) || isset($first['BaseRace']) || isset($first['Skills'])))) {
+            $character = $first;
+            $actions = $second ?? self::$actionsCache ?? [];
+            $calculatedState = $third ?? self::calculate($character);
+
+            $abilityMods = $calculatedState['ability_modifiers'] ?? [];
+            $attSpdMod = 0;
+            $sizeCombatMod = (int)($calculatedState['heritage']['size_combat_mod'] ?? $calculatedState['heritage']['size_id'] ?? 0);
+
+            $trainedSkills = [];
+            $rawSkills = is_object($character) ? ($character->Skills ?? []) : ($character['Skills'] ?? []);
+            if (is_string($rawSkills) && str_starts_with(trim($rawSkills), '{')) {
+                $rawSkills = json_decode($rawSkills, true) ?? [];
+            }
+            if (is_array($rawSkills)) {
+                $rates = $rawSkills['BackgroundRates'] ?? [];
+                $lvlSkills = $rawSkills['LevelSkills'] ?? [];
+                foreach ($rates as $sId => $rate) {
+                    $skName = self::$skillsCache[$sId]['Name'] ?? "Skill #{$sId}";
+                    $tot = (float)$rate;
+                    foreach ($lvlSkills as $lvlMap) {
+                        if (isset($lvlMap[$sId])) $tot += (float)$lvlMap[$sId];
+                    }
+                    $trainedSkills[strtolower($skName)] = $tot;
+                    $trainedSkills[$sId] = $tot;
+                }
+                foreach ($lvlSkills as $lvlMap) {
+                    foreach ($lvlMap as $sId => $ranks) {
+                        $skName = self::$skillsCache[$sId]['Name'] ?? "Skill #{$sId}";
+                        if (!isset($trainedSkills[strtolower($skName)])) {
+                            $trainedSkills[strtolower($skName)] = (float)$ranks;
+                            $trainedSkills[$sId] = (float)$ranks;
+                        }
+                    }
+                }
+            } elseif (is_string($rawSkills) && !empty($rawSkills)) {
+                $parts = explode(';', $rawSkills);
+                foreach ($parts as $p) {
+                    if (str_contains($p, '=')) {
+                        [$sId, $rk] = explode('=', $p, 2);
+                        $sIdInt = (int)$sId;
+                        $skName = self::$skillsCache[$sIdInt]['Name'] ?? "Skill #{$sIdInt}";
+                        $trainedSkills[strtolower($skName)] = (float)$rk;
+                        $trainedSkills[$sIdInt] = (float)$rk;
+                    }
+                }
+            }
+        } else {
+            $abilityMods = is_array($first) ? $first : (array)$first;
+            $trainedSkills = is_array($second) ? $second : [];
+            $attSpdMod = (int)$third;
+            $sizeCombatMod = (int)$fourth;
+            $actions = self::$actionsCache ?? [];
+        }
+
+        $results = [];
+        foreach ($actions as $actObj) {
+            $actArr = (array)$actObj;
+            $descriptors = $actArr['Descriptors'] ?? '';
+            $check = $actArr['ActionCheck'] ?? '';
+            $name = $actArr['Name'] ?? '';
+
+            $isUntrained = str_contains($descriptors, 'Untrained');
+
+            $unlocked = true;
+            if (!$isUntrained) {
+                $hasReq = false;
+                foreach ($trainedSkills as $skKey => $rk) {
+                    if ($rk > 0) {
+                        $keyStr = is_numeric($skKey) ? (self::$skillsCache[$skKey]['Name'] ?? '') : (string)$skKey;
+                        if (!empty($keyStr)) {
+                            if (stripos($check, $keyStr) !== false || stripos($name, $keyStr) !== false) {
+                                $hasReq = true;
+                                break;
+                            }
+                            if ((stripos($keyStr, 'Spellcraft') !== false || (int)$skKey === 195) && stripos($check, 'Arcane/Divine/Psi') !== false) {
+                                $hasReq = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (!$hasReq) {
+                    $unlocked = false;
+                }
+            }
+
+            if ($unlocked) {
+                $actArr['ActionTimeParsed'] = self::parseActionTime($actArr['ActionTime'] ?? '', $attSpdMod);
+                $actArr['ActionCheckParsed'] = self::parseActionCheck($actArr['ActionCheck'] ?? '', $abilityMods, $trainedSkills, $sizeCombatMod);
+                $results[] = $actArr;
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Parse action time formula e.g. "8 + size mod AP" -> "8 + 0 AP" or "8 - 1 AP"
+     */
+    public static function parseActionTime(string $timeStr, int $attSpdMod = 0): string
+    {
+        $timeStr = trim($timeStr);
+        if ($timeStr === '') return '1 AP';
+
+        if (preg_match('/(?<!weapon\'s\s)(?<!your\sweapon\'s\s)\bsize\s+mod\b/i', $timeStr)) {
+            $replacement = ($attSpdMod < 0) ? '- ' . abs($attSpdMod) : '+ ' . $attSpdMod;
+            $timeStr = preg_replace('/\+\s*(?<!weapon\'s\s)(?<!your\sweapon\'s\s)size\s+mod/i', $replacement, $timeStr);
+            $timeStr = preg_replace('/(?<!weapon\'s\s)(?<!your\sweapon\'s\s)\bsize\s+mod\b/i', (string)$attSpdMod, $timeStr);
+        }
+        return $timeStr;
+    }
+
+    /**
+     * Parse action check string e.g. "d20! + Athletics skill + Str mod + PAM + EP"
+     */
+    public static function parseActionCheck(string $checkStr, array|object $abilityMods = [], array $trainedSkills = [], int $sizeCombatMod = 0): string
+    {
+        $mods = [];
+        foreach ((array)$abilityMods as $k => $v) {
+            $mods[strtolower((string)$k)] = (int)$v;
+        }
+
+        $skills = [];
+        foreach ($trainedSkills as $k => $v) {
+            $skills[strtolower(trim((string)$k))] = (float)$v;
+        }
+
+        $formatNum = function(float|int $n): string {
+            return (floor($n) == $n) ? (string)(int)$n : (string)$n;
+        };
+
+        $str = $checkStr;
+
+        // 1. Replace size-based Att/DeC mod
+        $sizeCombatModStr = ($sizeCombatMod < 0) ? "({$sizeCombatMod})" : (string)$sizeCombatMod;
+        $str = preg_replace('/size-based\s+Att\/DeC\s+mod/i', $sizeCombatModStr, $str);
+
+        // 2. Replace skill mentions (sorted by length descending)
+        uksort($skills, fn($a, $b) => strlen((string)$b) <=> strlen((string)$a));
+        foreach ($skills as $skName => $skVal) {
+            if (!empty($skName) && !is_numeric($skName)) {
+                $quoted = preg_quote($skName, '/');
+                $str = preg_replace('/' . $quoted . '\s+skill\b/i', $formatNum($skVal), $str);
+                $str = preg_replace('/(?<=\+\s|\-\s)\b' . $quoted . '\b(?=\s\+|\s\-|\s+vs|\s*$)/i', $formatNum($skVal), $str);
+            }
+        }
+
+        // Generic fallback for any remaining "<unknown> skill" -> replace with 0
+        $str = preg_replace('/\b[a-zA-Z0-9\-\(\)\/][a-zA-Z0-9\s\-\(\)\/]*\s+skill\b/i', '0', $str);
+
+        // 3. Replace ability mods e.g. "+ Str mod", "+ Dex mod"
+        foreach (['Str', 'Dex', 'Con', 'Int', 'Wis', 'Cha'] as $ab) {
+            $abLower = strtolower($ab);
+            $val = $mods[$abLower] ?? 0;
+
+            $str = preg_replace_callback('/\+\s*' . $ab . '\s+mod\b/i', function() use ($val) {
+                return ($val < 0) ? ('- ' . abs($val)) : ('+ ' . $val);
+            }, $str);
+
+            $str = preg_replace_callback('/\b' . $ab . '\s+mod\b/i', function() use ($val) {
+                return (string)$val;
+            }, $str);
+
+            $str = preg_replace_callback("/\({$ab}\)/i", function() use ($ab, $val) {
+                $sign = $val >= 0 ? "+{$val}" : (string)$val;
+                return "({$ab} {$sign})";
+            }, $str);
+        }
+
+        return $str;
+    }
+
+    /**
+     * Calculate Age Category ID for a creature and age.
+     */
+    public static function calculateAgeCategory(int $raceId, int $age): int
+    {
+        $race = self::$creaturesCache[$raceId] ?? self::$creaturesCache[1] ?? [];
+        $matureAge = (int)($race['AgeMature'] ?? 18);
+        $middleAge = (int)($race['AgeMiddle'] ?? 35);
+        $oldAge = (int)($race['AgeOld'] ?? 53);
+        $venerableAge = (int)($race['AgeVenerable'] ?? 70);
+
+        if ($age < $matureAge) return 1; // Child/Young
+        if ($age < $middleAge) return 2; // Young Adult / Adult
+        if ($age < $oldAge) return 3;    // Middle Aged
+        if ($age < $venerableAge) return 4; // Old
+        return 5; // Venerable
+    }
+
+    /**
+     * Calculate Age Modifiers based on physical and mental age categories.
+     */
+    public static function calculateAgeModifiers(int $physCat, int $mentCat): array
+    {
+        $mods = ['Str' => 0, 'Con' => 0, 'Dex' => 0, 'Int' => 0, 'Wis' => 0, 'Cha' => 0];
+
+        // Physical modifiers
+        switch ($physCat) {
+            case 1: // Child
+                $mods['Str'] -= 2; $mods['Con'] -= 1; $mods['Dex'] += 1;
+                break;
+            case 3: // Middle age
+                $mods['Str'] -= 1; $mods['Con'] -= 1; $mods['Dex'] -= 1;
+                break;
+            case 4: // Old
+                $mods['Str'] -= 2; $mods['Con'] -= 2; $mods['Dex'] -= 2;
+                break;
+            case 5: // Venerable
+                $mods['Str'] -= 3; $mods['Con'] -= 3; $mods['Dex'] -= 3;
+                break;
+        }
+
+        // Mental modifiers
+        switch ($mentCat) {
+            case 1: // Child
+                $mods['Int'] -= 2; $mods['Wis'] -= 2; $mods['Cha'] -= 1;
+                break;
+            case 3: // Middle age
+                $mods['Int'] += 1; $mods['Wis'] += 1; $mods['Cha'] += 1;
+                break;
+            case 4: // Old
+                $mods['Int'] += 2; $mods['Wis'] += 2; $mods['Cha'] += 2;
+                break;
+            case 5: // Venerable
+                $mods['Int'] += 3; $mods['Wis'] += 3; $mods['Cha'] += 3;
+                break;
+        }
+
+        return $mods;
+    }
+
+    /**
+     * Format item traits string into a human-readable description.
+     */
+    public static function formatItemTraitsDescription(?string $traits, bool $brief = true): string
+    {
+        if (empty($traits) || trim($traits) === '') {
+            return '–';
+        }
+
+        try {
+            self::ensureRulesInitialized();
+
+            if (class_exists('\cTraitEffects') && method_exists('\cTraitEffects', 'StatGetTraitsDescription')) {
+                $desc = \cTraitEffects::StatGetTraitsDescription($traits, $brief);
+                if (!empty($desc) && trim($desc) !== '' && !str_contains($desc, 'ERROR') && !str_starts_with(trim($desc), '{')) {
+                    $cleanDesc = trim(str_replace(["\\n", "\n", "\r"], ', ', $desc));
+                    $cleanDesc = preg_replace('/\s*,\s*$/', '', $cleanDesc);
+                    if ($cleanDesc !== '') {
+                        return $cleanDesc;
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            // Fall back to TraitEvaluator representation
+        }
+
+        // Clean fallback
+        $parsed = TraitEvaluator::parse($traits);
+        $parts = [];
+        foreach ($parsed as $t) {
+            $type = $t['type'] ?? '';
+            $params = $t['params'] ?? [];
+            if ($type === 'Armor') {
+                $categoryVal = $params['Category'] ?? $params['Cat'] ?? null;
+                if ($categoryVal) {
+                    $catMap = ['ArmHv' => 'Heavy Armor', 'ArmMd' => 'Medium Armor', 'ArmLt' => 'Light Armor', 'WpShd' => 'Shield'];
+                    $parts[] = $catMap[$categoryVal] ?? $categoryVal;
+                }
+                $drVal = $params['DR'] ?? $params['Dr'] ?? $params['dr'] ?? null;
+                if ($drVal !== null && (int)$drVal > 0) {
+                    $parts[] = "DR {$drVal}";
+                }
+                $decVal = $params['DeC'] ?? $params['Dec'] ?? $params['dec'] ?? $params['DEC'] ?? null;
+                if ($decVal !== null && (int)$decVal !== 0) {
+                    $parts[] = 'DeC ' . ((int)$decVal > 0 ? '+' : '') . (int)$decVal;
+                }
+                $ecVal = $params['EC'] ?? $params['Ec'] ?? $params['ec'] ?? null;
+                if ($ecVal !== null && (int)$ecVal > 0) {
+                    $parts[] = "EC {$ecVal}";
+                }
+            } elseif ($type === 'Weapon') {
+                if (!empty($params['ParMod']) && (int)$params['ParMod'] !== 0) {
+                    $parts[] = 'Parry ' . ((int)$params['ParMod'] > 0 ? '+' : '') . (int)$params['ParMod'];
+                }
+                if (!empty($params['DisarmMod']) && (int)$params['DisarmMod'] !== 0) {
+                    $parts[] = 'Disarm ' . ((int)$params['DisarmMod'] > 0 ? '+' : '') . (int)$params['DisarmMod'];
+                }
+                if (!empty($params['TripDrop'])) {
+                    $parts[] = 'Trip';
+                }
+                if (!empty($params['OnlyRanged'])) {
+                    $parts[] = 'Ranged';
+                }
+            } elseif ($type === 'Ammo') {
+                if (!empty($params['Dmg'])) {
+                    $parts[] = $params['Dmg'];
+                }
+                if (!empty($params['Range'])) {
+                    $parts[] = "Range {$params['Range']}";
+                }
+            } elseif ($type === 'DefMod') {
+                $q = $params['Qual'] ?? '';
+                $v = $params['Value'] ?? '';
+                if ($q && $v) {
+                    $parts[] = ((is_numeric($v) && (float)$v > 0) ? '+' : '') . "{$v} {$q}";
+                }
+            } elseif ($type === 'AbilMod') {
+                $q = $params['Qual'] ?? '';
+                $v = $params['Value'] ?? '';
+                if ($q && $v) {
+                    $parts[] = ((is_numeric($v) && (float)$v > 0) ? '+' : '') . "{$v} {$q}";
+                }
+            } elseif ($type === 'SpdMod') {
+                $v = $params['Value'] ?? '';
+                if ($v) {
+                    $parts[] = ((is_numeric($v) && (float)$v > 0) ? '+' : '') . "{$v} Speed";
+                }
+            } elseif ($type === 'Sns') {
+                $q = $params['Qual'] ?? '';
+                $v = $params['Value'] ?? '';
+                $parts[] = $q . ($v ? " {$v}" : '');
+            } else {
+                $q = $params['Qual'] ?? $params['Type'] ?? '';
+                $v = $params['Value'] ?? '';
+                if ($q || $v) {
+                    $parts[] = $q . ($v ? " {$v}" : '');
+                }
+            }
+        }
+        return !empty($parts) ? implode(', ', $parts) : '–';
+    }
+
+    /**
+     * Ensure legacy rules engine and trait definitions are properly initialized.
+     */
+    public static function ensureRulesInitialized(): void
+    {
+        try {
+            $rulesPath = base_path('RulesSrc');
+            if (is_dir($rulesPath)) {
+                $curInclude = get_include_path();
+                if (!str_contains($curInclude, $rulesPath)) {
+                    set_include_path($curInclude . PATH_SEPARATOR . $rulesPath);
+                }
+                if (!class_exists('\cExpressionParser')) {
+                    $calcPath = $rulesPath . '/rolcalc.php';
+                    if (file_exists($calcPath)) {
+                        require_once $calcPath;
+                    }
+                }
+                if (!function_exists('init_traits')) {
+                    $globalPath = $rulesPath . '/global.php';
+                    if (file_exists($globalPath)) {
+                        require_once $globalPath;
+                        if (function_exists('restore_error_handler')) {
+                            restore_error_handler();
+                        }
+                    }
+                }
+                if (function_exists('init_traits') && empty($GLOBALS['aTraitDescriptions'])) {
+                    init_traits();
+                }
+                if (function_exists('init_weaponcats') && empty($GLOBALS['aWeaponCats'])) {
+                    init_weaponcats();
+                }
+                if (function_exists('init_armorcats') && empty($GLOBALS['aArmorCats'])) {
+                    init_armorcats();
+                }
+                if (empty($GLOBALS['_APP'])) {
+                    $appCacheFile = base_path('storage/framework/cache/app_data.php');
+                    if (file_exists($appCacheFile)) {
+                        $GLOBALS['_APP'] = require $appCacheFile;
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+    }
+
+    /**
+     * Fallback formatter for brief trait descriptions when cTraitEffects returns empty or raw syntax.
+     */
+    public static function formatBriefTraitFallback(string $type, array $params, array $evalParams = []): string
+    {
+        $qual = $params['Qual'] ?? $params['Type'] ?? '';
+        $val = $evalParams['Value'] ?? $params['Value'] ?? '';
+        $typeParam = $params['Type'] ?? '';
+
+        $formatSigned = function($v) {
+            if ($v === '' || $v === null) return '';
+            $s = (string)$v;
+            if (str_starts_with($s, '+') || str_starts_with($s, '-')) return $s;
+            return (is_numeric($s) && (float)$s > 0) ? "+{$s}" : $s;
+        };
+
+        $qLower = strtolower((string)$qual);
+        if ($qLower === 'ptblank' || $qLower === 'pointblankshot') return 'Point Blank Shot';
+        if ($qLower === 'preciseshot') return 'Precise Shot' . ($val ? " ({$val})" : '');
+        if ($qLower === 'rapidshot') return 'Rapid Shot';
+        if ($qLower === 'manyshot') return 'Manyshot' . ($val ? " ({$val})" : '');
+        if ($qLower === 'rapidreload') return 'Rapid Reload';
+        if ($qLower === 'quickdraw') return 'Quick Draw';
+        if ($qLower === 'cleave') return 'Cleave' . ($val && $val !== 'lesser' ? " ({$val})" : '');
+        if ($qLower === 'greatcleave') return 'Great Cleave';
+        if ($qLower === 'imprsunder') return 'Improved Sunder';
+        if ($qLower === 'imprtrip') return 'Improved Trip';
+        if ($qLower === 'imprdisarm') return 'Improved Disarm';
+        if ($qLower === 'imprgrapple') return 'Improved Grapple';
+        if ($qLower === 'imprrush') return 'Improved Bull Rush';
+        if ($qLower === 'improverrun') return 'Improved Overrun';
+        if ($qLower === 'greatrush') return 'Greater Bull Rush';
+        if ($qLower === 'greatoverrun') return 'Greater Overrun';
+        if ($qLower === 'weaponfamiliarity') return 'Weapon Familiarity';
+        if ($qLower === 'bleedingcrit') return 'Bleeding Critical' . ($val ? " ({$val})" : '');
+        if ($qLower === 'fatiguecrit') return 'Fatigue Critical' . ($val ? " ({$val})" : '');
+        if ($qLower === 'pushingcrit') return 'Pushing Critical';
+        if ($qLower === 'precisereach') return 'Precise Reach';
+        if ($qLower === 'shaping') return 'Spell Shaping';
+        if ($qLower === 'armorsleep') return 'Sleep in Armor';
+        if ($qLower === 'donarmor') return "Don Armor ({$val}%)";
+        if ($qLower === 'carrcapmod') return "Carrying Capacity " . $formatSigned($val) . "%";
+        if ($qLower === 'trance') return "Trance ({$val}h)";
+        if ($qLower === 'vitalattack') return "Vital Attack " . $formatSigned($val);
+        if ($qLower === 'rangedvitalattack') return "Ranged Vital Attack " . $formatSigned($val);
+        if ($qLower === 'sneakattack') return "Sneak Attack " . $formatSigned($val);
+        if ($qLower === 'powerattack') return "Power Attack " . $formatSigned($val);
+        if ($qLower === 'lowlightvision' || $qLower === 'lowlight') return "Low-light vision" . ($val && $val > 1 ? " (x{$val})" : '');
+        if ($qLower === 'darkvision') return "Darkvision " . ($val ? "{$val} sq" : '');
+        if ($qLower === 'darksight') return "Darksight " . ($val ? "{$val} sq" : '');
+        if ($qLower === 'blindsense') return "Blindsense " . ($val ? "{$val}" : '');
+        if ($qLower === 'tremorsense') return "Tremorsense " . ($val ? "{$val} sq" : '');
+        if ($qLower === 'scent') return "Scent";
+        if ($qLower === 'truesight') return "Truesight";
+        if ($qLower === 'lightsensitive' || $qLower === 'lightsensitivity') return "Light Sensitivity";
+        if ($qLower === 'immunity' && $typeParam) return ucfirst((string)$typeParam) . " imm";
+        if (str_ends_with($qLower, 'res')) {
+            $baseRes = ucfirst(substr((string)$qual, 0, -3));
+            if ($val == 999 || $val >= 999) return "{$baseRes} imm";
+            return "{$baseRes} res " . $formatSigned($val);
+        }
+        if (str_ends_with($qLower, 'imm')) {
+            $baseImm = ucfirst(substr((string)$qual, 0, -3));
+            return "{$baseImm} imm";
+        }
+
+        // Default brief format
+        $desc = (string)$qual;
+        if ($typeParam && $typeParam !== 'nil') {
+            $desc .= " ({$typeParam})";
+        }
+        if ($val !== '' && $val !== null) {
+            $desc .= " " . $formatSigned($val);
+        }
+
+        return trim($desc);
     }
 }

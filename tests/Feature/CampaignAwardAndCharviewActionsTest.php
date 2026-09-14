@@ -25,6 +25,13 @@ class CampaignAwardAndCharviewActionsTest extends TestCase
             application_start();
         }
         $this->controller = new UtilityController();
+        DB::beginTransaction();
+    }
+
+    protected function tearDown(): void
+    {
+        DB::rollBack();
+        parent::tearDown();
     }
 
     public function testGmAwardXpAndTreasureToParty(): void

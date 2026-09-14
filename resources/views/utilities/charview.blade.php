@@ -3,7 +3,7 @@
 @section('content')
 <div class="space-y-6" x-data="characterViewerApp()">
     <!-- Page Header & Character Switcher -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-amber-900/20 pb-4 gap-4">
+    <div class="no-print flex flex-col md:flex-row md:items-center justify-between border-b border-amber-900/20 pb-4 gap-4">
         <div>
             <h1 class="text-2xl font-bold flex items-center gap-2">
                 <span>📜</span> Character Sheet Viewer
@@ -46,6 +46,7 @@
     @if($character)
         @php
             $cfg = $activeConfig ?? (int)request('config', 0);
+            $activeConfig = $cfg;
             $calc = $calculatedState ?? \App\Services\Entity\EntityEngine::calculate($character, $cfg);
 
             // --- 1. Base & Adjusted Ability Scores ---
@@ -87,8 +88,9 @@
             }
             $classesDisplayStr = !empty($classSummary) ? implode(', ', $classSummary) : ($racialLevel > 0 ? 'Racial Paragon' : 'None');
             $actualClassCount = count($classIdsList);
-            $nextLevelReqXp = ($actualClassCount + 1) * $actualClassCount * 500;
-            $canLevelUp = ($totalLevel > $actualClassCount && $totalLevel <= 20) || ($xp >= $nextLevelReqXp && $actualClassCount < 20);
+            $nextTargetLevel = $challengeLevel + 1;
+            $nextLevelReqXp = \App\Services\Entity\EntityEngine::getXPRequiredForLevel($nextTargetLevel);
+            $canLevelUp = \App\Services\Entity\EntityEngine::canLevelUp($xp, $challengeLevel);
 
             // --- 3. Speed, Size & Senses ---
             $initMod = $calc['defenses']['init_mod'];
@@ -97,12 +99,10 @@
             $movementPoints = $calc['speeds']['ground'];
             $groundSpeed = $calc['speeds']['ground'];
 
-            $speedDisplay = $groundSpeed . "' Ground";
-            if (!empty($calc['speeds']['fly'])) $speedDisplay .= ", Fly " . $calc['speeds']['fly'] . "'";
-            if (!empty($calc['speeds']['swim'])) $speedDisplay .= ", Swim " . $calc['speeds']['swim'] . "'";
+            $speedDisplay = $calc['speeds']['display'] ?? ($groundSpeed . "' Ground");
 
             $sizeStr = $calc['heritage']['size_name'] . ' (' . ($sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M') . ')';
-            $spacingStr = $calc['heritage']['space'] . ' sq';
+            $spacingStr = $calc['heritage']['space'];
             $reachStr = $calc['heritage']['reach'];
 
             $bodyTypeObj = $bodyTypesMap[$calc['heritage']['body_type_id'] ?? 1] ?? null;
@@ -114,6 +114,7 @@
             $decPassive = $calc['defenses']['dec_passive'];
             $decActive = $calc['defenses']['dec_active'];
             $critRes = $calc['defenses']['crit_res'];
+            $critScore = $calc['defenses']['crit_score'] ?? ($critRes + 20);
 
             $fort = $calc['defenses']['fort'];
             $ref = $calc['defenses']['ref'];
@@ -170,6 +171,7 @@
                     }
                 }
             }
+            $skillsList = $calc['skills'] ?? $skillsList;
 
             // --- 7. Parse Specializations ---
             $specializationsList = [];
@@ -205,12 +207,62 @@
             }
 
             // --- 9. Parse Equipment & Wealth ---
-            $equipmentList = [];
+            $rawEquipmentList = [];
             if (!empty($character->Equipment)) {
                 $rawEquip = $character->Equipment;
                 if (str_starts_with($rawEquip, '[')) {
-                    $equipmentList = json_decode($rawEquip, true) ?? [];
+                    $rawEquipmentList = json_decode($rawEquip, true) ?? [];
+                } elseif (is_string($rawEquip) && trim($rawEquip) !== '') {
+                    $rawEquipmentList = [['name' => $rawEquip, 'Name' => $rawEquip, 'location' => 1]];
                 }
+            }
+            $equipmentList = [];
+            foreach ($rawEquipmentList as $idx => $it) {
+                if (!is_array($it)) continue;
+                $uid = (string)($it['uid'] ?? $it['id'] ?? ('item_' . $idx . '_' . ($it['item_id'] ?? $it['ID'] ?? '0')));
+                $name = (string)($it['Name'] ?? $it['name'] ?? 'Item');
+                $qty = max(1, (int)($it['Qty'] ?? $it['qty'] ?? 1));
+                $unitPrice = (float)($it['BaseValue'] ?? $it['unit_price'] ?? $it['value'] ?? 0.0);
+                $unitWeight = (float)($it['BaseWeight'] ?? $it['unit_weight'] ?? $it['weight'] ?? 0.0);
+                if ($unitWeight > 0 && isset($it['weight']) && !isset($it['BaseWeight']) && $qty > 1) {
+                    $unitWeight = round($unitWeight / $qty, 2);
+                }
+                $isContainer = !empty($it['IsContainer']) || !empty($it['is_container']) || \App\Services\Entity\EquipmentManager::isContainer($it);
+                $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($it);
+                $locs = $it['Locations'] ?? $it['locations'] ?? [];
+                if (!is_array($locs)) $locs = [];
+                $locations = [];
+                for ($c = 0; $c < 5; $c++) {
+                    $locations[$c] = isset($locs[$c]) ? (int)$locs[$c] : ((int)($it['Location'] ?? $it['location'] ?? $defaultLoc));
+                }
+                $containerId = $it['ContainerID'] ?? $it['container_id'] ?? null;
+                if ($containerId === '' || $containerId === 'none') $containerId = null;
+
+                $equipmentList[] = [
+                    'uid' => $uid,
+                    'id' => $uid,
+                    'item_id' => !empty($it['item_id']) ? (int)$it['item_id'] : (!empty($it['ID']) ? (int)$it['ID'] : null),
+                    'ID' => !empty($it['ID']) ? (int)$it['ID'] : (!empty($it['item_id']) ? (int)$it['item_id'] : null),
+                    'name' => $name,
+                    'Name' => $name,
+                    'qty' => $qty,
+                    'Qty' => $qty,
+                    'unit_price' => $unitPrice,
+                    'BaseValue' => $unitPrice,
+                    'unit_weight' => $unitWeight,
+                    'BaseWeight' => $unitWeight,
+                    'weight' => $unitWeight * $qty,
+                    'location' => $locations[$cfg] ?? $defaultLoc,
+                    'Location' => $locations[$cfg] ?? $defaultLoc,
+                    'locations' => $locations,
+                    'Locations' => $locations,
+                    'container_id' => $containerId,
+                    'ContainerID' => $containerId,
+                    'is_container' => $isContainer,
+                    'IsContainer' => $isContainer,
+                    'item_type_id' => $it['ItemTypeID'] ?? $it['item_type_id'] ?? $it['Type'] ?? null,
+                    'subtype' => $it['Subtype'] ?? $it['subtype'] ?? null,
+                ];
             }
             $wealth = (int)($character->Wealth ?? 0);
 
@@ -233,28 +285,38 @@
             $religionObj = !empty($character->Religion) ? ($pantheonsMap[$character->Religion] ?? null) : null;
             $deityObj = !empty($character->Deity) ? ($deitiesMap[$character->Deity] ?? null) : null;
 
+            $raceNameInformal = $race ? ($race->NameInformal ?: $race->Name) : 'Humanoid';
+            $creatureSubtypeObj = ($race && !empty($race->CreatureType)) ? ($creatureSubtypes[$race->CreatureType] ?? null) : null;
+            $creatureSubtypeStr = $creatureSubtypeObj ? $creatureSubtypeObj->Name : 'Humanoid';
+
             $templatesSummaryStr = 'None';
             if (isset($templates) && $templates->isNotEmpty()) {
-                $templatesSummaryStr = $templates->pluck('Name')->join(', ');
+                $templatesSummaryStr = $templates->map(fn($t) => $t->NameInformal ?: $t->Name)->join(', ');
             }
         @endphp
 
-        <!-- Character Sheet Action Bar -->
-        <div class="flex flex-wrap items-center justify-between gap-3 bg-linear-to-r from-slate-900 via-slate-800 to-slate-900 border border-amber-500/30 p-3 rounded-xl shadow-md text-white" x-data="{ copiedMd: false, copiedTxt: false }">
-            <div class="flex items-center gap-3 flex-wrap">
-                <span class="text-lg">🧙‍♂️</span>
-                <div>
-                    <span class="font-bold text-sm text-amber-300 font-serif">{{ $character->Name }}</span>
-                    <span class="text-xs text-amber-200/80 font-mono ml-2">Level {{ $totalLevel }} {{ $race->Name ?? 'Hero' }} ({{ number_format($xp) }} XP)</span>
+        <!-- Character Sheet Action Bar Plaque -->
+        <div class="no-print charview-action-bar flex flex-wrap items-center justify-between gap-3.5 p-3 rounded-xl shadow-lg" x-data="{ copiedMd: false, copiedTxt: false }">
+            <div class="flex items-center gap-3.5 flex-wrap">
+                <span class="text-2xl filter drop-shadow">🧙‍♂️</span>
+                <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2.5">
+                    <span class="charview-character-name">{{ $character->Name }}</span>
+                    <span class="charview-character-meta">TL {{ $totalLevel }}@if($challengeLevel !== $totalLevel) (CL {{ $challengeLevel }})@endif {{ $race->Name ?? 'Hero' }} &bull; {{ number_format($xp) }} XP</span>
                 </div>
 
                 <!-- Equipment Preset Switcher -->
-                <div class="flex items-center gap-1 bg-amber-950/70 p-1 rounded-lg border border-amber-500/30 text-xs">
-                    <span class="text-amber-300/80 px-1 font-bold font-serif">Preset:</span>
+                <div class="charview-preset-group">
+                    <span class="charview-preset-label">
+                        <span>⚙️</span> PRESET:
+                    </span>
                     @foreach(\App\Services\Entity\EquipmentManager::CONFIG_NAMES as $cfgId => $cfgName)
                         <a href="{{ request()->fullUrlWithQuery(['config' => $cfgId]) }}" 
-                           class="px-2 py-0.5 rounded transition {{ $activeConfig === $cfgId ? 'bg-amber-500 text-stone-900 font-bold shadow-xs' : 'text-amber-200/80 hover:bg-amber-900/50' }}">
-                            {{ $cfgName }}
+                           class="charview-preset-btn {{ $activeConfig === $cfgId ? 'active' : '' }}"
+                           title="Switch to {{ $cfgName }} loadout (Preset {{ $cfgId }})">
+                            @if($activeConfig === $cfgId)
+                                <span class="charview-preset-dot">●</span>
+                            @endif
+                            <span>{{ $cfgName }}</span>
                         </a>
                     @endforeach
                 </div>
@@ -263,11 +325,11 @@
             <!-- Action Buttons Group -->
             <div class="flex items-center gap-2 flex-wrap">
                 @if($canLevelUp)
-                    <button type="button" @click="showLevelUpModal = true" class="btn-rol-success animate-pulse" title="Ready to advance to Level {{ $actualClassCount + 1 }}!">
+                    <button type="button" @click="showLevelUpModal = true" class="btn-rol-success animate-pulse" title="Ready to advance to Level {{ $nextTargetLevel }}! (Has {{ number_format($xp) }} XP, requires {{ number_format($nextLevelReqXp) }} XP)">
                         <span>⬆️ Level Up!</span>
                     </button>
                 @else
-                    <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Need {{ number_format(max(0, $nextLevelReqXp - $xp)) }} more XP to reach Level {{ $actualClassCount + 1 }}">
+                    <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Need {{ number_format(max(0, $nextLevelReqXp - $xp)) }} more XP to reach Level {{ $nextTargetLevel }} (requires {{ number_format($nextLevelReqXp) }} XP)">
                         <span>⬆️ Level Up</span>
                     </button>
                 @endif
@@ -284,8 +346,16 @@
                     <span>🛍️ Buy Items</span>
                 </button>
 
+                <button type="button" @click="showEquipmentModal = true" class="btn-rol-secondary">
+                    <span>🎒 Manage Equipment</span>
+                </button>
+
                 <button type="button" @click="showLearnSpellsModal = true" class="btn-rol-secondary">
                     <span>✨ Learn Spells</span>
+                </button>
+
+                <button type="button" @click="showPortraitModal = true" class="btn-rol-secondary" title="Generate or edit AI character portrait">
+                    <span>🎨 Generate AI Portrait</span>
                 </button>
 
                 <button type="button" 
@@ -335,7 +405,7 @@
 ## Combat & Defenses
 - **Initiative:** {{ ($initMod >= 0 ? '+' : '') . $initMod }} | **AP:** {{ $actionPoints }} | **MP:** {{ $movementPoints }} | **Reactions:** {{ $reactions }}
 - **Speed:** {{ $speedDisplay }} | **Size:** {{ $sizeStr }} ({{ $spacingStr }} / {{ $reachStr }} sq) | **Body:** {{ $bodyTypeStr }}
-- **Defenses:** DeCa {{ $decActive }} | DeCp {{ $decPassive }} | Crit +{{ $critRes }} | DR {{ $dr }} | MR {{ $mr }}
+- **Defenses:** DeCa {{ $decActive }} | DeCp {{ $decPassive }} | Crit +{{ $critScore }} | DR {{ $dr }} | MR {{ $mr }}
 - **Saves:** Fort +{{ $fort }} | Ref +{{ $ref }} | Will +{{ $will }}
 - **Health:** HP {{ $hp }} / {{ $hpCurrent }} | SP {{ $sp !== null ? $sp . ' / ' . $spCurrent : '–' }} | PP {{ $pp !== null ? $pp . ' / ' . $ppCurrent : '–' }}
 
@@ -383,606 +453,24 @@ INT: {{ $int ?? '–' }} ({{ $intMod !== null ? ($intMod >= 0 ? '+' : '') . $int
 
 Init: {{ ($initMod >= 0 ? '+' : '') . $initMod }} | AP: {{ $actionPoints }} | MP: {{ $movementPoints }} | Reactions: {{ $reactions }}
 Speed: {{ $speedDisplay }} | Size: {{ $sizeStr }} | Body: {{ $bodyTypeStr }}
-DeCa: {{ $decActive }} | DeCp: {{ $decPassive }} | Crit: +{{ $critRes }} | DR: {{ $dr }} | MR: {{ $mr }}
+DeCa: {{ $decActive }} | DeCp: {{ $decPassive }} | Crit: +{{ $critScore }} | DR: {{ $dr }} | MR: {{ $mr }}
 Fort: +{{ $fort }} | Ref: +{{ $ref }} | Will: +{{ $will }}
 HP: {{ $hp }} / {{ $hpCurrent }} | SP: {{ $sp !== null ? $sp . ' / ' . $spCurrent : '–' }} | PP: {{ $pp !== null ? $pp . ' / ' . $ppCurrent : '–' }}
 </textarea>
         </div>
 
-        <!-- Authentic Classic D&D Character Sheet -->
-        <div class="p-2 sm:p-4 bg-slate-100 rounded-2xl border border-slate-300 shadow-sm charview-sheet">
-            <!-- Header Block -->
-            <div class="charview-row-header">
-                <!-- Character Names & Campaign -->
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr><td class="cvlabel">Character Name(s)</td></tr>
-                            <tr><td class="cvlrg">{{ $character->Name }}</td></tr>
-                            @if($player)
-                                <tr><td class="cvlabel">Player</td></tr>
-                                <tr><td class="cvmdm">{{ $player->Name }}</td></tr>
-                            @endif
-                            @if($campaign)
-                                <tr><td class="cvlabel">Campaign</td></tr>
-                                <tr><td class="cvmdm">{{ $campaign->Name }}</td></tr>
-                                @if($dm)
-                                    <tr><td class="cvlabel">Dungeon Master</td></tr>
-                                    <tr><td class="cvmdm">{{ $dm->Name }}</td></tr>
-                                @endif
-                            @else
-                                <tr><td class="cvlabel">Campaign</td></tr>
-                                <tr><td class="cvmdm">Standalone Character</td></tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Authentic Classic D&D Character Sheet (Shared Partial) -->
+        @include('utilities.partials.charview.sheet_content', ['isWizard' => false])
 
-                <!-- Heritage & Classes -->
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr><td class="cvlabel">Gender &amp; Race</td></tr>
-                            <tr><td class="cvsml">{{ $isFemale ? 'Female' : 'Male' }} {{ $race->Name ?? 'Humanoid' }}</td></tr>
-                            <tr><td class="cvlabel">Template(s)</td></tr>
-                            <tr><td class="cvsml">{{ $templatesSummaryStr }}</td></tr>
-                            <tr><td class="cvlabel">Culture (Background Class)</td></tr>
-                            <tr><td class="cvsml">{{ $culture->Name ?? 'Unknown' }} ({{ $bgClass->Name ?? 'Commoner' }})</td></tr>
-                            <tr><td class="cvlabel">Class(es) and Level(s)</td></tr>
-                            <tr><td class="cvsml">{{ $classesDisplayStr }}</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Levels Breakdown -->
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr><td class="cvheader cvcenter" colspan="2">Level</td></tr>
-                            <tr><td class="cvlabel cvcenter" colspan="2">TL</td></tr>
-                            <tr><td class="cvlrg cvcenter" colspan="2">{{ $totalLevel }}</td></tr>
-                            <tr>
-                                <td class="cvlabel cvcenter" style="width: 50%;">RL</td>
-                                <td class="cvlabel cvcenter" style="width: 50%;">CL</td>
-                            </tr>
-                            <tr>
-                                <td class="cvsml cvcenter">{{ $racialLevel }}</td>
-                                <td class="cvsml cvcenter">{{ $challengeLevel }}</td>
-                            </tr>
-                            <tr><td class="cvlabel cvcenter" colspan="2">XP</td></tr>
-                            <tr><td class="cvsml cvcenter" colspan="2">{{ number_format($xp) }}</td></tr>
-                            <tr><td class="cvlabel cvcenter" colspan="2">Fate Pts</td></tr>
-                            <tr><td class="cvmdm cvcenter" colspan="2">{{ $character->FatePts ?? 3 }}</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Core Statistics Grid (Ability Scores, Speed/Size/Senses, Defenses, Health) -->
-            <div class="charview-row-stats">
-                <!-- Ability Scores Block -->
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr><td class="cvheader cvcenter" colspan="4">Ability Scores</td></tr>
-                            <tr>
-                                <td class="cvlabel cvcenter">Abil</td>
-                                <td class="cvlabel cvcenter">Mod</td>
-                                <td class="cvlabel cvcenter">Base</td>
-                                <td class="cvlabel cvcenter">Score</td>
-                            </tr>
-                            <tr>
-                                <td class="cvlabel cvcenter">STR</td>
-                                <td class="cvmdm cvcenter">{{ $strMod !== null ? ($strMod >= 0 ? '+' : '') . $strMod : '–' }}</td>
-                                <td class="cvsml cvcenter">{{ $baseStr ?? '–' }}</td>
-                                <td class="cvmdm cvcenter">{{ $str ?? '–' }}</td>
-                            </tr>
-                            <tr>
-                                <td class="cvlabel cvcenter">CON</td>
-                                <td class="cvmdm cvcenter">{{ $conMod !== null ? ($conMod >= 0 ? '+' : '') . $conMod : '–' }}</td>
-                                <td class="cvsml cvcenter">{{ $baseCon ?? '–' }}</td>
-                                <td class="cvmdm cvcenter">{{ $con ?? '–' }}</td>
-                            </tr>
-                            <tr>
-                                <td class="cvlabel cvcenter">DEX</td>
-                                <td class="cvmdm cvcenter">{{ $dexMod !== null ? ($dexMod >= 0 ? '+' : '') . $dexMod : '–' }}</td>
-                                <td class="cvsml cvcenter">{{ $baseDex ?? '–' }}</td>
-                                <td class="cvmdm cvcenter">{{ $dex ?? '–' }}</td>
-                            </tr>
-                            <tr>
-                                <td class="cvlabel cvcenter">INT</td>
-                                <td class="cvmdm cvcenter">{{ $intMod !== null ? ($intMod >= 0 ? '+' : '') . $intMod : '–' }}</td>
-                                <td class="cvsml cvcenter">{{ $baseInt ?? '–' }}</td>
-                                <td class="cvmdm cvcenter">{{ $int ?? '–' }}</td>
-                            </tr>
-                            <tr>
-                                <td class="cvlabel cvcenter">WIS</td>
-                                <td class="cvmdm cvcenter">{{ $wisMod !== null ? ($wisMod >= 0 ? '+' : '') . $wisMod : '–' }}</td>
-                                <td class="cvsml cvcenter">{{ $baseWis ?? '–' }}</td>
-                                <td class="cvmdm cvcenter">{{ $wis ?? '–' }}</td>
-                            </tr>
-                            <tr>
-                                <td class="cvlabel cvcenter">CHA</td>
-                                <td class="cvmdm cvcenter">{{ $chaMod !== null ? ($chaMod >= 0 ? '+' : '') . $chaMod : '–' }}</td>
-                                <td class="cvsml cvcenter">{{ $baseCha ?? '–' }}</td>
-                                <td class="cvmdm cvcenter">{{ $cha ?? '–' }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Speed, Size and Senses Block -->
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr><td class="cvheader cvcenter" colspan="4">Speed, Size &amp; Senses</td></tr>
-                            <tr>
-                                <td class="cvlabel cvcenter">Init</td>
-                                <td class="cvlabel cvcenter">AP</td>
-                                <td class="cvlabel cvcenter">MP</td>
-                                <td class="cvlabel cvcenter">React</td>
-                            </tr>
-                            <tr>
-                                <td class="cvmdm cvcenter">{{ ($initMod >= 0 ? '+' : '') . $initMod }}</td>
-                                <td class="cvmdm cvcenter">{{ $actionPoints }}</td>
-                                <td class="cvmdm cvcenter">{{ $movementPoints }}</td>
-                                <td class="cvmdm cvcenter">{{ $reactions }}</td>
-                            </tr>
-                            <tr><td class="cvlabel" colspan="4">Speed</td></tr>
-                            <tr><td class="cvsml" colspan="4">{{ $speedDisplay }}</td></tr>
-                            <tr><td class="cvlabel" colspan="4">Body Type</td></tr>
-                            <tr><td class="cvsml" colspan="4">{{ $bodyTypeStr }}</td></tr>
-                            <tr>
-                                <td class="cvlabel cvcenter" colspan="2">Size</td>
-                                <td class="cvlabel cvcenter" colspan="2">Spacing / Reach</td>
-                            </tr>
-                            <tr>
-                                <td class="cvmdm cvcenter" colspan="2">{{ $sizeStr }}</td>
-                                <td class="cvsml cvcenter" colspan="2">{{ $spacingStr }} / {{ $reachStr }} sq</td>
-                            </tr>
-                            <tr><td class="cvlabel" colspan="4">Special Senses</td></tr>
-                            <tr><td class="cvsml" colspan="4">Standard Vision</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Defenses Block -->
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr><td class="cvheader cvcenter" colspan="6">Defenses</td></tr>
-                            <tr>
-                                <td class="cvlabel cvcenter" colspan="2">DeCa</td>
-                                <td class="cvlabel cvcenter" colspan="2">DeCp</td>
-                                <td class="cvlabel cvcenter" colspan="2">Crit</td>
-                            </tr>
-                            <tr>
-                                <td class="cvmdm cvcenter" colspan="2">{{ $decActive }}</td>
-                                <td class="cvmdm cvcenter" colspan="2">{{ $decPassive }}</td>
-                                <td class="cvmdm cvcenter" colspan="2">+{{ $critRes }}</td>
-                            </tr>
-                            <tr>
-                                <td class="cvlabel cvcenter" colspan="2">Fort</td>
-                                <td class="cvlabel cvcenter" colspan="2">Ref</td>
-                                <td class="cvlabel cvcenter" colspan="2">Will</td>
-                            </tr>
-                            <tr>
-                                <td class="cvmdm cvcenter" colspan="2">{{ ($fort !== null && $fort < 999) ? $fort : '–' }}</td>
-                                <td class="cvmdm cvcenter" colspan="2">{{ $ref ?? '0' }}</td>
-                                <td class="cvmdm cvcenter" colspan="2">{{ ($will !== null && $will < 999) ? $will : '–' }}</td>
-                            </tr>
-                            <tr>
-                                <td class="cvlabel cvcenter" colspan="3">DR</td>
-                                <td class="cvlabel cvcenter" colspan="3">MR</td>
-                            </tr>
-                            <tr>
-                                <td class="cvmdm cvcenter" colspan="3">{{ $dr }}</td>
-                                <td class="cvmdm cvcenter" colspan="3">{{ $mr }}</td>
-                            </tr>
-                            <tr><td class="cvlabel" colspan="6">Resistances &amp; Immunities</td></tr>
-                            <tr><td class="cvsml" colspan="6">{{ $resistancesDisplayStr }}</td></tr>
-                            <tr><td class="cvlabel" colspan="6">Special Defenses</td></tr>
-                            <tr><td class="cvsml" colspan="6">DR {{ $dr }}, MR {{ $mr }}, Crit +{{ $critRes }}</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Health Scores Block -->
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr><td class="cvheader cvcenter" colspan="3">Health</td></tr>
-                            <tr>
-                                <td class="cvheader cvcenter">HP</td>
-                                <td class="cvheader cvcenter">SP</td>
-                                <td class="cvheader cvcenter">PP</td>
-                            </tr>
-                            <tr>
-                                <td class="cvlabel cvcenter">Max</td>
-                                <td class="cvlabel cvcenter">Max</td>
-                                <td class="cvlabel cvcenter">Max</td>
-                            </tr>
-                            <tr>
-                                <td class="cvmdm cvcenter">{{ $hp }}</td>
-                                <td class="cvmdm cvcenter">{{ $sp ?? '–' }}</td>
-                                <td class="cvmdm cvcenter">{{ $pp ?? '–' }}</td>
-                            </tr>
-                            <tr>
-                                <td class="cvlabel cvcenter">Current</td>
-                                <td class="cvlabel cvcenter">Current</td>
-                                <td class="cvlabel cvcenter">Current</td>
-                            </tr>
-                            <tr>
-                                <td class="cvmdm cvcenter">{{ $hpCurrent }}</td>
-                                <td class="cvmdm cvcenter">{{ $spCurrent ?? '–' }}</td>
-                                <td class="cvmdm cvcenter">{{ $ppCurrent ?? '–' }}</td>
-                            </tr>
-                            <tr><td class="cvlabel" colspan="3">Conditions</td></tr>
-                            <tr>
-                                <td class="cvsml" colspan="3">
-                                    @if(!empty($activeConditions))
-                                        <span class="text-red-700 font-bold">{{ implode(', ', $activeConditions) }}</span>
-                                    @else
-                                        <span class="text-emerald-800">Normal</span>
-                                    @endif
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Combat & Attacks Matrix Row -->
-            <div class="mt-4" x-data="{ twoHandedMode: {} }">
-                <table class="charviewsection border-collapse w-full">
-                    <tbody>
-                        <tr>
-                            <td class="cvheader cvcenter" colspan="7">
-                                ⚔️ Combat &amp; Attack Matrix (Active Preset: {{ \App\Services\Entity\EquipmentManager::CONFIG_NAMES[$activeConfig] ?? 'Combat' }})
-                            </td>
-                        </tr>
-                        @if(!empty($calc['attacks']['weapons']))
-                            <tr class="bg-amber-100/60">
-                                <td class="cvlabel">Equipped Weapon</td>
-                                <td class="cvlabel cvcenter" style="width: 16%;">Wielding Mode</td>
-                                <td class="cvlabel cvcenter" style="width: 10%;">Speed (AP)</td>
-                                <td class="cvlabel cvcenter" style="width: 12%;">Attack Bonus</td>
-                                <td class="cvlabel cvcenter" style="width: 18%;">Damage (Avg)</td>
-                                <td class="cvlabel cvcenter" style="width: 14%;">Critical</td>
-                                <td class="cvlabel cvcenter" style="width: 14%;">Reach / Range</td>
-                            </tr>
-                            @foreach($calc['attacks']['weapons'] as $wId => $wpn)
-                                <tr x-init="twoHandedMode['{{ $wId }}'] = false">
-                                    <td class="cvlist font-bold text-amber-950">
-                                        🗡️ {{ $wpn['name'] }}
-                                        @if($wpn['parry_mod'] > 0)
-                                            <span class="text-xs text-amber-700 font-normal">(Parry +{{ $wpn['parry_mod'] }})</span>
-                                        @endif
-                                    </td>
-                                    <td class="cvlist cvcenter">
-                                        @if(!$wpn['is_ranged'])
-                                            <button type="button" 
-                                                    @click="twoHandedMode['{{ $wId }}'] = !twoHandedMode['{{ $wId }}']"
-                                                    class="text-xs px-2 py-0.5 rounded border transition"
-                                                    :class="twoHandedMode['{{ $wId }}'] ? 'bg-amber-800 text-white border-amber-900 font-bold' : 'bg-stone-100 text-stone-700 border-stone-300'">
-                                                <span x-text="twoHandedMode['{{ $wId }}'] ? '2-Handed (+2 Str)' : '1-Handed'"></span>
-                                            </button>
-                                        @else
-                                            <span class="text-xs text-stone-600 font-mono">Ranged</span>
-                                        @endif
-                                    </td>
-                                    <td class="cvlist cvcenter font-mono font-bold">{{ $wpn['ap'] }} AP</td>
-                                    <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                                        {{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }}
-                                    </td>
-                                    <td class="cvlist cvcenter font-mono font-bold">
-                                        <span x-show="!twoHandedMode['{{ $wId }}']">
-                                            {{ $wpn['one_handed']['damage'] }} <span class="text-xs text-stone-500 font-normal">({{ $wpn['one_handed']['avg_damage'] }})</span>
-                                        </span>
-                                        <span x-show="twoHandedMode['{{ $wId }}']" class="text-amber-900 font-extrabold">
-                                            {{ $wpn['two_handed']['damage'] }} <span class="text-xs text-amber-700 font-normal">({{ $wpn['two_handed']['avg_damage'] }})</span>
-                                        </span>
-                                    </td>
-                                    <td class="cvlist cvcenter font-mono text-xs">
-                                        {{ $wpn['crit_range'] }}-20 (&times;{{ $wpn['crit_multiplier'] }})
-                                    </td>
-                                    <td class="cvlist cvcenter text-xs font-mono">
-                                        {{ $wpn['is_ranged'] ? $wpn['range'] . ' m' : $reachStr . ' sq' }}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
-
-                        @if(!empty($calc['attacks']['akimbo']))
-                            <tr class="bg-amber-100/60">
-                                <td class="cvlabel" colspan="2">Akimbo Attack Combination</td>
-                                <td class="cvlabel cvcenter">AP Cost</td>
-                                <td class="cvlabel cvcenter">Penalties</td>
-                                <td class="cvlabel cvcenter" colspan="3">Combined Main / Off-Hand Strikes</td>
-                            </tr>
-                            @foreach($calc['attacks']['akimbo'] as $ak)
-                                <tr>
-                                    <td class="cvlist font-bold text-indigo-950" colspan="2">
-                                        ⚔️⚔️ {{ $ak['name'] }}
-                                    </td>
-                                    <td class="cvlist cvcenter font-mono font-bold">{{ $ak['ap'] }} AP</td>
-                                    <td class="cvlist cvcenter font-mono text-red-700 font-bold">{{ $ak['attack_penalty'] }}</td>
-                                    <td class="cvlist cvcenter text-xs font-mono" colspan="3">
-                                        Main: <span class="font-bold text-emerald-800">{{ ($ak['main_attack'] >= 0 ? '+' : '') . $ak['main_attack'] }}</span> ({{ $ak['main_damage'] }}) &bull;
-                                        Off: <span class="font-bold text-emerald-800">{{ ($ak['off_attack'] >= 0 ? '+' : '') . $ak['off_attack'] }}</span> ({{ $ak['off_damage'] }})
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
-
-                        @if(!empty($calc['attacks']['natural']))
-                            <tr class="bg-amber-100/60">
-                                <td class="cvlabel" colspan="2">Natural Attack</td>
-                                <td class="cvlabel cvcenter">Speed (AP)</td>
-                                <td class="cvlabel cvcenter">Attack Bonus</td>
-                                <td class="cvlabel cvcenter" colspan="3">Damage</td>
-                            </tr>
-                            @foreach($calc['attacks']['natural'] as $nat)
-                                <tr>
-                                    <td class="cvlist font-bold" colspan="2">
-                                        🐾 {{ $nat['name'] }} <span class="text-xs text-stone-500 font-normal">({{ $nat['primary'] ? 'Primary' : 'Secondary -4' }})</span>
-                                    </td>
-                                    <td class="cvlist cvcenter font-mono font-bold">{{ $nat['ap'] }} AP</td>
-                                    <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                                        {{ ($nat['attack_bonus'] >= 0 ? '+' : '') . $nat['attack_bonus'] }}
-                                    </td>
-                                    <td class="cvlist cvcenter font-mono" colspan="3">{{ $nat['damage'] }}</td>
-                                </tr>
-                            @endforeach
-                        @endif
-
-                        <!-- Brawling Attack -->
-                        <tr>
-                            <td class="cvlist text-stone-700" colspan="2">
-                                👊 {{ $calc['attacks']['brawling']['name'] }}
-                            </td>
-                            <td class="cvlist cvcenter font-mono font-bold">{{ $calc['attacks']['brawling']['ap'] }} AP</td>
-                            <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                                {{ ($calc['attacks']['brawling']['attack_bonus'] >= 0 ? '+' : '') . $calc['attacks']['brawling']['attack_bonus'] }}
-                            </td>
-                            <td class="cvlist cvcenter font-mono" colspan="3">{{ $calc['attacks']['brawling']['damage'] }}</td>
-                        </tr>
-
-                        <!-- Spellcaster Attacks -->
-                        <tr class="bg-indigo-50/80">
-                            <td class="cvlabel font-bold text-indigo-900" colspan="2">Spellcaster Actions</td>
-                            <td class="cvlabel cvcenter">Ray / Touch</td>
-                            <td class="cvlabel cvcenter">Area DC</td>
-                            <td class="cvlabel cvcenter">Body DC (Fort)</td>
-                            <td class="cvlabel cvcenter" colspan="2">Mind DC (Will)</td>
-                        </tr>
-                        <tr>
-                            <td class="cvlist text-indigo-950 font-serif" colspan="2">
-                                ✨ Supernatural &amp; Arcane Casting
-                            </td>
-                            <td class="cvlist cvcenter font-mono font-bold text-indigo-800">
-                                {{ ($calc['attacks']['spells']['ray_touch']['attack_bonus'] >= 0 ? '+' : '') . $calc['attacks']['spells']['ray_touch']['attack_bonus'] }}
-                            </td>
-                            <td class="cvlist cvcenter font-mono font-bold text-indigo-800">
-                                DC {{ $calc['attacks']['spells']['area_dc']['dc'] }}
-                            </td>
-                            <td class="cvlist cvcenter font-mono font-bold text-indigo-800">
-                                DC {{ $calc['attacks']['spells']['body_fort_dc']['dc'] }}
-                            </td>
-                            <td class="cvlist cvcenter font-mono font-bold text-indigo-800" colspan="2">
-                                DC {{ $calc['attacks']['spells']['mind_will_dc']['dc'] }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Physical, Social & Personality Details Table -->
-            <div class="charview-row-split">
-                <!-- Physical & Personality Details -->
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr><td class="cvheader cvcenter" colspan="4">Physical &amp; Personality Details</td></tr>
-                            <tr>
-                                <td class="cvlabel cvcenter">Physical Age</td>
-                                <td class="cvlabel cvcenter">Mental Age</td>
-                                <td class="cvlabel cvcenter">Height</td>
-                                <td class="cvlabel cvcenter">Weight</td>
-                            </tr>
-                            <tr>
-                                <td class="cvmdm cvcenter">{{ $physAge }} ({{ $physAgeCat }})</td>
-                                <td class="cvmdm cvcenter">{{ $mentAge }} ({{ $mentAgeCat }})</td>
-                                <td class="cvmdm cvcenter">{{ $calcHeight }} cm</td>
-                                <td class="cvmdm cvcenter">{{ $calcWeight }} kg</td>
-                            </tr>
-                            <tr>
-                                <td class="cvlabel cvcenter" colspan="2">Alignment</td>
-                                <td class="cvlabel cvcenter" colspan="2">Religion / Favored Deity</td>
-                            </tr>
-                            <tr>
-                                <td class="cvmdm cvcenter" colspan="2">{{ $character->Alignment ?? 'Neutral Good' }}</td>
-                                <td class="cvmdm cvcenter" colspan="2">{{ $religionObj ? $religionObj->Name : 'None' }} / {{ $deityObj ? $deityObj->Name : 'None' }}</td>
-                            </tr>
-                            <tr><td class="cvlabel" colspan="4">Appearance</td></tr>
-                            <tr><td class="cvsml" colspan="4">{{ $character->Appearance ?: 'Not specified' }}</td></tr>
-                            <tr><td class="cvlabel" colspan="4">Personality &amp; Habits</td></tr>
-                            <tr><td class="cvsml" colspan="4">{{ $character->Personality ?: 'Not specified' }}</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Social Details, Wealth & Lore -->
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr><td class="cvheader cvcenter" colspan="4">Social Details, Wealth &amp; Lore</td></tr>
-                            <tr>
-                                <td class="cvlabel cvcenter" style="width: 25%;">SC</td>
-                                <td class="cvlabel cvcenter" style="width: 25%;">WC</td>
-                                <td class="cvlabel cvcenter" style="width: 25%;">Reputation</td>
-                                <td class="cvlabel cvcenter" style="width: 25%;">Infl Pts</td>
-                            </tr>
-                            <tr>
-                                <td class="cvmdm cvcenter">{{ $character->SC ?? $character->SocialClass ?? 0 }}</td>
-                                <td class="cvmdm cvcenter">{{ $character->WC ?? $character->WealthClass ?? 0 }}</td>
-                                <td class="cvmdm cvcenter">{{ $calc['social']['reputation_total'] ?? ($character->Reputation ?? 0) }} {{ $character->ReputationDesc ? '(' . $character->ReputationDesc . ')' : '' }}</td>
-                                <td class="cvmdm cvcenter">{{ $calc['social']['influence_total'] ?? ($character->InfluencePts ?? 0) }} {{ $character->InfluenceDesc ? '(' . $character->InfluenceDesc . ')' : '' }}</td>
-                            </tr>
-                            <tr><td class="cvlabel" colspan="4">Family &amp; Relatives</td></tr>
-                            <tr><td class="cvsml" colspan="4">{{ $character->Family ?: 'Not specified' }}</td></tr>
-                            <tr><td class="cvlabel" colspan="4">Connections &amp; Contacts</td></tr>
-                            <tr><td class="cvsml" colspan="4">{{ $character->Contacts ?: 'Not specified' }}</td></tr>
-                            <tr><td class="cvlabel" colspan="4">Background History</td></tr>
-                            <tr><td class="cvsml" colspan="4">{{ $character->History ?: 'Not specified' }}</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Skills & Specializations Table -->
-            <div class="charview-row-split">
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr><td class="cvheader cvcenter" colspan="2">Trained Skills</td></tr>
-                            <tr>
-                                <td class="cvlabel">Skill Name</td>
-                                <td class="cvlabel cvcenter" style="width: 25%;">Rank</td>
-                            </tr>
-                            @forelse($skillsList as $sId => $rank)
-                                @if($rank > 0 && isset($skillsMap[$sId]))
-                                    <tr>
-                                        <td class="cvlist">{{ $skillsMap[$sId]->Name }}</td>
-                                        <td class="cvlist cvcenter font-mono font-bold">+{{ $rank }}</td>
-                                    </tr>
-                                @endif
-                            @empty
-                                <tr><td class="cvlist" colspan="2">No skills trained.</td></tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr><td class="cvheader cvcenter" colspan="2">Specializations &amp; Languages</td></tr>
-                            <tr>
-                                <td class="cvlabel">Specialization / Language</td>
-                                <td class="cvlabel cvcenter" style="width: 25%;">Rank</td>
-                            </tr>
-                            @forelse($specializationsList as $specId => $rank)
-                                @if($rank > 0 && isset($specializationsMap[$specId]))
-                                    <tr>
-                                        <td class="cvlist">{{ $specializationsMap[$specId]->Name }}</td>
-                                        <td class="cvlist cvcenter font-mono font-bold">{{ $rank }}</td>
-                                    </tr>
-                                @endif
-                            @empty
-                                <tr><td class="cvlist" colspan="2">No specializations purchased.</td></tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Equipment & Spells Table -->
-            <div class="charview-row-split">
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr>
-                                <td class="cvheader cvcenter" colspan="4">
-                                    Equipment &amp; Possessions ({{ \App\Services\Entity\EquipmentManager::CONFIG_NAMES[$activeConfig] ?? 'Combat' }})
-                                </td>
-                            </tr>
-                            <tr class="bg-stone-200/60">
-                                <td class="cvsml" colspan="4">
-                                    <div class="flex items-center justify-between text-xs px-1 text-stone-700">
-                                        <span><strong>Weight:</strong> {{ $calc['equipment']['total_weight'] }} kg</span>
-                                        <span><strong>Encumbrance:</strong> Class {{ $calc['equipment']['effective_ec'] }} (EP: {{ $calc['equipment']['encumbrance_penalty'] }}, Max Dex: {{ $calc['equipment']['max_dex_bonus'] < 90 ? '+' . $calc['equipment']['max_dex_bonus'] : 'None' }})</span>
-                                        <span><strong>Wealth:</strong> {{ $wealth }} sp</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cvlabel">Item</td>
-                                <td class="cvlabel cvcenter" style="width: 15%;">State</td>
-                                <td class="cvlabel cvcenter" style="width: 12%;">Qty</td>
-                                <td class="cvlabel cvcenter" style="width: 20%;">Cost</td>
-                            </tr>
-                            @forelse($equipmentList as $it)
-                                <tr>
-                                    <td class="cvlist">
-                                        <span class="font-bold text-stone-900">{{ $it['Name'] ?? $it['name'] ?? 'Item' }}</span>
-                                        @if(!empty($it['slot']))
-                                            <span class="text-xs text-amber-800 font-mono">({{ $it['slot'] }})</span>
-                                        @endif
-                                    </td>
-                                    <td class="cvlist cvcenter text-xs font-mono">
-                                        @php
-                                            $loc = $it['locations'][$activeConfig] ?? $it['location'] ?? 1;
-                                            $locName = match((int)$loc) {
-                                                2 => 'Equipped',
-                                                0 => 'Stowed',
-                                                default => 'Carried',
-                                            };
-                                        @endphp
-                                        <span class="{{ $loc == 2 ? 'text-amber-900 font-bold' : ($loc == 0 ? 'text-stone-400' : 'text-stone-700') }}">
-                                            {{ $locName }}
-                                        </span>
-                                    </td>
-                                    <td class="cvlist cvcenter font-mono">{{ $it['Qty'] ?? $it['qty'] ?? 1 }}</td>
-                                    <td class="cvlist cvcenter font-mono">{{ ((int)($it['BaseValue'] ?? $it['value'] ?? $it['unit_price'] ?? 0) * (int)($it['Qty'] ?? $it['qty'] ?? 1)) }} sp</td>
-                                </tr>
-                            @empty
-                                <tr><td class="cvlist" colspan="4">No equipment purchased.</td></tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="charview-col">
-                    <table class="charviewsection border-collapse">
-                        <tbody>
-                            <tr><td class="cvheader cvcenter" colspan="2">Spells &amp; Variations</td></tr>
-                            <tr>
-                                <td class="cvlabel">Spell</td>
-                                <td class="cvlabel cvcenter" style="width: 25%;">Cost</td>
-                            </tr>
-                            @forelse($spellsList as $spellId => $optIds)
-                                @if(isset($spellsMap[$spellId]))
-                                    <tr>
-                                        <td class="cvlist">
-                                            <span class="font-bold">{{ $spellsMap[$spellId]->Name }}</span>
-                                            @if(is_array($optIds) && !empty($optIds))
-                                                <div class="text-xs text-slate-700 pl-2 mt-0.5">
-                                                    @foreach($optIds as $optId)
-                                                        @if(isset($spellOptionsMap[$optId]))
-                                                            <div>&bull; {{ $spellOptionsMap[$optId]->Name }} ({{ $spellOptionsMap[$optId]->Cost }})</div>
-                                                        @endif
-                                                    @endforeach
-                                                </div>
-                                            @endif
-                                        </td>
-                                        <td class="cvlist cvcenter font-mono">{{ $spellsMap[$spellId]->Cost }}</td>
-                                    </tr>
-                                @endif
-                            @empty
-                                <tr><td class="cvlist" colspan="2">No spells learned.</td></tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
         <!-- Modals Partial Inclusions -->
         @include('utilities.partials.charview.modal_levelup')
         @include('utilities.partials.charview.modal_modify')
         @include('utilities.partials.charview.modal_partytrade')
         @include('utilities.partials.charview.modal_buyitems')
+        @include('utilities.partials.charview.modal_equipment')
         @include('utilities.partials.charview.modal_learnspells')
+        @include('utilities.partials.charview.modal_portrait_generator')
+        @include('utilities.partials.charview.modal_combat_matrix')
     @else
         <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-3">
             <span class="text-5xl">🧙‍♂️</span>
@@ -1037,7 +525,346 @@ function characterViewerApp() {
         showModifyModal: false,
         showTradeModal: false,
         showBuyItemsModal: false,
+        showEquipmentModal: false,
         showLearnSpellsModal: false,
+        showPortraitModal: false,
+        showCombatMatrixModal: false,
+
+        twoHandedMode: {},
+        selectedAmmo: {},
+
+        getActiveAmmo(wId) {
+            const weaps = this.combatMatrixState.weapons || {};
+            const w = weaps[wId];
+            if (!w || !w.compatible_ammo || !w.compatible_ammo.length) return null;
+            const selId = this.selectedAmmo[wId] || w.default_ammo_id;
+            return w.compatible_ammo.find(a => String(a.id) === String(selId)) || w.compatible_ammo[0] || null;
+        },
+
+        getActiveAmmoDamage(wId) {
+            const ammo = this.getActiveAmmo(wId);
+            if (!ammo) return '';
+            return `${ammo.damage} (${ammo.avg_damage})`;
+        },
+
+        getActiveAmmoRange(wId) {
+            const ammo = this.getActiveAmmo(wId);
+            return ammo ? ammo.range : '';
+        },
+
+        getActiveAmmoCrit(wId) {
+            const ammo = this.getActiveAmmo(wId);
+            return ammo ? ammo.crit_display : '';
+        },
+
+        getActiveAmmoAttack(wId) {
+            const ammo = this.getActiveAmmo(wId);
+            if (!ammo) return '';
+            return (ammo.attack_bonus >= 0 ? '+' : '') + ammo.attack_bonus;
+        },
+
+        // Combat Matrix State
+        combatMatrixState: {
+            showWeapons: true,
+            showAkimbo: true,
+            showNatural: true,
+            showBrawling: true,
+            showGrapple: true,
+            showSpells: true,
+            availableElements: @json($calc['attacks']['available_elements'] ?? []),
+            wieldedParries: @json($calc['defenses']['wielded_parries'] ?? []),
+            weapons: @json($calc['attacks']['weapons'] ?? []),
+            bestParryBonus: {{ (int)($calc['defenses']['parry_bonus'] ?? 0) }},
+            armorParryBonus: {{ (int)($calc['defenses']['armor_parry_bonus'] ?? 0) }},
+            decPassive: {{ (int)($calc['defenses']['dec_passive'] ?? 10) }},
+            decActive: {{ (int)($calc['defenses']['dec_active'] ?? 10) }},
+            dexMod: {{ (int)($dexMod ?? 0) }},
+            dodgeMod: {{ (int)($calc['modifiers_engine']->getTotal('Dodge') ?? 0) }},
+            multiAttackPenRed: {{ (int)($calc['modifiers_engine']->getTotal('MultiAttackPenRed') ?? 0) }},
+            customCombos: [],
+            activeAttackId: '{{ !empty($calc['attacks']['weapons']) ? ("weapon_" . array_key_first($calc['attacks']['weapons'])) : "unarmed_brawling" }}'
+        },
+
+        get currentParryBonus() {
+            const actId = this.combatMatrixState.activeAttackId;
+            const weaps = this.combatMatrixState.weapons || {};
+            const parries = this.combatMatrixState.wieldedParries || [];
+            const armorParry = parseInt(this.combatMatrixState.armorParryBonus || 0);
+
+            let isTwoHanded = false;
+            let activeItemParry = 0;
+
+            if (actId && actId.startsWith('weapon_')) {
+                const wId = actId.replace('weapon_', '');
+                const w = weaps[wId];
+                if (w) {
+                    const isToggled2H = !!this.twoHandedMode[wId];
+                    const isBow = !!w.is_ranged;
+                    isTwoHanded = isToggled2H || isBow;
+                    
+                    const foundPar = parries.find(p => String(p.id) === String(wId));
+                    if (foundPar) {
+                        activeItemParry = parseInt(foundPar.parry_bonus || 0);
+                    }
+                }
+            } else if (actId && (actId.startsWith('unarmed_') || actId === 'unarmed_brawling' || actId === 'grapple')) {
+                const foundPar = parries.find(p => p.category === 'Brl');
+                if (foundPar) {
+                    activeItemParry = parseInt(foundPar.parry_bonus || 0);
+                }
+            } else if (actId && actId.startsWith('natural_')) {
+                const foundPar = parries.find(p => p.category === 'Nat' || p.category === 'Brl');
+                if (foundPar) {
+                    activeItemParry = parseInt(foundPar.parry_bonus || 0);
+                }
+            } else if (actId && actId.startsWith('custom_combo_')) {
+                const combo = (this.combatMatrixState.customCombos || []).find(c => c.id === actId);
+                if (combo && combo.attacks) {
+                    let maxComboPar = 0;
+                    for (const a of combo.attacks) {
+                        const matched = parries.find(p => p.name && a.name && (p.name.toLowerCase().includes(a.name.toLowerCase()) || a.name.toLowerCase().includes(p.name.toLowerCase())));
+                        if (matched && parseInt(matched.parry_bonus || 0) > maxComboPar) {
+                            maxComboPar = parseInt(matched.parry_bonus || 0);
+                        }
+                    }
+                    activeItemParry = maxComboPar;
+                }
+            }
+
+            let shieldParry = 0;
+            if (!isTwoHanded) {
+                const shieldItem = parries.find(p => p.category && (p.category.includes('Shd') || (p.name && p.name.toLowerCase().includes('shield'))));
+                if (shieldItem) {
+                    shieldParry = parseInt(shieldItem.parry_bonus || 0);
+                }
+            }
+
+            const primaryParry = Math.max(activeItemParry, shieldParry);
+            return primaryParry + armorParry;
+        },
+
+        get currentDeCa() {
+            const base = parseInt(this.combatMatrixState.decPassive || 10);
+            const dex = Math.max(0, parseInt(this.combatMatrixState.dexMod || 0));
+            const dodge = parseInt(this.combatMatrixState.dodgeMod || 0);
+            const parry = this.currentParryBonus;
+            return base + dex + dodge + parry;
+        },
+
+        saveCombatMatrixConfig() {
+            try {
+                localStorage.setItem('char_' + {{ (int)($character->ID ?? 0) }} + '_combat_matrix', JSON.stringify({
+                    showWeapons: this.combatMatrixState.showWeapons,
+                    showAkimbo: this.combatMatrixState.showAkimbo,
+                    showNatural: this.combatMatrixState.showNatural,
+                    showBrawling: this.combatMatrixState.showBrawling,
+                    showGrapple: this.combatMatrixState.showGrapple,
+                    showSpells: this.combatMatrixState.showSpells,
+                    customCombos: this.combatMatrixState.customCombos,
+                    activeAttackId: this.combatMatrixState.activeAttackId,
+                    selectedAmmo: this.selectedAmmo
+                }));
+            } catch(e) {}
+        },
+
+        loadCombatMatrixConfig() {
+            try {
+                const saved = localStorage.getItem('char_' + {{ (int)($character->ID ?? 0) }} + '_combat_matrix');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.showWeapons !== undefined) this.combatMatrixState.showWeapons = parsed.showWeapons;
+                    if (parsed.showAkimbo !== undefined) this.combatMatrixState.showAkimbo = parsed.showAkimbo;
+                    if (parsed.showNatural !== undefined) this.combatMatrixState.showNatural = parsed.showNatural;
+                    if (parsed.showBrawling !== undefined) this.combatMatrixState.showBrawling = parsed.showBrawling;
+                    if (parsed.showGrapple !== undefined) this.combatMatrixState.showGrapple = parsed.showGrapple;
+                    if (parsed.showSpells !== undefined) this.combatMatrixState.showSpells = parsed.showSpells;
+                    if (Array.isArray(parsed.customCombos)) this.combatMatrixState.customCombos = parsed.customCombos;
+                    if (parsed.activeAttackId) this.combatMatrixState.activeAttackId = parsed.activeAttackId;
+                    if (parsed.selectedAmmo && typeof parsed.selectedAmmo === 'object') {
+                        this.selectedAmmo = Object.assign({}, this.selectedAmmo, parsed.selectedAmmo);
+                    }
+                }
+            } catch(e) {}
+        },
+
+        init() {
+            const weaps = this.combatMatrixState.weapons || {};
+            for (const [wId, w] of Object.entries(weaps)) {
+                if (w && w.default_ammo_id && !this.selectedAmmo[wId]) {
+                    this.selectedAmmo[wId] = String(w.default_ammo_id);
+                }
+            }
+            this.loadCombatMatrixConfig();
+        },
+
+        // Equipment Management State
+        modalActivePreset: {{ (int)$activeConfig }},
+        showAddCustomItem: false,
+        customItem: {
+            name: '',
+            qty: 1,
+            unit_price: 0,
+            unit_weight: 0,
+            is_container: false
+        },
+        equipmentItems: @json($equipmentList ?? []),
+
+        isItemContainer(item) {
+            if (item.is_container || item.IsContainer) return true;
+            const subtype = parseInt(item.subtype || item.Subtype) || 0;
+            const name = (item.name || item.Name || '').toLowerCase();
+            if (subtype === 24) return true;
+            return /backpack|pouch|sack|chest|barrel|quiver|scabbard|saddlebag|haversack|bag of/i.test(name);
+        },
+
+        getAllowedLocations(item) {
+            const type = parseInt(item.item_type_id || item.ItemTypeID || 0);
+            const subtype = parseInt(item.subtype || item.Subtype || 0);
+            const name = (item.name || item.Name || '').toLowerCase();
+
+            // 1. Buildings (Type 7 / Subtypes 57, 58)
+            if (type === 7 || subtype === 57 || subtype === 58 || /house|manor|tower|castle|estate|temple|inn|tavern|shop|farm|warehouse/i.test(name)) {
+                return [{ value: 0, label: '📦 Stowed (At Property)' }];
+            }
+
+            // 2. Mounts & Vehicles (Type 6, Subtypes 25, 26, 27, 71)
+            if (type === 6 || [25, 26, 27, 71].includes(subtype) || /horse|mule|donkey|pony|camel|wagon|cart|carriage|ship|boat|galley|canoe|aircraft|airship/i.test(name)) {
+                if (subtype !== 28 && !/saddlebag|bridle|harness|bit and bridle|saddle/i.test(name)) {
+                    return [{ value: 0, label: '📦 Stowed (At Stables/Dock)' }];
+                }
+            }
+
+            // 3. Services (Type 8)
+            if (type === 8 || [29, 30, 32, 33, 34].includes(subtype)) {
+                return [{ value: 0, label: '📦 Stowed (Purchased Service)' }];
+            }
+
+            // 4. Siege Weapons (Subtype 10)
+            if (subtype === 10 || /catapult|ballista|trebuchet|ram|siege/i.test(name)) {
+                return [{ value: 1, label: '🎒 Carried (Towed)' }, { value: 0, label: '📦 Stowed' }];
+            }
+
+            // 5. Bulk Containers
+            if (/barrel|chest|crate|iron safe/i.test(name)) {
+                return [{ value: 1, label: '🎒 Carried (Hauled)' }, { value: 0, label: '📦 Stowed' }];
+            }
+
+            // 6. Wearable Containers
+            if (this.isItemContainer(item)) {
+                return [{ value: 2, label: '🛡️ Equipped (Worn)' }, { value: 1, label: '🎒 Carried' }, { value: 0, label: '📦 Stowed' }];
+            }
+
+            // 7. Armor, Weapons, Clothes, Foci, Jewelry, Magic Wearables
+            if ([2, 3, 4, 9, 10].includes(type)) {
+                return [{ value: 2, label: '🛡️ Equipped (Worn/Wielded)' }, { value: 1, label: '🎒 Carried' }, { value: 0, label: '📦 Stowed' }];
+            }
+
+            // 8. General Goods
+            return [{ value: 1, label: '🎒 Carried' }, { value: 0, label: '📦 Stowed' }];
+        },
+
+        getAvailableContainers(item) {
+            const itemUid = item.uid || item.id;
+            return this.equipmentItems.filter(c => {
+                const cUid = c.uid || c.id;
+                return this.isItemContainer(c) && cUid !== itemUid && c.container_id !== itemUid;
+            });
+        },
+
+        getContainerName(containerId) {
+            if (!containerId) return '';
+            const c = this.equipmentItems.find(it => (it.uid || it.id) === containerId);
+            return c ? (c.name || c.Name) : '';
+        },
+
+        setItemLocation(item, presetIndex, newLoc) {
+            newLoc = parseInt(newLoc);
+            if (!item.locations) {
+                item.locations = [1, 1, 1, 1, 1];
+            }
+            item.locations[presetIndex] = newLoc;
+            item.location = item.locations[0];
+        },
+
+        removeItem(index) {
+            this.equipmentItems.splice(index, 1);
+        },
+
+        addCustomItemToInventory() {
+            if (!this.customItem.name.trim()) return;
+            const uid = 'item_custom_' + Date.now();
+            const isCont = Boolean(this.customItem.is_container);
+            const defaultLoc = isCont ? 2 : 1;
+            this.equipmentItems.push({
+                uid: uid,
+                id: uid,
+                item_id: null,
+                name: this.customItem.name.trim(),
+                qty: parseInt(this.customItem.qty) || 1,
+                unit_price: parseFloat(this.customItem.unit_price) || 0,
+                unit_weight: parseFloat(this.customItem.unit_weight) || 0,
+                is_container: isCont,
+                container_id: null,
+                locations: [defaultLoc, defaultLoc, defaultLoc, defaultLoc, defaultLoc],
+                location: defaultLoc,
+                item_type_id: null,
+                subtype: null
+            });
+            this.customItem = {
+                name: '',
+                qty: 1,
+                unit_price: 0,
+                unit_weight: 0,
+                is_container: false
+            };
+            this.showAddCustomItem = false;
+        },
+
+        calcPresetWeight(presetIdx) {
+            let total = 0;
+            const items = this.equipmentItems || [];
+            const containerMap = {};
+            items.forEach(it => {
+                const key = it.uid || it.id;
+                if (key) containerMap[key] = it;
+            });
+
+            const isStowed = (it) => {
+                let current = it;
+                let visited = {};
+                while (current) {
+                    const locs = current.locations || [1,1,1,1,1];
+                    const loc = parseInt(locs[presetIdx] ?? current.location ?? 1);
+                    if (loc === 0) return true;
+                    const cId = current.container_id;
+                    if (!cId || !containerMap[cId] || visited[cId]) {
+                        break;
+                    }
+                    visited[cId] = true;
+                    current = containerMap[cId];
+                }
+                return false;
+            };
+
+            items.forEach(it => {
+                if (isStowed(it)) {
+                    return;
+                }
+                const qty = parseInt(it.qty) || 1;
+                const unitW = parseFloat(it.unit_weight || it.BaseWeight) || 0.0;
+                const locs = it.locations || [1,1,1,1,1];
+                const loc = parseInt(locs[presetIdx] ?? it.location ?? 1);
+
+                if (it.container_id && containerMap[it.container_id]) {
+                    total += qty * unitW;
+                } else if (loc === 2) {
+                    total += (qty * unitW) * 0.5;
+                } else {
+                    total += (qty * unitW);
+                }
+            });
+            return total;
+        },
 
         // Level Up state
         lvlStep: 1,

@@ -2104,7 +2104,7 @@ skillbenefits:
     ID: 27
     Skill: 17
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpNat; } AttMod { Qual=Damage; Type=skill; Value=+lvl/4; Req=Weapon==WpNat; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/5; Req=Weapon==WpNat; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpNat; } AttMod { Qual=Damage; Type=skill; Value=+lvl/4; Req=Weapon==WpNat; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpNat; }'
   -
     ID: 30
     Skill: 17
@@ -2124,7 +2124,7 @@ skillbenefits:
     ID: 33
     Skill: 21
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpAxe; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpAxe; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/6; Req=Weapon==WpAxe; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+lvl/2; Req=Weapon==WpAxe; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpAxe; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/5; Req=Weapon==WpAxe; }'
   -
     ID: 36
     Skill: 21
@@ -2144,7 +2144,7 @@ skillbenefits:
     ID: 39
     Skill: 22
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+4)/5; Req=Weapon==WpClb; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpClb; } DefMod { Qual=Parry; Type=skill; Value=+lvl/6; Req=Weapon==WpClb; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpClb; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpClb; } DefMod { Qual=Parry; Type=skill; Value=+lvl/6; Req=Weapon==WpClb; }'
   -
     ID: 42
     Skill: 22
@@ -2154,7 +2154,7 @@ skillbenefits:
     ID: 43
     Skill: 23
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpFnc; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpFnc; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpFnc; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpFnc; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpFnc; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpFnc; }'
   -
     ID: 46
     Skill: 23
@@ -2174,7 +2174,7 @@ skillbenefits:
     ID: 49
     Skill: 24
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpFll; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpFll; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpFll; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpFll; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpFll; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpFll; }'
   -
     ID: 52
     Skill: 24
@@ -2189,7 +2189,7 @@ skillbenefits:
     ID: 54
     Skill: 25
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpHvB; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpHvB; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpHvB; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+lvl/2; Req=Weapon==WpHvB; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpHvB; } DefMod { Qual=Parry; Type=skill; Value=+lvl/3; Req=Weapon==WpHvB; }'
   -
     ID: 57
     Skill: 25
@@ -2214,7 +2214,7 @@ skillbenefits:
     ID: 61
     Skill: 26
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpLtB; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpLtB; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/5; Req=Weapon==WpLtB; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpLtB; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpLtB; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpLtB; }'
   -
     ID: 64
     Skill: 26
@@ -2229,7 +2229,7 @@ skillbenefits:
     ID: 66
     Skill: 27
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpPlA; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpPlA; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/5; Req=Weapon==WpPlA; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpPlA; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpPlA; } DefMod { Qual=Parry; Type=skill; Value=+lvl/4; Req=Weapon==WpPlA; }'
   -
     ID: 69
     Skill: 27
@@ -2254,7 +2254,7 @@ skillbenefits:
     ID: 73
     Skill: 29
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpSpr; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpSpr; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/5; Req=Weapon==WpSpr; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpSpr; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpSpr; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpSpr; }'
   -
     ID: 76
     Skill: 29
@@ -2279,7 +2279,7 @@ skillbenefits:
     ID: 80
     Skill: 30
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+4)/5; Req=Weapon==WpStv; } AttMod { Qual=Damage; Type=skill; Value=+lvl/4; Req=Weapon==WpStv; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/5; Req=Weapon==WpStv; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpStv; } AttMod { Qual=Damage; Type=skill; Value=+lvl/4; Req=Weapon==WpStv; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpStv; }'
   -
     ID: 83
     Skill: 30
@@ -2289,7 +2289,7 @@ skillbenefits:
     ID: 84
     Skill: 20
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpExo; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpExo; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/5; Req=Weapon==WpExo; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpExo; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpExo; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpExo; }'
   -
     ID: 87
     Skill: 20
@@ -2309,7 +2309,7 @@ skillbenefits:
     ID: 90
     Skill: 31
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpBow; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpBow; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpBow; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpBow; }'
   -
     ID: 92
     Skill: 31
@@ -2364,7 +2364,7 @@ skillbenefits:
     ID: 102
     Skill: 32
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpCrs; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpCrs; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpCrs; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpCrs; }'
   -
     ID: 104
     Skill: 32
@@ -2399,7 +2399,7 @@ skillbenefits:
     ID: 110
     Skill: 33
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpFir; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpFir; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpFir; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpFir; }'
   -
     ID: 112
     Skill: 33
@@ -2429,7 +2429,7 @@ skillbenefits:
     ID: 117
     Skill: 34
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpSln; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpSln; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpSln; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpSln; }'
   -
     ID: 119
     Skill: 34
@@ -2454,7 +2454,7 @@ skillbenefits:
     ID: 123
     Skill: 35
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpSmT; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpSmT; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpSmT; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpSmT; }'
   -
     ID: 125
     Skill: 35
@@ -2484,7 +2484,7 @@ skillbenefits:
     ID: 130
     Skill: 36
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpAre; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpAre; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpAre; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpAre; }'
   -
     ID: 132
     Skill: 36
@@ -2504,12 +2504,12 @@ skillbenefits:
     ID: 135
     Skill: 37
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpBaM; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpBaM; }'
   -
     ID: 136
     Skill: 38
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpRay; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpRay; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+lvl/2; Req=Weapon==WpRay; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpRay; }'
   -
     ID: 138
     Skill: 38
@@ -2534,7 +2534,7 @@ skillbenefits:
     ID: 142
     Skill: 39
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpSie; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpSie; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpSie; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpSie; }'
   -
     ID: 144
     Skill: 40
@@ -2639,7 +2639,7 @@ skillbenefits:
     ID: 174
     Skill: 18
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpBrl; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpBrl; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpBrl; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpBrl; }'
   -
     ID: 177
     Skill: 18
@@ -2684,7 +2684,7 @@ skillbenefits:
     ID: 189
     Skill: 28
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+4)/6; Req=Weapon==WpShd; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+4)/10; Req=Weapon==WpShd; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpShd; } SpdSpcl { Qual=ECRed; Value=lvl/10; Req=Weapon==WpShd; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/5; Req=Weapon==WpShd; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+4)/10; Req=Weapon==WpShd; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpShd; } SpdSpcl { Qual=ECRed; Value=lvl/10; Req=Weapon==WpShd; }'
   -
     ID: 193
     Skill: 52
@@ -3859,7 +3859,7 @@ skillbenefits:
     ID: 478
     Skill: 19
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+4)/5; Req=Weapon==WpGen; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpGen; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/5; Req=Weapon==WpGen; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpGen; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpGen; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpGen; }'
   -
     ID: 479
     Skill: 202
@@ -3874,7 +3874,7 @@ skillbenefits:
     ID: 481
     Skill: 49
     SkillLevel: 5
-    Traits: 'Defense { Qual=2WpDef; Value=1; }'
+    Traits: 'Defense { Qual=2WpDef; Value=1.5; }'
   -
     ID: 482
     Skill: 49
@@ -4009,7 +4009,7 @@ skillbenefits:
     ID: 508
     Skill: 109
     SkillLevel: 1
-    Traits: 'Affinity { Qual=Divine; Abil=Wis; PPRed=(lvl+2*WisMod)/5; } Affinity { Qual=Divine - Charm; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } Affinity { Qual=Divine - Insight; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } SklMod { Qual=Composure; Type=class; Value=+lvl/4; }'
+    Traits: 'Affinity { Qual=Divine; Abil=Wis; PPRed=(lvl+2*WisMod)/5; } Affinity { Qual=Divine - Charm; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } Affinity { Qual=Divine - Insight; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } SklMod { Qual=Self-Control; Type=class; Value=+lvl/4; }'
   -
     ID: 509
     Skill: 110
@@ -4089,7 +4089,7 @@ skillbenefits:
     ID: 524
     Skill: 125
     SkillLevel: 1
-    Traits: 'Affinity { Qual=Divine; Abil=Wis; PPRed=(lvl+2*WisMod)/5; } Affinity { Qual=Divine - Death; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } Affinity { Qual=Divine - Life; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } SklMod { Qual=Composure; Type=class; Value=+lvl/4; }'
+    Traits: 'Affinity { Qual=Divine; Abil=Wis; PPRed=(lvl+2*WisMod)/5; } Affinity { Qual=Divine - Death; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } Affinity { Qual=Divine - Life; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } SklMod { Qual=Self-Control; Type=class; Value=+lvl/4; }'
   -
     ID: 525
     Skill: 126
@@ -4444,7 +4444,7 @@ skillbenefits:
     ID: 595
     Skill: 206
     SkillLevel: 1
-    Traits: 'DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpNat; }'
+    Traits: 'DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpNat; }'
   -
     ID: 596
     Skill: 207
@@ -4454,12 +4454,12 @@ skillbenefits:
     ID: 597
     Skill: 208
     SkillLevel: 1
-    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpMnk; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpMnk; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpMnk; }'
+    Traits: 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpMnk; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpMnk; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpMnk; }'
   -
     ID: 598
     Skill: 209
     SkillLevel: 1
-    Traits: 'DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/5; Req=Weapon==WpNat; }'
+    Traits: 'DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpNat; }'
   -
     ID: 599
     Skill: 206

@@ -459,7 +459,7 @@ table.charviewpage {
 
 .charview-row-header {
     display: grid;
-    grid-template-columns: 5fr 5fr 2fr;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.5rem;
     align-items: stretch;
 }
@@ -479,6 +479,9 @@ table.charviewpage {
 }
 
 @media (max-width: 1024px) {
+    .charview-row-header {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
     .charview-row-stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -687,54 +690,171 @@ input[type=button].utiltabcurrent {
 }
 
 
-/* Printer-Friendly */
-/* ================ */
+/* Printer-Friendly Stylesheet */
+/* =========================== */
 
 @media print {
+    *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
     html {
-        height: auto;
-        overflow: auto;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        background: #ffffff !important;
     }
+
     body {
-        display: block;
-        height: auto;
-        overflow: auto;
-        background-image: none;
-        background-color: white;
-        font-size: 67%;
+        display: block !important;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        background-color: #ffffff !important;
+        background-image: none !important;
+        color: #0f172a !important;
+        font-size: 9.5pt;
+        line-height: 1.45;
+        margin: 0 !important;
+        padding: 0 !important;
     }
-    header, nav, footer, .no-print {
+
+    /* Container Resets - eliminate 1-page overflow clipping */
+    .modern-app,
+    div.flex-1.flex.overflow-hidden.relative,
+    .overflow-hidden,
+    .overflow-y-auto,
+    .overflow-x-auto,
+    .flex-1 {
+        overflow: visible !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        position: static !important;
+        display: block !important;
+        flex: none !important;
+    }
+
+    /* Hide Navigation, Drawers, Modals, Buttons, Floating UI */
+    header,
+    nav,
+    aside,
+    .modern-header,
+    .sidebar-drawer,
+    .sidebar-backdrop,
+    .mobile-nav-toggle,
+    .no-print,
+    .btn-print,
+    .btn-action-view,
+    .site-legal-footer,
+    #rolcalc-drawer,
+    #rolcalc-floating-btn,
+    .rolcalc-panel,
+    .rolcalc-toggle-btn,
+    [x-cloak],
+    .fixed,
+    .fixed.inset-0,
+    .modal-overlay,
+    .toast-container,
+    .chapter-divider {
         display: none !important;
     }
-    main {
-        display: block;
-        background-image: none;
-        background-color: white;
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        overflow: visible;
+
+    /* Main Content Container Full-Width Unconstrained */
+    main,
+    #main-content,
+    .max-w-5xl,
+    .printable-ruleset-container {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        overflow: visible !important;
     }
-    section {
-        display: block;
-        background-image: none;
-        background-color: white;
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        overflow: visible;
+
+    section,
+    .rule-content,
+    .ruleset-chapter {
+        display: block !important;
+        width: 100% !important;
+        overflow: visible !important;
+        background-image: none !important;
+        background-color: transparent !important;
     }
-    h1, h2, h3, h4, h5, h6 {
-        color: black;
-        page-break-after: avoid;
-        break-after: avoid;
+
+    /* Page Margins & Setup */
+    @page {
+        size: auto;
+        margin: 12mm 10mm 12mm 10mm;
     }
-    thead {
-        color: black;
+
+    /* Section Page Breaks */
+    .ruleset-chapter {
+        page-break-before: always !important;
+        break-before: page !important;
     }
-    tr, img, table {
-        page-break-inside: avoid;
-        break-inside: avoid;
+
+    .ruleset-chapter:first-of-type,
+    #chapter-1,
+    section:first-of-type {
+        page-break-before: auto !important;
+        break-before: auto !important;
+    }
+
+    /* Headings & Captions - Prevent Orphaned Titles */
+    h1, h2, h3, h4, h5, h6, caption {
+        color: #000000 !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+    }
+
+    /* Elements to Keep Together */
+    table,
+    tr,
+    img,
+    .statblock,
+    .optionalrule,
+    .rule-box,
+    .charviewsection,
+    .charview-col,
+    .charview-row-header,
+    .charview-row-stats,
+    .charview-row-split {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    /* Character Sheet Clean Print Overrides */
+    .charview-sheet {
+        display: block !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .charview-row-header,
+    .charview-row-stats,
+    .charview-row-split {
+        display: grid !important;
+        gap: 0.35rem !important;
+        margin-bottom: 0.35rem !important;
+    }
+
+    table.charviewsection {
+        background-color: #fdfdf8 !important;
+        box-shadow: none !important;
+    }
+
+    td.cvheader, th.cvheader, .cvheader {
+        background-color: #000000 !important;
+        color: #ffffff !important;
     }
 }
 
@@ -1777,15 +1897,109 @@ td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
     border-radius: 6px !important;
 }
 
-.wizard-ribbon::-webkit-scrollbar {
-    height: 4px;
-}
-.wizard-ribbon::-webkit-scrollbar-track {
-    background: rgba(44, 30, 14, 0.05);
-}
 .wizard-ribbon::-webkit-scrollbar-thumb {
     background: var(--rol-gold);
     border-radius: 2px;
 }
 
+/* ==========================================================================
+   Character Sheet Top Action Bar & Preset Switcher
+   ========================================================================== */
+
+.charview-action-bar {
+    background-color: #0f172a !important; /* Rich Navy Slate solid fallback */
+    background: linear-gradient(135deg, #090d16 0%, #172334 50%, #0d1522 100%) !important;
+    border: 1.5px solid #b45309 !important; /* Antique Gold border */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    color: #f8fafc !important;
+    border-radius: 10px !important;
+}
+
+.charview-character-name {
+    font-family: 'Cinzel', Georgia, serif !important;
+    font-weight: 700 !important;
+    font-size: 1.25rem !important;
+    color: #fef08a !important; /* Radiant Antique Gold */
+    letter-spacing: 0.03em !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 12px rgba(245, 158, 11, 0.3) !important;
+    line-height: 1.2 !important;
+}
+
+.charview-character-meta {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+    color: #cbd5e1 !important; /* Crisp light slate */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+.charview-preset-group {
+    background-color: rgba(2, 6, 23, 0.85) !important; /* Deep dark slate inner container */
+    border: 1px solid #334155 !important;
+    border-radius: 7px !important;
+    padding: 3px 5px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
+}
+
+.charview-preset-label {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    font-family: 'Cinzel', Georgia, serif !important;
+    font-weight: 800 !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    color: #fcd34d !important;
+    background: rgba(180, 83, 9, 0.3) !important;
+    border: 1px solid rgba(245, 158, 11, 0.5) !important;
+    border-radius: 4px !important;
+    padding: 3px 6px !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    margin-right: 2px !important;
+}
+
+.charview-preset-btn {
+    padding: 4px 10px !important;
+    border-radius: 4px !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    color: #e2e8f0 !important; /* Crisp light slate */
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
+    border: 1px solid #475569 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    transition: all 0.15s ease-in-out !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+}
+
+.charview-preset-btn:hover {
+    color: #ffffff !important;
+    background: linear-gradient(180deg, #334155 0%, #1e293b 100%) !important;
+    border-color: #f59e0b !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 6px rgba(245, 158, 11, 0.3) !important;
+    transform: translateY(-1px) !important;
+}
+
+.charview-preset-btn.active {
+    background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%) !important;
+    color: #020617 !important; /* Deep dark text on bright gold */
+    font-weight: 800 !important;
+    border: 1px solid #78350f !important;
+    box-shadow: 0 2px 8px rgba(217, 119, 6, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    transform: none !important;
+}
+
+.charview-preset-dot {
+    font-size: 0.65rem !important;
+    color: #78350f !important;
+    line-height: 1 !important;
+}
 

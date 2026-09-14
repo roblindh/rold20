@@ -380,4 +380,158 @@ class EntityEngineTest extends TestCase
         $this->assertEquals(4, $calcHeavy['equipment']['effective_ec']); // 18kg is between 15kg (EC 3) and 20kg (EC 4)
         $this->assertEquals(-2, $calcHeavy['equipment']['encumbrance_penalty']);
     }
+
+    public function test_parse_class_ids_various_formats(): void
+    {
+        // 1. Semicolon list
+        $this->assertEquals([11, 11], EntityEngine::parseClassIds('11;11'));
+
+        // 2. Key-value counts (e.g. 1=4 for 4 levels of class 1)
+        $this->assertEquals([1, 1, 1, 1], EntityEngine::parseClassIds('1=4'));
+        $this->assertEquals([1, 1, 1, 1, 11, 11], EntityEngine::parseClassIds('1=4;11=2'));
+
+        // 3. Single integer / string
+        $this->assertEquals([4], EntityEngine::parseClassIds(4));
+        $this->assertEquals([4], EntityEngine::parseClassIds('4'));
+
+        // 4. Sequential array
+        $this->assertEquals([4, 4, 11], EntityEngine::parseClassIds([4, 4, 11]));
+
+        // 5. Associative array / JSON
+        $this->assertEquals([1, 1, 1, 1, 11, 11], EntityEngine::parseClassIds(['1' => 4, '11' => 2]));
+        $this->assertEquals([1, 1, 1, 1, 11, 11], EntityEngine::parseClassIds('{"1": 4, "11": 2}'));
+        $this->assertEquals([4, 4, 11], EntityEngine::parseClassIds('[4, 4, 11]'));
+
+        // 6. Empty / null
+        $this->assertEquals([], EntityEngine::parseClassIds(''));
+        $this->assertEquals([], EntityEngine::parseClassIds(null));
+        $this->assertEquals([], EntityEngine::parseClassIds([]));
+    }
+
+    public function test_xp_and_level_progression_formulas(): void
+    {
+        // Level 1: 0 XP
+        $this->assertEquals(0, EntityEngine::getXPRequiredForLevel(1));
+        // Level 2: 1,000 XP
+        $this->assertEquals(1000, EntityEngine::getXPRequiredForLevel(2));
+        // Level 3: 3,000 XP
+        $this->assertEquals(3000, EntityEngine::getXPRequiredForLevel(3));
+        // Level 4: 6,000 XP
+        $this->assertEquals(6000, EntityEngine::getXPRequiredForLevel(4));
+        // Level 5: 10,000 XP
+        $this->assertEquals(10000, EntityEngine::getXPRequiredForLevel(5));
+        // Level 10: 45,000 XP
+        $this->assertEquals(45000, EntityEngine::getXPRequiredForLevel(10));
+        // Level 20: 190,000 XP
+        $this->assertEquals(190000, EntityEngine::getXPRequiredForLevel(20));
+
+        // getXPLevel
+        $this->assertEquals(1, EntityEngine::getXPLevel(0));
+        $this->assertEquals(1, EntityEngine::getXPLevel(800));
+        $this->assertEquals(2, EntityEngine::getXPLevel(1000));
+        $this->assertEquals(2, EntityEngine::getXPLevel(2500));
+        $this->assertEquals(3, EntityEngine::getXPLevel(3000));
+        $this->assertEquals(3, EntityEngine::getXPLevel(5000));
+        $this->assertEquals(4, EntityEngine::getXPLevel(6000));
+
+        // canLevelUp based on Challenge Level (CL)
+        // Character at CL 3 needs 6,000 XP for Level 4.
+        $this->assertFalse(EntityEngine::canLevelUp(5000, 3)); // Has 5k XP, needs 6k -> false
+        $this->assertTrue(EntityEngine::canLevelUp(6000, 3));  // Has 6k XP, needs 6k -> true
+        $this->assertTrue(EntityEngine::canLevelUp(7500, 3));  // Has 7.5k XP -> true
+
+        // Character at CL 1 needs 1,000 XP for Level 2.
+        $this->assertFalse(EntityEngine::canLevelUp(999, 1));
+        $this->assertTrue(EntityEngine::canLevelUp(1000, 1));
+    }
+
+    public function test_total_level_and_challenge_level_propagation(): void
+    {
+        // Character with 2 levels of Wizard (11;11) and Celestial Blood template (CLModifier: 1)
+        $character = [
+            'Name' => 'Obarion',
+            'BaseRace' => 12, // Half-Elf (BaseRL: 0, CLModifier: 0)
+            'Classes' => '11;11', // 2 class levels
+            'Templates' => '1', // Celestial Blood (CLModifier: 1)
+            'ExperiencePts' => 5000,
+        ];
+
+        $calc = EntityEngine::calculate($character);
+        $this->assertEquals(0, $calc['heritage']['racial_level']);
+        $this->assertEquals(2, $calc['heritage']['total_level']); // TL = sum(ClL) + RL = 2 + 0 = 2
+        $this->assertEquals(3, $calc['heritage']['challenge_level']); // CL = TL + CLMod = 2 + 1 = 3
+
+        // At CL 3 and 5,000 XP, next level is 4 (req 6,000 XP) -> cannot level up
+        $this->assertFalse(EntityEngine::canLevelUp(5000, $calc['heritage']['challenge_level']));
+    }
+
+    public function test_combat_instincts_scaling(): void
+    {
+        // Combat Instincts (Skill 44) at 14 ranks
+        $character = [
+            'Name' => 'ObarionHigh',
+            'BaseStr' => 10,
+            'BaseCon' => 10,
+            'BaseDex' => 18, // DexMod = +4
+            'BaseInt' => 10,
+            'BaseWis' => 10,
+            'BaseCha' => 10,
+            'BaseRace' => 1,
+            'Skills' => '44=14.0',
+        ];
+
+        $calc = EntityEngine::calculate($character);
+
+        // Init: DexMod (+4) + Combat Instincts floor((14+2)/3) = +5 -> Total = +9
+        $this->assertEquals(4, $calc['ability_modifiers']['Dex']);
+        $this->assertEquals(9, $calc['defenses']['init_mod']);
+
+        // Reactions: Base (1) + Combat Instincts floor(14/5) = +2 -> Total = 3
+        $this->assertEquals(3, $calc['actions']['reactions']);
+
+        // Fear Resistance: Combat Instincts floor((14+1)/5) = +3
+        $this->assertEquals(3, (int)$calc['modifiers_engine']->getTotal('FearRes'));
+    }
+
+    public function test_divine_providence_cha_mod_to_all_saves(): void
+    {
+        // Divine Providence (Skill 168) at 5 ranks gives DefMod { Qual=NDD; Type=class; Value=ChaMod; }
+        $character = [
+            'Name' => 'PaladinHero',
+            'BaseStr' => 14,
+            'BaseCon' => 14, // ConMod = +2
+            'BaseDex' => 10, // DexMod = +0
+            'BaseInt' => 10,
+            'BaseWis' => 12, // WisMod = +1
+            'BaseCha' => 16, // ChaMod = +3
+            'BaseRace' => 1,
+            'Skills' => '168=5.0',
+        ];
+
+        $calc = EntityEngine::calculate($character);
+
+        $this->assertEquals(3, $calc['ability_modifiers']['Cha']);
+        // Fortitude: Base 10 + ConMod 2 + StrMod 2 + ChaMod 3 = 17
+        $this->assertEquals(17, $calc['defenses']['fort']);
+        // Reflex: Base 10 + DexMod 0 + IntMod 0 + ChaMod 3 = 13
+        $this->assertEquals(13, $calc['defenses']['ref']);
+        // Will: Base 10 + WisMod 1 + ChaMod 3 (ability) + ChaMod 3 (class) = 17
+        $this->assertEquals(17, $calc['defenses']['will']);
+    }
+
+    public function test_affinity_spell_discounts_and_formatting(): void
+    {
+        // Test Affinity skill line discount matching
+        $affinityDiscounts = [
+            'Arcane' => 2,
+            'Arcane - Pyromancy' => 4,
+            'Divine - Life' => 3,
+        ];
+
+        $this->assertEquals(4, EntityEngine::getSpellSkillDiscount('Arcane - Pyromancy (1st)', $affinityDiscounts));
+        $this->assertEquals(2, EntityEngine::getSpellSkillDiscount('Arcane (Universal)', $affinityDiscounts));
+        $this->assertEquals(3, EntityEngine::getSpellSkillDiscount('Divine - Life', $affinityDiscounts));
+        $this->assertEquals(0, EntityEngine::getSpellSkillDiscount('Athletics', $affinityDiscounts));
+    }
 }
+

@@ -12,8 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Cinzel+Decorative:wght@700&family=Marcellus&display=swap" rel="stylesheet">
 
     <!-- Compiled Tailwind CSS & Site Styling -->
-    <link rel="stylesheet" href="/styles/tailwind.min.css">
-    <link rel="stylesheet" href="/styles/Site.css">
+    <link rel="stylesheet" href="/styles/tailwind.min.css?v={{ file_exists(public_path('styles/tailwind.min.css')) ? filemtime(public_path('styles/tailwind.min.css')) : '1.0' }}">
+    <link rel="stylesheet" href="/styles/Site.css?v={{ file_exists(public_path('styles/Site.css')) ? filemtime(public_path('styles/Site.css')) : '1.0' }}">
     <!-- Favicon & Browser Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -142,6 +142,12 @@
                     <div class="mb-4 bg-red-50 border border-red-300 text-red-800 px-4 py-2.5 rounded text-xs font-semibold flex items-center justify-between shadow-sm">
                         <span>⚠️ {{ session('error') }}</span>
                         <button onclick="this.parentElement.remove()" class="text-red-600 hover:text-red-900 font-bold text-sm">×</button>
+                    </div>
+                @endif
+                @if (session('warning'))
+                    <div class="mb-4 bg-amber-50 border border-amber-300 text-amber-900 px-4 py-2.5 rounded text-xs font-semibold flex items-center justify-between shadow-sm">
+                        <span>⚠️ {{ session('warning') }}</span>
+                        <button onclick="this.parentElement.remove()" class="text-amber-700 hover:text-amber-950 font-bold text-sm">×</button>
                     </div>
                 @endif
                 @if (isset($errors) && $errors->any())

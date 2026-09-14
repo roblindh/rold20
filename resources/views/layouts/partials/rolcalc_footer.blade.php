@@ -37,7 +37,7 @@
         
         <!-- Expression input form -->
         <form @submit.prevent="evaluate()" class="flex items-center gap-1.5 flex-1 max-w-[200px] sm:max-w-xs md:max-w-sm">
-            <input type="text" x-model="expression" placeholder="e.g. 1d20+5, 3d6+2"
+            <input type="text" x-model="expression" placeholder="e.g. d20!, 1d20+5, 3d6!"
                    class="bg-slate-950 border border-amber-900/40 rounded px-2 sm:px-2.5 py-1 text-xs sm:text-sm text-amber-100 placeholder-slate-500 focus:outline-none focus:border-amber-500 w-full font-mono">
             <button type="submit" class="btn-rol-primary text-xs py-1 px-2.5 sm:px-3 shrink-0">
                 <span x-show="!loading">Roll</span>
@@ -52,7 +52,8 @@
             <button @click="quickRoll('1d8')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d8</button>
             <button @click="quickRoll('1d10')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d10</button>
             <button @click="quickRoll('1d12')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d12</button>
-            <button @click="quickRoll('1d20')" class="btn-rol-primary py-0.5 px-2.5 rounded font-bold">d20</button>
+            <button @click="quickRoll('1d20')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d20</button>
+            <button @click="quickRoll('1d20!')" class="btn-rol-primary py-0.5 px-2.5 rounded font-bold tracking-wide" title="Open-Ended d20! (Exploding/Fumbling)">d20!</button>
             <button @click="quickRoll('1d100')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d100</button>
         </div>
     </div>

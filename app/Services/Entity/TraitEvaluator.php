@@ -136,21 +136,21 @@ class TraitEvaluator
         }
 
         // Evaluate operators in standard precedence: *, / then +, -
-        // Tokenize into numbers and operators
-        preg_match_all('/([+-]?\d+(?:\.\d+)?|[\+\-\*\/])/', $math, $tokens);
+        // Tokenize cleanly into numbers and operators
+        preg_match_all('/(\d+(?:\.\d+)?|[\+\-\*\/])/', $math, $tokens);
         $rawTokens = $tokens[0] ?? [];
 
         if (empty($rawTokens)) {
             return 0.0;
         }
 
-        // Consolidate tokens (handle consecutive operators or negative numbers)
+        // Handle unary + and -
         $cleanTokens = [];
         $expectOperand = true;
         foreach ($rawTokens as $t) {
             if ($expectOperand) {
                 if ($t === '+' || $t === '-') {
-                    $cleanTokens[] = $t . '1';
+                    $cleanTokens[] = ($t === '-') ? -1.0 : 1.0;
                     $cleanTokens[] = '*';
                 } else {
                     $cleanTokens[] = (float)$t;
@@ -345,6 +345,10 @@ class TraitEvaluator
             return in_array($traitTarget, ['carrier', 'owner', 'all']);
         }
 
+        if ($currentScope === 'owner') {
+            return in_array($traitTarget, ['owner', 'all']);
+        }
+
         return false;
     }
 
@@ -439,11 +443,42 @@ class TraitEvaluator
                 break;
 
             case 'SpeedMod':
+            case 'SpdMod':
                 $engine->addModifier('Speed', $numVal, $modType, $sourceName);
+                break;
+
+            case 'SpdSpcl':
+                if (strcasecmp($qual, 'EncumbranceRes') === 0) {
+                    $engine->addModifier('EncumbranceRes', $numVal, $modType, $sourceName);
+                } elseif (strcasecmp($qual, 'ECRed') === 0) {
+                    $engine->addModifier('ECRed', $numVal, $modType, $sourceName);
+                } elseif (strcasecmp($qual, 'Mobility') === 0) {
+                    $engine->addModifier('Mobility', $numVal, $modType, $sourceName);
+                }
                 break;
 
             case 'InitMod':
                 $engine->addModifier('Init', $numVal, $modType, $sourceName);
+                break;
+
+            case 'Attack':
+                if (strcasecmp($qual, 'RefMod') === 0) {
+                    $engine->addModifier('Reactions', $numVal, $modType, $sourceName);
+                }
+                break;
+
+            case 'Special':
+                if (strcasecmp($qual, 'InitMod') === 0) {
+                    $engine->addModifier('Init', $numVal, $modType, $sourceName);
+                } elseif (strcasecmp($qual, 'Haste') === 0) {
+                    $engine->addModifier('AP', $numVal, $modType, $sourceName);
+                } elseif (strcasecmp($qual, 'CombatRef') === 0) {
+                    $engine->addModifier('CombatRef', 1, $modType, $sourceName);
+                } elseif (strcasecmp($qual, 'AidMod') === 0) {
+                    $engine->addModifier('Aid', $numVal, $modType, $sourceName);
+                } elseif (strcasecmp($qual, 'CarrCapMod') === 0) {
+                    $engine->addModifier('CarrCap', $numVal, $modType, $sourceName);
+                }
                 break;
 
             case 'Defense':
@@ -453,6 +488,22 @@ class TraitEvaluator
                     $engine->addModifier('Dodge', $numVal, 'Ddg', $sourceName);
                 } elseif (strcasecmp($qual, 'CritRes') === 0) {
                     $engine->addModifier('CritRes', $numVal, $modType, $sourceName);
+                }
+                break;
+
+            case 'Armor':
+                $armorType = $modType !== 'Nil' ? $modType : 'armor';
+                $drVal = $params['DR'] ?? $params['Dr'] ?? $params['dr'] ?? null;
+                $decVal = $params['DeC'] ?? $params['Dec'] ?? $params['dec'] ?? $params['DEC'] ?? null;
+                $ecVal = $params['EC'] ?? $params['Ec'] ?? $params['ec'] ?? null;
+                if ($drVal !== null && is_numeric($drVal)) {
+                    $engine->addModifier('DR', (float)$drVal, $armorType, $sourceName);
+                }
+                if ($decVal !== null && is_numeric($decVal)) {
+                    $engine->addModifier('DeC', (float)$decVal, $armorType, $sourceName);
+                }
+                if ($ecVal !== null && is_numeric($ecVal)) {
+                    $engine->addModifier('EC', (float)$ecVal, $armorType, $sourceName);
                 }
                 break;
         }

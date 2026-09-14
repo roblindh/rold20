@@ -744,6 +744,24 @@ class cExpressionParser {
                         }
                         break;
 
+                    case "EDICE":
+                    case "OPENDICE":
+                        if ($this->GetNextToken()) {
+                            if ($this->GetNextToken()) {
+                                $count = (int) $this->EvaluateAssignment();
+                                $count = ($count == NULL || $count <= 0) ? 1 : $count;
+                                if ($this->GetNextToken()) {
+                                    $temp = (int) $this->EvaluateAssignment();
+                                    $result = 0.0;
+                                    for (; $count > 0; $count--) {
+                                        $result += (float) $this->RollOpenEndedDie($temp);
+                                    }
+                                    $this->GetNextToken();
+                                }
+                            }
+                        }
+                        break;
+
                     case "XDICE":
                         $rollCount = 1;
                         $diceCount = 1;
@@ -931,6 +949,8 @@ class cExpressionParser {
                     case "MAX":
                     case "MIN":
                     case "DICE":
+                    case "EDICE":
+                    case "OPENDICE":
                     case "XDICE":
                         $this->currentTokenType = TOKEN_FUNCTION;
                         $this->currentToken = strtoupper($this->currentToken);
@@ -1120,6 +1140,34 @@ class cExpressionParser {
             ;
 
         return ($n / $d);
+    }
+
+    public function RollOpenEndedDie(int $sides): int {
+        if ($sides <= 1) return 1;
+        $r = mt_rand(1, $sides);
+        if ($r === $sides) {
+            $sum = $r;
+            $limit = 20;
+            while ($r === $sides && --$limit > 0) {
+                $r = mt_rand(1, $sides);
+                $sum += $r;
+            }
+            return $sum;
+        }
+        if ($r === 1) {
+            $onesCount = 1;
+            $limit = 20;
+            while (--$limit > 0) {
+                $r = mt_rand(1, $sides);
+                if ($r === 1) {
+                    $onesCount++;
+                } else {
+                    break;
+                }
+            }
+            return $r - ($onesCount * $sides);
+        }
+        return $r;
     }
 
 }

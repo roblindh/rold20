@@ -40,7 +40,7 @@
             </template>
         </div>
         <div class="w-full bg-amber-950/20 h-2 rounded-full mt-3 overflow-hidden border border-amber-900/20">
-            <div class="bg-linear-to-r from-amber-600 to-amber-500 h-full transition-all duration-300 shadow-xs" :style="'width: ' + (step * 10) + '%'"></div>
+            <div class="bg-amber-600 h-full transition-all duration-300 shadow-xs" :style="'width: ' + (step * 10) + '%'"></div>
         </div>
     </div>
 
@@ -147,17 +147,15 @@
                 </div>
 
                 <!-- Standalone Free Method Choice Selector -->
-                <template x-if="!selectedCampaignObj">
-                    <div class="pt-1 max-w-xl">
-                        <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Choose Ability Generation Method:</label>
-                        <select x-model="character.AbilityGenMethod" @change="onAbilityMethodSelected()"
-                                class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500">
-                            <template x-for="m in abilityMethods" :key="m.ID">
-                                <option :value="m.ID" x-text="m.MethodName + ': ' + m.Description.substring(0, 60) + '...'"></option>
-                            </template>
-                        </select>
-                    </div>
-                </template>
+                <div x-show="!selectedCampaignObj" class="pt-1 max-w-xl">
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1">Choose Ability Generation Method:</label>
+                    <select x-model.number="character.AbilityGenMethod" @change="onAbilityMethodSelected()"
+                            class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500">
+                        @foreach($abilityMethods as $m)
+                            <option value="{{ $m->ID }}">{{ $m->MethodName }}: {{ \Illuminate\Support\Str::limit($m->Description, 60) }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
                 <p class="text-xs text-slate-600 leading-relaxed pt-1" x-text="currentMethodObj.Description"></p>
             </div>
@@ -774,15 +772,33 @@
                     
                     <!-- Learning Caps Breakdown Banner -->
                     <div class="flex flex-wrap items-center gap-2 text-xs font-mono font-bold">
-                        <span class="bg-blue-50 text-blue-900 border border-blue-200 px-2.5 py-1 rounded">
-                            Arcane: <span x-text="learnedSpellCounts.arcane"></span> / <span x-text="arcaneSpellCap"></span>
-                        </span>
-                        <span class="bg-amber-50 text-amber-900 border border-amber-200 px-2.5 py-1 rounded">
-                            Divine: <span x-text="learnedSpellCounts.divine"></span> / <span x-text="divineSpellCap"></span>
-                        </span>
-                        <span class="bg-purple-50 text-purple-900 border border-purple-200 px-2.5 py-1 rounded">
-                            Psionic: <span x-text="learnedSpellCounts.psi"></span> / <span x-text="psionicSpellCap"></span>
-                        </span>
+                        <template x-if="arcaneSpellCap > 0 || (learnedSpellCounts && learnedSpellCounts.arcane > 0)">
+                            <span class="bg-blue-50 text-blue-900 border border-blue-200 px-2.5 py-1 rounded flex items-center gap-1.5">
+                                <span>Arcane:</span>
+                                <span class="text-blue-700" x-text="learnedSpellCounts ? learnedSpellCounts.arcane : 0"></span>
+                                <span>/</span>
+                                <span x-text="arcaneSpellCap"></span>
+                                <span class="text-[10px] text-blue-600 font-normal" x-text="'(' + Math.max(0, arcaneSpellCap - (learnedSpellCounts ? learnedSpellCounts.arcane : 0)) + ' left)'"></span>
+                            </span>
+                        </template>
+                        <template x-if="divineSpellCap > 0 || (learnedSpellCounts && learnedSpellCounts.divine > 0)">
+                            <span class="bg-amber-50 text-amber-900 border border-amber-200 px-2.5 py-1 rounded flex items-center gap-1.5">
+                                <span>Divine:</span>
+                                <span class="text-amber-700" x-text="learnedSpellCounts ? learnedSpellCounts.divine : 0"></span>
+                                <span>/</span>
+                                <span x-text="divineSpellCap"></span>
+                                <span class="text-[10px] text-amber-700 font-normal" x-text="'(' + Math.max(0, divineSpellCap - (learnedSpellCounts ? learnedSpellCounts.divine : 0)) + ' left)'"></span>
+                            </span>
+                        </template>
+                        <template x-if="psionicSpellCap > 0 || (learnedSpellCounts && learnedSpellCounts.psi > 0)">
+                            <span class="bg-purple-50 text-purple-900 border border-purple-200 px-2.5 py-1 rounded flex items-center gap-1.5">
+                                <span>Psionic:</span>
+                                <span class="text-purple-700" x-text="learnedSpellCounts ? learnedSpellCounts.psi : 0"></span>
+                                <span>/</span>
+                                <span x-text="psionicSpellCap"></span>
+                                <span class="text-[10px] text-purple-600 font-normal" x-text="'(' + Math.max(0, psionicSpellCap - (learnedSpellCounts ? learnedSpellCounts.psi : 0)) + ' left)'"></span>
+                            </span>
+                        </template>
                     </div>
                 </div>
 
@@ -802,7 +818,7 @@
                     <div class="space-y-3">
                         <div class="p-3 bg-indigo-50/70 border border-indigo-200 rounded-xl text-xs flex items-center justify-between">
                             <span>Eligible Spells: <strong class="font-mono text-indigo-900" x-text="eligibleSpells.length"></strong> available to learn</span>
-                            <span class="text-slate-500">0 PP Cantrips/Orisons are free to learn</span>
+                            <span class="text-slate-500">Based on trained spellcraft skills</span>
                         </div>
 
                         <div class="max-h-96 overflow-y-auto pr-1 border border-slate-200 rounded-xl divide-y divide-slate-200 bg-white">
@@ -957,28 +973,65 @@
                         </div>
                     </div>
 
-                    <!-- Current Inventory Cart with Uniform Buttons (1 Col) -->
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+                    <!-- Current Inventory Cart with Placement & Container Controls (1 Col) -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2.5">
                         <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center justify-between">
-                            <span>🎒 Equipment Cart</span>
+                            <span>🎒 Equipment Cart &amp; Placement</span>
                             <span class="text-[10px] font-mono text-slate-500" x-text="inventoryItemCount + ' items'"></span>
                         </h3>
 
-                        <div class="max-h-72 overflow-y-auto space-y-1.5 divide-y divide-slate-200">
+                        <div class="max-h-96 overflow-y-auto space-y-2 divide-y divide-slate-200">
                             <template x-if="character.Inventory.length === 0">
                                 <div class="p-4 text-center text-xs text-slate-500">
                                     No equipment bought yet. Click "+ Buy" on any item in the shop!
                                 </div>
                             </template>
-                            <template x-for="(cartItem, idx) in character.Inventory" :key="idx">
-                                <div class="pt-1.5 flex items-center justify-between gap-1 text-xs">
-                                    <div class="min-w-0 flex-1">
-                                        <span class="font-semibold text-slate-800 truncate block" x-text="cartItem.Name"></span>
-                                        <span class="text-[10px] text-slate-500 font-mono" x-text="cartItem.Qty + 'x (' + (cartItem.BaseValue * cartItem.Qty) + ' sp)'"></span>
+                            <template x-for="(cartItem, idx) in character.Inventory" :key="cartItem.uid || idx">
+                                <div class="pt-2 space-y-1.5 text-xs">
+                                    <div class="flex items-center justify-between gap-1">
+                                        <div class="min-w-0 flex-1">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <span class="font-bold text-slate-900 truncate" x-text="cartItem.Name"></span>
+                                                <template x-if="cartItem.IsContainer">
+                                                    <span class="px-1.5 py-0.2 bg-amber-100 text-amber-800 text-[10px] rounded font-semibold border border-amber-300">Container</span>
+                                                </template>
+                                            </div>
+                                            <span class="text-[10px] text-slate-500 font-mono" x-text="cartItem.Qty + 'x (' + (cartItem.BaseValue * cartItem.Qty) + ' sp | ' + (cartItem.BaseWeight * cartItem.Qty).toFixed(1) + ' kg)'"></span>
+                                        </div>
+                                        <div class="flex items-center gap-1 shrink-0">
+                                            <button type="button" @click="removeOneItemFromInventory(cartItem.uid || cartItem.ID)" class="min-w-[32px] w-8 h-8 rounded bg-white border border-slate-300 text-slate-700 font-bold flex items-center justify-center hover:bg-slate-100 cursor-pointer text-sm shadow-2xs">-</button>
+                                            <span class="w-6 text-center font-mono font-bold text-xs text-slate-900" x-text="cartItem.Qty"></span>
+                                            <button type="button" @click="addItemToInventory(cartItem)" :disabled="remainingWealth < cartItem.BaseValue" class="min-w-[32px] w-8 h-8 rounded bg-white border border-slate-300 text-slate-700 font-bold flex items-center justify-center hover:bg-slate-100 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed text-sm shadow-2xs">+</button>
+                                            <button type="button" @click="deleteItemFromInventory(cartItem.uid || cartItem.ID)" class="min-w-[32px] w-8 h-8 rounded bg-rose-50 border border-rose-200 text-rose-600 font-bold flex items-center justify-center hover:bg-rose-100 cursor-pointer text-sm shadow-2xs ml-0.5" title="Remove">&times;</button>
+                                        </div>
                                     </div>
-                                    <div class="flex items-center gap-1">
-                                        <button type="button" @click="removeOneItemFromInventory(cartItem.ID)" class="min-w-[28px] w-7 h-7 rounded bg-white border border-slate-300 text-slate-700 font-bold flex items-center justify-center hover:bg-slate-100 cursor-pointer text-xs">-</button>
-                                        <button type="button" @click="addItemToInventory(cartItem)" :disabled="remainingWealth < cartItem.BaseValue" class="min-w-[28px] w-7 h-7 rounded bg-white border border-slate-300 text-slate-700 font-bold flex items-center justify-center hover:bg-slate-100 cursor-pointer disabled:opacity-30 text-xs">+</button>
+
+                                    <!-- Placement & Container Selectors -->
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 bg-white p-1.5 rounded-lg border border-slate-200 text-[11px]">
+                                        <!-- Placement Dropdown -->
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-slate-500 text-[10px] shrink-0 font-medium">Place:</span>
+                                            <select x-model.number="cartItem.Location"
+                                                    @change="onItemLocationChanged(cartItem)"
+                                                    class="px-1.5 py-0.5 border border-slate-300 rounded text-[11px] bg-slate-50 font-medium w-full text-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                                                <template x-for="loc in getAllowedLocationsForItem(cartItem)" :key="loc.value">
+                                                    <option :value="loc.value" x-text="loc.label"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+
+                                        <!-- Container Dropdown (if containers exist and not a container itself) -->
+                                        <div class="flex items-center gap-1" x-show="containerItems.length > 0 && !cartItem.IsContainer">
+                                            <span class="text-slate-500 text-[10px] shrink-0 font-medium">Inside:</span>
+                                            <select x-model="cartItem.ContainerID"
+                                                    @change="onItemContainerChanged(cartItem)"
+                                                    class="px-1.5 py-0.5 border border-slate-300 rounded text-[11px] bg-slate-50 font-medium w-full text-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                                                <option value="">None (On Person)</option>
+                                                <template x-for="c in getEligibleContainers(cartItem)" :key="c.uid">
+                                                    <option :value="c.uid" x-text="'In ' + c.Name + (c.Location === 2 ? ' (Worn)' : (c.Location === 0 ? ' (Stored)' : ' (Carried)'))"></option>
+                                                </template>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </template>
@@ -1107,17 +1160,17 @@
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Social Class (SC)</label>
                                 <select x-model.number="character.SocialClass" @change="updateSocialScores()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black bg-white focus:ring-2 focus:ring-indigo-500">
-                                    <template x-for="sc in socialClasses" :key="sc.ID">
-                                        <option :value="sc.ID" x-text="'SC ' + (sc.ID >= 0 ? '+' : '') + sc.ID + ': ' + sc.Examples + (sc.InflMod > 0 ? ' (+' + sc.InflMod + ' Infl)' : '')"></option>
-                                    </template>
+                                    @foreach($socialClasses as $sc)
+                                        <option value="{{ $sc->ID }}">{{ 'SC ' . ($sc->ID >= 0 ? '+' : '') . $sc->ID . ': ' . $sc->Examples . ($sc->InflMod > 0 ? ' (+' . $sc->InflMod . ' Infl)' : '') }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Wealth Class (WC)</label>
                                 <select x-model.number="character.WealthClass" @change="updateSocialScores()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black bg-white focus:ring-2 focus:ring-indigo-500">
-                                    <template x-for="wc in wealthClasses" :key="wc.ID">
-                                        <option :value="wc.ID" x-text="'WC ' + (wc.ID >= 0 ? '+' : '') + wc.ID + ': ' + (wc.Description ? wc.Description.substring(0, 32) + '...' : '')"></option>
-                                    </template>
+                                    @foreach($wealthClasses as $wc)
+                                        <option value="{{ $wc->ID }}">{{ 'WC ' . ($wc->ID >= 0 ? '+' : '') . $wc->ID . ': ' . ($wc->Description ? \Illuminate\Support\Str::limit($wc->Description, 32) : '') }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -1204,392 +1257,8 @@
                     </div>
                 </div>
 
-                <!-- Authentic Classic D&D Character Sheet -->
-                <div class="p-2 sm:p-4 bg-slate-100 rounded-2xl border border-slate-300 shadow-sm space-y-4">
-                    <!-- Header Block -->
-                    <table class="charviewpage w-full border-collapse">
-                        <tbody>
-                            <tr>
-                                <!-- Character Names & Campaign -->
-                                <td style="width: 42%; vertical-align: top; padding-right: 4px;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                            <tr><td class="cvlabel">Character Name(s)</td></tr>
-                                            <tr><td class="cvlrg" x-text="character.Name || 'Unnamed Hero'"></td></tr>
-                                            <tr><td class="cvlabel">Campaign</td></tr>
-                                            <tr><td class="cvmdm" x-text="selectedCampaignObj ? selectedCampaignObj.Name : 'Standalone Character'"></td></tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-
-                                <!-- Heritage & Classes -->
-                                <td style="width: 42%; vertical-align: top; padding-right: 4px;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                            <tr><td class="cvlabel">Gender &amp; Race</td></tr>
-                                            <tr><td class="cvsml" x-text="character.Gender + ' ' + (getSelectedRace().Name || 'Humanoid')"></td></tr>
-                                            <tr><td class="cvlabel">Template(s)</td></tr>
-                                            <tr><td class="cvsml" x-text="selectedTemplatesSummary"></td></tr>
-                                            <tr><td class="cvlabel">Culture (Background Class)</td></tr>
-                                            <tr><td class="cvsml" x-text="(getSelectedCulture().Name || 'Unknown') + ' (' + (getSelectedBackgroundClass().Name || 'Commoner') + ')'"></td></tr>
-                                            <tr><td class="cvlabel">Class(es) and Level(s)</td></tr>
-                                            <tr><td class="cvsml" x-text="classesSummaryStr"></td></tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-
-                                <!-- Levels Breakdown -->
-                                <td style="width: 16%; vertical-align: top;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                            <tr><td class="cvheader cvcenter" colspan="2">Level</td></tr>
-                                            <tr><td class="cvlabel cvcenter" colspan="2">TL</td></tr>
-                                            <tr><td class="cvlrg cvcenter" colspan="2" x-text="character.Level"></td></tr>
-                                            <tr>
-                                                <td class="cvlabel cvcenter" style="width: 50%;">RL</td>
-                                                <td class="cvlabel cvcenter" style="width: 50%;">CL</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvsml cvcenter" x-text="totalRL"></td>
-                                                <td class="cvsml cvcenter" x-text="totalCL"></td>
-                                            </tr>
-                                            <tr><td class="cvlabel cvcenter" colspan="2">XP</td></tr>
-                                            <tr><td class="cvsml cvcenter" colspan="2" x-text="Number(character.StartingXP).toLocaleString()"></td></tr>
-                                            <tr><td class="cvlabel cvcenter" colspan="2">Fate Pts</td></tr>
-                                            <tr><td class="cvmdm cvcenter" colspan="2">3</td></tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- Core Statistics Grid (Ability Scores, Speed/Size/Senses, Defenses, Health) -->
-                    <table class="charviewpage w-full border-collapse">
-                        <tbody>
-                            <tr>
-                                <!-- 1. Ability Scores Block -->
-                                <td style="width: 25%; vertical-align: top; padding-right: 4px;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                            <tr><td class="cvheader cvcenter" colspan="4">Ability Scores</td></tr>
-                                            <tr>
-                                                <td class="cvlabel cvcenter">Abil</td>
-                                                <td class="cvlabel cvcenter">Mod</td>
-                                                <td class="cvlabel cvcenter">Base</td>
-                                                <td class="cvlabel cvcenter">Score</td>
-                                            </tr>
-                                            @php
-                                                $abilKeys = [
-                                                    'Strength' => 'STR',
-                                                    'Constitution' => 'CON',
-                                                    'Dexterity' => 'DEX',
-                                                    'Intelligence' => 'INT',
-                                                    'Wisdom' => 'WIS',
-                                                    'Charisma' => 'CHA',
-                                                ];
-                                            @endphp
-                                            @foreach($abilKeys as $attr => $abbr)
-                                                <tr>
-                                                    <td class="cvlabel cvcenter">{{ $abbr }}</td>
-                                                    <td class="cvmdm cvcenter" x-text="(calculatedState?.ability_modifiers?.['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] !== undefined && calculatedState?.ability_modifiers?.['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] !== null) ? ((calculatedState.ability_modifiers['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] >= 0 ? '+' : '') + calculatedState.ability_modifiers['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}']) : (getAbilityModifier('{{ $attr }}') !== null ? ((getAbilityModifier('{{ $attr }}') >= 0 ? '+' : '') + getAbilityModifier('{{ $attr }}')) : '–')"></td>
-                                                    <td class="cvsml cvcenter" x-text="character['{{ $attr }}'] ?? '–'"></td>
-                                                    <td class="cvmdm cvcenter" x-text="calculatedState?.final_abilities?.['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] !== undefined ? (calculatedState.final_abilities['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] ?? '–') : (getFinalAbility('{{ $attr }}') !== null ? getFinalAbility('{{ $attr }}') : '–')"></td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </td>
-
-                                <!-- 2. Speed, Size and Senses Block -->
-                                <td style="width: 25%; vertical-align: top; padding-right: 4px;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                            <tr><td class="cvheader cvcenter" colspan="4">Speed, Size &amp; Senses</td></tr>
-                                            <tr>
-                                                <td class="cvlabel cvcenter">Init</td>
-                                                <td class="cvlabel cvcenter">AP</td>
-                                                <td class="cvlabel cvcenter">MP</td>
-                                                <td class="cvlabel cvcenter">React</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvmdm cvcenter" x-text="(calculatedState?.defenses?.init_mod !== undefined ? (calculatedState.defenses.init_mod >= 0 ? '+' : '') + calculatedState.defenses.init_mod : (calcInitMod() >= 0 ? '+' : '') + calcInitMod())"></td>
-                                                <td class="cvmdm cvcenter" x-text="calculatedState?.actions?.ap ?? calcActionPts()"></td>
-                                                <td class="cvmdm cvcenter" x-text="calculatedState?.actions?.mp ?? calculatedState?.speeds?.ground ?? calcMP()"></td>
-                                                <td class="cvmdm cvcenter" x-text="calculatedState?.actions?.reactions ?? calcReactions()"></td>
-                                            </tr>
-                                            <tr><td class="cvlabel" colspan="4">Speed</td></tr>
-                                            <tr><td class="cvsml" colspan="4" x-text="calculatedState?.speeds ? 'Ground ' + calculatedState.speeds.ground + ' sq' : calcSpeedStr()"></td></tr>
-                                            <tr><td class="cvlabel" colspan="4">Body Type</td></tr>
-                                            <tr><td class="cvsml" colspan="4" x-text="calcBodyType()"></td></tr>
-                                            <tr>
-                                                <td class="cvlabel cvcenter" colspan="2">Size</td>
-                                                <td class="cvlabel cvcenter" colspan="2">Spacing / Reach</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.heritage?.size_name ?? calcSizeCategory()"></td>
-                                                <td class="cvsml cvcenter" colspan="2" x-text="(calculatedState?.heritage ? calculatedState.heritage.space + ' / ' + calculatedState.heritage.reach : calcSpacing() + ' / ' + calcReach()) + ' sq'"></td>
-                                            </tr>
-                                            <tr><td class="cvlabel" colspan="4">Special Senses</td></tr>
-                                            <tr><td class="cvsml" colspan="4">Standard Vision</td></tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-
-                                <!-- 3. Dual-Ability Defenses Block -->
-                                <td style="width: 25%; vertical-align: top; padding-right: 4px;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                            <tr><td class="cvheader cvcenter" colspan="6">Defenses</td></tr>
-                                            <tr>
-                                                <td class="cvlabel cvcenter" colspan="2">DeCa</td>
-                                                <td class="cvlabel cvcenter" colspan="2">DeCp</td>
-                                                <td class="cvlabel cvcenter" colspan="2">Crit</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.defenses?.dec_active ?? calcDeCActive()"></td>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.defenses?.dec_passive ?? calcDeCPassive()"></td>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="'+' + (calculatedState?.defenses?.crit_res ?? calcCritRes())"></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvlabel cvcenter" colspan="2">Fort</td>
-                                                <td class="cvlabel cvcenter" colspan="2">Ref</td>
-                                                <td class="cvlabel cvcenter" colspan="2">Will</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.defenses?.fort !== undefined ? (calculatedState.defenses.fort < 999 ? calculatedState.defenses.fort : '–') : (calcFort() < 999 ? calcFort() : '–')"></td>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.defenses?.ref ?? calcRef()"></td>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.defenses?.will !== undefined ? (calculatedState.defenses.will < 999 ? calculatedState.defenses.will : '–') : (calcWill() < 999 ? calcWill() : '–')"></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvlabel cvcenter" colspan="3">DR</td>
-                                                <td class="cvlabel cvcenter" colspan="3">MR</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvmdm cvcenter" colspan="3" x-text="calculatedState?.defenses?.dr ?? calcDR()"></td>
-                                                <td class="cvmdm cvcenter" colspan="3" x-text="calculatedState?.defenses?.mr ?? calcMR()"></td>
-                                            </tr>
-                                            <tr><td class="cvlabel" colspan="6">Resistances and Immunities</td></tr>
-                                            <tr><td class="cvsml" colspan="6">None</td></tr>
-                                            <tr><td class="cvlabel" colspan="6">Special Defenses</td></tr>
-                                            <tr><td class="cvsml" colspan="6">None</td></tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-
-                                <!-- 4. Health Scores Block -->
-                                <td style="width: 25%; vertical-align: top;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                            <tr><td class="cvheader cvcenter" colspan="3">Health</td></tr>
-                                            <tr>
-                                                <td class="cvheader cvcenter">HP</td>
-                                                <td class="cvheader cvcenter">SP</td>
-                                                <td class="cvheader cvcenter">PP</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvlabel cvcenter">Max</td>
-                                                <td class="cvlabel cvcenter">Max</td>
-                                                <td class="cvlabel cvcenter">Max</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvmdm cvcenter" x-text="calculatedState?.health?.hp?.total ?? calcHP()"></td>
-                                                <td class="cvmdm cvcenter" x-text="calculatedState?.health?.sp?.total !== undefined ? (calculatedState.health.sp.total ?? '–') : (calcSP() !== null ? calcSP() : '–')"></td>
-                                                <td class="cvmdm cvcenter" x-text="calculatedState?.health?.pp?.total !== undefined ? (calculatedState.health.pp.total ?? '–') : (calcPP() !== null ? calcPP() : '–')"></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvlabel cvcenter">Current</td>
-                                                <td class="cvlabel cvcenter">Current</td>
-                                                <td class="cvlabel cvcenter">Current</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvmdm cvcenter" x-text="calculatedState?.health?.hp?.current ?? calculatedState?.health?.hp?.total ?? calcHP()"></td>
-                                                <td class="cvmdm cvcenter" x-text="calculatedState?.health?.sp?.current !== undefined ? (calculatedState.health.sp.current ?? '–') : (calcSP() !== null ? calcSP() : '–')"></td>
-                                                <td class="cvmdm cvcenter" x-text="calculatedState?.health?.pp?.current !== undefined ? (calculatedState.health.pp.current ?? '–') : (calcPP() !== null ? calcPP() : '–')"></td>
-                                            </tr>
-                                            <tr><td class="cvlabel" colspan="3">Conditions</td></tr>
-                                            <tr><td class="cvsml" colspan="3">Normal</td></tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- Physical, Social & Personality Details Summary Table -->
-                    <table class="charviewpage w-full border-collapse">
-                        <tbody>
-                            <tr>
-                                <td style="width: 50%; vertical-align: top; padding-right: 4px;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                            <tr><td class="cvheader cvcenter" colspan="4">Physical &amp; Personality Details</td></tr>
-                                            <tr>
-                                                <td class="cvlabel cvcenter">Physical Age</td>
-                                                <td class="cvlabel cvcenter">Mental Age</td>
-                                                <td class="cvlabel cvcenter">Height</td>
-                                                <td class="cvlabel cvcenter">Weight</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvmdm cvcenter" x-text="character.PhysicalAge + ' (' + getAgeCategory(character.PhysicalAge, getSelectedRace()) + ')'"></td>
-                                                <td class="cvmdm cvcenter" x-text="character.MentalAge + ' (' + getAgeCategory(character.MentalAge, getSelectedRace()) + ')'"></td>
-                                                <td class="cvmdm cvcenter" x-text="calculatedHeightCm + ' cm'"></td>
-                                                <td class="cvmdm cvcenter" x-text="calculatedWeightKg + ' kg'"></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvlabel cvcenter" colspan="2">Alignment</td>
-                                                <td class="cvlabel cvcenter" colspan="2">Religion / Favored Deity</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="character.Alignment"></td>
-                                                <td class="cvmdm cvcenter" colspan="2" x-text="(selectedReligionName || 'None') + ' / ' + (selectedDeityName || 'None')"></td>
-                                            </tr>
-                                            <tr><td class="cvlabel" colspan="4">Appearance</td></tr>
-                                            <tr><td class="cvsml" colspan="4" x-text="character.Appearance || 'Not specified'"></td></tr>
-                                            <tr><td class="cvlabel" colspan="4">Personality &amp; Habits</td></tr>
-                                            <tr><td class="cvsml" colspan="4" x-text="character.Personality || 'Not specified'"></td></tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-
-                                <td style="width: 50%; vertical-align: top;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                             <tr><td class="cvheader cvcenter" colspan="4">Social Details, Wealth &amp; Lore</td></tr>
-                                             <tr>
-                                                 <td class="cvlabel cvcenter" style="width: 25%;">SC</td>
-                                                 <td class="cvlabel cvcenter" style="width: 25%;">WC</td>
-                                                 <td class="cvlabel cvcenter" style="width: 25%;">Reputation</td>
-                                                 <td class="cvlabel cvcenter" style="width: 25%;">Infl Pts</td>
-                                             </tr>
-                                             <tr>
-                                                 <td class="cvmdm cvcenter" x-text="character.SocialClass ?? 0"></td>
-                                                 <td class="cvmdm cvcenter" x-text="character.WealthClass ?? 0"></td>
-                                                 <td class="cvmdm cvcenter" x-text="(calculatedState?.social?.reputation_total ?? character.Reputation ?? 0) + (character.ReputationDesc ? ' (' + character.ReputationDesc + ')' : '')"></td>
-                                                 <td class="cvmdm cvcenter" x-text="(calculatedState?.social?.influence_total ?? character.InfluencePts ?? 0) + (character.InfluenceDesc ? ' (' + character.InfluenceDesc + ')' : '')"></td>
-                                             </tr>
-                                             <tr><td class="cvlabel" colspan="4">Family &amp; Relatives</td></tr>
-                                             <tr><td class="cvsml" colspan="4" x-text="character.Family || 'Not specified'"></td></tr>
-                                             <tr><td class="cvlabel" colspan="4">Connections &amp; Contacts</td></tr>
-                                             <tr><td class="cvsml" colspan="4" x-text="character.Contacts || 'Not specified'"></td></tr>
-                                             <tr><td class="cvlabel" colspan="4">Background History</td></tr>
-                                             <tr><td class="cvsml" colspan="4" x-text="character.History || 'Not specified'"></td></tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- Skills & Specializations Table -->
-                    <table class="charviewpage w-full border-collapse">
-                        <tbody>
-                            <tr>
-                                <td style="width: 50%; vertical-align: top; padding-right: 4px;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                            <tr><td class="cvheader cvcenter" colspan="2">Trained Skills</td></tr>
-                                            <tr>
-                                                <td class="cvlabel">Skill Name</td>
-                                                <td class="cvlabel cvcenter" style="width: 25%;">Rank</td>
-                                            </tr>
-                                            <template x-for="sk in trainedSkillsSummary" :key="sk.ID">
-                                                <tr>
-                                                    <td class="cvlist" x-text="sk.Name"></td>
-                                                    <td class="cvlist cvcenter font-mono font-bold" x-text="'+' + sk.rank"></td>
-                                                </tr>
-                                            </template>
-                                            <template x-if="trainedSkillsSummary.length === 0">
-                                                <tr><td class="cvlist" colspan="2">No skills trained.</td></tr>
-                                            </template>
-                                        </tbody>
-                                    </table>
-                                </td>
-
-                                <td style="width: 50%; vertical-align: top;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                            <tr><td class="cvheader cvcenter" colspan="2">Specializations &amp; Languages</td></tr>
-                                            <tr>
-                                                <td class="cvlabel">Specialization / Language</td>
-                                                <td class="cvlabel cvcenter" style="width: 25%;">Rank</td>
-                                            </tr>
-                                            <template x-for="sp in trainedSpecializationsSummary" :key="sp.ID">
-                                                <tr>
-                                                    <td class="cvlist" x-text="sp.Name"></td>
-                                                    <td class="cvlist cvcenter font-mono font-bold" x-text="sp.rank"></td>
-                                                </tr>
-                                            </template>
-                                            <template x-if="trainedSpecializationsSummary.length === 0">
-                                                <tr><td class="cvlist" colspan="2">No specializations purchased.</td></tr>
-                                            </template>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- Equipment & Spells Table -->
-                    <table class="charviewpage w-full border-collapse">
-                        <tbody>
-                            <tr>
-                                <td style="width: 50%; vertical-align: top; padding-right: 4px;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                            <tr><td class="cvheader cvcenter" colspan="3">Equipment &amp; Possessions (Wealth: <span x-text="remainingWealth + ' sp'"></span>)</td></tr>
-                                            <tr>
-                                                <td class="cvlabel">Item</td>
-                                                <td class="cvlabel cvcenter" style="width: 15%;">Qty</td>
-                                                <td class="cvlabel cvcenter" style="width: 20%;">Cost</td>
-                                            </tr>
-                                            <template x-for="it in character.Inventory" :key="it.ID">
-                                                <tr>
-                                                    <td class="cvlist" x-text="it.Name"></td>
-                                                    <td class="cvlist cvcenter font-mono" x-text="it.Qty"></td>
-                                                    <td class="cvlist cvcenter font-mono" x-text="(it.BaseValue * it.Qty) + ' sp'"></td>
-                                                </tr>
-                                            </template>
-                                            <template x-if="character.Inventory.length === 0">
-                                                <tr><td class="cvlist" colspan="3">No equipment purchased.</td></tr>
-                                            </template>
-                                        </tbody>
-                                    </table>
-                                </td>
-
-                                <td style="width: 50%; vertical-align: top;">
-                                    <table class="charviewsection w-full border-collapse">
-                                        <tbody>
-                                            <tr><td class="cvheader cvcenter" colspan="2">Spells &amp; Variations</td></tr>
-                                            <tr>
-                                                <td class="cvlabel">Spell</td>
-                                                <td class="cvlabel cvcenter" style="width: 25%;">Cost</td>
-                                            </tr>
-                                            <template x-for="sp in learnedSpellsSummary" :key="sp.ID">
-                                                <tr>
-                                                    <td class="cvlist">
-                                                        <span class="font-bold" x-text="sp.Name"></span>
-                                                        <template x-if="sp.options && sp.options.length > 0">
-                                                            <div class="text-[10px] text-slate-600 pl-2">
-                                                                <template x-for="opt in sp.options" :key="opt.ID">
-                                                                    <div>&bull; <span x-text="opt.Name + ' (' + opt.Cost + ')'"></span></div>
-                                                                </template>
-                                                            </div>
-                                                        </template>
-                                                    </td>
-                                                    <td class="cvlist cvcenter font-mono" x-text="sp.Cost"></td>
-                                                </tr>
-                                            </template>
-                                            <template x-if="learnedSpellsSummary.length === 0">
-                                                <tr><td class="cvlist" colspan="2">No spells learned.</td></tr>
-                                            </template>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <!-- Authentic Classic D&D Character Sheet (Shared Partial) -->
+                @include('utilities.partials.charview.sheet_content', ['isWizard' => true])
             </div>
         </template>
     </div>
@@ -1653,10 +1322,12 @@ function characterWizard() {
         alignments: {!! json_encode($alignments) !!},
         sizeCats: {!! json_encode($sizeCats) !!},
         bodyTypes: {!! json_encode($bodyTypes) !!},
+        creatureSubtypes: {!! json_encode($creatureSubtypes ?? []) !!},
         socialClasses: {!! json_encode($socialClasses) !!},
         wealthClasses: {!! json_encode($wealthClasses) !!},
         encumbranceTable: {!! json_encode($encumbranceTable) !!},
         weightLimitsTable: {!! json_encode($weightLimitsTable) !!},
+        refActions: {!! json_encode($refActions ?? []) !!},
 
         selectedCampaignObj: null,
         skillAccessMap: {},
@@ -1666,6 +1337,7 @@ function characterWizard() {
         racesById: {},
         culturesById: {},
         templatesById: {},
+        creatureSubtypesById: {},
         spellsById: {},
         spellOptionsById: {},
         spellOptionsBySpellId: {},
@@ -1675,6 +1347,7 @@ function characterWizard() {
         wealthClassesById: {},
         encumbranceById: {},
         weightLimitsByStr: {},
+        itemsById: {},
 
         // Ability Generation State
         dragSourceAttr: null,
@@ -1752,13 +1425,42 @@ function characterWizard() {
             Contacts: ''
         },
 
+        // Navigation Guard & Persistence State
+        isSaved: false,
+        isDirty() {
+            return !this.isSaved && ((this.character.Name && this.character.Name.trim() !== '') || this.step > 1);
+        },
+
         init() {
+            // Navigation Guard: Warn before leaving if character creation has started
+            window.addEventListener('beforeunload', (e) => {
+                if (this.isDirty()) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('a');
+                if (link && link.href && !link.href.startsWith('#') && !link.href.startsWith('javascript:') && !link.target && this.isDirty()) {
+                    if (!confirm('You have unsaved character changes in the Character Generator. Are you sure you want to leave and discard your progress?')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                }
+            }, true);
+
             // Index lookup maps
             this.skills.forEach(s => { this.skillsById[s.ID] = s; });
             this.classes.forEach(c => { this.classesById[c.ID] = c; });
             this.races.forEach(r => { this.racesById[r.ID] = r; });
             this.cultures.forEach(c => { this.culturesById[c.ID] = c; });
             this.templates.forEach(t => { this.templatesById[t.ID] = t; });
+            if (Array.isArray(this.creatureSubtypes)) {
+                this.creatureSubtypes.forEach(s => { this.creatureSubtypesById[s.ID] = s; });
+            } else if (typeof this.creatureSubtypes === 'object' && this.creatureSubtypes !== null) {
+                this.creatureSubtypesById = this.creatureSubtypes;
+            }
             this.spells.forEach(s => { this.spellsById[s.ID] = s; });
             this.socialClasses.forEach(s => { this.socialClassesById[s.ID] = s; });
             this.wealthClasses.forEach(w => { this.wealthClassesById[w.ID] = w; });
@@ -1767,6 +1469,9 @@ function characterWizard() {
                 this.weightLimitsTable.forEach(w => { this.weightLimitsByStr[w.Str] = w; });
             } else if (typeof this.weightLimitsTable === 'object' && this.weightLimitsTable !== null) {
                 this.weightLimitsByStr = this.weightLimitsTable;
+            }
+            if (Array.isArray(this.equipment)) {
+                this.equipment.forEach(it => { this.itemsById[it.ID] = it; });
             }
 
             this.spellOptions.forEach(o => {
@@ -1905,6 +1610,7 @@ function characterWizard() {
 
         // --- Ability Scores Methods ---
         onAbilityMethodSelected() {
+            this.character.AbilityGenMethod = parseInt(this.character.AbilityGenMethod) || 2;
             this.initAbilityScores();
         },
 
@@ -2566,6 +2272,54 @@ function characterWizard() {
         },
 
         // --- Consolidated Skills & Spells (Step 7) ---
+        getTraitSkillBonus(skillId) {
+            const sk = this.skillsById[skillId];
+            if (!sk) return 0;
+            const skName = (sk.Name || '').toLowerCase().trim();
+            let bonus = 0;
+            const traitStrings = [];
+            const race = this.getSelectedRace();
+            if (race && (race.RacialTraits || race.Traits)) traitStrings.push(race.RacialTraits || race.Traits);
+            this.getSelectedTemplates().forEach(t => {
+                if (t && (t.RacialTraits || t.Traits)) traitStrings.push(t.RacialTraits || t.Traits);
+            });
+            const cult = this.getSelectedCulture();
+            if (cult && cult.Traits) traitStrings.push(cult.Traits);
+
+            const context = {
+                TL: this.totalLevel,
+                RL: this.totalRL,
+                CL: this.totalCL,
+            };
+
+            traitStrings.forEach(tStr => {
+                const matches = tStr.matchAll(/SklMod\s*\{\s*([^}]+)\s*\}/gi);
+                for (const match of matches) {
+                    const inner = match[1];
+                    const params = {};
+                    inner.split(';').forEach(pair => {
+                        const parts = pair.split('=');
+                        if (parts.length === 2) {
+                            params[parts[0].trim()] = parts[1].trim();
+                        }
+                    });
+                    const qual = (params['Qual'] || '').toLowerCase().trim();
+                    if (qual === skName || qual === String(skillId)) {
+                        let valStr = params['Value'] || '0';
+                        let val = 0;
+                        try {
+                            let expr = valStr.replace(/([A-Z]+)/g, (m, varName) => context[varName] !== undefined ? context[varName] : 0);
+                            val = Function('"use strict";return (' + expr + ')')();
+                        } catch(e) {
+                            val = parseFloat(valStr) || 0;
+                        }
+                        bonus += Number(val) || 0;
+                    }
+                }
+            });
+            return bonus;
+        },
+
         getConsolidatedSkillRank(skillId) {
             let total = 0;
             const bgRate = parseFloat(this.character.BgSkillRates[skillId]) || 0;
@@ -2576,6 +2330,7 @@ function characterWizard() {
                     total += parseFloat(this.character.LevelSkills[lvl][skillId]) || 0;
                 }
             }
+            total += this.getTraitSkillBonus(skillId);
             return Number(total.toFixed(1));
         },
 
@@ -2595,20 +2350,35 @@ function characterWizard() {
             return fallback ? parseInt(fallback[1]) : 1;
         },
 
-        computeSpellCategory(sp) {
+        computeSpellCategory(sp, trainedMap = null, trainedData = null) {
             if (!sp) return 'other';
-            if (sp.baseCost === 0) return 'free';
+
+            const tData = trainedData || this.getTrainedSkillsData();
+            const tMap = trainedMap || tData.trainedMap;
+            const qualified = this.getQualifiedCategoriesForSpell(sp, tMap);
+
+            if (qualified.length > 0) {
+                if (qualified.includes('divine') && tData.divineCap > 0 && (tData.arcaneCap === 0 || !qualified.includes('arcane'))) return 'divine';
+                if (qualified.includes('arcane') && tData.arcaneCap > 0 && (tData.divineCap === 0 || !qualified.includes('divine'))) return 'arcane';
+                if (qualified.includes('psi') && tData.psiCap > 0) return 'psi';
+                if (qualified.includes('divine') && tData.divineCap > 0) return 'divine';
+                if (qualified.includes('arcane') && tData.arcaneCap > 0) return 'arcane';
+                return qualified[0];
+            }
+
             const skills = (sp.Skills || '').toLowerCase();
-            if (skills.includes('arcane')) return 'arcane';
+            if (skills.includes('divine') && tData.divineCap > 0) return 'divine';
+            if (skills.includes('arcane') && tData.arcaneCap > 0) return 'arcane';
+            if (skills.includes('psi') && tData.psiCap > 0) return 'psi';
             if (skills.includes('divine')) return 'divine';
+            if (skills.includes('arcane')) return 'arcane';
             if (skills.includes('psi')) return 'psi';
             return 'other';
         },
 
-        computeSpellOptionCategory(sp, opt) {
+        computeSpellOptionCategory(sp, opt, trainedMap = null, trainedData = null) {
             if (!opt) return 'other';
-            if (opt.baseCost === 0) return 'free';
-            return sp ? sp.category : 'other';
+            return sp ? this.computeSpellCategory(sp, trainedMap, trainedData) : 'other';
         },
 
         parseSpellPrereqLines(sp) {
@@ -2629,10 +2399,24 @@ function characterWizard() {
                 if (!cleanLine) continue;
 
                 let prefix = '';
+                let lineCategory = 'other';
                 const prefixMatch = cleanLine.match(/^(Arcane|Divine|Psi|Cleric Affinity|Ki)\s*-\s*/i);
                 if (prefixMatch) {
                     prefix = prefixMatch[1] + ' - ';
+                    const pfx = prefixMatch[1].toLowerCase();
+                    if (pfx === 'arcane') lineCategory = 'arcane';
+                    else if (pfx === 'divine' || pfx === 'cleric affinity') lineCategory = 'divine';
+                    else if (pfx === 'psi') lineCategory = 'psi';
                     cleanLine = cleanLine.substring(prefixMatch[0].length);
+                } else {
+                    const lower = cleanLine.toLowerCase();
+                    if (lower.includes('divine') || lower.includes('holy') || lower.includes('blessing') || lower.includes('protection') || lower.includes('life') || lower.includes('nature') || lower.includes('elements') || lower.includes('animals') || lower.includes('plants') || lower.includes('death') || lower.includes('retribution') || lower.includes('summoning') || lower.includes('wild shape')) {
+                        lineCategory = 'divine';
+                    } else if (lower.includes('arcane') || lower.includes('wizardry') || lower.includes('pyromancy') || lower.includes('aeromancy') || lower.includes('hydromancy') || lower.includes('geomancy') || lower.includes('ouranomancy') || lower.includes('kinetomancy') || lower.includes('necromancy') || lower.includes('illumination') || lower.includes('abjuration') || lower.includes('conjuration') || lower.includes('divination') || lower.includes('enchantment') || lower.includes('evocation') || lower.includes('illusion') || lower.includes('transmutation')) {
+                        lineCategory = 'arcane';
+                    } else if (lower.includes('psi') || lower.includes('clairsentience') || lower.includes('psychokinesis') || lower.includes('psychometabolism') || lower.includes('psychoportation') || lower.includes('telepathy') || lower.includes('metacreativity')) {
+                        lineCategory = 'psi';
+                    }
                 }
 
                 const parts = cleanLine.split(/\s+and\s+|\s+or\s+|,\s*/i);
@@ -2651,11 +2435,50 @@ function characterWizard() {
                 if (lineParts.length > 0) {
                     prereqLines.push({
                         lineCost: lineCost,
+                        category: lineCategory,
                         parts: lineParts
                     });
                 }
             }
             return prereqLines;
+        },
+
+        getQualifiedCategoriesForSpell(sp, trainedMap = null) {
+            if (!sp || !sp.prereqLines || sp.prereqLines.length === 0) return [];
+            const tMap = trainedMap || this.getTrainedSkillsData().trainedMap;
+            const qualified = new Set();
+
+            for (let i = 0; i < sp.prereqLines.length; i++) {
+                const line = sp.prereqLines[i];
+                let lineQualified = true;
+                let matchedAnyInPart = false;
+
+                for (let j = 0; j < line.parts.length; j++) {
+                    const p = line.parts[j];
+                    let rank = 0;
+                    let found = false;
+
+                    for (const sName in tMap) {
+                        if (sName === p.candidateLower || sName === p.partLower || sName.endsWith(p.suffixMatch)) {
+                            rank = tMap[sName];
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found || rank < line.lineCost || rank <= 0) {
+                        lineQualified = false;
+                        break;
+                    } else {
+                        matchedAnyInPart = true;
+                    }
+                }
+
+                if (lineQualified && matchedAnyInPart) {
+                    qualified.add(line.category || 'other');
+                }
+            }
+            return Array.from(qualified);
         },
 
         getTrainedSkillsData() {
@@ -2674,6 +2497,11 @@ function characterWizard() {
                     if (this.character.LevelSkills[lvl][id] > 0) activeSkillIds.add(id);
                 }
             }
+            (this.skills || []).forEach(sk => {
+                if (this.getTraitSkillBonus(sk.ID) > 0) {
+                    activeSkillIds.add(String(sk.ID));
+                }
+            });
 
             activeSkillIds.forEach(id => {
                 const rank = this.getConsolidatedSkillRank(id);
@@ -2720,19 +2548,41 @@ function characterWizard() {
         },
 
         get learnedSpellCounts() {
-            const counts = { arcane: 0, divine: 0, psi: 0, free: 0, other: 0 };
+            const counts = { arcane: 0, divine: 0, psi: 0, other: 0 };
+            const tData = this.getTrainedSkillsData();
+            const tMap = tData.trainedMap;
+
             for (const spellId in this.character.LearnedSpells) {
                 const sp = this.spellsById[spellId];
                 if (sp) {
-                    const cat = sp.category;
+                    let cat = 'other';
+                    const qualified = this.getQualifiedCategoriesForSpell(sp, tMap);
+                    if (qualified.length > 0) {
+                        if (qualified.includes('divine') && tData.divineCap > 0 && counts.divine < tData.divineCap) {
+                            cat = 'divine';
+                        } else if (qualified.includes('arcane') && tData.arcaneCap > 0 && counts.arcane < tData.arcaneCap) {
+                            cat = 'arcane';
+                        } else if (qualified.includes('psi') && tData.psiCap > 0 && counts.psi < tData.psiCap) {
+                            cat = 'psi';
+                        } else if (qualified.includes('divine') && tData.divineCap > 0) {
+                            cat = 'divine';
+                        } else if (qualified.includes('arcane') && tData.arcaneCap > 0) {
+                            cat = 'arcane';
+                        } else if (qualified.includes('psi') && tData.psiCap > 0) {
+                            cat = 'psi';
+                        } else {
+                            cat = qualified[0];
+                        }
+                    } else {
+                        cat = this.computeSpellCategory(sp, tMap, tData);
+                    }
                     counts[cat] = (counts[cat] || 0) + 1;
 
                     const opts = this.character.LearnedSpells[spellId] || [];
                     opts.forEach(optId => {
                         const opt = this.spellOptionsById[optId];
                         if (opt) {
-                            const optCat = this.computeSpellOptionCategory(sp, opt);
-                            counts[optCat] = (counts[optCat] || 0) + 1;
+                            counts[cat] = (counts[cat] || 0) + 1;
                         }
                     });
                 }
@@ -2743,13 +2593,24 @@ function characterWizard() {
         canLearnSpell(spellId) {
             const sp = this.spellsById[spellId];
             if (!sp) return false;
-            const cat = sp.category;
-            if (cat === 'free') return true;
-            const { arcaneCap, divineCap, psiCap } = this.getTrainedSkillsData();
+
+            const tData = this.getTrainedSkillsData();
+            const qualified = this.getQualifiedCategoriesForSpell(sp, tData.trainedMap);
             const counts = this.learnedSpellCounts;
-            if (cat === 'arcane') return counts.arcane < arcaneCap;
-            if (cat === 'divine') return counts.divine < divineCap;
-            if (cat === 'psi') return counts.psi < psiCap;
+
+            if (qualified.length > 0) {
+                return qualified.some(cat => {
+                    if (cat === 'arcane') return counts.arcane < tData.arcaneCap;
+                    if (cat === 'divine') return counts.divine < tData.divineCap;
+                    if (cat === 'psi') return counts.psi < tData.psiCap;
+                    return true;
+                });
+            }
+
+            const cat = this.computeSpellCategory(sp, tData.trainedMap, tData);
+            if (cat === 'arcane') return counts.arcane < tData.arcaneCap;
+            if (cat === 'divine') return counts.divine < tData.divineCap;
+            if (cat === 'psi') return counts.psi < tData.psiCap;
             return true;
         },
 
@@ -2757,13 +2618,24 @@ function characterWizard() {
             const sp = this.spellsById[spellId];
             const opt = this.spellOptionsById[optionId];
             if (!sp || !opt) return false;
-            const cat = this.computeSpellOptionCategory(sp, opt);
-            if (cat === 'free') return true;
-            const { arcaneCap, divineCap, psiCap } = this.getTrainedSkillsData();
+
+            const tData = this.getTrainedSkillsData();
+            const qualified = this.getQualifiedCategoriesForSpell(sp, tData.trainedMap);
             const counts = this.learnedSpellCounts;
-            if (cat === 'arcane') return counts.arcane < arcaneCap;
-            if (cat === 'divine') return counts.divine < divineCap;
-            if (cat === 'psi') return counts.psi < psiCap;
+
+            if (qualified.length > 0) {
+                return qualified.some(cat => {
+                    if (cat === 'arcane') return counts.arcane < tData.arcaneCap;
+                    if (cat === 'divine') return counts.divine < tData.divineCap;
+                    if (cat === 'psi') return counts.psi < tData.psiCap;
+                    return true;
+                });
+            }
+
+            const cat = this.computeSpellOptionCategory(sp, opt, tData.trainedMap, tData);
+            if (cat === 'arcane') return counts.arcane < tData.arcaneCap;
+            if (cat === 'divine') return counts.divine < tData.divineCap;
+            if (cat === 'psi') return counts.psi < tData.psiCap;
             return true;
         },
 
@@ -2859,10 +2731,19 @@ function characterWizard() {
             const hasClothing = this.character.Inventory.some(i => i.ID == 158 || (i.Name && i.Name.toLowerCase().includes('clothing (basic)')));
             if (!hasClothing) {
                 this.character.Inventory.push({
+                    uid: 'item_158_' + Date.now(),
                     ID: 158,
                     Name: 'Clothing (basic)',
                     BaseValue: 0,
                     BaseWeight: 1,
+                    ECMod: 0,
+                    ItemTypeID: 3,
+                    Subtype: 14,
+                    SubtypeName: 'Clothing',
+                    IsContainer: false,
+                    ContainerID: null,
+                    Location: 2,
+                    Locations: [2, 2, 2, 2, 2],
                     Qty: 1
                 });
             }
@@ -2880,16 +2761,147 @@ function characterWizard() {
             }
         },
 
+        isItemContainer(item) {
+            const subtype = parseInt(item.Subtype) || 0;
+            const name = (item.Name || '').toLowerCase();
+            if (subtype === 24) return true;
+            return /backpack|pouch|sack|chest|barrel|quiver|scabbard|saddlebag|haversack|bag of/i.test(name);
+        },
+
+        getAllowedLocationsForItem(item) {
+            const type = parseInt(item.ItemTypeID || item.item_type || 0);
+            const subtype = parseInt(item.Subtype || item.subtype || 0);
+            const name = (item.Name || '').toLowerCase();
+
+            // 1. Buildings (Type 7 / Subtypes 57, 58)
+            if (type === 7 || subtype === 57 || subtype === 58 || /house|manor|tower|castle|estate|temple|inn|tavern|shop|farm|warehouse/i.test(name)) {
+                return [{ value: 0, label: '📦 Stowed (At Property)' }];
+            }
+
+            // 2. Mounts & Vehicles (Type 6, Subtypes 25, 26, 27, 71)
+            if (type === 6 || [25, 26, 27, 71].includes(subtype) || /horse|mule|donkey|pony|camel|wagon|cart|carriage|ship|boat|galley|canoe|aircraft|airship/i.test(name)) {
+                if (subtype !== 28 && !/saddlebag|bridle|harness|bit and bridle|saddle/i.test(name)) {
+                    return [{ value: 0, label: '📦 Stowed (At Stables/Dock)' }];
+                }
+            }
+
+            // 3. Services (Type 8)
+            if (type === 8 || [29, 30, 32, 33, 34].includes(subtype)) {
+                return [{ value: 0, label: '📦 Stowed (Purchased Service)' }];
+            }
+
+            // 4. Siege Weapons (Subtype 10)
+            if (subtype === 10 || /catapult|ballista|trebuchet|ram|siege/i.test(name)) {
+                return [{ value: 1, label: '🎒 Carried (Towed)' }, { value: 0, label: '📦 Stowed' }];
+            }
+
+            // 5. Bulk / Immobile Containers (e.g. Barrel, Large Chest)
+            if (/barrel|chest|crate|iron safe/i.test(name)) {
+                return [{ value: 1, label: '🎒 Carried (Hauled)' }, { value: 0, label: '📦 Stowed' }];
+            }
+
+            // 6. Wearable Containers (Backpack, Belt Pouch, Quiver, Scabbard, Sack)
+            if (this.isItemContainer(item)) {
+                return [{ value: 2, label: '🛡️ Equipped (Worn)' }, { value: 1, label: '🎒 Carried' }, { value: 0, label: '📦 Stowed' }];
+            }
+
+            // 7. Armor, Weapons, Clothing, Foci, Jewelry, Magic Wearables
+            if ([2, 3, 4, 9, 10].includes(type)) {
+                return [{ value: 2, label: '🛡️ Equipped (Worn/Wielded)' }, { value: 1, label: '🎒 Carried' }, { value: 0, label: '📦 Stowed' }];
+            }
+
+            // 8. General Goods, Consumables, Misc Gear
+            return [{ value: 1, label: '🎒 Carried' }, { value: 0, label: '📦 Stowed' }];
+        },
+
+        getDefaultLocationForItem(item) {
+            const allowed = this.getAllowedLocationsForItem(item);
+            if (allowed.length === 1) return allowed[0].value;
+
+            const type = parseInt(item.ItemTypeID || 0);
+            const name = (item.Name || '').toLowerCase();
+
+            if (/backpack|pouch|quiver|scabbard/i.test(name) && allowed.some(a => a.value === 2)) {
+                return 2;
+            }
+            if (([2, 3].includes(type) || [4, 9, 10].includes(type)) && allowed.some(a => a.value === 2)) {
+                return 2;
+            }
+            return allowed.some(a => a.value === 1) ? 1 : allowed[0].value;
+        },
+
+        get containerItems() {
+            return (this.character.Inventory || []).filter(it => it.IsContainer);
+        },
+
+        getEligibleContainers(cartItem) {
+            return this.containerItems.filter(c => (c.uid || c.ID) !== (cartItem.uid || cartItem.ID) && c.ContainerID !== (cartItem.uid || cartItem.ID));
+        },
+
+        getContainerName(containerId) {
+            const c = (this.character.Inventory || []).find(it => (it.uid || it.ID) === containerId);
+            return c ? c.Name : '';
+        },
+
+        onItemLocationChanged(cartItem) {
+            const loc = parseInt(cartItem.Location) || 0;
+            cartItem.Location = loc;
+            cartItem.Locations = [loc, loc, loc, loc, loc];
+        },
+
+        onItemContainerChanged(cartItem) {
+            // Container assignment handled reactively
+        },
+
         get inventoryTotalCost() {
-            return this.character.Inventory.reduce((sum, it) => sum + (it.BaseValue * it.Qty), 0);
+            return this.character.Inventory.reduce((sum, it) => sum + ((it.BaseValue || 0) * (it.Qty || 1)), 0);
         },
 
         get inventoryTotalWeight() {
-            return this.character.Inventory.reduce((sum, it) => sum + (it.BaseWeight * it.Qty), 0);
+            let total = 0;
+            const items = this.character.Inventory || [];
+            const containerMap = {};
+            items.forEach(it => {
+                const key = it.uid || it.ID;
+                if (key) containerMap[key] = it;
+            });
+
+            const isStowed = (it) => {
+                let current = it;
+                let visited = {};
+                while (current) {
+                    if (parseInt(current.Location) === 0) return true;
+                    const cId = current.ContainerID;
+                    if (!cId || !containerMap[cId] || visited[cId]) {
+                        break;
+                    }
+                    visited[cId] = true;
+                    current = containerMap[cId];
+                }
+                return false;
+            };
+
+            items.forEach(it => {
+                if (isStowed(it)) {
+                    return; // 0% weight for stowed items
+                }
+                const qty = parseInt(it.Qty) || 1;
+                const unitW = parseFloat(it.BaseWeight) || 0.0;
+                
+                // If item is placed inside a container (which is carried/worn), item weight counts 100% inside container
+                if (it.ContainerID && containerMap[it.ContainerID]) {
+                    total += qty * unitW;
+                } else if (parseInt(it.Location) === 2) {
+                    total += (qty * unitW) * 0.5; // 50% weight for equipped/worn gear
+                } else {
+                    total += (qty * unitW);       // 100% weight for carried gear
+                }
+            });
+            return total;
         },
 
         get inventoryItemCount() {
-            return this.character.Inventory.reduce((sum, it) => sum + it.Qty, 0);
+            return this.character.Inventory.reduce((sum, it) => sum + (parseInt(it.Qty) || 1), 0);
         },
 
         get remainingWealth() {
@@ -2917,31 +2929,60 @@ function characterWizard() {
                 alert('Not enough silver pieces to purchase this item.');
                 return;
             }
-            const found = this.character.Inventory.find(i => i.ID == item.ID);
+
+            const isContainer = this.isItemContainer(item);
+            const defaultLoc = this.getDefaultLocationForItem(item);
+
+            // If it's a general consumable/trade good and already in cart without container, increment quantity
+            const found = !isContainer && [1, 5, 8].includes(parseInt(item.ItemTypeID || 0))
+                ? this.character.Inventory.find(i => i.ID == item.ID && !i.ContainerID && i.Location === defaultLoc)
+                : null;
+
             if (found) {
                 found.Qty++;
             } else {
+                const uid = 'item_' + item.ID + '_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
                 this.character.Inventory.push({
+                    uid: uid,
                     ID: item.ID,
                     Name: item.Name,
                     BaseValue: item.BaseValue || 0,
                     BaseWeight: item.BaseWeight || 0,
                     ECMod: item.ECMod || 0,
                     ItemTypeID: item.ItemTypeID || 0,
+                    Subtype: item.Subtype || 0,
                     SubtypeName: item.SubtypeName || '',
+                    IsContainer: isContainer,
+                    ContainerID: null,
+                    Location: defaultLoc,
+                    Locations: [defaultLoc, defaultLoc, defaultLoc, defaultLoc, defaultLoc],
                     Qty: 1
                 });
             }
         },
 
-        removeOneItemFromInventory(itemId) {
-            const found = this.character.Inventory.find(i => i.ID == itemId);
+        removeOneItemFromInventory(identifier) {
+            const found = this.character.Inventory.find(i => (i.uid || i.ID) == identifier);
             if (found) {
                 found.Qty--;
                 if (found.Qty <= 0) {
-                    this.character.Inventory = this.character.Inventory.filter(i => i.ID != itemId);
+                    this.deleteItemFromInventory(identifier);
                 }
             }
+        },
+
+        deleteItemFromInventory(identifier) {
+            const removedItem = this.character.Inventory.find(i => (i.uid || i.ID) == identifier);
+            const removedUid = removedItem ? (removedItem.uid || removedItem.ID) : identifier;
+
+            this.character.Inventory = this.character.Inventory.filter(i => (i.uid || i.ID) != identifier);
+
+            // Unnest any child items that were inside this removed container
+            this.character.Inventory.forEach(it => {
+                if (it.ContainerID === removedUid) {
+                    it.ContainerID = null;
+                }
+            });
         },
 
         // --- Encumbrance & Mobility Calculations (Step 8) ---
@@ -2992,11 +3033,14 @@ function characterWizard() {
 
         calcEquipEC() {
             let equipEC = 0;
-            this.character.Inventory.forEach(item => {
-                const ecMod = parseInt(item.ECMod) || 0;
-                const qty = parseInt(item.Qty) || 1;
-                if (ecMod > 0) {
-                    equipEC += ecMod * qty;
+            (this.character.Inventory || []).forEach(item => {
+                // An item only contributes to Equipment EC if actively equipped and NOT inside a container
+                if (parseInt(item.Location) === 2 && !item.ContainerID) {
+                    const ecMod = parseInt(item.ECMod) || 0;
+                    const qty = parseInt(item.Qty) || 1;
+                    if (ecMod > 0) {
+                        equipEC += ecMod * qty;
+                    }
                 }
             });
             return equipEC;
@@ -3158,9 +3202,30 @@ function characterWizard() {
             return Math.round(avg * this.character.WeightFactor);
         },
 
+        get selectedRaceInformal() {
+            const race = this.getSelectedRace();
+            return race ? (race.NameInformal || race.Name) : 'Humanoid';
+        },
+
+        get selectedTemplatesInformalSummary() {
+            if (!this.character.TemplateIDs || this.character.TemplateIDs.length === 0) return 'None';
+            return this.character.TemplateIDs.map(id => {
+                const t = this.templatesById[id];
+                return t ? (t.NameInformal || t.Name) : 'Template #' + id;
+            }).join(', ');
+        },
+
+        get selectedCreatureSubtype() {
+            const race = this.getSelectedRace();
+            if (race && race.CreatureType && this.creatureSubtypesById && this.creatureSubtypesById[race.CreatureType]) {
+                return this.creatureSubtypesById[race.CreatureType].Name;
+            }
+            return this.calculatedState?.heritage?.creature_subtype_name || 'Humanoid';
+        },
+
         // --- Derived Stats & Review Summaries (Step 10) ---
         get classesSummaryStr() {
-            if (this.remainingClassLevels === 0) return 'Racial Paragon (' + this.getSelectedRace().Name + ')';
+            if (this.remainingClassLevels === 0) return 'Racial Paragon (' + this.selectedRaceInformal + ')';
             const counts = {};
             this.character.ClassLevels.forEach(cId => {
                 counts[cId] = (counts[cId] || 0) + 1;
@@ -3218,6 +3283,311 @@ function characterWizard() {
             return result;
         },
 
+        calcPAM() {
+            return 0;
+        },
+
+        calcMAM() {
+            return 0;
+        },
+
+        get commonActions() {
+            const { trainedMap, trainedById } = this.getTrainedSkillsData();
+            
+            const trainedSkillCategories = {
+                arcane: false,
+                divine: false,
+                psi: false,
+                knowledge: false,
+                affinity: false
+            };
+
+            for (const id in trainedById) {
+                const sk = this.skillsById[id];
+                if (sk) {
+                    const t = parseInt(sk.Type);
+                    const nameLower = (sk.Name || '').toLowerCase();
+                    if (t === 4) trainedSkillCategories.arcane = true;
+                    if (t === 5) trainedSkillCategories.divine = true;
+                    if (t === 6) trainedSkillCategories.psi = true;
+                    if (t === 7 || nameLower.includes('knowledge')) trainedSkillCategories.knowledge = true;
+                    if (t === 8 || nameLower.includes('affinity')) trainedSkillCategories.affinity = true;
+                }
+            }
+
+            return (this.refActions || []).filter(action => {
+                const desc = action.Descriptors || '';
+                if (desc.includes('Untrained')) {
+                    return true;
+                }
+
+                const name = (action.Name || '').toLowerCase();
+                const check = (action.ActionCheck || '').toLowerCase();
+                const actId = parseInt(action.ID) || 0;
+
+                // Spellcasting actions
+                if (check.includes('arcane/divine/psi') || check.includes('spellcasting check') || [28, 29, 36, 220, 225, 226, 269].includes(actId)) {
+                    if (trainedSkillCategories.arcane || trainedSkillCategories.divine || trainedSkillCategories.psi || trainedMap['spellcraft']) {
+                        return true;
+                    }
+                }
+
+                if (check.includes('healing') || name.includes('resuscitate')) {
+                    if (trainedMap['healing']) return true;
+                }
+
+                if (check.includes('knowledge') || name.includes('know answer')) {
+                    if (trainedSkillCategories.knowledge) return true;
+                }
+
+                if (check.includes('danger sense') || name.includes('sense danger')) {
+                    if (trainedMap['danger sense']) return true;
+                }
+
+                if (check.includes('divine - life') || name.includes('turn undead')) {
+                    if (trainedMap['divine - life'] || trainedMap['life']) return true;
+                }
+
+                if (check.includes('divine - death') || name.includes('rebuke undead')) {
+                    if (trainedMap['divine - death'] || trainedMap['death']) return true;
+                }
+
+                if (check.includes('spellcraft') || name.includes('identify effect')) {
+                    if (trainedMap['spellcraft']) return true;
+                }
+
+                if (check.includes('warfare') || name.includes('bait opponent')) {
+                    if (trainedMap['warfare']) return true;
+                }
+
+                if (check.includes('affinity') || name.includes('affinity item activation')) {
+                    if (trainedSkillCategories.affinity) return true;
+                }
+
+                if (check.includes('influence') || name.includes('use influence')) {
+                    if (trainedMap['psychology'] || trainedMap['influence'] || trainedMap['psychology (influence)']) return true;
+                }
+
+                // Generic matching against trained skill names
+                for (const skName in trainedMap) {
+                    if (trainedMap[skName] > 0 && (check.includes(skName) || name.includes(skName))) {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
+        },
+
+        formatActionModifier(val, sign) {
+            const num = (typeof val === 'number') ? val : (parseFloat(val) || 0);
+            const valFormatted = (num % 1 !== 0) ? num.toFixed(1).replace(/\.0$/, '') : Math.round(num);
+            if (sign === '+' || sign === '') {
+                if (num >= 0) {
+                    return (sign ? '+ ' : '') + valFormatted;
+                } else {
+                    return '- ' + Math.abs(num);
+                }
+            } else if (sign === '-') {
+                const eff = -num;
+                if (eff >= 0) {
+                    return '+ ' + valFormatted;
+                } else {
+                    return '- ' + Math.abs(eff);
+                }
+            }
+            return (num >= 0 ? '+ ' : '- ') + Math.abs(num);
+        },
+
+        formatSpellSkillsWithDiscount(sp) {
+            if (!sp || !sp.Skills) return '–';
+            const lines = String(sp.Skills).split(/\r\n|\n|\\n/);
+            const { trainedMap } = this.getTrainedSkillsData();
+            const discounts = this.calculatedState?.affinity_discounts || {};
+
+            const trainedLines = [];
+            const allLines = [];
+
+            lines.forEach(line => {
+                const clean = line.trim();
+                if (!clean) return;
+                let disc = discounts[clean] || 0;
+                if (!disc) {
+                    const rank = trainedMap[clean.toLowerCase()] || 0;
+                    if (clean.toLowerCase().includes('affinity') && rank > 0) {
+                        disc = Math.floor(rank / 4);
+                    }
+                }
+                const lineWithDisc = disc > 0 ? `${clean} (-${disc} PP)` : clean;
+                allLines.push(lineWithDisc);
+
+                const cleanName = clean.replace(/\([^)]*\)/g, '').trim();
+                const parts = cleanName.split(/\s+and\s+|\s+or\s+|,\s*/i);
+                let lineQualified = true;
+                let matchedAny = false;
+                for (let p of parts) {
+                    p = p.trim().toLowerCase();
+                    if (!p) continue;
+                    let rank = 0;
+                    for (const sName in trainedMap) {
+                        if (sName === p || sName.endsWith(' - ' + p) || sName === 'arcane - ' + p || sName === 'divine - ' + p || sName === 'psi - ' + p) {
+                            rank = trainedMap[sName];
+                            break;
+                        }
+                    }
+                    if (rank > 0) {
+                        matchedAny = true;
+                    } else {
+                        lineQualified = false;
+                    }
+                }
+                if (lineQualified && matchedAny) {
+                    trainedLines.push(lineWithDisc);
+                }
+            });
+
+            const result = (trainedLines.length > 0) ? trainedLines : allLines;
+            return result.join('<br/>');
+        },
+
+        parseActionTime(time) {
+            if (!time) return '–';
+            const race = this.getSelectedRace();
+            const sizeId = Math.max(-4, Math.min(4, parseInt(race?.SizeClass || 0)));
+            const attSpdMod = (this.sizeCats && this.sizeCats[sizeId] && this.sizeCats[sizeId].AttSpdMod !== undefined)
+                ? parseInt(this.sizeCats[sizeId].AttSpdMod)
+                : sizeId;
+
+            let parsed = time.replace(/(your weapon's\s+size\s+mod|weapon's\s+size\s+mod|item's\s+size\s+mod|vehicle\s+size\s+mod)|([+-]?\s*)\bsize\s+mod\b/gi, (match, preserved, sign) => {
+                if (preserved) return preserved;
+                return this.formatActionModifier(attSpdMod, sign ? sign.trim() : '');
+            });
+            return parsed.replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, '<br/>');
+        },
+
+        formatItemTraitsDescription(traitsStr) {
+            if (!traitsStr) return '–';
+            const parts = [];
+            const matches = traitsStr.matchAll(/(\w+)\s*\{\s*([^}]+)\s*\}/g);
+            for (const match of matches) {
+                const type = match[1];
+                const inner = match[2];
+                const params = {};
+                inner.split(';').forEach(pair => {
+                    const kv = pair.split('=');
+                    if (kv.length === 2) {
+                        params[kv[0].trim()] = kv[1].trim();
+                    }
+                });
+                if (type === 'Armor') {
+                    if (params.DR && parseInt(params.DR) > 0) parts.push('DR ' + params.DR);
+                    if (params.Dec && parseInt(params.Dec) !== 0) parts.push('DeC ' + (parseInt(params.Dec) > 0 ? '+' : '') + params.Dec);
+                    if (params.EC && parseInt(params.EC) > 0) parts.push('EC ' + params.EC);
+                } else if (type === 'Weapon') {
+                    if (params.ParMod && parseInt(params.ParMod) !== 0) parts.push('Parry ' + (parseInt(params.ParMod) > 0 ? '+' : '') + params.ParMod);
+                    if (params.DisarmMod && parseInt(params.DisarmMod) !== 0) parts.push('Disarm ' + (parseInt(params.DisarmMod) > 0 ? '+' : '') + params.DisarmMod);
+                    if (params.TripDrop) parts.push('Trip');
+                    if (params.OnlyRanged) parts.push('Ranged');
+                } else if (type === 'Ammo') {
+                    if (params.Dmg) parts.push(params.Dmg);
+                    if (params.Range) parts.push('Range ' + params.Range);
+                } else if (type === 'DefMod' || type === 'AbilMod') {
+                    const q = params.Qual || '';
+                    const v = params.Value || '';
+                    if (q && v) parts.push((parseFloat(v) > 0 ? '+' : '') + v + ' ' + q);
+                } else if (type === 'SpdMod') {
+                    const v = params.Value || '';
+                    if (v) parts.push((parseFloat(v) > 0 ? '+' : '') + v + ' Speed');
+                } else if (type === 'Sns') {
+                    const q = params.Qual || '';
+                    const v = params.Value || '';
+                    parts.push(q + (v ? ' ' + v : ''));
+                } else {
+                    const q = params.Qual || params.Type || '';
+                    const v = params.Value || '';
+                    if (q || v) parts.push(q + (v ? ' ' + v : ''));
+                }
+            }
+            return parts.length > 0 ? parts.join(', ') : '–';
+        },
+
+        parseActionCheck(check) {
+            if (!check) return '–';
+
+            const abilityMods = {
+                str: this.getAbilityModifier('Strength') ?? 0,
+                dex: this.getAbilityModifier('Dexterity') ?? 0,
+                con: this.getAbilityModifier('Constitution') ?? 0,
+                int: this.getAbilityModifier('Intelligence') ?? 0,
+                wis: this.getAbilityModifier('Wisdom') ?? 0,
+                cha: this.getAbilityModifier('Charisma') ?? 0
+            };
+
+            const race = this.getSelectedRace();
+            const sizeId = Math.max(-4, Math.min(4, parseInt(race?.SizeClass || 0)));
+            const sizeCombatMod = (this.sizeCats && this.sizeCats[sizeId] && this.sizeCats[sizeId].CombatMod !== undefined)
+                ? parseInt(this.sizeCats[sizeId].CombatMod)
+                : (sizeId === 0 ? 0 : -sizeId);
+
+            const { trainedMap } = this.getTrainedSkillsData();
+
+            let result = check;
+
+            // 1. Replace size-based Att/DeC mod: e.g. "- 2 x size-based Att/DeC mod" or "+ size-based Att/DeC mod"
+            // 1a. If preceded by "x" or "*", e.g. "2 x size-based Att/DeC mod"
+            result = result.replace(/(\bx\s*|\*\s*)\bsize-based\s+Att\/DeC\s+mod\b/gi, (match, prefix) => {
+                const valStr = sizeCombatMod < 0 ? `(${sizeCombatMod})` : String(sizeCombatMod);
+                return prefix + valStr;
+            });
+
+            // 1b. If preceded by +/- or standalone
+            result = result.replace(/([+-]?\s*)\bsize-based\s+Att\/DeC\s+mod\b/gi, (match, sign) => {
+                return this.formatActionModifier(sizeCombatMod, sign ? sign.trim() : '');
+            });
+
+            // 2. Replace "Str or Dex mod" / "X or Y mod"
+            result = result.replace(/([+-]?\s*)(Str|Dex|Con|Int|Wis|Cha)\s+or\s+(Str|Dex|Con|Int|Wis|Cha)\s+mod\b/gi, (match, sign, a1, a2) => {
+                const mod1 = abilityMods[a1.toLowerCase()] ?? 0;
+                const mod2 = abilityMods[a2.toLowerCase()] ?? 0;
+                const val = Math.max(mod1, mod2);
+                return this.formatActionModifier(val, sign ? sign.trim() : '');
+            });
+
+            // 3. Replace standard ability mods ("Str mod", "Dex mod", etc.)
+            result = result.replace(/([+-]?\s*)(Str|Dex|Con|Int|Wis|Cha)\s+mod\b/gi, (match, sign, ability) => {
+                const modVal = abilityMods[ability.toLowerCase()] ?? 0;
+                return this.formatActionModifier(modVal, sign ? sign.trim() : '');
+            });
+
+            // 3. Replace parenthesized skills: "(Weapons - Area Attacks skill)"
+            result = result.replace(/([+-]?\s*)\(([^)]+?)\s+skill\)/gi, (match, sign, skillName) => {
+                const cleanSkill = skillName.trim();
+                const baseSkill = cleanSkill.replace(/\s*\([^)]*\)/, '');
+                const key = cleanSkill.toLowerCase();
+                const baseKey = baseSkill.toLowerCase();
+                const rank = trainedMap[key] ?? trainedMap[baseKey] ?? 0;
+                return this.formatActionModifier(rank, sign ? sign.trim() : '');
+            });
+
+            // 4. Replace normal skills: "Acrobatics skill", "Fighting Style - Mobility skill", "Psychology (Influence) skill", etc.
+            result = result.replace(/([+-]?\s*)([A-Za-z0-9\-\s\(\)\&\/]+?)\s+skill\b/gi, (match, sign, skillName) => {
+                const raw = skillName.trim().replace(/^\((.*)\)$/, '$1');
+                const baseSkill = raw.replace(/\s*\([^)]*\)/, '');
+                const key = raw.toLowerCase().trim();
+                const baseKey = baseSkill.toLowerCase().trim();
+                const rank = trainedMap[key] ?? trainedMap[baseKey] ?? 0;
+                return this.formatActionModifier(rank, sign ? sign.trim() : '');
+            });
+
+            // 5. Replace standalone "influence" in "d20! + influence + Cha mod"
+            result = result.replace(/([+-]?\s*)\binfluence\b/gi, (match, sign) => {
+                const rank = trainedMap['influence'] ?? trainedMap['psychology (influence)'] ?? trainedMap['psychology'] ?? 0;
+                return this.formatActionModifier(rank, sign ? sign.trim() : '');
+            });
+
+            return result;
+        },
+
         calcInitMod() {
             return this.getAbilityModifier('Dexterity') + (this.getIPBonus(14) || 0);
         },
@@ -3245,11 +3615,49 @@ function characterWizard() {
         },
 
         calcSpeedStr() {
+            if (this.calculatedState?.speeds?.display) {
+                return this.calculatedState.speeds.display;
+            }
             const race = this.getSelectedRace();
-            let str = this.calcGroundSpeed() + "' Ground";
-            if (race.FlySpeed && parseInt(race.FlySpeed) > 0) str += ', Fly ' + race.FlySpeed + "'";
-            if (race.SwimSpeed && parseInt(race.SwimSpeed) > 0) str += ', Swim ' + race.SwimSpeed + "'";
-            return str;
+            const groundSq = Math.round(this.calcGroundSpeed() / 5);
+            let climbMult = 4;
+            let swimMult = 4;
+            let burrowMult = 0;
+
+            const traitStrings = [];
+            if (race && (race.RacialTraits || race.Traits)) traitStrings.push(race.RacialTraits || race.Traits);
+            this.getSelectedTemplates().forEach(t => {
+                if (t && (t.RacialTraits || t.Traits)) traitStrings.push(t.RacialTraits || t.Traits);
+            });
+            const cult = this.getSelectedCulture();
+            if (cult && cult.Traits) traitStrings.push(cult.Traits);
+
+            traitStrings.forEach(tStr => {
+                const matches = tStr.matchAll(/SpdType\s*\{\s*([^}]+)\s*\}/gi);
+                for (const match of matches) {
+                    const inner = match[1];
+                    const params = {};
+                    inner.split(';').forEach(pair => {
+                        const parts = pair.split('=');
+                        if (parts.length === 2) params[parts[0].trim()] = parts[1].trim();
+                    });
+                    const qual = (params['Qual'] || '').toLowerCase();
+                    const val = parseFloat(params['Value']) || 0;
+                    if (qual === 'climb' && val > 0) climbMult = val;
+                    if (qual === 'swim' && val > 0) swimMult = val;
+                    if (qual === 'burrow' && val > 0) burrowMult = val;
+                }
+            });
+
+            let groundDisplay = `${groundSq} sq Ground`;
+            if (climbMult > 0 && climbMult < 999) groundDisplay += ` (Climb ×${climbMult} MP)`;
+            if (swimMult > 0 && swimMult < 999 && (!race.SwimSpeed || parseInt(race.SwimSpeed) <= 0)) groundDisplay += ` (Swim ×${swimMult} MP)`;
+            if (burrowMult > 0 && burrowMult < 999) groundDisplay += ` (Burrow ×${burrowMult} MP)`;
+
+            const parts = [groundDisplay];
+            if (race.SwimSpeed && parseInt(race.SwimSpeed) > 0) parts.push(`Swim ${Math.round(parseInt(race.SwimSpeed) / 5)} sq`);
+            if (race.FlySpeed && parseInt(race.FlySpeed) > 0) parts.push(`Fly ${Math.round(parseInt(race.FlySpeed) / 5)} sq`);
+            return parts.join(', ');
         },
 
         calcBodyType() {
@@ -3319,12 +3727,30 @@ function characterWizard() {
         },
 
         calcDR() {
+            if (this.calculatedState?.defenses?.dr !== undefined) {
+                return this.calculatedState.defenses.dr;
+            }
             const race = this.getSelectedRace();
             let dr = parseInt(race.DR) || 0;
             this.getSelectedTemplates().forEach(t => {
                 if (t.DR) dr = Math.max(dr, parseInt(t.DR));
             });
             dr += (this.getIPBonus(18) || 0);
+
+            const items = this.character.Inventory || [];
+            items.forEach(it => {
+                if (parseInt(it.Location) === 2 && !it.ContainerID) {
+                    const itemData = this.itemsById[it.ID] || it;
+                    const traits = itemData.Traits || it.Traits || '';
+                    if (traits) {
+                        const armorMatch = traits.match(/Armor\s*\{[^}]*DR\s*=\s*(\d+)[^}]*\}/i);
+                        if (armorMatch) {
+                            dr += parseInt(armorMatch[1]) || 0;
+                        }
+                    }
+                }
+            });
+
             return dr;
         },
 
@@ -3579,6 +4005,7 @@ function characterWizard() {
                 });
                 const data = await res.json().catch(() => null);
                 if (res.ok && data && data.success) {
+                    this.isSaved = true;
                     window.location.href = data.redirect_url;
                 } else {
                     let errMsg = 'Error saving character.';

@@ -17,25 +17,9 @@ class SetCacheHeadersMiddleware
         $response = $next($request);
 
         if ($request->isMethod('GET') && $response->getStatusCode() === 200) {
-            // Do not cache interactive pages, generators, auth, campaign, or authenticated sessions
-            if (
-                $request->is('utilities*', 'campaign*', 'login*', 'register*', 'logout*', 'clear-cache*') ||
-                auth()->check()
-            ) {
-                $response->headers->set('Cache-Control', 'no-cache, private, must-revalidate');
-                $response->headers->remove('ETag');
-                return $response;
-            }
-
-            $etag = '"' . md5($response->getContent() ?: '') . '"';
-            $response->headers->set('ETag', $etag);
-            $response->headers->set('Cache-Control', 'public, max-age=300, must-revalidate');
-
-            $ifNoneMatch = $request->header('If-None-Match');
-            if ($ifNoneMatch && trim($ifNoneMatch) === $etag) {
-                $response->setStatusCode(304);
-                $response->setContent('');
-            }
+            // Dynamic HTML pages contain session, auth state, and CSRF tokens in the layout header
+            $response->headers->set('Cache-Control', 'no-cache, private, must-revalidate');
+            $response->headers->remove('ETag');
         }
 
         return $response;

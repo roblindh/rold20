@@ -24,6 +24,13 @@ class AuthTest extends TestCase
         if (function_exists('application_start')) {
             application_start();
         }
+        DB::beginTransaction();
+    }
+
+    protected function tearDown(): void
+    {
+        DB::rollBack();
+        parent::tearDown();
     }
 
     public function testPlayerModelAuthenticatable(): void
@@ -129,5 +136,26 @@ class AuthTest extends TestCase
         $savedCamp = DB::table('campaigns')->where('Name', $campName)->first();
         $this->assertNotNull($savedCamp);
         $this->assertEquals(Auth::id(), $savedCamp->GameMaster);
+    }
+
+    public function testHomePageRendersAuthenticatedState(): void
+    {
+        $uniquePlayer = 'AuthenticatedHero_' . uniqid();
+        $player = Player::create([
+            'Name' => $uniquePlayer,
+            'Password' => Hash::make('secret123'),
+            'Type' => Player::TYPE_PLAYER,
+        ]);
+
+        Auth::login($player);
+
+        $rulesController = new \App\Http\Controllers\RulesController();
+        $response = $rulesController->intro();
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $content = $response->getContent();
+        $this->assertStringContainsString($uniquePlayer, $content);
+        $this->assertStringContainsString('Logout', $content);
+        $this->assertStringNotContainsString('Log In', $content);
     }
 }
