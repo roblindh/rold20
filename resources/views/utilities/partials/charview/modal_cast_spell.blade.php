@@ -1,6 +1,7 @@
 <!-- Cast Spell Assistant Modal (Rules of Magic hb05 compliant) -->
-<div x-show="showCastSpellModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4" @keydown.escape.window="showCastSpellModal = false">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full border border-amber-900/30 overflow-hidden relative z-[10000] max-h-[96vh] flex flex-col font-sans" @click.outside="showCastSpellModal = false">
+<div x-show="showCastSpellModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/80 backdrop-blur-xs" @keydown.escape.window="showCastSpellModal = false">
+    <div class="flex min-h-full items-start justify-center p-2 sm:p-4 text-center">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full border border-amber-900/30 overflow-hidden relative z-[10000] my-auto flex flex-col font-sans max-h-[calc(100vh-1.5rem)] sm:max-h-[calc(100vh-2.5rem)] text-left" @click.outside="showCastSpellModal = false">
         
         <!-- Modal Header -->
         <div class="px-5 py-3.5 flex items-center justify-between border-b border-amber-900/20 shrink-0 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white">
@@ -496,4 +497,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>
