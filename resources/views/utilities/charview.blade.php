@@ -357,6 +357,10 @@
                     <span>✨ Learn Spells</span>
                 </button>
 
+                <button type="button" @click="openCastSpellModal()" class="btn-rol-secondary" title="Open Rules of Magic Cast Spell Assistant">
+                    <span>🪄 Cast Spell</span>
+                </button>
+
                 <button type="button" @click="showPortraitModal = true" class="btn-rol-secondary" title="Generate or edit AI character portrait">
                     <span>🎨 Generate AI Portrait</span>
                 </button>
@@ -474,6 +478,7 @@ HP: {{ $hp }} / {{ $hpCurrent }} | SP: {{ $sp !== null ? $sp . ' / ' . $spCurren
         @include('utilities.partials.charview.modal_learnspells')
         @include('utilities.partials.charview.modal_portrait_generator')
         @include('utilities.partials.charview.modal_combat_matrix')
+        @include('utilities.partials.charview.modal_cast_spell')
     @else
         <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-3">
             <span class="text-5xl">🧙‍♂️</span>
@@ -532,6 +537,7 @@ function characterViewerApp() {
         showLearnSpellsModal: false,
         showPortraitModal: false,
         showCombatMatrixModal: false,
+        showCastSpellModal: false,
 
         twoHandedMode: {},
         selectedAmmo: {},
@@ -1005,6 +1011,494 @@ function characterViewerApp() {
 
         getSpellOptionsFor(spellId) {
             return (this.spellOptions || []).filter(opt => opt.SpellID == spellId);
+        },
+
+        // =========================================================================
+        // CAST SPELL ASSISTANT (Rules of Magic hb05 compliant)
+        // =========================================================================
+        castAffinityDiscounts: @json($calc['affinity_discounts'] ?? []),
+        castAbilityMods: @json($calc['ability_modifiers'] ?? []),
+        castEffectiveSkills: @json($calc['skills'] ?? []),
+        castMamBonus: {{ (int)($calc['actions']['mam'] ?? 0) }},
+        castCurrentPP: {{ (int)($calc['defenses']['pp_current'] ?? $calc['defenses']['pp'] ?? 0) }},
+        castMaxPP: {{ (int)($calc['defenses']['pp'] ?? 0) }},
+        castCurrentAP: {{ (int)($calc['actions']['ap'] ?? 10) }},
+        characterName: "{{ addslashes($character->Name ?? 'Hero') }}",
+        knownSpellsData: @json($spellsList ?? []),
+
+        castSpellState: {
+            selectedSpellId: null,
+            showAllSpells: false,
+            selectedVariations: {},
+            selectedRangeIndex: 0,
+            selectedDurationIndex: 0,
+            selectedTargetIndex: 0,
+            selectedImplementsIndex: 0,
+            selectedActionTimeIndex: 0,
+            voluntaryPP: 0,
+            apMode: 'none', // 'none' | 'boost' | 'dampen'
+            apAmount: 1,
+            isTake10: true,
+            d20Roll: 10,
+            hasTwoFreeHands: true,
+            circumstanceCheckMod: 0,
+            targetMR: 0,
+            localAntimagic: 0,
+            localWildMagic: 0,
+            opposingPL: 0,
+            circumstanceDCMod: 0,
+            copiedLog: false,
+        },
+
+        get allSpellsCatalog() {
+            return spellsWithKnown;
+        },
+
+        get knownSpellsCatalog() {
+            const list = (spellsWithKnown || []).filter(s => s.isKnown);
+            return list.length > 0 ? list : spellsWithKnown;
+        },
+
+        get activeCastSpell() {
+            const id = this.castSpellState.selectedSpellId;
+            if (!id) return null;
+            return (rawSpells || []).find(s => String(s.ID) === String(id)) || null;
+        },
+
+        get activeCastSpellOptions() {
+            const id = this.castSpellState.selectedSpellId;
+            if (!id) return [];
+            return (rawSpellOptions || []).filter(o => String(o.SpellID) === String(id));
+        },
+
+        openCastSpellModal(spellId = null) {
+            if (spellId !== null && spellId !== undefined) {
+                this.castSpellState.selectedSpellId = String(spellId);
+            } else if (!this.castSpellState.selectedSpellId) {
+                const known = this.knownSpellsCatalog;
+                this.castSpellState.selectedSpellId = known.length > 0 ? String(known[0].ID) : (rawSpells.length > 0 ? String(rawSpells[0].ID) : null);
+            }
+            this.onCastSpellChanged();
+            this.showCastSpellModal = true;
+        },
+
+        onCastSpellChanged() {
+            this.castSpellState.selectedRangeIndex = 0;
+            this.castSpellState.selectedDurationIndex = 0;
+            this.castSpellState.selectedTargetIndex = 0;
+            this.castSpellState.selectedImplementsIndex = 0;
+            this.castSpellState.selectedActionTimeIndex = 0;
+            this.castSpellState.voluntaryPP = 0;
+            
+            // Pre-select known variations for this spell
+            const spellId = this.castSpellState.selectedSpellId;
+            const knownOpts = (this.knownSpellsData && this.knownSpellsData[spellId]) ? this.knownSpellsData[spellId] : [];
+            const newVars = {};
+            (this.activeCastSpellOptions || []).forEach(opt => {
+                newVars[opt.ID] = knownOpts.includes(parseInt(opt.ID)) || knownOpts.includes(String(opt.ID));
+            });
+            this.castSpellState.selectedVariations = newVars;
+
+            // Set Take 10 based on affinity
+            const info = this.castSkillInfo;
+            this.castSpellState.isTake10 = info.hasAffinity || true;
+        },
+
+        parseParamLines(text) {
+            if (!text || typeof text !== 'string') return [{ id: 0, text: 'Standard (+0)', ppMod: 0, apMod: 0 }];
+            const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+            if (lines.length === 0) return [{ id: 0, text: 'Standard (+0)', ppMod: 0, apMod: 0 }];
+
+            return lines.map((line, idx) => {
+                let ppMod = 0;
+                const ppMatch = line.match(/\(\s*([+-]?\d+)\s*(?:PP|cost)?\s*(?:;|\))/i);
+                if (ppMatch) {
+                    ppMod = parseInt(ppMatch[1], 10) || 0;
+                }
+                let apMod = 0;
+                const apMatch = line.match(/([+-]?\d+)\s*AP/i);
+                if (apMatch) {
+                    apMod = parseInt(apMatch[1], 10) || 0;
+                }
+                return {
+                    id: idx,
+                    text: line,
+                    ppMod: ppMod,
+                    apMod: apMod
+                };
+            });
+        },
+
+        get castRangeOptions() {
+            return this.parseParamLines(this.activeCastSpell ? this.activeCastSpell.Range : '');
+        },
+
+        get castDurationOptions() {
+            return this.parseParamLines(this.activeCastSpell ? this.activeCastSpell.Duration : '');
+        },
+
+        get castTargetOptions() {
+            return this.parseParamLines(this.activeCastSpell ? this.activeCastSpell.Target : '');
+        },
+
+        get castImplementsOptions() {
+            return this.parseParamLines(this.activeCastSpell ? this.activeCastSpell.Implements : '');
+        },
+
+        get castActionTimeOptions() {
+            return this.parseParamLines(this.activeCastSpell ? this.activeCastSpell.ActionTime : '');
+        },
+
+        getSpellBPC(spell) {
+            if (!spell || !spell.Cost) return 0;
+            const match = String(spell.Cost).match(/(\d+)\s*PP/i);
+            return match ? parseInt(match[1], 10) : 0;
+        },
+
+        get castSpellBPC() {
+            return this.getSpellBPC(this.activeCastSpell);
+        },
+
+        get castSkillInfo() {
+            const spell = this.activeCastSpell;
+            if (!spell || !spell.Skills) {
+                return {
+                    lines: [],
+                    bestRank: {{ (int)($calc['heritage']['total_level'] ?? 1) }},
+                    bestSkillName: 'General / Inherent',
+                    hasAffinity: false,
+                    affinityDiscount: 0,
+                    affinityAbilMod: 0,
+                    affinityAbilKey: ''
+                };
+            }
+
+            const lines = spell.Skills.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+            const effSkills = this.castEffectiveSkills || {};
+            const affDiscs = this.castAffinityDiscounts || {};
+            const abilMods = this.castAbilityMods || {};
+            const allSkills = rawSkills || [];
+
+            let bestRank = 0;
+            let bestSkillName = '';
+            let bestDiscount = 0;
+
+            lines.forEach(line => {
+                const cleanLine = line.replace(/\s*\([^)]*\)/g, '').trim();
+                for (const [k, v] of Object.entries(affDiscs)) {
+                    if (k && (cleanLine.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(cleanLine.toLowerCase()))) {
+                        if (parseInt(v) > bestDiscount) bestDiscount = parseInt(v);
+                    }
+                }
+
+                const parts = cleanLine.split(/\s+and\s+|\s+or\s+|,\s*/i).map(p => p.trim()).filter(Boolean);
+                let minPartRank = 999;
+
+                parts.forEach(part => {
+                    let foundRank = 0;
+                    for (const s of allSkills) {
+                        const sName = s.Name || '';
+                        if (sName.toLowerCase() === part.toLowerCase() ||
+                            sName.toLowerCase().endsWith(' - ' + part.toLowerCase()) ||
+                            sName.toLowerCase() === ('arcane - ' + part.toLowerCase()) ||
+                            sName.toLowerCase() === ('divine - ' + part.toLowerCase()) ||
+                            sName.toLowerCase() === ('psi - ' + part.toLowerCase())) {
+                            const r = parseFloat(effSkills[s.ID] || characterSkills[s.ID] || 0);
+                            if (r > foundRank) foundRank = r;
+                        }
+                    }
+                    if (foundRank < minPartRank) minPartRank = foundRank;
+                });
+
+                const lineRank = minPartRank === 999 ? 0 : minPartRank;
+                if (lineRank > bestRank) {
+                    bestRank = lineRank;
+                    bestSkillName = cleanLine;
+                }
+            });
+
+            const isArcane = spell.Skills.toLowerCase().includes('arcane');
+            const isDivine = spell.Skills.toLowerCase().includes('divine');
+            const isPsi = spell.Skills.toLowerCase().includes('psi');
+
+            let hasAffinity = (bestDiscount > 0);
+            let affinityAbilKey = 'Int';
+            let affinityAbilMod = 0;
+
+            if (isDivine) {
+                affinityAbilKey = 'Wis';
+                affinityAbilMod = parseInt(abilMods.Wis || 0);
+            } else if (isPsi) {
+                affinityAbilKey = 'Int';
+                affinityAbilMod = Math.max(parseInt(abilMods.Int || 0), parseInt(abilMods.Wis || 0), parseInt(abilMods.Cha || 0));
+            } else if (isArcane) {
+                const intM = parseInt(abilMods.Int || 0);
+                const chaM = parseInt(abilMods.Cha || 0);
+                if (chaM > intM && (affDiscs['Sorcerer'] || affDiscs['Bard'])) {
+                    affinityAbilKey = 'Cha';
+                    affinityAbilMod = chaM;
+                } else {
+                    affinityAbilKey = 'Int';
+                    affinityAbilMod = intM;
+                }
+            } else {
+                affinityAbilKey = 'Int';
+                affinityAbilMod = Math.max(parseInt(abilMods.Int || 0), parseInt(abilMods.Wis || 0), parseInt(abilMods.Cha || 0));
+            }
+
+            if (bestRank === 0) {
+                bestRank = {{ (int)($calc['heritage']['total_level'] ?? 1) }};
+                if (!bestSkillName) bestSkillName = 'TL / Inherent';
+            }
+
+            return {
+                lines: lines,
+                bestRank: bestRank,
+                bestSkillName: bestSkillName,
+                hasAffinity: hasAffinity,
+                affinityDiscount: bestDiscount,
+                affinityAbilMod: hasAffinity ? affinityAbilMod : 0,
+                affinityAbilKey: affinityAbilKey
+            };
+        },
+
+        get castVariationsPP() {
+            let total = 0;
+            const vars = this.castSpellState.selectedVariations || {};
+            (this.activeCastSpellOptions || []).forEach(opt => {
+                if (vars[opt.ID]) {
+                    const match = String(opt.Cost || '').match(/([+-]?\d+)\s*PP/i);
+                    if (match) {
+                        total += Math.max(0, parseInt(match[1], 10));
+                    }
+                }
+            });
+            return total;
+        },
+
+        get castParametersPP() {
+            let total = 0;
+            const rOpt = this.castRangeOptions[this.castSpellState.selectedRangeIndex];
+            if (rOpt) total += (rOpt.ppMod || 0);
+            const dOpt = this.castDurationOptions[this.castSpellState.selectedDurationIndex];
+            if (dOpt) total += (dOpt.ppMod || 0);
+            const tOpt = this.castTargetOptions[this.castSpellState.selectedTargetIndex];
+            if (tOpt) total += (tOpt.ppMod || 0);
+            const iOpt = this.castImplementsOptions[this.castSpellState.selectedImplementsIndex];
+            if (iOpt) total += (iOpt.ppMod || 0);
+            total += parseInt(this.castSpellState.voluntaryPP || 0);
+            return total;
+        },
+
+        get castTPC() {
+            return this.castSpellBPC + this.castVariationsPP + this.castParametersPP;
+        },
+
+        get castAPB() {
+            if (this.castSpellState.apMode === 'boost') {
+                return Math.max(1, parseInt(this.castSpellState.apAmount || 1));
+            } else if (this.castSpellState.apMode === 'dampen') {
+                return -Math.max(1, parseInt(this.castSpellState.apAmount || 1));
+            }
+            return 0;
+        },
+
+        get castPL() {
+            return Math.max(0, this.castTPC + this.castAPB);
+        },
+
+        get castLingeringAura() {
+            const pl = this.castPL;
+            if (pl <= 0) return 'None';
+            if (pl <= 5) return '1d6 rounds (1–6 rounds)';
+            if (pl <= 10) return '1d6 minutes (1–6 min)';
+            if (pl <= 20) return '1d6 × 10 minutes (10–60 min)';
+            return '1d6 days (1–6 days)';
+        },
+
+        get castAPC() {
+            // If Wild Magic Outstanding Success (1..9 margin), cost is 0 PP
+            if (parseInt(this.castSpellState.localWildMagic || 0) > 0 && this.castMargin >= 1 && this.castMargin <= 9) {
+                return 0;
+            }
+            const disc = this.castSkillInfo.affinityDiscount || 0;
+            if (this.castTPC === 0) return 0;
+            return Math.max(1, this.castTPC - disc);
+        },
+
+        get castBaseAP() {
+            const actOpt = this.castActionTimeOptions[this.castSpellState.selectedActionTimeIndex];
+            if (actOpt && actOpt.text) {
+                if (actOpt.text.toLowerCase().includes('reaction')) return 0;
+                if (actOpt.text.includes('1 h')) return 36000;
+                if (actOpt.text.includes('1 min')) return 600;
+                if (actOpt.text.includes('1 r')) return 60;
+                const match = actOpt.text.match(/(\d+)\s*AP/i);
+                if (match) return parseInt(match[1], 10);
+            }
+            return 7 + this.castTPC;
+        },
+
+        get castTotalAP() {
+            return this.castBaseAP + Math.abs(this.castAPB);
+        },
+
+        get castCheckResult() {
+            const roll = this.castSpellState.isTake10 ? 10 : parseInt(this.castSpellState.d20Roll || 0);
+            const rank = parseInt(this.castSkillInfo.bestRank || 0);
+            const affMod = parseInt(this.castSkillInfo.affinityAbilMod || 0);
+            const twoHand = this.castSpellState.hasTwoFreeHands ? 2 : 0;
+            const apb = this.castAPB;
+            const mam = parseInt(this.castMamBonus || 0);
+            const circ = parseInt(this.castSpellState.circumstanceCheckMod || 0);
+            return roll + rank + affMod + twoHand + apb + mam + circ;
+        },
+
+        get castEffectiveDC() {
+            const baseDC = 10 + this.castTPC;
+            const mr = parseInt(this.castSpellState.targetMR || 0);
+            const am = parseInt(this.castSpellState.localAntimagic || 0);
+            const wm = parseInt(this.castSpellState.localWildMagic || 0);
+            const opp = parseInt(this.castSpellState.opposingPL || 0);
+            const circ = parseInt(this.castSpellState.circumstanceDCMod || 0);
+            return baseDC + mr + am + wm + opp + circ;
+        },
+
+        get castMargin() {
+            return this.castCheckResult - this.castEffectiveDC;
+        },
+
+        get castOutcome() {
+            const isWM = parseInt(this.castSpellState.localWildMagic || 0) > 0;
+            const margin = this.castMargin;
+
+            if (!isWM) {
+                if (margin >= 0) {
+                    return {
+                        type: 'success',
+                        badge: '✨ Success',
+                        color: 'emerald',
+                        desc: 'Spell or power works as intended with full normal effect.'
+                    };
+                } else if (margin >= -9) {
+                    return {
+                        type: 'failure',
+                        badge: '⚠️ Failure (Reduced Effect)',
+                        color: 'amber',
+                        desc: 'Spell has negligible effect (one tenth damage, -20 attack roll, reduced area, etc.).'
+                    };
+                } else if (margin >= -19) {
+                    return {
+                        type: 'outstanding_failure',
+                        badge: '💥 Outstanding Failure',
+                        color: 'orange',
+                        desc: 'Spell or power fizzles in a shower of sparks with no effect.'
+                    };
+                } else {
+                    return {
+                        type: 'exceptional_failure',
+                        badge: '☠️ Exceptional Failure',
+                        color: 'red',
+                        desc: 'Spell or power fizzles with no noticeable effect whatsoever.'
+                    };
+                }
+            } else {
+                if (margin >= 20) {
+                    return {
+                        type: 'critical_success',
+                        badge: '🌟 Critical Success (Wild Surge)',
+                        color: 'purple',
+                        desc: 'Spell or power has increased effect (double damage, double area, double duration, etc.).'
+                    };
+                } else if (margin >= 10) {
+                    return {
+                        type: 'exceptional_success',
+                        badge: '⚡ Exceptional Success (Wild Surge)',
+                        color: 'indigo',
+                        desc: 'Spell or power has increased power (+8 PL and +4 bonus on any attack rolls).'
+                    };
+                } else if (margin >= 1) {
+                    return {
+                        type: 'outstanding_success',
+                        badge: '💎 Outstanding Success (Free Cast)',
+                        color: 'teal',
+                        desc: 'Spell or power works as intended and costs 0 PP!'
+                    };
+                } else if (margin === 0) {
+                    return {
+                        type: 'success',
+                        badge: '✨ Success',
+                        color: 'emerald',
+                        desc: 'Spell or power works as intended.'
+                    };
+                } else if (margin >= -9) {
+                    return {
+                        type: 'failure',
+                        badge: '⚠️ Failure (Reduced Effect)',
+                        color: 'amber',
+                        desc: 'Spell has negligible effect (one tenth damage, -20 attack roll, reduced area, etc.).'
+                    };
+                } else if (margin >= -19) {
+                    return {
+                        type: 'outstanding_failure',
+                        badge: '🌀 Outstanding Failure (Wild Chaos)',
+                        color: 'orange',
+                        desc: 'Innocuous item(s) appear in the target area, or caster suffers a bizarre harmless side effect.'
+                    };
+                } else if (margin >= -29) {
+                    return {
+                        type: 'exceptional_failure',
+                        badge: '⚡ Exceptional Failure (Energy Surge)',
+                        color: 'red',
+                        desc: 'Effect fails and magical energy backlash deals 2 HP per PL damage to the caster.'
+                    };
+                } else {
+                    return {
+                        type: 'critical_failure',
+                        badge: '💀 Critical Failure (Wild Backfire)',
+                        color: 'rose',
+                        desc: 'Spell targets the caster or an ally instead, or produces a contrary/opposite effect.'
+                    };
+                }
+            }
+        },
+
+        rollSpellD20() {
+            let roll = Math.floor(Math.random() * 20) + 1;
+            let total = roll;
+            if (roll === 20) {
+                let exp = Math.floor(Math.random() * 20) + 1;
+                total += exp;
+                while (exp === 20) {
+                    exp = Math.floor(Math.random() * 20) + 1;
+                    total += exp;
+                }
+            } else if (roll === 1) {
+                let exp = Math.floor(Math.random() * 20) + 1;
+                total = 1 - exp;
+            }
+            this.castSpellState.d20Roll = total;
+        },
+
+        parseAttackCheckDisplay(checkStr) {
+            if (!checkStr) return '–';
+            return String(checkStr).replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, '<br/>');
+        },
+
+        copyCastLogToClipboard() {
+            const s = this.activeCastSpell;
+            if (!s) return;
+            const text = `🪄 [Spellcasting] ${this.characterName} casts ${s.Name}
+• Power Level: PL ${this.castPL} (Lingering Aura: ${this.castLingeringAura})
+• Power Cost: ${this.castAPC} PP (TPC ${this.castTPC} PP - Affinity Discount ${this.castSkillInfo.affinityDiscount} PP)
+• Action Time: ${this.castTotalAP} AP
+• Supernatural Activation Check: ${this.castCheckResult} (Roll ${this.castSpellState.isTake10 ? 10 : this.castSpellState.d20Roll} + Skill ${this.castSkillInfo.bestRank} + Abil ${this.castSkillInfo.affinityAbilMod} + 2H ${this.castSpellState.hasTwoFreeHands ? 2 : 0} + APB ${this.castAPB} + MAM ${this.castMamBonus} + Circ ${this.castSpellState.circumstanceCheckMod})
+• Target DC: ${this.castEffectiveDC} (Base 10 + TPC ${this.castTPC} + MR ${this.castSpellState.targetMR} + AM ${this.castSpellState.localAntimagic} + WM ${this.castSpellState.localWildMagic} + Opposing PL ${this.castSpellState.opposingPL})
+• Result: ${this.castOutcome.badge} (Margin ${this.castMargin >= 0 ? '+' : ''}${this.castMargin})
+• Effect: ${this.castOutcome.desc}`;
+            navigator.clipboard.writeText(text);
+            this.castSpellState.copiedLog = true;
+            setTimeout(() => this.castSpellState.copiedLog = false, 2500);
         }
     };
 }

@@ -1544,16 +1544,23 @@
                             @endphp
                             <tr>
                                 <td class="cvlist">
-                                    <div class="flex flex-col">
-                                        <span class="font-bold text-amber-950 font-serif">{{ $spObj->Name }}</span>
-                                        @if(is_array($optIds) && !empty($optIds))
-                                            <div class="text-[11px] text-stone-600 pl-2 space-y-0.5 mt-0.5">
-                                                @foreach($optIds as $optId)
-                                                    @if(isset($spellOptionsMap[$optId]))
-                                                        <div>&bull; <span class="font-semibold text-stone-800">{{ $spellOptionsMap[$optId]->Name }}</span> <span class="text-indigo-800">({{ $spellOptionsMap[$optId]->Cost }})</span></div>
-                                                    @endif
-                                                @endforeach
-                                            </div>
+                                    <div class="flex items-center justify-between gap-2">
+                                        <div class="flex flex-col">
+                                            <span class="font-bold text-amber-950 font-serif">{{ $spObj->Name }}</span>
+                                            @if(is_array($optIds) && !empty($optIds))
+                                                <div class="text-[11px] text-stone-600 pl-2 space-y-0.5 mt-0.5">
+                                                    @foreach($optIds as $optId)
+                                                        @if(isset($spellOptionsMap[$optId]))
+                                                            <div>&bull; <span class="font-semibold text-stone-800">{{ $spellOptionsMap[$optId]->Name }}</span> <span class="text-indigo-800">({{ $spellOptionsMap[$optId]->Cost }})</span></div>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </div>
+                                        @if(!$isWizard)
+                                            <button type="button" @click="openCastSpellModal({{ $spObj->ID }})" class="no-print text-[11px] bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-800/30 px-2 py-0.5 rounded font-bold shadow-2xs cursor-pointer transition flex items-center gap-1 shrink-0" title="Open Cast Spell Assistant for {{ $spObj->Name }}">
+                                                <span>🪄 Cast</span>
+                                            </button>
                                         @endif
                                     </div>
                                 </td>
