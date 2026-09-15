@@ -268,6 +268,28 @@ class ModifierStackingEngine
     }
 
     /**
+     * Get subtotal of modifiers for a stat for a specific modifier type (or array of types).
+     */
+    public function getSubtotalByType(string $stat, string|array $types): float|int
+    {
+        if (!isset($this->modifiers[$stat])) {
+            return 0;
+        }
+
+        $typeArray = is_array($types) ? $types : [$types];
+        $normTypes = array_map([self::class, 'normalizeType'], $typeArray);
+
+        $total = 0.0;
+        foreach ($normTypes as $normType) {
+            if (isset($this->modifiers[$stat][$normType])) {
+                $total += $this->getTypeSubtotal($normType, $this->modifiers[$stat][$normType]);
+            }
+        }
+
+        return (floor($total) == $total) ? (int)$total : $total;
+    }
+
+    /**
      * Get list of all stats that have registered modifiers.
      */
     public function getModifiedStats(): array

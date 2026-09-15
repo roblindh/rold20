@@ -473,7 +473,7 @@ class EntityEngine
             }
         }
         $challengeLevel = $totalLevel + $clModifier;
-        $powerLevel = $totalLevel * 2;
+        $powerLevel = $totalLevel;
 
         // Size & Body Type
         $baseSizeId = (int)($race['Size'] ?? 0);
@@ -1289,7 +1289,12 @@ class EntityEngine
         }
         $mr = max(0, $racialMR + $templateMR + (int)$modifierEngine->getTotal('MR'));
 
-        $critRes = $dr + (int)$modifierEngine->getTotal('CritRes');
+        $critResMod = (int)$modifierEngine->getTotal('CritRes');
+        $racialCritRes = (int)$modifierEngine->getSubtotalByType('CritRes', ['Rac', 'Tpl']);
+        $isInanimate = ($groupId === 4 || in_array($subtypeId, [29, 30]));
+        $hasPiercingResistance = ($isInanimate || $racialCritRes >= 10);
+
+        $critRes = $dr + $critResMod;
         $critScore = 20 + $critRes;
 
         // Energy Resistances
@@ -2057,6 +2062,8 @@ class EntityEngine
                 'armor_parry_bonus' => $maxArmorPar,
                 'crit_res' => $critRes,
                 'crit_score' => $critScore,
+                'racial_crit_res' => $racialCritRes,
+                'piercing_resistance' => $hasPiercingResistance,
                 'fort' => $fort,
                 'ref' => $ref,
                 'will' => $will,

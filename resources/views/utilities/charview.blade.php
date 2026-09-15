@@ -131,6 +131,9 @@
 
             // Resistances string
             $activeResistances = [];
+            if (!empty($calc['defenses']['piercing_resistance'])) {
+                $activeResistances[] = "Piercing Res (½)";
+            }
             foreach ($calc['defenses']['resistances'] as $resType => $resVal) {
                 if ($resVal >= 999) {
                     $activeResistances[] = "{$resType} Imm";

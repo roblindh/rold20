@@ -325,7 +325,17 @@
                             <td class="cvmdm cvcenter" colspan="3" x-text="calculatedState?.defenses?.mr ?? calcMR()"></td>
                         </tr>
                         <tr><td class="cvlabel" colspan="6">Resistances &amp; Immunities</td></tr>
-                        <tr><td class="cvsml" colspan="6">None</td></tr>
+                        <tr><td class="cvsml" colspan="6" x-text="(() => {
+                            let res = [];
+                            if (calculatedState?.defenses?.piercing_resistance) res.push('Piercing Res (½)');
+                            if (calculatedState?.defenses?.resistances) {
+                                for (let [k, v] of Object.entries(calculatedState.defenses.resistances)) {
+                                    if (v >= 999) res.push(k + ' Imm');
+                                    else if (v > 0) res.push(k + ' Res ' + v);
+                                }
+                            }
+                            return res.length > 0 ? res.join(', ') : 'None';
+                        })()"></td></tr>
                         <tr><td class="cvlabel" colspan="6">Special Defenses</td></tr>
                         <tr><td class="cvsml" colspan="6" x-text="calculatedState?.traits?.defenses_str || 'None'"></td></tr>
                     @else
