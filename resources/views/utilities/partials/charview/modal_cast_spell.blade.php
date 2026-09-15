@@ -39,6 +39,56 @@
             <!-- LEFT COLUMN: Step-by-Step Configuration (7 cols on lg) -->
             <div class="lg:col-span-7 space-y-4">
                 
+                <!-- FAVORITES & SAVED PRESETS -->
+                <div class="bg-gradient-to-r from-amber-50/90 to-stone-50 border border-amber-800/20 rounded-xl p-3 shadow-2xs space-y-2.5">
+                    <div class="flex items-center justify-between border-b border-amber-800/10 pb-1.5">
+                        <div class="flex items-center gap-1.5 font-bold text-amber-950 text-xs uppercase tracking-wider font-serif">
+                            <span>⭐ Favorite Casting Presets</span>
+                            <span class="text-[10px] bg-amber-200 text-amber-900 font-mono px-1.5 py-0.2 rounded-full font-normal" x-text="spellFavorites.length + ' saved'"></span>
+                        </div>
+                        <div x-show="savedFavoriteToast" x-transition class="text-[11px] text-emerald-800 font-bold bg-emerald-100 border border-emerald-300 px-2 py-0.5 rounded shadow-2xs">
+                            ✓ Saved!
+                        </div>
+                    </div>
+
+                    <!-- Quick Load Preset Dropdown & Delete -->
+                    <div class="flex items-center gap-2">
+                        <div class="flex-1">
+                            <select x-model="selectedFavoriteId" @change="loadSelectedFavorite(selectedFavoriteId)" class="w-full bg-white border border-stone-300 rounded-lg px-2.5 py-1.5 text-xs font-medium text-stone-900 focus:outline-none focus:border-amber-600">
+                                <option value="">-- Load a Saved Favorite Preset --</option>
+                                <template x-for="fav in spellFavorites" :key="fav.id">
+                                    <option :value="fav.id" x-text="fav.name"></option>
+                                </template>
+                            </select>
+                        </div>
+                        <button type="button" 
+                                x-show="selectedFavoriteId" 
+                                @click="deleteFavorite(selectedFavoriteId)" 
+                                title="Delete this favorite preset"
+                                class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 rounded-lg text-xs font-bold transition flex items-center gap-1 cursor-pointer">
+                            <span>🗑️</span>
+                            <span class="hidden sm:inline">Delete</span>
+                        </button>
+                    </div>
+
+                    <!-- Save Current Configuration Row -->
+                    <div class="pt-1 border-t border-stone-200/80 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                        <div class="flex-1">
+                            <input type="text" 
+                                   x-model="newFavoriteName" 
+                                   @keydown.enter.prevent="saveCurrentAsFavorite()"
+                                   :placeholder="activeCastSpell ? (activeCastSpell.Name + ' (' + castTPC + ' PP, PL ' + castPL + ')') : 'Custom Preset Name...'" 
+                                   class="w-full bg-white border border-stone-300 rounded-lg px-2.5 py-1 text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-indigo-600">
+                        </div>
+                        <button type="button" 
+                                @click="saveCurrentAsFavorite()" 
+                                class="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold text-xs shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer shrink-0">
+                            <span>⭐</span>
+                            <span>Save Favorite</span>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- STEP 1: Select Spell or Power -->
                 <div class="bg-white border border-stone-300 rounded-xl p-3.5 shadow-2xs space-y-2.5">
                     <div class="flex items-center justify-between border-b border-stone-200 pb-2">

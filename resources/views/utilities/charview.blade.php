@@ -528,6 +528,10 @@ function characterViewerApp() {
     }));
 
     return {
+        init() {
+            this.loadSpellFavorites();
+        },
+
         // Modal visibility
         showLevelUpModal: false,
         showModifyModal: false,
@@ -704,6 +708,7 @@ function characterViewerApp() {
                 }
             }
             this.loadCombatMatrixConfig();
+            this.loadSpellFavorites();
         },
 
         // Equipment Management State
@@ -1072,13 +1077,15 @@ function characterViewerApp() {
         },
 
         openCastSpellModal(spellId = null) {
+            this.loadSpellFavorites();
             if (spellId !== null && spellId !== undefined) {
                 this.castSpellState.selectedSpellId = String(spellId);
+                this.onCastSpellChanged();
             } else if (!this.castSpellState.selectedSpellId) {
                 const known = this.knownSpellsCatalog;
                 this.castSpellState.selectedSpellId = known.length > 0 ? String(known[0].ID) : (rawSpells.length > 0 ? String(rawSpells[0].ID) : null);
+                this.onCastSpellChanged();
             }
-            this.onCastSpellChanged();
             this.showCastSpellModal = true;
         },
 
@@ -1499,6 +1506,106 @@ function characterViewerApp() {
             navigator.clipboard.writeText(text);
             this.castSpellState.copiedLog = true;
             setTimeout(() => this.castSpellState.copiedLog = false, 2500);
+        },
+
+        // Spell Favorites / Presets Management
+        spellFavorites: [],
+        newFavoriteName: '',
+        selectedFavoriteId: '',
+        savedFavoriteToast: false,
+
+        saveSpellFavorites() {
+            try {
+                localStorage.setItem('char_' + {{ (int)($character->ID ?? 0) }} + '_spell_favorites', JSON.stringify(this.spellFavorites));
+            } catch(e) {}
+        },
+
+        loadSpellFavorites() {
+            try {
+                const saved = localStorage.getItem('char_' + {{ (int)($character->ID ?? 0) }} + '_spell_favorites');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed)) {
+                        this.spellFavorites = parsed;
+                    }
+                }
+            } catch(e) {}
+        },
+
+        saveCurrentAsFavorite() {
+            const spell = this.activeCastSpell;
+            if (!spell) return;
+            const defaultName = spell.Name + ' (' + this.castTPC + ' PP, PL ' + this.castPL + ')';
+            const name = (this.newFavoriteName && this.newFavoriteName.trim()) ? this.newFavoriteName.trim() : defaultName;
+            
+            const newFav = {
+                id: 'fav_' + Date.now(),
+                name: name,
+                spellId: String(this.castSpellState.selectedSpellId),
+                spellName: spell.Name,
+                tpc: this.castTPC,
+                apc: this.castAPC,
+                pl: this.castPL,
+                ap: this.castTotalAP,
+                selectedVariations: Object.assign({}, this.castSpellState.selectedVariations),
+                selectedRangeIndex: parseInt(this.castSpellState.selectedRangeIndex || 0),
+                selectedDurationIndex: parseInt(this.castSpellState.selectedDurationIndex || 0),
+                selectedTargetIndex: parseInt(this.castSpellState.selectedTargetIndex || 0),
+                selectedImplementsIndex: parseInt(this.castSpellState.selectedImplementsIndex || 0),
+                selectedActionTimeIndex: parseInt(this.castSpellState.selectedActionTimeIndex || 0),
+                voluntaryPP: parseInt(this.castSpellState.voluntaryPP || 0),
+                apMode: this.castSpellState.apMode || 'none',
+                apAmount: parseInt(this.castSpellState.apAmount || 1),
+                isTake10: this.castSpellState.isTake10 !== undefined ? !!this.castSpellState.isTake10 : true,
+                hasTwoFreeHands: this.castSpellState.hasTwoFreeHands !== undefined ? !!this.castSpellState.hasTwoFreeHands : true,
+                circumstanceCheckMod: parseInt(this.castSpellState.circumstanceCheckMod || 0),
+                targetMR: parseInt(this.castSpellState.targetMR || 0),
+                localAntimagic: parseInt(this.castSpellState.localAntimagic || 0),
+                localWildMagic: parseInt(this.castSpellState.localWildMagic || 0),
+                opposingPL: parseInt(this.castSpellState.opposingPL || 0),
+                circumstanceDCMod: parseInt(this.castSpellState.circumstanceDCMod || 0),
+            };
+
+            this.spellFavorites.push(newFav);
+            this.selectedFavoriteId = newFav.id;
+            this.saveSpellFavorites();
+            this.newFavoriteName = '';
+            this.savedFavoriteToast = true;
+            setTimeout(() => this.savedFavoriteToast = false, 2500);
+        },
+
+        loadSelectedFavorite(favId) {
+            if (!favId) return;
+            const fav = (this.spellFavorites || []).find(f => String(f.id) === String(favId));
+            if (!fav) return;
+
+            this.castSpellState.selectedSpellId = String(fav.spellId);
+            this.castSpellState.selectedVariations = Object.assign({}, fav.selectedVariations || {});
+            this.castSpellState.selectedRangeIndex = parseInt(fav.selectedRangeIndex || 0);
+            this.castSpellState.selectedDurationIndex = parseInt(fav.selectedDurationIndex || 0);
+            this.castSpellState.selectedTargetIndex = parseInt(fav.selectedTargetIndex || 0);
+            this.castSpellState.selectedImplementsIndex = parseInt(fav.selectedImplementsIndex || 0);
+            this.castSpellState.selectedActionTimeIndex = parseInt(fav.selectedActionTimeIndex || 0);
+            this.castSpellState.voluntaryPP = parseInt(fav.voluntaryPP || 0);
+            this.castSpellState.apMode = fav.apMode || 'none';
+            this.castSpellState.apAmount = parseInt(fav.apAmount || 1);
+            this.castSpellState.isTake10 = fav.isTake10 !== undefined ? !!fav.isTake10 : true;
+            this.castSpellState.hasTwoFreeHands = fav.hasTwoFreeHands !== undefined ? !!fav.hasTwoFreeHands : true;
+            this.castSpellState.circumstanceCheckMod = parseInt(fav.circumstanceCheckMod || 0);
+            this.castSpellState.targetMR = parseInt(fav.targetMR || 0);
+            this.castSpellState.localAntimagic = parseInt(fav.localAntimagic || 0);
+            this.castSpellState.localWildMagic = parseInt(fav.localWildMagic || 0);
+            this.castSpellState.opposingPL = parseInt(fav.opposingPL || 0);
+            this.castSpellState.circumstanceDCMod = parseInt(fav.circumstanceDCMod || 0);
+        },
+
+        deleteFavorite(favId) {
+            if (!favId) return;
+            this.spellFavorites = (this.spellFavorites || []).filter(f => String(f.id) !== String(favId));
+            if (this.selectedFavoriteId === favId) {
+                this.selectedFavoriteId = '';
+            }
+            this.saveSpellFavorites();
         }
     };
 }
