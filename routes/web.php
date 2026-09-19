@@ -66,6 +66,16 @@ Route::prefix('reference')->name('reference.')->group(function () {
     Route::get('/cultures', [ReferenceController::class, 'cultures'])->name('cultures');
     Route::get('/cultures/list', [ReferenceController::class, 'culturesList'])->name('cultures.list');
     Route::get('/cultures/{name}', [ReferenceController::class, 'showCulture'])->name('cultures.show');
+
+    Route::get('/other', [ReferenceController::class, 'other'])->name('other');
+    Route::get('/other/list', [ReferenceController::class, 'otherList'])->name('other.list');
+    Route::get('/other/{name}', [ReferenceController::class, 'showOther'])->name('other.show');
+    Route::get('/conditions', [ReferenceController::class, 'other']);
+    Route::get('/conditions/list', [ReferenceController::class, 'otherList']);
+    Route::get('/conditions/{name}', [ReferenceController::class, 'showOther']);
+    Route::get('/poisons', fn() => redirect('/reference/other?type=3'));
+    Route::get('/diseases', fn() => redirect('/reference/other?type=4'));
+    Route::get('/organizations', [ReferenceController::class, 'other']);
 });
 
 // Generator & Management Utilities

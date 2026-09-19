@@ -40,6 +40,7 @@
                 <a href="#compendium-equipment" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">🛡️ Equipment</a>
                 <a href="#compendium-creatures" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">🐉 Bestiary</a>
                 <a href="#compendium-cultures" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">🏛️ Cultures</a>
+                <a href="#compendium-other" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">📜 Other Lists</a>
                 <span class="border-r border-slate-300 mx-1"></span>
                 <a href="#chapter-legal" class="px-2.5 py-1 rounded bg-slate-100 hover:bg-indigo-600 hover:text-white text-slate-700 transition font-medium border border-slate-200">⚖️ Legal &amp; OGL</a>
             </div>
@@ -142,6 +143,13 @@
         <!-- Compendium: Cultures -->
         <section id="compendium-cultures" class="ruleset-chapter compendium-section pt-4">
             <?php include resource_path('views/rules/content/hb14_cultures_content.php'); ?>
+        </section>
+
+        <hr class="chapter-divider my-12 border-slate-300" />
+
+        <!-- Compendium: Other Lists -->
+        <section id="compendium-other" class="ruleset-chapter compendium-section pt-4">
+            <?php include resource_path('views/rules/content/hb17_other_content.php'); ?>
         </section>
 
         <hr class="chapter-divider my-12 border-slate-300" />

@@ -540,6 +540,127 @@ class ReferenceController extends Controller
     }
 
     /**
+     * Other Lists (Staged Conditions & Organizations) reference table
+     */
+    public function other(Request $request): View|JsonResponse
+    {
+        $type = $request->input('type', '');
+        $search = $request->input('search', '');
+        $sort = $request->input('sort', 'Name');
+        $direction = $request->input('direction', 'asc') === 'desc' ? 'desc' : 'asc';
+        $isOrganization = ($type === 'organization' || $type === 'org');
+
+        if ($isOrganization) {
+            $query = DB::table('ref_organizations')
+                ->leftJoin('ref_organizationtypes', 'ref_organizations.Type', '=', 'ref_organizationtypes.ID')
+                ->select('ref_organizations.*', 'ref_organizationtypes.Type as TypeName');
+
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('ref_organizations.Name', 'like', "%{$search}%")
+                      ->orWhere('ref_organizationtypes.Type', 'like', "%{$search}%");
+                });
+            }
+
+            $sortMap = [
+                'Name' => 'ref_organizations.Name',
+                'Type' => 'ref_organizationtypes.Type',
+                'TypeName' => 'ref_organizationtypes.Type',
+            ];
+            $orderCol = $sortMap[$sort] ?? 'ref_organizations.Name';
+            $query->orderBy($orderCol, $direction);
+
+            $items = $query->paginate(25)->withQueryString();
+        } else {
+            $query = DB::table('ref_stagedconditions')
+                ->leftJoin('ref_conditiontypes', 'ref_stagedconditions.Type', '=', 'ref_conditiontypes.ID')
+                ->select('ref_stagedconditions.*', 'ref_conditiontypes.ConditionType as TypeName');
+
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('ref_stagedconditions.Name', 'like', "%{$search}%")
+                      ->orWhere('ref_stagedconditions.Descriptors', 'like', "%{$search}%")
+                      ->orWhere('ref_stagedconditions.Description', 'like', "%{$search}%")
+                      ->orWhere('ref_stagedconditions.Trigger', 'like', "%{$search}%")
+                      ->orWhere('ref_stagedconditions.InitialEffect', 'like', "%{$search}%")
+                      ->orWhere('ref_stagedconditions.Stage1', 'like', "%{$search}%")
+                      ->orWhere('ref_stagedconditions.Stage2', 'like', "%{$search}%");
+                });
+            }
+
+            if ($type !== '' && is_numeric($type)) {
+                $query->where('ref_stagedconditions.Type', (int)$type);
+            }
+
+            $sortMap = [
+                'Name' => 'ref_stagedconditions.Name',
+                'Type' => 'ref_conditiontypes.ConditionType',
+                'TypeName' => 'ref_conditiontypes.ConditionType',
+                'Trigger' => 'ref_stagedconditions.Trigger',
+                'InitialEffect' => 'ref_stagedconditions.InitialEffect',
+                'MaxDuration' => 'ref_stagedconditions.MaxDuration',
+            ];
+            $orderCol = $sortMap[$sort] ?? 'ref_stagedconditions.Name';
+            $query->orderBy($orderCol, $direction);
+
+            $items = $query->paginate(25)->withQueryString();
+        }
+
+        $conditionTypes = \Illuminate\Support\Facades\Cache::rememberForever('cache.ref_conditiontypes', fn() => DB::table('ref_conditiontypes')->orderBy('ID')->get());
+        $conditionCounts = DB::table('ref_stagedconditions')->select('Type', DB::raw('count(*) as count'))->groupBy('Type')->pluck('count', 'Type')->toArray();
+        $totalConditions = array_sum($conditionCounts);
+        $totalOrgs = DB::table('ref_organizations')->count();
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'html' => view('reference.partials.other_table', compact('items', 'isOrganization'))->render(),
+                'pagination' => $items->links('vendor.pagination.tailwind')->toHtml(),
+            ]);
+        }
+
+        return view('reference.other', compact(
+            'items',
+            'conditionTypes',
+            'conditionCounts',
+            'totalConditions',
+            'totalOrgs',
+            'sort',
+            'direction',
+            'isOrganization'
+        ));
+    }
+
+    public function showOther(string $name): View
+    {
+        $this->ensureRulesLoaded();
+        $name = urldecode($name);
+
+        $condition = DB::table('ref_stagedconditions')
+            ->leftJoin('ref_conditiontypes', 'ref_stagedconditions.Type', '=', 'ref_conditiontypes.ID')
+            ->select('ref_stagedconditions.*', 'ref_conditiontypes.ConditionType as TypeName')
+            ->where('ref_stagedconditions.Name', $name)
+            ->orWhere('ref_stagedconditions.ID', $name)
+            ->first();
+
+        if ($condition) {
+            return view('reference.other_show', compact('condition'));
+        }
+
+        $organization = DB::table('ref_organizations')
+            ->leftJoin('ref_organizationtypes', 'ref_organizations.Type', '=', 'ref_organizationtypes.ID')
+            ->select('ref_organizations.*', 'ref_organizationtypes.Type as TypeName')
+            ->where('ref_organizations.Name', $name)
+            ->orWhere('ref_organizations.ID', $name)
+            ->first();
+
+        if ($organization) {
+            return view('reference.other_show', compact('organization'));
+        }
+
+        abort(404, 'Condition or organization not found');
+    }
+
+    /**
      * Complete catalogue list views with full information boxes
      */
     public function skillsList(): View
@@ -576,5 +697,22 @@ class ReferenceController extends Controller
     {
         $this->ensureRulesLoaded();
         return view('reference.cultures_list');
+    }
+
+    public function otherList(): View
+    {
+        $this->ensureRulesLoaded();
+
+        $poisons = DB::table('ref_stagedconditions')->where('Type', 3)->orderBy('Name')->get();
+        $diseases = DB::table('ref_stagedconditions')->where('Type', 4)->orderBy('Name')->get();
+        $mentalIllnesses = DB::table('ref_stagedconditions')->where('Type', 5)->orderBy('Name')->get();
+        $specialConditions = DB::table('ref_stagedconditions')->whereIn('Type', [1, 2, 6])->orderBy('Name')->get();
+        $organizations = DB::table('ref_organizations')
+            ->leftJoin('ref_organizationtypes', 'ref_organizations.Type', '=', 'ref_organizationtypes.ID')
+            ->select('ref_organizations.*', 'ref_organizationtypes.Type as TypeName')
+            ->orderBy('ref_organizations.Name')
+            ->get();
+
+        return view('reference.other_list', compact('poisons', 'diseases', 'mentalIllnesses', 'specialConditions', 'organizations'));
     }
 }

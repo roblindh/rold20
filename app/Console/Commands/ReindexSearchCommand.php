@@ -159,6 +159,49 @@ class ReindexSearchCommand extends Command
             $indexedCount++;
         }
 
+        // 8. Index Staged Conditions (Poisons, Diseases, Insanity, Dying, Possession)
+        $this->info("Indexing staged conditions (poisons, diseases, etc.)...");
+        $conditions = DB::table('ref_stagedconditions')
+            ->leftJoin('ref_conditiontypes', 'ref_stagedconditions.Type', '=', 'ref_conditiontypes.ID')
+            ->select('ref_stagedconditions.*', 'ref_conditiontypes.ConditionType as TypeName')
+            ->get();
+        foreach ($conditions as $sc) {
+            $catLabel = match((int)$sc->Type) {
+                3 => 'Poison',
+                4 => 'Disease',
+                5 => 'Mental Illness',
+                1 => 'Condition',
+                2 => 'Condition',
+                default => 'Condition',
+            };
+            $fullText = "{$sc->Name} {$sc->Descriptors} {$sc->Description} {$sc->Trigger} {$sc->InitialEffect} {$sc->Stage1} {$sc->Stage2} {$sc->Stage3} {$sc->Stage4}";
+            DB::table('search_index')->insert([
+                'title' => $sc->Name,
+                'category' => $catLabel,
+                'url' => route('reference.other.show', ['name' => urlencode($sc->Name)], false),
+                'snippet' => mb_substr($sc->InitialEffect ?? $sc->Description ?? $sc->Trigger ?? '', 0, 200),
+                'content' => $fullText,
+            ]);
+            $indexedCount++;
+        }
+
+        // 9. Index Organizations
+        $this->info("Indexing organizations...");
+        $organizations = DB::table('ref_organizations')
+            ->leftJoin('ref_organizationtypes', 'ref_organizations.Type', '=', 'ref_organizationtypes.ID')
+            ->select('ref_organizations.*', 'ref_organizationtypes.Type as TypeName')
+            ->get();
+        foreach ($organizations as $org) {
+            DB::table('search_index')->insert([
+                'title' => $org->Name,
+                'category' => 'Organization',
+                'url' => route('reference.other.show', ['name' => urlencode($org->Name)], false),
+                'snippet' => mb_substr($org->TypeName ?? 'World Organization', 0, 200),
+                'content' => "{$org->Name} {$org->TypeName}",
+            ]);
+            $indexedCount++;
+        }
+
         $this->info("<info>Search index built successfully!</info> Total {$indexedCount} entries indexed.");
         return 0;
     }

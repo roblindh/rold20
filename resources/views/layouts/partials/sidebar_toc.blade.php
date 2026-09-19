@@ -303,6 +303,21 @@
                         </ul>
                     @endif
                 </li>
+
+                <!-- 7. Other Lists (Staged Conditions & Organizations) -->
+                @php $isOther = request()->routeIs('reference.other*'); @endphp
+                <li class="list-none p-0 m-0">
+                    <a href="{{ route('reference.other', [], false) }}" class="sidebar-nav-item {{ $isOther ? 'active' : '' }}">
+                        <span>📜 Other Lists</span>
+                        <span class="text-[11px] bg-slate-800 px-1.5 py-0.2 rounded text-amber-300 border border-slate-700 font-mono">65</span>
+                    </a>
+                    @if($isOther)
+                        <ul class="border-l-2 border-amber-600/40 ml-3.5 pl-2.5 my-1.5 space-y-0.5 text-xs list-none">
+                            <li><a href="{{ route('reference.other', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.other') && !request()->routeIs('reference.other.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-amber-200' }}">🔍 Search Table</a></li>
+                            <li><a href="{{ route('reference.other.list', [], false) }}" class="block py-0.5 transition {{ request()->routeIs('reference.other.list') ? 'text-amber-300 font-bold' : 'text-slate-300 hover:text-amber-200' }}">📋 Complete List</a></li>
+                        </ul>
+                    @endif
+                </li>
             </ul>
         </div>
 

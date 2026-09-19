@@ -351,7 +351,7 @@
     Unless explicitly specified, energy resistance, immunity, and vulnerability do not protect a creature's worn or carried equipment.
 </p>
 <p>
-    <em>Psychic Resistance (Psychic Res):</em> Reduces Psyche Point (PP) damage taken from <a href="/rules/combat#PsychicDmg">psychic attacks</a>. Psychic resistance represents the maximum PP damage absorbed per round. Psychic immunity completely negates psychic damage and mental status penalties, whereas psychic vulnerability increases incoming PP damage by +50% or +100%.
+    <em>Psychic Resistance (Psychic Res):</em> Reduces Power Point (PP) damage taken from <a href="/rules/combat#PsychicDmg">psychic attacks</a>. Psychic resistance represents the maximum PP damage absorbed per round. Psychic immunity completely negates psychic damage and mental status penalties, whereas psychic vulnerability increases incoming PP damage by +50% or +100%.
 </p>
 <p>
     <em>Penetrating Hits:</em> When an energy or psychic attack beats the target's defense by 10 or more (an exceptional success), the target's applicable resistance is halved against that attack.
@@ -386,7 +386,7 @@
 
 <h4 id="Size">Size</h4>
 <p>
-    <em>Size Category (Sz):</em> Every creature and object belongs to a size category that provides specific modifiers to attack rolls, defenses, carrying capacity, space, and stealth, as detailed in the table below. For manufactured gear and weapons, rules distinguish between the item's physical dimensions (<em>object size</em>) and the creature size it is proportioned for (<em>made-for-size</em>). For example, a dagger crafted for a Medium humanoid is itself a Tiny object.
+    <em>Size Category (Sz):</em> Every creature and object belongs to a size category that provides specific modifiers to attack rolls, defenses, carrying capacity, spacing, and stealth, as detailed in the table below. For manufactured gear and weapons, rules distinguish between the item's physical dimensions (<em>object size</em>) and the creature size it is proportioned for (<em>made-for-size</em>). For example, a dagger crafted for a Medium humanoid is itself a Tiny object.
 </p>
 
 <?php show_sizecategories(); ?>
@@ -423,7 +423,7 @@
 </p>
 <ul class="list-disc pl-6 space-y-1">
     <li><strong>Poison:</strong> Triggers a secondary attack against Fortitude whenever physical damage is dealt.</li>
-    <li><strong>Grab / Grapple:</strong> Allows the creature to immediately initiate a grapple maneuver as a free action upon striking.</li>
+    <li><strong>Grab / Grapple:</strong> Allows the creature to immediately initiate a grapple maneuver as a free action upon a successful hit.</li>
     <li><strong>Trip:</strong> Allows a free trip attempt against the target upon a successful hit.</li>
 </ul>
 
@@ -1437,11 +1437,21 @@
     Unless otherwise specified, a creature with a natural poison attack is immune to its own poison.
 </p>
 <p>
-    See the list below for the effects of specific poisons, and see the equipment chapter for their prices.
-    The effects described here are for a standard dose. The equipment chapter describes modifiers for additional doses or higher concentrations.
+    The effects described in the ruleset are for standard doses (see the <a href="/reference/equipment">Equipment Compendium</a> for poison pricing, crafting, and modifiers for higher concentrations or multi-dose applications).
 </p>
 
-<?php show_stagedconditions(STAGED_POISON); ?>
+<div class="my-4 p-4 bg-amber-50/80 border border-amber-300/80 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+    <div>
+        <span class="font-bold text-amber-950 flex items-center gap-1.5 text-sm font-serif">
+            <span>🧪</span> Complete Poison Reference Catalogue
+        </span>
+        <p class="text-xs text-stone-700 mt-0.5">Explore full progressive stage effects, save DCs, durations, and delivery vectors for all 50 poisons in the Reference Compendium.</p>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+        <a href="/reference/other?type=3" class="btn-rol-primary text-xs py-1.5 px-3">🔍 Search Poisons</a>
+        <a href="/reference/other/list#Poisons" class="btn-rol-secondary text-xs py-1.5 px-3">📋 Complete Poison List</a>
+    </div>
+</div>
 
 <h3 id="Disease">Disease</h3>
 
@@ -1469,13 +1479,36 @@
     <em>Injury:</em> Exposure occurs through open wounds, so the carrier has to penetrate both armor and natural DR. This type of disease can also spread through ingestion.
 </p>
 
-<?php show_stagedconditions(STAGED_DISEASE); ?>
+<div class="my-4 p-4 bg-amber-50/80 border border-amber-300/80 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+    <div>
+        <span class="font-bold text-amber-950 flex items-center gap-1.5 text-sm font-serif">
+            <span>🦠</span> Complete Disease Reference Catalogue
+        </span>
+        <p class="text-xs text-stone-700 mt-0.5">Browse incubation periods, stage escalations, ongoing check frequencies, and lingering afflictions for all 13 physical diseases.</p>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+        <a href="/reference/other?type=4" class="btn-rol-primary text-xs py-1.5 px-3">🔍 Search Diseases</a>
+        <a href="/reference/other/list#Diseases" class="btn-rol-secondary text-xs py-1.5 px-3">📋 Complete Disease List</a>
+    </div>
+</div>
 
 <h4 id="MentalIllness">Mental Illness</h4>
 <p>
+    Extreme psychological trauma, cosmic horror, necrotic corruption, or catastrophic psychic damage can inflict acute or progressive mental illnesses. Such afflictions typically test a creature's Will defense upon initial psychic exposure, progressing through escalating stages of behavioral impairment, delirium, or catatonia if subsequent recovery checks fail.
 </p>
 
-<?php show_stagedconditions(STAGED_INSANITY); ?>
+<div class="my-4 p-4 bg-amber-50/80 border border-amber-300/80 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+    <div>
+        <span class="font-bold text-amber-950 flex items-center gap-1.5 text-sm font-serif">
+            <span>🧠</span> Mental Illness &amp; Insanity Catalogue
+        </span>
+        <p class="text-xs text-stone-700 mt-0.5">View staged mental conditions, psychic trauma progressions, triggers, and psychological treatments in the Reference Compendium.</p>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+        <a href="/reference/other?type=5" class="btn-rol-primary text-xs py-1.5 px-3">🔍 Search Mental Illnesses</a>
+        <a href="/reference/other/list#MentalIllnesses" class="btn-rol-secondary text-xs py-1.5 px-3">📋 Complete List</a>
+    </div>
+</div>
 
 <h3 id="OtherConditions">Other Conditions</h3>
 <p>
