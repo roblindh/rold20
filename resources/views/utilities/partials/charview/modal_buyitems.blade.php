@@ -123,7 +123,9 @@
             <!-- Modal Footer -->
             <div class="flex items-center justify-between pt-3 border-t border-slate-200">
                 <button type="button" @click="showBuyItemsModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-800 cursor-pointer">Cancel</button>
-                <button type="submit" :disabled="cartItems.length === 0 || remainingWealth < 0" class="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white font-bold text-xs sm:text-sm rounded-lg shadow-md border border-emerald-900 transition flex items-center gap-1.5 cursor-pointer">
+                <button type="submit" :disabled="cartItems.length === 0 || remainingWealth < 0"
+                        style="background-color: #059669; color: #ffffff;"
+                        class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold text-xs sm:text-sm rounded-lg shadow-md border border-emerald-800 transition flex items-center gap-1.5 cursor-pointer">
                     <span>🛒</span> Purchase Selected Items
                 </button>
             </div>

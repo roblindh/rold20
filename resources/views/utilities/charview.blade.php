@@ -176,6 +176,84 @@
             }
             $skillsList = $calc['skills'] ?? $skillsList;
 
+            // --- Build Earlier Levels for Skill Points Copying in Level Up ---
+            $earlierLevelsList = [];
+            $jsonSkillsObj = (!empty($character->Skills) && str_starts_with($character->Skills, '{'))
+                ? (json_decode($character->Skills, true) ?? [])
+                : [];
+
+            $skillAccessByClassId = [];
+            if (isset($skillAccess)) {
+                foreach ($skillAccess as $sa) {
+                    $skillAccessByClassId[$sa->ClassID][$sa->SkillID] = (int)$sa->Prim;
+                }
+            }
+
+            // 1. Background Class
+            if (!empty($jsonSkillsObj['BackgroundRates']) && is_array($jsonSkillsObj['BackgroundRates'])) {
+                $earlierLevelsList[] = [
+                    'level' => 'bg',
+                    'label' => 'Background Class (' . ($bgClass->Name ?? 'Background') . ')',
+                    'allocations' => $jsonSkillsObj['BackgroundRates']
+                ];
+            } elseif ($bgClass && !empty($skillsList)) {
+                $bgSkillAccess = $skillAccessByClassId[$bgClass->ID] ?? [];
+                $bgAllocs = [];
+                foreach ($skillsList as $sId => $r) {
+                    if (isset($bgSkillAccess[$sId]) && (float)$r > 0) {
+                        $isPrim = ($bgSkillAccess[$sId] === 1);
+                        $bgAllocs[$sId] = min((float)$r, $isPrim ? 1.0 : 0.5);
+                    }
+                }
+                if (!empty($bgAllocs)) {
+                    $earlierLevelsList[] = [
+                        'level' => 'bg',
+                        'label' => 'Background Class (' . ($bgClass->Name ?? 'Background') . ')',
+                        'allocations' => $bgAllocs
+                    ];
+                }
+            }
+
+            // 2. Class Levels
+            if (!empty($classIdsList)) {
+                foreach ($classIdsList as $idx => $cId) {
+                    $lvlNum = $idx + 1;
+                    $cName = isset($classesMap[$cId]) ? $classesMap[$cId]->Name : "Level $lvlNum";
+                    $lvlAllocs = $jsonSkillsObj['LevelSkills'][$lvlNum] ?? null;
+
+                    if (empty($lvlAllocs) && !empty($skillsList)) {
+                        $classAccess = $skillAccessByClassId[$cId] ?? [];
+                        $lvlAllocs = [];
+                        foreach ($skillsList as $sId => $r) {
+                            if (isset($classAccess[$sId]) && (float)$r > 0) {
+                                $isPrim = ($classAccess[$sId] === 1);
+                                $lvlAllocs[$sId] = min((float)$r, $isPrim ? 1.0 : 0.5);
+                            }
+                        }
+                    }
+
+                    if (!empty($lvlAllocs)) {
+                        $earlierLevelsList[] = [
+                            'level' => (int)$lvlNum,
+                            'label' => "Level {$lvlNum} ({$cName})",
+                            'allocations' => $lvlAllocs
+                        ];
+                    }
+                }
+            }
+
+            // 3. Fallback / Current Trained Skills
+            if (!empty($skillsList)) {
+                $filteredSkills = array_filter($skillsList, fn($v) => (float)$v > 0);
+                if (!empty($filteredSkills)) {
+                    $earlierLevelsList[] = [
+                        'level' => 'current',
+                        'label' => 'Current Trained Skills',
+                        'allocations' => $filteredSkills
+                    ];
+                }
+            }
+
             // --- 7. Parse Specializations ---
             $specializationsList = [];
             if (!empty($character->Specializations)) {
@@ -507,6 +585,7 @@ function characterViewerApp() {
     const initialClassId = {{ (isset($classIdsList) && !empty($classIdsList)) ? end($classIdsList) : (($classes ?? collect([]))->first()->ID ?? 1) }};
     const initialLeftoverIp = {{ (isset($character) && $character) ? (int)($character->ImprovementPts ?? 0) : 0 }};
     const currentWealth = {{ isset($wealth) ? (int)$wealth : ((isset($character) && $character) ? (int)($character->Wealth ?? 0) : 0) }};
+    const earlierLevelsList = @json($earlierLevelsList ?? []);
 
     // Build lookup maps
     const classesMap = {};
@@ -515,7 +594,8 @@ function characterViewerApp() {
     const skillAccessByClass = {};
     (rawSkillAccess || []).forEach(sa => {
         if (!skillAccessByClass[sa.ClassID]) skillAccessByClass[sa.ClassID] = {};
-        skillAccessByClass[sa.ClassID][sa.SkillID] = sa.AccessType;
+        const isPrim = parseInt(sa.Prim) === 1;
+        skillAccessByClass[sa.ClassID][sa.SkillID] = isPrim ? 'Primary' : 'Secondary';
     });
 
     const skillsMap = {};
@@ -698,8 +778,12 @@ function characterViewerApp() {
 
         // Combat Matrix State
         combatMatrixState: {
+            showEquippedWeapons: true,
+            showCarriedWeapons: false,
             showWeapons: true,
             showAkimbo: true,
+            showPrimaryNatural: true,
+            showSecondaryNatural: true,
             showNatural: true,
             showBrawling: true,
             showGrapple: true,
@@ -707,6 +791,9 @@ function characterViewerApp() {
             availableElements: @json($calc['attacks']['available_elements'] ?? []),
             wieldedParries: @json($calc['defenses']['wielded_parries'] ?? []),
             weapons: @json($calc['attacks']['weapons'] ?? []),
+            primaryNatural: @json($calc['attacks']['primary_natural'] ?? []),
+            secondaryNatural: @json($calc['attacks']['secondary_natural'] ?? []),
+            brawlingActions: @json($calc['attacks']['brawling_actions'] ?? []),
             bestParryBonus: {{ (int)($calc['defenses']['parry_bonus'] ?? 0) }},
             armorParryBonus: {{ (int)($calc['defenses']['armor_parry_bonus'] ?? 0) }},
             decPassive: {{ (int)($calc['defenses']['dec_passive'] ?? 10) }},
@@ -715,7 +802,7 @@ function characterViewerApp() {
             dodgeMod: {{ (int)($calc['modifiers_engine']->getTotal('Dodge') ?? 0) }},
             multiAttackPenRed: {{ (int)($calc['modifiers_engine']->getTotal('MultiAttackPenRed') ?? 0) }},
             customCombos: [],
-            activeAttackId: '{{ !empty($calc['attacks']['weapons']) ? ("weapon_" . array_key_first($calc['attacks']['weapons'])) : "unarmed_brawling" }}'
+            activeAttackId: '{{ !empty($calc['attacks']['weapons']) ? ("weapon_" . array_key_first($calc['attacks']['weapons'])) : (!empty($calc['attacks']['primary_natural']) ? "natural_prim_0" : "initiate_grapple") }}'
         },
 
         get currentParryBonus() {
@@ -735,29 +822,69 @@ function characterViewerApp() {
                     const isBow = !!w.is_ranged;
                     isTwoHanded = isToggled2H || isBow;
                     
-                    const foundPar = parries.find(p => String(p.id) === String(wId));
+                    if (w.parry_bonus !== undefined) {
+                        activeItemParry = parseInt(w.parry_bonus || 0);
+                    } else {
+                        const foundPar = parries.find(p => String(p.id) === String(wId));
+                        if (foundPar) {
+                            activeItemParry = parseInt(foundPar.parry_bonus || 0);
+                        }
+                    }
+                }
+            } else if (actId && actId.startsWith('natural_prim_')) {
+                const idx = parseInt(actId.replace('natural_prim_', ''));
+                const natList = this.combatMatrixState.primaryNatural || [];
+                const nat = natList[idx];
+                if (nat && nat.parry_bonus !== undefined) {
+                    activeItemParry = parseInt(nat.parry_bonus || 0);
+                } else {
+                    const foundPar = parries.find(p => p.category && (p.category.includes('Nat') || p.category.includes('Brl') || p.category.includes('Gen')));
                     if (foundPar) {
                         activeItemParry = parseInt(foundPar.parry_bonus || 0);
                     }
                 }
-            } else if (actId && (actId.startsWith('unarmed_') || actId === 'unarmed_brawling' || actId === 'grapple')) {
-                const foundPar = parries.find(p => p.category === 'Brl');
-                if (foundPar) {
-                    activeItemParry = parseInt(foundPar.parry_bonus || 0);
+            } else if (actId && actId.startsWith('natural_sec_')) {
+                const idx = parseInt(actId.replace('natural_sec_', ''));
+                const natList = this.combatMatrixState.secondaryNatural || [];
+                const nat = natList[idx];
+                if (nat && nat.parry_bonus !== undefined) {
+                    activeItemParry = parseInt(nat.parry_bonus || 0);
+                } else {
+                    const foundPar = parries.find(p => p.category && (p.category.includes('Nat') || p.category.includes('Brl') || p.category.includes('Gen')));
+                    if (foundPar) {
+                        activeItemParry = parseInt(foundPar.parry_bonus || 0);
+                    }
+                }
+            } else if (actId && (actId.startsWith('unarmed_') || actId === 'initiate_grapple' || actId === 'grapple_attack' || actId === 'bull_rush' || actId === 'overrun' || actId === 'grapple')) {
+                const bActions = this.combatMatrixState.brawlingActions || {};
+                const bAct = bActions[actId];
+                if (bAct && bAct.parry_bonus !== undefined) {
+                    activeItemParry = parseInt(bAct.parry_bonus || 0);
+                } else {
+                    const foundPar = parries.find(p => p.category && (p.category.includes('Brl') || p.category.includes('Gen') || p.category.includes('Nat')));
+                    if (foundPar) {
+                        activeItemParry = parseInt(foundPar.parry_bonus || 0);
+                    }
                 }
             } else if (actId && actId.startsWith('natural_')) {
-                const foundPar = parries.find(p => p.category === 'Nat' || p.category === 'Brl');
+                const foundPar = parries.find(p => p.category && (p.category.includes('Nat') || p.category.includes('Brl') || p.category.includes('Gen')));
                 if (foundPar) {
                     activeItemParry = parseInt(foundPar.parry_bonus || 0);
                 }
+            } else if (actId && actId.startsWith('spell_')) {
+                activeItemParry = 0;
             } else if (actId && actId.startsWith('custom_combo_')) {
                 const combo = (this.combatMatrixState.customCombos || []).find(c => c.id === actId);
                 if (combo && combo.attacks) {
                     let maxComboPar = 0;
                     for (const a of combo.attacks) {
-                        const matched = parries.find(p => p.name && a.name && (p.name.toLowerCase().includes(a.name.toLowerCase()) || a.name.toLowerCase().includes(p.name.toLowerCase())));
-                        if (matched && parseInt(matched.parry_bonus || 0) > maxComboPar) {
-                            maxComboPar = parseInt(matched.parry_bonus || 0);
+                        if (a.parry_bonus !== undefined && parseInt(a.parry_bonus || 0) > maxComboPar) {
+                            maxComboPar = parseInt(a.parry_bonus || 0);
+                        } else {
+                            const matched = parries.find(p => p.name && a.name && (p.name.toLowerCase().includes(a.name.toLowerCase()) || a.name.toLowerCase().includes(p.name.toLowerCase())));
+                            if (matched && parseInt(matched.parry_bonus || 0) > maxComboPar) {
+                                maxComboPar = parseInt(matched.parry_bonus || 0);
+                            }
                         }
                     }
                     activeItemParry = maxComboPar;
@@ -787,8 +914,12 @@ function characterViewerApp() {
         saveCombatMatrixConfig() {
             try {
                 localStorage.setItem('char_' + {{ (int)($character->ID ?? 0) }} + '_combat_matrix', JSON.stringify({
+                    showEquippedWeapons: this.combatMatrixState.showEquippedWeapons,
+                    showCarriedWeapons: this.combatMatrixState.showCarriedWeapons,
                     showWeapons: this.combatMatrixState.showWeapons,
                     showAkimbo: this.combatMatrixState.showAkimbo,
+                    showPrimaryNatural: this.combatMatrixState.showPrimaryNatural,
+                    showSecondaryNatural: this.combatMatrixState.showSecondaryNatural,
                     showNatural: this.combatMatrixState.showNatural,
                     showBrawling: this.combatMatrixState.showBrawling,
                     showGrapple: this.combatMatrixState.showGrapple,
@@ -805,8 +936,12 @@ function characterViewerApp() {
                 const saved = localStorage.getItem('char_' + {{ (int)($character->ID ?? 0) }} + '_combat_matrix');
                 if (saved) {
                     const parsed = JSON.parse(saved);
+                    if (parsed.showEquippedWeapons !== undefined) this.combatMatrixState.showEquippedWeapons = parsed.showEquippedWeapons;
+                    if (parsed.showCarriedWeapons !== undefined) this.combatMatrixState.showCarriedWeapons = parsed.showCarriedWeapons;
                     if (parsed.showWeapons !== undefined) this.combatMatrixState.showWeapons = parsed.showWeapons;
                     if (parsed.showAkimbo !== undefined) this.combatMatrixState.showAkimbo = parsed.showAkimbo;
+                    if (parsed.showPrimaryNatural !== undefined) this.combatMatrixState.showPrimaryNatural = parsed.showPrimaryNatural;
+                    if (parsed.showSecondaryNatural !== undefined) this.combatMatrixState.showSecondaryNatural = parsed.showSecondaryNatural;
                     if (parsed.showNatural !== undefined) this.combatMatrixState.showNatural = parsed.showNatural;
                     if (parsed.showBrawling !== undefined) this.combatMatrixState.showBrawling = parsed.showBrawling;
                     if (parsed.showGrapple !== undefined) this.combatMatrixState.showGrapple = parsed.showGrapple;
@@ -1002,19 +1137,95 @@ function characterViewerApp() {
 
         // Level Up state
         lvlStep: 1,
+        lvlCopyFromLevel: '',
+        earlierLevelsList: earlierLevelsList || [],
+        lvlSpellSearch: '',
         lvlData: {
             selectedClassId: initialClassId,
             remainingIp: 5 + initialLeftoverIp,
             remainingSp: classesMap[initialClassId] ? parseInt(classesMap[initialClassId].SkillPtsPerLevel || classesMap[initialClassId].SkillPts || 2) : 2,
             improvements: {},
             skills: {},
-            selectedSpells: {}
+            selectedSpells: {},
+            selectedSpellOptions: {}
         },
 
         onLvlClassChanged(clsId, spPerLvl) {
             this.lvlData.selectedClassId = clsId;
             this.lvlData.skills = {};
             this.lvlData.remainingSp = spPerLvl || (classesMap[clsId] ? parseInt(classesMap[clsId].SkillPtsPerLevel || 2) : 2);
+        },
+
+        copyLvlSkillAllocations(sourceKey) {
+            if (!sourceKey) return;
+            const source = this.earlierLevelsList.find(e => String(e.level) === String(sourceKey));
+            if (!source || !source.allocations) return;
+
+            const clsId = this.lvlData.selectedClassId;
+            const maxSp = classesMap[clsId] ? parseInt(classesMap[clsId].SkillPtsPerLevel || 2) : 2;
+            this.lvlData.skills = {};
+            this.lvlData.remainingSp = maxSp;
+
+            const accessForClass = skillAccessByClass[clsId] || {};
+            for (const [sId, r] of Object.entries(source.allocations)) {
+                const numRank = parseFloat(r) || 0;
+                if (numRank <= 0) continue;
+                const accessCode = accessForClass[sId];
+                if (Object.keys(accessForClass).length > 0 && accessCode === undefined) continue;
+                const isPrimary = (accessCode == 1 || accessCode === '1' || accessCode === 'Primary');
+                const maxRankForSkill = isPrimary ? 1.0 : 0.5;
+                const targetRank = Math.min(numRank, maxRankForSkill);
+
+                let applied = 0;
+                while (applied + 0.5 <= targetRank + 0.001) {
+                    if (this.canIncLvlSkill(sId, 0.5, isPrimary ? 'Primary' : 'Secondary')) {
+                        this.adjustSkill(sId, 0.5, isPrimary ? 'Primary' : 'Secondary');
+                        applied += 0.5;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        },
+
+        get filteredLvlSpells() {
+            let list = rawSpells || [];
+            if (this.lvlSpellSearch.trim()) {
+                const q = this.lvlSpellSearch.toLowerCase();
+                list = list.filter(sp => (sp.Name && sp.Name.toLowerCase().includes(q)) || (sp.School && sp.School.toLowerCase().includes(q)));
+            }
+            return list;
+        },
+
+        isLvlSpellActive(spellId) {
+            return Boolean(this.lvlData.selectedSpells[spellId]);
+        },
+
+        toggleLvlSpellBase(spellId, isChecked) {
+            this.lvlData.selectedSpells[spellId] = isChecked;
+            if (!isChecked && this.lvlData.selectedSpellOptions[spellId]) {
+                delete this.lvlData.selectedSpellOptions[spellId];
+            }
+        },
+
+        isLvlOptionSelected(spellId, optId) {
+            const list = this.lvlData.selectedSpellOptions[spellId] || [];
+            return list.includes(optId) || list.includes(String(optId)) || list.includes(parseInt(optId));
+        },
+
+        toggleLvlOption(spellId, optId, isChecked) {
+            if (!this.lvlData.selectedSpellOptions[spellId]) {
+                this.lvlData.selectedSpellOptions[spellId] = [];
+            }
+            const numericId = parseInt(optId);
+            if (isChecked) {
+                if (!this.lvlData.selectedSpellOptions[spellId].includes(numericId)) {
+                    this.lvlData.selectedSpellOptions[spellId].push(numericId);
+                }
+                this.lvlData.selectedSpells[spellId] = true;
+            } else {
+                this.lvlData.selectedSpellOptions[spellId] = this.lvlData.selectedSpellOptions[spellId].filter(id => id !== numericId && id !== String(optId));
+            }
         },
 
         getCharPrereqContext() {
@@ -1080,20 +1291,26 @@ function characterViewerApp() {
             return true;
         },
 
+        lvlSkillSearch: '',
+
         get availableClassSkills() {
             const clsId = this.lvlData.selectedClassId;
             const accessForClass = skillAccessByClass[clsId] || {};
             
-            return (rawSkills || []).map(s => {
-                const accessCode = accessForClass[s.ID];
-                let accessType = 'Cross-Class';
-                if (accessCode == 1 || accessCode === '1' || accessCode === 'Primary') {
-                    accessType = 'Primary';
-                } else if (accessCode == 2 || accessCode === '2' || accessCode === 'Secondary') {
-                    accessType = 'Secondary';
-                } else {
-                    accessType = 'Secondary';
+            let list = (rawSkills || []).filter(s => {
+                if (Object.keys(accessForClass).length > 0) {
+                    return accessForClass[s.ID] !== undefined;
                 }
+                return true;
+            });
+
+            if (this.lvlSkillSearch && this.lvlSkillSearch.trim()) {
+                const q = this.lvlSkillSearch.toLowerCase();
+                list = list.filter(s => (s.Name && s.Name.toLowerCase().includes(q)) || (s.Abbreviation && s.Abbreviation.toLowerCase().includes(q)));
+            }
+
+            return list.map(s => {
+                const accessType = accessForClass[s.ID] || 'Secondary';
                 const currRank = characterSkills[s.ID] || characterSkills[String(s.ID)] || 0;
                 const evalRes = this.evaluateSkillPrereq(s);
 
@@ -1187,6 +1404,33 @@ function characterViewerApp() {
         spellsCatalog: spellsWithKnown,
         spellOptions: rawSpellOptions || [],
         spellsToLearn: {},
+        spellOptionsToLearn: {},
+
+        isOptionKnown(spellId, optId) {
+            const knownOpts = (this.knownSpellsData && this.knownSpellsData[spellId]) ? this.knownSpellsData[spellId] : [];
+            return knownOpts.includes(parseInt(optId)) || knownOpts.includes(String(optId));
+        },
+
+        onSpellOptionToggle(spellId, optId, checked) {
+            if (!this.spellOptionsToLearn[spellId]) {
+                this.spellOptionsToLearn[spellId] = {};
+            }
+            this.spellOptionsToLearn[spellId][optId] = checked;
+            if (checked) {
+                this.spellsToLearn[spellId] = true;
+            }
+        },
+
+        get hasPendingSpellsToLearn() {
+            const hasSpells = Object.keys(this.spellsToLearn).some(k => Boolean(this.spellsToLearn[k]));
+            if (hasSpells) return true;
+            for (const sId in this.spellOptionsToLearn) {
+                for (const oId in this.spellOptionsToLearn[sId]) {
+                    if (this.spellOptionsToLearn[sId][oId]) return true;
+                }
+            }
+            return false;
+        },
 
         get filteredSpellCatalog() {
             let list = this.spellsCatalog;
@@ -1217,8 +1461,8 @@ function characterViewerApp() {
         castAbilityMods: @json($calc['ability_modifiers'] ?? []),
         castEffectiveSkills: @json($calc['skills'] ?? []),
         castMamBonus: {{ (int)($calc['actions']['mam'] ?? 0) }},
-        castCurrentPP: {{ (int)($calc['defenses']['pp_current'] ?? $calc['defenses']['pp'] ?? 0) }},
-        castMaxPP: {{ (int)($calc['defenses']['pp'] ?? 0) }},
+        castCurrentPP: {{ (int)($calc['health']['pp']['current'] ?? $calc['health']['pp']['total'] ?? $calc['defenses']['pp_current'] ?? $calc['defenses']['pp'] ?? 0) }},
+        castMaxPP: {{ (int)($calc['health']['pp']['total'] ?? $calc['defenses']['pp'] ?? 0) }},
         castCurrentAP: {{ (int)($calc['actions']['ap'] ?? 10) }},
         characterName: "{{ addslashes($character->Name ?? 'Hero') }}",
         knownSpellsData: @json($spellsList ?? []),
@@ -1233,6 +1477,7 @@ function characterViewerApp() {
             selectedImplementsIndex: 0,
             selectedActionTimeIndex: 0,
             voluntaryPP: 0,
+            variableBasePP: 0,
             apMode: 'none', // 'none' | 'boost' | 'dampen'
             apAmount: 1,
             isTake10: true,
@@ -1288,15 +1533,10 @@ function characterViewerApp() {
             this.castSpellState.selectedImplementsIndex = 0;
             this.castSpellState.selectedActionTimeIndex = 0;
             this.castSpellState.voluntaryPP = 0;
+            this.castSpellState.variableBasePP = this.castSpellMinBPC;
             
-            // Pre-select known variations for this spell
-            const spellId = this.castSpellState.selectedSpellId;
-            const knownOpts = (this.knownSpellsData && this.knownSpellsData[spellId]) ? this.knownSpellsData[spellId] : [];
-            const newVars = {};
-            (this.activeCastSpellOptions || []).forEach(opt => {
-                newVars[opt.ID] = knownOpts.includes(parseInt(opt.ID)) || knownOpts.includes(String(opt.ID));
-            });
-            this.castSpellState.selectedVariations = newVars;
+            // Ensure no spell variations are selected by default
+            this.castSpellState.selectedVariations = {};
 
             // Set Take 10 based on affinity
             const info = this.castSkillInfo;
@@ -1305,10 +1545,55 @@ function characterViewerApp() {
 
         parseParamLines(text) {
             if (!text || typeof text !== 'string') return [{ id: 0, text: 'Standard (+0)', ppMod: 0, apMod: 0 }];
-            const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+            const lines = text.split(/\r?\n|\\r\\n|\\n|\\r/).map(l => l.trim()).filter(l => l.length > 0);
             if (lines.length === 0) return [{ id: 0, text: 'Standard (+0)', ppMod: 0, apMod: 0 }];
 
-            return lines.map((line, idx) => {
+            const result = [];
+            lines.forEach((line) => {
+                // Check if line contains semicolon and multiple comma-separated (+X) options
+                // e.g. "Line; 6 sq (+2), 12 sq (+4), 18 sq (+6); Range 0 only"
+                // or "Spherical burst; 2 sq rad (+2), 4 sq rad (+4), 6 sq rad (+6), 8 sq rad (+8)"
+                const plusCount = (line.match(/\(\s*[+-]?\d+/g) || []).length;
+                if (plusCount > 1 && line.includes(';')) {
+                    const parts = line.split(';');
+                    const prefix = parts[0].trim();
+                    const subChoicesStr = (parts[1] || '').trim();
+                    const suffix = parts.length > 2 ? '; ' + parts.slice(2).join('; ').trim() : '';
+
+                    if (!prefix.includes('(+') && subChoicesStr.includes('(+')) {
+                        const subChoices = subChoicesStr.split(',');
+                        subChoices.forEach(sc => {
+                            sc = sc.trim();
+                            if (!sc) return;
+                            const fullText = `${prefix}: ${sc}${suffix}`;
+                            let ppMod = 0;
+                            const ppMatch = sc.match(/\(\s*([+-]?\d+)\s*(?:PP|cost)?\s*(?:;|\))/i);
+                            if (ppMatch) ppMod = parseInt(ppMatch[1], 10) || 0;
+                            let apMod = 0;
+                            const apMatch = sc.match(/([+-]?\d+)\s*AP/i);
+                            if (apMatch) apMod = parseInt(apMatch[1], 10) || 0;
+                            result.push({ id: result.length, text: fullText, ppMod, apMod });
+                        });
+                        return;
+                    }
+                }
+
+                if (plusCount > 1 && line.includes(',')) {
+                    const subChoices = line.split(',');
+                    subChoices.forEach(sc => {
+                        sc = sc.trim();
+                        if (!sc) return;
+                        let ppMod = 0;
+                        const ppMatch = sc.match(/\(\s*([+-]?\d+)\s*(?:PP|cost)?\s*(?:;|\))/i);
+                        if (ppMatch) ppMod = parseInt(ppMatch[1], 10) || 0;
+                        let apMod = 0;
+                        const apMatch = sc.match(/([+-]?\d+)\s*AP/i);
+                        if (apMatch) apMod = parseInt(apMatch[1], 10) || 0;
+                        result.push({ id: result.length, text: sc, ppMod, apMod });
+                    });
+                    return;
+                }
+
                 let ppMod = 0;
                 const ppMatch = line.match(/\(\s*([+-]?\d+)\s*(?:PP|cost)?\s*(?:;|\))/i);
                 if (ppMatch) {
@@ -1319,13 +1604,60 @@ function characterViewerApp() {
                 if (apMatch) {
                     apMod = parseInt(apMatch[1], 10) || 0;
                 }
-                return {
-                    id: idx,
+                result.push({
+                    id: result.length,
                     text: line,
                     ppMod: ppMod,
                     apMod: apMod
-                };
+                });
             });
+
+            return result.length > 0 ? result : [{ id: 0, text: 'Standard (+0)', ppMod: 0, apMod: 0 }];
+        },
+
+        parseImplementsLines(text) {
+            if (!text || typeof text !== 'string') return [{ id: 0, text: 'Standard (+0)', ppMod: 0, apMod: 0 }];
+            const lines = text.split(/\r?\n|\\r\\n|\\n|\\r/).map(l => l.trim()).filter(l => l.length > 0);
+            if (lines.length === 0) return [{ id: 0, text: 'Standard (+0)', ppMod: 0, apMod: 0 }];
+
+            let hasV = false;
+            let hasS = false;
+            const extraImplements = [];
+
+            lines.forEach(line => {
+                if (/\bV\s*\(\+0\)/i.test(line) || /\bSilent\s*\(\+2\)/i.test(line)) {
+                    hasV = true;
+                }
+                if (/\bS\s*\(\+0\)/i.test(line) || /\bStill\s*\(\+2\)/i.test(line)) {
+                    hasS = true;
+                }
+                if (/^[FMD]\s*\(/i.test(line) || (!line.startsWith('V') && !line.startsWith('S') && !line.startsWith('Silent') && !line.startsWith('Still'))) {
+                    extraImplements.push(line);
+                }
+            });
+
+            const extraStr = extraImplements.length > 0 ? ' + ' . extraImplements.join(', ') : '';
+
+            if (hasV && hasS) {
+                return [
+                    { id: 0, text: `Standard (V, S${extraStr}) (+0 PP)`, ppMod: 0, apMod: 0 },
+                    { id: 1, text: `Silent (S${extraStr} only; no Verbal) (+2 PP)`, ppMod: 2, apMod: 0 },
+                    { id: 2, text: `Still (V${extraStr} only; no Somatic) (+2 PP)`, ppMod: 2, apMod: 0 },
+                    { id: 3, text: `Silent & Still (No V or S${extraStr}) (+4 PP)`, ppMod: 4, apMod: 0 }
+                ];
+            } else if (hasV) {
+                return [
+                    { id: 0, text: `Standard (V${extraStr}) (+0 PP)`, ppMod: 0, apMod: 0 },
+                    { id: 1, text: `Silent (No Verbal${extraStr}) (+2 PP)`, ppMod: 2, apMod: 0 }
+                ];
+            } else if (hasS) {
+                return [
+                    { id: 0, text: `Standard (S${extraStr}) (+0 PP)`, ppMod: 0, apMod: 0 },
+                    { id: 1, text: `Still (No Somatic${extraStr}) (+2 PP)`, ppMod: 2, apMod: 0 }
+                ];
+            } else {
+                return this.parseParamLines(text);
+            }
         },
 
         get castRangeOptions() {
@@ -1341,21 +1673,34 @@ function characterViewerApp() {
         },
 
         get castImplementsOptions() {
-            return this.parseParamLines(this.activeCastSpell ? this.activeCastSpell.Implements : '');
+            return this.parseImplementsLines(this.activeCastSpell ? this.activeCastSpell.Implements : '');
         },
 
         get castActionTimeOptions() {
             return this.parseParamLines(this.activeCastSpell ? this.activeCastSpell.ActionTime : '');
         },
 
-        getSpellBPC(spell) {
+        get isCastSpellVariableBase() {
+            const spell = this.activeCastSpell;
+            if (!spell || !spell.Cost) return false;
+            return /\+?\d+\s*PP\s*(?:per|\/|for|additional)|variable|var\b/i.test(spell.Cost);
+        },
+
+        get castSpellMinBPC() {
+            const spell = this.activeCastSpell;
             if (!spell || !spell.Cost) return 0;
             const match = String(spell.Cost).match(/(\d+)\s*PP/i);
             return match ? parseInt(match[1], 10) : 0;
         },
 
         get castSpellBPC() {
-            return this.getSpellBPC(this.activeCastSpell);
+            const spell = this.activeCastSpell;
+            if (!spell) return 0;
+            if (this.isCastSpellVariableBase) {
+                const minCost = this.castSpellMinBPC;
+                return Math.max(minCost, parseInt(this.castSpellState.variableBasePP || minCost));
+            }
+            return this.castSpellMinBPC;
         },
 
         get castSkillInfo() {
@@ -1364,7 +1709,9 @@ function characterViewerApp() {
                 return {
                     lines: [],
                     bestRank: {{ (int)($calc['heritage']['total_level'] ?? 1) }},
+                    rawRank: 0,
                     bestSkillName: 'General / Inherent',
+                    skillPPMod: 0,
                     hasAffinity: false,
                     affinityDiscount: 0,
                     affinityAbilMod: 0,
@@ -1372,7 +1719,7 @@ function characterViewerApp() {
                 };
             }
 
-            const lines = spell.Skills.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+            const lines = spell.Skills.split(/\r?\n|\\r\\n|\\n|\\r/).map(l => l.trim()).filter(l => l.length > 0);
             const effSkills = this.castEffectiveSkills || {};
             const affDiscs = this.castAffinityDiscounts || {};
             const abilMods = this.castAbilityMods || {};
@@ -1380,10 +1727,21 @@ function characterViewerApp() {
 
             let bestRank = 0;
             let bestSkillName = '';
+            let bestPPMod = 0;
             let bestDiscount = 0;
+            let firstSkillName = '';
+            let firstPPMod = 0;
 
-            lines.forEach(line => {
-                const cleanLine = line.replace(/\s*\([^)]*\)/g, '').trim();
+            lines.forEach((line, lineIdx) => {
+                const ppMatch = line.match(/\(\s*([+-]?\d+)\s*PP\s*cost\s*\)/i);
+                const linePPMod = ppMatch ? parseInt(ppMatch[1], 10) : 0;
+                const cleanLine = line.replace(/\s*\([^)]*PP\s*cost[^)]*\)/gi, '').trim();
+
+                if (lineIdx === 0) {
+                    firstSkillName = cleanLine;
+                    firstPPMod = linePPMod;
+                }
+
                 for (const [k, v] of Object.entries(affDiscs)) {
                     if (k && (cleanLine.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(cleanLine.toLowerCase()))) {
                         if (parseInt(v) > bestDiscount) bestDiscount = parseInt(v);
@@ -1397,12 +1755,13 @@ function characterViewerApp() {
                     let foundRank = 0;
                     for (const s of allSkills) {
                         const sName = s.Name || '';
-                        if (sName.toLowerCase() === part.toLowerCase() ||
-                            sName.toLowerCase().endsWith(' - ' + part.toLowerCase()) ||
-                            sName.toLowerCase() === ('arcane - ' + part.toLowerCase()) ||
-                            sName.toLowerCase() === ('divine - ' + part.toLowerCase()) ||
-                            sName.toLowerCase() === ('psi - ' + part.toLowerCase())) {
-                            const r = parseFloat(effSkills[s.ID] || characterSkills[s.ID] || 0);
+                        const partLower = part.toLowerCase();
+                        if (sName.toLowerCase() === partLower ||
+                            sName.toLowerCase().endsWith(' - ' + partLower) ||
+                            sName.toLowerCase() === ('arcane - ' + partLower) ||
+                            sName.toLowerCase() === ('divine - ' + partLower) ||
+                            sName.toLowerCase() === ('psi - ' + partLower)) {
+                            const r = parseFloat(effSkills[s.ID] || effSkills[String(s.ID)] || characterSkills[s.ID] || characterSkills[String(s.ID)] || 0);
                             if (r > foundRank) foundRank = r;
                         }
                     }
@@ -1410,11 +1769,17 @@ function characterViewerApp() {
                 });
 
                 const lineRank = minPartRank === 999 ? 0 : minPartRank;
-                if (lineRank > bestRank) {
+                if (lineRank > bestRank || (bestRank === 0 && bestSkillName === '')) {
                     bestRank = lineRank;
                     bestSkillName = cleanLine;
+                    bestPPMod = linePPMod;
                 }
             });
+
+            if (!bestSkillName) {
+                bestSkillName = firstSkillName || 'General / Inherent';
+                bestPPMod = firstPPMod;
+            }
 
             const isArcane = spell.Skills.toLowerCase().includes('arcane');
             const isDivine = spell.Skills.toLowerCase().includes('divine');
@@ -1445,15 +1810,14 @@ function characterViewerApp() {
                 affinityAbilMod = Math.max(parseInt(abilMods.Int || 0), parseInt(abilMods.Wis || 0), parseInt(abilMods.Cha || 0));
             }
 
-            if (bestRank === 0) {
-                bestRank = {{ (int)($calc['heritage']['total_level'] ?? 1) }};
-                if (!bestSkillName) bestSkillName = 'TL / Inherent';
-            }
+            const displayRank = bestRank > 0 ? bestRank : {{ (int)($calc['heritage']['total_level'] ?? 1) }};
 
             return {
                 lines: lines,
-                bestRank: bestRank,
+                bestRank: displayRank,
+                rawRank: bestRank,
                 bestSkillName: bestSkillName,
+                skillPPMod: bestPPMod,
                 hasAffinity: hasAffinity,
                 affinityDiscount: bestDiscount,
                 affinityAbilMod: hasAffinity ? affinityAbilMod : 0,
@@ -1490,7 +1854,7 @@ function characterViewerApp() {
         },
 
         get castTPC() {
-            return this.castSpellBPC + this.castVariationsPP + this.castParametersPP;
+            return this.castSpellBPC + (this.castSkillInfo.skillPPMod || 0) + this.castVariationsPP + this.castParametersPP;
         },
 
         get castAPB() {

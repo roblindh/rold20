@@ -106,34 +106,39 @@
                     <span class="text-[11px] text-slate-500 italic">Toggle which attack categories appear on your sheet</span>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                     <label class="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 hover:bg-slate-100/90 border border-slate-200 cursor-pointer transition">
-                        <span class="font-medium text-slate-800 text-xs">Equipped Weapons</span>
-                        <input type="checkbox" x-model="combatMatrixState.showWeapons" @change="saveCombatMatrixConfig()" class="rounded text-amber-800 focus:ring-amber-700">
+                        <span class="font-medium text-slate-800 text-xs">🗡️ Equipped Weapons</span>
+                        <input type="checkbox" x-model="combatMatrixState.showEquippedWeapons" @change="saveCombatMatrixConfig()" class="rounded text-amber-800 focus:ring-amber-700">
                     </label>
 
                     <label class="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 hover:bg-slate-100/90 border border-slate-200 cursor-pointer transition">
-                        <span class="font-medium text-slate-800 text-xs">Multi-Attack &amp; Combos</span>
+                        <span class="font-medium text-slate-800 text-xs">🎒 Carried Weapons</span>
+                        <input type="checkbox" x-model="combatMatrixState.showCarriedWeapons" @change="saveCombatMatrixConfig()" class="rounded text-amber-800 focus:ring-amber-700">
+                    </label>
+
+                    <label class="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 hover:bg-slate-100/90 border border-slate-200 cursor-pointer transition">
+                        <span class="font-medium text-slate-800 text-xs">🐾 Primary Natural</span>
+                        <input type="checkbox" x-model="combatMatrixState.showPrimaryNatural" @change="saveCombatMatrixConfig()" class="rounded text-amber-800 focus:ring-amber-700">
+                    </label>
+
+                    <label class="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 hover:bg-slate-100/90 border border-slate-200 cursor-pointer transition">
+                        <span class="font-medium text-slate-800 text-xs">🐾 Secondary Natural</span>
+                        <input type="checkbox" x-model="combatMatrixState.showSecondaryNatural" @change="saveCombatMatrixConfig()" class="rounded text-amber-800 focus:ring-amber-700">
+                    </label>
+
+                    <label class="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 hover:bg-slate-100/90 border border-slate-200 cursor-pointer transition">
+                        <span class="font-medium text-slate-800 text-xs">⚡ Akimbo &amp; Combos</span>
                         <input type="checkbox" x-model="combatMatrixState.showAkimbo" @change="saveCombatMatrixConfig()" class="rounded text-amber-800 focus:ring-amber-700">
                     </label>
 
                     <label class="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 hover:bg-slate-100/90 border border-slate-200 cursor-pointer transition">
-                        <span class="font-medium text-slate-800 text-xs">Natural Attacks</span>
-                        <input type="checkbox" x-model="combatMatrixState.showNatural" @change="saveCombatMatrixConfig()" class="rounded text-amber-800 focus:ring-amber-700">
-                    </label>
-
-                    <label class="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 hover:bg-slate-100/90 border border-slate-200 cursor-pointer transition">
-                        <span class="font-medium text-slate-800 text-xs">Unarmed Strikes</span>
+                        <span class="font-medium text-slate-800 text-xs">👊 Brawling &amp; Maneuvers</span>
                         <input type="checkbox" x-model="combatMatrixState.showBrawling" @change="saveCombatMatrixConfig()" class="rounded text-amber-800 focus:ring-amber-700">
                     </label>
 
                     <label class="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 hover:bg-slate-100/90 border border-slate-200 cursor-pointer transition">
-                        <span class="font-medium text-slate-800 text-xs">Grapple Maneuvers</span>
-                        <input type="checkbox" x-model="combatMatrixState.showGrapple" @change="saveCombatMatrixConfig()" class="rounded text-amber-800 focus:ring-amber-700">
-                    </label>
-
-                    <label class="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 hover:bg-slate-100/90 border border-slate-200 cursor-pointer transition">
-                        <span class="font-medium text-slate-800 text-xs">Spell Attacks (Ray/Area)</span>
+                        <span class="font-medium text-slate-800 text-xs">✨ Supernatural Attacks</span>
                         <input type="checkbox" x-model="combatMatrixState.showSpells" @change="saveCombatMatrixConfig()" class="rounded text-amber-800 focus:ring-amber-700">
                     </label>
                 </div>

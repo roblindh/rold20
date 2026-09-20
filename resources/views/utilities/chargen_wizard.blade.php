@@ -4096,6 +4096,10 @@ function characterWizard() {
                 ? parseInt(this.sizeCats[sizeId].CombatMod)
                 : (sizeId === 0 ? 0 : -sizeId);
 
+            const sizeGrappleMod = (this.sizeCats && this.sizeCats[sizeId] && this.sizeCats[sizeId].GrappleMod !== undefined)
+                ? parseInt(this.sizeCats[sizeId].GrappleMod)
+                : (sizeId * 4);
+
             const { trainedMap } = this.getTrainedSkillsData();
 
             let result = check;
@@ -4110,6 +4114,11 @@ function characterWizard() {
             // 1b. If preceded by +/- or standalone
             result = result.replace(/([+-]?\s*)\bsize-based\s+Att\/DeC\s+mod\b/gi, (match, sign) => {
                 return this.formatActionModifier(sizeCombatMod, sign ? sign.trim() : '');
+            });
+
+            // 1c. Replace grapple size mod: e.g. "+ grapple size mod" or "grapple size mod"
+            result = result.replace(/([+-]?\s*)\bgrapple\s+size\s+mod\b/gi, (match, sign) => {
+                return this.formatActionModifier(sizeGrappleMod, sign ? sign.trim() : '');
             });
 
             // 2. Replace "Str or Dex mod" / "X or Y mod"

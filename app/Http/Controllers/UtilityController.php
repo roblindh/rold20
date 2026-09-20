@@ -690,7 +690,9 @@ class UtilityController extends Controller
         }
         if (!empty($validated['spells'])) {
             foreach ($validated['spells'] as $spId => $opts) {
-                $existingSpells[(string)$spId] = is_array($opts) ? array_values(array_map('intval', $opts)) : [];
+                $existingOpts = $existingSpells[(string)$spId] ?? [];
+                $newOpts = is_array($opts) ? array_values(array_map('intval', $opts)) : [];
+                $existingSpells[(string)$spId] = array_values(array_unique(array_merge($existingOpts, $newOpts)));
             }
         }
         $newSpellsStr = json_encode($existingSpells);
@@ -1222,20 +1224,33 @@ class UtilityController extends Controller
         }
 
         $newCount = 0;
+        $newOptionsCount = 0;
         foreach ($validated['spells'] as $sp) {
             $sId = (string)$sp['spell_id'];
             $options = isset($sp['options']) ? array_values(array_map('intval', $sp['options'])) : [];
             if (!isset($existingSpells[$sId])) {
                 $newCount++;
+                $existingSpells[$sId] = $options;
+            } else {
+                $prevOpts = $existingSpells[$sId] ?? [];
+                $merged = array_values(array_unique(array_merge($prevOpts, $options)));
+                $newOptionsCount += count($merged) - count($prevOpts);
+                $existingSpells[$sId] = $merged;
             }
-            $existingSpells[$sId] = $options;
         }
 
         DB::table('characters')->where('ID', $id)->update([
             'Spells' => json_encode($existingSpells),
         ]);
 
-        return back()->with('status', "Successfully updated spells for {$character->Name} ({$newCount} new spell(s) learned)!");
+        $msg = "Successfully updated spells for {$character->Name}";
+        if ($newCount > 0 || $newOptionsCount > 0) {
+            $msg .= " ({$newCount} new spell(s), {$newOptionsCount} new variation(s) learned)!";
+        } else {
+            $msg .= "!";
+        }
+
+        return back()->with('status', $msg);
     }
 
     /**
@@ -2424,12 +2439,18 @@ class UtilityController extends Controller
         $characters = $rawPCs->map(fn($c) => $formatChar($c, 'pc'))->values()->all();
         $npcs = $rawNPCs->map(fn($c) => $formatChar($c, 'npc'))->values()->all();
 
+        $rawCreatureTypes = DB::table('ref_creaturetypes')->orderBy('Name')->get();
+        $creatureTypesMap = $rawCreatureTypes->keyBy('ID');
+        $creatureSubtypesMap = DB::table('ref_creaturesubtypes')->get()->keyBy('ID');
+        $rawSizes = DB::table('ref_sizes')->orderBy('ID')->get();
+        $sizesMap = $rawSizes->keyBy('ID');
+
         $rawCreatures = DB::table('ref_creatures')
-            ->select('ID', 'Name', 'BaseRL', 'CLModifier', 'GroundSpeed', 'FlySpeed', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj', 'DR', 'MR')
+            ->select('ID', 'Name', 'BaseRL', 'CLModifier', 'CreatureType', 'SizeClass', 'GroundSpeed', 'FlySpeed', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj', 'DR', 'MR', 'Descriptors')
             ->orderBy('Name')
             ->get();
 
-        $creatures = $rawCreatures->map(function ($cr) {
+        $creatures = $rawCreatures->map(function ($cr) use ($creatureTypesMap, $creatureSubtypesMap, $sizesMap) {
             $rl = max(1, (int)($cr->BaseRL ?? $cr->CLModifier ?? 1));
             $str = max(1, 10 + (int)($cr->StrAdj ?? 0));
             $con = max(1, 10 + (int)($cr->ConAdj ?? 0));
@@ -2456,10 +2477,26 @@ class UtilityController extends Controller
             $ref = 10 + $dexMod + $intMod + $rl;
             $will = 10 + $wisMod + $chaMod + $rl;
 
+            $subtypeId = (int)($cr->CreatureType ?? 0);
+            $subtypeObj = $creatureSubtypesMap[$subtypeId] ?? null;
+            $mainTypeId = $subtypeObj ? (int)$subtypeObj->GroupID : 0;
+            $mainTypeObj = $creatureTypesMap[$mainTypeId] ?? null;
+            $mainTypeName = $mainTypeObj ? $mainTypeObj->Name : 'Creature';
+            $subtypeName = $subtypeObj ? $subtypeObj->Name : '';
+            $sizeObj = $sizesMap[$cr->SizeClass ?? 0] ?? null;
+
             return [
                 'id' => $cr->ID,
                 'name' => $cr->Name,
                 'level' => $rl,
+                'type_id' => $mainTypeId,
+                'type_name' => $mainTypeName,
+                'subtype_id' => $subtypeId,
+                'subtype_name' => $subtypeName,
+                'size_id' => (int)($cr->SizeClass ?? 0),
+                'size_name' => $sizeObj ? ($sizeObj->Description ?? 'Medium') : 'Medium',
+                'size_abbr' => $sizeObj ? ($sizeObj->Abbreviation ?? 'M') : 'M',
+                'descriptors' => $cr->Descriptors ?? '',
                 'hp_max' => $hp,
                 'sp_max' => $sp,
                 'pp_max' => $pp,
@@ -2515,6 +2552,8 @@ class UtilityController extends Controller
             'characters' => $characters,
             'npcs' => $npcs,
             'creatures' => $creatures,
+            'creatureTypes' => $rawCreatureTypes,
+            'sizes' => $rawSizes,
             'conditionsList' => $conditionsList,
         ]);
     }
@@ -2599,7 +2638,49 @@ class UtilityController extends Controller
             ->orderBy('ref_items.Name')
             ->get();
 
-        return view('utilities.campaign', compact('campaigns', 'campaignsJson', 'characters', 'npcs', 'unassignedCharacters', 'myCampaigns', 'abilityMethods', 'equipmentCatalog'));
+        $rawModified = DB::table('ref_itemsmodified')
+            ->leftJoin('ref_itemsubtypes', 'ref_itemsmodified.Subtype', '=', 'ref_itemsubtypes.ID')
+            ->select('ref_itemsmodified.*', 'ref_itemsubtypes.Name as SubtypeName')
+            ->whereNotNull('ref_itemsmodified.Name')
+            ->orderBy('ref_itemsmodified.Name')
+            ->get();
+
+        $modifiedItemsCatalog = $rawModified->map(function ($it) {
+            $val = 0;
+            $weight = 0;
+            $pl = 0;
+            $dr = 0;
+            $size = 'M';
+            $hp = 1;
+            if (!empty($it->Config)) {
+                try {
+                    $pos = new \cPossession();
+                    $pos->GenerateItem($it->Config);
+                    $val = (int)$pos->GetValue();
+                    $weight = (float)$pos->GetWeight();
+                    $pl = (int)$pos->GetPowerLevel();
+                    $dr = (int)$pos->GetDR();
+                    $hp = (int)$pos->GetHPTotal();
+                    $sizeIdx = min(max($pos->GetCurrentSize(), -4), 4);
+                    $size = $GLOBALS['_APP']['sizecats'][$sizeIdx]['Abbreviation'] ?? 'M';
+                } catch (\Throwable $e) {}
+            }
+            return [
+                'ID' => $it->ID,
+                'Name' => $it->Name,
+                'Config' => $it->Config,
+                'SubtypeName' => $it->SubtypeName ?? 'Magic',
+                'Description' => $it->Description ?? '',
+                'Value' => $val,
+                'Weight' => $weight,
+                'PowerLevel' => $pl,
+                'DR' => $dr,
+                'HP' => $hp,
+                'Size' => $size,
+            ];
+        });
+
+        return view('utilities.campaign', compact('campaigns', 'campaignsJson', 'characters', 'npcs', 'unassignedCharacters', 'myCampaigns', 'abilityMethods', 'equipmentCatalog', 'modifiedItemsCatalog'));
     }
 
     public function createCampaign(Request $request): \Illuminate\Http\RedirectResponse

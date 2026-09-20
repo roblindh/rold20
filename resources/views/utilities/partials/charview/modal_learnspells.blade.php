@@ -35,13 +35,19 @@
                          :class="spellsToLearn[sp.ID] ? 'border-indigo-500 bg-indigo-50/40 ring-1 ring-indigo-400' : (sp.isKnown ? 'border-slate-300 bg-slate-50/80' : 'border-slate-200 hover:border-slate-300')">
                         <div class="flex items-start justify-between gap-2">
                             <div class="flex items-start gap-2 flex-1">
-                                <input type="checkbox" :name="'spells[' + sp.ID + '][spell_id]'" :value="sp.ID"
-                                       x-model="spellsToLearn[sp.ID]" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 mt-0.5">
-                                <div class="min-w-0">
-                                    <div class="flex items-center gap-2">
+                                <template x-if="!sp.isKnown">
+                                    <input type="checkbox" :name="'spells[' + sp.ID + '][spell_id]'" :value="sp.ID"
+                                           x-model="spellsToLearn[sp.ID]" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 mt-0.5">
+                                </template>
+                                <template x-if="sp.isKnown">
+                                    <span class="text-indigo-600 font-bold mt-0.5 select-none">✨</span>
+                                </template>
+                                
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-2 flex-wrap">
                                         <span class="font-bold text-slate-900 text-sm" x-text="sp.Name"></span>
                                         <template x-if="sp.isKnown">
-                                            <span class="text-[9px] bg-slate-200 text-slate-700 px-1.5 py-0.2 rounded font-semibold">Already Known</span>
+                                            <span class="text-[9px] bg-emerald-100 text-emerald-900 border border-emerald-300 px-1.5 py-0.2 rounded font-bold">✓ Already Known</span>
                                         </template>
                                         <span class="text-[10px] bg-indigo-100 text-indigo-900 px-1.5 py-0.2 rounded font-mono font-bold" x-text="'Cost: ' + (sp.Cost || 0) + ' PP'"></span>
                                     </div>
@@ -62,16 +68,44 @@
                         </div>
 
                         <!-- Variations & Options if spell has options -->
-                        <template x-if="getSpellOptionsFor(sp.ID).length > 0 && spellsToLearn[sp.ID]">
-                            <div class="pt-2 border-t border-slate-200 space-y-1.5 pl-6">
-                                <span class="text-[10px] font-bold uppercase text-slate-500 block">Spell Variations / Enhancements:</span>
+                        <template x-if="getSpellOptionsFor(sp.ID).length > 0 && (sp.isKnown || spellsToLearn[sp.ID])">
+                            <div class="pt-2 border-t border-slate-200 space-y-1.5 pl-4 sm:pl-6">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] font-bold uppercase text-slate-600 tracking-wider block">Spell Variations / Enhancements:</span>
+                                    <template x-if="sp.isKnown">
+                                        <span class="text-[10px] text-indigo-700 font-semibold">Select unlearned variations below to learn</span>
+                                    </template>
+                                </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                                     <template x-for="opt in getSpellOptionsFor(sp.ID)" :key="opt.ID">
-                                        <label class="bg-white border border-slate-200 p-1.5 rounded-lg flex items-center gap-2 cursor-pointer hover:border-indigo-300">
-                                            <input type="checkbox" :name="'spells[' + sp.ID + '][options][]'" :value="opt.ID"
-                                                   class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
-                                            <span class="text-[11px] font-semibold text-slate-800 truncate" x-text="opt.Name"></span>
-                                        </label>
+                                        <div class="border p-2 rounded-lg flex items-start justify-between gap-2"
+                                             :class="isOptionKnown(sp.ID, opt.ID) ? 'bg-emerald-50/60 border-emerald-200' : 'bg-white border-slate-200 hover:border-indigo-300'">
+                                            <div class="flex items-start gap-2 flex-1 min-w-0">
+                                                <template x-if="!isOptionKnown(sp.ID, opt.ID)">
+                                                    <div>
+                                                        <!-- Hidden spell_id if known spell to ensure form array structure is valid -->
+                                                        <input type="hidden" :name="'spells[' + sp.ID + '][spell_id]'" :value="sp.ID">
+                                                        <input type="checkbox" :name="'spells[' + sp.ID + '][options][]'" :value="opt.ID"
+                                                               @change="onSpellOptionToggle(sp.ID, opt.ID, $event.target.checked)"
+                                                               class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 mt-0.5 cursor-pointer">
+                                                    </div>
+                                                </template>
+                                                <div class="min-w-0 flex-1">
+                                                    <span class="text-[11px] font-semibold text-slate-800 block truncate" x-text="opt.Name"></span>
+                                                    <template x-if="opt.Cost">
+                                                        <span class="text-[10px] text-indigo-900 font-mono" x-text="opt.Cost"></span>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <template x-if="isOptionKnown(sp.ID, opt.ID)">
+                                                    <span class="text-[9px] bg-emerald-100 text-emerald-800 border border-emerald-300 px-1.5 py-0.5 rounded font-bold">✓ Known</span>
+                                                </template>
+                                                <template x-if="!isOptionKnown(sp.ID, opt.ID)">
+                                                    <span class="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">Learn</span>
+                                                </template>
+                                            </div>
+                                        </div>
                                     </template>
                                 </div>
                             </div>
@@ -83,9 +117,10 @@
             <!-- Summary & Footer -->
             <div class="flex items-center justify-between pt-3 border-t border-slate-200">
                 <button type="button" @click="showLearnSpellsModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-800 cursor-pointer">Cancel</button>
-                <button type="submit" :disabled="Object.keys(spellsToLearn).filter(k => spellsToLearn[k]).length === 0"
-                        class="px-6 py-2.5 bg-indigo-700 hover:bg-indigo-800 disabled:opacity-50 text-white font-bold text-xs sm:text-sm rounded-lg shadow-md transition flex items-center gap-1.5 cursor-pointer">
-                    <span>✨</span> Learn Selected Spells
+                <button type="submit" :disabled="!hasPendingSpellsToLearn"
+                        style="background-color: #4338ca; color: #ffffff;"
+                        class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold text-xs sm:text-sm rounded-lg shadow-md transition flex items-center gap-1.5 cursor-pointer">
+                    <span>✨</span> Learn Selected Spells &amp; Variations
                 </button>
             </div>
         </form>

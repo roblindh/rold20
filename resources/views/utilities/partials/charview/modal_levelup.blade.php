@@ -18,7 +18,7 @@
 
             <!-- Step Tabs Header -->
             <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flex-wrap">
                     <button type="button" @click="lvlStep = 1" :class="lvlStep === 1 ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 py-1.5 rounded-lg text-xs transition cursor-pointer">
                         1. Class Selection
                     </button>
@@ -97,10 +97,15 @@
                                 <span class="text-[10px] text-slate-500">{{ $imp->IPCost ?? $imp->Cost ?? 1 }} IP per rank</span>
                             </div>
                             <div class="flex items-center gap-1.5 shrink-0">
-                                <button type="button" @click="adjustImprovement({{ $imp->ID }}, -1, {{ (int)($imp->IPCost ?? $imp->Cost ?? 1) }})" :disabled="!lvlData.improvements[{{ $imp->ID }}]" class="w-6 h-6 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center cursor-pointer disabled:opacity-40">-</button>
-                                <span class="w-6 text-center font-mono font-bold" x-text="lvlData.improvements[{{ $imp->ID }}] || 0"></span>
+                                <button type="button" @click="adjustImprovement({{ $imp->ID }}, -1, {{ (int)($imp->IPCost ?? $imp->Cost ?? 1) }})"
+                                        :disabled="!lvlData.improvements[{{ $imp->ID }}]"
+                                        class="min-w-[32px] w-8 h-8 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold border border-slate-300 flex items-center justify-center cursor-pointer disabled:opacity-40 text-sm transition">-</button>
+                                <span class="w-7 text-center font-mono font-bold text-slate-900" x-text="lvlData.improvements[{{ $imp->ID }}] || 0"></span>
                                 <input type="hidden" :name="'improvements[' + {{ $imp->ID }} + ']'" :value="lvlData.improvements[{{ $imp->ID }}] || 0">
-                                <button type="button" @click="adjustImprovement({{ $imp->ID }}, 1, {{ (int)($imp->IPCost ?? $imp->Cost ?? 1) }})" :disabled="lvlData.remainingIp < {{ (int)($imp->IPCost ?? $imp->Cost ?? 1) }}" class="w-6 h-6 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-bold flex items-center justify-center cursor-pointer disabled:opacity-40">+</button>
+                                <button type="button" @click="adjustImprovement({{ $imp->ID }}, 1, {{ (int)($imp->IPCost ?? $imp->Cost ?? 1) }})"
+                                        :disabled="lvlData.remainingIp < {{ (int)($imp->IPCost ?? $imp->Cost ?? 1) }}"
+                                        style="background-color: #4f46e5; color: #ffffff;"
+                                        class="min-w-[32px] w-8 h-8 rounded hover:bg-indigo-700 font-bold flex items-center justify-center cursor-pointer disabled:opacity-40 text-sm transition">+</button>
                             </div>
                         </div>
                     @endforeach
@@ -110,14 +115,32 @@
 
             <!-- TAB 3: SKILL POINTS -->
             <div x-show="lvlStep === 3" class="space-y-4" style="display: none;">
-                <div class="flex items-center justify-between bg-indigo-50/70 border border-indigo-200 p-3 rounded-xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-indigo-50/70 border border-indigo-200 p-3 rounded-xl">
                     <div>
                         <h3 class="font-bold text-indigo-950 text-sm flex items-center gap-1.5">
                             <span>🎯</span> Distribute Skill Points
                         </h3>
                         <p class="text-xs text-slate-600 mt-0.5">Primary skills can increase up to +1.0 (cost 1 SP/rank), Secondary up to +0.5 (cost 0.5 SP). Max 1.0 SP per level on Prestige skills.</p>
+                        
+                        <!-- Copy from earlier level selector -->
+                        @if(!empty($earlierLevelsList))
+                            <div class="flex items-center gap-1.5 mt-2">
+                                <select x-model="lvlCopyFromLevel" class="text-xs px-2.5 py-1 border border-slate-300 rounded-lg bg-white text-slate-800 font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                                    <option value="">📋 Copy from earlier level...</option>
+                                    @foreach($earlierLevelsList as $item)
+                                        <option value="{{ $item['level'] }}">{{ $item['label'] }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="button" @click="if (lvlCopyFromLevel) { copyLvlSkillAllocations(lvlCopyFromLevel); }"
+                                        :disabled="!lvlCopyFromLevel"
+                                        style="background-color: #3b82f6; color: #ffffff;"
+                                        class="px-2.5 py-1 font-bold text-xs rounded-lg transition cursor-pointer disabled:opacity-40 flex items-center gap-1 shadow-2xs">
+                                    <span>Copy</span>
+                                </button>
+                            </div>
+                        @endif
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 shrink-0">
                         <template x-if="getLvlPrestigeSpent() > 0">
                             <div class="text-right font-mono bg-purple-50 border border-purple-200 px-2 py-1 rounded">
                                 <span class="text-[10px] text-purple-700 block font-semibold">Prestige SP:</span>
@@ -129,6 +152,12 @@
                             <span class="text-lg font-bold" :class="lvlData.remainingSp >= 0 ? 'text-emerald-700' : 'text-red-600'" x-text="lvlData.remainingSp.toFixed(1)"></span>
                         </div>
                     </div>
+                </div>
+
+                <!-- Search / Filter skills -->
+                <div class="flex items-center justify-between gap-2">
+                    <input type="text" x-model="lvlSkillSearch" placeholder="Filter class skills..." class="w-full sm:w-64 px-2.5 py-1 text-xs border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                    <span class="text-[11px] text-slate-500 font-mono" x-text="availableClassSkills.length + ' available'"></span>
                 </div>
 
                 <div class="space-y-2 max-h-80 overflow-y-auto pr-1">
@@ -155,10 +184,16 @@
                             <div class="flex items-center gap-2 shrink-0">
                                 <span class="text-[10px] text-slate-500">Current: <strong x-text="s.CurrentRank || 0"></strong></span>
                                 <div class="flex items-center gap-1">
-                                    <button type="button" @click="adjustSkill(s.ID, -0.5)" :disabled="!lvlData.skills[s.ID]" class="w-6 h-6 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center cursor-pointer disabled:opacity-40">-</button>
-                                    <span class="w-10 text-center font-mono font-bold" x-text="'+' + (lvlData.skills[s.ID] || 0)"></span>
+                                    <button type="button" @click="adjustSkill(s.ID, -0.5)"
+                                            :disabled="!lvlData.skills[s.ID]"
+                                            class="min-w-[32px] w-8 h-8 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold border border-slate-300 flex items-center justify-center cursor-pointer disabled:opacity-40 text-sm transition">-</button>
+                                    <span class="w-10 text-center font-mono font-bold text-slate-900" x-text="'+' + (lvlData.skills[s.ID] || 0)"></span>
                                     <input type="hidden" :name="'skills[' + s.ID + ']'" :value="lvlData.skills[s.ID] || 0">
-                                    <button type="button" @click="adjustSkill(s.ID, 0.5, s.AccessType)" :disabled="!canIncLvlSkill(s.ID, 0.5, s.AccessType)" class="w-6 h-6 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-bold flex items-center justify-center cursor-pointer disabled:opacity-40" :title="!s.PrereqPassed ? 'Prerequisites not met' : (s.IsPrestige && getLvlPrestigeSpent() >= 1.0 ? 'Max 1.0 SP per level on prestige skills' : '')">+</button>
+                                    <button type="button" @click="adjustSkill(s.ID, 0.5, s.AccessType)"
+                                            :disabled="!canIncLvlSkill(s.ID, 0.5, s.AccessType)"
+                                            style="background-color: #4f46e5; color: #ffffff;"
+                                            class="min-w-[32px] w-8 h-8 rounded hover:bg-indigo-700 font-bold flex items-center justify-center cursor-pointer disabled:opacity-40 text-sm transition"
+                                            :title="!s.PrereqPassed ? 'Prerequisites not met' : (s.IsPrestige && getLvlPrestigeSpent() >= 1.0 ? 'Max 1.0 SP per level on prestige skills' : '')">+</button>
                                 </div>
                             </div>
                         </div>
@@ -166,33 +201,79 @@
                 </div>
             </div>
 
-            <!-- TAB 4: SPELLS -->
+            <!-- TAB 4: SPELLS & VARIATIONS -->
             <div x-show="lvlStep === 4" class="space-y-4" style="display: none;">
-                <div>
-                    <h3 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
-                        <span>✨</span> Learn New Spells &amp; Variations (Optional)
-                    </h3>
-                    <p class="text-xs text-slate-600 mt-0.5">If this level grants spellcasting capabilities or improves spell skills, select any new spells and variations learned.</p>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                            <span>✨</span> Learn New Spells &amp; Variations (Optional)
+                        </h3>
+                        <p class="text-xs text-slate-600 mt-0.5">Select any new spells or variations learned at this level. Learned spells &amp; variations will be added to your character.</p>
+                    </div>
+                    <div class="shrink-0">
+                        <input type="text" x-model="lvlSpellSearch" placeholder="Filter spells..." class="px-2.5 py-1 text-xs border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-80 overflow-y-auto pr-1 text-xs">
-                    @foreach($spells as $sp)
-                        @php
-                            $isKnown = isset($spellsList[$sp->ID]);
-                        @endphp
-                        <label class="bg-white border border-slate-200 p-2.5 rounded-lg flex items-start gap-2 cursor-pointer hover:border-indigo-300 transition">
-                            <input type="checkbox" :name="'spells[' + {{ $sp->ID }} + '][]'" value="0" x-model="lvlData.selectedSpells[{{ $sp->ID }}]" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 mt-0.5">
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center justify-between">
-                                    <span class="font-bold text-slate-900 truncate">{{ $sp->Name }}</span>
-                                    @if($isKnown)
-                                        <span class="text-[9px] bg-indigo-100 text-indigo-900 px-1 rounded font-semibold">Known</span>
-                                    @endif
+                <div class="space-y-2.5 max-h-80 overflow-y-auto pr-1 text-xs">
+                    <template x-for="sp in filteredLvlSpells" :key="sp.ID">
+                        <div class="bg-white border rounded-xl p-3 space-y-2 shadow-2xs transition"
+                             :class="isLvlSpellActive(sp.ID) ? 'border-indigo-400 bg-indigo-50/30' : 'border-slate-200 hover:border-slate-300'">
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="flex items-start gap-2 min-w-0 flex-1">
+                                    <input type="checkbox" :name="'spells[' + sp.ID + '][]'" value="0"
+                                           :checked="isLvlSpellActive(sp.ID)"
+                                           @change="toggleLvlSpellBase(sp.ID, $event.target.checked)"
+                                           class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 mt-0.5">
+                                    <div class="min-w-0 flex-1">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <span class="font-bold text-slate-900 text-sm" x-text="sp.Name"></span>
+                                            <template x-if="isSpellKnown(sp.ID)">
+                                                <span class="text-[10px] bg-indigo-100 text-indigo-900 font-bold px-1.5 py-0.5 rounded">Known</span>
+                                            </template>
+                                            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 font-semibold" x-text="sp.Cost || '0 PP'"></span>
+                                            <template x-if="sp.School">
+                                                <span class="text-[10px] text-slate-500" x-text="sp.School"></span>
+                                            </template>
+                                        </div>
+                                        <p class="text-[11px] text-slate-600 line-clamp-1 mt-0.5" x-text="sp.Summary || sp.Description"></p>
+                                    </div>
                                 </div>
-                                <div class="text-[10px] text-slate-500 truncate">{{ $sp->School ?? 'Spell' }} &bull; Cost {{ $sp->Cost ?? 0 }} PP</div>
                             </div>
-                        </label>
-                    @endforeach
+
+                            <!-- Spell Variations if any exist -->
+                            <template x-if="getSpellOptionsForSpell(sp.ID).length > 0">
+                                <div class="mt-2 pt-2 border-t border-slate-200/80 space-y-1.5 pl-2 border-l-2 border-indigo-300">
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-900 block">Variations:</span>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                                        <template x-for="opt in getSpellOptionsForSpell(sp.ID)" :key="opt.ID">
+                                            <label class="p-1.5 rounded-lg border text-[11px] flex items-center justify-between gap-1.5 transition select-none"
+                                                   :class="isOptionKnown(sp.ID, opt.ID) ? 'bg-emerald-50/80 border-emerald-300 text-emerald-950 font-medium' : (isLvlOptionSelected(sp.ID, opt.ID) ? 'bg-indigo-50 border-indigo-400 text-indigo-950 font-semibold ring-1 ring-indigo-300' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer')">
+                                                <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                                                    <template x-if="isOptionKnown(sp.ID, opt.ID)">
+                                                        <span class="text-emerald-700 font-bold text-xs">✓</span>
+                                                    </template>
+                                                    <template x-if="!isOptionKnown(sp.ID, opt.ID)">
+                                                        <input type="checkbox" :name="'spells[' + sp.ID + '][]'" :value="opt.ID"
+                                                               :checked="isLvlOptionSelected(sp.ID, opt.ID)"
+                                                               @change="toggleLvlOption(sp.ID, opt.ID, $event.target.checked)"
+                                                               class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                                                    </template>
+                                                    <span class="truncate" x-text="opt.Name"></span>
+                                                </div>
+                                                <div class="shrink-0 flex items-center gap-1">
+                                                    <span class="text-[10px] font-mono text-slate-500" x-text="opt.Cost || '+0 PP'"></span>
+                                                    <template x-if="isOptionKnown(sp.ID, opt.ID)">
+                                                        <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1 rounded">Known</span>
+                                                    </template>
+                                                </div>
+                                            </label>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
                 </div>
             </div>
 
@@ -206,10 +287,10 @@
 
                 <div class="flex items-center gap-2">
                     <button type="button" @click="showLevelUpModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-800 cursor-pointer">Cancel</button>
-                    <button type="button" x-show="lvlStep < 4" @click="lvlStep++" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition cursor-pointer">
+                    <button type="button" x-show="lvlStep < 4" @click="lvlStep++" style="background-color: #4f46e5; color: #ffffff;" class="px-5 py-2.5 hover:bg-indigo-700 font-bold text-xs rounded-lg transition cursor-pointer">
                         Next Step &rarr;
                     </button>
-                    <button type="submit" x-show="lvlStep === 4 || lvlStep === 3" :disabled="!lvlData.selectedClassId" class="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white font-bold text-xs sm:text-sm rounded-lg shadow-md border border-emerald-900 transition flex items-center gap-1.5 cursor-pointer">
+                    <button type="submit" x-show="lvlStep === 4 || lvlStep === 3" :disabled="!lvlData.selectedClassId" style="background-color: #047857; color: #ffffff;" class="px-6 py-2.5 hover:bg-emerald-800 disabled:opacity-50 font-bold text-xs sm:text-sm rounded-lg shadow-md border border-emerald-900 transition flex items-center gap-1.5 cursor-pointer">
                         <span>✨</span> Complete Level Up!
                     </button>
                 </div>

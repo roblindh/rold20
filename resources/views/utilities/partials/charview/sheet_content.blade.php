@@ -492,10 +492,11 @@
                 </tr>
 
                 @if(!$isWizard)
-                    <!-- Blade Rendering for Equipped Weapons & Shields -->
+                    <!-- Category 1: Equipped Weapons -->
                     @if(!empty($calc['attacks']['weapons']))
                         @foreach($calc['attacks']['weapons'] as $wId => $wpn)
-                            <tr x-show="!combatMatrixState || combatMatrixState.showWeapons"
+                            @if(empty($wpn['is_carried']))
+                            <tr x-show="!combatMatrixState || combatMatrixState.showEquippedWeapons !== false"
                                 :class="combatMatrixState.activeAttackId === ('weapon_{{ $wId }}') ? 'bg-amber-100/60 font-semibold' : ''"
                                 x-init="twoHandedMode['{{ $wId }}'] = false; if (!selectedAmmo['{{ $wId }}']) selectedAmmo['{{ $wId }}'] = '{{ $wpn['default_ammo_id'] ?? '' }}'">
                                 <td class="cvlist cvcenter">
@@ -508,7 +509,14 @@
                                 <td class="cvlist font-bold text-amber-950">
                                     <div class="flex flex-col gap-1">
                                         <div class="flex items-center justify-between gap-2">
-                                            <span>{{ str_contains($wpn['name'], 'Shield') ? '🛡️' : ($wpn['is_ranged'] ? '🏹' : '🗡️') }} {{ $wpn['name'] }}</span>
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <span>{{ str_contains($wpn['name'], 'Shield') ? '🛡️' : ($wpn['is_ranged'] ? '🏹' : '🗡️') }} {{ $wpn['name'] }}</span>
+                                                @if(!empty($wpn['badges']))
+                                                    @foreach($wpn['badges'] as $b)
+                                                        <span class="text-[9px] px-1 py-0.2 rounded bg-amber-100/70 text-amber-900 border border-amber-300 font-sans font-normal">{{ $b }}</span>
+                                                    @endforeach
+                                                @endif
+                                            </div>
                                             @if(!$wpn['is_ranged'] && !str_contains($wpn['name'], 'Shield'))
                                                 <button type="button" 
                                                         @click="twoHandedMode['{{ $wId }}'] = !twoHandedMode['{{ $wId }}']"
@@ -572,11 +580,125 @@
                                     @endif
                                 </td>
                             </tr>
+                            @endif
+                        @endforeach
+
+                        <!-- Category 1b: Carried Weapons (when toggled on) -->
+                        @foreach($calc['attacks']['weapons'] as $wId => $wpn)
+                            @if(!empty($wpn['is_carried']))
+                            <tr x-show="combatMatrixState && combatMatrixState.showCarriedWeapons"
+                                class="bg-amber-50/20"
+                                :class="combatMatrixState.activeAttackId === ('weapon_{{ $wId }}') ? 'bg-amber-100/60 font-semibold' : ''"
+                                x-init="twoHandedMode['{{ $wId }}'] = false; if (!selectedAmmo['{{ $wId }}']) selectedAmmo['{{ $wId }}'] = '{{ $wpn['default_ammo_id'] ?? '' }}'">
+                                <td class="cvlist cvcenter">
+                                    <input type="radio" name="active_attack_selection" value="weapon_{{ $wId }}"
+                                           x-model="combatMatrixState.activeAttackId"
+                                           @change="saveCombatMatrixConfig()"
+                                           class="text-amber-800 focus:ring-amber-700 cursor-pointer"
+                                           title="Select as active attack">
+                                </td>
+                                <td class="cvlist font-bold text-amber-950">
+                                    <div class="flex flex-col gap-1">
+                                        <div class="flex items-center justify-between gap-2">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <span>{{ str_contains($wpn['name'], 'Shield') ? '🛡️' : ($wpn['is_ranged'] ? '🏹' : '🗡️') }} {{ $wpn['name'] }}</span>
+                                                @if(!empty($wpn['badges']))
+                                                    @foreach($wpn['badges'] as $b)
+                                                        <span class="text-[9px] px-1 py-0.2 rounded bg-amber-100/70 text-amber-900 border border-amber-300 font-sans font-normal">{{ $b }}</span>
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                            @if(!$wpn['is_ranged'] && !str_contains($wpn['name'], 'Shield'))
+                                                <button type="button" 
+                                                        @click="twoHandedMode['{{ $wId }}'] = !twoHandedMode['{{ $wId }}']"
+                                                        class="text-[10px] px-1.5 py-0.2 rounded border transition cursor-pointer"
+                                                        :class="twoHandedMode['{{ $wId }}'] ? 'bg-amber-800 text-white border-amber-900 font-bold' : 'bg-stone-100 text-stone-700 border-stone-300'">
+                                                    <span x-text="twoHandedMode['{{ $wId }}'] ? '2-Handed (+2 Str)' : '1-Handed'"></span>
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="cvlist cvcenter font-mono text-xs">{{ $wpn['size_abbr'] ?? 'M' }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold">{{ $wpn['ap'] }} AP</td>
+                                <td class="cvlist cvcenter text-xs font-mono">{{ $wpn['reach'] ?? ($wpn['is_ranged'] ? $wpn['range'] . ' m' : $reachStr . ' sq') }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold text-emerald-800">{{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold">
+                                    <span x-show="!twoHandedMode['{{ $wId }}']">
+                                        {{ $wpn['one_handed']['damage'] }} <span class="text-xs text-stone-500 font-normal">({{ $wpn['one_handed']['avg_damage'] }})</span>
+                                    </span>
+                                    <span x-show="twoHandedMode['{{ $wId }}']" class="text-amber-900 font-extrabold">
+                                        {{ $wpn['two_handed']['damage'] }} <span class="text-xs text-amber-700 font-normal">({{ $wpn['two_handed']['avg_damage'] }})</span>
+                                    </span>
+                                </td>
+                                <td class="cvlist cvcenter font-mono text-xs">{{ $wpn['crit_range'] }}-20 (&times;{{ $wpn['crit_multiplier'] }})</td>
+                            </tr>
+                            @endif
                         @endforeach
                     @endif
 
-                    <!-- Custom Akimbo & Multi-Attack Combos (from Player Routine Builder) -->
-                    <template x-if="!combatMatrixState || combatMatrixState.showAkimbo">
+                    <!-- Category 2: Primary Natural Attacks -->
+                    @if(!empty($calc['attacks']['primary_natural']))
+                        @foreach($calc['attacks']['primary_natural'] as $nIdx => $nat)
+                            <tr x-show="!combatMatrixState || combatMatrixState.showPrimaryNatural !== false"
+                                :class="combatMatrixState.activeAttackId === ('natural_prim_{{ $nIdx }}') ? 'bg-amber-100/60 font-semibold' : ''">
+                                <td class="cvlist cvcenter">
+                                    <input type="radio" name="active_attack_selection" value="natural_prim_{{ $nIdx }}"
+                                           x-model="combatMatrixState.activeAttackId"
+                                           @change="saveCombatMatrixConfig()"
+                                           class="text-amber-800 focus:ring-amber-700 cursor-pointer"
+                                           title="Select as active attack">
+                                </td>
+                                <td class="cvlist font-bold text-stone-900">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span>🐾 {{ $nat['name'] ?? 'Natural Attack' }}</span>
+                                        <span class="text-[9px] px-1 py-0.2 rounded bg-emerald-50 text-emerald-900 border border-emerald-300 font-sans font-semibold">Primary</span>
+                                    </div>
+                                </td>
+                                <td class="cvlist cvcenter font-mono text-xs">{{ $nat['size_abbr'] ?? ($sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M') }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold">{{ $nat['ap'] }} AP</td>
+                                <td class="cvlist cvcenter text-xs font-mono">{{ $nat['reach'] ?? ($reachStr . ' sq') }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
+                                    {{ ($nat['attack_bonus'] >= 0 ? '+' : '') . $nat['attack_bonus'] }}
+                                </td>
+                                <td class="cvlist cvcenter font-mono font-bold">{{ $nat['damage'] }} <span class="text-xs text-stone-500 font-normal">({{ $nat['avg_damage'] }})</span></td>
+                                <td class="cvlist cvcenter font-mono text-xs">{{ $nat['crit'] ?? '20 (x2)' }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
+
+                    <!-- Category 3: Secondary Natural Attacks -->
+                    @if(!empty($calc['attacks']['secondary_natural']))
+                        @foreach($calc['attacks']['secondary_natural'] as $nIdx => $nat)
+                            <tr x-show="!combatMatrixState || combatMatrixState.showSecondaryNatural !== false"
+                                :class="combatMatrixState.activeAttackId === ('natural_sec_{{ $nIdx }}') ? 'bg-amber-100/60 font-semibold' : ''">
+                                <td class="cvlist cvcenter">
+                                    <input type="radio" name="active_attack_selection" value="natural_sec_{{ $nIdx }}"
+                                           x-model="combatMatrixState.activeAttackId"
+                                           @change="saveCombatMatrixConfig()"
+                                           class="text-amber-800 focus:ring-amber-700 cursor-pointer"
+                                           title="Select as active attack">
+                                </td>
+                                <td class="cvlist font-bold text-stone-900">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span>🐾 {{ $nat['name'] ?? 'Natural Attack' }}</span>
+                                        <span class="text-[9px] px-1 py-0.2 rounded bg-amber-50 text-amber-900 border border-amber-300 font-sans font-semibold">Secondary (-4)</span>
+                                    </div>
+                                </td>
+                                <td class="cvlist cvcenter font-mono text-xs">{{ $nat['size_abbr'] ?? ($sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M') }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold">{{ $nat['ap'] }} AP</td>
+                                <td class="cvlist cvcenter text-xs font-mono">{{ $nat['reach'] ?? ($reachStr . ' sq') }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
+                                    {{ ($nat['attack_bonus'] >= 0 ? '+' : '') . $nat['attack_bonus'] }}
+                                </td>
+                                <td class="cvlist cvcenter font-mono font-bold">{{ $nat['damage'] }} <span class="text-xs text-stone-500 font-normal">({{ $nat['avg_damage'] }})</span></td>
+                                <td class="cvlist cvcenter font-mono text-xs">{{ $nat['crit'] ?? '20 (x2)' }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
+
+                    <!-- Category 4: Akimbo & Multi-Attack Combos (from Player Routine Builder) -->
+                    <template x-if="!combatMatrixState || combatMatrixState.showAkimbo !== false">
                         <template x-for="combo in (combatMatrixState?.customCombos || [])" :key="combo.id">
                             <tr class="bg-indigo-50/40 border-b border-amber-900/10"
                                 :class="combatMatrixState.activeAttackId === combo.id ? 'bg-indigo-100/70 font-semibold' : ''">
@@ -588,8 +710,9 @@
                                            title="Select as active routine">
                                 </td>
                                 <td class="cvlist font-bold text-indigo-950">
-                                    <div class="flex items-center gap-1.5">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
                                         <span>⚡ <span x-text="combo.name"></span></span>
+                                        <span class="text-[9px] px-1 py-0.2 rounded bg-indigo-100 text-indigo-900 border border-indigo-300 font-sans font-semibold" x-text="combo.count + ' Attacks'"></span>
                                     </div>
                                 </td>
                                 <td class="cvlist cvcenter font-mono text-xs">{{ $sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M' }}</td>
@@ -602,206 +725,238 @@
                         </template>
                     </template>
 
-                    <!-- Natural Attacks -->
-                    @if(!empty($calc['attacks']['natural']))
-                        @foreach($calc['attacks']['natural'] as $nIdx => $nat)
-                            <tr x-show="!combatMatrixState || combatMatrixState.showNatural"
-                                :class="combatMatrixState.activeAttackId === ('natural_{{ $nIdx }}') ? 'bg-amber-100/60 font-semibold' : ''">
+                    <!-- Category 5: Brawling Maneuvers (Initiate Grapple, Grapple Attack, Bull Rush, Overrun) -->
+                    @if(!empty($calc['attacks']['brawling_actions']))
+                        @php $bActions = $calc['attacks']['brawling_actions']; @endphp
+                        <!-- 5a. Initiate Grapple -->
+                        @if(isset($bActions['initiate_grapple']))
+                            <tr x-show="!combatMatrixState || combatMatrixState.showBrawling !== false" class="bg-amber-50/20"
+                                :class="combatMatrixState.activeAttackId === 'initiate_grapple' ? 'bg-amber-100/60 font-semibold' : ''">
                                 <td class="cvlist cvcenter">
-                                    <input type="radio" name="active_attack_selection" value="natural_{{ $nIdx }}"
+                                    <input type="radio" name="active_attack_selection" value="initiate_grapple"
                                            x-model="combatMatrixState.activeAttackId"
                                            @change="saveCombatMatrixConfig()"
                                            class="text-amber-800 focus:ring-amber-700 cursor-pointer"
                                            title="Select as active attack">
                                 </td>
-                                <td class="cvlist font-bold text-stone-900">
-                                    🐾 {{ $nat['name'] ?? 'Natural Attack' }} <span class="text-xs text-stone-500 font-normal">({{ !empty($nat['primary']) ? 'Primary' : 'Secondary -4' }})</span>
+                                <td class="cvlist font-bold text-amber-950">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span>🤼 {{ $bActions['initiate_grapple']['name'] }}</span>
+                                    </div>
                                 </td>
-                                <td class="cvlist cvcenter font-mono text-xs">{{ $sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M' }}</td>
-                                <td class="cvlist cvcenter font-mono font-bold">{{ $nat['ap'] }} AP</td>
-                                <td class="cvlist cvcenter text-xs font-mono">{{ $reachStr }} sq</td>
+                                <td class="cvlist cvcenter font-mono text-xs">{{ $bActions['initiate_grapple']['size_class'] ?? ($sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M') }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold">{{ $bActions['initiate_grapple']['ap'] }} AP</td>
+                                <td class="cvlist cvcenter text-xs font-mono">{{ $bActions['initiate_grapple']['reach'] }}</td>
                                 <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                                    {{ ($nat['attack_bonus'] >= 0 ? '+' : '') . $nat['attack_bonus'] }}
+                                    {{ ($bActions['initiate_grapple']['attack_bonus'] >= 0 ? '+' : '') . $bActions['initiate_grapple']['attack_bonus'] }}
                                 </td>
-                                <td class="cvlist cvcenter font-mono">{{ $nat['damage'] }}</td>
-                                <td class="cvlist cvcenter font-mono text-xs">20/&times;2</td>
+                                <td class="cvlist cvcenter font-mono text-stone-500">–</td>
+                                <td class="cvlist cvcenter font-mono text-xs text-stone-500">–</td>
                             </tr>
-                        @endforeach
-                    @endif
+                        @endif
 
-                    <!-- Natural Combos -->
-                    @if(!empty($calc['attacks']['natural_combos']))
-                        @foreach($calc['attacks']['natural_combos'] as $ncIdx => $nc)
-                            <tr x-show="!combatMatrixState || combatMatrixState.showNatural" class="bg-amber-50/40"
-                                :class="combatMatrixState.activeAttackId === ('nat_combo_{{ $ncIdx }}') ? 'bg-amber-100/70 font-semibold' : ''">
+                        <!-- 5b. Grapple Attack -->
+                        @if(isset($bActions['grapple_attack']))
+                            <tr x-show="!combatMatrixState || combatMatrixState.showBrawling !== false" class="bg-amber-50/20"
+                                :class="combatMatrixState.activeAttackId === 'grapple_attack' ? 'bg-amber-100/60 font-semibold' : ''">
                                 <td class="cvlist cvcenter">
-                                    <input type="radio" name="active_attack_selection" value="nat_combo_{{ $ncIdx }}"
+                                    <input type="radio" name="active_attack_selection" value="grapple_attack"
                                            x-model="combatMatrixState.activeAttackId"
                                            @change="saveCombatMatrixConfig()"
                                            class="text-amber-800 focus:ring-amber-700 cursor-pointer"
-                                           title="Select as active routine">
+                                           title="Select as active attack">
                                 </td>
-                                <td class="cvlist font-bold text-stone-900">
-                                    🐾🐾 {{ $nc['name'] }}
+                                <td class="cvlist font-bold text-amber-950">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span>🤼 {{ $bActions['grapple_attack']['name'] }}</span>
+                                    </div>
                                 </td>
-                                <td class="cvlist cvcenter font-mono text-xs">{{ $sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M' }}</td>
-                                <td class="cvlist cvcenter font-mono font-bold">{{ $nc['ap'] }} AP</td>
-                                <td class="cvlist cvcenter text-xs font-mono">{{ $reachStr }} sq</td>
+                                <td class="cvlist cvcenter font-mono text-xs">{{ $bActions['grapple_attack']['size_class'] ?? ($sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M') }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold">{{ $bActions['grapple_attack']['ap'] }} AP</td>
+                                <td class="cvlist cvcenter text-xs font-mono">{{ $bActions['grapple_attack']['reach'] }}</td>
                                 <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                                    @php
-                                        $comboBonuses = array_map(fn($a) => (($a['attack_bonus'] ?? $a['bonus'] ?? 0) >= 0 ? '+' : '') . ($a['attack_bonus'] ?? $a['bonus'] ?? 0), $nc['attacks'] ?? []);
-                                    @endphp
-                                    {{ implode(' / ', $comboBonuses) }}
+                                    {{ ($bActions['grapple_attack']['attack_bonus'] >= 0 ? '+' : '') . $bActions['grapple_attack']['attack_bonus'] }}
                                 </td>
-                                <td class="cvlist cvcenter text-xs font-mono">
-                                    @php
-                                        $comboDmgs = array_map(fn($a) => $a['name'] . ': ' . $a['damage'], $nc['attacks'] ?? []);
-                                    @endphp
-                                    {{ implode(' • ', $comboDmgs) }}
-                                </td>
-                                <td class="cvlist cvcenter font-mono text-xs">Spcl</td>
+                                <td class="cvlist cvcenter font-mono font-bold">{{ $bActions['grapple_attack']['damage'] }} <span class="text-xs text-stone-500 font-normal">({{ $bActions['grapple_attack']['avg_damage'] }})</span></td>
+                                <td class="cvlist cvcenter font-mono text-xs">{{ $bActions['grapple_attack']['crit'] }}</td>
                             </tr>
-                        @endforeach
+                        @endif
+
+                        <!-- 5c. Bull Rush -->
+                        @if(isset($bActions['bull_rush']))
+                            <tr x-show="!combatMatrixState || combatMatrixState.showBrawling !== false" class="bg-amber-50/20"
+                                :class="combatMatrixState.activeAttackId === 'bull_rush' ? 'bg-amber-100/60 font-semibold' : ''">
+                                <td class="cvlist cvcenter">
+                                    <input type="radio" name="active_attack_selection" value="bull_rush"
+                                           x-model="combatMatrixState.activeAttackId"
+                                           @change="saveCombatMatrixConfig()"
+                                           class="text-amber-800 focus:ring-amber-700 cursor-pointer"
+                                           title="Select as active attack">
+                                </td>
+                                <td class="cvlist font-bold text-amber-950">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span>🐂 {{ $bActions['bull_rush']['name'] }}</span>
+                                    </div>
+                                </td>
+                                <td class="cvlist cvcenter font-mono text-xs">{{ $bActions['bull_rush']['size_class'] ?? ($sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M') }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold">{{ $bActions['bull_rush']['ap'] }} AP</td>
+                                <td class="cvlist cvcenter text-xs font-mono">{{ $bActions['bull_rush']['reach'] }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
+                                    {{ ($bActions['bull_rush']['attack_bonus'] >= 0 ? '+' : '') . $bActions['bull_rush']['attack_bonus'] }}
+                                </td>
+                                <td class="cvlist cvcenter font-mono text-stone-500">–</td>
+                                <td class="cvlist cvcenter font-mono text-xs text-stone-500">–</td>
+                            </tr>
+                        @endif
+
+                        <!-- 5d. Overrun -->
+                        @if(isset($bActions['overrun']))
+                            <tr x-show="!combatMatrixState || combatMatrixState.showBrawling !== false" class="bg-amber-50/20"
+                                :class="combatMatrixState.activeAttackId === 'overrun' ? 'bg-amber-100/60 font-semibold' : ''">
+                                <td class="cvlist cvcenter">
+                                    <input type="radio" name="active_attack_selection" value="overrun"
+                                           x-model="combatMatrixState.activeAttackId"
+                                           @change="saveCombatMatrixConfig()"
+                                           class="text-amber-800 focus:ring-amber-700 cursor-pointer"
+                                           title="Select as active attack">
+                                </td>
+                                <td class="cvlist font-bold text-amber-950">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span>🏃 {{ $bActions['overrun']['name'] }}</span>
+                                    </div>
+                                </td>
+                                <td class="cvlist cvcenter font-mono text-xs">{{ $bActions['overrun']['size_class'] ?? ($sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M') }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold">{{ $bActions['overrun']['ap'] }} AP</td>
+                                <td class="cvlist cvcenter text-xs font-mono">{{ $bActions['overrun']['reach'] }}</td>
+                                <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
+                                    {{ ($bActions['overrun']['attack_bonus'] >= 0 ? '+' : '') . $bActions['overrun']['attack_bonus'] }}
+                                </td>
+                                <td class="cvlist cvcenter font-mono text-stone-500">–</td>
+                                <td class="cvlist cvcenter font-mono text-xs text-stone-500">–</td>
+                            </tr>
+                        @endif
                     @endif
 
-                    <!-- Brawling Attack -->
-                    <tr x-show="!combatMatrixState || combatMatrixState.showBrawling"
-                        :class="combatMatrixState.activeAttackId === 'unarmed_brawling' ? 'bg-amber-100/60 font-semibold' : ''">
-                        <td class="cvlist cvcenter">
-                            <input type="radio" name="active_attack_selection" value="unarmed_brawling"
-                                   x-model="combatMatrixState.activeAttackId"
-                                   @change="saveCombatMatrixConfig()"
-                                   class="text-amber-800 focus:ring-amber-700 cursor-pointer"
-                                   title="Select as active attack">
-                        </td>
-                        <td class="cvlist text-stone-800 font-medium">
-                            👊 {{ $calc['attacks']['brawling']['name'] }}
-                        </td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M' }}</td>
-                        <td class="cvlist cvcenter font-mono font-bold">{{ $calc['attacks']['brawling']['ap'] }} AP</td>
-                        <td class="cvlist cvcenter text-xs font-mono">{{ $reachStr }} sq</td>
-                        <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                            {{ ($calc['attacks']['brawling']['attack_bonus'] >= 0 ? '+' : '') . $calc['attacks']['brawling']['attack_bonus'] }}
-                        </td>
-                        <td class="cvlist cvcenter font-mono">{{ $calc['attacks']['brawling']['damage'] }}</td>
-                        <td class="cvlist cvcenter font-mono text-xs">20/&times;2</td>
-                    </tr>
-
-                    <!-- Grapple Maneuver -->
-                    @if(!empty($calc['attacks']['grapple']))
-                        @php $grp = $calc['attacks']['grapple']; @endphp
-                        <tr x-show="!combatMatrixState || combatMatrixState.showGrapple" class="bg-amber-50/30"
-                            :class="combatMatrixState.activeAttackId === 'grapple' ? 'bg-amber-100/60 font-semibold' : ''">
+                    <!-- Category 6: Supernatural / Spellcaster Attacks -->
+                    @if(!empty($calc['attacks']['spells']))
+                        @php $sp = $calc['attacks']['spells']; @endphp
+                        <!-- 6a. Ray Attack -->
+                        <tr class="bg-indigo-50/50" x-show="!combatMatrixState || combatMatrixState.showSpells !== false"
+                            :class="combatMatrixState.activeAttackId === 'spell_ray' ? 'bg-indigo-100/70 font-semibold' : ''">
                             <td class="cvlist cvcenter">
-                                <input type="radio" name="active_attack_selection" value="grapple"
+                                <input type="radio" name="active_attack_selection" value="spell_ray"
                                        x-model="combatMatrixState.activeAttackId"
                                        @change="saveCombatMatrixConfig()"
-                                       class="text-amber-800 focus:ring-amber-700 cursor-pointer"
+                                       class="text-indigo-800 focus:ring-indigo-700 cursor-pointer"
                                        title="Select as active attack">
                             </td>
-                            <td class="cvlist text-amber-950 font-medium">
-                                🤼 {{ $grp['name'] ?? 'Grapple' }} <span class="text-xs text-stone-500 font-normal">({{ $grp['category'] ?? 'Maneuver' }})</span>
+                            <td class="cvlist text-indigo-950 font-serif font-bold">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span>✨ {{ $sp['ray']['name'] ?? 'Ray Attack' }}</span>
+                                    @if(!empty($sp['focus_att_mod']))
+                                        <span class="text-[9px] px-1 py-0.2 rounded bg-indigo-100 text-indigo-900 border border-indigo-300 font-sans font-normal" title="Equipped Focus/Implement Bonus">Focus +{{ $sp['focus_att_mod'] }}</span>
+                                    @endif
+                                </div>
                             </td>
-                            <td class="cvlist cvcenter font-mono text-xs">{{ $sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M' }}</td>
-                            <td class="cvlist cvcenter font-mono font-bold">{{ $grp['ap'] ?? 8 }} AP</td>
-                            <td class="cvlist cvcenter text-xs font-mono">{{ $grp['reach'] ?? ($reachStr . ' sq') }}</td>
-                            <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                                Pin: {{ (($grp['dex_attack'] ?? 0) >= 0 ? '+' : '') . ($grp['dex_attack'] ?? 0) }} / Hold: {{ (($grp['str_attack'] ?? 0) >= 0 ? '+' : '') . ($grp['str_attack'] ?? 0) }}
+                            <td class="cvlist cvcenter font-mono text-xs">–</td>
+                            <td class="cvlist cvcenter font-mono font-bold">{{ $sp['ray']['ap'] ?? 'Var' }}</td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $sp['ray']['range'] ?? 'Var' }}</td>
+                            <td class="cvlist cvcenter font-mono font-bold text-indigo-900">
+                                {{ (($sp['ray']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($sp['ray']['attack_bonus'] ?? 0) }}
                             </td>
-                            <td class="cvlist cvcenter font-mono">{{ $grp['damage'] ?? '1d3' }} <span class="text-xs text-stone-500 font-normal">(Avg {{ $grp['avg_damage'] ?? '2' }})</span></td>
-                            <td class="cvlist cvcenter font-mono text-xs">{{ $grp['crit'] ?? '20/x2' }}</td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $sp['ray']['damage'] ?? 'Var' }}</td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $sp['ray']['crit'] ?? '20 (x2)' }}</td>
+                        </tr>
+
+                        <!-- 6b. Area Attack -->
+                        <tr class="bg-indigo-50/50" x-show="!combatMatrixState || combatMatrixState.showSpells !== false"
+                            :class="combatMatrixState.activeAttackId === 'spell_area' ? 'bg-indigo-100/70 font-semibold' : ''">
+                            <td class="cvlist cvcenter">
+                                <input type="radio" name="active_attack_selection" value="spell_area"
+                                       x-model="combatMatrixState.activeAttackId"
+                                       @change="saveCombatMatrixConfig()"
+                                       class="text-indigo-800 focus:ring-indigo-700 cursor-pointer"
+                                       title="Select as active attack">
+                            </td>
+                            <td class="cvlist text-indigo-950 font-serif font-bold">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span>🌌 {{ $sp['area']['name'] ?? 'Area Attack' }}</span>
+                                    @if(!empty($sp['focus_att_mod']))
+                                        <span class="text-[9px] px-1 py-0.2 rounded bg-indigo-100 text-indigo-900 border border-indigo-300 font-sans font-normal" title="Equipped Focus/Implement Bonus">Focus +{{ $sp['focus_att_mod'] }}</span>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="cvlist cvcenter font-mono text-xs">–</td>
+                            <td class="cvlist cvcenter font-mono font-bold">{{ $sp['area']['ap'] ?? 'Var' }}</td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $sp['area']['range'] ?? 'Var' }}</td>
+                            <td class="cvlist cvcenter font-mono font-bold text-indigo-900">
+                                {{ (($sp['area']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($sp['area']['attack_bonus'] ?? 0) }}
+                            </td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $sp['area']['damage'] ?? 'Var' }}</td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $sp['area']['crit'] ?? 'Var' }}</td>
+                        </tr>
+
+                        <!-- 6c. Body Attack -->
+                        <tr class="bg-indigo-50/50" x-show="!combatMatrixState || combatMatrixState.showSpells !== false"
+                            :class="combatMatrixState.activeAttackId === 'spell_body' ? 'bg-indigo-100/70 font-semibold' : ''">
+                            <td class="cvlist cvcenter">
+                                <input type="radio" name="active_attack_selection" value="spell_body"
+                                       x-model="combatMatrixState.activeAttackId"
+                                       @change="saveCombatMatrixConfig()"
+                                       class="text-indigo-800 focus:ring-indigo-700 cursor-pointer"
+                                       title="Select as active attack">
+                            </td>
+                            <td class="cvlist text-indigo-950 font-serif font-bold">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span>🧬 {{ $sp['body']['name'] ?? 'Body Attack' }}</span>
+                                    @if(!empty($sp['focus_att_mod']))
+                                        <span class="text-[9px] px-1 py-0.2 rounded bg-indigo-100 text-indigo-900 border border-indigo-300 font-sans font-normal" title="Equipped Focus/Implement Bonus">Focus +{{ $sp['focus_att_mod'] }}</span>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="cvlist cvcenter font-mono text-xs">–</td>
+                            <td class="cvlist cvcenter font-mono font-bold">{{ $sp['body']['ap'] ?? 'Var' }}</td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $sp['body']['range'] ?? 'Var' }}</td>
+                            <td class="cvlist cvcenter font-mono font-bold text-indigo-900">
+                                {{ (($sp['body']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($sp['body']['attack_bonus'] ?? 0) }}
+                            </td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $sp['body']['damage'] ?? 'Var' }}</td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $sp['body']['crit'] ?? 'Var' }}</td>
+                        </tr>
+
+                        <!-- 6d. Mind Attack -->
+                        <tr class="bg-indigo-50/50" x-show="!combatMatrixState || combatMatrixState.showSpells !== false"
+                            :class="combatMatrixState.activeAttackId === 'spell_mind' ? 'bg-indigo-100/70 font-semibold' : ''">
+                            <td class="cvlist cvcenter">
+                                <input type="radio" name="active_attack_selection" value="spell_mind"
+                                       x-model="combatMatrixState.activeAttackId"
+                                       @change="saveCombatMatrixConfig()"
+                                       class="text-indigo-800 focus:ring-indigo-700 cursor-pointer"
+                                       title="Select as active attack">
+                            </td>
+                            <td class="cvlist text-indigo-950 font-serif font-bold">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span>🧠 {{ $sp['mind']['name'] ?? 'Mind Attack' }}</span>
+                                    @if(!empty($sp['focus_att_mod']))
+                                        <span class="text-[9px] px-1 py-0.2 rounded bg-indigo-100 text-indigo-900 border border-indigo-300 font-sans font-normal" title="Equipped Focus/Implement Bonus">Focus +{{ $sp['focus_att_mod'] }}</span>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="cvlist cvcenter font-mono text-xs">–</td>
+                            <td class="cvlist cvcenter font-mono font-bold">{{ $sp['mind']['ap'] ?? 'Var' }}</td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $sp['mind']['range'] ?? 'Var' }}</td>
+                            <td class="cvlist cvcenter font-mono font-bold text-indigo-900">
+                                {{ (($sp['mind']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($sp['mind']['attack_bonus'] ?? 0) }}
+                            </td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $sp['mind']['damage'] ?? 'Var' }}</td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $sp['mind']['crit'] ?? 'Var' }}</td>
                         </tr>
                     @endif
-
-                    <!-- Supernatural / Spellcaster Attacks (Attack Rolls) -->
-                    <tr class="bg-indigo-50/50" x-show="!combatMatrixState || combatMatrixState.showSpells"
-                        :class="combatMatrixState.activeAttackId === 'spell_ray' ? 'bg-indigo-100/70 font-semibold' : ''">
-                        <td class="cvlist cvcenter">
-                            <input type="radio" name="active_attack_selection" value="spell_ray"
-                                   x-model="combatMatrixState.activeAttackId"
-                                   @change="saveCombatMatrixConfig()"
-                                   class="text-indigo-800 focus:ring-indigo-700 cursor-pointer"
-                                   title="Select as active attack">
-                        </td>
-                        <td class="cvlist text-indigo-950 font-serif font-bold">
-                            ✨ {{ $calc['attacks']['spells']['ray']['name'] ?? 'Ray Attack' }}
-                        </td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['ray']['size_class'] ?? 'M' }}</td>
-                        <td class="cvlist cvcenter font-mono">{{ $calc['attacks']['spells']['ray']['ap'] ?? 'Var' }}</td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['ray']['range'] ?? 'Var' }}</td>
-                        <td class="cvlist cvcenter font-mono font-bold text-indigo-900">
-                            {{ (($calc['attacks']['spells']['ray']['attack_bonus'] ?? $calc['attacks']['spells']['ray_touch']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($calc['attacks']['spells']['ray']['attack_bonus'] ?? $calc['attacks']['spells']['ray_touch']['attack_bonus'] ?? 0) }}
-                        </td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['ray']['damage'] ?? 'Var' }}</td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['ray']['crit'] ?? '20/x2' }}</td>
-                    </tr>
-                    <tr class="bg-indigo-50/50" x-show="!combatMatrixState || combatMatrixState.showSpells"
-                        :class="combatMatrixState.activeAttackId === 'spell_area' ? 'bg-indigo-100/70 font-semibold' : ''">
-                        <td class="cvlist cvcenter">
-                            <input type="radio" name="active_attack_selection" value="spell_area"
-                                   x-model="combatMatrixState.activeAttackId"
-                                   @change="saveCombatMatrixConfig()"
-                                   class="text-indigo-800 focus:ring-indigo-700 cursor-pointer"
-                                   title="Select as active attack">
-                        </td>
-                        <td class="cvlist text-indigo-950 font-serif font-bold">
-                            🌌 {{ $calc['attacks']['spells']['area']['name'] ?? 'Area Attack' }}
-                        </td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['area']['size_class'] ?? 'M' }}</td>
-                        <td class="cvlist cvcenter font-mono">{{ $calc['attacks']['spells']['area']['ap'] ?? 'Var' }}</td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['area']['range'] ?? 'Var' }}</td>
-                        <td class="cvlist cvcenter font-mono font-bold text-indigo-900">
-                            {{ (($calc['attacks']['spells']['area']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($calc['attacks']['spells']['area']['attack_bonus'] ?? 0) }}
-                        </td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['area']['damage'] ?? 'Var' }}</td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['area']['crit'] ?? 'Var' }}</td>
-                    </tr>
-                    <tr class="bg-indigo-50/50" x-show="!combatMatrixState || combatMatrixState.showSpells"
-                        :class="combatMatrixState.activeAttackId === 'spell_body' ? 'bg-indigo-100/70 font-semibold' : ''">
-                        <td class="cvlist cvcenter">
-                            <input type="radio" name="active_attack_selection" value="spell_body"
-                                   x-model="combatMatrixState.activeAttackId"
-                                   @change="saveCombatMatrixConfig()"
-                                   class="text-indigo-800 focus:ring-indigo-700 cursor-pointer"
-                                   title="Select as active attack">
-                        </td>
-                        <td class="cvlist text-indigo-950 font-serif font-bold">
-                            🧬 {{ $calc['attacks']['spells']['body']['name'] ?? 'Body Attack' }}
-                        </td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['body']['size_class'] ?? 'M' }}</td>
-                        <td class="cvlist cvcenter font-mono">{{ $calc['attacks']['spells']['body']['ap'] ?? 'Var' }}</td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['body']['range'] ?? 'Var' }}</td>
-                        <td class="cvlist cvcenter font-mono font-bold text-indigo-900">
-                            {{ (($calc['attacks']['spells']['body']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($calc['attacks']['spells']['body']['attack_bonus'] ?? 0) }}
-                        </td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['body']['damage'] ?? 'Var' }}</td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['body']['crit'] ?? 'Var' }}</td>
-                    </tr>
-                    <tr class="bg-indigo-50/50" x-show="!combatMatrixState || combatMatrixState.showSpells"
-                        :class="combatMatrixState.activeAttackId === 'spell_mind' ? 'bg-indigo-100/70 font-semibold' : ''">
-                        <td class="cvlist cvcenter">
-                            <input type="radio" name="active_attack_selection" value="spell_mind"
-                                   x-model="combatMatrixState.activeAttackId"
-                                   @change="saveCombatMatrixConfig()"
-                                   class="text-indigo-800 focus:ring-indigo-700 cursor-pointer"
-                                   title="Select as active attack">
-                        </td>
-                        <td class="cvlist text-indigo-950 font-serif font-bold">
-                            🧠 {{ $calc['attacks']['spells']['mind']['name'] ?? 'Mind Attack' }}
-                        </td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['mind']['size_class'] ?? 'M' }}</td>
-                        <td class="cvlist cvcenter font-mono">{{ $calc['attacks']['spells']['mind']['ap'] ?? 'Var' }}</td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['mind']['range'] ?? 'Var' }}</td>
-                        <td class="cvlist cvcenter font-mono font-bold text-indigo-900">
-                            {{ (($calc['attacks']['spells']['mind']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($calc['attacks']['spells']['mind']['attack_bonus'] ?? 0) }}
-                        </td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['mind']['damage'] ?? 'Var' }}</td>
-                        <td class="cvlist cvcenter font-mono text-xs">{{ $calc['attacks']['spells']['mind']['crit'] ?? 'Var' }}</td>
-                    </tr>
                 @else
                     <!-- Wizard Alpine Rendering for Weapons & Attacks -->
                     <template x-for="(wpn, wId) in (calculatedState?.attacks?.weapons || {})" :key="wId">
                         <tr x-init="twoHandedMode[wId] = false"
+                            x-show="!combatMatrixState || combatMatrixState.showEquippedWeapons !== false"
                             :class="combatMatrixState.activeAttackId === ('weapon_' + wId) ? 'bg-amber-100/60 font-semibold' : ''">
                             <td class="cvlist cvcenter">
                                 <input type="radio" name="active_attack_selection_wiz" :value="'weapon_' + wId"
@@ -810,7 +965,9 @@
                             </td>
                             <td class="cvlist font-bold text-amber-950">
                                 <div class="flex items-center justify-between gap-2">
-                                    <span x-text="(wpn.name.includes('Shield') ? '🛡️ ' : (wpn.is_ranged ? '🏹 ' : '🗡️ ')) + wpn.name"></span>
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span x-text="(wpn.name.includes('Shield') ? '🛡️ ' : (wpn.is_ranged ? '🏹 ' : '🗡️ ')) + wpn.name"></span>
+                                    </div>
                                     <template x-if="!wpn.is_ranged && !wpn.name.includes('Shield')">
                                         <button type="button" 
                                                 @click="twoHandedMode[wId] = !twoHandedMode[wId]"
@@ -833,140 +990,189 @@
                         </tr>
                     </template>
 
-                    <!-- Natural Attacks (Wizard) -->
-                    <template x-for="(nat, natIdx) in (calculatedState?.attacks?.natural || [])" :key="'nat_'+natIdx">
-                        <tr :class="combatMatrixState.activeAttackId === ('natural_' + natIdx) ? 'bg-amber-100/60 font-semibold' : ''">
+                    <!-- Primary Natural Attacks (Wizard) -->
+                    <template x-for="(nat, natIdx) in (calculatedState?.attacks?.primary_natural || [])" :key="'nat_prim_'+natIdx">
+                        <tr x-show="!combatMatrixState || combatMatrixState.showPrimaryNatural !== false"
+                            :class="combatMatrixState.activeAttackId === ('natural_prim_' + natIdx) ? 'bg-amber-100/60 font-semibold' : ''">
                             <td class="cvlist cvcenter">
-                                <input type="radio" name="active_attack_selection_wiz" :value="'natural_' + natIdx"
+                                <input type="radio" name="active_attack_selection_wiz" :value="'natural_prim_' + natIdx"
                                        x-model="combatMatrixState.activeAttackId"
                                        class="text-amber-800 focus:ring-amber-700 cursor-pointer">
                             </td>
                             <td class="cvlist font-bold text-stone-900">
-                                <span x-text="'🐾 ' + (nat.name || 'Natural Attack')"></span>
-                                <span class="text-xs text-stone-500 font-normal" x-text="nat.primary ? ' (Primary)' : ' (Secondary -4)'"></span>
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span x-text="'🐾 ' + (nat.name || 'Natural Attack')"></span>
+                                    <span class="text-[9px] px-1 py-0.2 rounded bg-emerald-50 text-emerald-900 border border-emerald-300 font-sans font-semibold">Primary</span>
+                                </div>
                             </td>
-                            <td class="cvlist cvcenter font-mono text-xs" x-text="calculatedState?.heritage?.size_abbr || 'M'"></td>
+                            <td class="cvlist cvcenter font-mono text-xs" x-text="nat.size_abbr || calculatedState?.heritage?.size_abbr || 'M'"></td>
                             <td class="cvlist cvcenter font-mono font-bold" x-text="nat.ap + ' AP'"></td>
-                            <td class="cvlist cvcenter text-xs font-mono" x-text="calcReach() + ' sq'"></td>
+                            <td class="cvlist cvcenter text-xs font-mono" x-text="nat.reach || (calcReach() + ' sq')"></td>
                             <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="(nat.attack_bonus >= 0 ? '+' : '') + nat.attack_bonus"></td>
-                            <td class="cvlist cvcenter font-mono" x-text="nat.damage"></td>
-                            <td class="cvlist cvcenter font-mono text-xs">20/&times;2</td>
+                            <td class="cvlist cvcenter font-mono font-bold" x-text="nat.damage + ' (' + nat.avg_damage + ')'"></td>
+                            <td class="cvlist cvcenter font-mono text-xs" x-text="nat.crit || '20 (x2)'"></td>
                         </tr>
                     </template>
 
-                    <!-- Natural Combos (Wizard) -->
-                    <template x-for="(nc, ncIdx) in (calculatedState?.attacks?.natural_combos || [])" :key="'nc_'+ncIdx">
-                        <tr class="bg-amber-50/40"
-                            :class="combatMatrixState.activeAttackId === ('nat_combo_' + ncIdx) ? 'bg-amber-100/70 font-semibold' : ''">
+                    <!-- Secondary Natural Attacks (Wizard) -->
+                    <template x-for="(nat, natIdx) in (calculatedState?.attacks?.secondary_natural || [])" :key="'nat_sec_'+natIdx">
+                        <tr x-show="!combatMatrixState || combatMatrixState.showSecondaryNatural !== false"
+                            :class="combatMatrixState.activeAttackId === ('natural_sec_' + natIdx) ? 'bg-amber-100/60 font-semibold' : ''">
                             <td class="cvlist cvcenter">
-                                <input type="radio" name="active_attack_selection_wiz" :value="'nat_combo_' + ncIdx"
+                                <input type="radio" name="active_attack_selection_wiz" :value="'natural_sec_' + natIdx"
                                        x-model="combatMatrixState.activeAttackId"
                                        class="text-amber-800 focus:ring-amber-700 cursor-pointer">
                             </td>
-                            <td class="cvlist font-bold text-stone-900" x-text="'🐾🐾 ' + nc.name"></td>
-                            <td class="cvlist cvcenter font-mono text-xs" x-text="calculatedState?.heritage?.size_abbr || 'M'"></td>
-                            <td class="cvlist cvcenter font-mono font-bold" x-text="nc.ap + ' AP'"></td>
-                            <td class="cvlist cvcenter text-xs font-mono" x-text="calcReach() + ' sq'"></td>
-                            <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="(nc.attacks || []).map(a => ((a.attack_bonus !== undefined ? a.attack_bonus : (a.bonus || 0)) >= 0 ? '+' : '') + (a.attack_bonus !== undefined ? a.attack_bonus : (a.bonus || 0))).join(' / ')"></td>
-                            <td class="cvlist cvcenter text-xs font-mono" x-text="(nc.attacks || []).map(a => a.name + ': ' + a.damage).join(' • ')"></td>
-                            <td class="cvlist cvcenter font-mono text-xs">Spcl</td>
+                            <td class="cvlist font-bold text-stone-900">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span x-text="'🐾 ' + (nat.name || 'Natural Attack')"></span>
+                                    <span class="text-[9px] px-1 py-0.2 rounded bg-amber-50 text-amber-900 border border-amber-300 font-sans font-semibold">Secondary (-4)</span>
+                                </div>
+                            </td>
+                            <td class="cvlist cvcenter font-mono text-xs" x-text="nat.size_abbr || calculatedState?.heritage?.size_abbr || 'M'"></td>
+                            <td class="cvlist cvcenter font-mono font-bold" x-text="nat.ap + ' AP'"></td>
+                            <td class="cvlist cvcenter text-xs font-mono" x-text="nat.reach || (calcReach() + ' sq')"></td>
+                            <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="(nat.attack_bonus >= 0 ? '+' : '') + nat.attack_bonus"></td>
+                            <td class="cvlist cvcenter font-mono font-bold" x-text="nat.damage + ' (' + nat.avg_damage + ')'"></td>
+                            <td class="cvlist cvcenter font-mono text-xs" x-text="nat.crit || '20 (x2)'"></td>
                         </tr>
                     </template>
 
-                    <!-- Brawling (Wizard) -->
-                    <tr :class="combatMatrixState.activeAttackId === 'unarmed_brawling' ? 'bg-amber-100/60 font-semibold' : ''">
-                        <td class="cvlist cvcenter">
-                            <input type="radio" name="active_attack_selection_wiz" value="unarmed_brawling"
-                                   x-model="combatMatrixState.activeAttackId"
-                                   class="text-amber-800 focus:ring-amber-700 cursor-pointer">
-                        </td>
-                        <td class="cvlist font-bold text-amber-950">👊 Unarmed Strike / Brawling</td>
-                        <td class="cvlist cvcenter font-mono text-xs" x-text="calculatedState?.heritage?.size_abbr || 'M'"></td>
-                        <td class="cvlist cvcenter font-mono font-bold" x-text="(calculatedState?.attacks?.brawling?.ap || 8) + ' AP'"></td>
-                        <td class="cvlist cvcenter text-xs font-mono" x-text="calcReach() + ' sq'"></td>
-                        <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="(calculatedState?.attacks?.brawling?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.brawling?.attack_bonus || 0)"></td>
-                        <td class="cvlist cvcenter font-mono" x-text="calculatedState?.attacks?.brawling?.damage || '1d2'"></td>
-                        <td class="cvlist cvcenter font-mono text-xs">20/&times;2</td>
-                    </tr>
+                    <!-- Akimbo & Combos (Wizard) -->
+                    <template x-if="!combatMatrixState || combatMatrixState.showAkimbo !== false">
+                        <template x-for="combo in (combatMatrixState?.customCombos || [])" :key="combo.id">
+                            <tr class="bg-indigo-50/40 border-b border-amber-900/10"
+                                :class="combatMatrixState.activeAttackId === combo.id ? 'bg-indigo-100/70 font-semibold' : ''">
+                                <td class="cvlist cvcenter">
+                                    <input type="radio" name="active_attack_selection_wiz" :value="combo.id"
+                                           x-model="combatMatrixState.activeAttackId"
+                                           class="text-indigo-800 focus:ring-indigo-700 cursor-pointer">
+                                </td>
+                                <td class="cvlist font-bold text-indigo-950">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span>⚡ <span x-text="combo.name"></span></span>
+                                        <span class="text-[9px] px-1 py-0.2 rounded bg-indigo-100 text-indigo-900 border border-indigo-300 font-sans font-semibold" x-text="combo.count + ' Attacks'"></span>
+                                    </div>
+                                </td>
+                                <td class="cvlist cvcenter font-mono text-xs" x-text="calculatedState?.heritage?.size_abbr || 'M'"></td>
+                                <td class="cvlist cvcenter font-mono font-bold text-indigo-950" x-text="combo.ap + ' AP'"></td>
+                                <td class="cvlist cvcenter text-xs font-mono" x-text="combo.reach || (calcReach() + ' sq')"></td>
+                                <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="(combo.attacks || []).map(a => ((a.attack_bonus !== undefined ? a.attack_bonus : (a.bonus || 0)) >= 0 ? '+' : '') + (a.attack_bonus !== undefined ? a.attack_bonus : (a.bonus || 0))).join(' / ')"></td>
+                                <td class="cvlist cvcenter text-xs font-mono text-stone-800" x-text="(combo.attacks || []).map(a => a.name + ': ' + a.damage).join(' • ')"></td>
+                                <td class="cvlist cvcenter font-mono text-xs text-stone-600">Spcl</td>
+                            </tr>
+                        </template>
+                    </template>
 
-                    <!-- Grapple (Wizard) -->
-                    <template x-if="calculatedState?.attacks?.grapple">
-                        <tr class="bg-amber-50/30"
-                            :class="combatMatrixState.activeAttackId === 'grapple' ? 'bg-amber-100/60 font-semibold' : ''">
-                            <td class="cvlist cvcenter">
-                                <input type="radio" name="active_attack_selection_wiz" value="grapple"
-                                       x-model="combatMatrixState.activeAttackId"
-                                       class="text-amber-800 focus:ring-amber-700 cursor-pointer">
-                            </td>
-                            <td class="cvlist text-amber-950 font-medium">
-                                <span x-text="'🤼 ' + calculatedState.attacks.grapple.name"></span>
-                                <span class="text-xs text-stone-500 font-normal" x-text="' (' + calculatedState.attacks.grapple.category + ')'"></span>
-                            </td>
-                            <td class="cvlist cvcenter font-mono text-xs" x-text="calculatedState?.heritage?.size_abbr || 'M'"></td>
-                            <td class="cvlist cvcenter font-mono font-bold" x-text="calculatedState.attacks.grapple.ap + ' AP'"></td>
-                            <td class="cvlist cvcenter text-xs font-mono" x-text="calculatedState.attacks.grapple.reach"></td>
-                            <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="'Pin: ' + (calculatedState.attacks.grapple.dex_attack >= 0 ? '+' : '') + calculatedState.attacks.grapple.dex_attack + ' / Hold: ' + (calculatedState.attacks.grapple.str_attack >= 0 ? '+' : '') + calculatedState.attacks.grapple.str_attack"></td>
-                            <td class="cvlist cvcenter font-mono" x-text="calculatedState.attacks.grapple.damage + ' (Avg ' + calculatedState.attacks.grapple.avg_damage + ')'"></td>
-                            <td class="cvlist cvcenter font-mono text-xs" x-text="calculatedState.attacks.grapple.crit"></td>
-                        </tr>
+                    <!-- Brawling Maneuvers (Wizard) -->
+                    <template x-if="calculatedState?.attacks?.brawling_actions">
+                        <template x-for="(ba, baKey) in calculatedState.attacks.brawling_actions" :key="baKey">
+                            <tr x-show="!combatMatrixState || combatMatrixState.showBrawling !== false"
+                                :class="combatMatrixState.activeAttackId === baKey ? 'bg-amber-100/60 font-semibold' : ''">
+                                <td class="cvlist cvcenter">
+                                    <input type="radio" name="active_attack_selection_wiz" :value="baKey"
+                                           x-model="combatMatrixState.activeAttackId"
+                                           class="text-amber-800 focus:ring-amber-700 cursor-pointer">
+                                </td>
+                                <td class="cvlist font-bold text-amber-950">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span x-text="(baKey.includes('grapple') ? '🤼 ' : (baKey === 'bull_rush' ? '🐂 ' : '🏃 ')) + ba.name"></span>
+                                    </div>
+                                </td>
+                                <td class="cvlist cvcenter font-mono text-xs" x-text="ba.size_class || calculatedState?.heritage?.size_abbr || 'M'"></td>
+                                <td class="cvlist cvcenter font-mono font-bold" x-text="ba.ap + ' AP'"></td>
+                                <td class="cvlist cvcenter text-xs font-mono" x-text="ba.reach || (calcReach() + ' sq')"></td>
+                                <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="(ba.attack_bonus >= 0 ? '+' : '') + ba.attack_bonus"></td>
+                                <td class="cvlist cvcenter font-mono font-bold" x-text="ba.damage !== '–' ? (ba.damage + ' (' + ba.avg_damage + ')') : '–'"></td>
+                                <td class="cvlist cvcenter font-mono text-xs" x-text="ba.crit"></td>
+                            </tr>
+                        </template>
                     </template>
 
                     <!-- Spells (Wizard) -->
-                    <tr class="bg-indigo-50/50"
+                    <tr class="bg-indigo-50/50" x-show="!combatMatrixState || combatMatrixState.showSpells !== false"
                         :class="combatMatrixState.activeAttackId === 'spell_ray' ? 'bg-indigo-100/70 font-semibold' : ''">
                         <td class="cvlist cvcenter">
                             <input type="radio" name="active_attack_selection_wiz" value="spell_ray"
                                    x-model="combatMatrixState.activeAttackId"
                                    class="text-indigo-800 focus:ring-indigo-700 cursor-pointer">
                         </td>
-                        <td class="cvlist text-indigo-950 font-serif font-bold">✨ Ray Attack</td>
-                        <td class="cvlist cvcenter font-mono text-xs" x-text="calculatedState?.heritage?.size_abbr || 'M'"></td>
-                        <td class="cvlist cvcenter font-mono">Var</td>
+                        <td class="cvlist text-indigo-950 font-serif font-bold">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span>✨ Ray Attack</span>
+                                <template x-if="calculatedState?.attacks?.spells?.focus_att_mod > 0">
+                                    <span class="text-[9px] px-1 py-0.2 rounded bg-indigo-100 text-indigo-900 border border-indigo-300 font-sans font-normal" x-text="'Focus +' + calculatedState.attacks.spells.focus_att_mod"></span>
+                                </template>
+                            </div>
+                        </td>
+                        <td class="cvlist cvcenter font-mono text-xs">–</td>
+                        <td class="cvlist cvcenter font-mono font-bold">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                         <td class="cvlist cvcenter font-mono font-bold text-indigo-900" x-text="(calculatedState?.attacks?.spells?.ray?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.spells?.ray?.attack_bonus || 0)"></td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
-                        <td class="cvlist cvcenter font-mono text-xs">20/x2</td>
+                        <td class="cvlist cvcenter font-mono text-xs" x-text="calculatedState?.attacks?.spells?.ray?.crit || '20 (x2)'"></td>
                     </tr>
-                    <tr class="bg-indigo-50/50"
+                    <tr class="bg-indigo-50/50" x-show="!combatMatrixState || combatMatrixState.showSpells !== false"
                         :class="combatMatrixState.activeAttackId === 'spell_area' ? 'bg-indigo-100/70 font-semibold' : ''">
                         <td class="cvlist cvcenter">
                             <input type="radio" name="active_attack_selection_wiz" value="spell_area"
                                    x-model="combatMatrixState.activeAttackId"
                                    class="text-indigo-800 focus:ring-indigo-700 cursor-pointer">
                         </td>
-                        <td class="cvlist text-indigo-950 font-serif font-bold">🌌 Area Attack</td>
-                        <td class="cvlist cvcenter font-mono text-xs" x-text="calculatedState?.heritage?.size_abbr || 'M'"></td>
-                        <td class="cvlist cvcenter font-mono">Var</td>
+                        <td class="cvlist text-indigo-950 font-serif font-bold">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span>🌌 Area Attack</span>
+                                <template x-if="calculatedState?.attacks?.spells?.focus_att_mod > 0">
+                                    <span class="text-[9px] px-1 py-0.2 rounded bg-indigo-100 text-indigo-900 border border-indigo-300 font-sans font-normal" x-text="'Focus +' + calculatedState.attacks.spells.focus_att_mod"></span>
+                                </template>
+                            </div>
+                        </td>
+                        <td class="cvlist cvcenter font-mono text-xs">–</td>
+                        <td class="cvlist cvcenter font-mono font-bold">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                         <td class="cvlist cvcenter font-mono font-bold text-indigo-900" x-text="(calculatedState?.attacks?.spells?.area?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.spells?.area?.attack_bonus || 0)"></td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                     </tr>
-                    <tr class="bg-indigo-50/50"
+                    <tr class="bg-indigo-50/50" x-show="!combatMatrixState || combatMatrixState.showSpells !== false"
                         :class="combatMatrixState.activeAttackId === 'spell_body' ? 'bg-indigo-100/70 font-semibold' : ''">
                         <td class="cvlist cvcenter">
                             <input type="radio" name="active_attack_selection_wiz" value="spell_body"
                                    x-model="combatMatrixState.activeAttackId"
                                    class="text-indigo-800 focus:ring-indigo-700 cursor-pointer">
                         </td>
-                        <td class="cvlist text-indigo-950 font-serif font-bold">🧬 Body Attack</td>
-                        <td class="cvlist cvcenter font-mono text-xs" x-text="calculatedState?.heritage?.size_abbr || 'M'"></td>
-                        <td class="cvlist cvcenter font-mono">Var</td>
+                        <td class="cvlist text-indigo-950 font-serif font-bold">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span>🧬 Body Attack</span>
+                                <template x-if="calculatedState?.attacks?.spells?.focus_att_mod > 0">
+                                    <span class="text-[9px] px-1 py-0.2 rounded bg-indigo-100 text-indigo-900 border border-indigo-300 font-sans font-normal" x-text="'Focus +' + calculatedState.attacks.spells.focus_att_mod"></span>
+                                </template>
+                            </div>
+                        </td>
+                        <td class="cvlist cvcenter font-mono text-xs">–</td>
+                        <td class="cvlist cvcenter font-mono font-bold">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                         <td class="cvlist cvcenter font-mono font-bold text-indigo-900" x-text="(calculatedState?.attacks?.spells?.body?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.spells?.body?.attack_bonus || 0)"></td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                     </tr>
-                    <tr class="bg-indigo-50/50"
+                    <tr class="bg-indigo-50/50" x-show="!combatMatrixState || combatMatrixState.showSpells !== false"
                         :class="combatMatrixState.activeAttackId === 'spell_mind' ? 'bg-indigo-100/70 font-semibold' : ''">
                         <td class="cvlist cvcenter">
                             <input type="radio" name="active_attack_selection_wiz" value="spell_mind"
                                    x-model="combatMatrixState.activeAttackId"
                                    class="text-indigo-800 focus:ring-indigo-700 cursor-pointer">
                         </td>
-                        <td class="cvlist text-indigo-950 font-serif font-bold">🧠 Mind Attack</td>
-                        <td class="cvlist cvcenter font-mono text-xs" x-text="calculatedState?.heritage?.size_abbr || 'M'"></td>
-                        <td class="cvlist cvcenter font-mono">Var</td>
+                        <td class="cvlist text-indigo-950 font-serif font-bold">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span>🧠 Mind Attack</span>
+                                <template x-if="calculatedState?.attacks?.spells?.focus_att_mod > 0">
+                                    <span class="text-[9px] px-1 py-0.2 rounded bg-indigo-100 text-indigo-900 border border-indigo-300 font-sans font-normal" x-text="'Focus +' + calculatedState.attacks.spells.focus_att_mod"></span>
+                                </template>
+                            </div>
+                        </td>
+                        <td class="cvlist cvcenter font-mono text-xs">–</td>
+                        <td class="cvlist cvcenter font-mono font-bold">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                         <td class="cvlist cvcenter font-mono font-bold text-indigo-900" x-text="(calculatedState?.attacks?.spells?.mind?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.spells?.mind?.attack_bonus || 0)"></td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>

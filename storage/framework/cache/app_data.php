@@ -10130,7 +10130,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -10370,7 +10370,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -10466,7 +10466,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -10514,7 +10514,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -10562,7 +10562,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -10658,7 +10658,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -10754,7 +10754,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -10802,7 +10802,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -10850,7 +10850,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -11042,7 +11042,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -11138,7 +11138,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -11234,7 +11234,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -11282,7 +11282,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -11378,7 +11378,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -11426,7 +11426,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -11522,7 +11522,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -11666,7 +11666,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -11762,7 +11762,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -11810,7 +11810,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -11906,7 +11906,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -11954,7 +11954,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12002,7 +12002,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12098,7 +12098,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12146,7 +12146,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12194,7 +12194,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12290,7 +12290,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12338,7 +12338,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12386,7 +12386,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12482,7 +12482,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12530,7 +12530,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12578,7 +12578,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12674,7 +12674,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12770,7 +12770,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -12818,7 +12818,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -13682,7 +13682,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -14258,7 +14258,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -14306,7 +14306,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -14354,7 +14354,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -14402,7 +14402,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -14498,7 +14498,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -14546,7 +14546,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -14786,7 +14786,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -14834,7 +14834,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -14978,7 +14978,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -15026,7 +15026,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -15074,7 +15074,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -15122,7 +15122,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -15170,7 +15170,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -15218,7 +15218,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -15266,7 +15266,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -15314,7 +15314,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -15458,7 +15458,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -15506,7 +15506,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -15554,7 +15554,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -16034,7 +16034,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -16370,7 +16370,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -16418,7 +16418,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -16610,7 +16610,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -16658,7 +16658,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17042,7 +17042,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17090,7 +17090,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17186,7 +17186,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17234,7 +17234,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17282,7 +17282,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17330,7 +17330,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17378,7 +17378,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17426,7 +17426,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17570,7 +17570,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17618,7 +17618,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17666,7 +17666,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17714,7 +17714,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17762,7 +17762,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17858,7 +17858,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17906,7 +17906,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -17954,7 +17954,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18050,7 +18050,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18098,7 +18098,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18146,7 +18146,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18194,7 +18194,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18242,7 +18242,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18290,7 +18290,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18338,7 +18338,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18386,7 +18386,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18434,7 +18434,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18482,7 +18482,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18530,7 +18530,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18578,7 +18578,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18626,7 +18626,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18818,7 +18818,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18866,7 +18866,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18914,7 +18914,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -18962,7 +18962,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -19058,7 +19058,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -19778,7 +19778,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -19826,7 +19826,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -19874,7 +19874,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -19922,7 +19922,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -19970,7 +19970,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20066,7 +20066,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20114,7 +20114,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20162,7 +20162,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20210,7 +20210,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20306,7 +20306,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20354,7 +20354,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20402,7 +20402,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20450,7 +20450,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20498,7 +20498,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20738,7 +20738,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20834,7 +20834,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20882,7 +20882,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20930,7 +20930,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -20978,7 +20978,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21026,7 +21026,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21074,7 +21074,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21170,7 +21170,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21218,7 +21218,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21266,7 +21266,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21314,7 +21314,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21362,7 +21362,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21410,7 +21410,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21458,7 +21458,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21506,7 +21506,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21602,7 +21602,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21650,7 +21650,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21698,7 +21698,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21746,7 +21746,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21794,7 +21794,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21842,7 +21842,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -21890,7 +21890,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -22034,7 +22034,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -22130,7 +22130,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -22322,7 +22322,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -22370,7 +22370,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -22562,7 +22562,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -22610,7 +22610,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -22658,7 +22658,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -22706,7 +22706,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -22754,7 +22754,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -22802,7 +22802,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -22850,7 +22850,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -28418,7 +28418,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -28466,7 +28466,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -28514,7 +28514,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -28658,7 +28658,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -28706,7 +28706,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -28754,7 +28754,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -28850,7 +28850,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -28946,7 +28946,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -28994,7 +28994,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29042,7 +29042,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29090,7 +29090,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29138,7 +29138,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29186,7 +29186,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29234,7 +29234,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29282,7 +29282,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29330,7 +29330,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29378,7 +29378,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29426,7 +29426,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29474,7 +29474,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29522,7 +29522,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29570,7 +29570,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29618,7 +29618,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29666,7 +29666,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29714,7 +29714,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29762,7 +29762,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29810,7 +29810,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29858,7 +29858,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29906,7 +29906,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -29954,7 +29954,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -30002,7 +30002,7 @@ return array (
       'Alignment' => NULL,
       'Morale' => NULL,
       'Organization' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'Environment' => NULL,
       'Feeding' => NULL,
       'Treasure' => NULL,
@@ -32489,7 +32489,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)*3-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     2 => 
     array (
@@ -32506,7 +32506,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)*3-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     3 => 
     array (
@@ -32523,7 +32523,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)*3-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     4 => 
     array (
@@ -32540,7 +32540,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)*3-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     5 => 
     array (
@@ -32557,7 +32557,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)*3-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     6 => 
     array (
@@ -32574,7 +32574,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)*3-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     7 => 
     array (
@@ -32591,7 +32591,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     8 => 
     array (
@@ -32608,7 +32608,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     9 => 
     array (
@@ -32625,7 +32625,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     10 => 
     array (
@@ -32642,7 +32642,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)*4-3',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     11 => 
     array (
@@ -32659,7 +32659,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '5',
       'MutualExclusion' => 1,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     12 => 
     array (
@@ -32676,7 +32676,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '10',
       'MutualExclusion' => 1,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     13 => 
     array (
@@ -32693,7 +32693,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)*4-3',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     14 => 
     array (
@@ -32710,7 +32710,7 @@ return array (
       'AssociatedSpecial' => 'Armor and Shields',
       'RecommendedSpellPL' => '(x)*3-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     15 => 
     array (
@@ -32727,7 +32727,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)*3-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     16 => 
     array (
@@ -32744,7 +32744,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)*4-3',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     17 => 
     array (
@@ -32761,7 +32761,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)/2-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     18 => 
     array (
@@ -32778,7 +32778,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)/2-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     19 => 
     array (
@@ -32795,7 +32795,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)/2-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     20 => 
     array (
@@ -32812,7 +32812,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)/2-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     21 => 
     array (
@@ -32829,7 +32829,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)/2-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     22 => 
     array (
@@ -32846,7 +32846,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)/2-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     23 => 
     array (
@@ -32863,7 +32863,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)/2-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     24 => 
     array (
@@ -32880,7 +32880,7 @@ return array (
       'AssociatedSpecial' => 'Weapons',
       'RecommendedSpellPL' => '(x)*3-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     25 => 
     array (
@@ -32897,7 +32897,7 @@ return array (
       'AssociatedSpecial' => 'Armor and Shields',
       'RecommendedSpellPL' => '(x)*3-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     26 => 
     array (
@@ -32914,7 +32914,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     27 => 
     array (
@@ -32931,7 +32931,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     28 => 
     array (
@@ -32948,7 +32948,7 @@ return array (
       'AssociatedSpecial' => 'Armor and Shields',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     29 => 
     array (
@@ -32965,7 +32965,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     30 => 
     array (
@@ -32982,7 +32982,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     31 => 
     array (
@@ -32999,7 +32999,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     32 => 
     array (
@@ -33016,7 +33016,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     33 => 
     array (
@@ -33033,7 +33033,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     34 => 
     array (
@@ -33050,7 +33050,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     35 => 
     array (
@@ -33067,7 +33067,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     36 => 
     array (
@@ -33084,7 +33084,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     37 => 
     array (
@@ -33101,7 +33101,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     38 => 
     array (
@@ -33118,7 +33118,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     39 => 
     array (
@@ -33135,7 +33135,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     40 => 
     array (
@@ -33152,7 +33152,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     41 => 
     array (
@@ -33169,7 +33169,7 @@ return array (
       'AssociatedSpecial' => 'Weapons',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 3,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     42 => 
     array (
@@ -33186,7 +33186,7 @@ return array (
       'AssociatedSpecial' => 'Weapons',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 3,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     43 => 
     array (
@@ -33203,7 +33203,7 @@ return array (
       'AssociatedSpecial' => 'Weapons',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     44 => 
     array (
@@ -33220,7 +33220,7 @@ return array (
       'AssociatedSpecial' => 'Foci',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 4,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     45 => 
     array (
@@ -33237,7 +33237,7 @@ return array (
       'AssociatedSpecial' => 'Foci',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 4,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     46 => 
     array (
@@ -33254,7 +33254,7 @@ return array (
       'AssociatedSpecial' => 'Foci',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 4,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     47 => 
     array (
@@ -33271,7 +33271,7 @@ return array (
       'AssociatedSpecial' => 'Foci',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 4,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     48 => 
     array (
@@ -33288,7 +33288,7 @@ return array (
       'AssociatedSpecial' => 'Foci',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 5,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     49 => 
     array (
@@ -33305,7 +33305,7 @@ return array (
       'AssociatedSpecial' => 'Foci',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 5,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     50 => 
     array (
@@ -33322,7 +33322,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     51 => 
     array (
@@ -33339,7 +33339,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     52 => 
     array (
@@ -33356,7 +33356,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     53 => 
     array (
@@ -33373,7 +33373,7 @@ return array (
       'AssociatedSpecial' => 'Empower',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 6,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     54 => 
     array (
@@ -33390,7 +33390,7 @@ return array (
       'AssociatedSpecial' => 'Empower',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 6,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     55 => 
     array (
@@ -33407,7 +33407,7 @@ return array (
       'AssociatedSpecial' => 'Empower',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 6,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     56 => 
     array (
@@ -33424,7 +33424,7 @@ return array (
       'AssociatedSpecial' => 'Empower',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 6,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     57 => 
     array (
@@ -33441,7 +33441,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 7,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     58 => 
     array (
@@ -33458,7 +33458,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 7,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     59 => 
     array (
@@ -33475,7 +33475,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     60 => 
     array (
@@ -33492,7 +33492,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     61 => 
     array (
@@ -33509,7 +33509,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     62 => 
     array (
@@ -33526,7 +33526,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     63 => 
     array (
@@ -33543,7 +33543,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     64 => 
     array (
@@ -33560,7 +33560,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 8,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     65 => 
     array (
@@ -33577,7 +33577,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 8,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     66 => 
     array (
@@ -33594,7 +33594,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 8,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     67 => 
     array (
@@ -33611,7 +33611,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 8,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     68 => 
     array (
@@ -33628,7 +33628,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     69 => 
     array (
@@ -33645,7 +33645,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 9,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     70 => 
     array (
@@ -33662,7 +33662,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 9,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     71 => 
     array (
@@ -33679,7 +33679,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     72 => 
     array (
@@ -33696,7 +33696,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 10,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     73 => 
     array (
@@ -33713,7 +33713,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 10,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     74 => 
     array (
@@ -33730,7 +33730,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 10,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     75 => 
     array (
@@ -33747,7 +33747,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 10,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     76 => 
     array (
@@ -33764,7 +33764,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     77 => 
     array (
@@ -33781,7 +33781,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 11,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     78 => 
     array (
@@ -33798,7 +33798,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     79 => 
     array (
@@ -33815,7 +33815,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 11,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     80 => 
     array (
@@ -33832,7 +33832,7 @@ return array (
       'AssociatedSpecial' => 'Sentience',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     81 => 
     array (
@@ -33849,7 +33849,7 @@ return array (
       'AssociatedSpecial' => 'Foci',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     82 => 
     array (
@@ -33866,7 +33866,7 @@ return array (
       'AssociatedSpecial' => 'Foci',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     83 => 
     array (
@@ -33883,7 +33883,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     84 => 
     array (
@@ -33900,7 +33900,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     85 => 
     array (
@@ -33917,7 +33917,7 @@ return array (
       'AssociatedSpecial' => 'Constructs',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     86 => 
     array (
@@ -33934,7 +33934,7 @@ return array (
       'AssociatedSpecial' => 'Constructs',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     87 => 
     array (
@@ -33951,7 +33951,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     88 => 
     array (
@@ -33968,7 +33968,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     89 => 
     array (
@@ -33985,7 +33985,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)*3-2',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     90 => 
     array (
@@ -34002,7 +34002,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     91 => 
     array (
@@ -34019,7 +34019,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     92 => 
     array (
@@ -34036,7 +34036,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     93 => 
     array (
@@ -34053,7 +34053,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     94 => 
     array (
@@ -34070,7 +34070,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     95 => 
     array (
@@ -34087,7 +34087,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     96 => 
     array (
@@ -34104,7 +34104,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     97 => 
     array (
@@ -34121,7 +34121,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     98 => 
     array (
@@ -34138,7 +34138,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     99 => 
     array (
@@ -34155,7 +34155,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     100 => 
     array (
@@ -34172,7 +34172,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     101 => 
     array (
@@ -34189,7 +34189,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     102 => 
     array (
@@ -34206,7 +34206,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     103 => 
     array (
@@ -34223,7 +34223,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     104 => 
     array (
@@ -34240,7 +34240,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     105 => 
     array (
@@ -34257,7 +34257,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 12,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     106 => 
     array (
@@ -34274,7 +34274,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 12,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     107 => 
     array (
@@ -34291,7 +34291,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     108 => 
     array (
@@ -34308,7 +34308,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     109 => 
     array (
@@ -34325,7 +34325,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     110 => 
     array (
@@ -34342,7 +34342,7 @@ return array (
       'AssociatedSpecial' => 'Weapons',
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     111 => 
     array (
@@ -34359,7 +34359,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     112 => 
     array (
@@ -34376,7 +34376,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     113 => 
     array (
@@ -34393,7 +34393,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     114 => 
     array (
@@ -34410,7 +34410,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     115 => 
     array (
@@ -34427,7 +34427,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     116 => 
     array (
@@ -34444,7 +34444,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     117 => 
     array (
@@ -34461,7 +34461,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     118 => 
     array (
@@ -34478,7 +34478,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     119 => 
     array (
@@ -34495,7 +34495,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     120 => 
     array (
@@ -34512,7 +34512,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     121 => 
     array (
@@ -34529,7 +34529,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     122 => 
     array (
@@ -34546,7 +34546,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     123 => 
     array (
@@ -34563,7 +34563,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     124 => 
     array (
@@ -34580,7 +34580,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     125 => 
     array (
@@ -34597,7 +34597,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     126 => 
     array (
@@ -34614,7 +34614,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     127 => 
     array (
@@ -34631,7 +34631,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     128 => 
     array (
@@ -34648,7 +34648,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     129 => 
     array (
@@ -34665,7 +34665,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     130 => 
     array (
@@ -34682,7 +34682,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     131 => 
     array (
@@ -34699,7 +34699,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     132 => 
     array (
@@ -34716,7 +34716,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     133 => 
     array (
@@ -34733,7 +34733,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     134 => 
     array (
@@ -34750,7 +34750,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     135 => 
     array (
@@ -34767,7 +34767,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     136 => 
     array (
@@ -34784,7 +34784,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     137 => 
     array (
@@ -34801,7 +34801,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => '(x)',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     138 => 
     array (
@@ -34818,7 +34818,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     139 => 
     array (
@@ -34835,7 +34835,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     140 => 
     array (
@@ -34852,7 +34852,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     141 => 
     array (
@@ -34869,7 +34869,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     142 => 
     array (
@@ -34886,7 +34886,7 @@ return array (
       'AssociatedSpecial' => NULL,
       'RecommendedSpellPL' => NULL,
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
   ),
   'itemmodsmundane' => 
@@ -34907,7 +34907,7 @@ return array (
       'Traits' => NULL,
       'SpecialInfo' => NULL,
       'MutualExclusion' => 1,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     2 => 
     array (
@@ -34925,7 +34925,7 @@ return array (
       'Traits' => NULL,
       'SpecialInfo' => NULL,
       'MutualExclusion' => 1,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     3 => 
     array (
@@ -34943,7 +34943,7 @@ return array (
       'Traits' => NULL,
       'SpecialInfo' => 'x2 HP; Break DC +10',
       'MutualExclusion' => 1,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     4 => 
     array (
@@ -34961,7 +34961,7 @@ return array (
       'Traits' => 'AttMod { Qual=Attack; Type=enh; Value=+1; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     5 => 
     array (
@@ -34979,7 +34979,7 @@ return array (
       'Traits' => 'AttMod { Qual=Attack; Type=enh; Value=+1; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     6 => 
     array (
@@ -34997,7 +34997,7 @@ return array (
       'Traits' => 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     7 => 
     array (
@@ -35015,7 +35015,7 @@ return array (
       'Traits' => 'AttMod { Qual=Attack; Type=enh; Value=+1; } AttMod { Qual=Damage; Type=enh; Value=+1; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     8 => 
     array (
@@ -35033,7 +35033,7 @@ return array (
       'Traits' => 'AttMod { Qual=Attack; Type=enh; Value=+1; } AttMod { Qual=Damage; Type=enh; Value=+1; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     9 => 
     array (
@@ -35051,7 +35051,7 @@ return array (
       'Traits' => 'AttMod { Qual=Damage; Type=enh; Value=+1; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     10 => 
     array (
@@ -35069,7 +35069,7 @@ return array (
       'Traits' => 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; } DefMod { Qual=Parry; Type=enh; Value=+1; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     11 => 
     array (
@@ -35087,7 +35087,7 @@ return array (
       'Traits' => 'AttMod { Qual=Attack; Type=enh; Value=+2; } AttMod { Qual=Damage; Type=enh; Value=+2; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     12 => 
     array (
@@ -35105,7 +35105,7 @@ return array (
       'Traits' => 'AttMod { Qual=Attack; Type=enh; Value=+2; } AttMod { Qual=Damage; Type=enh; Value=+2; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     13 => 
     array (
@@ -35123,7 +35123,7 @@ return array (
       'Traits' => 'AttMod { Qual=Damage; Type=enh; Value=+2; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     14 => 
     array (
@@ -35141,7 +35141,7 @@ return array (
       'Traits' => 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; } DefMod { Qual=Parry; Type=enh; Value=+2; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     15 => 
     array (
@@ -35159,7 +35159,7 @@ return array (
       'Traits' => NULL,
       'SpecialInfo' => 'Defaults to non-lethal (SP) damage',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     16 => 
     array (
@@ -35177,7 +35177,7 @@ return array (
       'Traits' => 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     17 => 
     array (
@@ -35195,7 +35195,7 @@ return array (
       'Traits' => 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; } DefMod { Qual=DR; Type=enh; Value=+1; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     18 => 
     array (
@@ -35213,7 +35213,7 @@ return array (
       'Traits' => 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; } DefMod { Qual=DR; Type=enh; Value=+2; }',
       'SpecialInfo' => NULL,
       'MutualExclusion' => 2,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     19 => 
     array (
@@ -35231,7 +35231,7 @@ return array (
       'Traits' => 'Weapon { Qual=Brl || LtB; AttMod=DexMod; Dmg=d6+StrMod P; MinReach=0; }',
       'SpecialInfo' => 'Improves damage when grappling and brawling; Spikes can also be used in melee as one or two daggers.',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     20 => 
     array (
@@ -35249,7 +35249,7 @@ return array (
       'Traits' => 'AttMod { Qual=DmgDice; Value=-4; }',
       'SpecialInfo' => 'Size reduced by 4 steps; Weapon: decreased damage, reach x0, range x0.2; Armor: DR x0.5',
       'MutualExclusion' => 3,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     21 => 
     array (
@@ -35267,7 +35267,7 @@ return array (
       'Traits' => 'AttMod { Qual=DmgDice; Value=-3; }',
       'SpecialInfo' => 'Size reduced by 3 steps; Weapon: decreased damage, reach x0, range x0.3; Armor: DR x0.5',
       'MutualExclusion' => 3,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     22 => 
     array (
@@ -35285,7 +35285,7 @@ return array (
       'Traits' => 'AttMod { Qual=DmgDice; Value=-2; }',
       'SpecialInfo' => 'Size reduced by 2 steps; Weapon: decreased damage, reach x0.5, range x0.5; Armor: DR x0.75',
       'MutualExclusion' => 3,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     23 => 
     array (
@@ -35303,7 +35303,7 @@ return array (
       'Traits' => 'AttMod { Qual=DmgDice; Value=-1; }',
       'SpecialInfo' => 'Size reduced by 1 step; Weapon: decreased damage, reach x1, range x0.75; Armor: DR x1',
       'MutualExclusion' => 3,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     24 => 
     array (
@@ -35321,7 +35321,7 @@ return array (
       'Traits' => 'AttMod { Qual=DmgDice; Value=+1; }',
       'SpecialInfo' => 'Size increased by 1 step; Weapon: increased damage, reach x2, range x1.5; Armor: DR x1',
       'MutualExclusion' => 3,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     25 => 
     array (
@@ -35339,7 +35339,7 @@ return array (
       'Traits' => 'AttMod { Qual=DmgDice; Value=+2; }',
       'SpecialInfo' => 'Size increased by 2 steps; Weapon: increased damage, reach x2, range x2; Armor: DR x1',
       'MutualExclusion' => 3,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     26 => 
     array (
@@ -35357,7 +35357,7 @@ return array (
       'Traits' => 'AttMod { Qual=DmgDice; Value=+3; }',
       'SpecialInfo' => 'Size increased by 3 steps; Weapon: increased damage, reach x3, range x3; Armor: DR x1',
       'MutualExclusion' => 3,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     27 => 
     array (
@@ -35375,7 +35375,7 @@ return array (
       'Traits' => 'AttMod { Qual=DmgDice; Value=+4; }',
       'SpecialInfo' => 'Size increased by 4 steps; Weapon: increased damage, reach x4, range x4; Armor: DR x1',
       'MutualExclusion' => 3,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     28 => 
     array (
@@ -35393,7 +35393,7 @@ return array (
       'Traits' => NULL,
       'SpecialInfo' => 'Also known as barding',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     29 => 
     array (
@@ -35411,7 +35411,7 @@ return array (
       'Traits' => 'ActMod { Qual=var; Type=crc; Type=+2; }',
       'SpecialInfo' => '+2 circumstance bonus (if applicable)',
       'MutualExclusion' => 4,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     30 => 
     array (
@@ -35429,7 +35429,7 @@ return array (
       'Traits' => 'ActMod { Qual=var; Type=crc; Type=+4; }',
       'SpecialInfo' => '+4 circumstance bonus (if applicable)',
       'MutualExclusion' => 4,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     31 => 
     array (
@@ -35447,7 +35447,7 @@ return array (
       'Traits' => 'ActMod { Qual=var; Type=crc; Type=+6; }',
       'SpecialInfo' => '+6 circumstance bonus (if applicable)',
       'MutualExclusion' => 4,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     32 => 
     array (
@@ -35465,7 +35465,7 @@ return array (
       'Traits' => NULL,
       'SpecialInfo' => 'Custom-fitted for an individual (within the item\'s size category)',
       'MutualExclusion' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     33 => 
     array (
@@ -35483,7 +35483,7 @@ return array (
       'Traits' => NULL,
       'SpecialInfo' => 'Silver coating for any steel or iron item',
       'MutualExclusion' => 5,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     34 => 
     array (
@@ -35501,7 +35501,7 @@ return array (
       'Traits' => NULL,
       'SpecialInfo' => 'Gold coating for any steel or iron item',
       'MutualExclusion' => 5,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
   ),
   'items' => 
@@ -35520,7 +35520,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     2 => 
@@ -35537,7 +35537,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     3 => 
@@ -35554,7 +35554,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     4 => 
@@ -35571,7 +35571,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     5 => 
@@ -35588,7 +35588,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     6 => 
@@ -35605,7 +35605,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => NULL,
     ),
     7 => 
@@ -35622,7 +35622,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     8 => 
@@ -35639,7 +35639,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     9 => 
@@ -35656,7 +35656,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     10 => 
@@ -35673,7 +35673,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     11 => 
@@ -35690,7 +35690,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     12 => 
@@ -35707,7 +35707,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     13 => 
@@ -35724,7 +35724,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     14 => 
@@ -35741,7 +35741,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => NULL,
     ),
     15 => 
@@ -35758,7 +35758,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     16 => 
@@ -35775,7 +35775,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     17 => 
@@ -35792,7 +35792,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     18 => 
@@ -35809,7 +35809,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     19 => 
@@ -35826,7 +35826,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     20 => 
@@ -35843,7 +35843,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     21 => 
@@ -35860,7 +35860,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     22 => 
@@ -35877,7 +35877,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     23 => 
@@ -35894,7 +35894,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     24 => 
@@ -35911,7 +35911,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     25 => 
@@ -35928,7 +35928,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     26 => 
@@ -35945,7 +35945,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     27 => 
@@ -35962,7 +35962,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     28 => 
@@ -35979,7 +35979,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     29 => 
@@ -35996,7 +35996,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Axe; AttMod=StrMod+1; Dmg=d10+StrMod S; CritMul=+1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     30 => 
@@ -36013,7 +36013,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Axe; AttMod=StrMod+1; Dmg=d12+StrMod S; CritMul=+1; Bastard=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     31 => 
@@ -36030,7 +36030,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Axe; AttMod=StrMod+1; Dmg=2d8+StrMod S; CritMul=+1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     32 => 
@@ -36047,7 +36047,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Axe || Mnk; AttMod=StrMod+1; Dmg=d8+StrMod S; CritMul=+1; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     33 => 
@@ -36064,7 +36064,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=StrMod+1; Dmg=d10+StrMod S; DblWeapDmg=d10+StrMod S; CritMul=+1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     34 => 
@@ -36081,7 +36081,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Axe || SmT; AttMod=StrMod+1; Dmg=d8+StrMod S; MinReach=0; Range=2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     35 => 
@@ -36098,7 +36098,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=DexMod; Dmg=d6+StrMod B SP; Range=2; TripDrop=1; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     36 => 
@@ -36115,7 +36115,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=DexMod; ParMod=+1; Dmg=d10+StrMod P; MaxReach=2; TripDrop=1; DisarmMod=+2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     37 => 
@@ -36132,7 +36132,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=DexMod+1; Dmg=d6+StrMod S; CritMul=+1; MinReach=0; Range=6; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     38 => 
@@ -36149,7 +36149,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Nat || LtB; AttMod=DexMod+1; ParMod=+1; Dmg=d6+StrMod P; CritRng=+1; MinReach=0; NoDisarm=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     39 => 
@@ -36166,7 +36166,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Clb || Mnk; AttMod=StrMod; Dmg=d8+StrMod B; Range=2; }',
       'Description' => 'When suitably prepared, can be used as somatic and/or focus implement for divine casting (then referred to as a rod)',
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     40 => 
@@ -36183,7 +36183,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Clb; AttMod=StrMod; Dmg=d12+StrMod B; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     41 => 
@@ -36200,7 +36200,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Clb; AttMod=StrMod+1; Dmg=d8+StrMod B; CritMul=+1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     42 => 
@@ -36217,7 +36217,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Fnc || LtB; AttMod=StrMod+1; ParMod=+1; Dmg=d8+StrMod P/S; CritRng=+1; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     43 => 
@@ -36234,7 +36234,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Fnc || LtB || SmT || Mnk; AttMod=DexMod+1; ParMod=+1; Dmg=d6+StrMod P/S; CritRng=+1; MinReach=0; Range=2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     44 => 
@@ -36251,7 +36251,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || LtB; AttMod=StrMod+1; Dmg=d6+StrMod P; CritMul=+1; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     45 => 
@@ -36268,7 +36268,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || SmT; AttMod=DexMod; Dmg=d4+StrMod P; MinReach=0; Range=4; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     46 => 
@@ -36285,7 +36285,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || LtB; AttMod=DexMod+1; Dmg=d4+StrMod P; CritMul=+2; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     47 => 
@@ -36302,7 +36302,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || HvB; AttMod=StrMod+1; Dmg=d10+StrMod S; CritRng=+2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     48 => 
@@ -36319,7 +36319,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Fll; AttMod=DexMod+1; ParMod=+1; Dmg=d10+StrMod B; TripDrop=1; DisarmMod=+2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     49 => 
@@ -36336,7 +36336,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=DexMod+1; ParMod=+1; Dmg=d8+StrMod B; DblWeapDmg=d10+StrMod B; TripDrop=1; DisarmMod=+2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     50 => 
@@ -36353,7 +36353,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Fll; AttMod=DexMod+1; ParMod=+1; Dmg=d12+StrMod B; CritRng=+1; TripDrop=1; DisarmMod=+2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     51 => 
@@ -36370,7 +36370,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || PlA; AttMod=StrMod+1; Dmg=d12+StrMod S; CritMul=+1; MinReach=2; MaxReach=2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     52 => 
@@ -36387,7 +36387,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || PlA; AttMod=StrMod+1; Dmg=2d6+StrMod S; CritMul=+1; MinReach=2; MaxReach=2; TripDrop=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     53 => 
@@ -36404,7 +36404,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || PlA; AttMod=StrMod+1; Dmg=d12+StrMod P/S; CritMul=+1; TripDrop=1; Charge=1; SetCharge=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     54 => 
@@ -36421,7 +36421,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=StrMod+1; Dmg=d12+StrMod B; DblWeapDmg=d10+StrMod P; CritMul=+1; }',
       'Description' => 'Note that this weapon is commonly made for Small humanoids rather than Medium ones.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     55 => 
@@ -36438,7 +36438,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Clb || SmT; AttMod=StrMod+1; Dmg=d6+StrMod B; MinReach=0; Range=4; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     56 => 
@@ -36455,7 +36455,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Clb; AttMod=StrMod+1; Dmg=d10+StrMod B; CritMul=+1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     57 => 
@@ -36472,7 +36472,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Spr || SmT; AttMod=DexMod; Dmg=d8+StrMod P; Range=6; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     58 => 
@@ -36489,7 +36489,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo || Mnk; AttMod=StrMod+1; ParMod=+1; Dmg=d8+StrMod S; MinReach=0; TripDrop=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     59 => 
@@ -36506,7 +36506,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=StrMod; Dmg=d10+StrMod S; CritRng=+1; TripDrop=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     60 => 
@@ -36523,7 +36523,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || LtB; AttMod=StrMod+1; Dmg=d6+StrMod S; CritRng=+2; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     61 => 
@@ -36540,7 +36540,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Spr; AttMod=DexMod+1; Dmg=d10+StrMod P; CritMul=+1; MinReach=2; MaxReach=2; Charge=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     62 => 
@@ -36557,7 +36557,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Spr; AttMod=DexMod+1; Dmg=d8+StrMod P SP; CritRng=+1; CritMul=+1; MinReach=2; MaxReach=2; Charge=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     63 => 
@@ -36574,7 +36574,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Clb; AttMod=StrMod+1; Dmg=d10+StrMod B; }',
       'Description' => 'When suitably prepared, can be used as somatic and/or focus implement for divine casting (then referred to as a rod)',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     64 => 
@@ -36591,7 +36591,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Clb; AttMod=StrMod+1; Dmg=d8+StrMod B; MinReach=0; }',
       'Description' => 'When suitably prepared, can be used as somatic and/or focus implement for divine casting (then referred to as a rod)',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     65 => 
@@ -36608,7 +36608,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Clb; AttMod=StrMod+1; Dmg=d12+StrMod B; CritMul=+1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     66 => 
@@ -36625,7 +36625,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Clb; AttMod=StrMod+1; Dmg=d10+StrMod B/P; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     67 => 
@@ -36642,7 +36642,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=DexMod; ParMod=+2; Dmg=Entangle; Range=2; }',
       'Description' => 'Opponents within one size category of the weapon\'s size can be entangled. The trailing rope can be used to keep the victim from moving more than 2 squares away, but this requires an opposed Strength check. A net can be ripped with a DC 25 Strength check. The first attack with a folded net uses a normal attack roll, but subsequent attacks incur a -4 attack penalty. Folding a net takes 20 AP.',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     68 => 
@@ -36659,7 +36659,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Fll || Mnk; AttMod=DexMod; ParMod=+1; Dmg=d6+StrMod B; MinReach=0; DisarmMod=+2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     69 => 
@@ -36676,7 +36676,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Axe; AttMod=DexMod+1; Dmg=d8+StrMod P; CritMul=+2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     70 => 
@@ -36693,7 +36693,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Axe; AttMod=DexMod+1; Dmg=d6+StrMod P; CritMul=+2; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     71 => 
@@ -36710,7 +36710,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Stv || Mnk; AttMod=DexMod; ParMod=+1; Dmg=d8+StrMod B; DblWeapDmg=d8+StrMod B; }',
       'Description' => 'Can be used as somatic and/or focus implement for arcane casting',
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     72 => 
@@ -36727,7 +36727,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || PlA; AttMod=StrMod+1; Dmg=2d6+StrMod P; CritMul=+1; MinReach=2; MaxReach=2; DisarmMod=+2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     73 => 
@@ -36744,7 +36744,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Fnc; AttMod=DexMod+1; ParMod=+1; Dmg=d8+StrMod P; CritRng=+2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     74 => 
@@ -36761,7 +36761,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Fnc || HvB; AttMod=StrMod+1; Dmg=d10+StrMod P/S; CritRng=+1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     75 => 
@@ -36778,7 +36778,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo || Mnk; AttMod=DexMod; ParMod=+2; Dmg=d4+StrMod B/P; MinReach=0; Range=2; DisarmMod=+4; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     76 => 
@@ -36795,7 +36795,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Clb || Nat; AttMod=DexMod; Dmg=d6+StrMod B SP; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     77 => 
@@ -36812,7 +36812,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Fnc || HvB; AttMod=StrMod+1; Dmg=d8+StrMod S; CritRng=+2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     78 => 
@@ -36829,7 +36829,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=DexMod; Dmg=d8 S; TripDrop=1; DisarmMod=+2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     79 => 
@@ -36846,7 +36846,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || PlA; AttMod=StrMod+1; Dmg=2d6+StrMod S/P; CritMul=+2; TripDrop=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     80 => 
@@ -36863,7 +36863,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || SmT || Mnk; AttMod=DexMod; Dmg=d3+StrMod P; MinReach=0; Range=2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     81 => 
@@ -36880,7 +36880,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo || Mnk; AttMod=DexMod+1; ParMod=+1; Dmg=d8+StrMod P; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     82 => 
@@ -36897,7 +36897,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || LtB; AttMod=DexMod+1; Dmg=d8+StrMod S; MinReach=0; TripDrop=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     83 => 
@@ -36914,7 +36914,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Spr; AttMod=DexMod+1; Dmg=d10+StrMod P; CritMul=+1; Range=4; Charge=1; SetCharge=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     84 => 
@@ -36931,7 +36931,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Spr; AttMod=DexMod+1; Dmg=d10+StrMod P; CritMul=+1; MinReach=2; MaxReach=2; Charge=1; SetCharge=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     85 => 
@@ -36948,7 +36948,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Spr; AttMod=DexMod+1; Dmg=d8+StrMod P; Range=4; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     86 => 
@@ -36965,7 +36965,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || HvB; AttMod=StrMod+1; ParMod=+1; Dmg=d12+StrMod S; CritRng=+1; Bastard=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     87 => 
@@ -36982,7 +36982,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || HvB; AttMod=StrMod+1; ParMod=+1; Dmg=2d8+StrMod S; CritRng=+1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     88 => 
@@ -36999,7 +36999,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Fnc || HvB; AttMod=StrMod+1; ParMod=+1; Dmg=d10+StrMod S; CritRng=+1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     89 => 
@@ -37016,7 +37016,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Fnc || LtB; AttMod=DexMod+1; ParMod=+1; Dmg=d8+StrMod P; CritRng=+1; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     90 => 
@@ -37033,7 +37033,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=StrMod+1; ParMod=+1; Dmg=d10+StrMod S; DblWeapDmg=d10+StrMod S; CritRng=+1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     91 => 
@@ -37050,7 +37050,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Spr; AttMod=DexMod+1; Dmg=d10+StrMod P; Range=2; Charge=1; SetCharge=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     92 => 
@@ -37067,7 +37067,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=StrMod+1; Dmg=d10+StrMod S; DblWeapDmg=d8+StrMod P; CritMul=+1; SetCharge=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     93 => 
@@ -37084,7 +37084,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=DexMod; Dmg=d4 S SP; MaxReach=3; TripDrop=1; }',
       'Description' => 'Whips don\'t threaten the area within their reach.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     94 => 
@@ -37101,7 +37101,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=StrMod-8; Dmg=6d6+StrMod B; MaxCrew=12; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     95 => 
@@ -37118,7 +37118,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=StrMod-4; Dmg=3d6+StrMod B; MaxCrew=6; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     96 => 
@@ -37135,7 +37135,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=StrMod-4; Dmg=4d6+StrMod B; MaxCrew=6; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     97 => 
@@ -37152,7 +37152,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Room for 20 M-sized creatures',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     98 => 
@@ -37169,7 +37169,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=DexMod; PrepTime=2AP; Ammo=Needle; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     99 => 
@@ -37186,7 +37186,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=Needle; Dmg=d2 P; Range=2; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     100 => 
@@ -37203,7 +37203,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Bow; AttMod=DexMod+1; PrepTime=2AP; Range=+8; Ammo=Arrow; OnlyRanged=1; }',
       'Description' => 'Cannot be effectively fired unless you have at least the specified strength score',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     101 => 
@@ -37220,7 +37220,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Bow; AttMod=DexMod+1; Dmg=+1; PrepTime=2AP; Range=+10; Ammo=Arrow; OnlyRanged=1; }',
       'Description' => 'Cannot be effectively fired unless you have at least the specified strength score',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     102 => 
@@ -37237,7 +37237,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Bow; AttMod=DexMod+1; Dmg=+2; PrepTime=2AP; Range=+12; Ammo=Arrow; OnlyRanged=1; }',
       'Description' => 'Cannot be effectively fired unless you have at least the specified strength score',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     103 => 
@@ -37254,7 +37254,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Bow; AttMod=DexMod+1; Dmg=+3; PrepTime=2AP; Range=+14; Ammo=Arrow; OnlyRanged=1; }',
       'Description' => 'Cannot be effectively fired unless you have at least the specified strength score',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => 1,
     ),
     104 => 
@@ -37271,7 +37271,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Bow; AttMod=DexMod+1; Dmg=+4; PrepTime=2AP; Range=+16; Ammo=Arrow; OnlyRanged=1; }',
       'Description' => 'Cannot be effectively fired unless you have at least the specified strength score',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => 1,
     ),
     105 => 
@@ -37288,7 +37288,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Bow; AttMod=DexMod+1; PrepTime=2AP; Ammo=Arrow; OnlyRanged=1; }',
       'Description' => 'Cannot be effectively fired unless you have at least the specified strength score',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     106 => 
@@ -37305,7 +37305,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Bow; AttMod=DexMod+1; Dmg=+1; PrepTime=2AP; Range=+2; Ammo=Arrow; OnlyRanged=1; }',
       'Description' => 'Cannot be effectively fired unless you have at least the specified strength score',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     107 => 
@@ -37322,7 +37322,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Bow; AttMod=DexMod+1; Dmg=+2; PrepTime=2AP; Range=+4; Ammo=Arrow; OnlyRanged=1; }',
       'Description' => 'Cannot be effectively fired unless you have at least the specified strength score',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     108 => 
@@ -37339,7 +37339,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Bow; AttMod=DexMod+1; Dmg=+3; PrepTime=2AP; Range=+6; Ammo=Arrow; OnlyRanged=1; }',
       'Description' => 'Cannot be effectively fired unless you have at least the specified strength score',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     109 => 
@@ -37356,7 +37356,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Bow; AttMod=DexMod+1; Dmg=+4; PrepTime=2AP; Range=+8; Ammo=Arrow; OnlyRanged=1; }',
       'Description' => 'Cannot be effectively fired unless you have at least the specified strength score',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => 1,
     ),
     110 => 
@@ -37373,7 +37373,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Bow; AttMod=DexMod+1; PrepTime=2AP; Range=+8; Ammo=Arrow; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     111 => 
@@ -37390,7 +37390,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Bow; AttMod=DexMod+1; PrepTime=2AP; Ammo=Arrow; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     112 => 
@@ -37407,7 +37407,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=Arrow; Dmg=d10 P; CritMul=+1; Range=12; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     113 => 
@@ -37424,7 +37424,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=Arrow; Dmg=d8 P; CritMul=+1; Range=16; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     114 => 
@@ -37441,7 +37441,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=Arrow; Dmg=d12 S; Range=6; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     115 => 
@@ -37458,7 +37458,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Crs; AttMod=DexMod+1; PrepTime=4AP; Ammo=BoltHand; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     116 => 
@@ -37475,7 +37475,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=BoltHand; Dmg=d6 P; CritRng=+1; Range=6; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     117 => 
@@ -37492,7 +37492,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Crs; AttMod=DexMod+2; PrepTime=10AP; Ammo=BoltHeavy; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     118 => 
@@ -37509,7 +37509,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Crs; AttMod=DexMod+1; PrepTime=20AP; Ammo=BoltHeavy; Cap=6; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => 1,
     ),
     119 => 
@@ -37526,7 +37526,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Crs; AttMod=DexMod+1; PrepTime=14AP; Ammo=BoltHeavy; Cap=2; OnlyRanged=1; }',
       'Description' => 'The bolts can be shot simultaneously (one attack roll but separate damage rolls) or separately',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     120 => 
@@ -37543,7 +37543,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=BoltHeavy; Dmg=d12 P; CritRng=+1; Range=24; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     121 => 
@@ -37560,7 +37560,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Crs; AttMod=DexMod+2; PrepTime=4AP; Ammo=BoltLight; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     122 => 
@@ -37577,7 +37577,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Crs; AttMod=DexMod+1; PrepTime=8AP; Ammo=BoltLight; Cap=6; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     123 => 
@@ -37594,7 +37594,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Crs; AttMod=DexMod+1; PrepTime=6AP; Ammo=BoltLight; Cap=2; OnlyRanged=1; }',
       'Description' => 'The bolts can be shot simultaneously (one attack roll but separate damage rolls) or separately',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     124 => 
@@ -37611,7 +37611,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Crs; AttMod=DexMod+1; PrepTime=8AP; Ammo=BoltLight; Cap=3; OnlyRanged=1; }',
       'Description' => 'The bolts can be shot simultaneously (one attack roll but separate damage rolls) or separately',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     125 => 
@@ -37628,7 +37628,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=BoltLight; Dmg=d10 P; CritRng=+1; Range=16; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     126 => 
@@ -37645,7 +37645,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Sln; AttMod=DexMod; PrepTime=2AP; Ammo=SlingStone; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     127 => 
@@ -37662,7 +37662,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=SlingStone; Dmg=d6+StrMod B; Range=10; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     128 => 
@@ -37679,7 +37679,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=SlingStone; AttMod=-1; Dmg=d4+StrMod B; Range=10; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     129 => 
@@ -37696,7 +37696,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Fir; AttMod=DexMod; Dmg=+1; PrepTime=30AP; Range=+10; Ammo=Bullet; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     130 => 
@@ -37713,7 +37713,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Fir; AttMod=DexMod+1; Dmg=+2; PrepTime=25AP; Range=+14; Ammo=Bullet; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     131 => 
@@ -37730,7 +37730,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Fir; AttMod=DexMod+2; Dmg=+2; PrepTime=40AP; Range=+20; Ammo=Bullet; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     132 => 
@@ -37747,7 +37747,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Fir; AttMod=DexMod; PrepTime=25AP; Ammo=Bullet; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     133 => 
@@ -37764,7 +37764,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Fir; AttMod=DexMod+1; Dmg=+1; PrepTime=20AP; Range=+2; Ammo=Bullet; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     134 => 
@@ -37781,7 +37781,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=Bullet; Dmg=d10 P; CritMul=+1; Range=10; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     135 => 
@@ -37798,7 +37798,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=IntMod-8; PrepTime=240AP; MaxCrew=4; Ammo=StoneSmall; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     136 => 
@@ -37815,7 +37815,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=IntMod-12; PrepTime=360AP; MaxCrew=6; Ammo=StoneMedium; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     137 => 
@@ -37832,7 +37832,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=IntMod-16; PrepTime=480AP; MaxCrew=8; Ammo=StoneLarge; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     138 => 
@@ -37849,7 +37849,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=StoneSmall; Dmg=4d10 B; Range=30; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     139 => 
@@ -37866,7 +37866,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=DexMod-2; PrepTime=60AP; MaxCrew=2; Ammo=JavelinSmall; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     140 => 
@@ -37883,7 +37883,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=DexMod-4; PrepTime=120AP; MaxCrew=4; Ammo=JavelinMedium; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     141 => 
@@ -37900,7 +37900,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=DexMod-6; PrepTime=180AP; MaxCrew=6; Ammo=JavelinLarge; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     142 => 
@@ -37917,7 +37917,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=JavelinSmall; Dmg=4d6 P; Range=18; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     143 => 
@@ -37934,7 +37934,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=DexMod-2; PrepTime=60AP; MaxCrew=3; Ammo=SpitfirePot; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     144 => 
@@ -37951,7 +37951,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=SpitfirePot; Dmg=d10 fire, d6 splash; Range=12; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     145 => 
@@ -37968,7 +37968,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Shd; AttMod=DexMod; ParMod=+3; Dmg=d3+StrMod B; MinReach=0; }',
       'Description' => 'Small shield strapped to the forearm. The shield hand can be used for other things (shooting a bow, casting a spell, wielding a melee weapon, etc.) without dropping the buckler. However, any attacks made with that hand suffer a -1 attack penalty, due to the weight and reduced mobility, and the buckler provides no parry bonus for the rest of that round.',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     146 => 
@@ -37985,7 +37985,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Shd; AttMod=StrMod-2; ParMod=+6; Dmg=d4+StrMod B; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     147 => 
@@ -38002,7 +38002,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Shd; AttMod=StrMod-2; ParMod=+6; Dmg=d6+StrMod P; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     148 => 
@@ -38019,7 +38019,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Shd; AttMod=StrMod-1; ParMod=+4; Dmg=d3+StrMod B; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     149 => 
@@ -38036,7 +38036,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Shd; AttMod=StrMod-1; ParMod=+4; Dmg=d4+StrMod P; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     150 => 
@@ -38053,7 +38053,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Shd; AttMod=StrMod-4; ParMod=+8; Dmg=d4+StrMod B; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     151 => 
@@ -38070,7 +38070,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=Arrow; Dmg=d6 B; Range=12; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     152 => 
@@ -38087,7 +38087,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=Arrow; Dmg=d6 P; Range=12; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     153 => 
@@ -38104,7 +38104,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Fnc; AttMod=DexMod+1; ParMod=+2; Dmg=d6+StrMod P; CritRng=+1; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     154 => 
@@ -38121,7 +38121,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=DexMod+1; ParMod=+1; Dmg=d8+StrMod P; CritRng=+1; MinReach=0; TripDrop=1; DisarmMod=+2; }',
       'Description' => 'Special shortsword in Midnight',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     155 => 
@@ -38138,7 +38138,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Exo; AttMod=DexMod+1; ParMod=+1; Dmg=d8+StrMod P/S; CritRng=+1; CritMul=+1; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     156 => 
@@ -38155,7 +38155,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || HvB; AttMod=StrMod+1; Dmg=2d8+StrMod S; Bastard=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     157 => 
@@ -38172,7 +38172,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || HvB; AttMod=StrMod+1; Dmg=2d10+StrMod S; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     158 => 
@@ -38189,7 +38189,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Lt; DR=0; DonTime=10/6/10; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     159 => 
@@ -38206,7 +38206,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Lt; DR=1; DonTime=100/60/100; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     160 => 
@@ -38223,7 +38223,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Lt; DR=2; DonTime=100/60/100; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     161 => 
@@ -38240,7 +38240,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Lt; DR=3; DonTime=100/60/100; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     162 => 
@@ -38257,7 +38257,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Lt || Md; DR=4; DonTime=100/60/100; }',
       'Description' => 'Suit includes a cap helmet',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     163 => 
@@ -38274,7 +38274,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Lt || Md; DR=3; DonTime=100/60/100; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     164 => 
@@ -38291,7 +38291,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Md; DR=4; DonTime=400/100/100; }',
       'Description' => 'Suit includes two gauntlets',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     165 => 
@@ -38308,7 +38308,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Md; DR=5; DonTime=400/100/100; }',
       'Description' => 'Suit includes two gauntlets',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     166 => 
@@ -38325,7 +38325,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Md || Hv; DR=5; DonTime=400/100/100; }',
       'Description' => 'Suit includes two gauntlets and a full helmet',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     167 => 
@@ -38342,7 +38342,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Md || Hv; DR=6; DonTime=400/100/100; }',
       'Description' => 'Suit includes two gauntlets',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     168 => 
@@ -38359,7 +38359,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Hv; DR=6; DonTime=400/100/100; }',
       'Description' => 'Suit includes two gauntlets',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     169 => 
@@ -38376,7 +38376,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Hv; DR=7; DonTime=400/400/(1d4+1)x100; }',
       'Description' => 'Suit includes two gauntlets',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => 1,
     ),
     170 => 
@@ -38393,7 +38393,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Armor { Qual=Hv; DR=8; DonTime=400/400/(1d4+1)x100; }',
       'Description' => 'Suit includes two gauntlets and a full helmet',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => 1,
     ),
     171 => 
@@ -38410,7 +38410,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Nat; AttMod=DexMod-1; Dmg=d4+StrMod/2 B; MaxReach=0; NoDisarm=1; } Defense { Qual=CritRes; Type=Armor; Value=1; }',
       'Description' => 'Replaces natural head attack. Gives a -2 armor penalty to Listen.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     172 => 
@@ -38427,7 +38427,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Nat; AttMod=DexMod-1; Dmg=d4+StrMod/2 B; MaxReach=0; NoDisarm=1; } Defense { Qual=CritRes; Type=Armor; Value=2; }',
       'Description' => 'Replaces natural head attack. Gives a -2 armor penalty to Spot and -4 to Listen.',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     173 => 
@@ -38444,7 +38444,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Nat; AttMod=DexMod; ParMod=0; Dmg=d3+StrMod B SP; NoDisarm=1; }',
       'Description' => 'Replaces natural arm attacks.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     174 => 
@@ -38461,7 +38461,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Nat; AttMod=DexMod; ParMod=+1; Dmg=d4+StrMod B; NoDisarm=1; }',
       'Description' => 'Replaces natural arm attacks.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     175 => 
@@ -38478,7 +38478,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Nat; AttMod=DexMod; ParMod=+1; Dmg=d4+StrMod B; NoDisarm=1; }',
       'Description' => 'Replaces natural arm attacks. Also gives a +10 bonus to avoid being disarmed. Locking and unlocking the gauntlet takes 10 AP, and a hand in a locked gauntlet cannot be used to cast somatic spells.',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     176 => 
@@ -38495,7 +38495,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || LtB; AttMod=DexMod+1; ParMod=+1; Dmg=d4+StrMod P; MinReach=0; NoDisarm=1; }',
       'Description' => 'Replaces natural arm attacks.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     177 => 
@@ -38512,7 +38512,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Nat; AttMod=DexMod-1; Dmg=d4+StrMod B SP; NoDisarm=1; }',
       'Description' => 'Replaces natural leg attacks.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     178 => 
@@ -38529,7 +38529,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Nat; AttMod=DexMod-1; Dmg=d4+StrMod B SP; NoDisarm=1; }',
       'Description' => 'Replaces natural leg attacks.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     179 => 
@@ -38546,7 +38546,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Nat; AttMod=DexMod-1; Dmg=d4+1+StrMod B; NoDisarm=1; }',
       'Description' => 'Replaces natural leg attacks.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     180 => 
@@ -38563,7 +38563,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Nat; AttMod=DexMod-1; Dmg=d4+StrMod P; CritRng=+1; MinReach=0; NoDisarm=1; }',
       'Description' => 'Spring-loaded. Replaces natural leg attacks.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     181 => 
@@ -38580,7 +38580,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     182 => 
@@ -38597,7 +38597,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     183 => 
@@ -38614,7 +38614,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     184 => 
@@ -38631,7 +38631,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Lets someone hoist up to 8 times their EC 10 maximum load.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     185 => 
@@ -38648,7 +38648,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Covers one square. They make a +0 attack roll against creatures entering the square. Parry and deflection bonuses to DeC do not count. A successful attack deals 1d4+1 damage, and if any damage penetrates DR, the creature\'s base speed is halved for 24 hours or until the wounds are treated.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     186 => 
@@ -38665,7 +38665,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     187 => 
@@ -38682,7 +38682,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => NULL,
     ),
     188 => 
@@ -38699,7 +38699,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus for opening doors, chests, etc.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     189 => 
@@ -38716,7 +38716,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     190 => 
@@ -38733,7 +38733,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     191 => 
@@ -38750,7 +38750,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     192 => 
@@ -38767,7 +38767,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Full-round action to light a fire',
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     193 => 
@@ -38784,7 +38784,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Requires a ranged attack roll against DeC 10; base range 2 sq',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     194 => 
@@ -38801,7 +38801,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     195 => 
@@ -38818,7 +38818,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     196 => 
@@ -38835,7 +38835,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     197 => 
@@ -38852,7 +38852,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Disappears after 1 h; heat makes it reappear',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     198 => 
@@ -38869,7 +38869,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     199 => 
@@ -38886,7 +38886,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     200 => 
@@ -38903,7 +38903,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     201 => 
@@ -38920,7 +38920,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     202 => 
@@ -38937,7 +38937,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'DC 20',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     203 => 
@@ -38954,7 +38954,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'DC 25',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     204 => 
@@ -38971,7 +38971,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'DC 30',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     205 => 
@@ -38988,7 +38988,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'DC 40',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     206 => 
@@ -39005,7 +39005,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Lock DC 30; Break DC 26',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     207 => 
@@ -39022,7 +39022,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Lock DC 35; Break DC 28',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     208 => 
@@ -39039,7 +39039,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Lock DC 30; Break DC 32',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => 1,
     ),
     209 => 
@@ -39056,7 +39056,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Lock DC 30; Break DC 36',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => 1,
     ),
     210 => 
@@ -39073,7 +39073,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     211 => 
@@ -39090,7 +39090,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as a splash weapon, but oil with a fuse has only a 50% chance of igniting successfully. If poured on the ground, a flask covers one square; if lit on fire, a pool causes d6 HP of fire damage for 2 rounds.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     212 => 
@@ -39107,7 +39107,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     213 => 
@@ -39124,7 +39124,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     214 => 
@@ -39141,7 +39141,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     215 => 
@@ -39158,7 +39158,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     216 => 
@@ -39175,7 +39175,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     217 => 
@@ -39192,7 +39192,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus (or +4 for 2 users) to break down doors',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     218 => 
@@ -39209,7 +39209,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     219 => 
@@ -39226,7 +39226,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     220 => 
@@ -39243,7 +39243,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     221 => 
@@ -39260,7 +39260,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     222 => 
@@ -39277,7 +39277,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     223 => 
@@ -39294,7 +39294,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     224 => 
@@ -39311,7 +39311,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     225 => 
@@ -39328,7 +39328,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     226 => 
@@ -39345,7 +39345,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     227 => 
@@ -39362,7 +39362,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     228 => 
@@ -39379,7 +39379,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'x2 magnification',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => 1,
     ),
     229 => 
@@ -39396,7 +39396,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     230 => 
@@ -39413,7 +39413,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     231 => 
@@ -39430,7 +39430,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     232 => 
@@ -39447,7 +39447,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     233 => 
@@ -39464,7 +39464,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     234 => 
@@ -39481,7 +39481,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '45 l; 5 AP to don or remove',
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     235 => 
@@ -39498,7 +39498,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Holds eight small items; 5 AP to don or remove',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     236 => 
@@ -39515,7 +39515,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Holds twelve small items; 5 AP to don or remove',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     237 => 
@@ -39532,7 +39532,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '200 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     238 => 
@@ -39549,7 +39549,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '10 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     239 => 
@@ -39566,7 +39566,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '0.5 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     240 => 
@@ -39583,7 +39583,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '10 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     241 => 
@@ -39600,7 +39600,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     242 => 
@@ -39617,7 +39617,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '100 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     243 => 
@@ -39634,7 +39634,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '150 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     244 => 
@@ -39651,7 +39651,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '0.5 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     245 => 
@@ -39668,7 +39668,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '5 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     246 => 
@@ -39685,7 +39685,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '0.5 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     247 => 
@@ -39702,7 +39702,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '3 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     248 => 
@@ -39719,7 +39719,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '5 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     249 => 
@@ -39736,7 +39736,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Holds six potion vials; 5 AP to don or remove',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     250 => 
@@ -39753,7 +39753,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Holds ten potion vials; 5 AP to don or remove',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     251 => 
@@ -39770,7 +39770,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Holds small items',
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     252 => 
@@ -39787,7 +39787,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Holds a large number of very small items; 5 AP to don or remove',
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     253 => 
@@ -39804,7 +39804,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Holds very small items',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     254 => 
@@ -39821,7 +39821,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '20 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     255 => 
@@ -39838,7 +39838,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Strip of leather with fifteen overlapping scroll pockets; 5 AP to don or remove',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     256 => 
@@ -39855,7 +39855,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '0.5 dl',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     257 => 
@@ -39872,7 +39872,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '2 l',
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     258 => 
@@ -39889,7 +39889,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '1 sq radius dim light',
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => NULL,
     ),
     259 => 
@@ -39906,7 +39906,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '1 sq radius dim light',
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => NULL,
     ),
     260 => 
@@ -39923,7 +39923,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '3 sq radius normal light, 6 sq radius dim light; burns oil',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     261 => 
@@ -39940,7 +39940,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '12 sq cone normal light, 24 sq cone dim light; burns oil',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     262 => 
@@ -39957,7 +39957,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '6 sq radius normal light, 12 sq radius dim light; burns oil',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     263 => 
@@ -39974,7 +39974,7 @@ return array (
       'BasePL' => 1,
       'Traits' => NULL,
       'Description' => '6 sq radius normal light, 12 sq radius dim light; alchemical device',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     264 => 
@@ -39991,7 +39991,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '4 sq radius normal light, 8 sq radius dim light',
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     265 => 
@@ -40008,7 +40008,7 @@ return array (
       'BasePL' => 1,
       'Traits' => NULL,
       'Description' => '4 sq radius normal light, 8 sq radius dim light; supernatural device',
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     266 => 
@@ -40025,7 +40025,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as a splash weapon; 1d6 HP acid damage; 1 sq radius splash with 1 HP acid damage',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     267 => 
@@ -40042,7 +40042,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as a splash weapon; 1d6 HP fire damage; 1 sq radius splash with 1 HP fire damage and sets on fire',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     268 => 
@@ -40059,7 +40059,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+5 metabolic bonus on Fort defense vs. poison for 1 h',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     269 => 
@@ -40076,7 +40076,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as a splash weapon (if preheated); 1d6 HP heat damage; 1 sq radius splash with 1d4 HP heat damage',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     270 => 
@@ -40093,7 +40093,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Must be preheated; 3d6 HP heat damage; 2 sq radius splash with 1d6 HP heat damage',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     271 => 
@@ -40110,7 +40110,7 @@ return array (
       'BasePL' => 1,
       'Traits' => NULL,
       'Description' => 'Can be thrown; +15 attack vs. Ref; Success - 2d6 HP fire damage in 1 sq radius; Failure - Half damage',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     272 => 
@@ -40127,7 +40127,7 @@ return array (
       'BasePL' => 1,
       'Traits' => NULL,
       'Description' => 'Waterproof horn that holds enough for 32 firearm shots',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     273 => 
@@ -40144,7 +40144,7 @@ return array (
       'BasePL' => 6,
       'Traits' => NULL,
       'Description' => 'Enough for 240 firearm shots',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     274 => 
@@ -40161,7 +40161,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Renders a male humanoid infertile for 3d4 days',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     275 => 
@@ -40178,7 +40178,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Renders a female humanoid infertile for 2d4 days',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     276 => 
@@ -40195,7 +40195,7 @@ return array (
       'BasePL' => 1,
       'Traits' => NULL,
       'Description' => 'Can be used as a splash weapon; 2d4 HP radiant damage to undead and evil outsiders; 1 sq radius splash with 1 HP radiant damage',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     277 => 
@@ -40212,7 +40212,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+8 attack against Fort; S - Scent ability useless for 1 h',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     278 => 
@@ -40229,7 +40229,7 @@ return array (
       'BasePL' => 1,
       'Traits' => NULL,
       'Description' => 'Fills a 2x2x2 sq cube with thick smoke',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     279 => 
@@ -40246,7 +40246,7 @@ return array (
       'BasePL' => 1,
       'Traits' => NULL,
       'Description' => 'Large or smaller target struck is entangled for 2d4 r; +7 attack vs. Ref (escape attempt or 15 HP damage to break free)',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     280 => 
@@ -40263,7 +40263,7 @@ return array (
       'BasePL' => 1,
       'Traits' => NULL,
       'Description' => '2 sq radius sonic attack; +5 attack vs. Fort (deafened for 1 h)',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     281 => 
@@ -40280,7 +40280,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Lights a fire in 9 AP.',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     282 => 
@@ -40297,7 +40297,7 @@ return array (
       'BasePL' => 1,
       'Traits' => NULL,
       'Description' => 'Can be used as a splash weapon; 2d4 HP necrotic damage to good outsiders; 1 sq radius splash with 1 HP necrotic damage',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     283 => 
@@ -40314,7 +40314,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Crafting (Alchemy)',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     284 => 
@@ -40331,7 +40331,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Set of tools for one Crafting specialization (such as brewery, carpentry, cobblery, forgery, herbalism, leatherworking, masonry, pottery, or woodcarving)',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     285 => 
@@ -40348,7 +40348,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to many Crafting specializations',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     286 => 
@@ -40365,7 +40365,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Crafting (Armorsmith)',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     287 => 
@@ -40382,7 +40382,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can hold 3 flasks of holy water',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     288 => 
@@ -40399,7 +40399,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     289 => 
@@ -40416,7 +40416,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     290 => 
@@ -40433,7 +40433,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     291 => 
@@ -40450,7 +40450,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Athletics (Climb). You can also use the kit to anchor yourself; after spending 20 AP to do this, you will fall no more than 5 sq from that point.',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     292 => 
@@ -40467,7 +40467,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Perform (Disguise); 10 uses',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     293 => 
@@ -40484,7 +40484,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     294 => 
@@ -40501,7 +40501,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Heal; 10 uses',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     295 => 
@@ -40518,7 +40518,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Used as focus for most druids and rangers',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     296 => 
@@ -40535,7 +40535,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     297 => 
@@ -40552,7 +40552,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Crafting (Appraisal)',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => 1,
     ),
     298 => 
@@ -40569,7 +40569,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Covers one square; DC 15 Balance check to move across',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     299 => 
@@ -40586,7 +40586,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Similar to the game of "pick-up sticks"',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     300 => 
@@ -40603,7 +40603,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Crafting (Appraisal)',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     301 => 
@@ -40620,7 +40620,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Typically 100 pages',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     302 => 
@@ -40637,7 +40637,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '78 cards',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     303 => 
@@ -40654,7 +40654,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     304 => 
@@ -40671,7 +40671,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Thievery',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     305 => 
@@ -40688,7 +40688,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to many Crafting specializations',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     306 => 
@@ -40705,7 +40705,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Accurate within half an hour',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     307 => 
@@ -40722,7 +40722,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as somatic and/or focus implement for divine casting',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     308 => 
@@ -40739,7 +40739,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as somatic and/or focus implement for divine casting',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     309 => 
@@ -40756,7 +40756,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as one- or two-handed somatic and/or focus implement for bards. Examples: flute, shawm, snare drum, fiddle',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     310 => 
@@ -40773,7 +40773,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Perform (Play Instrument)',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     311 => 
@@ -40790,7 +40790,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as somatic and/or focus implement for arcane casting',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     312 => 
@@ -40807,7 +40807,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as somatic and/or focus implement for psionic powers',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     313 => 
@@ -40824,7 +40824,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as focus implement for psionic powers',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     314 => 
@@ -40841,7 +40841,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     315 => 
@@ -40858,7 +40858,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'For ceremonial functions',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     316 => 
@@ -40875,7 +40875,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+5 circ bonus on Survival (Survive Severe Weather) in cold weather',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     317 => 
@@ -40892,7 +40892,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     318 => 
@@ -40909,7 +40909,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     319 => 
@@ -40926,7 +40926,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Sturdy outfit with many pockets',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     320 => 
@@ -40943,7 +40943,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     321 => 
@@ -40960,7 +40960,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus on Survival (Survive Severe Weather) in cold weather',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     322 => 
@@ -40977,7 +40977,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     323 => 
@@ -40994,7 +40994,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Robe with several small pockets',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     324 => 
@@ -41011,7 +41011,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     325 => 
@@ -41028,7 +41028,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     326 => 
@@ -41045,7 +41045,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     327 => 
@@ -41062,7 +41062,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     328 => 
@@ -41079,7 +41079,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     329 => 
@@ -41096,7 +41096,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     330 => 
@@ -41113,7 +41113,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     331 => 
@@ -41130,7 +41130,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     332 => 
@@ -41147,7 +41147,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     333 => 
@@ -41164,7 +41164,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     334 => 
@@ -41181,7 +41181,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     335 => 
@@ -41198,7 +41198,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     336 => 
@@ -41215,7 +41215,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => NULL,
     ),
     337 => 
@@ -41232,7 +41232,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Keep with 3 m thick and 5 m high wall and 4 towers',
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     338 => 
@@ -41249,7 +41249,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Large keep with exterior buildings and a 3 m thick and 6 m high wall and 6 towers; add 4000 sp for a 10 m wide moat with bridge',
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     339 => 
@@ -41266,7 +41266,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     340 => 
@@ -41283,7 +41283,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     341 => 
@@ -41300,7 +41300,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     342 => 
@@ -41317,7 +41317,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => NULL,
     ),
     343 => 
@@ -41334,7 +41334,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     344 => 
@@ -41351,7 +41351,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '1 to 3 rooms; wood',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     345 => 
@@ -41368,7 +41368,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '3 to 6 rooms; wood',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     346 => 
@@ -41385,7 +41385,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '4 to 10 rooms; wood',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     347 => 
@@ -41402,7 +41402,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '10 to 20 rooms; 2 or 3 stories; wood and brick',
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     348 => 
@@ -41419,7 +41419,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Private room',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     349 => 
@@ -41436,7 +41436,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Shared room',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     350 => 
@@ -41453,7 +41453,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Near the hearth',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     351 => 
@@ -41470,7 +41470,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '15 to 25 rooms; fortified stone',
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     352 => 
@@ -41487,7 +41487,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     353 => 
@@ -41504,7 +41504,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     354 => 
@@ -41521,7 +41521,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     355 => 
@@ -41538,7 +41538,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     356 => 
@@ -41555,7 +41555,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     357 => 
@@ -41572,7 +41572,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     358 => 
@@ -41589,7 +41589,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     359 => 
@@ -41606,7 +41606,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Round or square; 3 levels; stone',
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     360 => 
@@ -41623,7 +41623,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Own your home and grow your own food; the small cost represents those few things you cannot make yourself',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     361 => 
@@ -41640,7 +41640,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Very simple food and lodging',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     362 => 
@@ -41657,7 +41657,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Basic food and lodging',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     363 => 
@@ -41674,7 +41674,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Food and lodging at inns',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     364 => 
@@ -41691,7 +41691,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Good food and lodging, including one or two servants',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     365 => 
@@ -41708,7 +41708,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Lavish food and lodging, including a staff of servants',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     366 => 
@@ -41725,7 +41725,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     367 => 
@@ -41742,7 +41742,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     368 => 
@@ -41759,7 +41759,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop=Oars or towed; Spd=1; Crew=5; Cap=120 passengers and 50 tons; Arm=2xL and 2xH; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     369 => 
@@ -41776,7 +41776,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     370 => 
@@ -41793,7 +41793,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     371 => 
@@ -41810,7 +41810,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     372 => 
@@ -41827,7 +41827,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     373 => 
@@ -41844,7 +41844,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop=Paddles; Spd=3; Crew=1; Cap=1 passenger and 50 kg; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     374 => 
@@ -41861,7 +41861,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop=Paddles and 1 mast; Spd=4; Crew=12; Cap=16 passengers and 2 tons; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     375 => 
@@ -41878,7 +41878,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=LandPulled; Prop=4-wheeled, 2+ L draught animals; Spd=5; Crew=1; Cap=4 passengers; }',
       'Description' => 'Enclosed cab',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     376 => 
@@ -41895,7 +41895,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=LandPulled; Prop=4-wheeled, 4+ L draught animals; Spd=5; Crew=2; Cap=4 passengers; }',
       'Description' => 'Enclosed cab',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     377 => 
@@ -41912,7 +41912,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=LandPulled; Prop=2-wheeled, 1+ L draught animals; Spd=4; Crew=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     378 => 
@@ -41929,7 +41929,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Trained for combat',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     379 => 
@@ -41946,7 +41946,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Trained for combat',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     380 => 
@@ -41963,7 +41963,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     381 => 
@@ -41980,7 +41980,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     382 => 
@@ -41997,7 +41997,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop=140 oars and 3 masts, coastal; Spd=8; Crew=150; Cap=200 passengers and 120 tons; Arm=3xL and 2xH; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     383 => 
@@ -42014,7 +42014,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     384 => 
@@ -42031,7 +42031,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     385 => 
@@ -42048,7 +42048,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Trained for combat',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     386 => 
@@ -42065,7 +42065,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     387 => 
@@ -42082,7 +42082,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Trained for combat',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     388 => 
@@ -42099,7 +42099,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     389 => 
@@ -42116,7 +42116,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Trained for combat',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     390 => 
@@ -42133,7 +42133,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterSailed; Prop=1 mast and 8 oars, lake and river; Spd=3; Crew=10; Cap=16 passengers and 20 tons; Arm=1xL; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     391 => 
@@ -42150,7 +42150,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterSailed; Prop=1 mast and 40 oars; Spd=5; Crew=45; Cap=60 passengers and 40 tons; Arm=2xL; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     392 => 
@@ -42167,7 +42167,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     393 => 
@@ -42184,7 +42184,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     394 => 
@@ -42201,7 +42201,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop=Oars; Spd=3; Crew=1; Cap=4 passengers and 500 kg; }',
       'Description' => 'Also known as a skiff or punt',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     395 => 
@@ -42218,7 +42218,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Exotic (for unusual mount) x3 cost; +2 circ bonus to Riding; 75% chance to remain in saddle',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     396 => 
@@ -42235,7 +42235,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Exotic (for unusual mount) x3 cost',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     397 => 
@@ -42252,7 +42252,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Exotic x3 cost; 50% chance to remain in saddle',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     398 => 
@@ -42269,7 +42269,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     399 => 
@@ -42286,7 +42286,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterSailed; Prop=2 or 3 masts; Spd=6; Crew=7; Cap=30 passengers and 120 tons; Arm=2xL and 1xH; }',
       'Description' => 'Also known as a caravel',
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     400 => 
@@ -42303,7 +42303,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=LandCarried; Prop=4+ M carriers; Spd=3; Crew=4; Cap=2 passengers; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     401 => 
@@ -42320,7 +42320,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=SnowPulled; Prop=2 runners, 2+ L or 4+ M draught animals; Crew=1; Cap=1 passenger and 100 kg; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     402 => 
@@ -42337,7 +42337,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     403 => 
@@ -42354,7 +42354,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=LandPulled; Prop=4-wheeled, 2+ L draught animals; Spd=4; Crew=1; Cap=4 passengers; }',
       'Description' => 'Open cab',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     404 => 
@@ -42371,7 +42371,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterSailed; Prop=2 masts and 80 oars; Spd=8; Crew=80; Cap=160 passengers and 150 tons; Arm=3xL and 2xH; }',
       'Description' => 'Also known as a dromond',
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     405 => 
@@ -42388,7 +42388,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     406 => 
@@ -42405,7 +42405,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Price varies with the danger of the terrain',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     407 => 
@@ -42422,7 +42422,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Costs (total PP)x(actual PP)x10 sp plus material costs',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     408 => 
@@ -42439,7 +42439,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     409 => 
@@ -42456,7 +42456,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     410 => 
@@ -42473,7 +42473,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     411 => 
@@ -42490,7 +42490,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     412 => 
@@ -42507,7 +42507,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     413 => 
@@ -42524,7 +42524,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Incl. board',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     414 => 
@@ -42541,7 +42541,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Incl. board',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     415 => 
@@ -42558,7 +42558,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Incl. board',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     416 => 
@@ -42575,7 +42575,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     417 => 
@@ -42592,7 +42592,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     418 => 
@@ -42609,7 +42609,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     419 => 
@@ -42626,7 +42626,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Alchemist, architect, barrister, sage',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     420 => 
@@ -42643,7 +42643,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Costs (skill level)x(skill level)x1 sp per day',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     421 => 
@@ -42660,7 +42660,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Costs (skill level)x(skill level)x2 sp per day',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     422 => 
@@ -42677,7 +42677,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Costs (skill level)x(skill level)x5 sp per day',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     423 => 
@@ -42694,7 +42694,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'From artisans and masons to entertainers and scribes',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     424 => 
@@ -42711,7 +42711,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'From servants and lantern bearers to laborers',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     425 => 
@@ -42728,7 +42728,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     426 => 
@@ -42745,7 +42745,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     427 => 
@@ -42762,7 +42762,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     428 => 
@@ -42779,7 +42779,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     429 => 
@@ -42796,7 +42796,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     430 => 
@@ -42813,7 +42813,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     431 => 
@@ -42830,7 +42830,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Pigeon or raven; up to 1000 km; requires 2 h per 100 km',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     432 => 
@@ -42847,7 +42847,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Plus 1 h of prayer and minor duties',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     433 => 
@@ -42864,7 +42864,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Plus 1 to 10 days of prayer and a small mission or quest',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     434 => 
@@ -42881,7 +42881,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Plus 1 month of prayer, Atonement spell, and a quest',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     435 => 
@@ -42898,7 +42898,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     436 => 
@@ -42915,7 +42915,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     437 => 
@@ -42932,7 +42932,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     438 => 
@@ -42949,7 +42949,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     439 => 
@@ -42966,7 +42966,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'L creatures cost x2',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     440 => 
@@ -42983,7 +42983,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     441 => 
@@ -43000,7 +43000,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     442 => 
@@ -43017,7 +43017,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     443 => 
@@ -43034,7 +43034,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     444 => 
@@ -43051,7 +43051,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     445 => 
@@ -43068,7 +43068,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     446 => 
@@ -43085,7 +43085,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     447 => 
@@ -43102,7 +43102,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     448 => 
@@ -43119,7 +43119,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     449 => 
@@ -43136,7 +43136,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Costs (maximum PP)x(maximum PP)x50 sp plus material costs',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     450 => 
@@ -43153,7 +43153,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     451 => 
@@ -43170,7 +43170,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     452 => 
@@ -43187,7 +43187,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     453 => 
@@ -43204,7 +43204,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     454 => 
@@ -43221,7 +43221,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     455 => 
@@ -43238,7 +43238,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     456 => 
@@ -43255,7 +43255,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     457 => 
@@ -43272,7 +43272,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     458 => 
@@ -43289,7 +43289,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     459 => 
@@ -43306,7 +43306,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     460 => 
@@ -43323,7 +43323,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     461 => 
@@ -43340,7 +43340,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     462 => 
@@ -43357,7 +43357,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     463 => 
@@ -43374,7 +43374,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     464 => 
@@ -43391,7 +43391,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     465 => 
@@ -43408,7 +43408,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     466 => 
@@ -43425,7 +43425,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     467 => 
@@ -43442,7 +43442,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     468 => 
@@ -43459,7 +43459,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     469 => 
@@ -43476,7 +43476,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop=40 oars, coastal; Spd=6; Crew=40; Cap=20 passengers and 10 tons; Arm=1xL; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     470 => 
@@ -43493,7 +43493,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop= 80 oars and 1 mast, coastal; Spd=6; Crew=60; Cap=60 passengers and 40 tons; Arm=1xL and 1xH; }',
       'Description' => 'Also known as a trireme',
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     471 => 
@@ -43510,7 +43510,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     472 => 
@@ -43527,7 +43527,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     473 => 
@@ -43544,7 +43544,7 @@ return array (
       'BasePL' => 10,
       'Traits' => NULL,
       'Description' => 'A silvery, slightly luminescent liquid. Corresponds to 1000 XP as a spell component or for magic item creation.',
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     474 => 
@@ -43561,7 +43561,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     475 => 
@@ -43578,7 +43578,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     476 => 
@@ -43595,7 +43595,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     477 => 
@@ -43612,7 +43612,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     478 => 
@@ -43629,7 +43629,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     479 => 
@@ -43646,7 +43646,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     480 => 
@@ -43663,7 +43663,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     481 => 
@@ -43680,7 +43680,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     482 => 
@@ -43697,7 +43697,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     483 => 
@@ -43714,7 +43714,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     484 => 
@@ -43731,7 +43731,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     485 => 
@@ -43748,7 +43748,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     486 => 
@@ -43765,7 +43765,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     487 => 
@@ -43782,7 +43782,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     488 => 
@@ -43799,7 +43799,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     489 => 
@@ -43816,7 +43816,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     490 => 
@@ -43833,7 +43833,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     491 => 
@@ -43850,7 +43850,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     492 => 
@@ -43867,7 +43867,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     493 => 
@@ -43884,7 +43884,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     494 => 
@@ -43901,7 +43901,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     495 => 
@@ -43918,7 +43918,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     496 => 
@@ -43935,7 +43935,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     497 => 
@@ -43952,7 +43952,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     498 => 
@@ -43969,7 +43969,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     499 => 
@@ -43986,7 +43986,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     500 => 
@@ -44003,7 +44003,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     501 => 
@@ -44020,7 +44020,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     502 => 
@@ -44037,7 +44037,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     503 => 
@@ -44054,7 +44054,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     504 => 
@@ -44071,7 +44071,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     505 => 
@@ -44088,7 +44088,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     506 => 
@@ -44105,7 +44105,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     507 => 
@@ -44122,7 +44122,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     508 => 
@@ -44139,7 +44139,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     509 => 
@@ -44156,7 +44156,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     510 => 
@@ -44173,7 +44173,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     511 => 
@@ -44190,7 +44190,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     512 => 
@@ -44207,7 +44207,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     513 => 
@@ -44224,7 +44224,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     514 => 
@@ -44241,7 +44241,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     515 => 
@@ -44258,7 +44258,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     516 => 
@@ -44275,7 +44275,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     517 => 
@@ -44292,7 +44292,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     518 => 
@@ -44309,7 +44309,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     519 => 
@@ -44326,7 +44326,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     520 => 
@@ -44343,7 +44343,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     521 => 
@@ -44360,7 +44360,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     522 => 
@@ -44377,7 +44377,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 35; Climb DC: 20',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     523 => 
@@ -44394,7 +44394,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 35; Climb DC: 25',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     524 => 
@@ -44411,7 +44411,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 42; Climb DC: 25',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     525 => 
@@ -44428,7 +44428,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 45; Climb DC: 25',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     526 => 
@@ -44445,7 +44445,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 50; Climb DC: 25',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     527 => 
@@ -44462,7 +44462,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 43; Climb DC: 20',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     528 => 
@@ -44479,7 +44479,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 43; Climb DC: 10',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     529 => 
@@ -44496,7 +44496,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 30; Climb DC: 25',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     530 => 
@@ -44513,7 +44513,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 25; Climb DC: 22',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     531 => 
@@ -44530,7 +44530,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 1',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     532 => 
@@ -44547,7 +44547,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 13/15; CL 3',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     533 => 
@@ -44564,7 +44564,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 16/18; CL 5',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     534 => 
@@ -44581,7 +44581,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 23/25; CL 8',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     535 => 
@@ -44598,7 +44598,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 28; CL 18',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     536 => 
@@ -44615,7 +44615,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 28; CL 18',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     537 => 
@@ -44632,7 +44632,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 29; CL 29',
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     538 => 
@@ -44649,7 +44649,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 38',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     539 => 
@@ -44666,7 +44666,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 25; CL 15',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     540 => 
@@ -44683,7 +44683,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 28; CL 26',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     541 => 
@@ -44700,7 +44700,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 33; CL 30+',
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     542 => 
@@ -44717,7 +44717,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 27; CL 18',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     543 => 
@@ -44734,7 +44734,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 40; Climb DC: 20; can provide limited cover for creatures in the pillar\'s square',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     544 => 
@@ -44751,7 +44751,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Break DC: 50; Climb DC: 25; can provide up to normal cover for adjacent creatures',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     545 => 
@@ -44768,7 +44768,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '50 l (plus outside straps for rope, bedroll, etc); 5 AP to don, and 2 AP to remove',
-      'Frequency' => NULL,
+      'Frequency' => 9,
       'ShowPCGen' => 1,
     ),
     546 => 
@@ -44785,7 +44785,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Generic potion (base item)',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     547 => 
@@ -44802,7 +44802,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Generic scroll (base item)',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     548 => 
@@ -44819,7 +44819,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Generic psionic tattoo (base item)',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     549 => 
@@ -44836,7 +44836,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Generic power stone (base item)',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     550 => 
@@ -44853,7 +44853,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Generic construct (base item)',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     551 => 
@@ -44870,7 +44870,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     552 => 
@@ -44887,7 +44887,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     553 => 
@@ -44904,7 +44904,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     554 => 
@@ -44921,7 +44921,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     555 => 
@@ -44938,7 +44938,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '6 l',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     556 => 
@@ -44955,7 +44955,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     557 => 
@@ -44972,7 +44972,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     558 => 
@@ -44989,7 +44989,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     559 => 
@@ -45006,7 +45006,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     560 => 
@@ -45023,7 +45023,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     561 => 
@@ -45040,7 +45040,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     562 => 
@@ -45057,7 +45057,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     563 => 
@@ -45074,7 +45074,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Generic packet of harmless dust or powder',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     564 => 
@@ -45091,7 +45091,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Holds 20 arrows or bolts',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     565 => 
@@ -45108,7 +45108,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     566 => 
@@ -45125,7 +45125,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     567 => 
@@ -45142,7 +45142,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     568 => 
@@ -45159,7 +45159,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     569 => 
@@ -45176,7 +45176,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     570 => 
@@ -45193,7 +45193,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     571 => 
@@ -45210,7 +45210,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Shd; AttMod=StrMod-2; ParMod=+6; Dmg=d4+StrMod B; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     572 => 
@@ -45227,7 +45227,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Gen || Shd; AttMod=StrMod-1; ParMod=+4; Dmg=d3+StrMod B; MinReach=0; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     573 => 
@@ -45244,7 +45244,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=StoneMedium; Dmg=6d10 B; Range=45; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     574 => 
@@ -45261,7 +45261,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=StoneLarge; Dmg=8d10 B; Range=60; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     575 => 
@@ -45278,7 +45278,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=JavelinMedium; Dmg=6d6 P; Range=27; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     576 => 
@@ -45295,7 +45295,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=JavelinLarge; Dmg=8d6 P; Range=36; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     577 => 
@@ -45312,7 +45312,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=AirSailed; Prop=Sails and gasbag; Spd=12; Crew=10; Cap=20 passengers and 400 kg; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     578 => 
@@ -45329,7 +45329,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Small mechanical figure (usually of a human, monster, or vehicle). It can move in a random direction 1 sq per round for up to 10 rounds. Winding it up takes 2 rounds.',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     579 => 
@@ -45346,7 +45346,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Small mechanical box that plays a simple tune at a moderate volume. It can play for up to five minutes, and winding it up takes 1 round per minute.',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     580 => 
@@ -45363,7 +45363,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     581 => 
@@ -45380,7 +45380,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Leg trap; when armed and triggered, it makes +5 attack for d6 P damage; requires a DC 13 Str check to break free',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     582 => 
@@ -45397,7 +45397,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Compact kit with cup, cutlery, and bowl',
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
     583 => 
@@ -45414,7 +45414,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     584 => 
@@ -45431,7 +45431,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as one- or two-handed somatic and/or focus implement for bards. Examples: horn, chime, cymbal, glockenspiel',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     585 => 
@@ -45448,7 +45448,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Perform (Play Instrument)',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     586 => 
@@ -45465,7 +45465,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as one- or two-handed somatic and/or focus implement for bards. Examples: drum, lute, lyre, dulcimer, harp, bagpipes',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     587 => 
@@ -45482,7 +45482,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Perform (Play Instrument)',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     588 => 
@@ -45499,7 +45499,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Can be used as one- or two-handed somatic and/or focus implement for bards. Examples: portative organ, trombone, tuba',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     589 => 
@@ -45516,7 +45516,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Perform (Play Instrument)',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     590 => 
@@ -45533,7 +45533,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => '+2 circ bonus to Survival checks to avoid getting lost (and other navigation-related tasks)',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => 1,
     ),
     591 => 
@@ -45550,7 +45550,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Only available in some settings',
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => 1,
     ),
     592 => 
@@ -45567,7 +45567,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Only available in some settings',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     593 => 
@@ -45584,7 +45584,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Trained for combat; only available in some settings',
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     594 => 
@@ -45601,7 +45601,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     595 => 
@@ -45618,7 +45618,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     596 => 
@@ -45635,7 +45635,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     597 => 
@@ -45652,7 +45652,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Keep with 2 m thick and 4 m high wall and 2 towers',
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     598 => 
@@ -45669,7 +45669,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Large keep with exterior buildings and a 3 m thick and 8 m high wall and 8 towers; add 8000 sp for a 10 m wide moat with bridge',
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     599 => 
@@ -45686,7 +45686,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Huge keep with exterior buildings and a 4 m thick and 10 m high wall and 12 towers; add 20000 sp for a 10 m wide moat with bridge',
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     600 => 
@@ -45703,7 +45703,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop=Paddle; Spd=4; Crew=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     601 => 
@@ -45720,7 +45720,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop=Oar or pole; Spd=2; Crew=2; Cap=8 passengers and 2 tons; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     602 => 
@@ -45737,7 +45737,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     603 => 
@@ -45754,7 +45754,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop=160 oars and 3 masts, coastal; Spd=6; Crew=180; Cap=300 passengers and 150 tons; Arm=6xL and 3xH; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     604 => 
@@ -45771,7 +45771,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterSailed; Prop=1 mast; Spd=5; Crew=4; Cap=20 passengers and 40 tons; Arm=1xL and 1xH; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     605 => 
@@ -45788,7 +45788,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop=Paddle; Spd=2; Crew=1; Cap=1 passenger and 50 kg; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => NULL,
     ),
     606 => 
@@ -45805,7 +45805,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop=Paddle; Spd=2; Crew=1; Cap=3 passengers and 200 kg; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     607 => 
@@ -45822,7 +45822,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterSailed; Prop=2 masts; Spd=12; Crew=5; Cap=30 passengers and 30 tons; Arm=2xL and 1xH; }',
       'Description' => 'Very rarely sold to non-elves',
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     608 => 
@@ -45839,7 +45839,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterSailed; Prop=4 masts; Spd=8; Crew=20; Cap=500 passengers and 500 tons; Arm=12xL and 4xH; }',
       'Description' => 'Also known as a carrack',
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     609 => 
@@ -45856,7 +45856,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterSailed; Prop=2 masts and 60 oars; Spd=4; Crew=65; Cap=120 passengers and 20 tons; Arm=8xL and 2xH; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     610 => 
@@ -45873,7 +45873,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterRowed; Prop=Oars; Spd=3; Crew=3; Cap=8 passengers and 4 tons; }',
       'Description' => 'Also known as a whaleship',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     611 => 
@@ -45890,7 +45890,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Vehicle { Qual=WaterSailed; Prop=2 masts and 8 oars; Spd=8; Crew=3; Cap=15 passengers and 30 tons; Arm=2xL; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     612 => 
@@ -45907,7 +45907,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=DexMod-4; PrepTime=240AP; MaxCrew=4; Ammo=StoneSmall; OnlyRanged=1; }',
       'Description' => 'Requires 60 firearm smokepowder charges per shot',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     613 => 
@@ -45924,7 +45924,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=DexMod-6; PrepTime=800AP; MaxCrew=8; Ammo=StoneMedium; OnlyRanged=1; }',
       'Description' => 'Requires 120 firearm smokepowder charges per shot',
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     614 => 
@@ -45941,7 +45941,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=DexMod-8; PrepTime=1500AP; MaxCrew=12; Ammo=StoneLarge; OnlyRanged=1; }',
       'Description' => 'Requires 240 firearm smokepowder charges per shot',
-      'Frequency' => NULL,
+      'Frequency' => 2,
       'ShowPCGen' => NULL,
     ),
     615 => 
@@ -45958,7 +45958,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Weapon { Qual=Sie; AttMod=DexMod-4; PrepTime=400AP; MaxCrew=5; Ammo=FirespoutBarrel; OnlyRanged=1; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     616 => 
@@ -45975,7 +45975,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=StoneSmall; Dmg=4d6 fire in 2 sq radius; Range=20; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     617 => 
@@ -45992,7 +45992,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=StoneMedium; Dmg=6d6 fire in 2 sq radius; Range=30; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
       'ShowPCGen' => NULL,
     ),
     618 => 
@@ -46009,7 +46009,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=StoneLarge; Dmg=8d6 fire in 2 sq radius; Range=40; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     619 => 
@@ -46026,7 +46026,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => 'Ammo { Qual=FirespoutBarrel; Dmg=6d6 fire in 12 sq line; }',
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     620 => 
@@ -46043,7 +46043,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'A hoist and cradle for L-sized boats; takes up L armament slot; launching takes 10 AP and recovery takes 200 AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     621 => 
@@ -46060,7 +46060,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'A hoist and cradle for H-sized boats; takes up H armament slot; launching takes 10 AP and recovery takes 800 AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
       'ShowPCGen' => NULL,
     ),
     622 => 
@@ -46077,7 +46077,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Holds 2 M creatures; takes up H armament slot; crew 4 for hoist and crew 2 for air pump; ascends or descends 2 sq/r; maximum depth 40 sq (60 m)',
-      'Frequency' => NULL,
+      'Frequency' => 3,
       'ShowPCGen' => NULL,
     ),
     623 => 
@@ -46094,7 +46094,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Drops to form sturdy 1-sq-wide bridge to another ship; takes up H armament slot',
-      'Frequency' => NULL,
+      'Frequency' => 5,
       'ShowPCGen' => NULL,
     ),
     624 => 
@@ -46111,7 +46111,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => 'Tarred ropes that act as obstruction for boarders',
-      'Frequency' => NULL,
+      'Frequency' => 7,
       'ShowPCGen' => NULL,
     ),
     625 => 
@@ -46128,7 +46128,7 @@ return array (
       'BasePL' => NULL,
       'Traits' => NULL,
       'Description' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 8,
       'ShowPCGen' => 1,
     ),
   ),
@@ -49363,7 +49363,7 @@ return array (
       'ID' => 27,
       'Skill' => 17,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpNat; } AttMod { Qual=Damage; Type=skill; Value=+lvl/4; Req=Weapon==WpNat; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/5; Req=Weapon==WpNat; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpNat; } AttMod { Qual=Damage; Type=skill; Value=+lvl/4; Req=Weapon==WpNat; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpNat; }',
     ),
     30 => 
     array (
@@ -49391,7 +49391,7 @@ return array (
       'ID' => 33,
       'Skill' => 21,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpAxe; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpAxe; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/6; Req=Weapon==WpAxe; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+lvl/2; Req=Weapon==WpAxe; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpAxe; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/5; Req=Weapon==WpAxe; }',
     ),
     36 => 
     array (
@@ -49419,7 +49419,7 @@ return array (
       'ID' => 39,
       'Skill' => 22,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+4)/5; Req=Weapon==WpClb; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpClb; } DefMod { Qual=Parry; Type=skill; Value=+lvl/6; Req=Weapon==WpClb; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpClb; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpClb; } DefMod { Qual=Parry; Type=skill; Value=+lvl/6; Req=Weapon==WpClb; }',
     ),
     42 => 
     array (
@@ -49433,7 +49433,7 @@ return array (
       'ID' => 43,
       'Skill' => 23,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpFnc; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpFnc; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpFnc; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpFnc; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpFnc; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpFnc; }',
     ),
     46 => 
     array (
@@ -49461,7 +49461,7 @@ return array (
       'ID' => 49,
       'Skill' => 24,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpFll; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpFll; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpFll; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpFll; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpFll; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpFll; }',
     ),
     52 => 
     array (
@@ -49482,7 +49482,7 @@ return array (
       'ID' => 54,
       'Skill' => 25,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpHvB; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpHvB; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpHvB; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+lvl/2; Req=Weapon==WpHvB; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpHvB; } DefMod { Qual=Parry; Type=skill; Value=+lvl/3; Req=Weapon==WpHvB; }',
     ),
     57 => 
     array (
@@ -49517,7 +49517,7 @@ return array (
       'ID' => 61,
       'Skill' => 26,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpLtB; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpLtB; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/5; Req=Weapon==WpLtB; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpLtB; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpLtB; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpLtB; }',
     ),
     64 => 
     array (
@@ -49538,7 +49538,7 @@ return array (
       'ID' => 66,
       'Skill' => 27,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpPlA; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpPlA; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/5; Req=Weapon==WpPlA; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpPlA; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpPlA; } DefMod { Qual=Parry; Type=skill; Value=+lvl/4; Req=Weapon==WpPlA; }',
     ),
     69 => 
     array (
@@ -49573,7 +49573,7 @@ return array (
       'ID' => 73,
       'Skill' => 29,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpSpr; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpSpr; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/5; Req=Weapon==WpSpr; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpSpr; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpSpr; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpSpr; }',
     ),
     76 => 
     array (
@@ -49594,7 +49594,7 @@ return array (
       'ID' => 78,
       'Skill' => 29,
       'SkillLevel' => 5,
-      'Traits' => 'Attack { Qual=ImprRange; Value=2; Req=Weapon==WpSpr; }',
+      'Traits' => 'Attack { Qual=ImprRange; Req=Weapon==WpSpr; }',
     ),
     79 => 
     array (
@@ -49608,7 +49608,7 @@ return array (
       'ID' => 80,
       'Skill' => 30,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+4)/5; Req=Weapon==WpStv; } AttMod { Qual=Damage; Type=skill; Value=+lvl/4; Req=Weapon==WpStv; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/5; Req=Weapon==WpStv; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpStv; } AttMod { Qual=Damage; Type=skill; Value=+lvl/4; Req=Weapon==WpStv; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpStv; }',
     ),
     83 => 
     array (
@@ -49622,7 +49622,7 @@ return array (
       'ID' => 84,
       'Skill' => 20,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpExo; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpExo; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/5; Req=Weapon==WpExo; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpExo; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpExo; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpExo; }',
     ),
     87 => 
     array (
@@ -49650,7 +49650,7 @@ return array (
       'ID' => 90,
       'Skill' => 31,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpBow; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpBow; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpBow; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpBow; }',
     ),
     92 => 
     array (
@@ -49671,7 +49671,7 @@ return array (
       'ID' => 94,
       'Skill' => 31,
       'SkillLevel' => 5,
-      'Traits' => 'Attack { Qual=ImprRange; Value=1.5; Req=Weapon==WpBow; }',
+      'Traits' => 'Attack { Qual=ImprRange; Req=Weapon==WpBow; }',
     ),
     95 => 
     array (
@@ -49727,7 +49727,7 @@ return array (
       'ID' => 102,
       'Skill' => 32,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpCrs; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpCrs; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpCrs; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpCrs; }',
     ),
     104 => 
     array (
@@ -49748,7 +49748,7 @@ return array (
       'ID' => 106,
       'Skill' => 32,
       'SkillLevel' => 5,
-      'Traits' => 'Attack { Qual=ImprRange; Value=1.5; Req=Weapon==WpCrs; }',
+      'Traits' => 'Attack { Qual=ImprRange; Req=Weapon==WpCrs; }',
     ),
     107 => 
     array (
@@ -49776,7 +49776,7 @@ return array (
       'ID' => 110,
       'Skill' => 33,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpFir; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpFir; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpFir; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpFir; }',
     ),
     112 => 
     array (
@@ -49818,7 +49818,7 @@ return array (
       'ID' => 117,
       'Skill' => 34,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpSln; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpSln; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpSln; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpSln; }',
     ),
     119 => 
     array (
@@ -49839,7 +49839,7 @@ return array (
       'ID' => 121,
       'Skill' => 34,
       'SkillLevel' => 5,
-      'Traits' => 'Attack { Qual=ImprRange; Value=1.5; Req=Weapon==WpSln; }',
+      'Traits' => 'Attack { Qual=ImprRange; Req=Weapon==WpSln; }',
     ),
     122 => 
     array (
@@ -49853,7 +49853,7 @@ return array (
       'ID' => 123,
       'Skill' => 35,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpSmT; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpSmT; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpSmT; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpSmT; }',
     ),
     125 => 
     array (
@@ -49881,7 +49881,7 @@ return array (
       'ID' => 128,
       'Skill' => 35,
       'SkillLevel' => 5,
-      'Traits' => 'Attack { Qual=ImprRange; Value=2; Req=Weapon==WpSmT; }',
+      'Traits' => 'Attack { Qual=ImprRange; Req=Weapon==WpSmT; }',
     ),
     129 => 
     array (
@@ -49895,7 +49895,7 @@ return array (
       'ID' => 130,
       'Skill' => 36,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpAre; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpAre; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpAre; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpAre; }',
     ),
     132 => 
     array (
@@ -49923,14 +49923,14 @@ return array (
       'ID' => 135,
       'Skill' => 37,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpBaM; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpBaM; }',
     ),
     136 => 
     array (
       'ID' => 136,
       'Skill' => 38,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpRay; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpRay; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+lvl/2; Req=Weapon==WpRay; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpRay; }',
     ),
     138 => 
     array (
@@ -49965,7 +49965,7 @@ return array (
       'ID' => 142,
       'Skill' => 39,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpSie; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpSie; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpSie; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpSie; }',
     ),
     144 => 
     array (
@@ -50112,7 +50112,7 @@ return array (
       'ID' => 174,
       'Skill' => 18,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpBrl; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpBrl; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpBrl; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpBrl; }',
     ),
     177 => 
     array (
@@ -50175,7 +50175,7 @@ return array (
       'ID' => 189,
       'Skill' => 28,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+4)/6; Req=Weapon==WpShd; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+4)/10; Req=Weapon==WpShd; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpShd; } SpdSpcl { Qual=ECRed; Value=lvl/10; Req=Weapon==WpShd; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/5; Req=Weapon==WpShd; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+4)/10; Req=Weapon==WpShd; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpShd; } SpdSpcl { Qual=ECRed; Value=lvl/10; Req=Weapon==WpShd; }',
     ),
     193 => 
     array (
@@ -51820,7 +51820,7 @@ return array (
       'ID' => 478,
       'Skill' => 19,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+4)/5; Req=Weapon==WpGen; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpGen; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/5; Req=Weapon==WpGen; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpGen; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpGen; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpGen; }',
     ),
     479 => 
     array (
@@ -51841,7 +51841,7 @@ return array (
       'ID' => 481,
       'Skill' => 49,
       'SkillLevel' => 5,
-      'Traits' => 'Defense { Qual=2WpDef; Value=1; }',
+      'Traits' => 'Defense { Qual=2WpDef; Value=1.5; }',
     ),
     482 => 
     array (
@@ -52030,7 +52030,7 @@ return array (
       'ID' => 508,
       'Skill' => 109,
       'SkillLevel' => 1,
-      'Traits' => 'Affinity { Qual=Divine; Abil=Wis; PPRed=(lvl+2*WisMod)/5; } Affinity { Qual=Divine - Charm; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } Affinity { Qual=Divine - Insight; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } SklMod { Qual=Composure; Type=class; Value=+lvl/4; }',
+      'Traits' => 'Affinity { Qual=Divine; Abil=Wis; PPRed=(lvl+2*WisMod)/5; } Affinity { Qual=Divine - Charm; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } Affinity { Qual=Divine - Insight; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } SklMod { Qual=Self-Control; Type=class; Value=+lvl/4; }',
     ),
     509 => 
     array (
@@ -52142,7 +52142,7 @@ return array (
       'ID' => 524,
       'Skill' => 125,
       'SkillLevel' => 1,
-      'Traits' => 'Affinity { Qual=Divine; Abil=Wis; PPRed=(lvl+2*WisMod)/5; } Affinity { Qual=Divine - Death; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } Affinity { Qual=Divine - Life; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } SklMod { Qual=Composure; Type=class; Value=+lvl/4; }',
+      'Traits' => 'Affinity { Qual=Divine; Abil=Wis; PPRed=(lvl+2*WisMod)/5; } Affinity { Qual=Divine - Death; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } Affinity { Qual=Divine - Life; Abil=Wis; PPRed=(lvl+2*WisMod)/4; } SklMod { Qual=Self-Control; Type=class; Value=+lvl/4; }',
     ),
     525 => 
     array (
@@ -52639,7 +52639,7 @@ return array (
       'ID' => 595,
       'Skill' => 206,
       'SkillLevel' => 1,
-      'Traits' => 'DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpNat; }',
+      'Traits' => 'DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpNat; }',
     ),
     596 => 
     array (
@@ -52653,14 +52653,14 @@ return array (
       'ID' => 597,
       'Skill' => 208,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpMnk; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpMnk; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpMnk; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpMnk; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpMnk; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpMnk; }',
     ),
     598 => 
     array (
       'ID' => 598,
       'Skill' => 209,
       'SkillLevel' => 1,
-      'Traits' => 'DefMod { Qual=Parry; Type=skill; Value=+(lvl+3)/5; Req=Weapon==WpNat; }',
+      'Traits' => 'DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpNat; }',
     ),
     599 => 
     array (
@@ -59618,7 +59618,7 @@ return array (
       'Results' => 'S - The target suffers the chosen effects for 1 round.\\nES - The target suffers the chosen effects for the rest of the encounter.\\nCS - The effect becomes permanent (does not apply to poison variation).\\nF - The target avoids the effect.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     2 => 
     array (
@@ -59638,7 +59638,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     3 => 
     array (
@@ -59658,7 +59658,7 @@ return array (
       'Results' => 'S - You discern all active spells and magical properties of the target.\\nF - You fail to analyze the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     4 => 
     array (
@@ -59678,7 +59678,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     5 => 
     array (
@@ -59698,7 +59698,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     6 => 
     array (
@@ -59718,7 +59718,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     7 => 
     array (
@@ -59738,7 +59738,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     8 => 
     array (
@@ -59758,7 +59758,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     9 => 
     array (
@@ -59778,7 +59778,7 @@ return array (
       'Results' => 'S - The spell works as intended.\\nAntipathy: Affected creatures are unable to enter the area or approach within 12 sq of the object (LoS).\\nSympathy: Affected creatures feel an overpowering urge to stay in the area or approach and touch the object (if within 12 sq and LoS).\\nF - The spell fails to attract or repel the target.\\nAntipathy: Intended creatures feel uncomfortable (shaken) within the area of effect.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     10 => 
     array (
@@ -59798,7 +59798,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     11 => 
     array (
@@ -59818,7 +59818,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     12 => 
     array (
@@ -59838,7 +59838,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     13 => 
     array (
@@ -59858,7 +59858,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     14 => 
     array (
@@ -59878,7 +59878,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     15 => 
     array (
@@ -59898,7 +59898,7 @@ return array (
       'Results' => 'S - You awaken the animal or tree and grant it intelligence.\\nF - The spell fails.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     16 => 
     array (
@@ -59918,7 +59918,7 @@ return array (
       'Results' => 'S - The extraplanar creature is sent back to its home plane.\\nF - You fail to banish the creature.',
       'Modifiers' => 'For every focus hated or feared by the target: +2',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     17 => 
     array (
@@ -59938,7 +59938,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     18 => 
     array (
@@ -59958,7 +59958,7 @@ return array (
       'Results' => 'S - The target is helpless for 1 round while fighting off the spell.\\nES - You successfully bind the target.\\nF - You fail to bind the target.',
       'Modifiers' => 'Each reasonable termination trigger: +2 (maximum +6)\\nTarget\'s name known: +2\\nTarget\'s background history known: +2\\nUsing a statuette of the target as focus: +2\\nSlumber binding: -1\\nBound Slumber binding: -2\\nImprisonment binding: -2\\nHedged Prison binding: -3\\nMetamorphosis binding: -4\\nMinimus Containment binding: -4\\nTrigger gem: +10',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     19 => 
     array (
@@ -59978,7 +59978,7 @@ return array (
       'Results' => 'Force weapon:\\nS - The target takes the specified amount of damage.\\nCS - The target takes double damage.\\nF - The weapon misses.\\nWall of Blades variation:\\nS - The target takes 1d6 per 2 skill levels HP of slashing damage.\\nCS - The target takes double damage.\\nF - The target takes half damage.\\nCF - The target avoids all damage.',
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     20 => 
     array (
@@ -59998,7 +59998,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     21 => 
     array (
@@ -60018,7 +60018,7 @@ return array (
       'Results' => 'S - The target suffers the indicated amount of damage.\\nCS - The target takes double damage.\\nF - The target suffers half damage.\\nCF - The target takes no damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     22 => 
     array (
@@ -60038,7 +60038,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     23 => 
     array (
@@ -60058,7 +60058,7 @@ return array (
       'Results' => 'S - The target\'s body enters an affinity feedback loop with your body.\\nF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     24 => 
     array (
@@ -60078,7 +60078,7 @@ return array (
       'Results' => 'S - The target is successfully affected.\\nF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     25 => 
     array (
@@ -60098,7 +60098,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - The target takes only half damage.\\nCF - The target avoids all damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     26 => 
     array (
@@ -60118,7 +60118,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage and cannot regain HP, SP, or PP for 1 round.\\nF - The target takes only half damage.\\nCF - The target avoids all damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     27 => 
     array (
@@ -60138,7 +60138,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - The target takes only half damage.\\nCF - The target avoids all damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     28 => 
     array (
@@ -60158,7 +60158,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - The target takes only half damage.\\nCF - The target avoids all damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     29 => 
     array (
@@ -60178,7 +60178,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - The target takes only half damage.\\nCF - The target avoids all damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     30 => 
     array (
@@ -60198,7 +60198,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - The target takes only half damage.\\nCF - The target avoids all damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     31 => 
     array (
@@ -60218,7 +60218,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - The target takes only half damage.\\nCF - The target avoids all damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     32 => 
     array (
@@ -60238,7 +60238,7 @@ return array (
       'Results' => 'S - The bolt deals the indicated amount of damage.\\nCS - The target takes double damage.\\nF - The target takes only half damage.\\nCF - The target takes no damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     33 => 
     array (
@@ -60258,7 +60258,7 @@ return array (
       'Results' => 'S - You successfully affect the animal or plant creature for 1 round.\\nES - The effect lasts for the rest of the encounter.\\nCS - The effect\'s duration increases to one day.\\nF - You fail to affect the target.',
       'Modifiers' => 'You or your allies are attacking the targets: -5 circ (only charm base variation)',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     34 => 
     array (
@@ -60278,7 +60278,7 @@ return array (
       'Results' => 'S - The attitude of the target is successfully changed to friendly for 1 round.\\nES - The effect lasts for the rest of the encounter.\\nCS - The effect\'s duration increases to one day.\\nF - You fail to affect the target.',
       'Modifiers' => 'You or your allies are attacking the targets: -5 circ',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     35 => 
     array (
@@ -60298,7 +60298,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     36 => 
     array (
@@ -60318,7 +60318,7 @@ return array (
       'Results' => 'S - The target is stunned for 1 round.\\nES - The target is stunned for 1 round and blinded the rest of the encounter.\\nCS - The target is rendered unconscious for the rest of the encounter.\\nF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     37 => 
     array (
@@ -60338,7 +60338,7 @@ return array (
       'Results' => 'S - The target obeys your command for 1 round.\\nCS - The effect\'s duration increases to one encounter.\\nF - The target ignores the command.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     38 => 
     array (
@@ -60358,7 +60358,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     39 => 
     array (
@@ -60378,7 +60378,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     40 => 
     array (
@@ -60398,7 +60398,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     41 => 
     array (
@@ -60418,7 +60418,7 @@ return array (
       'Results' => 'S - You successfully contact the entity and can ask questions.\\nF - You fail to get any answers.\\nOF - You suffer a mental blowback and take 2d6 points of Int and Cha damage.',
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     42 => 
     array (
@@ -60438,7 +60438,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     43 => 
     array (
@@ -60458,7 +60458,7 @@ return array (
       'Results' => 'S - The target is successfully controlled for up to 1 round.\\nES - The target is successfully controlled for as long as you concentrate.\\nF - The target is unaffected.',
       'Modifiers' => 'Actions that go against target\'s nature: -2\\nSuicidal actions: -5',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     44 => 
     array (
@@ -60478,7 +60478,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     45 => 
     array (
@@ -60498,7 +60498,7 @@ return array (
       'Results' => 'S - You successfully affect the emotions of the target.\\nES - The effect\'s duration increases by one step for free.\\nF - You fail to affect the target.',
       'Modifiers' => 'You or your allies are attacking the targets: -5 for calm emotions',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     46 => 
     array (
@@ -60518,7 +60518,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     47 => 
     array (
@@ -60538,7 +60538,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     48 => 
     array (
@@ -60558,7 +60558,7 @@ return array (
       'Results' => 'S - You successfully heat or chill the targeted objects.\\nF - You fail to affect the objects.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     49 => 
     array (
@@ -60578,7 +60578,7 @@ return array (
       'Results' => 'S - The target ignores you for the rest of the encounter. For the other variations, the duration is 1 round.\\nES - The effect lasts for the rest of the encounter (all variations).\\nCS - The effect\'s duration increases to one day.\\nF - You fail to affect the target.',
       'Modifiers' => 'You or your allies are attacking the targets: -5 circ (only charm variation)',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     50 => 
     array (
@@ -60598,7 +60598,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     51 => 
     array (
@@ -60618,7 +60618,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     52 => 
     array (
@@ -60638,7 +60638,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     53 => 
     array (
@@ -60658,7 +60658,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     54 => 
     array (
@@ -60678,7 +60678,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     55 => 
     array (
@@ -60698,7 +60698,7 @@ return array (
       'Results' => 'S - You create a portal to the correct destination.\\nF - You create a portal, but you miss the destination by 1d4x10%.\\nOF - You fail to open the portal.',
       'Modifiers' => 'Very familiar destination: +0\\nStudied destination carefully: -2\\nSeen destination casually: -4\\nViewed destination once: -6',
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     56 => 
     array (
@@ -60718,7 +60718,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     57 => 
     array (
@@ -60738,7 +60738,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     58 => 
     array (
@@ -60758,7 +60758,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     59 => 
     array (
@@ -60778,7 +60778,7 @@ return array (
       'Results' => 'S - Affected target is entangled.\\nCS - The target is entangled and unable to leave its square.\\nF - The target is not entangled, but the area is still considered difficult terrain.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     60 => 
     array (
@@ -60798,7 +60798,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nES - Target\'s DR is halved against this damage.\\nCS - The target takes double damage.\\nF - You miss the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     61 => 
     array (
@@ -60818,7 +60818,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     62 => 
     array (
@@ -60838,7 +60838,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     63 => 
     array (
@@ -60858,7 +60858,7 @@ return array (
       'Results' => 'S - The target suffers the chosen penalties.\\nCS - Target suffers double penalties.\\nF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     64 => 
     array (
@@ -60878,7 +60878,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     65 => 
     array (
@@ -60898,7 +60898,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     66 => 
     array (
@@ -60918,7 +60918,7 @@ return array (
       'Results' => '1st round - You detect the presence or absence of the chosen alignment aspect.\\n2nd round - You detect the number of auras of the chosen aspect.\\n3rd round - You detect the location and approximate strength of each aura.',
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     67 => 
     array (
@@ -60938,7 +60938,7 @@ return array (
       'Results' => '1st round - You detect the presence or absence of living and undead creatures (but not constructs).\\n2nd round - You detect the number of living/undead creatures.\\n3rd round - You detect the location and status (healthy, bloodied, dying, or undead) of each aura.',
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     68 => 
     array (
@@ -60958,7 +60958,7 @@ return array (
       'Results' => '1st round - You detect the presence or absence of magic.\\n2nd round - You detect the number of magical auras and the power of the most potent one.\\n3rd round - You detect the power and location of each aura. You can make Spellcraft checks to further investigate and analyze each aura.',
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     69 => 
     array (
@@ -60978,7 +60978,7 @@ return array (
       'Results' => '1st round - You detect the presence or absence of poison, disease, hazard, or the chosen animal or plant.\\n2nd round - You detect the number of poisons, diseases, hazards, or specimens of the chosen animal or plant.\\n3rd round - You detect the location of each aura. For poisons and diseases, you also detect its type and strength (and this provides a +4 circumstance bonus for Healing checks to treat it), for hazards, its type, and for animals and plants, its status (healthy, diseased, bloodied, or dying).',
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     70 => 
     array (
@@ -60998,7 +60998,7 @@ return array (
       'Results' => '1st round - You detect the presence or absence of teleportation effects, portals, et al.\\n2nd round - You detect the number of teleportation effects in the area.\\n3rd round - For teleportation effects, you can make a Spellcraft check to detect the approximate direction and distance of the teleport. For portals, you detect the special properties (triggering conditions, limitations, one- or two-way, etc) of each portal. You can make a Spellcraft check to get a rough indication of the direction and distance to a portal\'s destination.',
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     71 => 
     array (
@@ -61018,7 +61018,7 @@ return array (
       'Results' => '1st round - You detect the presence or absence of thinking creatures (Int 1 or higher).\\n2nd round - You detect the number and approximate intelligence of thinking creatures.\\n3rd round and S - If your attack beats a creature\'s Will, you pick up its surface thoughts.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     72 => 
     array (
@@ -61038,7 +61038,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     73 => 
     array (
@@ -61058,7 +61058,7 @@ return array (
       'Results' => 'S - You find the target\'s location.\\nF - You fail to find the target.',
       'Modifiers' => 'You have never seen the target: -4',
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     74 => 
     array (
@@ -61078,7 +61078,7 @@ return array (
       'Results' => 'If the touch or ray hits an object, the spell deals the specified damage. If it hits a creature, a further attack against Fort has the following effect:\\nS - The spell deals the indicated damage.\\nCS - The spell deals double damage.\\nF - The spell deals only one-quarter damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     75 => 
     array (
@@ -61098,7 +61098,7 @@ return array (
       'Results' => 'S - You successfully dispel the targeted effect.\\nF - You fail to dispel the effect.',
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     76 => 
     array (
@@ -61118,7 +61118,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     77 => 
     array (
@@ -61138,7 +61138,7 @@ return array (
       'Results' => 'S - You gain a correct reading.\\nF - You receive the "nothing" answer.\\nOF - You receive a faulty reading.',
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     78 => 
     array (
@@ -61158,7 +61158,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     79 => 
     array (
@@ -61178,7 +61178,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     80 => 
     array (
@@ -61198,7 +61198,7 @@ return array (
       'Results' => 'S - The target is successfully compelled for 1 round.\\nES - The target is compelled for the rest of the encounter.\\nCS - The effect\'s duration increases to one day.\\nF - The target is unaffected.',
       'Modifiers' => 'Commands against target\'s nature: -2\\nSuicidal commands: -5',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     81 => 
     array (
@@ -61218,7 +61218,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     82 => 
     array (
@@ -61238,7 +61238,7 @@ return array (
       'Results' => 'S - The target is successfully entangled.\\nES - The target is entangled and unable to leave its square.\\nF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     83 => 
     array (
@@ -61258,7 +61258,7 @@ return array (
       'Results' => 'S - Damage is transferred between you and the target creature.\\nF - Both you and the target are unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     86 => 
     array (
@@ -61278,7 +61278,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     87 => 
     array (
@@ -61298,7 +61298,7 @@ return array (
       'Results' => 'S - The target suffers the indicated damage.\\nCS - The target suffers double damage.\\nF - The target takes only half HP and SP damage and no other effects.\\nCF - The target suffers no damage or effects.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     88 => 
     array (
@@ -61318,7 +61318,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     89 => 
     array (
@@ -61338,7 +61338,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     90 => 
     array (
@@ -61358,7 +61358,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     91 => 
     array (
@@ -61378,7 +61378,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     92 => 
     array (
@@ -61398,7 +61398,7 @@ return array (
       'Results' => 'S - You enthrall the target.\\nF - You fail to enthrall the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     93 => 
     array (
@@ -61418,7 +61418,7 @@ return array (
       'Results' => 'S - The target is panicked for 1 round, and then shaken and sickened for 1 h.\\nES - You render the target comatose for the rest of the encounter.\\nF - The target is sickened for the rest of the encounter.\\nOF - You fail to affect the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     94 => 
     array (
@@ -61438,7 +61438,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     95 => 
     array (
@@ -61458,7 +61458,7 @@ return array (
       'Results' => 'S - The target suffers the chosen fear effect for 1 round.\\nES - The target suffers the effect for the rest of the encounter.\\nCS - The target is panicked for the rest of the encounter.\\nF - The target is shaken for 1 round.\\nOF - You fail to affect the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     96 => 
     array (
@@ -61478,7 +61478,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - The target takes only half damage.\\nCF - The target takes no damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     97 => 
     array (
@@ -61498,7 +61498,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     98 => 
     array (
@@ -61518,7 +61518,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     99 => 
     array (
@@ -61538,7 +61538,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     100 => 
     array (
@@ -61558,7 +61558,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     101 => 
     array (
@@ -61578,7 +61578,7 @@ return array (
       'Results' => 'S - The missile strikes the target and deals damage.\\nES - Halve target\'s DR against this attack.\\nCS - The missile causes double damage.\\nF - The missile misses and disappears.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     102 => 
     array (
@@ -61598,7 +61598,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     103 => 
     array (
@@ -61618,7 +61618,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     104 => 
     array (
@@ -61638,7 +61638,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     105 => 
     array (
@@ -61658,7 +61658,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     106 => 
     array (
@@ -61678,7 +61678,7 @@ return array (
       'Results' => 'S - The target creature is placed under a magical command.\\nF - The target resists your geas.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     107 => 
     array (
@@ -61698,7 +61698,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     108 => 
     array (
@@ -61718,7 +61718,7 @@ return array (
       'Results' => 'S - Target does not realize that the sound is an illusion.\\nF - Target realizes that the sound is an illusion.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     109 => 
     array (
@@ -61738,7 +61738,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     110 => 
     array (
@@ -61758,7 +61758,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     111 => 
     array (
@@ -61778,7 +61778,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     112 => 
     array (
@@ -61798,7 +61798,7 @@ return array (
       'Results' => 'S - The target is stunned for 1 round.\\nES - The target is paralyzed for the rest of the encounter.\\nCS - The effect\'s duration increases to one day.\\nF - The target is dazed for 1 round.\\nOF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     113 => 
     array (
@@ -61818,7 +61818,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     114 => 
     array (
@@ -61838,7 +61838,7 @@ return array (
       'Results' => 'S - The blast deals the indicated amount of damage and dazzles the target for 1 r.\\nCS - The target takes double damage and is blinded for the rest of the encounter.\\nF - The target takes only half damage (and is not dazzled or blinded).\\nCF - The target takes no damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     115 => 
     array (
@@ -61858,7 +61858,7 @@ return array (
       'Results' => 'S - The target suffers the effect(s) described above.\\nCS - The target suffers the next worse effect.\\nF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     116 => 
     array (
@@ -61878,7 +61878,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     117 => 
     array (
@@ -61898,7 +61898,7 @@ return array (
       'Results' => 'S - The target believes the illusion.\\nF - The target disbelieves the illusion.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     118 => 
     array (
@@ -61918,7 +61918,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     119 => 
     array (
@@ -61938,7 +61938,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     120 => 
     array (
@@ -61958,7 +61958,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     121 => 
     array (
@@ -61978,7 +61978,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     122 => 
     array (
@@ -61998,7 +61998,7 @@ return array (
       'Results' => 'S - You inflict wounds on the target.\\nCS - The target takes double damage.\\nF - The target takes only half damage.\\nCF - The target takes no damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     123 => 
     array (
@@ -62018,7 +62018,7 @@ return array (
       'Results' => 'S - The target suffers the chosen effect for 1 round.\\nES - The effect lasts until the end of the encounter.\\nCS - The effect\'s duration increases to one day.\\nF - The target is dazed for 1 round.\\nOF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     124 => 
     array (
@@ -62038,7 +62038,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     125 => 
     array (
@@ -62058,7 +62058,7 @@ return array (
       'Results' => 'S - You bring to mind legends about the subject.\\nF - The spell fails.',
       'Modifiers' => 'Subject of the casting is at hand: +4\\nDetailed information about subject available: +0\\nOnly rumors about subject available: -4',
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     126 => 
     array (
@@ -62078,7 +62078,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     127 => 
     array (
@@ -62098,7 +62098,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     128 => 
     array (
@@ -62118,7 +62118,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     129 => 
     array (
@@ -62138,7 +62138,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     130 => 
     array (
@@ -62158,7 +62158,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     131 => 
     array (
@@ -62178,7 +62178,7 @@ return array (
       'Results' => 'S - The senses of the target are successfully affected.\\nF - You fail to affect the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     132 => 
     array (
@@ -62198,7 +62198,7 @@ return array (
       'Results' => 'S - The target suffers or enjoys the chosen effect (from the start of its next turn).\\nF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     133 => 
     array (
@@ -62218,7 +62218,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     134 => 
     array (
@@ -62238,7 +62238,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     135 => 
     array (
@@ -62258,7 +62258,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     136 => 
     array (
@@ -62278,7 +62278,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     137 => 
     array (
@@ -62298,7 +62298,7 @@ return array (
       'Results' => 'S - You successfully read the target\'s mind.\\nF - Target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     138 => 
     array (
@@ -62318,7 +62318,7 @@ return array (
       'Results' => 'S - The target is successfully seeded.\\nF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     139 => 
     array (
@@ -62338,7 +62338,7 @@ return array (
       'Results' => 'S - The target cannot regain HP, SP, PP, or ability damage.\\nF - The target cannot regain HP, SP, PP, or ability damage for 1 round.\\nOF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     140 => 
     array (
@@ -62358,7 +62358,7 @@ return array (
       'Results' => 'S - The target is paralyzed for 1 round.\\nES - The target is turned to stone or vice versa for the spell\'s duration.\\nF - The target is slowed (-2 AP and -2 speed) for 1 round.\\nOF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     141 => 
     array (
@@ -62378,7 +62378,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     142 => 
     array (
@@ -62398,7 +62398,7 @@ return array (
       'Results' => 'S - You call and bind the extraplanar creature.\\nF - You successfully call the creature but fail to contain it.\\nCS - The summoned creature helps you willingly.\\nOF - The target creature fails to appear.',
       'Modifiers' => 'Spellcraft synergy: +1 syn per 5 lvls',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     143 => 
     array (
@@ -62418,7 +62418,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     144 => 
     array (
@@ -62438,7 +62438,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     145 => 
     array (
@@ -62458,7 +62458,7 @@ return array (
       'Results' => 'S - The target is affected for 1 round (death effect causes paralysis).\\nES - You successfully affect the target for the specified duration.\\nF - You fail to affect the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     146 => 
     array (
@@ -62478,7 +62478,7 @@ return array (
       'Results' => 'S - The target is blinded for 1 round and suffers the reduced effect described above.\\nES - The creature in question is blinded for the rest of the encounter and suffers full effect.\\nCS - The target suffers double damage.\\nF - The creature is dazzled for 1 round.\\nCF - The creature is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     147 => 
     array (
@@ -62498,7 +62498,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     148 => 
     array (
@@ -62518,7 +62518,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     149 => 
     array (
@@ -62538,7 +62538,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     150 => 
     array (
@@ -62558,7 +62558,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     151 => 
     array (
@@ -62578,7 +62578,7 @@ return array (
       'Results' => 'S - You successfully affect the target.\\nF - You fail to affect the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     152 => 
     array (
@@ -62598,7 +62598,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     153 => 
     array (
@@ -62618,7 +62618,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     154 => 
     array (
@@ -62638,7 +62638,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     155 => 
     array (
@@ -62658,7 +62658,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     156 => 
     array (
@@ -62678,7 +62678,7 @@ return array (
       'Results' => 'S - You can change the target\'s size.\\nF - The target resists.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     157 => 
     array (
@@ -62698,7 +62698,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     158 => 
     array (
@@ -62718,7 +62718,7 @@ return array (
       'Results' => 'S - You can change the target\'s size.\\nF - The target resists.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     159 => 
     array (
@@ -62738,7 +62738,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     160 => 
     array (
@@ -62758,7 +62758,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     161 => 
     array (
@@ -62778,7 +62778,7 @@ return array (
       'Results' => 'S - You successfully create the sensor in the desired location.\\nF - You fail to locate the target (and the sensor is not created). Further tries by you to scry on the same target during the next 24 hours automatically fail.',
       'Modifiers' => 'If you try to scry on an individual, use the following modifiers:\\nNo knowledge: -10\\nSecond-hand knowledge: -5\\nFirst-hand knowledge: +0\\nLikeness or picture of subject: +2\\nPossession or garment: +4\\nBody part, hair, nail, etc.: +10\\nFamiliar: +5',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     162 => 
     array (
@@ -62798,7 +62798,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     163 => 
     array (
@@ -62818,7 +62818,7 @@ return array (
       'Results' => 'S - You successfully link your senses with those of the target.\\nF - You fail to affect the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     164 => 
     array (
@@ -62838,7 +62838,7 @@ return array (
       'Results' => 'S - The shadow creatures have full effect against the target.\\nF - The shadow creatures have only their limited effect against the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     165 => 
     array (
@@ -62858,7 +62858,7 @@ return array (
       'Results' => 'S - The target suffers full effect from the illusion.\\nF - The target suffers only the reduced effect.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     166 => 
     array (
@@ -62878,7 +62878,7 @@ return array (
       'Results' => 'S - The target is stunned for 1 round (while fighting the transformation).\\nES - You successfully polymorph the target.\\nF - The target resists.',
       'Modifiers' => 'Potentially fatal shapechange of unwilling target: -4',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     167 => 
     array (
@@ -62898,7 +62898,7 @@ return array (
       'Results' => 'S - The target creature suffers 10d6 HP of necrotic damage.\\nES - The target creature dies.\\nF - The target creature suffers 5d6 HP of necrotic damage.\\nCF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     168 => 
     array (
@@ -62918,7 +62918,7 @@ return array (
       'Results' => 'S - The target is dazed for 1 round.\\nES - You cause the target to fall asleep.\\nCS - The effect\'s duration increases by one step for free.\\nF - The target becomes drowsy and inattentive, taking a -5 penalty on Perception checks for the rest of the encounter.\\nOF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     169 => 
     array (
@@ -62938,7 +62938,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     170 => 
     array (
@@ -62958,7 +62958,7 @@ return array (
       'Results' => 'S - You cause sonic damage to the target.\\nCS - The target takes double damage.\\nF - The target takes half damage.\\nCF - The target takes no damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     171 => 
     array (
@@ -62978,7 +62978,7 @@ return array (
       'Results' => 'S - You split the target\'s personality into two.\\nF - You fail to affect the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     172 => 
     array (
@@ -62998,7 +62998,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     173 => 
     array (
@@ -63018,7 +63018,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     174 => 
     array (
@@ -63038,7 +63038,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     175 => 
     array (
@@ -63058,7 +63058,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     176 => 
     array (
@@ -63078,7 +63078,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     177 => 
     array (
@@ -63098,7 +63098,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     178 => 
     array (
@@ -63118,7 +63118,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => 'You know the target well: +5\\nYou have met the target before: +0\\nYou have only heard of the target: -5\\nYou know nothing about the target: -10\\nLikeness or picture of target: +2\\nPossession or garment of target: +4\\nBody part, lock of hair, etc. of target: +10',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     179 => 
     array (
@@ -63138,7 +63138,7 @@ return array (
       'Results' => 'If a target is unwilling, an attack against Will is required:\\nS - You fail to teleport the target but can choose to bodily scramble it for 5d6 HP of damage.\\nES - You can either teleport the target or bodily scramble it for 10d6 HP of damage.\\nF - You fail to affect the target\\nThe result of the spellcasting check:\\nS - You teleport the target to the desired location.\\nF - You teleport the target to the wrong destination. Roll 1d10 for specific result: 1-5 - Off target by 1d10x10% of the total distance; 6-8 - Target ends up in similar area; 9-10 - Target(s) take 1d10 HP of damage and roll again for actual destination.\\nOF - The teleportation simply fails.',
       'Modifiers' => 'Very familiar destination: +0\\nStudied destination carefully: -2\\nSeen destination casually: -4\\nViewed destination once: -6',
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     180 => 
     array (
@@ -63158,7 +63158,7 @@ return array (
       'Results' => 'S - You create a teleportation circle to the correct destination.\\nF - You create a teleportation circle, but you miss the destination by 1d4x10%.\\nOF - You fail to create the teleportation circle.',
       'Modifiers' => 'Very familiar destination: +0\\nStudied destination carefully: -2\\nSeen destination casually: -4\\nViewed destination once: -6',
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     181 => 
     array (
@@ -63178,7 +63178,7 @@ return array (
       'Results' => 'S - The target suffers damage to the chosen ability scores.\\nCS - The target takes double damage.\\nF - The target suffers no damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     182 => 
     array (
@@ -63198,7 +63198,7 @@ return array (
       'Results' => 'S - The target suffers damage to the chosen ability scores.\\nCS - The target takes double damage.\\nF - The target suffers no damage.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     183 => 
     array (
@@ -63218,7 +63218,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     184 => 
     array (
@@ -63238,7 +63238,7 @@ return array (
       'Results' => 'S - The target is stunned for 1 round (while fighting the intruding soul).\\nES - The target is affected.\\nF - The target is unaffected.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     185 => 
     array (
@@ -63258,7 +63258,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     186 => 
     array (
@@ -63278,7 +63278,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     187 => 
     array (
@@ -63298,7 +63298,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     188 => 
     array (
@@ -63318,7 +63318,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     189 => 
     array (
@@ -63338,7 +63338,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     190 => 
     array (
@@ -63358,7 +63358,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     191 => 
     array (
@@ -63378,7 +63378,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     192 => 
     array (
@@ -63398,7 +63398,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     193 => 
     array (
@@ -63418,7 +63418,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - You hit with a glancing touch that deals half damage\\nEF - You miss the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     194 => 
     array (
@@ -63438,7 +63438,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage and cannot regain HP, SP, or PP for 1 round.\\nF - You hit with a glancing touch that deals half damage\\nEF - You miss the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     195 => 
     array (
@@ -63458,7 +63458,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - You hit with a glancing touch that deals half damage\\nEF - You miss the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     196 => 
     array (
@@ -63478,7 +63478,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - You hit with a glancing touch that deals half damage\\nEF - You miss the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     197 => 
     array (
@@ -63498,7 +63498,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - You hit with a glancing touch that deals half damage\\nEF - You miss the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     198 => 
     array (
@@ -63518,7 +63518,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - You hit with a glancing touch that deals half damage\\nEF - You miss the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     199 => 
     array (
@@ -63538,7 +63538,7 @@ return array (
       'Results' => 'S - The target takes the indicated amount of damage.\\nCS - The target takes double damage.\\nF - You hit with a glancing touch that deals half damage\\nEF - You miss the target.',
       'Modifiers' => NULL,
       'APBoost' => '+1 attack bonus per AP',
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     200 => 
     array (
@@ -63558,7 +63558,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     201 => 
     array (
@@ -63578,7 +63578,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     202 => 
     array (
@@ -63598,7 +63598,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     203 => 
     array (
@@ -63618,7 +63618,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     204 => 
     array (
@@ -63638,7 +63638,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     205 => 
     array (
@@ -63658,7 +63658,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     206 => 
     array (
@@ -63678,7 +63678,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     207 => 
     array (
@@ -63698,7 +63698,7 @@ return array (
       'Results' => NULL,
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 6,
     ),
     208 => 
     array (
@@ -63718,7 +63718,7 @@ return array (
       'Results' => 'S - You identify the creature\'s race, templates, class, and approximate CL.\\nES - You also discover the target\'s resistances, immunities, vulnerabilities, and special abilities.\\nCS - You discover all base characteristics of the target\'s race and templates.\\nF - You identify the target\'s race but nothing else.',
       'Modifiers' => NULL,
       'APBoost' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
   ),
   'spelloptions' => 
@@ -66326,7 +66326,7 @@ return array (
       'Appearance' => 'Usually have some trait from their bloodline, such as silver hair, golden eyes, or an unusual birthmark.',
       'Personality' => 'Righteous',
       'Alignment' => 'Usually G',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     3 => 
     array (
@@ -66358,7 +66358,7 @@ return array (
       'Appearance' => 'Blueish skin or hair',
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     4 => 
     array (
@@ -66390,7 +66390,7 @@ return array (
       'Appearance' => 'Earthlike skin, rough features, dark eyes',
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     5 => 
     array (
@@ -66422,7 +66422,7 @@ return array (
       'Appearance' => 'Dark skin, red hair, glowing eyes',
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     6 => 
     array (
@@ -66454,7 +66454,7 @@ return array (
       'Appearance' => 'Lightly scaled skin, clammy skin, blue-green hair',
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     7 => 
     array (
@@ -66486,7 +66486,7 @@ return array (
       'Appearance' => 'Usually have some trait from their bloodline, such as pointed teeth, red eyes, or small horns.',
       'Personality' => 'Many are evil and untrustworthy',
       'Alignment' => 'Usually E',
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     8 => 
     array (
@@ -66518,7 +66518,7 @@ return array (
       'Appearance' => 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\\nAppearance will reflect the color of the dragon you share a bloodline with.',
       'Personality' => NULL,
       'Alignment' => 'Often E',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     9 => 
     array (
@@ -66550,7 +66550,7 @@ return array (
       'Appearance' => 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\\nAppearance will reflect the color of the dragon you share a bloodline with.',
       'Personality' => NULL,
       'Alignment' => 'Often E',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     10 => 
     array (
@@ -66582,7 +66582,7 @@ return array (
       'Appearance' => 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\\nAppearance will reflect the color of the dragon you share a bloodline with.',
       'Personality' => NULL,
       'Alignment' => 'Often E',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     11 => 
     array (
@@ -66614,7 +66614,7 @@ return array (
       'Appearance' => 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\\nAppearance will reflect the color of the dragon you share a bloodline with.',
       'Personality' => NULL,
       'Alignment' => 'Often E',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     12 => 
     array (
@@ -66646,7 +66646,7 @@ return array (
       'Appearance' => 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\\nAppearance will reflect the color of the dragon you share a bloodline with.',
       'Personality' => NULL,
       'Alignment' => 'Often E',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     13 => 
     array (
@@ -66678,7 +66678,7 @@ return array (
       'Appearance' => 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\\nAppearance will reflect the color of the dragon you share a bloodline with.',
       'Personality' => NULL,
       'Alignment' => 'Often G',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     14 => 
     array (
@@ -66710,7 +66710,7 @@ return array (
       'Appearance' => 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\\nAppearance will reflect the color of the dragon you share a bloodline with.',
       'Personality' => NULL,
       'Alignment' => 'Often G',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     15 => 
     array (
@@ -66742,7 +66742,7 @@ return array (
       'Appearance' => 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\\nAppearance will reflect the color of the dragon you share a bloodline with.',
       'Personality' => NULL,
       'Alignment' => 'Often G',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     16 => 
     array (
@@ -66774,7 +66774,7 @@ return array (
       'Appearance' => 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\\nAppearance will reflect the color of the dragon you share a bloodline with.',
       'Personality' => NULL,
       'Alignment' => 'Often G',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     17 => 
     array (
@@ -66806,7 +66806,7 @@ return array (
       'Appearance' => 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\\nAppearance will reflect the color of the dragon you share a bloodline with.',
       'Personality' => NULL,
       'Alignment' => 'Often G',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     19 => 
     array (
@@ -66838,7 +66838,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => 'Always G',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     20 => 
     array (
@@ -66870,7 +66870,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => 'Always E',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     22 => 
     array (
@@ -66902,7 +66902,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     24 => 
     array (
@@ -66934,7 +66934,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => 'Always E',
-      'Frequency' => NULL,
+      'Frequency' => 2,
     ),
     25 => 
     array (
@@ -66966,7 +66966,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => 'Often LG',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     26 => 
     array (
@@ -66998,7 +66998,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => 'Often N',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     27 => 
     array (
@@ -67030,7 +67030,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => 'Often CE',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     28 => 
     array (
@@ -67062,7 +67062,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => 'Often N',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     29 => 
     array (
@@ -67094,7 +67094,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => 'Often CE',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     30 => 
     array (
@@ -67126,7 +67126,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => 'Always NE',
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     31 => 
     array (
@@ -67158,7 +67158,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => 'Always NE',
-      'Frequency' => NULL,
+      'Frequency' => 7,
     ),
     32 => 
     array (
@@ -67190,7 +67190,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => 'Always E',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     33 => 
     array (
@@ -67222,7 +67222,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     35 => 
     array (
@@ -67254,7 +67254,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     36 => 
     array (
@@ -67286,7 +67286,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     37 => 
     array (
@@ -67318,7 +67318,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     38 => 
     array (
@@ -67350,7 +67350,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => 'Righteous',
       'Alignment' => 'Always G',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     39 => 
     array (
@@ -67382,7 +67382,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => 'Many are evil and untrustworthy',
       'Alignment' => 'Always E',
-      'Frequency' => NULL,
+      'Frequency' => 3,
     ),
     41 => 
     array (
@@ -67414,7 +67414,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => 'Always non-G',
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
     42 => 
     array (
@@ -67446,7 +67446,7 @@ return array (
       'Appearance' => 'Blueish skin, fur, or hair',
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     43 => 
     array (
@@ -67478,7 +67478,7 @@ return array (
       'Appearance' => 'Earthlike skin, rough features, dark eyes',
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     44 => 
     array (
@@ -67510,7 +67510,7 @@ return array (
       'Appearance' => 'Dark skin, red hair or fur, glowing eyes',
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     45 => 
     array (
@@ -67542,7 +67542,7 @@ return array (
       'Appearance' => 'Lightly scaled skin, clammy skin, blue-green hair or fur',
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 5,
     ),
     46 => 
     array (
@@ -67574,7 +67574,7 @@ return array (
       'Appearance' => NULL,
       'Personality' => NULL,
       'Alignment' => NULL,
-      'Frequency' => NULL,
+      'Frequency' => 4,
     ),
   ),
   'terraintypes' => 

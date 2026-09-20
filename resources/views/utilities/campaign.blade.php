@@ -343,10 +343,10 @@
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
-                    <button type="button" @click="showCreateModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-800 cursor-pointer">Cancel</button>
+                    <button type="button" @click="showCreateModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
                     <button type="submit" :disabled="isCreateNameDuplicate || !createCamp.Name.trim()" 
-                            :class="isCreateNameDuplicate || !createCamp.Name.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-amber-800 cursor-pointer'"
-                            class="bg-amber-700 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-md border border-amber-900 transition">
+                            :class="isCreateNameDuplicate || !createCamp.Name.trim() ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'"
+                            class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
                         Create Campaign
                     </button>
                 </div>
@@ -426,10 +426,10 @@
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
-                    <button type="button" @click="showEditModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-800 cursor-pointer">Cancel</button>
+                    <button type="button" @click="showEditModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
                     <button type="submit" :disabled="isEditNameDuplicate || !editCamp.Name.trim()" 
-                            :class="isEditNameDuplicate || !editCamp.Name.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-amber-800 cursor-pointer'"
-                            class="bg-amber-700 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-md border border-amber-900 transition">
+                            :class="isEditNameDuplicate || !editCamp.Name.trim() ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'"
+                            class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
                         Save Changes
                     </button>
                 </div>
@@ -474,9 +474,9 @@
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
-                    <button type="button" @click="showAddPcModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-800 cursor-pointer">Cancel</button>
+                    <button type="button" @click="showAddPcModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
                     @if($unassignedCharacters->isNotEmpty())
-                        <button type="submit" :disabled="!selectedCharId" :class="!selectedCharId ? 'opacity-50 cursor-not-allowed' : 'hover:bg-amber-800 cursor-pointer'" class="bg-amber-700 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-md border border-amber-900 transition">
+                        <button type="submit" :disabled="!selectedCharId" :class="!selectedCharId ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
                             Add to Campaign
                         </button>
                     @endif
@@ -655,38 +655,78 @@
                 </div>
 
                 <!-- 3. ITEMS & LOOT REWARDS SECTION -->
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2">
-                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3.5">
+                    <div class="font-bold text-slate-900 text-sm flex items-center justify-between border-b border-slate-200 pb-2">
+                        <span class="flex items-center gap-1.5">
                             <span>🗡️</span> Items &amp; Magic Loot Awards (<span x-text="awardData.items.length"></span>)
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <select x-model="selectedCatalogItemId" class="text-xs px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white text-slate-800">
-                                <option value="">-- Choose from Equipment Catalog --</option>
+                        </span>
+                        <span class="text-xs text-slate-500 font-normal">Choose standard gear or modified magic items from the compendium</span>
+                    </div>
+
+                    <!-- Row 1: Standard Equipment Catalog -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-white p-2.5 rounded-lg border border-slate-200 shadow-2xs">
+                        <div class="flex-1">
+                            <label class="block text-[10px] font-bold uppercase text-slate-500 mb-0.5">Standard Equipment Catalog</label>
+                            <select x-model="selectedCatalogItemId" class="text-xs px-2.5 py-1.5 border border-slate-300 rounded-lg bg-slate-50/50 text-slate-800 w-full focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                                <option value="">-- Choose Standard Equipment Catalog --</option>
                                 @if(isset($equipmentCatalog))
                                     @foreach($equipmentCatalog as $eq)
                                         <option value="{{ $eq->ID }}" data-name="{{ $eq->Name }}" data-value="{{ $eq->BaseValue ?? 0 }}" data-weight="{{ $eq->Weight ?? 0 }}" data-pl="{{ $eq->PowerLevel ?? 0 }}" data-dr="{{ $eq->DR ?? 0 }}">
-                                            {{ $eq->Name }} ({{ number_format((int)($eq->BaseValue ?? 0)) }} sp, {{ $eq->SubtypeName ?? 'Gear' }})
+                                            {{ $eq->Name }} ({{ number_format((int)($eq->BaseValue ?? 0)) }} sp &bull; {{ $eq->SubtypeName ?? 'Gear' }})
                                         </option>
                                     @endforeach
                                 @endif
                             </select>
-                            <button type="button" @click="addItemFromCatalog()" :disabled="!selectedCatalogItemId" class="bg-indigo-700 hover:bg-indigo-800 disabled:opacity-50 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition cursor-pointer">
-                                ➕ Add Item
+                        </div>
+                        <div class="flex items-center gap-1.5 pt-3 sm:pt-3">
+                            <button type="button" @click="addItemFromCatalog()" :disabled="!selectedCatalogItemId" class="btn-rol-secondary text-xs py-1 px-3 disabled:opacity-40 shrink-0">
+                                ➕ Add Gear
                             </button>
-                            <button type="button" @click="addCustomItem()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs px-3 py-1.5 rounded-lg transition cursor-pointer">
+                            <button type="button" @click="addCustomItem()" class="btn-rol-secondary text-xs py-1 px-3 shrink-0">
                                 ✏️ Custom
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Modified & Magic Items Catalog (ref_itemsmodified) -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-amber-50/40 p-2.5 rounded-lg border border-amber-200/70 shadow-2xs">
+                        <div class="flex-1">
+                            <label class="block text-[10px] font-bold uppercase text-amber-900 mb-0.5 flex items-center gap-1">
+                                <span>✨</span> Modified &amp; Magic Items (<span class="font-mono">{{ isset($modifiedItemsCatalog) ? count($modifiedItemsCatalog) : 0 }}</span> items)
+                            </label>
+                            <select x-model="selectedModifiedItemId" class="text-xs px-2.5 py-1.5 border border-amber-300 rounded-lg bg-white text-slate-800 w-full focus:outline-none focus:ring-1 focus:ring-amber-500">
+                                <option value="">-- Choose from Magic / Modified Items (Potions, Scrolls, Wands, Enchanted Gear) --</option>
+                                @if(isset($modifiedItemsCatalog))
+                                    @foreach($modifiedItemsCatalog as $mIt)
+                                        <option value="{{ $mIt['ID'] }}" 
+                                                data-name="{{ $mIt['Name'] }}" 
+                                                data-config="{{ $mIt['Config'] }}"
+                                                data-value="{{ $mIt['Value'] }}" 
+                                                data-weight="{{ $mIt['Weight'] }}" 
+                                                data-pl="{{ $mIt['PowerLevel'] }}" 
+                                                data-dr="{{ $mIt['DR'] }}"
+                                                data-hp="{{ $mIt['HP'] }}"
+                                                data-size="{{ $mIt['Size'] }}">
+                                            ✨ {{ $mIt['Name'] }} ({{ number_format((int)$mIt['Value']) }} sp &bull; {{ $mIt['SubtypeName'] }} &bull; PL {{ $mIt['PowerLevel'] }})
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-1.5 pt-3 sm:pt-3">
+                            <button type="button" @click="addItemFromModifiedCatalog()" :disabled="!selectedModifiedItemId" class="btn-rol-primary text-xs py-1 px-3 disabled:opacity-40 shrink-0">
+                                ✨ Add Magic Item
                             </button>
                         </div>
                     </div>
 
                     <template x-if="awardData.items.length === 0">
                         <div class="p-4 bg-white border border-dashed border-slate-300 rounded-lg text-xs text-slate-500 text-center">
-                            No items queued for award. Use the equipment selector above or add custom loot.
+                            No items queued for award. Use the equipment or modified items selectors above, or add custom loot.
                         </div>
                     </template>
 
-                    <div class="space-y-2.5 max-h-56 overflow-y-auto pr-1">
+                    <div class="space-y-2.5 max-h-56 overflow-y-auto pr-1" x-show="awardData.items.length > 0">
                         <template x-for="(it, idx) in awardData.items" :key="idx">
                             <div class="bg-white border border-slate-200 p-3 rounded-lg text-xs space-y-2 shadow-2xs">
                                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -730,8 +770,8 @@
                 </div>
 
                 <div class="flex items-center justify-between pt-3 border-t border-slate-200">
-                    <button type="button" @click="showAwardModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-800 cursor-pointer">Cancel</button>
-                    <button type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-lg shadow-md border border-emerald-900 transition flex items-center gap-2 cursor-pointer">
+                    <button type="button" @click="showAwardModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
+                    <button type="submit" class="btn-rol-success text-xs sm:text-sm px-6 py-2.5 rounded-lg shadow-md border border-emerald-900 transition flex items-center gap-2 cursor-pointer" style="background: linear-gradient(180deg, #047857 0%, #065f46 100%) !important; color: #ffffff !important;">
                         <span>✨</span>
                         <span>Grant Rewards to Party</span>
                     </button>
@@ -761,6 +801,7 @@ function campaignAdmin() {
         awardCamp: { ID: null, Name: '' },
         awardParty: [],
         selectedCatalogItemId: '',
+        selectedModifiedItemId: '',
         awardData: {
             total_xp: 0,
             divide_xp_equally: true,
@@ -845,6 +886,7 @@ function campaignAdmin() {
                 items: []
             };
             this.selectedCatalogItemId = '';
+            this.selectedModifiedItemId = '';
             this.showAwardModal = true;
         },
         calculateLevelFromXp(xp) {
@@ -881,9 +923,30 @@ function campaignAdmin() {
                 weight: parseFloat(opt.getAttribute('data-weight')) || 0,
                 pl: opt.getAttribute('data-pl') || '0',
                 dr: opt.getAttribute('data-dr') || '0',
+                hp: 1,
+                size: 'Medium (M)',
                 assign_to: 'vault'
             });
             this.selectedCatalogItemId = '';
+        },
+        addItemFromModifiedCatalog() {
+            if (!this.selectedModifiedItemId) return;
+            const selectEl = document.querySelector('select[x-model="selectedModifiedItemId"]');
+            const opt = selectEl ? selectEl.options[selectEl.selectedIndex] : null;
+            if (!opt) return;
+
+            this.awardData.items.push({
+                name: opt.getAttribute('data-name') || opt.text,
+                config: opt.getAttribute('data-config') || opt.getAttribute('data-name') || opt.text,
+                value: parseFloat(opt.getAttribute('data-value')) || 0,
+                weight: parseFloat(opt.getAttribute('data-weight')) || 0,
+                pl: opt.getAttribute('data-pl') || '0',
+                dr: opt.getAttribute('data-dr') || '0',
+                hp: parseInt(opt.getAttribute('data-hp')) || 1,
+                size: opt.getAttribute('data-size') || 'Medium (M)',
+                assign_to: 'vault'
+            });
+            this.selectedModifiedItemId = '';
         },
         addCustomItem() {
             this.awardData.items.push({
@@ -893,6 +956,8 @@ function campaignAdmin() {
                 weight: 1,
                 pl: '0',
                 dr: '0',
+                hp: 1,
+                size: 'Medium (M)',
                 assign_to: 'vault'
             });
         },

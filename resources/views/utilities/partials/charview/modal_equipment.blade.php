@@ -207,7 +207,9 @@
 
                 <div class="flex items-center gap-2 justify-end">
                     <button type="button" @click="showEquipmentModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-800 cursor-pointer">Cancel</button>
-                    <button type="submit" class="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm rounded-lg shadow-md border border-emerald-900 transition flex items-center gap-1.5 cursor-pointer">
+                    <button type="submit"
+                            style="background-color: #059669; color: #ffffff;"
+                            class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-lg shadow-md border border-emerald-800 transition flex items-center gap-1.5 cursor-pointer">
                         <span>💾</span> Save Equipment &amp; Presets
                     </button>
                 </div>

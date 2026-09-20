@@ -166,9 +166,11 @@ class CommonActionsTest extends TestCase
         $gatherInfoCheck = 'd20! + Psychology (Influence) skill + Cha mod vs. DC';
         $this->assertEquals('d20! + 1 + 4 vs. DC', EntityEngine::parseActionCheck($gatherInfoCheck, $abilityMods, $trainedSkills));
 
-        // Break Barrier: Str mod (+3), Weapons - Brawling (2.0)
+        // Break Barrier: Str mod (+3), Weapons - Brawling (2.0), grapple size mod (0 for medium)
         $breakBarrierCheck = 'd20! + Weapons - Brawling skill + Str mod + grapple size mod + PAM vs. DC';
-        $this->assertEquals('d20! + 2 + 3 + grapple size mod + PAM vs. DC', EntityEngine::parseActionCheck($breakBarrierCheck, $abilityMods, $trainedSkills));
+        $this->assertEquals('d20! + 2 + 3 + 0 + PAM vs. DC', EntityEngine::parseActionCheck($breakBarrierCheck, $abilityMods, $trainedSkills, 0, 0));
+        $this->assertEquals('d20! + 2 + 3 - 4 + PAM vs. DC', EntityEngine::parseActionCheck($breakBarrierCheck, $abilityMods, $trainedSkills, 1, -4));
+        $this->assertEquals('d20! + 2 + 3 + 4 + PAM vs. DC', EntityEngine::parseActionCheck($breakBarrierCheck, $abilityMods, $trainedSkills, -1, 4));
 
         // Use Influence: Cha mod (+4), influence (1.0)
         $useInfluenceCheck = 'd20! + influence + Cha mod + other mods vs. DC or opposing Psychology (Sense Motive)';

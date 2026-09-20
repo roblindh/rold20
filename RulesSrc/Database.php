@@ -38,7 +38,7 @@ class Database
             return;
         }
 
-        if (class_exists('\Illuminate\Support\Facades\DB')) {
+        if (class_exists('\Illuminate\Support\Facades\DB') && !str_starts_with((string)$host, 'invalid')) {
             try {
                 $this->pdo = \Illuminate\Support\Facades\DB::connection()->getPdo();
                 if ($this->pdo !== null) {

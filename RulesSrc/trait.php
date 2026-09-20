@@ -263,7 +263,7 @@ class cTrait {
                 if (isset($this->aParams["Req"])) {
                     $str .= "; Prereq: " . $this->aParams["Req"];
                     if ($strBrief != "")
-                        $strBrief .= " / Req: " . $this->aParams["Req"];
+                        $strBrief .= " (" . $this->aParams["Req"] . ")";
                     // Are the prerequisites fulfilled?
                     if ($entity != NULL && !$this->CheckPrereq($this->aParams["Req"], $entity, $parser)) {
                         // If not, is the trait a normal weapon or armor modifier?

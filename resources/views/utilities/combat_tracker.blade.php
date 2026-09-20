@@ -162,9 +162,9 @@
             <!-- Combatants List -->
             <div class="space-y-3">
                 <template x-for="(c, idx) in sortedCombatants" :key="c.id">
-                    <div class="bg-white border rounded-2xl shadow-2xs overflow-hidden transition duration-150"
+                    <div class="bg-white border rounded-2xl shadow-sm overflow-hidden transition duration-150"
                          :class="{
-                             'ring-2 ring-amber-400 border-amber-300 bg-amber-50/15 shadow-sm': activeIndex === idx,
+                             'ring-2 ring-amber-400 border-amber-300 bg-amber-50/15 shadow-md': activeIndex === idx,
                              'border-slate-200': activeIndex !== idx
                          }">
                         <!-- Card Header & Core Stats Strip -->
@@ -200,7 +200,7 @@
                             <!-- Initiative Controls & Actions -->
                             <div class="flex items-center gap-2">
                                 <!-- Initiative Input & Roll -->
-                                <div class="flex items-center gap-1 bg-white border border-slate-300 rounded-lg px-2 py-1 shadow-2xs">
+                                <div class="flex items-center gap-1 bg-white border border-slate-300 rounded-lg px-2 py-1 shadow-sm">
                                     <span class="text-[11px] font-bold text-slate-500 uppercase">Init:</span>
                                     <input type="number" x-model.number="c.init_total" 
                                            class="w-12 text-center font-mono font-bold text-xs text-slate-900 focus:outline-none"
@@ -477,43 +477,228 @@
     </div>
 
     <!-- Monster Reference Search Modal -->
-    <div x-show="showMonsterModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-        <div @click.outside="showMonsterModal = false" class="bg-white rounded-2xl shadow-xl max-w-xl w-full p-5 space-y-4 border border-slate-200" x-data="{ monsterSearch: '' }">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h3 class="font-bold text-base text-slate-900 flex items-center gap-2">
-                    <span>👹</span> Add Monster Reference
-                </h3>
-                <button type="button" @click="showMonsterModal = false" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+    <div x-show="showMonsterModal" 
+         style="display: none; z-index: 9999;" 
+         class="fixed inset-0 z-[9999] overflow-hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4" 
+         @keydown.escape.window="showMonsterModal = false">
+        <div @click.outside="showMonsterModal = false" 
+             class="bg-white rounded-xl shadow-2xl max-w-5xl w-full border border-slate-300 flex flex-col overflow-hidden relative z-[10000]"
+             style="height: 85vh; max-height: 85vh; min-height: 480px; display: flex; flex-direction: column;">
+            
+            <!-- Modal Header -->
+            <div class="px-5 py-3 flex items-center justify-between border-b border-slate-700 rounded-t-xl" 
+                 style="background-color: #2b3d52; color: #ffffff; flex-shrink: 0;">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-xl">👹</span>
+                    <div>
+                        <h3 class="font-bold text-base sm:text-lg text-white font-serif leading-tight">
+                            Add Monster Reference from Bestiary
+                        </h3>
+                        <p class="text-[11px] text-slate-300">
+                            Browse {{ count($creatures) }} official creatures, filter by type, size, and level, and batch-add foes with rolled initiative.
+                        </p>
+                    </div>
+                </div>
+                <button type="button" @click="showMonsterModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-2xl leading-none cursor-pointer">&times;</button>
             </div>
 
-            <input type="text" x-model="monsterSearch" placeholder="Search 449 creatures by name or level..."
-                   class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            <!-- Filters & Search Toolbar -->
+            <div class="p-3 bg-slate-50 border-b border-slate-200 space-y-2.5" style="flex-shrink: 0;">
+                <!-- Inputs Row: Responsive Flex Wrap -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <!-- Text Search Input -->
+                    <div class="relative flex-1" style="min-width: 220px;">
+                        <input type="text" x-model="monsterSearch" @input="monsterDisplayLimit = 50" placeholder="Search name, subtype, traits..."
+                               class="w-full pl-8 pr-7 py-1.5 bg-white border border-slate-300 rounded-lg text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-amber-500 font-medium" />
+                        <span class="absolute left-2.5 top-2 text-xs text-slate-400">🔍</span>
+                        <button type="button" x-show="monsterSearch" @click="monsterSearch = ''; monsterDisplayLimit = 50" class="absolute right-2 top-1.5 text-slate-400 hover:text-slate-700 text-sm font-bold">&times;</button>
+                    </div>
 
-            <div class="max-h-72 overflow-y-auto space-y-1 pr-1">
-                <template x-for="m in filteredMonsters(monsterSearch)" :key="m.id">
-                    <div class="p-2.5 hover:bg-rose-50 border border-slate-100 rounded-xl flex items-center justify-between gap-2 transition">
-                        <div>
-                            <span class="font-bold text-sm text-slate-900" x-text="m.name"></span>
-                            <div class="text-xs text-slate-500 font-mono" x-text="'Lvl ' + m.level + ' | HP ' + m.hp_max + ' | DeCa ' + m.deca + ' | Speed ' + m.speed"></div>
-                        </div>
-                        <button type="button" @click="addMonster(m); showMonsterModal = false"
-                                class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold transition cursor-pointer">
-                            + Add
+                    <!-- Creature Type Dropdown -->
+                    <div style="min-width: 160px; flex: 0 1 190px;">
+                        <select x-model="monsterTypeFilter" @change="monsterDisplayLimit = 50" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
+                            <option value="">All Creature Types ({{ count($creatureTypes ?? []) }})</option>
+                            @if(isset($creatureTypes))
+                                @foreach($creatureTypes as $ct)
+                                    <option value="{{ $ct->ID }}">{{ $ct->Name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+
+                    <!-- Size Dropdown -->
+                    <div style="min-width: 120px; flex: 0 1 140px;">
+                        <select x-model="monsterSizeFilter" @change="monsterDisplayLimit = 50" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
+                            <option value="">All Sizes</option>
+                            @if(isset($sizes))
+                                @foreach($sizes as $sz)
+                                    <option value="{{ $sz->ID }}">{{ $sz->Description }} ({{ $sz->Abbreviation }})</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+
+                    <!-- Sort Order Dropdown -->
+                    <div style="min-width: 140px; flex: 0 1 170px;">
+                        <select x-model="monsterSort" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
+                            <option value="name_asc">Name (A &rarr; Z)</option>
+                            <option value="name_desc">Name (Z &rarr; A)</option>
+                            <option value="level_asc">Level (Low &rarr; High)</option>
+                            <option value="level_desc">Level (High &rarr; Low)</option>
+                            <option value="hp_desc">HP (High &rarr; Low)</option>
+                            <option value="type_asc">Type &rarr; Name</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Level Range Pills & Summary Bar -->
+                <div class="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-slate-200 text-xs">
+                    <!-- Quick Level Pills -->
+                    <div class="flex flex-wrap items-center gap-1">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1">Level:</span>
+                        <button type="button" @click="monsterLevelFilter = ''; monsterDisplayLimit = 50"
+                                :class="monsterLevelFilter === '' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'"
+                                class="px-2 py-0.5 rounded text-[11px] transition cursor-pointer">
+                            All
                         </button>
+                        <button type="button" @click="monsterLevelFilter = '1-3'; monsterDisplayLimit = 50"
+                                :class="monsterLevelFilter === '1-3' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'"
+                                class="px-2 py-0.5 rounded text-[11px] transition cursor-pointer">
+                            1–3
+                        </button>
+                        <button type="button" @click="monsterLevelFilter = '4-7'; monsterDisplayLimit = 50"
+                                :class="monsterLevelFilter === '4-7' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'"
+                                class="px-2 py-0.5 rounded text-[11px] transition cursor-pointer">
+                            4–7
+                        </button>
+                        <button type="button" @click="monsterLevelFilter = '8-12'; monsterDisplayLimit = 50"
+                                :class="monsterLevelFilter === '8-12' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'"
+                                class="px-2 py-0.5 rounded text-[11px] transition cursor-pointer">
+                            8–12
+                        </button>
+                        <button type="button" @click="monsterLevelFilter = '13-16'; monsterDisplayLimit = 50"
+                                :class="monsterLevelFilter === '13-16' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'"
+                                class="px-2 py-0.5 rounded text-[11px] transition cursor-pointer">
+                            13–16
+                        </button>
+                        <button type="button" @click="monsterLevelFilter = '17+'; monsterDisplayLimit = 50"
+                                :class="monsterLevelFilter === '17+' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'"
+                                class="px-2 py-0.5 rounded text-[11px] transition cursor-pointer">
+                            17+
+                        </button>
+
+                        <template x-if="monsterSearch || monsterTypeFilter || monsterSizeFilter || monsterLevelFilter || monsterSort !== 'name_asc'">
+                            <button type="button" @click="resetMonsterFilters()" class="text-rose-700 hover:text-rose-900 font-bold underline ml-2 text-[11px] cursor-pointer">
+                                ✕ Reset
+                            </button>
+                        </template>
+                    </div>
+
+                    <!-- Counter & Notification -->
+                    <div class="flex items-center gap-2">
+                        <template x-if="monsterNotification">
+                            <span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 text-[11px]" x-text="monsterNotification"></span>
+                        </template>
+                        <span class="text-[11px] text-slate-500 font-mono" x-text="'Showing ' + Math.min(monsterDisplayLimit, getFilteredMonsters().length) + ' of ' + getFilteredMonsters().length + ' matches'"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monster List (Scrollable flex-1) -->
+            <div class="p-3 sm:p-4 space-y-2 bg-slate-100/70" style="flex: 1 1 0%; min-height: 0; overflow-y: auto;">
+                <template x-for="m in visibleMonsters" :key="m.id">
+                    <div class="p-2.5 sm:p-3 bg-white hover:bg-amber-50/40 border border-slate-200 hover:border-amber-400/60 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-sm transition">
+                        <!-- Left: Creature Details -->
+                        <div class="space-y-1 flex-1 min-w-0">
+                            <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                                <span class="font-bold text-sm text-slate-900 font-serif" x-text="m.name"></span>
+                                <span class="bg-rose-100 text-rose-900 text-[10px] font-bold px-1.5 py-0.2 rounded border border-rose-200 font-mono" x-text="'Lvl ' + m.level"></span>
+                                <span class="bg-slate-100 text-slate-700 text-[10px] font-medium px-1.5 py-0.2 rounded border border-slate-200" x-text="(m.size_abbr ? m.size_abbr + ' ' : '') + (m.type_name || 'Creature')"></span>
+                                <template x-if="m.subtype_name && m.subtype_name !== m.type_name">
+                                    <span class="bg-amber-50 text-amber-800 text-[10px] font-medium px-1.5 py-0.2 rounded border border-amber-200" x-text="m.subtype_name"></span>
+                                </template>
+                                <template x-if="m.descriptors">
+                                    <span class="text-[10px] text-slate-500 font-mono italic" x-text="'(' + m.descriptors + ')'"></span>
+                                </template>
+                            </div>
+                            
+                            <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] font-mono text-slate-600">
+                                <span>HP <strong class="text-slate-900" x-text="m.hp_max"></strong></span>
+                                <span>&bull;</span>
+                                <span>SP <strong class="text-slate-900" x-text="m.sp_max"></strong></span>
+                                <span>&bull;</span>
+                                <span>DeCa <strong class="text-indigo-900" x-text="m.deca"></strong> (<span class="text-slate-500" x-text="'DeCp ' + m.decp"></span>)</span>
+                                <template x-if="m.dr > 0">
+                                    <span>&bull; DR <strong class="text-amber-900" x-text="m.dr"></strong></span>
+                                </template>
+                                <span>&bull; Fort <span class="font-semibold text-slate-800" x-text="'+' + m.fort"></span></span>
+                                <span>&bull; Ref <span class="font-semibold text-slate-800" x-text="'+' + m.ref"></span></span>
+                                <span>&bull; Will <span class="font-semibold text-slate-800" x-text="'+' + m.will"></span></span>
+                                <span>&bull; Speed <span class="text-slate-700" x-text="m.speed"></span></span>
+                            </div>
+                        </div>
+
+                        <!-- Add Count & Button -->
+                        <div class="flex items-center gap-2 self-end sm:self-center shrink-0" style="flex-shrink: 0;">
+                            <div class="flex items-center border border-slate-300 rounded-lg bg-slate-50 overflow-hidden">
+                                <button type="button" @click="m._count = Math.max(1, (m._count || 1) - 1)" class="px-2 py-1 bg-slate-200 hover:bg-slate-300 text-xs font-bold text-slate-800 cursor-pointer">-</button>
+                                <input type="number" min="1" max="20" x-model.number="m._count" :placeholder="1" class="w-10 py-1 text-center font-mono font-bold text-xs bg-white text-slate-900 border-x border-slate-300 focus:outline-none" />
+                                <button type="button" @click="m._count = Math.min(20, (m._count || 1) + 1)" class="px-2 py-1 bg-slate-200 hover:bg-slate-300 text-xs font-bold text-slate-800 cursor-pointer">+</button>
+                            </div>
+                            <button type="button" @click="addMonsters(m, m._count || 1)"
+                                    class="btn-rol-primary text-xs py-1 px-3 font-bold cursor-pointer shrink-0">
+                                + Add <span x-text="(m._count > 1 ? '(' + m._count + ')' : '')"></span>
+                            </button>
+                        </div>
                     </div>
                 </template>
+
+                <!-- Load More / Show All Controls -->
+                <template x-if="getFilteredMonsters().length > monsterDisplayLimit">
+                    <div class="p-3 bg-white border border-slate-200 rounded-xl text-center space-y-2 shadow-sm">
+                        <p class="text-xs text-slate-600">
+                            Showing <strong x-text="monsterDisplayLimit"></strong> of <strong x-text="getFilteredMonsters().length"></strong> matching creatures.
+                        </p>
+                        <div class="flex items-center justify-center gap-2">
+                            <button type="button" @click="monsterDisplayLimit += 50" class="btn-rol-primary text-xs py-1.5 px-4 font-bold cursor-pointer">
+                                + Load 50 More
+                            </button>
+                            <button type="button" @click="monsterDisplayLimit = 1000" class="btn-rol-secondary text-xs py-1.5 px-4 font-bold cursor-pointer">
+                                Show All (<span x-text="getFilteredMonsters().length"></span>)
+                            </button>
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="getFilteredMonsters().length === 0">
+                    <div class="p-8 bg-white border border-dashed border-slate-300 rounded-xl text-center text-slate-500 text-xs space-y-1">
+                        <p class="font-bold text-slate-700">No matching creatures found.</p>
+                        <p>Try adjusting your search terms or clearing active filters.</p>
+                        <button type="button" @click="resetMonsterFilters()" class="btn-rol-secondary text-xs py-1 px-3 mt-2 font-semibold">Reset Filters</button>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-5 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between" style="flex-shrink: 0;">
+                <div class="text-xs text-slate-600 font-mono">
+                    <span class="font-bold text-slate-900" x-text="combatants.length"></span> Combatants in encounter
+                </div>
+                <button type="button" @click="showMonsterModal = false" class="btn-rol-secondary text-xs py-1.5 px-5 font-bold cursor-pointer">
+                    Done
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Custom Combatant Modal -->
-    <div x-show="showCustomModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-        <div @click.outside="showCustomModal = false" class="bg-white rounded-2xl shadow-xl max-w-md w-full p-5 space-y-4 border border-slate-200">
+    <div x-show="showCustomModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showCustomModal = false">
+        <div @click.outside="showCustomModal = false" class="bg-white rounded-xl shadow-2xl max-w-md w-full p-5 space-y-4 border border-slate-300 relative z-[10000]">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h3 class="font-bold text-base text-slate-900 flex items-center gap-2">
                     <span>➕</span> Add Custom Combatant
                 </h3>
-                <button type="button" @click="showCustomModal = false" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+                <button type="button" @click="showCustomModal = false" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer">&times;</button>
             </div>
 
             <div class="space-y-3 text-xs">
@@ -577,8 +762,8 @@
             </div>
 
             <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                <button type="button" @click="showCustomModal = false" class="px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded-lg">Cancel</button>
-                <button type="button" @click="addCustomCombatant(); showCustomModal = false" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg shadow-2xs">Add Combatant</button>
+                <button type="button" @click="showCustomModal = false" class="btn-rol-secondary text-xs py-1.5 px-3">Cancel</button>
+                <button type="button" @click="addCustomCombatant(); showCustomModal = false" class="btn-rol-primary text-xs py-1.5 px-4 font-bold shadow-sm">Add Combatant</button>
             </div>
         </div>
     </div>
@@ -598,6 +783,13 @@ function combatTrackerApp() {
         
         showMonsterModal: false,
         showCustomModal: false,
+        monsterSearch: '',
+        monsterTypeFilter: '',
+        monsterSizeFilter: '',
+        monsterLevelFilter: '',
+        monsterSort: 'name_asc',
+        monsterDisplayLimit: 50,
+        monsterNotification: '',
         customDiceExpr: '1d20+5',
         latestRollResult: null,
         eventLog: [],
@@ -642,10 +834,87 @@ function combatTrackerApp() {
             return this.allNPCs;
         },
 
+        getFilteredMonsters() {
+            let list = this.allCreatures || [];
+
+            // 1. Text Search (name, subtype, main type, descriptors, speed, level)
+            if (this.monsterSearch && this.monsterSearch.trim()) {
+                const q = this.monsterSearch.toLowerCase().trim();
+                list = list.filter(c => 
+                    (c.name && c.name.toLowerCase().includes(q)) || 
+                    (c.subtype_name && c.subtype_name.toLowerCase().includes(q)) ||
+                    (c.type_name && c.type_name.toLowerCase().includes(q)) ||
+                    (c.descriptors && c.descriptors.toLowerCase().includes(q)) ||
+                    (c.size_name && c.size_name.toLowerCase().includes(q)) ||
+                    (c.speed && c.speed.toLowerCase().includes(q)) ||
+                    ('lvl ' + c.level).includes(q)
+                );
+            }
+
+            // 2. Creature Main Type Filter
+            if (this.monsterTypeFilter) {
+                const tId = parseInt(this.monsterTypeFilter);
+                list = list.filter(c => c.type_id === tId);
+            }
+
+            // 3. Size Filter
+            if (this.monsterSizeFilter !== '' && this.monsterSizeFilter !== null && this.monsterSizeFilter !== undefined) {
+                const sId = parseInt(this.monsterSizeFilter);
+                list = list.filter(c => c.size_id === sId);
+            }
+
+            // 4. Level Range Filter
+            if (this.monsterLevelFilter) {
+                if (this.monsterLevelFilter === '1-3') {
+                    list = list.filter(c => c.level >= 1 && c.level <= 3);
+                } else if (this.monsterLevelFilter === '4-7') {
+                    list = list.filter(c => c.level >= 4 && c.level <= 7);
+                } else if (this.monsterLevelFilter === '8-12') {
+                    list = list.filter(c => c.level >= 8 && c.level <= 12);
+                } else if (this.monsterLevelFilter === '13-16') {
+                    list = list.filter(c => c.level >= 13 && c.level <= 16);
+                } else if (this.monsterLevelFilter === '17+') {
+                    list = list.filter(c => c.level >= 17);
+                }
+            }
+
+            // 5. Sorting
+            list = [...list].sort((a, b) => {
+                if (this.monsterSort === 'name_asc') {
+                    return (a.name || '').localeCompare(b.name || '');
+                } else if (this.monsterSort === 'name_desc') {
+                    return (b.name || '').localeCompare(a.name || '');
+                } else if (this.monsterSort === 'level_asc') {
+                    return a.level - b.level || (a.name || '').localeCompare(b.name || '');
+                } else if (this.monsterSort === 'level_desc') {
+                    return b.level - a.level || (a.name || '').localeCompare(b.name || '');
+                } else if (this.monsterSort === 'hp_desc') {
+                    return b.hp_max - a.hp_max || (a.name || '').localeCompare(b.name || '');
+                } else if (this.monsterSort === 'type_asc') {
+                    return (a.type_name || '').localeCompare(b.type_name || '') || (a.name || '').localeCompare(b.name || '');
+                }
+                return 0;
+            });
+
+            return list;
+        },
+
+        get visibleMonsters() {
+            const all = this.getFilteredMonsters();
+            return all.slice(0, this.monsterDisplayLimit);
+        },
+
+        resetMonsterFilters() {
+            this.monsterSearch = '';
+            this.monsterTypeFilter = '';
+            this.monsterSizeFilter = '';
+            this.monsterLevelFilter = '';
+            this.monsterSort = 'name_asc';
+            this.monsterDisplayLimit = 50;
+        },
+
         filteredMonsters(q) {
-            if (!q || !q.trim()) return this.allCreatures.slice(0, 50);
-            const query = q.toLowerCase();
-            return this.allCreatures.filter(c => c.name.toLowerCase().includes(query) || ('lvl ' + c.level).includes(query)).slice(0, 50);
+            return this.getFilteredMonsters();
         },
 
         filteredConditions(q) {
@@ -687,38 +956,51 @@ function combatTrackerApp() {
         },
 
         addMonster(m) {
-            const count = this.combatants.filter(c => c.name.startsWith(m.name)).length;
-            const name = count > 0 ? `${m.name} ${count + 1}` : m.name;
-            const roll = Math.floor(Math.random() * 20) + 1;
-            const comb = {
-                id: 'comb_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
-                name: name,
-                type: 'monster',
-                level: m.level,
-                hp_max: m.hp_max,
-                hp_curr: m.hp_max,
-                sp_max: m.sp_max,
-                sp_curr: m.sp_max,
-                pp_max: m.pp_max,
-                pp_curr: m.pp_max,
-                ap_max: m.ap_max,
-                ap_curr: m.ap_max,
-                init_mod: m.init_mod,
-                init_roll: roll,
-                init_total: roll + m.init_mod,
-                deca: m.deca,
-                decp: m.decp,
-                dr: m.dr,
-                mr: m.mr,
-                fort: m.fort,
-                ref: m.ref,
-                will: m.will,
-                speed: m.speed,
-                conditions: [],
-                notes: ''
-            };
-            this.combatants.push(comb);
-            this.logEvent(`Added monster ${name} (Init ${comb.init_total})`);
+            this.addMonsters(m, 1);
+        },
+
+        addMonsters(m, qty) {
+            qty = Math.max(1, Math.min(20, parseInt(qty) || 1));
+            for (let i = 0; i < qty; i++) {
+                const count = this.combatants.filter(c => c.name.startsWith(m.name)).length;
+                let name = m.name;
+                if (count > 0 || qty > 1) {
+                    name = `${m.name} ${count + 1}`;
+                }
+                const roll = Math.floor(Math.random() * 20) + 1;
+                const comb = {
+                    id: 'comb_' + Date.now() + '_' + Math.floor(Math.random() * 10000) + '_' + i,
+                    name: name,
+                    type: 'monster',
+                    level: m.level,
+                    race_name: (m.size_abbr ? m.size_abbr + ' ' : '') + (m.subtype_name || m.type_name || 'Monster'),
+                    hp_max: m.hp_max,
+                    hp_curr: m.hp_max,
+                    sp_max: m.sp_max,
+                    sp_curr: m.sp_max,
+                    pp_max: m.pp_max,
+                    pp_curr: m.pp_max,
+                    ap_max: m.ap_max || (10 + m.level),
+                    ap_curr: m.ap_max || (10 + m.level),
+                    init_mod: m.init_mod || 0,
+                    init_roll: roll,
+                    init_total: roll + (m.init_mod || 0),
+                    deca: m.deca,
+                    decp: m.decp,
+                    dr: m.dr || 0,
+                    mr: m.mr || 0,
+                    fort: m.fort,
+                    ref: m.ref,
+                    will: m.will,
+                    speed: m.speed,
+                    conditions: [],
+                    notes: m.descriptors ? `Descriptors: ${m.descriptors}` : ''
+                };
+                this.combatants.push(comb);
+                this.logEvent(`Added monster ${name} (Init ${comb.init_total})`);
+            }
+            this.monsterNotification = `Added ${qty} × ${m.name} to encounter!`;
+            setTimeout(() => { this.monsterNotification = ''; }, 3000);
         },
 
         addCustomCombatant() {

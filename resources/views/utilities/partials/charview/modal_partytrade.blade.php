@@ -89,8 +89,10 @@
                                 <span class="text-[10px] text-slate-500 mt-1 block">Maximum available: {{ number_format($wealth) }} sp</span>
                             </div>
 
-                            <button type="submit" :disabled="{{ $wealth <= 0 || $partyMembers->isEmpty() ? 'true' : 'false' }}" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white font-bold rounded-lg transition cursor-pointer">
-                                Transfer Silver Pieces &rarr;
+                            <button type="submit" :disabled="{{ $wealth <= 0 || $partyMembers->isEmpty() ? 'true' : 'false' }}"
+                                    style="background-color: #047857; color: #ffffff;"
+                                    class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold rounded-lg shadow transition cursor-pointer text-xs sm:text-sm">
+                                🤝 Transfer Silver Pieces &rarr;
                             </button>
                         </form>
                     </div>
@@ -108,7 +110,9 @@
                                 <span class="text-[10px] text-slate-500 mt-1 block">Your current wealth: {{ number_format($wealth) }} sp</span>
                             </div>
 
-                            <button type="submit" :disabled="{{ $wealth <= 0 ? 'true' : 'false' }}" class="w-full py-2.5 bg-indigo-700 hover:bg-indigo-800 disabled:opacity-50 text-white font-bold rounded-lg transition cursor-pointer">
+                            <button type="submit" :disabled="{{ $wealth <= 0 ? 'true' : 'false' }}"
+                                    style="background-color: #4338ca; color: #ffffff;"
+                                    class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-lg shadow transition cursor-pointer text-xs sm:text-sm">
                                 💎 Deposit into Campaign Vault
                             </button>
                         </form>
@@ -127,7 +131,9 @@
                                 <span class="text-[10px] text-slate-500 mt-1 block">Available vault pool: {{ number_format($campaignVaultFunds) }} sp</span>
                             </div>
 
-                            <button type="submit" :disabled="{{ $campaignVaultFunds <= 0 ? 'true' : 'false' }}" class="w-full py-2.5 bg-amber-700 hover:bg-amber-800 disabled:opacity-50 text-white font-bold rounded-lg transition cursor-pointer">
+                            <button type="submit" :disabled="{{ $campaignVaultFunds <= 0 ? 'true' : 'false' }}"
+                                    style="background-color: #b45309; color: #ffffff;"
+                                    class="w-full py-2.5 bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white font-bold rounded-lg shadow transition cursor-pointer text-xs sm:text-sm">
                                 💰 Withdraw Silver to Inventory
                             </button>
                         </form>
@@ -152,7 +158,7 @@
                                     <div>
                                         <span class="font-bold text-slate-900 block">✨ {{ $item['name'] ?? $item['Name'] ?? 'Item' }}</span>
                                         <span class="text-[10px] text-slate-500">
-                                            Value: {{ number_format((int)($item['value'] ?? $item['BaseValue'] ?? 0)) }} sp
+                                             Value: {{ number_format((int)($item['value'] ?? $item['BaseValue'] ?? 0)) }} sp
                                             @if(isset($item['weight'])) &bull; {{ $item['weight'] }} kg @endif
                                         </span>
                                     </div>
@@ -169,7 +175,9 @@
                                                         <option value="{{ $pm->ID }}">{{ $pm->Name }}</option>
                                                     @endforeach
                                                 </select>
-                                                <button type="submit" class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] rounded transition cursor-pointer">
+                                                <button type="submit"
+                                                        style="background-color: #047857; color: #ffffff;"
+                                                        class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] rounded shadow-xs transition cursor-pointer">
                                                     Give &rarr;
                                                 </button>
                                             </form>
@@ -180,7 +188,9 @@
                                             @csrf
                                             <input type="hidden" name="trade_type" value="give_item_vault">
                                             <input type="hidden" name="item_index" value="{{ $eIdx }}">
-                                            <button type="submit" class="px-2.5 py-1 bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-[11px] rounded transition cursor-pointer" title="Deposit into Campaign Vault">
+                                            <button type="submit"
+                                                    style="background-color: #4338ca; color: #ffffff;"
+                                                    class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] rounded shadow-xs transition cursor-pointer" title="Deposit into Campaign Vault">
                                                 💎 To Vault
                                             </button>
                                         </form>
@@ -219,7 +229,9 @@
                                         @csrf
                                         <input type="hidden" name="trade_type" value="take_item_vault">
                                         <input type="hidden" name="item_index" value="{{ $vIdx }}">
-                                        <button type="submit" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-lg transition cursor-pointer flex items-center gap-1">
+                                        <button type="submit"
+                                                style="background-color: #047857; color: #ffffff;"
+                                                class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg shadow-xs transition cursor-pointer flex items-center gap-1">
                                             <span>📥</span> Take Item
                                         </button>
                                     </form>

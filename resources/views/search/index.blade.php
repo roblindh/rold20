@@ -26,7 +26,7 @@
                     @endforeach
                 </select>
             </div>
-            <button type="submit" class="px-5 py-2 sm:py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-sm shadow transition shrink-0">
+            <button type="submit" class="btn-rol-primary px-5 py-2 sm:py-2.5 rounded-lg text-sm shadow transition shrink-0">
                 Search
             </button>
         </div>

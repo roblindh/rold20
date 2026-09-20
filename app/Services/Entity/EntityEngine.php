@@ -17,6 +17,7 @@ class EntityEngine
     protected static ?array $classConfigsCache = null;
     protected static ?array $skillsCache = null;
     protected static ?array $skillBenefitsCache = null;
+    public static function getSkillBenefitsCache(): ?array { return self::$skillBenefitsCache; }
     protected static ?array $specializationsCache = null;
     protected static ?array $improvementsCache = null;
     protected static ?array $itemsCache = null;
@@ -30,6 +31,7 @@ class EntityEngine
     protected static ?array $socialClassesCache = null;
     protected static ?array $wealthClassesCache = null;
     protected static ?array $actionsCache = null;
+    protected static ?array $naturalAttacksCache = null;
 
     /**
      * Complete mapping of weapon category abbreviations to Skill ID, code, and name.
@@ -343,6 +345,7 @@ class EntityEngine
             self::$socialClassesCache = DB::table('ref_socialclasses')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$wealthClassesCache = DB::table('ref_wealthclasses')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$actionsCache = DB::table('ref_actions')->where('ShowPCGen', '>=', 2)->orderBy('Name')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
+            self::$naturalAttacksCache = DB::table('ref_naturalattacks')->get()->keyBy('Name')->map(fn($r) => (array)$r)->toArray();
 
             if (empty(self::$itemsCache) || empty(self::$creaturesCache)) {
                 $cacheFile = dirname(__DIR__, 3) . '/storage/framework/cache/app_data.php';
@@ -372,7 +375,8 @@ class EntityEngine
                 if (empty(self::$subtypesCache)) self::$subtypesCache = $appData['creaturesubtypes'] ?? [];
                 if (empty(self::$socialClassesCache)) self::$socialClassesCache = $appData['socialclasses'] ?? [];
                 if (empty(self::$wealthClassesCache)) self::$wealthClassesCache = $appData['wealthclasses'] ?? [];
-                if (empty(self::$actionsCache)) self::$actionsCache = $appData['actions'] ?? [];
+                if (empty($actionsCache)) self::$actionsCache = $appData['actions'] ?? [];
+                if (empty(self::$naturalAttacksCache)) self::$naturalAttacksCache = isset($appData['naturalattacks']) ? array_column($appData['naturalattacks'], null, 'Name') : [];
             }
 
             self::ensureRulesInitialized();
@@ -411,6 +415,7 @@ class EntityEngine
         self::$socialClassesCache = $appData['socialclasses'] ?? [];
         self::$wealthClassesCache = $appData['wealthclasses'] ?? [];
         self::$actionsCache = $appData['actions'] ?? [];
+        self::$naturalAttacksCache = isset($appData['naturalattacks']) ? array_column($appData['naturalattacks'], null, 'Name') : [];
     }
 
     /**
@@ -476,7 +481,7 @@ class EntityEngine
         $powerLevel = $totalLevel;
 
         // Size & Body Type
-        $baseSizeId = (int)($race['Size'] ?? 0);
+        $baseSizeId = (int)($race['SizeClass'] ?? $race['Size'] ?? 0);
         $sizeMod = 0;
         foreach ($templateIds as $tId) {
             $t = self::$templatesCache[$tId] ?? null;
@@ -1176,7 +1181,7 @@ class EntityEngine
         $wieldedParryList = [];
 
         // 1. Natural attack / Brawling parry
-        $natSkills = self::evaluateWeaponSkillsForQual('Nat || Brl', $effectiveSkillRanks, $context);
+        $natSkills = self::evaluateWeaponSkillsForQual('Nat || Brl || Gen', $effectiveSkillRanks, $context);
         $natParry = (int)($natSkills['parry_bonus'] ?? 0);
         $primaryParryCandidates[] = $natParry;
         $wieldedParryList[] = [
@@ -1184,7 +1189,7 @@ class EntityEngine
             'parry_bonus' => $natParry,
             'inherent_par' => 0,
             'skill_par' => $natParry,
-            'category' => 'Brl',
+            'category' => 'Nat || Brl || Gen',
         ];
 
         // 2. Equipped Weapons & Shields parry
@@ -1414,10 +1419,12 @@ class EntityEngine
         $weaponsMatrix = [];
         $akimboAttacks = [];
         $naturalAttacks = [];
+        $primaryNaturalAttacks = [];
+        $secondaryNaturalAttacks = [];
         $naturalCombos = [];
         $availableElements = [];
 
-        // 1. Equipped Weapons Matrix (1H vs 2H toggle, weapon size, reach, skill bonuses)
+        // 1. Equipped & Carried Weapons Matrix (1H vs 2H toggle, weapon size, reach, skill bonuses)
         $equippedWeapons = $equipmentManager->getEquippedWeapons($config);
         $sizeAbbrMap = [-4=>'F', -3=>'D', -2=>'T', -1=>'S', 0=>'M', 1=>'L', 2=>'H', 3=>'G', 4=>'C'];
         $charPossessions = $equipmentManager->getItems();
@@ -1476,10 +1483,49 @@ class EntityEngine
             $skillDmgBonus = (int)($wSkills['damage_bonus'] ?? 0);
             $skillAttSpdBonus = (int)($wSkills['att_spd_bonus'] ?? 0);
             $skillCritRngBonus = (int)($wSkills['crit_rng_bonus'] ?? 0);
+            $skillParryBonus = (int)($wSkills['parry_bonus'] ?? 0);
+            $totalWeaponParry = $parMod + $skillParryBonus;
             $maneuvers = $wSkills['maneuvers'] ?? [];
 
             $baseAP = max(5, 8 + $currentSizeId + $weaponSizeVal - $skillAttSpdBonus) - (int)$modifierEngine->getTotal('AttSpd');
             $isProjectile = !empty($ammoRequired) || ((int)($wRef['Subtype'] ?? 0) === 7);
+
+            $isEquippedLoc = (($wItem['location'] ?? EquipmentManager::LOCATION_EQUIPPED) === EquipmentManager::LOCATION_EQUIPPED);
+            $isCarriedLoc = (($wItem['location'] ?? 0) === EquipmentManager::LOCATION_CARRIED);
+
+            $weaponBadges = [];
+            if (!empty($wRef['Bastard']) || str_contains($dmgTraitStr, 'Bastard')) $weaponBadges[] = 'Hand-and-a-Half';
+            if (!empty($wRef['Charge'])) $weaponBadges[] = 'Charge';
+            if (!empty($wRef['SetCharge'])) $weaponBadges[] = 'Set vs Charge';
+            if (!empty($wRef['TripDrop'])) $weaponBadges[] = 'Trip';
+            if (!empty($wRef['DisarmMod'])) $weaponBadges[] = 'Disarm ' . ($wRef['DisarmMod'] >= 0 ? '+' : '') . $wRef['DisarmMod'];
+            if (!empty($wRef['NoDisarm'])) $weaponBadges[] = "Can't Disarm";
+
+            // Evaluate AttMod trait if specified, else default to DexMod for ranged / StrMod for melee
+            $defaultStat = $onlyRanged ? $dexMod : $strMod;
+            $statAtt = $defaultStat;
+            if (!empty($attModTrait)) {
+                $evalContext = array_merge($context, [
+                    'StrMod' => $strMod,
+                    'DexMod' => $dexMod,
+                    'ConMod' => $conMod,
+                    'IntMod' => $intMod,
+                    'WisMod' => $wisMod,
+                    'ChaMod' => $chaMod,
+                    'STRMOD' => $strMod,
+                    'DEXMOD' => $dexMod,
+                    'CONMOD' => $conMod,
+                    'INTMOD' => $intMod,
+                    'WISMOD' => $wisMod,
+                    'CHAMOD' => $chaMod,
+                ]);
+                $evalRes = TraitEvaluator::evaluateExpression($attModTrait, $evalContext);
+                if (is_numeric($evalRes)) {
+                    $statAtt = (int)$evalRes;
+                } elseif (preg_match('/^([+-]?\d+)$/', trim((string)$attModTrait), $numM)) {
+                    $statAtt = $defaultStat + (int)$numM[1];
+                }
+            }
 
             if ($isProjectile) {
                 $compatibleAmmo = [];
@@ -1489,14 +1535,6 @@ class EntityEngine
                 $weaponFlatDmg = 0;
                 if (preg_match('/^([+-]?\d+)$/', trim($dmgTraitStr), $fm)) {
                     $weaponFlatDmg = (int)$fm[1];
-                }
-
-                // Weapon AttMod offset
-                $weaponAttVal = 0;
-                if (preg_match('/DexMod\s*([+-]\s*\d+)?/i', $attModTrait, $am)) {
-                    $weaponAttVal = isset($am[1]) ? (int)str_replace(' ', '', $am[1]) : 0;
-                } elseif (is_numeric($attModTrait)) {
-                    $weaponAttVal = (int)$attModTrait;
                 }
 
                 if (!empty(self::$itemsCache)) {
@@ -1522,7 +1560,7 @@ class EntityEngine
                                 $totalRange = $aRange + $range;
                                 $netCritRng = 20 - ($critRng + $aCritRng + $skillCritRngBonus);
                                 $netCritMul = 2 + $critMul + $aCritMul;
-                                $ammoAttCheck = $dexMod + $sizeCombatMod + $weaponAttVal + $aAttMod + $skillAttBonus + $charAttMod;
+                                $ammoAttCheck = $statAtt + $sizeCombatMod + $aAttMod + $skillAttBonus + $charAttMod;
 
                                 // Check inventory possession
                                 $inInv = false;
@@ -1546,8 +1584,9 @@ class EntityEngine
                                     'range_meters' => $totalRange,
                                     'crit_range' => $netCritRng,
                                     'crit_multiplier' => $netCritMul,
-                                    'crit_display' => ($netCritRng < 20 ? "{$netCritRng}-20" : "20") . " (&times;{$netCritMul})",
+                                    'crit_display' => ($netCritRng < 20 ? "{$netCritRng}-20" : "20") . " (x{$netCritMul})",
                                     'attack_bonus' => $ammoAttCheck,
+                                    'parry_bonus' => $totalWeaponParry,
                                 ];
                                 $compatibleAmmo[] = $ammoObj;
 
@@ -1571,8 +1610,9 @@ class EntityEngine
                         'range_meters' => $range > 0 ? $range : 16,
                         'crit_range' => 20 - $critRng,
                         'crit_multiplier' => 2 + $critMul,
-                        'crit_display' => '20 (&times;2)',
-                        'attack_bonus' => $dexMod + $sizeCombatMod + $skillAttBonus + $charAttMod,
+                        'crit_display' => '20 (x2)',
+                        'attack_bonus' => $statAtt + $sizeCombatMod + $skillAttBonus + $charAttMod,
+                        'parry_bonus' => $totalWeaponParry,
                     ];
                 }
 
@@ -1584,6 +1624,9 @@ class EntityEngine
                     'ap' => $baseAP,
                     'is_ranged' => true,
                     'is_projectile' => true,
+                    'is_equipped' => $isEquippedLoc,
+                    'is_carried' => $isCarriedLoc,
+                    'badges' => $weaponBadges,
                     'ammo_required' => $ammoRequired,
                     'compatible_ammo' => $compatibleAmmo,
                     'default_ammo_id' => (string)$defaultAmmo['id'],
@@ -1591,7 +1634,9 @@ class EntityEngine
                     'reach' => $defaultAmmo['range'],
                     'crit_range' => $defaultAmmo['crit_range'],
                     'crit_multiplier' => $defaultAmmo['crit_multiplier'],
-                    'parry_mod' => $parMod,
+                    'crit_display' => ($defaultAmmo['crit_range'] < 20 ? "{$defaultAmmo['crit_range']}-20" : "20") . " (x{$defaultAmmo['crit_multiplier']})",
+                    'parry_mod' => $totalWeaponParry,
+                    'parry_bonus' => $totalWeaponParry,
                     'maneuvers' => $maneuvers,
                     'maneuvers_str' => !empty($maneuvers) ? implode(', ', array_column($maneuvers, 'description')) : '',
                     'matched_skills' => $wSkills['matched_skills'] ?? [],
@@ -1619,10 +1664,10 @@ class EntityEngine
                     'avg_damage' => $defaultAmmo['avg_damage'],
                     'reach' => $defaultAmmo['range'],
                     'crit' => $defaultAmmo['crit_display'],
+                    'parry_bonus' => $totalWeaponParry,
                 ];
             } else {
                 // Melee / Shields
-                $statAtt = $onlyRanged ? $dexMod : $strMod;
                 $attBonus1H = $statAtt + $sizeCombatMod + $skillAttBonus + $charAttMod;
 
                 $parsed1H = self::parseWeaponDamageFormula(
@@ -1645,6 +1690,9 @@ class EntityEngine
 
                 $reachDisplay = $onlyRanged ? "{$range} m" : ($minReach . '-' . max(0, $maxReach + (int)($sizeRow['Reach'] ?? 1.5) - 1) . ' sq');
                 $netCritRng = $critRng + $skillCritRngBonus;
+                $critRangeVal = 20 - $netCritRng;
+                $critMulVal = 2 + $critMul;
+                $critDisplayStr = ($critRangeVal < 20 ? "{$critRangeVal}-20" : "20") . " (x{$critMulVal})";
 
                 $weaponsMatrix[$wId] = [
                     'id' => $wId,
@@ -1654,11 +1702,16 @@ class EntityEngine
                     'ap' => $baseAP,
                     'is_ranged' => $onlyRanged,
                     'is_projectile' => false,
+                    'is_equipped' => $isEquippedLoc,
+                    'is_carried' => $isCarriedLoc,
+                    'badges' => $weaponBadges,
                     'range' => $range,
                     'reach' => $reachDisplay,
-                    'crit_range' => 20 - $netCritRng,
-                    'crit_multiplier' => 2 + $critMul,
-                    'parry_mod' => $parMod,
+                    'crit_range' => $critRangeVal,
+                    'crit_multiplier' => $critMulVal,
+                    'crit_display' => $critDisplayStr,
+                    'parry_mod' => $totalWeaponParry,
+                    'parry_bonus' => $totalWeaponParry,
                     'maneuvers' => $maneuvers,
                     'maneuvers_str' => !empty($maneuvers) ? implode(', ', array_column($maneuvers, 'description')) : '',
                     'matched_skills' => $wSkills['matched_skills'] ?? [],
@@ -1687,7 +1740,8 @@ class EntityEngine
                     'damage' => $is2H ? $parsed2H['display'] : $parsed1H['display'],
                     'avg_damage' => $is2H ? $parsed2H['avg_damage'] : $parsed1H['avg_damage'],
                     'reach' => $reachDisplay,
-                    'crit' => (20 - $netCritRng) . '-20 (x' . (2 + $critMul) . ')',
+                    'crit' => $critDisplayStr,
+                    'parry_bonus' => $totalWeaponParry,
                 ];
             }
         }
@@ -1695,81 +1749,173 @@ class EntityEngine
         // 2. Custom Multi-Attack & Akimbo Routines are configured by the player in Configure Matrix (none created automatically)
         $akimboAttacks = [];
 
-        // 3. Natural Attacks (from race)
-        if (!empty($race['NaturalAttacks'])) {
-            $rawNat = (string)$race['NaturalAttacks'];
-            if (preg_match('/(Bite|Claw|Gore|Hoof|Hooves|Sting|Tail|Tentacle|Slam|Pincer|Talons|Constrict|Rake|Dmg\s*=|AttMod\s*=|Damage\s*=)/i', $rawNat)) {
-                $natBlocks = explode(';', $rawNat);
-                $natSkills = self::evaluateWeaponSkillsForQual('Nat', $effectiveSkillRanks, $context);
-                $natAttSkill = (int)($natSkills['attack_bonus'] ?? 0);
-                $natDmgSkill = (int)($natSkills['damage_bonus'] ?? 0);
-                $natAttSpdSkill = (int)($natSkills['att_spd_bonus'] ?? 0);
-                $natCritRngSkill = (int)($natSkills['crit_rng_bonus'] ?? 0);
+        // 3. Natural Attacks (from race or creature stats)
+        $primaryNaturalAttacks = [];
+        $secondaryNaturalAttacks = [];
+        $rawNat = (string)($e->NaturalAttacks ?? $race['NaturalAttacks'] ?? '');
 
-                foreach ($natBlocks as $nIdx => $nb) {
-                    $nb = trim($nb);
-                    if (empty($nb)) continue;
-                    if (preg_match('/^\d*\s*(Arm|Leg|Head|Torso|Wing|Tail)\s*\{\s*\}$/i', $nb)) {
-                        continue;
-                    }
-                    if (!preg_match('/(Bite|Claw|Gore|Hoof|Hooves|Sting|Tail|Tentacle|Slam|Pincer|Talons|Constrict|Rake|Dmg\s*=|AttMod\s*=|Damage\s*=)/i', $nb)) {
-                        continue;
-                    }
+        if (!empty($rawNat)) {
+            $natBlocks = explode('}', $rawNat);
+            $natSkills = self::evaluateWeaponSkillsForQual('Nat || Gen', $effectiveSkillRanks, $context);
+            $natAttSkill = (int)($natSkills['attack_bonus'] ?? 0);
+            $natDmgSkill = (int)($natSkills['damage_bonus'] ?? 0);
+            $natAttSpdSkill = (int)($natSkills['att_spd_bonus'] ?? 0);
+            $natCritRngSkill = (int)($natSkills['crit_rng_bonus'] ?? 0);
+            $penRed = (int)$modifierEngine->getTotal('MultiAttackPenRed') + (int)$modifierEngine->getTotal('ImprSec');
 
-                    $attackName = trim(preg_replace('/\{[^}]*\}/', '', $nb));
-                    if (empty($attackName)) {
-                        $attackName = $nb;
-                    }
+            foreach ($natBlocks as $nIdx => $block) {
+                $block = trim($block);
+                if (empty($block)) continue;
+                $bracePos = strpos($block, '{');
+                if ($bracePos === false) continue;
 
-                    $natTraits = TraitEvaluator::parse($nb);
-                    $natDmgStr = '1d4+StrMod B';
-                    $natCritRng = 0;
-                    $natCritMul = 0;
+                $headerPart = trim(substr($block, 0, $bracePos));
+                $traitPart = trim(substr($block, $bracePos + 1));
 
-                    foreach ($natTraits as $tr) {
-                        if ($tr['type'] === 'Weapon' || $tr['type'] === 'Attack') {
-                            $natDmgStr = $tr['params']['Dmg'] ?? $tr['params']['Damage'] ?? $natDmgStr;
-                            $natCritRng = (int)($tr['params']['CritRng'] ?? 0);
-                            $natCritMul = (int)($tr['params']['CritMul'] ?? 0);
+                // Parse quantity and attack name: e.g. "2 Claw", "Bite", "4 Tentacle", "2 Arm", "Head"
+                $qty = 1;
+                $attackName = $headerPart;
+                if (preg_match('/^(\d+)\s+(.+)$/', $headerPart, $qm)) {
+                    $qty = (int)$qm[1];
+                    $attackName = trim($qm[2]);
+                }
+
+                if (empty($attackName)) continue;
+
+                // Check ref_naturalattacks for default traits if any
+                $defNatRow = null;
+                if (self::$naturalAttacksCache !== null) {
+                    foreach (self::$naturalAttacksCache as $cNat) {
+                        if (strcasecmp($cNat['Name'] ?? '', $attackName) === 0) {
+                            $defNatRow = $cNat;
+                            break;
                         }
                     }
-
-                    $parsedNatDmg = self::parseWeaponDamageFormula(
-                        $natDmgStr,
-                        $abilityModsMap,
-                        $natDmgSkill,
-                        (int)$modifierEngine->getTotal('Dmg'),
-                        false
-                    );
-
-                    $natAtt = $strMod + $sizeCombatMod + $natAttSkill + (int)$modifierEngine->getTotal('Att');
-                    $natAP = max(4, 7 + $currentSizeId - $natAttSpdSkill);
-                    $netNatCritRng = 20 - ($natCritRng + $natCritRngSkill);
-                    $netNatCritMul = 2 + $natCritMul;
-
-                    $naturalAttacks[] = [
-                        'name' => $attackName,
-                        'primary' => true,
-                        'ap' => $natAP,
-                        'attack_bonus' => $natAtt,
-                        'damage' => $parsedNatDmg['display'],
-                        'reach' => '0-1 sq',
-                        'crit' => ($netNatCritRng < 20 ? "{$netNatCritRng}-20" : "20") . " (x{$netNatCritMul})",
-                        'maneuvers' => $natSkills['maneuvers'] ?? [],
-                    ];
-
-                    $availableElements[] = [
-                        'id' => 'natural_' . $nIdx,
-                        'type' => 'natural',
-                        'name' => $attackName,
-                        'ap' => $natAP,
-                        'attack_bonus' => $natAtt,
-                        'damage' => $parsedNatDmg['display'],
-                        'avg_damage' => $parsedNatDmg['avg_damage'],
-                        'reach' => '0-1 sq',
-                        'crit' => ($netNatCritRng < 20 ? "{$netNatCritRng}-20" : "20") . " (x{$netNatCritMul})",
-                    ];
                 }
+
+                $defTraits = $defNatRow ? TraitEvaluator::parse($defNatRow['Traits'] ?? '') : [];
+                $customTraits = TraitEvaluator::parse($traitPart);
+
+                // Default parameters from ref_naturalattacks
+                $isPrim = true;
+                $natSizeOffset = -2;
+                $natDmgStr = 'd4+StrMod S HP';
+                $natCritRng = 0;
+                $natCritMul = 0;
+                $natMinReach = 0;
+                $natMaxReach = 1;
+                $natRange = 0;
+                $natOnlyRanged = false;
+                $hasExplicitDmg = false;
+
+                foreach ($defTraits as $dt) {
+                    if ($dt['type'] === 'Weapon' || $dt['type'] === 'Attack') {
+                        if (isset($dt['params']['Prim'])) $isPrim = ($dt['params']['Prim'] !== '0');
+                        if (isset($dt['params']['Sec'])) $isPrim = ($dt['params']['Sec'] === '0');
+                        if (isset($dt['params']['Size'])) $natSizeOffset = (int)$dt['params']['Size'];
+                        if (isset($dt['params']['Dmg'])) $natDmgStr = $dt['params']['Dmg'];
+                        if (isset($dt['params']['Damage'])) $natDmgStr = $dt['params']['Damage'];
+                        if (isset($dt['params']['CritRng'])) $natCritRng = (int)$dt['params']['CritRng'];
+                        if (isset($dt['params']['CritMul'])) $natCritMul = (int)$dt['params']['CritMul'];
+                        if (isset($dt['params']['MinReach'])) $natMinReach = (int)$dt['params']['MinReach'];
+                        if (isset($dt['params']['MaxReach'])) $natMaxReach = (int)$dt['params']['MaxReach'];
+                        if (isset($dt['params']['Range'])) $natRange = (int)$dt['params']['Range'];
+                        if (!empty($dt['params']['OnlyRanged'])) $natOnlyRanged = true;
+                    }
+                }
+
+                // Explicit traits from creature definition override defaults
+                if (preg_match('/\bPrim\b/i', $traitPart) || preg_match('/\bPrim\s*=/i', $traitPart)) $isPrim = true;
+                if (preg_match('/\bSec\b/i', $traitPart) || preg_match('/\bSec\s*=/i', $traitPart)) $isPrim = false;
+
+                foreach ($customTraits as $ct) {
+                    if ($ct['type'] === 'Weapon' || $ct['type'] === 'Attack' || $ct['type'] === 'Sec' || $ct['type'] === 'Prim') {
+                        if (isset($ct['params']['Prim']) || $ct['type'] === 'Prim') $isPrim = true;
+                        if (isset($ct['params']['Sec']) || $ct['type'] === 'Sec') $isPrim = false;
+                        if (isset($ct['params']['Size'])) $natSizeOffset = (int)$ct['params']['Size'];
+                        if (isset($ct['params']['Dmg'])) { $natDmgStr = $ct['params']['Dmg']; $hasExplicitDmg = true; }
+                        if (isset($ct['params']['Damage'])) { $natDmgStr = $ct['params']['Damage']; $hasExplicitDmg = true; }
+                        if (isset($ct['params']['CritRng'])) $natCritRng = (int)$ct['params']['CritRng'];
+                        if (isset($ct['params']['CritMul'])) $natCritMul = (int)$ct['params']['CritMul'];
+                        if (isset($ct['params']['MinReach'])) $natMinReach = (int)$ct['params']['MinReach'];
+                        if (isset($ct['params']['MaxReach'])) $natMaxReach = (int)$ct['params']['MaxReach'];
+                        if (isset($ct['params']['Range'])) $natRange = (int)$ct['params']['Range'];
+                        if (!empty($ct['params']['OnlyRanged'])) $natOnlyRanged = true;
+                    }
+                }
+
+                // If damage is from default ref_naturalattacks, scale damage die by creature size offset ($currentSizeId)
+                if (!$hasExplicitDmg && $currentSizeId != 0) {
+                    $natDmgStr = self::scaleDamageDie($natDmgStr, $currentSizeId);
+                }
+
+                // Secondary attacks use StrMod/2 if not explicitly overridden
+                if (!$isPrim && str_contains($natDmgStr, '+StrMod') && !str_contains($natDmgStr, '+StrMod/2')) {
+                    $natDmgStr = str_replace('+StrMod', '+StrMod/2', $natDmgStr);
+                }
+
+                $parsedNatDmg = self::parseWeaponDamageFormula(
+                    $natDmgStr,
+                    $abilityModsMap,
+                    $natDmgSkill,
+                    (int)$modifierEngine->getTotal('Dmg'),
+                    false
+                );
+
+                $secPen = $isPrim ? 0 : max(0, 4 - $penRed);
+                $natAttBonus = $strMod + $sizeCombatMod + $natAttSkill + (int)$modifierEngine->getTotal('Att') - $secPen;
+                $natAP = max(4, 8 + $currentSizeId + $natSizeOffset - $natAttSpdSkill) - (int)$modifierEngine->getTotal('AttSpd');
+                $netNatCritRng = 20 - ($natCritRng + $natCritRngSkill);
+                $netNatCritMul = 2 + $natCritMul;
+                $reachStrNat = $natOnlyRanged ? "{$natRange} m" : ($natMinReach . '-' . max(0, $natMaxReach + (int)($sizeRow['Reach'] ?? 1.5) - 1) . ' sq');
+
+                $natRelSize = (int)($defNatRow['RelSize'] ?? $natSizeOffset ?? -2);
+                $attackSizeVal = max(-4, min(4, $currentSizeId + $natRelSize));
+                $attackSizeAbbr = $sizeAbbrMap[$attackSizeVal] ?? 'M';
+                $natParryBonus = (int)($natSkills['parry_bonus'] ?? 0);
+
+                $dispName = ($qty > 1 ? "{$qty} " : '') . $attackName;
+
+                $natObj = [
+                    'id' => 'natural_' . $nIdx,
+                    'name' => $dispName,
+                    'raw_name' => $attackName,
+                    'quantity' => $qty,
+                    'primary' => $isPrim,
+                    'is_primary' => $isPrim,
+                    'size_abbr' => $attackSizeAbbr,
+                    'ap' => $natAP,
+                    'reach' => $reachStrNat,
+                    'attack_bonus' => $natAttBonus,
+                    'damage' => $parsedNatDmg['display'],
+                    'avg_damage' => $parsedNatDmg['avg_damage'],
+                    'crit_range' => $netNatCritRng,
+                    'crit_multiplier' => $netNatCritMul,
+                    'crit' => ($netNatCritRng < 20 ? "{$netNatCritRng}-20" : "20") . " (x{$netNatCritMul})",
+                    'parry_bonus' => $natParryBonus,
+                    'maneuvers' => $natSkills['maneuvers'] ?? [],
+                ];
+
+                $naturalAttacks[] = $natObj;
+                if ($isPrim) {
+                    $primaryNaturalAttacks[] = $natObj;
+                } else {
+                    $secondaryNaturalAttacks[] = $natObj;
+                }
+
+                $availableElements[] = [
+                    'id' => 'natural_' . $nIdx,
+                    'type' => 'natural',
+                    'name' => $dispName . ($isPrim ? ' (Prim)' : ' (Sec)'),
+                    'size_abbr' => $attackSizeAbbr,
+                    'ap' => $natAP,
+                    'attack_bonus' => $natAttBonus,
+                    'damage' => $parsedNatDmg['display'],
+                    'avg_damage' => $parsedNatDmg['avg_damage'],
+                    'reach' => $reachStrNat,
+                    'crit' => ($netNatCritRng < 20 ? "{$netNatCritRng}-20" : "20") . " (x{$netNatCritMul})",
+                    'parry_bonus' => $natParryBonus,
+                ];
             }
         }
 
@@ -1782,7 +1928,7 @@ class EntityEngine
 
             foreach ($naturalAttacks as $idx => $na) {
                 $totalNatAP += (int)($na['ap'] ?? 6);
-                $isPrimary = ($idx === 0);
+                $isPrimary = !empty($na['primary']);
                 $att = $isPrimary ? $na['attack_bonus'] : ($na['attack_bonus'] - $secondaryPen);
                 $comboParts[] = [
                     'name' => $na['name'],
@@ -1800,84 +1946,15 @@ class EntityEngine
             ];
         }
 
-        // 4. Default Brawling / Unarmed Strikes & Attack Elements
+        // 4. Default Brawling Maneuvers (Initiate Grapple, Grapple Attack, Bull Rush, Overrun)
         $brlSkills = self::evaluateWeaponSkillsForQual('Brl || Gen', $effectiveSkillRanks, $context);
         $brlAttBonus = (int)($brlSkills['attack_bonus'] ?? 0);
         $brlDmgBonus = (int)($brlSkills['damage_bonus'] ?? 0);
         $brlAttSpdBonus = (int)($brlSkills['att_spd_bonus'] ?? 0);
+        $brlParryBonus = (int)($brlSkills['parry_bonus'] ?? 0);
 
-        $brawlingAttack = [
-            'name' => 'Unarmed Strike / Punch',
-            'ap' => max(4, 6 + $currentSizeId - $brlAttSpdBonus),
-            'attack_bonus' => $strMod + $sizeCombatMod + $brlAttBonus + (int)$modifierEngine->getTotal('Att'),
-            'damage' => '1d3' . (($strMod + $brlDmgBonus) >= 0 ? '+' . ($strMod + $brlDmgBonus) : (string)($strMod + $brlDmgBonus)),
-            'reach' => '0-1 sq',
-            'crit' => '20/x2',
-            'maneuvers' => $brlSkills['maneuvers'] ?? [],
-        ];
-
-        // Add Unarmed Strikes to available elements for Combo Builder
-        $availableElements[] = [
-            'id' => 'unarmed_punch_r',
-            'type' => 'unarmed',
-            'name' => 'Right Punch / Fist',
-            'ap' => max(4, 6 + $currentSizeId - $brlAttSpdBonus),
-            'attack_bonus' => $brawlingAttack['attack_bonus'],
-            'damage' => $brawlingAttack['damage'],
-            'avg_damage' => self::calculateAverageDamage('1d3', $strMod + $brlDmgBonus + (int)$modifierEngine->getTotal('Dmg')),
-            'reach' => '0-1 sq',
-            'crit' => '20/x2',
-        ];
-        $availableElements[] = [
-            'id' => 'unarmed_punch_l',
-            'type' => 'unarmed',
-            'name' => 'Left Punch / Fist',
-            'ap' => max(4, 6 + $currentSizeId - $brlAttSpdBonus),
-            'attack_bonus' => $brawlingAttack['attack_bonus'],
-            'damage' => $brawlingAttack['damage'],
-            'avg_damage' => self::calculateAverageDamage('1d3', $strMod + $brlDmgBonus + (int)$modifierEngine->getTotal('Dmg')),
-            'reach' => '0-1 sq',
-            'crit' => '20/x2',
-        ];
-        $kickDmgBonus = $strMod + 1 + $brlDmgBonus + (int)$modifierEngine->getTotal('Dmg');
-        $availableElements[] = [
-            'id' => 'unarmed_kick_r',
-            'type' => 'unarmed',
-            'name' => 'Right Kick',
-            'ap' => max(4, 7 + $currentSizeId - $brlAttSpdBonus),
-            'attack_bonus' => $brawlingAttack['attack_bonus'],
-            'damage' => '1d4' . ($kickDmgBonus >= 0 ? '+' . $kickDmgBonus : (string)$kickDmgBonus),
-            'avg_damage' => self::calculateAverageDamage('1d4', $kickDmgBonus),
-            'reach' => '0-1 sq',
-            'crit' => '20/x2',
-        ];
-        $availableElements[] = [
-            'id' => 'unarmed_kick_l',
-            'type' => 'unarmed',
-            'name' => 'Left Kick',
-            'ap' => max(4, 7 + $currentSizeId - $brlAttSpdBonus),
-            'attack_bonus' => $brawlingAttack['attack_bonus'],
-            'damage' => '1d4' . ($kickDmgBonus >= 0 ? '+' . $kickDmgBonus : (string)$kickDmgBonus),
-            'avg_damage' => self::calculateAverageDamage('1d4', $kickDmgBonus),
-            'reach' => '0-1 sq',
-            'crit' => '20/x2',
-        ];
-        $headbuttDmgBonus = $strMod + $brlDmgBonus + (int)$modifierEngine->getTotal('Dmg');
-        $availableElements[] = [
-            'id' => 'unarmed_headbutt',
-            'type' => 'unarmed',
-            'name' => 'Headbutt',
-            'ap' => max(4, 6 + $currentSizeId - $brlAttSpdBonus),
-            'attack_bonus' => $brawlingAttack['attack_bonus'],
-            'damage' => '1d3' . ($headbuttDmgBonus >= 0 ? '+' . $headbuttDmgBonus : (string)$headbuttDmgBonus),
-            'avg_damage' => self::calculateAverageDamage('1d3', $headbuttDmgBonus),
-            'reach' => '0-1 sq',
-            'crit' => '20/x2',
-        ];
-
-        // 5. Grapple Maneuver (Grp)
         $sizeGrappleMod = (int)($sizeRow['GrappleMod'] ?? 0);
-        $grappleAP = max(4, 8 + $currentSizeId - $brlAttSpdBonus) - (int)$modifierEngine->getTotal('AttSpd');
+        $maneuverAP = max(4, 8 + $currentSizeId - $brlAttSpdBonus) - (int)$modifierEngine->getTotal('AttSpd');
         $grappleReach = '0-' . max(1, (int)round((float)($sizeRow['Reach'] ?? 1.5))) . ' sq';
         $grappleDexAtt = $dexMod + $sizeCombatMod + $brlAttBonus + (int)$modifierEngine->getTotal('Att');
         $grappleStrAtt = $strMod + $sizeGrappleMod + $brlAttBonus + (int)$modifierEngine->getTotal('Att');
@@ -1886,29 +1963,186 @@ class EntityEngine
 
         $grappleAttack = [
             'name' => 'Grapple',
-            'category' => 'Brawling / Maneuver',
-            'ap' => $grappleAP,
+            'category' => 'Maneuver',
+            'ap' => $maneuverAP,
             'reach' => $grappleReach,
             'dex_attack' => $grappleDexAtt,
             'str_attack' => $grappleStrAtt,
-            'attack_bonus' => $grappleDexAtt,
             'damage' => $grappleDmgDisplay,
             'avg_damage' => round(2.0 + $grappleDmgBonus, 1),
-            'crit' => '20/x2',
-            'size_grapple_mod' => $sizeGrappleMod,
+            'crit' => '20 (x2)',
+            'parry_bonus' => $brlParryBonus,
+            'description' => 'Dex to Pin (Reflex), Str to Hold (Fort)',
         ];
 
-        // 6. Caster Spell Attacks Matrix
+        $brawlingActions = [
+            'initiate_grapple' => [
+                'id' => 'initiate_grapple',
+                'name' => 'Initiate Grapple',
+                'category' => 'Brawling / Maneuver',
+                'size_class' => $sizeRow['Abbreviation'] ?? 'M',
+                'ap' => $maneuverAP,
+                'reach' => $grappleReach,
+                'attack_bonus' => $grappleDexAtt,
+                'damage' => '–',
+                'avg_damage' => '–',
+                'crit' => '–',
+                'parry_bonus' => $brlParryBonus,
+                'description' => 'Dex check vs target Reflex/DeCa to establish hold',
+            ],
+            'grapple_attack' => [
+                'id' => 'grapple_attack',
+                'name' => 'Grapple Attack',
+                'category' => 'Brawling / Maneuver',
+                'size_class' => $sizeRow['Abbreviation'] ?? 'M',
+                'ap' => $maneuverAP,
+                'reach' => '0-1 sq',
+                'attack_bonus' => $grappleStrAtt,
+                'damage' => $grappleDmgDisplay,
+                'avg_damage' => round(2.0 + $grappleDmgBonus, 1),
+                'crit' => '20 (x2)',
+                'parry_bonus' => $brlParryBonus,
+                'description' => 'Str check vs Fort/DeCp to inflict grapple damage',
+            ],
+            'bull_rush' => [
+                'id' => 'bull_rush',
+                'name' => 'Bull Rush',
+                'category' => 'Brawling / Maneuver',
+                'size_class' => $sizeRow['Abbreviation'] ?? 'M',
+                'ap' => $maneuverAP,
+                'reach' => '0-1 sq',
+                'attack_bonus' => $strMod + $sizeCombatMod + $brlAttBonus + (int)$modifierEngine->getTotal('Att'),
+                'damage' => '–',
+                'avg_damage' => '–',
+                'crit' => '–',
+                'parry_bonus' => $brlParryBonus,
+                'description' => 'Opposed Str check to push target back 1+ squares',
+            ],
+            'overrun' => [
+                'id' => 'overrun',
+                'name' => 'Overrun',
+                'category' => 'Brawling / Maneuver',
+                'size_class' => $sizeRow['Abbreviation'] ?? 'M',
+                'ap' => $maneuverAP,
+                'reach' => '0-1 sq',
+                'attack_bonus' => $strMod + $sizeCombatMod + $brlAttBonus + (int)$modifierEngine->getTotal('Att'),
+                'damage' => '–',
+                'avg_damage' => '–',
+                'crit' => '–',
+                'parry_bonus' => $brlParryBonus,
+                'description' => 'Opposed Str check vs Str/Dex to knock target prone',
+            ],
+        ];
+
+        // Add Unarmed Strikes & Maneuvers to available elements for Combo Builder
+        $unarmedStrikeAtt = $strMod + $sizeCombatMod + $brlAttBonus + (int)$modifierEngine->getTotal('Att');
+        $unarmedStrikeDmgBonus = $strMod + $brlDmgBonus + (int)$modifierEngine->getTotal('Dmg');
+        $unarmedStrikeDmg = '1d3' . ($unarmedStrikeDmgBonus >= 0 ? '+' . $unarmedStrikeDmgBonus : (string)$unarmedStrikeDmgBonus);
+        $unarmedStrikeAvg = self::calculateAverageDamage('1d3', $unarmedStrikeDmgBonus);
+
+        $availableElements[] = [
+            'id' => 'unarmed_punch_r',
+            'type' => 'unarmed',
+            'name' => 'Right Punch / Fist',
+            'ap' => max(4, 6 + $currentSizeId - $brlAttSpdBonus),
+            'attack_bonus' => $unarmedStrikeAtt,
+            'damage' => $unarmedStrikeDmg,
+            'avg_damage' => $unarmedStrikeAvg,
+            'reach' => '0-1 sq',
+            'crit' => '20 (x2)',
+            'parry_bonus' => $brlParryBonus,
+        ];
+        $availableElements[] = [
+            'id' => 'unarmed_punch_l',
+            'type' => 'unarmed',
+            'name' => 'Left Punch / Fist',
+            'ap' => max(4, 6 + $currentSizeId - $brlAttSpdBonus),
+            'attack_bonus' => $unarmedStrikeAtt,
+            'damage' => $unarmedStrikeDmg,
+            'avg_damage' => $unarmedStrikeAvg,
+            'reach' => '0-1 sq',
+            'crit' => '20 (x2)',
+            'parry_bonus' => $brlParryBonus,
+        ];
+        $kickDmgBonus = $strMod + 1 + $brlDmgBonus + (int)$modifierEngine->getTotal('Dmg');
+        $availableElements[] = [
+            'id' => 'unarmed_kick_r',
+            'type' => 'unarmed',
+            'name' => 'Right Kick',
+            'ap' => max(4, 7 + $currentSizeId - $brlAttSpdBonus),
+            'attack_bonus' => $unarmedStrikeAtt,
+            'damage' => '1d4' . ($kickDmgBonus >= 0 ? '+' . $kickDmgBonus : (string)$kickDmgBonus),
+            'avg_damage' => self::calculateAverageDamage('1d4', $kickDmgBonus),
+            'reach' => '0-1 sq',
+            'crit' => '20 (x2)',
+            'parry_bonus' => $brlParryBonus,
+        ];
+        $availableElements[] = [
+            'id' => 'unarmed_kick_l',
+            'type' => 'unarmed',
+            'name' => 'Left Kick',
+            'ap' => max(4, 7 + $currentSizeId - $brlAttSpdBonus),
+            'attack_bonus' => $unarmedStrikeAtt,
+            'damage' => '1d4' . ($kickDmgBonus >= 0 ? '+' . $kickDmgBonus : (string)$kickDmgBonus),
+            'avg_damage' => self::calculateAverageDamage('1d4', $kickDmgBonus),
+            'reach' => '0-1 sq',
+            'crit' => '20 (x2)',
+            'parry_bonus' => $brlParryBonus,
+        ];
+        $headbuttDmgBonus = $strMod + $brlDmgBonus + (int)$modifierEngine->getTotal('Dmg');
+        $availableElements[] = [
+            'id' => 'unarmed_headbutt',
+            'type' => 'unarmed',
+            'name' => 'Headbutt',
+            'ap' => max(4, 6 + $currentSizeId - $brlAttSpdBonus),
+            'attack_bonus' => $unarmedStrikeAtt,
+            'damage' => '1d3' . ($headbuttDmgBonus >= 0 ? '+' . $headbuttDmgBonus : (string)$headbuttDmgBonus),
+            'avg_damage' => self::calculateAverageDamage('1d3', $headbuttDmgBonus),
+            'reach' => '0-1 sq',
+            'crit' => '20 (x2)',
+            'parry_bonus' => $brlParryBonus,
+        ];
+
+        // 5. Caster Spell Attacks Matrix & Equipped Focus/Implement Combat Bonuses
         $raySkills = self::evaluateWeaponSkillsForQual('Ray || Gen', $effectiveSkillRanks, $context);
         $areSkills = self::evaluateWeaponSkillsForQual('Are || Gen', $effectiveSkillRanks, $context);
         $bamSkills = self::evaluateWeaponSkillsForQual('BaM || Gen', $effectiveSkillRanks, $context);
 
-        $casterAttackRay = $dexMod + $sizeCombatMod + (int)($raySkills['attack_bonus'] ?? 0) + (int)$modifierEngine->getTotal('AttRay');
-        $casterAttackArea = $dexMod + $sizeCombatMod + (int)($areSkills['attack_bonus'] ?? 0) + (int)$modifierEngine->getTotal('AttArea');
-        $casterAttackBody = $dexMod + $sizeCombatMod + (int)($bamSkills['attack_bonus'] ?? 0) + (int)$modifierEngine->getTotal('AttBody');
-        $casterAttackMind = $intMod + (int)($bamSkills['attack_bonus'] ?? 0) + (int)$modifierEngine->getTotal('AttMind');
+        $focusAttMod = 0;
+        $focusCritRng = 0;
+        $focusCritMul = 0;
+        $focusName = '';
+
+        foreach ($charPossessions as $pos) {
+            $loc = $pos['locations'][$config ?? 0] ?? $pos['location'] ?? EquipmentManager::LOCATION_STOWED;
+            if ($loc === EquipmentManager::LOCATION_EQUIPPED) {
+                $traitsStr = (string)($pos['ref_data']['Traits'] ?? $pos['custom_traits'] ?? $pos['traits'] ?? '');
+                $pTraits = TraitEvaluator::parse($traitsStr);
+                foreach ($pTraits as $pt) {
+                    if ($pt['type'] === 'Implement' || $pt['type'] === 'Focus') {
+                        $focusAttMod += (int)($pt['params']['AttMod'] ?? 0);
+                        $focusCritRng += (int)($pt['params']['CritRng'] ?? 0);
+                        $focusCritMul += (int)($pt['params']['CritMul'] ?? 0);
+                        if (empty($focusName)) {
+                            $focusName = $pos['name'] ?? 'Focus';
+                        }
+                    }
+                }
+            }
+        }
+
+        $casterAttackRay = $dexMod + $sizeCombatMod + (int)($raySkills['attack_bonus'] ?? 0) + $focusAttMod + (int)$modifierEngine->getTotal('AttRay');
+        $casterAttackArea = $dexMod + $sizeCombatMod + (int)($areSkills['attack_bonus'] ?? 0) + $focusAttMod + (int)$modifierEngine->getTotal('AttArea');
+        $casterAttackBody = $dexMod + $sizeCombatMod + (int)($bamSkills['attack_bonus'] ?? 0) + $focusAttMod + (int)$modifierEngine->getTotal('AttBody');
+        $casterAttackMind = $intMod + (int)($bamSkills['attack_bonus'] ?? 0) + $focusAttMod + (int)$modifierEngine->getTotal('AttMind');
+
+        $rayCritRng = 20 - ((int)($raySkills['crit_rng_bonus'] ?? 0) + $focusCritRng);
+        $rayCritMul = 2 + $focusCritMul;
+        $rayCritStr = ($rayCritRng < 20 ? "{$rayCritRng}-20" : "20") . " (x{$rayCritMul})";
 
         $spellAttacks = [
+            'focus_name' => $focusName,
+            'focus_att_mod' => $focusAttMod,
             'ray' => [
                 'name' => 'Ray Attack',
                 'size_class' => $sizeRow['Abbreviation'] ?? 'M',
@@ -1916,7 +2150,7 @@ class EntityEngine
                 'range' => 'Var',
                 'attack_bonus' => $casterAttackRay,
                 'damage' => 'Var',
-                'crit' => 'Var',
+                'crit' => $rayCritStr,
             ],
             'area' => [
                 'name' => 'Area Attack',
@@ -2026,6 +2260,8 @@ class EntityEngine
                 'challenge_level' => $challengeLevel,
                 'power_level' => $powerLevel,
                 'size_id' => $currentSizeId,
+                'size_combat_mod' => (int)($sizeRow['CombatMod'] ?? 0),
+                'size_grapple_mod' => (int)($sizeRow['GrappleMod'] ?? 0),
                 'size_name' => $sizeRow['Name'] ?? 'Medium',
                 'size_abbr' => $sizeRow['Abbreviation'] ?? 'M',
                 'body_type_id' => $bodyTypeId,
@@ -2110,9 +2346,11 @@ class EntityEngine
                 'weapons' => $weaponsMatrix,
                 'akimbo' => $akimboAttacks,
                 'natural' => $naturalAttacks,
+                'primary_natural' => $primaryNaturalAttacks,
+                'secondary_natural' => $secondaryNaturalAttacks,
                 'natural_combos' => $naturalCombos,
-                'brawling' => $brawlingAttack,
                 'grapple' => $grappleAttack,
+                'brawling_actions' => $brawlingActions,
                 'spells' => $spellAttacks,
                 'available_elements' => $availableElements,
             ],
@@ -2257,7 +2495,7 @@ class EntityEngine
                     if (in_array($k, ['Value', 'Range', 'PPRed'])) {
                         $evalVal = TraitEvaluator::evaluateExpression((string)$v, $colContext);
                         if (is_numeric($evalVal)) {
-                            $intVal = (floor((float)$evalVal) == (float)$evalVal) ? (int)$evalVal : round((float)$evalVal, 1);
+                            $intVal = (int)floor((float)$evalVal);
                             $origStr = (string)$v;
                             if (str_starts_with($origStr, '+') || (in_array($type, ['Defense', 'DefMod', 'HeaMod', 'SpdSpcl']) && $intVal > 0 && !in_array($qualLower, ['sleepres', 'paralysisres', 'poisonres', 'diseaseres', 'darkvision', 'lowlightvision', 'lowlight']))) {
                                 $evalParams[$k] = '+' . $intVal;
@@ -2292,10 +2530,12 @@ class EntityEngine
                     $desc = self::formatBriefTraitFallback($type, $params, $evalParams);
                 }
 
-                // Clean up trailing "/ T: Wearer", "(Nil)", and excess whitespace from description
+                // Clean up trailing "/ T: Wearer", "(Nil)", format requirements into parentheses, and excess whitespace from description
                 if (!empty($desc)) {
                     $desc = preg_replace('/\s*\(\s*nil\s*\)/i', '', $desc);
                     $desc = preg_replace('/\s*\/\s*T:\s*wearer\b/i', '', $desc);
+                    $desc = preg_replace('/\s*\/\s*Req:\s*([^,\/]+)/i', ' (Req: $1)', $desc);
+                    $desc = preg_replace('/\s*\/\s*Req\b\s*([^,\/]+)/i', ' (Req: $1)', $desc);
                     $desc = preg_replace('/\s+/', ' ', $desc);
                     $desc = trim($desc);
                 }
@@ -2819,6 +3059,92 @@ class EntityEngine
     }
 
     /**
+     * Scale a damage dice expression up or down by size steps (e.g. d4 -> d6 for Large, d4 -> d3 for Small).
+     */
+    public static function scaleDamageDie(string $dmgFormula, int $sizeSteps): string
+    {
+        if ($sizeSteps === 0 || empty($dmgFormula)) {
+            return $dmgFormula;
+        }
+
+        // Match leading die expression: e.g. "d4", "2d6", "1d8", "d3"
+        if (preg_match('/^(\d*d\d+)(.*)$/i', trim($dmgFormula), $m)) {
+            $diePart = $m[1];
+            $rest = $m[2];
+            $scaledDie = self::modifyDieSteps($diePart, $sizeSteps);
+            return $scaledDie . $rest;
+        }
+
+        return $dmgFormula;
+    }
+
+    /**
+     * Modify die steps following standard D&D/RoL rules.
+     */
+    public static function modifyDieSteps(string $dieStr, int $steps): string
+    {
+        if (function_exists('ModifyDie')) {
+            return \ModifyDie($dieStr, $steps);
+        }
+
+        $idx = strpos($dieStr, 'd');
+        $n = $idx <= 0 ? 1 : (int) substr($dieStr, 0, $idx);
+        $d = (int) substr($dieStr, $idx + 1);
+
+        while ($steps > 0) {
+            if ($d == 6 && $n >= 4)
+                $n++;
+            else if ($d >= 20) {
+                $n *= 4;
+                $d = 6;
+            } else if ($d >= 12) {
+                $n *= 2;
+                $d = 8;
+            } else if ($d >= 10) {
+                $n *= 2;
+                $d = 6;
+            } else if ($d >= 8)
+                $d = 10;
+            else if ($d >= 6)
+                $d = 8;
+            else if ($d >= 4)
+                $d = 6;
+            else if ($d >= 3)
+                $d = 4;
+            else if ($d >= 2)
+                $d = 3;
+            else
+                $d = 2;
+            $steps--;
+        }
+        while ($steps < 0) {
+            if ($d == 6 && $n > 4)
+                $n--;
+            else if ($d >= 20) {
+                $n *= 2;
+                $d = 8;
+            } else if ($d >= 12) {
+                $d = 10;
+            } else if ($d >= 10) {
+                $d = 8;
+            } else if ($d >= 8)
+                $d = 6;
+            else if ($d >= 6)
+                $d = 4;
+            else if ($d >= 4)
+                $d = 3;
+            else if ($d >= 3)
+                $d = 2;
+            else
+                $d = 1;
+            $steps++;
+        }
+
+        return ($n > 1 ? $n : "") . (($n > 1 || $d > 1) ? "d" : "") . $d;
+    }
+
+
+    /**
      * XP required for a given target Challenge Level.
      */
     public static function getXPRequiredForLevel(int $level): int
@@ -2853,7 +3179,7 @@ class EntityEngine
     /**
      * Get Common Actions list with parsed checks and action times.
      */
-    public static function getCommonActions(mixed $first = [], mixed $second = null, mixed $third = null, mixed $fourth = null): array
+    public static function getCommonActions(mixed $first = [], mixed $second = null, mixed $third = null, mixed $fourth = null, mixed $fifth = null): array
     {
         self::loadReferenceTables();
 
@@ -2864,7 +3190,9 @@ class EntityEngine
 
             $abilityMods = $calculatedState['ability_modifiers'] ?? [];
             $attSpdMod = 0;
-            $sizeCombatMod = (int)($calculatedState['heritage']['size_combat_mod'] ?? $calculatedState['heritage']['size_id'] ?? 0);
+            $sizeId = (int)($calculatedState['heritage']['size_id'] ?? 0);
+            $sizeCombatMod = (int)($calculatedState['heritage']['size_combat_mod'] ?? self::$sizesCache[$sizeId]['CombatMod'] ?? $sizeId);
+            $sizeGrappleMod = (int)($calculatedState['heritage']['size_grapple_mod'] ?? self::$sizesCache[$sizeId]['GrappleMod'] ?? 0);
 
             $trainedSkills = [];
             $rawSkills = is_object($character) ? ($character->Skills ?? []) : ($character['Skills'] ?? []);
@@ -2909,6 +3237,7 @@ class EntityEngine
             $trainedSkills = is_array($second) ? $second : [];
             $attSpdMod = (int)$third;
             $sizeCombatMod = (int)$fourth;
+            $sizeGrappleMod = ($fifth !== null) ? (int)$fifth : (isset(self::$sizesCache[$sizeCombatMod]['GrappleMod']) ? (int)self::$sizesCache[$sizeCombatMod]['GrappleMod'] : ($sizeCombatMod * 4));
             $actions = self::$actionsCache ?? [];
         }
 
@@ -2946,7 +3275,7 @@ class EntityEngine
 
             if ($unlocked) {
                 $actArr['ActionTimeParsed'] = self::parseActionTime($actArr['ActionTime'] ?? '', $attSpdMod);
-                $actArr['ActionCheckParsed'] = self::parseActionCheck($actArr['ActionCheck'] ?? '', $abilityMods, $trainedSkills, $sizeCombatMod);
+                $actArr['ActionCheckParsed'] = self::parseActionCheck($actArr['ActionCheck'] ?? '', $abilityMods, $trainedSkills, $sizeCombatMod, $sizeGrappleMod);
                 $results[] = $actArr;
             }
         }
@@ -2973,7 +3302,7 @@ class EntityEngine
     /**
      * Parse action check string e.g. "d20! + Athletics skill + Str mod + PAM + EP"
      */
-    public static function parseActionCheck(string $checkStr, array|object $abilityMods = [], array $trainedSkills = [], int $sizeCombatMod = 0): string
+    public static function parseActionCheck(string $checkStr, array|object $abilityMods = [], array $trainedSkills = [], int $sizeCombatMod = 0, int $sizeGrappleMod = 0): string
     {
         $mods = [];
         foreach ((array)$abilityMods as $k => $v) {
@@ -2994,6 +3323,14 @@ class EntityEngine
         // 1. Replace size-based Att/DeC mod
         $sizeCombatModStr = ($sizeCombatMod < 0) ? "({$sizeCombatMod})" : (string)$sizeCombatMod;
         $str = preg_replace('/size-based\s+Att\/DeC\s+mod/i', $sizeCombatModStr, $str);
+
+        // 1b. Replace grapple size mod e.g. "+ grapple size mod" or "grapple size mod"
+        $str = preg_replace_callback('/\+\s*grapple\s+size\s+mod\b/i', function() use ($sizeGrappleMod) {
+            return ($sizeGrappleMod < 0) ? ('- ' . abs($sizeGrappleMod)) : ('+ ' . $sizeGrappleMod);
+        }, $str);
+        $str = preg_replace_callback('/(?<!\+\s)\bgrapple\s+size\s+mod\b/i', function() use ($sizeGrappleMod) {
+            return ($sizeGrappleMod < 0) ? "({$sizeGrappleMod})" : (string)$sizeGrappleMod;
+        }, $str);
 
         // 2. Replace skill mentions (sorted by length descending)
         uksort($skills, fn($a, $b) => strlen((string)$b) <=> strlen((string)$a));
@@ -3254,54 +3591,62 @@ class EntityEngine
             return (is_numeric($s) && (float)$s > 0) ? "+{$s}" : $s;
         };
 
+        $reqStr = !empty($params['Req']) ? " (Req: {$params['Req']})" : '';
+
+        $formatWithReq = function(string $str) use ($reqStr): string {
+            return trim($str) . $reqStr;
+        };
+
         $qLower = strtolower((string)$qual);
-        if ($qLower === 'ptblank' || $qLower === 'pointblankshot') return 'Point Blank Shot';
-        if ($qLower === 'preciseshot') return 'Precise Shot' . ($val ? " ({$val})" : '');
-        if ($qLower === 'rapidshot') return 'Rapid Shot';
-        if ($qLower === 'manyshot') return 'Manyshot' . ($val ? " ({$val})" : '');
-        if ($qLower === 'rapidreload') return 'Rapid Reload';
-        if ($qLower === 'quickdraw') return 'Quick Draw';
-        if ($qLower === 'cleave') return 'Cleave' . ($val && $val !== 'lesser' ? " ({$val})" : '');
-        if ($qLower === 'greatcleave') return 'Great Cleave';
-        if ($qLower === 'imprsunder') return 'Improved Sunder';
-        if ($qLower === 'imprtrip') return 'Improved Trip';
-        if ($qLower === 'imprdisarm') return 'Improved Disarm';
-        if ($qLower === 'imprgrapple') return 'Improved Grapple';
-        if ($qLower === 'imprrush') return 'Improved Bull Rush';
-        if ($qLower === 'improverrun') return 'Improved Overrun';
-        if ($qLower === 'greatrush') return 'Greater Bull Rush';
-        if ($qLower === 'greatoverrun') return 'Greater Overrun';
-        if ($qLower === 'weaponfamiliarity') return 'Weapon Familiarity';
-        if ($qLower === 'bleedingcrit') return 'Bleeding Critical' . ($val ? " ({$val})" : '');
-        if ($qLower === 'fatiguecrit') return 'Fatigue Critical' . ($val ? " ({$val})" : '');
-        if ($qLower === 'pushingcrit') return 'Pushing Critical';
-        if ($qLower === 'precisereach') return 'Precise Reach';
-        if ($qLower === 'shaping') return 'Spell Shaping';
-        if ($qLower === 'armorsleep') return 'Sleep in Armor';
-        if ($qLower === 'donarmor') return "Don Armor ({$val}%)";
-        if ($qLower === 'carrcapmod') return "Carrying Capacity " . $formatSigned($val) . "%";
-        if ($qLower === 'trance') return "Trance ({$val}h)";
-        if ($qLower === 'vitalattack') return "Vital Attack " . $formatSigned($val);
-        if ($qLower === 'rangedvitalattack') return "Ranged Vital Attack " . $formatSigned($val);
-        if ($qLower === 'sneakattack') return "Sneak Attack " . $formatSigned($val);
-        if ($qLower === 'powerattack') return "Power Attack " . $formatSigned($val);
-        if ($qLower === 'lowlightvision' || $qLower === 'lowlight') return "Low-light vision" . ($val && $val > 1 ? " (x{$val})" : '');
-        if ($qLower === 'darkvision') return "Darkvision " . ($val ? "{$val} sq" : '');
-        if ($qLower === 'darksight') return "Darksight " . ($val ? "{$val} sq" : '');
-        if ($qLower === 'blindsense') return "Blindsense " . ($val ? "{$val}" : '');
-        if ($qLower === 'tremorsense') return "Tremorsense " . ($val ? "{$val} sq" : '');
-        if ($qLower === 'scent') return "Scent";
-        if ($qLower === 'truesight') return "Truesight";
-        if ($qLower === 'lightsensitive' || $qLower === 'lightsensitivity') return "Light Sensitivity";
-        if ($qLower === 'immunity' && $typeParam) return ucfirst((string)$typeParam) . " imm";
+        if ($qLower === 'imprrange') return $formatWithReq('Improved range');
+        if ($qLower === 'ptblank' || $qLower === 'pointblankshot') return $formatWithReq('Point Blank Shot');
+        if ($qLower === 'preciseshot') return $formatWithReq('Precise Shot' . ($val ? " ({$val})" : ''));
+        if ($qLower === 'rapidshot') return $formatWithReq('Rapid Shot');
+        if ($qLower === 'manyshot') return $formatWithReq('Manyshot' . ($val ? " ({$val})" : ''));
+        if ($qLower === 'rapidreload') return $formatWithReq('Rapid Reload');
+        if ($qLower === 'quickdraw') return $formatWithReq('Quick Draw');
+        if ($qLower === 'cleave') return $formatWithReq('Cleave' . ($val && $val !== 'lesser' ? " ({$val})" : ''));
+        if ($qLower === 'greatcleave') return $formatWithReq('Great Cleave');
+        if ($qLower === 'imprsunder') return $formatWithReq('Improved Sunder');
+        if ($qLower === 'imprtrip') return $formatWithReq('Improved Trip');
+        if ($qLower === 'imprdisarm') return $formatWithReq('Improved Disarm');
+        if ($qLower === 'imprgrapple') return $formatWithReq('Improved Grapple');
+        if ($qLower === 'imprrush') return $formatWithReq('Improved Bull Rush');
+        if ($qLower === 'improverrun') return $formatWithReq('Improved Overrun');
+        if ($qLower === 'greatrush') return $formatWithReq('Greater Bull Rush');
+        if ($qLower === 'greatoverrun') return $formatWithReq('Greater Overrun');
+        if ($qLower === 'weaponfamiliarity') return $formatWithReq('Weapon Familiarity');
+        if ($qLower === 'bleedingcrit') return $formatWithReq('Bleeding Critical' . ($val ? " ({$val})" : ''));
+        if ($qLower === 'fatiguecrit') return $formatWithReq('Fatigue Critical' . ($val ? " ({$val})" : ''));
+        if ($qLower === 'pushingcrit') return $formatWithReq('Pushing Critical');
+        if ($qLower === 'precisereach') return $formatWithReq('Precise Reach');
+        if ($qLower === 'shaping') return $formatWithReq('Spell Shaping');
+        if ($qLower === 'armorsleep') return $formatWithReq('Sleep in Armor');
+        if ($qLower === 'donarmor') return $formatWithReq("Don Armor ({$val}%)");
+        if ($qLower === 'carrcapmod') return $formatWithReq("Carrying Capacity " . $formatSigned($val) . "%");
+        if ($qLower === 'trance') return $formatWithReq("Trance ({$val}h)");
+        if ($qLower === 'vitalattack') return $formatWithReq("Vital Attack " . $formatSigned($val));
+        if ($qLower === 'rangedvitalattack') return $formatWithReq("Ranged Vital Attack " . $formatSigned($val));
+        if ($qLower === 'sneakattack') return $formatWithReq("Sneak Attack " . $formatSigned($val));
+        if ($qLower === 'powerattack') return $formatWithReq("Power Attack " . $formatSigned($val));
+        if ($qLower === 'lowlightvision' || $qLower === 'lowlight') return $formatWithReq("Low-light vision" . ($val && $val > 1 ? " (x{$val})" : ''));
+        if ($qLower === 'darkvision') return $formatWithReq("Darkvision " . ($val ? "{$val} sq" : ''));
+        if ($qLower === 'darksight') return $formatWithReq("Darksight " . ($val ? "{$val} sq" : ''));
+        if ($qLower === 'blindsense') return $formatWithReq("Blindsense " . ($val ? "{$val}" : ''));
+        if ($qLower === 'tremorsense') return $formatWithReq("Tremorsense " . ($val ? "{$val} sq" : ''));
+        if ($qLower === 'scent') return $formatWithReq("Scent");
+        if ($qLower === 'truesight') return $formatWithReq("Truesight");
+        if ($qLower === 'lightsensitive' || $qLower === 'lightsensitivity') return $formatWithReq("Light Sensitivity");
+        if ($qLower === 'dodge') return $formatWithReq("Dodge " . $formatSigned($val));
+        if ($qLower === 'immunity' && $typeParam) return $formatWithReq(ucfirst((string)$typeParam) . " imm");
         if (str_ends_with($qLower, 'res')) {
             $baseRes = ucfirst(substr((string)$qual, 0, -3));
-            if ($val == 999 || $val >= 999) return "{$baseRes} imm";
-            return "{$baseRes} res " . $formatSigned($val);
+            if ($val == 999 || $val >= 999) return $formatWithReq("{$baseRes} imm");
+            return $formatWithReq("{$baseRes} res " . $formatSigned($val));
         }
         if (str_ends_with($qLower, 'imm')) {
             $baseImm = ucfirst(substr((string)$qual, 0, -3));
-            return "{$baseImm} imm";
+            return $formatWithReq("{$baseImm} imm");
         }
 
         // Default brief format
@@ -3313,6 +3658,6 @@ class EntityEngine
             $desc .= " " . $formatSigned($val);
         }
 
-        return trim($desc);
+        return $formatWithReq($desc);
     }
 }

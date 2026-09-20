@@ -2269,7 +2269,7 @@ skillbenefits:
     ID: 78
     Skill: 29
     SkillLevel: 5
-    Traits: 'Attack { Qual=ImprRange; Value=2; Req=Weapon==WpSpr; }'
+    Traits: 'Attack { Qual=ImprRange; Req=Weapon==WpSpr; }'
   -
     ID: 79
     Skill: 29
@@ -2324,7 +2324,7 @@ skillbenefits:
     ID: 94
     Skill: 31
     SkillLevel: 5
-    Traits: 'Attack { Qual=ImprRange; Value=1.5; Req=Weapon==WpBow; }'
+    Traits: 'Attack { Qual=ImprRange; Req=Weapon==WpBow; }'
   -
     ID: 95
     Skill: 31
@@ -2379,7 +2379,7 @@ skillbenefits:
     ID: 106
     Skill: 32
     SkillLevel: 5
-    Traits: 'Attack { Qual=ImprRange; Value=1.5; Req=Weapon==WpCrs; }'
+    Traits: 'Attack { Qual=ImprRange; Req=Weapon==WpCrs; }'
   -
     ID: 107
     Skill: 32
@@ -2444,7 +2444,7 @@ skillbenefits:
     ID: 121
     Skill: 34
     SkillLevel: 5
-    Traits: 'Attack { Qual=ImprRange; Value=1.5; Req=Weapon==WpSln; }'
+    Traits: 'Attack { Qual=ImprRange; Req=Weapon==WpSln; }'
   -
     ID: 122
     Skill: 34
@@ -2474,7 +2474,7 @@ skillbenefits:
     ID: 128
     Skill: 35
     SkillLevel: 5
-    Traits: 'Attack { Qual=ImprRange; Value=2; Req=Weapon==WpSmT; }'
+    Traits: 'Attack { Qual=ImprRange; Req=Weapon==WpSmT; }'
   -
     ID: 129
     Skill: 35

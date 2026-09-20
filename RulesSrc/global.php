@@ -434,7 +434,7 @@ function init_traits(): void {
         new cTraitDescription("Attack", "ImprGrappleDmg", "Impr grapple dmg", "Improved damage with grappling attacks", TYPE_OTHER),
         new cTraitDescription("Attack", "ImprInterrupt", "Impr interrupt (%v)", "%v bonus to attack and damage with ready actions and AoO to interrupt spellcasting and supernatural activations", TYPE_INTEGER),
         new cTraitDescription("Attack", "ImprOverrun", "Impr overrun", "Improved overrun (target cannot choose to avoid; success grants a free leg attack against target)", TYPE_OTHER),
-        new cTraitDescription("Attack", "ImprRange", "", "Improved range (-1 instead of -2 per increment)", TYPE_OTHER),
+        new cTraitDescription("Attack", "ImprRange", "Improved range", "Improved range (-1 instead of -2 per increment)", TYPE_OTHER),
         new cTraitDescription("Attack", "ImprRush", "Impr bull rush", "Improved bull rush (no AoO)", TYPE_OTHER),
         new cTraitDescription("Attack", "ImprSec", "", "Reduced secondary attack form penalty, %v", TYPE_LEVEL),
         new cTraitDescription("Attack", "ImprSunder", "Impr sunder", "Improved sunder (no AoO; +4 bonus on attack roll)", TYPE_OTHER),

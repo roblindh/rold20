@@ -21,7 +21,7 @@
             </select>
         </div>
 
-        <button @click="rollTreasure()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg text-sm shadow transition flex items-center justify-center gap-2 cursor-pointer">
+        <button @click="rollTreasure()" class="btn-rol-primary px-5 py-2.5 rounded-lg text-sm shadow transition flex items-center justify-center gap-2 cursor-pointer">
             <span>🎲</span> Roll Random Hoard
         </button>
     </div>

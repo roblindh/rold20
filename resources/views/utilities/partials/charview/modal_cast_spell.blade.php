@@ -126,6 +126,27 @@
                         </div>
                     </div>
 
+                    <!-- Variable Base Cost Stepper if spell has variable base cost -->
+                    <template x-if="isCastSpellVariableBase">
+                        <div class="pt-2 border-t border-amber-900/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 bg-amber-50/80 p-2.5 rounded-lg text-xs">
+                            <div>
+                                <span class="font-bold text-amber-950 flex items-center gap-1">
+                                    <span>🔥</span> Base Power Investment (Variable Cost):
+                                </span>
+                                <span class="text-[10px] text-stone-600 block mt-0.5" x-text="activeCastSpell ? activeCastSpell.Cost.replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, ' • ') : ''"></span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" @click="if (castSpellState.variableBasePP > castSpellMinBPC) castSpellState.variableBasePP--"
+                                        class="w-6 h-6 rounded bg-stone-200 hover:bg-stone-300 font-bold text-xs flex items-center justify-center cursor-pointer">-</button>
+                                <input type="number" :min="castSpellMinBPC" :max="castSkillInfo.bestRank || 30" x-model.number="castSpellState.variableBasePP"
+                                       class="w-12 text-center py-1 border border-stone-300 rounded font-mono font-bold text-xs bg-white text-stone-900">
+                                <button type="button" @click="castSpellState.variableBasePP++"
+                                        class="w-6 h-6 rounded bg-stone-200 hover:bg-stone-300 font-bold text-xs flex items-center justify-center cursor-pointer">+</button>
+                                <span class="font-mono text-xs font-bold text-indigo-900" x-text="castSpellBPC + ' PP'"></span>
+                            </div>
+                        </div>
+                    </template>
+
                     <!-- Active Spell Details Card -->
                     <template x-if="activeCastSpell">
                         <div class="bg-amber-50/50 border border-amber-900/15 rounded-lg p-2.5 space-y-1.5 text-[11px]">
@@ -148,9 +169,11 @@
                                 </div>
                             </div>
                             <div class="text-stone-600 leading-tight" x-text="activeCastSpell.Summary || activeCastSpell.Description"></div>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-1 pt-1 text-[10px] text-stone-700 font-mono">
-                                <div><strong>Skill:</strong> <span class="text-indigo-900" x-text="castSkillInfo.bestSkillName"></span> (<span x-text="'Rank ' + castSkillInfo.bestRank"></span>)</div>
-                                <div><strong>Implements:</strong> <span x-text="activeCastSpell.Implements || '–'"></span></div>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1 text-[10px] text-stone-700 font-mono">
+                                <div><strong>Skill:</strong> <span class="text-indigo-900 font-bold" x-text="castSkillInfo.bestSkillName"></span> (<span x-text="'Rank ' + castSkillInfo.bestRank"></span>)</div>
+                                <template x-if="castSkillInfo.skillPPMod">
+                                    <div><strong>Skill PP Mod:</strong> <span class="text-amber-900 font-bold" x-text="(castSkillInfo.skillPPMod >= 0 ? '+' : '') + castSkillInfo.skillPPMod + ' PP'"></span></div>
+                                </template>
                                 <div><strong>Action Time:</strong> <span x-text="activeCastSpell.ActionTime || '7+TPC AP'"></span></div>
                             </div>
                         </div>
@@ -400,26 +423,26 @@
             <div class="lg:col-span-5 space-y-4">
                 
                 <!-- PRIMARY SUMMARY CARD -->
-                <div class="bg-gradient-to-b from-slate-900 to-indigo-950 text-white rounded-2xl p-4 shadow-xl border border-indigo-900/40 space-y-3.5">
+                <div class="bg-gradient-to-b from-slate-900 to-indigo-950 text-white rounded-2xl p-4 shadow-xl border border-indigo-900/40 space-y-3.5" style="background: linear-gradient(to bottom, #0f172a, #1e1b4b); color: #ffffff;">
                     <div class="flex items-center justify-between border-b border-indigo-800/60 pb-2">
-                        <span class="font-serif font-bold text-amber-300 text-sm tracking-wide">✨ Casting Calculation Summary</span>
-                        <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-indigo-900/90 text-indigo-200 border border-indigo-700/50" x-text="'PL ' + castPL"></span>
+                        <span class="font-serif font-bold text-amber-300 text-sm tracking-wide" style="color: #fcd34d;">✨ Casting Calculation Summary</span>
+                        <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-indigo-900/90 text-indigo-200 border border-indigo-700/50" style="background-color: #312e81; color: #c7d2fe;" x-text="'PL ' + castPL"></span>
                     </div>
 
                     <!-- Main Metrics Grid -->
                     <div class="grid grid-cols-2 gap-2 text-center">
-                        <div class="bg-slate-800/80 rounded-xl p-2.5 border border-slate-700">
-                            <span class="text-[10px] text-slate-300 uppercase block font-semibold">Total PP Cost (TPC)</span>
-                            <span class="text-xl font-bold font-mono text-amber-300" x-text="castTPC + ' PP'"></span>
-                            <div class="text-[10px] text-slate-400 mt-0.5">
+                        <div class="bg-slate-800/80 rounded-xl p-2.5 border border-slate-700" style="background-color: rgba(30, 41, 59, 0.85); border-color: #334155;">
+                            <span class="text-[10px] uppercase block font-semibold" style="color: #cbd5e1;">Total PP Cost (TPC)</span>
+                            <span class="text-xl font-bold font-mono" style="color: #fcd34d;" x-text="castTPC + ' PP'"></span>
+                            <div class="text-[10px] mt-0.5" style="color: #94a3b8;">
                                 Base <span x-text="castSpellBPC"></span> + Var <span x-text="castVariationsPP"></span> + Param <span x-text="castParametersPP"></span>
                             </div>
                         </div>
 
-                        <div class="bg-indigo-900/60 rounded-xl p-2.5 border border-indigo-700/70">
-                            <span class="text-[10px] text-indigo-200 uppercase block font-semibold">Actual Cost (APC)</span>
-                            <span class="text-xl font-bold font-mono text-emerald-300" x-text="castAPC + ' PP'"></span>
-                            <div class="text-[10px] text-indigo-300 mt-0.5">
+                        <div class="bg-indigo-900/60 rounded-xl p-2.5 border border-indigo-700/70" style="background-color: rgba(49, 46, 129, 0.6); border-color: #4338ca;">
+                            <span class="text-[10px] uppercase block font-semibold" style="color: #c7d2fe;">Actual Cost (APC)</span>
+                            <span class="text-xl font-bold font-mono" style="color: #6ee7b7;" x-text="castAPC + ' PP'"></span>
+                            <div class="text-[10px] mt-0.5" style="color: #a5b4fc;">
                                 <template x-if="castSkillInfo.affinityDiscount > 0">
                                     <span>Discount: -<span x-text="castSkillInfo.affinityDiscount"></span> PP</span>
                                 </template>
@@ -429,33 +452,33 @@
                             </div>
                         </div>
 
-                        <div class="bg-slate-800/80 rounded-xl p-2.5 border border-slate-700">
-                            <span class="text-[10px] text-slate-300 uppercase block font-semibold">Power Level (PL)</span>
-                            <span class="text-xl font-bold font-mono text-cyan-300" x-text="'PL ' + castPL"></span>
-                            <div class="text-[10px] text-slate-400 mt-0.5">
+                        <div class="bg-slate-800/80 rounded-xl p-2.5 border border-slate-700" style="background-color: rgba(30, 41, 59, 0.85); border-color: #334155;">
+                            <span class="text-[10px] uppercase block font-semibold" style="color: #cbd5e1;">Power Level (PL)</span>
+                            <span class="text-xl font-bold font-mono" style="color: #67e8f9;" x-text="'PL ' + castPL"></span>
+                            <div class="text-[10px] mt-0.5" style="color: #94a3b8;">
                                 TPC <span x-text="castTPC"></span> <span x-text="(castAPB >= 0 ? '+' : '') + castAPB + ' APB'"></span>
                             </div>
                         </div>
 
-                        <div class="bg-slate-800/80 rounded-xl p-2.5 border border-slate-700">
-                            <span class="text-[10px] text-slate-300 uppercase block font-semibold">Action Time (AP)</span>
-                            <span class="text-xl font-bold font-mono text-emerald-300" x-text="castTotalAP + ' AP'"></span>
-                            <div class="text-[10px] text-slate-400 mt-0.5">
+                        <div class="bg-slate-800/80 rounded-xl p-2.5 border border-slate-700" style="background-color: rgba(30, 41, 59, 0.85); border-color: #334155;">
+                            <span class="text-[10px] uppercase block font-semibold" style="color: #cbd5e1;">Action Time (AP)</span>
+                            <span class="text-xl font-bold font-mono" style="color: #6ee7b7;" x-text="castTotalAP + ' AP'"></span>
+                            <div class="text-[10px] mt-0.5" style="color: #94a3b8;">
                                 Base <span x-text="castBaseAP"></span> + Boost <span x-text="Math.abs(castAPB)"></span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Lingering Aura Banner -->
-                    <div class="bg-slate-800/90 rounded-xl p-2.5 border border-slate-700/80 text-[11px] flex items-center justify-between">
-                        <span class="text-slate-300 font-medium">✨ Lingering Aura:</span>
-                        <span class="font-bold text-amber-300 font-mono" x-text="castLingeringAura"></span>
+                    <div class="bg-slate-800/90 rounded-xl p-2.5 border border-slate-700/80 text-[11px] flex items-center justify-between" style="background-color: rgba(30, 41, 59, 0.9); border-color: #334155;">
+                        <span class="font-medium" style="color: #e2e8f0;">✨ Lingering Aura:</span>
+                        <span class="font-bold font-mono" style="color: #fcd34d;" x-text="castLingeringAura"></span>
                     </div>
 
                     <!-- Remaining PP Preview -->
-                    <div class="bg-slate-800/90 rounded-xl p-2.5 border border-slate-700/80 text-[11px] flex items-center justify-between">
-                        <span class="text-slate-300 font-medium">🔮 Caster PP After Cast:</span>
-                        <span class="font-bold font-mono" :class="(castCurrentPP - castAPC) < 0 ? 'text-rose-400' : 'text-indigo-300'" x-text="(castCurrentPP - castAPC) + ' / ' + castMaxPP + ' PP'"></span>
+                    <div class="bg-slate-800/90 rounded-xl p-2.5 border border-slate-700/80 text-[11px] flex items-center justify-between" style="background-color: rgba(30, 41, 59, 0.9); border-color: #334155;">
+                        <span class="font-medium" style="color: #e2e8f0;">🔮 Caster PP After Cast:</span>
+                        <span class="font-bold font-mono" :style="(castCurrentPP - castAPC) < 0 ? 'color: #fb7185;' : 'color: #6ee7b7;'" x-text="(castCurrentPP - castAPC) + ' / ' + castMaxPP + ' PP'"></span>
                     </div>
                 </div>
 
@@ -535,11 +558,11 @@
 
                     <!-- Actions & Copy Button -->
                     <div class="pt-2 flex items-center justify-between gap-2">
-                        <button type="button" @click="copyCastLogToClipboard()" class="flex-1 py-2 px-3 bg-stone-800 hover:bg-stone-900 text-white rounded-lg font-bold text-xs shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+                        <button type="button" @click="copyCastLogToClipboard()" class="flex-1 py-2 px-3 rounded-lg font-bold text-xs shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer" style="background-color: #1e293b; color: #ffffff;">
                             <span x-show="!castSpellState.copiedLog">📋 Copy Casting Summary</span>
-                            <span x-show="castSpellState.copiedLog" class="text-emerald-400 font-bold">✓ Copied to Clipboard!</span>
+                            <span x-show="castSpellState.copiedLog" class="font-bold" style="color: #34d399;">✓ Copied to Clipboard!</span>
                         </button>
-                        <button type="button" @click="showCastSpellModal = false" class="py-2 px-4 bg-stone-200 hover:bg-stone-300 text-stone-800 rounded-lg font-bold text-xs transition cursor-pointer">
+                        <button type="button" @click="showCastSpellModal = false" class="py-2 px-4 rounded-lg font-bold text-xs transition cursor-pointer" style="background-color: #e2e8f0; color: #1e293b;">
                             Close
                         </button>
                     </div>
