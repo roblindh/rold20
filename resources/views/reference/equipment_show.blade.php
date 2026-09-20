@@ -17,7 +17,7 @@
     </div>
 
     <!-- Quick Stats Grid -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2.5 sm:gap-3">
+    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2.5 sm:gap-3">
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center">
             <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Value</div>
             <div class="text-sm font-bold text-amber-700 mt-1 font-mono">{{ $item->Cost ? $item->Cost . ' sp' : '—' }}</div>
@@ -41,6 +41,10 @@
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center">
             <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Item HP</div>
             <div class="text-sm font-bold text-slate-900 mt-1 font-mono">{{ $itemHP }}</div>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center">
+            <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Frequency</div>
+            <div class="text-sm font-bold text-slate-900 mt-1 font-mono">{{ $item->Frequency ?? 5 }}/9</div>
         </div>
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center">
             <div class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Base Material</div>

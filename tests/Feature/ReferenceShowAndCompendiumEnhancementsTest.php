@@ -96,4 +96,26 @@ class ReferenceShowAndCompendiumEnhancementsTest extends TestCase
         $response = $this->app->handle(\Illuminate\Http\Request::create('/reference/equipment?type=2', 'GET'));
         $this->assertEquals(200, $response->getStatusCode());
     }
+
+    public function testOrganizationShowAndTableList(): void
+    {
+        // 1. Check organization list filter
+        $response = $this->app->handle(\Illuminate\Http\Request::create('/reference/other?type=organization', 'GET'));
+        $this->assertEquals(200, $response->getStatusCode());
+        $content = $response->getContent();
+        $this->assertStringContainsString('Craft &amp; Trade Guild', $content);
+        $this->assertStringContainsString('Urban Thieves&#039; Guild', $content);
+        $this->assertStringContainsString('The Iron Vanguard', $content);
+
+        // 2. Check individual organization show page with all rich details
+        $responseShow = $this->app->handle(\Illuminate\Http\Request::create('/reference/other/' . urlencode('Urban Thieves\' Guild'), 'GET'));
+        $this->assertEquals(200, $responseShow->getStatusCode());
+        $showContent = $responseShow->getContent();
+        $this->assertStringContainsString('Urban Thieves&#039; Guild', $showContent);
+        $this->assertStringContainsString('The Shadow Hand', $showContent);
+        $this->assertStringContainsString('Uses of Faction Influence', $showContent);
+        $this->assertStringContainsString('Ranks, Titles &amp; Hierarchy', $showContent);
+        $this->assertStringContainsString('Social Class Range', $showContent);
+        $this->assertStringContainsString('Wealth Class Range', $showContent);
+    }
 }

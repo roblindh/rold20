@@ -2181,16 +2181,17 @@ class UtilityController extends Controller
         if (!empty($candidateItems)) {
             for ($k = 0; $k < $magicCount; $k++) {
                 try {
-                    $baseItem = $candidateItems[array_rand($candidateItems)];
+                    $baseItem = \App\Services\Random\WeightedSelector::choice($candidateItems, 'Frequency');
+                    if (!$baseItem) {
+                        continue;
+                    }
                     $baseName = $baseItem['Name'];
 
                     $chosenMods = [];
                     if (!empty($magicMods)) {
                         $modCount = rand(1, min(3, max(1, (int)ceil($el / 6))));
-                        $shuffled = $magicMods;
-                        shuffle($shuffled);
-                        for ($i = 0; $i < min($modCount, count($shuffled)); $i++) {
-                            $m = $shuffled[$i];
+                        $pickedMods = \App\Services\Random\WeightedSelector::sample($magicMods, $modCount, 'Frequency', false);
+                        foreach ($pickedMods as $m) {
                             $abbr = $m['Abbreviation'];
                             $x = null;
                             if (str_contains($m['Description'], '(x)') || str_contains($m['SpecialInfo'] ?? '', '(x)')) {

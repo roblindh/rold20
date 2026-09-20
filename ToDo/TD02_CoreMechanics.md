@@ -16,5 +16,5 @@
   - [ ] Use modifier categories for penalties as well as bonuses.
 - [ ] Conditions
   - [ ] See Tome of Sorrows I (p 48-51) for more diseases.
-  - [ ] Mental trauma and illness? See BURPS p 81. See 5E DMG p259-260 for madness.
-  - [ ] Insanities (pfgm251+)
+  - [x] Mental trauma and illness? See BURPS p 81. See 5E DMG p259-260 for madness.
+  - [x] Insanities (pfgm251+)

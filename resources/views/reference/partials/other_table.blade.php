@@ -3,9 +3,11 @@
         <table class="compendium-table">
             <thead>
                 <tr>
-                    <x-sort-th column="Name" label="Organization Name" />
+                    <x-sort-th column="Name" label="Organization Archetype" />
                     <x-sort-th column="Type" label="Type / Category" />
-                    <th class="px-4 py-3 text-left">Campaign / Region</th>
+                    <th class="px-3 py-3 text-left">Inspirational Examples</th>
+                    <th class="px-3 py-3 text-left">Social &amp; Wealth Class</th>
+                    <th class="px-3 py-3 text-left">Scale &amp; Alignment</th>
                     <th class="col-action px-3 py-3 text-center">Action</th>
                 </tr>
             </thead>
@@ -22,8 +24,18 @@
                                 {{ $org->TypeName ?? 'Faction' }}
                             </span>
                         </td>
-                        <td class="px-4 py-3 text-xs text-stone-600">
-                            {{ $org->Campaign ? 'Campaign #' . $org->Campaign : 'Global / Setting Neutral' }}
+                        <td class="px-3 py-3 text-xs text-stone-600 italic max-w-xs">
+                            <div class="line-clamp-2">
+                                {{ $org->InspirationalNames ?? '—' }}
+                            </div>
+                        </td>
+                        <td class="px-3 py-3 text-xs text-stone-700 whitespace-nowrap">
+                            <div class="font-medium text-[11px]">{{ $org->SocialClassRange ?? '—' }}</div>
+                            <div class="text-stone-500 text-[10px]">{{ $org->WealthClassRange ?? '' }}</div>
+                        </td>
+                        <td class="px-3 py-3 text-xs text-stone-600 whitespace-nowrap">
+                            <div class="font-medium">{{ $org->Scale ?? 'Regional' }}</div>
+                            <div class="text-stone-500 text-[11px]">{{ $org->Alignment ?? 'Any' }}</div>
                         </td>
                         <td class="col-action px-3 py-3 text-center">
                             <a href="{{ route('reference.other.show', ['name' => urlencode($org->Name)]) }}" class="btn-action-view">
@@ -33,7 +45,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="px-4 py-8 text-center text-stone-500 italic">
+                        <td colspan="6" class="px-4 py-8 text-center text-stone-500 italic">
                             No organizations currently registered in this campaign database.
                         </td>
                     </tr>

@@ -192,12 +192,13 @@ class ReindexSearchCommand extends Command
             ->select('ref_organizations.*', 'ref_organizationtypes.Type as TypeName')
             ->get();
         foreach ($organizations as $org) {
+            $fullContent = trim("{$org->Name} {$org->TypeName} {$org->InspirationalNames} {$org->Description} {$org->TypicalMembers} {$org->MemberBenefits} {$org->MemberResponsibilities} {$org->UsesOfInfluence} {$org->RanksAndTitles} {$org->FavoredSkills}");
             DB::table('search_index')->insert([
                 'title' => $org->Name,
                 'category' => 'Organization',
                 'url' => route('reference.other.show', ['name' => urlencode($org->Name)], false),
-                'snippet' => mb_substr($org->TypeName ?? 'World Organization', 0, 200),
-                'content' => "{$org->Name} {$org->TypeName}",
+                'snippet' => mb_substr($org->Description ?? $org->TypeName ?? 'World Organization', 0, 200),
+                'content' => $fullContent,
             ]);
             $indexedCount++;
         }

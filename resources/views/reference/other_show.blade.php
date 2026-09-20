@@ -129,13 +129,31 @@
     @elseif(isset($organization))
         <!-- Organization Stat Card -->
         <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+            <!-- Header Banner -->
             <div class="bg-slate-900 text-white p-5 sm:p-6 border-b border-amber-600/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl sm:text-3xl font-bold font-serif text-amber-200">
                         {{ $organization->Name }}
                     </h1>
-                    <div class="text-slate-300 text-xs sm:text-sm mt-1">
-                        <span>🏛️ {{ $organization->TypeName ?? 'World Organization' }}</span>
+                    @if(!empty($organization->InspirationalNames))
+                        <div class="text-amber-300/80 text-xs sm:text-sm mt-0.5 italic">
+                            <span>Inspirational Examples:</span> {{ $organization->InspirationalNames }}
+                        </div>
+                    @endif
+                    <div class="text-slate-300 text-xs sm:text-sm mt-1.5 flex items-center gap-3 flex-wrap">
+                        <span class="inline-flex items-center gap-1 text-amber-400 font-medium">
+                            <span>🏛️</span> {{ $organization->TypeName ?? 'World Organization' }}
+                        </span>
+                        @if(!empty($organization->Scale))
+                            <span class="inline-flex items-center gap-1 text-slate-300">
+                                <span>🗺️</span> Scale: {{ $organization->Scale }}
+                            </span>
+                        @endif
+                        @if(!empty($organization->Alignment))
+                            <span class="inline-flex items-center gap-1 text-slate-300">
+                                <span>⚖️</span> Alignment: {{ $organization->Alignment }}
+                            </span>
+                        @endif
                     </div>
                 </div>
                 <span class="self-start md:self-auto px-3 py-1 rounded-full text-xs font-bold border border-indigo-500 bg-indigo-900/80 text-indigo-200">
@@ -143,21 +161,93 @@
                 </span>
             </div>
 
-            <div class="p-5 sm:p-6 space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            <!-- Content Body -->
+            <div class="p-5 sm:p-6 space-y-6">
+                <!-- Key Details Summary Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
                     <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                        <span class="font-bold text-slate-600 block mb-1">Organization Type:</span>
-                        <span class="text-slate-900 font-semibold">{{ $organization->TypeName ?? 'Unspecified' }}</span>
+                        <span class="font-bold text-slate-600 block mb-1">Social Class Range:</span>
+                        <span class="text-slate-900 font-semibold">{{ $organization->SocialClassRange ?? 'SC 0 to SC 2' }}</span>
                     </div>
                     <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                        <span class="font-bold text-slate-600 block mb-1">Campaign Context:</span>
-                        <span class="text-slate-900">{{ $organization->Campaign ? 'Campaign #' . $organization->Campaign : 'Setting Neutral / Core Lore' }}</span>
+                        <span class="font-bold text-slate-600 block mb-1">Wealth Class Range:</span>
+                        <span class="text-slate-900 font-semibold">{{ $organization->WealthClassRange ?? 'WC 0 to WC 3' }}</span>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <span class="font-bold text-slate-600 block mb-1">Favored Skills:</span>
+                        <span class="text-slate-900">{{ $organization->FavoredSkills ?? 'Varies by role' }}</span>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <span class="font-bold text-slate-600 block mb-1">Campaign Setting:</span>
+                        <span class="text-slate-900">{{ $organization->Campaign ? 'Campaign #' . $organization->Campaign : 'Setting Neutral / Generic' }}</span>
                     </div>
                 </div>
 
+                <!-- Description -->
                 @if(!empty($organization->Description))
-                    <div class="prose max-w-none text-slate-800 text-sm leading-relaxed pt-2">
+                    <div class="prose max-w-none text-slate-800 text-sm leading-relaxed border-b border-slate-200 pb-4">
                         <p>{!! nl2br(e(str_replace('\\n', "\n", $organization->Description))) !!}</p>
+                    </div>
+                @endif
+
+                <!-- Typical Members -->
+                @if(!empty($organization->TypicalMembers))
+                    <div class="bg-amber-50/60 border border-amber-200 rounded-lg p-4 space-y-1">
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-950 block font-serif flex items-center gap-1.5">
+                            <span>👥</span> Typical Members &amp; Roles
+                        </span>
+                        <div class="text-xs text-slate-800 leading-relaxed">
+                            {!! nl2br(e(str_replace('\\n', "\n", $organization->TypicalMembers))) !!}
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Benefits & Responsibilities Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @if(!empty($organization->MemberBenefits))
+                        <div class="bg-emerald-50/60 border border-emerald-200 rounded-lg p-4 space-y-1">
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-950 block font-serif flex items-center gap-1.5">
+                                <span>✨</span> Member Benefits &amp; Privileges
+                            </span>
+                            <div class="text-xs text-slate-800 leading-relaxed">
+                                {!! nl2br(e(str_replace('\\n', "\n", $organization->MemberBenefits))) !!}
+                            </div>
+                        </div>
+                    @endif
+
+                    @if(!empty($organization->MemberResponsibilities))
+                        <div class="bg-rose-50/60 border border-rose-200 rounded-lg p-4 space-y-1">
+                            <span class="text-xs font-bold uppercase tracking-wider text-rose-950 block font-serif flex items-center gap-1.5">
+                                <span>📜</span> Member Responsibilities &amp; Dues
+                            </span>
+                            <div class="text-xs text-slate-800 leading-relaxed">
+                                {!! nl2br(e(str_replace('\\n', "\n", $organization->MemberResponsibilities))) !!}
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Uses of Influence -->
+                @if(!empty($organization->UsesOfInfluence))
+                    <div class="bg-indigo-50/60 border border-indigo-200 rounded-lg p-4 space-y-1">
+                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-950 block font-serif flex items-center gap-1.5">
+                            <span>🌟</span> Uses of Faction Influence (Favors &amp; Calls)
+                        </span>
+                        <div class="text-xs text-slate-800 leading-relaxed">
+                            {!! nl2br(e(str_replace('\\n', "\n", $organization->UsesOfInfluence))) !!}
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Ranks and Titles Hierarchy -->
+                @if(!empty($organization->RanksAndTitles))
+                    <div class="bg-slate-50 border border-slate-300 rounded-lg p-4 space-y-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-800 block font-serif flex items-center gap-1.5">
+                            <span>🎖️</span> Ranks, Titles &amp; Hierarchy
+                        </span>
+                        <div class="text-xs text-slate-800 leading-relaxed font-mono">
+                            {!! nl2br(e(str_replace('\\n', "\n", $organization->RanksAndTitles))) !!}
+                        </div>
                     </div>
                 @endif
             </div>

@@ -558,7 +558,11 @@ class ReferenceController extends Controller
             if ($search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('ref_organizations.Name', 'like', "%{$search}%")
-                      ->orWhere('ref_organizationtypes.Type', 'like', "%{$search}%");
+                      ->orWhere('ref_organizationtypes.Type', 'like', "%{$search}%")
+                      ->orWhere('ref_organizations.InspirationalNames', 'like', "%{$search}%")
+                      ->orWhere('ref_organizations.Description', 'like', "%{$search}%")
+                      ->orWhere('ref_organizations.TypicalMembers', 'like', "%{$search}%")
+                      ->orWhere('ref_organizations.FavoredSkills', 'like', "%{$search}%");
                 });
             }
 
@@ -566,6 +570,7 @@ class ReferenceController extends Controller
                 'Name' => 'ref_organizations.Name',
                 'Type' => 'ref_organizationtypes.Type',
                 'TypeName' => 'ref_organizationtypes.Type',
+                'Scale' => 'ref_organizations.Scale',
             ];
             $orderCol = $sortMap[$sort] ?? 'ref_organizations.Name';
             $query->orderBy($orderCol, $direction);

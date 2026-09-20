@@ -855,4 +855,92 @@ function show_wealthclasses() {
     </p>
     <?php
 }
+
+function show_organizations() {
+    global $db_server, $db_user, $db_password, $db_name;
+
+    $db = Database::getInstance();
+    $db->connect($db_server, $db_user, $db_password, $db_name);
+    $query = "SELECT o.*, t.Type AS TypeName FROM organizations o LEFT JOIN organizationtypes t ON o.Type = t.ID ORDER BY o.Name";
+    $result = $db->query($query);
+
+    while ($row = $result->fetch()) {
+        $orgName = htmlspecialchars($row['Name'] ?? '');
+        $typeName = htmlspecialchars($row['TypeName'] ?? 'Organization');
+        $inspNames = !empty($row['InspirationalNames']) ? ' <span style="font-weight: normal; font-style: italic; font-size: 0.9em;">(e.g., ' . htmlspecialchars($row['InspirationalNames']) . ')</span>' : '';
+        ?>
+        <table>
+            <caption><?= $orgName . $inspNames ?></caption>
+            <tbody>
+                <tr>
+                    <td style="width: 25%; font-weight: bold;">Type / Category:</td>
+                    <td><?= $typeName ?></td>
+                </tr>
+                <?php if (!empty($row['Alignment']) || !empty($row['Scale'])): ?>
+                <tr>
+                    <td style="font-weight: bold;">Alignment &amp; Scale:</td>
+                    <td>
+                        <?= !empty($row['Alignment']) ? '<strong>Alignment:</strong> ' . htmlspecialchars($row['Alignment']) : '' ?>
+                        <?= (!empty($row['Alignment']) && !empty($row['Scale'])) ? ' &bull; ' : '' ?>
+                        <?= !empty($row['Scale']) ? '<strong>Scale:</strong> ' . htmlspecialchars($row['Scale']) : '' ?>
+                    </td>
+                </tr>
+                <?php endif; ?>
+                <?php if (!empty($row['SocialClassRange']) || !empty($row['WealthClassRange'])): ?>
+                <tr>
+                    <td style="font-weight: bold;">Class Ranges:</td>
+                    <td>
+                        <?= !empty($row['SocialClassRange']) ? '<strong>Social Class:</strong> ' . htmlspecialchars($row['SocialClassRange']) : '' ?>
+                        <?= (!empty($row['SocialClassRange']) && !empty($row['WealthClassRange'])) ? '<br/>' : '' ?>
+                        <?= !empty($row['WealthClassRange']) ? '<strong>Wealth Class:</strong> ' . htmlspecialchars($row['WealthClassRange']) : '' ?>
+                    </td>
+                </tr>
+                <?php endif; ?>
+                <?php if (!empty($row['FavoredSkills'])): ?>
+                <tr>
+                    <td style="font-weight: bold;">Favored Skills:</td>
+                    <td><?= htmlspecialchars($row['FavoredSkills']) ?></td>
+                </tr>
+                <?php endif; ?>
+                <?php if (!empty($row['Description'])): ?>
+                <tr>
+                    <td style="font-weight: bold;">Description:</td>
+                    <td><?= str_replace("\\n", '<br/>', htmlspecialchars($row['Description'])) ?></td>
+                </tr>
+                <?php endif; ?>
+                <?php if (!empty($row['TypicalMembers'])): ?>
+                <tr>
+                    <td style="font-weight: bold;">Typical Members:</td>
+                    <td><?= str_replace("\\n", '<br/>', htmlspecialchars($row['TypicalMembers'])) ?></td>
+                </tr>
+                <?php endif; ?>
+                <?php if (!empty($row['MemberBenefits'])): ?>
+                <tr>
+                    <td style="font-weight: bold;">Member Benefits:</td>
+                    <td><?= str_replace("\\n", '<br/>', htmlspecialchars($row['MemberBenefits'])) ?></td>
+                </tr>
+                <?php endif; ?>
+                <?php if (!empty($row['MemberResponsibilities'])): ?>
+                <tr>
+                    <td style="font-weight: bold;">Member Responsibilities:</td>
+                    <td><?= str_replace("\\n", '<br/>', htmlspecialchars($row['MemberResponsibilities'])) ?></td>
+                </tr>
+                <?php endif; ?>
+                <?php if (!empty($row['UsesOfInfluence'])): ?>
+                <tr>
+                    <td style="font-weight: bold;">Uses of Influence:</td>
+                    <td><?= str_replace("\\n", '<br/>', htmlspecialchars($row['UsesOfInfluence'])) ?></td>
+                </tr>
+                <?php endif; ?>
+                <?php if (!empty($row['RanksAndTitles'])): ?>
+                <tr>
+                    <td style="font-weight: bold;">Ranks &amp; Hierarchy:</td>
+                    <td><?= str_replace("\\n", '<br/>', htmlspecialchars($row['RanksAndTitles'])) ?></td>
+                </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+        <?php
+    }
+}
 ?>

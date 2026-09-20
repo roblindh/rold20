@@ -16,7 +16,7 @@ spells:
     Results: 'S - The target suffers the chosen effects for 1 round.\nES - The target suffers the chosen effects for the rest of the encounter.\nCS - The effect becomes permanent (does not apply to poison variation).\nF - The target avoids the effect.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 7
   -
     ID: 2
     Name: 'Air Walk'
@@ -34,7 +34,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 3
     Name: 'Analyze Dweomer'
@@ -52,7 +52,7 @@ spells:
     Results: 'S - You discern all active spells and magical properties of the target.\nF - You fail to analyze the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 4
     Name: 'Animal Shapes'
@@ -70,7 +70,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 5
     Name: 'Animate Objects'
@@ -88,7 +88,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 6
     Name: 'Animate Plants'
@@ -106,7 +106,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 7
     Name: 'Antilife Shell'
@@ -124,7 +124,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 8
     Name: Antimagic
@@ -142,7 +142,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 9
     Name: Antipathy/Sympathy
@@ -160,7 +160,7 @@ spells:
     Results: 'S - The spell works as intended.\nAntipathy: Affected creatures are unable to enter the area or approach within 12 sq of the object (LoS).\nSympathy: Affected creatures feel an overpowering urge to stay in the area or approach and touch the object (if within 12 sq and LoS).\nF - The spell fails to attract or repel the target.\nAntipathy: Intended creatures feel uncomfortable (shaken) within the area of effect.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 2
   -
     ID: 10
     Name: 'Arcane Mark'
@@ -178,7 +178,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 11
     Name: 'Arcane Ward'
@@ -196,7 +196,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 12
     Name: 'Astral Construct'
@@ -214,7 +214,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 13
     Name: Atonement
@@ -232,7 +232,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 14
     Name: 'Attack of the Beast'
@@ -250,7 +250,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 15
     Name: 'Awaken Intelligence'
@@ -268,7 +268,7 @@ spells:
     Results: 'S - You awaken the animal or tree and grant it intelligence.\nF - The spell fails.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 3
   -
     ID: 16
     Name: Banishment
@@ -286,7 +286,7 @@ spells:
     Results: 'S - The extraplanar creature is sent back to its home plane.\nF - You fail to banish the creature.'
     Modifiers: 'For every focus hated or feared by the target: +2'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 17
     Name: 'Bestow Power'
@@ -304,7 +304,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 18
     Name: Binding
@@ -322,7 +322,7 @@ spells:
     Results: 'S - The target is helpless for 1 round while fighting off the spell.\nES - You successfully bind the target.\nF - You fail to bind the target.'
     Modifiers: 'Each reasonable termination trigger: +2 (maximum +6)\nTarget''s name known: +2\nTarget''s background history known: +2\nUsing a statuette of the target as focus: +2\nSlumber binding: -1\nBound Slumber binding: -2\nImprisonment binding: -2\nHedged Prison binding: -3\nMetamorphosis binding: -4\nMinimus Containment binding: -4\nTrigger gem: +10'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 3
   -
     ID: 19
     Name: 'Blade Barrier'
@@ -340,7 +340,7 @@ spells:
     Results: 'Force weapon:\nS - The target takes the specified amount of damage.\nCS - The target takes double damage.\nF - The weapon misses.\nWall of Blades variation:\nS - The target takes 1d6 per 2 skill levels HP of slashing damage.\nCS - The target takes double damage.\nF - The target takes half damage.\nCF - The target avoids all damage.'
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 20
     Name: 'Bless Water'
@@ -358,7 +358,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 7
   -
     ID: 21
     Name: Blight
@@ -376,7 +376,7 @@ spells:
     Results: 'S - The target suffers the indicated amount of damage.\nCS - The target takes double damage.\nF - The target suffers half damage.\nCF - The target takes no damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 7
   -
     ID: 22
     Name: Blink
@@ -394,7 +394,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 23
     Name: 'Body Affinity'
@@ -412,7 +412,7 @@ spells:
     Results: 'S - The target''s body enters an affinity feedback loop with your body.\nF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 24
     Name: 'Body Crisis'
@@ -430,7 +430,7 @@ spells:
     Results: 'S - The target is successfully affected.\nF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 25
     Name: 'Bolt of Acid'
@@ -448,7 +448,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - The target takes only half damage.\nCF - The target avoids all damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 26
     Name: 'Bolt of Death'
@@ -466,7 +466,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage and cannot regain HP, SP, or PP for 1 round.\nF - The target takes only half damage.\nCF - The target avoids all damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 27
     Name: 'Bolt of Fire'
@@ -484,7 +484,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - The target takes only half damage.\nCF - The target avoids all damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 28
     Name: 'Bolt of Ice'
@@ -502,7 +502,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - The target takes only half damage.\nCF - The target avoids all damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 29
     Name: 'Bolt of Lightning'
@@ -520,7 +520,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - The target takes only half damage.\nCF - The target avoids all damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 7
   -
     ID: 30
     Name: 'Bolt of Radiance'
@@ -538,7 +538,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - The target takes only half damage.\nCF - The target avoids all damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 31
     Name: 'Bolt of Sound'
@@ -556,7 +556,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - The target takes only half damage.\nCF - The target avoids all damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 32
     Name: 'Call Lightning'
@@ -574,7 +574,7 @@ spells:
     Results: 'S - The bolt deals the indicated amount of damage.\nCS - The target takes double damage.\nF - The target takes only half damage.\nCF - The target takes no damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 7
   -
     ID: 33
     Name: 'Charm Animal/Plant'
@@ -592,7 +592,7 @@ spells:
     Results: 'S - You successfully affect the animal or plant creature for 1 round.\nES - The effect lasts for the rest of the encounter.\nCS - The effect''s duration increases to one day.\nF - You fail to affect the target.'
     Modifiers: 'You or your allies are attacking the targets: -5 circ (only charm base variation)'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 34
     Name: 'Charm Creature'
@@ -610,7 +610,7 @@ spells:
     Results: 'S - The attitude of the target is successfully changed to friendly for 1 round.\nES - The effect lasts for the rest of the encounter.\nCS - The effect''s duration increases to one day.\nF - You fail to affect the target.'
     Modifiers: 'You or your allies are attacking the targets: -5 circ'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 35
     Name: Clone
@@ -628,7 +628,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 36
     Name: 'Color Spray'
@@ -646,7 +646,7 @@ spells:
     Results: 'S - The target is stunned for 1 round.\nES - The target is stunned for 1 round and blinded the rest of the encounter.\nCS - The target is rendered unconscious for the rest of the encounter.\nF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 37
     Name: 'Command Creature'
@@ -664,7 +664,7 @@ spells:
     Results: 'S - The target obeys your command for 1 round.\nCS - The effect''s duration increases to one encounter.\nF - The target ignores the command.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 38
     Name: 'Commune with Nature'
@@ -682,7 +682,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 39
     Name: 'Comprehend Languages'
@@ -700,7 +700,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 40
     Name: Consecrate
@@ -718,7 +718,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 41
     Name: 'Contact Other Plane'
@@ -736,7 +736,7 @@ spells:
     Results: 'S - You successfully contact the entity and can ask questions.\nF - You fail to get any answers.\nOF - You suffer a mental blowback and take 2d6 points of Int and Cha damage.'
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 42
     Name: 'Control Air'
@@ -754,7 +754,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 43
     Name: 'Control Body'
@@ -772,7 +772,7 @@ spells:
     Results: 'S - The target is successfully controlled for up to 1 round.\nES - The target is successfully controlled for as long as you concentrate.\nF - The target is unaffected.'
     Modifiers: 'Actions that go against target''s nature: -2\nSuicidal actions: -5'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 44
     Name: 'Control Earth'
@@ -790,7 +790,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 45
     Name: 'Control Emotions'
@@ -808,7 +808,7 @@ spells:
     Results: 'S - You successfully affect the emotions of the target.\nES - The effect''s duration increases by one step for free.\nF - You fail to affect the target.'
     Modifiers: 'You or your allies are attacking the targets: -5 for calm emotions'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 46
     Name: 'Control Fire'
@@ -826,7 +826,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 47
     Name: 'Control Light'
@@ -844,7 +844,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 7
   -
     ID: 48
     Name: 'Control Temperature'
@@ -862,7 +862,7 @@ spells:
     Results: 'S - You successfully heat or chill the targeted objects.\nF - You fail to affect the objects.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 49
     Name: 'Control Undead'
@@ -880,7 +880,7 @@ spells:
     Results: 'S - The target ignores you for the rest of the encounter. For the other variations, the duration is 1 round.\nES - The effect lasts for the rest of the encounter (all variations).\nCS - The effect''s duration increases to one day.\nF - You fail to affect the target.'
     Modifiers: 'You or your allies are attacking the targets: -5 circ (only charm variation)'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 50
     Name: 'Control Vegetation'
@@ -898,7 +898,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 51
     Name: 'Control Water'
@@ -916,7 +916,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 52
     Name: 'Control Weather'
@@ -934,7 +934,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 53
     Name: Courage
@@ -952,7 +952,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 54
     Name: 'Create Object'
@@ -970,7 +970,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 55
     Name: 'Create Portal'
@@ -988,7 +988,7 @@ spells:
     Results: 'S - You create a portal to the correct destination.\nF - You create a portal, but you miss the destination by 1d4x10%.\nOF - You fail to open the portal.'
     Modifiers: 'Very familiar destination: +0\nStudied destination carefully: -2\nSeen destination casually: -4\nViewed destination once: -6'
     APBoost: null
-    Frequency: null
+    Frequency: 2
   -
     ID: 56
     Name: 'Create Sustenance'
@@ -1006,7 +1006,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 57
     Name: 'Create Undead'
@@ -1024,7 +1024,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 58
     Name: 'Create Wall'
@@ -1042,7 +1042,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 59
     Name: 'Create Web'
@@ -1060,7 +1060,7 @@ spells:
     Results: 'S - Affected target is entangled.\nCS - The target is entangled and unable to leave its square.\nF - The target is not entangled, but the area is still considered difficult terrain.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 60
     Name: 'Crystal Shard'
@@ -1078,7 +1078,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nES - Target''s DR is halved against this damage.\nCS - The target takes double damage.\nF - You miss the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 61
     Name: 'Cure Affliction'
@@ -1096,7 +1096,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 7
   -
     ID: 62
     Name: 'Cure Fatigue'
@@ -1114,7 +1114,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 7
   -
     ID: 63
     Name: Curse
@@ -1132,7 +1132,7 @@ spells:
     Results: 'S - The target suffers the chosen penalties.\nCS - Target suffers double penalties.\nF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 7
   -
     ID: 64
     Name: Darkness
@@ -1150,7 +1150,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 65
     Name: 'Deflective Shield'
@@ -1168,7 +1168,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 7
   -
     ID: 66
     Name: 'Detect Alignment'
@@ -1186,7 +1186,7 @@ spells:
     Results: '1st round - You detect the presence or absence of the chosen alignment aspect.\n2nd round - You detect the number of auras of the chosen aspect.\n3rd round - You detect the location and approximate strength of each aura.'
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 67
     Name: 'Detect Life'
@@ -1204,7 +1204,7 @@ spells:
     Results: '1st round - You detect the presence or absence of living and undead creatures (but not constructs).\n2nd round - You detect the number of living/undead creatures.\n3rd round - You detect the location and status (healthy, bloodied, dying, or undead) of each aura.'
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 68
     Name: 'Detect Magic'
@@ -1222,7 +1222,7 @@ spells:
     Results: '1st round - You detect the presence or absence of magic.\n2nd round - You detect the number of magical auras and the power of the most potent one.\n3rd round - You detect the power and location of each aura. You can make Spellcraft checks to further investigate and analyze each aura.'
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 7
   -
     ID: 69
     Name: 'Detect Natural Features and Hazards'
@@ -1240,7 +1240,7 @@ spells:
     Results: '1st round - You detect the presence or absence of poison, disease, hazard, or the chosen animal or plant.\n2nd round - You detect the number of poisons, diseases, hazards, or specimens of the chosen animal or plant.\n3rd round - You detect the location of each aura. For poisons and diseases, you also detect its type and strength (and this provides a +4 circumstance bonus for Healing checks to treat it), for hazards, its type, and for animals and plants, its status (healthy, diseased, bloodied, or dying).'
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 70
     Name: 'Detect Teleportation'
@@ -1258,7 +1258,7 @@ spells:
     Results: '1st round - You detect the presence or absence of teleportation effects, portals, et al.\n2nd round - You detect the number of teleportation effects in the area.\n3rd round - For teleportation effects, you can make a Spellcraft check to detect the approximate direction and distance of the teleport. For portals, you detect the special properties (triggering conditions, limitations, one- or two-way, etc) of each portal. You can make a Spellcraft check to get a rough indication of the direction and distance to a portal''s destination.'
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 71
     Name: 'Detect Thoughts'
@@ -1276,7 +1276,7 @@ spells:
     Results: '1st round - You detect the presence or absence of thinking creatures (Int 1 or higher).\n2nd round - You detect the number and approximate intelligence of thinking creatures.\n3rd round and S - If your attack beats a creature''s Will, you pick up its surface thoughts.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 72
     Name: 'Dimensional Lock'
@@ -1294,7 +1294,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 73
     Name: 'Discern Location'
@@ -1312,7 +1312,7 @@ spells:
     Results: 'S - You find the target''s location.\nF - You fail to find the target.'
     Modifiers: 'You have never seen the target: -4'
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 74
     Name: Disintegrate
@@ -1330,7 +1330,7 @@ spells:
     Results: 'If the touch or ray hits an object, the spell deals the specified damage. If it hits a creature, a further attack against Fort has the following effect:\nS - The spell deals the indicated damage.\nCS - The spell deals double damage.\nF - The spell deals only one-quarter damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 75
     Name: 'Dispel Magic'
@@ -1348,7 +1348,7 @@ spells:
     Results: 'S - You successfully dispel the targeted effect.\nF - You fail to dispel the effect.'
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 76
     Name: Displacement
@@ -1366,7 +1366,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 77
     Name: Divination
@@ -1384,7 +1384,7 @@ spells:
     Results: 'S - You gain a correct reading.\nF - You receive the "nothing" answer.\nOF - You receive a faulty reading.'
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 78
     Name: 'Divine Aura'
@@ -1402,7 +1402,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 79
     Name: 'Divine Favor'
@@ -1420,7 +1420,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 80
     Name: 'Dominate Creature'
@@ -1438,7 +1438,7 @@ spells:
     Results: 'S - The target is successfully compelled for 1 round.\nES - The target is compelled for the rest of the encounter.\nCS - The effect''s duration increases to one day.\nF - The target is unaffected.'
     Modifiers: 'Commands against target''s nature: -2\nSuicidal commands: -5'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 81
     Name: Earthquake
@@ -1456,7 +1456,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 82
     Name: 'Ectoplasmic Glob'
@@ -1474,7 +1474,7 @@ spells:
     Results: 'S - The target is successfully entangled.\nES - The target is entangled and unable to leave its square.\nF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 83
     Name: 'Empathic Transfer'
@@ -1492,7 +1492,7 @@ spells:
     Results: 'S - Damage is transferred between you and the target creature.\nF - Both you and the target are unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 86
     Name: 'Energy Resistance'
@@ -1510,7 +1510,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 7
   -
     ID: 87
     Name: Enervation
@@ -1528,7 +1528,7 @@ spells:
     Results: 'S - The target suffers the indicated damage.\nCS - The target suffers double damage.\nF - The target takes only half HP and SP damage and no other effects.\nCF - The target suffers no damage or effects.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 88
     Name: 'Enhance Mental Ability'
@@ -1546,7 +1546,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 89
     Name: 'Enhance Mobility'
@@ -1564,7 +1564,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 90
     Name: 'Enhance Physical Ability'
@@ -1582,7 +1582,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 91
     Name: 'Enhance Senses'
@@ -1600,7 +1600,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 92
     Name: Enthrall
@@ -1618,7 +1618,7 @@ spells:
     Results: 'S - You enthrall the target.\nF - You fail to enthrall the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 93
     Name: 'Evil Eye'
@@ -1636,7 +1636,7 @@ spells:
     Results: 'S - The target is panicked for 1 round, and then shaken and sickened for 1 h.\nES - You render the target comatose for the rest of the encounter.\nF - The target is sickened for the rest of the encounter.\nOF - You fail to affect the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 94
     Name: 'Extradimensional Shelter'
@@ -1654,7 +1654,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 95
     Name: Fear
@@ -1672,7 +1672,7 @@ spells:
     Results: 'S - The target suffers the chosen fear effect for 1 round.\nES - The target suffers the effect for the rest of the encounter.\nCS - The target is panicked for the rest of the encounter.\nF - The target is shaken for 1 round.\nOF - You fail to affect the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 96
     Name: 'Fire Storm'
@@ -1690,7 +1690,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - The target takes only half damage.\nCF - The target takes no damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 97
     Name: 'Fire Stride'
@@ -1708,7 +1708,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 98
     Name: Fission
@@ -1726,7 +1726,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 2
   -
     ID: 99
     Name: 'Fog Cloud'
@@ -1744,7 +1744,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 100
     Name: 'Force Field'
@@ -1762,7 +1762,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 101
     Name: 'Force Missile'
@@ -1780,7 +1780,7 @@ spells:
     Results: 'S - The missile strikes the target and deals damage.\nES - Halve target''s DR against this attack.\nCS - The missile causes double damage.\nF - The missile misses and disappears.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 102
     Name: 'Forceful Hand'
@@ -1798,7 +1798,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 103
     Name: Foresight
@@ -1816,7 +1816,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 104
     Name: Freedom
@@ -1834,7 +1834,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 105
     Name: Fusion
@@ -1852,7 +1852,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 2
   -
     ID: 106
     Name: Geas
@@ -1870,7 +1870,7 @@ spells:
     Results: 'S - The target creature is placed under a magical command.\nF - The target resists your geas.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 107
     Name: Genesis
@@ -1888,7 +1888,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 2
   -
     ID: 108
     Name: 'Ghost Sound'
@@ -1906,7 +1906,7 @@ spells:
     Results: 'S - Target does not realize that the sound is an illusion.\nF - Target realizes that the sound is an illusion.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 109
     Name: 'Glyph of Warding'
@@ -1924,7 +1924,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 110
     Name: 'Heal Wounds'
@@ -1942,7 +1942,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 111
     Name: 'History Reading'
@@ -1960,7 +1960,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 112
     Name: 'Hold Creature'
@@ -1978,7 +1978,7 @@ spells:
     Results: 'S - The target is stunned for 1 round.\nES - The target is paralyzed for the rest of the encounter.\nCS - The effect''s duration increases to one day.\nF - The target is dazed for 1 round.\nOF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 113
     Name: 'Hold Object'
@@ -1996,7 +1996,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 114
     Name: 'Holy Smite'
@@ -2014,7 +2014,7 @@ spells:
     Results: 'S - The blast deals the indicated amount of damage and dazzles the target for 1 r.\nCS - The target takes double damage and is blinded for the rest of the encounter.\nF - The target takes only half damage (and is not dazzled or blinded).\nCF - The target takes no damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 115
     Name: 'Holy Word'
@@ -2032,7 +2032,7 @@ spells:
     Results: 'S - The target suffers the effect(s) described above.\nCS - The target suffers the next worse effect.\nF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 2
   -
     ID: 116
     Name: Illuminate
@@ -2050,7 +2050,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 117
     Name: Illusion
@@ -2068,7 +2068,7 @@ spells:
     Results: 'S - The target believes the illusion.\nF - The target disbelieves the illusion.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 118
     Name: 'Illusory Disguise'
@@ -2086,7 +2086,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 119
     Name: 'Illusory Double'
@@ -2104,7 +2104,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 120
     Name: 'Illusory Terrain'
@@ -2122,7 +2122,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 121
     Name: 'Illusory Trap'
@@ -2140,7 +2140,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 122
     Name: 'Inflict Wounds'
@@ -2158,7 +2158,7 @@ spells:
     Results: 'S - You inflict wounds on the target.\nCS - The target takes double damage.\nF - The target takes only half damage.\nCF - The target takes no damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 123
     Name: Insanity
@@ -2176,7 +2176,7 @@ spells:
     Results: 'S - The target suffers the chosen effect for 1 round.\nES - The effect lasts until the end of the encounter.\nCS - The effect''s duration increases to one day.\nF - The target is dazed for 1 round.\nOF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 124
     Name: Invisibility
@@ -2194,7 +2194,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 125
     Name: 'Legend Lore'
@@ -2212,7 +2212,7 @@ spells:
     Results: 'S - You bring to mind legends about the subject.\nF - The spell fails.'
     Modifiers: 'Subject of the casting is at hand: +4\nDetailed information about subject available: +0\nOnly rumors about subject available: -4'
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 126
     Name: Levitate
@@ -2230,7 +2230,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 127
     Name: Light
@@ -2248,7 +2248,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 7
   -
     ID: 128
     Name: 'Manipulate Corpse'
@@ -2266,7 +2266,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 129
     Name: 'Manipulate Gravity'
@@ -2284,7 +2284,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 2
   -
     ID: 130
     Name: 'Manipulate Matter'
@@ -2302,7 +2302,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 131
     Name: 'Manipulate Senses'
@@ -2320,7 +2320,7 @@ spells:
     Results: 'S - The senses of the target are successfully affected.\nF - You fail to affect the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 132
     Name: 'Manipulate Time'
@@ -2338,7 +2338,7 @@ spells:
     Results: 'S - The target suffers or enjoys the chosen effect (from the start of its next turn).\nF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 133
     Name: 'Manipulate Writing'
@@ -2356,7 +2356,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 134
     Name: 'Meld with Nature'
@@ -2374,7 +2374,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 135
     Name: 'Metabolic Trance'
@@ -2392,7 +2392,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 136
     Name: 'Mind Blank'
@@ -2410,7 +2410,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 137
     Name: 'Mind Reading'
@@ -2428,7 +2428,7 @@ spells:
     Results: 'S - You successfully read the target''s mind.\nF - Target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 138
     Name: 'Mind Seed'
@@ -2446,7 +2446,7 @@ spells:
     Results: 'S - The target is successfully seeded.\nF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 2
   -
     ID: 139
     Name: 'Necrotic Mantle'
@@ -2464,7 +2464,7 @@ spells:
     Results: 'S - The target cannot regain HP, SP, PP, or ability damage.\nF - The target cannot regain HP, SP, PP, or ability damage for 1 round.\nOF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 140
     Name: Petrification
@@ -2482,7 +2482,7 @@ spells:
     Results: 'S - The target is paralyzed for 1 round.\nES - The target is turned to stone or vice versa for the spell''s duration.\nF - The target is slowed (-2 AP and -2 speed) for 1 round.\nOF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 141
     Name: 'Phase Door'
@@ -2500,7 +2500,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 142
     Name: 'Planar Binding'
@@ -2518,7 +2518,7 @@ spells:
     Results: 'S - You call and bind the extraplanar creature.\nF - You successfully call the creature but fail to contain it.\nCS - The summoned creature helps you willingly.\nOF - The target creature fails to appear.'
     Modifiers: 'Spellcraft synergy: +1 syn per 5 lvls'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 3
   -
     ID: 143
     Name: 'Planar Projection'
@@ -2536,7 +2536,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 2
   -
     ID: 144
     Name: 'Planar Travel'
@@ -2554,7 +2554,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 145
     Name: 'Power Word'
@@ -2572,7 +2572,7 @@ spells:
     Results: 'S - The target is affected for 1 round (death effect causes paralysis).\nES - You successfully affect the target for the specified duration.\nF - You fail to affect the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 2
   -
     ID: 146
     Name: 'Prismatic Attack'
@@ -2590,7 +2590,7 @@ spells:
     Results: 'S - The target is blinded for 1 round and suffers the reduced effect described above.\nES - The creature in question is blinded for the rest of the encounter and suffers full effect.\nCS - The target suffers double damage.\nF - The creature is dazzled for 1 round.\nCF - The creature is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 2
   -
     ID: 147
     Name: 'Prismatic Barrier'
@@ -2608,7 +2608,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 2
   -
     ID: 148
     Name: 'Produce Flame'
@@ -2626,7 +2626,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 149
     Name: 'Protection from Divination'
@@ -2644,7 +2644,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 150
     Name: 'Protection from Scrying'
@@ -2662,7 +2662,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 151
     Name: 'Psychic Chirurgery'
@@ -2680,7 +2680,7 @@ spells:
     Results: 'S - You successfully affect the target.\nF - You fail to affect the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 3
   -
     ID: 152
     Name: Regeneration
@@ -2698,7 +2698,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 153
     Name: Reincarnate
@@ -2716,7 +2716,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 154
     Name: 'Repair Object'
@@ -2734,7 +2734,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 155
     Name: 'Repel Objects'
@@ -2752,7 +2752,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 156
     Name: 'Resize Animal'
@@ -2770,7 +2770,7 @@ spells:
     Results: 'S - You can change the target''s size.\nF - The target resists.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 157
     Name: 'Resize Object'
@@ -2788,7 +2788,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 158
     Name: 'Resize Creature'
@@ -2806,7 +2806,7 @@ spells:
     Results: 'S - You can change the target''s size.\nF - The target resists.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 159
     Name: Resurrection
@@ -2824,7 +2824,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 160
     Name: Sanctuary
@@ -2842,7 +2842,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 161
     Name: Scrying
@@ -2860,7 +2860,7 @@ spells:
     Results: 'S - You successfully create the sensor in the desired location.\nF - You fail to locate the target (and the sensor is not created). Further tries by you to scry on the same target during the next 24 hours automatically fail.'
     Modifiers: 'If you try to scry on an individual, use the following modifiers:\nNo knowledge: -10\nSecond-hand knowledge: -5\nFirst-hand knowledge: +0\nLikeness or picture of subject: +2\nPossession or garment: +4\nBody part, hair, nail, etc.: +10\nFamiliar: +5'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 162
     Name: 'Secure Shelter'
@@ -2878,7 +2878,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 7
   -
     ID: 163
     Name: 'Sense Link'
@@ -2896,7 +2896,7 @@ spells:
     Results: 'S - You successfully link your senses with those of the target.\nF - You fail to affect the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 164
     Name: 'Shadow Creature'
@@ -2914,7 +2914,7 @@ spells:
     Results: 'S - The shadow creatures have full effect against the target.\nF - The shadow creatures have only their limited effect against the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 165
     Name: 'Shadow Evocation'
@@ -2932,7 +2932,7 @@ spells:
     Results: 'S - The target suffers full effect from the illusion.\nF - The target suffers only the reduced effect.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 166
     Name: Shapechange
@@ -2950,7 +2950,7 @@ spells:
     Results: 'S - The target is stunned for 1 round (while fighting the transformation).\nES - You successfully polymorph the target.\nF - The target resists.'
     Modifiers: 'Potentially fatal shapechange of unwilling target: -4'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 167
     Name: 'Slay Living'
@@ -2968,7 +2968,7 @@ spells:
     Results: 'S - The target creature suffers 10d6 HP of necrotic damage.\nES - The target creature dies.\nF - The target creature suffers 5d6 HP of necrotic damage.\nCF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 3
   -
     ID: 168
     Name: Sleep
@@ -2986,7 +2986,7 @@ spells:
     Results: 'S - The target is dazed for 1 round.\nES - You cause the target to fall asleep.\nCS - The effect''s duration increases by one step for free.\nF - The target becomes drowsy and inattentive, taking a -5 penalty on Perception checks for the rest of the encounter.\nOF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 169
     Name: 'Snow Storm'
@@ -3004,7 +3004,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 170
     Name: 'Sonic Disruption'
@@ -3022,7 +3022,7 @@ spells:
     Results: 'S - You cause sonic damage to the target.\nCS - The target takes double damage.\nF - The target takes half damage.\nCF - The target takes no damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 171
     Name: 'Split Personality'
@@ -3040,7 +3040,7 @@ spells:
     Results: 'S - You split the target''s personality into two.\nF - You fail to affect the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 172
     Name: 'Summon Animal or Plant'
@@ -3058,7 +3058,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 173
     Name: 'Summon Elemental'
@@ -3076,7 +3076,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 174
     Name: 'Summon Outsider'
@@ -3094,7 +3094,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 175
     Name: 'Summon Tentacles'
@@ -3112,7 +3112,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 176
     Name: 'Summon Vermin'
@@ -3130,7 +3130,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 177
     Name: Telekinesis
@@ -3148,7 +3148,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 178
     Name: Telepathy
@@ -3166,7 +3166,7 @@ spells:
     Results: null
     Modifiers: 'You know the target well: +5\nYou have met the target before: +0\nYou have only heard of the target: -5\nYou know nothing about the target: -10\nLikeness or picture of target: +2\nPossession or garment of target: +4\nBody part, lock of hair, etc. of target: +10'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 179
     Name: Teleport
@@ -3184,7 +3184,7 @@ spells:
     Results: 'If a target is unwilling, an attack against Will is required:\nS - You fail to teleport the target but can choose to bodily scramble it for 5d6 HP of damage.\nES - You can either teleport the target or bodily scramble it for 10d6 HP of damage.\nF - You fail to affect the target\nThe result of the spellcasting check:\nS - You teleport the target to the desired location.\nF - You teleport the target to the wrong destination. Roll 1d10 for specific result: 1-5 - Off target by 1d10x10% of the total distance; 6-8 - Target ends up in similar area; 9-10 - Target(s) take 1d10 HP of damage and roll again for actual destination.\nOF - The teleportation simply fails.'
     Modifiers: 'Very familiar destination: +0\nStudied destination carefully: -2\nSeen destination casually: -4\nViewed destination once: -6'
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 4
   -
     ID: 180
     Name: 'Teleportation Circle'
@@ -3202,7 +3202,7 @@ spells:
     Results: 'S - You create a teleportation circle to the correct destination.\nF - You create a teleportation circle, but you miss the destination by 1d4x10%.\nOF - You fail to create the teleportation circle.'
     Modifiers: 'Very familiar destination: +0\nStudied destination carefully: -2\nSeen destination casually: -4\nViewed destination once: -6'
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 181
     Name: 'Touch of Enfeeblement'
@@ -3220,7 +3220,7 @@ spells:
     Results: 'S - The target suffers damage to the chosen ability scores.\nCS - The target takes double damage.\nF - The target suffers no damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 182
     Name: 'Touch of Idiocy'
@@ -3238,7 +3238,7 @@ spells:
     Results: 'S - The target suffers damage to the chosen ability scores.\nCS - The target takes double damage.\nF - The target suffers no damage.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 5
   -
     ID: 183
     Name: 'Toughen Skin'
@@ -3256,7 +3256,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 184
     Name: 'Transfer Soul'
@@ -3274,7 +3274,7 @@ spells:
     Results: 'S - The target is stunned for 1 round (while fighting the intruding soul).\nES - The target is affected.\nF - The target is unaffected.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 3
   -
     ID: 185
     Name: 'Transform Seeds'
@@ -3292,7 +3292,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 186
     Name: 'Transmute Metal'
@@ -3310,7 +3310,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 187
     Name: 'Transmute Rock'
@@ -3328,7 +3328,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 188
     Name: 'Transmute Wood'
@@ -3346,7 +3346,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 189
     Name: Ventriloquism
@@ -3364,7 +3364,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 190
     Name: 'Wall of Energy'
@@ -3382,7 +3382,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 191
     Name: 'Wall of Thorns'
@@ -3400,7 +3400,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 192
     Name: 'Zone of Revelation'
@@ -3418,7 +3418,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 193
     Name: 'Touch of Acid'
@@ -3436,7 +3436,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - You hit with a glancing touch that deals half damage\nEF - You miss the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 194
     Name: 'Touch of Death'
@@ -3454,7 +3454,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage and cannot regain HP, SP, or PP for 1 round.\nF - You hit with a glancing touch that deals half damage\nEF - You miss the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 195
     Name: 'Touch of Fire'
@@ -3472,7 +3472,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - You hit with a glancing touch that deals half damage\nEF - You miss the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 196
     Name: 'Touch of Ice'
@@ -3490,7 +3490,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - You hit with a glancing touch that deals half damage\nEF - You miss the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 197
     Name: 'Touch of Lightning'
@@ -3508,7 +3508,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - You hit with a glancing touch that deals half damage\nEF - You miss the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 7
   -
     ID: 198
     Name: 'Touch of Radiance'
@@ -3526,7 +3526,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - You hit with a glancing touch that deals half damage\nEF - You miss the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 199
     Name: 'Touch of Sound'
@@ -3544,7 +3544,7 @@ spells:
     Results: 'S - The target takes the indicated amount of damage.\nCS - The target takes double damage.\nF - You hit with a glancing touch that deals half damage\nEF - You miss the target.'
     Modifiers: null
     APBoost: '+1 attack bonus per AP'
-    Frequency: null
+    Frequency: 6
   -
     ID: 200
     Name: 'Silver Storm'
@@ -3562,7 +3562,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 201
     Name: 'Enchant Armor'
@@ -3580,7 +3580,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 202
     Name: 'Enchant Focus'
@@ -3598,7 +3598,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 203
     Name: 'Enchant Shield'
@@ -3616,7 +3616,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 7
   -
     ID: 204
     Name: 'Enchant Weapon'
@@ -3634,7 +3634,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 205
     Name: Contingency
@@ -3652,7 +3652,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 4
   -
     ID: 206
     Name: Trigger
@@ -3670,7 +3670,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 207
     Name: 'Force Armor'
@@ -3688,7 +3688,7 @@ spells:
     Results: null
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 6
   -
     ID: 208
     Name: 'Analyze Creature'
@@ -3706,7 +3706,7 @@ spells:
     Results: "S - You identify the creature's race, templates, class, and approximate CL.\\nES - You also discover the target's resistances, immunities, vulnerabilities, and special abilities.\\nCS - You discover all base characteristics of the target's race and templates.\\nF - You identify the target's race but nothing else."
     Modifiers: null
     APBoost: null
-    Frequency: null
+    Frequency: 5
 spelloptions:
   -
     ID: 1

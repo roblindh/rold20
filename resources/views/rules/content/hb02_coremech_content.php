@@ -297,7 +297,7 @@
     <dfn>DR = Natural DR + armor bonus + cover bonus + other modifiers</dfn>
 </p>
 <p>
-    DR provided by armor and cover applies separately and takes effect alongside innate or natural DR. Natural DR is determined by race and can be further augmented by templates, feats, or magic.
+    DR provided by armor and cover applies separately and takes effect alongside innate or natural DR. Natural DR is determined by race and can be further augmented by templates, special abilities, or magic.
 </p>
 <p>
     <em>Critical Protection:</em> In addition to mitigating damage, DR directly reinforces protection against critical hits targeting DeC by adding directly to Critical Hit Resistance (see below).
@@ -446,7 +446,7 @@
     <li><strong>Burrowing:</strong> Movement through soil or earth based on Ground speed (typically requiring higher MP per square). Burrowing does not permit charging, running, or sprinting, and leaves behind no usable tunnel unless explicitly specified.</li>
 </ul>
 <p>
-    <em id="AdjustedSpeed">Adjusted Speed (Spd):</em> A creature's base speed after applying modifiers from encumbrance class, worn armor, feats, skills, and magical enhancements.
+    <em id="AdjustedSpeed">Adjusted Speed (Spd):</em> A creature's base speed after applying modifiers from encumbrance class, worn armor, skills, and magical enhancements.
 </p>
 <p>
     <em id="MovementPoints">Movement Points (MP):</em> At the start of each round, a creature receives MP equal to its adjusted speed for its current environment. MP is expended to execute tactical movement actions. In addition, a character can convert Action Points (AP) into additional MP on a 1-for-1 basis, up to a maximum equal to their adjusted speed per round.
@@ -634,9 +634,8 @@
 
 <h4 id="Initiative">Initiative</h4>
 <p>
-    <em>Initiative modifier (Init):</em> This is the modifier applied to a creature’s 
-    <a href="/rules/combat#Initiative">initiative rolls</a>.
-    Such rolls are used to determine the order in which creatures get to act during an encounter.
+    <em>Initiative Modifier (Init):</em> Applied directly to a creature's 
+    <a href="/rules/combat#Initiative">initiative rolls</a> to determine turn order during tactical encounters and combat scenes.
 </p>
 <p>
     <dfn>Init = Dex mod + other modifiers</dfn>
@@ -644,120 +643,104 @@
 
 <h4 id="FatePts">Fate Points</h4>
 <p>
-    <em>Fate Points (FP):</em> These are points that can be used in a situation where all else has failed.
-    They are possessed by individuals that have important destinies, more specifically the player characters
-    and their key opponents. Fate points can be used as follows:
+    <em>Fate Points (FP):</em> Rare heroic reserves granted to individuals bound for pivotal destinies—primarily player characters and their greatest nemeses. Fate points represent dramatic luck, divine favor, or sheer heroic determination, allowing a creature to avert disaster when all else fails:
 </p>
-<ul>
-    <li>One point can change any failed check to a basic success.</li>
-    <li>One point can change an opponent’s successful check into a failure.</li>
-    <li>One point can change a recent death (caused by HP loss) into unconsciousness (-1 HP).</li>
-    <li>One point lets a character recover immediately from any single condition (e.g. compelled or stunned).</li>
-    <li>Two points can be used to provide a miraculous escape from an otherwise certain death.
-        The DM dictates the specifics but should not give out any bonuses other than mere survival.
-        The character can still lose treasured items or suffer some severe and long-lasting injury.</li>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Avert Failure (1 FP):</strong> Converts any failed check into a basic success.</li>
+    <li><strong>Thwart Adversary (1 FP):</strong> Converts an opponent's successful check or attack into a failure.</li>
+    <li><strong>Defy Death (1 FP):</strong> Converts lethal Hit Point loss into unconsciousness at &minus;1 HP.</li>
+    <li><strong>Overcome Affliction (1 FP):</strong> Immediately ends any single ongoing condition (such as <em>compelled</em>, <em>paralyzed</em>, or <em>stunned</em>).</li>
+    <li><strong>Miraculous Escape (2 FP):</strong> Grants miraculous survival against an otherwise inescapable death (such as falling into molten lava or being crushed beneath a collapsing mountain). The DM adjudicates the exact escape, ensuring survival without granting unearned boons; the character may still lose treasured possessions or suffer lasting physical scars.</li>
 </ul>
 <p>
-    Fate points are not automatically regenerated. Once used, they are gone forever.
-    Nevertheless, the DM should sometimes reward characters with new fate points,
-    but only when they have accomplished something extraordinary.
+    Fate points do not replenish automatically; once expended, they are gone permanently. DMs should award new Fate Points sparingly as momentous rewards for extraordinary achievements, heroic self-sacrifice, or resolving major narrative milestones.
 </p>
 
 <h4 id="CharDependencies">Characteristics Dependency Chart</h4>
 <p>
-    The following figure shows the characteristics that are common to most creatures. It also shows their dependencies and relationships,
-    with the most basic and constant characteristics at the top. Whenever one of your characteristics gets updated,
-    you can use the chart to determine which other characteristics will be indirectly affected by the change.
+    The diagram below illustrates the foundational characteristics shared by most creatures, along with their cascading dependencies and relationships. Primary, static attributes appear at the top, flowing downward into derived stats. When an underlying attribute changes (such as an ability score increase or size modification), use this chart to identify all affected downstream values.
 </p>
 <div class="my-4 overflow-x-auto">
     <img src="/images/Characteristics.gif" title="Characteristics and Modifiers" alt="Characteristics Dependencies and Effects" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
 </div>
 <p>
-    Note that spells and magic items can affect almost any characteristic, and this is not shown in the chart above.
+    <em>Note:</em> Supernatural powers, spells, and magical items can directly modify almost any characteristic, bypassing the standard derivation paths shown above.
 </p>
 
 <h3 id="Actions">Actions and Action Checks</h3>
 <p>
-    <a href="/reference/actions">Actions</a> 
-    cover everything that a character can do. Some actions are very simple to perform,
-    such as walking across a room or shouting a warning to a friend.
-    Unless there are extreme circumstances (walking across a slippery floor during an earthquake, for example),
-    such actions are automatically successful. Other actions, such as hitting a target with a thrown dagger,
-    climbing a cliff wall, or deciphering a tome written in an ancient language, can be more or less difficult,
-    and they always carry a chance of failure. Those actions will typically require a die roll to determine the level of success or failure.
+    <a href="/reference/actions">Actions</a> encompass every activity a character or creature can undertake. 
+    Routine tasks—such as striding across a quiet room or calling out a warning—succeed automatically under ordinary circumstances. 
+    Challenging endeavors carrying a meaningful risk of failure—such as striking a dodging adversary, scaling a rain-slicked cliff, or deciphering an ancient runic dialect—require an action check to determine the degree of success or failure.
 </p>
 
 <h4 id="ActionAccess">Access to Actions</h4>
 <p>
-    Many actions can be attempted by practically any character or creature, regardless of class or skill.
-    In other words, such actions can be used even if the character has 0 skill levels in the action's associated skill (if any).
-    These actions are designated with the [Untrained] descriptor.
+    <em>Untrained Actions:</em> Many fundamental actions can be attempted by any creature, even with 0 ranks in the associated skill. These actions bear the <code>[Untrained]</code> descriptor.
 </p>
 <p>
-    Actions that do not allow untrained use can only be used if the character has explicitly gained access to the action,
-    usually by belonging to a certain race or by having enough levels in the action's associated skill.
+    <em>Trained Actions:</em> Actions lacking the <code>[Untrained]</code> descriptor require specialized training. A creature must explicitly gain access to the action through racial traits, class features, or meeting prerequisite skill ranks.
 </p>
 <p>
-    For skills that have specializations, the following rules determine access to and usage of actions.
-    For an action that can be used untrained,
-    the character counts half his actual skill levels when using an untrained specialization.
-    For an action that cannot be used untrained, the character can only attempt actions with specializations that he knows.
+    <em>Specialized Skills:</em> For skills divided into distinct specializations:
 </p>
+<ul class="list-disc pl-6 space-y-1">
+    <li>For an <strong>untrained action</strong>, a character applies half their actual skill ranks when performing the action with an untrained specialization.</li>
+    <li>For a <strong>trained action</strong>, a character may only perform the action using specializations they have explicitly learned.</li>
+</ul>
 
 <h4 id="ActionChecks">Performing Action Checks</h4>
 <p>
-    The core mechanism for resolving any action is known as a d20 check and is quite simple:
-    roll an open-ended d20, add the appropriate modifiers, and compare the result against a target number
-    (typically a difficulty class, defense score, or an opposing action check).
-    If the total is equal to or higher than the target number, the action succeeds. If it is lower, the action fails.
+    The universal mechanic for resolving actions is the <strong>d20 check</strong>: roll an open-ended d20 (<code>d20!</code>), add applicable modifiers, and compare the final total against a target threshold (a Difficulty Class, a Defense score, or an opposing check). If the total meets or exceeds the target, the action succeeds; if it falls short, the action fails.
 </p>
 <p>
-    Whenever an action is to be performed, follow these steps:
+    To execute an action, resolve the following sequence:
 </p>
-<ol>
-    <li>Select the action you want to perform (and make sure you have the necessary skills and skill levels).</li>
-    <li>Select any variable options and parameters (such as range, target, etc).</li>
-    <li>Start the action.</li>
-    <li>At the end of the activation time, roll the d20 action check (if any) and apply modifiers.</li>
-    <ul>
-        <li>If the action has multiple mandatory skills, use the highest skill level for the check.</li>
-        <li>If the action takes an extended time to perform, don't apply modifiers that have shorter durations.</li>
-        <li>If you are distracted or hurt during the activation time, additional action checks will often be required
-        to maintain concentration and complete the action.</li>
-    </ul>
-    <li>Deduct costs (in SP, PP, money, etc).</li>
-    <li>Determine and apply the results and effects.</li>
+<ol class="list-decimal pl-6 space-y-2">
+    <li><strong>Declare Action:</strong> Select the action and verify that all prerequisites, required skills, and equipment are satisfied.</li>
+    <li><strong>Set Parameters:</strong> Choose all variable options (e.g., target, range, allocated AP/MP, spell enhancements).</li>
+    <li><strong>Initiate Activation:</strong> Begin the action. If the action has an extended activation time, maintain focus throughout:
+        <ul class="list-disc pl-6 mt-1 space-y-1 text-sm text-slate-700">
+            <li>If an action requires multiple mandatory skills, use the highest skill rank for the check.</li>
+            <li>Temporary modifiers with durations shorter than the action's activation time do not apply.</li>
+            <li>Taking damage or suffering distractions during activation requires a Concentration check to avoid losing the action.</li>
+        </ul>
+    </li>
+    <li><strong>Roll Action Check:</strong> At the completion of activation time, roll <code>d20!</code> and apply all relevant modifiers.</li>
+    <li><strong>Deduct Costs:</strong> Expend required resources (AP, MP, SP, PP, ammunition, or monetary components).</li>
+    <li><strong>Resolve Outcome:</strong> Determine degrees of success or failure and apply the resulting mechanical and narrative effects.</li>
 </ol>
-<p>
-    Certain types of d20 checks are so common that they have their own names, as shown here:
+<p class="mt-4">
+    Common d20 check types:
 </p>
-<dl>
-    <dt>d20 check</dt>
-    <dd>Roll an open-ended d20, add modifiers, and compare the result against the target number.</dd>
-    <dt>Skill check</dt>
-    <dd>d20 check using a skill against a difficulty class (DC) or opposing skill.</dd>
-    <dt>Ability check</dt>
-    <dd>d20 check using just an ability mod against a DC.</dd>
-    <dt>Attack roll</dt>
-    <dd>d20 check using attack modifiers against a defense.</dd>
-    <dt>Supernatural activation check (also known as a spellcasting check)</dt>
-    <dd>A skill check specifically used to cast a spell (or activate a supernatural ability).</dd>
-</dl>
-<p>
-    A few example actions and their d20 checks:
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-3">
+    <div class="bg-slate-50 border border-slate-200 rounded p-3 text-xs">
+        <strong class="text-slate-900 block mb-1">🎲 Standard d20 Check</strong>
+        Roll <code>d20!</code> + relevant modifiers against a target difficulty or threshold.
+    </div>
+    <div class="bg-slate-50 border border-slate-200 rounded p-3 text-xs">
+        <strong class="text-slate-900 block mb-1">⚔️ Attack Roll</strong>
+        Roll <code>d20!</code> + attack modifiers against target's active or passive DeC, Fort, Ref, or Will.
+    </div>
+    <div class="bg-slate-50 border border-slate-200 rounded p-3 text-xs">
+        <strong class="text-slate-900 block mb-1">🛠️ Skill Check</strong>
+        Roll <code>d20!</code> + skill ranks + ability modifier against a Difficulty Class (DC) or opposed skill.
+    </div>
+    <div class="bg-slate-50 border border-slate-200 rounded p-3 text-xs">
+        <strong class="text-slate-900 block mb-1">✨ Supernatural Activation Check</strong>
+        A specialized skill check used to weave spells, manifest powers, or trigger supernatural abilities.
+    </div>
+</div>
+<p class="mt-2">
+    <em>Representative Action Checks:</em>
 </p>
-<dl>
-    <dt>Climb a wall</dt>
-    <dd>d20! + Athletics skill + Str mod + other mods against the wall’s DC.</dd>
-    <dt>Sneaking</dt>
-    <dd>d20! + Stealth skill + Dex mod + other mods against opposing 10 + Perception skill + Wis mod + other mods.</dd>
-    <dt>Break door</dt>
-    <dd>d20! + Brawling skill + Str mod against door’s DC.</dd>
-    <dt>Weapon attack</dt>
-    <dd>d20! + ability mod + weapon skill + other mods against DeC.</dd>
-    <dt>Magic attack</dt>
-    <dd>d20! + ability mod + attack skill + other mods against appropriate defense.</dd>
-</dl>
+<ul class="list-disc pl-6 space-y-1 text-sm">
+    <li><strong>Scaling a Cliff:</strong> <code>d20! + Athletics rank + Str mod + mods vs. Surface DC</code></li>
+    <li><strong>Stealth &amp; Infiltration:</strong> <code>d20! + Stealth rank + Dex mod + mods vs. Opposing Passive Perception (10 + rank + Wis mod)</code></li>
+    <li><strong>Forcing a Barred Gate:</strong> <code>d20! + Brawling rank + Str mod + mods vs. Gate Structural DC</code></li>
+    <li><strong>Melee / Ranged Attack:</strong> <code>d20! + Weapon Skill rank + Ability mod + mods vs. Target DeC</code></li>
+    <li><strong>Offensive Spell Attack:</strong> <code>d20! + Magic Skill rank + Ability mod + mods vs. Target Defense (Fort/Ref/Will/DeC)</code></li>
+</ul>
 
 <h4 id="OpenEndedChecks">Open-Ended d20 Checks</h4>
 <p>

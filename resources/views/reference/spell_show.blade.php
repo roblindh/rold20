@@ -22,7 +22,7 @@
     </div>
 
     <!-- Quick Stats Grid -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
         <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
             <div class="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Action Time</div>
             <div class="text-sm font-bold text-slate-900 mt-1 font-mono">{!! \App\Helpers\RolLink::formatText($spell->ActionTime ?? '7 AP') !!}</div>
@@ -38,6 +38,24 @@
         <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
             <div class="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Duration</div>
             <div class="text-sm font-bold text-slate-900 mt-1">{!! \App\Helpers\RolLink::formatText($spell->Duration ?? 'Instantaneous') !!}</div>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+            <div class="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Frequency / Rarity</div>
+            <div class="text-sm font-bold text-slate-900 mt-1">
+                {{ $spell->Frequency ? $spell->Frequency . '/9' : '5/9' }}
+                <span class="text-[11px] font-normal text-slate-500">({{ match((int)($spell->Frequency ?? 5)) {
+                    9 => 'Ubiquitous',
+                    8 => 'Very Common',
+                    7 => 'Common',
+                    6 => 'Fairly Common',
+                    5 => 'Uncommon',
+                    4 => 'Rare',
+                    3 => 'Very Rare',
+                    2 => 'Extremely Rare',
+                    1 => 'Unique',
+                    default => 'Average',
+                } }})</span>
+            </div>
         </div>
         @if(!empty($spell->Target))
             <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">

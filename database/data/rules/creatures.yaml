@@ -2219,7 +2219,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -2449,7 +2449,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -2541,7 +2541,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -2587,7 +2587,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -2633,7 +2633,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -2725,7 +2725,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -2817,7 +2817,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -2863,7 +2863,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -2909,7 +2909,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -3093,7 +3093,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -3185,7 +3185,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -3277,7 +3277,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -3323,7 +3323,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -3415,7 +3415,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -3461,7 +3461,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -3553,7 +3553,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -3691,7 +3691,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -3783,7 +3783,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -3829,7 +3829,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -3921,7 +3921,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -3967,7 +3967,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -4013,7 +4013,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -4105,7 +4105,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -4151,7 +4151,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -4197,7 +4197,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -4289,7 +4289,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -4335,7 +4335,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -4381,7 +4381,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -4473,7 +4473,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -4519,7 +4519,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -4565,7 +4565,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -4657,7 +4657,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -4749,7 +4749,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -4795,7 +4795,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -5623,7 +5623,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -6175,7 +6175,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -6221,7 +6221,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -6267,7 +6267,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -6313,7 +6313,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -6405,7 +6405,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -6451,7 +6451,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -6681,7 +6681,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -6727,7 +6727,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -6865,7 +6865,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -6911,7 +6911,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -6957,7 +6957,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -7003,7 +7003,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -7049,7 +7049,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -7095,7 +7095,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 3
     Environment: null
     Feeding: null
     Treasure: null
@@ -7141,7 +7141,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -7187,7 +7187,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -7325,7 +7325,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -7371,7 +7371,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -7417,7 +7417,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -7877,7 +7877,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -8199,7 +8199,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -8245,7 +8245,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -8429,7 +8429,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -8475,7 +8475,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -8843,7 +8843,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -8889,7 +8889,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -8981,7 +8981,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -9027,7 +9027,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -9073,7 +9073,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9119,7 +9119,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9165,7 +9165,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9211,7 +9211,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9349,7 +9349,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9395,7 +9395,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -9441,7 +9441,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9487,7 +9487,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9533,7 +9533,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9625,7 +9625,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -9671,7 +9671,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9717,7 +9717,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9809,7 +9809,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9855,7 +9855,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9901,7 +9901,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9947,7 +9947,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -9993,7 +9993,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -10039,7 +10039,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -10085,7 +10085,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -10131,7 +10131,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -10177,7 +10177,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -10223,7 +10223,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -10269,7 +10269,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -10315,7 +10315,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -10361,7 +10361,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -10545,7 +10545,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -10591,7 +10591,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -10637,7 +10637,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -10683,7 +10683,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -10775,7 +10775,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -11465,7 +11465,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -11511,7 +11511,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -11557,7 +11557,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 3
     Environment: null
     Feeding: null
     Treasure: null
@@ -11603,7 +11603,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -11649,7 +11649,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 2
     Environment: null
     Feeding: null
     Treasure: null
@@ -11741,7 +11741,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -11787,7 +11787,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -11833,7 +11833,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -11879,7 +11879,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 2
     Environment: null
     Feeding: null
     Treasure: null
@@ -11971,7 +11971,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -12017,7 +12017,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -12063,7 +12063,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -12109,7 +12109,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -12155,7 +12155,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -12385,7 +12385,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 3
     Environment: null
     Feeding: null
     Treasure: null
@@ -12477,7 +12477,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -12523,7 +12523,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -12569,7 +12569,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -12615,7 +12615,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -12661,7 +12661,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -12707,7 +12707,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -12799,7 +12799,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -12845,7 +12845,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -12891,7 +12891,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -12937,7 +12937,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -12983,7 +12983,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -13029,7 +13029,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -13075,7 +13075,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -13121,7 +13121,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -13213,7 +13213,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 2
     Environment: null
     Feeding: null
     Treasure: null
@@ -13259,7 +13259,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -13305,7 +13305,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -13351,7 +13351,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -13397,7 +13397,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -13443,7 +13443,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -13489,7 +13489,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -13627,7 +13627,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -13719,7 +13719,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -13903,7 +13903,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -13949,7 +13949,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -14133,7 +14133,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -14179,7 +14179,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -14225,7 +14225,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -14271,7 +14271,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 3
     Environment: null
     Feeding: null
     Treasure: null
@@ -14317,7 +14317,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -14363,7 +14363,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -14409,7 +14409,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -19745,7 +19745,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -19791,7 +19791,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -19837,7 +19837,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -19975,7 +19975,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -20021,7 +20021,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 3
     Environment: null
     Feeding: null
     Treasure: null
@@ -20067,7 +20067,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -20159,7 +20159,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -20251,7 +20251,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -20297,7 +20297,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -20343,7 +20343,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -20389,7 +20389,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -20435,7 +20435,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -20481,7 +20481,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -20527,7 +20527,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -20573,7 +20573,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -20619,7 +20619,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -20665,7 +20665,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -20711,7 +20711,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -20757,7 +20757,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -20803,7 +20803,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -20849,7 +20849,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -20895,7 +20895,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 3
     Environment: null
     Feeding: null
     Treasure: null
@@ -20941,7 +20941,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -20987,7 +20987,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 3
     Environment: null
     Feeding: null
     Treasure: null
@@ -21033,7 +21033,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 6
     Environment: null
     Feeding: null
     Treasure: null
@@ -21079,7 +21079,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 4
     Environment: null
     Feeding: null
     Treasure: null
@@ -21125,7 +21125,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -21171,7 +21171,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 3
     Environment: null
     Feeding: null
     Treasure: null
@@ -21217,7 +21217,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -21263,7 +21263,7 @@ creatures:
     Alignment: null
     Morale: null
     Organization: null
-    Frequency: null
+    Frequency: 5
     Environment: null
     Feeding: null
     Treasure: null
@@ -21300,7 +21300,7 @@ templates:
     Appearance: 'Usually have some trait from their bloodline, such as silver hair, golden eyes, or an unusual birthmark.'
     Personality: Righteous
     Alignment: 'Usually G'
-    Frequency: null
+    Frequency: 5
   -
     ID: 3
     Name: 'Elemental Blood, Air'
@@ -21330,7 +21330,7 @@ templates:
     Appearance: 'Blueish skin or hair'
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 4
     Name: 'Elemental Blood, Earth'
@@ -21360,7 +21360,7 @@ templates:
     Appearance: 'Earthlike skin, rough features, dark eyes'
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 5
     Name: 'Elemental Blood, Fire'
@@ -21390,7 +21390,7 @@ templates:
     Appearance: 'Dark skin, red hair, glowing eyes'
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 6
     Name: 'Elemental Blood, Water'
@@ -21420,7 +21420,7 @@ templates:
     Appearance: 'Lightly scaled skin, clammy skin, blue-green hair'
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 7
     Name: 'Fiendish Blood'
@@ -21450,7 +21450,7 @@ templates:
     Appearance: 'Usually have some trait from their bloodline, such as pointed teeth, red eyes, or small horns.'
     Personality: 'Many are evil and untrustworthy'
     Alignment: 'Usually E'
-    Frequency: null
+    Frequency: 5
   -
     ID: 8
     Name: 'Half-Dragon, Black'
@@ -21480,7 +21480,7 @@ templates:
     Appearance: 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\nAppearance will reflect the color of the dragon you share a bloodline with.'
     Personality: null
     Alignment: 'Often E'
-    Frequency: null
+    Frequency: 3
   -
     ID: 9
     Name: 'Half-Dragon, Blue'
@@ -21510,7 +21510,7 @@ templates:
     Appearance: 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\nAppearance will reflect the color of the dragon you share a bloodline with.'
     Personality: null
     Alignment: 'Often E'
-    Frequency: null
+    Frequency: 3
   -
     ID: 10
     Name: 'Half-Dragon, Green'
@@ -21540,7 +21540,7 @@ templates:
     Appearance: 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\nAppearance will reflect the color of the dragon you share a bloodline with.'
     Personality: null
     Alignment: 'Often E'
-    Frequency: null
+    Frequency: 3
   -
     ID: 11
     Name: 'Half-Dragon, Red'
@@ -21570,7 +21570,7 @@ templates:
     Appearance: 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\nAppearance will reflect the color of the dragon you share a bloodline with.'
     Personality: null
     Alignment: 'Often E'
-    Frequency: null
+    Frequency: 3
   -
     ID: 12
     Name: 'Half-Dragon, White'
@@ -21600,7 +21600,7 @@ templates:
     Appearance: 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\nAppearance will reflect the color of the dragon you share a bloodline with.'
     Personality: null
     Alignment: 'Often E'
-    Frequency: null
+    Frequency: 3
   -
     ID: 13
     Name: 'Half-Dragon, Brass'
@@ -21630,7 +21630,7 @@ templates:
     Appearance: 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\nAppearance will reflect the color of the dragon you share a bloodline with.'
     Personality: null
     Alignment: 'Often G'
-    Frequency: null
+    Frequency: 3
   -
     ID: 14
     Name: 'Half-Dragon, Bronze'
@@ -21660,7 +21660,7 @@ templates:
     Appearance: 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\nAppearance will reflect the color of the dragon you share a bloodline with.'
     Personality: null
     Alignment: 'Often G'
-    Frequency: null
+    Frequency: 3
   -
     ID: 15
     Name: 'Half-Dragon, Copper'
@@ -21690,7 +21690,7 @@ templates:
     Appearance: 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\nAppearance will reflect the color of the dragon you share a bloodline with.'
     Personality: null
     Alignment: 'Often G'
-    Frequency: null
+    Frequency: 3
   -
     ID: 16
     Name: 'Half-Dragon, Gold'
@@ -21720,7 +21720,7 @@ templates:
     Appearance: 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\nAppearance will reflect the color of the dragon you share a bloodline with.'
     Personality: null
     Alignment: 'Often G'
-    Frequency: null
+    Frequency: 3
   -
     ID: 17
     Name: 'Half-Dragon, Silver'
@@ -21750,7 +21750,7 @@ templates:
     Appearance: 'Scaled skin, elongated facial features, reptilian eyes, sharp teeth and claws.\nAppearance will reflect the color of the dragon you share a bloodline with.'
     Personality: null
     Alignment: 'Often G'
-    Frequency: null
+    Frequency: 3
   -
     ID: 19
     Name: Celestial
@@ -21780,7 +21780,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: 'Always G'
-    Frequency: null
+    Frequency: 4
   -
     ID: 20
     Name: Fiendish
@@ -21810,7 +21810,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: 'Always E'
-    Frequency: null
+    Frequency: 4
   -
     ID: 22
     Name: Ghost
@@ -21840,7 +21840,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 3
   -
     ID: 24
     Name: Lich
@@ -21870,7 +21870,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: 'Always E'
-    Frequency: null
+    Frequency: 2
   -
     ID: 25
     Name: 'Lycanthrope, Werebear'
@@ -21900,7 +21900,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: 'Often LG'
-    Frequency: null
+    Frequency: 4
   -
     ID: 26
     Name: 'Lycanthrope, Wereboar'
@@ -21930,7 +21930,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: 'Often N'
-    Frequency: null
+    Frequency: 4
   -
     ID: 27
     Name: 'Lycanthrope, Wererat'
@@ -21960,7 +21960,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: 'Often CE'
-    Frequency: null
+    Frequency: 4
   -
     ID: 28
     Name: 'Lycanthrope, Weretiger'
@@ -21990,7 +21990,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: 'Often N'
-    Frequency: null
+    Frequency: 4
   -
     ID: 29
     Name: 'Lycanthrope, Werewolf'
@@ -22020,7 +22020,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: 'Often CE'
-    Frequency: null
+    Frequency: 4
   -
     ID: 30
     Name: Skeleton
@@ -22050,7 +22050,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: 'Always NE'
-    Frequency: null
+    Frequency: 7
   -
     ID: 31
     Name: Zombie
@@ -22080,7 +22080,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: 'Always NE'
-    Frequency: null
+    Frequency: 7
   -
     ID: 32
     Name: Vampire
@@ -22110,7 +22110,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: 'Always E'
-    Frequency: null
+    Frequency: 3
   -
     ID: 33
     Name: None
@@ -22140,7 +22140,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 35
     Name: Ungral
@@ -22170,7 +22170,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 36
     Name: Faengral
@@ -22200,7 +22200,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 37
     Name: Maelgral
@@ -22230,7 +22230,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 38
     Name: Half-Celestial
@@ -22260,7 +22260,7 @@ templates:
     Appearance: null
     Personality: Righteous
     Alignment: 'Always G'
-    Frequency: null
+    Frequency: 3
   -
     ID: 39
     Name: Half-Fiend
@@ -22290,7 +22290,7 @@ templates:
     Appearance: null
     Personality: 'Many are evil and untrustworthy'
     Alignment: 'Always E'
-    Frequency: null
+    Frequency: 3
   -
     ID: 41
     Name: Shade
@@ -22320,7 +22320,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: 'Always non-G'
-    Frequency: null
+    Frequency: 4
   -
     ID: 42
     Name: 'Half-Elemental, Air'
@@ -22350,7 +22350,7 @@ templates:
     Appearance: 'Blueish skin, fur, or hair'
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 43
     Name: 'Half-Elemental, Earth'
@@ -22380,7 +22380,7 @@ templates:
     Appearance: 'Earthlike skin, rough features, dark eyes'
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 44
     Name: 'Half-Elemental, Fire'
@@ -22410,7 +22410,7 @@ templates:
     Appearance: 'Dark skin, red hair or fur, glowing eyes'
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 45
     Name: 'Half-Elemental, Water'
@@ -22440,7 +22440,7 @@ templates:
     Appearance: 'Lightly scaled skin, clammy skin, blue-green hair or fur'
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 5
   -
     ID: 46
     Name: Phrenic
@@ -22470,7 +22470,7 @@ templates:
     Appearance: null
     Personality: null
     Alignment: null
-    Frequency: null
+    Frequency: 4
 naturalattacks:
   -
     ID: 1

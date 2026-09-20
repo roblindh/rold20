@@ -1005,6 +1005,18 @@ return new class extends Migration
             $table->increments('ID');
             $table->string('Name', 50)->nullable();
             $table->integer('Type')->nullable();
+            $table->text('InspirationalNames')->nullable();
+            $table->text('Description')->nullable();
+            $table->text('TypicalMembers')->nullable();
+            $table->text('MemberBenefits')->nullable();
+            $table->text('MemberResponsibilities')->nullable();
+            $table->text('UsesOfInfluence')->nullable();
+            $table->text('RanksAndTitles')->nullable();
+            $table->string('SocialClassRange', 100)->nullable();
+            $table->string('WealthClassRange', 100)->nullable();
+            $table->text('FavoredSkills')->nullable();
+            $table->string('Alignment', 50)->nullable();
+            $table->string('Scale', 50)->nullable();
             $table->integer('Campaign')->nullable();
             $table->unique('Name');
         });
@@ -1013,6 +1025,7 @@ return new class extends Migration
         Schema::create('ref_organizationtypes', function (Blueprint $table) {
             $table->increments('ID');
             $table->string('Type', 50)->nullable();
+            $table->text('Description')->nullable();
             $table->unique('Type');
         });
 

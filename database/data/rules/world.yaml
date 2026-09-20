@@ -1713,5 +1713,402 @@ planes:
     Name: Arcadia
     Alias: null
     OtherNotes: null
-organizations: {  }
-organizationtypes: {  }
+organizations:
+  -
+    ID: 1
+    Name: 'Craft & Trade Guild'
+    Type: 1
+    InspirationalNames: 'The Ironwright Guild, The Guild of Master Stonemasons, The Weavers'' & Dyers'' Fellowship'
+    Description: 'An association of artisans, craftsmen, and trade masters controlling local production standards, prices, apprentice training, and trade monopolies within a city or municipality.'
+    TypicalMembers: 'Blacksmiths, stonemasons, carpenters, weavers, alchemists, jewelers, apprentices, journeymen, and trade masters.'
+    MemberBenefits: 'Exclusive legal right to practice and sell trade goods within municipal boundaries; access to shared guild workshops, high-quality bulk raw materials, apprentice labor, price-fixing protections, and legal defense in trade disputes.'
+    MemberResponsibilities: 'Annual membership tithes and dues; adherence to strict manufacturing quality standards; mandatory training of registered apprentices; attending quarterly convocations; honoring guild price floors.'
+    UsesOfInfluence: 'Securing municipal building contracts (1-2 Inf); obtaining rare/exotic crafting materials at cost (2 Inf); blacklisting a competitor or rogue merchant (3 Inf); calling upon guild masters for expert artisan testimony in court (2 Inf); commissioning masterwork or enchanted items with expedited delivery (3-4 Inf).'
+    RanksAndTitles: 'Apprentice (entry trainee) -> Journeyman (licensed practicing artisan) -> Master (certified workshop proprietor and master craftsman) -> Guild Elder / Warden (executive council member) -> Grand Guildmaster (elected head of the guild).'
+    SocialClassRange: 'SC 0 (Apprentice) to SC 2 (Master / Guildmaster)'
+    WealthClassRange: 'WC 0 (Poor) to WC 3 (Wealthy)'
+    FavoredSkills: 'Crafting (any specialization), Appraisal, Negotiation, Knowledge - Architecture/Engineering, Law'
+    Alignment: 'LN, N, LG'
+    Scale: 'Local City to Regional Province'
+    Campaign: null
+  -
+    ID: 2
+    Name: 'Alchemists'' & Apothecaries'' Guild'
+    Type: 1
+    InspirationalNames: 'The Crucible Society, The Guild of Phial & Retort, The Herbalist Conclave'
+    Description: 'A specialized guild of potion-brewers, herbalists, venom-distillers, and pyrotechnicians who regulate the manufacture, quality testing, and trade of chemical and alchemical reagents.'
+    TypicalMembers: 'Alchemists, apothecaries, herbalists, chirurgeons, potion-brewers, glassblowers, laboratory assistants.'
+    MemberBenefits: 'Wholesale access to rare herbs, monster glands, and mineral reagents; certified lab safety insurance; licensed rights to sell curative, combat, and industrial draughts.'
+    MemberResponsibilities: 'Strict secrecy regarding proprietary formulae; mandatory toxicity inspections; safe hazardous waste disposal; emergency supply contributions during plagues or war.'
+    UsesOfInfluence: 'Sourcing restricted poisons, volatile acids, or alchemical fire (2-3 Inf); identifying unknown magical draughts or toxins (1 Inf); securing a fully outfitted laboratory with advanced alembics (2 Inf); suppressing public inquiries into lab accidents or fires (3 Inf).'
+    RanksAndTitles: 'Lab Hand -> Alchemical Initiate -> Apothecary Journeyman -> Master Alchemist -> High Alchemist of the Crucible.'
+    SocialClassRange: 'SC 0 (Lab Hand) to SC 3 (Master Alchemist)'
+    WealthClassRange: 'WC 1 (Stable) to WC 4 (Very Wealthy)'
+    FavoredSkills: 'Crafting - Alchemy, Knowledge - Nature, Heal, Appraisal, Perception'
+    Alignment: 'N, LN, CN'
+    Scale: 'Regional Province to Kingdom-Wide'
+    Campaign: null
+  -
+    ID: 3
+    Name: 'Merchant Trading Consortium'
+    Type: 2
+    InspirationalNames: 'The Golden Scale Consortium, The Silver Spire Trading Company, The High Sea Merchant League'
+    Description: 'A powerhouse commercial league financing overland caravans, merchant fleets, trade outposts, and chartered monopolies between kingdoms and international ports.'
+    TypicalMembers: 'Caravan masters, ship captains, supercargoes, merchant factors, accountants, warehouse overseers, hired caravan guards.'
+    MemberBenefits: 'Preferential freight rates on consortium ships and caravans; letters of credit honored across major cities; fortified warehouse storage; shared intelligence on tariffs, pirate activities, and bandit routes.'
+    MemberResponsibilities: 'Investment capital or cargo revenue share (10-20% tithe); maintaining armed escorts on designated trade corridors; reporting route hazards and market fluctuations to the board.'
+    UsesOfInfluence: 'Arranging discreet cargo transport bypassing local tariffs (2 Inf); securing an emergency charter vessel or armed caravan escort (3 Inf); obtaining high-value investment loans at minimal interest (2-4 Inf); manipulating regional commodity prices (4-5 Inf).'
+    RanksAndTitles: 'Factor -> Merchant Agent -> Caravan / Fleet Captain -> High Factor -> Director of the Board -> Governor-General.'
+    SocialClassRange: 'SC 1 (Agent) to SC 4 (Director / Merchant Prince)'
+    WealthClassRange: 'WC 2 (Well-Off) to WC 5 (Tremendously Wealthy)'
+    FavoredSkills: 'Negotiation, Appraisal, Knowledge - Geography/Law, Linguistics, Navigation'
+    Alignment: 'LN, N, LE'
+    Scale: 'Kingdom-Wide to Continental'
+    Campaign: null
+  -
+    ID: 4
+    Name: 'Merchant Banking House'
+    Type: 2
+    InspirationalNames: 'The Iron Vault Financial House, The Gilded Crest Bank, The Coffer & Coin Syndicate'
+    Description: 'An elite financial institution providing letters of credit, secure deposit vaults, currency exchange, kingdom loans, and sovereign debt financing to nobles, monarchs, and trade cartels.'
+    TypicalMembers: 'Bankers, moneylenders, auditors, vault guards, debt collectors, notary scribes, investment factors.'
+    MemberBenefits: 'High-security vault storage for gold and artifacts; international letters of credit; investment dividends; currency minting and assaying verification.'
+    MemberResponsibilities: 'Strict fiduciary audits; protection of client confidentiality; upholding debt enforcement treaties; maintenance of required gold solvency reserves.'
+    UsesOfInfluence: 'Calling in a noble debtor''s note to apply political pressure (3-4 Inf); securing a massive emergency line of credit in gems or platinum (2-5 Inf); tracing large financial transactions and money laundering (2 Inf); freezing a rival faction''s accounts (4 Inf).'
+    RanksAndTitles: 'Clerk -> Teller -> Auditor -> Chief Assayer -> Vault Chancellor -> Senior Partner.'
+    SocialClassRange: 'SC 1 (Clerk) to SC 4 (Senior Partner)'
+    WealthClassRange: 'WC 2 (Well-Off) to WC 6 (Fabulously Wealthy)'
+    FavoredSkills: 'Mathematics/Accounting, Appraisal, Sense Motive, Law, Bluff, Psychology'
+    Alignment: 'LN, LE, N'
+    Scale: 'Regional to Continental'
+    Campaign: null
+  -
+    ID: 5
+    Name: 'Urban Thieves'' Guild'
+    Type: 3
+    InspirationalNames: 'The Shadow Hand, The Night Watchers, The Velvet Dagger Syndicate'
+    Description: 'An organized underworld syndicate controlling citywide street theft, racketeering, smuggling, fencing of stolen loot, gambling dens, and black-market enterprises.'
+    TypicalMembers: 'Pickpockets, burglars, fences, cutpurses, lookouts, enforcers, rogue spies, corrupt watchmen.'
+    MemberBenefits: 'Safehouse network; discounted fencing rates for stolen goods; legal bribery and bail assistance; immunity from street robbery by fellow guild rogues; black-market gear access.'
+    MemberResponsibilities: '20-30% cut on all illicit earnings; adherence to guild turf boundaries; strict code of silence (omertà); non-aggression against guild-protected patrons.'
+    UsesOfInfluence: 'Arranging safe extraction from city watch pursuit (1-2 Inf); acquiring forged travel papers or identity papers (2 Inf); purchasing insider blueprints of a noble mansion or vault (2-3 Inf); hiring a squad of underworld thugs for muscle (2-3 Inf); bribing a city magistrate or watch captain (3-4 Inf).'
+    RanksAndTitles: 'Footpad (street thief) -> Cutpurse / Burglar (licensed thief) -> Fence / Lieutenant (neighborhood boss) -> Shadow Master (inner council) -> Guildmaster of Shadows.'
+    SocialClassRange: 'SC -2 (Wanted Criminal) to SC 2 (Master / Crime Lord)'
+    WealthClassRange: 'WC -1 (Destitute) to WC 4 (Very Wealthy)'
+    FavoredSkills: 'Thievery, Stealth, Streetwise, Sense Motive, Athletics - Climb, Sleight of Hand'
+    Alignment: 'NE, LE, CE, N'
+    Scale: 'Local City to Regional Province'
+    Campaign: null
+  -
+    ID: 6
+    Name: 'Smugglers'' & Freebooters'' Syndicate'
+    Type: 3
+    InspirationalNames: 'The Hidden Cove Syndicate, The Salt-Mist Brotherhood, The Shadow Keel League'
+    Description: 'A maritime and border network specializing in contraband transport, tax evasion, secret harbor landings, and dodging naval patrols.'
+    TypicalMembers: 'Smuggler captains, sailors, dockers, corrupt customs officers, lighthouse keepers, black-market fences.'
+    MemberBenefits: 'Undocumented border passage and maritime transport; hidden sea cave caches and smuggler tunnels; access to untaxed luxury goods, weapons, and exotic beasts.'
+    MemberResponsibilities: 'Safeguarding secret channel coordinates; maintaining emergency caches; defending consortium landing beaches against rival pirates.'
+    UsesOfInfluence: 'Smuggling prohibited items or fugitives through city gates/ports (1-3 Inf); chartering an unmarked blockade runner (2-4 Inf); misdirecting royal naval patrol cutters (3 Inf).'
+    RanksAndTitles: 'Deckhand -> Runner -> Helmsman / Captain -> Bay Master -> Commodore of the Shadow Keel.'
+    SocialClassRange: 'SC -2 (Criminal) to SC 2 (Captain / Merchant)'
+    WealthClassRange: 'WC 0 (Poor) to WC 4 (Very Wealthy)'
+    FavoredSkills: 'Navigation, Sailing, Stealth, Bluff, Survival - Maritime, Thievery'
+    Alignment: 'CN, N, NE'
+    Scale: 'Regional Coastline to Maritime Realm'
+    Campaign: null
+  -
+    ID: 7
+    Name: 'Arcane Academy & Wizard College'
+    Type: 4
+    InspirationalNames: 'The High Collegium of Magics, The Grand Scriptorium & Spire, The Arcane Conservatory'
+    Description: 'A prestigious institution of higher magical learning, spell research, and mystical experimentation with extensive libraries, observatories, and laboratories.'
+    TypicalMembers: 'Wizards, sorcerers, artificers, scribes, scholars, alchemists, apprentice spellcasters.'
+    MemberBenefits: 'Free access to vast spellbooks and research libraries; specialized laboratory apparatus; spell-scroll and component discounts; institutional legal immunity for spellcasting research.'
+    MemberResponsibilities: 'Tuition fees or teaching hours; filing copies of newly researched spells/formulae with the archives; defending the academy during planar or magical threats; adhering to restrictions on forbidden schools.'
+    UsesOfInfluence: 'Gaining access to the Restricted Arcane Vaults (2-3 Inf); commissioning high-level divinations or enchantments from faculty (2-4 Inf); borrowing rare magical foci or laboratory tools (2 Inf); suppressing civic inquisitions regarding magical accidents (3-4 Inf).'
+    RanksAndTitles: 'Initiate / Novice -> Apprentice -> Journeyman Scholar -> Magister / Fellow -> Archmagus / Dean -> Chancellor of the Spire.'
+    SocialClassRange: 'SC 0 (Initiate) to SC 4 (Archmagus / Chancellor)'
+    WealthClassRange: 'WC 1 (Stable) to WC 5 (Tremendously Wealthy)'
+    FavoredSkills: 'Spellcraft, Knowledge - Arcana/Planes/History, Linguistics, Concentration, Crafting - Artifice'
+    Alignment: 'LN, N, NG, LG'
+    Scale: 'Regional Province to Continental'
+    Campaign: null
+  -
+    ID: 8
+    Name: 'Secret Esoteric Circle'
+    Type: 4
+    InspirationalNames: 'The Veiled Eye, The Obsidian Cabal, The Order of the Hidden Star'
+    Description: 'A clandestine society of mages pursuing forbidden lore, planar travel, ancient relics, and secret metaphysics away from public and ecclesiastical oversight.'
+    TypicalMembers: 'Mages, psions, occultists, planar travelers, renegade scholars, arcanists.'
+    MemberBenefits: 'Access to banned grimoires, eldritch research, planar portals, and a covert network of spellcasters pledged to mutual aid against inquisitors.'
+    MemberResponsibilities: 'Absolute secrecy upon pain of death or mind wipe; active acquisition of ancient artifacts and rare texts for the circle''s vault.'
+    UsesOfInfluence: 'Sourcing forbidden spells or dark grimoires (3 Inf); requesting secret planar sanctuary or portal transport (3-4 Inf); activating occult wards to foil scrying (2-3 Inf).'
+    RanksAndTitles: 'Neophyte -> Adept -> Epopt -> Master of the Veil -> Hierophant of the Inner Eye.'
+    SocialClassRange: 'SC 1 (Adept) to SC 4 (Hierophant)'
+    WealthClassRange: 'WC 2 (Well-Off) to WC 5 (Rich)'
+    FavoredSkills: 'Knowledge - Arcana/Planes/Occult, Spellcraft, Stealth, Deception, Concentration'
+    Alignment: 'N, NE, CN, LE'
+    Scale: 'Continental to Planar'
+    Campaign: null
+  -
+    ID: 9
+    Name: 'Holy Temple & Religious Order'
+    Type: 5
+    InspirationalNames: 'The High Temple of the Radiant Dawn, The Sisterhood of Healing Waters, The Order of the Eternal Light'
+    Description: 'An established ecclesiastical church serving a deity, operating urban cathedrals, hospices, orphanages, and clerical synods.'
+    TypicalMembers: 'Clerics, priests, acolytes, temple guards, healers, monastic scribes, lay devotees.'
+    MemberBenefits: 'Free healing and divine spellcasting support; shelter and sanctuary within consecrated grounds; access to theological archives and relics; moral and spiritual authority in community affairs.'
+    MemberResponsibilities: 'Daily devotional rites and prayers; tithe of 10% of earnings; charitable service in hospices and almshouses; defending temple dogma.'
+    UsesOfInfluence: 'Requesting miraculous healing, disease removal, or resurrection (2-5 Inf); claiming sacred sanctuary from secular authorities (2 Inf); obtaining sacred water or consecrated implements at cost (1-2 Inf); invoking ecclesiastical excommunication of an enemy (4-5 Inf).'
+    RanksAndTitles: 'Acolyte -> Priest / Curate -> High Priest / Canon -> Prelate -> Patriarch / Matriarch.'
+    SocialClassRange: 'SC 0 (Acolyte) to SC 5 (Patriarch / High Prelate)'
+    WealthClassRange: 'WC 0 (Ascetic) to WC 5 (Tremendously Wealthy)'
+    FavoredSkills: 'Knowledge - Religion, Psychology, Heal, Spellcraft, Diplomacy'
+    Alignment: 'LG, NG, LN (or aligned to deity)'
+    Scale: 'Local City to Kingdom-Wide'
+    Campaign: null
+  -
+    ID: 10
+    Name: 'Crusading Militant Order'
+    Type: 5
+    InspirationalNames: 'The Knights of the Holy Sepulchre, The Order of the Silver Chalice, The Radiant Templars'
+    Description: 'A zealous military arm of the church tasked with purging fiends, undead, heretics, and monsters threatening the faithful.'
+    TypicalMembers: 'Paladins, templars, war priests, heavy cavalry, devout squires.'
+    MemberBenefits: 'Heavy arms, consecrated armor, and warhorse outfitting; military training in sacred smiting; church-backed authority to investigate unholy phenomena.'
+    MemberResponsibilities: 'Vow of chastity, poverty, or obedience; martial crusade service; eradication of evil entities without quarter.'
+    UsesOfInfluence: 'Calling upon a lance of templar heavy cavalry for battle (3-4 Inf); requisitions of consecrated weapons and holy water (2 Inf); ecclesiastical warrants of inquisitorial authority (3 Inf).'
+    RanksAndTitles: 'Postulant -> Knight Brother -> Commander -> Grand Prior -> Lord Grand Master.'
+    SocialClassRange: 'SC 1 (Squire) to SC 4 (Grand Master / High Noble Rank)'
+    WealthClassRange: 'WC 1 (Ascetic personal) to WC 4 (Order wealth)'
+    FavoredSkills: 'Weapons - Heavy, Knowledge - Religion, Athletics, Psychology, Riding'
+    Alignment: 'LG, LN'
+    Scale: 'Kingdom-Wide to Continental'
+    Campaign: null
+  -
+    ID: 11
+    Name: 'Knightly Order & Chivalric Brotherhood'
+    Type: 6
+    InspirationalNames: 'The Order of the Golden Griffin, The Knights of the White Hart, The Order of the Dragon Crest'
+    Description: 'A prestigious secular chivalric brotherhood recognized by the crown, dedicated to martial prowess, realm defense, and high chivalric ideals.'
+    TypicalMembers: 'Knights, cavaliers, noble scions, men-at-arms, squires, armorers.'
+    MemberBenefits: 'Knightly status and heraldic coat of arms; tournament rights and hospitality in all friendly castles; right to bear heavy armor and martial weaponry in royal courts.'
+    MemberResponsibilities: 'Feudal service and military muster upon royal summon; upholding the code of chivalry; maintaining war equipment and mounts; defending peasants and travelers.'
+    UsesOfInfluence: 'Securing an audience with the crown or high court (2-3 Inf); challenging an insult to personal honor in judicial duel (2 Inf); requisitioning warhorses or royal armory weapons (2-3 Inf); calling on brother knights for a military rescue (3-5 Inf).'
+    RanksAndTitles: 'Page -> Squire -> Knight Bachelor -> Knight Banneret -> Grand Marshal -> Lord Grand Commander.'
+    SocialClassRange: 'SC 1 (Squire) to SC 4 (Grand Marshal / High Noble)'
+    WealthClassRange: 'WC 2 (Landed) to WC 4 (Very Wealthy)'
+    FavoredSkills: 'Weapons - Martial/Polearms, Riding, Athletics, Etiquette/Diplomacy, Warfare'
+    Alignment: 'LG, LN, NG'
+    Scale: 'Kingdom-Wide'
+    Campaign: null
+  -
+    ID: 12
+    Name: 'Mercenary Free Company'
+    Type: 7
+    InspirationalNames: 'The Iron Vanguard, The Red Boar Company, The Free Company of the Black Eagle'
+    Description: 'A battle-tested private military regiment contracting out heavy infantry, crossbowmen, cavalry, and siege engineers for campaigns and wars.'
+    TypicalMembers: 'Veterans, sellswords, crossbowmen, pikemen, siege engineers, field chirurgeons, quartermasters.'
+    MemberBenefits: 'Guaranteed daily pay, loot shares, and casualty pension; access to company armorers and medical tents; legal contract arbitration backed by international mercenary charters.'
+    MemberResponsibilities: 'Strict military discipline; obedience to contract terms; surrender of standard loot quota to company chest; fighting until contract expiration or agreed truce.'
+    UsesOfInfluence: 'Hiring a platoon or vanguard company of veteran mercenaries for a private raid (3-5 Inf); securing high-grade siege engines (trebuchets, ballistas) with crews (3-4 Inf); contracting seasoned bodyguards for a dangerous expedition (2 Inf).'
+    RanksAndTitles: 'Recruit -> Man-at-Arms -> Sergeant -> Lieutenant -> Captain -> Commander / General of the Free Company.'
+    SocialClassRange: 'SC 0 (Mercenary) to SC 3 (General / Minor Noble)'
+    WealthClassRange: 'WC 0 (Poor) to WC 4 (Very Wealthy)'
+    FavoredSkills: 'Weapons (any), Warfare, Athletics, Survival, Intimidate, Siegecraft'
+    Alignment: 'N, LN, CN, LE'
+    Scale: 'Regional to Continental'
+    Campaign: null
+  -
+    ID: 13
+    Name: 'Adventurer Guild & Explorers'' League'
+    Type: 8
+    InspirationalNames: 'The League of Seekers, The Wayfarers'' & Explorers'' Guild, The Cartographers'' Expedition Society'
+    Description: 'A chartered hall coordinating freelance adventuring parties, monster bounties, dungeon clearances, artifact salvage, and cartographic exploration.'
+    TypicalMembers: 'Adventurers, dungeon delvers, monster hunters, cartographers, scouts, spellswords.'
+    MemberBenefits: 'Access to the guild bounty board and official exploration charters; safe identification and auctioning of dungeon salvage; lodging and guild tavern rates; monster lore archives.'
+    MemberResponsibilities: '10% bounty processing fee; reporting map discoveries and ruin locations to the guild archives; honoring the non-interference code between registered parties.'
+    UsesOfInfluence: 'Accessing classified expedition maps and lost ruin records (2 Inf); claiming exclusive first-right rights to a dungeon or bounty contract (2-3 Inf); hiring guide specialists or hirelings (1-2 Inf); mediating party loot disputes with binding arbitration (1 Inf).'
+    RanksAndTitles: 'Novice Seeker (Bronze) -> Adventurer (Iron) -> Veteran Delver (Silver) -> Champion (Gold) -> Guild Master of the Expedition Hall (Platinum).'
+    SocialClassRange: 'SC 0 (Peasant/Freelancer) to SC 3 (Champion / Hero)'
+    WealthClassRange: 'WC 0 (Poor) to WC 5 (Rich from dungeon hoards)'
+    FavoredSkills: 'Survival, Dungeoneering, Knowledge - Monsters, Perception, Athletics, Combat'
+    Alignment: 'Any (typically N, NG, CG)'
+    Scale: 'Regional to Continental'
+    Campaign: null
+  -
+    ID: 14
+    Name: 'Bard College & Minstrel Society'
+    Type: 9
+    InspirationalNames: 'The College of the Silver Lyre, The Whispering Heralds, The Society of Chroniclers'
+    Description: 'An artistic and academic society of musicians, poets, heralds, dramatists, and spies dedicated to preserving history, news gathering, and high performance.'
+    TypicalMembers: 'Bards, minstrels, poets, actors, court heralds, folklorists, covert informants.'
+    MemberBenefits: 'Universal hospitality in noble courts, taverns, and festivals; access to rare songbooks, ancient ballads, and lore vaults; guild protections for licensed political satire and news reporting.'
+    MemberResponsibilities: 'Composing and performing original works; filing political news and historical chronicles with the college library; mentoring minstrel apprentices.'
+    UsesOfInfluence: 'Spreading viral rumors or damaging political scandals across taverns and courts (2-3 Inf); securing a performance slot before royal nobility (2 Inf); uncovering confidential court gossip or political intrigue (2-4 Inf); gathering secret regional lore about ancient ruins (1-2 Inf).'
+    RanksAndTitles: 'Busker -> Minstrel Apprentice -> Troubadour -> Master of Song -> College Dean / High Bard.'
+    SocialClassRange: 'SC 0 (Busker) to SC 3 (High Bard / Court Poet)'
+    WealthClassRange: 'WC 0 (Poor) to WC 3 (Wealthy)'
+    FavoredSkills: 'Perform (all), Knowledge - History/Nobility, Psychology, Bluff, Linguistics, Streetwise'
+    Alignment: 'CG, NG, N, CN'
+    Scale: 'Regional to Kingdom-Wide'
+    Campaign: null
+  -
+    ID: 15
+    Name: 'Martial Arts Monastery & Fighting Dojo'
+    Type: 10
+    InspirationalNames: 'The Monastery of the Iron Mountain, The Dojo of the Seven Winds, The School of the Flowing River'
+    Description: 'A disciplined monastic academy teaching unarmed martial arts, ki manipulation, body conditioning, meditation, and sword mastery.'
+    TypicalMembers: 'Monks, martial artists, duelists, ascetics, weapon masters, meditators.'
+    MemberBenefits: 'Advanced training in specialized martial forms and ki techniques; access to peaceful training grounds, meditation gardens, and herbal healing; brotherhood lodging.'
+    MemberResponsibilities: 'Strict ascetic lifestyle, daily meditation and physical conditioning; adherence to monastic vows and non-aggression except in self-defense or justice.'
+    UsesOfInfluence: 'Receiving secret personal instruction in rare martial forms (2-3 Inf); sanctuary from secular bounty hunters within monastery walls (2 Inf); summoning fellow monastic brothers to defend a village (3 Inf).'
+    RanksAndTitles: 'Novitiate -> White Belt (Initiate) -> Brown Belt (Disciple) -> Black Belt (Master) -> Grandmaster / Abbot.'
+    SocialClassRange: 'SC 0 (Ascetic) to SC 2 (Master / Abbot)'
+    WealthClassRange: 'WC -1 (Vow of poverty) to WC 1 (Modest temple funds)'
+    FavoredSkills: 'Athletics, Acrobatics, Weapons - Unarmed/Natural, Concentration, Knowledge - Philosophy'
+    Alignment: 'LN, LG, N'
+    Scale: 'Local Monastery to Regional'
+    Campaign: null
+  -
+    ID: 16
+    Name: 'Gladiatorial Stable & Fencing Academy'
+    Type: 10
+    InspirationalNames: 'The Red Sands Arena Stable, The Dueling Guild of the Golden Rapier, The Vanguard Fighting Pit'
+    Description: 'A commercial combat school and arena stable training gladiators, pit fighters, and aristocratic fencing duelists.'
+    TypicalMembers: 'Gladiators, duelists, fencing masters, arena promoters, weaponsmiths, beast handlers.'
+    MemberBenefits: 'Combat training in exotic weapons, feints, and crowd-pleasing maneuvers; access to specialized dueling gear; rights to fight in sanctioned prize matches.'
+    MemberResponsibilities: 'Participation in scheduled arena bouts; payment of training fees or share of fight purses; honoring dueling conventions.'
+    UsesOfInfluence: 'Securing entry into championship prize duels (2 Inf); betting insider tips on arena matches (2 Inf); hiring master duelists as combat champions in legal trials by combat (3-4 Inf).'
+    RanksAndTitles: 'Pit Recruit -> Arena Contender -> Champion -> Master of the Blade -> Lanista / Academy Master.'
+    SocialClassRange: 'SC -1 (Gladiator slave) to SC 3 (Master Duelist)'
+    WealthClassRange: 'WC 0 (Poor) to WC 4 (Wealthy Champion)'
+    FavoredSkills: 'Weapons - Light/Fencing/Brawling, Acrobatics, Intimidate, Bluff, Athletics'
+    Alignment: 'N, CN, NE'
+    Scale: 'Citywide to Regional'
+    Campaign: null
+  -
+    ID: 17
+    Name: 'Landed Noble House & Aristocratic Dynasty'
+    Type: 11
+    InspirationalNames: 'House Valerius, House Ravencrest, House Silverthorn'
+    Description: 'A hereditary aristocratic bloodline holding ancestral estates, castles, tenant farmers, political titles, and feudal voting rights in the royal council.'
+    TypicalMembers: 'Lords, ladies, noble heirs, retainers, household guards, heralds, majordomos, castellans.'
+    MemberBenefits: 'Feudal revenues, estate lands, and ancestral castles; legal noble privileges and immunity from common courts; inherited family heraldry and alliances.'
+    MemberResponsibilities: 'Feudal military service to the monarch; stewardship of tenant lands; arranging strategic dynastic marriages; maintaining house honor and wealth.'
+    UsesOfInfluence: 'Securing aristocratic titles, knighthoods, or land grants (4-5 Inf); obtaining royal pardons for crimes (3-5 Inf); deploying the house personal garrison (3-5 Inf); arranging high-society marriage alliances (3-4 Inf).'
+    RanksAndTitles: 'Scion / Ward -> Heir Apparent -> Knight / Lady of the House -> Baron / Count -> Lord High Patriarch / Matriarch.'
+    SocialClassRange: 'SC 3 (Minor Noble) to SC 6 (High Nobility / Sovereign Peers)'
+    WealthClassRange: 'WC 3 (Wealthy) to WC 6 (Fabulously Wealthy)'
+    FavoredSkills: 'Etiquette, Politics, Law, Warfare, Riding, Negotiation'
+    Alignment: 'LN, LG, LE, N'
+    Scale: 'Regional Province to Kingdom-Wide'
+    Campaign: null
+  -
+    ID: 18
+    Name: 'Gentlemen''s Social Club & Scholarly Salon'
+    Type: 12
+    InspirationalNames: 'The Obsidian Quill Society, The Reformers'' Club, The Antiquarian Salon'
+    Description: 'An exclusive private salon for high-born gentlemen, wealthy patrons, scholars, and political elites to discuss philosophy, politics, art, and high finance.'
+    TypicalMembers: 'Aristocrats, wealthy merchants, philosophers, diplomats, antiquarians, retired generals.'
+    MemberBenefits: 'Luxurious private clubhouses with dining, private libraries, and smoking lounges; high-level networking with civic leaders, judges, and ministers; complete privacy and discretion.'
+    MemberResponsibilities: 'Hefty annual membership fees; black-ball voting approval for new members; strict club decorum and dress codes.'
+    UsesOfInfluence: 'Arranging private introductions with high government ministers or foreign ambassadors (2-3 Inf); securing quiet investment capital for grand ventures (3-4 Inf); quashing civic gossip or legal investigations among peers (3-4 Inf).'
+    RanksAndTitles: 'Associate Member -> Full Member -> Senior Fellow -> Club Director -> President of the Society.'
+    SocialClassRange: 'SC 2 (Merchant/Master) to SC 5 (High Nobility / Royalty)'
+    WealthClassRange: 'WC 3 (Wealthy) to WC 6 (Fabulously Wealthy)'
+    FavoredSkills: 'Etiquette, Negotiation, Politics, Knowledge (any), Sense Motive'
+    Alignment: 'LN, N, LE, NG'
+    Scale: 'Capital City to Regional'
+    Campaign: null
+  -
+    ID: 19
+    Name: 'Assassin Brotherhood & Death Cult'
+    Type: 13
+    InspirationalNames: 'The Silent Blade Covenant, The Crimson Shroud, The Brotherhood of the Night Whisper'
+    Description: 'A secret society of contract killers, venom specialists, and stealth masters executing targets for coin, religious fanaticism, or political upheaval.'
+    TypicalMembers: 'Assassins, shadowdancers, poison-brewers, disguise artists, infiltrators, cult zealots.'
+    MemberBenefits: 'Access to specialized covert weaponry, untraceable poisons, safehouses, and assassination contracts with high gold rewards.'
+    MemberResponsibilities: 'Strict obedience to the Black Contracts; 30% contract tithe; absolute secrecy; death penalty for contract betrayal or unauthorized killings.'
+    UsesOfInfluence: 'Placing a high-priority contract on a political target or rival (4-5 Inf); acquiring untraceable, rare lethal poisons (2-3 Inf); extracting a compromised agent from a high-security citadel (3 Inf).'
+    RanksAndTitles: 'Initiate Blade -> Shadow -> Executioner -> Master of Whispers -> Grandmaster of the Shroud.'
+    SocialClassRange: 'SC -2 (Criminal/Outcast) to SC 3 (Covert Master)'
+    WealthClassRange: 'WC 1 (Stable) to WC 5 (Rich from bloody gold)'
+    FavoredSkills: 'Stealth, Thievery, Crafting - Poison, Disguise, Weapons - Concealed, Perception'
+    Alignment: 'LE, NE, CE'
+    Scale: 'Regional to Kingdom-Wide'
+    Campaign: null
+  -
+    ID: 20
+    Name: 'Druidic Circle & Woodland Wardens'
+    Type: 14
+    InspirationalNames: 'The Circle of the Ancient Oak, The Wardens of the Greenwood, The Sylvan Conclave'
+    Description: 'A secluded conclave of druids, rangers, and primal wardens defending primordial forests, sacred standing stones, and natural balance from desecration.'
+    TypicalMembers: 'Druids, rangers, shamans, beastmasters, woodland scouts, herbalists.'
+    MemberBenefits: 'Safe passage and lodging within ancient groves and sacred standing stones; communication with primal spirits and woodland beasts; magical natural remedies and animal companions.'
+    MemberResponsibilities: 'Defense of the sacred groves against deforestation, poachers, and corrupting aberrations; participating in seasonal equinox and solstice rituals; respecting the primal balance.'
+    UsesOfInfluence: 'Calling upon woodland beasts or treants to defend a territory (3-4 Inf); gathering primal intelligence across vast forest tracts (1-2 Inf); receiving rare herbal salves and antivenoms (1-2 Inf); guiding large armies through impassable wilderness safely (3 Inf).'
+    RanksAndTitles: 'Woodland Initiate -> Warden -> Circle Druid -> Elder of the Grove -> Archdruid of the Circle.'
+    SocialClassRange: 'SC -1 (Hermit) to SC 2 (Archdruid / Elder)'
+    WealthClassRange: 'WC -1 (Ascetic / Primal) to WC 1 (Natural wealth)'
+    FavoredSkills: 'Survival, Knowledge - Nature, Handle Animal, Heal, Spellcraft - Primal, Stealth'
+    Alignment: 'N, NG, CG, LN'
+    Scale: 'Regional Wilderness to Continental'
+    Campaign: null
+organizationtypes:
+  -
+    ID: 1
+    Type: 'Craft & Trade Guild'
+    Description: 'Associations of artisans, craftsmen, and trade specialists maintaining monopolies on production, pricing, and apprenticeships.'
+  -
+    ID: 2
+    Type: 'Merchant Company & Trading Consortium'
+    Description: 'Commercial ventures, maritime trading cartels, and banking syndicates operating trade routes, caravans, and financial services.'
+  -
+    ID: 3
+    Type: 'Thieves'' Guild & Underworld Syndicate'
+    Description: 'Organized criminal enterprises managing black markets, smuggling, racketeering, burglary, fencing, and underworld security.'
+  -
+    ID: 4
+    Type: 'Arcane Academy & Wizard College'
+    Description: 'Institutions of formal magical education, research universities, and cloistered wizardly orders dedicated to the arcane arts.'
+  -
+    ID: 5
+    Type: 'Religious Order & Holy Temple'
+    Description: 'Ecclesiastical hierarchies, monastic cloisters, and clerical organizations serving specific deities, pantheons, or faiths.'
+  -
+    ID: 6
+    Type: 'Knightly Order & Chivalric Brotherhood'
+    Description: 'Sworn orders of martial knights, paladins, and cavaliers bound by chivalric oaths of honor, realm defense, or crusading zeal.'
+  -
+    ID: 7
+    Type: 'Mercenary Company & Free Brotherhood'
+    Description: 'Professional soldiers-for-hire, free companies, siege units, and military contractors selling martial prowess to rulers and factions.'
+  -
+    ID: 8
+    Type: 'Adventurer Guild & Explorers'' League'
+    Description: 'Chartered leagues organizing expeditions, cataloging ruins, brokering bounties, and managing adventuring charters.'
+  -
+    ID: 9
+    Type: 'Bard College & Minstrel Society'
+    Description: 'Guilds of performers, heralds, chroniclers, and orators who preserve lore, compose epics, and gather clandestine intelligence.'
+  -
+    ID: 10
+    Type: 'Martial Arts Monastery & Fighting School'
+    Description: 'Monastic retreats, weapon masters'' dojos, and gladiatorial stables refining hand-to-hand combat, ki mastery, and martial philosophy.'
+  -
+    ID: 11
+    Type: 'Noble House & Aristocratic Dynasty'
+    Description: 'Hereditary patrician dynasties, feudal landed houses, and aristocratic bloodlines holding political power, estates, and vassals.'
+  -
+    ID: 12
+    Type: 'Gentlemen''s Club & Scholarly Fraternity'
+    Description: 'Exclusive private social clubs, antiquarian societies, and philosophical salons for elites, academics, and patrons of the arts.'
+  -
+    ID: 13
+    Type: 'Assassin Brotherhood & Shadow Cult'
+    Description: 'Secret societies of professional killers, venom masters, and lethal zealots executing targeted contracts and political eliminations.'
+  -
+    ID: 14
+    Type: 'Druidic Circle & Woodland Wardens'
+    Description: 'Conclaves of druids, rangers, and primal wardens safeguarding ancient forests, sacred groves, balance of nature, and wildlife.'
+

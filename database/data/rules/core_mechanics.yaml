@@ -2784,6 +2784,278 @@ stagedconditions:
     Stage5: null
     Stage6: null
     Modifiers: null
+  -
+    ID: 66
+    Name: 'Battle Trauma'
+    Type: 5
+    Descriptors: '[Mind, Trauma]'
+    Description: 'You are haunted by horrific combat memories, near-death experiences, or visceral battlefield carnage.'
+    Trigger: 'Surviving a critical hit that reduces you to 0 HP, witnessing a massacre, or suffering massive damage from an ambush.'
+    InitialEffect: 'd20! + 4 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Hypervigilance: Suffer a -2 penalty on Concentration checks and restful recovery. Startle easily in non-combat situations.\nAfter 1 week, make d20! + 4 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Flashbacks & Tremors: At the start of combat, make a d20! check vs. Will. On a failure, become dazed for 1 round as flashbacks overwhelm you. Suffer a -2 penalty to Will defense.\nAfter 1 week, make d20! + 4 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Paralyzing Combat Freeze: Suffer a -4 penalty to Will defense and initiative. When taking damage in combat, make a d20! check vs. Will or drop held items and become panicked for 1d4 rounds.\nAfter 1 month, make d20! + 4 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 67
+    Name: 'Nightmare Psychosis'
+    Type: 5
+    Descriptors: '[Mind, Fear]'
+    Description: 'Horrifying waking terrors and nightmarish visions plague your rest, making sleep an agonizing ordeal.'
+    Trigger: 'Exposure to psychic trauma, dream-haunting magic, or encountering hags, fiends, or undead phantoms.'
+    InitialEffect: 'd20! + 5 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Restless Sleep: You wake drenched in sweat. Natural HP, SP, and PP recovery rates are halved.\nAfter 1 day, make d20! + 5 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Sleep Deprivation: Suffer the fatigued condition and a -2 penalty on perception and mental action checks. Lose 1d4 SP per day.\nAfter 1 day, make d20! + 5 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Waking Hallucinations: Suffer 1 Wis drain per day. Suffer the dazed condition whenever startled and cannot distinguish illusions from reality.\nAfter 1 day, make d20! + 5 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 68
+    Name: Hysteria
+    Type: 5
+    Descriptors: '[Mind, Fear]'
+    Description: 'Overwhelming surges of sudden, unprovoked terror and loss of motor control under intense pressure.'
+    Trigger: 'Prolonged claustrophobia, witnessing overwhelming magical cataclysms, or extreme terror effects.'
+    InitialEffect: 'd20! + 3 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Nervous Tremors: Suffer a -2 penalty to Dex-based skill checks and ranged attack rolls during stressful situations.\nAfter 1 day, make d20! + 3 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Hyperventilation: AP cost for spellcasting and complex actions increases by +2 AP. Suffer a -3 penalty to Will defense.\nAfter 1 day, make d20! + 3 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Full Breakdown: When confronted with hostile creatures or sudden loud noises, become panicked for 1d6 rounds. Cannot maintain concentration.\nAfter 1 day, make d20! + 3 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 69
+    Name: Schizophrenia
+    Type: 5
+    Descriptors: '[Mind]'
+    Description: 'Auditory hallucinations, disorganized thoughts, and erratic behavior tear apart coherent thinking.'
+    Trigger: 'Prolonged psychic assault, contact with alien entities, or cursed magic items.'
+    InitialEffect: 'd20! + 6 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Whispering Voices: Phantom murmurs distract you. Suffer a -2 penalty on Listen, Spot, and Search checks, and -2 on initiative.\nAfter 1 week, make d20! + 6 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Disorganized Thought: Suffer a -4 penalty on Knowledge, Spellcraft, and Concentration checks. At the start of your turn in combat, roll 1d6: on a 1, lose 3 AP arguing with voices.\nAfter 1 week, make d20! + 6 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Chaos of Mind: Suffer 1d3 Int and 1d3 Wis drain. Suffer a permanent confused effect during the first 2 rounds of any hostile encounter.\nAfter 1 month, make d20! + 6 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 70
+    Name: 'Hallucinatory Delirium'
+    Type: 5
+    Descriptors: '[Mind, Illusion]'
+    Description: 'You cannot distinguish sensory reality from intense, fabricated illusions created by a fractured mind.'
+    Trigger: 'Inhaling psychoactive spores, severe brain fever, or psychic blast trauma.'
+    InitialEffect: 'd20! + 4 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Sensory Distortion: Shadows seem to crawl and faces appear warped. Suffer a -2 penalty on Sense Motive and Spot checks.\nAfter 1 day, make d20! + 4 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Phantom Threats: In combat, you have a 50% chance when choosing a new target to attack an empty square believing an enemy stands there.\nAfter 1 day, make d20! + 4 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Complete Delusion: You mistake allies for monsters and enemies for beloved friends, acting completely under the control of your delusions.\nAfter 1 day, make d20! + 4 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 71
+    Name: Amnesia
+    Type: 5
+    Descriptors: '[Mind]'
+    Description: 'Trauma or magical shock wipes away recent memories, past history, and procedural knowledge.'
+    Trigger: 'Severe head trauma, resurrection shock, psychic drain, or Mind Wipe magic.'
+    InitialEffect: 'd20! + 5 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Short-Term Loss: Frequently forget recent events, names, and directions. Suffer a -4 penalty on Knowledge and Navigation checks.\nAfter 1 week, make d20! + 5 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Retrograde Amnesia: Forget personal history, allies'' identities, and backstory. All trained skill ranks are temporarily treated as 1 level lower (minimum 0).\nAfter 1 week, make d20! + 5 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Tabula Rasa: Complete loss of identity, language fluencies (reduced to 1 basic language), and spell access until cured.\nAfter 1 month, make d20! + 5 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 72
+    Name: Catatonia
+    Type: 5
+    Descriptors: '[Mind]'
+    Description: 'The mind shuts down all conscious engagement with the outside world, collapsing into a motionless, mute state.'
+    Trigger: 'Extreme despair, failing multiple sanity checks against eldritch horrors, or severe melancholia.'
+    InitialEffect: 'd20! + 6 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Psychomotor Retardation: Move and speak in a slow, dazed haze. Base movement speed reduced by -2 squares; -2 penalty to all reaction checks.\nAfter 1 day, make d20! + 6 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Severe Stupor: Mute and unresponsive unless physically led by allies. Gain the dazed condition permanently. Combat AP reduced by 3.\nAfter 1 day, make d20! + 6 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Full Immobility: Fall into a rigid, unmoving stupor (helpless condition, unable to eat, drink, or move without external care).\nAfter 1 week, make d20! + 6 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 73
+    Name: Paranoia
+    Type: 5
+    Descriptors: '[Mind]'
+    Description: 'You are convinced that everyone around you—especially close allies—is plotting your betrayal, murder, or ruin.'
+    Trigger: 'Betrayal by a trusted ally, exposure to doppelgangers/rakshasas, or psychological torture.'
+    InitialEffect: 'd20! + 5 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Deep Suspicion: Suffer a -3 penalty on all social and Diplomacy checks. Refuse to sleep without standing guard or setting traps.\nAfter 1 week, make d20! + 5 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Refusal of Aid: Refuse all beneficial spells, potions, or food offered by allies unless passing an opposed Sense Motive check. Cannot benefit from Aid Another or flanking.\nAfter 1 week, make d20! + 5 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Hostile Strike: In any stressful or ambiguous situation, view friendly actions as assassination attempts and violently attack companions or flee.\nAfter 1 month, make d20! + 5 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 74
+    Name: Melancholia
+    Type: 5
+    Descriptors: '[Mind, Emotion]'
+    Description: 'A profound, inescapable black cloud of apathy, sorrow, and loss of the will to live or fight.'
+    Trigger: 'Tragic loss of a loved one, failure of an epic quest, energy drain by undead, or gloom magic of the Shadowfell.'
+    InitialEffect: 'd20! + 4 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Lethargy: Suffer a -2 morale penalty on all attack rolls, skill checks, and Will defense.\nAfter 1 week, make d20! + 4 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Apathy: Suffer a -4 morale penalty on all rolls. Cannot spend Action Points (AP) to boost attack, damage, or defenses. PP recovery is halted.\nAfter 1 week, make d20! + 4 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Nihilistic Surrender: Refuse to take defensive actions in combat (losing active DeC bonuses) and make no effort to avoid hazards or lethal attacks.\nAfter 1 month, make d20! + 4 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 75
+    Name: Mania
+    Type: 5
+    Descriptors: '[Mind, Emotion]'
+    Description: 'An erratic burst of chaotic hyperactivity, racing speech, hyper-fixations, and total lack of impulse control.'
+    Trigger: 'Overexposure to chaotic planar energies, wild magic surges, or intense stimulants.'
+    InitialEffect: 'd20! + 3 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Hyperactivity: +1 bonus to initiative, but -3 penalty to Concentration, Stealth, and Search checks. Cannot rest quietly.\nAfter 1 week, make d20! + 3 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Erratic Impulse: Must act immediately without tactical planning. Suffer a -4 penalty on Will defense and -4 on all defense-boosting actions.\nAfter 1 week, make d20! + 3 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Delirious Overdrive: Take 1d6 SP damage per hour of strenuous activity, yet refuse to sleep or rest until collapsing from physical exhaustion.\nAfter 1 month, make d20! + 3 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 76
+    Name: Megalomania
+    Type: 5
+    Descriptors: '[Mind]'
+    Description: 'An unshakeable, grandiose delusion of your own omnipotence, supremacy, and divine destiny.'
+    Trigger: 'Attaining high level too quickly, possessing an artifact, defeating an overpowering foe, or fiendish corruption.'
+    InitialEffect: 'd20! + 5 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Arrogance: Suffer a -2 penalty on social interactions with superiors or equals. Refuse to take advice or warnings.\nAfter 1 week, make d20! + 5 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Reckless Hubris: Refuse to retreat from any encounter regardless of danger. Suffer a -4 penalty on Insight and Sense Motive checks.\nAfter 1 week, make d20! + 5 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Grandiose Tyranny: Demand unquestioning obedience from allies. Treat tactical caution as cowardice or treason, recklessly challenging dragons and armies single-handedly.\nAfter 1 month, make d20! + 5 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 77
+    Name: Claustrophobia
+    Type: 5
+    Descriptors: '[Mind, Fear]'
+    Description: 'A paralyzing, suffocating terror of small spaces, narrow dungeon corridors, caves, and enclosed tombs.'
+    Trigger: 'Being buried alive, caught in a cave-in, or trapped in a suffocating container.'
+    InitialEffect: 'd20! + 3 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Unease: When in an enclosed space narrower than 2 squares, suffer a -2 penalty on all attack rolls and ability checks.\nAfter 1 week, make d20! + 3 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Suffocating Dread: In enclosed spaces, suffer the shaken condition, -4 penalty to Will defense, and 1 SP damage per hour from hyperventilating.\nAfter 1 week, make d20! + 3 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Frantic Panic: When enclosed, become panicked and spend all AP attempting to break out or flee toward the open sky.\nAfter 1 month, make d20! + 3 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 78
+    Name: Necrophobia
+    Type: 5
+    Descriptors: '[Mind, Fear]'
+    Description: 'Deep, uncontrollable revulsion and dread of dead bodies, skeletal remains, and undead creatures.'
+    Trigger: 'Trauma from near-death among rotting corpses, ghoul attacks, or mummy curses.'
+    InitialEffect: 'd20! + 4 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Repulsion: Suffer a -2 penalty on attack rolls and checks when within 6 squares of corpses or undead.\nAfter 1 week, make d20! + 4 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Nausea & Terror: When within 6 squares of corpses or undead, become sickened and suffer a -4 penalty on Will defense against fear.\nAfter 1 week, make d20! + 4 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Paralyzing Horror: Upon seeing an undead creature or corpse, make a Will check vs. DC 15 or become paralyzed with terror for 1d4 rounds.\nAfter 1 month, make d20! + 4 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 79
+    Name: 'Obsessive-Compulsive Fixation'
+    Type: 5
+    Descriptors: '[Mind, Compulsion]'
+    Description: 'You must perform repetitive, rigid rituals (counting items, cleaning blood, checking locks) to calm overwhelming anxiety.'
+    Trigger: 'Surviving deadly traps, exposure to cursed perfectionist relics, or psychological trauma.'
+    InitialEffect: 'd20! + 2 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Minor Rituals: Preparing gear or resting takes 50% longer due to repetitive alignment and checking. Suffer -2 on initiative if interrupted.\nAfter 1 week, make d20! + 2 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Compulsive Disruption: If bloodied or dirty, suffer a -3 penalty to all action checks until you spend at least 1 minute cleansing your gear.\nAfter 1 week, make d20! + 2 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Paralyzing Compulsion: When entering a new room or encounter area, must spend your first turn in combat checking doors, counting enemies, or organizing gear before taking hostile actions.\nAfter 1 month, make d20! + 2 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 80
+    Name: 'Cosmic Madness'
+    Type: 5
+    Descriptors: '[Su, Mind, Eldritch]'
+    Description: 'Witnessing impossible alien geometry, Great Old Ones, or Far Realm entities breaks your perception of reality.'
+    Trigger: 'Contact with Aberrations (Aboleths, Mind Flayers, Beholders), reading forbidden tomes, or visiting the Far Realm.'
+    InitialEffect: 'd20! + 8 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Alien Insight: Speak in strange glossolalia while sleeping. Suffer a -2 penalty to Cha checks, but gain a +1 bonus on Knowledge (Arcana/Planes).\nAfter 1 week, make d20! + 8 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Spatial Disorientation: Non-Euclidean geometries haunt you. Suffer a -4 penalty on ranged attacks and balance checks. Suffer 1 Wis drain.\nAfter 1 week, make d20! + 8 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Cosmic Alienation: Total mental assimilation. Suffer 1d6 Wis and 1d6 Cha drain. You worship or align with alien entities, becoming an NPC under DM control unless healed with high-level magic.\nAfter 1 month, make d20! + 8 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 81
+    Name: 'Lycanthropic Delusion'
+    Type: 5
+    Descriptors: '[Mind]'
+    Description: 'Despite possessing no real curse of lycanthropy, you are convinced you are a bloodthirsty beast and act accordingly.'
+    Trigger: 'Surviving a werewolf attack, forest isolation, or madness curses.'
+    InitialEffect: 'd20! + 4 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Feral Mannerisms: Growl under stress, eat raw meat, and suffer a -2 penalty on Diplomacy and etiquette checks.\nAfter 1 week, make d20! + 4 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Beastly Instincts: Suffer a -4 penalty on weapon attacks and spellcasting, preferring to attack with bare hands, teeth, or claws. Refuse to wear heavy armor.\nAfter 1 week, make d20! + 4 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Savage Fugue: Under the full moon or when smelling blood, strip off all clothing and equipment, hunting prey on all fours as a feral beast.\nAfter 1 month, make d20! + 4 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 82
+    Name: 'Sanguinary Lust'
+    Type: 5
+    Descriptors: '[Mind, Compulsion]'
+    Description: 'A dark, compulsive craving for slaughter and the sight and taste of flowing blood.'
+    Trigger: 'Contact with fiendish artifacts, vampire bites, or unholy altars of blood deities.'
+    InitialEffect: 'd20! + 5 vs. Will (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: 'Blood Lust: When a creature within 3 squares is reduced to 0 HP, make a Will check vs. DC 12 or spend your next action attacking that target to ensure its death.\nAfter 1 week, make d20! + 5 attack vs. Will (S - Go to stage 2; F - Stay at stage 1; OF - Condition cured).'
+    Stage2: 'Insatiable Violence: Suffer a -4 penalty to Will defense against rage and compulsion effects. Cannot accept an enemy surrender in combat.\nAfter 1 week, make d20! + 5 attack vs. Will (S - Go to stage 3; F - Stay at stage 2; OF - Go to stage 1).'
+    Stage3: 'Ghoulish Thirst: Suffer 1 Cha drain per week if you have not personally killed and fed on the blood or flesh of a sentient humanoid.\nAfter 1 month, make d20! + 5 attack vs. Will (S/F - Stay at stage 3; OF - Go to stage 2).'
+    Stage4: null
+    Stage5: null
+    Stage6: null
+    Modifiers: null
 hpeffects:
   -
     ID: 1
