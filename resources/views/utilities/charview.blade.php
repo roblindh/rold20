@@ -519,7 +519,127 @@ function characterViewerApp() {
     });
 
     const skillsMap = {};
-    (rawSkills || []).forEach(s => { skillsMap[s.ID] = s; });
+    const skillsByAbbr = {};
+    (rawSkills || []).forEach(s => {
+        skillsMap[s.ID] = s;
+        if (s.Abbreviation) {
+            skillsByAbbr[s.Abbreviation] = s;
+            skillsByAbbr[s.Abbreviation.toLowerCase()] = s;
+        }
+    });
+
+    const charRaceName = @json($race->Name ?? $character->ref_creatures_Name ?? $calc['heritage']['race_name'] ?? '');
+    const charTemplateNames = @json($templates->pluck('Name')->all() ?? []);
+    const charCreatureType = @json($race->CreatureType ?? $calc['heritage']['creature_type'] ?? '');
+    const charCreatureSubtypes = @json(!empty($race->CreatureSubtype) && isset($creatureSubtypes[$race->CreatureSubtype]) ? [$creatureSubtypes[$race->CreatureSubtype]->Name] : []);
+
+    function evaluatePrerequisiteExpression(prereqStr, context, skillsByAbbrMap = {}, skillsByIdMap = {}) {
+        if (!prereqStr || !prereqStr.trim()) {
+            return { passed: true, unmet: [], formatted: '', raw: prereqStr };
+        }
+
+        const unmetList = [];
+        let evaluatedExpr = prereqStr;
+
+        // 1. Skl(Abbr) >= Val (or <=, >, <, ==)
+        evaluatedExpr = evaluatedExpr.replace(/Skl\(([A-Za-z0-9_]+)\)\s*(>=|<=|>|<|==)\s*([0-9.]+)/gi, (match, abbr, op, valStr) => {
+            const val = parseFloat(valStr);
+            const sk = skillsByAbbrMap[abbr] || skillsByAbbrMap[abbr.toLowerCase()] || null;
+            const skId = sk ? sk.ID : null;
+            const skName = sk ? sk.Name : abbr;
+
+            let currRank = 0;
+            const sMap = context.skills || {};
+            if (sMap[abbr] !== undefined) {
+                currRank = parseFloat(sMap[abbr]);
+            } else if (sMap[abbr.toLowerCase()] !== undefined) {
+                currRank = parseFloat(sMap[abbr.toLowerCase()]);
+            } else if (skId && sMap[skId] !== undefined) {
+                currRank = parseFloat(sMap[skId]);
+            } else if (skId && sMap[String(skId)] !== undefined) {
+                currRank = parseFloat(sMap[String(skId)]);
+            }
+
+            let passed = false;
+            if (op === '>=') passed = currRank >= (val - 0.0001);
+            else if (op === '<=') passed = currRank <= (val + 0.0001);
+            else if (op === '>') passed = currRank > (val + 0.0001);
+            else if (op === '<') passed = currRank < (val - 0.0001);
+            else if (op === '==') passed = Math.abs(currRank - val) < 0.001;
+
+            if (!passed) {
+                unmetList.push(`${skName} ${op} ${val} (Current: ${currRank})`);
+            }
+
+            return passed ? 'true' : 'false';
+        });
+
+        // 2. Race == Name
+        evaluatedExpr = evaluatedExpr.replace(/Race\s*==\s*([A-Za-z0-9_]+)/gi, (match, targetRace) => {
+            const charRace = (context.race || '').toLowerCase();
+            let templates = context.templates || [];
+            if (typeof templates === 'string') templates = templates.split(';');
+            const lowerTemplates = templates.map(t => String(t).toLowerCase());
+
+            const passed = charRace === targetRace.toLowerCase() || lowerTemplates.includes(targetRace.toLowerCase());
+            if (!passed) {
+                unmetList.push(`Race must be ${targetRace}`);
+            }
+            return passed ? 'true' : 'false';
+        });
+
+        // 3. CrSubt == Name
+        evaluatedExpr = evaluatedExpr.replace(/CrSubt\s*==\s*([A-Za-z0-9_]+)/gi, (match, targetSubt) => {
+            let charSubts = context.creatureSubtypes || [];
+            if (typeof charSubts === 'string') charSubts = charSubts.split(';');
+            const lowerSubts = charSubts.map(s => String(s).toLowerCase());
+
+            const passed = lowerSubts.includes(targetSubt.toLowerCase());
+            if (!passed) {
+                unmetList.push(`Creature Subtype must be ${targetSubt}`);
+            }
+            return passed ? 'true' : 'false';
+        });
+
+        // 4. CrType == Name
+        evaluatedExpr = evaluatedExpr.replace(/CrType\s*==\s*([A-Za-z0-9_]+)/gi, (match, targetType) => {
+            const charType = (context.creatureType || '').toLowerCase();
+            const passed = charType === targetType.toLowerCase();
+            if (!passed) {
+                unmetList.push(`Creature Type must be ${targetType}`);
+            }
+            return passed ? 'true' : 'false';
+        });
+
+        // 5. Evaluate boolean logic safely
+        let boolExpr = evaluatedExpr.replace(/\bAND\b/gi, '&&').replace(/\bOR\b/gi, '||');
+        let overallPassed = false;
+        if (/^[01truefalse\s\(\)&\|!]+$/i.test(boolExpr)) {
+            try {
+                overallPassed = Boolean(Function('"use strict";return (' + boolExpr + ')')());
+            } catch (e) {
+                overallPassed = false;
+            }
+        }
+
+        // Format human-friendly prereq string
+        let formatted = prereqStr.replace(/Skl\(([A-Za-z0-9_]+)\)\s*(>=|<=|>|<|==)\s*([0-9.]+)/gi, (m, abbr, op, val) => {
+            const sk = skillsByAbbrMap[abbr] || skillsByAbbrMap[abbr.toLowerCase()] || null;
+            const skName = sk ? sk.Name : abbr;
+            return `${skName} ${op} ${val}`;
+        });
+        formatted = formatted.replace(/\bAND\b/gi, ' and ').replace(/\bOR\b/gi, ' or ')
+            .replace(/Race==/gi, 'Race: ')
+            .replace(/CrSubt==/gi, 'Subtype: ')
+            .replace(/CrType==/gi, 'Type: ');
+
+        return {
+            passed: overallPassed,
+            unmet: overallPassed ? [] : unmetList,
+            formatted: formatted,
+            raw: prereqStr
+        };
+    }
 
     // Mark known spells
     const spellsWithKnown = (rawSpells || []).map(sp => ({
@@ -897,6 +1017,69 @@ function characterViewerApp() {
             this.lvlData.remainingSp = spPerLvl || (classesMap[clsId] ? parseInt(classesMap[clsId].SkillPtsPerLevel || 2) : 2);
         },
 
+        getCharPrereqContext() {
+            const sMap = {};
+            for (const sId in characterSkills) {
+                const r = parseFloat(characterSkills[sId]) || 0;
+                sMap[sId] = r;
+                const sk = skillsMap[sId];
+                if (sk && sk.Abbreviation) {
+                    sMap[sk.Abbreviation] = r;
+                    sMap[sk.Abbreviation.toLowerCase()] = r;
+                }
+            }
+            return {
+                skills: sMap,
+                race: charRaceName || '',
+                templates: charTemplateNames || [],
+                creatureType: charCreatureType || '',
+                creatureSubtypes: charCreatureSubtypes || []
+            };
+        },
+
+        evaluateSkillPrereq(skill) {
+            if (!skill || !skill.Prereqs || !skill.Prereqs.trim()) {
+                return { passed: true, unmet: [], formatted: '', raw: null };
+            }
+            return evaluatePrerequisiteExpression(skill.Prereqs, this.getCharPrereqContext(), skillsByAbbr, skillsMap);
+        },
+
+        getLvlPrestigeSpent() {
+            let spent = 0;
+            for (const sId in this.lvlData.skills) {
+                const sk = skillsMap[sId];
+                if (sk && Number(sk.Type) === 10) {
+                    spent += parseFloat(this.lvlData.skills[sId]) || 0;
+                }
+            }
+            return spent;
+        },
+
+        canIncLvlSkill(skillId, delta, accessType) {
+            const sk = skillsMap[skillId];
+            if (!sk) return false;
+
+            // 1. Prereqs check
+            const evalRes = this.evaluateSkillPrereq(sk);
+            if (!evalRes.passed) return false;
+
+            // 2. Remaining SP check
+            if (this.lvlData.remainingSp < delta) return false;
+
+            // 3. Max rank per level check (0.5 for Secondary, 1.0 for Primary)
+            const cur = this.lvlData.skills[skillId] || 0;
+            const maxRank = (accessType === 'Primary') ? 1.0 : 0.5;
+            if (cur + delta > maxRank) return false;
+
+            // 4. Prestige cap check (max 1.0 SP per level across all prestige skills)
+            if (Number(sk.Type) === 10) {
+                const prestigeSpent = this.getLvlPrestigeSpent();
+                if (prestigeSpent + delta > 1.0) return false;
+            }
+
+            return true;
+        },
+
         get availableClassSkills() {
             const clsId = this.lvlData.selectedClassId;
             const accessForClass = skillAccessByClass[clsId] || {};
@@ -912,9 +1095,18 @@ function characterViewerApp() {
                     accessType = 'Secondary';
                 }
                 const currRank = characterSkills[s.ID] || characterSkills[String(s.ID)] || 0;
+                const evalRes = this.evaluateSkillPrereq(s);
+
                 return {
                     ID: s.ID,
                     Name: s.Name,
+                    Abbreviation: s.Abbreviation,
+                    Type: s.Type,
+                    IsPrestige: Number(s.Type) === 10,
+                    Prereqs: s.Prereqs,
+                    PrereqPassed: evalRes.passed,
+                    UnmetPrereqs: evalRes.unmet,
+                    FormattedPrereq: evalRes.formatted,
                     AccessType: accessType,
                     CurrentRank: currRank
                 };
@@ -936,7 +1128,7 @@ function characterViewerApp() {
             const current = this.lvlData.skills[skillId] || 0;
             const next = current + delta;
             if (next < 0) return;
-            if (delta > 0 && this.lvlData.remainingSp < delta) return;
+            if (delta > 0 && !this.canIncLvlSkill(skillId, delta, accessType)) return;
 
             this.lvlData.skills[skillId] = Math.round(next * 10) / 10;
             this.lvlData.remainingSp = Math.round((this.lvlData.remainingSp - delta) * 10) / 10;

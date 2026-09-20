@@ -183,28 +183,85 @@ class UtilityController extends Controller
         if ($request->has('Skills')) {
             $skillsData = $request->input('Skills');
             if (is_array($skillsData)) {
-                $skillRanks = [];
+                // Build race & template context for prerequisite validation
+                $raceRow = null;
+                if ($request->filled('RaceID')) {
+                    $raceRow = DB::table('ref_creatures')->where('ID', (int)$request->input('RaceID'))->first();
+                }
+                $templateNames = [];
+                if ($request->filled('TemplateIDs') && is_array($request->input('TemplateIDs'))) {
+                    $templateNames = DB::table('ref_templates')->whereIn('ID', array_filter(array_map('intval', $request->input('TemplateIDs'))))->pluck('Name')->all();
+                } elseif ($request->filled('TemplateID')) {
+                    $tRow = DB::table('ref_templates')->where('ID', (int)$request->input('TemplateID'))->first();
+                    if ($tRow) $templateNames[] = $tRow->Name;
+                }
+                $charSubtypes = [];
+                if ($raceRow && !empty($raceRow->CreatureSubtype)) {
+                    $stRow = DB::table('ref_creaturesubtypes')->where('ID', $raceRow->CreatureSubtype)->first();
+                    if ($stRow) $charSubtypes[] = $stRow->Name;
+                }
+
+                $runningSkills = [];
+
                 if (isset($skillsData['BackgroundRates']) && is_array($skillsData['BackgroundRates'])) {
                     $rl = (int)($request->input('TotalRL') ?? 0);
                     $bgLvl = $rl + 1;
+                    
+                    // Validate background skills prerequisites
+                    $bgAllocations = [];
                     foreach ($skillsData['BackgroundRates'] as $sId => $rate) {
                         $r = (float)$rate * $bgLvl;
                         if ($r > 0) {
-                            $skillRanks[$sId] = ($skillRanks[$sId] ?? 0) + $r;
+                            $bgAllocations[$sId] = $r;
                         }
                     }
+                    $bgContext = [
+                        'skills' => [],
+                        'race' => $raceRow ? $raceRow->Name : '',
+                        'templates' => $templateNames,
+                        'creatureType' => $raceRow ? ($raceRow->CreatureType ?? '') : '',
+                        'creatureSubtypes' => $charSubtypes,
+                    ];
+                    $bgVal = \App\Services\Entity\SkillPrerequisiteEvaluator::validateLevelSkillAllocation($bgAllocations, $bgContext, 999.0);
+                    if (!$bgVal['valid']) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Background skill validation failed: ' . implode(' ', $bgVal['errors']),
+                        ], 422);
+                    }
+
+                    foreach ($bgAllocations as $sId => $r) {
+                        $runningSkills[$sId] = ($runningSkills[$sId] ?? 0) + $r;
+                    }
                 }
+
                 if (isset($skillsData['LevelSkills']) && is_array($skillsData['LevelSkills'])) {
                     foreach ($skillsData['LevelSkills'] as $lvlIndex => $lvlAllocations) {
                         if (is_array($lvlAllocations)) {
+                            $lvlContext = [
+                                'skills' => $runningSkills,
+                                'race' => $raceRow ? $raceRow->Name : '',
+                                'templates' => $templateNames,
+                                'creatureType' => $raceRow ? ($raceRow->CreatureType ?? '') : '',
+                                'creatureSubtypes' => $charSubtypes,
+                            ];
+                            $lvlVal = \App\Services\Entity\SkillPrerequisiteEvaluator::validateLevelSkillAllocation($lvlAllocations, $lvlContext, 1.0);
+                            if (!$lvlVal['valid']) {
+                                return response()->json([
+                                    'success' => false,
+                                    'message' => "Level {$lvlIndex} skill validation failed: " . implode(' ', $lvlVal['errors']),
+                                ], 422);
+                            }
                             foreach ($lvlAllocations as $sId => $rank) {
-                                $skillRanks[$sId] = ($skillRanks[$sId] ?? 0) + (float)$rank;
+                                if ((float)$rank > 0) {
+                                    $runningSkills[$sId] = ($runningSkills[$sId] ?? 0) + (float)$rank;
+                                }
                             }
                         }
                     }
                 }
                 $parts = [];
-                foreach ($skillRanks as $sId => $rank) {
+                foreach ($runningSkills as $sId => $rank) {
                     if ($rank > 0) {
                         $parts[] = intval($sId) . "=" . $rank;
                     }
@@ -550,6 +607,36 @@ class UtilityController extends Controller
             }
         }
         if (!empty($validated['skills'])) {
+            $race = ($character && $character->BaseRace) ? DB::table('ref_creatures')->where('ID', $character->BaseRace)->first() : null;
+            $templates = collect([]);
+            if ($character && !empty($character->Templates)) {
+                $tIds = explode(';', (string)$character->Templates);
+                $tIds = array_filter(array_map('intval', $tIds));
+                if (!empty($tIds)) {
+                    $templates = DB::table('ref_templates')->whereIn('ID', $tIds)->get();
+                }
+            }
+            $charSubtypes = [];
+            if ($race && !empty($race->CreatureSubtype)) {
+                $stRow = DB::table('ref_creaturesubtypes')->where('ID', $race->CreatureSubtype)->first();
+                if ($stRow) {
+                    $charSubtypes[] = $stRow->Name;
+                }
+            }
+
+            $context = [
+                'skills' => $existingSkills,
+                'race' => $race ? $race->Name : '',
+                'templates' => $templates->pluck('Name')->all(),
+                'creatureType' => $race ? ($race->CreatureType ?? '') : '',
+                'creatureSubtypes' => $charSubtypes,
+            ];
+
+            $valResult = \App\Services\Entity\SkillPrerequisiteEvaluator::validateLevelSkillAllocation($validated['skills'], $context, 1.0);
+            if (!$valResult['valid']) {
+                return back()->with('error', implode(' ', $valResult['errors']));
+            }
+
             foreach ($validated['skills'] as $sId => $addRank) {
                 if ((float)$addRank > 0) {
                     $existingSkills[(int)$sId] = ($existingSkills[(int)$sId] ?? 0) + (float)$addRank;

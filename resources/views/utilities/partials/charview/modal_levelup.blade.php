@@ -115,22 +115,41 @@
                         <h3 class="font-bold text-indigo-950 text-sm flex items-center gap-1.5">
                             <span>🎯</span> Distribute Skill Points
                         </h3>
-                        <p class="text-xs text-slate-600 mt-0.5">Primary skills can increase up to +1.0 (cost 1 SP/rank), Secondary up to +0.5 (cost 0.5 SP). Specializations cost 1 SP.</p>
+                        <p class="text-xs text-slate-600 mt-0.5">Primary skills can increase up to +1.0 (cost 1 SP/rank), Secondary up to +0.5 (cost 0.5 SP). Max 1.0 SP per level on Prestige skills.</p>
                     </div>
-                    <div class="text-right font-mono">
-                        <span class="text-xs text-slate-500 block">Skill Points Left:</span>
-                        <span class="text-lg font-bold" :class="lvlData.remainingSp >= 0 ? 'text-emerald-700' : 'text-red-600'" x-text="lvlData.remainingSp.toFixed(1)"></span>
+                    <div class="flex items-center gap-3">
+                        <template x-if="getLvlPrestigeSpent() > 0">
+                            <div class="text-right font-mono bg-purple-50 border border-purple-200 px-2 py-1 rounded">
+                                <span class="text-[10px] text-purple-700 block font-semibold">Prestige SP:</span>
+                                <span class="text-sm font-bold text-purple-900" x-text="getLvlPrestigeSpent().toFixed(1) + ' / 1.0 SP'"></span>
+                            </div>
+                        </template>
+                        <div class="text-right font-mono">
+                            <span class="text-xs text-slate-500 block">Skill Points Left:</span>
+                            <span class="text-lg font-bold" :class="lvlData.remainingSp >= 0 ? 'text-emerald-700' : 'text-red-600'" x-text="lvlData.remainingSp.toFixed(1)"></span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="space-y-2 max-h-80 overflow-y-auto pr-1">
                     <template x-for="s in availableClassSkills" :key="s.ID">
-                        <div class="bg-white border border-slate-200 p-2.5 rounded-lg flex items-center justify-between gap-2 text-xs shadow-2xs">
-                            <div>
-                                <span class="font-bold text-slate-800" x-text="s.Name"></span>
-                                <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded ml-1"
-                                      :class="s.AccessType === 'Primary' ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-slate-100 text-slate-700 border border-slate-300'"
-                                      x-text="s.AccessType"></span>
+                        <div class="bg-white border border-slate-200 p-2.5 rounded-lg flex items-center justify-between gap-2 text-xs shadow-2xs"
+                             :class="!s.PrereqPassed ? 'opacity-75 border-dashed bg-slate-50' : ''">
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    <span class="font-bold text-slate-800" x-text="s.Name"></span>
+                                    <template x-if="s.IsPrestige">
+                                        <span class="text-[8px] bg-purple-100 text-purple-800 px-1 py-0.2 rounded font-bold">PRESTIGE</span>
+                                    </template>
+                                    <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded ml-1"
+                                          :class="s.AccessType === 'Primary' ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-slate-100 text-slate-700 border border-slate-300'"
+                                          x-text="s.AccessType"></span>
+                                </div>
+                                <template x-if="s.Prereqs && !s.PrereqPassed">
+                                    <div class="mt-1 text-[10px] text-amber-800 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 font-sans leading-tight">
+                                        <span class="font-bold">🔒 Prereq:</span> <span x-text="s.UnmetPrereqs.join(', ') || s.FormattedPrereq"></span>
+                                    </div>
+                                </template>
                             </div>
 
                             <div class="flex items-center gap-2 shrink-0">
@@ -139,7 +158,7 @@
                                     <button type="button" @click="adjustSkill(s.ID, -0.5)" :disabled="!lvlData.skills[s.ID]" class="w-6 h-6 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center cursor-pointer disabled:opacity-40">-</button>
                                     <span class="w-10 text-center font-mono font-bold" x-text="'+' + (lvlData.skills[s.ID] || 0)"></span>
                                     <input type="hidden" :name="'skills[' + s.ID + ']'" :value="lvlData.skills[s.ID] || 0">
-                                    <button type="button" @click="adjustSkill(s.ID, 0.5, s.AccessType)" :disabled="lvlData.remainingSp < 0.5 || (s.AccessType === 'Secondary' && (lvlData.skills[s.ID] || 0) >= 0.5) || (s.AccessType === 'Primary' && (lvlData.skills[s.ID] || 0) >= 1.0)" class="w-6 h-6 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-bold flex items-center justify-center cursor-pointer disabled:opacity-40">+</button>
+                                    <button type="button" @click="adjustSkill(s.ID, 0.5, s.AccessType)" :disabled="!canIncLvlSkill(s.ID, 0.5, s.AccessType)" class="w-6 h-6 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-bold flex items-center justify-center cursor-pointer disabled:opacity-40" :title="!s.PrereqPassed ? 'Prerequisites not met' : (s.IsPrestige && getLvlPrestigeSpent() >= 1.0 ? 'Max 1.0 SP per level on prestige skills' : '')">+</button>
                                 </div>
                             </div>
                         </div>

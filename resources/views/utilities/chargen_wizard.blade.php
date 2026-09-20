@@ -552,11 +552,15 @@
                     <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center justify-between" x-text="st.Name"></h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         <template x-for="s in getBgAccessibleSkillsForType(st.ID)" :key="s.ID">
-                            <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs space-y-2">
+                            <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs space-y-2"
+                                 :class="!isBgSkillPrereqMet(s.ID) ? 'opacity-75 bg-slate-50/90 border-dashed' : ''">
                                 <div class="flex items-center justify-between gap-2">
                                     <div class="min-w-0 flex-1">
-                                        <div class="flex items-center gap-1.5">
+                                        <div class="flex items-center gap-1.5 flex-wrap">
                                             <span class="text-xs font-semibold text-slate-900 truncate" x-text="s.Name"></span>
+                                            <template x-if="Number(s.Type) === 10">
+                                                <span class="text-[8px] bg-purple-100 text-purple-800 px-1 py-0.2 rounded font-bold">PRESTIGE</span>
+                                            </template>
                                             <span class="text-[9px] px-1 py-0.2 rounded font-bold"
                                                   :class="isBgSkillPrimary(s.ID) ? 'bg-indigo-100 text-indigo-800' : 'bg-slate-100 text-slate-600'"
                                                   x-text="isBgSkillPrimary(s.ID) ? 'PRIMARY' : 'SEC'">
@@ -566,6 +570,11 @@
                                             <span>Bg: <strong class="text-slate-800" x-text="getBgSkillRank(s.ID)"></strong> / <span x-text="getBgSkillMax(s.ID)"></span></span>
                                             <span class="text-indigo-700 font-bold bg-indigo-50 px-1 py-0.2 rounded">Total Rank: <span x-text="getConsolidatedSkillRank(s.ID)"></span></span>
                                         </div>
+                                        <template x-if="s.Prereqs && !isBgSkillPrereqMet(s.ID)">
+                                            <div class="mt-1 text-[10px] text-amber-800 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 font-sans leading-tight">
+                                                <span class="font-bold">🔒 Prereq:</span> <span x-text="getSkillPrereqEvaluation(s, 'bg').unmet.join(', ') || getSkillPrereqEvaluation(s, 'bg').formatted"></span>
+                                            </div>
+                                        </template>
                                     </div>
 
                                     <!-- Uniform Rank Allocation Buttons -->
@@ -725,10 +734,11 @@
                                 <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-2" x-text="st.Name"></h4>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
                                     <template x-for="s in getLevelAccessibleSkillsForType(activeClassLevelTab, st.ID)" :key="s.ID">
-                                        <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200 space-y-1.5 text-xs">
+                                        <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200 space-y-1.5 text-xs"
+                                             :class="!isLevelSkillPrereqMet(activeClassLevelTab, s.ID) ? 'opacity-75 border-dashed bg-slate-100/70' : ''">
                                             <div class="flex items-center justify-between gap-2">
                                                 <div class="min-w-0 flex-1">
-                                                    <div class="flex items-center gap-1.5">
+                                                    <div class="flex items-center gap-1.5 flex-wrap">
                                                         <span class="font-semibold text-slate-900 truncate" x-text="s.Name"></span>
                                                         <template x-if="Number(s.Type) === 10">
                                                             <span class="text-[8px] bg-purple-100 text-purple-800 px-1 py-0.2 rounded font-bold">PRESTIGE</span>
@@ -743,6 +753,11 @@
                                                         <span>Lvl Rank: <strong class="text-slate-800" x-text="getLevelSkillRank(activeClassLevelTab, s.ID)"></strong> / <span x-text="isLevelSkillPrimary(activeClassLevelTab, s.ID) ? '1.0' : '0.5'"></span></span>
                                                         <span class="text-indigo-700 font-bold bg-indigo-50 px-1 py-0.2 rounded">Total Rank: <span x-text="getConsolidatedSkillRank(s.ID)"></span></span>
                                                     </div>
+                                                    <template x-if="s.Prereqs && !isLevelSkillPrereqMet(activeClassLevelTab, s.ID)">
+                                                        <div class="mt-1 text-[10px] text-amber-800 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 font-sans leading-tight">
+                                                            <span class="font-bold">🔒 Prereq:</span> <span x-text="getSkillPrereqEvaluation(s, 'lvl', activeClassLevelTab).unmet.join(', ') || getSkillPrereqEvaluation(s, 'lvl', activeClassLevelTab).formatted"></span>
+                                                        </div>
+                                                    </template>
                                                 </div>
 
                                                 <!-- Action Buttons with Single-Click +1 for Primary Skills -->
@@ -1395,6 +1410,114 @@ function characterWizard() {
         return prereqLines;
     }
 
+    function evaluatePrerequisiteExpression(prereqStr, context, skillsByAbbr = {}, skillsById = {}) {
+        if (!prereqStr || !prereqStr.trim()) {
+            return { passed: true, unmet: [], formatted: '', raw: prereqStr };
+        }
+
+        const unmetList = [];
+        let evaluatedExpr = prereqStr;
+
+        // 1. Skl(Abbr) >= Val (or <=, >, <, ==)
+        evaluatedExpr = evaluatedExpr.replace(/Skl\(([A-Za-z0-9_]+)\)\s*(>=|<=|>|<|==)\s*([0-9.]+)/gi, (match, abbr, op, valStr) => {
+            const val = parseFloat(valStr);
+            const sk = skillsByAbbr[abbr] || skillsByAbbr[abbr.toLowerCase()] || null;
+            const skId = sk ? sk.ID : null;
+            const skName = sk ? sk.Name : abbr;
+
+            let currRank = 0;
+            const skillsMap = context.skills || {};
+            if (skillsMap[abbr] !== undefined) {
+                currRank = parseFloat(skillsMap[abbr]);
+            } else if (skillsMap[abbr.toLowerCase()] !== undefined) {
+                currRank = parseFloat(skillsMap[abbr.toLowerCase()]);
+            } else if (skId && skillsMap[skId] !== undefined) {
+                currRank = parseFloat(skillsMap[skId]);
+            } else if (skId && skillsMap[String(skId)] !== undefined) {
+                currRank = parseFloat(skillsMap[String(skId)]);
+            }
+
+            let passed = false;
+            if (op === '>=') passed = currRank >= (val - 0.0001);
+            else if (op === '<=') passed = currRank <= (val + 0.0001);
+            else if (op === '>') passed = currRank > (val + 0.0001);
+            else if (op === '<') passed = currRank < (val - 0.0001);
+            else if (op === '==') passed = Math.abs(currRank - val) < 0.001;
+
+            if (!passed) {
+                unmetList.push(`${skName} ${op} ${val} (Current: ${currRank})`);
+            }
+
+            return passed ? 'true' : 'false';
+        });
+
+        // 2. Race == Name
+        evaluatedExpr = evaluatedExpr.replace(/Race\s*==\s*([A-Za-z0-9_]+)/gi, (match, targetRace) => {
+            const charRace = (context.race || '').toLowerCase();
+            let templates = context.templates || [];
+            if (typeof templates === 'string') templates = templates.split(';');
+            const lowerTemplates = templates.map(t => String(t).toLowerCase());
+
+            const passed = charRace === targetRace.toLowerCase() || lowerTemplates.includes(targetRace.toLowerCase());
+            if (!passed) {
+                unmetList.push(`Race must be ${targetRace}`);
+            }
+            return passed ? 'true' : 'false';
+        });
+
+        // 3. CrSubt == Name
+        evaluatedExpr = evaluatedExpr.replace(/CrSubt\s*==\s*([A-Za-z0-9_]+)/gi, (match, targetSubt) => {
+            let charSubts = context.creatureSubtypes || [];
+            if (typeof charSubts === 'string') charSubts = charSubts.split(';');
+            const lowerSubts = charSubts.map(s => String(s).toLowerCase());
+
+            const passed = lowerSubts.includes(targetSubt.toLowerCase());
+            if (!passed) {
+                unmetList.push(`Creature Subtype must be ${targetSubt}`);
+            }
+            return passed ? 'true' : 'false';
+        });
+
+        // 4. CrType == Name
+        evaluatedExpr = evaluatedExpr.replace(/CrType\s*==\s*([A-Za-z0-9_]+)/gi, (match, targetType) => {
+            const charType = (context.creatureType || '').toLowerCase();
+            const passed = charType === targetType.toLowerCase();
+            if (!passed) {
+                unmetList.push(`Creature Type must be ${targetType}`);
+            }
+            return passed ? 'true' : 'false';
+        });
+
+        // 5. Evaluate boolean logic safely
+        let boolExpr = evaluatedExpr.replace(/\bAND\b/gi, '&&').replace(/\bOR\b/gi, '||');
+        let overallPassed = false;
+        if (/^[01truefalse\s\(\)&\|!]+$/i.test(boolExpr)) {
+            try {
+                overallPassed = Boolean(Function('"use strict";return (' + boolExpr + ')')());
+            } catch (e) {
+                overallPassed = false;
+            }
+        }
+
+        // Format human-friendly prereq string
+        let formatted = prereqStr.replace(/Skl\(([A-Za-z0-9_]+)\)\s*(>=|<=|>|<|==)\s*([0-9.]+)/gi, (m, abbr, op, val) => {
+            const sk = skillsByAbbr[abbr] || skillsByAbbr[abbr.toLowerCase()] || null;
+            const skName = sk ? sk.Name : abbr;
+            return `${skName} ${op} ${val}`;
+        });
+        formatted = formatted.replace(/\bAND\b/gi, ' and ').replace(/\bOR\b/gi, ' or ')
+            .replace(/Race==/gi, 'Race: ')
+            .replace(/CrSubt==/gi, 'Subtype: ')
+            .replace(/CrType==/gi, 'Type: ');
+
+        return {
+            passed: overallPassed,
+            unmet: overallPassed ? [] : unmetList,
+            formatted: formatted,
+            raw: prereqStr
+        };
+    }
+
     // 1. Raw Reference Data
     const rawCampaigns = @json($campaigns ?? []);
     const rawRaces = @json($races ?? []);
@@ -1427,6 +1550,7 @@ function characterWizard() {
 
     // 2. Pre-index lookup maps
     const skillsById = {};
+    const skillsByAbbr = {};
     const classesById = {};
     const racesById = {};
     const culturesById = {};
@@ -1445,7 +1569,13 @@ function characterWizard() {
     const skillAccessMap = {};
     const accessibleSkillsByClass = {};
 
-    (rawSkills || []).forEach(s => { skillsById[s.ID] = s; });
+    (rawSkills || []).forEach(s => {
+        skillsById[s.ID] = s;
+        if (s.Abbreviation) {
+            skillsByAbbr[s.Abbreviation] = s;
+            skillsByAbbr[s.Abbreviation.toLowerCase()] = s;
+        }
+    });
     (rawClasses || []).forEach(c => { classesById[c.ID] = c; });
     (rawRaces || []).forEach(r => { racesById[r.ID] = r; });
     (rawCultures || []).forEach(c => { culturesById[c.ID] = c; });
@@ -1531,6 +1661,7 @@ function characterWizard() {
     deepFreeze(rawWeightLimitsTable);
     deepFreeze(rawRefActions);
     deepFreeze(skillsById);
+    deepFreeze(skillsByAbbr);
     deepFreeze(classesById);
     deepFreeze(racesById);
     deepFreeze(culturesById);
@@ -1599,6 +1730,7 @@ function characterWizard() {
         skillAccessMap: skillAccessMap,
         accessibleSkillsByClass: accessibleSkillsByClass,
         skillsById: skillsById,
+        skillsByAbbr: skillsByAbbr,
         classesById: classesById,
         racesById: racesById,
         culturesById: culturesById,
@@ -2285,7 +2417,96 @@ function characterWizard() {
             return (maxRate * (this.totalRL + 1)).toFixed(1).replace(/\.0$/, '');
         },
 
+        getBgPrereqContext() {
+            const race = this.getSelectedRace();
+            const templates = this.getSelectedTemplates();
+            const skillsMap = {};
+            for (const sId in this.skillsById) {
+                const tb = this.getTraitSkillBonus(sId);
+                if (tb > 0) {
+                    const sk = this.skillsById[sId];
+                    skillsMap[sId] = tb;
+                    if (sk && sk.Abbreviation) {
+                        skillsMap[sk.Abbreviation] = tb;
+                        skillsMap[sk.Abbreviation.toLowerCase()] = tb;
+                    }
+                }
+            }
+            const subts = [];
+            if (race && race.CreatureSubtype) {
+                const subtObj = this.creatureSubtypesById[race.CreatureSubtype];
+                if (subtObj && subtObj.Name) subts.push(subtObj.Name);
+                else subts.push(String(race.CreatureSubtype));
+            }
+            return {
+                skills: skillsMap,
+                race: race ? (race.Name || '') : '',
+                templates: templates.map(t => t.Name || ''),
+                creatureType: race ? (race.CreatureType || '') : '',
+                creatureSubtypes: subts,
+            };
+        },
+
+        getLevelPrereqContext(lvl) {
+            const race = this.getSelectedRace();
+            const templates = this.getSelectedTemplates();
+            const skillsMap = {};
+            for (const sId in this.skillsById) {
+                const bgRate = parseFloat(this.character.BgSkillRates[sId]) || 0;
+                let rank = bgRate * (this.totalRL + 1);
+                for (let l = 1; l < lvl; l++) {
+                    if (this.character.LevelSkills[l] && this.character.LevelSkills[l][sId]) {
+                        rank += parseFloat(this.character.LevelSkills[l][sId]) || 0;
+                    }
+                }
+                rank += this.getTraitSkillBonus(sId);
+
+                if (rank > 0) {
+                    const sk = this.skillsById[sId];
+                    skillsMap[sId] = rank;
+                    if (sk && sk.Abbreviation) {
+                        skillsMap[sk.Abbreviation] = rank;
+                        skillsMap[sk.Abbreviation.toLowerCase()] = rank;
+                    }
+                }
+            }
+            const subts = [];
+            if (race && race.CreatureSubtype) {
+                const subtObj = this.creatureSubtypesById[race.CreatureSubtype];
+                if (subtObj && subtObj.Name) subts.push(subtObj.Name);
+                else subts.push(String(race.CreatureSubtype));
+            }
+            return {
+                skills: skillsMap,
+                race: race ? (race.Name || '') : '',
+                templates: templates.map(t => t.Name || ''),
+                creatureType: race ? (race.CreatureType || '') : '',
+                creatureSubtypes: subts,
+            };
+        },
+
+        getSkillPrereqEvaluation(skill, contextType = 'bg', lvl = 1) {
+            if (!skill || !skill.Prereqs || !skill.Prereqs.trim()) {
+                return { passed: true, unmet: [], formatted: '', raw: null };
+            }
+            const ctx = (contextType === 'bg') ? this.getBgPrereqContext() : this.getLevelPrereqContext(lvl);
+            return evaluatePrerequisiteExpression(skill.Prereqs, ctx, this.skillsByAbbr, this.skillsById);
+        },
+
+        isBgSkillPrereqMet(skillId) {
+            const sk = this.skillsById[skillId];
+            if (!sk || !sk.Prereqs) return true;
+            return this.getSkillPrereqEvaluation(sk, 'bg').passed;
+        },
+
+        isLevelSkillPrereqMet(lvl, skillId) {
+            const sk = this.skillsById[skillId];
+            if (!sk || !sk.Prereqs) return true;
+            return this.getSkillPrereqEvaluation(sk, 'lvl', lvl).passed;
+        },
+
         canSetBgSkillRate(skillId, newRate) {
+            if (newRate > 0 && !this.isBgSkillPrereqMet(skillId)) return false;
             const currentRate = this.getBgSkillRate(skillId);
             const delta = (newRate - currentRate) * (this.totalRL + 1);
             return this.bgSkillPointsRemaining >= delta;
@@ -2441,6 +2662,8 @@ function characterWizard() {
         },
 
         canIncLevelSkillBy(lvl, skillId, amount) {
+            if (!this.isLevelSkillPrereqMet(lvl, skillId)) return false;
+
             const current = this.getLevelSkillRank(lvl, skillId);
             const isPrim = this.isLevelSkillPrimary(lvl, skillId);
             const maxRankForLevel = isPrim ? 1.0 : 0.5;
