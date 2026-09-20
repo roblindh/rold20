@@ -3,6 +3,18 @@
 @section('content')
 @php
     $initialCampId = request()->query('campaign', '');
+    $wizardSteps = [
+        1 => 'Identity & Campaign',
+        2 => 'Ability Scores',
+        3 => 'Race & Culture',
+        4 => 'Improvements',
+        5 => 'Bg Skills',
+        6 => 'Class & Class Skills',
+        7 => 'Spells',
+        8 => 'Equipment & Wealth',
+        9 => 'Personal Details',
+        10 => 'Review & Save',
+    ];
 @endphp
 
 <div class="space-y-6" x-data="characterWizard()">
@@ -15,8 +27,16 @@
             <p class="text-stone-700 text-sm mt-1">Hero creation with background skills, improvements, level-by-level class progression, spell learning, equipment shopping, and lore.</p>
         </div>
         <div class="flex items-center gap-2">
+            <!-- Loading / Initialization Indicator -->
+            <div x-show="!isReady" style="display: none;" class="flex items-center gap-1.5 text-xs text-amber-800 bg-amber-100 border border-amber-300 px-2.5 py-1 rounded-lg font-medium animate-pulse">
+                <svg class="animate-spin h-3.5 w-3.5 text-amber-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                </svg>
+                <span>Initializing Wizard...</span>
+            </div>
             <span class="text-xs bg-amber-900/10 border border-amber-800/30 text-amber-950 px-3 py-1.5 rounded-lg font-bold">
-                Step <span x-text="step"></span> of 10: <span x-text="stepNames[step]"></span>
+                Step <span x-text="step">1</span> of 10: <span x-text="stepNames[step]">{{ $wizardSteps[1] }}</span>
             </span>
         </div>
     </div>
@@ -24,23 +44,23 @@
     <!-- Step Progress Ribbon (10 Steps) -->
     <div class="parchment-card p-3 sm:p-4 shadow-sm">
         <div class="wizard-ribbon">
-            <template x-for="(name, num) in stepNames" :key="num">
-                <div class="wizard-step-item"
+            @foreach($wizardSteps as $num => $name)
+                <div class="wizard-step-item cursor-pointer {{ $num === 1 ? 'active' : 'opacity-60' }}"
                      :class="{
-                         'active': step == num,
-                         'completed': step > num,
-                         'opacity-60': step < num
+                         'active': step == {{ $num }},
+                         'completed': step > {{ $num }},
+                         'opacity-60': step < {{ $num }}
                      }"
-                     @click="if(num <= step || true) { step = parseInt(num); if (step === 10) fetchPreviewState(); }">
-                    <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold"
-                          :class="step == num ? 'bg-amber-400 text-slate-900' : (step > num ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-700')"
-                          x-text="step > num ? '✓' : num"></span>
-                    <span x-text="name"></span>
+                     @click="step = {{ $num }}; if (step === 10) fetchPreviewState();">
+                    <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold {{ $num === 1 ? 'bg-amber-400 text-slate-900' : 'bg-slate-300 text-slate-700' }}"
+                          :class="step == {{ $num }} ? 'bg-amber-400 text-slate-900' : (step > {{ $num }} ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-700')"
+                          x-text="step > {{ $num }} ? '✓' : '{{ $num }}'">{{ $num }}</span>
+                    <span>{{ $name }}</span>
                 </div>
-            </template>
+            @endforeach
         </div>
         <div class="w-full bg-amber-950/20 h-2 rounded-full mt-3 overflow-hidden border border-amber-900/20">
-            <div class="bg-amber-600 h-full transition-all duration-300 shadow-xs" :style="'width: ' + (step * 10) + '%'"></div>
+            <div class="bg-amber-600 h-full transition-all duration-300 shadow-xs" style="width: 10%;" :style="'width: ' + (step * 10) + '%'"></div>
         </div>
     </div>
 
@@ -1284,7 +1304,253 @@
 
 <script>
 function characterWizard() {
+    // Helper to deeply freeze static datasets so Alpine skips creating thousands of reactive proxies
+    function deepFreeze(obj) {
+        if (!obj || typeof obj !== 'object' || Object.isFrozen(obj)) return obj;
+        Object.freeze(obj);
+        for (const key of Object.keys(obj)) {
+            const val = obj[key];
+            if (val && typeof val === 'object' && !Object.isFrozen(val)) {
+                deepFreeze(val);
+            }
+        }
+        return obj;
+    }
+
+    function parseSpellBaseCost(costStr) {
+        if (!costStr) return 0;
+        const normalized = costStr.replace(/\\r\\n|\\r|\\n|\r\n|\r/g, '\n');
+        const lines = normalized.split('\n');
+        const costs = [];
+        for (let line of lines) {
+            line = line.trim();
+            if (!line || line.startsWith('+') || line.startsWith('-')) continue;
+            const m = line.match(/^(\d+)\s*PP/i);
+            if (m) costs.push(parseInt(m[1]));
+        }
+        if (costs.length > 0) return Math.min(...costs);
+        const fallback = normalized.match(/(\d+)\s*PP/i);
+        return fallback ? parseInt(fallback[1]) : 1;
+    }
+
+    function parseSpellPrereqLines(sp) {
+        if (!sp || !sp.Skills) return [];
+        const normalized = (sp.Skills || '').replace(/\\r\\n|\\r|\\n|\r\n|\r/g, '\n');
+        const lines = normalized.split('\n');
+        const prereqLines = [];
+
+        for (let line of lines) {
+            line = line.trim();
+            if (!line) continue;
+
+            let lineCost = sp.baseCost;
+            const costMatch = line.match(/\(\+(\d+)\s*PP(?:\s+cost)?\)/i);
+            if (costMatch) lineCost += parseInt(costMatch[1]);
+
+            let cleanLine = line.replace(/\([^)]*\)/g, '').trim();
+            if (!cleanLine) continue;
+
+            let prefix = '';
+            let lineCategory = 'other';
+            const prefixMatch = cleanLine.match(/^(Arcane|Divine|Psi|Cleric Affinity|Ki)\s*-\s*/i);
+            if (prefixMatch) {
+                prefix = prefixMatch[1] + ' - ';
+                const pfx = prefixMatch[1].toLowerCase();
+                if (pfx === 'arcane') lineCategory = 'arcane';
+                else if (pfx === 'divine' || pfx === 'cleric affinity') lineCategory = 'divine';
+                else if (pfx === 'psi') lineCategory = 'psi';
+                cleanLine = cleanLine.substring(prefixMatch[0].length);
+            } else {
+                const lower = cleanLine.toLowerCase();
+                if (lower.includes('divine') || lower.includes('holy') || lower.includes('blessing') || lower.includes('protection') || lower.includes('life') || lower.includes('nature') || lower.includes('elements') || lower.includes('animals') || lower.includes('plants') || lower.includes('death') || lower.includes('retribution') || lower.includes('summoning') || lower.includes('wild shape')) {
+                    lineCategory = 'divine';
+                } else if (lower.includes('arcane') || lower.includes('wizardry') || lower.includes('pyromancy') || lower.includes('aeromancy') || lower.includes('hydromancy') || lower.includes('geomancy') || lower.includes('ouranomancy') || lower.includes('kinetomancy') || lower.includes('necromancy') || lower.includes('illumination') || lower.includes('abjuration') || lower.includes('conjuration') || lower.includes('divination') || lower.includes('enchantment') || lower.includes('evocation') || lower.includes('illusion') || lower.includes('transmutation')) {
+                    lineCategory = 'arcane';
+                } else if (lower.includes('psi') || lower.includes('clairsentience') || lower.includes('psychokinesis') || lower.includes('psychometabolism') || lower.includes('psychoportation') || lower.includes('telepathy') || lower.includes('metacreativity')) {
+                    lineCategory = 'psi';
+                }
+            }
+
+            const parts = cleanLine.split(/\s+and\s+|\s+or\s+|,\s*/i);
+            const lineParts = [];
+            for (let part of parts) {
+                part = part.trim();
+                if (!part) continue;
+                const candidateName = part.includes(' - ') ? part : (prefix + part);
+                lineParts.push({
+                    partLower: part.toLowerCase().trim(),
+                    candidateLower: candidateName.toLowerCase().trim(),
+                    suffixMatch: ' - ' + part.toLowerCase().trim()
+                });
+            }
+
+            if (lineParts.length > 0) {
+                prereqLines.push({
+                    lineCost: lineCost,
+                    category: lineCategory,
+                    parts: lineParts
+                });
+            }
+        }
+        return prereqLines;
+    }
+
+    // 1. Raw Reference Data
+    const rawCampaigns = @json($campaigns ?? []);
+    const rawRaces = @json($races ?? []);
+    const rawTemplates = @json($templates ?? []);
+    const rawCultures = @json($cultures ?? []);
+    const rawClassConfigs = @json($classConfigs ?? []);
+    const rawClasses = @json($classes ?? []);
+    const rawAbilityMethods = @json($abilityMethods ?? []);
+    const rawSkillTypes = @json($skillTypes ?? []);
+    const rawSkills = @json($skills ?? []);
+    const rawSkillAccess = @json($skillAccess ?? []);
+    const rawSkillSpecializations = @json($skillSpecializations ?? []);
+    const rawImprovements = @json($improvements ?? []);
+    const rawWealthPerLevel = @json($wealthPerLevel ?? []);
+    const rawItemTypes = @json($itemTypes ?? []);
+    const rawEquipment = @json($equipment ?? []);
+    const rawSpells = @json($spells ?? []);
+    const rawSpellOptions = @json($spellOptions ?? []);
+    const rawPantheons = @json($pantheons ?? []);
+    const rawDeities = @json($deities ?? []);
+    const rawAlignments = @json($alignments ?? []);
+    const rawSizeCats = @json($sizeCats ?? []);
+    const rawBodyTypes = @json($bodyTypes ?? []);
+    const rawCreatureSubtypes = @json($creatureSubtypes ?? []);
+    const rawSocialClasses = @json($socialClasses ?? []);
+    const rawWealthClasses = @json($wealthClasses ?? []);
+    const rawEncumbranceTable = @json($encumbranceTable ?? []);
+    const rawWeightLimitsTable = @json($weightLimitsTable ?? []);
+    const rawRefActions = @json($refActions ?? []);
+
+    // 2. Pre-index lookup maps
+    const skillsById = {};
+    const classesById = {};
+    const racesById = {};
+    const culturesById = {};
+    const templatesById = {};
+    const creatureSubtypesById = {};
+    const spellsById = {};
+    const spellOptionsById = {};
+    const spellOptionsBySpellId = {};
+    const specializationsById = {};
+    const specializationsBySkillId = {};
+    const socialClassesById = {};
+    const wealthClassesById = {};
+    const encumbranceById = {};
+    const weightLimitsByStr = {};
+    const itemsById = {};
+    const skillAccessMap = {};
+    const accessibleSkillsByClass = {};
+
+    (rawSkills || []).forEach(s => { skillsById[s.ID] = s; });
+    (rawClasses || []).forEach(c => { classesById[c.ID] = c; });
+    (rawRaces || []).forEach(r => { racesById[r.ID] = r; });
+    (rawCultures || []).forEach(c => { culturesById[c.ID] = c; });
+    (rawTemplates || []).forEach(t => { templatesById[t.ID] = t; });
+    if (Array.isArray(rawCreatureSubtypes)) {
+        rawCreatureSubtypes.forEach(s => { creatureSubtypesById[s.ID] = s; });
+    } else if (typeof rawCreatureSubtypes === 'object' && rawCreatureSubtypes !== null) {
+        Object.assign(creatureSubtypesById, rawCreatureSubtypes);
+    }
+    (rawSocialClasses || []).forEach(s => { socialClassesById[s.ID] = s; });
+    (rawWealthClasses || []).forEach(w => { wealthClassesById[w.ID] = w; });
+    (rawEncumbranceTable || []).forEach(e => { encumbranceById[e.ID] = e; });
+    if (Array.isArray(rawWeightLimitsTable)) {
+        rawWeightLimitsTable.forEach(w => { weightLimitsByStr[w.Str] = w; });
+    } else if (typeof rawWeightLimitsTable === 'object' && rawWeightLimitsTable !== null) {
+        Object.assign(weightLimitsByStr, rawWeightLimitsTable);
+    }
+    (rawEquipment || []).forEach(it => { itemsById[it.ID] = it; });
+
+    (rawSpells || []).forEach(sp => {
+        sp.baseCost = parseSpellBaseCost(sp.Cost);
+        sp.prereqLines = parseSpellPrereqLines(sp);
+        spellsById[sp.ID] = sp;
+    });
+
+    (rawSpellOptions || []).forEach(o => {
+        o.baseCost = parseSpellBaseCost(o.Cost);
+        spellOptionsById[o.ID] = o;
+        if (!spellOptionsBySpellId[o.SpellID]) {
+            spellOptionsBySpellId[o.SpellID] = [];
+        }
+        spellOptionsBySpellId[o.SpellID].push(o);
+    });
+
+    (rawSkillSpecializations || []).forEach(s => {
+        specializationsById[s.ID] = s;
+        if (!specializationsBySkillId[s.Skill]) {
+            specializationsBySkillId[s.Skill] = [];
+        }
+        specializationsBySkillId[s.Skill].push(s);
+    });
+
+    (rawSkillAccess || []).forEach(sa => {
+        skillAccessMap[sa.SkillID + '_' + sa.ClassID] = parseInt(sa.Prim) !== undefined ? parseInt(sa.Prim) : 0;
+    });
+
+    (rawClasses || []).forEach(cls => {
+        accessibleSkillsByClass[cls.ID] = {};
+        (rawSkillTypes || []).forEach(st => {
+            accessibleSkillsByClass[cls.ID][st.ID] = (rawSkills || []).filter(s => 
+                s.Type == st.ID && skillAccessMap[s.ID + '_' + cls.ID] !== undefined
+            );
+        });
+    });
+
+    // 3. Deep freeze static lookup tables to prevent proxy overhead
+    deepFreeze(rawCampaigns);
+    deepFreeze(rawRaces);
+    deepFreeze(rawTemplates);
+    deepFreeze(rawCultures);
+    deepFreeze(rawClassConfigs);
+    deepFreeze(rawClasses);
+    deepFreeze(rawAbilityMethods);
+    deepFreeze(rawSkillTypes);
+    deepFreeze(rawSkills);
+    deepFreeze(rawSkillAccess);
+    deepFreeze(rawSkillSpecializations);
+    deepFreeze(rawImprovements);
+    deepFreeze(rawWealthPerLevel);
+    deepFreeze(rawItemTypes);
+    deepFreeze(rawEquipment);
+    deepFreeze(rawSpells);
+    deepFreeze(rawSpellOptions);
+    deepFreeze(rawPantheons);
+    deepFreeze(rawDeities);
+    deepFreeze(rawAlignments);
+    deepFreeze(rawSizeCats);
+    deepFreeze(rawBodyTypes);
+    deepFreeze(rawCreatureSubtypes);
+    deepFreeze(rawSocialClasses);
+    deepFreeze(rawWealthClasses);
+    deepFreeze(rawEncumbranceTable);
+    deepFreeze(rawWeightLimitsTable);
+    deepFreeze(rawRefActions);
+    deepFreeze(skillsById);
+    deepFreeze(classesById);
+    deepFreeze(racesById);
+    deepFreeze(culturesById);
+    deepFreeze(templatesById);
+    deepFreeze(creatureSubtypesById);
+    deepFreeze(spellsById);
+    deepFreeze(spellOptionsById);
+    deepFreeze(spellOptionsBySpellId);
+    deepFreeze(specializationsById);
+    deepFreeze(specializationsBySkillId);
+    deepFreeze(socialClassesById);
+    deepFreeze(wealthClassesById);
+    deepFreeze(encumbranceById);
+    deepFreeze(weightLimitsByStr);
+    deepFreeze(itemsById);
+    deepFreeze(skillAccessMap);
+    deepFreeze(accessibleSkillsByClass);
+
     return {
+        isReady: false,
         step: 1,
         stepNames: {
             1: 'Identity & Campaign',
@@ -1299,55 +1565,55 @@ function characterWizard() {
             10: 'Review & Save'
         },
 
-        campaigns: {!! json_encode($campaigns) !!},
-        races: {!! json_encode($races) !!},
-        templates: {!! json_encode($templates) !!},
-        cultures: {!! json_encode($cultures) !!},
-        classConfigs: {!! json_encode($classConfigs) !!},
-        classes: {!! json_encode($classes) !!},
-        abilityMethods: {!! json_encode($abilityMethods) !!},
-        pointBuyCosts: { 3: -5, 4: -4, 5: -3, 6: -2, 7: -1, 8: 0, 9: 1, 10: 2, 11: 3, 12: 4, 13: 5, 14: 6, 15: 8, 16: 10, 17: 13, 18: 16 },
-        skillTypes: {!! json_encode($skillTypes) !!},
-        skills: {!! json_encode($skills) !!},
-        skillAccess: {!! json_encode($skillAccess) !!},
-        skillSpecializations: {!! json_encode($skillSpecializations) !!},
-        improvements: {!! json_encode($improvements) !!},
-        wealthPerLevel: {!! json_encode($wealthPerLevel) !!},
-        itemTypes: {!! json_encode($itemTypes) !!},
-        equipment: {!! json_encode($equipment) !!},
-        spells: {!! json_encode($spells) !!},
-        spellOptions: {!! json_encode($spellOptions) !!},
-        pantheons: {!! json_encode($pantheons) !!},
-        deities: {!! json_encode($deities) !!},
-        alignments: {!! json_encode($alignments) !!},
-        sizeCats: {!! json_encode($sizeCats) !!},
-        bodyTypes: {!! json_encode($bodyTypes) !!},
-        creatureSubtypes: {!! json_encode($creatureSubtypes ?? []) !!},
-        socialClasses: {!! json_encode($socialClasses) !!},
-        wealthClasses: {!! json_encode($wealthClasses) !!},
-        encumbranceTable: {!! json_encode($encumbranceTable) !!},
-        weightLimitsTable: {!! json_encode($weightLimitsTable) !!},
-        refActions: {!! json_encode($refActions ?? []) !!},
+        campaigns: rawCampaigns,
+        races: rawRaces,
+        templates: rawTemplates,
+        cultures: rawCultures,
+        classConfigs: rawClassConfigs,
+        classes: rawClasses,
+        abilityMethods: rawAbilityMethods,
+        pointBuyCosts: Object.freeze({ 3: -5, 4: -4, 5: -3, 6: -2, 7: -1, 8: 0, 9: 1, 10: 2, 11: 3, 12: 4, 13: 5, 14: 6, 15: 8, 16: 10, 17: 13, 18: 16 }),
+        skillTypes: rawSkillTypes,
+        skills: rawSkills,
+        skillAccess: rawSkillAccess,
+        skillSpecializations: rawSkillSpecializations,
+        improvements: rawImprovements,
+        wealthPerLevel: rawWealthPerLevel,
+        itemTypes: rawItemTypes,
+        equipment: rawEquipment,
+        spells: rawSpells,
+        spellOptions: rawSpellOptions,
+        pantheons: rawPantheons,
+        deities: rawDeities,
+        alignments: rawAlignments,
+        sizeCats: rawSizeCats,
+        bodyTypes: rawBodyTypes,
+        creatureSubtypes: rawCreatureSubtypes,
+        socialClasses: rawSocialClasses,
+        wealthClasses: rawWealthClasses,
+        encumbranceTable: rawEncumbranceTable,
+        weightLimitsTable: rawWeightLimitsTable,
+        refActions: rawRefActions,
 
         selectedCampaignObj: null,
-        skillAccessMap: {},
-        accessibleSkillsByClass: {},
-        skillsById: {},
-        classesById: {},
-        racesById: {},
-        culturesById: {},
-        templatesById: {},
-        creatureSubtypesById: {},
-        spellsById: {},
-        spellOptionsById: {},
-        spellOptionsBySpellId: {},
-        specializationsById: {},
-        specializationsBySkillId: {},
-        socialClassesById: {},
-        wealthClassesById: {},
-        encumbranceById: {},
-        weightLimitsByStr: {},
-        itemsById: {},
+        skillAccessMap: skillAccessMap,
+        accessibleSkillsByClass: accessibleSkillsByClass,
+        skillsById: skillsById,
+        classesById: classesById,
+        racesById: racesById,
+        culturesById: culturesById,
+        templatesById: templatesById,
+        creatureSubtypesById: creatureSubtypesById,
+        spellsById: spellsById,
+        spellOptionsById: spellOptionsById,
+        spellOptionsBySpellId: spellOptionsBySpellId,
+        specializationsById: specializationsById,
+        specializationsBySkillId: specializationsBySkillId,
+        socialClassesById: socialClassesById,
+        wealthClassesById: wealthClassesById,
+        encumbranceById: encumbranceById,
+        weightLimitsByStr: weightLimitsByStr,
+        itemsById: itemsById,
 
         // Ability Generation State
         dragSourceAttr: null,
@@ -1450,73 +1716,11 @@ function characterWizard() {
                 }
             }, true);
 
-            // Index lookup maps
-            this.skills.forEach(s => { this.skillsById[s.ID] = s; });
-            this.classes.forEach(c => { this.classesById[c.ID] = c; });
-            this.races.forEach(r => { this.racesById[r.ID] = r; });
-            this.cultures.forEach(c => { this.culturesById[c.ID] = c; });
-            this.templates.forEach(t => { this.templatesById[t.ID] = t; });
-            if (Array.isArray(this.creatureSubtypes)) {
-                this.creatureSubtypes.forEach(s => { this.creatureSubtypesById[s.ID] = s; });
-            } else if (typeof this.creatureSubtypes === 'object' && this.creatureSubtypes !== null) {
-                this.creatureSubtypesById = this.creatureSubtypes;
-            }
-            this.spells.forEach(s => { this.spellsById[s.ID] = s; });
-            this.socialClasses.forEach(s => { this.socialClassesById[s.ID] = s; });
-            this.wealthClasses.forEach(w => { this.wealthClassesById[w.ID] = w; });
-            this.encumbranceTable.forEach(e => { this.encumbranceById[e.ID] = e; });
-            if (Array.isArray(this.weightLimitsTable)) {
-                this.weightLimitsTable.forEach(w => { this.weightLimitsByStr[w.Str] = w; });
-            } else if (typeof this.weightLimitsTable === 'object' && this.weightLimitsTable !== null) {
-                this.weightLimitsByStr = this.weightLimitsTable;
-            }
-            if (Array.isArray(this.equipment)) {
-                this.equipment.forEach(it => { this.itemsById[it.ID] = it; });
-            }
-
-            this.spellOptions.forEach(o => {
-                this.spellOptionsById[o.ID] = o;
-                if (!this.spellOptionsBySpellId[o.SpellID]) {
-                    this.spellOptionsBySpellId[o.SpellID] = [];
-                }
-                this.spellOptionsBySpellId[o.SpellID].push(o);
-                o.baseCost = this.parseSpellBaseCost(o.Cost);
-            });
-
-            this.skillSpecializations.forEach(s => {
-                this.specializationsById[s.ID] = s;
-                if (!this.specializationsBySkillId[s.Skill]) {
-                    this.specializationsBySkillId[s.Skill] = [];
-                }
-                this.specializationsBySkillId[s.Skill].push(s);
-            });
-
-            // Pre-parse spells
-            this.spells.forEach(sp => {
-                sp.baseCost = this.parseSpellBaseCost(sp.Cost);
-                sp.category = this.computeSpellCategory(sp);
-                sp.prereqLines = this.parseSpellPrereqLines(sp);
-            });
-
-            // Build skill access map: skillAccessMap[skillId + '_' + classId] = 1 (Prim) or 0 (Sec)
-            this.skillAccess.forEach(sa => {
-                this.skillAccessMap[sa.SkillID + '_' + sa.ClassID] = parseInt(sa.Prim) !== undefined ? parseInt(sa.Prim) : 0;
-            });
-
-            // Pre-index accessible skills by Class ID & Type ID for ultra-fast performance
-            this.classes.forEach(cls => {
-                this.accessibleSkillsByClass[cls.ID] = {};
-                this.skillTypes.forEach(st => {
-                    this.accessibleSkillsByClass[cls.ID][st.ID] = this.skills.filter(s => 
-                        s.Type == st.ID && this.skillAccessMap[s.ID + '_' + cls.ID] !== undefined
-                    );
-                });
-            });
-
             this.onCampaignChanged();
             this.rollRandomPhysicalAttributes();
             this.initStartingWealth();
             this.updateSocialScores();
+            this.isReady = true;
         },
 
         calculateLevelFromXP(xp) {
