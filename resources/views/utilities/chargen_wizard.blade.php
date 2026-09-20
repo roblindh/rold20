@@ -1773,6 +1773,13 @@ function characterWizard() {
         calculatedState: null,
         isCalculatingPreview: false,
 
+        // Memoization & Caching State
+        _traitSkillBonuses: null,
+        _cachedBgPrereqContext: null,
+        _cachedLevelPrereqContext: null,
+        _cachedTrainedSkillsData: null,
+        _cachedEligibleSpells: null,
+
         character: {
             Name: '',
             CampaignID: '{{ $initialCampId }}',
@@ -1825,6 +1832,96 @@ function characterWizard() {
 
         // Navigation Guard & Persistence State
         isSaved: false,
+        // Cache Invalidation & Trait Bonuses Memoization
+        invalidateSkillsAndSpellCache(invalidateTraits = false) {
+            if (invalidateTraits || !this._traitSkillBonuses) {
+                this.computeAllTraitSkillBonuses();
+                this._cachedBgPrereqContext = null;
+            }
+            this._cachedLevelPrereqContext = null;
+            this._cachedTrainedSkillsData = null;
+            this._cachedEligibleSpells = null;
+        },
+
+        computeAllTraitSkillBonuses() {
+            const bonuses = {};
+            const traitStrings = [];
+            const race = this.getSelectedRace();
+            if (race && (race.RacialTraits || race.Traits)) traitStrings.push(race.RacialTraits || race.Traits);
+            this.getSelectedTemplates().forEach(t => {
+                if (t && (t.RacialTraits || t.Traits)) traitStrings.push(t.RacialTraits || t.Traits);
+            });
+            const cult = this.getSelectedCulture();
+            if (cult && cult.Traits) traitStrings.push(cult.Traits);
+
+            const context = {
+                TL: parseInt(this.character.Level) || 1,
+                RL: this.totalRL,
+                CL: this.totalCL,
+            };
+
+            traitStrings.forEach(tStr => {
+                if (!tStr) return;
+                const matches = tStr.matchAll(/SklMod\s*\{\s*([^}]+)\s*\}/gi);
+                for (const match of matches) {
+                    const inner = match[1];
+                    const params = {};
+                    inner.split(';').forEach(pair => {
+                        const parts = pair.split('=');
+                        if (parts.length === 2) {
+                            params[parts[0].trim()] = parts[1].trim();
+                        }
+                    });
+                    const qual = (params['Qual'] || '').toLowerCase().trim();
+                    if (qual) {
+                        let valStr = params['Value'] || '0';
+                        let val = 0;
+                        try {
+                            let expr = valStr.replace(/([A-Z]+)/g, (m, varName) => context[varName] !== undefined ? context[varName] : 0);
+                            val = Function('"use strict";return (' + expr + ')')();
+                        } catch(e) {
+                            val = parseFloat(valStr) || 0;
+                        }
+                        const numVal = Number(val) || 0;
+
+                        let skId = null;
+                        let skName = null;
+                        if (this.skillsById[qual]) {
+                            skId = String(qual);
+                            skName = (this.skillsById[qual].Name || '').toLowerCase().trim();
+                        } else if (this.skillsByAbbr[qual]) {
+                            const sk = this.skillsByAbbr[qual];
+                            skId = String(sk.ID);
+                            skName = (sk.Name || '').toLowerCase().trim();
+                        } else {
+                            const found = (this.skills || []).find(s => (s.Name || '').toLowerCase().trim() === qual);
+                            if (found) {
+                                skId = String(found.ID);
+                                skName = (found.Name || '').toLowerCase().trim();
+                            }
+                        }
+
+                        if (skId) {
+                            bonuses[skId] = (bonuses[skId] || 0) + numVal;
+                        }
+                        if (skName) {
+                            bonuses[skName] = (bonuses[skName] || 0) + numVal;
+                        }
+                        if (!skId && !skName) {
+                            bonuses[qual] = (bonuses[qual] || 0) + numVal;
+                        }
+                    }
+                }
+            });
+
+            this._traitSkillBonuses = bonuses;
+            return bonuses;
+        },
+
+        get totalLevel() {
+            return parseInt(this.character.Level) || 1;
+        },
+
         isDirty() {
             return !this.isSaved && ((this.character.Name && this.character.Name.trim() !== '') || this.step > 1);
         },
@@ -1848,6 +1945,7 @@ function characterWizard() {
                 }
             }, true);
 
+            this.computeAllTraitSkillBonuses();
             this.onCampaignChanged();
             this.rollRandomPhysicalAttributes();
             this.initStartingWealth();
@@ -1895,6 +1993,7 @@ function characterWizard() {
                 }
             }
 
+            this.invalidateSkillsAndSpellCache(true);
             this.initAbilityScores();
             this.validateRaceAndCulture();
             this.initStartingWealth();
@@ -1916,6 +2015,7 @@ function characterWizard() {
                     this.character.CultureID = cult.ID;
                 }
             }
+            this.invalidateSkillsAndSpellCache(true);
             this.onCultureChanged();
             this.rollRandomPhysicalAttributes();
         },
@@ -1927,11 +2027,13 @@ function characterWizard() {
                     this.character.BackgroundClassID = availBg[0].ID;
                 }
             }
+            this.invalidateSkillsAndSpellCache(true);
             this.syncClassLevels();
         },
 
         onBackgroundClassChanged() {
             this.character.BgSkillRates = {};
+            this.invalidateSkillsAndSpellCache(false);
         },
 
         syncClassLevels() {
@@ -2164,12 +2266,14 @@ function characterWizard() {
             templateId = parseInt(templateId);
             if (!templateId || this.character.TemplateIDs.includes(templateId)) return;
             this.character.TemplateIDs.push(templateId);
+            this.invalidateSkillsAndSpellCache(true);
             this.syncClassLevels();
         },
 
         removeTemplate(templateId) {
             templateId = parseInt(templateId);
             this.character.TemplateIDs = this.character.TemplateIDs.filter(id => id !== templateId);
+            this.invalidateSkillsAndSpellCache(true);
             this.syncClassLevels();
         },
 
@@ -2418,14 +2522,20 @@ function characterWizard() {
         },
 
         getBgPrereqContext() {
+            if (this._cachedBgPrereqContext) {
+                return this._cachedBgPrereqContext;
+            }
             const race = this.getSelectedRace();
             const templates = this.getSelectedTemplates();
             const skillsMap = {};
-            for (const sId in this.skillsById) {
-                const tb = this.getTraitSkillBonus(sId);
+            if (!this._traitSkillBonuses) {
+                this.computeAllTraitSkillBonuses();
+            }
+            for (const key in this._traitSkillBonuses) {
+                const tb = this._traitSkillBonuses[key];
                 if (tb > 0) {
-                    const sk = this.skillsById[sId];
-                    skillsMap[sId] = tb;
+                    skillsMap[key] = tb;
+                    const sk = this.skillsById[key];
                     if (sk && sk.Abbreviation) {
                         skillsMap[sk.Abbreviation] = tb;
                         skillsMap[sk.Abbreviation.toLowerCase()] = tb;
@@ -2438,22 +2548,48 @@ function characterWizard() {
                 if (subtObj && subtObj.Name) subts.push(subtObj.Name);
                 else subts.push(String(race.CreatureSubtype));
             }
-            return {
+            this._cachedBgPrereqContext = {
                 skills: skillsMap,
                 race: race ? (race.Name || '') : '',
                 templates: templates.map(t => t.Name || ''),
                 creatureType: race ? (race.CreatureType || '') : '',
                 creatureSubtypes: subts,
             };
+            return this._cachedBgPrereqContext;
         },
 
         getLevelPrereqContext(lvl) {
+            if (this._cachedLevelPrereqContext && this._cachedLevelPrereqContext[lvl]) {
+                return this._cachedLevelPrereqContext[lvl];
+            }
             const race = this.getSelectedRace();
             const templates = this.getSelectedTemplates();
             const skillsMap = {};
-            for (const sId in this.skillsById) {
+
+            const activeSkillIds = new Set();
+            for (const sId in this.character.BgSkillRates) {
+                if (this.character.BgSkillRates[sId] > 0) activeSkillIds.add(sId);
+            }
+            for (let l = 1; l < lvl; l++) {
+                if (this.character.LevelSkills[l]) {
+                    for (const sId in this.character.LevelSkills[l]) {
+                        if (this.character.LevelSkills[l][sId] > 0) activeSkillIds.add(sId);
+                    }
+                }
+            }
+            if (!this._traitSkillBonuses) {
+                this.computeAllTraitSkillBonuses();
+            }
+            for (const key in this._traitSkillBonuses) {
+                if (this._traitSkillBonuses[key] > 0 && this.skillsById[key]) {
+                    activeSkillIds.add(String(key));
+                }
+            }
+
+            const rlMult = this.totalRL + 1;
+            activeSkillIds.forEach(sId => {
                 const bgRate = parseFloat(this.character.BgSkillRates[sId]) || 0;
-                let rank = bgRate * (this.totalRL + 1);
+                let rank = bgRate * rlMult;
                 for (let l = 1; l < lvl; l++) {
                     if (this.character.LevelSkills[l] && this.character.LevelSkills[l][sId]) {
                         rank += parseFloat(this.character.LevelSkills[l][sId]) || 0;
@@ -2469,20 +2605,25 @@ function characterWizard() {
                         skillsMap[sk.Abbreviation.toLowerCase()] = rank;
                     }
                 }
-            }
+            });
+
             const subts = [];
             if (race && race.CreatureSubtype) {
                 const subtObj = this.creatureSubtypesById[race.CreatureSubtype];
                 if (subtObj && subtObj.Name) subts.push(subtObj.Name);
                 else subts.push(String(race.CreatureSubtype));
             }
-            return {
+
+            const ctx = {
                 skills: skillsMap,
                 race: race ? (race.Name || '') : '',
                 templates: templates.map(t => t.Name || ''),
                 creatureType: race ? (race.CreatureType || '') : '',
                 creatureSubtypes: subts,
             };
+            if (!this._cachedLevelPrereqContext) this._cachedLevelPrereqContext = {};
+            this._cachedLevelPrereqContext[lvl] = ctx;
+            return ctx;
         },
 
         getSkillPrereqEvaluation(skill, contextType = 'bg', lvl = 1) {
@@ -2515,6 +2656,7 @@ function characterWizard() {
         setBgSkillRate(skillId, rate) {
             if (this.canSetBgSkillRate(skillId, rate)) {
                 this.character.BgSkillRates[skillId] = rate;
+                this.invalidateSkillsAndSpellCache(false);
             }
         },
 
@@ -2588,6 +2730,7 @@ function characterWizard() {
             if (this.character.LevelSkills[lvl]) {
                 delete this.character.LevelSkills[lvl];
             }
+            this.invalidateSkillsAndSpellCache(false);
         },
 
         copyLevelAllocations(fromLvl, toLvl) {
@@ -2600,6 +2743,7 @@ function characterWizard() {
 
             const fromAlloc = this.character.LevelSkills[fromLvl] || {};
             this.character.LevelSkills[toLvl] = JSON.parse(JSON.stringify(fromAlloc));
+            this.invalidateSkillsAndSpellCache(false);
         },
 
         getLevelSkillPointsTotal(lvl) {
@@ -2686,6 +2830,7 @@ function characterWizard() {
             if (this.canIncLevelSkillBy(lvl, skillId, amount)) {
                 if (!this.character.LevelSkills[lvl]) this.character.LevelSkills[lvl] = {};
                 this.character.LevelSkills[lvl][skillId] = (this.character.LevelSkills[lvl][skillId] || 0) + amount;
+                this.invalidateSkillsAndSpellCache(false);
             }
         },
 
@@ -2695,56 +2840,27 @@ function characterWizard() {
                 if (this.character.LevelSkills[lvl][skillId] <= 0) {
                     delete this.character.LevelSkills[lvl][skillId];
                 }
+                this.invalidateSkillsAndSpellCache(false);
             }
         },
 
         // --- Consolidated Skills & Spells (Step 7) ---
         getTraitSkillBonus(skillId) {
+            if (!this._traitSkillBonuses) {
+                this.computeAllTraitSkillBonuses();
+            }
+            const sIdStr = String(skillId);
+            if (this._traitSkillBonuses[sIdStr] !== undefined) {
+                return this._traitSkillBonuses[sIdStr];
+            }
             const sk = this.skillsById[skillId];
-            if (!sk) return 0;
-            const skName = (sk.Name || '').toLowerCase().trim();
-            let bonus = 0;
-            const traitStrings = [];
-            const race = this.getSelectedRace();
-            if (race && (race.RacialTraits || race.Traits)) traitStrings.push(race.RacialTraits || race.Traits);
-            this.getSelectedTemplates().forEach(t => {
-                if (t && (t.RacialTraits || t.Traits)) traitStrings.push(t.RacialTraits || t.Traits);
-            });
-            const cult = this.getSelectedCulture();
-            if (cult && cult.Traits) traitStrings.push(cult.Traits);
-
-            const context = {
-                TL: this.totalLevel,
-                RL: this.totalRL,
-                CL: this.totalCL,
-            };
-
-            traitStrings.forEach(tStr => {
-                const matches = tStr.matchAll(/SklMod\s*\{\s*([^}]+)\s*\}/gi);
-                for (const match of matches) {
-                    const inner = match[1];
-                    const params = {};
-                    inner.split(';').forEach(pair => {
-                        const parts = pair.split('=');
-                        if (parts.length === 2) {
-                            params[parts[0].trim()] = parts[1].trim();
-                        }
-                    });
-                    const qual = (params['Qual'] || '').toLowerCase().trim();
-                    if (qual === skName || qual === String(skillId)) {
-                        let valStr = params['Value'] || '0';
-                        let val = 0;
-                        try {
-                            let expr = valStr.replace(/([A-Z]+)/g, (m, varName) => context[varName] !== undefined ? context[varName] : 0);
-                            val = Function('"use strict";return (' + expr + ')')();
-                        } catch(e) {
-                            val = parseFloat(valStr) || 0;
-                        }
-                        bonus += Number(val) || 0;
-                    }
+            if (sk) {
+                const skName = (sk.Name || '').toLowerCase().trim();
+                if (this._traitSkillBonuses[skName] !== undefined) {
+                    return this._traitSkillBonuses[skName];
                 }
-            });
-            return bonus;
+            }
+            return 0;
         },
 
         getConsolidatedSkillRank(skillId) {
@@ -2909,6 +3025,10 @@ function characterWizard() {
         },
 
         getTrainedSkillsData() {
+            if (this._cachedTrainedSkillsData) {
+                return this._cachedTrainedSkillsData;
+            }
+
             const trainedMap = {};
             const trainedById = {};
             let arcaneCap = 0;
@@ -2924,11 +3044,14 @@ function characterWizard() {
                     if (this.character.LevelSkills[lvl][id] > 0) activeSkillIds.add(id);
                 }
             }
-            (this.skills || []).forEach(sk => {
-                if (this.getTraitSkillBonus(sk.ID) > 0) {
-                    activeSkillIds.add(String(sk.ID));
+            if (!this._traitSkillBonuses) {
+                this.computeAllTraitSkillBonuses();
+            }
+            for (const key in this._traitSkillBonuses) {
+                if (this._traitSkillBonuses[key] > 0 && this.skillsById[key]) {
+                    activeSkillIds.add(String(key));
                 }
-            });
+            }
 
             activeSkillIds.forEach(id => {
                 const rank = this.getConsolidatedSkillRank(id);
@@ -2947,7 +3070,8 @@ function characterWizard() {
                 }
             });
 
-            return { trainedMap, trainedById, arcaneCap, divineCap, psiCap };
+            this._cachedTrainedSkillsData = { trainedMap, trainedById, arcaneCap, divineCap, psiCap };
+            return this._cachedTrainedSkillsData;
         },
 
         get trainedSpellSkills() {
@@ -2977,13 +3101,12 @@ function characterWizard() {
         get learnedSpellCounts() {
             const counts = { arcane: 0, divine: 0, psi: 0, other: 0 };
             const tData = this.getTrainedSkillsData();
-            const tMap = tData.trainedMap;
 
             for (const spellId in this.character.LearnedSpells) {
                 const sp = this.spellsById[spellId];
                 if (sp) {
                     let cat = 'other';
-                    const qualified = this.getQualifiedCategoriesForSpell(sp, tMap);
+                    const qualified = sp._qualifiedCategories || [];
                     if (qualified.length > 0) {
                         if (qualified.includes('divine') && tData.divineCap > 0 && counts.divine < tData.divineCap) {
                             cat = 'divine';
@@ -3001,7 +3124,7 @@ function characterWizard() {
                             cat = qualified[0];
                         }
                     } else {
-                        cat = this.computeSpellCategory(sp, tMap, tData);
+                        cat = sp._defaultCategory || 'other';
                     }
                     counts[cat] = (counts[cat] || 0) + 1;
 
@@ -3022,7 +3145,7 @@ function characterWizard() {
             if (!sp) return false;
 
             const tData = this.getTrainedSkillsData();
-            const qualified = this.getQualifiedCategoriesForSpell(sp, tData.trainedMap);
+            const qualified = sp._qualifiedCategories || [];
             const counts = this.learnedSpellCounts;
 
             if (qualified.length > 0) {
@@ -3034,7 +3157,7 @@ function characterWizard() {
                 });
             }
 
-            const cat = this.computeSpellCategory(sp, tData.trainedMap, tData);
+            const cat = sp._defaultCategory || this.computeSpellCategory(sp, tData.trainedMap, tData);
             if (cat === 'arcane') return counts.arcane < tData.arcaneCap;
             if (cat === 'divine') return counts.divine < tData.divineCap;
             if (cat === 'psi') return counts.psi < tData.psiCap;
@@ -3047,7 +3170,7 @@ function characterWizard() {
             if (!sp || !opt) return false;
 
             const tData = this.getTrainedSkillsData();
-            const qualified = this.getQualifiedCategoriesForSpell(sp, tData.trainedMap);
+            const qualified = sp._qualifiedCategories || [];
             const counts = this.learnedSpellCounts;
 
             if (qualified.length > 0) {
@@ -3059,7 +3182,7 @@ function characterWizard() {
                 });
             }
 
-            const cat = this.computeSpellOptionCategory(sp, opt, tData.trainedMap, tData);
+            const cat = sp._defaultCategory || this.computeSpellOptionCategory(sp, opt, tData.trainedMap, tData);
             if (cat === 'arcane') return counts.arcane < tData.arcaneCap;
             if (cat === 'divine') return counts.divine < tData.divineCap;
             if (cat === 'psi') return counts.psi < tData.psiCap;
@@ -3100,9 +3223,26 @@ function characterWizard() {
         },
 
         get eligibleSpells() {
-            const { trainedMap } = this.getTrainedSkillsData();
-            if (Object.keys(trainedMap).length === 0) return [];
-            return this.spells.filter(sp => this.isSpellEligible(sp, trainedMap));
+            if (this._cachedEligibleSpells) {
+                return this._cachedEligibleSpells;
+            }
+            const tData = this.getTrainedSkillsData();
+            const trainedMap = tData.trainedMap;
+            if (Object.keys(trainedMap).length === 0) {
+                this._cachedEligibleSpells = [];
+                return [];
+            }
+            const list = [];
+            for (let i = 0; i < this.spells.length; i++) {
+                const sp = this.spells[i];
+                if (this.isSpellEligible(sp, trainedMap)) {
+                    sp._qualifiedCategories = this.getQualifiedCategoriesForSpell(sp, trainedMap);
+                    sp._defaultCategory = this.computeSpellCategory(sp, trainedMap, tData);
+                    list.push(sp);
+                }
+            }
+            this._cachedEligibleSpells = list;
+            return list;
         },
 
         isSpellLearned(spellId) {
