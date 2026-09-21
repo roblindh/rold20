@@ -744,464 +744,339 @@
 
 <h4 id="OpenEndedChecks">Open-Ended d20 Checks</h4>
 <p>
-    Unless otherwise specified, all d20 checks use an open-ended d20 roll.
+    Unless explicitly noted otherwise, all d20 checks in RoL d20 utilize open-ended (exploding and imploding) rolls, denoted as <code>d20!</code>:
 </p>
-<p>
-    On an initial roll of a natural 20, roll again and add the new result to the first.
-    A second roll of 20 allows another reroll, and so forth. Some special checks produce exceptional results more often than normal
-    and allow open-ended rerolls on rolls lower than 20, such as on 19 to 20 or 18 to 20.
-</p>
-<p>
-    On an initial roll of a natural 1, roll again and subtract 20 from the result.
-    If this roll results in another 1, roll again and subtract 40 instead of 20, and so forth.
-    Some special checks have a greater than normal risk of failure and require open-ended rerolls even on rolls higher than 1, such as on 1 to 2 or 1 to 3.
-</p>
+<ul class="list-disc pl-6 space-y-1">
+    <li><strong>Exploding Rolls (Natural 20):</strong> When the die lands on a natural 20, the check explodes: roll the d20 again and add the new result to the initial 20. If that subsequent roll is also a 20, continue rolling and adding cumulatively. Specialized weapons, talents, or abilities can expand this exploding threshold (e.g., exploding on a natural 19–20 or 18–20).</li>
+    <li><strong>Imploding Rolls (Natural 1):</strong> When the die lands on a natural 1, the check implodes: roll the d20 again and subtract 20 from the total. If that subsequent roll is also a natural 1, subtract another 20 (cumulative &minus;40 penalty) and roll again. High-risk actions or hazardous conditions may expand this implosion threshold (e.g., imploding on a natural 1–2 or 1–3).</li>
+</ul>
 
 <div class="optionalrule">
     <p>
-        <em>Cinematic Luck</em> (optional rule for more cinematic campaigns):
-        Heroes in movies and literature are often extremely lucky, even when those heroes are ordinary people.
-        If you want a similar effect in your campaign, consider allowing a certain number of action check rerolls
-        per day for each character. A reroll can also be used to force an opponent to reroll a successful attack.
-        Another option is to always let characters roll two d20 for each action check and use the highest roll.
+        <em>Cinematic Luck</em> (optional rule for high-heroism campaigns):
+        To emulate cinematic protagonists and swashbuckling luck, DMs may grant each player character a pool of daily rerolls (e.g., 2–3 per session). A reroll can be spent to reroll any personal action check or force a foe to reroll a successful attack against the hero. Alternatively, grant characters rolling advantage (rolling 2d20 and taking the higher result) on defining heroic actions.
     </p>
 </div>
 
 <h4 id="Taking10">Taking 10 and Taking 20</h4>
 <p>
-    During favorable conditions, it is possible to perform certain actions without rolling a d20.
-    &quot;Taking 10&quot; means that you perform the action in a relaxed and controlled manner,
-    and you simply replace the normal d20 roll with the value 10.
-    &quot;Taking 20&quot; means that you spend a lot of time getting a perfect result,
-    allowing you to replace the normal d20 roll with the value 20 (but without triggering an open-ended reroll).
+    Under favorable conditions, characters can resolve tasks without rolling a d20:
 </p>
 <p>
-    In order to <em>&quot;take 10&quot;</em>, the following prerequisites apply:
+    <em>Taking 10:</em> Under calm, routine conditions, a character may perform an action methodically without rolling, treating the d20 roll as a flat 10. This represents reliable, average performance under no duress.
 </p>
-<ul>
-    <li>Your character must not be threatened, stressed, or distracted.</li>
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>Prerequisite:</strong> The character must not be in immediate danger, combat, or severe distraction.</li>
 </ul>
-<p>
-    In order to <em>&quot;take 20&quot;</em>, the following prerequisites apply:
+<p class="mt-3">
+    <em>Taking 20:</em> When a character has ample time and the luxury of repeated attempts without penalties for failure, they may work exhaustively until achieving their best possible result, treating the d20 roll as a flat 20 (without triggering open-ended explosions).
 </p>
-<ul>
-    <li>Your character must not be threatened, stressed, or distracted.</li>
-    <li>The action must not carry penalties for failure.</li>
-    <li>The action must allow retries.</li>
-    <li>The action will take 20 times longer than normal to perform.</li>
-    <li>If materials are required and consumed, calculate the total cost as if 20 failures had been rolled.</li>
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>Prerequisites:</strong> The character must not be threatened, stressed, or engaged in combat.</li>
+    <li>The task must carry no consequences for failed attempts (e.g., picking a simple un-trapped padlock or thoroughly examining an empty library).</li>
+    <li>The action requires <strong>20 times its normal activation time</strong>.</li>
+    <li>Any consumable materials or monetary components are expended as if 20 separate attempts had been made.</li>
 </ul>
 
 <h4 id="Taking1">Taking 1</h4>
 <p>
-    In situations where a creature is unable or unwilling to perform actions or roll active skill checks,
-    but where an action check is needed and an automatic failure is not appropriate,
-    determine the results as if the creature rolled a 1 (but without triggering an open-ended reroll).
-    This rule can be particularly useful for opposed action checks where one or both sides are passive.
+    <em>Taking 1:</em> When an action check is required for a creature that is completely passive, helpless, incapacitated, or unwilling to exert effort—and where an automatic failure is inappropriate—resolve the check treating the d20 roll as a flat 1 (without triggering open-ended implosion). This provides a consistent floor for opposed checks involving unresisting or slumbering targets.
 </p>
 
 <h4 id="DefensiveActions">Defensive Action Checks</h4>
 <p>
-    Many actions tend to make you more vulnerable, triggering 
-    <a href="/rules/combat#AoO">attacks of opportunity</a> 
-    (AoO) from opponents within reach.
-    Unless otherwise specified, it is possible to perform those actions defensively, thereby avoiding AoO.
-    Performing an action defensively takes twice as long as normal (double the action time) and also involves a -4 circumstance penalty on the action check.
+    Many complex activities lower a character's guard, provoking 
+    <a href="/rules/combat#AoO">attacks of opportunity</a> (AoO) from threatening foes. 
+    Unless explicitly prohibited, an action can be performed <strong>defensively</strong> to avoid provoking AoO. 
+    Performing an action defensively doubles its action time and imposes a &minus;4 circumstance penalty on the action check.
 </p>
 
 <h4 id="MultipleChecksPerAction">Actions with Multiple Action Checks</h4>
 <p>
-    Although most actions require either zero or one action checks, there are some that require multiple separate action checks.
-    See below for three different examples, all of them attacks of one type or another:
+    While most actions require a single check (or none), certain complex actions involve multiple discrete action checks:
 </p>
-<p>
-    Example 1: A disintegrating ray typically requires two attack rolls, one against DeC to hit the target,
-    and a second one against Fort to then overcome the target's fortitude and deal maximum damage.
+<ul class="list-disc pl-6 space-y-2">
+    <li><strong>Two-Stage Attack (e.g., <em>Disintegrate</em>):</strong> Requires an initial attack roll against DeC to strike the target, followed by a secondary attack roll against Fortitude to overcome bodily resilience and inflict full destructive damage.</li>
+    <li><strong>Area-of-Effect Attack (e.g., <em>Fireball</em>):</strong> Requires a separate attack roll against each creature in the blast radius. Damage dice are rolled once and applied to all targets, but individual defense totals produce varying degrees of damage or full evasion.</li>
+    <li><strong>Dual-Wielding Attack (e.g., <em>Akimbo Attack</em>):</strong> Strikes simultaneously with two weapons (potentially against different targets). Each strike is resolved with its own distinct attack roll, critical check, and damage roll.</li>
+</ul>
+<p class="mt-3">
+    <em>Scope of Modifiers:</em> Because an action can encompass multiple checks or attacks, pay close attention to the scope of applied bonuses:
 </p>
-<p>
-    Example 2: A large fireball that targets multiple opponents will require a separate attack roll against each target.
-    Unless otherwise described in the effect, damage is rolled once and applied equally against all targets,
-    but the separate attack rolls can result in varying degrees of success and failure against the different targets,
-    in turn resulting in different amounts of damage being inflicted.
-</p>
-<p>
-    Example 3: A combatant is using Akimbo Attack to attack with both a sword and a dagger simultaneously,
-    possibly even against two different targets.
-    In this case, the Akimbo Attack action counts as two separate attacks, and each of these attacks is resolved separately
-    (albeit simultaneously), with separate attack rolls as well as damage rolls.
-</p>
-<p>
-    The fact that a single action can consist of multiple attacks and/or multiple action checks means that it will
-    sometimes be important to note whether a modifier applies to an action, an action check, an attack, or an attack roll.
-    For example, if you happen to have a bonus that applies to your next attack roll, and you cast a fireball spell,
-    the bonus will only apply to the first of the spell's attack rolls (typically against the target closest to the center).
-    If, on the other hand, the bonus applies to your next action, it would apply to all of the fireball's attack rolls.
-</p>
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li>A bonus to your <strong>next attack roll</strong> applies strictly to the first roll made (e.g., only the primary target in a multi-target blast).</li>
+    <li>A bonus to your <strong>next action</strong> applies across all rolls and attacks generated within that action.</li>
+</ul>
 
 <h4 id="StagedActions">Staged Action Checks</h4>
 <p>
-    Some situations and conditions are complicated or long-lasting enough to require
-    a sequence of action checks in order for the situation to be fully resolved.
-    These sequences of action checks are represented as a number of stages, where the
-    change from one stage to another is determined by the success or failure of an action check.
+    Complex or prolonged situations and afflictions—such as virulent <a href="/reference/other?category=Diseases">diseases</a>, insidious <a href="/reference/other?category=Poisons">poisons</a>, psychological <a href="/reference/other?category=Insanities">insanities</a>, and demonic <a href="#Possession">possession</a>—progress through a sequence of distinct stages (typically Stages 1–6).
 </p>
 <p>
-    A sequence of staged action checks starts at a specific stage, typically referred to as the initial stage.
-    Each stage has a specified duration, after which an action check is made to determine the new stage in the sequence.
-    In most sequences, one or more stages are defined as a terminal stage -
-    when it has been reached, the situation has been resolved and no further checks need to be made.
-    Some sequences also specify a maximum duration or maximum number of checks,
-    and they will also specify what happens when that maximum has been reached.
+    A staged sequence begins at a designated initial stage upon onset. Each stage persists for a specified interval (e.g., 1 round, 1 hour, or 1 day), at the end of which an attack roll or action check is made by the affliction against the victim's passive defense (such as Fortitude or Will):
 </p>
-<p>
-    For a typical example of a staged action check, see <a href="#Possession">Possession</a>.
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>Attack Success:</strong> The affliction overcomes the victim's resistance and worsens, advancing to a more severe stage.</li>
+    <li><strong>Attack Failure:</strong> The victim withstands the assault, allowing the condition to remain contained or regress toward recovery.</li>
+    <li><strong>Terminal Stages:</strong> Reaching a terminal stage resolves the sequence—either through complete recovery and purged symptoms or through permanent incapacity, death, or full demonic takeover.</li>
+    <li><strong>Maximum Duration:</strong> Some conditions specify a maximum duration or check limit, resolving into a defined final state when the time elapses.</li>
+</ul>
+<p class="mt-2">
+    For the complete catalogue and stage progression tables, see the <a href="/reference/other">Other Lists Compendium</a>.
 </p>
 
 <h4 id="AidAnother">Aiding Another</h4>
 <p>
-    In many cases, it is possible for multiple characters to cooperate when performing an action.
-    One of the characters (typically the one with the best chance) makes a normal action check against the appropriate target number.
-    Every cooperating character makes a similar action check against the target difficulty modified by -10,
-    and the first character’s check receives a circumstance modifier for each supporting check.
+    Multiple characters can coordinate to perform an action cooperatively. The primary actor (typically the character with the highest skill bonus) makes the standard action check against the base target number. Each assisting character makes a supporting check against the target difficulty reduced by &minus;10:
 </p>
 
 <?php show_aidresults(); ?> 
 
-<p>
-    Using a skill check to aid another takes the same amount of time, carries the same cost,
-    and provokes attacks of opportunity the same way that the base action check does.
-</p>
-<p>
-    The DM determines when aiding another’s action check is possible as well as the maximum number of beneficial helpers.
+<p class="mt-3">
+    Assisting an ally expends the same action time, incurs the same resource costs, and provokes attacks of opportunity identically to the base action. The DM adjudicates whether a task physically permits assistance and determines the maximum number of helpers who can meaningfully contribute.
 </p>
 
 <h4 id="DiffClasses">Difficulty Classes (DC)</h4>
 <p>
-    A difficulty class is an estimate of how difficult an action is to perform successfully.
-    It is the number your action check has to match or exceed in order to be a success.
+    A <strong>Difficulty Class (DC)</strong> benchmarks the absolute difficulty of a task. To achieve a basic success, an action check must meet or exceed the assigned DC:
 </p>
 
 <?php show_difficulties(); ?> 
 
-<p>
-    Regardless of skill levels and difficulty classes, the DM can choose to disallow or severely penalize certain illogical actions.
-    For example, even if a crocodile has a high strength score and a few skill levels in Athletics, it should not be able to climb a tree.
+<p class="mt-3">
+    <em>Adjudication &amp; Plausibility:</em> Regardless of numerical modifiers and DC thresholds, the Dungeon Master holds authority to disallow biologically or physically implausible attempts (for instance, a crocodile cannot climb a vertical tree trunk regardless of Athletics ranks).
 </p>
 
 <h4 id="OpposingActions">Opposing Action Checks</h4>
 <p>
-    Whenever two action checks are in opposition, the highest modified roll succeeds and the other fails.
-    In case of a tie, the highest modifier wins. If the modifiers are also the same, the result is a stalemate.
-    If a stalemate is not possible, even temporarily, reroll both checks until a winner can be determined.
+    When two creatures actively contest an outcome (such as an arm-wrestling contest or a duel of wits), both roll action checks. The higher total succeeds. Tie-breakers are resolved as follows:
 </p>
-<p>
-    In some cases, an action check will be opposed by several opposed checks.
-    For example, when you are sneaking, you want your stealth check to beat every opposed perception check.
-    In these situations, roll a single action check and compare it against each opposed check.
-</p>
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>Highest Modifier:</strong> If check totals are tied, the participant with the higher total static modifier wins.</li>
+    <li><strong>Stalemate / Reroll:</strong> If modifiers are also identical, the contest results in a stalemate. If a stalemate is impossible under the circumstances, reroll both checks immediately.</li>
+    <li><strong>Multi-Target Contests:</strong> When a single action is contested by multiple observers (such as a solitary rogue sneaking past several sentries), roll a single action check and compare the result against each opponent's individual check or passive defense.</li>
+</ul>
 
-<h4 id="ResultsEffects">Results and Effects</h4>
+<h4 id="ResultsEffects">Results and Degrees of Success</h4>
 <p>
-    After rolling the necessary action check (or checks), compare the result against the DC, defense, or opposed action check.
-    The difference determines not only success or failure but also the degree of success or failure.
-    Each action will specify what happens at the different levels.
-</p>
-<p>
-    For attack actions, please see the <a href="/rules/combat#AttackTypes">Combat</a> chapter for more details.
+    Comparing the final action check total against the target threshold (DC, Defense, or opposing roll) determines both binary outcome (success vs. failure) and qualitative <strong>degrees of success or failure</strong>:
 </p>
 
 <h4 id="ActionCheckLevels">Levels of Success and Failure</h4>
 <p>
-    In many cases, the degree of success or failure can be significant.
-    The difference between the total result and the target number is referred to as levels of success or failure.
-    For example, if the DC is 20 and you make a modified roll of 23, you have achieved 3 levels of success.
-    Sometimes this is also referred to as beating the DC by 3. For action checks where exceptional success or failure is possible,
-    the skill action will describe how many levels of success or failure are required to achieve such exceptional results.
+    The numerical margin between the check result and the target number defines the level of success or failure (e.g., rolling 24 against DC 20 achieves 4 levels of success; rolling 13 against DC 20 represents 7 levels of failure):
 </p>
 
 <?php show_actionresults(); ?> 
 
+<p class="mt-3">
+    <em>Key Milestones:</em> Beating a target threshold by <strong>10 or more</strong> constitutes an exceptional success (halving damage resistance on attacks, unlocking critical insights, or doubling crafting speeds). Beating a Defense by <strong>20 or more</strong> (modified by Critical Hit Resistance) lands a devastating Critical Hit. Conversely, missing by 10 or more triggers exceptional failure (jamming mechanisms, ruining crafting materials, or exposing defenses).
+</p>
+
 <h4 id="Retrying">Trying Again</h4>
 <p>
-    Unless otherwise specified, actions can be retried indefinitely, regardless of success or failure.
-    However, note that each try takes the specified amount of time and carries the full cost.
-    In many cases, each failure will also have some sort of additional consequence.
-    Also note that actions that are reactions never allow more than one reactive action per triggering event.
-    There are even some actions where retrying is simply not possible, at least not until the situation has changed or your chances have improved.
+    Unless explicitly prohibited, most actions may be retried repeatedly following success or failure, subject to standard constraints:
 </p>
-<p>
-    For example, let us say you are trying to punch an opponent in the face. Regardless of whether the attack succeeds or fails,
-    you can usually try to punch him again. However, each attack takes a certain amount of time and effort,
-    and if your opponent runs away or manages to knock you unconscious, you can no longer retry your attack.
-</p>
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>Resource &amp; Time Costs:</strong> Every attempt consumes the full action time and expends all required AP, MP, SP, PP, or consumable materials.</li>
+    <li><strong>Escalating Consequences:</strong> Repeated failures often alter the situation—breaking lockpicks, alerting guards, or worsening a patient's medical trauma.</li>
+    <li><strong>Reaction Limits:</strong> Reactive actions can only be triggered <em>once per discrete event</em>.</li>
+    <li><strong>Situational Lockout:</strong> Certain knowledge or social checks cannot be retried until circumstances change meaningfully (such as acquiring a research library or discovering new diplomatic leverage).</li>
+</ul>
 
 <h4 id="PowerLevel">Supernatural Actions and Power Level</h4>
 <p>
-    Just like supernatural creatures and objects, supernatural actions have a power level (PL).
-    The PL is used to determine the effect’s chance to resist dispelling or to overcome
-    magic resistance, anti-magic, and wild magic.
+    <em>Power Level (PL):</em> Measures the supernatural potency and magical density of active spells, psionic powers, magic items, and monster abilities. Power Level governs an effect's resilience against dispelling, countermagic, anti-magic fields, and wild magic volatility:
 </p>
 <p>
-    For spells and powers with a PP cost:
+    <dfn>Spells and PP-fueled powers: PL = Total Power Cost (TPC) + AP augmentation</dfn>
 </p>
 <p>
-    <dfn>PL = TPC (Total Power Cost) + AP boost/dampen</dfn>
+    <dfn>Innate / Supernatural abilities: PL = Associated skill rank or creature RL / TL</dfn>
 </p>
-<p>
-    For other powers:
+<p class="mt-3">
+    <em>Lingering Magical Auras:</em> When an active supernatural effect expires or is dispelled, a lingering magical signature remains detectable in the area or upon the subject before fully dissipating:
 </p>
-<p>
-    <dfn>PL = skill level or creature’s RL/TL</dfn>
-</p>
-<p>
-    When a supernatural effect has terminated, its magical aura will linger for a variable amount of time.
-    A PL of 1 to 5 lingers for 1d6 rounds, PL 6 to 10 for 1d6 minutes, PL 11 to 20 for 1d6&times;10 minutes, and PL 20+ for 1d6 days.
-</p>
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>PL 1–5 (Faint):</strong> Lingers for <code>1d6 rounds</code></li>
+    <li><strong>PL 6–10 (Moderate):</strong> Lingers for <code>1d6 minutes</code></li>
+    <li><strong>PL 11–20 (Strong):</strong> Lingers for <code>1d6 &times; 10 minutes</code></li>
+    <li><strong>PL 21+ (Overwhelming):</strong> Lingers for <code>1d6 days</code></li>
+</ul>
 
 <h3 id="ActionMods">Action Modifiers</h3>
 
 <h4 id="SpecialActionMods">Physical and Mental Action Modifiers</h4>
 <p>
-    Some circumstance modifiers are common enough that they have their own abbreviations.
-    These abbreviations are used in the action checks where appropriate, 
-    PAM for Physical Action Modifier and MAM for Mental Action Modifier.
+    Certain recurring physical, environmental, and psychological stressors impose standardized penalties across many action checks:
 </p>
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>Physical Action Modifier (PAM):</strong> Applied to physical actions when impaired by pain, severe wounds, exhaustion, or somatic distress.</li>
+    <li><strong>Mental Action Modifier (MAM):</strong> Applied to intellectual, communicative, and spellcasting actions when impaired by fear, psychic trauma, confusion, or sensory shock.</li>
+</ul>
 
 <?php show_actionmods(); ?>
 
-<p>
-    Note that the Composure skill can be used to reduce PAM and MAM penalties.
+<p class="mt-3">
+    <em>Mitigation:</em> Ranks in the <strong>Composure</strong> skill can be actively employed to mitigate or suppress PAM and MAM penalties.
 </p>
 
 <h4 id="EncumbrancePen">Encumbrance Penalty (EP)</h4>
 <p>
-    Heavy equipment and armor increases a creature's 
-    <a href="#EquipmentChars">encumbrance class</a>, 
-    and this in turn leads to an
-    encumbrance penalty (EP) that applies to many physical actions, especially those related to movement.
+    Heavy carried loads and cumbersome armor increase a creature's <a href="#EquipmentChars">Encumbrance Class</a>, imposing an <strong>Encumbrance Penalty (EP)</strong> on agility- and movement-related physical action checks.
 </p>
 <p>
-    When you are wearing armor with which you are non-proficient (skill level 0),
-    your EP also applies to all actions with the PAM or MAM modifier in the action check
-    (but if EP is applied to the action check normally, don't apply it twice).
+    <em>Armor Non-Proficiency:</em> Wearing armor without adequate training (0 ranks in the relevant armor skill) causes the armor's full EP to penalize <strong>all actions</strong> bearing either the PAM or MAM modifier (if EP already applies to the check, do not apply it twice).
 </p>
 
 <h4 id="SynergyBonus">Synergy Bonus</h4>
 <p>
-    For some actions, proficiency in certain skills (other than the action's key skill, if any)
-    can be beneficial and provide a synergy bonus to the check.
-    Such synergy skills are listed under the modifiers for each action.
-    Multiple synergy bonuses do not stack; only the highest applicable one applies.
+    Proficiency in complementary fields often aids task execution, granting a <strong>synergy bonus</strong> to the check (e.g., knowledge of anatomy enhancing medical treatment or precision strikes). Applicable synergy skills are detailed in individual action descriptions. Synergy bonuses from multiple related skills do not stack; apply only the single highest applicable bonus.
 </p>
 
 <h3 id="ActionParameters">Action Parameters</h3>
 
 <h4 id="ActionTime">Action Time</h4>
 <p>
-    Action time is the amount of time that must be spent to perform or at least initiate an action.
+    <em>Action Time:</em> Defines the required temporal commitment to initiate, perform, or sustain an action:
 </p>
 
 <?php show_actiontime(); ?> 
 
-<p>
-    Most variable decisions of an action, such as range, targets, area, etc., can be made at the end of the specified action time.
-    A notable exception is the use of AP to gain additional bonuses for the action in question; this decision must be made when starting to perform the action.
+<p class="mt-3">
+    <em>Timing of Tactical Decisions:</em> Most variable parameters (such as targeting, range allocation, and spell augmentations) are finalized at the conclusion of the activation time. However, allocating extra Action Points (AP) to boost an action must be declared at the moment the action begins.
 </p>
 <p>
-    If the action time is longer than a full-round action and the action provokes attacks of opportunity,
-    it provokes new attacks of opportunity each round, at the beginning of your turn.
+    <em>Extended Actions &amp; AoO:</em> Actions requiring longer than a full round that provoke attacks of opportunity provoke new AoO at the beginning of the character's turn each round during activation.
 </p>
 <p>
-    Whenever an action time specifies a percentage, it means that you can only work on the action efficiently for that portion of time.
-    The rest of the time is typically spent sleeping, relaxing, or performing unrelated actions.
-    On most of these actions you can also spend less than the specified portion of time, but this will increase the total action
-    time proportionately.
+    <em>Duty Cycles (Percentage Times):</em> When an extended task specifies a percentage (such as 50% for crafting or travel), only that portion of each day can be productively devoted to the task; the remainder is required for rest, biological maintenance, or camp chores. Spending less daily time proportionally extends total calendar duration.
 </p>
 
 <h4 id="Implements">Implements</h4>
 <p>
-    An implement is a body part, tool, weapon, faculty, sense, etc. needed to perform the action.
+    <em>Implements:</em> Physical tools, anatomical faculties, weapons, sensory organs, or magical foci required to execute an action:
 </p>
 
 <?php show_implements(); ?>
 
-<p>
-    Note that foci with bonuses will only provide those bonuses when the spell or power allows the use of that focus
-    (by having either a focus component or a somatic component).
+<p class="mt-3">
+    <em>Magical Foci:</em> Foci providing numerical bonuses only confer their enhancements if the spell or supernatural power explicitly requires a focus or somatic component.
 </p>
 
 <h4 id="ActionCost">Action Cost</h4>
 <p>
-    The cost of an action includes all materials, money, stamina, blood, life energy, etc. that have to be spent in order to activate or complete the action.
+    The direct expenditure of resources—monetary currency, material catalysts, Stamina Points (SP), Hit Points (HP), or Power Points (PP)—necessary to activate and complete an action:
 </p>
 
 <?php show_actioncost(); ?> 
 
-<p>
-    Unless otherwise specified, the full cost has to be paid even if the check fails or the action is interrupted (voluntarily or involuntarily).
-    Certain skills (such as affinity skills) can be used to reduce specific action costs, but note that HP and SP costs will not be reduced by DR, and PP costs will not be reduced by psychic resistance.
+<p class="mt-3">
+    <em>Non-Refundable Costs:</em> Unless explicitly noted, all action costs must be paid in full even if the action check fails or is interrupted. Affinity skills and specialized training can reduce costs, but HP/SP costs bypass Damage Resistance and PP costs bypass Psychic Resistance.
 </p>
 <p>
-    Whenever HP, SP, or PP are used to perform an action, those health points cannot be regained until the action or effect ends.
-    This effectively lowers the creature's maximum level of HP/SP/PP until the duration expires.
-    No form of natural or magical healing can restore the "reserved" HP/SP/PP until the effect has ended.
-    This also means that temporary HP, SP, and PP can only be used to pay the action cost for instantaneous actions.
+    <em>Reserved Health Points:</em> Whenever HP, SP, or PP are expended to sustain a non-instantaneous ongoing effect, those points remain <strong>reserved</strong> and cannot be restored by natural rest or magical healing until the effect terminates. This temporarily reduces the character's effective maximum health pool for the duration. Consequently, temporary health points can only be used to pay costs for instantaneous actions.
 </p>
 <p>
-    This rule applies to items as well as creatures, specifically when an item has a rechargeable or regenerating power pool.
-    For example, when a rechargeable wand creates a non-instantaneous effect,
-    its maximum PP will be reduced by the number of PP spent until the effect expires.
+    <em>Magic Items:</em> Rechargeable magical items follow the same reservation principle; a wand maintaining a sustained ward reduces its maximum active PP pool until the spell expires.
 </p>
 
 <h4 id="Range">Range</h4>
 <p>
-    The range of an action is the greatest distance at which the action’s effect can occur.
-    All targets or the point of origin of an area effect must be within this range.
+    <em>Range:</em> The maximum distance from the actor at which an action's point of origin or target can be placed:
 </p>
 
 <?php show_actionrange(); ?>
 
-<p>
-    An action's range will often specify one of these special limitations...
+<p class="mt-3">
+    <em>Targeting &amp; Pathing Constraints:</em>
 </p>
-<p>
-    <em>Line of sight (LoS):</em> You must be able to see at least part of every target.
-    Anything that blocks vision (such as total cover or total concealment) will prevent line of sight, but transparent obstacles will not.
-</p>
-<p>
-    <em>Range of hearing (RoH):</em> The target must be able to hear you clearly (and vice versa).
-</p>
-<p>
-    <em>Line of effect (LoE):</em> You must have a straight and physically (but not necessarily visually) unobstructed path to the target(s).
-    Lines of effect can pass through openings as small as 30 cm in diameter.
-    A limited amount of obstructions can usually be penetrated but typically incur an action check penalty based on the material(s).
-    The DM is also free to add action check penalties for effects crossing into new materials, such as going from air into water.
-</p>
-<p>
-    <em>Path of effect (PoE):</em> You must have a physically unobstructed (but not necessarily straight) path to the target(s).
-    Paths of effect can pass through openings as small as 30 cm in diameter.
-    A limited amount of obstructions can usually be penetrated but typically incur an action check penalty based on the material(s).
-    The DM is also free to add action check penalties for effects crossing into new materials, such as going from air into water.
-</p>
-
-<p>
-    Unless otherwise specified, the range of an action is only significant during activation.
-    If the action's effect has a specified duration, the effect continues even if the targets move outside the specified range.
-    However, effects that can be sustained, redirected, dismissed, et. al. can only be thus affected while the controller is within range of the effect.
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>Line of Sight (LoS):</strong> You must have a clear visual path to at least a portion of every target. Total cover or total darkness blocks LoS; transparent barriers do not.</li>
+    <li><strong>Range of Hearing (RoH):</strong> The target and actor must be capable of hearing one another clearly.</li>
+    <li><strong>Line of Effect (LoE):</strong> A direct, physically unobstructed straight-line trajectory between actor and target. LoE can pass through apertures as narrow as 30 cm. Dense physical barriers block LoE unless specifically penetrated by specialized magic.</li>
+    <li><strong>Path of Effect (PoE):</strong> A physically unobstructed trajectory that may bend or navigate around corners and corridors to reach the target, traversing apertures down to 30 cm in diameter.</li>
+</ul>
+<p class="mt-2">
+    <em>Range After Activation:</em> Unless otherwise specified, range constraints apply only during activation. Once established, ongoing effects remain active even if targets move beyond the initial range; however, actively sustaining, redirecting, or dismissing an effect requires remaining within the original range.
 </p>
 
 <h4 id="Duration">Duration</h4>
 <p>
-    Duration specifies how long an effect lasts.
+    <em>Duration:</em> Specifies how long an effect persists before fading:
 </p>
 
 <?php show_actionduration(); ?> 
 
-<p>
-    <em>Dismissible (D):</em> You can terminate a dismissible effect at will. However, this still requires a dismiss action, and you must be within the effect’s original range.
+<p class="mt-3">
+    <em>Dismissible Effects (D):</em> The creator may terminate a dismissible effect at will by spending a dismiss action while within the effect's original range.
 </p>
 <p>
-    Unless an action requires concentration to maintain, the duration continues normally even if the initiator is stunned,
-    becomes unconscious, dies, or is otherwise rendered helpless.
+    <em>Persistence:</em> Unless an effect requires active concentration, its duration continues uninterrupted even if the creator is stunned, incapacitated, or killed.
 </p>
 <p>
-    If a target's condition makes it invalid as a target during the course of an effect, the effect can be temporarily rendered inactive,
-    but the actual duration is not affected.
-    For example, say that a creature being affected by a Fear spell is killed and then revived.
-    Although the spell can only affect living creatures, the spell's duration will not be canceled by the condition of death,
-    and the creature in question will still be affected after being revived.
+    <em>Target Validity:</em> If a target becomes temporarily invalid during an ongoing effect (such as an afflicted mortal dying and later being resurrected while a <em>Fear</em> spell is still ticking), the effect remains dormant while invalid and resumes immediately upon regaining valid status for any remaining duration.
 </p>
 
 <h4 id="AreasTargets">Area of Effect and Targets</h4>
 <p>
-    The area of effect of an action specifies the possible target(s), area, or general effect.
+    Defines which entities, grid spaces, or volumes are affected:
 </p>
 
 <?php show_actiontarget(); ?> 
 
-<p>
-    <em>Shapeable (S):</em> You can shape the area or volume within the specified limits,
-    allowing you to decide which squares or cubes to exclude from the effect.
-</p>
-<p>
-    Please see the original d20 rules
-    (or this <a href="http://www.enworld.org/forum/attachment.php?attachmentid=43825&d=1272853472">document</a>)
-    for examples of area templates.
+<p class="mt-3">
+    <em>Shapeable (S):</em> The caster or initiator can customize the geometry of the area, selectively excluding specific grid squares or cubes up to the maximum volume.
 </p>
 
 <div class="my-4 overflow-x-auto">
     <img src="/images/Areas.gif" title="Example Areas of Effect" alt="Example Areas of Effect" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
 </div>
 
-<p>
-    When target specifies "Ally" or "Allies", this can also include you (unless otherwise specified).
-</p>
-<p>
-    When an area-effect originates from a creature or object, the area moves with that creature/object.
-    Otherwise, an area is immobile, unless the action specifies that it is mobile.
-</p>
-
-<h3 id="Modifiers">Modifier Types</h3>
-<p>
-    Action checks (and other die rolls) are often affected by a variety of modifiers.
-    Positive modifiers are commonly referred to as bonuses and negative ones as penalties.
-    The following basic rules apply to modifiers:
-</p>
-<ul>
-    <li>Most modifiers belong to a specified type.</li>
-    <li>Modifiers of different types stack.</li>
-    <li>Modifiers without a specified type stack.</li>
-    <li>Modifiers of the same type do not normally stack. For each type, apply only the highest bonus and the most severe penalty. The following exceptions apply:</li>
-    <ul>
-        <li>Circumstance modifiers stack with circumstance modifiers from other sources.</li>
-        <li>Improvement modifiers stack, but they have a limited total as described in the section about <a href="/rules/chargen#Improvements">improvement points</a>.</li>
-        <li>Inherent modifiers stack, but they are limited to a total of +5 for each ability score.</li>
-    </ul>
-    <li>Enhancement and material modifiers frequently apply to weapons, shields, armor, and other equipment rather than to a character or creature.
-        In this case, the modifier typically affects a property of the item (such as a weapon's attack modifier,
-        a shield's parry modifier, or an armor's DR) and only indirectly affects the item's user or wearer.</li>
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>Allies:</strong> Actions designating "Allies" include the actor unless explicitly stated otherwise.</li>
+    <li><strong>Area Mobility:</strong> Area effects anchored to a creature or vehicle travel along with the host; environmental area effects remain stationary unless explicitly noted as mobile.</li>
 </ul>
+
+<h3 id="Modifiers">Modifier Types &amp; Stacking</h3>
+<p>
+    Numerical modifiers adjust action checks, defenses, and game values. Positive values are <strong>bonuses</strong>, while negative values are <strong>penalties</strong>. Stacking is governed by strict type rules:
+</p>
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>Different Named Types:</strong> Modifiers of different named types (e.g., a Morale bonus and an Insight bonus) always stack.</li>
+    <li><strong>Untyped Modifiers:</strong> Modifiers lacking a specific category (untyped modifiers) stack with all other modifiers.</li>
+    <li><strong>Same Named Types:</strong> Modifiers of the identical named type <strong>do not stack</strong>. Apply only the single highest bonus and the single most severe penalty.</li>
+</ul>
+<p class="mt-3">
+    <em>Stacking Exceptions:</em>
+</p>
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>Circumstance Modifiers:</strong> Stack freely with circumstance modifiers from distinct sources.</li>
+    <li><strong>Improvement Modifiers:</strong> Stack up to the cap allowed by invested <a href="/rules/chargen#Improvements">Improvement Points</a>.</li>
+    <li><strong>Inherent Modifiers:</strong> Stack up to a maximum cumulative bonus of +5 per ability score.</li>
+</ul>
+<p class="mt-3">
+    <em>Equipment Properties:</em> Enhancement and material modifiers apply directly to weapons, shields, and armor (improving baseline damage, parry bonuses, or Damage Resistance), only indirectly benefiting the wielder.
+</p>
 
 <?php show_modifiers(); ?> 
 
 <h3 id="Descriptors">Descriptors</h3>
 <p>
-    Descriptors are used to categorize a wide variety of things, including actions, spells, special abilities, objects, and creatures.
-    These descriptor categories can be used to determine whether a creature’s resistance applies to a certain spell,
-    whether a certain action triggers attacks of opportunity or not, and much, much more.
+    <em>Descriptors:</em> Standardized taxonomic tags attached to actions, spells, creatures, and items. Descriptors dictate keyword interactions—such as whether a spell is blocked by Magic Resistance (<code>[MR]</code>), provokes attacks of opportunity, or triggers damage vulnerabilities (e.g., <code>[Fire]</code>, <code>[Necrotic]</code>, <code>[Poison]</code>).
 </p>
 
 <?php show_descriptors(); ?> 
 
 <h3 id="Prerequisites">Prerequisites</h3>
 <p>
-    Prerequisites are conditions that need to be satisfied within the given context.
-    Prerequisites can be applied to almost anything, including skills, classes, bonuses, magic items, etc.
-    For example, skill A can have a prerequisite stating that skill B must be learned to a certain level before you can allocate skill points to skill A.
-    Another example is a bonus that only applies when you are wearing a certain type of armor or wielding a certain type of weapon.
+    <em>Prerequisites:</em> Mandatory conditions that must be fulfilled before a skill can be learned, a spell cast, an item attuned, or a class accessed:
 </p>
-<p>
-    In most cases, prerequisites are self-explanatory and simple to resolve, but there are exceptions.
-    For example, when you are levelling up a character, improvement points may be used before resolving prerequisites for skills.
-    However, allocation of skill points when levelling up is effectively done all at once.
-    This means that skills gained or improved when levelling may not count their improved level to fulfill prerequisites for another skill (until after the levelling).
-</p>
-<p>
-    Sometimes, a prerequisite can be temporarily satisfied due to a bonus of limited duration.
-    The opposite situation is also possible, where a temporary penalty results in a prerequisite no longer being satisfied.
-    The default rule is to use a creature's current characteristics to resolve any prerequisite.
-    For example, if a magic hammer requires a minimum strength of 18 and your normal strength is 16,
-    you can hypothetically use a magic spell to increase your strength and successfully wield the hammer.
-    Conversely, if your strength normally is 20 but has been reduced to 17 by a spider's venomous bite,
-    then you are temporarily unable to wield the aforementioned hammer.
-    For the purpose of resolving "long-term" prerequisites, such as skill prerequisites and actions with a long action time,
-    you should only count bonuses and penalties that have a duration at least as long as the action time.
-</p>
-<p>
-    Prerequisites are typically expressed as logical expressions that can be evaluated to true or false.
-    Most prerequisites are simple expressions with a single condition, but it is possible to combine multiple conditions
-    with the logical operators 'AND', 'OR', and 'XOR'.
-</p>
+<ul class="list-disc pl-6 space-y-2 text-sm text-slate-700">
+    <li><strong>Current Functional Values:</strong> Prerequisites evaluate a creature's current, functional statistics. For example, a magic greatsword requiring Strength 18 can be wielded by a Strength 16 character temporarily augmented by a <em>Bull's Strength</em> spell; conversely, an innate Strength 20 warrior drained to Strength 17 by venom temporarily loses access.</li>
+    <li><strong>Level-Up Resolution Order:</strong> When leveling up, Improvement Points may be spent first to meet prerequisites for new skills. However, skill points allocated during that level-up are applied simultaneously and cannot fulfill prerequisites for other skills being purchased in the same leveling event.</li>
+    <li><strong>Boolean Conditions:</strong> Compound prerequisites combine multiple criteria using formal logical operators (<code>AND</code>, <code>OR</code>, <code>XOR</code>).</li>
+</ul>
 
 <?php show_prereqs(); ?> 
 
@@ -1241,74 +1116,73 @@
 
 <h4 id="MentalFatigue">Mental Fatigue</h4>
 <p>
-    Mental fatigue is measured by a decrease in power points (PP).
+    <em>Mental Fatigue:</em> Psychic strain, cognitive shock, and supernatural exertion deplete Power Points (PP):
 </p>
 
 <?php show_ppeffects(); ?> 
 
-<p>
-    Some types of mental fatigue, especially the ones that are long-lasting and/or serious,
-    lead to a reduction in Wis rather than (or in addition to) a cost in PP. See ability damage for details.
+<p class="mt-3">
+    <em>Psychic Shock:</em> If a creature sustains psychic damage exceeding half its maximum PP pool in a single attack, it is <strong>dazed for 1 round</strong>.
 </p>
 <p>
-    If a creature takes more than half its full PP of damage in a single attack, it is dazed for 1 round.
-</p>
-<p>
-    For information about temporary PP, see the section about <a href="#HealthScores">Health Scores</a>.
+    Severe psychological trauma or necrotic corruption can inflict Wisdom damage in addition to PP loss (see <a href="#AbilityDamage">Ability Damage</a>).
 </p>
 
 <h4 id="AlternativeHealthEffects">Increased or Decreased Health Effects</h4>
 <div class="optionalrule">
     <p>
-        <em>Increased Health Penalties</em> (optional rule for more realistic campaigns):
-        Increase the penalties incurred by damage to HP, SP, and PP.
+        <em>Gritty Realism &amp; Severe Wounds</em> (optional rule): DMs seeking higher lethality may increase the physical and mental action penalties (PAM/MAM) incurred as HP, SP, and PP diminish.
     </p>
 </div>
 <div class="optionalrule">
     <p>
-        <em>Decreased Health Penalties</em> (optional rule for more cinematic campaigns):
-        Decrease or remove the penalties incurred by damage to HP, SP, and PP.
-        For a truly cinematic alternative, change the penalties to bonuses of the same size.
-    </p>
-    <p>
-        Alternatively, the points at which a character becomes fatigued or tired can be changed from half SP/PP to a lower limit.
+        <em>Cinematic Heroism</em> (optional rule): DMs wishing to encourage desperate last stands can reduce or eliminate low-health penalties, or convert penalties into heroic adrenaline bonuses.
     </p>
 </div>
 
 <h4 id="AbilityDamage">Ability Damage</h4>
 <p>
-    Many things can cause ability damage, including poison, disease, extreme fatigue, magic, etc.
-    Any characteristic that is dependent on a damaged ability score or its modifier should be immediately recalculated based on the new score.
+    Virulent toxins, draining magic, and severe starvation can inflict direct damage to a creature's core ability scores. Whenever an ability score drops, all derived statistics (defenses, skill bonuses, HP/SP/PP maximums, and carrying capacity) are recalculated immediately.
 </p>
-<dl>
-    <dt>Strength 0</dt><dd>The creature can only lie helpless on the ground.</dd>
-    <dt>Constitution 0</dt><dd>The creature is dead.</dd>
-    <dt>Dexterity 0</dt><dd>The creature is paralyzed, motionless, and helpless.</dd>
-    <dt>Intelligence 0</dt><dd>The creature cannot think and is in a coma-like stupor.</dd>
-    <dt>Wisdom 0</dt><dd>The creature is withdrawn in a deep sleep, helpless.</dd>
-    <dt>Charisma 0</dt><dd>The creature is withdrawn in a catatonic, coma-like stupor.</dd>
-</dl>
-<p>
-    Note that not having an ability score is not the same as the ability score being 0.
-    Lack of an ability score provides neither a bonus nor a penalty as an ability modifier.
-    Creatures that lack an ability score are also immune to damage to that score.
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 my-3">
+    <div class="bg-rose-50/70 border border-rose-200 rounded p-2.5 text-xs text-rose-950">
+        <strong class="text-rose-900 block font-bold mb-0.5">Strength 0</strong>
+        Collapsed to the ground, helpless and unable to move limbs.
+    </div>
+    <div class="bg-rose-50/70 border border-rose-200 rounded p-2.5 text-xs text-rose-950">
+        <strong class="text-rose-900 block font-bold mb-0.5">Constitution 0</strong>
+        Total metabolic collapse; the creature is <strong>dead</strong>.
+    </div>
+    <div class="bg-rose-50/70 border border-rose-200 rounded p-2.5 text-xs text-rose-950">
+        <strong class="text-rose-900 block font-bold mb-0.5">Dexterity 0</strong>
+        Completely paralyzed, rigid, and helpless.
+    </div>
+    <div class="bg-rose-50/70 border border-rose-200 rounded p-2.5 text-xs text-rose-950">
+        <strong class="text-rose-900 block font-bold mb-0.5">Intelligence 0</strong>
+        Comatose and mindless, unresponsive to stimuli.
+    </div>
+    <div class="bg-rose-50/70 border border-rose-200 rounded p-2.5 text-xs text-rose-950">
+        <strong class="text-rose-900 block font-bold mb-0.5">Wisdom 0</strong>
+        Submerged in deep vegetative slumber, helpless.
+    </div>
+    <div class="bg-rose-50/70 border border-rose-200 rounded p-2.5 text-xs text-rose-950">
+        <strong class="text-rose-900 block font-bold mb-0.5">Charisma 0</strong>
+        Catatonic stupor, completely dissociated from reality.
+    </div>
+</div>
+<p class="mt-2 text-sm text-slate-700">
+    <em>Non-Abilities:</em> Lacking an ability score entirely (such as an Undead having no Constitution score or an animated Golem lacking Constitution and Intelligence) is distinct from possessing a score of 0. Non-abilities grant neither a bonus nor a penalty (+0 modifier) and confer complete immunity to damage targeting that score.
 </p>
 
 <h4 id="Recovery">Recovery and Levels of Activity</h4>
 <p>
-    Living creatures automatically recover damage to HP, SP, PP, and ability scores over time; this is known as natural healing.
-    The rate of recovery varies with levels of activity, as shown in the table below.
-</p>
-<p>
-    Note that any environment, ongoing cost, or condition that causes a certain type of damage will prevent all natural recovery of that damage type.
-    For example, a creature that is starving will be unable to naturally recover SP until properly fed.
-    Similarly, a creature spending PP on an ongoing spell will not naturally recover PP while the cost is being paid.
+    Living creatures restore lost HP, SP, PP, and damaged ability scores naturally over time through biological rest:
 </p>
 
 <?php show_activitylevels(); ?> 
 
-<p>
-    Note that the recovery of ability score damage applies separately to each ability score.
+<p class="mt-3 text-sm text-slate-700">
+    <em>Rest Constraints:</em> Active starvation, environmental exposure, or sustaining ongoing spell upkeeps halts all natural recovery for that specific resource. Ability score recovery is tracked and healed separately for each damaged attribute.
 </p>
 
 <div class="optionalrule">
@@ -1323,105 +1197,82 @@
 
 <h4 id="OngoingDamage">Ongoing Damage</h4>
 <p>
-    Ongoing damage (sometimes referred to as continuous damage) is an effect that causes a recurring loss of HP, SP, or PP.
-    The damage occurs each round at the beginning of the affected creature's turn, until the specified duration expires.
-    Ongoing damage can be caused by both mundane effects, such as hemorrhaging, and supernatural effects, such as magical acid.
+    <em>Ongoing Damage:</em> Recurring harm—such as arterial bleeding, burning oil, or caustic acid—inflicts damage at the start of the affected creature's turn each round. Multiple sources of ongoing damage stack cumulatively.
 </p>
 <p>
-    Unless otherwise specified, any type of magical healing or a successful Bind Wounds action will stop the ongoing
-    damage and prevent further loss.
-</p>
-<p>
-    Ongoing costs of HP, SP, and PP are equivalent to ongoing damage for most purposes (except that healing will not end the cost).
-</p>
-<p>
-    Multiple instances of ongoing damage and/or ongoing cost stack and increase the amount lost per round.
+    <em>Halting Ongoing Damage:</em> Applying any form of magical healing or a successful <em>Bind Wounds</em> medical check immediately stops mundane ongoing damage and stabilizes the trauma.
 </p>
 
 <h4 id="PersistentDamage">Persistent and Insidious Damage [Su]</h4>
 <p>
-    <em>Persistent damage:</em> Damage to HP, SP, PP, or ability scores that has the same effects as normal damage but is more difficult to heal with magic.
-    Natural recovery works as usual.
-    This means that persistent damage must be kept track of separately.
-    Depending on the effect's description, healing the damage with magic is either impossible or will require a spellcasting check against the specified PL.
+    Specialized supernatural afflictions resist standard healing methods:
 </p>
-<p>
-    <em>Insidious damage:</em> Damage to HP, SP, PP, or ability scores that has the same effects as normal damage but can only be healed with magic.
-    Natural recovery has no effect at all.
-    This means that insidious damage must be kept track of separately.
-</p>
-<p>
-    Insidious damage to ability scores is sometimes referred to as ability drain rather than ability damage.
-</p>
+<ul class="list-disc pl-6 space-y-1.5 text-sm text-slate-700">
+    <li><strong>Persistent Damage:</strong> Heals normally through natural bed rest, but resists magical restoration. Curing persistent damage with magic requires a spellcasting check beating the effect's Power Level (PL).</li>
+    <li><strong>Insidious Damage (Ability Drain):</strong> Bypasses biological recuperation entirely; natural rest cannot restore insidious damage. It can only be cleansed through specialized curative magic (such as <em>Restoration</em>).</li>
+</ul>
 
 <h4 id="Dying">Dying</h4>
 <p>
-    When a living creature's HP falls below 0, he falls unconscious and starts dying.
+    When a living creature's Hit Points drop below 0, it collapses unconscious and enters the <a href="/reference/other/Dying%20Condition">Dying staged condition</a>:
 </p>
+
 <?php show_stagedconditions(STAGED_DYING); ?> 
 
-<p>
-    An unconscious creature that wakes up (through natural or supernatural healing) is flat-footed until its next initiative comes up, and it is also dazed for 1 round.
+<p class="mt-3 text-sm text-slate-700">
+    <em>Regaining Consciousness:</em> An unconscious creature restored to 0 or more HP regains awareness, remaining flat-footed until its next initiative and <strong>dazed for 1 round</strong> upon waking.
 </p>
 
-<h4 id="Death">Death</h4>
+<h4 id="Death">Death and the Afterlife</h4>
 <p>
-    When a creature dies, its soul departs the body.
-    Sooner or later, the soul will leave the Prime Material Plane and journey to an outer plane that matches the creature’s alignment or religion.
-    Once there, it will linger for a variable amount of time,
-    before either being turned into a servant for its favored deity or being absorbed by one of the local creatures.
+    Upon death, a creature's soul departs the physical vessel, journeying across the Astral Plane to the Outer Plane aligning with its moral ethos or deity.
 </p>
 <p>
-    With powerful magic and/or divine intervention, it is possible to heal a dead body and call the original soul back into it.
-    However, if the soul has been destroyed or trapped, such resurrection is not possible.
-    Nor is it possible if the soul itself does not wish to return to the body.
-    The soul automatically knows the surface thoughts and approximate alignment of any creature that is attempting to resurrect it.
+    <em>Resurrection:</em> Powerful divine rites and high-tier magic can repair a deceased mortal form and recall its soul. Resurrection fails if the soul has been destroyed, trapped in an occult phylactery, or refuses to return. A summoned soul instinctively perceives the surface intentions and alignment of the resurrector before consenting to return.
 </p>
 <p>
-    Whenever a living and intelligent creature dies, there is a chance that its soul remains in the body, turning it into an undead.
-    In most campaign worlds, this is resolved as a +0 attack against the creature's Will (calculated as if it had been alive).
-    If this attack fails, the creature does not become undead, but if it succeeds, the number of success levels determine the type of undead:
-    0 to 4 generates a ghoul, 5 to 9 a ghast, 10 to 14 a wight, 15 to 19 a shadow, 20 to 24 a wraith, 25 to 29 a spectre,
-    30 to 34 a ghost, and 35 or more a vampire.
-    The transformation typically occurs 1d6 days after death.
+    <em>Spontaneous Undead Rising:</em> When an intelligent creature dies under traumatic or unholy circumstances, necrotic resonance can anchor the restless spirit to its corpse. Resolve this as a <strong>+0 attack against the creature's Will Defense</strong> (calculated as in life). If the attack succeeds, the margin of success determines the resulting undead after <code>1d6 days</code>:
 </p>
-<p>
-    Burial on holy ground results in a -20 penalty on the attack roll for turning a corpse into an undead.
-    On the other hand, many situations can give a bonus to the attack, if the DM so desires.
-    Typical examples include areas with necrotic energy, evil temple sites, a particularly violent or unfair death, etc.
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 my-2.5 text-xs">
+    <div class="bg-slate-100 p-2 rounded border border-slate-200"><strong>Margin 0–4:</strong> Ghoul</div>
+    <div class="bg-slate-100 p-2 rounded border border-slate-200"><strong>Margin 5–9:</strong> Ghast</div>
+    <div class="bg-slate-100 p-2 rounded border border-slate-200"><strong>Margin 10–14:</strong> Wight</div>
+    <div class="bg-slate-100 p-2 rounded border border-slate-200"><strong>Margin 15–19:</strong> Shadow</div>
+    <div class="bg-slate-100 p-2 rounded border border-slate-200"><strong>Margin 20–24:</strong> Wraith</div>
+    <div class="bg-slate-100 p-2 rounded border border-slate-200"><strong>Margin 25–29:</strong> Spectre</div>
+    <div class="bg-slate-100 p-2 rounded border border-slate-200"><strong>Margin 30–34:</strong> Ghost</div>
+    <div class="bg-slate-100 p-2 rounded border border-slate-200"><strong>Margin 35+:</strong> Vampire</div>
+</div>
+<p class="text-sm text-slate-700">
+    Consecrated burial in hallowed ground imposes a &minus;20 penalty on this rising roll, whereas profane battlefields or dark rituals grant substantial circumstance bonuses.
 </p>
 
 <h3 id="Poison">Poisoning</h3>
 <p>
-    Typically, when a creature is exposed to a poison or a drug, the poison makes an &quot;attack&quot; against the victim’s Fortitude.
-    If the attack succeeds, the poison starts to affect the victim (according to each poison’s progression).
+    Upon exposure to a toxin or drug, the poison makes an <strong>attack roll against the victim's Fortitude Defense</strong>. On a hit, the victim contracts the affliction at Stage 1, triggering the initial effect and advancing through progressive stages:
 </p>
-<p>
-    <em>Contact:</em> Exposure to a contact poison occurs as soon as the poison is touched with bare skin.
-    It also works through injuries or when ingested. The poison has to penetrate armor DR but not natural DR in order to take effect.
-    Unless otherwise specified, a weapon or an object smeared with contact poison will only affect a single creature.
-</p>
-<p>
-    <em>Ingested:</em> Exposure occurs only when the poison is ingested. Mere physical contact is not enough.
-</p>
-<p>
-    <em>Inhaled:</em> This is a gaseous poison, and exposure occurs through inhalation.
-    This type of poison is often stored in containers that can be thrown or fired with siege weapons.
-    Many inhaled poisons even work through nasal membranes, meaning that holding one’s breath has little or no effect.
-</p>
-<p>
-    <em>Injury:</em> Exposure occurs through open wounds, so the poisoned object has to penetrate both armor and natural DR.
-    Unless otherwise specified, a weapon smeared with injury poison will only last for a single hit. This type of poison also works when ingested.
-</p>
-<p>
-    Any exceptional failure (or worse) when attacking with a poisoned weapon (or when handling a poisoned object) results in the attacker being exposed to the poison.
-</p>
-<p>
-    Unless otherwise specified, a creature with a natural poison attack is immune to its own poison.
-</p>
-<p>
-    The effects described in the ruleset are for standard doses (see the <a href="/reference/equipment">Equipment Compendium</a> for poison pricing, crafting, and modifiers for higher concentrations or multi-dose applications).
-</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-3">
+    <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs">
+        <strong class="text-slate-900 block font-bold mb-0.5">✋ Contact</strong>
+        Absorbed on bare skin contact or wounds. Must bypass worn <strong>Armor DR</strong> (ignores Natural DR). A coated weapon or surface discharges upon a single contact.
+    </div>
+    <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs">
+        <strong class="text-slate-900 block font-bold mb-0.5">🍖 Ingested</strong>
+        Consistently introduced through swallowed food, drink, or potions. Mere skin contact causes no harm.
+    </div>
+    <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs">
+        <strong class="text-slate-900 block font-bold mb-0.5">💨 Inhaled</strong>
+        Airborne mists and gases absorbed through the respiratory tract and nasal membranes; holding one's breath provides no protection against corrosive or aerosolized agents.
+    </div>
+    <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs">
+        <strong class="text-slate-900 block font-bold mb-0.5">🗡️ Injury</strong>
+        Delivered through weapon strikes or natural claws. Must penetrate <strong>both Armor DR and Natural DR</strong> to enter the bloodstream. Discharges after one successful hit.
+    </div>
+</div>
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>Mishandling &amp; Fumbles:</strong> Rolling an exceptional failure (missing by 10+) on an attack with a envenomed weapon accidentally exposes the wielder to their own poison.</li>
+    <li><strong>Natural Immunity:</strong> Creatures bearing innate venomous attacks are immune to their own poison.</li>
+</ul>
 
 <div class="my-4 p-4 bg-amber-50/80 border border-amber-300/80 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
     <div>
@@ -1438,28 +1289,30 @@
 
 <h3 id="Disease">Disease</h3>
 
-<h4>Physical Illness</h4>
+<h4 id="PhysicalDisease">Physical Illness</h4>
 <p>
-    On exposure (or once per day during prolonged exposure), the disease makes an &quot;attack&quot; against the potential victim’s Fortitude save.
-    If the attack succeeds, the victim contracts the disease and enters first stage.
-    Periodically, a new check is made against the victim’s Fortitude to determine the disease progression,
-    until the victim is either cured or the final stage has been reached.
+    Upon exposure (or once daily during sustained contact with infected vectors), the pathogen makes an <strong>attack roll against the victim's Fortitude Defense</strong>. On a hit, the victim contracts the infection at Stage 1. At the conclusion of each stage's incubation interval, periodic attacks are rolled against Fortitude to determine whether the disease worsens, stabilizes, or regresses:
 </p>
-<p>
-    If the disease has a final stage and it is reached, only magical healing can remove the lingering effects.
-</p>
-<p>
-    <em>Contact:</em> Exposure to a contact disease occurs as soon as the carrier is touched with bare skin.
-    It also works through injuries or when ingested. The disease has to penetrate armor DR but not natural DR in order to take effect.
-</p>
-<p>
-    <em>Ingested:</em> Exposure occurs only when the carrier is ingested. Mere physical contact is not enough.
-</p>
-<p>
-    <em>Inhaled:</em> Disease exposure occurs through inhalation. Most inhaled diseases even work through nasal membranes, meaning that holding one’s breath has little or no effect.
-</p>
-<p>
-    <em>Injury:</em> Exposure occurs through open wounds, so the carrier has to penetrate both armor and natural DR. This type of disease can also spread through ingestion.
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-3">
+    <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs">
+        <strong class="text-slate-900 block font-bold mb-0.5">✋ Contact</strong>
+        Spread through physical touch or handling contaminated objects. Must bypass <strong>Armor DR</strong> (ignores Natural DR).
+    </div>
+    <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs">
+        <strong class="text-slate-900 block font-bold mb-0.5">🍖 Ingested</strong>
+        Contracted by consuming tainted food, stagnant water, or raw carrion.
+    </div>
+    <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs">
+        <strong class="text-slate-900 block font-bold mb-0.5">💨 Inhaled</strong>
+        Airborne pathogens, spores, and miasmas transmitted via respiration; breath-holding offers no protection.
+    </div>
+    <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs">
+        <strong class="text-slate-900 block font-bold mb-0.5">🗡️ Injury</strong>
+        Transmitted via bite wounds, blood contamination, or rusted blades. Must penetrate <strong>both Armor DR and Natural DR</strong>.
+    </div>
+</div>
+<p class="text-sm text-slate-700">
+    <em>Terminal Stages:</em> If a disease progresses to its designated final terminal stage, natural recovery is no longer possible; only specialized curative magic (such as <em>Remove Disease</em>) can purge the lingering corruption.
 </p>
 
 <div class="my-4 p-4 bg-amber-50/80 border border-amber-300/80 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
@@ -1495,958 +1348,665 @@
 
 <h3 id="OtherConditions">Other Conditions</h3>
 <p>
-    Many of the conditions listed below represent different levels within the same type of condition.
-    If a creature is subject to multiple conditions of the same type, apply only the effects of the most serious condition.
+    Many conditions represent progressive severity levels within a single affliction or impairment type.
+    When a creature is subject to multiple conditions of the same progression, apply only the effects of the most severe condition.
 </p>
-<p>
-    <em>Lesser condition &rarr; greater condition</em><br/>
-    Fascinated &rarr; Charmed &rarr; Compelled &rarr; Mastered<br/>
-    Dazzled &rarr; Blinded<br/>
-    Dazed &rarr; Clobbered &rarr; Stunned<br/>
-    Entangled &rarr; Paralysis &rarr; Petrified<br/>
-    Grappling &rarr; Pinned<br/>
-    Shaken &rarr; Frightened &rarr; Panicked &rarr; Cower<br/>
-    Sickened &rarr; Nauseated
-</p>
+
+<div class="bg-slate-50 border border-slate-200 rounded p-3 text-xs text-slate-700 my-3 font-mono space-y-1">
+    <div class="font-bold text-slate-900 mb-1">Condition Progressions (Lesser &rarr; Greater)</div>
+    <div>Fascinated &rarr; Charmed &rarr; Compelled &rarr; Mastered</div>
+    <div>Dazzled &rarr; Blinded</div>
+    <div>Dazed &rarr; Clobbered &rarr; Stunned</div>
+    <div>Entangled &rarr; Paralyzed &rarr; Petrified</div>
+    <div>Grappling &rarr; Pinned</div>
+    <div>Shaken &rarr; Frightened &rarr; Panicked &rarr; Cowering</div>
+    <div>Sickened &rarr; Nauseated</div>
+</div>
 
 <h5 id="Blinded">Blinded</h5>
 <p>
-    The creature cannot see nor use vision-based abilities. The following effects apply:
+    The creature cannot see and cannot use vision-based abilities. The blinded condition applies to any creature that is completely unable to see, whether from sensory damage, total darkness, heavy fog, or magical obscurity. The following effects apply:
 </p>
 <ul>
-    <li>-2 penalty to DeC, and creature can only use passive DeC.</li>
-    <li>Halve base speed.</li>
-    <li>-4 penalty to Search checks and most Strength- and Dexterity-based action checks.</li>
-    <li>All potential opponents enjoy full concealment against the blind creature.</li>
+    <li>Suffers a -2 penalty to DeC and can only use passive DeC.</li>
+    <li>Base speed is halved.</li>
+    <li>Suffers a -4 penalty to Search checks and to most Strength- and Dexterity-based action checks.</li>
+    <li>All opponents enjoy total concealment (50% miss chance / cannot be targeted by line-of-sight abilities) against the blinded creature.</li>
 </ul>
 <p>
-    Some skills (or prolonged blindness) may allow the creature to overcome some of the drawbacks above.
-</p>
-<p>
-    Note that the blinded condition applies to any creature that is unable to see, even if this is due to darkness, fog, etc.
+    Certain skills, special senses (such as Blindsense), or prolonged adaptation may mitigate some of these penalties.
 </p>
 
 <h5 id="Charmed">Charmed</h5>
 <p>
-    The affected creature is convinced that the charming creature is its friend or ally.
-    The affected creature’s personality or memory is not directly altered, but it will treat the charming creature as a
-    dear and trusted friend and respond accordingly to any suggestions made by or actions taken against that creature.
-    The affected creature’s feelings towards other creatures are not altered in any way.
+    The creature perceives the charmer as a dear, trusted friend and ally. The creature’s core personality and memories remain intact, but it interprets the charmer’s words and actions in the most favorable light and responds supportively. Its attitudes toward other creatures remain unchanged.
 </p>
 <p>
-    If the charming creature gives a command or makes a suggestion that is against the affected creature’s natural instincts,
-    a Diplomacy check opposed by a Sense Motive check can resolve the situation.
-    Even if the affected creature successfully resists the request, the charm remains in place.
-    However, a command that is highly objectionable to the affected creature may require a new attack roll to maintain the charm.
-    Suicidal or seriously harmful commands will not be obeyed.
+    If the charmer makes a suggestion or issues a request that conflicts with the charmed creature’s natural instincts or morals, resolve the conflict with an opposed check (Diplomacy vs. Sense Motive). Even if the creature resists the request, the charm remains active. Highly objectionable commands may grant the target a new defensive check to break the charm. Suicidal, overtly self-destructive, or blatantly harmful commands are rejected outright.
 </p>
 <p>
-    If the charming creature attacks the charmed one, the charm effect is immediately and automatically broken.
+    If the charmer or one of the charmer's obvious allies attacks or directly harms the charmed creature, the charm is immediately broken.
 </p>
 
 <h5 id="Clobbered">Clobbered</h5>
 <p>
-    A clobbered creature can take no actions but suffers no other penalties.
+    A clobbered creature is heavily reeling and cannot take any active actions during its turn. It suffers no additional defensive penalties and retains its normal defenses.
 </p>
 
 <h5 id="Compelled">Compelled</h5>
 <p>
-    The affected creature will obey (to the best of its ability) any command given by the compelling creature.
-    The victim does not have any free will, nor does it take any independent initiative for the duration of the effect.
+    The creature is entirely subject to the compelling entity's mental dominance and obeys all commands to the best of its ability. The victim loses all free will and cannot take independent initiative.
 </p>
 <p>
-    Unless otherwise specified, a compelled creature is also dazed (and can only use half its AP/MP per round).
+    Unless otherwise specified, a compelled creature is also dazed (limited to half its AP and MP per round).
 </p>
 
 <h5 id="Confused">Confused</h5>
 <p>
-    A confused creature acts irrationally and randomly. It cannot choose its own actions, but it defends itself normally and
-    will always try to attack any creature that attacked it during the previous round.
-    Otherwise, at the beginning of each turn, determine the confused creature’s actions by rolling a d10:
+    A confused creature acts erratically and unpredictably, unable to choose its actions coherently. It defends itself normally and always prioritizes attacking any creature that attacked it during the previous round.
 </p>
 <p>
-    1 - Attack the most likely source of the confusion.<br/>
-    2 - Act normally.<br/>
-    3-5 - Babble incoherently.<br/>
-    6-7 - Flee at top possible speed.<br/>
-    8-10 - Attack the nearest creature.
+    Otherwise, at the start of each of its turns, determine the creature's action by rolling a d10:
 </p>
+<div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 my-2 font-mono">
+    <div><strong>1:</strong> Attack the most likely source of the confusion.</div>
+    <div><strong>2:</strong> Act normally.</div>
+    <div><strong>3–5:</strong> Babble incoherently (takes no active actions).</div>
+    <div><strong>6–7:</strong> Flee away from danger at maximum possible speed.</div>
+    <div><strong>8–10:</strong> Attack the nearest creature (move to engage if necessary).</div>
+</div>
 
-<h5 id="Cower">Cower</h5>
+<h5 id="Cower">Cowering</h5>
 <p>
-    The creature is frozen in fear and can take no action. It also suffers a -2 penalty to DeC and can only use passive DeC.
+    The creature is completely frozen in terror. It can take no active actions, suffers a -2 penalty to DeC, and can only use passive DeC.
 </p>
 
 <h5 id="Dazed">Dazed</h5>
 <p>
-    A dazed creature can use only half its AP and MP per round but suffers no other penalties.
+    A dazed creature is disoriented and can spend only half of its normal AP and MP per round. It suffers no other penalties and defends itself normally.
 </p>
 
 <h5 id="Dazzled">Dazzled</h5>
 <p>
-    A dazzled creature has suffered overstimulation of the eyes and takes a -1 penalty on attack rolls and vision-based action checks.
+    The creature's vision is overstimulated by sudden glare or brilliant illumination. It takes a -1 penalty on attack rolls and vision-based action checks.
 </p>
 
 <h5 id="Deafened">Deafened</h5>
 <p>
-    A deafened creature cannot hear or perform skill actions based on hearing.
-    It also suffers a -4 penalty on initiative rolls and all action checks involving speech, including the casting of spells with verbal components.
+    A deafened creature cannot hear and automatically fails any checks based on hearing. It suffers a -4 penalty on initiative checks and all action checks involving speech, including the casting of spells with verbal components.
 </p>
 
 <h5 id="Entangled">Entangled</h5>
 <p>
-    Entanglement impedes movement but does not entirely prevent it. The following effects apply to an entangled creature:
+    The creature is ensnared or physically constrained. Movement is severely impeded but not fully halted:
 </p>
 <ul>
-    <li>Halve adjusted speed (and MP).</li>
+    <li>Adjusted speed and MP are halved.</li>
     <li>Running, sprinting, and charging are impossible.</li>
-    <li>-2 penalty on all attack rolls.</li>
-    <li>-4 penalty to Dexterity.</li>
-    <li>An action check is required to perform any physical action that requires concentration.</li>
+    <li>Suffers a -2 penalty on all attack rolls.</li>
+    <li>Suffers a -4 effective penalty to Dexterity (-2 modifier).</li>
+    <li>A Concentration check is required to cast spells or perform complex actions requiring sustained focus.</li>
 </ul>
 <p>
-    Some forms of physical entanglement also have the following immobilizing effect:
+    Severe or tethered entanglement may additionally immobilize the target: a successful +8 attack roll against the target's Ref prevents ground-moving creatures from moving more than 1 square per round, and causes winged flying creatures to stall and plummet.
 </p>
-<ul>
-    <li>A successful +8 attack against Ref prevents a ground-moving creature from moving more than 1 square per round.
-        A winged, flying creature stops moving and falls to the ground.</li>
-</ul>
 
 <h5 id="Extraplanar">Extraplanar</h5>
 <p>
-    Every creature has a home plane, which is typically the plane where it was born and feels most at home.
-    Whenever it is travelling on another plane, it has the extraplanar condition and may be subject to certain limitations and penalties,
-    be vulnerable to banishment spells, etc.
+    Every creature has a native home plane (typically where it was born or originated). When traveling on any plane other than its native plane, the creature gains the extraplanar condition, making it subject to dimensional displacement, planar alignment traits, and banishment magic.
 </p>
 
 <h5 id="Fascinated">Fascinated</h5>
 <p>
-    A fascinated creature is entranced by something and stands or sits quietly. It takes no actions unless threatened,
-    and it suffers a -4 penalty on any reactive action checks. An ally can shake the creature free of its fascination by spending 5 AP.
+    A fascinated creature is utterly entranced by a visual or auditory spectacle. It stands or sits quietly, taking no actions other than watching or listening. It suffers a -4 penalty on reactive action checks (such as Spot and Listen). Any overt threat or hostile action immediately breaks the fascination. An ally can shake the creature free of its trance by spending 5 AP to touch or jar it.
 </p>
 
 <h5 id="Flatfooted">Flat-Footed</h5>
 <p>
-    A flat-footed creature can only use passive DeC and cannot use reaction actions.
+    A flat-footed creature has not yet reacted to combat or has been caught off-guard. It can only use passive DeC and cannot take reaction actions.
 </p>
 
 <h5 id="Frightened">Frightened</h5>
 <p>
-    This is a medium level of fear, in between shaken and panicked. Any additional fear effect will cause the creature to panic.
-</p>
-<p>
-    The affected creature suffers a -2 morale penalty to all action checks (attack rolls, skill checks, and ability checks) and defenses.
-    It will also try to flee from the source of the fear as quickly as possible (but can choose its own path and method of flight).
-    The flight response lasts for as long as the source of the fear is in line of sight.
-    If flight is impossible, the creature can choose to fight back.
+    A creature experiencing moderate fear suffers a -2 morale penalty to all action checks (attacks, skill checks, ability checks) and defenses. The creature must flee from the source of its fear as quickly as possible via any available path. If cornered or unable to flee, it can fight defensively. Any additional fear effect escalates the condition to panicked.
 </p>
 
 <h5 id="Grappling">Grappling</h5>
 <p>
-    The creature is engaged in wrestling with one or more opponents.
-    This could also just mean grabbing or being grabbed by an opponent in some way.
-    Only a limited set of actions can be performed, specifically the Grapple Attack action as well as those actions that
-    do not require movement, do not require tools one size smaller than you or larger, and do not have a somatic component.
-    A grappling creature does not threaten nearby squares, and it can only use passive DeC against non-grappling opponents.
+    The creature is actively wrestling or physically held by an opponent. While grappling:
 </p>
+<ul>
+    <li>It can only perform the Grapple Attack action, actions requiring no movement, or actions using implements of its size or smaller that lack somatic components.</li>
+    <li>It does not threaten any surrounding squares.</li>
+    <li>It can only use passive DeC against attackers outside the grapple.</li>
+</ul>
 
 <h5 id="Helpless">Helpless</h5>
 <p>
-    A helpless creature is paralyzed, unconscious, sleeping, trussed up, or otherwise at an opponent’s mercy.
-    It effectively has Dexterity 0 (-5 penalty) and can only use passive DeC.
-    Melee attackers also enjoy a +4 attack bonus against a helpless defender and can choose to perform a coup de grace.
+    A helpless creature is paralyzed, unconscious, bound, or completely immobilized at an opponent's mercy:
 </p>
-<p>
-    A helpless creature is typically considered an &quot;unwilling&quot; target, except when subjected to healing magic.
-    Calculate its Ref as if both Dexterity and Intelligence were 0 (-10 penalty),
-    but its Fort and Will defenses suffer only a -2 penalty.
-</p>
+<ul>
+    <li>It has an effective Dexterity score of 0 (-5 modifier) and can only use passive DeC.</li>
+    <li>Melee attackers gain a +4 attack bonus against it and can deliver a coup de grace.</li>
+    <li>Its Ref defense is calculated as if both Dexterity and Intelligence were 0 (-10 total penalty). Its Fort and Will defenses suffer a -2 penalty.</li>
+</ul>
 
 <h5 id="Mastered">Mastered</h5>
 <p>
-    This condition combines the "best" features of the charmed and compelled conditions, and it is more powerful than either.
+    The ultimate form of mental dominance, combining the obedience of compulsion with the willing devotion of charm.
 </p>
 <p>
-    The affected creature treats the mastering creature as its absolute and rightful ruler, to be obeyed and trusted above all others.
-    The affected creature's personality or memory is not directly altered,
-    but it will view the master's actions and requests in the most favorable light imaginable, no matter how outrageous the demands might be.
-    It responds accordingly to any suggestions made by or actions taken against the master.
-    Although an affected creature will always obey commands from the master to the best of its ability,
-    it still retains free will and can take independent initiative as long as such actions do not conflict with the master's commands.
-</p>
-<p>
-    The affected creature's feelings towards creatures other than the master are not automatically altered,
-    but those feelings can be affected by what the master says or by actions such creatures take against the master.
-    The master can quite easily manipulate an affected creature into betraying and backstabbing old friends.
+    The affected creature reveres the master as its supreme, rightful ruler. While its core memories and personality remain, it interprets all instructions from the master in the most favorable light possible. It obeys the master's commands unfailingly, yet retains enough free will to show tactical initiative in executing them. The master can effortlessly manipulate the creature into betraying former allies, viewing them as enemies or traitors to the master.
 </p>
 
 <h5 id="Nauseated">Nauseated</h5>
 <p>
-    A nauseated creature can only use half its AP and MP per round and only for actions that do not require the concentration implement.
+    The creature is severely sickened and retching. It can spend only half its normal AP and MP per round, and cannot take any actions that require the concentration implement or sustained focus.
 </p>
 
 <h5 id="OnFire">On Fire</h5>
 <p>
-    The creature takes 1d6 HP of ongoing fire damage per round.
+    The creature is engulfed in flames and takes 1d6 ongoing fire damage at the start of each of its turns.
 </p>
 <p>
-    Extinguishing the fire is a full-round action that requires a check of d20! + Dex mod vs. DC 15.
-    You can gain a +2 circumstance bonus to the check by falling prone and rolling on the ground.
+    Extinguishing the flames requires a full-round action and a successful Dexterity check (d20! + Dex mod vs. DC 15). Dropping prone and rolling on the ground grants a +2 circumstance bonus to the check. Submerging in water extinguishes the flames automatically.
 </p>
 
 <h5 id="Panicked">Panicked</h5>
 <p>
-    This is the most extreme level of fear.
-</p>
-<p>
-    The affected creature suffers a -2 morale penalty to all action checks (attack rolls, skill checks, and ability checks) and defenses.
-    It will also drop anything held and flee from the source of the fear as quickly as possible, acting on pure instinct
-    (roll randomly when different paths or methods can be chosen).
-    For the duration of the fear effect, the creature will flee from all dangers, and if flight is impossible, it will cower.
+    The creature is overwhelmed by terror. It drops whatever it is holding and flees blindly from all sources of danger at maximum speed, choosing routes randomly if needed. It suffers a -2 morale penalty to all action checks and defenses. If cornered and unable to flee, the creature cowers.
 </p>
 
-<h5 id="Paralysis">Paralysis</h5>
+<h5 id="Paralysis">Paralyzed</h5>
 <p>
-    The affected creature is immobile and helpless. It can see, hear, and think, but any and all sorts of movement are impossible.
-    The creature still breathes but cannot speak or make any sound.
-    Physical attacks are impossible to make, but purely mental actions can still be performed.
-</p>
-<p>
-    A flying creature that is paralyzed can no longer fly and will probably start to fall.
-    A swimming creature stops swimming and may drown as a result.
+    The creature's motor functions are completely arrested. It remains aware, can perceive its surroundings, and can perform purely mental actions, but it cannot move, speak, or make physical attacks. It is rendered helpless. Winged flying creatures stall and fall; swimming creatures cannot swim and risk drowning.
 </p>
 
 <h5 id="Petrified">Petrified</h5>
 <p>
-    A petrified creature has been turned to stone and is effectively unconscious. If broken while petrified,
-    a creature will suffer corresponding damage and loss of limbs if and when it is returned to flesh.
-    While petrified, a creature does not age.
+    The creature is turned completely to stone and is in a state of suspended animation (effectively unconscious). It does not age. If broken or damaged while petrified, it suffers corresponding trauma and loss of limbs if restored to flesh.
 </p>
 
 <h5 id="Pinned">Pinned</h5>
 <p>
-    Held immobile (but not helpless) in a grapple for 1 round. You can use the Grapple Attack action (but only to break the pin), and you can
-    perform actions that do not require movement, do not require tools/weapons/materials/foci, and do not have a somatic component.
+    The creature is held completely immobile within a grapple. It is not helpless, but its options are severely restricted: it can take the Grapple Attack action only to attempt to escape the pin, and can only perform actions that require no physical movement, require no physical implements or foci, and have no somatic components.
 </p>
 
 <h5 id="Prone">Prone</h5>
 <p>
-    The creature is lying down on the ground. This results in various attack modifiers, both for the prone creature and potential attackers.
+    The creature is lying flat on the ground. It suffers a -4 penalty on melee attack rolls and cannot use ranged projectile weapons (except crossbows). Melee attackers gain a +4 bonus against a prone target, whereas ranged attackers suffer a -4 penalty against it.
 </p>
 
 <h5 id="Shaken">Shaken</h5>
 <p>
-    This is the mildest level of fear. Further fear effects will escalate the creature’s state to frightened or panicked.
-</p>
-<p>
-    The affected creature suffers a -2 morale penalty to all action checks (attack rolls, skill checks, and ability checks).
+    A mild state of fear and apprehension. The creature suffers a -2 morale penalty to all action checks (attack rolls, skill checks, and ability checks). Further fear effects escalate this condition to frightened.
 </p>
 
 <h5 id="Sickened">Sickened</h5>
 <p>
-    The creature takes a -2 penalty to action checks, weapon damage rolls, and defenses.
+    The creature is afflicted with mild nausea, pain, or illness. It suffers a -2 penalty to action checks, weapon damage rolls, and defenses.
 </p>
 
 <h5 id="Stunned">Stunned</h5>
 <p>
-    The creature drops anything held, can’t take any actions, suffers a -2 penalty to DeC, and can only use passive DeC.
+    The creature is reeling from a concussive shock. It drops whatever it is holding, cannot take active actions, suffers a -2 penalty to DeC, and can only use passive DeC.
 </p>
 
 <h3 id="SpecialSenses">Special Senses</h3>
 
 <h4 id="AllAroundVision">All-Around Vision (LoS)</h4>
 <p>
-    Some creatures have the ability to see in all directions simultaneously.
-    This gives them a +4 bonus on Spot checks, and their attackers never gain flanking bonuses.
+    Some creatures possess multi-faceted eyes, sensory organs distributed across their bodies, or heightened spatial awareness that allows them to see in all directions simultaneously.
+</p>
+<p>
+    The creature gains a +4 bonus on Spot checks and cannot be flanked; attackers never gain flanking bonuses against it.
 </p>
 
 <h4 id="Blindsense">Blindsense (PoE)</h4>
 <p>
-    Some creatures have such an acute sense of hearing, keen sense of smell, and/or other special sense
-    that they can perceive their surroundings and operate more or less effectively without vision.
+    Some creatures rely on echolocation, hypersensitive olfactory senses, electrical detection, or other specialized organs to perceive their surroundings and operate effectively without relying on sight.
 </p>
 <p>
-    <em>Minor Blindsense:</em> You take only half the usual speed penalty for darkness, blindness, and poor visibility.
+    <em>Minor Blindsense:</em> The creature takes only half the usual speed penalty imposed by darkness, blindness, and poor visibility.
 </p>
 <p>
-    <em>Lesser Blindsense:</em> You automatically sense the location (with a precision of one square) of all creatures within range,
-    but such creatures still enjoy full concealment bonuses for invisibility, darkness, etc.
-    A creature with lesser blindsense still suffers normal DeC penalties when attacked by invisible creatures.
+    <em>Lesser Blindsense:</em> The creature automatically senses the location (with a precision of one square) of all creatures within range. However, target creatures still retain full concealment bonuses against the creature (due to invisibility, darkness, fog, etc.). A creature with lesser blindsense still suffers normal DeC penalties when attacked by unseen foes.
 </p>
 <p>
-    <em>Greater Blindsense</em> confers the following advantages:
+    <em>Greater Blindsense:</em> Confers complete sensory awareness within range, granting the following benefits:
 </p>
 <ul>
-    <li>It maneuvers and fights as well as a sighted creature.</li>
-    <li>It automatically perceives and pinpoints all hidden, concealed, or invisible objects and creatures within range.
-        Ethereal objects and creatures are not revealed, however.</li>
-    <li>It is completely unaffected by shadows and darkness within range.</li>
-    <li>Blindsense does not reveal color or visual contrast. It does not reveal paintings nor allow reading, for example.</li>
-    <li>If the creature does not have a visual sense (or if it closes its eyes), gaze attacks do not affect it.</li>
-    <li>If the creature does not have a visual sense, blinding attacks do not affect it.</li>
-    <li>If the blindsight is based on hearing, a deafening attack makes the creature effectively blind.</li>
-    <li>If the blindsight is based on hearing or smell, it works underwater but not in a vacuum.</li>
-    <li>Blindsense makes the creature immune to purely visual illusions, including displacement and blur effects.</li>
+    <li>The creature maneuvers and fights as effectively as a sighted creature.</li>
+    <li>It automatically perceives and pinpoints all hidden, concealed, or invisible objects and creatures within range (ethereal objects and creatures remain undetected unless otherwise specified).</li>
+    <li>It is completely unaffected by ambient darkness, magical shadows, or visual concealment within its range.</li>
+    <li>Blindsense does not distinguish color, tonal contrast, or visual surface details; it cannot be used to read text, discern painted markings, or recognize facial pigments.</li>
+    <li>If the creature lacks functional eyes or keeps its eyes closed, it is completely immune to gaze attacks and visual blinding attacks.</li>
+    <li>If blindsense relies on hearing (echolocation), deafening attacks render the creature effectively blind; if it relies on hearing or olfaction, it functions underwater but fails completely in a vacuum.</li>
+    <li>The creature is immune to purely visual illusions, including displacement and blur effects.</li>
 </ul>
 
 <h4 id="Darkvision">Darkvision (LoS)</h4>
 <p>
-    A creature with darkvision has the ability to see in darkness (but not in extreme darkness).
-    The ability is always specified with a limited range, and it typically does not allow the creature to discern colors.
+    A creature with darkvision can see in total darkness out to its specified range (typically in shades of grey without discerning color). Normal darkvision does not penetrate extreme or magical darkness, does not reveal invisible creatures or illusions, and offers no protection against gaze attacks.
 </p>
 <p>
-    Note that darkvision does not reveal invisible creatures or illusions, nor does it protect against gaze attacks.
-</p>
-<p>
-    <em>Greater Darkvision:</em> This is a special form of darkvision that also gives the ability to see through extreme darkness.
+    <em>Greater Darkvision:</em> An advanced supernatural form of darkvision that allows the creature to see through extreme and magical darkness without impairment.
 </p>
 
 <h4 id="LifeSense">Life Sense (LoS)</h4>
 <p>
-    Creatures with life sense can automatically perceive all living and undead creatures within range.
-    This sense provides information equivalent to vision but also gives a rough indication of creatures' life force (TL)
-    and whether their life force is positive (alive) or negative (undead).
+    Creatures with life sense automatically perceive the life energy of all living and undead creatures within range. This sense functions with the fidelity of vision, while also revealing a rough appraisal of each creature's vitality (TL) and nature (positive life force for living creatures, negative energy for undead).
 </p>
 <p>
-    Hidden, invisible, and concealed creatures are automatically perceived, and their concealment bonuses are halved.
+    Hidden, invisible, and concealed creatures within range are automatically detected, and their concealment bonuses against the sensing creature are halved.
 </p>
 
 <h4 id="LowLightVision">Low-Light Vision (LoS)</h4>
 <p>
-    Creatures with low-light vision can see further than a human in low-light conditions.
-    They effectively treat dim light as normal light, and they gain an additional radius corresponding to dim light around each source of light.
+    Creatures with low-light vision possess exceptionally sensitive eyes capable of magnifying ambient light. They treat dim light as normal light and double the effective illuminated radius of all light sources.
 </p>
 
 <h4 id="Scent">Scent (PoE)</h4>
 <p>
-    Creatures with the scent ability have such a keen sense of smell that they can use it to detect nearby creatures and for tracking.
-    Scent gives the following benefits:
+    Creatures with the scent ability possess an acute olfactory sense, allowing them to detect creatures by odor, pinpoint nearby foes, and track quarry:
 </p>
 <ul>
-    <li>Creatures that are not scentless can be detected within the specified range (double range upwind and half range downwind).
-        Strong scents can be detected at twice this range,
-        and overpowering scents at three times the range (but can potentially overpower lesser scents).</li>
-    <li>If another creature is detected by scent, its direction can be determined by spending 5 AP.
-        When the creature is in an adjacent square, its exact square can be pinpointed for the same AP cost.</li>
-    <li>Creatures that have been detected or pinpointed with scent still enjoy normal concealment bonuses.</li>
-    <li>When using scent to track creatures that are not scentless,
-        the ability provides a +4 bonus and lets the tracker ignore penalties due to surface conditions and poor visibility.</li>
+    <li>Creatures that possess a scent can be detected within the specified range (range is doubled upwind and halved downwind). Strong odors can be detected at twice this range, and overpowering scents at triple range (though overpowering scents may mask weaker aromas).</li>
+    <li>Once a creature's scent is detected, the searcher can determine its general direction by spending 5 AP. If the quarry is in an adjacent square, spending 5 AP pinpoints its exact square.</li>
+    <li>Creatures detected or pinpointed solely via scent still benefit from normal concealment bonuses.</li>
+    <li>When tracking non-scentless quarry, scent provides a +4 bonus on Survival checks and allows the tracker to ignore penalties from surface conditions or poor visibility.</li>
 </ul>
 
 <h4 id="LightSensitive">Sensitivity to Light</h4>
 <p>
-    Creatures that are sensitive to light suffer the specified penalty to action checks under normal light conditions.
-    Bright light doubles the specified penalty. They typically suffer the same penalty on defenses against radiant attacks.
+    Creatures sensitive to light suffer their specified penalty to action checks when operating under normal light conditions. Bright illumination doubles the penalty. Light-sensitive creatures typically suffer the same penalty to defenses against radiant attacks.
 </p>
 
 <h4 id="Tremorsense">Tremorsense (PoE)</h4>
 <p>
-    Creatures with tremorsense are extremely sensitive to vibrations.
-    They can automatically sense the location of any creature that is within the indicated range, in contact with the ground,
-    and moving or taking physical actions.
-    A path must exist through the ground to the creatures to be detected - creatures on the other side of a deep chasm will not be detected.
+    Creatures with tremorsense are attuned to seismic vibrations traveling through solid surfaces. They automatically pinpoint the location of any creature within range that is in direct contact with the ground and actively moving or taking physical actions.
 </p>
 <p>
-    Creatures that have been detected or pinpointed with tremorsense still enjoy normal concealment bonuses.
+    A continuous physical path through the ground is required; tremorsense cannot detect creatures across a deep chasm, fissure, or open void. Detected creatures still benefit from normal concealment bonuses against the sensing creature.
 </p>
 <p>
-    Aquatic creatures with tremorsense can also use this sense to detect creatures within range that share the same body of water.
+    Aquatic creatures with tremorsense can similarly detect vibrating or swimming creatures within range that share the same contiguous body of water.
 </p>
 
 <h4 id="Truesight">Truesight (LoS)</h4>
 <p>
-    Truesight lets a creature see all things within range as they actually are.
-    It can see through normal and magical darkness, see invisible and ethereal creatures and objects,
-    recognize illusions, negate magical concealment bonuses, and see the true form of shapechanged creatures and objects.
+    Truesight allows a creature to perceive all things within range in their true, unadorned reality. It sees through normal and magical darkness, notices invisible and ethereal creatures or objects, sees through illusions, negates magical concealment bonuses, and perceives the true form of shapechanged or polymorphed subjects.
 </p>
 <p>
-    Note that Truesight by itself does not provide any bonus to perception-based actions,
-    and it does not automatically reveal hidden or camouflaged creatures and objects,
-    nor does it penetrate non-magical concealment effects.
+    Truesight alone does not grant bonus Perception modifiers, does not automatically defeat mundane camouflage or mundane hiding, and does not penetrate physical or non-magical cover and concealment (such as heavy foliage or solid walls).
 </p>
 
-<h4>X-Ray Vision (LoS)</h4>
+<h4 id="XRayVision">X-Ray Vision (LoS)</h4>
 <p>
-    X-ray vision is the ability to see through solid objects.
-    Unless otherwise specified, the maximum range is 4 sq,
-    and the maximum thickness that can be penetrated is equivalent to a detection DC modifier of 150 (see Materials).
+    X-ray vision allows a creature to see through solid, opaque matter. Unless otherwise specified, the default maximum range is 4 squares, and the maximum density penetrable is equivalent to a barrier detection DC modifier of +150 (see <a href="/reference/equipment#Materials">Materials</a>).
 </p>
 
 <h3 id="SpecialAttacks">Special Attacks</h3>
 
 <h4 id="BreathWeapons">Breath Weapons</h4>
 <p>
-    A breath weapon is some sort of attack expelled from a creature’s mouth. It commonly takes the shape of a cloud or a cone,
-    but other areas of effect are also possible. Most breath weapons can even be used when the creature is unable to breathe.
+    A breath weapon is an area-of-effect attack expelled from a creature’s maw, typically taking the form of an expanding cone, line, or billowing cloud. Most breath weapons are physiological or magical discharge mechanisms that function even if the creature is temporarily unable to breathe (such as when underwater or in a vacuum).
 </p>
 <p>
-    Unless otherwise specified, a creature is immune to its own type of breath weapon.
+    Unless otherwise specified, a creature is immune to its own breath weapon and damage type.
 </p>
 
 <h4 id="DeathEffects">Death Effects [Su, MR, Necrotic]</h4>
 <p>
-    Certain attacks and spells can cause massive amounts of damage with necrotic energy. This is commonly referred to as a death effect.
-    If the damage is enough to kill the victim, a side effect is that any attempt to magically resurrect the victim becomes significantly more difficult.
+    Death effects channel catastrophic surges of lethal necrotic energy. If the damage dealt by a death effect reduces a creature to 0 HP or below and slays it, the victim's life force is severely disrupted, making subsequent attempts at magical resurrection considerably more difficult (-10 penalty on resurrection checks).
 </p>
 
 <h4 id="EnergyDrain">Energy Drain [Su, Necrotic]</h4>
 <p>
-    Some creatures have the inherent ability to use necrotic energy to drain life energy from living creatures.
+    Certain necrotic beings and sinister entities can siphon the vital life energy of living creatures through touch or specialized attacks.
 </p>
 <p>
-    <em>Minor Energy Drain:</em> The least powerful form of energy drain damages HP, SP, and/or PP.
-    Half of the damage caused by an energy draining attack becomes temporary HP for the draining creature.
+    <em>Minor Energy Drain:</em> Damages the victim's HP, SP, and/or PP. The draining creature gains temporary HP equal to half the total damage dealt.
 </p>
 <p>
-    <em>Lesser Energy Drain:</em> The medium level of energy drain causes ability damage to Con and/or Wis.
-    Each point of ability damage becomes 5 temporary HP for the draining creature.
-    Unlike other temporary HP, these stack with each new draining attack.
+    <em>Lesser Energy Drain:</em> Deals ability damage to Constitution and/or Wisdom. The draining creature gains 5 temporary HP per point of ability damage inflicted; unlike standard temporary HP, these stack with each successive drain.
 </p>
 <p>
-    <em>Greater Energy Drain:</em> This more powerful form of energy drain causes ability drain to Con and/or Wis.
-    Each point of ability damage becomes 5 temporary HP for the draining creature.
-    Unlike other temporary HP, these stack with each new draining attack.
+    <em>Greater Energy Drain:</em> Causes permanent ability drain to Constitution and/or Wisdom. The draining creature gains 5 temporary HP per point of ability drain inflicted (stacking with each successive attack).
 </p>
 <p>
-    <em>Superior Energy Drain:</em> In addition to the ability draining effect of Greater Energy Drain,
-    Superior Energy Drain will also cause a cumulative penalty to the victim's AP total.
-    The AP penalty is permanent until magically healed.
-    If the victim is drained to below 10 AP, it dies (and may transform into an undead creature).
+    <em>Superior Energy Drain:</em> In addition to the ability drain of Greater Energy Drain, Superior Energy Drain inflicts a cumulative permanent penalty to the victim's total AP pool. If the victim's AP pool is reduced below 10 AP, the creature immediately dies and may spontaneously rise as an undead spawn under the attacker's sway.
 </p>
 <p>
-    Temporary HP granted by any form of Energy Drain have a maximum duration of one day.
+    Temporary HP gained from any form of Energy Drain last for a maximum duration of 24 hours.
 </p>
 
 <h4 id="Fear">Fear [Mind, Fear]</h4>
 <p>
-    Some creatures have such an unsettling and fearsome presence that they have the extraordinary ability to cause fear in opponents.
-    Typically, when the creature acts aggressively or threateningly, it makes an automatic attack against the Will of any opponent within range
-    (S - creature becomes shaken; ES - creature becomes frightened; F - creature is unaffected and immune to this particular effect for 24 h).
-    Fear is usually unable to affect creatures whose TL exceeds that of the frightening creature.
+    Creatures with a terrifying or monstrous aura project an unsettling presence that strikes dread into their foes. When the creature acts aggressively or advances threateningly, it makes an automatic attack check against the Will defense of each opponent within range:
+</p>
+<ul>
+    <li><strong>Success:</strong> Target becomes shaken.</li>
+    <li><strong>Exceptional Success:</strong> Target becomes frightened.</li>
+    <li><strong>Failure:</strong> Target is unaffected and immune to this creature's fear aura for 24 hours.</li>
+</ul>
+<p>
+    Fear effects cannot affect creatures whose Total Level (TL) exceeds that of the frightening creature. Animals and monstrous beasts instinctively avoid or flee from creatures radiating supernatural dread.
 </p>
 <p>
-    <em>Greater Fear [Su]:</em> Similar to the usual Fear ability but a supernatural ability.
-    It can have greater effect and is typically not limited to opponents below a certain TL.
+    <em>Greater Fear [Su]:</em> A potent supernatural fear aura that causes deeper panic and is not restricted by target TL.
 </p>
 <p>
-    Most creatures of the animal and monstrous animal types will instinctively avoid or flee from creatures with the Fear ability.
-</p>
-<p>
-    <em>Turning and Rebuking [Su]:</em> This is similar to the Fear ability but is typically limited to a certain type of creature.
-    Note that turning and rebuking can work against the specified type of creature, even if that creature is generally resistant or immune to mind or fear effects.
+    <em>Turning and Rebuking [Su]:</em> A specialized supernatural burst targeting specific creature types (such as undead). Turning forces targets to flee or cower, while Rebuking cowers or commands them, functioning even against creatures ordinarily immune to mind-affecting or fear effects.
 </p>
 
 <h4 id="GazeAttacks">Gaze Attacks</h4>
 <p>
-    Gaze attacks can have a variety of effects, but they always require the attacker to meet the gaze of the potential victims.
-    Other eye-based attacks, such as the rays shot from a beholder’s eyes, are rays and not gaze attacks.
-    Gaze attacks only work through direct eye contact and never through mirrors nor scrying.
+    Gaze attacks channel magical or supernatural power through direct visual contact with potential victims. Gaze attacks require direct line of sight and mutual vision; they cannot be transmitted through reflective mirrors, scrying sensors, or indirect recordings. (Targeted ocular rays, such as an eye tyrant's eyebeams, are ranged ray attacks rather than gaze attacks.)
 </p>
 <p>
-    Every seeing creature that is within range and line of sight of the attacker suffers an automatic attack at the beginning of each of its turns.
-    If a potential victim actively averts its eyes, it gains a +5 bonus on defenses against the attack,
-    but this also gives the gaze attacker the benefit of concealment against that potential victim.
-    Creatures that close their eyes completely (or are otherwise unable to see) are immune to the attack.
-    Reduced visibility (due to shadows, fog, etc.) provides the same bonus to defenses against gaze attacks as it does to DeC due to concealment.
-    An invisible creature can only use its gaze attack against victims that are somehow able to see it.
+    Every sighted creature within range and line of sight of a gaze attacker is subjected to an automatic attack at the start of each of its turns:
 </p>
+<ul>
+    <li><strong>Averting Eyes:</strong> A creature can actively avert its eyes, gaining a +5 bonus to defenses against the gaze attack, but granting the gaze attacker the benefit of concealment against the averting creature.</li>
+    <li><strong>Closing Eyes:</strong> A creature that completely closes its eyes (or is blind) is completely immune to the gaze attack.</li>
+    <li><strong>Reduced Visibility:</strong> Shadows, fog, or obscurement grant the same bonus to defenses against gaze attacks as their corresponding concealment bonus.</li>
+    <li><strong>Invisible Gaze:</strong> An invisible attacker can only use its gaze attack against creatures capable of seeing invisible targets.</li>
+</ul>
 <p>
-    A creature with a gaze attack can also use its attack actively, targeting a single creature within range with each attack.
-    That victim enjoys the same defense modifiers as for the passive gaze attack.
-</p>
-<p>
-    Unless otherwise specified, a creature is immune to its own gaze attack.
-</p>
-<p>
-    Unless otherwise specified, a creature can turn off its gaze attack at will.
+    A gaze attacker can also actively focus its gaze (using the Gaze Attack action for 6 AP), directing the attack at a single chosen target within range. The targeted victim applies the same defense modifiers as for passive exposure. Unless otherwise specified, a creature is immune to its own gaze and can suppress its gaze aura at will.
 </p>
 
 <h4 id="GrapplingAttack">Grappling</h4>
 <p>
-    Normal grappling is described under the actions "Initiate Grapple" and "Grapple Attack".
-    The skill "Fighting Style - Brawling" can provide bonuses to grapple actions.
-    Some creatures have additional special abilities that are related to grappling.
+    Standard grappling rules are detailed under the <a href="#InitiateGrapple">Initiate Grapple</a> and <a href="#GrappleAttack">Grapple Attack</a> actions. Certain creatures possess unique monstrous grappling capabilities:
 </p>
 <p>
-    <em>Engulf:</em> Creatures with this ability can engulf creatures smaller than themselves.
-    They can do this automatically by successfully initiating a grapple.
-    Engulfed creatures are considered grappled and can still use grapple attacks to cause damage to the engulfing creature.
-    Whenever an engulfing creature takes damage from the outside, engulfed creatures take 1/2 of the same damage (after reduction by DR).
+    <em>Engulf:</em> The creature can engulf foes smaller than itself automatically upon successfully establishing a grapple. Engulfed victims are grappled and can use grapple attacks to damage the engulfing creature from within. Whenever the engulfing creature suffers external damage, engulfed victims take half of that damage (after reduction by the engulfing creature's DR).
 </p>
 <p>
-    <em>Swallow:</em> Most creatures can swallow other creatures, provided that the victim is sufficiently small.
-    Swallowed creatures are considered grappled and can still use grapple attacks to cause damage to the swallowing creature.
-    In general, a swallowed creature will be exposed to a certain amount of ongoing acid damage as well as suffocation.
-    Whenever a swallowing creature takes damage from the outside, swallowed creatures take 1/2 of the same damage (after reduction by DR).
+    <em>Swallow:</em> The creature can swallow smaller grappled prey whole. Swallowed creatures are grappled within the creature's gullet and can use light natural or light weapon attacks to cut their way out. Swallowed victims suffer ongoing acid damage and suffocation each round. Whenever the swallowing creature suffers external damage, swallowed victims suffer half of the damage dealt (after DR).
 </p>
 
 <h4 id="Manyshot">Manyshot</h4>
 <p>
-    This is the ability to shoot multiple projectiles at a single target with a single attack roll.
-    For all practical purposes, this counts as a single attack with increased damage but with a penalty to the attack roll.
-    Unless otherwise specified, the base weapon damage is multiplied by the number of projectiles (before modifiers are applied),
-    and the attack penalty is -2 multiplied by the number of projectiles.
+    The ability to notch, aim, and loose multiple arrows or projectiles simultaneously against a single target with a single attack check. The maneuver resolves as a single attack roll:
 </p>
+<ul>
+    <li>The attack roll suffers a -2 penalty multiplied by the total number of projectiles loosed.</li>
+    <li>On a hit, base weapon damage dice are multiplied by the number of projectiles before applying ability modifiers and bonus damage.</li>
+</ul>
 
 <h4 id="Possession">Possession [Su, MR, Mind]</h4>
 <p>
-    When two or more souls occupy the same body, they will typically fight for control of the body, according to the staged action check shown below.
-    However, a soul may choose to surrender control and voluntarily lose any of the opposed checks.
-    When the possession is an attack, the attacker can usually leave the occupied body voluntarily at any time and return to its own body.
-    The &quot;non-native&quot; soul is designated attacker, while the &quot;native&quot; soul is the defender.
+    When two or more souls inhabit a single physical vessel, they contest for bodily control through a staged action check. A soul may choose to surrender control voluntarily at any time. When possession is an aggressive attack, the non-native soul is designated as the attacker, while the native soul is the defender. The invading soul can leave the host body at will and return to its own vessel.
 </p>
 <p>
-    The soul that is currently in control does not just choose the body’s actions.
-    It also determines the creature’s Int, Wis, Cha, health points, class levels, skill levels, Fort, Ref, Will, mental abilities,
-    spellcasting, personality, and alignment.
-    The body itself determines Str, Con, Dex, creature type and subtype, size, modes and speed of movement, senses,
-    physical attack forms, physical abilities, and appearance.
+    The dominant soul in control determines the creature’s mental attributes: Intelligence, Wisdom, Charisma, mental health pools, class levels, skill ranks, Fortitude, Reflex, Will defenses, mental talents, spellcasting, personality, and alignment.
+</p>
+<p>
+    The physical vessel determines physical attributes: Strength, Constitution, Dexterity, creature type and subtype, size, movement modes and speeds, sensory organs, natural weapons, physical abilities, and physical appearance.
 </p>
 
 <?php show_stagedconditions(STAGED_POSSESSION); ?> 
 
 <p>
-    Whenever a body is not occupied by a soul (but not slain), it lies comatose and helpless.
+    If a living body is entirely devoid of an inhabiting soul (and has not been slain), it remains comatose and helpless.
 </p>
 
 <h4 id="Stampede">Stampede</h4>
 <p>
-    This is an ability that lets some creatures make overrun attacks that cause trampling damage.
-    The danger of this ability is often increased by the quantity of stampeding creatures.
+    A herd or pack of beasts can execute sweeping overrun attacks, trampling everything in their path. The destructive force and save DC of a stampede increase proportionally with the size and density of the stampeding herd.
 </p>
 
 <h4 id="TouchAttacks">Touch Attacks</h4>
 <p>
-    Many special attacks are transferred by touch and therefore require a successful attack roll.
-    Note that the special attack is not activated by someone else touching the creature in question.
+    Special attacks delivered via skin-to-skin or physical contact require a touch attack roll (Tch). A touch attack requires an active offensive strike; it is not triggered merely by an opponent making contact with the creature.
 </p>
 <p>
-    Reach attacks (Rch) can typically be combined with a normal melee attack (causing natural weapon damage), while touch attacks (Tch) cannot.
+    Reach attacks (Rch) can typically be combined with normal natural weapon strikes (dealing physical weapon damage alongside the effect), whereas pure touch attacks bypass armor DR and deal only the special magical or energetic effect.
 </p>
 
 <h4 id="VitalAttack">Vital Attack</h4>
 <p>
-    Vital Attack is the ability to strike the most vulnerable and sensitive spots on an enemy.
-    This provides an attack and damage bonus
-    against any opponent that is flat-footed or for other reasons not allowed to use active DeC.
+    Vital Attack represents surgical precision striking at an opponent’s most vulnerable nerve clusters, arteries, or anatomical weak points. It provides bonus attack and precision damage against any opponent that is flat-footed or otherwise denied its active DeC.
 </p>
 <p>
-    Vital attacks can only be made with primary attack forms or weapons held in primary attack forms.
-    Furthermore, vital attacks require at least one skill level in a weapon skill appropriate for the weapon used.
+    Vital attacks can only be delivered using primary attack forms or weapons wielded in primary limbs, and require at least one skill level in the weapon skill being used.
 </p>
 <p>
-    Vital attacks require a relatively unobstructed view of the target;
-    good or total cover as well as good or total concealment nullify the bonuses granted by vital attack.
-<p>
-    For attacks with secondary attack rolls, the attack bonus applies to both the primary and secondary attack.
+    A clear line of sight and unobstructed view are required; good cover, total cover, good concealment, or total concealment negate all Vital Attack bonuses. For attacks featuring secondary attack rolls, the attack bonus applies to both the primary and secondary attack checks.
 </p>
 
 <h3 id="SpecialDefenses">Special Defenses</h3>
 
-<h4>Age Resistance</h4>
+<h4 id="AgeResistance">Age Resistance</h4>
 <p>
-    Lesser age resistance means that a creature appears to age normally and can still die from old age,
-    but it is immune to any penalties caused by aging.
-    A creature with greater age resistance does not even appear to age and will never die from old age.
+    <em>Lesser Age Resistance:</em> The creature appears to age naturally and can eventually die of old age, but it is entirely immune to physical and mental attribute penalties caused by aging.
+</p>
+<p>
+    <em>Greater Age Resistance:</em> The creature ceases physical aging entirely, maintains its physical peak indefinitely, and can never die of natural old age.
 </p>
 
 <h4 id="Dodge">Dodge</h4>
 <p>
-    Not to be confused with dodge modifiers to DeC, the dodge special ability lets a creature use its active DeC even when flat-footed.
+    Distinct from standard dodge bonuses to DeC, the Dodge special defensive ability allows a creature to retain its active DeC even when caught flat-footed or surprised.
 </p>
 
 <h4 id="EnergyShield">Energy Shield [Su, MR]</h4>
 <p>
-    This is a field of energy (usually visible) that surrounds a creature and automatically causes the specified type and amount of damage
-    to any melee attacker (or the attacker's weapon).
-    Each successful melee attack causes a new instance of damage to the attacker.
+    A shimmering or crackling energy barrier surrounds the creature, automatically inflicting its specified energy damage to any melee attacker (or the attacker's natural weapons / melee implements) upon contact. Each successful melee strike against the shielded creature triggers a separate instance of retaliation damage.
 </p>
 
 <h4 id="Evasion">Evasion</h4>
 <p>
-    Evasion makes a creature better at dodging area effect attacks.
-    If the creature is exposed to an area effect that targets the DeC or Reflex defenses,
-    a failed attack will cause no damage at all (even if the result states that 1/2 damage be dealt).
-    A creature with <em>Greater Evasion</em> suffers only half damage even when such an attack is successful.
+    Evasion allows a creature to dodge area-of-effect hazards with extraordinary agility:
 </p>
+<ul>
+    <li><strong>Standard Evasion:</strong> When exposed to an area attack that targets DeC or Reflex defense for half damage on a miss/save, a successful defensive check completely negates all damage.</li>
+    <li><strong>Greater Evasion:</strong> The creature takes no damage on a successful defense check and suffers only half damage even if the attack succeeds.</li>
+</ul>
 <p>
-    Evasion requires some room to move, so it does not help creatures that are helpless, immobile, bound, or otherwise severely restrained.
-    However, evasion is a reflexive ability, and prior knowledge of the attack is not required.
+    Evasion is an instinctual reflex and does not require prior awareness of the incoming hazard; however, it requires physical mobility and cannot be used if the creature is helpless, paralyzed, pinned, or severely restrained.
 </p>
 
 <h4 id="Regeneration">Regeneration</h4>
 <p>
-    Regeneration is the ability to heal wounds at an extraordinary rate, usually specified as a number of HP per round.
-    The healing takes place at the beginning of each of the creature’s turns.
+    Regeneration represents the rapid supernatural healing of biological trauma at the start of each of the creature's turns, quantified in HP per round:
 </p>
-<p>
-    If the creature has suffered SP as well as HP damage, regeneration will first heal SP damage (at the indicated rate).
-    SP damage caused by thirst, hunger, or suffocation will not be cured by regeneration, however.
-</p>
-<p>
-    <em>Lesser Regeneration</em> works exactly the same way as natural recovery but at an increased rate,
-    and it is often specified as points per minute or hour rather than per round.
-    The creature's level of activity as well as ongoing costs and damage have the same effect on lesser regeneration as on natural recovery.
-</p>
-<p>
-    <em>Greater Regeneration</em> also allows regrowing (or reattaching) of severed limbs and destroyed organs.
-    More importantly, a creature with Greater Regeneration can be rendered unconscious but never killed by physical damage,
-    unless that damage is of a type that bypasses the regeneration.
-    Even a severed head can regenerate a whole body, but note that a severed limb will never regenerate into a full creature.
-</p>
-<p>
-    Many creatures with regeneration are unable to use the ability to heal certain types of damage (usually acid and fire).
-    Such damage will have to be kept track of separately.
-</p>
-<p>
-    <em>SP Regeneration</em> This type of regeneration only regenerates SP (not HP) at a higher rate.
-</p>
-<p>
-    <em>PP Regeneration</em> This type of regeneration only regenerates PP (not SP or HP) at a higher rate.
-</p>
+<ul>
+    <li><strong>Damage Priority:</strong> Regeneration first heals Stamina Point (SP) damage before repairing Health Point (HP) damage. It cannot heal SP damage caused by starvation, thirst, or suffocation.</li>
+    <li><strong>Lesser Regeneration:</strong> Accelerates natural recovery rates (measured in points per minute or hour rather than per round). Activity levels and ongoing exertion affect Lesser Regeneration in the same manner as natural rest.</li>
+    <li><strong>Greater Regeneration:</strong> Enables the complete regrowth or instantaneous reattachment of severed limbs, lost sensory organs, and destroyed tissue. A creature with Greater Regeneration can be rendered unconscious but cannot be slain by physical damage, unless that damage is dealt by an energy type that bypasses its regeneration (typically acid or fire). A severed head can regenerate an entire body, though severed limbs cannot regenerate into duplicate creatures.</li>
+    <li><strong>Energy Vulnerabilities:</strong> Specific damage types (most commonly fire and acid) bypass regeneration and deal permanent wounds that must heal naturally or through dedicated restoration.</li>
+    <li><strong>SP / PP Regeneration:</strong> Specialized forms that accelerate the recovery of Stamina Points or Psyche Points exclusively.</li>
+</ul>
 
 <h4 id="Split">Split</h4>
 <p>
-    Split is an extraordinary ability that lets some creatures split in half when struck by certain types of damage,
-    effectively becoming two smaller creatures.
-    The original creature's current HP, SP, PP, and RL are split evenly between the two new creatures,
-    but the ability typically does not work when the creature's HP reaches a certain minimum level (default is 10 HP).
-    Each of the new creatures is one size smaller than the original and should be <a href="#SizeAlteration">adjusted</a> accordingly.
+    An extraordinary defensive adaptation that causes a creature to divide into two viable smaller entities when struck by specific slashing or piercing damage types.
+</p>
+<p>
+    The original creature's current HP, SP, PP, and Racial Level (RL) are divided equally between the two newly formed creatures. The split ability ceases to function once a creature's HP drops below a minimum threshold (default 10 HP). Each new entity is one size category smaller than the original and adjusts its attributes accordingly (see <a href="#SizeAlteration">Size Alteration</a>).
 </p>
 
 <h3 id="SpecialAbils">Other Special Abilities and Effects</h3>
 <p>
-    Note that some supernatural abilities are described in greater detail in the 
-    <a href="/rules/magic">Rules of Magic</a> chapter. 
+    The following special abilities, supernatural traits, and environmental interactions expand upon core gameplay mechanics. Additional high-level magical interactions are detailed in the <a href="/rules/magic">Rules of Magic</a> chapter.
 </p>
 
 <h4 id="Antimagic">Antimagic</h4>
 <p>
-    Antimagic greatly reduces the power of magic in an area.
-    It makes the casting of spells and use of supernatural or spell-like abilities extremely difficult and unreliable.
-    Even existing effects, magic items, and supernatural creatures can be rendered inert while they are within the field of antimagic.
-    Such effects are just temporarily negated, not dispelled, and they begin functioning again when they leave the field of antimagic.
+    Antimagic suppresses magical energy within an area, making spellcasting, supernatural powers, and spell-like abilities inert or severely disrupted. Existing spells, enchantments, magic items, and summoned creatures are temporarily suppressed while within an antimagic field, but are not dispelled; their functions resume immediately upon exiting the field.
 </p>
 <p>
-    See the 
-    <a href="/rules/magic">Rules of Magic</a> 
-    chapter for more details.
+    See the <a href="/rules/magic">Rules of Magic</a> chapter for comprehensive antimagic and dispelling rules.
 </p>
 
 <h4 id="Auras">Auras</h4>
 <p>
-    An aura is a special property that can be detected by certain creatures or with the aid of certain spells.
-    Auras are defined according to their type and level. This is a list of the most common aura types:
+    An aura is a distinct metaphysical radiance emitted by certain creatures, objects, or ongoing spells that can be detected through sensory divination:
 </p>
 <ul>
-    <li>Alignment: Typically possessed by clerics, templars, undead, and outsider creatures.
-        The level is either based on the level of certain divine skills or on the creature's TL.
-        If the same creature has skills that give conflicting auras, the aura with the highest level will be the detectable one,
-        but its level will be reduced by that of the conflicting skill.</li>
-    <li>Life: All living creatures have a life aura, the strength of which is based on the creature's TL.</li>
-    <li>Magic: All supernatural effects have a magical aura with a level equal to the effect's PL.</li>
+    <li><strong>Alignment Aura:</strong> Radiated by clerics, templars, outsiders, and powerful undead. Aura intensity is determined by divine skill ranks or Total Level (TL). When conflicting alignment traits exist, the highest-level aura dominates but is reduced by the opposing trait.</li>
+    <li><strong>Life Aura:</strong> Emitted by all living biological entities, with an intensity based on the creature's TL.</li>
+    <li><strong>Magic Aura:</strong> Emitted by supernatural effects, active spells, and enchanted items, with an intensity equal to the effect's Power Level (PL).</li>
 </ul>
 <p>
-    Many types of aura will linger for a variable amount of time even after the source has disappeared.
-    A level of 1 to 5 lingers for 1d6 rounds, level 6 to 10 for 1d6 minutes, level 11 to 20 for 1d6&times;10 minutes, and level 20+ for 1d6 days.
+    Auras linger after the source departs or is destroyed: Level 1–5 auras linger for 1d6 rounds; Level 6–10 for 1d6 minutes; Level 11–20 for 1d6&times;10 minutes; and Level 20+ auras linger for 1d6 days.
 </p>
 
 <h4 id="Barriers">Barriers</h4>
 <p>
-    Effects that create mobile barriers against certain creatures or objects can typically not be used to push such creatures/objects away.
-    If you try to do so, a discernible pressure will be felt, and if you continue to force the barrier, the effect will be broken.
+    Mobile magical barriers and repelling wards cannot be used as offensive battering rams to physically crush or push creatures. Attempting to force an anchored creature or solid obstruction creates immediate backpressure; continuing to force the barrier shatters the effect.
 </p>
 
 <h4 id="Detection">Detection [Su]</h4>
 <p>
-    Many supernatural detection effects reveal their information as enhanced visual cues,
-    and they are therefore limited to the creature’s normal field of vision.
+    Supernatural detection abilities typically manifest as enhanced sensory overlays within the creature’s normal field of vision.
 </p>
 <p>
-    Detection effects that require focus and concentration typically allow the active scanning of one quadrant per action.
-    Additional information may become available if the same quadrant is scanned repeatedly.
+    Sustained detection requiring active concentration allows the scanning of one 90-degree quadrant per action. Repeatedly focusing on the same quadrant reveals progressive layers of detail (such as exact location, strength, and aura type).
 </p>
 <p>
-    Detection through barriers is difficult but not impossible.
-    Any such attempt requires a spellcasting check against a difficulty set by the barrier’s 
-    <a href="/reference/equipment#Materials">material</a> 
-    and thickness.
+    Penetrating physical barriers requires a spellcasting check against a difficulty determined by the barrier’s <a href="/reference/equipment#Materials">material</a> and thickness.
 </p>
 
 <h4 id="Etherealness">Etherealness [Su, Dimension]</h4>
 <p>
-    The Ethereal Plane overlaps all parts of the Prime Material Plane,
-    and some creatures have the ability to travel between those planes at will.
-    A few creatures take this one step further and actually exist on both planes simultaneously.
-</p>
-<p>
-    The following effects apply to ethereal creatures:
+    The Ethereal Plane coexists with and overlaps the Prime Material Plane. Ethereal creatures exist slightly out of phase with material reality, gaining the following traits:
 </p>
 <ul>
-    <li>Invisible, inaudible, insubstantial, and scentless to creatures on the Prime Material Plane.</li>
-    <li>Can be detected by some magical senses and abilities.</li>
-    <li>An ethereal creature can see and hear into the Prime Material Plane within a 12 square radius.
-        Vision is ghostly and indistinct, and sounds are somewhat muffled.
-        Note that objects in the Prime Material Plane still block sight and sound normally.</li>
-    <li>An ethereal creature can move freely in any direction (including up and down),
-        and it can move through solid Prime Material objects (including the ground and walls).
-        It can also move effortlessly through Prime Material water and other liquids.</li>
-    <li>An ethereal creature can never fall nor take falling damage.</li>
-    <li>Ethereal creatures are immune to most attacks originating on the Prime Material Plane, normal as well as magical ones.</li>
-    <li>An ethereal creature is unable to affect Prime Material creatures with most physical and magical attacks.</li>
-    <li>Unless otherwise specified, [Force] magic exists on both the Ethereal and Prime Material Planes simultaneously.
-        Therefore, [Force] effects can be used by a creature on one plane to affect creatures on the other plane.</li>
-    <li>Most gaze attacks extend from the Prime Material Plane to the Ethereal Plane but not the other way around.</li>
+    <li><strong>Invisibility and Inaudibility:</strong> Completely invisible, silent, insubstantial, and scentless to creatures on the Prime Material Plane (perceptible only via truesight or specialized divination).</li>
+    <li><strong>Sensory Perception:</strong> Can see and hear into the Prime Material Plane out to a radius of 12 squares. Material sights appear dim and ghostly, and sounds are muffled. Material walls and solid objects block ethereal sight and hearing normally.</li>
+    <li><strong>Effortless Movement:</strong> Moves freely in all three dimensions (including through solid earth, stone walls, and liquids) without resistance. An ethereal creature cannot fall and takes no falling damage.</li>
+    <li><strong>Combat Interaction:</strong> Immune to all mundane and magical attacks originating on the Prime Material Plane, and cannot harm Prime Material targets with physical attacks or standard spells.</li>
+    <li><strong>Force Effects:</strong> Spells and effects with the [Force] descriptor exist on both planes simultaneously, allowing force attacks to cross the planar divide freely.</li>
+    <li><strong>Gaze Attacks:</strong> Prime Material gaze attacks penetrate onto the Ethereal Plane, but ethereal gaze attacks do not affect material observers.</li>
 </ul>
 
 <h4 id="Gaseous">Gaseous Form</h4>
 <p>
-    Some creatures can assume gaseous form, through magic or as a special ability. A few creatures are even gaseous in their natural state.
-    The following effects apply to such creatures:
+    A creature in gaseous form transforms into a cloud of vapor or swirling mist, retaining its consciousness while altering its physical nature:
 </p>
 <ul>
-    <li>Gaseous creatures can fly, but they cannot increase their speed by running, sprinting, or charging.</li>
-    <li>Gaseous creatures never fall or become prone.</li>
-    <li>Gaseous creatures can’t move through solid or liquid matter, but they can flow through very small openings and cracks.</li>
-    <li>Gaseous creatures cannot be hurt by strong winds, but their movement will be affected by the wind speed.</li>
-    <li>A gaseous creature cannot make physical attacks nor talk or cast spells with verbal, somatic, or material components.</li>
-    <li>Many skills and special abilities cannot be used by a creature in gaseous form.</li>
-    <li>Gaseous creatures cannot wear armor and do not enjoy any benefits from natural armor,
-        but they do receive a +10 enhancement bonus to DR vs. non-magical weapons as well as +20 critical hit resistance.</li>
-    <li>Gaseous creatures do not need to breathe and are immune to suffocation and gas-based attacks.</li>
-    <li>Unless otherwise specified, gaseous creatures have normal vulnerability to energy attacks and spells.</li>
-    <li>Gaseous creatures receive a +20 circumstance bonus when trying to hide in mist, smoke, or similar gas.</li>
-    <li>Distinguishing a gaseous creature from normal mist requires a DC 15 spot check.</li>
+    <li><strong>Flight and Maneuverability:</strong> Gains a fly speed, but cannot run, sprint, or charge. Gaseous creatures never fall and cannot be knocked prone.</li>
+    <li><strong>Passage:</strong> Cannot pass through solid barriers or liquid surfaces, but can seep effortlessly through pinholes, keyholes, and narrow cracks.</li>
+    <li><strong>Wind Effects:</strong> Immune to damage from strong winds, though high-velocity gales buffet and redirect their movement along the air current.</li>
+    <li><strong>Action Restrictions:</strong> Cannot make physical weapon attacks, manipulate physical objects, speak, or cast spells requiring verbal, somatic, or material components.</li>
+    <li><strong>Defenses:</strong> Cannot wear armor or gain natural armor bonuses, but gains a +10 enhancement bonus to DR against non-magical weapons and +20 Critical Hit Resistance.</li>
+    <li><strong>Resistances:</strong> Does not breathe; completely immune to suffocation, choking, and inhaled gas effects. Vulnerable to energy attacks and damaging spells as normal.</li>
+    <li><strong>Concealment:</strong> Gains a +20 circumstance bonus to Stealth checks when hiding within fog, steam, or smoke. Discerning a gaseous creature from mundane vapor requires a DC 15 Spot check.</li>
 </ul>
 
 <h4 id="Healing">Healing [Su, MR, Radiant]</h4>
 <p>
-    Supernatural healing uses controlled amounts of radiant energy to heal living creatures.
-    Since undead are vulnerable to radiant energy, they suffer damage from healing spells (the same amount that would have been healed).
+    Supernatural healing channels radiant life energy to close wounds and restore damaged tissue in living creatures.
 </p>
 <p>
-    Undead creatures can be healed with necrotic energy. Not only are they immune to necrotic damage, but they are healed by it, on a point-per-point basis.
+    Because undead entities are fueled by necrotic power, positive radiant healing deals radiant damage to undead equal to the HP that would have been restored. Conversely, necrotic energy heals undead point-for-point while harming the living.
 </p>
 
-<div class="optionalrule">
+<div class="bg-amber-50 border-l-4 border-amber-400 p-3 my-3 text-xs text-amber-900">
+    <p class="font-bold mb-0.5">Optional Rule: Percentage Healing</p>
     <p>
-        <em>Percentage Healing</em> (optional rule for more realistic campaigns):
-        Instead of a healing effect repairing x HP, SP, or PP, it repairs x% of the creature's total HP, SP, or PP.
+        In campaigns emphasizing proportional resilience, healing effects repair a flat percentage of a creature’s total HP, SP, or PP pool rather than fixed numerical increments.
     </p>
 </div>
 
 <h4 id="Illusions">Illusions [Su, Illusion]</h4>
 <p>
-    Some illusions (specifically figments and glamers) create false sensations that anyone can perceive,
-    but they cannot harm nor affect their surroundings in any way other than sensory. They have a DeC equal to 10 + size mod.
+    Illusion effects deceive the senses or mind, categorized into three distinct schools:
 </p>
-<p>
-    Phantasm illusions create mental images in the minds of the subjects and cannot be perceived by non-targets.
-</p>
-<p>
-    Shadow illusions are partially real and can affect their surroundings in various ways.
-</p>
+<ul>
+    <li><strong>Figments &amp; Glamers:</strong> Create false sensory impressions (visual, auditory, olfactory) that anyone can perceive. They cannot inflict physical damage or physically alter matter. Mundane figments have an effective DeC equal to 10 + size modifier.</li>
+    <li><strong>Phantasms:</strong> Mind-affecting phantasmal projections implanted directly into a target's consciousness; they cannot be seen or heard by third parties.</li>
+    <li><strong>Shadow Illusions:</strong> Semi-real constructs infused with extraplanar shadowstuff capable of interacting physically with the environment and inflicting tangible damage.</li>
+</ul>
 
 <h4 id="Incorporeality">Incorporeality [Su, Incorporeal]</h4>
 <p>
-    An incorporeal creature has no physical body, consisting instead of pure energy.
-    Some undead, for example, consist entirely of necrotic energy.
-    The following effects apply to incorporeal creatures:
+    Incorporeal creatures possess no physical mass, existing as manifestations of pure energy or spiritual malice (such as spectres and wraiths):
 </p>
 <ul>
-    <li>Insubstantial and immune to all non-magical physical attacks and energy attacks.</li>
-    <li>Can be harmed by other incorporeal creatures and magical attacks.
-        Magical weapons cause damage equal to their magical bonus plus skill- and AP-based damage modifiers.
-        The weapon’s base damage and Str modifiers do not apply.
-        Magical acid, cold, electricity, fire, and sonic attacks cause half damage (but radiant and necrotic energy still have full effect).
-        Magical [Force] attacks have full effect.</li>
-    <li>Resistance +20 to critical hits and vital attacks. Immune to tripping and grappling attacks.</li>
-    <li>Unable to manipulate objects or exert physical force.
-        However, most incorporeal creatures have attacks that can affect living creatures, usually by draining their life energy.
-        Incorporeal attacks cannot be used for tripping or grappling.</li>
-    <li>Armor DR does not apply against attacks made by incorporeal creatures,
-        and non-magical weapons and shields provide no parry bonuses.</li>
-    <li>An incorporeal creature can move freely in any direction (including up and down),
-        and it can move through solid objects (including the ground and walls). It can also move effortlessly through water and other liquids.
-        An incorporeal creature hiding in a solid object is unable to see but enjoys a +2 bonus to Listen checks.</li>
-    <li>Unless otherwise specified, an incorporeal creature can occupy the same space as a corporeal creature.
-        Depending on the relative size of the two creatures, the incorporeal one can gain cover by hiding inside the corporeal one
-        (normal cover for same size, good cover for incorporeal 1 size smaller, and total cover for 2 or more sizes smaller),
-        while the corporeal one can gain concealment from the incorporeal one
-        (normal concealment for same size, good concealment for incorporeal 1 size larger, and total concealment for 2 or more sizes larger).
-        Total cover and total concealment are reduced to good cover/concealment, if the hiding creature chooses to make a melee attack.</li>
-    <li>An incorporeal creature can never fall nor take falling damage.</li>
-    <li>An incorporeal creature has no mass and does not leave footprints.</li>
-    <li>Incorporeal creatures are completely inaudible, but many can produce sound if they so desire. They are also scentless.</li>
+    <li><strong>Physical Immunity:</strong> Completely immune to all non-magical physical attacks and mundane energy damage.</li>
+    <li><strong>Magical Vulnerability:</strong> Can be damaged by magic weapons and spells. Magic weapons deal damage equal to their magical enhancement bonus plus skill- and AP-based modifiers (base weapon damage dice and Strength modifiers do not apply).</li>
+    <li><strong>Energy Interaction:</strong> Magical acid, cold, electricity, fire, and sonic attacks deal half damage. Radiant energy, necrotic energy, and spells with the [Force] descriptor deal full damage.</li>
+    <li><strong>Combat Traits:</strong> Gains +20 Critical Hit Resistance and Vital Attack Resistance. Immune to tripping, grappling, and all brawling maneuvers. Natural incorporeal touch attacks ignore mundane armor DR and cannot be parried by non-magical weapons or shields.</li>
+    <li><strong>3D Movement:</strong> Moves weightlessly in any direction, effortlessly passing through solid walls, earth, and liquids. An incorporeal creature concealed inside a solid wall cannot see out, but gains a +2 bonus to Listen checks.</li>
+    <li><strong>Occupying Spaces:</strong> Can occupy the same space as a corporeal creature, providing cover or concealment based on size differences (e.g. an incorporeal creature one size larger grants good concealment to an ally inside it).</li>
+    <li><strong>Silent and Weightless:</strong> Completely silent (unless vocalizing intentionally), scentless, leaves no tracks, and is immune to falling damage.</li>
 </ul>
 
 <h4 id="Invisibility">Invisibility</h4>
 <p>
-    Invisible creatures cannot be seen (even by darkvision), but they can still be heard, smelled, and felt normally.
-    The following effects apply to invisible creatures and objects:
+    Invisible creatures and objects emit no visible light and cannot be seen with normal vision or darkvision. However, they remain perceptible through other senses:
 </p>
 <ul>
-    <li>Difficult Spot or Listen checks can be used to notice or even pinpoint (within one square) invisible creatures.</li>
-    <li>Successfully striking an invisible creature or being successfully struck by one (with a melee weapon)
-        lets you know which square the creature is currently in (until it moves again).</li>
-    <li>Invisible creatures leave footprints and can be tracked normally.</li>
-    <li>An invisible creature displaces water, letting it be automatically pinpointed. It still enjoys full concealment.</li>
-    <li>Unless otherwise specified, a creature’s equipment becomes invisible when the creature becomes invisible.</li>
-    <li>When an invisible creature picks up a visible object, the object remains visible.
-        However, the object becomes effectively invisible if it can be hidden under the creature’s clothes or put in an invisible container.</li>
-    <li>An invisible light source still produces light.</li>
-    <li>Some skills and special abilities (such as Blindsense and Scent) can reduce the benefits of invisibility or render it ineffective.</li>
+    <li><strong>Detection:</strong> Unseen movement can be noticed or pinpointed (to within one square) using opposed Perception checks (Spot vs. Stealth or Listen vs. Stealth).</li>
+    <li><strong>Tactile Feedback:</strong> Striking an invisible target in melee or being struck by one pinpoints the target's current square until it moves again.</li>
+    <li><strong>Environmental Clues:</strong> Invisible creatures leave footprints, disturb foliage, and displace liquid. Submerged or wading invisible creatures are automatically pinpointed, though they still retain full concealment.</li>
+    <li><strong>Equipment:</strong> Carried and worn equipment turns invisible with the creature. Visible items picked up afterward remain visible unless tucked beneath clothing or stowed inside an invisible container.</li>
+    <li><strong>Light Sources:</strong> An invisible torch or lantern still illuminates its surroundings normally.</li>
+    <li><strong>Countermeasures:</strong> Blindsense, Tremorsense, Scent, and Truesight bypass or severely mitigate the advantages of invisibility.</li>
 </ul>
 
 <h4 id="PlanarTravel">Planar Travel and Projection [Su, Dimension]</h4>
 <p>
-    Projecting into another plane means that your soul leaves your original body.
-    While the effect lasts, your body is helpless and in suspended animation (does not age nor need to eat or breathe).
-    A silvery cord connects your body and soul, but this cord is invisible to most creatures and impervious to most attacks.
-    Creatures able to target a silver cord treat it as an attended object with the creature's DeC, DR 10, and 20 HP.
-    The soul will typically create an astral body around itself at the destination.
-    Unless otherwise specified, this body resembles the creature’s natural one and has identical characteristics.
+    Planar projection detaches the traveler's soul from its physical vessel to traverse the multiverse:
 </p>
 <p>
-    If your body is slain while you are projecting, the connection between body and soul is severed,
-    and the soul will start its journey to the afterlife (just as if you had died normally).
-    If your astral body is slain, the soul automatically gets pulled back to your original body, and you awaken immediately (with no ill effects).
+    While projecting, the physical body remains comatose, helpless, and in suspended animation (requiring no food, air, or aging). An unbreakable, translucent silver cord anchors the soul to the body; entities capable of attacking a silver cord treat it as an attended object with the creature's DeC, DR 10, and 20 HP. At the destination plane, the soul manifests an astral form mirroring its natural statistics.
 </p>
 <p>
-    If access to other dimensions is blocked, planar travel and projection is impossible or at least more difficult.
-    It requires a spellcasting check against the PL of the block.
+    If the physical body is destroyed, the silver cord snaps and the soul passes on to the afterlife. If the astral form is slain, the soul instantly snaps back to its physical vessel, awakening immediately without trauma.
 </p>
 <p>
-    Travelling into or out of a warded area or a completely enclosed volume is more difficult than normal and
-    will require a spellcasting check against the appropriate DC (determined by the ward’s PL or the 
-    <a href="/reference/equipment#Materials">material's</a> 
-    MR).
+    Traversing dimensional blocks, dimensional anchors, or warded barriers requires a spellcasting check against the ward’s PL or the <a href="/reference/equipment#Materials">material’s</a> MR.
 </p>
 
 <h4 id="Polymorph">Polymorph and Shapeshifting [Su, MR]</h4>
 <p>
-    A polymorphed creature has its own mind but a new physical form.
-    The polymorph or shapechange effect has a number of different grades, each with its own powers and limitations.
-</p>
-<p>
-    The following rules apply to all shapechanging:
+    Polymorph and shapeshifting magic alters a creature's physical biology while preserving its core consciousness:
 </p>
 <ul>
-    <li>You can change your appearance (including hair, skin color, and eye color), gender, and physical age.</li>
-    <li>If you try to mimic a specific individual, you gain a +10 circumstance bonus to Perform (Disguise).</li>
-    <li>You can only assume the form of a race (or mimic an individual) that you have seen and/or studied carefully.</li>
-    <li>The racial level of your assumed form must not exceed the relevant skill level or your total level.</li>
-    <li>You retain your own mind, personality, and alignment.</li>
-    <li>You retain classes and levels.</li>
-    <li>You retain health points, defenses, and attack bonuses. Changes to ability scores still apply normally.</li>
-    <li>You retain skills and special abilities, except those that depend on body parts you no longer have.</li>
-    <li>You lose your regular racial skill bonuses but gain the ones of your new form.</li>
-    <li>You lose your own physical qualities (size, mundane forms of movement and speed, natural armor, and natural weapons)
-        but acquire the ones of the new form.</li>
-    <li>If both your regular and the new form are capable of speech, you can communicate normally.</li>
-    <li>If the assumed form can carry, wear, and hold your equipment, that equipment remains worn or held.
-        If not, the equipment melds with your new form and becomes non-functional.
-        When you revert to your own form, the equipment returns and becomes functional again.
-        Items picked up in your new form will still be carried (if possible) or dropped at your feet.</li>
-    <li>Any part of the body that is separated from the whole reverts to its true form.</li>
-    <li>If you are slain, you revert to your true form.</li>
-    <li>Incorporeal and gaseous creatures are immune to shapechanging.
-        Creatures with innate shapechanging abilities can revert to their natural form by spending the normal AP for a change.</li>
+    <li><strong>Core Identity:</strong> Retains its mind, personality, alignment, class levels, health point pools, base defenses, attack bonuses, and skill ranks.</li>
+    <li><strong>Physical Attributes:</strong> Adopts the physical size, movement modes, speeds, natural armor, and natural weapon attacks of the assumed form.</li>
+    <li><strong>Equipment:</strong> Worn and carried gear compatible with the new form remains equipped; incompatible gear melds harmlessly into the new shape and becomes inert until reverting.</li>
+    <li><strong>Severed Parts &amp; Death:</strong> Severed tissue reverts instantly to the creature's true form; if slain, the creature reverts to its natural shape immediately.</li>
+    <li><strong>Immunity:</strong> Incorporeal and gaseous creatures are immune to polymorph effects.</li>
 </ul>
 <p>
-    Grade I shapechanging:
+    <em>Grade I:</em> Assume the form of a creature of your same type within one size category. Subtype does not change; retain your own ability scores.
 </p>
-<ul>
-    <li>You can assume the form of a creature of the same type as your normal form.</li>
-    <li>Your creature subtype does not change, even if your new form is of a different subtype.</li>
-    <li>Your new form must be within one size category of your normal form.</li>
-    <li>You cannot assume the form of a creature with a template.</li>
-    <li>You retain your own ability scores.</li>
-</ul>
 <p>
-    Grade II shapechanging:
+    <em>Grade II:</em> Assume the form of an aberration, animal, dragon, humanoid, monstrous animal, monstrous humanoid, plant, or vermin (from Fine up to one size larger than normal). Adopt the form’s physical ability scores (Str, Con, Dex) and special physical attacks; retain your mental scores (Int, Wis, Cha).
 </p>
-<ul>
-    <li>You can assume the form of a creature of the same type as your normal form or one of the following types:
-        aberration, animal, dragon, humanoid, monstrous animal, monstrous humanoid, plant, or vermin.</li>
-    <li>You assume the type and subtype of the new form.</li>
-    <li>The minimum size of the new form is Fine and the maximum is one size larger than your normal form.</li>
-    <li>The assumed form cannot be incorporeal or gaseous.</li>
-    <li>You adjust your physical ability scores (Strength, Constitution, and Dexterity) according to your new form
-        (replacing your normal racial ability modifiers with those of the new form).
-        You retain your own mental ability scores (Intelligence, Wisdom, and Charisma).
-        If your original form does not have one or more mental ability scores, you gain the ones from your new form.</li>
-    <li>You gain all of the new form’s special attack forms except the supernatural ones.</li>
-</ul>
 <p>
-    Grade III shapechanging:
+    <em>Grade III:</em> Assume any creature form from Fine to Colossal (including gaseous and incorporeal entities). Gain all physical ability scores, special skills, natural attacks, and supernatural abilities of the chosen form.
 </p>
-<ul>
-    <li>You can assume the form of any creature from Fine to Colossal size (including gaseous and incorporeal creatures).</li>
-    <li>You assume the type and subtype of the new form.</li>
-    <li>You adjust your physical ability scores (Strength, Constitution, and Dexterity) according to your new form
-        (replacing your normal racial ability modifiers with those of the new form).
-        You retain your own mental ability scores (Intelligence, Wisdom, and Charisma).
-        If your original form does not have one or more mental ability scores, you gain the ones from your new form.</li>
-    <li>You gain all of the new form’s special skills, attacks, and abilities, including supernatural ones.</li>
-</ul>
 <p>
-    Grade IV shapechanging:
+    <em>Grade IV:</em> Assume the form of any creature, plant, inanimate object, or elemental substance (sand, water, vapor) from Fine to Colossal. Complex mechanical forms require appropriate Crafting skills.
 </p>
-<ul>
-    <li>You can assume the form of any creature, plant, or non-magical object from Fine to Colossal size.
-        You can even assume the form of dust, sand, gas, liquid, and other unusual substances.
-        Complicated mechanical devices, however, requires a certain level in Crafting skill.</li>
-    <li>You assume the type and subtype of the new form.</li>
-    <li>You adjust your physical ability scores (Strength, Constitution, and Dexterity) according to your new form
-        (replacing your normal racial ability modifiers with those of the new form).
-        You retain your own mental ability scores (Intelligence, Wisdom, and Charisma).
-        If your original form does not have one or more mental ability scores, you gain the ones from your new form.</li>
-    <li>You gain all of the new form’s special skills, attacks, and abilities, including supernatural ones.</li>
-</ul>
 
 <h4 id="Resurrection">Resurrection and Reincarnation [Su, Radiant]</h4>
 <p>
-    It is possible, albeit not easy, to repair a dead body and recall its soul.
-    The longer an individual has been dead, the harder the resurrection becomes.
-    The soul also starts to lose its memories as soon as death occurs, and this will result in a gradual loss of XP (and possibly levels).
-    In other words, the longer an individual has been dead before resurrection, the greater the loss of XP.
+    Calling a departed soul back to a reconstructed physical body becomes increasingly difficult as time elapses, resulting in memory fragmentation and XP loss:
 </p>
+<div class="bg-slate-50 border border-slate-200 rounded p-3 text-xs text-slate-700 my-3 font-mono space-y-1">
+    <div><strong>Death Duration &le; 1 Day:</strong> Loss = 100 &times; TL XP (no check penalty).</div>
+    <div><strong>Death Duration 1 Day – 1 Week:</strong> Loss = 300 &times; TL XP (-4 check penalty).</div>
+    <div><strong>Death Duration &gt; 1 Week:</strong> Loss = 1,000 &times; TL XP (-8 check penalty).</div>
+    <div><strong>Death Effect / Necrotic Cause:</strong> Additional -10 check penalty.</div>
+    <div><strong>Undead Desecration:</strong> Additional -4 check penalty.</div>
+</div>
 <p>
-    For death lasting one day or less, the memory loss is equal to 100&times;TL XP, and there is no check penalty,
-    for death between one day and one week the loss is 300&times;TL XP, there is a -4 check penalty,
-    and for a longer death the loss is 1000&times;TL XP, and the penalty is -8.
-</p>
-<p>
-    If the death was caused by a death effect or necrotic damage, there is a further -10 penalty to the check.
-</p>
-<p>
-    If the creature has become undead, there is an additional -4 penalty to the check.
-</p>
-<p>
-    The soul that is being resurrected is generally aware of the surface thoughts and alignment of the creature performing the resurrection,
-    and the soul can choose to not return to the body.
-</p>
-<p>
-    Note that a resurrected creature will typically start out prone and flat-footed. Furthermore, it is clobbered for 1 round.
+    The departing soul is aware of the resurrection caster's alignment and surface intent, and may refuse the summons. A resurrected creature awakens prone, flat-footed, and clobbered for 1 round.
 </p>
 
 <h4 id="Scrying">Scrying [Su, Scry]</h4>
 <p>
-    Most scrying effects create a remote and invisible sensor that provides visual and sometimes auditory feedback.
-    Effects that enhance the caster’s senses (such as Darkvision) will work equally well through the sensor,
-    but those that emanate from the caster (such as most detection spells) will not.
-    Note, however, that a scrying sensor is a separate &quot;organ&quot; and works even if the caster has been otherwise blinded or deafened.
-</p>
-<p>
-    Sufficiently sensitive creatures can detect a scrying sensor with a successful Perception check.
-    Scrying sensors can be blocked by certain materials and magical effects.
-</p>
-<p>
-    Detection into or out of a warded area or an enclosed volume is difficult but not impossible.
-    Any such attempt requires a spellcasting check against a difficulty set by the ward’s PL or the
-    <a href="/reference/equipment#Materials">material's</a> 
-    MR.
+    Scrying manifests an invisible magical sensor at a remote vantage point, transmitting visual and auditory impressions to the caster. Sensory enhancement spells (such as Darkvision) function through the sensor, but emanation effects do not. Sensitive targets can detect the presence of a scrying sensor with a successful Perception check.
 </p>
 
 <h4 id="SizeAlteration">Size Alteration [Su, MR]</h4>
@@ -2454,111 +2014,57 @@
 <?php show_sizealteration(); ?> 
 
 <p>
-    Note that the base damage for natural weapons also increases. See the weapons chapter for more details.
-</p>
-<p>
-    Supernatural size alteration will (unless otherwise specified) also alter the size of carried and worn equipment.
-    If insufficient room is available for an increase in size, the creature gets a free Break Barrier check to burst the enclosures.
-    If that check fails, the size alteration stops before causing harm to the creature.
+    Natural weapon base damage dice scale with size changes (see <a href="/rules/combat#NaturalWeapons">Combat</a>). Attended equipment expands or contracts proportionally. If enclosed space is insufficient for expansion, the creature receives a free Break Barrier check to burst open constraints; failure safely halts expansion.
 </p>
 
 <h4 id="Summoning">Summoning and Calling [Su, Dimension]</h4>
 <p>
-    The summoning effect transports a creature from its home plane to your location. When the effect ends or the creature is killed,
-    it is automatically returned to its home plane. Many such creatures will eventually reform if they are slain.
-    When a summoned creature returns to its home plane, all of its ongoing spells and effects are terminated.
-    A summoned creature cannot in turn summon other creatures and may also have other restrictions.
-    A summoned creature cannot enter an anti-magic zone unless the summoning’s PL is greater than the zone’s AM.
+    <em>Summoning:</em> Temporarily conjures an extraplanar entity. When slain or dismissed, the creature dissolves and returns to its home plane, terminating all its ongoing spells. Summoned creatures cannot summon other entities and cannot enter an antimagic zone unless the summoning’s PL exceeds the zone's AM strength.
 </p>
 <p>
-    The calling effect transports a creature from its home plane to your location, and it normally grants the creature the ability
-    to return home (during certain circumstances). However, if the creature is killed, it actually dies and does not return to its home plane.
+    <em>Calling:</em> Physically translocates a true creature across planes. The creature acts autonomously and can return home only under specified conditions. If slain, a called creature dies permanently.
 </p>
 
 <h4 id="Swarm">Swarm</h4>
 <p>
-    A swarm creature is actually a large quantity of small creatures (of size category Tiny or smaller) that are treated as a single creature.
-    A swarm creature enjoys the following benefits and limitations:
+    A swarm is a dense congregation of Tiny, Diminutive, or Fine creatures acting in concert as a single unified entity:
 </p>
 <ul>
-    <li>Reach 0 (regardless of swarm size).</li>
-    <li>Deal automatic damage each round (no attack roll required) to creatures in the swarm’s square(s).</li>
-    <li>Distract - Free attack each round against creatures in the swarm’s square(s): d20! + TL vs. Fort (S - dazed for 1 r).</li>
-    <li>Creatures in the swarm’s squares take a -4 penalty on many action checks (PAM and MAM).</li>
-    <li>Does not threaten squares and cannot make opportunity attacks.</li>
-    <li>Can move through any occupied square and vice versa.</li>
-    <li>Can move through cracks and holes that are larger than a single member of the swarm.</li>
-    <li>Immunity to critical hits and flanking.</li>
-    <li>Immunity to tripping, grappling, and all brawling attacks.</li>
-    <li>If the swarm members are Tiny, the swarm takes ½ damage from piercing and slashing weapons.</li>
-    <li>If the swarm members are Fine or Diminutive, the swarm is immune to weapon damage.</li>
-    <li>Immunity to targeted spells and powers.</li>
-    <li>Vulnerability to area effect damage (attacks against Ref).</li>
-    <li>Cannot perform tripping and grappling attacks.</li>
-    <li>Swarms of flying creatures are susceptible to winds.</li>
+    <li><strong>Space and Reach:</strong> Reach 0; moves freely through occupied squares. Deals automatic physical damage to all creatures within its occupied area at the end of its turn (no attack check required).</li>
+    <li><strong>Distraction:</strong> Creatures occupying the swarm's area suffer a -4 penalty on action checks (PAM and MAM) and must succeed on a Fortitude check (d20! + TL vs. Fort) each round or become dazed for 1 round.</li>
+    <li><strong>Defenses &amp; Immunities:</strong> Immune to flanking, critical hits, vital attacks, tripping, grappling, and single-target targeted spells.</li>
+    <li><strong>Weapon Resistances:</strong> Tiny swarms take half damage from piercing and slashing weapons; Fine and Diminutive swarms are completely immune to weapon damage.</li>
+    <li><strong>Vulnerabilities:</strong> Takes +50% bonus damage from area-of-effect attacks targeting Reflex defense. Flying swarms are severely hindered by wind currents.</li>
 </ul>
 
 <h4 id="Telepathy">Telepathy [Su, MR, Mind, Telepathy]</h4>
 <p>
-    Telepathy can be used to communicate with one or more creatures within range.
-    It only works for communication with creatures that have a language.
+    Enables silent, instantaneous mental communication with any creature within range that possesses a language.
 </p>
 <p>
-    <em>Empathy:</em> This is a specific form of telepathy that can be used to perceive and/or communicate basic emotions.
-    Unlike telepathy, this works even on creatures without a language.
+    <em>Empathy:</em> A primal emotional link that conveys basic emotional impressions and instinctual concepts, functioning even on creatures without language.
 </p>
 <p>
-    Telepathy into or out of a warded area or an enclosed volume is difficult but not impossible.
-    Any such attempt requires a spellcasting check against a difficulty set by the ward’s PL or the
-    <a href="/reference/equipment#Materials">material's</a> 
-    MR.
+    Transmitting telepathic contact through warded structures or barriers requires a spellcasting check against the ward's PL or the <a href="/reference/equipment#Materials">material's</a> MR.
 </p>
 
 <h4 id="Teleportation">Teleportation [Su, MR, Dimension, Teleport]</h4>
 <p>
-    All forms of teleportation make use of other dimensions to facilitate instantaneous travel from one location to another.
-    The destination has to be a location you can see, visualize, or describe by direction and distance.
-    If access to other dimensions is blocked, teleportation is impossible or at least more difficult.
-    It requires a spellcasting check against the PL of the block.
+    Instantly translocates the subject through intermediate dimensions to a designated destination (described by sight, clear memory, or precise direction and distance).
 </p>
 <p>
-    Unless otherwise specified, a teleporting creature must not be carrying more than its weight limit for EC 10.
-    If it is carrying more than this, the teleportation automatically fails.
-</p>
-<p>
-    As a rule, teleporting to a familiar or visible destination is much easier than teleporting to an unfamiliar one.
-</p>
-<p>
-    Teleporting into or out of a warded area or a completely enclosed volume is more difficult than normal and
-    will require a spellcasting check against the appropriate DC (determined by the ward’s PL or the 
-    <a href="/reference/equipment#Materials">material's</a> 
-    MR).
+    A teleporting creature cannot exceed its encumbrance limit for EC 10 (carrying greater weight causes automatic failure). Penetrating dimensional barriers or warded sanctums requires a spellcasting check against the barrier's PL or material MR.
 </p>
 
 <h4 id="Troop">Troop (or Mob)</h4>
 <p>
-    A troop (or mob) is a group of creatures that are very similar and can be effectively treated as a single unit.
-    The DM can use this abstraction to simplify combat, especially between high-level characters and a large quantity of low-level opponents.
-    Troops are in many ways similar to swarms, but should only be used for creatures of size category Small or larger.
-    A group of creatures of size Tiny or smaller is better treated as a Swarm.
-</p>
-<p>
-    Troops enjoy the following benefits and limitations:
+    A troop (or mob) represents a coordinated regiment or unruly crowd of Small or larger creatures treated mechanically as a single composite combatant:
 </p>
 <ul>
-    <li>The troop has effectively the same race and template(s) as its constituent members, for the purpose of type, subtype, size modifiers, and racial traits.</li>
-    <li>Calculate CL and XP as you would for the separate members.</li>
-    <li>HP, SP, and PP for the troop are calculated as the sum of the constituent creatures' HP, SP, PP. Reaching 0 in either HP, SP, PP means that the troop breaks and disperses, although every individual need not be dead or unconscious. Use morale to help determine if the troop breaks and disperses before that.</li>
-    <li>Same initiative modifier as an average member.</li>
-    <li>Same speed and movement types as an average member.</li>
-    <li>Same DeC, DR, Fort, Ref, and Will as an average member. However, see also immunities and vulnerabilities below.</li>
-    <li>Same AP as an average member. However, see also attacks below.</li>
-    <li>Same attack statistics and reach as an average member. However, when spending AP to make an attack, roll two such attacks against each foe within the troop's reach or range.</li>
-    <li>Can make an unlimited number of opportunity attacks per round (within reason). Each separate enemy action can only trigger one opportunity attack, however.</li>
-    <li>Determine the troop's effective spacing based on the number of members and their individual size. The troop can move through smaller openings according to the size of individual members, but treat this as difficult terrain for the troop.</li>
-    <li>Immunity to flanking.</li>
-    <li>Immunity to tripping, grappling, and all brawling attacks.</li>
-    <li>Immunity to targeted attacks against Fort and Will (unless the number of targets is at least equal to half the troop's size).</li>
-    <li>Vulnerability to area effect attacks against Ref (50% extra damage).</li>
-    <li>Has effectively the same ability scores, skills, and access to actions as an average member of the troop.</li>
+    <li><strong>Shared Vitality:</strong> HP, SP, and PP are the combined totals of its constituent members. Reaching 0 in any pool causes the formation to break and rout.</li>
+    <li><strong>Regimental Assault:</strong> When spending AP to attack, the troop executes two attack rolls against each foe within its reach or range.</li>
+    <li><strong>Opportunity Attacks:</strong> Can make an unlimited number of opportunity attacks per round (maximum one per enemy trigger).</li>
+    <li><strong>Defenses:</strong> Shares the DeC, DR, Fortitude, Reflex, and Will of its average member. Immune to flanking, tripping, and grappling.</li>
+    <li><strong>Targeting Restrictions:</strong> Immune to single-target Fortitude and Will effects unless the attack targets at least half the troop's member count.</li>
+    <li><strong>Area Vulnerability:</strong> Takes +50% extra damage from area-of-effect attacks targeting Reflex defense.</li>
 </ul>
