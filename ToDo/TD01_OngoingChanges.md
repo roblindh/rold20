@@ -4,14 +4,14 @@
 
 - [ ] Improvement page
   - [ ] Advantages/disadvantages? (house rule)
-- [ ] Bg Skills page
-  - [ ] Ensure that races and templates with RL > 0 grant skill points appropriately.
+- [x] Bg Skills page
+  - [x] Ensure that races and templates with RL > 0 grant skill points appropriately.
 - [ ] Skill page
-  - [ ] Ensure skill prerequisites are handled correctly.
+  - [x] Ensure skill prerequisites are handled correctly.
   - [ ] Also show skills with access bought with IP (but only starting after x levels) (house rule)
   - [ ] For skill access bought with IP, calculate max increment based on earliest sec/prim access (calculate IP bonus from race/culture)
 - [ ] Social page
-  - [ ] Validation: age within racial limits
+  - [x] Validation: age within racial limits
   - [ ] Allocate influence points?
 
 ## View PC Utility
@@ -19,32 +19,32 @@
 - [ ] List page
   - [ ] For players, list only the player’s PCs?
   - [ ] For DMs, list all PCs (or those of a single campaign?)
-- [ ] Core page
-  - [ ] Encumbrance?, (Jump, Climb, and Swim modifiers?)
-  - [ ] Special senses (Spot, Listen, and Search modifiers?)
-  - [ ] Other basic actions?
-- [ ] Skill page
-  - [ ] Skills and skill levels
-  - [ ] Specializations
-  - [ ] Languages
-  - [ ] Important benefits and skill actions not shown on core page
+- [x] Core page
+  - [x] Encumbrance?, (Jump, Climb, and Swim modifiers?)
+  - [x] Special senses (Spot, Listen, and Search modifiers?)
+  - [x] Other basic actions?
+- [x] Skill page
+  - [x] Skills and skill levels
+  - [x] Specializations
+  - [x] Languages
+  - [x] Important benefits and skill actions not shown on core page
 - [ ] Spell page
-  - [ ] Spells and variants known
+  - [x] Spells and variants known
   - [ ] Affinity skills and modifiers
   - [ ] Spell skills and modifiers (ranges?)
 - [ ] Equipment page
   - [ ] Money and other treasure
   - [ ] Multiple equipment configurations? Show per body part?
-  - [ ] Encumbrance, weight limits
+  - [x] Encumbrance, weight limits
 - [ ] Social page
   - [ ] Companions, followers
 
 ## Modify PC Utility
 
-- [ ] DM: Add experience
-- [ ] DM: Add/remove money
-- [ ] Add/buy equipment
-- [ ] Trade money/equipment to other PC/NPC/entity
+- [x] DM: Add experience
+- [x] DM: Add/remove money
+- [x] Add/buy equipment
+- [x] Trade money/equipment to other PC/NPC/entity
 - [ ] Use improvement points (or only when levelling?)
 - [ ] Learn spells/variants
   - [ ] Calculate “free” spells from spell and affinity skills. Don’t forget racial/cultural skill bonuses.
@@ -57,19 +57,19 @@
 
 ## Level PC Utility
 
-- [ ] Choose class
-- [ ] Allocate improvement points
-- [ ] Allocate new skill points
-- [ ] Learn spells/options?
+- [x] Choose class
+- [x] Allocate improvement points
+- [x] Allocate new skill points
+- [x] Learn spells/options?
 - [ ] Allocate influence points, update reputation
 
 ## Other utilities
 
-- [ ] Party administration
-  - [ ] Create party
-  - [ ] Award and split XP
-  - [ ] Split treasure
-  - [ ] Manage jointly owned money and equipment
+- [x] Party administration
+  - [x] Create party
+  - [x] Award and split XP
+  - [x] Split treasure
+  - [x] Manage jointly owned money and equipment
 - [ ] Campaign administration
   - [ ] Create quest/adventure
   - [ ] Create encounter
@@ -109,6 +109,8 @@
 
 ## Database Updates
 
+- [ ] Actions
+  - [ ] Validate/clarify action checks for attacks. Currently some seem to include full skill level and skill modifier.
 - [ ] Weapon categories
 - [ ] New trait required for natural attack modifications or enough with AttMod/DmgMod with prereqs? Useful also for some spells and metamorphosis skills. Modifiers to the wielder or to the weapon?
 - [ ] Items and item modifications
@@ -144,8 +146,8 @@
 
 - [ ] **Missing or faulty implementation**
   - [ ] **For alternate shapes, use current\_race for Str/Con/Dex but base\_race for Int/Wis/Cha.**
-  - [ ] **Fix implementation of +2 damage bonus for 2-H weapons (implement full config functionality?)**
-  - [ ] **In damage calculations, remember the rule of limiting bonus dmg (from Str) to no more than maximum weapon dmg.**
+  - [x] **Fix implementation of +2 damage bonus for 2-H weapons (implement full config functionality?)**
+  - [x] **In damage calculations, remember the rule of limiting bonus dmg (from Str) to no more than maximum weapon dmg.**
   - [ ] **Fix multi-attack penalties for double weapons (still count as one-handed + light?)**
   - [ ] **Check that Weapons - Generic provides bonuses also for Brawling and Rays in entity calculations. Update skill description.**
 - [ ] Maintain a single struct (per entity) for all traits.
