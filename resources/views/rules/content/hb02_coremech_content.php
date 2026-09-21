@@ -1083,22 +1083,22 @@
 <h3 id="InjuryFatigue">Injury and Fatigue</h3>
 
 <h4 id="Injury">Injury</h4>
-<p>
-    Physical injury is measured by a decrease in hit points (HP).
+<p class="mt-3">
+    <em>Physical injury</em> is measured by a decrease in hit points (HP).
 </p>
 
 <?php show_hpeffects(); ?> 
 
-<p>
-    If a creature takes more than half its full HP of damage in a single attack, it is dazed for 1 round.
+<p class="mt-3">
+    <em>Physical Shock:</em> If a creature takes more than half its full HP of damage in a single attack, it is <strong>dazed for 1 round</strong>.
 </p>
 <p>
     For information about temporary HP, see the section about <a href="#HealthScores">Health Scores</a>.
 </p>
 
 <h4 id="PhysicalFatigue">Physical Fatigue</h4>
-<p>
-    Physical fatigue is measured by a decrease in stamina points (SP).
+<p class="mt-3">
+    <em>Physical fatigue</em> is measured by a decrease in stamina points (SP).
 </p>
 
 <?php show_speffects(); ?> 
@@ -1107,8 +1107,8 @@
     Some types of fatigue, especially the ones that are long-lasting and/or serious,
     lead to a reduction in Con rather than (or in addition to) a cost in SP. See ability damage for details.
 </p>
-<p>
-    If a creature takes more than half its full SP of damage in a single attack, it is dazed for 1 round.
+<p class="mt-3">
+    <em>Exhausting Shock:</em> If a creature takes more than half its full SP of damage in a single attack, it is <strong>dazed for 1 round</strong>.
 </p>
 <p>
     For information about temporary SP, see the section about <a href="#HealthScores">Health Scores</a>.
