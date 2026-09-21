@@ -129,6 +129,16 @@ class SyncRulesCommand extends Command
         }
 
         $this->info("<info>Rules synchronization completed successfully!</info> Synced $totalRecords records across $totalTables reference tables.");
+
+        $this->line("<comment>Rebuilding application data cache (storage/framework/cache/app_data.php)...</comment>");
+        try {
+            $cacheFile = \App\Services\RulesCacheService::warm();
+            $this->info("  [✓] Application cache written to $cacheFile (" . round(filesize($cacheFile) / 1024, 1) . " KB)");
+        } catch (\Throwable $e) {
+            $this->warn("  Failed to rebuild app_data cache: " . $e->getMessage());
+        }
+
         return 0;
     }
 }
+

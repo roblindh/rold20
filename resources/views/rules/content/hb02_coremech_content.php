@@ -735,11 +735,11 @@
     <em>Representative Action Checks:</em>
 </p>
 <ul class="list-disc pl-6 space-y-1 text-sm">
-    <li><strong>Scaling a Cliff:</strong> <code>d20! + Athletics rank + Str mod + mods vs. Surface DC</code></li>
-    <li><strong>Stealth &amp; Infiltration:</strong> <code>d20! + Stealth rank + Dex mod + mods vs. Opposing Passive Perception (10 + rank + Wis mod)</code></li>
-    <li><strong>Forcing a Barred Gate:</strong> <code>d20! + Brawling rank + Str mod + mods vs. Gate Structural DC</code></li>
-    <li><strong>Melee / Ranged Attack:</strong> <code>d20! + Weapon Skill rank + Ability mod + mods vs. Target DeC</code></li>
-    <li><strong>Offensive Spell Attack:</strong> <code>d20! + Magic Skill rank + Ability mod + mods vs. Target Defense (Fort/Ref/Will/DeC)</code></li>
+    <li><strong>Scaling a Cliff:</strong> <code>d20! + Athletics skill rank + Str mod + mods vs. Surface DC</code></li>
+    <li><strong>Stealth &amp; Infiltration:</strong> <code>d20! + Stealth skill rank + Dex mod + mods vs. Opposing Passive Perception (10 + Perception skill rank + Wis mod)</code></li>
+    <li><strong>Forcing a Barred Gate:</strong> <code>d20! + Brawling skill rank + Str mod + mods vs. Gate Structural DC</code></li>
+    <li><strong>Melee / Ranged Attack:</strong> <code>d20! + Weapon skill bonus + Ability mod + mods vs. Target DeC</code></li>
+    <li><strong>Offensive Spell Attack:</strong> <code>d20! + Magic Attack skill bonus + Ability mod + mods vs. Target Defense (Fort/Ref/Will/DeC)</code></li>
 </ul>
 
 <h4 id="OpenEndedChecks">Open-Ended d20 Checks</h4>
@@ -1907,10 +1907,10 @@
     Because undead entities are fueled by necrotic power, positive radiant healing deals radiant damage to undead equal to the HP that would have been restored. Conversely, necrotic energy heals undead point-for-point while harming the living.
 </p>
 
-<div class="bg-amber-50 border-l-4 border-amber-400 p-3 my-3 text-xs text-amber-900">
-    <p class="font-bold mb-0.5">Optional Rule: Percentage Healing</p>
+<div class="optionalrule">
     <p>
-        In campaigns emphasizing proportional resilience, healing effects repair a flat percentage of a creature’s total HP, SP, or PP pool rather than fixed numerical increments.
+        <em id="PercentageHealing">Percentage Healing</em> (optional rule for improved realism):
+        In campaigns emphasizing realism, healing effects repair a flat percentage of a creature’s total HP, SP, or PP pool rather than fixed numerical increments.
     </p>
 </div>
 

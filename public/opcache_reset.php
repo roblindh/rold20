@@ -50,7 +50,7 @@ if (file_exists($config)) {
     $results['config_cleared'] = @unlink($config);
 }
 
-// 5. Run migrations if requested
+// 5. Run migrations & rules sync if requested
 if (isset($_GET['migrate']) || isset($_GET['sync'])) {
     try {
         require_once $base . '/vendor/autoload.php';
@@ -60,6 +60,16 @@ if (isset($_GET['migrate']) || isset($_GET['sync'])) {
 
         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
         $results['migration_output'] = \Illuminate\Support\Facades\Artisan::output();
+
+        if (isset($_GET['sync'])) {
+            \Illuminate\Support\Facades\Artisan::call('rules:sync', ['--force' => true]);
+            $results['sync_output'] = \Illuminate\Support\Facades\Artisan::output();
+        }
+
+        if (class_exists(\App\Services\RulesCacheService::class)) {
+            \App\Services\RulesCacheService::warm();
+            $results['rules_cache_warmed'] = true;
+        }
     } catch (\Throwable $e) {
         $results['migration_error'] = $e->getMessage();
     }

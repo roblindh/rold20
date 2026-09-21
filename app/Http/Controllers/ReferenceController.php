@@ -207,14 +207,24 @@ class ReferenceController extends Controller
      */
     public function creatures(Request $request): View|JsonResponse
     {
+        $this->ensureRulesLoaded();
+
         $query = DB::table('ref_creatures')
             ->leftJoin('ref_creaturesubtypes', 'ref_creatures.CreatureType', '=', 'ref_creaturesubtypes.ID')
             ->leftJoin('ref_creaturetypes', 'ref_creaturesubtypes.GroupID', '=', 'ref_creaturetypes.ID')
-            ->select('ref_creatures.*', 'ref_creaturetypes.Name as TypeName', 'ref_creaturesubtypes.Name as SubtypeName');
+            ->leftJoin('ref_sizes', 'ref_creatures.SizeClass', '=', 'ref_sizes.ID')
+            ->select(
+                'ref_creatures.*',
+                'ref_creaturetypes.Name as TypeName',
+                'ref_creaturesubtypes.Name as SubtypeName',
+                'ref_sizes.Description as SizeDesc',
+                'ref_sizes.Abbreviation as SizeAbbr'
+            );
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('ref_creatures.Name', 'like', "%{$search}%")
+                  ->orWhere('ref_creatures.NameInformal', 'like', "%{$search}%")
                   ->orWhere('ref_creatures.Environment', 'like', "%{$search}%")
                   ->orWhere('ref_creatures.Appearance', 'like', "%{$search}%")
                   ->orWhere('ref_creatures.Personality', 'like', "%{$search}%");
@@ -232,10 +242,14 @@ class ReferenceController extends Controller
             'Name' => 'ref_creatures.Name',
             'Type' => 'ref_creaturetypes.Name',
             'TypeName' => 'ref_creaturetypes.Name',
+            'Subtype' => 'ref_creaturesubtypes.Name',
+            'Size' => 'ref_creatures.SizeClass',
+            'SizeClass' => 'ref_creatures.SizeClass',
             'BaseRL' => 'ref_creatures.BaseRL',
-            'HP' => 'ref_creatures.HP',
-            'DeC' => 'ref_creatures.DeC',
+            'GroundSpeed' => 'ref_creatures.GroundSpeed',
+            'DR' => 'ref_creatures.DR',
             'Environment' => 'ref_creatures.Environment',
+            'Frequency' => 'ref_creatures.Frequency',
         ];
         $orderCol = $sortMap[$sort] ?? 'ref_creatures.Name';
         $query->orderBy($orderCol, $direction);
@@ -252,6 +266,7 @@ class ReferenceController extends Controller
 
         return view('reference.creatures', compact('creatures', 'types', 'sort', 'direction'));
     }
+
 
     public function showCreature(string $name): View
     {

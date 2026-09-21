@@ -128,12 +128,26 @@ if (Test-Path $DstConfigCache) {
     } catch {}
 }
 
+# Deploy pre-warmed application rules data cache (storage/framework/cache/app_data.php)
+$SrcAppData = Join-Path $Source "storage\framework\cache\app_data.php"
+$DstCacheDir = Join-Path $Destination "storage\framework\cache"
+$DstAppData = Join-Path $DstCacheDir "app_data.php"
+if (Test-Path $SrcAppData) {
+    try {
+        if (!(Test-Path $DstCacheDir)) {
+            New-Item -ItemType Directory -Path $DstCacheDir -Force | Out-Null
+        }
+        Copy-Item -Path $SrcAppData -Destination $DstAppData -Force -ErrorAction SilentlyContinue
+        Write-Host "Deployed pre-warmed application rules cache (app_data.php) to destination." -ForegroundColor Cyan
+    } catch {}
+}
+
 # Automatically trigger OPcache, migrations, in-container cache purge, and rules sync via HTTP if server is up
 try {
-    $ResetUri = "http://ROL-NAS-MINI:8090/opcache_reset.php?migrate=1"
-    $Response = Invoke-WebRequest -Uri $ResetUri -UseBasicParsing -TimeoutSec 15 -ErrorAction SilentlyContinue
+    $ResetUri = "http://ROL-NAS-MINI:8090/opcache_reset.php?migrate=1&sync=1"
+    $Response = Invoke-WebRequest -Uri $ResetUri -UseBasicParsing -TimeoutSec 20 -ErrorAction SilentlyContinue
     if ($Response.StatusCode -eq 200) {
-        Write-Host "Triggered OPcache reset, database migrations & in-container cache purge via HTTP ($ResetUri)." -ForegroundColor Green
+        Write-Host "Triggered OPcache reset, database migrations, rules sync & in-container cache purge via HTTP ($ResetUri)." -ForegroundColor Green
     }
 } catch {}
 

@@ -374,6 +374,14 @@
             if (isset($templates) && $templates->isNotEmpty()) {
                 $templatesSummaryStr = $templates->map(fn($t) => $t->NameInformal ?: $t->Name)->join(', ');
             }
+
+            $authUser = \Illuminate\Support\Facades\Auth::user();
+            $canManageCharacter = $canManageCharacter ?? false;
+            if (!$canManageCharacter && $authUser) {
+                if ($authUser->isGM() || (isset($campaign) && $campaign && (int)$campaign->GameMaster === (int)$authUser->ID) || (isset($character) && $character && !empty($character->Player) && (int)$character->Player === (int)$authUser->ID)) {
+                    $canManageCharacter = true;
+                }
+            }
         @endphp
 
         <!-- Character Sheet Action Bar Plaque -->
@@ -405,43 +413,77 @@
 
             <!-- Action Buttons Group -->
             <div class="flex items-center gap-2 flex-wrap">
-                @if($canLevelUp)
-                    <button type="button" @click="showLevelUpModal = true" class="btn-rol-success animate-pulse" title="Ready to advance to Level {{ $nextTargetLevel }}! (Has {{ number_format($xp) }} XP, requires {{ number_format($nextLevelReqXp) }} XP)">
-                        <span>⬆️ Level Up!</span>
+                @if($canManageCharacter)
+                    @if($canLevelUp)
+                        <button type="button" @click="showLevelUpModal = true" class="btn-rol-success animate-pulse" title="Ready to advance to Level {{ $nextTargetLevel }}! (Has {{ number_format($xp) }} XP, requires {{ number_format($nextLevelReqXp) }} XP)">
+                            <span>⬆️ Level Up!</span>
+                        </button>
+                    @else
+                        <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Need {{ number_format(max(0, $nextLevelReqXp - $xp)) }} more XP to reach Level {{ $nextTargetLevel }} (requires {{ number_format($nextLevelReqXp) }} XP)">
+                            <span>⬆️ Level Up</span>
+                        </button>
+                    @endif
+
+                    <button type="button" @click="showModifyModal = true" class="btn-rol-secondary">
+                        <span>✏️ Modify</span>
+                    </button>
+
+                    <button type="button" @click="showTradeModal = true" class="btn-rol-secondary">
+                        <span>🤝 Party Trade</span>
+                    </button>
+
+                    <button type="button" @click="showBuyItemsModal = true" class="btn-rol-secondary">
+                        <span>🛍️ Buy Items</span>
+                    </button>
+
+                    <button type="button" @click="showEquipmentModal = true" class="btn-rol-secondary">
+                        <span>🎒 Manage Equipment</span>
+                    </button>
+
+                    <button type="button" @click="showLearnSpellsModal = true" class="btn-rol-secondary">
+                        <span>✨ Learn Spells</span>
+                    </button>
+
+                    <button type="button" @click="openCastSpellModal()" class="btn-rol-secondary" title="Open Rules of Magic Cast Spell Assistant">
+                        <span>🪄 Cast Spell</span>
+                    </button>
+
+                    <button type="button" @click="showPortraitModal = true" class="btn-rol-secondary" title="Generate or edit AI character portrait">
+                        <span>🎨 Generate AI Portrait</span>
                     </button>
                 @else
-                    <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Need {{ number_format(max(0, $nextLevelReqXp - $xp)) }} more XP to reach Level {{ $nextTargetLevel }} (requires {{ number_format($nextLevelReqXp) }} XP)">
+                    <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can level up this character">
                         <span>⬆️ Level Up</span>
                     </button>
+
+                    <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can modify this character">
+                        <span>✏️ Modify</span>
+                    </button>
+
+                    <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can trade assets">
+                        <span>🤝 Party Trade</span>
+                    </button>
+
+                    <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can buy items">
+                        <span>🛍️ Buy Items</span>
+                    </button>
+
+                    <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can manage equipment">
+                        <span>🎒 Manage Equipment</span>
+                    </button>
+
+                    <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can learn spells">
+                        <span>✨ Learn Spells</span>
+                    </button>
+
+                    <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can cast spells">
+                        <span>🪄 Cast Spell</span>
+                    </button>
+
+                    <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can generate AI portraits">
+                        <span>🎨 Generate AI Portrait</span>
+                    </button>
                 @endif
-
-                <button type="button" @click="showModifyModal = true" class="btn-rol-secondary">
-                    <span>✏️ Modify</span>
-                </button>
-
-                <button type="button" @click="showTradeModal = true" class="btn-rol-secondary">
-                    <span>🤝 Party Trade</span>
-                </button>
-
-                <button type="button" @click="showBuyItemsModal = true" class="btn-rol-secondary">
-                    <span>🛍️ Buy Items</span>
-                </button>
-
-                <button type="button" @click="showEquipmentModal = true" class="btn-rol-secondary">
-                    <span>🎒 Manage Equipment</span>
-                </button>
-
-                <button type="button" @click="showLearnSpellsModal = true" class="btn-rol-secondary">
-                    <span>✨ Learn Spells</span>
-                </button>
-
-                <button type="button" @click="openCastSpellModal()" class="btn-rol-secondary" title="Open Rules of Magic Cast Spell Assistant">
-                    <span>🪄 Cast Spell</span>
-                </button>
-
-                <button type="button" @click="showPortraitModal = true" class="btn-rol-secondary" title="Generate or edit AI character portrait">
-                    <span>🎨 Generate AI Portrait</span>
-                </button>
 
                 <button type="button" 
                         @click="

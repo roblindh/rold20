@@ -973,6 +973,8 @@ main, .rule-content table, .overflow-x-auto, nav {
 
     .rule-content table {
         font-size: 0.8rem !important;
+        margin-top: 1rem !important;
+        margin-bottom: 1.75rem !important;
     }
 
     .rule-content th, thead th, .rule-content td {
@@ -982,7 +984,7 @@ main, .rule-content table, .overflow-x-auto, nav {
 
 /* ==============================================================================
    Modern Layout Reset & Mobile Responsive Navigation Drawer
-   ===========================@CHARSET "UTF-8";
+   ============================================================================== */
 
 /* ==========================================================================
    RoL d20 — Fantasy-Medieval Master Design System & Style Tokens
@@ -1516,6 +1518,8 @@ div.optionalrule p + p, .rule-content div.optionalrule p + p {
     border-radius: 6px;
     background-color: var(--rol-bg-parchment-card);
     box-shadow: 0 4px 12px rgba(44, 30, 14, 0.08);
+    margin-top: 1.25rem !important;
+    margin-bottom: 2rem !important;
 }
 
 .compendium-table, .rule-content table {
@@ -1523,7 +1527,23 @@ div.optionalrule p + p, .rule-content div.optionalrule p + p {
     border-collapse: separate !important;
     border-spacing: 0 !important;
     font-size: 0.88rem !important;
+}
+
+.compendium-table {
     margin: 0 !important;
+}
+
+.rule-content table {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    margin-top: 1.25rem !important;
+    margin-bottom: 2rem !important;
+    border: 1px solid var(--rol-border-parchment) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 12px rgba(44, 30, 14, 0.08) !important;
+    background-color: var(--rol-bg-parchment-card) !important;
 }
 
 .compendium-table thead, thead.sticky {
@@ -1564,6 +1584,11 @@ div.optionalrule p + p, .rule-content div.optionalrule p + p {
     color: var(--rol-text-main) !important;
 }
 
+.compendium-table tbody tr:last-child td,
+.rule-content table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
 .compendium-table tbody tr:nth-child(even), .rule-content tr:nth-child(even) {
     background-color: var(--rol-bg-parchment-alt) !important;
 }
@@ -1573,6 +1598,18 @@ div.optionalrule p + p, .rule-content div.optionalrule p + p {
 .compendium-table tbody tr:hover, .rule-content tr:hover {
     background-color: #fef9c3 !important;
     transition: background-color 0.15s ease;
+}
+
+caption, .rule-content caption {
+    padding: 8px 10px 6px 10px !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    text-align: left !important;
+    color: #17212d !important;
+    font-family: "Cinzel", "Trajan Pro", Georgia, serif !important;
+    font-variant: small-caps !important;
+    letter-spacing: 0.03em !important;
+    caption-side: top !important;
 }
 
 /* ==========================================================================

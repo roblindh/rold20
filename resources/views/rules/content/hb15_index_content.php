@@ -496,7 +496,7 @@
                 </a>
             </li>
             <li>
-                <a href="/rules/core#Healing" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                <a href="/rules/core#PercentageHealing" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
                     <span class="text-amber-600 text-xs">▸</span> Percentage Healing
                 </a>
             </li>

@@ -1,5 +1,12 @@
 @php
     $isWizard = $isWizard ?? false;
+    $currentUser = \Illuminate\Support\Facades\Auth::user();
+    $canManageCharacter = $canManageCharacter ?? false;
+    if (!$isWizard && !$canManageCharacter && $currentUser) {
+        if ($currentUser->isGM() || (isset($campaign) && $campaign && (int)$campaign->GameMaster === (int)$currentUser->ID) || (isset($character) && $character && !empty($character->Player) && (int)$character->Player === (int)$currentUser->ID)) {
+            $canManageCharacter = true;
+        }
+    }
 @endphp
 
 <!-- Authentic Classic D&D Character Sheet (11-Row Layout) -->
@@ -115,22 +122,26 @@
                     </div>
                 @else
                     @if(!empty($character->ImagePath))
-                        <div class="w-full h-full relative overflow-hidden rounded flex items-center justify-center bg-stone-900">
+                        <div class="w-full h-full relative overflow-hidden rounded flex items-center justify-center bg-stone-900 {{ $canManageCharacter ? 'group' : '' }}">
                             <img id="charview-portrait-img" src="{{ asset($character->ImagePath) }}" alt="{{ $character->Name }} Portrait"
                                  class="w-full h-full object-cover max-h-[160px] rounded">
-                            <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                                <button type="button" @click="showPortraitModal = true" class="btn-rol-primary text-[11px] px-2.5 py-1 font-bold shadow-md cursor-pointer">
-                                    🎨 Edit Portrait
-                                </button>
-                            </div>
+                            @if($canManageCharacter)
+                                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                    <button type="button" @click="showPortraitModal = true" class="btn-rol-primary text-[11px] px-2.5 py-1 font-bold shadow-md cursor-pointer">
+                                        🎨 Edit Portrait
+                                    </button>
+                                </div>
+                            @endif
                         </div>
                     @else
                         <div id="charview-portrait-placeholder" class="w-full h-full flex flex-col items-center justify-center text-center p-2 space-y-1.5">
                             <span class="text-3xl filter drop-shadow opacity-70">🎨</span>
                             <span class="text-[10px] font-serif font-bold text-stone-600 uppercase">No Portrait</span>
-                            <button type="button" @click="showPortraitModal = true" class="btn-rol-primary text-[10px] px-2 py-1 font-bold shadow-xs cursor-pointer">
-                                ✨ Generate AI Portrait
-                            </button>
+                            @if($canManageCharacter)
+                                <button type="button" @click="showPortraitModal = true" class="btn-rol-primary text-[10px] px-2 py-1 font-bold shadow-xs cursor-pointer">
+                                    ✨ Generate AI Portrait
+                                </button>
+                            @endif
                         </div>
                         <img id="charview-portrait-img" src="" alt="Portrait" class="hidden w-full h-full object-cover max-h-[160px] rounded">
                     @endif
@@ -1763,7 +1774,7 @@
                                                 </div>
                                             @endif
                                         </div>
-                                        @if(!$isWizard)
+                                        @if(!$isWizard && $canManageCharacter)
                                             <button type="button" @click="openCastSpellModal({{ $spObj->ID }})" class="no-print text-[11px] bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-800/30 px-2 py-0.5 rounded font-bold shadow-2xs cursor-pointer transition flex items-center gap-1 shrink-0" title="Open Cast Spell Assistant for {{ $spObj->Name }}">
                                                 <span>🪄 Cast</span>
                                             </button>

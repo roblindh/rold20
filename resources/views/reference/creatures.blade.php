@@ -61,12 +61,12 @@
                 <span class="text-stone-700 leading-relaxed">Base level of an adult member of the species. Playable character races typically have RL 0, while monsters have innate hit dice.</span>
             </div>
             <div class="parchment-inset p-3 rounded-lg shadow-xs">
-                <span class="font-bold text-amber-950 block mb-1">Hit Points (HP &amp; SP)</span>
-                <span class="text-stone-700 leading-relaxed">Health Points determine physical survivability, while Stamina Points (SP) represent fatigue reserves and fatigue recovery.</span>
+                <span class="font-bold text-amber-950 block mb-1">Ability Adjustments</span>
+                <span class="text-stone-700 leading-relaxed">Innate physical (STR, DEX, CON) and mental (INT, WIS, CHA) modifiers characteristic of the species.</span>
             </div>
             <div class="parchment-inset p-3 rounded-lg shadow-xs">
-                <span class="font-bold text-amber-950 block mb-1">Defense Class (DeC)</span>
-                <span class="text-stone-700 leading-relaxed">Includes Active Defense (DeCa) and Passive Defense (DeCp), along with critical hit resistance and saving throws.</span>
+                <span class="font-bold text-amber-950 block mb-1">Speed &amp; Defenses (DR/MR)</span>
+                <span class="text-stone-700 leading-relaxed">Tactical speeds (in 5-ft squares) and natural armor Damage Resistance (DR) / Magic Resistance (MR).</span>
             </div>
             <div class="parchment-inset p-3 rounded-lg shadow-xs">
                 <span class="font-bold text-amber-950 block mb-1">Stat Blocks</span>

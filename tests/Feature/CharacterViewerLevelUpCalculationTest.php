@@ -33,11 +33,19 @@ class CharacterViewerLevelUpCalculationTest extends TestCase
 
     public function test_character_viewer_tl_cl_and_levelup_button_state(): void
     {
+        $player = \App\Models\Dynamic\Player::create([
+            'Name' => 'CharOwner_' . uniqid(),
+            'Password' => \Illuminate\Support\Facades\Hash::make('secret'),
+            'Type' => \App\Models\Dynamic\Player::TYPE_PLAYER,
+        ]);
+        \Illuminate\Support\Facades\Auth::login($player);
+
         // 1. Create character: Half-Elf (BaseRace 12, BaseRL 0, CLMod 0), Celestial Blood (Template 1, CLMod +1)
         // 2 Class Levels of Wizard (Classes: '11;11') -> TL = 2, CL = 3
         // XP = 5000 (< 6000 required for Level 4) -> Level Up button should be disabled
         $charId = DB::table('characters')->insertGetId([
             'Name' => 'Obarion Test ' . uniqid(),
+            'Player' => $player->ID,
             'BaseRace' => 12,
             'Classes' => '11;11',
             'Templates' => '1',
