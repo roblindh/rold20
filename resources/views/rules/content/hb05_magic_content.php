@@ -1,521 +1,381 @@
 <h2 id="Magic">Rules of Magic</h2>
 <p>
-    Magic plays a vital part in D&amp;D and encompasses a wide range of effects.
-    A fireball cast by a wizard, the healing done by a cleric, a druid changing into a wolf, a dragon’s fiery breath,
-    and an illithid’s mind blast are all different examples of magic.
+    Magic plays a vital part in RoL d20, encompassing a rich spectrum of supernatural disciplines. A wizard's blazing fireball, a cleric's restorative prayer, a druid shifting into the form of a dire wolf, a dragon's fiery breath, and a mind flayer's psionic blast are all distinct manifestations of magical energy.
 </p>
 
 <h3 id="MagicTypes">Types and Sources of Magic</h3>
 <p>
-    Magic is the ability to manipulate reality in ways contrary to the laws of physics.
-    This requires a certain amount of skill, some mental effort and concentration, as well as a source of energy.
-    The main difference between different caster types and different supernatural skills is where the energy is drawn from.
+    Magic is the art and science of reshaping reality in defiance of mundane physical laws. Doing so demands rigorous training, disciplined mental concentration, and access to a reservoir of metaphysical energy. The fundamental difference between caster traditions lies in the conduit through which they draw power:
 </p>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3 my-3 text-xs">
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Arcane Magic</strong>
+        <p class="mt-1 text-stone-700">
+            Arcane casters channel raw energy from planar dimensions, most notably the Positive and Negative Energy Planes, the Astral Sea, and the elemental realms. Arcane spells emphasize elemental forces, spatial manipulation, and direct physical alteration.
+        </p>
+    </div>
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Divine &amp; Nature Magic</strong>
+        <p class="mt-1 text-stone-700">
+            Divine casters (such as clerics and templars) petition deities, angelic hosts, or spiritual planes. Druids and rangers commune with the natural vitality inherent in living beasts, flora, and terrestrial ecosystems.
+        </p>
+    </div>
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Psionic Manifestation</strong>
+        <p class="mt-1 text-stone-700">
+            Psionic practitioners harness the internal energy of the conscious mind and soul. Master telepaths and psychokinetics expand their internal focus to tap the subtle currents of the Ethereal and Astral planes.
+        </p>
+    </div>
+</div>
+
 <p>
-    Arcane casters summon magical energy from other dimensions and planes of existence.
-    The most common sources are the positive and negative material planes, with the other elemental planes as a close second.
-</p>
-<p>
-    Divine casters summon magical energy from powerful outsiders and the spiritual planes.
-    This applies most of all to clerics and templars.
-    Druids and rangers, on the other hand, draw most of their spiritual energy from animals, plants, and nature itself.
-</p>
-<p>
-    Psionic users summon magical energy mostly from their inner selves and their own souls.
-    More proficient users can also learn to draw power from the Ethereal and Astral planes.
-</p>
-<p>
-    Different magic skills and sources of energy are more or less suited to different purposes.
-    A druid, for example, is attuned to and very good at manipulating plants, animals, and weather,
-    but he is not particularly good at affecting sentient minds or manipulating metal objects.
+    Each magic tradition is intrinsically specialized. A druid excels at commanding weather, beasts, and plant growth, but struggles to influence inorganic metallurgy or project illusionary deceptions.
 </p>
 
 <h3 id="LearningSpells">Learning Spells and Powers</h3>
 <p>
-    Skill levels in the various spell skills determine how many spells a creature can learn.
-    A certain number of spells or new variations can be learned automatically whenever a skill level is gained.
-    Each variation for a spell is learned separately, and when a new spell is learned, you learn none of its variations for free.
-    However, spells and variations that have a base cost of 0 PP typically do not have a base effect and can be learned "for free".
-    In order to learn a spell or variation, it must have the appropriate skill as a mandatory skill,
-    and your skill level in each of the mandatory skills must be at least equal to the spell's base PP cost.
+    A character's skill level in the corresponding supernatural skill governs their capacity to master spells and powers:
 </p>
-<p>
-    Spells, powers, and variations that are not automatically learned can be acquired with the "Learn Spell" action.
-    Note that for spells that you gain access to through special skills (such as Bardic Music or Wild Shape),
-    the "Learn Spell" action is always required.
-</p>
-<p>
-    Access to common spells is rarely a big problem, since most temples, guilds, and masters are willing to teach their apprentices new spells
-    in exchange for services rendered or a modest amount of money.
-</p>
+<ul class="space-y-1.5 my-2">
+    <li><strong>Automatic Acquisition:</strong> Gaining a new skill level in a spell skill automatically grants a set number of new spells or variations.</li>
+    <li><strong>Spell Parameters vs. Variations:</strong> <em>Spell parameters</em> scale the numeric and operational scope of a spell (such as increasing area, extending duration, expanding range, or adding targets). In contrast, <em>spell variations</em> represent significant alternate manifestations of the base spell (for example, the <em>Affliction</em> spell employs variations to cover distinct effects like Cause Blindness, Cause Deafness, Cause Disease, and Poison).</li>
+    <li><strong>Learning Variations &amp; 0 PP Spells:</strong> Each variation is learned separately. A spell with a base cost of 0 PP (which has no base effect on its own) can be learned for free, but any variations for that spell that cost PP will still require dedicated spell choices to master.</li>
+    <li><strong>Skill Level Prerequisites:</strong> To learn a spell or variation, your skill level in every mandatory skill must equal or exceed the spell or variation's Base Power Cost (BPC).</li>
+    <li><strong>Learn Spell Action:</strong> Spells and variations not gained automatically upon leveling can be mastered during downtime via the <em>Learn Spell</em> action. Spells unlocked via special class features or talents (such as Bardic Music or Wild Shape) always require the <em>Learn Spell</em> action.</li>
+    <li><strong>Access &amp; Tutelage:</strong> Common spells are readily accessible through temples, arcane academies, and mentor guildhalls in exchange for guild dues, service quests, or modest tuition.</li>
+</ul>
 
 <?php show_spelllearning(); ?> 
 
 <h4 id="SupernaturalAffinity">Supernatural Affinity Skills</h4>
 <p>
-    Some classes and creatures have a natural affinity for certain types of magic. This can bring the following benefits:<br/>
+    Certain classes, lineages, and specialized traditions possess an innate affinity for particular schools of magic, providing three key mechanical benefits:
 </p>
-<ul>
-    <li>First, they get an ability bonus to the action check for casting spells or using powers of the specified type.</li>
-    <li>Second, they can &quot;take 10&quot; on those action checks even when stressed or threatened.</li>
-    <li>Third, the PP costs for those spells and powers can be reduced.</li>
+<ul class="space-y-1.5 my-2">
+    <li><strong>Ability Bonus on Activation:</strong> Add the affinity's associated ability modifier to supernatural activation checks.</li>
+    <li><strong>Take 10 Under Pressure:</strong> The caster may choose to &quot;take 10&quot; on activation checks even while threatened, injured, or under acute combat stress.</li>
+    <li><strong>Power Point Cost Reduction:</strong> The actual PP cost to cast spells within the affinity is reduced (to a minimum actual cost of 1 PP).</li>
 </ul>
 <p>
-    Supernatural affinity specifies the skill or skills for which it applies,
-    which ability score modifier to use as a bonus or penalty to spellcasting checks,
-    and the PP cost reduction (usually based on the affinity skill level and the ability score modifier).
-    If there are any special prerequisites or limitations for the affinity, these are also specified.
-</p>
-<p>
-    If a character gains multiple supernatural affinities for the same skill, use the most beneficial one.
-    The effects of multiple supernatural affinities do not stack.
+    If a character qualifies for multiple affinity skills that apply to the same spell or power, use the single most beneficial affinity; affinity benefits do not stack.
 </p>
 
 <h4>Arcane, Divine, and Psionic Writings</h4>
 <p>
-    Within the RoL d20 rules, there are no longer any spellcasters that need to memorize their spells from spellbooks.
-    Nevertheless, many spellcasters still collect or create writings that describe how to cast their spells.
-    Some such writings are created as a source of income, others as instruction books for apprentices,
-    some as religious texts, and still others as research notes.
+    In RoL d20, spellcasters do not need to memorize spells daily from spellbooks. However, practitioners frequently maintain written records, grimoires, research scrolls, and liturgical scriptures for study, trade, and instructional reference.
 </p>
 <p>
-    Most writings are books and tomes of some sort, but more exotic variants also exist.
-    For example, a sorcerer may choose to write down spells on dragonhide, a church may keep their most important religious writings on sheets of silver,
-    and some psionicists may use crystals to store their teachings. In other words, the type, size, and weight of such writings can vary greatly.
+    While traditional parchment grimoires are most common, diverse traditions employ unique mediums: sorcerers may inscribe draconic glyphs upon treated dragonhide, holy orders engrave sacred prayers on beaten silver plates, and psionic orders imprint mnemonic patterns into resonant crystal matrices.
 </p>
 <p>
-    Barring such unusual storage devices, there is a default size and cost for writing that describes a spell or power.
-    First, calculate the maximum PP cost of the spell – add all variations and the maximum cost of each parameter.
-    If the sum exceeds 30, use 30 instead as the upper limit. The writing takes up one page per maximum PP cost,
-    and each page requires 20 sp and 2 h to write. A typical spellbook contains up to 300 pages.
+    <strong>Standard Scribe Capacity &amp; Costs:</strong> The length of a spell's written transcription equals its maximum possible Power Point cost (adding all variations and maximum parameters, capped at a maximum of 30 pages). Transcribing each page costs <strong>20 silver pieces (sp)</strong> and requires <strong>2 hours</strong> of dedicated scribe work. A standard grimoire contains up to 300 pages.
 </p>
 
 <h3 id="CastingSpells">Casting Spells and Using Supernatural Powers</h3>
 <p>
-    Casting a spell, manifesting a psionic power, or using some other supernatural ability requires a
-    special d20 check, commonly referred to as a supernatural activation check or spellcasting check.
-    The procedure is essentially the same as any other d20 check, but each step has additional
-    choices that are more or less unique to spellcasting.
-    Each step is described in more detail below.
+    Casting a spell, manifesting a psionic power, or activating a supernatural ability requires an open-ended d20 check termed a <strong>supernatural activation check</strong> (or spellcasting check).
 </p>
 <p>
-    Casting spells and using most supernatural powers can be quite tiresome, even exhausting.
-    The fatigue caused is mental rather than physical, so this is measured as an expenditure of PP.
+    Supernatural exertion imposes mental fatigue, measured through the expenditure of <strong>Power Points (PP)</strong>.
 </p>
-<ol>
-    <li>Select the spell or power you want to use.</li>
-    <li>Select any variable parameters (such as range, target, etc) and variations.</li>
-    <li>Start the spellcasting or power manifestation.</li>
-    <li>At the end of the activation time, roll the d20 action check (or 'take 10').</li>
-    <li>Determine and apply the results and effects.</li>
-    <li>Deduct costs.</li>
-</ol>
+
+<div class="bg-stone-50 border border-stone-200 rounded-sm p-3 my-3">
+    <strong class="text-stone-900 font-semibold text-sm">Supernatural Activation Sequence</strong>
+    <ol class="list-decimal ml-5 mt-1 space-y-1 text-xs text-stone-700">
+        <li><strong>Select Spell or Power:</strong> Choose a learned ability and identify its Base Power Cost (BPC).</li>
+        <li><strong>Select Variations &amp; Parameters:</strong> Configure range, duration, target count, area, and variations to calculate Total Power Cost (TPC).</li>
+        <li><strong>Initiate Activation:</strong> Declare Action Point (AP) boosting or dampening; check for defensive casting to avoid attacks of opportunity.</li>
+        <li><strong>Perform Activation Check:</strong> Roll d20! (or take 10 with affinity) against DC 10 + TPC.</li>
+        <li><strong>Determine Results:</strong> Resolve magical effects and execute any required attack checks against target defenses (DeC, Ref, Fort, Will).</li>
+        <li><strong>Deduct Costs:</strong> Deduct Actual Power Cost (APC), material components, and XP costs.</li>
+    </ol>
+</div>
 
 <h4>Spellcasting Procedure Details</h4>
 
 <h5>1. Select the Spell or Power</h5>
 <p>
-    Choose a spell or power among those that you have learned.
-</p>
-<p>
-    <em>Base Power Cost (BPC):</em> The base (or minimum) PP cost of a spell or power.
+    Choose an available spell or power from your known catalogue. Every ability has a defined <strong>Base Power Cost (BPC)</strong> representing its entry-level energy requirement.
 </p>
 
 <h5>2. Select Variations and Parameters</h5>
 <p>
-    Choose additional variations and parameters among those allowed for the spell/power.
+    Enhance the spell by adding compatible variations and amplifying parameters (such as extending reach, widening blast radius, or intensifying damage dice):
 </p>
-<p>
-    Most variations and parameters will add to the spell's PP cost. The total cost must not
-    exceed your skill level in any of the spell's (or variation's) mandatory skills.
-    For inherent powers without a suitable skill, use the creature's RL or TL in place of skill level.
-</p>
-<p>
-    <em>Total Power Cost (TPC):</em> TPC = BPC + PP cost of all variations and parameters.
-</p>
-<p>
-    You can voluntarily increase TPC up to your skill level limit (without adding parameters).
-    This is a way to increase the spell's PL but increases the DC of the spellcasting check.
-</p>
+<ul class="space-y-1.5 my-2">
+    <li><strong>Skill Level Limit:</strong> The resulting <strong>Total Power Cost (TPC)</strong> cannot exceed your skill level in any of the spell's mandatory skills (or your Rank Level / Total Level for innate racial powers).</li>
+    <li><strong>Total Power Cost Formula:</strong> <code>TPC = Base Power Cost + Parameter &amp; Variation PP Costs</code></li>
+    <li><strong>Voluntary TPC Increase:</strong> You may voluntarily heighten a spell's TPC up to your skill level ceiling without adding parameters, raising its effective Power Level (PL) against counterspells and dispels at the cost of a higher activation DC.</li>
+</ul>
 
-<h5>3. Start Spellcasting</h5>
+<h5>3. Start Spellcasting &amp; AP Allocation</h5>
 <p>
-    When you start casting a spell/power, you can choose whether to boost it with additional AP.
-    This boost can be used to add power to the casting (making it more resistant to counterspelling and dispelling),
-    to dampen the casting (making the spell/power harder to detect), and/or
-    to boost the spell/power in other ways (such as a bonus on attack rolls).
-    Note that a spellcaster or power user cannot both boost and dampen the same power.
+    When beginning an activation, a caster can invest additional Action Points to modulate the magical signature:
 </p>
-<p>
-    <em>AP Boost (APB):</em> APB = (+1 per AP used for boost) or (-1 per AP used for dampen).
-</p>
-<p>
-    Casting of a spell/power will trigger attacks of opportunity (unless the casting is done defensively).
-</p>
-<p>
-    If you are distracted or hurt during the activation time, separate spellcasting checks (see below)
-    will typically be required to maintain concentration and complete the casting.
-    Note that you have to pay the full PP cost even if your casting is interrupted.
-</p>
+<ul class="space-y-1.5 my-2">
+    <li><strong>AP Boost (+1 PL and +1 to Check per AP):</strong> Fortifies the spell against counterspelling and dispelling, and enhances accuracy or DC.</li>
+    <li><strong>AP Dampening (-1 PL and -1 to Check per AP):</strong> Suppresses the sensory and magical signature of the casting, making the spell difficult to detect with <em>Detect Magic</em> or visual observation. A caster cannot simultaneously boost and dampen the same power.</li>
+    <li><strong>Defensive Casting:</strong> Casting in a threatened square provokes an attack of opportunity unless the caster declares defensive casting.</li>
+    <li><strong>Interruption &amp; Concentration:</strong> Taking damage or suffering severe distraction during the activation time requires a concentration check. Failing this check ruins the casting, though all PP costs are still expended.</li>
+</ul>
 
 <h5>4. Make Spellcasting Check</h5>
 <p>
-    At the end of the activation time, make an open-ended d20 activation check using the appropriate spell skill.
-    If the spell or power has multiple mandatory skills, use your highest skill level for the check.
+    At the conclusion of the activation time, roll an open-ended d20 activation check using the spell's primary skill (or your highest skill if multi-disciplinary):
 </p>
+
+<div class="bg-amber-50 border-l-4 border-amber-400 p-3 my-3 text-xs text-amber-900">
+    <strong class="font-bold text-amber-950">Supernatural Activation Check Formula:</strong><br/>
+    <code class="font-bold">Check = d20! + Spell Skill + Ability Mod (Affinity) + Two-Handed/Focus Bonus (+2) + AP Boost/Dampen + MAM vs. DC (10 + TPC)</code>
+</div>
+
+<ul class="space-y-1.5 my-2">
+    <li><strong>Two-Handed / Large Focus Bonus (+2):</strong> Having two free hands for somatic gestures or wielding a large focus implement (staff, rod, psicrown, or large instrument) grants a <strong>+2 bonus</strong> to the activation check.</li>
+    <li><strong>Environmental &amp; Target Difficulty Modifiers:</strong>
+        <ul class="list-disc ml-5 mt-1 space-y-0.5 text-xs text-stone-700">
+            <li><strong>Active Opposing Power:</strong> + Opposing Power's PL to DC.</li>
+            <li><strong>Target Magic Resistance (<dfn>MR</dfn>):</strong> + Target's MR to DC (applied individually per resistant target).</li>
+            <li><strong>Antimagic Zone (<dfn>AM</dfn>):</strong> + AM intensity level to DC.</li>
+            <li><strong>Wild Magic Zone (<dfn>WM</dfn>):</strong> + WM instability level to DC.</li>
+        </ul>
+    </li>
+    <li><strong>Opposed Contests &amp; Ongoing Effects:</strong>
+        <ul class="list-disc ml-5 mt-1 space-y-0.5 text-xs text-stone-700">
+            <li><strong>Counterspelling:</strong> Base DC 10 is replaced by the opponent's counterspelling check.</li>
+            <li><strong>Active Ongoing Spell:</strong> Check replaced by <code>10 + Power's PL</code>.</li>
+            <li><strong>Magical Creature / Construct:</strong> Check replaced by <code>10 + Creature's TL</code>.</li>
+            <li><strong>Summoned Creature:</strong> Check replaced by <code>10 + Summoning Spell's PL</code>.</li>
+            <li><strong>Magic Item:</strong> Check replaced by <code>10 + Item's PL</code>.</li>
+        </ul>
+    </li>
+</ul>
+
 <p>
-    If you have an affinity skill for the spell or power, you gain the benefit of adding the appropriate
-    ability modifier to the activation check, and you can choose to &quot;take 10&quot; instead of rolling d20.
-</p>
-<p>
-    <em>Supernatural activation check:</em> d20! + Arcane/Divine/Psi skill<sup>1</sup> + ability mod<sup>2</sup> + 2-handed bonus<sup>3</sup> + APB<sup>4</sup> + MAM vs. DC 10 + TPC
-</p>
-<p>
-    <sup>1</sup>For inherent abilities and other situations where no skill level is applicable, use the creature’s RL or TL instead of skill level.<br/>
-    <sup>2</sup>If you have an appropriate affinity skill for this spell, you can add the affinity's ability mod to the check.<br/>
-    <sup>3</sup>If the spell has a somatic component and you either have two free hands for casting or holding a large-sized focus (staff, rod, psicrown, or large instrument), you gain a +2 two-handed bonus.<br/>
-    <sup>4</sup>Note that APB is a bonus when boosting and a penalty when dampening.
-</p>
-<p>
-    There are a number of situations where a supernatural action can be resisted or otherwise made more difficult to perform.
-    Add the following modifiers to the difficulty:
-</p>
-<dl>
-    <dt>Against active opposing power...</dt>
-    <dd>+ opposing power’s PL</dd>
-    <dt>Against target(s) with <a href="/rules/core#MagicRes">magic resistance</a>...</dt>
-    <dd>+ MR (this modifier applies only to the target or targets with MR)</dd>
-    <dt>Caster or target in antimagic zone...</dt>
-    <dd>+ AM (level of antimagic)</dd>
-    <dt>Caster or target in wild magic zone...</dt>
-    <dd>+ WM (level of wild magic)</dd>
-</dl>
-<p>
-    Note that some of the modifiers above may apply to only some of the targets.
-    One activation check is made, but the result is compared against different target numbers.
-    In other words, it is quite possible for a casting to succeed overall but fail within
-    a limited area or against certain targets.
-</p>
-<p>
-    A modified version of the activation check is used for certain situations:
-</p>
-<dl>
-    <dt>When subjected to counterspelling...</dt>
-    <dd>Replace base DC 10 with (opposed counterspelling check)</dd>
-    <dt>Already active spell or power against opposing effect...</dt>
-    <dd>Replace d20 check with 10 + power’s PL</dd>
-    <dt>Undead, construct, or other magical creature against opposing effect...</dt>
-    <dd>Replace d20 check with 10 + creature’s TL</dd>
-    <dt>Summoned creature against opposing effect...</dt>
-    <dd>Replace d20 check with 10 + summoning power’s PL</dd>
-    <dt>Supernatural item against opposing effect...</dt>
-    <dd>Replace d20 check with 10 + item’s PL</dd>
-</dl>
-<p>
-    The spell or power's power level (PL) is derived from its total PP cost and any AP boost used.
-    PL affects the chance of overcoming magic resistance, anti-magic, and similar hindrances,
-    and it also affects the difficulty of detecting, dispelling, counterspelling, etc. the power.
-</p>
-<p>
-    <em>PL:</em> PL = TPC + APB<sup>1</sup> (minimum of 0)
-</p>
-<p>
-    <sup>1</sup>Note that this is an increase when boosting and a decrease when dampening.<br/>
-    An exception is when you're creating magic items; dampening a spell does not reduce the creation cost.
+    <strong>Power Level (PL):</strong> An ability's effective strength is its Power Level: <code>PL = Total Power Cost (TPC) + AP Boost (or - AP Dampen)</code> (minimum 0).
 </p>
 
 <h5>5. Determine Results</h5>
 <p>
-    Determine and apply effects based on your spellcasting check.
-    If the casting is successful, you can then choose specific area or targets.
+    Compare the final activation check against the target DC to determine the level of success:
 </p>
 
 <?php show_spellresults(); ?> 
 
 <p>
-    In the case of an attack spell or power, a successful spellcasting check is just the first step;
-    one or more attack rolls (as specified in the spell's description)
-    are then usually required in order to successfully affect the intended targets.
+    For offensive attack spells, achieving a successful activation check is the first step. You then make attack rolls (against <dfn>DeC</dfn>, <dfn>Ref</dfn>, <dfn>Fort</dfn>, or <dfn>Will</dfn> as dictated by the spell description) to deliver the payload to each target.
 </p>
 
 <h5>6. Deduct Costs</h5>
 <p>
-    Deduct activation costs (in PP, XP, etc).
-    The total PP cost is the spell's base cost plus the sum of all additional variation and parameter costs that you chose in step 2.
+    Deduct the <strong>Actual Power Cost (APC)</strong> from your current Power Points pool, along with any expended material components or XP costs:
 </p>
-<p>
-    However, if you have an affinity skill for the spell or power, you won't have to bear the full brunt of this cost.
-    Your affinity skill provides a PP cost reduction based on skill level and ability modifier, to a minimum actual cost of 1 PP.
-    This reduced cost is what you deduct from your current PP total.
-</p>
-<p>
-    If the spell or power has multiple mandatory skills, you only need spell affinity in one of them to be eligible for the PP cost reduction.
-    If you have multiple spell affinity skills that apply to the same spell, the cost reductions do not stack (use only the highest one).
-</p>
-<p>
-    <em>Actual Power Cost (APC):</em> APC = TPC – spell affinity cost reduction. Minimum 1 PP.
-</p>
+
+<div class="bg-amber-50 border-l-4 border-amber-400 p-3 my-3 text-xs text-amber-900">
+    <strong class="font-bold text-amber-950">Actual Power Cost Formula:</strong><br/>
+    <code class="font-bold">APC = Total Power Cost (TPC) - Spell Affinity Cost Reduction (Minimum 1 PP)</code>
+</div>
+
 <?php show_affinityskilleffects(); ?>
 
 <h4>Maintaining a Spell or Power</h4>
 <p>
-    Some spells require continuous concentration to maintain. While concentrating, you can only use half your AP and MP for other actions,
-    and those actions must not themselves require concentration. Anything that can break your concentration requires an appropriate skill check.
+    Spells with ongoing concentration require steady focus. While sustaining concentration, a caster may spend only up to <strong>half their total Action Points and Movement Points</strong> on other actions, and cannot perform any secondary action that itself requires concentration. Taking damage or suffering sudden disorientation forces an immediate concentration check to prevent the maintained effect from collapsing.
 </p>
 
 <h4>Spellcasting Examples</h4>
 <p>
-    <em>Example 1 (simple spell with affinity skill):</em>
+    The following scenarios illustrate how the supernatural activation sequence, parameters, AP boosting/dampening, affinity reductions, and environmental modifiers operate in practice:
 </p>
-<ol>
-    <li><em>Spell:</em> A cleric with Wis 18 and both Divine - Life and Cleric Affinity - Healing Domain
-        skills at level 8 casts Heal Wounds on a comrade.</li>
-    <li><em>Parameters:</em> His skills allow a maximum TPC (total power cost) of 8 PP, so the most efficient
-        casting is 25 HP heal on one target and with a range of touch, for a TPC of 7 PP.</li>
-    <li><em>Boost:</em> He sees no reason to boost the spell.</li>
-    <li><em>d20 check:</em> The affinity skill means that the caster can use &quot;take 10&quot; for
-        the d20 check and automatically succeed.</li>
-    <li><em>Results:</em> To be precise, the supernatural activation check with &quot;take 10&quot;
-        comes down to 10 + 8 (skill) + 4 (Wis mod) against DC 10 + 7 (TPC).</li>
-    <li><em>Costs:</em> The affinity skill provides a cost reduction of 4 PP ((8+2x4)/4 PP),
-        giving APC (actual power cost) of 3 PP.</li>
-</ol>
-<p>
-    <em>Example 2 (attack spell with affinity skill):</em>
-</p>
-<ol>
-    <li><em>Spell:</em> A wizard with Int 16 and both Arcane - Pyromancy and Wizard Affinity - Generalist
-        at level 5 casts a Bolt of Fire at 7 opponents.</li>
-    <li><em>Parameters:</em> The caster chooses to spend PP on a large spherical burst rather than increased
-        damage, in order to include all of his opponents, resulting in TPC of 5 PP.</li>
-    <li><em>Boost:</em> No boost.</li>
-    <li><em>d20 check:</em> Using &quot;take 10&quot; for the supernatural activation check means
-        automatic success (a check of 10 + 5 + 3 against DC 10 + 5).</li>
-    <li><em>Results:</em> The caster makes a single damage roll, resulting in 10 HP of base fire damage.
-        He then rolls one attack roll against each opponent's Ref (all of which happen to be 16),
-        getting 21, 18, 20, 3, 24, 20, and 37 (including modifiers).
-        This translates to one failure (half damage), 5 successes (normal damage),
-        and one critical success (double damage).</li>
-    <li><em>Costs:</em> Affinity bonus of 2 PP gives an APC of 3 PP.</li>
-</ol>
-<p>
-    <em>Example 3 (attack spell without affinity skill):</em>
-</p>
-<ol>
-    <li><em>Spell:</em> A rogue has &quot;dabbled&quot; in magic and acquired 4 levels in Arcane - Transmutation.
-        He uses it to cast Disintegrate on an opponent as part of a Vital Attack.</li>
-    <li><em>Parameters:</em> The caster decides to maximize his success chances and just spend the minimum PP,
-        resulting in TPC of 1 PP.</li>
-    <li><em>Boost:</em> No boost.</li>
-    <li><em>d20 check:</em> Since the caster lacks an appropriate affinity skill, he can't use &quot;take 10&quot;
-        with the d20 check.
-        He first rolls an activation check of 17 (d20) + 4 against DC 10 + 1,
-        meaning that the spell is cast successfully.
-        Even if the casting had failed, the action's range of Rch would have allowed
-        a single unarmed attack for normal damage.</li>
-    <li><em>Results:</em> The rogue surprises his opponent, getting an unarmed attack roll of 27
-        (largely thanks to the Vital Attack bonus) against the opponent's passive DeC of 10.
-        The second attack roll (against the opponent's Fort) also receives Vital Attack bonuses,
-        resulting in 22 against Fort 19.
-        All in all, the caster narrowly fails to achieve a critical hit with the first attack roll,
-        but still manages to inflict 6 blunt HP with his fist and 16 HP with the spell.</li>
-    <li><em>Costs:</em> No affinity, so APC is equal to TPC (1 PP).</li>
-</ol>
-<p>
-    <em>Example 4 (boosting a spell):</em>
-</p>
-<ol>
-    <li><em>Spell:</em> An experienced sorcerer (relevant skill levels at 12) casts a boosted
-        Dispel Magic against a creature being affected by four active spells (their PL is 7, 11, 14, and 20, respectively).</li>
-    <li><em>Parameters:</em> The opponent is at medium range, giving TPC of 8 PP.</li>
-    <li><em>Boost:</em> The caster manages to boost the casting with 10 AP.</li>
-    <li><em>d20 check:</em> The caster can choose to &quot;take 10&quot; but decides to roll d20 instead.
-        As the spell states, a spellcasting check is made against each active effect on the target creature.</li>
-    <li><em>Results:</em> The four d20 checks result in 3 + 12 + 5 + 10 vs. DC 10 + 8 + 7,
-        9 + 12 + 5 + 10 vs. DC 10 + 8 + 11, 25 + 12 + 5 + 10 vs. DC 10 + 8 + 14, 7 + 12 + 5 + 10 vs. DC 10 + 8 + 20.
-        To summarize, the first three active spells are successfully dispelled, but the last one is not.</li>
-    <li><em>Costs:</em> Affinity results in APC of 3 PP.</li>
-</ol>
-<p>
-    <em>Example 5 (dampening a spell):</em>
-</p>
-<ol>
-    <li><em>Spell:</em> A cleric (relevant skill levels at 12) protects his private altar
-        with a concealed Glyph of Warding and dampens the spell to make it even harder to find.</li>
-    <li><em>Parameters:</em> Choice of parameters results in TPC of 11 PP.</li>
-    <li><em>Boost:</em> The caster is able to spend 10 AP to dampen the spell.</li>
-    <li><em>d20 check:</em> The d20 check with &quot;take 10&quot; would result in 10 + 12 + 5 - 10 against a DC of 10 + 11.
-        Since this would be an automatic failure, the caster decides to roll until he gets a successful roll (14 or better).
-        Note that each failure will still cost 55 gp worth of diamond dust.</li>
-    <li><em>Results:</em> The concealed and dampened glyph will have an effective PL of 1 (making it hard to see with Detect Magic) and has a DC of 15 + 11 to be visually detected.
-        Note, however, that the reduced PL will make a discovered glyph quite easy to dispel or disarm.</li>
-    <li><em>Costs:</em> Affinity results in APC of 7 PP.</li>
-</ol>
-<p>
-    <em>Example 6 (spell against counterspelling attempt):</em>
-</p>
-<ol>
-    <li><em>Spell:</em> A wizard (skills at level 5) casts Sleep while a sorcerer
-        (skills at level 3) tries to counterspell him.</li>
-    <li><em>Parameters:</em> The wizard chooses &quot;encounter&quot; for duration and a burst of 2 sq radius, resulting in TPC of 5 PP.</li>
-    <li><em>Boost:</em> Not anticipating the counterspelling attempt, he chooses to not boost the spell.</li>
-    <li><em>d20 check:</em> The sorcerer uses a reaction to successfully identify the Sleep spell.
-        He also knows Sleep, so he can attempt a reactive counterspelling without penalties
-        and has 3 AP saved for a counterspelling bonus.</li>
-    <li><em>Results:</em> The wizard's supernatural activation check with &quot;take 10&quot; ends up as 10 + 5 (skill) + 3 (Int mod),
-        but the DC of 10 + 5 (TPC) is replaced with the sorcerer's counterspelling check of 16 (d20) + 3 (skill) + 3 (Cha mod) + 3 (AP) + 5 (TPC).
-        The spellcasting result of 18 against the counterspelling result of 30 means that the sorcerer succeeds in interrupting the wizard's casting.
-        With a critical success, the sorcerer would even have been able to redirect the spell's target area instead of just interrupting the spell.</li>
-    <li><em>Costs:</em> Affinity results in APC of 3 PP (which has to be paid even though the spell was interrupted).</li>
-</ol>
-<p>
-    <em>Example 7 (spell against magic resistance):</em>
-</p>
-<ol>
-    <li><em>Spell:</em> A psion telepath (skills at level 12) tries to paralyze four drow with Hold Person.
-        They have magic resistance with MR of 7, 8, 12, and 17, respectively.</li>
-    <li><em>Parameters:</em> The parameters result in TPC of 11 PP.</li>
-    <li><em>Boost:</em> Since the psionicist knows his targets are resistant to magic, he boosts the power with 5 AP.</li>
-    <li><em>d20 check:</em> The psion decides to &quot;take 10&quot; with the d20 check,
-        resulting in 10 + 12 + 5 + 5 against a base DC of 10 + 11.</li>
-    <li><em>Results:</em> With each target's MR added to the DC, the power has full effect against the
-        first two drow, reduced effect against the third, and no effect at all against the fourth.<br/>
-        The psion rolls three attack rolls, getting 3 + 14 against Will 18, 12 + 14 against Will 19,
-        and 4 + 14 - 20 (due to reduced effect) against Will 25.
-        To summarize, the first drow is dazed for 1 round and the second is stunned for 1 round,
-        while the remaining two are unaffected.</li>
-    <li><em>Costs:</em> Affinity results in APC of 3 PP.</li>
-</ol>
-<p>
-    <em>Example 8 (spell against antimagic):</em>
-</p>
-<ol>
-    <li><em>Spell:</em> An archmage (skills at level 21) attacks three opponents with Force Missile,
-        two of which are standing in an anti-magic zone of strength 10.</li>
-    <li><em>Parameters:</em> With six missiles (two fired at each opponent), the TPC is 21 PP.</li>
-    <li><em>Boost:</em> The caster is unaware of the anti-magic zone, so he doesn't boost the spell.</li>
-    <li><em>d20 check:</em> Still unaware of the anti-magic zone, he uses &quot;take 10&quot;,
-        resulting in 10 + 21 + 5 against DC 10 + 21. Since the anti-magic zone increases the DC with 10,
-        the spell has reduced effect within the zone.</li>
-    <li><em>Results:</em> The wizard rolls one attack roll for each missile, getting 9 + 27, 17 + 27, -2 + 27 - 20, 7 + 27 - 20, 12 + 27 - 20, and 7 + 27 - 20.
-    All of the targets have DeC 19, so this means two hits against the target outside the zone (one exceptional and one critical hit),
-    two misses against the second target, and one regular hit against the third one.</li>
-    <li><em>Costs:</em> Affinity results in APC of 11 PP.</li>
-</ol>
-<p>
-    <em>Example 9 (spell against wild magic):</em>
-</p>
-<ol>
-    <li><em>Spell:</em> A druid (skills at level 9) standing in a zone of wild magic (strength 10) casts Fire Storm at opponents outside the zone.</li>
-    <li><em>Parameters:</em> With maximum damage for his skill level, the spell's TPC becomes 9 PP.</li>
-    <li><em>Boost:</em> Being aware of the wild magic zone, he boosts the spell with 5 AP.</li>
-    <li><em>d20 check:</em> The caster decides to take his chances by not using &quot;take 10&quot; for the check.
-        The caster has a stroke of bad luck, rolling a supernatural activation check of 2 + 9 + 4 + 5 against a DC of 10 + 9 + 10.</li>
-    <li><em>Results:</em> This is an outstanding failure, and the DM decides that a harmless swarm of butterflies flitters around the target area for 1 round.
-        Without the 5 AP boost, the result would have been an exceptional failure, and the druid would have suffered 28 HP of damage.</li>
-    <li><em>Costs:</em> Affinity results in APC of 6 PP.</li>
-</ol>
-<p>
-    <em>Example 10 (active spell against magic resistance):</em>
-</p>
-<ol>
-    <li><em>Spell: A cleric casts Blade Barrier to create a blade of force. A few rounds later,
-            he uses it to attack a demon with MR 13.</em></li>
-    <li><em>Parameters:</em> Let's say the caster chose to increase the blade's attack bonus
-        and damage when casting the spell, resulting in TPC of 9 PP.</li>
-    <li><em>Boost:</em> No boost chosen during casting.</li>
-    <li><em>d20 check:</em> Without a boost, the spell's PL will be equal to TPC (9),
-        so that casting will never be able to affect a demon with MR 13.
-        On the other hand, a boost of 4 AP or better would have guaranteed that the demon's MR of 13 is overcome.</li>
-    <li><em>Results:</em> Not relevant for the example.</li>
-    <li><em>Costs:</em> Not relevant for the example.</li>
-</ol>
-<p>
-    <em>Example 11 (summoned creature against antimagic):</em>
-</p>
-<ol>
-    <li><em>Spell:</em> A druid summons an earth elemental with Summon Elemental.
-        The elemental later tries to enter a zone of anti-magic.</li>
-    <li><em>Parameters:</em> Let's say the druid cast the summoning with TPC of 7.</li>
-    <li><em>Boost:</em> And boosted the spell with 5 AP.</li>
-    <li><em>d20 check:</em> This means the spell has PL 12 and that the elemental can enter anti-magic zones of strength 12 or less.</li>
-    <li><em>Results:</em> Not relevant for the example.</li>
-    <li><em>Costs:</em> Not relevant for the example.</li>
-</ol>
-<p>
-    <em>Example 12 (magic item against antimagic):</em>
-</p>
-<ol>
-    <li><em>Description:</em> A rogue brings a Dagger of Venom (PL 7) into a zone of anti-magic.</li>
-    <li><em>Results:</em> If the zone has a strength of 7 or less, the dagger functions normally within the zone.
-    If the zone is stronger, the dagger loses all magical powers and bonuses while within the zone.</li>
-</ol>
-<p>
-    <em>Example 13 (detection against protection):</em>
-</p>
-<ol>
-    <li><em>Spell:</em> A cleric (skills at level 4) tries to use Detect Alignment against an illusionist.
-        The illusionist has previously cast a boosted Protection from Divination with the False Aura variation, for a total PL of 10.</li>
-    <li><em>Parameters:</em> Not relevant for the example.</li>
-    <li><em>Boost:</em> The cleric can boost his spell with 5 AP.</li>
-    <li><em>d20 check:</em> Since the cleric's Detect Alignment is a non-instantaneous effect,
-        the contest between the spells is a simple PL comparison.
-        With the cleric's skill level of 4 and boost of 5, the maximum PL of his detection is 9;
-        the detection spell will only be able to detect the illusionist's fake aura.</li>
-    <li><em>Results:</em> Not relevant for the example.</li>
-    <li><em>Costs:</em> Not relevant for the example.</li>
-</ol>
-<p>
-    <em>Example 14 (teleporting through barriers):</em>
-</p>
-<ol>
-    <li><em>Spell:</em> A powerful wizard (skills at level 15) tries to teleport out of a sealed chamber.
-        The &quot;magically weakest&quot; part of the sealed chamber is a 5-cm-thick steel door,
-        adding 10 to the spellcasting difficulty.</li>
-    <li><em>Parameters:</em> The wizard tries for a teleport of unlimited range to a familiar destination, resulting in TPC of 9.</li>
-    <li><em>Boost:</em> Maximum boost for this wizard is 12 AP.</li>
-    <li><em>d20 check:</em> He attempts the spellcasting with &quot;take 10&quot;,
-            resulting in 10 + 15 + 5 + 12 against DC 20 + 9 + 10, meaning he escapes and ends up exactly where he intended.</li>
-    <li><em>Results:</em> Without the 12 AP boost, the teleport would have simply failed,
-        and with a smaller boost, he could have escaped the chamber but ended up at an unintended destination.</li>
-    <li><em>Costs:</em> Affinity results in APC of 4.</li>
-</ol>
-<p>
-    <em>Example 15 (casting a spell from a scroll):</em>
-</p>
-<ol>
-    <li><em>Spell:</em> A low-level cleric (skills at level 2) tries to cast Slay Living from a scroll.
-        The scroll is PL 9 (which happens to be the minimum PL possible for Slay Living).</li>
-    <li><em>Parameters:</em> PL 9 does not allow for any additional parameters.</li>
-    <li><em>Boost:</em> No boost.</li>
-    <li><em>d20 check:</em> Casting from a scroll means that the cleric has to spend twice the AP of the normal spell and can't use &quot;take 10&quot; on the spellcasting check.
-        Unfortunately, the cleric rolls a 3, so the spellcasting check ends up as 3 + 2 + 3 against DC 10 + 9,
-        an exceptional failure.</li>
-    <li><em>Results:</em> An exceptional failure simply means that the spell fizzles, but the scroll is still consumed.</li>
-    <li><em>Costs:</em> With a scroll, the casting does not cost the caster any PP.</li>
-</ol>
+
+<div class="space-y-3 my-3 text-xs">
+    <!-- Example 1 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 1: Benevolent Spell with Affinity</strong>
+        <p class="text-stone-600 mt-0.5"><em>A cleric (Wis 18, +4 mod) with level 8 in both Divine - Life and Cleric Affinity - Healing Domain casts Heal Wounds on an ally.</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Parameters &amp; TPC:</strong> Maximum allowable TPC is 8 PP. The cleric selects a 25 HP heal on one target at touch range, resulting in a <strong>Total Power Cost (TPC) of 7 PP</strong>.</li>
+            <li><strong>AP Boost:</strong> No boost necessary.</li>
+            <li><strong>Activation Check:</strong> With an affinity skill, the caster chooses to &quot;take 10&quot;: <code>10 + 8 (skill) + 4 (Wis mod) = 22 vs. DC 17 (10 + 7 TPC)</code>, achieving automatic success.</li>
+            <li><strong>Actual Cost:</strong> The affinity provides a cost reduction of 4 PP: <code>(8 + 2 &times; 4) / 4 = 4 PP</code>, resulting in an <strong>Actual Power Cost (APC) of 3 PP</strong>.</li>
+        </ul>
+    </div>
+
+    <!-- Example 2 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 2: Area Attack Spell with Affinity</strong>
+        <p class="text-stone-600 mt-0.5"><em>A wizard (Int 16, +3 mod) with level 5 in Arcane - Pyromancy and Wizard Affinity - Generalist casts Bolt of Fire targeting 7 opponents.</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Parameters &amp; TPC:</strong> To envelop all 7 targets, the caster selects a large spherical burst, yielding a <strong>TPC of 5 PP</strong>.</li>
+            <li><strong>Activation Check:</strong> Taking 10 with affinity: <code>10 + 5 (skill) + 3 (Int mod) = 18 vs. DC 15 (10 + 5 TPC)</code> (automatic success).</li>
+            <li><strong>Resolution &amp; Attacks:</strong> The wizard rolls base damage once (10 HP fire), then rolls individual attacks against each opponent's Reflex (<dfn>Ref 16</dfn>): results of 21, 18, 20, 3, 24, 20, and 37 produce 1 failure (half damage), 5 regular hits (full damage), and 1 critical success (double damage).</li>
+            <li><strong>Actual Cost:</strong> Affinity reduction of 2 PP yields an <strong>APC of 3 PP</strong>.</li>
+        </ul>
+    </div>
+
+    <!-- Example 3 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 3: Touch Spell without Affinity (Vital Attack)</strong>
+        <p class="text-stone-600 mt-0.5"><em>A rogue with 4 levels in Arcane - Transmutation casts Disintegrate as part of a melee Vital Attack.</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Parameters &amp; TPC:</strong> To maximize success chances, the rogue spends the minimum <strong>TPC of 1 PP</strong>.</li>
+            <li><strong>Activation Check:</strong> Lacking an affinity skill, the rogue cannot take 10. Rolling d20 produces: <code>17 + 4 (skill) = 21 vs. DC 11 (10 + 1 TPC)</code> (success).</li>
+            <li><strong>Melee &amp; Saving Attack Rolls:</strong> Benefiting from Vital Attack bonuses, the rogue scores an unarmed attack check of 27 against passive <dfn>DeCp 10</dfn> (hit), followed by a secondary check of 22 against <dfn>Fort 19</dfn> (success), inflicting 6 blunt HP from the punch and 16 HP from Disintegrate.</li>
+            <li><strong>Actual Cost:</strong> Without affinity, <strong>APC equals TPC (1 PP)</strong>.</li>
+        </ul>
+    </div>
+
+    <!-- Example 4 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 4: Action Point Boosting (Dispel Magic)</strong>
+        <p class="text-stone-600 mt-0.5"><em>A level 12 sorcerer casts a boosted Dispel Magic against a foe shielded by four active spells (PL 7, 11, 14, and 20).</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Parameters &amp; AP Boost:</strong> Medium range yields <strong>TPC of 8 PP</strong>. The sorcerer spends <strong>10 AP</strong> to boost the casting (<code>APB = +10</code>).</li>
+            <li><strong>Activation Checks:</strong> Rolling against each active spell:
+                <ul class="list-disc ml-5 mt-0.5 space-y-0.5">
+                    <li>Spell 1 (PL 7): <code>3 + 12 + 5 + 10 = 30 vs. DC 25 (10 + 8 + 7)</code> &rarr; Dispelled.</li>
+                    <li>Spell 2 (PL 11): <code>9 + 12 + 5 + 10 = 36 vs. DC 29 (10 + 8 + 11)</code> &rarr; Dispelled.</li>
+                    <li>Spell 3 (PL 14): <code>25 + 12 + 5 + 10 = 52 vs. DC 32 (10 + 8 + 14)</code> &rarr; Dispelled.</li>
+                    <li>Spell 4 (PL 20): <code>7 + 12 + 5 + 10 = 34 vs. DC 38 (10 + 8 + 20)</code> &rarr; Remains active.</li>
+                </ul>
+            </li>
+            <li><strong>Actual Cost:</strong> Affinity reduction gives an <strong>APC of 3 PP</strong>.</li>
+        </ul>
+    </div>
+
+    <!-- Example 5 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 5: Action Point Dampening (Concealed Glyph)</strong>
+        <p class="text-stone-600 mt-0.5"><em>A level 12 cleric protects an altar with a concealed Glyph of Warding, dampening the casting to conceal its aura.</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Parameters &amp; Dampening:</strong> Parameters yield <strong>TPC 11 PP</strong>; the cleric spends 10 AP to dampen (<code>APB = -10</code>).</li>
+            <li><strong>Activation Check:</strong> Taking 10 would produce <code>10 + 12 + 5 - 10 = 17 vs. DC 21 (10 + 11 TPC)</code> (automatic failure), so the cleric rolls d20, retrying until achieving a roll of 14+ (each failure consuming 55 gp of diamond dust).</li>
+            <li><strong>Concealment Results:</strong> The dampened glyph has an effective <strong>PL of 1</strong> (making it nearly undetectable via <em>Detect Magic</em>) and requires a <strong>DC 26 (15 + 11)</strong> Perception check to spot visually (though its low PL makes it easy to dispel if discovered).</li>
+            <li><strong>Actual Cost:</strong> <strong>APC of 7 PP</strong>.</li>
+        </ul>
+    </div>
+
+    <!-- Example 6 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 6: Opposed Counterspelling Contest</strong>
+        <p class="text-stone-600 mt-0.5"><em>A level 5 wizard casts Sleep (TPC 5 PP) while an opposing level 3 sorcerer attempts a reactive counterspell.</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Reaction &amp; Identification:</strong> The sorcerer spends a reaction to identify <em>Sleep</em>. Knowing the spell, the sorcerer initiates an opposed counterspell with 3 banked AP.</li>
+            <li><strong>Opposed Contest:</strong> Wizard activation check (take 10): <code>10 + 5 + 3 = 18</code>. The base DC is replaced by the sorcerer's counterspelling check: <code>16 (d20) + 3 (skill) + 3 (Cha) + 3 (AP) + 5 (TPC) = 30</code>.</li>
+            <li><strong>Resolution:</strong> Because <code>30 &gt; 18</code>, the sorcerer successfully counters and disrupts the casting. The wizard must still expend the full <strong>APC of 3 PP</strong>.</li>
+        </ul>
+    </div>
+
+    <!-- Example 7 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 7: Penetrating Magic Resistance (MR)</strong>
+        <p class="text-stone-600 mt-0.5"><em>A level 12 psion telepath manifests Hold Person (TPC 11 PP, boosted with 5 AP &rarr; PL 16) against four drow with MR 7, 8, 12, and 17.</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Activation Check:</strong> Taking 10 with boost: <code>10 + 12 (skill) + 5 (Wis) + 5 (AP) = 32 vs. Base DC 21 (10 + 11 TPC)</code>.</li>
+            <li><strong>Per-Target MR Resolution:</strong>
+                <ul class="list-disc ml-5 mt-0.5 space-y-0.5">
+                    <li>Drow 1 (MR 7, DC 28) &amp; Drow 2 (MR 8, DC 29): Full effect (32 &ge; DC).</li>
+                    <li>Drow 3 (MR 12, DC 33): Reduced effect (-20 penalty on subsequent attack check).</li>
+                    <li>Drow 4 (MR 17, DC 38): Complete failure (32 &lt; 38).</li>
+                </ul>
+            </li>
+            <li><strong>Attack Checks:</strong> Attack rolls against Willpower paralyze Drow 1 (dazed 1 round) and Drow 2 (stunned 1 round), while Drow 3 and 4 resist.</li>
+        </ul>
+    </div>
+
+    <!-- Example 8 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 8: Casting into an Antimagic Zone</strong>
+        <p class="text-stone-600 mt-0.5"><em>An archmage (skill 21) attacks three opponents with Force Missile (6 missiles, TPC 21 PP, unboosted). Two targets stand in an Antimagic zone of strength 10.</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Activation Check:</strong> Taking 10: <code>10 + 21 + 5 = 36 vs. DC 31 (outside) / DC 41 (inside AM zone)</code>. The spell functions at full power outside, but suffers reduced effect inside.</li>
+            <li><strong>Missile Attack Resolution:</strong> Targets have <dfn>DeC 19</dfn>. Against the target outside: 2 hits (1 exceptional, 1 critical). Inside the zone (-20 penalty): 2 misses and 1 regular hit.</li>
+            <li><strong>Actual Cost:</strong> <strong>APC of 11 PP</strong>.</li>
+        </ul>
+    </div>
+
+    <!-- Example 9 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 9: Wild Magic Instability &amp; Mishap</strong>
+        <p class="text-stone-600 mt-0.5"><em>A level 9 druid standing in a Wild Magic zone (strength 10) casts Fire Storm (TPC 9 PP, boosted with 5 AP).</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Activation Check:</strong> Rolling d20 produces <code>2 + 9 + 4 + 5 = 20 vs. DC 29 (10 + 9 TPC + 10 WM)</code>.</li>
+            <li><strong>Wild Magic Mishap:</strong> Failing by 9 constitutes an outstanding failure; a harmless cloud of colorful butterflies erupts for 1 round. (Without the 5 AP boost, this would have been an exceptional failure dealing 28 backfire HP to the caster.)</li>
+            <li><strong>Actual Cost:</strong> <strong>APC of 6 PP</strong>.</li>
+        </ul>
+    </div>
+
+    <!-- Example 10 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 10: Active Ongoing Spell vs. Magic Resistance</strong>
+        <p class="text-stone-600 mt-0.5"><em>A cleric directs an active Blade Barrier (TPC 9 PP, unboosted &rarr; PL 9) against a demon possessing MR 13.</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Ongoing Check:</strong> Active ongoing spells test using <code>10 + PL (19) vs. DC 23 (10 + 13 MR)</code>. Because 19 &lt; 23, the unboosted blade cannot pierce the demon's resistance (an initial 4 AP boost during casting would have ensured penetration).</li>
+        </ul>
+    </div>
+
+    <!-- Example 11 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 11: Summoned Creature vs. Antimagic</strong>
+        <p class="text-stone-600 mt-0.5"><em>A druid summons an earth elemental with Summon Elemental (TPC 7 PP, boosted with 5 AP &rarr; PL 12).</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Zone Entry:</strong> Because the summoning has an effective <strong>PL of 12</strong>, the elemental can freely cross into and operate within antimagic zones of strength 12 or less.</li>
+        </ul>
+    </div>
+
+    <!-- Example 12 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 12: Magic Item in Antimagic</strong>
+        <p class="text-stone-600 mt-0.5"><em>A rogue carries a Dagger of Venom (PL 7) into an antimagic field.</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Suppression:</strong> If the zone's AM strength is 7 or lower, the dagger functions normally. If the AM strength exceeds 7, the dagger temporarily functions as a mundane masterwork blade while in the zone.</li>
+        </ul>
+    </div>
+
+    <!-- Example 13 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 13: Divination Detection vs. False Aura</strong>
+        <p class="text-stone-600 mt-0.5"><em>A cleric (skill 4) casts Detect Alignment (boosted with 5 AP &rarr; PL 9) against an illusionist shielded by Protection from Divination (False Aura, PL 10).</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>PL Contest:</strong> Because both are ongoing effects, compare PL directly: <code>PL 10 (protection) &gt; PL 9 (detection)</code>. The cleric detects only the fabricated false alignment.</li>
+        </ul>
+    </div>
+
+    <!-- Example 14 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 14: Teleportation through Structural Barriers</strong>
+        <p class="text-stone-600 mt-0.5"><em>A level 15 wizard attempts to teleport out of a sealed vault through a 5 cm reinforced steel door (+10 difficulty).</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Parameters &amp; AP Boost:</strong> Unlimited range to a familiar destination gives <strong>TPC 9 PP</strong>; the wizard boosts with <strong>12 AP</strong>.</li>
+            <li><strong>Activation Check:</strong> Taking 10: <code>10 + 15 (skill) + 5 (Int) + 12 (AP) = 42 vs. DC 39 (20 base + 9 TPC + 10 barrier)</code>. The wizard teleports cleanly to the intended destination.</li>
+            <li><strong>Actual Cost:</strong> Affinity reduction gives an <strong>APC of 4 PP</strong>.</li>
+        </ul>
+    </div>
+
+    <!-- Example 15 -->
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-3">
+        <strong class="text-stone-900 font-semibold text-sm">Example 15: Casting from a Scroll</strong>
+        <p class="text-stone-600 mt-0.5"><em>A level 2 cleric attempts to activate a Scroll of Slay Living (PL 9).</em></p>
+        <ul class="mt-2 space-y-1 text-stone-700">
+            <li><strong>Activation Check:</strong> Scribing requirements force double AP activation time and forbid taking 10. Rolling a 3 produces: <code>3 + 2 (skill) + 3 (Wis) = 8 vs. DC 19 (10 + 9 PL)</code>.</li>
+            <li><strong>Resolution:</strong> Failing by 11 is an exceptional failure; the spell fizzles harmlessly, the scroll crumbles to dust, and no personal PP is lost.</li>
+        </ul>
+    </div>
+</div>
 
 <h3 id="CircleMagic">Circle Magic</h3>
 <p>
-    Multiple creatures with sufficient levels in Spellcraft can cooperate by joining in a circle of magic.
-    The leader (or the beneficiary) of the circle stands in the center, while the other participants must stand within 2 squares of the leader.
-    The participants do not have to be of the same class (although this is usually the case).
-    It is even possible for wizards, clerics, and psions to cooperate in the same circle.
+    Multiple spellcasters or psionicists with sufficient ranks in <em>Spellcraft</em> can join in cooperative ritual circles to channel immense magical energy:
 </p>
-<p>
-    The circle requires one hour for all participants to attune themselves, before the leader can receive any benefits.
-    A contributing participant who performs any action that requires concentration automatically leaves the circle.
-</p>
-<p>
-    While the circle is assembled, the leader can draw PP from the other participants when he is casting spells or manifesting powers.
-    A participant who has the necessary skills to cast the leader’s spell or power can also perform an “aid another” action 
-    to give the leader a spellcasting check or attack roll bonus.
-</p>
+<ul class="space-y-1.5 my-2">
+    <li><strong>Structure &amp; Participation:</strong> The designated leader (and beneficiary) stands in the center of the circle, while contributing participants position themselves within <strong>2 squares (10 feet)</strong> of the leader. Participants do not need to share the same class or tradition; wizards, clerics, and psions can seamlessly combine power within a single circle.</li>
+    <li><strong>Attunement Ritual:</strong> Establishing a circle requires <strong>1 hour</strong> of uninterrupted attunement before the leader can draw upon shared benefits. Any contributing participant who takes an action requiring independent concentration immediately breaks their connection and leaves the circle.</li>
+    <li><strong>Shared Power &amp; Assistance:</strong> While the circle remains active, the leader can draw Power Points directly from contributing participants to fuel high-cost spells and variations. Participants possessing the requisite skills to cast the leader's active spell can also perform the <em>Aid Another</em> action to grant circumstance bonuses to the leader's activation checks or attack rolls.</li>
+</ul>
 
 <h3 id="ResearchingSpells">Researching Spells and Powers</h3>
 <p>
-    The spells and powers listed in these rules are only the ones most commonly taught to spell casters and psionicists.
-    It is possible, however, for such practitioners to research and develop new powers based on the skills they know.
+    The spells and psionic powers detailed in the rules catalog represent standardized, widely taught formulas. Arcane scholars, devout hierarchs, and enlightened psions can engage in scholarly research during extended downtime to invent entirely new spells, develop novel variations, or customize unique supernatural manifestations tailored to their known skills.
 </p>
 
 <h3 id="Metaphysics">Metaphysics</h3>
