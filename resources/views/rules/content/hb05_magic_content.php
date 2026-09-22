@@ -380,226 +380,158 @@
 
 <h3 id="Metaphysics">Metaphysics</h3>
 <p>
-    The strength and reliability of the laws of physics vary across the universe. Where the laws are strongest, magic is at its weakest,
-    and only the most powerful and skilled magicians have any hope of casting spells there.
-    If, on the other hand, the laws are weak, they are more easily manipulated by those who are skilled in magic.
-    Weak laws of physics means strong magic, but this is not always beneficial.
-    Advanced technology is usually very dependent on the reliability of those laws,
-    so areas with strong magic tend to disrupt or at least reduce the efficiency of electronic devices, internal combustion engines,
-    even explosives, electrical batteries, and generators. Biology tends to be more resilient,
-    but areas with extremely weak laws of physics are chaotic enough to be inhospitable even to organic life, biotechnology, and simple mechanics.
+    The strength and consistency of the laws of physics vary across the cosmos. Where physical laws are rigid and dominant, magic is at its weakest, and only the most potent and disciplined spellcasters can channel supernatural energy. Conversely, where physical laws are pliable and thin, the fabric of reality is easily shaped by magical will.
 </p>
 <p>
-    The strength of magic can fluctuate greatly over both time and space. There is no typical size to these fluctuations;
-    in many cases, a whole galaxy can have strong laws of physics and practically no magic at all, while in other cases,
-    a world may be strong in magic but have sporadic “dead” zones encompassing just a few cubic meters.
-    Another possible occurrence is that an advanced technological civilization suddenly collapses due to an unexpected increase in the level of magic.
-    In very rare cases, a local magic fluctuation can even be connected to a living creature or artificial device.
+    However, strong magic is not without hazard. Advanced technology relies heavily on predictable physical constants; areas rich in magic disrupt or degrade the efficiency of electronics, combustion engines, chemical explosives, and power cells. While biological organisms are more resilient, zones of extreme physical instability become too chaotic to support even organic life, biotechnology, or simple mechanics.
+</p>
+<p>
+    Magic fluctuates across time and space. An entire galaxy may operate under strict physical laws with virtually no ambient magic, while a high-magic world might harbor sporadic &ldquo;dead magic&rdquo; voids spanning only a few paces. Unstable fluctuations can trigger the sudden collapse of technological civilizations or arise as rare anomalies tethered to ancient artifacts or living beings.
 </p>
 
 <h4>Anti-Magic Zones</h4>
 <p>
-    If you try to use a supernatural action in an area that has anti-magic, the anti-magic level (AM) is added to the difficulty.
-    If the check fails due to the added AM, the action will have reduced or no effect.
-    If you are within the AM area, the entire action is affected. If you are outside the area but the effect is wholly or partially in the AM area,
-    then any part of the effect that is within the AM area suffers the reduced effect.
+    Attempting a supernatural action within or into an anti-magic area adds the anti-magic level (AM) directly to the action&rsquo;s difficulty DC:
 </p>
-<p>
-    When an active supernatural effect, magical device, or conjured creature enters an area with AM,
-    compare the AM against the effect’s, device’s, or creature’s power level.
-    If the AM is higher, the effect is temporarily dispelled, the device is temporarily rendered inactive, and the creature is unable to enter the area.
-</p>
+<ul>
+    <li><strong>Failed Checks:</strong> If the check fails specifically due to the added AM, the action suffers reduced potency or fails entirely.</li>
+    <li><strong>Zone Boundaries:</strong> If the caster is inside the zone, the entire action is suppressed. If the caster is outside but the effect enters the zone, only the portion inside the anti-magic area suffers suppression.</li>
+    <li><strong>Existing Magic &amp; Constructs:</strong> When an active supernatural effect, magic item, or conjured creature enters an anti-magic zone, compare the AM against the effect&rsquo;s, item&rsquo;s, or creature&rsquo;s Power Level (PL). If the AM exceeds the PL, the effect is temporarily dispelled, the item is rendered inert, and conjured creatures are barred from entering.</li>
+</ul>
 
 <h4>Wild Magic Zones</h4>
 <p>
-    If you try to use a supernatural action in an area that has wild magic, the wild magic level (WM) is added to the difficulty.
-    If the check fails due to the added WM, then the action suffers a wild effect.
-    This can happen either if you are standing in the WM area or if the action’s effect is wholly or partially in the WM area.
+    Attempting a supernatural action within or targeted into a wild magic area adds the wild magic level (WM) to the action&rsquo;s difficulty DC. If the check fails due to the added WM modifier, the magic unravels into an unpredictable wild magic surge. This applies whether the caster stands inside the area or targets an effect into it.
 </p>
 
 <h4>Affecting Zones of Wild and Dead Magic</h4>
 <p>
+    Extreme planar phenomena, master-tier rituals, and cataclysmic disruptions of magical ley lines can alter, stabilize, or induce dead or wild magic anomalies across a region.
 </p>
 
 <h4 id="Undeath">Souls and Undeath</h4>
 <p>
-    Souls gradually develop as metaphysical energy patterns in any system complex enough to be sentient, whether that system is a human brain,
-    the brain of any other intelligent creature, a computer, etc.
-    What happens to the soul when the owner dies depends on the “strength” of the soul as well as the local level of magic.
-    More intelligent or powerful creatures will develop stronger souls, while the souls of common animals are usually weak enough
-    to disperse soon after the creature’s death. Souls that are strong enough to be persistent may travel to a different plane,
-    remain in the vicinity and manifest occasionally as spirits or ghosts, or reanimate the dead body as an undead.
+    Souls develop as metaphysical energy matrices within any system complex enough to sustain sentience&mdash;whether a biological humanoid brain, an alien consciousness, or a sapient synthetic construct.
 </p>
 <p>
-    Souls can be regarded as metaphysical copies of the physical brain, and strong souls will retain the complete personality and memories of the owner.
-    Things that affect the brain, such as disease, chemicals, injuries, etc., will also affect the soul if the effect’s duration is long enough.
-    Note that if an individual is cloned or his mind otherwise duplicated, the copy can gradually develop its own soul.
-    Souls do not have a corporeal existence, but the soul’s memories will usually cause any manifestation to resemble the original person,
-    unless the soul consciously alters its appearance. An incorporeal soul does not have any of the normal senses,
-    but it can roughly sense density of matter in the vicinity, and it can also sense other nearby souls (corporeal as well as incorporeal).
-    The soul itself usually interprets these senses as a form of sight and sound.
+    Upon physical death, the fate of a soul depends on its intrinsic strength and the local ambient magic:
+</p>
+<ul>
+    <li><strong>Weak Souls:</strong> The souls of beasts and simple minds lack the structural cohesion to endure and dissipate shortly after death.</li>
+    <li><strong>Persistent Souls:</strong> Powerful minds form resilient souls that may transition to other planes, linger as spectral entities (spirits, ghosts, or wraiths), or reanimate their mortal remains into undeath.</li>
+</ul>
+<p>
+    A soul acts as a metaphysical blueprint of the physical brain, retaining the deceased individual&rsquo;s full memories, traits, and personality. Prolonged physiological trauma, diseases, or mental damage will mirror onto the soul over time. Conversely, when an individual is cloned or their consciousness duplicated, the new vessel gradually develops an independent soul.
 </p>
 <p>
-    Trained individuals can learn to voluntarily (and temporarily) separate their soul from the body.
-    The level of concentration or meditation required means that the individual’s body is virtually comatose while the soul is travelling
-    (unless the individual is extremely good at multitasking).
+    Incorporeal souls lack physical senses but perceive ambient matter density and nearby souls (both living and disembodied), which the mind interprets as supernatural sight and sound.
 </p>
 <p>
-    A free soul can sometimes fight the soul of a living creature and 
-    <a href="/rules/core#Possession">possess</a> 
-    its body.
-    Only a very powerful soul is capable of inhabiting and controlling a body whose brain does not match the soul.
-    Therefore, a rough order of difficulty goes from a clone, to a relative, to an individual of the same species,
-    to another intelligent creature, to an unintelligent creature or construct. If the soul is very strong,
-    it will gradually imprint its pattern in the brain it inhabits, but if it is not strong enough,
-    it may eventually become replaced by or merged with the original soul.
+    Disciplined practitioners can enter deep meditative trances to temporarily project their soul outside the body. While astral projecting, the physical body remains comatose and vulnerable unless the practitioner possesses extraordinary multitasking capabilities.
+</p>
+<p>
+    A free soul may attempt to <a href="/rules/core#Possession">possess</a> a living vessel. Overcoming and controlling an alien brain requires immense willpower. The difficulty of possession increases based on anatomical and mental divergence:
+</p>
+<ol>
+    <li>Direct Genetic Clone <em>(Easiest)</em></li>
+    <li>Close Blood Relative</li>
+    <li>Member of the Same Species</li>
+    <li>Other Intelligent Creature</li>
+    <li>Unintelligent Creature or Construct <em>(Hardest)</em></li>
+</ol>
+<p>
+    A dominant soul gradually overwrites the host brain with its own neural patterns, whereas a weaker invading soul risks being suppressed, expunged, or permanently merged with the host.
 </p>
 
 <h3 id="Residuum">Residuum</h3>
 <p>
-    Residuum is a liquid form of raw magic and life energy.
-    It can be used in place of XP when creating magic items and casting spells that cost XP.
-    Residuum is typically produced by using the Enchant Item skill to disenchant a magic item.
+    Residuum is raw magical energy and life force distilled into liquid form. It serves as a universal substitute for Experience Point (XP) costs when crafting magic items or casting high-tier spells that demand life energy. Residuum is harvested by disenchanting magical items using the <em>Enchant Item</em> skill.
 </p>
-<p>
-    Residuum is a silvery liquid similar to mercury in appearance, but it has a slightly luminescent quality.
-    Amounts of residuum are measured in XP, its volume is 1 dl per 1000 XP, and it has a density of 10 kg per l.
-</p>
-<p>
-    Residuum is usually stored in glass vials and flasks.
-</p>
-<p>
-    If anyone is crazy enough to drink residuum (or is forced to do so), apply the effects of a random spell to the drinker.
-    The maximum PL of that effect is 1 per 200 XP of residuum.
-</p>
+<ul>
+    <li><strong>Appearance &amp; Density:</strong> A luminous, silvery fluid resembling mercury, possessing a density of 10 kg per liter.</li>
+    <li><strong>Equivalence:</strong> 1 deciliter (0.1 L) of residuum equals 1,000 XP. It is typically stored in reinforced glass vials and alchemical flasks.</li>
+    <li><strong>Hazards:</strong> Ingesting residuum triggers a volatile magical reaction. The imbiber suffers the effect of a random spell with a maximum Power Level equal to 1 PL per 200 XP consumed.</li>
+</ul>
 
 <h3 id="MagicItems">Magic Items</h3>
 <p>
-    Magic items are usually similar to mundane items, except that they have been infused with and enhanced by magic.
+    Magic items are objects infused with supernatural energy and permanent enchantments that grant extraordinary properties beyond mundane craftsmanship.
 </p>
 
 <h4>Magic Item Appearance</h4>
 <p>
-    A majority of magic items differ little in appearance from their mundane versions,
-    but they are often exceptionally well made or decorated with gems and precious metals.
-    Some may even be obviously magical, glowing or sparkling with discharges of arcane energy.
-    Others, however, may be “disguised” as common or even cheap items.
+    Most magic items closely resemble their mundane counterparts, though they are often crafted with exceptional artistry, engraved with arcane runes, or inlaid with precious gemstones. Some radiate visible discharges of magical energy, while others are deliberately disguised as plain or weathered tools.
 </p>
 <p>
-    Many magic items are of masterwork, outstanding, or exceptional workmanship in addition to being magical.
-    Not only does this make the item more valuable, but it also makes the item more useful in situations where its magic fails for whatever reason.
+    Many enchanted items are of <em>Masterwork</em>, <em>Outstanding</em>, or <em>Exceptional</em> quality. Superior craftsmanship not only increases the item&rsquo;s value and durability, but also ensures it remains an effective tool if its enchantments are temporarily suppressed in anti-magic fields.
 </p>
 
 <h4>Identifying Magic Items</h4>
 <p>
-    The Spellcraft and Enchant Item skills can be used to do some basic identification of a magic item.
-    Successful checks can identify potions and reveal the type and level of power involved.
-    These skills can also be used to attune oneself to supernatural foci and power sources.
+    The <em>Spellcraft</em> and <em>Enchant Item</em> skills can assess unknown items through careful examination:
 </p>
-<p>
-    For more detailed identification, spells such as Detect Magic and Analyze Dweomer are required.
-</p>
+<ul>
+    <li><strong>Basic Analysis:</strong> Successful skill checks identify potions and reveal the general school, type, and power level of an enchantment. These skills also allow a character to attune to magical foci and power sources.</li>
+    <li><strong>Comprehensive Analysis:</strong> Detailed insight into an item&rsquo;s command words, charges, and hidden curses requires spells such as <em>Detect Magic</em> and <em>Analyze Dweomer</em>.</li>
+</ul>
 
 <h4>Using Magic Items</h4>
 <p>
-    Many magic items need only be worn or used normally to provide their benefits to the owner.
-    For example, a suit of magic armor protects its wearer automatically, a Ring of Regeneration starts working as soon as it is put on one’s finger,
-    a magic sword gives bonuses to attack and damage when it is wielded, etc. Such items usually require no special skills or powers to wear or use.
+    Magic items operate through one of several activation methods:
 </p>
-<p>
-    Other items must be activated in some way, possibly requiring a spoken phrase, a special gesture,
-    or just a mental command.
-    Some items, such as wands and spell scrolls, even require specific skills and action checks to use properly.
-    See the 
-    <a href="/reference/actions">list of actions</a> 
-    for special actions related to the use of magic items.
-</p>
+<ul>
+    <li><strong>Continuous &amp; Passive Items:</strong> Provide continuous benefits simply by being worn or wielded (e.g., magic armor providing DR bonuses, a <em>Ring of Regeneration</em>, or an enchanted blade granting attack bonuses).</li>
+    <li><strong>Command-Activated Items:</strong> Require a deliberate trigger, such as a command word, somatic gesture, or mental impulse.</li>
+    <li><strong>Spell Implements:</strong> Items such as wands and scrolls require specific skill checks and actions to channel safely. See the <a href="/reference/actions">List of Actions</a> for dedicated magic item actions.</li>
+</ul>
 
 <h4>Potions and Oils</h4>
 <p>
-    Potions and oils are basically spells concocted and distilled into a liquid form.
-    Potions take effect when you drink them, while oils take effect when they are applied to the skin of a creature (or the surface an object).
-    Certain oils can even be activated by throwing and breaking the container against the target (treat this as a splash attack).
-    Such oils are often stored in breakable glass beads rather than vials,
-    and their size make them suitable as ammunition for slings made for small-, medium-, or large-sized creatures.
+    Potions and oils are distilled magical spells suspended in liquid form:
 </p>
-<p>
-    Potions and oils usually come in small vials containing a single dose.
-    A typical dose is 2 to 3 cl, and vials are usually around 3 cm wide and 5 cm high.
-</p>
+<ul>
+    <li><strong>Application:</strong> Potions take effect when ingested. Oils take effect when applied directly to a creature&rsquo;s skin or an object&rsquo;s surface.</li>
+    <li><strong>Splash Delivery:</strong> Certain oils can be brewed into fragile glass beads and thrown as splash attacks or launched using slings sized for Small, Medium, or Large wielders.</li>
+    <li><strong>Dose &amp; Size:</strong> Standard doses consist of 2 to 3 cl of liquid contained in vials approximately 3 cm wide by 5 cm tall.</li>
+</ul>
 
 <h4>Psionic Tattoos</h4>
 <p>
-    Psionic tattoos are psionic powers stored in the form of a colorful geometric design on a creature's body.
-    A tattoo can be activated by the wearer (and only the wearer) by touching it and concentrating for a few seconds.
-    When activated, the tattoo's power takes effect, and the tattoo itself immediately fades away.
+    Psionic tattoos are psionic powers inscribed directly onto a creature&rsquo;s skin as intricate, geometric patterns of vibrant energy:
 </p>
-<p>
-    Tattoos usually cover an area no larger than 10 by 10 cm, but there is no actual limit other than the size of the creature's skin.
-    A single creature is limited to a maximum of twenty tattoos - adding another one will create an interference
-    and overload that causes all the tattoos to fade away.
-</p>
+<ul>
+    <li><strong>Activation:</strong> Only the bearer can trigger a tattoo by touching the design and concentrating. Upon activation, the power discharges instantly and the tattoo fades away.</li>
+    <li><strong>Limits:</strong> A tattoo typically occupies a 10 &times; 10 cm area of skin. A single creature can support up to 20 active tattoos. Inscribing a 21st tattoo creates magical dissonance that overloads the matrix and causes all tattoos on the bearer to permanently vanish.</li>
+</ul>
 
 <h4>Scrolls</h4>
 <p>
-    Scrolls are spells that have been written down on paper or parchment.
-    The scroll also contains the power and materials required to cast the spell,
-    so anyone with at least one level in the required spell skill(s) can cast the spell from a scroll without paying its cost or using any implements other than verbal.
-    However, casting a spell from a scroll requires the same amount of concentration as normal spellcasting, and it triggers attacks of opportunity.
-    Also note that reading a scroll consumes its power and turns the scroll to dust.
+    Scrolls are arcane or divine spells transcribed onto parchment or paper, complete with the mystical energy and material catalysts required for casting:
 </p>
-<p>
-    Any reader with the required spell skill(s) can identify the spell(s) of a scroll with a quick perusal.
-    Scrolls take effect when they are read out loud.
-</p>
-<p>
-    Reading a scroll requires at least one level in the spell skill(s) that the writer had to use to create the scroll.
-    Note, however, that the spell does not have to be known to the reader, nor does he automatically learn the spell simply by activating the scroll.
-    Reading from a scroll always requires a spellcasting check, with the same modifiers as a regular casting.
-</p>
-<p>
-    The reader chooses the actual range and target(s) within the spell's limits, but other
-    variations and parameters are chosen when the scroll is created.
-</p>
+<ul>
+    <li><strong>Requirements:</strong> Activating a scroll requires at least 1 rank in the corresponding spell skill used to scribe it. The caster does not need to know the spell beforehand, nor does reading the scroll teach it permanently.</li>
+    <li><strong>Casting from a Scroll:</strong> Reading a scroll out loud requires a standard spellcasting check (with all standard casting modifiers), demands concentration, and provokes attacks of opportunity. Implements other than verbal components are waived.</li>
+    <li><strong>Parameters:</strong> The reader selects the range and targets within the spell&rsquo;s parameters upon casting, but the spell&rsquo;s variations and enhancements are locked in at the time of scribing. Once cast, the scroll crumbles into dust.</li>
+</ul>
 
 <h4>Power Stones</h4>
 <p>
-    Power Stones are crystals containing a stored version of a psionic power.
-    The stone also contains the power and materials required to manifest the power,
-    so anyone with at least one level in the required psionic skill(s) can manifest the power in a power stone without paying its cost or using any implements other than verbal.
-    However, manifesting a power from a stone requires the same amount of concentration as normal spellcasting, and it triggers attacks of opportunity.
-    Also note that activating a power stone consumes its power and turns the stone to dust.
+    Power stones are attuned crystals storing a dormant psionic power:
 </p>
-<p>
-    A power stone is a thumb-sized chunk of crystal.
-    It possesses a barely detectable interior glow if it holds a power of PL below 6.
-    A stone imprinted with a higher-level power glows more brightly, but never enough to provide illumination in its own right.
-</p>
-<p>
-    The power(s) stored in a stone can be identified by anyone with the required psionic skill(s) simply by touching the stone.
-    Such a psionic user can then activate the stone by concentrating upon it and chanting.
-</p>
-<p>
-    Activating a power stone requires at least one level in the psionic skill(s) that the creator had to use to create the stone.
-    Note, however, that the power does not have to be known to the activator, nor does he automatically learn the power simply by activating the stone.
-    Activating a power stone always requires a supernatural activation check, with the same modifiers as a regular manifestation.
-</p>
-<p>
-    The activator chooses the actual range and target(s) within the power's limits, but other
-    variations and parameters are chosen when the power stone is created.
-</p>
+<ul>
+    <li><strong>Requirements:</strong> Activating a power stone requires at least 1 rank in the associated psionic skill. The activator does not need to know the power beforehand.</li>
+    <li><strong>Manifestation:</strong> Activating a stone requires chanting, concentration, and a supernatural activation check, provoking attacks of opportunity.</li>
+    <li><strong>Luminescence:</strong> Stones holding powers of PL 6 or higher emit a distinct interior glow. Upon activation, the stone expends its stored energy and dissolves into fine crystal dust.</li>
+</ul>
 
 <h4>Runes</h4>
 <p>
-    Runes are divine spells that have been inscribed on an object or surface.
-    Objects of medium size or smaller can hold a single rune, while larger objects and surfaces can hold up to one rune per m<sup>2</sup>.
+    Runes are divine spells inscribed onto objects or architectural surfaces:
 </p>
-<p>
-    A rune is triggered by any living creature touching it.
-    The only exception is the rune’s creator - he can choose whether to activate the rune or not when touching it.
-    Also note that only “active” touching triggers a rune; attacking with a rune-inscribed weapon does not trigger the rune, for example.
-    When a rune’s charges have been used up, it becomes non-magical and also fades away physically.
-</p>
+<ul>
+    <li><strong>Capacity:</strong> A Medium or smaller object can support a single rune. Larger structures and surfaces can hold up to 1 rune per m<sup>2</sup>.</li>
+    <li><strong>Trigger:</strong> Runes trigger immediately upon physical contact by any living creature. The creator can touch the rune freely without triggering it. Incidental contact (such as striking a foe with a runed weapon) does not discharge the rune unless deliberately designed as a touch-trigger. When all charges are exhausted, the rune fades physically and ceases to be magical.</li>
+</ul>
 
 <h4>Magic Weapons</h4>
 <p>
