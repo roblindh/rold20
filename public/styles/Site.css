@@ -203,10 +203,24 @@ em, dt {
 }
 
 dfn {
-    display: block;
-    padding-left: 2.5em;
     font-weight: bold;
     font-style: italic;
+}
+
+div.formula-box, .formula-box {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    padding: 0.625rem 0.875rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #334155;
+    margin: 0.75rem 0;
+}
+
+div.formula-box > div + div, .formula-box > div + div {
+    margin-top: 0.25rem;
 }
 
 table {

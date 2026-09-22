@@ -43,12 +43,11 @@
 
 <h4>Weapon Attacks</h4>
 <p>
-    Natural weapons, melee weapons, thrown weapons, and projectile weapons all target the defender's Defense Class (<dfn>DeC</dfn>).
+    Natural weapons, melee weapons, thrown weapons, and projectile weapons all target the defender's Defense Class (<em>DeC</em>).
 </p>
 
-<div class="bg-amber-50 border-l-4 border-amber-400 p-3 my-3 text-xs text-amber-900">
-    <strong class="font-bold text-amber-950">Total Weapon Damage Formula:</strong><br/>
-    <code class="font-bold">Total Damage = Base Weapon Damage + Strength Modifier (where applicable) + AP Boost</code>
+<div class="formula-box">
+    <strong>Total Damage</strong> = Base Weapon Damage + Strength Modifier (where applicable) + AP Boost
 </div>
 
 <p>
@@ -64,7 +63,7 @@
 
 <h4>Supernatural Touch and Reach Attacks</h4>
 <p>
-    Actions with a range of Reach (<code>Rch</code>) or Touch (<code>Tch</code>) used against unwilling targets are resolved as melee weapon attacks targeting the defender's <dfn>DeC</dfn>. Attack modifiers derive from the weapon or implement used, including all relevant weapon skill bonuses:
+    Actions with a range of Reach (<code>Rch</code>) or Touch (<code>Tch</code>) used against unwilling targets are resolved as melee weapon attacks targeting the defender's <em>DeC</em>. Attack modifiers derive from the weapon or implement used, including all relevant weapon skill bonuses:
 </p>
 <ul class="space-y-1.5 my-2">
     <li><strong>Implement Foci:</strong> Small foci (such as wands or holy symbols) use the <em>Weapons - Natural</em> skill for attack modifiers. Larger implements (such as staves and rods) utilize their specific weapon skill (such as <em>Weapons - Staves</em>).</li>
@@ -77,7 +76,7 @@
 
 <h4>Ray Attacks</h4>
 <p>
-    Spells and abilities with a Ray area of effect are ranged attacks directed at a single target's <dfn>DeC</dfn>, benefiting from the <em>Weapons - Ray Attacks</em> skill.
+    Spells and abilities with a Ray area of effect are ranged attacks directed at a single target's <em>DeC</em>, benefiting from the <em>Weapons - Ray Attacks</em> skill.
 </p>
 <ul class="space-y-1.5 my-2">
     <li><strong>Exceptional Hits:</strong> An exceptional success on a ray attack halves the target's relevant energy resistance.</li>
@@ -86,7 +85,7 @@
 
 <h4>Area Attacks</h4>
 <p>
-    Area-of-effect abilities make independent attack rolls against the Reflex defense (<dfn>Ref</dfn>) of every creature caught in the blast radius, benefiting from the <em>Weapons - Area Attacks</em> skill.
+    Area-of-effect abilities make independent attack rolls against the Reflex defense (<em>Ref</em>) of every creature caught in the blast radius, benefiting from the <em>Weapons - Area Attacks</em> skill.
 </p>
 <ul class="space-y-1.5 my-2">
     <li><strong>Partial Exposure:</strong> Targets partially inside an area of effect are fully affected unless the DM grants partial cover, reduced damage, or circumstance defense bonuses based on physical terrain.</li>
@@ -96,7 +95,7 @@
 
 <h4>Body and Mind Attacks</h4>
 <p>
-    Ranged supernatural abilities targeting one or more specific creatures without physical projectiles or rays target the defender's Fortitude (<dfn>Fort</dfn>) or Willpower (<dfn>Will</dfn>) defense, benefiting from the <em>Weapons - Body &amp; Mind Attacks</em> skill.
+    Ranged supernatural abilities targeting one or more specific creatures without physical projectiles or rays target the defender's Fortitude (<em>Fort</em>) or Willpower (<em>Will</em>) defense, benefiting from the <em>Weapons - Body &amp; Mind Attacks</em> skill.
 </p>
 <ul class="space-y-1.5 my-2">
     <li><strong>Attacker Feedback:</strong> The attacker intuitively senses the degree of success or failure achieved against each targeted creature.</li>
@@ -218,9 +217,9 @@
 <ul class="space-y-1 my-2">
     <li><strong>Physical Damage</strong>
         <ul class="list-disc ml-5 mt-1 space-y-0.5">
-            <li>Blunt Damage (<dfn>B</dfn>)</li>
-            <li>Piercing Damage (<dfn>P</dfn>)</li>
-            <li>Slashing Damage (<dfn>S</dfn>)</li>
+            <li>Blunt Damage (<em>B</em>)</li>
+            <li>Piercing Damage (<em>P</em>)</li>
+            <li>Slashing Damage (<em>S</em>)</li>
         </ul>
     </li>
     <li><strong>Energy Damage</strong>
@@ -241,9 +240,9 @@
 
 <h4 id="PhysDmg">Physical Damage</h4>
 <ul class="space-y-1.5 my-2">
-    <li><strong>Blunt Damage (<dfn>B</dfn>):</strong> Depletes Hit Points (HP) or Stamina Points (SP). Any single attack dealing <strong>50% or more</strong> of a creature's maximum HP or SP in blunt damage forces an immediate <em>Acrobatics (Maintain Balance)</em> check against a DC equal to the damage dealt. Failure knocks the creature prone; for every 5 points of failure below the DC, the creature is knocked back 1 square (5 feet). Most <code>[Force]</code> effects inflict blunt damage.</li>
-    <li><strong>Piercing Damage (<dfn>P</dfn>):</strong> Depletes HP. Piercing strikes rely on penetrating vital anatomy; consequently, objects and creatures possessing an innate racial critical hit resistance of <strong>+10 or greater</strong> take only half damage from piercing attacks (calculated after Damage Resistance).</li>
-    <li><strong>Slashing Damage (<dfn>S</dfn>):</strong> Depletes HP through deep lacerations and severed tissue.</li>
+    <li><strong>Blunt Damage (<em>B</em>):</strong> Depletes Hit Points (HP) or Stamina Points (SP). Any single attack dealing <strong>50% or more</strong> of a creature's maximum HP or SP in blunt damage forces an immediate <em>Acrobatics (Maintain Balance)</em> check against a DC equal to the damage dealt. Failure knocks the creature prone; for every 5 points of failure below the DC, the creature is knocked back 1 square (5 feet). Most <code>[Force]</code> effects inflict blunt damage.</li>
+    <li><strong>Piercing Damage (<em>P</em>):</strong> Depletes HP. Piercing strikes rely on penetrating vital anatomy; consequently, objects and creatures possessing an innate racial critical hit resistance of <strong>+10 or greater</strong> take only half damage from piercing attacks (calculated after Damage Resistance).</li>
+    <li><strong>Slashing Damage (<em>S</em>):</strong> Depletes HP through deep lacerations and severed tissue.</li>
 </ul>
 <p>
     Physical <strong>Damage Resistance (DR)</strong> reduces incoming physical damage on a per-instance basis.
@@ -339,7 +338,7 @@
     Key vehicle combat rules:
 </p>
 <ul class="space-y-1.5 my-2">
-    <li><strong>Vehicle Statistics:</strong> Vehicles possess HP, Defense Class (<dfn>DeC</dfn>), Damage Resistance (<dfn>DR</dfn>), and Base Speed, acting on the operator's initiative.</li>
+    <li><strong>Vehicle Statistics:</strong> Vehicles possess HP, Defense Class (<em>DeC</em>), Damage Resistance (<em>DR</em>), and Base Speed, acting on the operator's initiative.</li>
     <li><strong>Structural Damage Thresholds:</strong>
         <ul class="list-disc ml-5 mt-1 space-y-0.5 text-xs text-stone-700">
             <li><strong>Waterborne Craft:</strong> Below 50% HP (Broken), a vessel takes on water and founders in <strong>10d10 rounds</strong> unless half the minimum crew bails water full-time. At 0 HP, it stops and sinks in <strong>1d10 rounds</strong>.</li>
@@ -352,7 +351,7 @@
 
 <h3 id="Morale">Morale</h3>
 <p>
-    High-stakes battles, terrifying supernatural entities, and severe losses require morale checks to determine whether combatants stand their ground, surrender, or rout in panic. A morale check is resolved as an attack against the creature's Willpower defense (<dfn>Will</dfn>) and is classified as a <code>[Fear]</code> effect (with applicable [Fear] resistances and immunities applied).
+    High-stakes battles, terrifying supernatural entities, and severe losses require morale checks to determine whether combatants stand their ground, surrender, or rout in panic. A morale check is resolved as an attack against the creature's Willpower defense (<em>Will</em>) and is classified as a <code>[Fear]</code> effect (with applicable [Fear] resistances and immunities applied).
 </p>
 <p>
     Morale checks primarily govern NPCs and monsters; player characters are subjected to morale checks only when exposed to overwhelming fear magic, eldritch terrors, or extreme psychological trauma.

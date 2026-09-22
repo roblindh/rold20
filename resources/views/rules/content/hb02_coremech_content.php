@@ -30,9 +30,9 @@
 <p>
     <em id="DamageDice">Dice Scaling Progression:</em> Effects that step damage dice up or down follow this standard progression:
 </p>
-<p class="font-mono text-xs bg-slate-100 p-2 rounded border border-slate-300">
+<div class="formula-box">
     1 &harr; d2 &harr; d3 &harr; d4 &harr; d6 &harr; d8 &harr; d10 &harr; 2d6 (or d12) &harr; 2d8 &harr; 2d10 (or d20) &harr; 4d6 &harr; 5d6 &harr; 6d6 ...
-</p>
+</div>
 <p>
     In general, scale multiple dice independently. For example, stepping up <code>3d8</code> results in <code>3d10</code>, then <code>6d6</code>, <code>7d6</code>, etc.
 </p>
@@ -54,9 +54,9 @@
     When multiple multiplicative modifiers apply to a single abstract game value (such as a spell multiplying weapon damage combined with a critical hit), 
     add the multipliers together rather than multiplying them, reducing each multiplier beyond the first by 1:
 </p>
-<p class="font-mono text-xs bg-slate-100 p-2 rounded border border-slate-300">
-    Total Multiplier = First Multiplier + (Second Multiplier &minus; 1) + (Third Multiplier &minus; 1) ...
-</p>
+<div class="formula-box">
+    <strong>Total Multiplier</strong> = First Multiplier + (Second Multiplier &minus; 1) + (Third Multiplier &minus; 1) ...
+</div>
 <p>
     For example, combining a &times;2 multiplier with a &times;3 multiplier yields a &times;4 total (<code>2 + [3 &minus; 1]</code>), rather than &times;6. 
     When applying multiple multipliers to real-world physical values (such as weight, carrying capacity, or distance), multiply them normally.
@@ -130,15 +130,15 @@
 <p>
     <em>Total Level (TL):</em> A creature's total level is the combined sum of all its class and racial levels:
 </p>
-<p>
-    <dfn>TL = &sum;ClL + RL</dfn>
-</p>
+<div class="formula-box">
+    <strong>TL</strong> = &sum;ClL + RL
+</div>
 <p>
     <em>Challenge Level (CL):</em> An evaluation of a creature's combat threat. While often equal to Total Level, exceptional supernatural traits, legendary equipment, or extreme social standing can modify Challenge Level above or below TL:
 </p>
-<p>
-    <dfn>CL = TL + CL modifier</dfn>
-</p>
+<div class="formula-box">
+    <strong>CL</strong> = TL + CL modifier
+</div>
 
 <?php show_experiencelevels(); ?> 
 
@@ -175,15 +175,11 @@
 <p>
     Ability score modifiers are calculated directly from actual ability scores:
 </p>
-<p>
-    <dfn>Base ability score = 3 to 18 (using 3d6 for average individuals)</dfn>
-</p>
-<p>
-    <dfn>Ability score (actual) = base ability score + racial/template mods + age mod + other modifiers</dfn>
-</p>
-<p>
-    <dfn>Ability score modifier = (ability score / 2) - 5</dfn>
-</p>
+<div class="formula-box">
+    <div><strong>Base ability score</strong> = 3 to 18 (using 3d6 for average individuals)</div>
+    <div><strong>Ability score (actual)</strong> = base ability score + racial/template mods + age mod + other modifiers</div>
+    <div><strong>Ability score modifier</strong> = (ability score / 2) &minus; 5</div>
+</div>
 
 <?php show_abilityscoremods(); ?> 
 
@@ -194,21 +190,21 @@
 <p>
     <em>Hit Points (HP):</em> Measures physical bodily health and structural integrity. Depletion to 0 HP results in unconsciousness and impending death.
 </p>
-<p>
-    <dfn>HP = Con + (HP bonus per class and level) + (HP bonus per race and level) &times; size factor + other modifiers</dfn>
-</p>
+<div class="formula-box">
+    <strong>HP</strong> = Con + (HP bonus per class and level) + (HP bonus per race and level) &times; size factor + other modifiers
+</div>
 <p>
     <em>Stamina Points (SP):</em> Measures physical endurance and athletic reserve. SP absorbs non-lethal strikes and fuels strenuous martial maneuvers before true physical injury occurs.
 </p>
-<p>
-    <dfn>SP = Con + (SP bonus per class/race and level) + other modifiers</dfn>
-</p>
+<div class="formula-box">
+    <strong>SP</strong> = Con + (SP bonus per class/race and level) + other modifiers
+</div>
 <p>
     <em>Power Points (PP):</em> Measures mental fortitude, psychic reserve, and supernatural focus. PP fuels spellcasting, psionic powers, and mental resistance.
 </p>
-<p>
-    <dfn>PP = Wis + (PP bonus per class/race and level) + other modifiers</dfn>
-</p>
+<div class="formula-box">
+    <strong>PP</strong> = Wis + (PP bonus per class/race and level) + other modifiers
+</div>
 <p>
     <strong>Ability Score Fluctuations:</strong> Any permanent or temporary modification to a creature's Constitution or Wisdom score immediately adjusts both its maximum and current HP, SP, or PP. If an injured creature suffers a Constitution penalty, the sudden drop in HP can result in immediate unconsciousness or death.
 </p>
@@ -237,12 +233,10 @@
 <p>
     <em>Defense Class (DeC):</em> A measure of how difficult a creature or object is to strike with physical attacks. Defense Class is split into passive and active values:
 </p>
-<p>
-    <dfn>DeCp (passive DeC) = 10 + Dex mod (if negative) + TL (total level) + size mod + deflection bonus + other modifiers</dfn>
-</p>
-<p>
-    <dfn>DeCa (active DeC) = DeCp + Dex mod (if positive) + parry bonus + dodge bonus + other modifiers</dfn>
-</p>
+<div class="formula-box">
+    <div><strong>DeCp (passive DeC)</strong> = 10 + Dex mod (if negative) + TL (total level) + size mod + deflection bonus + other modifiers</div>
+    <div><strong>DeCa (active DeC)</strong> = DeCp + Dex mod (if positive) + parry bonus + dodge bonus + other modifiers</div>
+</div>
 <p>
     <strong>Active DeC (DeCa)</strong> is used against attacks the defender is aware of and actively able to avoid or deflect.
     <strong>Passive DeC (DeCp)</strong> is used whenever the defender is unable to actively react—such as when flat-footed, surprised, attacked by an unseen or invisible opponent, or incapacitated by conditions like entanglement or paralysis.
@@ -261,21 +255,21 @@
 <p>
     <em>Fortitude Defense (Fort):</em> A measure of physical resilience, stamina, and biological endurance against toxins, diseases, massive physical shock, and metabolic strain.
 </p>
-<p>
-    <dfn>Fort = 10 + Str mod + Con mod + TL (total level) + skill mod + other modifiers</dfn>
-</p>
+<div class="formula-box">
+    <strong>Fort</strong> = 10 + Str mod + Con mod + TL (total level) + skill mod + other modifiers
+</div>
 <p>
     <em>Reflex Defense (Ref):</em> A measure of agility, physical reaction speed, and spatial awareness used to evade area-of-effect hazards, explosions, and breath weapons.
 </p>
-<p>
-    <dfn>Ref = 10 + Dex mod + Int mod + TL (total level) + skill mod + other modifiers</dfn>
-</p>
+<div class="formula-box">
+    <strong>Ref</strong> = 10 + Dex mod + Int mod + TL (total level) + skill mod + other modifiers
+</div>
 <p>
     <em>Will Defense (Will):</em> A measure of mental discipline, willpower, and psychological fortitude against enchantments, fear, illusions, and mental domination.
 </p>
-<p>
-    <dfn>Will = 10 + Wis mod + Cha mod + TL (total level) + skill mod + other modifiers</dfn>
-</p>
+<div class="formula-box">
+    <strong>Will</strong> = 10 + Wis mod + Cha mod + TL (total level) + skill mod + other modifiers
+</div>
 <p>
     Most inanimate objects lack Constitution, Intelligence, and Wisdom scores, and have a Dexterity of 0. Consequently, objects are immune to effects targeting Fortitude and Will (unless an effect specifically targets objects), and have a static Reflex defense of 5 (<code>10 &minus; 5</code>).
 </p>
@@ -293,9 +287,9 @@
 <p>
     Damage Resistance can be granted by thick hides, scales, worn armor, or physical cover:
 </p>
-<p>
-    <dfn>DR = Natural DR + armor bonus + cover bonus + other modifiers</dfn>
-</p>
+<div class="formula-box">
+    <strong>DR</strong> = Natural DR + armor bonus + cover bonus + other modifiers
+</div>
 <p>
     DR provided by armor and cover applies separately and takes effect alongside innate or natural DR. Natural DR is determined by race and can be further augmented by templates, special abilities, or magic.
 </p>
@@ -322,11 +316,11 @@
 
 <h4 id="CritResistance">Critical Hit Resistance</h4>
 <p>
-    <em>Critical Hit Resistance (CritRes):</em> Represents anatomy with few vital pressure points or exceptionally reinforced structures that diffuse lethal blows. While an attack roll beating DeC by 20 or more normally scores a critical hit, Critical Hit Resistance increases this threshold. CritRes applies to all attacks against DeC capable of scoring critical hits, but does not apply to attacks targeting Fort, Ref, or Will.
+    <em>Critical Hit Resistance (CritRes):</em> Represents anatomy with average vital pressure points or exceptionally reinforced structures that diffuse lethal blows. While an attack roll beating DeC by 20 or more normally scores a critical hit, Critical Hit Resistance increases this threshold. CritRes applies to all attacks against DeC capable of scoring critical hits, but does not apply to attacks targeting Fort, Ref, or Will.
 </p>
-<p>
-    <dfn>CritRes = DR + racial mod + other modifiers</dfn>
-</p>
+<div class="formula-box">
+    <strong>CritRes</strong> = DR + racial mod + other modifiers
+</div>
 <p>
     <em>Example:</em> A creature with DeC 15, DR 5, and a racial CritRes modifier of +10 requires an attack roll of 15 to hit normally, but requires a total result of 50 (<code>15 DeC + 20 base crit threshold + 5 DR + 10 racial = 50</code>) to suffer a critical hit.
 </p>
@@ -403,9 +397,9 @@
     A creature's size and anatomy determine its combat space (the grid area it controls) and natural reach (the distance it can strike without moving), as illustrated below:
 </p>
 <div class="my-4 space-y-4">
-    <img src="/images/Reach1.gif" alt="Spacing and Reach Diagram 1" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
-    <img src="/images/Reach2.gif" alt="Spacing and Reach Diagram 2" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
-    <img src="/images/Reach3.gif" alt="Spacing and Reach Diagram 3" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
+    <img src="/images/Reach1.svg" alt="Spacing and Reach Diagram 1" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
+    <img src="/images/Reach2.svg" alt="Spacing and Reach Diagram 2" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
+    <img src="/images/Reach3.svg" alt="Spacing and Reach Diagram 3" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
 </div>
 
 <h4 id="NaturalAttacks">Natural Attacks</h4>
@@ -559,9 +553,9 @@
 <p>
     <em>Bilateral Obligations:</em> Influence is inherently reciprocal. While elevated influence grants authority to command subordinates and demand institutional favors, it simultaneously imposes duties, obligations, and the expectation of obedience to superiors within the hierarchy.
 </p>
-<p>
-    <dfn>Total Infl = Cha + (Infl bonus per class/race and level) + SC bonus + other modifiers</dfn>
-</p>
+<div class="formula-box">
+    <strong>Total Infl</strong> = Cha + (Infl bonus per class/race and level) + SC bonus + other modifiers
+</div>
 <p>
     <em>Allocating Influence:</em> Players choose how to distribute their Influence pool subject to DM approval:
 </p>
@@ -581,9 +575,9 @@
 <p>
     <em id="Reputation">Reputation (Rep):</em> Measures the geographic reach of an individual's renown or infamy, as well as the specific titles and deeds they are known for. Total reputation is distributed among distinct descriptive qualities—ranging from broad archetypes (<em>"Honorable Knight"</em>, <em>"Cunning Rake"</em>, <em>"Fierce Berserker"</em>) to specific accolades (<em>"Troll Slayer"</em>, <em>"Defender of the Crown"</em>, <em>"Scourge of the High Seas"</em>).
 </p>
-<p>
-    <dfn>Total Rep = TL (total level) + SC + WC + other modifiers</dfn>
-</p>
+<div class="formula-box">
+    <strong>Total Rep</strong> = TL (total level) + SC + WC + other modifiers
+</div>
 <p>
     <em>Geographic Scope of Renown:</em>
 </p>
@@ -637,9 +631,9 @@
     <em>Initiative Modifier (Init):</em> Applied directly to a creature's 
     <a href="/rules/combat#Initiative">initiative rolls</a> to determine turn order during tactical encounters and combat scenes.
 </p>
-<p>
-    <dfn>Init = Dex mod + other modifiers</dfn>
-</p>
+<div class="formula-box">
+    <strong>Init</strong> = Dex mod + other modifiers
+</div>
 
 <h4 id="FatePts">Fate Points</h4>
 <p>
@@ -888,12 +882,10 @@
 <p>
     <em>Power Level (PL):</em> Measures the supernatural potency and magical density of active spells, psionic powers, magic items, and monster abilities. Power Level governs an effect's resilience against dispelling, countermagic, anti-magic fields, and wild magic volatility:
 </p>
-<p>
-    <dfn>Spells and PP-fueled powers: PL = Total Power Cost (TPC) + AP augmentation</dfn>
-</p>
-<p>
-    <dfn>Innate / Supernatural abilities: PL = Associated skill rank or creature RL / TL</dfn>
-</p>
+<div class="formula-box">
+    <div><strong>Spells &amp; PP-fueled powers:</strong> PL = Total Power Cost (TPC) + AP augmentation</div>
+    <div><strong>Innate / Supernatural abilities:</strong> PL = Associated skill rank or creature RL / TL</div>
+</div>
 <p class="mt-3">
     <em>Lingering Magical Auras:</em> When an active supernatural effect expires or is dispelled, a lingering magical signature remains detectable in the area or upon the subject before fully dissipating:
 </p>
@@ -1030,7 +1022,7 @@
 </p>
 
 <div class="my-4 overflow-x-auto">
-    <img src="/images/Areas.gif" title="Example Areas of Effect" alt="Example Areas of Effect" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
+    <img src="/images/Areas.svg" title="Example Areas of Effect" alt="Example Areas of Effect" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
 </div>
 
 <ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
@@ -1352,7 +1344,7 @@
     When a creature is subject to multiple conditions of the same progression, apply only the effects of the most severe condition.
 </p>
 
-<div class="bg-slate-50 border border-slate-200 rounded p-3 text-xs text-slate-700 my-3 font-mono space-y-1">
+<div class="formula-box">
     <div class="font-bold text-slate-900 mb-1">Condition Progressions (Lesser &rarr; Greater)</div>
     <div>Fascinated &rarr; Charmed &rarr; Compelled &rarr; Mastered</div>
     <div>Dazzled &rarr; Blinded</div>
@@ -1408,7 +1400,7 @@
 <p>
     Otherwise, at the start of each of its turns, determine the creature's action by rolling a d10:
 </p>
-<div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 my-2 font-mono">
+<div class="formula-box">
     <div><strong>1:</strong> Attack the most likely source of the confusion.</div>
     <div><strong>2:</strong> Act normally.</div>
     <div><strong>3–5:</strong> Babble incoherently (takes no active actions).</div>
@@ -1993,7 +1985,7 @@
 <p>
     Calling a departed soul back to a reconstructed physical body becomes increasingly difficult as time elapses, resulting in memory fragmentation and XP loss:
 </p>
-<div class="bg-slate-50 border border-slate-200 rounded p-3 text-xs text-slate-700 my-3 font-mono space-y-1">
+<div class="formula-box">
     <div><strong>Death Duration &le; 1 Day:</strong> Loss = 100 &times; TL XP (no check penalty).</div>
     <div><strong>Death Duration 1 Day – 1 Week:</strong> Loss = 300 &times; TL XP (-4 check penalty).</div>
     <div><strong>Death Duration &gt; 1 Week:</strong> Loss = 1,000 &times; TL XP (-8 check penalty).</div>

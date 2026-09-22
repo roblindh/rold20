@@ -173,7 +173,7 @@
 <p>
     Calculate your starting maximum Hit Points (HP), Stamina Points (SP), and Power Points (PP):
 </p>
-<div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 my-2 font-mono space-y-1">
+<div class="formula-box">
     <div><strong>HP</strong> = Constitution + (HP bonus per class &amp; level) + (HP bonus per race &amp; level) &times; size factor</div>
     <div><strong>SP</strong> = Constitution + (SP bonus per class/race &amp; level)</div>
     <div><strong>PP</strong> = Wisdom + (PP bonus per class/race &amp; level)</div>
@@ -183,7 +183,7 @@
 <p>
     Calculate your active and passive Defense Class, along with your Fortitude, Reflex, and Willpower defenses:
 </p>
-<div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 my-2 font-mono space-y-1">
+<div class="formula-box">
     <div><strong>DeCp (passive DeC)</strong> = 10 + Dex mod (if negative) + TL + size mod + misc modifiers</div>
     <div><strong>DeCa (active DeC)</strong>  = DeCp + Dex mod (if positive) + parry bonus + misc modifiers</div>
     <div><strong>Fort</strong>               = 10 + Str mod + Con mod + TL + skill modifiers + misc modifiers</div>
@@ -200,7 +200,7 @@
 <p>
     Initiative determines your reaction speed at the onset of combat:
 </p>
-<div class="bg-slate-50 border border-slate-200 rounded p-2 text-xs text-slate-700 my-2 font-mono">
+<div class="formula-box">
     <strong>Init</strong> = Dexterity modifier + misc modifiers
 </div>
 
@@ -208,7 +208,7 @@
 <p>
     Player characters ordinarily begin their adventuring careers at Social Class 0 (Commoner/Free Citizen) and Wealth Class 0 (Modest Means), unless special background options or campaign parameters dictate otherwise:
 </p>
-<div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 my-2 font-mono space-y-1">
+<div class="formula-box">
     <div><strong>SC</strong> = 0 (Base starting Social Class)</div>
     <div><strong>WC</strong> = 0 (Base starting Wealth Class)</div>
     <div><strong>Infl</strong> = Charisma + (Influence bonus per class/race &amp; level) + SC bonus + misc modifiers</div>
@@ -219,8 +219,8 @@
 </p>
 
 <h4>Action Points &amp; Fate Points</h4>
-<div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 my-2 font-mono space-y-1">
-    <div><strong>AP</strong> = 10 + Total Level (TL) <span class="text-slate-500 font-sans text-[11px]">(unless modified by race)</span></div>
+<div class="formula-box">
+    <div><strong>AP</strong> = 10 + Total Level (TL) <span class="text-slate-500 font-sans text-xs">(unless modified by race)</span></div>
     <div><strong>Fate Points</strong> = 3 starting FP</div>
 </div>
 

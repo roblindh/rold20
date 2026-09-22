@@ -180,9 +180,9 @@
     Each reaction can be used for any action that has an action time of &quot;react&quot; and has had its triggering condition satisfied.
     Note, however, that each creature can only use one reaction per triggering condition.
 </p>
-<p>
-    <dfn>Maximum number of reactions (per round) = (Total AP / 10) (rounded down) + bonus reactions</dfn>
-</p>
+<div class="formula-box">
+    <strong>Maximum number of reactions (per round)</strong> = (Total AP / 10) (rounded down) + bonus reactions
+</div>
 <p>
     The reaction occurs immediately when triggered, interrupts the normal initiative sequence, and is usually resolved before any triggering action.
     This potentially means that a reaction can prevent triggering actions from being completed.
