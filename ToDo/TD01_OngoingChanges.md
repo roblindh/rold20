@@ -53,7 +53,7 @@
 - [ ] Add companions/followers
 - [ ] Modify name, personality, appearance, weight
 - [ ] Modify WC, SC, influence, reputation
-- [ ] Adjust age
+- [x] Adjust age
 
 ## Level PC Utility
 
@@ -133,14 +133,14 @@
 - [ ] **How to handle traits that improve weapons (natural as well as non-natural)? Additional attack/damage bonus to existing attack type (such as a natural attack)? Increased damage die? Fixed damage die (but adjusted for size)? Altered damage type (HP/SP/PP, B/P/S)? Additional damage type (+1d6 HP fire)?**
 - [ ] **For items, separate traits into Item Traits, Owner Traits, Equipped Traits, and Used Traits? Alternative is to use predefined targets.**
 - [ ] **Can a single item have different prerequisites? For example, one for equipping it and another for using it?**
-- [ ] Creatures
+- [x] Creatures
 - [ ] Replace current terrain data with bitmasks for terrain(s), plane(s), and climate(s). Or a large amount of Bool properties?
 - [ ] Special: add “wear horseshoe trait” specifically to horses, unicorns, griffons, and other hoofed creatures. Or maybe add a more generic “wear (x) trait” with variable equipment type?
 - [ ] Add frequency (common/uncommon/rare/very rare) selection to more tables. Better granularity (maybe 0 to 10 or 0 to 9)? Linear or exponential?
   - [ ] Common=8-10, uncommon=5-7, rare=3-4, very rare=1-2, unique=0
   - [ ] Also required for item modifications in order to generate magic items randomly.
-  - [ ] Create a generic method for randomly selecting item from array with rarity specified for each item?
-    - [ ] Implementation: traverse list and add to sum based on each item’s rarity, generate random number up to sum, traverse again to find selected item (or use index created on first traversal). Add 2^rarity (from 1 for 0 to 1024 for 10)?
+  - [x] Create a generic method for randomly selecting item from array with rarity specified for each item?
+    - [x] Implementation: traverse list and add to sum based on each item’s rarity, generate random number up to sum, traverse again to find selected item (or use index created on first traversal). Add 2^rarity (from 1 for 0 to 1024 for 10)?
 
 ## Entity Calculations
 
@@ -164,14 +164,14 @@
   - [ ] Should some modifiers (such as ability modifiers to defenses) simply be hard-coded?
   - [ ] Requirements
     - [ ] **Note that many traits can have conditions and requirements, meaning that they should be described and listed but not always included in modifier calculations.**
-    - [ ] **Add functionality for resolving requirements and applying some such traits. Weapons and armor, for example.**
+    - [x] **Add functionality for resolving requirements and applying some such traits. Weapons and armor, for example.**
     - [ ] Used for races(?), templates, classes(?), skills, actions, equipment.
     - [ ] This will also affect modifier calculations. Traits that are likely to have requirement dependencies should be parsed later than others. Conflicts are still possible - e.g. one item may grant bonus to Str score while another item may have a minimum Str requirement. Can this really be resolved by postponing some requirement checks?
   - [ ] Trait sources: racial, cultural (often one-shot), creature type and group, class?, skill, item (equipped, carried, etc), spell/power.
   - [ ] Source of effect specifies effect and parameters (user/wearer/wielder/carrier/owner, permanent/activated/reaction, etc)?
 - [ ] Problematic modifier types...
   - [ ] Indirect modifiers that affect items, such as enhancement bonuses to a weapon's attack, damage, and parry or an armor's DR; from the entity’s perspective, convert the modifier type to an increased armor, weapon, etc? EC modifiers? Set up pointers to owner, carrier, wielder, rider(s), etc?
-  - [ ] Skill modifiers to parry to DeC. Should be applied to the creature rather than weapon but depends on which weapon is carried.
+  - [x] Skill modifiers to parry to DeC. Should be applied to the creature rather than weapon but depends on which weapon is carried.
   - [ ] Racial modifiers that can stack from one race and multiple templates (also affected by size and shapechanging)? Consider whether multiple templates really should stack.
 - [ ] **Add polymorph and size alteration to TraitEffects struct (or keep them in Entity class?). Also add to entity calculations.**
 - [ ] How to define or replace standard parameters for an action. For example, a breath weapon should probably be a single predefined action, but it can have highly variable parameters. Or separate actions for EnergyBreath, PetrifyBreath, PetrifyGaze, etc? Or even more generic actions, such as spell-like abilities and physical attacks with strange side effects?

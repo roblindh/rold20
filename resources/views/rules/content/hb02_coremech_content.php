@@ -1819,7 +1819,7 @@
     <li><strong>Lesser Regeneration:</strong> Accelerates natural recovery rates (measured in points per minute or hour rather than per round). Activity levels and ongoing exertion affect Lesser Regeneration in the same manner as natural rest.</li>
     <li><strong>Greater Regeneration:</strong> Enables the complete regrowth or instantaneous reattachment of severed limbs, lost sensory organs, and destroyed tissue. A creature with Greater Regeneration can be rendered unconscious but cannot be slain by physical damage, unless that damage is dealt by an energy type that bypasses its regeneration (typically acid or fire). A severed head can regenerate an entire body, though severed limbs cannot regenerate into duplicate creatures.</li>
     <li><strong>Energy Vulnerabilities:</strong> Specific damage types (most commonly fire and acid) bypass regeneration and deal permanent wounds that must heal naturally or through dedicated restoration.</li>
-    <li><strong>SP / PP Regeneration:</strong> Specialized forms that accelerate the recovery of Stamina Points or Psyche Points exclusively.</li>
+    <li><strong>SP / PP Regeneration:</strong> Specialized forms that accelerate the recovery of Stamina Points or Power Points exclusively.</li>
 </ul>
 
 <h4 id="Split">Split</h4>
