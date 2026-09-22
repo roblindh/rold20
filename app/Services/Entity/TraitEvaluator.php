@@ -31,7 +31,7 @@ class TraitEvaluator
                 continue;
             }
 
-            $type = trim(substr($block, 0, $openPos));
+            $type = trim(trim(substr($block, 0, $openPos)), "; \t\n\r\0\x0B");
             $paramsStr = trim(substr($block, $openPos + 1));
 
             $params = [

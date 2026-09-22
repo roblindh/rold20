@@ -23,8 +23,8 @@
         <ul class="list-disc ml-5 mt-1 space-y-0.5 text-xs text-stone-700">
             <li>Health pools: Hit Points (HP), Stamina Points (SP), and Power Points (PP).</li>
             <li>Initiative modifier (Init).</li>
-            <li>Defense Class: passive (<dfn>DeCp</dfn>) and active (<dfn>DeCa</dfn>).</li>
-            <li>Defenses: Fortitude (<dfn>Fort</dfn>), Reflex (<dfn>Ref</dfn>), and Willpower (<dfn>Will</dfn>).</li>
+            <li>Defense Class: passive (<em>DeCp</em>) and active (<em>DeCa</em>).</li>
+            <li>Defenses: Fortitude (<em>Fort</em>), Reflex (<em>Ref</em>), and Willpower (<em>Will</em>).</li>
             <li>Attack and damage modifiers for equipped weapons and implements.</li>
             <li>Encumbrance Class (EC) and check penalties.</li>
             <li>Starting Fate Points (3 FP).</li>
@@ -40,15 +40,17 @@
 
 <?php show_abilitygenmethods(); ?> 
 
-<div class="bg-amber-50 border-l-4 border-amber-400 p-3 my-3 text-xs text-amber-900 space-y-2">
-    <div>
-        <strong id="AverageChars" class="font-bold text-amber-950">Optional Rule: Average Characters</strong><br/>
+<div class="optionalrule">
+    <p>
+        <em id="AverageChars">Average Characters</em> (optional rule for gritty campaigns):
         For grounded, gritty, or highly realistic campaigns, the DM may restrict character generation to standard or average dice array methods.
-    </div>
-    <div>
-        <strong id="HeroicChars" class="font-bold text-amber-950">Optional Rule: Heroic Characters</strong><br/>
+    </p>
+</div>
+<div class="optionalrule">
+    <p>
+        <em id="HeroicChars">Heroic Characters</em> (optional rule for epic campaigns):
         For epic, high-fantasy, or cinematic campaigns, characters may generate scores using high-powered heroic point-buy or advanced dice pool methods.
-    </div>
+    </p>
 </div>
 
 <h3 id="CharacterRaces">Character Races</h3>
@@ -99,37 +101,33 @@
 
 <?php show_improvements(); ?>
 
-<div class="bg-amber-50 border-l-4 border-amber-400 p-3 my-3 text-xs text-amber-900 space-y-3">
-    <div>
-        <strong id="ImprovementSkillAccess" class="font-bold text-amber-950">Optional Rule: Permanent Skill Access</strong>
-        <p class="mt-0.5">
-            Characters can spend 10 IP to purchase permanent secondary access to any skill, or 20 additional IP to upgrade permanent secondary access to permanent primary access. Permanent access allows the character to allocate skill points (up to 0.5 for secondary, up to 1.0 for primary) upon leveling up, even if their chosen class does not provide access to that skill. This bypasses class skill restrictions, though specific skill prerequisites still apply.
-        </p>
-    </div>
+<div class="optionalrule">
+    <p>
+        <em id="ImprovementSkillAccess">Permanent Skill Access</em> (optional rule):
+        Characters can spend 10 IP to purchase permanent secondary access to any skill, or 20 additional IP to upgrade permanent secondary access to permanent primary access. Permanent access allows the character to allocate skill points (up to 0.5 for secondary, up to 1.0 for primary) upon leveling up, even if their chosen class does not provide access to that skill. This bypasses class skill restrictions, though specific skill prerequisites still apply.
+    </p>
+</div>
 
-    <div>
-        <strong id="Advantages" class="font-bold text-amber-950">Optional Rule: Advantages and Disadvantages</strong>
-        <p class="mt-0.5">
-            Players can spend IP to acquire unique background advantages, or gain additional bonus IP by accepting character disadvantages (subject to DM approval).
-        </p>
-        <p class="mt-1">
-            At character creation, no character may purchase more than 10 IP worth of advantages or claim more than 10 IP from disadvantages. Characters may subsequently spend IP during their adventuring career to overcome and remove existing disadvantages through dedicated roleplaying and DM alignment.
-        </p>
-    </div>
+<div class="optionalrule">
+    <p>
+        <em id="Advantages">Advantages and Disadvantages</em> (optional rule):
+        Players can spend IP to acquire unique background advantages, or gain additional bonus IP by accepting character disadvantages (subject to DM approval).
+    </p>
+    <p>
+        At character creation, no character may purchase more than 10 IP worth of advantages or claim more than 10 IP from disadvantages. Characters may subsequently spend IP during their adventuring career to overcome and remove existing disadvantages through dedicated roleplaying and DM alignment.
+    </p>
 
     <?php show_advantages(); ?>
 
-    <div>
-        <strong id="RandomAdvantages" class="font-bold text-amber-950">Optional Rule: Random Advantages &amp; Disadvantages</strong>
-        <p class="mt-0.5">
-            To generate unpredictable quirks, roll d% on the table below during character creation:
-        </p>
-        <div class="bg-white/80 border border-amber-200 rounded p-2 text-xs font-mono my-1.5 space-y-0.5 text-stone-800">
-            <div><strong>01–50:</strong> No advantage or disadvantage.</div>
-            <div><strong>51–75:</strong> Gain one random advantage (deduct IP cost) and roll again.</div>
-            <div><strong>76–00:</strong> Gain one random disadvantage (add bonus IP) and roll again.</div>
-        </div>
-    </div>
+    <p>
+        <em id="RandomAdvantages">Random Advantages &amp; Disadvantages</em> (optional rule):
+        To generate unpredictable quirks, roll d% on the table below during character creation:
+    </p>
+    <ul>
+        <li><strong>01–50:</strong> No advantage or disadvantage.</li>
+        <li><strong>51–75:</strong> Gain one random advantage (deduct IP cost) and roll again.</li>
+        <li><strong>76–00:</strong> Gain one random disadvantage (add bonus IP) and roll again.</li>
+    </ul>
 </div>
 
 <h3 id="CharSkills">Learning Skills</h3>
@@ -151,22 +149,22 @@
 </p>
 
 <h4 id="OptionalSkillRules">Optional Skill Rules</h4>
-<div class="bg-amber-50 border-l-4 border-amber-400 p-3 my-3 text-xs text-amber-900 space-y-2">
-    <div>
-        <strong class="font-bold text-amber-950">Optional Rule: Out-of-Class Skill Access</strong><br/>
+<div class="optionalrule">
+    <p>
+        <em id="OutOfClassSkillAccess">Out-of-Class Skill Access</em> (optional rule):
         Each character chooses one signature skill that they permanently treat as a primary skill, regardless of their current class.
-    </div>
-    <div>
-        <strong class="font-bold text-amber-950">Optional Rule: Skill Retraining</strong>
-        <p class="mt-0.5">
-            Upon gaining a level, a character can reallocate a limited pool of previously earned skill points (determined by the DM) to represent evolving focus:
-        </p>
-        <ul class="list-disc ml-4 mt-1 space-y-0.5 text-amber-950">
-            <li>No more than 1.0 skill point may be moved out of any single skill per level.</li>
-            <li>Reallocated points must follow the class skill access rules of the new level (up to 1.0 for primary, 0.5 for secondary).</li>
-            <li>The total skill points invested in any single skill cannot exceed <strong>(TL + 1)</strong> at any time.</li>
-        </ul>
-    </div>
+    </p>
+</div>
+<div class="optionalrule">
+    <p>
+        <em id="SkillRetraining">Skill Retraining</em> (optional rule):
+        Upon gaining a level, a character can reallocate a limited pool of previously earned skill points (determined by the DM) to represent evolving focus:
+    </p>
+    <ul>
+        <li>No more than 1.0 skill point may be moved out of any single skill per level.</li>
+        <li>Reallocated points must follow the class skill access rules of the new level (up to 1.0 for primary, 0.5 for secondary).</li>
+        <li>The total skill points invested in any single skill cannot exceed <strong>(TL + 1)</strong> at any time.</li>
+    </ul>
 </div>
 
 <h3 id="OtherChars">Other Characteristics</h3>
@@ -315,9 +313,9 @@
     Characters are assumed to train, study, and refine their techniques during downtime between adventures, seamlessly integrating their newly acquired capabilities.
 </p>
 
-<div class="bg-amber-50 border-l-4 border-amber-400 p-3 my-3 text-xs text-amber-900">
-    <strong class="font-bold text-amber-950">Optional Rule: Level Training</strong>
-    <p class="mt-0.5">
-        In campaigns emphasizing strict realism or downtime logistics, characters do not advance immediately upon reaching an XP threshold. Instead, they must dedicate dedicated downtime (days or weeks) and seek out qualified mentors or academies to complete their training.
+<div class="optionalrule">
+    <p>
+        <em id="LevelTraining">Level Training</em> (optional rule):
+        In campaigns emphasizing strict realism or downtime logistics, characters do not advance immediately upon reaching an XP threshold. Instead, they must dedicate downtime (days or weeks) and seek out qualified mentors or academies to complete their training.
     </p>
 </div>

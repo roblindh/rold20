@@ -3439,7 +3439,7 @@ class EntityEngine
         try {
             self::ensureRulesInitialized();
 
-            if (class_exists('\cTraitEffects') && method_exists('\cTraitEffects', 'StatGetTraitsDescription')) {
+            if (!preg_match('/\b(Armor|Weapon|Ammo|Material)\b/i', $traits) && class_exists('\cTraitEffects') && method_exists('\cTraitEffects', 'StatGetTraitsDescription')) {
                 $desc = \cTraitEffects::StatGetTraitsDescription($traits, $brief);
                 if (!empty($desc) && trim($desc) !== '' && !str_contains($desc, 'ERROR') && !str_starts_with(trim($desc), '{')) {
                     $cleanDesc = trim(str_replace(["\\n", "\n", "\r"], ', ', $desc));

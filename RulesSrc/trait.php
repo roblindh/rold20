@@ -208,6 +208,13 @@ class cTrait {
                     $strBrief = str_replace("(%t) ", "", $strBrief);
                     $strBrief = str_replace("%t ", "", $strBrief);
                 }
+                if (isset($this->aParams["Level"])) {
+                    $str = str_replace("%Level", $this->aParams["Level"], $str);
+                    $strBrief = str_replace("%Level", $this->aParams["Level"], $strBrief);
+                } else {
+                    $str = str_replace("%Level", "", $str);
+                    $strBrief = str_replace("%Level", "", $strBrief);
+                }
 
                 if ($this->type == "Affinity") {
                     $str .= " (" . $this->aParams["Qual"];
@@ -263,7 +270,7 @@ class cTrait {
                 if (isset($this->aParams["Req"])) {
                     $str .= "; Prereq: " . $this->aParams["Req"];
                     if ($strBrief != "")
-                        $strBrief .= " (" . $this->aParams["Req"] . ")";
+                        $strBrief .= " (Req: " . $this->aParams["Req"] . ")";
                     // Are the prerequisites fulfilled?
                     if ($entity != NULL && !$this->CheckPrereq($this->aParams["Req"], $entity, $parser)) {
                         // If not, is the trait a normal weapon or armor modifier?
@@ -770,25 +777,26 @@ class cTrait {
                             case "HeaMod":
                             case "DefMod":
                             case "Defense":
-                                $traitEffects->defAbilStr .= $str . "\\n";
+                            case "Immunity":
+                                $traitEffects->defAbilStr .= $str . "\n";
                                 if ($strBrief != "")
                                     $traitEffects->defAbilStrBrief .= ($traitEffects->defAbilStrBrief == "" ? "" : ", ") . $strBrief;
                                 break;
                             case "AttMod":
                             case "Attack":
-                                $traitEffects->attAbilStr .= $str . "\\n";
+                                $traitEffects->attAbilStr .= $str . "\n";
                                 if ($strBrief != "")
                                     $traitEffects->attAbilStrBrief .= ($traitEffects->attAbilStrBrief == "" ? "" : ", ") . $strBrief;
                                 break;
                             case "Sns":
-                                $traitEffects->snsAbilStr .= $str . "\\n";
+                                $traitEffects->snsAbilStr .= $str . "\n";
                                 if ($strBrief != "")
                                     $traitEffects->snsAbilStrBrief .= ($traitEffects->snsAbilStrBrief == "" ? "" : ", ") . $strBrief;
                                 break;
                             case "SpdType":
                             case "SpdMod":
                             case "SpdSpcl":
-                                $traitEffects->mobAbilStr .= $str . "\\n";
+                                $traitEffects->mobAbilStr .= $str . "\n";
                                 if ($strBrief != "")
                                     $traitEffects->mobAbilStrBrief .= ($traitEffects->mobAbilStrBrief == "" ? "" : ", ") . $strBrief;
                                 break;
@@ -801,8 +809,65 @@ class cTrait {
             }
         }
 
-        if (!$found)
-            $str = $strBrief = "ERROR!!!";
+        if (!$found) {
+            $qual = $this->aParams["Qual"] ?? $this->type;
+            $label = trim(preg_replace('/(?<!^)([A-Z])/', ' $1', $qual));
+            if (isset($this->aParams["Value"]) && $this->aParams["Value"] !== "") {
+                $label .= " " . $this->aParams["Value"];
+            }
+            $str = $strBrief = $label;
+            if (isset($this->aParams["Type"])) {
+                $str .= " (" . $this->aParams["Type"] . ")";
+                $strBrief .= " (" . $this->aParams["Type"] . ")";
+            }
+            if (isset($this->aParams["Dmg"])) {
+                $str .= "; Damage: " . $this->aParams["Dmg"];
+                $strBrief .= " / Dmg: " . $this->aParams["Dmg"];
+            }
+            if (isset($this->aParams["Effect"])) {
+                $str .= "; Effect: " . $this->aParams["Effect"];
+                $strBrief .= " / Eff: " . $this->aParams["Effect"];
+            }
+            if (isset($this->aParams["Req"])) {
+                $str .= "; Prereq: " . $this->aParams["Req"];
+                $strBrief .= " (Req: " . $this->aParams["Req"] . ")";
+            }
+            if ($traitEffects != null) {
+                switch ($this->type) {
+                    case "Attack":
+                    case "AttMod":
+                        $traitEffects->attAbilStr .= $str . "\n";
+                        if ($strBrief != "")
+                            $traitEffects->attAbilStrBrief .= ($traitEffects->attAbilStrBrief == "" ? "" : ", ") . $strBrief;
+                        break;
+                    case "Defense":
+                    case "DefMod":
+                    case "Immunity":
+                    case "HeaMod":
+                        $traitEffects->defAbilStr .= $str . "\n";
+                        if ($strBrief != "")
+                            $traitEffects->defAbilStrBrief .= ($traitEffects->defAbilStrBrief == "" ? "" : ", ") . $strBrief;
+                        break;
+                    case "Sns":
+                        $traitEffects->snsAbilStr .= $str . "\n";
+                        if ($strBrief != "")
+                            $traitEffects->snsAbilStrBrief .= ($traitEffects->snsAbilStrBrief == "" ? "" : ", ") . $strBrief;
+                        break;
+                    case "SpdType":
+                    case "SpdMod":
+                    case "SpdSpcl":
+                        $traitEffects->mobAbilStr .= $str . "\n";
+                        if ($strBrief != "")
+                            $traitEffects->mobAbilStrBrief .= ($traitEffects->mobAbilStrBrief == "" ? "" : ", ") . $strBrief;
+                        break;
+                    default:
+                        $traitEffects->spcAbilStr .= $str . "\n";
+                        if ($strBrief != "")
+                            $traitEffects->spcAbilStrBrief .= ($traitEffects->spcAbilStrBrief == "" ? "" : ", ") . $strBrief;
+                        break;
+                }
+            }
+        }
 
         return ($brief ? $strBrief : $str);
     }
@@ -1765,7 +1830,7 @@ class cTraitEffects {
         foreach ($aTraits as $iTrait) {
             if (($i = strpos($iTrait, "{")) !== FALSE) {
                 $traitItem = new cTrait();
-                $traitItem->type = trim(substr($iTrait, 0, $i));
+                $traitItem->type = trim(trim(substr($iTrait, 0, $i)), "; \t\n\r\0\x0B");
                 $traitItem->aParams["Qual"] = "";
                 $traitItem->aParams["Value"] = "";
                 $aParams = explode(";", trim(substr($iTrait, $i + 1)));

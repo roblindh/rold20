@@ -203,6 +203,7 @@ em, dt {
 }
 
 dfn {
+    display: block;
     padding-left: 2.5em;
     font-weight: bold;
     font-style: italic;
