@@ -18,7 +18,7 @@
             <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
                 <span>📜</span> Other Lists - Complete Catalogue
             </h1>
-            <p class="text-slate-600 text-sm mt-1">Complete catalogue of staged conditions (poisons, physical diseases, mental illnesses, dying, possession) and world organizations.</p>
+            <p class="text-slate-600 text-sm mt-1">Complete catalogue of staged conditions (poisons, physical diseases, mental illnesses, dying, possession), world organizations, and divine pantheons and deities.</p>
         </div>
         <!-- Quick Jump Links -->
         <div class="flex items-center gap-1.5 flex-wrap text-xs">
@@ -27,33 +27,38 @@
             <a href="#MentalIllnesses" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">🧠 Mental Illnesses</a>
             <a href="#SpecialConditions" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">⚡ Special</a>
             <a href="#Organizations" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">🏛️ Organizations</a>
+            <a href="#Deities" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">☀️ Deities</a>
         </div>
     </div>
 
     <!-- Ruleset Explanatory Guide -->
     <div class="bg-indigo-50/50 border border-indigo-200 rounded-xl p-5 text-xs text-indigo-950 space-y-2 shadow-2xs">
         <div class="font-bold text-sm text-indigo-900 flex items-center gap-1.5">
-            <span>🧪</span> Staged Condition Progression &amp; Affliction Rules
+            <span>🧪</span> Reference Categories &amp; Compendium Rules
         </div>
         <p class="leading-relaxed text-slate-700">
-            Staged conditions represent afflictions that evolve through successive phases based on recurring saving throws:
+            Specialized condition progressions, institutional factions, and divine patrons:
         </p>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-1">
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
                 <span class="font-bold text-slate-900 block mb-0.5">🧪 Poisons &amp; Toxins</span>
-                <span class="text-slate-600">Delivered via Contact, Ingestion, Inhalation, or Injury. Attack rolls vs. Fortitude determine initial contraction and stage escalation.</span>
+                <span class="text-slate-600">Contact, ingestion, inhalation, and injury toxins with staged Fortitude checks.</span>
             </div>
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
                 <span class="font-bold text-slate-900 block mb-0.5">🦠 Physical Diseases</span>
-                <span class="text-slate-600">Incubation periods precede onset. Daily or periodic Fortitude checks dictate progression; reaching terminal stages requires magical restoration.</span>
+                <span class="text-slate-600">Incubating biological infections with progressive physical deterioration.</span>
             </div>
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
-                <span class="font-bold text-slate-900 block mb-0.5">🧠 Mental Afflictions</span>
-                <span class="text-slate-600">Psychic shock, alien contact, or trauma inflicting escalating stages of madness, hysteria, or catatonia tested against Will defense.</span>
+                <span class="font-bold text-slate-900 block mb-0.5">🧠 Mental Illnesses</span>
+                <span class="text-slate-600">Psychic shock, forbidden lore, and escalating madness tested vs. Will defense.</span>
             </div>
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
                 <span class="font-bold text-slate-900 block mb-0.5">🏛️ Organizations</span>
-                <span class="text-slate-600">Guilds, knightly orders, temples, arcane syndicates, and regional factions with influence rankings and membership benefits.</span>
+                <span class="text-slate-600">Guilds, knightly orders, temples, syndicates, and faction influence ranks.</span>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
+                <span class="font-bold text-slate-900 block mb-0.5">☀️ Deities &amp; Pantheons</span>
+                <span class="text-slate-600">Patron gods, divine domains, favored weapons, alignment spheres, and holy symbols.</span>
             </div>
         </div>
     </div>

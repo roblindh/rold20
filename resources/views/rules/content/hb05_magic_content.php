@@ -103,9 +103,11 @@
 <p>
     Enhance the spell by adding compatible variations and amplifying parameters (such as extending reach, widening blast radius, or intensifying damage dice):
 </p>
+<div class="formula-box">
+    <strong>TPC</strong> = Base Power Cost + Parameter &amp; Variation PP Costs
+</div>
 <ul class="space-y-1.5 my-2">
     <li><strong>Skill Level Limit:</strong> The resulting <strong>Total Power Cost (TPC)</strong> cannot exceed your skill level in any of the spell's mandatory skills (or your Rank Level / Total Level for innate racial powers).</li>
-    <li><strong>Total Power Cost Formula:</strong> <code>TPC = Base Power Cost + Parameter &amp; Variation PP Costs</code></li>
     <li><strong>Voluntary TPC Increase:</strong> You may voluntarily heighten a spell's TPC up to your skill level ceiling without adding parameters, raising its effective Power Level (PL) against counterspells and dispels at the cost of a higher activation DC.</li>
 </ul>
 
@@ -125,9 +127,8 @@
     At the conclusion of the activation time, roll an open-ended d20 activation check using the spell's primary skill (or your highest skill if multi-disciplinary):
 </p>
 
-<div class="bg-amber-50 border-l-4 border-amber-400 p-3 my-3 text-xs text-amber-900">
-    <strong class="font-bold text-amber-950">Supernatural Activation Check Formula:</strong><br/>
-    <code class="font-bold">Check = d20! + Spell Skill + Ability Mod (Affinity) + Two-Handed/Focus Bonus (+2) + AP Boost/Dampen + MAM vs. DC (10 + TPC)</code>
+<div class="formula-box">
+    <strong>Check</strong> = d20! + Spell Skill + Ability Mod (Affinity) + Two-Handed/Focus Bonus (+2) + AP Boost/Dampen + MAM vs. DC (10 + TPC)
 </div>
 
 <ul class="space-y-1.5 my-2">
@@ -135,9 +136,9 @@
     <li><strong>Environmental &amp; Target Difficulty Modifiers:</strong>
         <ul class="list-disc ml-5 mt-1 space-y-0.5 text-xs text-stone-700">
             <li><strong>Active Opposing Power:</strong> + Opposing Power's PL to DC.</li>
-            <li><strong>Target Magic Resistance (<dfn>MR</dfn>):</strong> + Target's MR to DC (applied individually per resistant target).</li>
-            <li><strong>Antimagic Zone (<dfn>AM</dfn>):</strong> + AM intensity level to DC.</li>
-            <li><strong>Wild Magic Zone (<dfn>WM</dfn>):</strong> + WM instability level to DC.</li>
+            <li><strong>Target Magic Resistance (<em>MR</em>):</strong> + Target's MR to DC (applied individually per resistant target).</li>
+            <li><strong>Antimagic Zone (<em>AM</em>):</strong> + AM intensity level to DC.</li>
+            <li><strong>Wild Magic Zone (<em>WM</em>):</strong> + WM instability level to DC.</li>
         </ul>
     </li>
     <li><strong>Opposed Contests &amp; Ongoing Effects:</strong>
@@ -152,8 +153,11 @@
 </ul>
 
 <p>
-    <strong>Power Level (PL):</strong> An ability's effective strength is its Power Level: <code>PL = Total Power Cost (TPC) + AP Boost (or - AP Dampen)</code> (minimum 0).
+    <strong>Power Level (PL):</strong> An ability's effective strength is its Power Level:
 </p>
+<div class="formula-box">
+    <strong>PL</strong> = Total Power Cost (TPC) + AP Boost (or - AP Dampen) <span class="text-xs text-slate-500">(minimum 0)</span>
+</div>
 
 <h5>5. Determine Results</h5>
 <p>
@@ -163,7 +167,7 @@
 <?php show_spellresults(); ?> 
 
 <p>
-    For offensive attack spells, achieving a successful activation check is the first step. You then make attack rolls (against <dfn>DeC</dfn>, <dfn>Ref</dfn>, <dfn>Fort</dfn>, or <dfn>Will</dfn> as dictated by the spell description) to deliver the payload to each target.
+    For offensive attack spells, achieving a successful activation check is the first step. You then make attack rolls (against <em>DeC</em>, <em>Ref</em>, <em>Fort</em>, or <em>Will</em> as dictated by the spell description) to deliver the payload to each target.
 </p>
 
 <h5>6. Deduct Costs</h5>
@@ -171,9 +175,8 @@
     Deduct the <strong>Actual Power Cost (APC)</strong> from your current Power Points pool, along with any expended material components or XP costs:
 </p>
 
-<div class="bg-amber-50 border-l-4 border-amber-400 p-3 my-3 text-xs text-amber-900">
-    <strong class="font-bold text-amber-950">Actual Power Cost Formula:</strong><br/>
-    <code class="font-bold">APC = Total Power Cost (TPC) - Spell Affinity Cost Reduction (Minimum 1 PP)</code>
+<div class="formula-box">
+    <strong>APC</strong> = Total Power Cost (TPC) - Spell Affinity Cost Reduction <span class="text-xs text-slate-500">(minimum 1 PP)</span>
 </div>
 
 <?php show_affinityskilleffects(); ?>
@@ -208,7 +211,7 @@
         <ul class="mt-2 space-y-1 text-stone-700">
             <li><strong>Parameters &amp; TPC:</strong> To envelop all 7 targets, the caster selects a large spherical burst, yielding a <strong>TPC of 5 PP</strong>.</li>
             <li><strong>Activation Check:</strong> Taking 10 with affinity: <code>10 + 5 (skill) + 3 (Int mod) = 18 vs. DC 15 (10 + 5 TPC)</code> (automatic success).</li>
-            <li><strong>Resolution &amp; Attacks:</strong> The wizard rolls base damage once (10 HP fire), then rolls individual attacks against each opponent's Reflex (<dfn>Ref 16</dfn>): results of 21, 18, 20, 3, 24, 20, and 37 produce 1 failure (half damage), 5 regular hits (full damage), and 1 critical success (double damage).</li>
+            <li><strong>Resolution &amp; Attacks:</strong> The wizard rolls base damage once (10 HP fire), then rolls individual attacks against each opponent's Reflex (<em>Ref 16</em>): results of 21, 18, 20, 3, 24, 20, and 37 produce 1 failure (half damage), 5 regular hits (full damage), and 1 critical success (double damage).</li>
             <li><strong>Actual Cost:</strong> Affinity reduction of 2 PP yields an <strong>APC of 3 PP</strong>.</li>
         </ul>
     </div>
@@ -220,7 +223,7 @@
         <ul class="mt-2 space-y-1 text-stone-700">
             <li><strong>Parameters &amp; TPC:</strong> To maximize success chances, the rogue spends the minimum <strong>TPC of 1 PP</strong>.</li>
             <li><strong>Activation Check:</strong> Lacking an affinity skill, the rogue cannot take 10. Rolling d20 produces: <code>17 + 4 (skill) = 21 vs. DC 11 (10 + 1 TPC)</code> (success).</li>
-            <li><strong>Melee &amp; Saving Attack Rolls:</strong> Benefiting from Vital Attack bonuses, the rogue scores an unarmed attack check of 27 against passive <dfn>DeCp 10</dfn> (hit), followed by a secondary check of 22 against <dfn>Fort 19</dfn> (success), inflicting 6 blunt HP from the punch and 16 HP from Disintegrate.</li>
+            <li><strong>Melee &amp; Saving Attack Rolls:</strong> Benefiting from Vital Attack bonuses, the rogue scores an unarmed attack check of 27 against passive <em>DeCp 10</em> (hit), followed by a secondary check of 22 against <em>Fort 19</em> (success), inflicting 6 blunt HP from the punch and 16 HP from Disintegrate.</li>
             <li><strong>Actual Cost:</strong> Without affinity, <strong>APC equals TPC (1 PP)</strong>.</li>
         </ul>
     </div>
@@ -289,7 +292,7 @@
         <p class="text-stone-600 mt-0.5"><em>An archmage (skill 21) attacks three opponents with Force Missile (6 missiles, TPC 21 PP, unboosted). Two targets stand in an Antimagic zone of strength 10.</em></p>
         <ul class="mt-2 space-y-1 text-stone-700">
             <li><strong>Activation Check:</strong> Taking 10: <code>10 + 21 + 5 = 36 vs. DC 31 (outside) / DC 41 (inside AM zone)</code>. The spell functions at full power outside, but suffers reduced effect inside.</li>
-            <li><strong>Missile Attack Resolution:</strong> Targets have <dfn>DeC 19</dfn>. Against the target outside: 2 hits (1 exceptional, 1 critical). Inside the zone (-20 penalty): 2 misses and 1 regular hit.</li>
+            <li><strong>Missile Attack Resolution:</strong> Targets have <em>DeC 19</em>. Against the target outside: 2 hits (1 exceptional, 1 critical). Inside the zone (-20 penalty): 2 misses and 1 regular hit.</li>
             <li><strong>Actual Cost:</strong> <strong>APC of 11 PP</strong>.</li>
         </ul>
     </div>
@@ -693,62 +696,61 @@
 
 <h5>Brewing Potions and Oils</h5>
 <p>
-    Potions and oils store arcane or divine spells with an Action Time of 15 AP or less, a range of Personal, Touch, Reach, or 0, and targeting a single creature (or object/area for oils). Maximum Total Power Cost (TPC) is 5. Focus implements cannot be used, and material components must be consumed in the brew.
+    Potions and oils store arcane or divine spells with an Action Time of 15 AP or less, a range of Personal, Touch, Reach, or 0, and targeting a single creature (or object/area for oils). Maximum Total Power Cost (TPC) is 5. Focus implements cannot be used, and material components must be consumed in the brew. Minimum PL equals the spell&rsquo;s TPC.
 </p>
-<ul>
-    <li><strong>Minimum PL:</strong> Equal to the spell&rsquo;s TPC (Total Power Cost).</li>
-    <li><strong>Base Price (gp):</strong> <code>Minimum PL &times; Actual PL &times; 5 + Material Cost</code></li>
-</ul>
+<div class="formula-box">
+    <strong>Base Price (gp)</strong> = Minimum PL &times; Actual PL &times; 5 + Material Cost
+</div>
 
 <h5>Creating Psionic Tattoos</h5>
 <p>
-    Tattoos store psionic powers with an Action Time of 15 AP or less, a range of Personal or Touch, and targeting You or 1 creature. Maximum TPC is 5. Focus implements cannot be used, and material components must be consumed in the creation.
+    Tattoos store psionic powers with an Action Time of 15 AP or less, a range of Personal or Touch, and targeting You or 1 creature. Maximum TPC is 5. Focus implements cannot be used, and material components must be consumed in the creation. Minimum PL equals the power&rsquo;s TPC.
 </p>
-<ul>
-    <li><strong>Minimum PL:</strong> Equal to the power&rsquo;s TPC.</li>
-    <li><strong>Base Price (gp):</strong> <code>Minimum PL &times; Actual PL &times; 5 + Material Cost</code></li>
-</ul>
+<div class="formula-box">
+    <strong>Base Price (gp)</strong> = Minimum PL &times; Actual PL &times; 5 + Material Cost
+</div>
 
 <h5>Scribing Scrolls</h5>
 <p>
-    Scrolls store arcane or divine spells. Reading the scroll takes twice the normal Action Time (2 &times; AP). Ongoing durations can be extended by providing extra PP at the time of scribing.
+    Scrolls store arcane or divine spells. Reading the scroll takes twice the normal Action Time (2 &times; AP). Ongoing durations can be extended by providing extra PP at the time of scribing. Minimum PL equals the spell&rsquo;s TPC.
 </p>
-<ul>
-    <li><strong>Minimum PL:</strong> Equal to the spell&rsquo;s TPC.</li>
-    <li><strong>Base Price (gp):</strong> <code>Minimum PL &times; Actual PL &times; 2 + Material Cost</code></li>
-</ul>
+<div class="formula-box">
+    <strong>Base Price (gp)</strong> = Minimum PL &times; Actual PL &times; 2 + Material Cost
+</div>
 
 <h5>Enchanting Power Stones</h5>
 <p>
-    Power stones store psionic powers. Manifesting a power stone takes twice the normal Action Time (2 &times; AP).
+    Power stones store psionic powers. Manifesting a power stone takes twice the normal Action Time (2 &times; AP). Minimum PL equals the power&rsquo;s TPC.
 </p>
-<ul>
-    <li><strong>Minimum PL:</strong> Equal to the power&rsquo;s TPC.</li>
-    <li><strong>Base Price (gp):</strong> <code>Minimum PL &times; Actual PL &times; 2 + Material Cost</code></li>
-</ul>
+<div class="formula-box">
+    <strong>Base Price (gp)</strong> = Minimum PL &times; Actual PL &times; 2 + Material Cost
+</div>
 
 <h5>Inscribing Runes</h5>
 <p>
-    Runes store divine spells centered on the rune (range 0) that trigger upon contact.
+    Runes store divine spells centered on the rune (range 0) that trigger upon contact. Minimum PL equals the spell&rsquo;s TPC.
 </p>
-<ul>
-    <li><strong>Minimum PL:</strong> Equal to the spell&rsquo;s TPC.</li>
-    <li><strong>Base Price (gp):</strong> <code>(Minimum PL &times; Actual PL &times; 5 + Material Cost) &times; (Number of Charges)</code></li>
-    <li><em>Modifier:</em> Double the base price if the rune is designed to trigger upon proximity (within 1 square) or reading rather than direct touch.</li>
-</ul>
+<div class="formula-box">
+    <strong>Base Price (gp)</strong> = (Minimum PL &times; Actual PL &times; 5 + Material Cost) &times; Number of Charges
+</div>
+<p class="text-xs text-slate-600 mt-1">
+    <em>Modifier:</em> Double the base price if the rune is designed to trigger upon proximity (within 1 square) or reading rather than direct touch.
+</p>
 
 <h5>Weapons, Shields, and Armor</h5>
-<ul>
-    <li><strong>Magic Weapons (gp):</strong> <code>Minimum PL &times; Actual PL &times; 80 + Mundane Weapon Cost</code><br>
-        <em>(Double weapons can be enchanted as a single weapon or as two distinct components.)</em></li>
-    <li><strong>Magic Ammunition (gp):</strong> <code>Minimum PL &times; Actual PL &times; 2 + Mundane Ammunition Cost</code></li>
-    <li><strong>Magic Shields (gp):</strong> <code>Minimum PL &times; Actual PL &times; 50 + Mundane Shield Cost</code></li>
-    <li><strong>Magic Armor (gp):</strong> <code>Minimum PL &times; Actual PL &times; 80 + Mundane Armor Cost</code></li>
-</ul>
+<div class="formula-box">
+    <div><strong>Magic Weapons (gp):</strong> Minimum PL &times; Actual PL &times; 80 + Mundane Weapon Cost</div>
+    <div><strong>Magic Ammunition (gp):</strong> Minimum PL &times; Actual PL &times; 2 + Mundane Ammunition Cost</div>
+    <div><strong>Magic Shields (gp):</strong> Minimum PL &times; Actual PL &times; 50 + Mundane Shield Cost</div>
+    <div><strong>Magic Armor (gp):</strong> Minimum PL &times; Actual PL &times; 80 + Mundane Armor Cost</div>
+</div>
+<p class="text-xs text-slate-600 mt-1">
+    <em>Double weapons:</em> Can be enchanted as a single weapon or as two distinct components.
+</p>
 
 <h5>Foci, Constructs, and Miscellaneous Items</h5>
-<ul>
-    <li><strong>Magic Foci (gp):</strong> <code>Minimum PL &times; Actual PL &times; 80 + Mundane Focus Cost</code> <em>(Max PL 10 for small foci)</em></li>
-    <li><strong>Animated Constructs (gp):</strong> <code>(Construct CL&sup2; + Minimum PL &times; Actual PL) &times; 200 + Mundane Vessel Cost</code></li>
-    <li><strong>Other Magic Items (gp):</strong> <code>Minimum PL &times; Actual PL &times; 100 + Mundane Item Cost</code></li>
-</ul>
+<div class="formula-box">
+    <div><strong>Magic Foci (gp):</strong> Minimum PL &times; Actual PL &times; 80 + Mundane Focus Cost <span class="text-xs text-slate-500">(Max PL 10 for small foci)</span></div>
+    <div><strong>Animated Constructs (gp):</strong> (Construct CL&sup2; + Minimum PL &times; Actual PL) &times; 200 + Mundane Vessel Cost</div>
+    <div><strong>Other Magic Items (gp):</strong> Minimum PL &times; Actual PL &times; 100 + Mundane Item Cost</div>
+</div>

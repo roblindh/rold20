@@ -1,16 +1,192 @@
 <h2 id="Culture">Rules of Culture</h2>
+<p>
+    Culture, social standing, and personal networks shape how characters interact with civilization, law, economy, and power structures. While combat and adventuring skills measure physical or magical prowess, a character's place within their family, faction, community, and realm determines their broader influence on the world.
+</p>
 
 <h3 id="Connections">Connections</h3>
+<p>
+    No hero exists in isolation. Connections represent the web of personal relationships, sworn allegiances, professional networks, and loyal companions that bind a character to society. Connections can provide invaluable resources—ranging from shelter, legal protection, and vital intelligence to armed retainers and supernatural allies—while also demanding reciprocal duties, honor obligations, and shared risks.
+</p>
 
-<h4>Family and Clan</h4>
+<h4 id="FamilyAndClan">Family and Clan</h4>
+<p>
+    Kinship remains the foundational social unit in most civilizations. Whether an aristocratic noble dynasty, a dwarven mountain clan, an elven royal line, or a nomadic tribal sept, bloodlines define hereditary standing, legal privileges, and generational responsibilities:
+</p>
+<ul>
+    <li><strong>Ancestral Standing &amp; Inheritance:</strong> A character's initial <a href="#SocialClass">Social Class</a> is almost universally inherited through family lineage. Legitimate heirs inherit land parcels, ancestral heirlooms, trade charters, and noble titles upon the passing of senior kin.</li>
+    <li><strong>Kinship Loyalty:</strong> Kin are expected to stand together against outside threats. Clans provide immediate shelter, bail, legal advocacy before magistrate courts, and hospitable sanctuary across distant settlements where extended family resides.</li>
+    <li><strong>Clan Obligations &amp; Blood Debts:</strong> Family ties are bidirectional. Characters are expected to defend clan honor, contribute to family dowries and taxes, support elderly or impoverished relatives, and take up arms in times of clan feuds or hereditary vendettas. Slighting or dishonoring the family can lead to disownment or exile.</li>
+</ul>
 
-<h4>Contacts, Friends, and Enemies</h4>
+<h4 id="Contacts">Contacts, Friends, and Enemies</h4>
+<p>
+    Beyond blood relations, adventurers forge individual networks through past endeavors, commercial patronage, mutual favors, and shared danger:
+</p>
+<ul>
+    <li><strong>Contacts:</strong> Professional acquaintances, informants, fences, minor officials, tavernkeepers, and city guards. Contacts exchange specific services, rumors, and access in return for coin, reciprocal favors, or <a href="#Influence">Influence</a>. A contact's loyalty is typically transactional; maintaining a healthy network requires ongoing investment and mutual trust.</li>
+    <li><strong>Friends &amp; Allies:</strong> Devoted personal companions who share ideological goals, past life-and-death bonds, or deep emotional ties. Allies willingly offer free lodging, lend specialized equipment, or provide emergency aid without demanding compensation, though they expect similar loyalty in return.</li>
+    <li><strong>Rivals &amp; Enemies:</strong> Foes, competing adventuring companies, jealous court nobles, or vengeful syndicate lieutenants who actively oppose the character. Enemies leverage their own Influence, wealth, and agents to undermine the character's reputation, sabotage expeditions, or dispatch assassins. Overcoming or reconciling with significant enemies often forms major campaign milestones.</li>
+</ul>
 
 <h4 id="Followers">Henchmen, Minions, and Followers</h4>
+<p>
+    As characters gain renown and accumulated wealth, they attract subordinates who assist in expeditions, guard strongholds, manage businesses, or enforce authority:
+</p>
+<ul>
+    <li><strong>Hirelings &amp; Specialists:</strong> Non-combatants and skilled craftsmen (such as scribes, teamsters, porters, blacksmiths, alchemists, and navigators) hired for day-to-day operations. Their availability is governed by the community's gold piece limit, and they receive standard daily or weekly wages.</li>
+    <li><strong>Henchmen &amp; Retainers:</strong> Sworn retainers, squires, apprentices, and professional soldiers who accompany adventurers into perilous environments. Henchmen typically receive a steady wage plus a negotiated share of expedition treasure (usually a half to full share), along with the expectation of medical care, equipment maintenance, and honorable leadership.</li>
+    <li><strong>Minions &amp; Mercenary Units:</strong> Large bodies of armed guards, archers, or foot soldiers hired to garrison castles, protect trade caravans, or fight in open warfare. Their upkeep includes food, armor maintenance, barracks, and hazard bonuses.</li>
+    <li><strong>Morale &amp; Loyalty:</strong> Subordinates are not disposable cannon fodder. Unreasonable risk, cruel treatment, missed wages, or cowardly leadership triggers morale checks, mutiny, or desertion. Conversely, high character <a href="#Reputation">Reputation</a> and fair treatment instill steadfast devotion.</li>
+</ul>
+
+<h4 id="BondedCompanions">Special Companions &amp; Bonded Servants</h4>
+<p>
+    Certain characters form supernatural, metaphysical, or psionic bonds with extraordinary companions. These bonded servants are far more capable and loyal than ordinary creatures, growing in power alongside their master through dedicated companion skills:
+</p>
+<ul>
+    <li><strong>Animal Companions:</strong> Gained through the <em>Animal Companion</em> skill (inspired by druids and rangers), this mystical affinity attracts one or more natural animals into devoted service.
+        <ul>
+            <li><em>Creature Limit:</em> The total Creature Level (CL) sum of all active animal companions cannot exceed the master's <code>(skill level &minus; 1)</code>.</li>
+            <li><em>Empathy &amp; Handling:</em> The master can handle and command their companion via verbal commands as a free action (0 AP cost) through Animal Empathy.</li>
+            <li><em>Shared Magic:</em> Any spell the master casts on themselves can automatically affect the animal companion if within 1 square (at no extra cost; the effect ends if the companion moves more than 1 square away).</li>
+            <li><em>Calling &amp; Dismissal:</em> Attracting a new animal companion requires a 24-hour ritual and meditation in an appropriate natural habitat (via <em>Call Animal Companion</em>). Releasing a companion is instantaneous (via <em>Dismiss Animal Companion</em>).</li>
+            <li><em>Enhancements:</em> As the master's skill level increases, the companion gains escalating bonuses to Strength, Dexterity, Hit Points, Damage Reduction, Attack, Defense, Action Points, Acrobatics, and Will defense (see table below).</li>
+        </ul>
+    </li>
+    <li><strong>Divine Mounts:</strong> Granted through the <em>Divine Mount</em> skill (inspired by paladins and holy champions), this bond summons an exceptional extraplanar steed from celestial or higher planes.
+        <ul>
+            <li><em>Creature Limit:</em> The mount must be an animal or monstrous animal capable of bearing a rider, with a CL not exceeding the master's <code>(skill level &minus; 1)</code>.</li>
+            <li><em>Empathic Link:</em> The master communicates empathically with their mount up to a range of 1 km as a supernatural ability (0 AP cost).</li>
+            <li><em>Mounted Defenses:</em> While mounted, the mount can substitute the rider's Fortitude, Reflex, and Will defense values whenever they are superior to its own.</li>
+            <li><em>Shared Magic:</em> Self-targeted spells cast by the rider automatically extend to the mount when within 1 square.</li>
+            <li><em>Summoning &amp; Loss:</em> The mount is called directly from its native plane via <em>Call Mount</em> (Full round action, 5 PP, duration of <code>2 &times; skill level</code> hours), appearing in full health with all stowed gear. Replacing a mount requires a 1-day ritual; if a divine mount is slain, 30 days must pass before another can be summoned.</li>
+            <li><em>Enhancements:</em> Scaling improvements grant the mount increased Strength, Intelligence, Hit Points, Damage Reduction, Attack, Defense, AP, movement speed bonuses (+2 squares), the <em>Command Similar Creatures</em> ability, and Magic Resistance (<code>+TL+5</code> enhancement modifier).</li>
+        </ul>
+    </li>
+    <li><strong>Familiars:</strong> Summoned through the <em>Familiar</em> skill (inspired by wizards and sorcerers), a familiar is an intelligent magical beast or animal attuned to the master's arcane soul.
+        <ul>
+            <li><em>Creature Limit:</em> The familiar must be an animal or monstrous animal at least one size category smaller than the master, with a CL not exceeding <code>(skill level &minus; 1)</code>.</li>
+            <li><em>Empathic Link &amp; Sensory Synergy:</em> Empathic communication functions up to 1 km (0 AP). When within 1 square, the master gains a +2 skill level bonus to Perception. When within 1 km, the master gains a +2 skill level bonus to a designated racial skill of the familiar.</li>
+            <li><em>Shared Defenses &amp; Spells:</em> When within 1 square, the familiar can utilize the master's Fortitude, Reflex, and Will defenses, and shares self-targeted spells.</li>
+            <li><em>Deliver Touch Spells:</em> At higher skill ranks, the familiar can physically deliver touch spells cast by the master.</li>
+            <li><em>Scrying &amp; Loss:</em> The master can scry upon the familiar across distances or planes via <em>Scry on Familiar</em>. If a familiar dies or is dismissed, a full year (1 year) must pass before a replacement can be summoned.</li>
+            <li><em>Enhancements:</em> Progression bestows Intelligence boosts, HP, DR, Attack, Defense, AP, Acrobatics bonuses, speech with the master and similar creatures, and Magic Resistance (<code>+TL+5</code>).</li>
+        </ul>
+    </li>
+    <li><strong>Psicrystals:</strong> Created through the <em>Psicrystal</em> skill (inspired by psions and wilders), a psicrystal is a crystalline focus infused with an articulated fragment of the manifestor's personality.
+        <ul>
+            <li><em>Personality Fragment:</em> Each psicrystal embodies a distinct personality archetype (e.g., <em>Observant</em>, <em>Resolved</em>, <em>Nimble</em>, <em>Sage</em>, <em>Sneaky</em>), granting the master an affinity bonus when within 1 km, plus a +2 skill level bonus to Perception when within 1 square.</li>
+            <li><em>Telepathic Link:</em> The master maintains a telepathic link up to 1 km (0 AP).</li>
+            <li><em>Shared Defenses &amp; Powers:</em> Within 1 square, the psicrystal uses the master's defenses and shares self-targeted psionic powers. It can also deliver touch powers.</li>
+            <li><em>Self-Propulsion:</em> The psicrystal possesses independent mobility, growing tiny crystalline or ectoplasmic legs to scuttle across the ground (Ground speed 6 sq), and eventually developing levitation and flight (Fly speed 10 sq).</li>
+            <li><em>Loss &amp; Reconstruction:</em> A character can possess only one psicrystal at a time. If shattered or destroyed, one year must elapse before a new matrix can be crystallized.</li>
+            <li><em>Enhancements:</em> Advances grant enhanced Intelligence, HP, DR, AP, two-way telepathy (6 sq range), independent flight, and Power/Magic Resistance (<code>+TL+5</code>).</li>
+        </ul>
+    </li>
+</ul>
 
 <?php show_companionimprovements(); ?> 
 
 <h3 id="Organizations">Organizations</h3>
+<p>
+    Organizations represent collective institutions—guilds, knightly orders, religious inquisitions, merchant cartels, arcane academies, and shadowy syndicates—that hold wealth, political sway, and military force far exceeding any single individual. Joining, navigating, and commanding organizations is one of the primary avenues through which adventurers transform personal heroic power into enduring geopolitical influence.
+</p>
+
+<h4 id="OrgNature">Nature and Scale of Organizations</h4>
+<p>
+    Every organization operates at a specific scope of operations, determining its geographic reach, institutional resources, and demographic footprint:
+</p>
+<ul>
+    <li><strong>Local / Cell:</strong> Neighborhood guilds, rural militia leagues, cloistered shrines, or isolated secret cabals operating within a single village or urban district.</li>
+    <li><strong>Settlement / Citywide:</strong> Municipal craft guilds, city watch commands, prominent merchant houses, or thieves' syndicates controlling the trade and underworld of an entire city.</li>
+    <li><strong>Regional:</strong> Ducal knightly chapters, provincial trading companies, regional druidic circles, or dioceses spanning multiple cities, baronies, and trade roads.</li>
+    <li><strong>Kingdom-wide / National:</strong> Sovereign standing armies, grand chivalric orders, royal trading cartels, and state religious hierarchies enjoying official royal charters and tax exemptions.</li>
+    <li><strong>Continental / Empire-wide:</strong> Transnational banking consortiums, imperial bureaucracies, continent-spanning inquisitions, or ancient arcane colleges with chapterhouses across many kingdoms.</li>
+    <li><strong>Planar / Multiversal:</strong> Cosmic brotherhoods, extraplanar mercenary leagues, divine legions, or interdimensional scholarly consortiums spanning planes of existence.</li>
+</ul>
+
+<h4 id="OrgMembership">Membership, Ranks, and Hierarchy</h4>
+<p>
+    Gaining entry into an organization requires fulfilling specific prerequisites, which may include skill proficiencies, moral alignments, background checks, sponsorship from existing members, initiation dues, or formal trials of valor or wit.
+</p>
+<p>
+    Once accepted, members progress through a standardized five-tier hierarchy of authority and responsibility:
+</p>
+<ol>
+    <li><strong>Initiate / Apprentice / Novice:</strong> Entry-level probationers. Initiates receive basic training, institutional lodging, and access to communal workshops or libraries, while performing routine labor, guard duty, or menial tasks under senior supervision.</li>
+    <li><strong>Associate / Journeyman / Footman:</strong> Full accredited members. Journeymen carry the organization's badge of office, enjoy legal advocacy and commercial privileges, and are assigned independent contracts, patrols, or crafting duties.</li>
+    <li><strong>Senior Member / Veteran / Master Artisan:</strong> Trusted operatives, senior knights, and master craftsmen. Senior members supervise junior cells, command tactical squads, access restricted archives, and participate in local chapter votes.</li>
+    <li><strong>Officer / Chapter Regent / Guildmaster:</strong> Executive leadership at the municipal or regional level. Officers manage chapterhouses, disburse organizational treasuries, negotiate treaties with civic rulers, and issue high-stakes missions.</li>
+    <li><strong>Grandmaster / High Primate / Council Elder:</strong> Sovereign commanders and ruling conclaves. Supreme leaders establish institutional dogma, command entire armies or trading fleets, advise kings and emperors, and control the organization's ultimate destiny.</li>
+</ol>
+
+<h4 id="OrgClass">Social Class and Wealth Class</h4>
+<p>
+    Organizations possess aggregate ratings for <a href="#SocialClass">Social Class</a> and <a href="#WealthClass">Wealth Class</a>, reflecting their collective prestige and accumulated treasury:
+</p>
+<ul>
+    <li><strong>Institutional vs. Personal Standing:</strong> An elite knightly order or grand bank may boast SC 4 (Nobility) and WC 5 (Vast Treasury), while its individual junior members start at SC 1 or 2 with modest personal funds. However, representing the organization allows members to command respect and credit far above their personal station.</li>
+    <li><strong>Rank Progression &amp; Elevation:</strong> Advancing to officer or grandmaster ranks typically elevates a character's personal Social Class and provides regular stipends, land grants, or access to institutional wealth. Conversely, expulsion or dishonorable discharge immediately strips these privileges.</li>
+</ul>
+
+<h4 id="OrgInfluence">Using Influence within Organizations</h4>
+<p>
+    A character's standing within a faction is measured directly by their <a href="#Influence">Influence</a> score with that organization. Influence is earned through meritorious service, successful missions, lavish donations, political maneuvering, or battlefield heroism.
+</p>
+<p>
+    Characters can spend or leverage their Influence to request institutional favors, requisition assets, or seize leadership:
+</p>
+<ul>
+    <li><strong>Minor Demands (1&ndash;2 Influence):</strong> Securing emergency shelter in a guild safehouse; consulting chapterhouse libraries and scholars; obtaining basic trade discounts (5&ndash;10%); arranging discreet introductions to local fixers, fences, or low-level officials.</li>
+    <li><strong>Moderate Demands (2&ndash;3 Influence):</strong> Requisitioning specialized or masterwork gear; accessing restricted spell scrolls or alchemical concoctions; obtaining bail, legal representation, or political asylum from municipal authorities; commissioning private research on rare artifacts or monsters.</li>
+    <li><strong>Major Demands (3&ndash;4 Influence):</strong> Deploying armed tactical squads or mercenary platoons to support an expedition; mobilizing trade boycotts against a rival merchant; securing royal audiences or high-level diplomatic intervention; accessing forbidden vaults and sacred relics; expelling or disciplining corrupt rivals within the chapter.</li>
+    <li><strong>Extreme Demands &amp; Leadership Challenges (4&ndash;5+ Influence):</strong> Mobilizing the organization's full military or economic power for a regional war; establishing a new sovereign chapterhouse; rewriting organizational bylaws and creeds; mounting a leadership challenge to depose an incumbent Grandmaster or claim the supreme seat of power.</li>
+</ul>
+
+<h4 id="OrgBenefits">Rights, Benefits, and Responsibilities</h4>
+<p>
+    Membership in an organization is a reciprocal covenant between the individual and the institution:
+</p>
+<ul>
+    <li><strong>Member Benefits:</strong> Access to institutional training and favored skills; mutual defense against external enemies; legal immunity or reduced sentencing in friendly jurisdictions; access to specialized supply networks, safehouses, and communication conduits.</li>
+    <li><strong>Member Responsibilities:</strong> Payment of annual dues or tithes (typically 5% to 10% of earned income or quest spoils); obedience to lawful orders from superior officers; maintaining oaths of secrecy (omert&agrave;) regarding internal methods and plans; coming to the immediate aid of fellow brethren in distress.</li>
+    <li><strong>Expulsion &amp; Treason:</strong> Violating institutional creeds, stealing from the treasury, or betraying secrets brings severe repercussions. Punishments range from formal demotion and monetary fines to total expulsion, branding, bounty hunting, excommunication, or lethal assassination by internal enforcers.</li>
+</ul>
+
+<h4 id="OrgArchetypes">Major Organization Archetypes</h4>
+<p>
+    While every faction possesses distinct traditions and lore, most organizations across civilized and frontier realms align with one of fourteen core archetypes:
+</p>
+<ul>
+    <li><strong>Merchant Companies &amp; Syndicates:</strong> Commercial enterprises, trade cartels, and banking houses focused on controlling lucrative shipping routes, commodity monopolies, and maritime commerce.</li>
+    <li><strong>Craft &amp; Artisan Guilds:</strong> Professional associations of stonemasons, smiths, shipwrights, and weavers that establish quality standards, regulate apprenticeships, and protect trade secrets.</li>
+    <li><strong>Thieves' Guilds &amp; Criminal Syndicates:</strong> Illicit underworld cartels governing smuggling, burglary, extortion, fences, and black markets beneath urban centers.</li>
+    <li><strong>Arcane Academies &amp; Esoteric Orders:</strong> Scholarly colleges and mystical fraternities devoted to researching spells, preserving arcane lore, crafting magical items, and regulating dangerous sorcery.</li>
+    <li><strong>Knightly &amp; Martial Orders:</strong> Chivalric fellowships of noble warriors, paladins, and cavaliers sworn to chivalric codes, holy crusades, monster hunting, and sovereign defense.</li>
+    <li><strong>Religious &amp; Holy Orders:</strong> Monastic dioceses, militant inquisitions, and priesthoods that shepherd the faithful, root out heresy, maintain sacred shrines, and perform divine rites.</li>
+    <li><strong>Mercenary Companies &amp; Free Bands:</strong> Professional freelance armies, condottieri, and veteran lances who sell their swords to city-states, merchant princes, and warring lords.</li>
+    <li><strong>Monastic &amp; Martial Arts Brotherhoods:</strong> Ascetic orders dedicated to physical perfection, unarmed combat mastery, meditation, and philosophical enlightenment.</li>
+    <li><strong>Druidic &amp; Wilderness Circles:</strong> Ancient conclaves of druids, rangers, and shamans who guard primordial forests, balance planar leylines, and repel abominations.</li>
+    <li><strong>Aristocratic &amp; Noble Houses:</strong> Patrician lineages and dynastic families wielding feudal land holdings, court patronage, and hereditary political power.</li>
+    <li><strong>Espionage &amp; Shadow Agencies:</strong> Covert intelligence networks, spymasters, and stealth operatives serving crowns, councils, or private interests through espionage and statecraft.</li>
+    <li><strong>Cults &amp; Secret Societies:</strong> Hidden cabals worshipping dark deities, elder abominations, or esoteric philosophies, working from the shadows to achieve cosmic or apocalyptic ends.</li>
+    <li><strong>Scholarly &amp; Explorer Societies:</strong> Adventurous leagues of cartographers, archaeologists, naturalists, and historians dedicated to cataloging lost ruins, ancient artifacts, and unexplored continents.</li>
+    <li><strong>Adventurers' Guilds:</strong> Frontier associations and mercenary halls that broker quest contracts, organize dungeon expeditions, appraise relics, and provide mutual aid to roaming adventurers.</li>
+</ul>
+
+<div class="not-prose my-6 p-4 rounded-xl bg-amber-50/70 border border-amber-200 text-stone-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
+    <div>
+        <div class="font-bold text-sm text-stone-900 flex items-center gap-1.5 font-serif">
+            <span>🏛️</span> Complete Organizations Catalogue
+        </div>
+        <p class="text-xs text-stone-600 mt-0.5">
+            For full game profiles, alignments, scale, class ranges, favored skills, member perks, responsibilities, and hierarchy ranks across all major world organizations, consult the Other Lists reference compendium.
+        </p>
+    </div>
+    <a href="/reference/other/list#Organizations" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold transition bg-amber-800 hover:bg-amber-900 text-white shadow-xs shrink-0" style="background-color: #8b1a1a;">
+        <span>View Organizations in Other Lists &rarr;</span>
+    </a>
+</div>
 
 <h3 id="Civilization">Civilization</h3>
 
@@ -161,17 +337,58 @@
 
 <h3 id="Religion">Religion</h3>
 <p>
+    Religion permeates almost every facet of daily life in fantasy worlds. The gods are not distant abstractions; their power manifests tangibly through miraculous spells, celestial visitations, divine smiting, and celestial and fiendish incursions. Temples serve as spiritual centers, communal sanctuaries, repositories of healing arts, and powerful political institutions that shape law, morality, and culture.
 </p>
 
-<h4>Deities</h4>
+<h4 id="Deities">Deities and Pantheons</h4>
 <p>
+    Most civilizations revere pantheons of deities representing diverse aspects of existence—from creation, war, and justice to harvest, commerce, storms, and death. Rather than worshipping a single god exclusively, common folk offer prayers and tithes to whichever deity oversees their immediate circumstances, such as entreating the goddess of healing during sickness or praying to the god of the sea before a voyage.
 </p>
-
-<?php show_deities(); ?> 
-
-<h4>Philosophies</h4>
 <p>
+    Deities are classified by their cosmic potency and planar authority into four primary divine ranks:
 </p>
+<ul>
+    <li><strong>Greater Deities (Rank G):</strong> Immortal primordial rulers and cosmic creators who command vast planar dominions and multitudes of worshippers. They can reshape realities, grant spells across all planes, and rarely manifest directly in mortal realms without risking cosmic cataclysms.</li>
+    <li><strong>Intermediate Deities (Rank I):</strong> Major gods presiding over key portfolios such as agriculture, battle, crafts, or the dead. They actively guide mortal churches and champion planar crusades.</li>
+    <li><strong>Lesser Deities (Rank L):</strong> Specialized divine patrons governing narrower portfolios, specific races, geographic regions, or unique crafts.</li>
+    <li><strong>Demigods &amp; Quasi-Deities (Rank D):</strong> Ascended mortal heroes, divine offspring, or immortal guardians who possess extraordinary divine power and can grant limited spells to small cults or sworn champions.</li>
+</ul>
+
+<h5>Clerical Devotion &amp; Divine Mechanics</h5>
+<p>
+    While lay worshippers venerate entire pantheons, clerics, paladins, and divine champions forge a dedicated covenant with a specific patron deity:
+</p>
+<ul>
+    <li><strong>Alignment Harmony:</strong> A cleric's alignment must generally remain within one step of their deity's alignment (e.g., a Lawful Good deity accepts Lawful Good, Neutral Good, or Lawful Neutral clerics) and can never be opposed on either the Law/Chaos or Good/Evil axis.</li>
+    <li><strong>Affinity Domains:</strong> Each deity grants access to specific divine domains (such as <em>Sun</em>, <em>War</em>, <em>Healing</em>, <em>Knowledge</em>, <em>Protection</em>, <em>Magic</em>, or <em>Trickery</em>). A cleric chooses domains granted by their patron, unlocking domain affinity skills, bonus spell repertoires, and specialized channeling traits.</li>
+    <li><strong>Favored Weapons:</strong> Every deity sanctifies a specific favored weapon (such as the warhammer for Moradin, the longsword for Heironeous, or the bow for Corellon Larethian). Clerics gain martial familiarity and divine bonuses when wielding their patron's consecrated armament.</li>
+    <li><strong>Holy Symbols &amp; Divine Foci:</strong> Priesthoods channel divine energy through consecrated holy symbols carved from silver, wood, or sacred stone. A holy symbol serves as an indispensable divine focus implement for manifesting spells and turning or rebuking planar creatures.</li>
+</ul>
+
+<div class="not-prose my-6 p-4 rounded-xl bg-amber-50/70 border border-amber-200 text-stone-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
+    <div>
+        <div class="font-bold text-sm text-stone-900 flex items-center gap-1.5 font-serif">
+            <span>☀️</span> Complete Deities &amp; Pantheons Catalogue
+        </div>
+        <p class="text-xs text-stone-600 mt-0.5">
+            For the complete catalogue of deities—including divine ranks, alignments, granted domains, favored weapons, portfolios, and holy symbols—consult the Other Lists reference compendium.
+        </p>
+    </div>
+    <a href="/reference/other/list#Deities" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold transition bg-amber-800 hover:bg-amber-900 text-white shadow-xs shrink-0" style="background-color: #8b1a1a;">
+        <span>View Deities in Other Lists &rarr;</span>
+    </a>
+</div>
+
+<h4 id="Philosophies">Philosophies and Cosmic Forces</h4>
+<p>
+    Not all divine practitioners revere anthropomorphic or personified deities. Some clerics, mystics, and monastic orders dedicate themselves to abstract cosmic principles, philosophies, or primal spiritual forces:
+</p>
+<ul>
+    <li><strong>Cosmic Alignments &amp; Universal Concepts:</strong> Devotion to fundamental principles such as <em>The Great Wheel</em>, <em>The Cosmic Balance</em>, <em>The Eternal Light</em>, <em>The Path of Truth</em>, or <em>Primal Nature</em>. These champions channel divine magic drawn from the outer planes of existence or the fabric of the multiverse itself.</li>
+    <li><strong>Ancestor Veneration &amp; Animism:</strong> Cultural traditions common among nomadic tribes, orcish clans, and dwarven fortresses where spiritual energy is channeled through ancestral spirits, totem guardians, or natural genus loci rather than distant gods.</li>
+    <li><strong>Domain Selection for Philosophers:</strong> A cleric devoted to a philosophy rather than a deity selects any two domains that logically harmonize with their personal alignment, creed, and philosophical worldview (subject to Dungeon Master approval).</li>
+    <li><strong>Spiritual Foci:</strong> Non-theistic clerics use sacred geometric amulets, carved runestones, clan totems, or philosophical mandalas as their divine holy symbols.</li>
+</ul>
 
 <h3 id="Technology">Technology</h3>
 <p>

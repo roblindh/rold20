@@ -1,6 +1,6 @@
 <h2 id="OtherLists">Other Lists</h2>
 <p>
-    This chapter catalogues specialized affliction progressions—including lethal poisons, virulent diseases, psychic insanities, and existential conditions—along with world organizations, factions, and institutional hierarchies.
+    This chapter catalogues specialized reference lists—including lethal poisons, virulent diseases, psychic insanities, existential conditions, world organizations, and divine pantheons and deities.
 </p>
 
 <h3 id="Poisons">Poisons &amp; Toxins</h3>
@@ -41,4 +41,12 @@
 </p>
 
 <?php show_organizations(); ?>
+
+<h3 id="Deities">Deities &amp; Pantheons</h3>
+<p>
+    Sovereign powers, cosmic patrons, and divine pantheons worshipped across mortal civilizations. Clerics, paladins, and devout champions draw spiritual strength, spellcasting affinity domains, and sanctified martial traditions from their patron deities:
+</p>
+
+<?php show_deities(); ?>
+
 
