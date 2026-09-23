@@ -30,13 +30,16 @@
     <a href="#letter-U" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">U</a>
     <a href="#letter-V" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">V</a>
     <a href="#letter-W" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">W</a>
+    <a href="#letter-X" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">X</a>
+    <a href="#letter-Y" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">Y</a>
+    <a href="#letter-Z" class="px-2 py-0.5 bg-white hover:bg-amber-100 text-amber-950 rounded border border-amber-900/20 transition">Z</a>
     <a href="#OptionalRules" class="px-2.5 py-0.5 bg-amber-600 hover:bg-amber-700 text-white rounded font-sans transition">Optional Rules</a>
 </div>
 <table><tbody>
     <tr valign="top">
         <td>
             <h4 id="letter-A">A</h4>
-            <a href="/reference/creatures">Aberration creatures</a><br/>
+            <a href="/reference/creatures?type=Aberration">Aberration creatures</a><br/>
             <a href="/rules/core#Actions">Ability checks</a><br/>
             <a href="/rules/core#AbilityDamage">Ability damage</a><br/>
             <a href="/rules/core#PersistentDamage">Ability drain</a><br/>
@@ -44,26 +47,30 @@
             <a href="/rules/core#AbilityScores">Ability scores</a><br/>
             <a href="/rules/core#Actions">Action checks</a><br/>
             <a href="/rules/core#ActionCost">Action cost</a><br/>
-            <a href="/rules/core#SpecialActionMods">Action modifiers</a><br/>
+            <a href="/rules/core#ActionMods">Action modifiers</a><br/>
+            <a href="/rules/core#ActionParameters">Action parameters</a><br/>
             <a href="/rules/core#ActionPts">Action Points (AP)</a><br/>
-            <a href="/rules/combat#ActionPoints">Action Points (AP)</a><br/>
             <a href="/rules/core#ActionTime">Action time</a><br/>
             <a href="/reference/actions">Actions</a><br/>
-            <a href="/rules/core#Advantages">Advantages</a><br/>
+            <a href="/rules/core#AdjustedSpeed">Adjusted Speed</a><br/>
+            <a href="/rules/combat#AdvancedCombat">Advanced combat</a><br/>
+            <a href="/rules/chargen#Advantages">Advantages</a><br/>
             <a href="/rules/core#OtherChars">Age</a><br/>
             <a href="/rules/core#OtherChars">Age categories</a><br/>
+            <a href="/rules/core#AgeResistance">Age resistance</a><br/>
             <a href="/rules/core#AidAnother">Aid another</a><br/>
             <a href="/rules/core#Alignment">Alignment</a><br/>
             <a href="/rules/core#AllAroundVision">All-around vision</a><br/>
-            <a href="/rules/culture#Followers">Animal companions</a><br/>
-            <a href="/reference/creatures">Animals</a><br/>
-            <a href="/reference/creatures">Animals, monstrous</a><br/>
-            <a href="/rules/core#Antimagic">Antimagic</a><br/>
-            <a href="/rules/magic#CastingSpells">Antimagic zone</a><br/>
+            <a href="/rules/culture#BondedCompanions">Animal companions</a><br/>
+            <a href="/reference/creatures?type=Animal">Animals</a><br/>
+            <a href="/reference/creatures?type=Monstrous+Animal">Animals, monstrous</a><br/>
+            <a href="/rules/core#Antimagic">Anti-Magic</a><br/>
+            <a href="/rules/magic#Metaphysics">Anti-Magic Zones</a><br/>
             <a href="/rules/core#AreasTargets">Area of effect</a><br/>
+            <a href="/rules/combat#ArmorSkills">Armor skills</a><br/>
             <a href="/rules/magic#MagicItems">Artifacts</a><br/>
             <a href="/rules/environment#Multiverse">Astral plane</a><br/>
-            <a href="/rules/combat#ActionPoints">Attack Bonus (AB)</a><br/>
+            <a href="/rules/combat#AttackTypes">Attack Bonus (AB)</a><br/>
             <a href="/rules/combat#AoO">Attack of Opportunity (AoO)</a><br/>
             <a href="/rules/combat#WeaponSize">Attack speed</a><br/>
             <a href="/rules/combat#AttackTypes">Attack types</a><br/>
@@ -71,10 +78,13 @@
             <a href="/rules/core#Auras">Aura</a><br/>
             <h4 id="letter-B">B</h4>
             <a href="/rules/chargen#CharSkills">Background skills</a><br/>
+            <a href="/rules/culture#Trading">Banking & moneychangers</a><br/>
+            <a href="/rules/core#Barriers">Barriers & wards</a><br/>
             <a href="/rules/core#Blinded">Blindness</a><br/>
             <a href="/rules/core#Blindsense">Blindsense</a><br/>
             <a href="/rules/core#Injury">Bloodied condition</a><br/>
-            <a href="/rules/core#RaceChars">Body categories (Body)</a><br/>
+            <a href="/rules/core#BodyChars">Body categories (Body)</a><br/>
+            <a href="/rules/culture#BondedCompanions">Bonded companions</a><br/>
             <a href="/rules/magic#CastingSpells">Boosting spell/power</a><br/>
             <a href="/rules/combat#AttackTypes">Brawling attacks</a><br/>
             <a href="/rules/core#BreathWeapons">Breath weapons</a><br/>
@@ -83,52 +93,63 @@
             <a href="/rules/magic#CastingSpells">Casting spells</a><br/>
             <a href="/rules/core#LevelChars">Challenge Level (CL)</a><br/>
             <a href="/rules/chargen#CharacterClasses">Character classes</a><br/>
+            <a href="/rules/core#CharDependencies">Character dependencies</a><br/>
             <a href="/rules/chargen#CharGen">Character generation</a><br/>
             <a href="/rules/chargen#CharacterRaces">Character races</a><br/>
-            <a href="/rules/core#Characteristics">Characteristics</a><br/>
+            <a href="/rules/core#CharDependencies">Characteristics</a><br/>
             <a href="/rules/core#AbilityScores">Charisma (Cha)</a><br/>
             <a href="/rules/core#Charmed">Charmed condition</a><br/>
             <a href="/rules/magic#CircleMagic">Circle magic</a><br/>
+            <a href="/rules/culture#Civilization">City-States</a><br/>
+            <a href="/rules/culture#Civilization">Civilization types</a><br/>
+            <a href="/rules/culture#FamilyAndClan">Clan obligations & kinship</a><br/>
             <a href="/rules/core#LevelChars">Class Level (ClL)</a><br/>
             <a href="/rules/chargen#CharacterClasses">Classes</a><br/>
             <a href="/rules/core#Clobbered">Clobbered condition</a><br/>
-            <a href="/rules/culture#Trading">Coins</a><br/>
+            <a href="/rules/culture#Trading">Coins & currency</a><br/>
             <a href="/rules/core#RaceChars">Colossal size (C)</a><br/>
             <a href="/rules/combat#CombatMods">Combat modifiers</a><br/>
-            <a href="/rules/combat#CombatSequence">Combat sequence</a><br/>
+            <a href="/rules/combat#CombatReactions">Combat reactions</a><br/>
+            <a href="/rules/engagement#CombatSequence">Combat sequence</a><br/>
+            <a href="/rules/combat#CombatSkills">Combat skills</a><br/>
             <a href="/rules/core#Compelled">Compelled condition</a><br/>
             <a href="/rules/combat#CombatMods">Concealment</a><br/>
             <a href="/rules/core#Duration">Concentration duration</a><br/>
             <a href="/rules/core#Confused">Confused condition</a><br/>
+            <a href="/rules/culture#Connections">Connections</a><br/>
             <a href="/rules/core#AbilityScores">Constitution (Con)</a><br/>
-            <a href="/reference/creatures">Constructs</a><br/>
+            <a href="/reference/creatures?type=Construct">Constructs</a><br/>
+            <a href="/rules/culture#Contacts">Contacts, friends & enemies</a><br/>
             <a href="/rules/core#OngoingDamage">Continuous damage</a><br/>
             <a href="/rules/culture#Trading">Copper pieces (cp)</a><br/>
             <a href="/rules/magic#CastingSpells">Counterspelling</a><br/>
             <a href="/rules/combat#CombatMods">Cover</a><br/>
+            <a href="/rules/core#Cower">Cowering condition</a><br/>
             <a href="/reference/creatures">Creature advancement</a><br/>
             <a href="/reference/creatures">Creature types</a><br/>
             <a href="/reference/creatures">Creatures</a><br/>
             <a href="/rules/core#ActionCheckLevels">Critical Failure (CF)</a><br/>
-            <a href="/rules/core#ResistanceScores">Critical hit resistance</a><br/>
+            <a href="/rules/core#CritResistance">Critical hit resistance</a><br/>
             <a href="/rules/core#ActionCheckLevels">Critical Success (CS)</a><br/>
             <a href="/rules/environment#Falling">Crushing</a><br/>
             <a href="/reference/cultures">Cultures</a><br/>
             <h4 id="letter-D">D</h4>
             <a href="/rules/core#Actions">d20 checks</a><br/>
-            <a href="http://en.wikipedia.org/wiki/D20_system">d20 System</a><br/>
-            <a href="/rules/combat#ActionPoints">Damage Bonus (DaB)</a><br/>
-            <a href="/rules/core#ResistanceScores">Damage Resistance (DR)</a><br/>
+            <a href="/rules/combat#DamageTypes">Damage Bonus (DaB)</a><br/>
+            <a href="/rules/core#DamageDice">Damage dice & scaling</a><br/>
+            <a href="/rules/core#DamageResistance">Damage Resistance (DR)</a><br/>
             <a href="/rules/combat#DamageTypes">Damage types</a><br/>
             <a href="/rules/core#Darkvision">Darkvision</a><br/>
             <a href="/rules/core#Dazed">Dazed condition</a><br/>
+            <a href="/rules/core#Dazzled">Dazzled condition</a><br/>
+            <a href="/rules/magic#Metaphysics">Dead Magic Zones</a><br/>
             <a href="/rules/core#Deafened">Deafness</a><br/>
             <a href="/rules/core#Death">Death</a><br/>
             <a href="/rules/core#DeathEffects">Death effects</a><br/>
-            <a href="/rules/combat#ActionPoints">Defense Bonus (DeB)</a><br/>
             <a href="/rules/core#DefenseScores">Defense Class (DeC)</a><br/>
             <a href="/rules/core#DefenseScores">Defense scores</a><br/>
             <a href="/rules/core#DefensiveActions">Defensive action checks</a><br/>
+            <a href="/rules/culture#Deities">Deities & pantheons</a><br/>
             <a href="/rules/environment#Multiverse">Demiplanes</a><br/>
             <a href="/rules/core#Descriptors">Descriptors</a><br/>
             <a href="/rules/core#Detection">Detection</a><br/>
@@ -137,33 +158,40 @@
             <a href="/rules/core#DiffClasses">Difficulty Class (DC)</a><br/>
             <a href="/rules/core#RaceChars">Diminutive size (D)</a><br/>
             <a href="/rules/core#Injury">Disabled condition</a><br/>
-            <a href="/rules/core#Advantages">Disadvantages</a><br/>
+            <a href="/rules/chargen#Advantages">Disadvantages</a><br/>
             <a href="/rules/core#Disease">Disease</a><br/>
             <a href="/rules/core#Disease">Disease exposure</a><br/>
+            <a href="/rules/magic#Residuum">Disenchanting & residuum</a><br/>
             <a href="/rules/core#Duration">Dismissible duration (D)</a><br/>
+            <a href="/rules/culture#BondedCompanions">Divine Mounts</a><br/>
+            <a href="/rules/core#Dodge">Dodge</a><br/>
             <a href="/rules/magic#MagicItems">Dorjes</a><br/>
-            <a href="/reference/creatures">Dragons</a><br/>
+            <a href="/reference/creatures?type=Dragon">Dragons</a><br/>
             <a href="/rules/core#MentalFatigue">Drained condition</a><br/>
-            <a href="http://en.wikipedia.org/wiki/Dungeon_Master">Dungeon Master (DM)</a><br/>
-            <a href="http://en.wikipedia.org/wiki/Dungeons_%26_Dragons">Dungeons &amp; Dragons (D&amp;D)</a><br/>
+            <a href="/rules/environment#BuildingFeatures">Dungeon features</a><br/>
+            <a href="/rules/intro">Dungeon Master (DM)</a><br/>
             <a href="/rules/core#Duration">Duration</a><br/>
+            <a href="/rules/core#Dying">Dying condition</a><br/>
         </td>
         <td>
             <h4 id="letter-E">E</h4>
             <a href="/rules/environment#Multiverse">Elemental planes</a><br/>
-            <a href="/reference/creatures">Elementals</a><br/>
+            <a href="/reference/creatures?type=Elemental">Elementals</a><br/>
             <a href="/rules/core#Timing">Encounter (enc)</a><br/>
-            <a href="/rules/encounters#Experience">Encounter experience</a><br/>
-            <a href="/rules/encounters#Encounters">Encounter Level (EL)</a><br/>
-            <a href="/rules/combat#CombatSequence">Encounter sequence</a><br/>
-            <a href="/rules/encounters#Encounters">Encounters</a><br/>
+            <a href="/rules/engagement#EncounterCreation">Encounter creation</a><br/>
+            <a href="/rules/engagement#Experience">Encounter experience</a><br/>
+            <a href="/rules/engagement#Engagement">Encounter Level (EL)</a><br/>
+            <a href="/rules/engagement#CombatSequence">Encounter sequence</a><br/>
+            <a href="/rules/engagement#Engagement">Encounters</a><br/>
             <a href="/rules/core#EquipmentChars">Encumbrance Class (EC)</a><br/>
             <a href="/rules/core#EncumbrancePen">Encumbrance Penalty (EP)</a><br/>
             <a href="/rules/combat#DamageTypes">Energy damage</a><br/>
             <a href="/rules/core#EnergyDrain">Energy drain</a><br/>
-            <a href="/rules/core#ResistanceScores">Energy resistance</a><br/>
+            <a href="/rules/core#EnergyResistance">Energy resistance</a><br/>
+            <a href="/rules/core#EnergyShield">Energy Shield</a><br/>
             <a href="/rules/core#Entangled">Entangled condition</a><br/>
-            <a href="/rules/environment#Environment">Environment effects</a><br/>
+            <a href="/rules/culture#Entertainment">Entertainment & tourneys</a><br/>
+            <a href="/rules/environment#EnvironEffects">Environment effects</a><br/>
             <a href="/reference/equipment">Equipment, mundane</a><br/>
             <a href="/reference/equipment">Equipment, special</a><br/>
             <a href="/rules/environment#Multiverse">Ethereal plane</a><br/>
@@ -173,48 +201,58 @@
             <a href="/rules/core#ActionCheckLevels">Exceptional Success (ES)</a><br/>
             <a href="/rules/core#PhysicalFatigue">Exhausted condition</a><br/>
             <a href="/rules/core#LevelChars">Experience Points (XP)</a><br/>
+            <a href="/rules/core#OpenEndedChecks">Exploding dice (d20!)</a><br/>
+            <a href="/rules/core#Extraplanar">Extraplanar creatures</a><br/>
             <h4 id="letter-F">F</h4>
             <a href="/rules/core#ActionCheckLevels">Failure (F)</a><br/>
             <a href="/rules/environment#Falling">Falling</a><br/>
-            <a href="/rules/culture#Followers">Familiars</a><br/>
+            <a href="/rules/culture#BondedCompanions">Familiars</a><br/>
+            <a href="/rules/culture#FamilyAndClan">Family and Clan</a><br/>
+            <a href="/rules/core#Fascinated">Fascinated condition</a><br/>
             <a href="/rules/core#FatePts">Fate Points (FP)</a><br/>
             <a href="/rules/core#PhysicalFatigue">Fatigued condition</a><br/>
+            <a href="/rules/culture#Deities">Favored weapons (deities)</a><br/>
             <a href="/rules/core#Fear">Fear effects</a><br/>
+            <a href="/rules/culture#Civilization">Feudal land ownership</a><br/>
             <a href="/rules/core#RaceChars">Fine size (F)</a><br/>
             <a href="/rules/combat#CombatMods">Flanking</a><br/>
             <a href="/rules/core#Flatfooted">Flat-footed condition</a><br/>
             <a href="/rules/core#Implements">Focus (implement)</a><br/>
-            <a href="/rules/culture#Followers">Followers</a><br/>
+            <a href="/rules/culture#Followers">Followers & henchmen</a><br/>
             <a href="/rules/core#DefenseScores">Fortitude defense (Fort)</a><br/>
+            <a href="/rules/culture#Civilization">Free Cities & Cantons</a><br/>
             <a href="/rules/core#Frightened">Frightened condition</a><br/>
             <h4 id="letter-G">G</h4>
             <a href="/rules/chargen#ExperienceAndLevel">Gaining level</a><br/>
             <a href="/rules/core#RaceChars">Gargantuan size (G)</a><br/>
+            <a href="/rules/core#Gaseous">Gaseous form / condition</a><br/>
             <a href="/rules/core#GazeAttacks">Gaze attacks</a><br/>
-            <a href="/rules/chargen#CharacterGender">Gender</a><br/>
+            <a href="/rules/chargen#OtherChars">Gender</a><br/>
             <a href="/rules/culture#Trading">Gold pieces (gp)</a><br/>
             <a href="/rules/core#Grappling">Grappled condition</a><br/>
+            <a href="/rules/core#GrapplingAttack">Grappling attack</a><br/>
             <h4 id="letter-H">H</h4>
             <a href="/rules/core#Healing">Healing effects</a><br/>
             <a href="/rules/core#HealthScores">Health scores</a><br/>
             <a href="/rules/core#Helpless">Helpless condition</a><br/>
-            <a href="/rules/culture#Followers">Henchmen</a><br/>
+            <a href="/rules/culture#Followers">Henchmen & retainers</a><br/>
             <a href="/rules/core#HealthScores">Hit Points (HP)</a><br/>
             <a href="/rules/magic#MagicItems">Holy symbols</a><br/>
             <a href="/rules/core#RaceChars">Huge size (H)</a><br/>
-            <a href="hb13g_creatures.php">Humanoid creatures</a><br/>
-            <a href="hb13h_creatures.php">Humanoids, monstrous</a><br/>
+            <a href="/reference/creatures?type=Humanoid">Humanoid creatures</a><br/>
+            <a href="/reference/creatures?type=Monstrous+Humanoid">Humanoids, monstrous</a><br/>
             <a href="/rules/environment#Hunger">Hunger</a><br/>
             <h4 id="letter-I">I</h4>
             <a href="/rules/core#Illusions">Illusions</a><br/>
             <a href="/rules/core#Implements">Implements</a><br/>
             <a href="/rules/core#ImprPts">Improvement Points (IP)</a><br/>
+            <a href="/rules/chargen#Improvements">Improvements</a><br/>
             <a href="/rules/combat#UntrainedWeapons">Improvised weapons</a><br/>
             <a href="/rules/core#Incorporeality">Incorporeality</a><br/>
             <a href="/rules/culture#Influence">Influence</a><br/>
             <a href="/rules/core#Influence">Influence (Infl)</a><br/>
-            <a href="/rules/combat#Initiative">Initiative</a><br/>
-            <a href="/rules/combat#Initiative">Initiative check</a><br/>
+            <a href="/rules/engagement#Initiative">Initiative</a><br/>
+            <a href="/rules/engagement#Initiative">Initiative check</a><br/>
             <a href="/rules/core#OtherChars">Initiative modifier (Init)</a><br/>
             <a href="/rules/core#Injury">Injured condition</a><br/>
             <a href="/rules/core#Injury">Injury</a><br/>
@@ -222,121 +260,141 @@
             <a href="/rules/core#PersistentDamage">Insidious damage</a><br/>
             <a href="/rules/core#Duration">Instantaneous duration</a><br/>
             <a href="/rules/core#AbilityScores">Intelligence (Int)</a><br/>
+            <a href="/rules/magic#MagicItems">Intelligent magic items</a><br/>
             <a href="/rules/core#Invisibility">Invisibility</a><br/>
-            <a href="hb12c_equipment.php">Item modifications</a><br/>
+            <a href="/reference/equipment#MundaneMods">Item modifications</a><br/>
             <h4 id="letter-J">J</h4>
+            <a href="/rules/engagement#Initiative">Joining ongoing encounters</a><br/>
+            <a href="/rules/culture#Entertainment">Jousting & The Lists</a><br/>
             <h4 id="letter-K">K</h4>
+            <a href="/rules/culture#Civilization">Kingdoms and Empires</a><br/>
+            <a href="/rules/culture#FamilyAndClan">Kinship loyalty & clan</a><br/>
+            <a href="/rules/engagement#SocialRewards">Knighthood & noble titles</a><br/>
             <h4 id="letter-L">L</h4>
+            <a href="/rules/culture#Civilization">Land ownership</a><br/>
             <a href="/rules/core#RaceChars">Large size (L)</a><br/>
             <a href="/rules/magic#LearningSpells">Learning spell/power</a><br/>
             <a href="/rules/core#LevelChars">Level</a><br/>
             <a href="/rules/core#Recovery">Level of activity</a><br/>
             <a href="/rules/core#ActionCheckLevels">Level of success/failure</a><br/>
             <a href="/rules/core#LifeSense">Life sense</a><br/>
-            <a href="/rules/environment#Environment">Light conditions</a><br/>
+            <a href="/rules/environment#VisionLight">Light conditions</a><br/>
+            <a href="/rules/core#LightSensitive">Light sensitivity</a><br/>
             <a href="/rules/core#Range">Line of Effect (LoE)</a><br/>
             <a href="/rules/core#Range">Line of Hearing (LoH)</a><br/>
             <a href="/rules/core#Range">Line of Sight (LoS)</a><br/>
-            <a href="/rules/core#StagedActions">Staged action checks</a><br/>
             <a href="/rules/core#LowLightVision">Low-light vision</a><br/>
-        </td>
-        <td>
             <h4 id="letter-M">M</h4>
-            <a href="/rules/magic#MagicItems">Magic item creation</a><br/>
+            <a href="/rules/magic#MagicItemCreation">Magic item creation</a><br/>
             <a href="/rules/magic#MagicItems">Magic items</a><br/>
-            <a href="/rules/magic#CastingSpells">Magic resistance</a><br/>
             <a href="/rules/core#MagicRes">Magic Resistance (MR)</a><br/>
             <a href="/rules/magic#MagicTypes">Magic sources</a><br/>
             <a href="/rules/magic#MagicTypes">Magic types</a><br/>
             <a href="/rules/magic#CastingSpells">Maintaining spell/power</a><br/>
             <a href="/rules/core#Maneuverability">Maneuverability</a><br/>
             <a href="/rules/magic#CastingSpells">Manifesting powers</a><br/>
+            <a href="/rules/core#Manyshot">Manyshot</a><br/>
+            <a href="/rules/core#Mastered">Mastered condition</a><br/>
             <a href="/rules/core#Implements">Material implement</a><br/>
             <a href="/rules/environment#Multiverse">Material plane</a><br/>
-            <a href="hb12d_equipment.php">Materials</a><br/>
+            <a href="/reference/equipment#Materials">Materials</a><br/>
             <a href="/rules/core#Mathematics">Mathematics</a><br/>
             <a href="/rules/core#RaceChars">Medium size (M)</a><br/>
             <a href="/rules/combat#AttackTypes">Melee attacks</a><br/>
             <a href="/rules/core#MentalFatigue">Mental fatigue</a><br/>
             <a href="/rules/core#MentalIllness">Mental illness</a><br/>
+            <a href="/rules/magic#Metaphysics">Metaphysics</a><br/>
             <a href="/rules/core#Modifiers">Modifiers</a><br/>
-            <a href="/rules/culture#Trading">Money</a><br/>
+            <a href="/rules/culture#Trading">Money & coinage</a><br/>
             <a href="/rules/combat#Morale">Morale</a><br/>
             <a href="/rules/combat#Morale">Morale checks</a><br/>
             <a href="/rules/combat#MountedCombat">Mounted combat</a><br/>
-            <a href="/rules/culture#Followers">Mounts</a><br/>
+            <a href="/rules/culture#BondedCompanions">Mounts</a><br/>
             <a href="/rules/environment#Movement">Movement</a><br/>
-            <a href="/rules/core#Timing">Movement Points (MP)</a><br/>
-            <a href="/rules/combat#MovementPoints">Movement Points (MP)</a><br/>
+            <a href="/rules/core#MovementPoints">Movement Points (MP)</a><br/>
             <a href="/rules/chargen#MultiClass">Multi-classing</a><br/>
+            <a href="/rules/combat#MultiAttacks">Multiple attacks</a><br/>
+            <a href="/rules/core#MultipleChecksPerAction">Multiple checks per action</a><br/>
             <a href="/rules/core#Mathematics">Multiplication</a><br/>
             <a href="/rules/environment#Multiverse">Multiverse</a><br/>
             <h4 id="letter-N">N</h4>
             <a href="/rules/core#RaceChars">Natural attacks</a><br/>
             <a href="/rules/core#Nauseated">Nauseated condition</a><br/>
             <a href="/rules/core#DefenseScores">Non-DeC Defenses (NDD)</a><br/>
-            <a href="/rules/encounters#NPC">Non-Player Character (NPC)</a><br/>
-            <a href="http://en.wikipedia.org/wiki/Non-player_character">Non-Player Character (NPC)</a><br/>
+            <a href="/rules/combat#DamageTypes">Non-lethal damage / subdual</a><br/>
+            <a href="/rules/engagement#NPC">Non-Player Character (NPC)</a><br/>
+        </td>
+        <td>
             <h4 id="letter-O">O</h4>
+            <a href="/rules/core#OnFire">On Fire condition</a><br/>
             <a href="/rules/core#OngoingDamage">Ongoing damage</a><br/>
             <a href="/rules/core#OpenEndedChecks">Open-ended checks</a><br/>
             <a href="/rules/core#OpposingActions">Opposing action checks</a><br/>
+            <a href="/rules/culture#Organizations">Organizations & factions</a><br/>
             <a href="/rules/environment#Multiverse">Outer planes</a><br/>
-            <a href="hb13i_creatures.php">Outsiders</a><br/>
+            <a href="/reference/creatures?type=Outsider">Outsiders</a><br/>
             <a href="/rules/core#ActionCheckLevels">Outstanding Failure (OF)</a><br/>
             <a href="/rules/core#ActionCheckLevels">Outstanding Success (OS)</a><br/>
             <h4 id="letter-P">P</h4>
             <a href="/rules/core#Panicked">Panicked condition</a><br/>
             <a href="/rules/core#Paralysis">Paralysis</a><br/>
             <a href="/rules/core#DefenseScores">Parry bonus</a><br/>
+            <a href="/rules/combat#ParryReaction">Parry reaction</a><br/>
             <a href="/rules/core#Range">Path of Effect (PoE)</a><br/>
             <a href="/rules/core#Duration">Permanent duration</a><br/>
             <a href="/rules/core#PersistentDamage">Persistent damage</a><br/>
             <a href="/rules/core#Petrified">Petrification</a><br/>
+            <a href="/rules/culture#Philosophies">Philosophies & cosmic forces</a><br/>
             <a href="/rules/combat#DamageTypes">Physical damage</a><br/>
             <a href="/rules/core#PhysicalFatigue">Physical fatigue</a><br/>
             <a href="/rules/environment#Multiverse">Physical planes</a><br/>
             <a href="/rules/core#Pinned">Pinned condition</a><br/>
-            <a href="/rules/core#PlanarTravel">Planar projection</a><br/>
-            <a href="/rules/core#PlanarTravel">Planar travel</a><br/>
+            <a href="/rules/core#PlanarTravel">Planar travel & projection</a><br/>
             <a href="/rules/environment#Multiverse">Planes of existence</a><br/>
-            <a href="hb13j_creatures.php">Plant creatures</a><br/>
+            <a href="/reference/creatures?type=Plant">Plant creatures</a><br/>
             <a href="/rules/culture#Trading">Platinum pieces (pp)</a><br/>
-            <a href="http://en.wikipedia.org/wiki/Player_character">Player Character (PC)</a><br/>
+            <a href="/rules/chargen#CharGen">Player Character (PC)</a><br/>
             <a href="/rules/core#Poison">Poison</a><br/>
             <a href="/rules/core#Polymorph">Polymorphing</a><br/>
             <a href="/rules/core#Possession">Possession</a><br/>
             <a href="/rules/magic#MagicItems">Potions</a><br/>
             <a href="/rules/core#PowerLevel">Power Level (PL)</a><br/>
-            <a href="/rules/magic#CastingSpells">Power point cost</a><br/>
+            <a href="/rules/magic#CastingSpells">Power Point cost</a><br/>
             <a href="/rules/core#HealthScores">Power Points (PP)</a><br/>
+            <a href="/rules/magic#MagicItems">Power pools</a><br/>
             <a href="/rules/magic#MagicItems">Power stones</a><br/>
             <a href="/rules/core#Prerequisites">Prerequisites</a><br/>
+            <a href="/reference/skills#PrestigeSkills">Prestige Skills</a><br/>
             <a href="/rules/environment#Multiverse">Prime material plane</a><br/>
             <a href="/rules/core#Prone">Prone position</a><br/>
             <a href="/rules/magic#MagicItems">Psicrowns</a><br/>
-            <a href="/rules/culture#Followers">Psicrystals</a><br/>
+            <a href="/rules/culture#BondedCompanions">Psicrystals</a><br/>
             <a href="/reference/spells">Psionic powers</a><br/>
+            <a href="/rules/magic#MagicItems">Psionic tattoos</a><br/>
+            <a href="/rules/combat#PsychicDmg">Psychic damage</a><br/>
             <h4 id="letter-Q">Q</h4>
+            <a href="/rules/culture#Deities">Quasi-Deities & Demigods</a><br/>
+            <a href="/rules/engagement#Experience">Quest experience & milestones</a><br/>
             <h4 id="letter-R">R</h4>
             <a href="/rules/core#LevelChars">Racial Level (RL)</a><br/>
             <a href="/rules/core#Range">Range</a><br/>
+            <a href="/rules/engagement#Reactions">Reactions</a><br/>
+            <a href="/rules/combat#CombatReactions">Readied actions</a><br/>
             <a href="/rules/core#Recovery">Recovery</a><br/>
             <a href="/rules/core#DefenseScores">Reflex defense (Ref)</a><br/>
             <a href="/rules/core#Regeneration">Regeneration</a><br/>
             <a href="/rules/magic#MagicItems">Relics</a><br/>
+            <a href="/rules/culture#Religion">Religion & deities</a><br/>
             <a href="/rules/culture#Reputation">Reputation</a><br/>
             <a href="/rules/core#Reputation">Reputation (Rep)</a><br/>
             <a href="/rules/magic#ResearchingSpells">Researching spell/power</a><br/>
             <a href="/rules/magic#Residuum">Residuum</a><br/>
-            <a href="/rules/core#ResistanceScores">Resistance scores</a><br/>
+            <a href="/rules/core#SpecialResistance">Resistance scores</a><br/>
             <a href="/rules/core#Resurrection">Resurrection</a><br/>
-            <a href="/rules/core#Retrying">Retry action</a><br/>
+            <a href="/rules/core#Retrying">Retrying action</a><br/>
             <a href="/rules/core#Timing">Round (r)</a><br/>
             <a href="/rules/core#Mathematics">Rounding</a><br/>
             <a href="/rules/magic#MagicItems">Runes</a><br/>
-        </td>
-        <td>
             <h4 id="letter-S">S</h4>
             <a href="/rules/core#Scent">Scent</a><br/>
             <a href="/rules/magic#MagicItems">Scrolls</a><br/>
@@ -360,16 +418,22 @@
             <a href="/rules/core#RaceChars">Small size (S)</a><br/>
             <a href="/rules/culture#SocialClass">Social class</a><br/>
             <a href="/rules/core#SocialScores">Social Class (SC)</a><br/>
+            <a href="/rules/engagement#SocialRewards">Social Rewards</a><br/>
             <a href="/rules/core#SocialScores">Social scores</a><br/>
             <a href="/rules/core#Implements">Somatic implement</a><br/>
-            <a href="/rules/environment#Undeath">Souls</a><br/>
+            <a href="/rules/magic#Undeath">Souls</a><br/>
             <a href="/rules/core#BaseSpeed">Speed (Spd)</a><br/>
+            <a href="/rules/culture#Entertainment">Spell duels</a><br/>
             <a href="/rules/magic#CastingSpells">Spellcasting</a><br/>
-            <a href="/rules/magic#CastingMods">Spellcasting modifiers</a><br/>
+            <a href="/rules/magic#CastingSpells">Spellcasting modifiers</a><br/>
             <a href="/reference/spells">Spells</a><br/>
             <a href="/rules/environment#Multiverse">Spiritual planes</a><br/>
+            <a href="/rules/core#Split">Split creature trait</a><br/>
             <a href="/rules/core#Mathematics">Stacking</a><br/>
+            <a href="/rules/magic#MagicItems">Staffs & wands</a><br/>
+            <a href="/rules/core#StagedActions">Staged action checks</a><br/>
             <a href="/rules/core#HealthScores">Stamina Points (SP)</a><br/>
+            <a href="/rules/core#Stampede">Stampede trait</a><br/>
             <a href="/rules/chargen#ExperienceAndLevel">Starting experience</a><br/>
             <a href="/rules/chargen#WealthPerLevel">Starting wealth</a><br/>
             <a href="/rules/core#AbilityScores">Strength (Str)</a><br/>
@@ -378,44 +442,51 @@
             <a href="/rules/environment#Suffocation">Suffocation</a><br/>
             <a href="/rules/core#Summoning">Summoning</a><br/>
             <a href="/rules/magic#CastingSpells">Supernatural activation</a><br/>
-            <a href="/rules/core#SupernaturalAffinity">Supernatural affinity</a><br/>
+            <a href="/rules/magic#SupernaturalAffinity">Supernatural affinity</a><br/>
             <a href="/rules/combat#AttackTypes">Supernatural attacks</a><br/>
             <a href="/rules/combat#AttackTypes">Supernatural damage</a><br/>
-            <a href="/rules/combat#CombatSequence">Surprise</a><br/>
+            <a href="/rules/engagement#Surprise">Surprise</a><br/>
+            <a href="/rules/core#Swarm">Swarm trait</a><br/>
             <a href="/rules/core#SynergyBonus">Synergy bonus</a><br/>
             <h4 id="letter-T">T</h4>
             <a href="/rules/core#Taking1">Take 1</a><br/>
             <a href="/rules/core#Taking10">Take 10</a><br/>
             <a href="/rules/core#Taking10">Take 20</a><br/>
             <a href="/rules/core#AreasTargets">Target</a><br/>
-            <a href="/rules/culture#TechLevels">Technology Level (TL)</a><br/>
+            <a href="/rules/culture#Technology">Technology Level (TL)</a><br/>
             <a href="/rules/core#Telepathy">Telepathy</a><br/>
             <a href="/rules/core#Teleportation">Teleportation</a><br/>
-            <a href="hb13l_creatures.php">Templates</a><br/>
+            <a href="/reference/creatures/list#Templates">Templates</a><br/>
             <a href="/rules/core#HealthScores">Temporary health points</a><br/>
-            <a href="/rules/environment#Movement">Terrain</a><br/>
-            <a href="/rules/environment#Environment">Terrain features</a><br/>
-            <a href="/rules/environment#Environment">Terrain hazards</a><br/>
+            <a href="/rules/environment#NaturalFeatures">Terrain features</a><br/>
+            <a href="/rules/environment#Traps">Terrain hazards</a><br/>
+            <a href="/rules/environment#Movement">Terrain movement</a><br/>
             <a href="/rules/environment#Hunger">Thirst</a><br/>
             <a href="/rules/core#Timing">Timing</a><br/>
             <a href="/rules/core#RaceChars">Tiny size (T)</a><br/>
             <a href="/rules/core#MentalFatigue">Tired condition</a><br/>
             <a href="/rules/core#LevelChars">Total Level (TL)</a><br/>
             <a href="/rules/core#TouchAttacks">Touch attacks</a><br/>
-            <a href="/rules/environment#Environment">Traps</a><br/>
-            <a href="/rules/encounters#Treasure">Treasure</a><br/>
+            <a href="/rules/culture#Entertainment">Tournaments</a><br/>
+            <a href="/rules/culture#Trading">Trade bars (Bullion)</a><br/>
+            <a href="/rules/culture#Trading">Trade fairs</a><br/>
+            <a href="/rules/culture#Trading">Trading & economy</a><br/>
+            <a href="/rules/environment#Traps">Traps</a><br/>
+            <a href="/rules/engagement#Treasure">Treasure</a><br/>
             <a href="/rules/core#Tremorsense">Tremorsense</a><br/>
+            <a href="/rules/core#Troop">Troop trait</a><br/>
             <a href="/rules/core#Truesight">Truesight</a><br/>
             <h4 id="letter-U">U</h4>
             <a href="/rules/core#Injury">Unconsciousness</a><br/>
-            <a href="hb13k_creatures.php">Undead creatures</a><br/>
-            <a href="/rules/environment#Undeath">Undeath</a><br/>
+            <a href="/reference/creatures?type=Undead">Undead creatures</a><br/>
+            <a href="/rules/magic#Undeath">Undeath</a><br/>
             <a href="/rules/combat#UntrainedWeapons">Untrained weapons</a><br/>
             <h4 id="letter-V">V</h4>
+            <a href="/rules/combat#VehicleCombat">Vehicle combat</a><br/>
             <a href="/rules/core#Implements">Verbal implements</a><br/>
-            <a href="/rules/environment#Environment">Visibility</a><br/>
+            <a href="/rules/environment#VisionLight">Visibility</a><br/>
             <a href="/rules/core#VitalAttack">Vital attack</a><br/>
-            <a href="/rules/core#ResistanceScores">Vulnerability</a><br/>
+            <a href="/rules/core#SpecialResistance">Vulnerability</a><br/>
             <h4 id="letter-W">W</h4>
             <a href="/rules/magic#MagicItems">Wands</a><br/>
             <a href="/rules/culture#WealthClass">Wealth class</a><br/>
@@ -424,15 +495,22 @@
             <a href="/rules/combat#AttackTypes">Weapon damage</a><br/>
             <a href="/rules/combat#WeaponSize">Weapon reach</a><br/>
             <a href="/rules/combat#WeaponSize">Weapon size</a><br/>
+            <a href="/rules/combat#WeaponSkills">Weapon skills</a><br/>
             <a href="/rules/environment#Weather">Weather</a><br/>
             <a href="/rules/core#EquipmentChars">Weight limit</a><br/>
-            <a href="/rules/magic#CastingSpells">Wild magic zone</a><br/>
+            <a href="/rules/magic#Metaphysics">Wild Magic Zones</a><br/>
             <a href="/rules/core#DefenseScores">Will defense (Will)</a><br/>
             <a href="/rules/core#AbilityScores">Wisdom (Wis)</a><br/>
-            <a href="/rules/encounters#Experience">Work experience</a><br/>
+            <a href="/rules/engagement#Experience">Work experience</a><br/>
             <h4 id="letter-X">X</h4>
+            <a href="/rules/core#XRayVision">X-Ray vision</a><br/>
+            <a href="/rules/core#LevelChars">XP (Experience Points)</a><br/>
             <h4 id="letter-Y">Y</h4>
+            <a href="/rules/culture#Entertainment">Yielding (duels & combat)</a><br/>
             <h4 id="letter-Z">Z</h4>
+            <a href="/rules/magic#Metaphysics">Zones of Anti-Magic</a><br/>
+            <a href="/rules/magic#Metaphysics">Zones of Dead Magic</a><br/>
+            <a href="/rules/magic#Metaphysics">Zones of Wild Magic</a><br/>
         </td>
     </tr>
 </tbody></table>
@@ -452,18 +530,23 @@
                 </a>
             </li>
             <li>
-                <a href="/rules/core#Advantages" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                <a href="/rules/chargen#Advantages" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
                     <span class="text-amber-600 text-xs">&#9656;</span> Advantages and Disadvantages
                 </a>
             </li>
             <li>
-                <a href="/rules/core#RandomAdvantages" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                <a href="/rules/chargen#RandomAdvantages" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
                     <span class="text-amber-600 text-xs">&#9656;</span> Random Advantages and Disadvantages
                 </a>
             </li>
             <li>
-                <a href="/rules/chargen#OptionalSkillRules" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                <a href="/rules/chargen#OutOfClassSkillAccess" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
                     <span class="text-amber-600 text-xs">&#9656;</span> Out-of-Class Skill Access
+                </a>
+            </li>
+            <li>
+                <a href="/rules/chargen#ImprovementSkillAccess" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Permanent Skill Access
                 </a>
             </li>
         </ul>
@@ -477,32 +560,32 @@
         <ul class="space-y-1.5 text-sm list-none p-0 m-0">
             <li>
                 <a href="/rules/chargen#AverageChars" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Average Characters
+                    <span class="text-amber-600 text-xs">&#9656;</span> Average Characters
                 </a>
             </li>
             <li>
                 <a href="/rules/core#HealthScores" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Decreased Health Points
+                    <span class="text-amber-600 text-xs">&#9656;</span> Decreased Health Points
                 </a>
             </li>
             <li>
                 <a href="/rules/core#AlternativeHealthEffects" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Increased Health Penalties
+                    <span class="text-amber-600 text-xs">&#9656;</span> Increased Health Penalties
                 </a>
             </li>
             <li>
                 <a href="/rules/core#EquipmentChars" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Encumbrance Increases Fatigue
+                    <span class="text-amber-600 text-xs">&#9656;</span> Encumbrance Increases Fatigue
                 </a>
             </li>
             <li>
                 <a href="/rules/core#PercentageHealing" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Percentage Healing
+                    <span class="text-amber-600 text-xs">&#9656;</span> Percentage Healing
                 </a>
             </li>
             <li>
-                <a href="/rules/chargen#ExperienceAndLevel" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Level Training
+                <a href="/rules/chargen#LevelTraining" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Level Training
                 </a>
             </li>
         </ul>
@@ -516,22 +599,22 @@
         <ul class="space-y-1.5 text-sm list-none p-0 m-0">
             <li>
                 <a href="/rules/chargen#HeroicChars" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Heroic Characters
+                    <span class="text-amber-600 text-xs">&#9656;</span> Heroic Characters
                 </a>
             </li>
             <li>
-                <a href="/rules/core#CinematicLuck" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Cinematic Luck
+                <a href="/rules/core#FatePts" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Cinematic Luck
                 </a>
             </li>
             <li>
                 <a href="/rules/core#AlternativeHealthEffects" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Decreased Health Penalties
+                    <span class="text-amber-600 text-xs">&#9656;</span> Decreased Health Penalties
                 </a>
             </li>
             <li>
                 <a href="/rules/core#Recovery" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Fast Recovery
+                    <span class="text-amber-600 text-xs">&#9656;</span> Fast Recovery
                 </a>
             </li>
         </ul>
@@ -544,13 +627,8 @@
         </h4>
         <ul class="space-y-1.5 text-sm list-none p-0 m-0">
             <li>
-                <a href="/rules/chargen#OptionalSkillRules" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Retraining Skills
-                </a>
-            </li>
-            <li>
-                <a href="/rules/combat#FixedAP" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Fixed AP Distribution
+                <a href="/rules/chargen#SkillRetraining" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Retraining Skills
                 </a>
             </li>
         </ul>
@@ -563,13 +641,13 @@
         </h4>
         <ul class="space-y-1.5 text-sm list-none p-0 m-0">
             <li>
-                <a href="/rules/combat#InitiativeAP" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Initiative-Modified AP
+                <a href="/rules/engagement#InitiativeAP" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Initiative-Modified AP
                 </a>
             </li>
             <li>
-                <a href="/rules/combat#Escalation" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Escalated Combat
+                <a href="/rules/engagement#Escalation" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Escalated Combat
                 </a>
             </li>
         </ul>
@@ -582,13 +660,13 @@
         </h4>
         <ul class="space-y-1.5 text-sm list-none p-0 m-0">
             <li>
-                <a href="/rules/encounters#FasterAdvancement" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Faster Character Advancement
+                <a href="/rules/engagement#FasterAdvancement" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Faster Character Advancement
                 </a>
             </li>
             <li>
-                <a href="/rules/encounters#SlowerAdvancement" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">▸</span> Slower Character Advancement
+                <a href="/rules/engagement#SlowerAdvancement" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Slower Character Advancement
                 </a>
             </li>
         </ul>
