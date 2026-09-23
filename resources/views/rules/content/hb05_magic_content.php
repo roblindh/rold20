@@ -535,357 +535,220 @@
 
 <h4>Magic Weapons</h4>
 <p>
-    A majority of magic weapons have no other power than possessing an enhancement bonus to their attack and damage attributes,
-    and this is expressed as a plus bonus after the weapon name.
-    For example, a Longsword +4 gives an enhancement bonus of +4 to both attack and damage rolls with that weapon.
-    The bonus of melee weapons and thrown weapons applies to both attack and damage,
-    the bonus of projectile weapons applies only to attack rolls, and the bonus of ammunition applies only to damage rolls.
+    The majority of magic weapons possess an enhancement bonus added to their attack and damage rolls, denoted by a numerical plus bonus (e.g., a <em>Longsword +4</em> grants a +4 enhancement bonus to both attack and damage rolls).
 </p>
-<p>
-    Unless otherwise specified, magic ammunition is destroyed after one use (regardless of whether it hits or misses).
-</p>
-<p>
-    Most magic weapons are of at least masterwork quality and sized for medium-sized wielders.
-</p>
+<ul>
+    <li><strong>Melee and Thrown Weapons:</strong> The enhancement bonus applies to both attack rolls and damage rolls.</li>
+    <li><strong>Projectile Weapons:</strong> The enhancement bonus applies only to attack rolls.</li>
+    <li><strong>Ammunition:</strong> The enhancement bonus applies only to damage rolls. Unless otherwise specified, magic ammunition is consumed and destroyed upon use regardless of whether the attack hits or misses.</li>
+    <li><strong>Craftsmanship &amp; Sizing:</strong> Magic weapons are crafted to <em>Masterwork</em> quality and sized for Medium wielders by default unless enchanted otherwise.</li>
+</ul>
 
 <h4>Magic Shields</h4>
 <p>
-    A majority of magic shields have no other power than possessing an enhancement bonus to their parry attribute, and this is expressed as a plus bonus after the shield name.
-    For example, a Large Shield +3 has a +3 enhancement to the parry bonus that the shield provides to DeC.
+    Magic shields grant an enhancement bonus to their parry rating, augmenting the bearer&rsquo;s Defensive Class (DeC). For example, a <em>Large Shield +3</em> adds a +3 enhancement bonus to its base parry value.
 </p>
-<p>
-    Most magic shields are sized for medium-sized bearers. The type and size determines its weight.
-</p>
-<p>
-    Unless otherwise specified, magic shields are masterwork quality (one encumbrance class better compared to normal shields of the same type).
-</p>
+<ul>
+    <li><strong>Properties:</strong> Unless noted otherwise, magic shields are of <em>Masterwork</em> quality (lowering their encumbrance class by one step) and sized for Medium bearers. Weight is determined by shield size and base material.</li>
+</ul>
 
 <h4>Magic Armor and Clothing</h4>
 <p>
-    A majority of magic suits of armor have no other power than possessing an enhancement bonus on top of its DR armor bonus, and this is expressed as a plus bonus after the armor name.
-    For example, a Scale Mail +4 has a +4 enhancement bonus to its DR armor bonus.
+    Enchanted armor and robes provide an enhancement bonus stacked directly onto their base Damage Reduction (DR) armor value (e.g., <em>Scale Mail +4</em> grants a +4 enhancement bonus to its DR).
 </p>
-<p>
-    Only one set of magic armor or clothing can be worn at a time.
-    If you try to combine two sets of magic armor, wear a magic robe over magic armor, or wear a magic vest under a magic robe, for example,
-    their magic will interfere and malfunction.
-</p>
-<p>
-    Most magic armor and clothing are sized for medium-sized wearers,
-    but they will automatically adjust their size one step up or down to accommodate different wearers.
-    The type and base size determine the armor’s weight.
-</p>
-<p>
-    Unless otherwise specified, magic armor is masterwork quality (one encumbrance class better compared to normal armor of the same type).
-</p>
+<ul>
+    <li><strong>Layering Limits:</strong> A character can benefit from only one suit of magic armor or enchanted garment at a time. Layering magic armor, wearing a magical robe over enchanted plate, or wearing an enchanted vest under armor creates magical interference that suppresses all layered enchantments.</li>
+    <li><strong>Universal Sizing:</strong> Magic armor and garments automatically adjust up to one size category larger or smaller to fit the wearer.</li>
+    <li><strong>Craftsmanship:</strong> Standard magic armor is of <em>Masterwork</em> quality, reducing its encumbrance class by one tier.</li>
+</ul>
 
 <h4>Other Magic Wearables</h4>
 <p>
-    Only one magic headwear can be worn per head.
+    To prevent magical interference, a character is limited to specific attunement slots for worn magical items:
 </p>
-<p>
-    Only one set of goggles or lenses can be worn per pair of eyes.
-    Unless otherwise specified, lenses are created in pairs, and both of them must be worn to have the given effect.
-</p>
-<p>
-    Only one magic glove or gauntlet can be worn per hand.
-    Unless otherwise specified, gloves and gauntlets are created in pairs, and both of them must be worn to have the given effect.
-</p>
-<p>
-    Only one magic boot or shoe can be worn per foot.
-    Unless otherwise specified, boots and shoes are created in pairs, and both of them must be worn to have the given effect.
-</p>
-<p>
-    Only one magic cloak or mantle can be worn at a time.
-</p>
-<p>
-    Only one magic girdle or belt can be worn at a time.
-</p>
-<p>
-    A ring must be worn on a human-like finger or claw in order to work. It will not work, for example, when worn in an ear or on a toe.
-    A creature can only have one active magic ring per hand (not per finger); trying to wear more causes their magical fields to interfere,
-    temporarily cancelling all effects of the less powerful ring.
-</p>
-<p>
-    Unless otherwise specified, a ring has DeC 13, DR 10, and 2 HP.
-</p>
-<p>
-    An amulet or necklace must be worn around a human-like neck in order to work.
-    A creature can only have one active magic necklace per neck; trying to wear more causes their magical fields to interfere and malfunction.
-</p>
-<p>
-    A bracer or bracelet must be worn around a human-like forearm or wrist in order to work. It will not work, for example, when worn around a leg or ankle.
-    A creature can only have one active magic bracer or bracelet per arm; trying to wear more causes their magical fields to interfere and malfunction.
-    Unless otherwise specified, bracers are created in pairs, and both of them must be worn to have the given effect.
-</p>
-<p>
-    Most magic wearables are sized for medium-sized wearers, but they will automatically adjust their size one step up or down to accommodate different wearers.
-</p>
+<ul>
+    <li><strong>Headwear:</strong> One magical helm, cap, or circlet per head.</li>
+    <li><strong>Eyes:</strong> One set of goggles, glasses, or lenses per pair of eyes. Lenses are enchanted in matched pairs and both must be worn together to function.</li>
+    <li><strong>Hands:</strong> One pair of magical gloves or gauntlets. Both must be worn to receive their benefits.</li>
+    <li><strong>Feet:</strong> One pair of enchanted boots or shoes. Both must be worn together.</li>
+    <li><strong>Shoulders &amp; Cloaks:</strong> One magic cloak, cape, or mantle at a time.</li>
+    <li><strong>Waist:</strong> One magic belt, sash, or girdle at a time.</li>
+    <li><strong>Rings:</strong> Magic rings must be worn on human-like fingers or claws (toes or ears do not channel their matrix). A creature can support at most <strong>one active magic ring per hand</strong> (not per finger). Wearing multiple rings on the same hand causes magical interference, temporarily suppressing the less powerful ring. A standard ring has DeC 13, DR 10, and 2 HP.</li>
+    <li><strong>Neck:</strong> One magic amulet, necklace, or medallion per neck. Wearing multiple necklaces causes their magical fields to clash and malfunction.</li>
+    <li><strong>Arms:</strong> One pair of bracers or bracelets per pair of forearms/wrists (both must be worn). Wearing multiple sets causes interference.</li>
+    <li><strong>Size Adjustment:</strong> Most magical wearables are crafted for Medium wearers but automatically resize one size step larger or smaller.</li>
+</ul>
 
 <h4>Foci</h4>
 <p>
-    Wands, holy symbols, dorjes, and small instruments are small-sized foci that can be used as somatic (and optional focus) components by arcane, divine, psionic users, and bards, respectively.
+    Foci are specialized conduits that channel, focus, and amplify supernatural power. They serve as somatic (and focus) implements for distinct traditions: arcane spellcasters, divine practitioners, psions, and bards.
 </p>
+
+<h5>Small Foci</h5>
 <p>
-    A typical wand is made of wood, bone, or metal, 15 to 30 cm long and 0.5 to 1 cm thick. Some of them are tipped with a crystal or other small device.
-    Unless otherwise specified, a wand has DeC 9, 5 HP, and DR 5.
+    Small foci store supernatural energy dedicated to a specific spell or power. Channeling a focus requires at least 1 rank in the corresponding affinity skill:
 </p>
+<ul>
+    <li><strong>Wands (Arcane):</strong> Slender rods of wood, bone, or metal (15&ndash;30 cm long, 0.5&ndash;1 cm thick), often tipped with crystal or precious alloys. Standard stats: DeC 9, DR 5, 5 HP. Maximum Power Level is 10.</li>
+    <li><strong>Holy Symbols (Divine):</strong> Sacred emblems of silver, gold, or consecrated materials (10&ndash;30 cm). Held in hand or worn around the neck without consuming the amulet/necklace magic slot. Standard stats: DeC 7, DR 5, 5 HP.</li>
+    <li><strong>Dorjes (Psionic):</strong> Elongated crystal rods (20&ndash;25 cm long, ~1 cm thick), often engraved with psionic geometries. Standard stats: DeC 7, DR 8, 7 HP.</li>
+    <li><strong>Small Instruments (Bardic):</strong> Compact musical conduits such as pipes, flutes, or bells.</li>
+</ul>
+
+<h5>Large Foci</h5>
 <p>
-    A typical holy symbol is made of silver, gold, or similarly precious metal, and it usually has a size of 10 to 30 cm.
-    It can be held in one hand or carried around one’s neck (without interfering with magic amulets and necklaces).
-    Unless otherwise specified, a holy symbol has DeC 7, 5 HP, and DR 5.
+    Large foci store substantial reservoirs of supernatural energy to trigger suites of themed spells or versatile powers:
 </p>
-<p>
-    A typical dorje is an elongated crystal of any color, 20 to 25 cm long and about 1 cm thick.
-    Occasionally, a dorje is decorated with carvings or inscribed runes along a face of the crystal.
-    A typical dorje has DeC 7, 7 HP, and DR 8.
-</p>
-<p>
-    A typical small focus is created with a store of supernatural energy,
-    and this energy can be used to trigger effects related to a specific spell or power.
-    In order to use the focus' power, the wielder must have at least one skill level in an appropriate affinity skill.
-</p>
-<p>
-    Staves, rods, psicrowns, and large instruments are large-sized foci that can be used as somatic (and optional focus) components by arcane, divine, psionic users, and bards, respectively.
-</p>
-    A typical staff is made of wood, 1.2 to 2 m long, and 5 to 8 cm thick.
-    Some staffs may be constructed from bone, metal, crystal, and other exotic materials.
-    Many staffs are shod in metal, while others are capped by gems or arcane devices.
-    Unless otherwise specified, a staff can be used as a quarterstaff weapon and has DeC 5, 10 HP, and DR 5.
-</p>
-<p>
-    Most rods are 0.5 to 1 m long and made of metal. They can be merely decorative scepters, or they can be weapons usable as clubs or maces.
-    Unless otherwise specified, they have DeC 6, 10 HP, and DR 10.
-</p>
-<p>
-    Some psicrowns are actually crownlike and heavily adorned, while others are simple headbands with crystal centerpieces.
-    Most psicrowns are metallic, but one could potentially be composed of any material. All psicrowns weigh less than 0.5 kg.
-</p>
-<p>
-    A typical large focus is created with a store of supernatural energy,
-    and this energy can be used to trigger spells related to a specific supernatural skill or set of spells.
-    In order to use the focus' power, the wielder must have at least one skill level in an appropriate affinity skill.
-</p>
+<ul>
+    <li><strong>Staves (Arcane):</strong> Heavy shafts of treated wood, bone, or crystal (1.2&ndash;2 m long, 5&ndash;8 cm thick), often shod in metal and capped with arcane gems. Can be wielded in combat as quarterstaffs. Standard stats: DeC 5, DR 5, 10 HP.</li>
+    <li><strong>Rods (Divine / Arcane):</strong> Metal scepters or batons (0.5&ndash;1 m long) usable in melee as clubs or maces. Standard stats: DeC 6, DR 10, 10 HP.</li>
+    <li><strong>Psicrowns (Psionic):</strong> Metallic circlets or headbands adorned with central psionic crystals (weighing under 0.5 kg).</li>
+    <li><strong>Large Instruments (Bardic):</strong> Masterwork lutes, harps, or horns tuned as major supernatural conduits.</li>
+</ul>
 
 <h4>Power Pools</h4>
 <p>
-    A power pool is not a type of magic item in itself but a vital component of items with spell-like powers.
-    Most such items will need a pool of power points to activate their spells, unless they are single-use items like
-    potions and scrolls (or items that allow the wielder himself to supply the required power points).
-</p>
-<p>
-    There are different types of power pools, as described below:
+    A power pool is an internal energy reservoir embedded in an item to fuel its supernatural effects without draining the wielder&rsquo;s personal Power Points (PP):
 </p>
 <ul>
-    <li><em>Power Pool:</em> A store of power points. It can't be recharged, so used power points are forever spent.</li>
-    <li><em>Regenerating Power Pool:</em> A store of power points that regenerates over time. By default, an item with such a pool regenerates PL PP per hour.</li>
-    <li><em>Rechargeable Power Pool:</em> A store of power points that can be recharged with the Transfer Power to Pool action.</li>
-    <li><em>Attuned Power Pool:</em> A store of power points that can be recharged with the Transfer Power to Pool action.
-        Furthermore, once a wielder has used the Attune to Power Pool action, he can use the Transfer Power from Pool action to "recharge" himself from the pool.
-        Finally, such a wielder can also use power points from the pool to pay his own PP costs (if the pool is within range).</li>
+    <li><strong>Standard Power Pool:</strong> A non-rechargeable store of Power Points. Once spent, the energy is permanently expended.</li>
+    <li><strong>Regenerating Power Pool:</strong> A self-replenishing pool that recovers spent points over time. By default, it regenerates PL PP per hour.</li>
+    <li><strong>Rechargeable Power Pool:</strong> Can be refilled by spellcasters using the <em>Transfer Power to Pool</em> action.</li>
+    <li><strong>Attuned Power Pool:</strong> A versatile rechargeable reservoir. Once a wielder completes the <em>Attune to Power Pool</em> action, they can use <em>Transfer Power from Pool</em> to replenish their own PP, or directly draw PP from the pool to pay their personal spell costs when in range.</li>
 </ul>
 
 <h4>Intelligent Items</h4>
 <p>
-    An intelligent item’s alignment and personality can be determined randomly.
+    Certain powerful artifacts and items awaken with their own consciousness, alignment, and motivations.
 </p>
 <p>
-    When the interests of an intelligent item conflict with those of its owner, the item can attempt to dominate the owner.
-    It makes a (d20! + item's PL) check against the owner’s Will to do so. Dominance can last for up to one day at a time.
+    When an intelligent item&rsquo;s goals conflict with those of its wielder, the item can attempt to dominate the owner. The item rolls an activation check of <code>d20! + item's PL</code> against the owner&rsquo;s <strong>Will</strong> defense. If successful, the item assumes control of the owner&rsquo;s actions for up to 24 hours.
 </p>
 
-<h4>&quot;Cursed&quot; Items</h4>
+<h4>&ldquo;Cursed&rdquo; Items</h4>
 <p>
-    Some magic items have drawbacks that can negatively affect their users or wearers.
-    These drawbacks can be the intentional effect of a cursed or trapped item,
-    an unintentional side effect caused by errors introduced during creation of the item,
-    or a malfunction accumulated over time due to entropy or a nearby corrupting aura.
+    Some magic items harbor drawbacks and detrimental effects. These flaws may be intentionally engineered traps, accidental distortions caused by flawed craftsmanship, or gradual corruption stemming from planar entropy or vile auras.
 </p>
 <p>
-    When randomly generating treasure, the DM should feel free to add a drawback to approximately 5% of the generated magic items.
+    When generating random treasure, approximately 5% of magic items should possess an unexpected drawback or curse.
 </p>
 
 <?php show_itemcurses(); ?>
 
 <h4>Artifacts and Relics</h4>
 <p>
+    Artifacts and relics are legendary relics of overwhelming power, forged by ancient civilizations, demigods, or planar entities. Unlike standard magic items, artifacts cannot be crafted through ordinary enchanting and are virtually indestructible except through specific mythic means.
 </p>
 
 <h3 id="MagicItemCreation">Magic Item Creation</h3>
 <p>
-    In order to create a magic item, a number of requirements must be fulfilled.
-    Multiple individuals can cooperate in providing these requirements.
+    In order to create a magic item, a number of requirements must be fulfilled. Multiple individuals can cooperate in providing these requirements:
 </p>
-<ul>
-    <li>The enchanters must first procure the mundane item that is to be enchanted.</li>
-    <li>Decide which powers to add to the item (see the list of magical item modifications).</li>
-    <li>Calculate the item's minimum power level (PL).</li>
-    <ul>
-        <li>Start with the PL of the highest-level power.</li>
-        <li>Add the PL of each additional power, modified as follows:</li>
+
+<h4>Creation Process</h4>
+<ol>
+    <li><strong>Procure Base Item:</strong> Obtain a mundane item of suitable craftsmanship (typically Masterwork quality).</li>
+    <li><strong>Select Powers &amp; Calculate Minimum PL:</strong>
         <ul>
-            <li>If the power follows the item's main &quot;theme&quot;, multiply its PL by 0.5.</li>
-            <li>If the power is added to an item of an inappropriate type, multiply its PL by 1.5.</li>
+            <li>Start with the Power Level (PL) of the highest-level enchantment.</li>
+            <li>Add the PL of each additional power, applying modifiers:
+                <ul>
+                    <li><strong>Thematic Synergy:</strong> Multiply the additional power&rsquo;s PL by <strong>0.5</strong> if it aligns closely with the item&rsquo;s central theme.</li>
+                    <li><strong>Inappropriate Item Type:</strong> Multiply the additional power&rsquo;s PL by <strong>1.5</strong> if the power is placed on an unusual or mismatched item type.</li>
+                </ul>
+            </li>
+            <li>The resulting sum is the item&rsquo;s <strong>Minimum PL</strong> (which cannot be reduced via AP dampening).</li>
         </ul>
-        <li>The end result is the item's minimum PL.</li>
-        <li>Note that any references to PL in these calculations cannot be reduced with AP dampening.</li>
-    </ul>
-    <li>Choose the item's actual PL (no lower than the minimum PL calculated above).</li>
-    <li>Use the item’s minimum and actual PL to determine the item’s base price
-        (see below for each item type and for special price modifications).</li>
-    <li>The main enchanter has to have an Enchant Item skill level equal to or higher than the item’s actual PL.</li>
-    <li>For each power, at least one enchanter must know the appropriate spell(s) and/or Enchant Item specialization(s) at a level matching the PL of that power.</li>
-    <li>The enchanters must provide the raw materials (equivalent to half of the base price).</li>
-    <li>The main enchanter must infuse the item with a portion of his life force (XP equal to 40% of the base price in gp).
-        Residuum can be used to replace all or some of this cost.</li>
+    </li>
+    <li><strong>Set Actual PL:</strong> Choose the item&rsquo;s final PL (must be &ge; Minimum PL).</li>
+    <li><strong>Determine Base Price:</strong> Calculate the base price using the item type&rsquo;s specific formula.</li>
+    <li><strong>Skill Requirements:</strong> The primary enchanter must have an <em>Enchant Item</em> skill level equal to or exceeding the item&rsquo;s Actual PL. For each individual power, at least one collaborating enchanter must know the corresponding spell or specialization at a level matching that power&rsquo;s PL.</li>
+    <li><strong>Material &amp; Life Force Costs:</strong>
+        <ul>
+            <li><strong>Raw Materials:</strong> Enchanting consumes exotic catalysts worth <strong>50% of the base price</strong> in gold pieces.</li>
+            <li><strong>Life Energy (XP):</strong> The primary enchanter must sacrifice personal life force equal to <strong>40% of the base price in XP</strong>. Residuum may replace this XP cost partially or entirely.</li>
+        </ul>
+    </li>
+</ol>
+
+<h4>Repairs, Upgrades, and Transfers</h4>
+<ul>
+    <li><strong>Repairs:</strong> Damaged magic items can be repaired using standard mundane <em>Crafting</em> skills. Enchantments remain intact unless the item is entirely destroyed.</li>
+    <li><strong>Upgrades:</strong> Enhancing an existing magic item requires paying the difference in material cost, XP cost, and crafting time between the old and new base prices.</li>
+    <li><strong>Transfers &amp; Alterations:</strong> Altering an enchantment or transferring powers to another vessel is resolved as two distinct steps: disenchanting the old power into residuum, then enchanting the new item.</li>
 </ul>
+
+<h4>Free Creation Restrictions</h4>
 <p>
-    A damaged magic item can be repaired with regular Crafting skills.
-    The magic of an item is not lost until it is completely destroyed, so no supernatural skill is needed for mere repairs.
-</p>
-<p>
-    When upgrading an already enchanted item to something more powerful, calculate PL and base price as normal.
-    The material cost, XP cost, and the time required is based on the price difference between the original and finished item.
-</p>
-<p>
-    When altering an already enchanted item to something different, or when transferring powers from one item to another,
-    treat the alteration or transfer as two separate actions,
-    one to extract residuum for removed powers, and another to enchant with new powers.
-</p>
-<p>
-    The following modifications can be applied to most item types for free:
+    The following restrictions can be incorporated during enchanting at no additional cost:
 </p>
 <ul>
-    <li>Skill-restricted item: Using the item's powers and enhancements requires a minimum skill level</li>
-    <li>Race/class-restricted item: The item's powers and enhancements can only be used by a specific race or class</li>
-    <li>Level-restricted item: The item's user can only enjoy powers and enhancements of a PL equal to or lower than his own TL.
-        Note that this can provide gradual access to powers that have a variable PL cost.</li>
-    <li>Bonded item: Item's powers and enhancements can only be used by someone who has successfully completed an attunement ritual (as specified by the item's creator).</li>
+    <li><strong>Skill-Restricted:</strong> Powers can only be activated by users possessing a specified minimum skill level.</li>
+    <li><strong>Race/Class-Restricted:</strong> Item properties only function when wielded by a specific race or class.</li>
+    <li><strong>Level-Restricted:</strong> Powers scale to the wielder&rsquo;s Target Level (TL), capping accessible effects at the user&rsquo;s TL.</li>
+    <li><strong>Bonded Item:</strong> The item requires the user to complete a specialized attunement ritual defined during creation.</li>
 </ul>
 
-<h4>Brewing Potions and Oils</h4>
+<h4>Magic Item Pricing Formulas</h4>
+
+<h5>Brewing Potions and Oils</h5>
 <p>
-    A potion can be based on any arcane or divine spell with the restrictions listed below.
-    All other variations and specifics are determined by the brewer of the potion or oil, not by the one who uses it.
+    Potions and oils store arcane or divine spells with an Action Time of 15 AP or less, a range of Personal, Touch, Reach, or 0, and targeting a single creature (or object/area for oils). Maximum Total Power Cost (TPC) is 5. Focus implements cannot be used, and material components must be consumed in the brew.
 </p>
 <ul>
-    <li>Action Time must be 15 AP or less</li>
-    <li>If implements include M, the material must be included in the brewing</li>
-    <li>Implements must not include F</li>
-    <li>Range must be Personal, Touch, Reach, or 0</li>
-    <li>Target must be You or 1 creature for potions (oils can also have 1 object or an area as target)</li>
-    <li>Maximum TPC (total power cost) is 5</li>
+    <li><strong>Minimum PL:</strong> Equal to the spell&rsquo;s TPC (Total Power Cost).</li>
+    <li><strong>Base Price (gp):</strong> <code>Minimum PL &times; Actual PL &times; 5 + Material Cost</code></li>
 </ul>
-<p>
-    Minimum PL = Spell's TPC (total power cost)
-</p>
-<p>
-    Base price (gp) = Minimum PL &times; Actual PL &times; 5 + material cost
-</p>
 
-<h4>Creating Psionic Tattoos</h4>
+<h5>Creating Psionic Tattoos</h5>
 <p>
-    A tattoo can be based on any psionic power with the restrictions listed below.
-    All other variations and specifics are determined by the creator of the tattoo, not by the one who wears and activates it.
+    Tattoos store psionic powers with an Action Time of 15 AP or less, a range of Personal or Touch, and targeting You or 1 creature. Maximum TPC is 5. Focus implements cannot be used, and material components must be consumed in the creation.
 </p>
 <ul>
-    <li>Action Time must be 15 AP or less</li>
-    <li>If implements include M, the material must be included in the creation</li>
-    <li>Implements must not include F</li>
-    <li>Range must be Personal or Touch</li>
-    <li>Target must be You or 1 creature. For target You, the tattoo recipient must be you.</li>
-    <li>Maximum TPC (total power cost) is 5</li>
+    <li><strong>Minimum PL:</strong> Equal to the power&rsquo;s TPC.</li>
+    <li><strong>Base Price (gp):</strong> <code>Minimum PL &times; Actual PL &times; 5 + Material Cost</code></li>
 </ul>
-<p>
-    Minimum PL = Power's TPC (total power cost)
-</p>
-<p>
-    Base price (gp) = Minimum PL &times; Actual PL &times; 5 + material cost
-</p>
 
-<h4>Scribing Scrolls</h4>
+<h5>Scribing Scrolls</h5>
 <p>
-    A scroll can be based on any arcane or divine spell.
-    The creator of the scroll determines the action time (note that reading the scroll takes twice as long as the regular casting of the spell),
-    the maximum range, the duration, the maximum size of or number of targets, and any other options.
+    Scrolls store arcane or divine spells. Reading the scroll takes twice the normal Action Time (2 &times; AP). Ongoing durations can be extended by providing extra PP at the time of scribing.
 </p>
-<p>
-    For ongoing durations, the actual duration is limited by the number of extra PP supplied by the creator.
-    For example, if a level 8 enchanter creates a scroll for a 5 PP spell with an ongoing duration cost of 1 PP per hour, he can add 3 PP to give it a total duration of 4 hours.
-</p>
-<p>
-    Minimum PL = Spell's TPC (total power cost)
-</p>
-<p>
-    Base price (gp) = Minimum PL &times; Actual PL &times; 2 + material cost
-</p>
+<ul>
+    <li><strong>Minimum PL:</strong> Equal to the spell&rsquo;s TPC.</li>
+    <li><strong>Base Price (gp):</strong> <code>Minimum PL &times; Actual PL &times; 2 + Material Cost</code></li>
+</ul>
 
-<h4>Enchanting Power Stones</h4>
+<h5>Enchanting Power Stones</h5>
 <p>
-    A power stone can be based on any psionic power.
-    The creator of the stone determines the action time (note that activating the stone takes twice as long as the regular manifestation of the power),
-    the maximum range, the duration, the maximum size of or number of targets, and any other options.
+    Power stones store psionic powers. Manifesting a power stone takes twice the normal Action Time (2 &times; AP).
 </p>
-<p>
-    For ongoing durations, the actual duration is limited by the number of extra PP supplied by the creator.
-    For example, if a level 8 enchanter creates a power stone for a 5 PP power with an ongoing duration cost of 1 PP per hour, he can add 3 PP to give it a total duration of 4 hours.
-</p>
-<p>
-    Minimum PL = Power's TPC (total power cost)
-</p>
-<p>
-    Base price (gp) = Minimum PL &times; Actual PL &times; 2 + material cost
-</p>
+<ul>
+    <li><strong>Minimum PL:</strong> Equal to the power&rsquo;s TPC.</li>
+    <li><strong>Base Price (gp):</strong> <code>Minimum PL &times; Actual PL &times; 2 + Material Cost</code></li>
+</ul>
 
-<h4>Inscribing Runes</h4>
+<h5>Inscribing Runes</h5>
 <p>
-    A rune can be based on most divine spells. The spell takes effect immediately when triggered, and it is always centered on the rune (range 0).
-    The creator of the rune chooses the duration, the maximum size of or number of targets, and any other options.
+    Runes store divine spells centered on the rune (range 0) that trigger upon contact.
 </p>
-<p>
-    Minimum PL = Spell’s TPC (total power cost)
-</p>
-<p>
-    Base price (gp) = (Minimum PL &times; Actual PL &times; 5 + material cost) &times; (number of charges)
-</p>
-<p>
-    If the rune is to be triggered by reading or by a creature passing within one square (instead of just by touch),
-    double the base price.
-</p>
+<ul>
+    <li><strong>Minimum PL:</strong> Equal to the spell&rsquo;s TPC.</li>
+    <li><strong>Base Price (gp):</strong> <code>(Minimum PL &times; Actual PL &times; 5 + Material Cost) &times; (Number of Charges)</code></li>
+    <li><em>Modifier:</em> Double the base price if the rune is designed to trigger upon proximity (within 1 square) or reading rather than direct touch.</li>
+</ul>
 
-<h4>Creating Magic Weapons, Shields, and Armor</h4>
-<p>
-    When enchanting a double weapon, the enchanter can choose whether to treat it as two weapons
-    (with separate enchantments and costs for each part of the weapon)
-    or as one weapon (with the same enchantments and a single cost for both parts of the weapon).
-</p>
-<p>
-    Base price for weapon (gp) = Minimum PL &times; Actual PL &times; 80 + cost of mundane weapon
-</p>
-<p>
-    Base price for ammunition (gp) = Minimum PL &times; Actual PL &times; 2 + cost of mundane ammunition
-</p>
-<p>
-    Base price for shield (gp) = Minimum PL &times; Actual PL &times; 50 + cost of mundane shield
-</p>
-<p>
-    Base price for armor (gp) = Minimum PL &times; Actual PL &times; 80 + cost of mundane armor
-</p>
+<h5>Weapons, Shields, and Armor</h5>
+<ul>
+    <li><strong>Magic Weapons (gp):</strong> <code>Minimum PL &times; Actual PL &times; 80 + Mundane Weapon Cost</code><br>
+        <em>(Double weapons can be enchanted as a single weapon or as two distinct components.)</em></li>
+    <li><strong>Magic Ammunition (gp):</strong> <code>Minimum PL &times; Actual PL &times; 2 + Mundane Ammunition Cost</code></li>
+    <li><strong>Magic Shields (gp):</strong> <code>Minimum PL &times; Actual PL &times; 50 + Mundane Shield Cost</code></li>
+    <li><strong>Magic Armor (gp):</strong> <code>Minimum PL &times; Actual PL &times; 80 + Mundane Armor Cost</code></li>
+</ul>
 
-<h4>Creating Magic Foci</h4>
-<p>
-    The maximum PL of a small focus is 10.
-</p>
-<p>
-    Base price (gp) = Minimum PL &times; Actual PL &times; 80 + cost of mundane focus
-</p>
-
-<h4>Animating Constructs</h4>
-<p>
-    Base price (gp) = (Construct CL &times; CL + Minimum PL &times; Actual PL) &times; 200 + cost of mundane item
-</p>
-
-<h4>Creating Other Magic Items</h4>
-<p>
-    Base price (gp) = Minimum PL &times; Actual PL &times; 100 + cost of mundane item
-</p>
+<h5>Foci, Constructs, and Miscellaneous Items</h5>
+<ul>
+    <li><strong>Magic Foci (gp):</strong> <code>Minimum PL &times; Actual PL &times; 80 + Mundane Focus Cost</code> <em>(Max PL 10 for small foci)</em></li>
+    <li><strong>Animated Constructs (gp):</strong> <code>(Construct CL&sup2; + Minimum PL &times; Actual PL) &times; 200 + Mundane Vessel Cost</code></li>
+    <li><strong>Other Magic Items (gp):</strong> <code>Minimum PL &times; Actual PL &times; 100 + Mundane Item Cost</code></li>
+</ul>
