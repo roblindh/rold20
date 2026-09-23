@@ -3,107 +3,84 @@
 <h3 id="Movement">Movement and Travel</h3>
 <h4>Speed</h4>
 <p>
-    A creature’s 
-    <a href="/rules/core#AdjustedSpeed">adjusted speed</a> 
-    indicates the number of squares it can walk per round.
-    Jogging is equal to two times that speed, running is equal to three times, and sprinting is equal to four times the speed.
+    A creature&rsquo;s <a href="/rules/core#AdjustedSpeed">adjusted speed</a> indicates the number of tactical squares (1.5 m) it can walk per round (6 seconds):
 </p>
-<p>
-    To convert squares per round into m/s, divide it by four. To convert it into km/h, multiply it by 1 (or 0.9, for better accuracy).
-</p>
-<p>
-    During a typical day spent walking, a creature can cover a number of km equal to its adjusted speed times eight.
-</p>
+<ul>
+    <li><strong>Walking:</strong> Base adjusted speed.</li>
+    <li><strong>Jogging:</strong> 2 &times; adjusted speed.</li>
+    <li><strong>Running:</strong> 3 &times; adjusted speed.</li>
+    <li><strong>Sprinting:</strong> 4 &times; adjusted speed.</li>
+</ul>
+
+<div class="bg-stone-50 border border-stone-200 rounded-sm p-3 my-3 text-sm">
+    <div class="font-semibold text-stone-900 mb-1">Speed Unit Conversions</div>
+    <ul class="list-disc list-inside space-y-1 text-stone-700">
+        <li><strong>Squares/round to m/s:</strong> Divide squares by <strong>4</strong> (e.g., 4 squares/round = 1.0 m/s).</li>
+        <li><strong>Squares/round to km/h:</strong> Multiply squares by <strong>0.9</strong> (or 1.0 for a quick estimate; e.g., 4 squares/round &approx; 3.6 km/h).</li>
+        <li><strong>Daily Travel (km/day):</strong> A creature walking at a normal pace covers a distance in kilometers equal to <code>adjusted speed &times; 8</code> per standard travel day.</li>
+    </ul>
+</div>
 
 <?php show_speedconversion(); ?> 
 
 <?php show_speedtable(); ?> 
 
-<dl>
-    <dt>Difficult terrain or obstacles:</dt>
-    <dd>×2 movement cost</dd>
-    <dt>Very difficult terrain:</dt>
-    <dd>×3 movement cost (or more)</dd>
-    <dt>Poor visibility (darkness, fog):</dt>
-    <dd>×2 movement cost</dd>
-</dl>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-2 my-3 text-xs">
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-2.5">
+        <strong class="text-stone-900 block mb-0.5">Difficult Terrain / Obstacles</strong>
+        <span class="text-stone-700">&times;2 Movement Point cost</span>
+    </div>
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-2.5">
+        <strong class="text-stone-900 block mb-0.5">Very Difficult Terrain</strong>
+        <span class="text-stone-700">&times;3+ Movement Point cost</span>
+    </div>
+    <div class="bg-stone-50 border border-stone-200 rounded-sm p-2.5">
+        <strong class="text-stone-900 block mb-0.5">Poor Visibility (Fog / Darkness)</strong>
+        <span class="text-stone-700">&times;2 Movement Point cost</span>
+    </div>
+</div>
 <p>
-    You cannot run or sprint effectively in difficult terrain or poor visibility.
+    Creatures cannot run, sprint, or charge effectively through difficult terrain or areas of poor visibility.
 </p>
 
 <h4>Movement Rules</h4>
 <p>
-    Most [Move]-actions are performed using movement points (MP) rather than action points (AP).
-    As described in earlier chapters, a creature's adjusted speed determines its number of available MP,
-    but the number of MP can also be increased by converting AP to MP.
-    For example, a creature with 20 AP and an adjusted speed of 4 automatically gets 4 MP per round, but it can also convert up to 4 AP into additional MP.
+    Most <code>[Move]</code> actions are performed using Movement Points (MP) rather than Action Points (AP). A creature&rsquo;s adjusted speed determines its baseline MP per round. Creatures can also convert AP directly into additional MP on a 1-for-1 basis, up to a maximum equal to their adjusted speed (for example, a creature with 20 AP and an adjusted speed of 4 receives 4 MP automatically and may convert up to 4 AP into 4 extra MP).
 </p>
 <p>
-    The following rules apply to all movement:
+    The following tactical rules govern all standard movement:
 </p>
 <ul>
-    <li>You can move diagonally past opponents and obstructions but not past corners.</li>
-    <li>You can move through or stop in (but not run/sprint/charge through) squares with helpless creatures.</li>
-    <li>You can move through (but not stop in or run/sprint/charge through) squares occupied by allies.</li>
-    <li>You cannot move through an opponent’s square (unless the opponent is helpless). Exceptions include tumbling and overrun actions.</li>
-    <li>A Tiny or smaller creature can move through occupied squares but provokes attacks of opportunity when doing so.</li>
-    <li>Any creature can move through squares occupied by a creature that is three or more sizes larger or smaller. However, this does provoke attacks of opportunity.</li>
-    <li>Flying and incorporeal creatures are not affected by obstructions on the ground.</li>
-    <li>For creatures that occupy multiple squares, the worst conditions apply.</li>
-    <li>Creatures can squeeze through areas half as wide as their normal space (or half as high as their height), but this costs double movement. While squeezing, you suffer a -4 circumstance penalty to attack rolls, DeC, and Ref. Spaces that are both narrow and low quadruple the MP cost and cause double the penalty.</li>
-    <li>If you accidentally end your movement in an illegal square, you instead end up in the square most recently moved through. If this square is also illegal, you fall prone in that square.</li>
+    <li><strong>Diagonals:</strong> You can move diagonally past opponents and obstacles, but you cannot cut across hard corners of solid walls.</li>
+    <li><strong>Helpless Creatures:</strong> You can move through or end your turn in squares occupied by helpless creatures (though you cannot charge, run, or sprint through them).</li>
+    <li><strong>Allies:</strong> You can move through squares occupied by friendly allies, but you cannot end your turn in their square, nor run, sprint, or charge through them.</li>
+    <li><strong>Opponents:</strong> You cannot enter or move through an opponent&rsquo;s square unless they are helpless, or unless you perform a specific action such as <em>Tumble</em> or <em>Overrun</em>.</li>
+    <li><strong>Size Discrepancies:</strong> Tiny or smaller creatures can pass through occupied squares (provoking attacks of opportunity). Any creature can move through squares occupied by a creature three or more size categories larger or smaller (provoking attacks of opportunity).</li>
+    <li><strong>Flight &amp; Incorporeality:</strong> Flying and incorporeal creatures ignore ground-based terrain penalties and obstacles.</li>
+    <li><strong>Multi-Square Creatures:</strong> For creatures occupying multiple squares, movement costs are determined by the most severe terrain condition entered.</li>
+    <li><strong>Squeezing:</strong> A creature can squeeze through spaces half as wide as its normal combat space (or half its height) at double MP cost, suffering a <strong>-4 circumstance penalty</strong> to attack rolls, Defensive Class (DeC), and Reflex (Ref). Navigating a space that is both narrow and low quadruples MP cost (&times;4) and doubles the circumstance penalties (-8).</li>
+    <li><strong>Illegal Endings:</strong> If an action accidentally terminates in an illegal square, the creature is placed in the last legal square traversed. If that square is also invalid, the creature falls prone there.</li>
 </ul>
 <p>
-    Obstructed/difficult terrain includes the following features:
-</p>
-<ul>
-    <li>Rubble or uneven ground</li>
-    <li>Undergrowth</li>
-    <li>Steep slopes (uphill generally worse than downhill)</li>
-    <li>Slippery ground</li>
-    <li>Stairs</li>
-    <li>Ladders</li>
-    <li>Shallow pools</li>
-    <li>Low walls</li>
-    <li>Broken pillars, statues, etc.</li>
-    <li>Darkness</li>
-    <li>Dense fog</li>
-</ul>
-<p>
-    If multiple conditions apply, the DM is free to increase the movement cost to &times;3, &times;4, or worse.
-</p>
-<p>
-    Some obstructions may require extra MP to traverse and also prevent creatures from stopping in the same square.
+    Common difficult and hazardous terrain features include rubble, heavy undergrowth, steep slopes (uphill traversing being more demanding), slippery ice or mud, stairs, ladders, shallow bogs, low barricades, broken pillars, darkness, and dense fog. When multiple impeding factors overlap, the DM may increase the MP multiplier to &times;3, &times;4, or higher.
 </p>
 
 <h4>Overland Travel</h4>
 <p>
-    The speed of overland movement is described above, specified as the number of km covered per day.
-    The speed should be modified for the terrain and the quality of the road, as shown below:
+    Overland travel rates represent the distance covered per day based on terrain type and road quality:
 </p>
 
 <?php show_terrainmove(); ?> 
 
 <p>
-    Overland movement is typically spread over 6 to 8 hours in a day. Rowing can usually be done for 10 hours per day,
-    while a well-crewed sailing ship often can travel 24 hours per day.
+    A standard overland march spans 6 to 8 travel hours per day. Continuous rowing can be sustained for up to 10 hours per day, while a well-crewed sailing vessel can maintain travel for 24 hours per day.
 </p>
-<p>
-    <em>Slow pace:</em> By moving at half the speed indicated for the terrain, you gain a +5 bonus on Survival checks to find food, navigate, etc.
-    You are also able to use Stealth actions to avoid discovery.
-</p>
-<p>
-    <em>Fast pace:</em> You can increase the indicated travel speed by 50%, but you then suffer a -5 penalty on Survival- and Perception-based action checks.
-</p>
-<p>
-    <em>Hustling:</em> When hustling, you move at twice your normal speed. After each full hour of hustling, you take (10 – Con mod) SP of damage.
-    If you are mounted, the mount takes full damage, and you take (5 - Con mod) SP of damage.
-    Furthermore, any Survival- and Perception-based action checks suffer a -8 penalty.
-</p>
-<p>
-    <em>Forced march:</em> If you spend more than 8 hours per day walking or hustling, you take an extra 5 SP of damage per additional hour.
-    If you are mounted, the mount takes full damage, and you take 2 SP per hour.
-</p>
+<ul>
+    <li><strong>Slow Pace:</strong> Moving at half standard speed grants a <strong>+5 bonus</strong> on <em>Survival</em> checks (navigation, foraging, tracking) and permits the party to use <em>Stealth</em> to avoid detection.</li>
+    <li><strong>Fast Pace:</strong> Increasing travel speed by +50% imposes a <strong>-5 penalty</strong> on all <em>Survival</em> and <em>Perception</em> checks.</li>
+    <li><strong>Hustling:</strong> Moving at double speed for an extended journey quickly exhausts travelers. For each full hour spent hustling beyond the first, a creature suffers <code>(10 &minus; Con mod) SP</code> of fatigue damage. Mounts take full damage, while their riders take <code>(5 &minus; Con mod) SP</code>. Furthermore, all <em>Survival</em> and <em>Perception</em> checks suffer a <strong>-8 penalty</strong>.</li>
+    <li><strong>Forced March:</strong> Traveling more than 8 hours in a single day inflicts an additional <strong>5 SP</strong> of damage per extra hour. For mounted travelers, the mount suffers the full 5 SP and the rider takes 2 SP per additional hour.</li>
+</ul>
 
 <h3 id="Weather">Weather</h3>
 
@@ -111,67 +88,52 @@
 
 <h4>Weather Generation Tools</h4>
 <p>
-    <a href="https://donjon.bin.sh/d20/weather/">Random Weather Generator</a>
+    For dynamic meteorological conditions during campaigns, see the <a href="https://donjon.bin.sh/d20/weather/" target="_blank" rel="noopener">Donjon Random Weather Generator</a>.
 </p>
 
 <h3 id="Necessities">Necessities</h3>
+
 <h4 id="Hunger">Hunger and Thirst</h4>
 <p>
-    Most medium-sized humanoids require 2 l of water (or other drinkable liquid) per day to avoid dehydration.
-    After 24 + Con hours with insufficient liquid, a creature suffers a +5 attack (+1 per additional check) vs. Fort once per h (S – 1d6 SP).
-    High temperatures typically increase water requirements and reduce the time before the first thirst check.
+    Sustaining biological functions requires adequate hydration and caloric nourishment:
 </p>
+<ul>
+    <li><strong>Water (Hydration):</strong> A Medium humanoid requires 2 liters of drinkable water per day. After going <code>24 + Con</code> hours without sufficient fluids, the creature is subjected to an environmental attack of <code>+5 vs. Fortitude</code> (+1 cumulative per additional check) once per hour (Damage: <code>S &minus; 1d6 SP</code>). Extreme heat increases water consumption and accelerates thirst onset.</li>
+    <li><strong>Food (Nourishment):</strong> A Medium humanoid requires a minimum of 0.2 kg of food per day. After 3 consecutive days with inadequate nutrition, the creature suffers an environmental attack of <code>+5 vs. Fortitude</code> (+1 cumulative per additional check) once per day (Damage: <code>S &minus; 1d6 SP</code>).</li>
+    <li><strong>Size Scaling:</strong> Multiply daily water and food requirements by <strong>0.25</strong> for each size category below Medium, and by <strong>4</strong> for each size category above Medium.</li>
+</ul>
+
+<h4 id="Suffocation">Suffocation and Air Supply</h4>
 <p>
-    Most medium-sized humanoids require a minimum of 0.2 kg of food per day to avoid starvation.
-    After 3 days with insufficient food, a creature suffers a +5 attack (+1 per additional check) vs. Fort once per day (S – 1d6 SP).
+    Deprivation of oxygen rapidly incapacitates living organisms:
 </p>
+<ul>
+    <li><strong>Holding Breath:</strong> A living creature taking a deep breath can hold its breath for <code>Con rounds</code>. Thereafter, it suffers an environmental attack of <code>+0 vs. Fortitude</code> (+1 cumulative per round) once per round (Damage: <code>S &minus; 1d6 SP</code>). Strenuous combat activity or spending actions that cost Stamina Points (SP) counts as two rounds of breath expenditure.</li>
+    <li><strong>Enclosed Air Consumption:</strong> A Medium humanoid consumes the oxygen of 5 m<sup>3</sup> of sealed air per hour. Once depleted, the remaining air provides one additional hour of strained breathing, inflicting <strong>1d6 SP</strong> of asphyxiation damage every 15 minutes. Open combustion (such as a torch or lantern) consumes oxygen at the same rate as one Medium creature. Scale air requirements by &times;0.25 per size below Medium and &times;4 per size above.</li>
+</ul>
+
+<h4 id="Sleep">Sleep and Rest</h4>
 <p>
-    Multiply the requirements by 0.25 per size category below medium and by 4 per size above.
+    Most humanoids require a minimum of 6 hours of sleep per 24-hour cycle to avoid debilitating fatigue:
 </p>
-<h4 id="Suffocation">Suffocation</h4>
-<p>
-    Most living creatures can easily hold their breath for Con rounds (if they have time to take a deep breath).
-    After that, they suffer a +0 attack (+1 per additional check) vs. Fort once per round (S – 1d6 SP).
-    Rounds involving combat or strenuous activity (with any action costing SP) count as double rounds.
-</p>
-<p>
-    Most medium-sized humanoids require the oxygen from 5 m<sup>3</sup> of air per hour.
-    The air is then depleted but still breathable for one more hour (causes 1d6 SP per 15 minutes).
-    A burning torch or lantern consumes the same amount of oxygen as a medium-sized creature.
-    Multiply the air requirements by 0.25 per size category below medium and by 4 per size above.
-</p>
-<h4 id="Sleep">Sleep</h4>
-<p>
-    Most humanoids need at least 6 h of sleep per day to avoid fatigue.
-</p>
-<p>
-    After 20 hours without sleep, a creature suffers a +0 attack (+1 per additional check) vs. Will
-    once per h (S – 1d6 PP, and if its current activity state is low, it falls asleep).
-</p>
+<ul>
+    <li><strong>Sleep Deprivation:</strong> After remaining awake for 20 consecutive hours, a creature suffers an environmental attack of <code>+0 vs. Will</code> (+1 cumulative per additional check) once per hour (Drain: <code>S &minus; 1d6 PP</code>). If the check fails while the creature is in a low-activity state, it immediately falls asleep.</li>
+</ul>
 
 <h3 id="VisionLight">Vision and Light</h3>
 <p>
-    Illumination is one of the most important and common environmental effects to consider.
-    The following list describes the different levels of illumination, their effects, and typical situations:
+    Illumination conditions dictate visibility, sensory accuracy, and concealment modifiers:
 </p>
 <ul>
-    <li><em>Extreme Darkness:</em> Supernaturally enhanced darkness.<br/>
-        Creatures without non-visual senses are effectively blind (and regular darkvision is not sufficient).</li>
-    <li><em>Darkness:</em> Enclosed area or outside on a moonless night.<br/>
-        Creatures without darkvision or truesight are effectively blind.</li>
-    <li><em>Dim Light:</em> Lit by candle, inside a building with few and small windows, or outside on a moonlit night.<br/>
-        All creatures and objects enjoy concealment against creatures without darkvision or low-light vision.<br/>
-        Creatures with low-light vision treat dim light as normal light. They can see an additional "radius" around light sources as dim light.</li>
-    <li><em>Normal Light:</em> Lit by lantern, inside a building with windows, or outside on a cloudy day.<br/>
-        Creatures sensitive to light suffer normal penalties.</li>
-    <li><em>Bright Light:</em> Outside in direct sunlight.<br/>
-        Creatures sensitive to light suffer double penalties.</li>
-    <li><em>Blinding Light:</em> This level of light is typically caused by supernatural effects using radiant energy.</li>
+    <li><strong>Extreme Darkness:</strong> Supernatural or absolute void. Creatures lacking non-visual senses are effectively <em>Blind</em> (standard Darkvision is ineffective).</li>
+    <li><strong>Darkness:</strong> Enclosed unlit subterranean spaces or moonless night outdoors. Creatures without Darkvision or Truesight are effectively <em>Blind</em>.</li>
+    <li><strong>Dim Light:</strong> Candlelight, twilight, or clear moonlit nights. All creatures and objects gain <em>Concealment</em> against observers lacking Low-Light Vision or Darkvision. Creatures with Low-Light Vision treat dim light as normal light and perceive an additional outer radius of dim light.</li>
+    <li><strong>Normal Light:</strong> Lantern light, torchlight, well-lit interiors, or overcast daylight. Light-sensitive creatures suffer standard sensitivity penalties.</li>
+    <li><strong>Bright Light:</strong> Direct midday sunlight. Light-sensitive creatures suffer doubled sensitivity penalties.</li>
+    <li><strong>Blinding Light:</strong> Radiant magical discharges, supernovas, or direct divine brilliance that dazzles and blinds exposed observers.</li>
 </ul>
 <p>
-    For areas with overlapping levels of light, simply apply the highest level.
-    It typically requires at least ten overlapping light sources of a certain level to combine into a higher level.
-    Ten lanterns in the same area could create bright light, for example, although each lantern only sheds normal light by itself.
+    When multiple light zones overlap, the highest illumination level governs. Ten or more clustered light sources of a given tier can elevate the surrounding area to the next higher illumination category (e.g., ten lanterns clustered in a hall can generate Bright Light).
 </p>
 
 <?php show_lightsources(); ?> 
@@ -181,34 +143,30 @@
 <?php show_environments(); ?> 
 
 <p>
-    SP and HP caused by an environmental effect will not be recovered by natural means until the creature returns to a harmless environment.
+    Stamina Points (SP) and Health Points (HP) lost to ongoing environmental hazards cannot be recovered through natural rest until the creature retreats to a safe, hospitable environment.
 </p>
 
 <h3 id="Falling">Falling and Crushing</h3>
 <p>
-    When you fall or jump from a height, you risk taking damage.
+    Falling or jumping from a height inflicts kinetic impact damage based on the total distance fallen:
 </p>
-<p>
-    <em>Base falling damage:</em> 1d6 HP of blunt damage per 2 squares (3 m) that you fall, to a maximum of 30d6 HP.
-    The falling creature also lands prone. A successful Acrobatics / Land Softly check can reduce the damage and prevent the prone condition.
-</p>
-<p>
-    If you land on a yielding surface, one d6 of damage changes from HP to SP (this can stack with the effect of Land Softly).
-</p>
-<p>
-    If you land on water (3+ meters of depth) or a very yielding surface, reduce actual falling height by 4 squares
-    for the purpose of damage calculations. Furthermore, convert the next 2 d6s of damage from HP to SP (this can stack with the effect of Land Softly).
-</p>
-<p>
-    When falling, most creatures reach terminal velocity in a single round. In the first round, it falls 120 squares (180 m).
-    It falls 240 squares (360 m) every round after that.
-</p>
-<p>
-    An object that crushes or falls on a creature deals damage based on its weight and the falling height.
-</p>
-<p>
-    <em>Crushing damage:</em> 1d6 HP of blunt damage per ((squares of falling height / 2; minimum 1, maximum 30) × (weight / 100 kg))
-</p>
+<ul>
+    <li><strong>Base Falling Damage:</strong> <strong>1d6 HP</strong> of blunt damage per 2 squares (3 m) fallen, up to a maximum of <strong>30d6 HP</strong>. The falling creature lands <strong>Prone</strong>.</li>
+    <li><strong>Acrobatics (Land Softly):</strong> A successful <em>Acrobatics</em> check reduces falling damage and prevents the creature from falling prone.</li>
+    <li><strong>Yielding Surface:</strong> Landing on a yielding surface (such as soft mud, loose snow, or a canopy) converts 1d6 of damage from HP into SP (stacks with <em>Land Softly</em>).</li>
+    <li><strong>Deep Water or Highly Yielding Surface:</strong> Landing in deep water (3+ meters of depth) or a very yielding surface (such as a haystack or safety net) reduces the effective fall height by <strong>4 squares (6 m)</strong> for damage calculations, and converts the next <strong>2d6</strong> of damage from HP to SP.</li>
+    <li><strong>Terminal Velocity:</strong> A falling creature accelerates rapidly, falling <strong>120 squares (180 m)</strong> in the first round, and <strong>240 squares (360 m)</strong> each round thereafter.</li>
+</ul>
+
+<div class="bg-stone-50 border border-stone-200 rounded-sm p-3 my-3 text-sm">
+    <div class="font-semibold text-stone-900 mb-1">Crushing &amp; Falling Object Damage</div>
+    <p class="text-stone-700 mb-2">
+        Heavy objects that fall or collapse onto a creature deal blunt damage based on both their mass and the height from which they fell:
+    </p>
+    <div class="bg-white border border-stone-200 rounded p-2 text-stone-900 font-mono text-xs">
+        Crushing Damage = 1d6 HP per [ (squares of falling height / 2; min 1, max 30) &times; (weight in kg / 100) ]
+    </div>
+</div>
 
 <h3 id="NaturalFeatures">Natural Features</h3>
 
@@ -216,220 +174,119 @@
 
 <?php show_hazards(); ?> 
 
-<p>
-    Clearing rubble: In one minute, a (non-buried) character can clear rubble equal to five times his maximum carrying capacity.
-    One square typically contains 1000 kg of rubble. A suitable tool doubles the amount of clearing a character can do.
-</p>
+<div class="bg-stone-50 border border-stone-200 rounded-sm p-3 my-3 text-sm">
+    <div class="font-semibold text-stone-900 mb-1">Clearing Rubble and Cave-Ins</div>
+    <p class="text-stone-700">
+        In one minute of continuous labor, an unburied character can clear an amount of rubble equal to <strong>5 &times; their maximum carrying capacity</strong>. A standard 1.5 m tactical square filled with cave-in debris contains approximately <strong>1,000 kg of rubble</strong>. Using suitable tools (such as shovels, pickaxes, or crowbars) doubles the clearance rate.
+    </p>
+</div>
 
 <h3 id="BuildingFeatures">Dungeon and Building Features</h3>
-
 <p>
-    Many standard building features (and their typical DR, HP, break DC, and climb DC) can be found in the
-    <a href="/reference/equipment">list of equipment</a>.
+    Standard architectural components, doors, walls, and portcullises—including their typical Damage Reduction (DR), Hit Points (HP), Break DC, and Climb DC—are detailed in the <a href="/reference/equipment">List of Equipment</a>.
 </p>
 
 <?php show_buildingfeatures(); ?> 
 
 <h3 id="Traps">Traps</h3>
 <p>
-    Traps come in many different varieties, but they can be roughly categorized as either mechanical or magic.
-    Traps are also defined by other parameters, such as their trigger, their attack bonus and type, their damage, etc.
+    Traps are classified into two primary categories: <strong>Mechanical Traps</strong> (pits, blade scythes, dart walls) and <strong>Magic Traps</strong> (spell glyphs and enchanted ward devices).
 </p>
 <p>
-    Detecting and defeating, or maybe just surviving, a trap can be as challenging as slaying monsters,
-    so adventurers are awarded experience points for the traps they encounter.
-    The table below shows how to calculate the EL of a trap, and as usual, each EL equals 300 XP.
+    Overcoming, disabling, or surviving deadly dungeon traps awards Experience Points (XP) equal to the trap&rsquo;s Encounter Level (EL), with each EL providing <strong>300 XP</strong>:
 </p>
 
 <?php show_traps(); ?> 
 
 <p>
-    The Crafting (trapmaking) skill is used to craft and set mechanical traps,
-    the Enchant Item skill is used to craft and set magic device traps, and the appropriate spell is used to set a magic spell trap.
-</p>
-<p>
-    The <a href="https://www.d20srd.org/srd/traps.htm">3.5E DMG and SRD</a> have a large number of example traps.
+    The <em>Crafting (trapmaking)</em> skill is used to design and assemble mechanical traps, <em>Enchant Item</em> is used to construct magical device traps, and relevant spellcasting skills are used to inscribe spell traps. For extensive examples of classic d20 traps, see the <a href="https://www.d20srd.org/srd/traps.htm" target="_blank" rel="noopener">3.5E SRD Traps Index</a>.
 </p>
 
 <h3 id="SpecialEnvirons">Special Environments</h3>
+
 <h4>Mid-Air</h4>
 <ul>
-    <li>Fly speed must be used for movement. See the section about maneuverability for more details.</li>
-    <li>A flying creature that is knocked prone starts to fall. See the previous section for falling damage and falling velocity.</li>
-    <li>For a flier to halt an uncontrolled descent requires an Acrobatics skill check against DC 10.</li>
-    <li>Strong winds can affect movement.</li>
-    <li>Debris and swirling air currents constitute difficult terrain.</li>
-    <li>Winged creatures with sufficient maneuverability to hover can use their wings to create strong winds
-        (Large creatures can generate strong winds within 5 sq radius, Huge severe winds within 10 sq,
-        Gargantuan stormy winds within 15 sq, and Colossal hurricane winds within 20 sq).</li>
-    <li>Clouds can provide concealment, good concealment, or total concealment, depending on their thickness.</li>
+    <li><strong>Movement &amp; Maneuverability:</strong> Flying creatures use their designated Fly speed and maneuverability rating for aerial navigation.</li>
+    <li><strong>Falling Flier:</strong> A flying creature knocked <em>Prone</em> immediately stalls and enters an uncontrolled freefall (see falling rules above). Halting an uncontrolled descent requires an <em>Acrobatics</em> check against <strong>DC 10</strong>.</li>
+    <li><strong>Aerial Obstructions:</strong> High-altitude gale winds, swirling turbulence, and airborne debris count as difficult terrain.</li>
+    <li><strong>Wing Buffet Wind Generation:</strong> Large or larger winged creatures with hovering capability can generate powerful localized windblasts by beating their wings:
+        <ul class="list-disc list-inside mt-1 space-y-0.5 text-stone-700">
+            <li><em>Large:</em> Strong winds (5-square radius)</li>
+            <li><em>Huge:</em> Severe winds (10-square radius)</li>
+            <li><em>Gargantuan:</em> Storm winds (15-square radius)</li>
+            <li><em>Colossal:</em> Hurricane winds (20-square radius)</li>
+        </ul>
+    </li>
+    <li><strong>Cloud Cover:</strong> Dense clouds provide <em>Concealment</em>, <em>Good Concealment</em>, or <em>Total Concealment</em> depending on thickness.</li>
 </ul>
 
 <h4>Underwater</h4>
 <p>
-    The following effects apply to creatures swimming in water or wading in water that is at least chest-deep.
+    Submerged combat and wading in chest-deep water impose distinct physical restrictions:
 </p>
 <ul>
-    <li>Swim speed must be used for movement.</li>
-    <li>Environmental effects: current affects movement.</li>
-    <li>Slashing and blunt weapons suffer a -2 attack penalty and cause only half damage.</li>
-    <li>Thrown weapons do not work. Projectile weapons suffer -2 attack penalty per square.</li>
-    <li>Non-aquatic creatures using brawling attacks suffer a -2 attack penalty but deal normal damage (and have normal effects).</li>
-    <li>Aquatic monsters have a +2 attack advantage against non-aquatic ones.</li>
-    <li>Water provides concealment, good concealment, or even total concealment against attacks from above water, and vice versa.</li>
-    <li>Fire effects are reduced or negated.</li>
-    <li>Fire magic requires a spellcasting check (+10 difficulty) and creates superheated steam rather than fire.</li>
+    <li><strong>Swim Speed:</strong> Swimming creatures move using their Swim speed. Aquatic currents directly modify Movement Point costs.</li>
+    <li><strong>Melee Weapons:</strong> Slashing and blunt melee attacks suffer a <strong>-2 attack penalty</strong> and deal only <strong>half damage</strong>. Piercing weapons function normally.</li>
+    <li><strong>Brawling Attacks:</strong> Non-aquatic creatures making unarmed or natural brawling attacks suffer a <strong>-2 attack penalty</strong> but deal full normal damage.</li>
+    <li><strong>Ranged Weapons:</strong> Thrown weapons are completely ineffective underwater. Projectile weapons suffer a cumulative <strong>-2 attack penalty per square</strong> of water traversed.</li>
+    <li><strong>Aquatic Advantage:</strong> Native aquatic monsters gain a <strong>+2 attack advantage</strong> against non-aquatic opponents.</li>
+    <li><strong>Surface Boundary:</strong> The water surface grants progressive concealment against attacks crossing between air and water.</li>
+    <li><strong>Fire &amp; Steam Magic:</strong> Mundane fire is instantly extinguished. Casting fire magic underwater requires a spellcasting check at <strong>+10 DC difficulty</strong>; upon success, it erupts as a blast of superheated steam rather than open flame.</li>
 </ul>
 
 <?php show_underwatereffects(); ?> 
 
 <h3 id="Multiverse">The Multiverse</h3>
 <p>
-    The Multiverse is very much like the Universe we all live in.
-    There are clusters of galaxies, pulsars, black holes, billions and billions of stars, an even greater number of planets, and so forth.
-    Start with that, then add a few additional planes of existence, top them off with some extra dimensions as well,
-    and we will call everything the Multiverse. The Multiverse can be roughly divided into the purely physical planes
-    (also known as the elemental planes) and the purely spiritual planes (a number of heavens, hells, and limbos floating around in the Astral Plane),
-    with the regular Universe acting as a sort of buffer in between.
-    There is also an infinite number of smaller, less stable planes (commonly known as Demiplanes) floating around among the larger ones.
-    In addition, most of the known planes have “extradimensional” qualities (hyperspace, the Ethereal, the fifth dimension,
-    or whatever you prefer to call it) that can be accessed or utilized through advanced technology or magic.
+    The Multiverse encompasses physical reality, metaphysical realms, and extraplanar dimensions. It is structured into physical elemental planes and spiritual planes, with the Material Universe acting as a stabilizing buffer between them. Innumerable pocket demiplanes and extradimensional folds (such as the Ethereal and Astral planes) bridge these realities.
 </p>
 <p>
-    The level of magic in a given location of the Universe is directly related to the metaphysical distance between the Universe
-    and other planes of existence. In locations where the planes are metaphysically close together, the normal laws of physics are weakened,
-    and magic is correspondingly strong. Greater distance between the planes leads to stronger laws of physics and weaker magic.
-    Planes other than the regular Universe each have their own level of magic (and strength of the laws), and the level can also vary locally within each plane.
+    The local strength of magic in any region is governed by its metaphysical distance to neighboring planes. Where planes align closely, physical laws relax and magic thrives; where planes drift apart, rigid physical laws dominate and magic is suppressed.
 </p>
-<p>
-    Quite logically, travel between planes is much easier and requires less energy when those planes are closer together.
-    Accessing a plane’s extra dimensions is, generally speaking, much easier than accessing other planes of existence.
-    Finally, extraplanar and extradimensional travel is easier when there are few other forces acting on the individual or object.
-    For example, in areas with weak magic and strong laws, extraplanar travel is all but impossible,
-    and dimensional travel is possible but very costly in energy. FTL drives, stargates, and teleportation are all possible
-    but require huge amounts of energy. They will work best in areas where other forces are at a minimum,
-    preferably far away from the gravity well of any planet or moon. In areas with strong magic and weak laws, on the other hand,
-    magic can be used to quite easily access other dimensions and planes.
-</p>
-<p>
-    Extremely low ML: Stability and inertia is so high that life is practically impossible.<br/>
-    Very low ML: Standard universe without exotic technologies, such as FTL drives, artificial gravity, etc.<br/>
-    Low ML: Standard universe. FTL drives, artificial gravity, etc. are possible but power-hungry.<br/>
-    Medium ML: Same as low but very simple magic is also possible.<br/>
-    High ML: Low-fantasy world. Electronics and other advanced technology are unreliable.<br/>
-    Very high ML: High-fantasy world. Electronics and high-tech are virtually useless.<br/>
-    Extremely high ML: Pure magic. Most life is impossible, since a stray thought can lead to self-combustion.
-</p>
+
+<div class="bg-stone-50 border border-stone-200 rounded-sm p-3 my-3 text-sm">
+    <div class="font-semibold text-stone-900 mb-1">Magic Level (ML) Scale</div>
+    <ul class="space-y-1 text-stone-700 text-xs">
+        <li><strong>Extremely Low ML:</strong> Physical inertia is absolute; biological life cannot form.</li>
+        <li><strong>Very Low ML:</strong> Standard universe; exotic technology (FTL drives, artificial gravity) cannot function.</li>
+        <li><strong>Low ML:</strong> Standard universe; advanced power-hungry FTL drives and artificial gravity are operational.</li>
+        <li><strong>Medium ML:</strong> Advanced space technology functions alongside elementary supernatural magic.</li>
+        <li><strong>High ML:</strong> Low-fantasy realm; advanced electronics and high-tech mechanisms degrade.</li>
+        <li><strong>Very High ML:</strong> High-fantasy realm; advanced technology is rendered inert.</li>
+        <li><strong>Extremely High ML:</strong> Raw magical volatility; physical matter dissolves and thoughts risk spontaneous combustion.</li>
+    </ul>
+</div>
 
 <h4>The Physical or Elemental Planes</h4>
 <p>
-    The physical planes are infinite in number, and each one is thought to be infinite in size.
-    Each contains nothing but pure matter or energy, with the exception of the souls of travelers from other planes.
-    The souls of such travelers run the risk of spontaneously dispersing, unless they are protected.
-    The planes can be said to be arranged in order of energy content, from absolute zero temperature where every substance is frozen solid,
-    through liquids and gases, to plasma and the pure energy of photons.
-    Proceeding from the photon level, energy content again decreases, but at this end of the scale, it forms antimatter instead of matter.
-    The planar sages of medieval times have traditionally expressed the main levels of energy as earth (for solid matter),
-    water (for liquid matter), air (for gaseous matter), and fire (for plasma).
-    References to a plane of negative energy commonly refer to one or more of the planes of antimatter.
-    All in all, there is one physical plane for every physical substance at every possible level of energy.
-    A sufficiently proficient magician could theoretically conjure an infinite amount of diamonds from the physical planes,
-    but this would require quite a bit of magical energy.
+    The physical planes are boundless realms composed of primordial matter and energy, arranged along an energetic continuum from absolute zero (frozen solid matter) through liquids, gases, and plasma (photons), transitioning into negative energy antimatter planes.
 </p>
 <p>
-    The laws of physics do not work in the physical planes like they do in the regular Universe, especially the law of gravity.
-    For example, the elemental planes have no center of gravity. This prevents the substance from simply contracting into a great black hole.
-    It also means that anything that can move through the substance can do so freely in all three dimensions.
-</p>
-<p>
-    The physical planes are inhabited by elementals in various forms and sizes.
-    The absence of metaphysical energy means that they do not develop souls, but they usually have some degree of sentience and
-    quite a bit of control over their respective element.
+    Gravity operates without a central point of attraction in the elemental planes, allowing matter to float freely without collapsing into black holes and enabling unrestricted three-dimensional movement. These realms are inhabited by elemental beings—entities possessing sentience and elemental control, though lacking metaphysical souls.
 </p>
 
 <h4>The Spiritual Planes</h4>
 <p>
-    The spiritual planes are also infinite in number (at least in theory), but their lack of physical existence make them
-    indefinite and indeterminate in size. They seem to be somewhat arranged according to what one would normally consider aspects of personality,
-    including morality, ego, and so forth. Many of the spiritual planes have been claimed by one or more deities.
-    The deities are able to redefine and alter their planes by force of will,
-    and some of them have even created a virtual physical reality in imitation of the Universe.
-    Generally speaking, where the physical planes contain matter and physical energy, the spiritual planes consist of
-    thoughts, emotions, perceptions, ideas, and spiritual energy.
+    The spiritual planes are non-physical realms composed of collective thought, emotion, philosophy, and psychic energy (such as the Seven Heavens, the Nine Hells, the Abyss, and Elysium). Many are ruled by deities who reshape planar matter by force of will.
 </p>
 <p>
-    Examples of spiritual planes include the Seven Heavens, the Nine Hells, the Abyss, Tartarus, Paradise, Gehenna, Asgard, and many more.
-    In addition to the deities, they are inhabited by the lesser spirits more commonly known as angels, devils, and demons.
-</p>
-<p>
-    For some reason, free souls appear to be strongly attracted by the spiritual planes, particularly in locations where the level of magic is high.
-    When a creature dies, its soul will typically travel to a spiritual plane matching its dominant personality traits.
-    Over time, the soul will become absorbed by the plane itself or its native inhabitants. It is surmised that those inhabitants,
-    even the deities themselves, originally arose as collectives of souls.
-    That would mean that those deities were spontaneously created by the souls of the first sentient creatures rather than the other way around.
-</p>
-<p>
-    Inhabitants of the spiritual planes become more powerful when they contain a large amount of spiritual energy
-    (equivalent to a large number of souls). In other words,
-    it is in the interests of those inhabitants to have as many souls as possible joining their plane.
-    This is the main reason that the deities of the spiritual planes try to influence and gain worshipers in the regular Universe.
-    It also seems that worshipers automatically channel some of their spiritual energy to their patrons, even before dying and releasing their souls.
-    Most of those patrons will in turn reward their priests and other trusted worshipers with portions of spiritual energy
-    that can then be used to perform feats of magic.
+    Upon mortal demise, disembodied souls are drawn toward the spiritual plane that aligns with their dominant moral and psychological resonance. Over time, departed souls merge into the planar fabric or empower native celestials and fiends. Patrons channel portions of this gathered spiritual energy back to their mortal priests and champions as divine spells.
 </p>
 
-<h4>The Universe</h4>
+<h4>The Material Universe</h4>
 <p>
-    Originally, the Universe was nothing but an empty void. It was not even a vacuum, because it had no extent and no dimensions whatsoever.
-    It acted simply as a sort of barrier between the physical and spiritual planes. However, even in this remote time,
-    the insulation of the Universe (its ML) flowed and fluctuated.
-    At one point in time, the ML reached a point where the physical and spiritual planes actually touched (in a metaphysical sense).
-    This created a momentary rift between the various planes, pouring enormous amounts of matter, energy,
-    and spiritual essence into the Universe in what is commonly referred to as the Big Bang.
+    The Material Universe originated as a dimensional void insulating the physical and spiritual realms. A primal metaphysical convergence brought these planes into contact, triggering the Big Bang and flooding the cosmos with matter, energy, and life force.
 </p>
 
-<h4>The Ethereal Plane and the Demiplanes</h4>
+<h4>The Ethereal Plane and Demiplanes</h4>
 <p>
-    Most of the planes with a spatial extent (the physical planes and the Universe) have an extradimensional property.
-    This &quot;fifth dimension&quot; is also often referred to as hyperspace or the Ethereal plane.
-    The Ethereal links all of the physical planes and the Universe together, and can be used to travel between these planes.
+    The Ethereal Plane (hyperspace or the 5th dimension) coexists with physical space, linking the Material Universe to the elemental planes. Pure radiant energy (light and heat) exists simultaneously across both dimensions, allowing energy weapons (such as lasers and flamethrowers) to strike across the planar threshold.
 </p>
 <p>
-    Pure energy (light and heat) exists simultaneously in both the physical plane and the Ethereal, but matter generally does not.
-    As already mentioned, transferring physical objects into the Ethereal requires a high ML or a huge amount of energy.
-    Since the Ethereal overlaps and permeates the physical planes and energy exists in both,
-    Ethereal objects are visible from the physical plane and vice versa.
-    This also means that energy-based weapons (lasers and even flame-throwers) can be used against targets in the other dimension.
-    Gravity, on the other hand, does not carry into or from the Ethereal. So, unless special magical or technological means are used,
-    an object that turns Ethereal will soon drift away from whatever planet or spaceship it used to rest on.
-    Note that an ethereal object or creature easily can pass through most physical objects without encountering any resistance,
-    but materialization is only possible in gases, liquids, and other materials that are easily displaced.
-    Also note that momentum and inertia is generally retained by objects entering or leaving the Ethereal.
-</p>
-<p>
-    The spatial characteristics of the Ethereal plane can be folded, compressed, and/or expanded.
-    This means that the plane can be used for faster-than-light communication and travel and even for teleportation.
-    However, since electromagnetic radiation carries over into the Ethereal, one cannot safely pass through stars or even the molten core of planets.
-    To use the Ethereal for transportation to a totally different plane, one will first have to enter the deep Ethereal.
-    This is the part of the Ethereal that does not overlap with any physical plane,
-    and it can only be entered or exited through the use of energy inversely proportionate to the local ML.
-</p>
-<p>
-    The Ethereal is basically a complete vacuum, but there are a few islands of floating matter (asteroids)
-    that have spontaneously or artificially been transferred from the other planes. In addition,
-    some powerful magicians have been able to create their own demiplanes, small physical planes that can have almost any characteristics imaginable.
-    Among those rumored to exist are the demiplane of Shadow, the demiplane of Time, and many more.
-    Nevertheless, in areas of low ML, the energy required to enter or leave the plane ensures that encounters are incredibly rare.
+    Ethereal matter phases through solid physical obstacles without friction, though gravity does not bridge the dimensional divide. Dimensional spatial folding within the Ethereal enables faster-than-light transit and teleportation. Master spellcasters can also weave localized pockets of planar space into dedicated <em>Demiplanes</em> (such as the Demiplane of Shadow or Demiplane of Time).
 </p>
 
 <h4>The Astral Plane</h4>
 <p>
-    Just like the Ethereal links the Universe with the physical planes, the Astral links the Universe with the spiritual planes.
-    One might even say that the spiritual planes float around in the sea of the Astral plane.
-</p>
-<p>
-    Only a soul can enter the Astral plane, but the soul’s owner does not necessarily have to be dead for this to happen.
-    Magicians and psionicists can use their powers to release someone’s or their own soul from its body.
-    It is even possible that powerful dreams can temporarily transfer the soul into the Astral and thence into a spiritual plane.
-    In the latter case, the dream will often include weird encounters with the inhabitants of that plane.
+    The Astral Plane is the spiritual counterpart to the Ethereal, functioning as a silver sea that connects the Material Universe to the outer spiritual planes. Pure souls, astral projecting spellcasters, and lucid dream travelers can traverse its expanse to commune with outer entities.
 </p>
