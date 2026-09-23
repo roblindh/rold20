@@ -5,12 +5,12 @@
 
 <h3 id="Connections">Connections</h3>
 <p>
-    No hero exists in isolation. Connections represent the web of personal relationships, sworn allegiances, professional networks, and loyal companions that bind a character to society. Connections can provide invaluable resources—ranging from shelter, legal protection, and vital intelligence to armed retainers and supernatural allies—while also demanding reciprocal duties, honor obligations, and shared risks.
+    No hero exists in total isolation. Connections represent the web of personal relationships, sworn allegiances, professional networks, and loyal companions that bind a character to society. Connections provide invaluable resources—ranging from shelter, legal protection, and vital intelligence to armed retainers and supernatural allies—while also demanding reciprocal duties, honor obligations, and shared risks.
 </p>
 
 <h4 id="FamilyAndClan">Family and Clan</h4>
 <p>
-    Kinship remains the foundational social unit in most civilizations. Whether an aristocratic noble dynasty, a dwarven mountain clan, an elven royal line, or a nomadic tribal sept, bloodlines define hereditary standing, legal privileges, and generational responsibilities:
+    Kinship remains the foundational social unit across most civilizations. Whether an aristocratic noble dynasty, a dwarven mountain clan, an elven royal house, or a nomadic tribal sept, bloodlines define hereditary standing, legal privileges, and generational responsibilities:
 </p>
 <ul>
     <li><strong>Ancestral Standing &amp; Inheritance:</strong> A character's initial <a href="#SocialClass">Social Class</a> is almost universally inherited through family lineage. Legitimate heirs inherit land parcels, ancestral heirlooms, trade charters, and noble titles upon the passing of senior kin.</li>
@@ -25,7 +25,7 @@
 <ul>
     <li><strong>Contacts:</strong> Professional acquaintances, informants, fences, minor officials, tavernkeepers, and city guards. Contacts exchange specific services, rumors, and access in return for coin, reciprocal favors, or <a href="#Influence">Influence</a>. A contact's loyalty is typically transactional; maintaining a healthy network requires ongoing investment and mutual trust.</li>
     <li><strong>Friends &amp; Allies:</strong> Devoted personal companions who share ideological goals, past life-and-death bonds, or deep emotional ties. Allies willingly offer free lodging, lend specialized equipment, or provide emergency aid without demanding compensation, though they expect similar loyalty in return.</li>
-    <li><strong>Rivals &amp; Enemies:</strong> Foes, competing adventuring companies, jealous court nobles, or vengeful syndicate lieutenants who actively oppose the character. Enemies leverage their own Influence, wealth, and agents to undermine the character's reputation, sabotage expeditions, or dispatch assassins. Overcoming or reconciling with significant enemies often forms major campaign milestones.</li>
+    <li><strong>Rivals &amp; Enemies:</strong> Foes, competing adventuring companies, jealous court nobles, or vengeful syndicate lieutenants who actively oppose the character. Enemies leverage their own Influence, wealth, and agents to undermine the character's reputation, sabotage expeditions, or dispatch assassins. Overcoming or reconciling with significant enemies often marks major campaign milestones.</li>
 </ul>
 
 <h4 id="Followers">Henchmen, Minions, and Followers</h4>
@@ -33,7 +33,7 @@
     As characters gain renown and accumulated wealth, they attract subordinates who assist in expeditions, guard strongholds, manage businesses, or enforce authority:
 </p>
 <ul>
-    <li><strong>Hirelings &amp; Specialists:</strong> Non-combatants and skilled craftsmen (such as scribes, teamsters, porters, blacksmiths, alchemists, and navigators) hired for day-to-day operations. Their availability is governed by the community's gold piece limit, and they receive standard daily or weekly wages.</li>
+    <li><strong>Hirelings &amp; Specialists:</strong> Non-combatants and skilled craftsmen (such as scribes, teamsters, porters, blacksmiths, alchemists, and navigators) hired for day-to-day operations. Their availability is governed by the settlement's gold piece limit, and they receive standard daily or weekly wages.</li>
     <li><strong>Henchmen &amp; Retainers:</strong> Sworn retainers, squires, apprentices, and professional soldiers who accompany adventurers into perilous environments. Henchmen typically receive a steady wage plus a negotiated share of expedition treasure (usually a half to full share), along with the expectation of medical care, equipment maintenance, and honorable leadership.</li>
     <li><strong>Minions &amp; Mercenary Units:</strong> Large bodies of armed guards, archers, or foot soldiers hired to garrison castles, protect trade caravans, or fight in open warfare. Their upkeep includes food, armor maintenance, barracks, and hazard bonuses.</li>
     <li><strong>Morale &amp; Loyalty:</strong> Subordinates are not disposable cannon fodder. Unreasonable risk, cruel treatment, missed wages, or cowardly leadership triggers morale checks, mutiny, or desertion. Conversely, high character <a href="#Reputation">Reputation</a> and fair treatment instill steadfast devotion.</li>
@@ -59,7 +59,7 @@
             <li><em>Empathic Link:</em> The master communicates empathically with their mount up to a range of 1 km as a supernatural ability (0 AP cost).</li>
             <li><em>Mounted Defenses:</em> While mounted, the mount can substitute the rider's Fortitude, Reflex, and Will defense values whenever they are superior to its own.</li>
             <li><em>Shared Magic:</em> Self-targeted spells cast by the rider automatically extend to the mount when within 1 square.</li>
-            <li><em>Summoning &amp; Loss:</em> The mount is called directly from its native plane via <em>Call Mount</em> (Full round action, 5 PP, duration of <code>2 &times; skill level</code> hours), appearing in full health with all stowed gear. Replacing a mount requires a 1-day ritual; if a divine mount is slain, 30 days must pass before another can be summoned.</li>
+            <li><em>Summoning &amp; Loss:</em> The mount is called directly from its native plane via <em>Call Mount</em> (Full round action / 15 AP, 5 PP, duration of <code>2 &times; skill level</code> hours), appearing in full health with all stowed gear. Replacing a mount requires a 1-day ritual; if a divine mount is slain, 30 days must pass before another can be summoned.</li>
             <li><em>Enhancements:</em> Scaling improvements grant the mount increased Strength, Intelligence, Hit Points, Damage Reduction, Attack, Defense, AP, movement speed bonuses (+2 squares), the <em>Command Similar Creatures</em> ability, and Magic Resistance (<code>+TL+5</code> enhancement modifier).</li>
         </ul>
     </li>
@@ -189,150 +189,124 @@
 </div>
 
 <h3 id="Civilization">Civilization</h3>
+<p>
+    Civilized realms vary dramatically in governance, settlement density, legal infrastructure, and cultural cohesion. From lawless frontier borders to sprawling imperial heartlands, the environment dictates how law is enforced, how goods are transported, and how communities organize their defense.
+</p>
 
 <h4>Civilization Types</h4>
 <p>
-    Frontiers:
+    Campaign settings generally feature four major settlement patterns:
 </p>
 <ul>
-    <li>Unclaimed territory.</li>
-    <li>Most settlements are thorps and villages isolated by vast tracts of wilderness.</li>
-    <li>Occasional small towns where roads meet or particular resources attract.</li>
-    <li>Nonhumans frequently outnumber humans and other civilized races.</li>
-    <li>Average one town per 5000 km<sup>2</sup>; typically 3d20+30 km from one town to the next.</li>
-    <li>-20% on the table for randomly generating towns.</li>
-</ul>
-<p>
-    Free Cities:
-</p>
-<ul>
-    <li>Independent cities, counties, or regions. Cantons are independent regions centered around a handful of large villages or small towns. Free cities are similar but are centered on a large town or small city.</li>
-    <li>Terrain between towns consists mostly of farmlands, light woods, and rangeland.</li>
-    <li>Average one town per 1000 km<sup>2</sup>; typically 3d10+15 km from one town to the next.</li>
-    <li>-15% on the table for randomly generating towns (other than the main settlement).</li>
-</ul>
-<p>
-    City-States:
-</p>
-<ul>
-    <li>Trading powers centered on a large city, typically with a great crossroads or harbor.</li>
-    <li>The city is large and strong enough to support an army and controls an area dozens or hundreds of km in size.</li>
-    <li>Terrain between towns consists mostly of farmlands, light woods, and rangeland.</li>
-    <li>Average one town per 300 km<sup>2</sup>; typically 3d6+10 km from one town to the next.</li>
-    <li>-10% on the table for randomly generating towns (other than the main city).</li>
-</ul>
-<p>
-    Kingdoms and Empires:
-</p>
-<ul>
-    <li>Single political entity incorporating a number of cities and towns.</li>
-    <li>Typically covers an area of at least 100 km<sup>2</sup>.</li>
-    <li>Terrain between towns consists mostly of farmlands, light woods, and rangeland.</li>
-    <li>Average one town per 300 km<sup>2</sup>; typically 3d6+10 km from one town to the next.</li>
+    <li><strong>Frontiers (Unclaimed Wilderness):</strong> Lawless or newly discovered borderlands where civilized authority is sparse. Settlements consist predominantly of isolated thorps, farmsteads, and fortified villages separated by vast tracts of untamed wilderness, with occasional small trading towns at river crossings or mining strikes. Nonhumans and monstrous threats frequently outnumber civilized races.
+        <ul>
+            <li><em>Density &amp; Spacing:</em> Average 1 town per 5,000 km<sup>2</sup>; typically <code>3d20+30 km</code> between adjacent settlements.</li>
+            <li><em>Generation Modifier:</em> &minus;20% on the random town generation table.</li>
+        </ul>
+    </li>
+    <li><strong>Free Cities and Cantons:</strong> Independent city-states, leagues, or autonomous counties governed by merchant councils, civic charters, or local counts. Cantons are rural confederations centered around clusters of large villages; free cities are sovereign urban hubs centered on a large town or small city. Intervening terrain consists mostly of cultivated farmlands, managed woodlands, and pasture.
+        <ul>
+            <li><em>Density &amp; Spacing:</em> Average 1 town per 1,000 km<sup>2</sup>; typically <code>3d10+15 km</code> between settlements.</li>
+            <li><em>Generation Modifier:</em> &minus;15% on the random town generation table (for secondary settlements).</li>
+        </ul>
+    </li>
+    <li><strong>City-States:</strong> Major sovereign mercantile and military powers centered on a metropolitan capital, typically positioned at a vital continental crossroads or deepwater harbor. The capital maintains a standing army and exerts direct hegemony over hundreds of square kilometers of hinterland.
+        <ul>
+            <li><em>Density &amp; Spacing:</em> Average 1 town per 300 km<sup>2</sup>; typically <code>3d6+10 km</code> between settlements.</li>
+            <li><em>Generation Modifier:</em> &minus;10% on the random town generation table (outside the capital).</li>
+        </ul>
+    </li>
+    <li><strong>Kingdoms and Empires:</strong> Unified sovereign nations encompassing multiple cities, baronies, and defensive marches under a central crown or imperial council, spanning tens of thousands of square kilometers. Intervening terrain is crisscrossed by royal roads, patrol routes, and extensive agricultural estates.
+        <ul>
+            <li><em>Density &amp; Spacing:</em> Average 1 town per 300 km<sup>2</sup>; typically <code>3d6+10 km</code> between settlements.</li>
+            <li><em>Generation Modifier:</em> Standard rolls on the random town generation table.</li>
+        </ul>
+    </li>
 </ul>
 
 <?php show_towntypes(); ?> 
 
 <h4>Land Ownership</h4>
 <p>
-    Most D&amp;D campaigns are based on a feudal system roughly similar to medieval Europe.
-    In essence, this means that land ownership starts with an emperor, empress, king, or queen and then
-    propagates down through a hierarchy of vassals. A feudal lord will typically split his land into
-    parcels and grant rights to those parcels to his vassals. A vassal has the right
-    to farm, mine, or otherwise exploit that land as he chooses. The vassal then pays tax to the lord,
-    usually as a percentage of any income earned from the land, in exchange for protection and possibly
-    other services provided by the lord.
+    In RoL d20, most fantasy realms operate under a feudal structure inspired by historical medieval Europe. Sovereign authority starts with an emperor, empress, king, or queen and cascades downward through an established hierarchy of vassals (dukes, counts, barons, and landed knights).
 </p>
 <p>
-    Farming and mining are not the only types of income a lord can extract from his land. Tolls from
-    roads, tariffs from ports, and taxes from city guilds are other common examples. Whether these
-    incomes belong to the local lord or not varies from kingdom to kingdom, but in many cases
-    roads, ports, and cities are considered the sole property (and responsibility) of the highest levels
-    in the feudal hierarchy, such as a duke or the king.
+    A feudal lord divides their territory into estates or fiefs, granting tenure to subordinate vassals. In exchange for the right to farm, mine, collect tolls, and govern the local population, the vassal swears fealty, pays annual tithes (typically a negotiated percentage of gross estate income), and provides military levies (the feudal host) during times of war.
 </p>
 <p>
-    In most feudal systems, it is quite common for a lord to occupy multiple levels in the feudal
-    hierarchy. For example, members of the royal family are usually dukes and duchesses of the kingdom's
-    most important duchies, counts and countesses of the key counties in those duchies, and so forth.
-    A side effect of this is that a king or queen is usually able to grant land and titles from their own
-    holdings without having to first revoke those titles from existing vassals.
+    Feudal lords extract revenue through diverse avenues beyond agriculture and mining:
+</p>
+<ul>
+    <li><strong>Highway &amp; Bridge Tolls:</strong> Levies collected from merchants and travelers navigating maintained roads, mountain passes, and river crossings.</li>
+    <li><strong>Port &amp; Maritime Tariffs:</strong> Customs duties assessed on cargo ships docking at coastal or river harbors.</li>
+    <li><strong>Guild Dues &amp; Market Taxes:</strong> Licensing fees and excise taxes charged to commercial craftsmen and merchant stalls.</li>
+</ul>
+<p>
+    Whether these revenues belong to the local vassal or the sovereign crown depends on local law. In many centralized realms, strategic highways, major ports, and chartered cities remain the direct property of the high crown or ducal seat. Furthermore, senior lords frequently hold multiple overlapping titles (such as a monarch holding direct countship over key royal estates), enabling them to grant land from personal holdings without stripping existing vassals.
 </p>
 <p>
-    In most feudal systems, titles and land ownership is hereditary, but there are exceptions to this rule.
-    There are some historical examples where ownership automatically reverted to the lord after a set amount
-    of time or when the vassal died.
+    While land ownership and noble titles are traditionally hereditary, exceptions exist: benefices and life-fiefs automatically revert to the granting lord upon the vassal's death, or may be revoked following gross treason, cowardice, or breach of feudal contract.
 </p>
 
 <h4>World Generation Tools</h4>
-<p>
-    <a href="http://www.d20srd.org/fantasy/name/">SRD Fantasy Name Generator</a><br/>
-    <a href="https://www.d20srd.org/fantasy/world/">SRD Fantasy World Generator</a><br/>
-    <a href="https://www.kassoon.com/dnd/world-map/">Kassoon Fantasy World Generator</a><br/>
-    <a href="https://www.d20srd.org/d20/demographics/">Country and Settlement Generator</a><br/>
-    <a href="https://donjon.bin.sh/fantasy/town/">Donjon Town Generator</a><br/>
-    <a href="https://www.kassoon.com/dnd/town-generator/">Kassoon Town Generator</a><br/>
-    <a href="https://www.d20srd.org/fantasy/inn/">Random Inn Generator</a><br/>
-    <a href="https://www.d20srd.org/d20/magic/shop.html">Random Magic Shop Generator</a>
-</p>
+<div class="not-prose my-4 p-4 rounded-xl bg-stone-50 border border-stone-200 text-stone-800 text-xs">
+    <div class="font-bold text-stone-900 text-sm font-serif mb-2">🌐 External World &amp; Settlement Generators</div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div><a href="http://www.d20srd.org/fantasy/name/" target="_blank" rel="noopener" class="text-amber-800 hover:text-amber-900 font-semibold">&rarr; SRD Fantasy Name Generator</a></div>
+        <div><a href="https://www.d20srd.org/fantasy/world/" target="_blank" rel="noopener" class="text-amber-800 hover:text-amber-900 font-semibold">&rarr; SRD Fantasy World Generator</a></div>
+        <div><a href="https://www.kassoon.com/dnd/world-map/" target="_blank" rel="noopener" class="text-amber-800 hover:text-amber-900 font-semibold">&rarr; Kassoon World Map Generator</a></div>
+        <div><a href="https://www.d20srd.org/d20/demographics/" target="_blank" rel="noopener" class="text-amber-800 hover:text-amber-900 font-semibold">&rarr; Country &amp; Settlement Generator</a></div>
+        <div><a href="https://donjon.bin.sh/fantasy/town/" target="_blank" rel="noopener" class="text-amber-800 hover:text-amber-900 font-semibold">&rarr; Donjon Town Generator</a></div>
+        <div><a href="https://www.kassoon.com/dnd/town-generator/" target="_blank" rel="noopener" class="text-amber-800 hover:text-amber-900 font-semibold">&rarr; Kassoon Town Generator</a></div>
+        <div><a href="https://www.d20srd.org/fantasy/inn/" target="_blank" rel="noopener" class="text-amber-800 hover:text-amber-900 font-semibold">&rarr; Random Inn Generator</a></div>
+        <div><a href="https://www.d20srd.org/d20/magic/shop.html" target="_blank" rel="noopener" class="text-amber-800 hover:text-amber-900 font-semibold">&rarr; Random Magic Shop Generator</a></div>
+    </div>
+</div>
 
 <h3 id="Trading">Trading and Economy</h3>
 <p>
-    In most civilized areas, trade is regulated by the local rulers and guilds.
-    This means that most coins and bars of precious metals have well-defined and constant values,
-    regardless of whether they are used for buying or selling. Gems, art objects, and certain trade goods
-    that are commonly used for bartering also have well-regulated values, leaving little room for haggling.
+    In most civilized lands, trade is regulated by municipal authorities, merchant syndicates, and craft guilds. Standardized coinage and precious metal bullion possess fixed, legally enforced exchange values. Gemstones, art objects, and bulk trade commodities (grain, timber, iron) also have established market values, leaving little room for price fluctuation in peaceful times.
 </p>
 <p>
-    Manufactured goods, on the other hand, can vary a lot more in quality, condition, and price.
-    The price listed in the 
-    <a href="/reference/equipment">equipment lists</a> 
-    is the typical price someone has to pay to buy the item from a merchant or craftsman.
-    On the other hand, when a character (or other non-merchant) tries to sell such an item, the typical price is no more than 50% of the listed price.
+    Manufactured goods, weapons, and armor vary significantly in craftsmanship, durability, and availability:
 </p>
+<ul>
+    <li><strong>Retail Price:</strong> The listed price in the <a href="/reference/equipment">equipment lists</a> represents the standard retail cost to purchase an item in good condition from an established merchant or artisan.</li>
+    <li><strong>Resale Value:</strong> When adventurers or non-merchants sell recovered equipment, weapons, or gear, merchants typically offer no more than <strong>50%</strong> of the listed retail price (accounting for merchant profit margins, refurbishment, and holding costs).</li>
+    <li><strong>Black Market Rates:</strong> Underground syndicates and fences deal in contraband, forbidden sorcery, and stolen goods. Due to severe legal risks and smuggling overhead, buying through a black market costs <strong>200%</strong> of listed value, while selling illicit loot yields no more than <strong>25%</strong> of listed value.</li>
+    <li><strong>Renting &amp; Leasing:</strong> Characters can lease specialized tools, mounts, or equipment for short expeditions. The standard rental fee is <strong>5% of the item's listed price per day</strong>, with additional security deposits required for high-risk ventures.</li>
+</ul>
+
+<h4>Coins and Currency</h4>
 <p>
-    Most towns will also have a black market, which can be used to discreetly buy or sell illegal equipment and stolen goods.
-    However, the risk involved has a negative effect on prices – when buying something through a black market,
-    you typically pay 200% of the listed price, and when selling, you rarely get more than 25% of the listed price.
+    Standard currency in RoL d20 is minted in uniform discs approximately 3 to 4 cm in diameter, weighing 10 g each (50 coins per 0.5 kg, or 100 coins per kilogram):
 </p>
+<ul>
+    <li><strong>Copper Piece (cp):</strong> The standard coin of day-to-day subsistence and common laborers. <code>10 cp = 1 sp</code>.</li>
+    <li><strong>Silver Piece (sp):</strong> The primary coin of common commerce. <code>10 sp = 1 gp</code>. As a benchmark, 1 sp possesses purchasing power roughly equivalent to $10 USD (year 2000 value).</li>
+    <li><strong>Gold Piece (gp):</strong> The universal standard for adventurers, merchants, and landowners. <code>10 gp = 1 pp</code>.</li>
+    <li><strong>Platinum Piece (pp):</strong> The rarest common coin, found predominantly in royal treasuries and ancient hoard vaults. <code>1 pp = 10 gp = 100 sp = 1,000 cp</code>.</li>
+</ul>
 <p>
-    For some items, renting or borrowing can be an option. The typical cost should be 5% of the listed price per day,
-    but this can vary a lot based on the perceived risk of damages to, destruction of, or theft of the equipment.
+    For large transactions, merchants and trade caravans utilize standardized <strong>Trade Bars</strong> of pure silver or gold, minted in 0.5 kg, 1 kg, 2.5 kg, and 5 kg ingots. Consult the trade goods tables for exact weight-to-value conversion ratios.
 </p>
 
-<h4>Coins and Gems</h4>
+<h4>Banking and Moneychangers</h4>
 <p>
-    For player characters, wealth usually comes in the form of coins. Most common coins are 3 to 4 cm in diameter and weigh 10 g.
+    Almost every established town hosts one or more moneychangers who convert foreign coinages, weigh bullion bars, and authenticate precious metals for a standard transaction fee (typically 1% to 5%).
 </p>
 <p>
-    <em>Copper Pieces (cp):</em> The least valuable common coin. 10 cp equal 1 sp.<br/>
-    <em>Silver Pieces (sp):</em> For commoners, this is the most prevalent coin. 10 sp equal 1 gp.
-    To get a feel for the worth of a silver piece, it buys approximately as much as 10 US$ in the year 2000.<br/>
-    <em>Gold Pieces (gp):</em> The coin of choice for wealthy individuals. 10 gp equal 1 pp.<br/>
-    <em>Platinum Pieces (pp):</em> The rarest and most valuable of the common coins.
-    It can be found in ancient treasure hoards but is seldom minted or used in daily life.
+    Major commercial cities support established merchant banks offering sophisticated financial instruments:
 </p>
-<p>
-    Merchants and caravans often use trade bars as well as coins.
-    Most trade bars are silver or gold, and they come in 0.5, 1, 2.5, and 5 kg weights.
-    See the trade goods table for the value per weight of trade bars.
-</p>
-
-<h4>Banks</h4>
-<p>
-    Towns will usually have one or more moneychangers.
-    Their main service is to exchange coins and trade bars of different value, weight, and origin,
-    and they charge a portion of that wealth for the work done.
-    Larger towns and cities will have wealthier moneychangers, offering extended services.
-    These services can include storage of money, transfer of money to other cities and countries,
-    offering loans, and brokering investment opportunities.
-</p>
+<ul>
+    <li><strong>Secure Vault Storage:</strong> Guarded safekeeping of coin reserves, deeds, and precious heirlooms.</li>
+    <li><strong>Letters of Credit &amp; Money Transfers:</strong> Safe transmission of funds across kingdoms via recognized banking branches, eliminating the hazard of transporting physical bullion across bandit-ridden roads.</li>
+    <li><strong>Commercial Loans &amp; Venture Financing:</strong> Lending capital for trade expeditions, ship construction, and civic infrastructure at interest.</li>
+</ul>
 
 <h4>Trade Fairs</h4>
 <p>
-    Medieval civilizations tend to have regular trade fairs, where both local and traveling
-    merchants and craftsmen gather to buy and sell their wares.
-    They also act as festivals for common folk, attracting entertainers as well as pickpockets.
-    Trade fairs are large and messy affairs, commonly held outdoors, and they can often last for one or two weeks at a time.
+    Civilized realms hold seasonal trade fairs where regional guilds, traveling caravans, foreign merchants, and local artisans gather for one to two weeks of intensive commerce. Fairs serve as massive cultural festivals featuring tourneys, bards, street performers, and food markets, while also attracting pickpockets, fences, and spies.
 </p>
 
 <h3 id="Religion">Religion</h3>
@@ -392,117 +366,93 @@
 
 <h3 id="Technology">Technology</h3>
 <p>
-    This table lists key technologies and the approximate year that they become available to a normal human civilization.
-    Certain future technologies are entirely hypothetical, and they can easily be moved to a different point in history or even removed completely.
+    Technology progression across civilizations determines available materials, armaments, transportation, and infrastructure. In RoL d20, human technological development is indexed by approximate historical era and technological milestones.
 </p>
 
 <?php show_techlevels(); ?> 
 
 <h3 id="Entertainment">Entertainment</h3>
 <p>
+    From rural harvest games to royal celebrations, public entertainment fosters community pride, provides renown for champions, and serves as an arena for resolving aristocratic rivalries without full-scale warfare.
 </p>
 
 <h4>Tournaments</h4>
 <p>
+    Chivalric tournaments and grand martial games draw competitors from across continents, competing in four primary formats:
 </p>
 <ul>
-    <li>Melee: Battle between multiple knights simultaneously. "Last man standing".</li>
-    <li>Team: Two or more teams fight each other simultaneously.</li>
-    <li>List: One knight against another. Opponents can be selected randomly or by challenge.</li>
-    <li>Pageant: Teams compete for a quest-like objective.</li>
+    <li><strong>Grand M&ecirc;l&eacute;e:</strong> An open battlefield free-for-all among dozens of knights fighting simultaneously until only the last combatant remains standing.</li>
+    <li><strong>Team M&ecirc;l&eacute;e:</strong> Coordinated tactical battles fought between rival lances, baronial contingents, or mercenary companies.</li>
+    <li><strong>The Lists (Joust):</strong> Formal one-on-one mounted charges using heavy lances. Unhorsed knights traditionally have the option to continue the duel on foot with sword or mace.</li>
+    <li><strong>Pageant &amp; Martial Trials:</strong> Structured competitive challenges involving obstacle courses, archery contests, beast hunts, or simulated tactical sieges.</li>
 </ul>
 <p>
-    Most tournaments focus on jousting. In a typical joust, unhorsed knights may choose to continue the fight with their sword (or other melee weapon).
-</p>
-<p>
-    Tournament prices can be up to several thousand gold pieces for the really big tournaments.
+    Major tournament prizes can reach thousands of gold pieces, along with masterwork arms, warhorses, royal favors, or chivalric honors.
 </p>
 
-<h4>Spell Duels</h4>
+<h4>Formal Spell Duels</h4>
 <p>
-    From time to time, wizards and other spellcasters agree to meet in formal duels rather than fight it out in the chaos of regular battles.
-    A set of ancient and honorable rules has evolved over time to resolve such conflicts in a relatively fair manner.
-    Note, however, that no magic automatically enforces compliance, and dishonorable spellcasters can and do break the rules.
-</p>
-<p>
-    Typical ground rules and prerequisites:
+    When arcane rivalries threaten widespread collateral damage, spellcasters frequently resolve their disputes through formalized spell duels governed by ancient traditions of magical combat. While no innate enchantment physically prevents cheating, duelists abide by established protocol to preserve honor and prevent lethal escalation:
 </p>
 <ul>
-    <li>Most spell duels are one-against-one affairs, taking place between two single spellcasters without companions, familiars, etc.</li>
-    <li>The two duelists agree on a time and place, but the challenged party is traditionally given the choice of dueling ground.</li>
-    <li>The two duelists agree on whether the duel will be lethal or nonlethal.</li>
+    <li><strong>Format:</strong> Strictly one-on-one duels between two single casters without outside interference, familiars, or bonded companions.</li>
+    <li><strong>Grounds &amp; Terms:</strong> The challenged party traditionally selects the dueling ground, and both combatants agree in advance whether the duel is nonlethal (surrender/incapacitation) or lethal.</li>
+    <li><strong>Purity of Start:</strong> Neither participant may be under the effect of pre-cast spells, potions, or activated magic items prior to the opening signal.</li>
 </ul>
-<p>
-    Dueling procedure:
-</p>
+
+<h5>Dueling Procedure</h5>
 <ol>
-    <li>Neither party may be under the effect of active spells or magic items at the start of the duel.</li>
-    <li>At the appointed time, the presiding judge or official gives a sign that the duel has begun. The participants roll initiative.</li>
-    <li>Round 1: The participants may only cast spells that target themselves.</li>
-    <li>Round 2: The participants may cast spells that target themselves, and they may also prepare one spell as a "ready action".</li>
-    <li>Round 3+: The participants may cast any spell or spells, resolve their readied actions (if any), and generally act freely.</li>
-    <li>End of duel: The duel traditionally ends when one combatant yields, dies, is knocked unconscious, or otherwise rendered unable to continue.</li>
+    <li><strong>Commencement &amp; Initiative:</strong> The presiding arbiter signals the duel's start. Both participants roll Initiative.</li>
+    <li><strong>Round 1 (Warding):</strong> Duelists may only cast defensive or enhancement spells that target themselves.</li>
+    <li><strong>Round 2 (Preparation):</strong> Duelists may cast self-targeted spells and may prepare one readied action.</li>
+    <li><strong>Round 3+ (Open Engagement):</strong> Full offensive spellcasting begins. Duelists may cast any spells, trigger readied actions, counterspell, and maneuver freely.</li>
+    <li><strong>Resolution:</strong> The duel concludes immediately when one combatant yields, falls unconscious, is incapacitated, or is slain.</li>
 </ol>
 
 <h3 id="SocialCharacteristics">Using Social Characteristics</h3>
 
 <h4 id="SocialClass">Social Class</h4>
 <p>
-    Social Class is a measure of a character's or organization's relative power in society.
-    In most medieval societies, a character is born into a certain social class and will remain within that class.
-    Still, those of noble rank (SC 3 or higher) can generally promote others to any rank below their own
-    or demote anyone who is below their own rank.
+    <a href="/rules/core#SocialClass">Social Class (SC)</a> measures a character's or organization's hereditary rank, legal standing, and societal privilege:
 </p>
-<p>
-    Which other privileges, responsibilities, laws, etc. that apply to each rank will typically vary from society to society.
-    For example, some societies may only allow those above SC 1 to own and carry weapons.
-</p>
-<p>
-    Social Class of an organization is a reflection of its power relative to nobles and other
-    individuals as well as to other organizations.
-    The leader or leaders of an organization will often have SC equal to the organization's,
-    but other members typically have lower SC.
-</p>
+<ul>
+    <li><strong>Hereditary Standing:</strong> In most feudal cultures, characters are born into their social class. However, high-ranking nobility (SC 3+) possess the sovereign authority to elevate commoners or strip the titles of subordinate vassals.</li>
+    <li><strong>Legal Privileges:</strong> Higher Social Class confers legal immunity to summary arrest, trial before peers rather than common magistrates, exemption from sumptuary laws, and exclusive rights to bear martial weapons or wear aristocratic crests.</li>
+    <li><strong>Organizational Social Class:</strong> An organization's collective SC reflects its political sway relative to the realm's high nobility. Leaders typically share the organization's SC rating, while junior operatives possess lower individual standing.</li>
+</ul>
 
 <h4 id="WealthClass">Wealth Class</h4>
 <p>
-    Wealth Class is a somewhat abstract measure of a character's, organization's, or community's wealth.
-    It represents access to assets, incomes, and resources rather than being a simple pile of coins and possessions.
-    This means that WC of 1 or higher generates a certain amount of income every day.
-    In most societies, a high WC will also make it easier to borrow money from other wealthy individuals and organizations.
+    <a href="/rules/core#WealthClass">Wealth Class (WC)</a> measures recurring income, creditworthiness, and institutional liquidity rather than static coin hoards:
 </p>
+<ul>
+    <li><strong>Recurring Income:</strong> A Wealth Class of 1 or higher generates a dependable daily, weekly, or monthly income from investments, rents, and trade ventures without requiring active labor.</li>
+    <li><strong>Credit &amp; Leverage:</strong> High WC makes it straightforward to secure substantial loans, letters of credit, and commercial partnerships from merchant banks and foreign noble houses.</li>
+</ul>
 
 <h4 id="Reputation">Reputation</h4>
 <p>
-    An individual’s 
-    <a href="/rules/core#Reputation">reputation</a> 
-    will affect other people’s attitudes and may give bonuses or penalties to certain action checks
-    (Psychology skill checks in particular). Note that a reputation will only have an effect on people who know and believe in the reputation.
-    It is up to the DM to decide whether a reputation should apply to an action check, and also whether it should be a bonus or penalty.
-    In general, a reputation should be a benefit more often than a hindrance.
+    An individual's <a href="/rules/core#Reputation">Reputation</a> represents their public fame, notoriety, or infamy across civilization. Reputation alters how NPCs perceive and react to the character, providing situational modifiers to social interaction checks (particularly Psychology-based skills):
 </p>
-<p>
-    When you apply a reputation to an action check, you should generally use one half or one third of the reputation as a modifier,
-    although the actual fraction is ultimately up to the DM.
-    When multiple reputations apply to the same check, start with one half or one third of the highest of them,
-    and then add 20% or 25% of the remaining ones.
-    It is also possible for one reputation to counteract or lessen another one.
-</p>
+<ul>
+    <li><strong>Relevance &amp; Knowledge:</strong> A reputation modifier applies only when the interacting parties are aware of the character's renown and believe the rumors to be true.</li>
+    <li><strong>DM Discretion:</strong> The Dungeon Master determines whether a given reputation applies to an interaction and whether it acts as a bonus or penalty (e.g., a fearsome reputation aids Intimidation but penalizes Diplomacy).</li>
+</ul>
+
+<div class="bg-stone-50 border border-stone-200 rounded-sm p-3 my-3 text-sm">
+    <div class="font-bold text-stone-900 font-serif mb-1">📐 Reputation Modifier Calculation</div>
+    <ul class="text-xs text-stone-700 space-y-1 mb-0">
+        <li><strong>Base Modifier:</strong> Apply <code>1/2</code> or <code>1/3</code> of the primary Reputation score as a check bonus or penalty (at DM discretion based on relevance).</li>
+        <li><strong>Multiple Reputations:</strong> Start with <code>1/2</code> or <code>1/3</code> of the most applicable reputation score, then add <code>20%</code> to <code>25%</code> of each secondary applicable reputation.</li>
+        <li><strong>Conflicting Reputations:</strong> Opposing or contradictory reputations (e.g., "Generous Philanthropist" vs. "Cruel Landlord") mitigate or cancel out one another's modifiers.</li>
+    </ul>
+</div>
 
 <h4 id="Influence">Influence</h4>
 <p>
-    <a href="/rules/core#Influence">Influence</a> 
-    is a measure of your power over another individual or an organization. This power can be used to request favors,
-    mobilize military forces, gather economic resources, etc.
+    <a href="/rules/core#Influence">Influence</a> measures direct leverage, political authority, or coercive obligation over another individual, guild, or faction.
 </p>
-<p>
-    In many ways, an influence check can be used to achieve effects similar to those you achieve with Psychology-based skill checks.
-    However, while the Psychology checks try to improve the target’s attitude towards you,
-    an influence check instead tries to force the target to help you (for reasons of duty or debt).
-</p>
-<p>
-    Influence can also be used to determine the effects and results of power struggles within an organization.
-    Assume, for example, that a lieutenant in a thieves’ guild assassinates his boss.
-    If there are no other members with a higher or similar level of influence, he can then easily take over the guild.
-    On the other hand, if several members have similar levels of influence, internal warfare is likely to ensue.
-</p>
+<ul>
+    <li><strong>Influence vs. Psychology Checks:</strong> While Psychology skill checks rely on charm, deception, or persuasion to improve an NPC's attitude, an Influence check compels assistance through institutional duty, chain of command, political leverage, or unpaid debts.</li>
+    <li><strong>Faction Power Struggles &amp; Succession:</strong> Influence determines the outcome of internal political struggles, coups, and leadership transitions. When a guildmaster or noble dies or is deposed, the claimant with superior Influence can smoothly consolidate control, while closely matched contenders trigger internal power struggles and factional warfare.</li>
+</ul>
