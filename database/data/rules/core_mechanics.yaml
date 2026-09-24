@@ -3552,127 +3552,127 @@ techlevelsm:
   -
     TL: 0
     Year: Prehistory
-    Technologies: null
+    Technologies: 'Trance visions, animal senses, fire-calling, spiritual warding, bone charms, fetish stones, flint, dried herbs'
   -
     TL: 1
     Year: '50,000 BC'
-    Technologies: null
+    Technologies: 'Guidance, animal speech, weather sensing, touch healing, spirit masks, tribal ward poles, totems, mammoth ivory, bloodstones'
   -
     TL: 2
     Year: '20,000 BC'
-    Technologies: null
+    Technologies: 'Beast shaping, cure minor wounds, darkness, light, produce flame, shamanic rattles, runic stones, monster hide, amber'
   -
     TL: 3
     Year: '10,000 BC'
-    Technologies: null
+    Technologies: 'Alarm, bless, endure elements, purify food & drink, entangle, witchwood staves, dowsing rods, cold iron nuggets'
   -
     TL: 4
     Year: '5,000 BC'
-    Technologies: null
+    Technologies: 'Magic missile, burning hands, sleep, sanctuary, mage armor, inscribed clay tablets, talismans, refined cold iron'
   -
     TL: 5
     Year: '3,000 BC'
-    Technologies: null
+    Technologies: 'Levitate, hold person, blindness/deafness, spiritual weapon, minor healing potions, +1 weapons, scrying bowls, leafweave'
   -
     TL: 6
     Year: '1,500 BC'
-    Technologies: null
+    Technologies: 'Fireball, lightning bolt, fly, dispel magic, water breathing, basic wands, spell scrolls, +1 resistance cloaks, darkwood'
   -
     TL: 7
     Year: '0'
-    Technologies: Mithril
+    Technologies: 'Mithril, invisibility, haste, stoneskin, cure moderate wounds, bags of holding, boots of elvenkind, decanters of water, alchemical silver'
   -
     TL: 8
     Year: '500'
-    Technologies: null
+    Technologies: 'Dimension door, polymorph, wall of fire, scrying, death ward, rings of protection, bracers of armor, sending stones, sunrods'
   -
     TL: 9
     Year: '1000'
-    Technologies: null
+    Technologies: 'Telekinesis, teleport, cone of cold, flame strike, raise dead, pearls of power, folding boats, deep-crystal'
   -
     TL: 10
     Year: '1400'
-    Technologies: Adamantium
+    Technologies: 'Adamantine, wall of force, disintegrate, chain lightning, true seeing, staves of the woodlands, crystal balls, rings of wizardry'
   -
     TL: 11
     Year: '1700'
-    Technologies: null
+    Technologies: 'Plane shift, reverse gravity, forcecage, finger of death, animated shields, cloaks of the bat, rod of the python, quicksilver distillates'
   -
     TL: 12
     Year: '1800'
-    Technologies: null
+    Technologies: 'Teleportation circles, mind blank, clone, maze, earthquake, flesh & clay golems, carpets of flying, starmetal'
   -
     TL: 13
     Year: '1900'
-    Technologies: null
+    Technologies: 'Residuum, gate, foresight, shapechange, meteor swarm, prismatic spray, iron golems, helms of brilliance, portable holes'
   -
     TL: 14
     Year: '1930'
-    Technologies: null
+    Technologies: 'Mass heal, astral projection, imprisonment, wail of the banshee, airship levitation rings, rods of lordly might, planar glass'
   -
     TL: 15
     Year: '1960'
-    Technologies: null
+    Technologies: 'True resurrection, storm of vengeance, energy drain, elemental galleons, cubes of force, manual of golems, ethereal silk'
   -
     TL: 16
     Year: '1980'
-    Technologies: null
+    Technologies: 'Wish, miracle, time stop, permanent mythal wards, robes of the archmagi, staff of the magi, vorpal blades, spheres of annihilation, astral diamonds, orichalcum'
   -
     TL: 17
     Year: '2000'
-    Technologies: null
+    Technologies: 'Persistent interplanar portals, global telepathic networks, linked planar gates, thought-transference prisms, soul gems'
   -
     TL: 18
     Year: '2010'
-    Technologies: null
+    Technologies: 'Clockwork automaton animation, mass warding matrices, construct servants, autonomous magical defenders, living steel'
   -
     TL: 19
     Year: '2020'
-    Technologies: null
+    Technologies: 'Weather control networks, permanent crop rejuvenation, elemental lightning rail, skyship fleets, mythal city cores, gravitite'
   -
     TL: 20
     Year: '2030'
-    Technologies: null
+    Technologies: 'Demiplanes weaving, localized gravity alteration, portable sanctums, pocket dimension vaults, solidified shadow'
   -
     TL: 21
     Year: '2040'
-    Technologies: null
+    Technologies: 'Homunculus sentience, warforged soul-forging, sentient living constructs, matrix soul-vessels, forged soul-fiber'
   -
     TL: 22
     Year: '2050'
-    Technologies: null
+    Technologies: 'Planar atmospheric bubbles, astral skiffs, ethereal dive bells, planar dreadnoughts, planar anchorstone'
   -
     TL: 23
     Year: '2060'
-    Technologies: null
+    Technologies: 'True transmutation, permanent resource replication, transmutation engines, fonts of sustenance, philosopher''s stone, prima materia'
   -
     TL: 24
     Year: '2070'
-    Technologies: null
+    Technologies: 'Spontaneous spell emergence, localized law alteration, self-casting ward towers, morphic arcanite'
   -
     TL: 25
     Year: '2080'
-    Technologies: null
+    Technologies: 'Apotheosis rites, avatar manifestation, godforged artifacts, world-cleaving weapons, titan ichor, stellar fire'
   -
     TL: 26
     Year: '2090'
-    Technologies: null
+    Technologies: 'Leyline rerouting, planar convergence anchoring, continental levitation anchors, planar bridges, planetary keystone cores'
   -
     TL: 27
     Year: '2100'
-    Technologies: null
+    Technologies: 'Wormhole weaving, pocket universe ignition, dimensional loom engines, celestial planetariums, chronal sand'
   -
     TL: 28
     Year: '2110'
-    Technologies: null
+    Technologies: 'Retroactive destiny alteration, chronal loop isolation, chronomantic hourglasses, stasis tombs, chronite'
   -
     TL: 29
     Year: '2120'
-    Technologies: null
+    Technologies: 'Solar manipulation, stellar ignition via positive energy, dyson mythals, planetary ward shields, stellar plasma weave'
   -
     TL: 30
     Year: '2130'
-    Technologies: null
+    Technologies: 'Reality rewriting, creation of new physical & spiritual planes, genesis engines, multiverse anchors, cosmic quintessence'
 techlevelst:
   -
     TL: 0

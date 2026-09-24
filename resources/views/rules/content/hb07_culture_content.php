@@ -366,8 +366,79 @@
 
 <h3 id="Technology">Technology</h3>
 <p>
-    Technology progression across civilizations determines available materials, armaments, transportation, and infrastructure. In RoL d20, human technological development is indexed by approximate historical era and technological milestones.
+    Technological and magical development across civilizations dictates the availability of materials, armaments, transportation, medical treatments, and civil infrastructure. In RoL d20, societal progression is divided into two distinct dimensions: <strong>Physical Technology Levels (TL)</strong> and <strong>Metaphysical Technology Levels (MTL)</strong>.
 </p>
+
+<h4>Physical Technology Levels (TL)</h4>
+<p>
+    Physical Technology Levels measure a civilization's mastery over mundane mechanics, metallurgy, engineering, chemical sciences, and mundane power generation. From the primitive stone tools of TL 0 through industrial steam power (TL 12), nuclear fission (TL 14), and advanced space travel (TL 22+), physical technology progresses chronologically based on material innovation.
+</p>
+
+<h4>Metaphysical Technology Levels (MTL)</h4>
+<p>
+    Metaphysical Technology Levels measure the theoretical sophistication, institutional proliferation, and practical integration of magic, psionics, planar energy manipulation, wondrous craftsmanship, and supernatural materials. While mundane technology relies on thermodynamics and physical laws, metaphysical technology harnesses leyline currents, planar conduits, soul matrices, and divine covenants.
+</p>
+
+<h5>Decoupled Progression &amp; Campaign Baselines</h5>
+<p>
+    In most fantasy universes, physical and metaphysical technologies develop along separate trajectories rather than progressing in lockstep. A civilization can possess late-medieval physical metallurgy (TL 10) while wielding advanced metaphysical infrastructure (MTL 16), allowing high-level arcane spellcraft, widespread wondrous items, flying skyships, teleportation circles, and planar gateways to thrive alongside castles, plate armor, and matchlocks.
+</p>
+
+<table>
+    <caption>Campaign Setting Archetypes</caption>
+    <thead>
+        <tr>
+            <th style="text-align:center">Campaign Archetype</th>
+            <th style="text-align:center">Physical TL</th>
+            <th style="text-align:center">Metaphysical MTL</th>
+            <th>Defining Characteristics</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align:center"><strong>Stone &amp; Shamanism</strong></td>
+            <td style="text-align:center">TL 0–3</td>
+            <td style="text-align:center">MTL 0–3</td>
+            <td>Tribal survival, bone charms, spirit warding, primal animism, rare witch doctors.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>Sword &amp; Sorcery</strong></td>
+            <td style="text-align:center">TL 4–6</td>
+            <td style="text-align:center">MTL 4–6</td>
+            <td>Bronze/iron age empires, rare sorcerers, minor potions, feared and occult magic.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>Gritty Low Fantasy</strong></td>
+            <td style="text-align:center">TL 7–9</td>
+            <td style="text-align:center">MTL 6–8</td>
+            <td>Classical/medieval feudalism, hedge mages, low-tier wondrous items, scarce resurrection, superstition.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>Standard High Fantasy</strong><br><small class="text-stone-500">(D&amp;D Baseline)</small></td>
+            <td style="text-align:center">TL 9–10</td>
+            <td style="text-align:center">MTL 16</td>
+            <td>Late medieval/Renaissance crafts, full 9-tier spellcasting, wondrous items, teleportation networks, golems, mythals, adamantine &amp; mithril.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>Arcane Industrial / Magitech</strong></td>
+            <td style="text-align:center">TL 11–13</td>
+            <td style="text-align:center">MTL 18–21</td>
+            <td>Elemental lightning rails, sentient living constructs, mass warding grids, skyship fleets, arcane factories.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>Planar Empire / Mythic</strong></td>
+            <td style="text-align:center">TL 10–14</td>
+            <td style="text-align:center">MTL 22–26</td>
+            <td>Astral dreadnoughts, floating sky-cities, planar convergence bridges, demiplane weaving, godforged relics.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>Cosmic / Transcendent</strong></td>
+            <td style="text-align:center">TL 15+</td>
+            <td style="text-align:center">MTL 27–30</td>
+            <td>Dyson mythals, chronomantic destiny alteration, stellar manipulation, reality rewriting, plane creation.</td>
+        </tr>
+    </tbody>
+</table>
 
 <?php show_techlevels(); ?> 
 
