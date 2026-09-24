@@ -265,6 +265,11 @@
     Gravity operates without a central point of attraction in the elemental planes, allowing matter to float freely without collapsing into black holes and enabling unrestricted three-dimensional movement. These realms are inhabited by elemental beings—entities possessing sentience and elemental control, though lacking metaphysical souls.
 </p>
 
+<div class="my-4 text-center">
+    <img src="/images/Multiverse_Physical.svg" alt="Physical and Elemental Planes Cosmology" title="Physical and Elemental Cosmology Diagram" class="max-w-full h-auto rounded border border-stone-200 shadow-sm mx-auto" />
+    <div class="mt-1.5 text-xs text-stone-500 italic">Figure: Symbolic representation of the Physical &amp; Elemental Cosmology, Energetic Continuum, and Ethereal 5th-Dimension.</div>
+</div>
+
 <h4>The Spiritual Planes</h4>
 <p>
     The spiritual planes are non-physical realms composed of collective thought, emotion, philosophy, and psychic energy (such as the Seven Heavens, the Nine Hells, the Abyss, and Elysium). Many are ruled by deities who reshape planar matter by force of will.
@@ -272,6 +277,11 @@
 <p>
     Upon mortal demise, disembodied souls are drawn toward the spiritual plane that aligns with their dominant moral and psychological resonance. Over time, departed souls merge into the planar fabric or empower native celestials and fiends. Patrons channel portions of this gathered spiritual energy back to their mortal priests and champions as divine spells.
 </p>
+
+<div class="my-4 text-center">
+    <img src="/images/Multiverse_Spiritual.svg" alt="Spiritual and Astral Planes Cosmology" title="Spiritual and Astral Cosmology Diagram" class="max-w-full h-auto rounded border border-stone-200 shadow-sm mx-auto" />
+    <div class="mt-1.5 text-xs text-stone-500 italic">Figure: Symbolic representation of the Spiritual &amp; Astral Cosmology, Moral Alignments, and Soul Conduits.</div>
+</div>
 
 <h4>The Material Universe</h4>
 <p>

@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 640" width="100%" height="100%" style="background:#faf8f5; font-family:ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <!-- Shadows -->
+    <filter id="cardShadow" x="-3%" y="-3%" width="106%" height="106%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    
+    <!-- Gradients -->
+    <radialGradient id="matGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="70%" stop-color="#bae6fd"/>
+      <stop offset="100%" stop-color="#7dd3fc"/>
+    </radialGradient>
+    <radialGradient id="ethGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="40%" stop-color="#f1f5f9" stop-opacity="0.2"/>
+      <stop offset="80%" stop-color="#c084fc" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#9333ea" stop-opacity="0.45"/>
+    </radialGradient>
+    
+    <!-- Elemental Gradients -->
+    <linearGradient id="fireGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </linearGradient>
+    <linearGradient id="airGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="50%" stop-color="#a7f3d0"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="waterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="50%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="earthGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="50%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#78350f"/>
+    </linearGradient>
+    <linearGradient id="negGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6b21a8"/>
+      <stop offset="50%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </linearGradient>
+    
+    <!-- Arrow Markers -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#9333ea"/>
+    </marker>
+  </defs>
+
+  <!-- Frame Background -->
+  <rect x="12" y="12" width="816" height="616" rx="10" fill="#faf8f5" stroke="#e2d8c3" stroke-width="1.5" filter="url(#cardShadow)"/>
+  
+  <!-- Outer Title & Subtitle -->
+  <text x="36" y="46" font-family="Georgia, Cambria, serif" font-size="20" font-weight="bold" fill="#78350f">The Physical &amp; Elemental Cosmology</text>
+  <text x="36" y="66" font-size="11.5" fill="#64748b">Energetic Continuum, Matter Phases, the Ethereal 5th-Dimension &amp; Pocket Demiplanes</text>
+
+  <!-- Main Chart Canvas Center at (420, 310) -->
+  <g transform="translate(420, 310)">
+    
+    <!-- Outer Negative Void Boundary (Antimatter / Entropy Horizon) -->
+    <circle cx="0" cy="0" r="225" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <text x="0" y="-233" text-anchor="middle" font-size="9" font-weight="bold" fill="#475569" letter-spacing="1.5">NEGATIVE ENERGY &amp; ANTIMATTER BOUNDARY (ENTROPY &amp; THE VOID)</text>
+    
+    <!-- Para-elemental & Continuum Rings -->
+    <circle cx="0" cy="0" r="165" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+    
+    <!-- Ethereal Plane Aura (5th Dimension / Hyperspace) -->
+    <ellipse cx="0" cy="0" rx="105" ry="105" fill="url(#ethGrad)" stroke="#a855f7" stroke-width="1.75" stroke-dasharray="4 3"/>
+    <text x="0" y="80" text-anchor="middle" font-size="9" font-weight="bold" fill="#7e22ce" letter-spacing="1">ETHEREAL PLANE (5TH DIMENSION / HYPERSPACE)</text>
+    <text x="0" y="93" text-anchor="middle" font-size="7.5" fill="#6b21a8">Coexists with 3D space • Phases matter • Radiant energy conduit</text>
+
+    <!-- Radiating Continuum Arrows -->
+    <line x1="0" y1="-70" x2="0" y2="-130" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="2 2" marker-end="url(#arrow)"/>
+    <line x1="70" y1="0" x2="130" y2="0" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="2 2" marker-end="url(#arrow)"/>
+    <line x1="0" y1="70" x2="0" y2="130" stroke="#d97706" stroke-width="1.5" stroke-dasharray="2 2" marker-end="url(#arrow)"/>
+    <line x1="-70" y1="0" x2="-130" y2="0" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="2 2" marker-end="url(#arrow)"/>
+
+    <!-- Inter-Elemental / Para-Elemental Connectors -->
+    <path d="M 0 -165 L 165 0 L 0 165 L -165 0 Z" fill="none" stroke="#cbd5e1" stroke-width="1.25" stroke-dasharray="3 3"/>
+
+    <!-- Para-Elemental Nodes -->
+    <!-- Smoke: Top-Right (Fire + Air) -->
+    <g transform="translate(100, -100)">
+      <rect x="-35" y="-11" width="70" height="22" rx="4" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/>
+      <text x="0" y="3.5" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#475569">Smoke</text>
+    </g>
+    <!-- Mud / Ooze: Bottom-Left (Water + Earth) -->
+    <g transform="translate(-100, 100)">
+      <rect x="-35" y="-11" width="70" height="22" rx="4" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/>
+      <text x="0" y="3.5" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#475569">Mud / Ooze</text>
+    </g>
+    <!-- Ice / Frost: Top-Left (Air/Water/Cold) -->
+    <g transform="translate(-100, -100)">
+      <rect x="-35" y="-11" width="70" height="22" rx="4" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/>
+      <text x="0" y="3.5" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#475569">Ice / Frost</text>
+    </g>
+    <!-- Magma: Bottom-Right (Fire + Earth) -->
+    <g transform="translate(100, 100)">
+      <rect x="-35" y="-11" width="70" height="22" rx="4" fill="#f8fafc" stroke="#94a3b8" stroke-width="1"/>
+      <text x="0" y="3.5" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#475569">Magma</text>
+    </g>
+
+    <!-- 1. Positive Energy & Fire / Plasma Plane (Top) -->
+    <g transform="translate(0, -165)">
+      <circle cx="0" cy="0" r="32" fill="url(#fireGrad)" stroke="#991b1b" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="0" y="-5" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#ffffff">PLANE OF</text>
+      <text x="0" y="7" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#ffffff">FIRE</text>
+      <text x="0" y="44" text-anchor="middle" font-size="8" font-weight="bold" fill="#b91c1c">Plasma • Photons • Stars</text>
+    </g>
+
+    <!-- 2. Plane of Air (Right) -->
+    <g transform="translate(165, 0)">
+      <circle cx="0" cy="0" r="32" fill="url(#airGrad)" stroke="#0369a1" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="0" y="-5" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#0f172a">PLANE OF</text>
+      <text x="0" y="7" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#0f172a">AIR</text>
+      <text x="0" y="44" text-anchor="middle" font-size="8" font-weight="bold" fill="#0284c7">Gases • Atmosphere</text>
+    </g>
+
+    <!-- 3. Plane of Earth (Bottom) -->
+    <g transform="translate(0, 165)">
+      <circle cx="0" cy="0" r="32" fill="url(#earthGrad)" stroke="#451a03" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="0" y="-5" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#ffffff">PLANE OF</text>
+      <text x="0" y="7" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#ffffff">EARTH</text>
+      <text x="0" y="44" text-anchor="middle" font-size="8" font-weight="bold" fill="#78350f">Solid Matter • 0 K Density</text>
+    </g>
+
+    <!-- 4. Plane of Water (Left) -->
+    <g transform="translate(-165, 0)">
+      <circle cx="0" cy="0" r="32" fill="url(#waterGrad)" stroke="#1e3a8a" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="0" y="-5" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#ffffff">PLANE OF</text>
+      <text x="0" y="7" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#ffffff">WATER</text>
+      <text x="0" y="44" text-anchor="middle" font-size="8" font-weight="bold" fill="#1d4ed8">Liquids • Oceans</text>
+    </g>
+
+    <!-- 5. Negative Energy / Void Plane Node (Top Left Outer) -->
+    <g transform="translate(-215, -155)">
+      <circle cx="0" cy="0" r="24" fill="url(#negGrad)" stroke="#a855f7" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <text x="0" y="-3" text-anchor="middle" font-size="7" font-weight="bold" fill="#e9d5ff">NEGATIVE</text>
+      <text x="0" y="7" text-anchor="middle" font-size="8" font-weight="bold" fill="#ffffff">ENERGY</text>
+      <text x="0" y="33" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#475569">Antimatter &amp; Void</text>
+    </g>
+
+    <!-- Pocket Demiplanes (Linked to Ethereal) -->
+    <g transform="translate(205, -155)">
+      <rect x="-46" y="-20" width="92" height="40" rx="5" fill="#faf5ff" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="3 2" filter="url(#cardShadow)"/>
+      <text x="0" y="-4" text-anchor="middle" font-size="8" font-weight="bold" fill="#6b21a8">POCKET DEMIPLANES</text>
+      <text x="0" y="8" text-anchor="middle" font-size="7" fill="#7e22ce">Shadow • Time • Pockets</text>
+      <!-- Connector to ethereal -->
+      <path d="M -15 20 Q -40 45 -65 70" fill="none" stroke="#a855f7" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#arrowPurple)"/>
+    </g>
+
+    <!-- CENTER: THE MATERIAL UNIVERSE (Nexus & Buffer) -->
+    <g transform="translate(0, 0)">
+      <circle cx="0" cy="0" r="44" fill="url(#matGrad)" stroke="#0284c7" stroke-width="2.5" filter="url(#cardShadow)"/>
+      <text x="0" y="-10" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#0369a1" letter-spacing="0.5">MATERIAL</text>
+      <text x="0" y="3" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#0c4a6e">UNIVERSE</text>
+      <text x="0" y="16" text-anchor="middle" font-size="7" fill="#0284c7">(Mortal Reality &amp; 3D Space)</text>
+      <text x="0" y="26" text-anchor="middle" font-size="6.5" fill="#475569">Physical Buffer</text>
+    </g>
+  </g>
+
+  <!-- Left & Right Informational Panels / Legend -->
+  <g transform="translate(36, 495)">
+    <rect x="0" y="0" width="370" height="115" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#cardShadow)"/>
+    <text x="14" y="20" font-size="10.5" font-weight="bold" fill="#78350f">Elemental Physics &amp; Energetic Continuum</text>
+    <text x="14" y="38" font-size="8.5" fill="#334155">• <tspan font-weight="bold">No Central Gravity:</tspan> Matter floats in equilibrium without black holes.</text>
+    <text x="14" y="53" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Continuous States:</tspan> Absolute 0 (Solid) &rarr; Liquid &rarr; Gas &rarr; Plasma (Photons).</text>
+    <text x="14" y="68" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Inhabitants:</tspan> Elemental beings (sentient matter lacking metaphysical souls).</text>
+    <text x="14" y="83" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Unbounded 3D Motion:</tspan> Complete three-dimensional navigation.</text>
+    <text x="14" y="98" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Antimatter Horizon:</tspan> Negative energy planes bound physical outer space.</text>
+  </g>
+
+  <g transform="translate(434, 495)">
+    <rect x="0" y="0" width="370" height="115" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#cardShadow)"/>
+    <text x="14" y="20" font-size="10.5" font-weight="bold" fill="#6b21a8">The Ethereal Plane &amp; Demiplanes</text>
+    <text x="14" y="38" font-size="8.5" fill="#334155">• <tspan font-weight="bold">5th Dimension / Hyperspace:</tspan> Coexists invisibly with the Material plane.</text>
+    <text x="14" y="53" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Energy Transmission:</tspan> Light, lasers &amp; radiant heat cross threshold.</text>
+    <text x="14" y="68" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Spatial Folding:</tspan> Enables faster-than-light (FTL) transit &amp; teleportation.</text>
+    <text x="14" y="83" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Phased Matter:</tspan> Ethereal objects pass through physical solids frictionless.</text>
+    <text x="14" y="98" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Demiplanes:</tspan> Woven artificial pockets (Shadow, Time, Dream domains).</text>
+  </g>
+
+</svg>

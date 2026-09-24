@@ -1,0 +1,224 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 640" width="100%" height="100%" style="background:#faf8f5; font-family:ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <!-- Shadows -->
+    <filter id="cardShadow" x="-3%" y="-3%" width="106%" height="106%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    
+    <!-- Gradients -->
+    <radialGradient id="matGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="70%" stop-color="#bae6fd"/>
+      <stop offset="100%" stop-color="#7dd3fc"/>
+    </radialGradient>
+    <radialGradient id="astralGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="20%" stop-color="#f8fafc" stop-opacity="0.4"/>
+      <stop offset="60%" stop-color="#cbd5e1" stop-opacity="0.3"/>
+      <stop offset="90%" stop-color="#64748b" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#334155" stop-opacity="0.5"/>
+    </radialGradient>
+
+    <!-- Planar Alignment Gradients -->
+    <!-- LG: Gold/White -->
+    <linearGradient id="lgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="50%" stop-color="#fde047"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+    <!-- NG: Amber/Sunlight -->
+    <linearGradient id="ngGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#eab308"/>
+    </linearGradient>
+    <!-- CG: Emerald/Gold Aurora -->
+    <linearGradient id="cgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dcfce7"/>
+      <stop offset="50%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </linearGradient>
+    <!-- LN: Steel/Bronze/Order -->
+    <linearGradient id="lnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f1f5f9"/>
+      <stop offset="50%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+    <!-- CN: Primal Chaos / Maelstrom -->
+    <linearGradient id="cnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fce7f3"/>
+      <stop offset="50%" stop-color="#f472b6"/>
+      <stop offset="100%" stop-color="#9d174d"/>
+    </linearGradient>
+    <!-- LE: Hellfire / Iron Tyranny -->
+    <linearGradient id="leGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fecaca"/>
+      <stop offset="50%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#7f1d1d"/>
+    </linearGradient>
+    <!-- NE: Gray Gloom / Entropy -->
+    <linearGradient id="neGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="50%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <!-- CE: Abyssal Blood & Void -->
+    <linearGradient id="ceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#991b1b"/>
+      <stop offset="50%" stop-color="#450a0a"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </linearGradient>
+
+    <!-- Arrow Markers -->
+    <marker id="astralArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#64748b"/>
+    </marker>
+    <marker id="goldArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#ca8a04"/>
+    </marker>
+    <marker id="redArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#b91c1c"/>
+    </marker>
+  </defs>
+
+  <!-- Frame Background -->
+  <rect x="12" y="12" width="816" height="616" rx="10" fill="#faf8f5" stroke="#e2d8c3" stroke-width="1.5" filter="url(#cardShadow)"/>
+  
+  <!-- Outer Title & Subtitle -->
+  <text x="36" y="46" font-family="Georgia, Cambria, serif" font-size="20" font-weight="bold" fill="#78350f">The Spiritual &amp; Astral Cosmology</text>
+  <text x="36" y="66" font-size="11.5" fill="#64748b">Metaphysical Resonance, Moral Alignments, the Astral Silver Sea &amp; Divine Pantheons</text>
+
+  <!-- Main Chart Canvas Center at (420, 310) -->
+  <g transform="translate(420, 310)">
+    
+    <!-- Outer Astral Silver Sea (Spiritual Conduit Horizon) -->
+    <circle cx="0" cy="0" r="225" fill="url(#astralGrad)" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <text x="0" y="-233" text-anchor="middle" font-size="9" font-weight="bold" fill="#334155" letter-spacing="1.5">THE ASTRAL PLANE (THE SILVER SEA • REALM OF THOUGHT &amp; SOULS)</text>
+
+    <!-- Alignment Axis Lines -->
+    <!-- Good / Evil Vertical Axis -->
+    <line x1="0" y1="-210" x2="0" y2="210" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <!-- Law / Chaos Horizontal Axis -->
+    <line x1="-210" y1="0" x2="210" y2="0" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+    <!-- Axis Labels -->
+    <text x="0" y="-212" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#ca8a04">▲ UPPER CELESTIAL REALMS (GOOD)</text>
+    <text x="0" y="222" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#991b1b">▼ LOWER FIENDISH REALMS (EVIL)</text>
+    <text x="-212" y="-5" text-anchor="end" font-size="8.5" font-weight="bold" fill="#475569">◀ LAW &amp; ORDER</text>
+    <text x="212" y="-5" text-anchor="start" font-size="8.5" font-weight="bold" fill="#9d174d">CHAOS &amp; FREEDOM ▶</text>
+
+    <!-- Outer Connective Orbit Circle -->
+    <circle cx="0" cy="0" r="165" fill="none" stroke="#e2e8f0" stroke-width="1.25"/>
+
+    <!-- Dynamic Soul & Divine Energy Conduits (Arrows) -->
+    <line x1="-35" y1="-35" x2="-95" y2="-95" stroke="#ca8a04" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#goldArrow)"/>
+    <line x1="0" y1="-45" x2="0" y2="-125" stroke="#eab308" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#goldArrow)"/>
+    <line x1="35" y1="-35" x2="95" y2="-95" stroke="#15803d" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#goldArrow)"/>
+    
+    <line x1="-40" y1="0" x2="-125" y2="0" stroke="#64748b" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#astralArrow)"/>
+    <line x1="40" y1="0" x2="125" y2="0" stroke="#db2777" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#astralArrow)"/>
+
+    <line x1="-35" y1="35" x2="-95" y2="95" stroke="#b91c1c" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#redArrow)"/>
+    <line x1="0" y1="45" x2="0" y2="125" stroke="#0f172a" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#redArrow)"/>
+    <line x1="35" y1="35" x2="95" y2="95" stroke="#450a0a" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#redArrow)"/>
+
+    <!-- ==================== OUTER SPIRITUAL PLANES ==================== -->
+
+    <!-- 1. Top-Center: Elysium (Neutral Good) -->
+    <g transform="translate(0, -165)">
+      <circle cx="0" cy="0" r="30" fill="url(#ngGrad)" stroke="#a16207" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="0" y="-4" text-anchor="middle" font-size="9" font-weight="bold" fill="#713f12">ELYSIUM</text>
+      <text x="0" y="8" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#854d0e">(Neutral Good)</text>
+      <text x="0" y="42" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#a16207">Blessed Fields • Peace</text>
+    </g>
+
+    <!-- 2. Top-Left: Seven Heavens / Mount Celestia (Lawful Good) -->
+    <g transform="translate(-115, -115)">
+      <circle cx="0" cy="0" r="30" fill="url(#lgGrad)" stroke="#854d0e" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="0" y="-8" text-anchor="middle" font-size="8" font-weight="bold" fill="#713f12">SEVEN HEAVENS</text>
+      <text x="0" y="3" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#854d0e">Mt. Celestia</text>
+      <text x="0" y="14" text-anchor="middle" font-size="7" fill="#713f12">(Lawful Good)</text>
+      <text x="0" y="42" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#854d0e">Archons • Divine Justice</text>
+    </g>
+
+    <!-- 3. Top-Right: Arborea / Olympus (Chaotic Good) -->
+    <g transform="translate(115, -115)">
+      <circle cx="0" cy="0" r="30" fill="url(#cgGrad)" stroke="#14532d" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="0" y="-4" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#ffffff">ARBOREA</text>
+      <text x="0" y="8" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#f0fdf4">(Chaotic Good)</text>
+      <text x="0" y="42" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#15803d">Eladrin • Passion &amp; Joy</text>
+    </g>
+
+    <!-- 4. Mid-Left: Mechanus / Nirvana (Lawful Neutral) -->
+    <g transform="translate(-165, 0)">
+      <circle cx="0" cy="0" r="30" fill="url(#lnGrad)" stroke="#334155" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="0" y="-4" text-anchor="middle" font-size="8" font-weight="bold" fill="#ffffff">MECHANUS</text>
+      <text x="0" y="8" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#e2e8f0">(Lawful Neutral)</text>
+      <text x="0" y="42" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#475569">Clockwork Order • Modrons</text>
+    </g>
+
+    <!-- 5. Mid-Right: Limbo / Pandemonium (Chaotic Neutral) -->
+    <g transform="translate(165, 0)">
+      <circle cx="0" cy="0" r="30" fill="url(#cnGrad)" stroke="#831843" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="0" y="-4" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">LIMBO</text>
+      <text x="0" y="8" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#fdf2f8">(Chaotic Neutral)</text>
+      <text x="0" y="42" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#9d174d">Raw Chaos • Willpower</text>
+    </g>
+
+    <!-- 6. Bottom-Left: Nine Hells of Baator (Lawful Evil) -->
+    <g transform="translate(-115, 115)">
+      <circle cx="0" cy="0" r="30" fill="url(#leGrad)" stroke="#7f1d1d" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="0" y="-8" text-anchor="middle" font-size="8" font-weight="bold" fill="#ffffff">NINE HELLS</text>
+      <text x="0" y="3" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#fef2f2">Baator</text>
+      <text x="0" y="14" text-anchor="middle" font-size="7" fill="#fee2e2">(Lawful Evil)</text>
+      <text x="0" y="42" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#b91c1c">Devils • Feudal Tyranny</text>
+    </g>
+
+    <!-- 7. Bottom-Center: Hades / Gray Waste / Gehenna (Neutral Evil) -->
+    <g transform="translate(0, 165)">
+      <circle cx="0" cy="0" r="30" fill="url(#neGrad)" stroke="#09090b" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="0" y="-4" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">HADES</text>
+      <text x="0" y="8" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#cbd5e1">(Neutral Evil)</text>
+      <text x="0" y="42" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#334155">Gray Waste • Yugoloths</text>
+    </g>
+
+    <!-- 8. Bottom-Right: The Infinite Abyss (Chaotic Evil) -->
+    <g transform="translate(115, 115)">
+      <circle cx="0" cy="0" r="30" fill="url(#ceGrad)" stroke="#000000" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="0" y="-8" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#ffffff">THE ABYSS</text>
+      <text x="0" y="3" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#fca5a5">Infinite Layers</text>
+      <text x="0" y="14" text-anchor="middle" font-size="7" fill="#f87171">(Chaotic Evil)</text>
+      <text x="0" y="42" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#991b1b">Demons • Pure Ruin</text>
+    </g>
+
+    <!-- CENTER: THE MATERIAL UNIVERSE (Nexus of Mortal Souls & Faith) -->
+    <g transform="translate(0, 0)">
+      <circle cx="0" cy="0" r="44" fill="url(#matGrad)" stroke="#0284c7" stroke-width="2.5" filter="url(#cardShadow)"/>
+      <text x="0" y="-10" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#0369a1" letter-spacing="0.5">MATERIAL</text>
+      <text x="0" y="3" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#0c4a6e">UNIVERSE</text>
+      <text x="0" y="16" text-anchor="middle" font-size="7" fill="#0284c7">(Mortal Souls &amp; Devotion)</text>
+      <text x="0" y="26" text-anchor="middle" font-size="6.5" fill="#475569">Spiritual Crucible</text>
+    </g>
+  </g>
+
+  <!-- Left & Right Informational Panels / Legend -->
+  <g transform="translate(36, 495)">
+    <rect x="0" y="0" width="370" height="115" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#cardShadow)"/>
+    <text x="14" y="20" font-size="10.5" font-weight="bold" fill="#78350f">Metaphysical Fabric &amp; Soul Migration</text>
+    <text x="14" y="38" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Substance of Thought:</tspan> Realms formed of belief, emotion &amp; philosophy.</text>
+    <text x="14" y="53" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Soul Transmigration:</tspan> Departed souls drawn to matching moral resonance.</text>
+    <text x="14" y="68" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Planar Merging:</tspan> Souls gradually empower native celestials or fiends.</text>
+    <text x="14" y="83" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Divine Willpower:</tspan> Greater Deities reshape planar matter by thought alone.</text>
+    <text x="14" y="98" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Divine Magic Conduits:</tspan> Patrons funnel spiritual power back to priests.</text>
+  </g>
+
+  <g transform="translate(434, 495)">
+    <rect x="0" y="0" width="370" height="115" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#cardShadow)"/>
+    <text x="14" y="20" font-size="10.5" font-weight="bold" fill="#334155">The Astral Plane &amp; Travel</text>
+    <text x="14" y="38" font-size="8.5" fill="#334155">• <tspan font-weight="bold">The Silver Sea:</tspan> Boundless spiritual ocean bridging the Material to Outer Planes.</text>
+    <text x="14" y="53" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Silver Cords:</tspan> Tethers projected astral travelers to their physical bodies.</text>
+    <text x="14" y="68" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Timeless Transit:</tspan> Biological aging, hunger, and thirst are suspended.</text>
+    <text x="14" y="83" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Astral Projections:</tspan> Lucid dreaming and psychic meditation navigation.</text>
+    <text x="14" y="98" font-size="8.5" fill="#334155">• <tspan font-weight="bold">Planar Conduits:</tspan> Color pools open portals into specific outer realms.</text>
+  </g>
+
+</svg>
