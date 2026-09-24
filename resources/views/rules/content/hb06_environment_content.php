@@ -267,7 +267,7 @@
 
 <div class="my-4 text-center">
     <img src="/images/Multiverse_Physical.svg" alt="Physical and Elemental Planes Cosmology" title="Physical and Elemental Cosmology Diagram" class="max-w-full h-auto rounded border border-stone-200 shadow-sm mx-auto" />
-    <div class="mt-1.5 text-xs text-stone-500 italic">Figure: Symbolic representation of the Physical &amp; Elemental Cosmology, Energetic Continuum, and Ethereal 5th-Dimension.</div>
+    <div class="mt-1.5 text-xs text-stone-500 italic">Figure: Symbolic representation of the Physical Spherical Cosmology, Positive/Negative Poles, and the Elemental Equator.</div>
 </div>
 
 <h4>The Spiritual Planes</h4>
