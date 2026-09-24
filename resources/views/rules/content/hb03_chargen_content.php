@@ -81,6 +81,20 @@
 <?php show_templates(4, false); ?> 
 
 <h3 id="CharacterClasses">Character Classes</h3>
+<p>
+    A character class defines a hero's primary vocation, training, and core capabilities in the world. Character classes in RoL d20 fall into two distinct categories:
+</p>
+<ul>
+    <li>
+        <strong>Player Character (PC) Classes (Bard to Wizard):</strong> The eleven primary adventuring classes—<strong>Bard, Cleric, Druid, Fighter, Monk, Psion, Psiwarrior, Ranger, Rogue, Templar, and Wizard</strong>—are full-progression classes designed specifically for heroic player characters (and prominent NPC champions). They provide robust health and power pools (HP, SP, PP, Influence), generous skill point allocations, broad access to primary and secondary skills, and specialized class configurations suited for perilous adventures.
+    </li>
+    <li>
+        <strong>Non-Player Character (NPC) Classes (Adept to Warrior):</strong> The five secondary classes—<strong>Adept, Aristocrat, Commoner, Expert, and Warrior</strong>—are somewhat inferior, simplified archetypes meant primarily for non-player characters and general world-building (such as town guards, village hedge casters, artisans, court nobility, and common laborers). They possess lower resource progressions, narrower skill access, and reduced advancement potential compared to full-progression classes. In addition to populating the world, these classes serve as cultural background classes representing a character's life experience before embarking on an adventuring career.
+    </li>
+</ul>
+<p>
+    The statistics, resource progressions, key abilities, and skill proficiencies for each class are detailed below:
+</p>
 
 <?php show_classes(); ?> 
 

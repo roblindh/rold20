@@ -40,6 +40,16 @@ function show_classes() {
             $secSkillsList[] = $secRow['Name'] . " (" . $secRow['Abbreviation'] . ")";
         }
         $secSkillsStr = !empty($secSkillsList) ? implode(', ', $secSkillsList) : 'None';
+
+        $classSlug = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $row['Name']));
+        $imgRel = null;
+        foreach (['jpg', 'jpeg', 'png', 'webp'] as $ext) {
+            $candRel = 'images/classes/' . $classSlug . '.' . $ext;
+            if (file_exists(dirname(__DIR__) . '/public/' . $candRel)) {
+                $imgRel = $candRel;
+                break;
+            }
+        }
         ?>
         <br/>
         <table width="100%">
@@ -47,6 +57,13 @@ function show_classes() {
                 <th colspan="2"><?php echo $row['Name'] . " (" . $row['Abbreviation'] . ")"; ?></th>
             </tr></thead>
             <tbody>
+            <?php if ($imgRel) { ?>
+            <tr>
+                <td colspan="2" style="text-align: center; padding: 12px; background: rgba(0,0,0,0.02);">
+                    <img src="/<?php echo $imgRel; ?>" alt="<?php echo htmlspecialchars($row['Name'], ENT_QUOTES); ?> Class Illustration" class="rounded-lg shadow-md border border-amber-900/20" style="max-height: 440px; width: auto; max-width: 100%; object-fit: contain; margin: 0 auto; display: block;" loading="lazy" />
+                </td>
+            </tr>
+            <?php } ?>
             <tr>
                 <td>HP/Level:</td>
                 <td><?php echo $row['HPPerLevel']; ?></td>
