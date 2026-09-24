@@ -118,6 +118,8 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/npcgen/generate', [UtilityController::class, 'generateNpc']);
     Route::post('/npc-generator/abilities', [UtilityController::class, 'generateNpcAbilities'])->name('npcgen.abilities');
     Route::post('/npcgen/abilities', [UtilityController::class, 'generateNpcAbilities']);
+    Route::post('/npc-generator/loadout', [UtilityController::class, 'generateBlueprintLoadout'])->name('npcgen.loadout');
+    Route::post('/npcgen/loadout', [UtilityController::class, 'generateBlueprintLoadout']);
     Route::post('/npc-generator/save-to-campaign', [UtilityController::class, 'saveNpcToCampaign'])->name('npcgen.save-to-campaign');
     Route::post('/npcgen/save-to-campaign', [UtilityController::class, 'saveNpcToCampaign']);
 

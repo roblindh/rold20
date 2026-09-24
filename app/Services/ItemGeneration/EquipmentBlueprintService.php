@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class EquipmentBlueprintService
 {
     /**
-     * Archetype blueprints definitions
+     * Legacy archetype constants for backward compatibility
      */
     public const ARCHETYPE_HEAVY_MARTIAL = 'heavy_martial';
     public const ARCHETYPE_AGILE_SKIRMISHER = 'agile_skirmisher';
@@ -16,11 +16,6 @@ class EquipmentBlueprintService
     public const ARCHETYPE_DIVINE_CASTER = 'divine_caster';
     public const ARCHETYPE_UNARMED_MONK = 'unarmed_monk';
     public const ARCHETYPE_PSIONIC_MANIFESTER = 'psionic_manifester';
-
-    /**
-     * Cache for class configs
-     */
-    protected static ?array $classConfigsCache = null;
 
     /**
      * Ensure application rules data is loaded
@@ -31,59 +26,227 @@ class EquipmentBlueprintService
     }
 
     /**
-     * Map a class config ID, class name, or entity to an archetype.
+     * Get all archetype blueprints from cache or database
      */
-    public static function resolveArchetype(?int $classConfigId, ?string $className = null, ?string $skills = null): string
+    public static function getAllBlueprints(): array
     {
         self::ensureAppLoaded();
         global $_APP;
 
-        if ($classConfigId && isset($_APP['classconfigs'][$classConfigId])) {
-            $conf = $_APP['classconfigs'][$classConfigId];
-            $name = strtolower($conf['Name'] ?? '');
-            $eq = strtolower($conf['Equipment'] ?? '');
-            $prim = strtolower($conf['PrimSkills'] ?? '');
+        if (!empty($_APP['archetypeblueprints'])) {
+            return array_values($_APP['archetypeblueprints']);
+        }
 
-            if (str_contains($name, 'monk')) {
-                return self::ARCHETYPE_UNARMED_MONK;
+        try {
+            return DB::table('ref_archetypeblueprints')->orderBy('ID')->get()->map(fn($r) => (array)$r)->toArray();
+        } catch (\Throwable $e) {
+            return [];
+        }
+    }
+
+    /**
+     * Get a single blueprint by ID, Slug, or Name
+     */
+    public static function getBlueprint(string|int $key): ?array
+    {
+        self::ensureAppLoaded();
+        global $_APP;
+
+        if (is_numeric($key) && isset($_APP['archetypeblueprints'][(int)$key])) {
+            return $_APP['archetypeblueprints'][(int)$key];
+        }
+
+        $all = self::getAllBlueprints();
+        $strKey = strtolower(trim((string)$key));
+
+        foreach ($all as $bp) {
+            if ((string)($bp['ID'] ?? '') === (string)$key) {
+                return $bp;
             }
-            if (str_contains($name, 'psion') || str_contains($name, 'seer') || str_contains($name, 'shaper') || str_contains($name, 'savant') || str_contains($name, 'egoist') || str_contains($name, 'nomad') || str_contains($name, 'telepath')) {
-                return self::ARCHETYPE_PSIONIC_MANIFESTER;
+            if (strtolower($bp['Slug'] ?? '') === $strKey) {
+                return $bp;
             }
-            if (str_contains($name, 'wizard') || str_contains($name, 'sorcerer') || str_contains($name, 'mage') || str_contains($name, 'mancer') || str_contains($name, 'conjurer') || str_contains($name, 'enchanter') || str_contains($name, 'necromancer') || str_contains($name, 'abjurer') || str_contains($name, 'illuminist') || str_contains($name, 'illusionist')) {
-                return self::ARCHETYPE_ARCANE_CASTER;
-            }
-            if (str_contains($name, 'cleric') || str_contains($name, 'druid') || str_contains($name, 'adept') || str_contains($name, 'shaman') || str_contains($name, 'witch doctor')) {
-                return self::ARCHETYPE_DIVINE_CASTER;
-            }
-            if (str_contains($name, 'rogue') || str_contains($name, 'ranger') || str_contains($name, 'scout') || str_contains($name, 'assassin') || str_contains($name, 'spy') || str_contains($name, 'bard') || str_contains($name, 'duelist') || str_contains($name, 'smuggler') || str_contains($name, 'archer')) {
-                return self::ARCHETYPE_AGILE_SKIRMISHER;
-            }
-            if (str_contains($name, 'fighter') || str_contains($name, 'templar') || str_contains($name, 'soldier') || str_contains($name, 'guard') || str_contains($name, 'gladiator') || str_contains($name, 'thug') || str_contains($name, 'knight') || str_contains($name, 'swordsman') || str_contains($name, 'axeman') || str_contains($name, 'spearman') || str_contains($name, 'psiwarrior')) {
-                return self::ARCHETYPE_HEAVY_MARTIAL;
+            if (strtolower($bp['Name'] ?? '') === $strKey) {
+                return $bp;
             }
         }
 
+        // Search by partial match on Slug
+        foreach ($all as $bp) {
+            if (str_contains(strtolower($bp['Slug'] ?? ''), $strKey) || str_contains($strKey, strtolower($bp['Slug'] ?? ''))) {
+                return $bp;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Resolve the archetype blueprint for a given class configuration, class name, or skills.
+     */
+    public static function resolveBlueprint(?int $classConfigId, ?string $className = null, ?string $skills = null): array
+    {
+        self::ensureAppLoaded();
+        global $_APP;
+
+        $all = self::getAllBlueprints();
+        if (empty($all)) {
+            // Fallback default structure if table empty
+            return [
+                'ID' => 1,
+                'Name' => 'Sword Fighter / Swordsman',
+                'Slug' => 'sword_fighter',
+                'ArmorCategory' => 'heavy',
+                'PreferredArmor' => 'Full plate',
+                'ShieldCategory' => 'heavy',
+                'PreferredShield' => 'Shield, heavy steel',
+                'PrimaryWeaponCategory' => 'sword',
+                'PreferredPrimaryWeapon' => 'Sword, long-',
+                'SecondaryWeapon' => 'Dagger',
+                'PreferredRangedWeapon' => 'Bow, composite long-',
+                'Ammunition' => 'Arrow, sheaf (20)',
+                'ImplementCategory' => null,
+                'ConsumableTypes' => 'healing_potion,buff_potion',
+                'AccessorySlots' => 'waist,shoulders,ring,neck',
+            ];
+        }
+
+        // 1. Check direct ClassConfigIDs matching
+        if ($classConfigId) {
+            foreach ($all as $bp) {
+                $rawIds = $bp['ClassConfigIDs'] ?? '';
+                if (!empty($rawIds)) {
+                    $ids = array_map('intval', array_filter(array_map('trim', explode(',', (string)$rawIds))));
+                    if (in_array((int)$classConfigId, $ids, true)) {
+                        return $bp;
+                    }
+                }
+            }
+
+            // Check config name keywords
+            if (isset($_APP['classconfigs'][$classConfigId])) {
+                $conf = $_APP['classconfigs'][$classConfigId];
+                $name = strtolower($conf['Name'] ?? '');
+                $bp = self::matchBlueprintByNameKeywords($name, $all);
+                if ($bp) {
+                    return $bp;
+                }
+            }
+        }
+
+        // 2. Check class name keywords
         if ($className) {
-            $cn = strtolower($className);
-            if (str_contains($cn, 'monk')) return self::ARCHETYPE_UNARMED_MONK;
-            if (str_contains($cn, 'wizard') || str_contains($cn, 'sorcerer') || str_contains($cn, 'mage')) return self::ARCHETYPE_ARCANE_CASTER;
-            if (str_contains($cn, 'cleric') || str_contains($cn, 'druid') || str_contains($cn, 'priest')) return self::ARCHETYPE_DIVINE_CASTER;
-            if (str_contains($cn, 'rogue') || str_contains($cn, 'ranger') || str_contains($cn, 'bard') || str_contains($cn, 'thief')) return self::ARCHETYPE_AGILE_SKIRMISHER;
-            if (str_contains($cn, 'psion')) return self::ARCHETYPE_PSIONIC_MANIFESTER;
-            if (str_contains($cn, 'fighter') || str_contains($cn, 'paladin') || str_contains($cn, 'barbarian') || str_contains($cn, 'warrior')) return self::ARCHETYPE_HEAVY_MARTIAL;
+            $bp = self::matchBlueprintByNameKeywords(strtolower($className), $all);
+            if ($bp) {
+                return $bp;
+            }
         }
 
+        // 3. Check skills keywords
         if ($skills) {
             $sk = strtolower($skills);
-            if (str_contains($sk, 'arcm') || str_contains($sk, 'arcil') || str_contains($sk, 'arcev')) return self::ARCHETYPE_ARCANE_CASTER;
-            if (str_contains($sk, 'divli') || str_contains($sk, 'divpr') || str_contains($sk, 'divch')) return self::ARCHETYPE_DIVINE_CASTER;
-            if (str_contains($sk, 'psic') || str_contains($sk, 'psit')) return self::ARCHETYPE_PSIONIC_MANIFESTER;
-            if (str_contains($sk, 'armhv') || str_contains($sk, 'wphvb') || str_contains($sk, 'wpaxe')) return self::ARCHETYPE_HEAVY_MARTIAL;
-            if (str_contains($sk, 'armlt') || str_contains($sk, 'wpfnc') || str_contains($sk, 'thiev')) return self::ARCHETYPE_AGILE_SKIRMISHER;
+            if (str_contains($sk, 'arcm') || str_contains($sk, 'arcil') || str_contains($sk, 'arcev')) {
+                return self::getBlueprint('arcane_caster') ?? $all[0];
+            }
+            if (str_contains($sk, 'divli') || str_contains($sk, 'divpr') || str_contains($sk, 'divch')) {
+                return self::getBlueprint('cleric_life') ?? $all[0];
+            }
+            if (str_contains($sk, 'psic') || str_contains($sk, 'psit')) {
+                return self::getBlueprint('psionic_manifester') ?? $all[0];
+            }
+            if (str_contains($sk, 'armhv') || str_contains($sk, 'wphvb')) {
+                return self::getBlueprint('sword_fighter') ?? $all[0];
+            }
+            if (str_contains($sk, 'armlt') || str_contains($sk, 'wpfnc') || str_contains($sk, 'thiev')) {
+                return self::getBlueprint('rogue_scout') ?? $all[0];
+            }
         }
 
-        return self::ARCHETYPE_HEAVY_MARTIAL;
+        return $all[0];
+    }
+
+    /**
+     * Helper to match blueprint by name keywords
+     */
+    protected static function matchBlueprintByNameKeywords(string $name, array $all): ?array
+    {
+        if (str_contains($name, 'cleric of life') || str_contains($name, 'healer')) {
+            return self::getBlueprint('cleric_life');
+        }
+        if (str_contains($name, 'cleric of war') || str_contains($name, 'cleric of destruction') || str_contains($name, 'crusader')) {
+            return self::getBlueprint('cleric_war');
+        }
+        if (str_contains($name, 'cleric of knowledge')) {
+            return self::getBlueprint('cleric_knowledge');
+        }
+        if (str_contains($name, 'druid')) {
+            return self::getBlueprint('druid');
+        }
+        if (str_contains($name, 'witch doctor') || str_contains($name, 'shaman') || str_contains($name, 'adept')) {
+            return self::getBlueprint('witch_doctor');
+        }
+        if (str_contains($name, 'battlemage') || str_contains($name, 'war wizard')) {
+            return self::getBlueprint('battlemage');
+        }
+        if (str_contains($name, 'barbarian') || str_contains($name, 'berserker')) {
+            return self::getBlueprint('barbarian');
+        }
+        if (str_contains($name, 'duelist') || str_contains($name, 'fencer') || str_contains($name, 'swashbuckler')) {
+            return self::getBlueprint('duelist');
+        }
+        if (str_contains($name, 'ranger') || str_contains($name, 'archer') || str_contains($name, 'arcane archer')) {
+            return self::getBlueprint('archery_ranger');
+        }
+        if (str_contains($name, 'axe fighter') || str_contains($name, 'axeman')) {
+            return self::getBlueprint('axe_fighter');
+        }
+        if (str_contains($name, 'mace fighter') || str_contains($name, 'maceman')) {
+            return self::getBlueprint('mace_fighter');
+        }
+        if (str_contains($name, 'spear fighter') || str_contains($name, 'spearman')) {
+            return self::getBlueprint('spear_fighter');
+        }
+        if (str_contains($name, 'monk') || str_contains($name, 'student of')) {
+            return self::getBlueprint('unarmed_monk');
+        }
+        if (str_contains($name, 'psiwarrior') || str_contains($name, 'mind blade')) {
+            return self::getBlueprint('psiwarrior');
+        }
+        if (str_contains($name, 'psion') || str_contains($name, 'seer') || str_contains($name, 'shaper') || str_contains($name, 'savant') || str_contains($name, 'egoist') || str_contains($name, 'nomad') || str_contains($name, 'telepath')) {
+            return self::getBlueprint('psionic_manifester');
+        }
+        if (str_contains($name, 'templar') || str_contains($name, 'paladin')) {
+            return self::getBlueprint('templar');
+        }
+        if (str_contains($name, 'knight') || str_contains($name, 'cavalry')) {
+            return self::getBlueprint('cavalry_knight');
+        }
+        if (str_contains($name, 'gladiator')) {
+            return self::getBlueprint('gladiator');
+        }
+        if (str_contains($name, 'rogue') || str_contains($name, 'assassin') || str_contains($name, 'scout') || str_contains($name, 'spy') || str_contains($name, 'smuggler') || str_contains($name, 'thug')) {
+            return self::getBlueprint('rogue_scout');
+        }
+        if (str_contains($name, 'wizard') || str_contains($name, 'sorcerer') || str_contains($name, 'mage') || str_contains($name, 'mancer') || str_contains($name, 'conjurer') || str_contains($name, 'enchanter') || str_contains($name, 'necromancer') || str_contains($name, 'abjurer') || str_contains($name, 'illuminist') || str_contains($name, 'illusionist')) {
+            return self::getBlueprint('arcane_caster');
+        }
+        if (str_contains($name, 'aristocrat') || str_contains($name, 'politician') || str_contains($name, 'bard')) {
+            return self::getBlueprint('aristocrat');
+        }
+        if (str_contains($name, 'commoner') || str_contains($name, 'laborer') || str_contains($name, 'servant') || str_contains($name, 'craftsman') || str_contains($name, 'sage') || str_contains($name, 'merchant')) {
+            return self::getBlueprint('commoner');
+        }
+
+        return null;
+    }
+
+    /**
+     * Map a class config ID, class name, or entity to an archetype slug.
+     */
+    public static function resolveArchetype(?int $classConfigId, ?string $className = null, ?string $skills = null): string
+    {
+        $bp = self::resolveBlueprint($classConfigId, $className, $skills);
+        return $bp['Slug'] ?? self::ARCHETYPE_HEAVY_MARTIAL;
     }
 
     /**
@@ -92,7 +255,7 @@ class EquipmentBlueprintService
      * @param int $level Target level (1-40)
      * @param int|null $classConfigId ref_classconfigs ID
      * @param bool $isNpc True for NPC wealth, false for PC wealth
-     * @param array $options Additional overrides (archetype, favored weapon, etc.)
+     * @param array $options Additional overrides (blueprint, archetype, favored weapon, etc.)
      * @return array List of generated items, total value, and metadata
      */
     public static function generateLoadout(int $level, ?int $classConfigId = null, bool $isNpc = true, array $options = []): array
@@ -104,80 +267,91 @@ class EquipmentBlueprintService
         $totalWealthSp = $wealth['total_wealth_sp'];
         $maxSingleItemSp = $wealth['max_item_sp'];
 
-        $archetype = $options['archetype'] ?? self::resolveArchetype($classConfigId, $options['class_name'] ?? null);
-
-        // Fetch equipment tokens if defined in ref_classconfigs
-        $equipmentTokens = [];
-        if ($classConfigId && isset($_APP['classconfigs'][$classConfigId]['Equipment'])) {
-            $eqStr = (string)$_APP['classconfigs'][$classConfigId]['Equipment'];
-            $equipmentTokens = array_map('trim', explode(',', $eqStr));
+        // Determine Blueprint
+        $blueprint = null;
+        if (!empty($options['blueprint'])) {
+            $blueprint = is_array($options['blueprint']) ? $options['blueprint'] : self::getBlueprint($options['blueprint']);
+        }
+        if (!$blueprint && !empty($options['archetype'])) {
+            $blueprint = self::getBlueprint($options['archetype']);
+        }
+        if (!$blueprint) {
+            $blueprint = self::resolveBlueprint($classConfigId, $options['class_name'] ?? null, $options['skills'] ?? null);
         }
 
         $items = [];
         $spentSp = 0.0;
 
-        // 1. Armor / Shield
-        $armor = self::generateLoadoutArmor($archetype, $level, $maxSingleItemSp, $equipmentTokens, $options);
+        // 1. Armor
+        $armor = self::generateLoadoutArmor($blueprint, $level, $maxSingleItemSp, $options);
         if ($armor) {
             $items[] = array_merge($armor, ['slot' => 'torso', 'equipped' => true]);
-            $spentSp += $armor['value_sp'];
+            $spentSp += (float)($armor['value_sp'] ?? $armor['value'] ?? 0);
         }
 
-        $shield = self::generateLoadoutShield($archetype, $level, $maxSingleItemSp, $equipmentTokens, $options);
+        // 2. Shield
+        $shield = self::generateLoadoutShield($blueprint, $level, $maxSingleItemSp, $options);
         if ($shield) {
             $items[] = array_merge($shield, ['slot' => 'off_hand', 'equipped' => true]);
-            $spentSp += $shield['value_sp'];
+            $spentSp += (float)($shield['value_sp'] ?? $shield['value'] ?? 0);
         }
 
-        // 2. Primary Weapon
-        $mainWeapon = self::generateLoadoutPrimaryWeapon($archetype, $level, $maxSingleItemSp, $equipmentTokens, $options);
+        // 3. Primary Weapon
+        $mainWeapon = self::generateLoadoutPrimaryWeapon($blueprint, $level, $maxSingleItemSp, $options);
         if ($mainWeapon) {
             $items[] = array_merge($mainWeapon, ['slot' => 'main_hand', 'equipped' => true]);
-            $spentSp += $mainWeapon['value_sp'];
+            $spentSp += (float)($mainWeapon['value_sp'] ?? $mainWeapon['value'] ?? 0);
         }
 
-        // 3. Secondary / Ranged Weapon + Ammunition
-        $rangedWeapon = self::generateLoadoutRangedWeapon($archetype, $level, $maxSingleItemSp, $equipmentTokens, $options);
+        // 4. Secondary Weapon (if defined and budget allows)
+        $secWeapon = self::generateLoadoutSecondaryWeapon($blueprint, $level, $maxSingleItemSp, $options);
+        if ($secWeapon) {
+            $items[] = array_merge($secWeapon, ['slot' => 'belt', 'equipped' => true]);
+            $spentSp += (float)($secWeapon['value_sp'] ?? $secWeapon['value'] ?? 0);
+        }
+
+        // 5. Ranged Weapon + Ammunition
+        $rangedWeapon = self::generateLoadoutRangedWeapon($blueprint, $level, $maxSingleItemSp, $options);
         if ($rangedWeapon) {
             $items[] = array_merge($rangedWeapon, ['slot' => 'ranged', 'equipped' => true]);
-            $spentSp += $rangedWeapon['value_sp'];
+            $spentSp += (float)($rangedWeapon['value_sp'] ?? $rangedWeapon['value'] ?? 0);
 
             // Add Ammunition
-            $ammo = self::generateLoadoutAmmo($rangedWeapon['name'], $level, $maxSingleItemSp);
+            $ammo = self::generateLoadoutAmmo($blueprint, $rangedWeapon['name'], $level, $maxSingleItemSp);
             if ($ammo) {
                 $items[] = array_merge($ammo, ['slot' => 'quiver', 'equipped' => true]);
-                $spentSp += $ammo['value_sp'];
+                $spentSp += (float)($ammo['value_sp'] ?? $ammo['value'] ?? 0);
             }
         }
 
-        // 4. Implements / Focus
-        $focus = self::generateLoadoutFocus($archetype, $level, $maxSingleItemSp, $equipmentTokens);
+        // 6. Implements / Focus
+        $focus = self::generateLoadoutFocus($blueprint, $level, $maxSingleItemSp);
         if ($focus) {
             $items[] = array_merge($focus, ['slot' => 'held_or_belt', 'equipped' => true]);
-            $spentSp += $focus['value_sp'];
+            $spentSp += (float)($focus['value_sp'] ?? $focus['value'] ?? 0);
         }
 
-        // 5. Consumables (Potions, Scrolls, Power Stones)
-        $consumables = self::generateLoadoutConsumables($archetype, $level, $maxSingleItemSp);
+        // 7. Consumables (Potions, Scrolls, Power Stones)
+        $consumables = self::generateLoadoutConsumables($blueprint, $level, $maxSingleItemSp);
         foreach ($consumables as $c) {
             $items[] = array_merge($c, ['slot' => 'pouch', 'equipped' => false]);
-            $spentSp += $c['value_sp'];
+            $spentSp += (float)($c['value_sp'] ?? $c['value'] ?? 0);
         }
 
-        // 6. Accessories / Wondrous Items (Scaling with level)
+        // 8. Accessories / Wondrous Items (Scaling with level)
         if ($level >= 5) {
-            $accessories = self::generateLoadoutAccessories($archetype, $level, $maxSingleItemSp, $totalWealthSp - $spentSp);
+            $accessories = self::generateLoadoutAccessories($blueprint, $level, $maxSingleItemSp, max(0.0, $totalWealthSp - $spentSp));
             foreach ($accessories as $acc) {
                 $items[] = array_merge($acc, ['equipped' => true]);
-                $spentSp += $acc['value_sp'];
+                $spentSp += (float)($acc['value_sp'] ?? $acc['value'] ?? 0);
             }
         }
 
-        // 7. Adventurer's Kit / Mundane Gear
+        // 9. Adventurer's Kit / Mundane Gear
         $kit = ProceduralItemFactory::instantiateItem("Backpack (Item=Backpack)");
         if ($kit) {
             $items[] = array_merge($kit, ['slot' => 'back', 'equipped' => true]);
-            $spentSp += $kit['value_sp'];
+            $spentSp += (float)($kit['value_sp'] ?? $kit['value'] ?? 0);
         }
 
         $remainingSp = max(0.0, $totalWealthSp - $spentSp);
@@ -185,7 +359,9 @@ class EquipmentBlueprintService
         return [
             'level' => $level,
             'is_npc' => $isNpc,
-            'archetype' => $archetype,
+            'blueprint_id' => $blueprint['ID'] ?? 1,
+            'blueprint_name' => $blueprint['Name'] ?? 'Custom Blueprint',
+            'archetype' => $blueprint['Slug'] ?? 'custom',
             'total_budget_sp' => $totalWealthSp,
             'total_budget_gp' => $totalWealthSp / 10.0,
             'max_single_item_sp' => $maxSingleItemSp,
@@ -199,17 +375,15 @@ class EquipmentBlueprintService
     }
 
     /**
-     * Generate Armor for archetype
+     * Generate Armor based on blueprint
      */
-    protected static function generateLoadoutArmor(string $archetype, int $level, float $maxBudgetSp, array $tokens, array $options): ?array
+    protected static function generateLoadoutArmor(array $blueprint, int $level, float $maxBudgetSp, array $options): ?array
     {
-        $hasClothing = in_array('Clothing', $tokens, true);
-        $hasLtArmor = in_array('LtArmor', $tokens, true);
-        $hasMdArmor = in_array('MdArmor', $tokens, true);
-        $hasHvArmor = in_array('HvArmor', $tokens, true);
+        $category = strtolower($blueprint['ArmorCategory'] ?? 'medium');
+        $preferred = $options['armor_base'] ?? $blueprint['PreferredArmor'] ?? null;
 
-        if ($archetype === self::ARCHETYPE_UNARMED_MONK || $archetype === self::ARCHETYPE_ARCANE_CASTER) {
-            if ($level >= 8) {
+        if ($category === 'none') {
+            if ($level >= 8 && ($blueprint['Slug'] === 'unarmed_monk' || $blueprint['Slug'] === 'arcane_caster' || $blueprint['Slug'] === 'psionic_manifester')) {
                 // Bracers of Armor
                 return ProceduralItemFactory::generateWondrousItem($level, ['slot' => 'arms', 'max_budget_sp' => $maxBudgetSp]);
             }
@@ -217,124 +391,119 @@ class EquipmentBlueprintService
                 ?? ProceduralItemFactory::instantiateItem("Fine Clothing (Item=Robe)");
         }
 
-        $category = 'medium';
-        if ($hasHvArmor || $archetype === self::ARCHETYPE_HEAVY_MARTIAL) {
-            $category = 'heavy';
-        } elseif ($hasLtArmor || $archetype === self::ARCHETYPE_AGILE_SKIRMISHER) {
-            $category = 'light';
-        } elseif ($hasMdArmor || $archetype === self::ARCHETYPE_DIVINE_CASTER) {
-            $category = 'medium';
-        }
-
         return ProceduralItemFactory::generateArmor($level, [
             'category' => $category,
+            'base_item' => $preferred,
             'max_budget_sp' => $maxBudgetSp,
-            'base_item' => $options['armor_base'] ?? null,
         ]);
     }
 
     /**
-     * Generate Shield for archetype
+     * Generate Shield based on blueprint
      */
-    protected static function generateLoadoutShield(string $archetype, int $level, float $maxBudgetSp, array $tokens, array $options): ?array
+    protected static function generateLoadoutShield(array $blueprint, int $level, float $maxBudgetSp, array $options): ?array
     {
-        $hasShield = in_array('Shield', $tokens, true);
-        $hasBuckler = in_array('Buckler', $tokens, true);
-
-        if (!$hasShield && !$hasBuckler) {
-            if ($archetype !== self::ARCHETYPE_HEAVY_MARTIAL && $archetype !== self::ARCHETYPE_DIVINE_CASTER) {
-                return null;
-            }
-            // 50% of heavy martials use a shield
-            if ($archetype === self::ARCHETYPE_HEAVY_MARTIAL && rand(1, 100) > 60) {
-                return null;
-            }
+        $category = strtolower($blueprint['ShieldCategory'] ?? 'none');
+        if ($category === 'none') {
+            return null;
         }
 
-        $category = $hasBuckler ? 'buckler' : 'shield';
+        $preferred = $options['shield_base'] ?? $blueprint['PreferredShield'] ?? null;
+
         return ProceduralItemFactory::generateShield($level, [
+            'category' => $category,
+            'base_item' => $preferred,
+            'max_budget_sp' => $maxBudgetSp,
+        ]);
+    }
+
+    /**
+     * Generate Primary Weapon based on blueprint
+     */
+    protected static function generateLoadoutPrimaryWeapon(array $blueprint, int $level, float $maxBudgetSp, array $options): ?array
+    {
+        $preferred = $options['weapon_base'] ?? $blueprint['PreferredPrimaryWeapon'] ?? null;
+        $category = $blueprint['PrimaryWeaponCategory'] ?? 'sword';
+
+        if ($preferred) {
+            return ProceduralItemFactory::generateWeapon($level, [
+                'base_item' => $preferred,
+                'category' => $category,
+                'max_budget_sp' => $maxBudgetSp,
+            ]);
+        }
+
+        return ProceduralItemFactory::generateWeapon($level, [
             'category' => $category,
             'max_budget_sp' => $maxBudgetSp,
         ]);
     }
 
     /**
-     * Generate Primary Weapon for archetype
+     * Generate Secondary Weapon based on blueprint
      */
-    protected static function generateLoadoutPrimaryWeapon(string $archetype, int $level, float $maxBudgetSp, array $tokens, array $options): ?array
+    protected static function generateLoadoutSecondaryWeapon(array $blueprint, int $level, float $maxBudgetSp, array $options): ?array
     {
-        $favored = $options['weapon_base'] ?? null;
-        if ($favored) {
-            return ProceduralItemFactory::generateWeapon($level, [
-                'base_item' => $favored,
-                'max_budget_sp' => $maxBudgetSp,
-            ]);
+        $sec = $blueprint['SecondaryWeapon'] ?? null;
+        if (empty($sec)) {
+            return null;
         }
 
-        $candidates = [
-            self::ARCHETYPE_HEAVY_MARTIAL => ['Longsword', 'Greatsword', 'Battleaxe', 'Warhammer', 'Halberd'],
-            self::ARCHETYPE_AGILE_SKIRMISHER => ['Rapier', 'Shortsword', 'Scimitar', 'Dagger'],
-            self::ARCHETYPE_ARCANE_CASTER => ['Dagger', 'Quarterstaff'],
-            self::ARCHETYPE_DIVINE_CASTER => ['Warhammer', 'Morningstar', 'Mace, heavy', 'Spear', 'Sickle'],
-            self::ARCHETYPE_UNARMED_MONK => ['Quarterstaff', 'Kama', 'Nunchaku', 'Siangham'],
-            self::ARCHETYPE_PSIONIC_MANIFESTER => ['Shortsword', 'Dagger', 'Spear'],
-        ];
+        if ($level >= 8) {
+            $config = "Exceptional {$sec} (Item={$sec}: Mod=ExcepMeleeWp:)";
+        } elseif ($level >= 4) {
+            $config = "Masterwork {$sec} (Item={$sec}: Mod=MwMeleeWp:)";
+        } else {
+            $config = "{$sec} (Item={$sec})";
+        }
 
-        $pool = $candidates[$archetype] ?? ['Longsword', 'Dagger'];
-        $chosen = $pool[array_rand($pool)];
-
-        return ProceduralItemFactory::generateWeapon($level, [
-            'base_item' => $chosen,
-            'max_budget_sp' => $maxBudgetSp,
-        ]);
+        return ProceduralItemFactory::instantiateItem($config);
     }
 
     /**
-     * Generate Ranged Weapon for archetype
+     * Generate Ranged Weapon based on blueprint
      */
-    protected static function generateLoadoutRangedWeapon(string $archetype, int $level, float $maxBudgetSp, array $tokens, array $options): ?array
+    protected static function generateLoadoutRangedWeapon(array $blueprint, int $level, float $maxBudgetSp, array $options): ?array
     {
-        if ($archetype === self::ARCHETYPE_UNARMED_MONK) {
-            return ProceduralItemFactory::generateWeapon($level, [
-                'base_item' => 'Sling',
-                'max_budget_sp' => $maxBudgetSp,
-            ]);
+        $preferred = $blueprint['PreferredRangedWeapon'] ?? null;
+        if (empty($preferred)) {
+            return null;
         }
 
-        $candidates = [
-            self::ARCHETYPE_HEAVY_MARTIAL => ['Crossbow, heavy', 'Bow, composite long-'],
-            self::ARCHETYPE_AGILE_SKIRMISHER => ['Bow, composite short-', 'Crossbow, light', 'Shortbow'],
-            self::ARCHETYPE_ARCANE_CASTER => ['Crossbow, light', 'Darts'],
-            self::ARCHETYPE_DIVINE_CASTER => ['Crossbow, light', 'Sling'],
-            self::ARCHETYPE_PSIONIC_MANIFESTER => ['Crossbow, light'],
-        ];
-
-        $pool = $candidates[$archetype] ?? ['Crossbow, light'];
-        $chosen = $pool[array_rand($pool)];
+        // If primary weapon was already this ranged weapon, skip secondary ranged
+        $primary = $blueprint['PreferredPrimaryWeapon'] ?? '';
+        if ($blueprint['PrimaryWeaponCategory'] === 'ranged' && $primary === $preferred) {
+            return null;
+        }
 
         return ProceduralItemFactory::generateWeapon($level, [
-            'base_item' => $chosen,
+            'base_item' => $preferred,
+            'category' => 'ranged',
             'max_budget_sp' => $maxBudgetSp * 0.6,
         ]);
     }
 
     /**
-     * Generate Ammunition for Ranged Weapon
+     * Generate Ammunition for Ranged Weapon based on blueprint
      */
-    protected static function generateLoadoutAmmo(string $weaponName, int $level, float $maxBudgetSp): ?array
+    protected static function generateLoadoutAmmo(array $blueprint, string $weaponName, int $level, float $maxBudgetSp): ?array
     {
-        $wn = strtolower($weaponName);
-        $ammoItem = 'Arrow, sheaf (20)';
-        if (str_contains($wn, 'heavy') && str_contains($wn, 'crossbow')) {
-            $ammoItem = 'Bolt, heavy (10)';
-        } elseif (str_contains($wn, 'light') && str_contains($wn, 'crossbow')) {
-            $ammoItem = 'Bolt, light (10)';
-        } elseif (str_contains($wn, 'hand') && str_contains($wn, 'crossbow')) {
-            $ammoItem = 'Bolt, hand (10)';
-        } elseif (str_contains($wn, 'crossbow')) {
-            $ammoItem = 'Bolt, heavy (10)';
-        } elseif (str_contains($wn, 'sling')) {
-            $ammoItem = 'Bullet, sling (10)';
+        $ammoItem = $blueprint['Ammunition'] ?? null;
+        if (empty($ammoItem)) {
+            $wn = strtolower($weaponName);
+            if (str_contains($wn, 'heavy') && str_contains($wn, 'crossbow')) {
+                $ammoItem = 'Bolt, heavy (10)';
+            } elseif (str_contains($wn, 'light') && str_contains($wn, 'crossbow')) {
+                $ammoItem = 'Bolt, light (10)';
+            } elseif (str_contains($wn, 'hand') && str_contains($wn, 'crossbow')) {
+                $ammoItem = 'Bolt, hand (10)';
+            } elseif (str_contains($wn, 'crossbow')) {
+                $ammoItem = 'Bolt, heavy (10)';
+            } elseif (str_contains($wn, 'sling')) {
+                $ammoItem = 'Bullet, sling (10)';
+            } else {
+                $ammoItem = 'Arrow, sheaf (20)';
+            }
         }
 
         if ($level >= 6) {
@@ -349,11 +518,13 @@ class EquipmentBlueprintService
     }
 
     /**
-     * Generate Focus / Implement
+     * Generate Focus / Implement based on blueprint
      */
-    protected static function generateLoadoutFocus(string $archetype, int $level, float $maxBudgetSp, array $tokens): ?array
+    protected static function generateLoadoutFocus(array $blueprint, int $level, float $maxBudgetSp): ?array
     {
-        if ($archetype === self::ARCHETYPE_DIVINE_CASTER) {
+        $category = strtolower($blueprint['ImplementCategory'] ?? 'none');
+
+        if ($category === 'holy_symbol') {
             $bonus = $level >= 10 ? 2 : 1;
             if ($level >= 5) {
                 return ProceduralItemFactory::instantiateItem("Holy Symbol +{$bonus} (Item=Holy symbol, silver: Mod=ImplementEnh&x={$bonus})");
@@ -361,57 +532,68 @@ class EquipmentBlueprintService
             return ProceduralItemFactory::instantiateItem("Holy Symbol, Silver (Item=Holy symbol, silver)");
         }
 
-        if ($archetype === self::ARCHETYPE_ARCANE_CASTER) {
+        if ($category === 'druidic_focus') {
+            return ProceduralItemFactory::instantiateItem("Holly and Mistletoe (Item=Holy symbol, wooden)");
+        }
+
+        if ($category === 'wand') {
             if ($level >= 7) {
                 return ProceduralItemFactory::generateWand($level, ['max_power_cost' => 2]);
             }
             return ProceduralItemFactory::instantiateItem("Arcane Focus (Item=Rod)");
         }
 
+        if ($category === 'dorje') {
+            if ($level >= 7) {
+                return ProceduralItemFactory::generateWand($level, ['type' => 'dorje', 'max_power_cost' => 2]);
+            }
+            return ProceduralItemFactory::instantiateItem("Psionic Focus (Item=Rod)");
+        }
+
         return null;
     }
 
     /**
-     * Generate Consumables (Potions, Scrolls)
+     * Generate Consumables based on blueprint
      */
-    protected static function generateLoadoutConsumables(string $archetype, int $level, float $maxBudgetSp): array
+    protected static function generateLoadoutConsumables(array $blueprint, int $level, float $maxBudgetSp): array
     {
         $consumables = [];
+        $typesStr = $blueprint['ConsumableTypes'] ?? 'healing_potion';
+        $types = array_filter(array_map('trim', explode(',', $typesStr)));
 
-        // Everyone gets 1-2 Potions of Healing
-        $potionLevel = min(10, max(1, $level));
-        $healingPotion = ProceduralItemFactory::generatePotion($potionLevel, [
-            'spell_name' => 'Heal Wounds',
-            'max_budget_sp' => $maxBudgetSp * 0.4,
-        ]);
-        if ($healingPotion) {
-            $consumables[] = $healingPotion;
-        }
-
-        // Casters get utility scrolls or power stones
-        if ($archetype === self::ARCHETYPE_ARCANE_CASTER) {
-            $scroll = ProceduralItemFactory::generateScroll($level, [
-                'school_or_discipline' => 'Arcane',
-                'max_budget_sp' => $maxBudgetSp * 0.4,
-            ]);
-            if ($scroll) {
-                $consumables[] = $scroll;
-            }
-        } elseif ($archetype === self::ARCHETYPE_DIVINE_CASTER) {
-            $scroll = ProceduralItemFactory::generateScroll($level, [
-                'school_or_discipline' => 'Divine',
-                'max_budget_sp' => $maxBudgetSp * 0.4,
-            ]);
-            if ($scroll) {
-                $consumables[] = $scroll;
-            }
-        } elseif ($archetype === self::ARCHETYPE_PSIONIC_MANIFESTER) {
-            $stone = ProceduralItemFactory::generateScroll($level, [
-                'type' => 'power_stone',
-                'max_budget_sp' => $maxBudgetSp * 0.4,
-            ]);
-            if ($stone) {
-                $consumables[] = $stone;
+        foreach ($types as $t) {
+            if ($t === 'healing_potion' || $t === 'potion_heal') {
+                $potionLevel = min(10, max(1, $level));
+                $hp = ProceduralItemFactory::generatePotion($potionLevel, [
+                    'spell_name' => 'Heal Wounds',
+                    'max_budget_sp' => $maxBudgetSp * 0.4,
+                ]);
+                if ($hp) $consumables[] = $hp;
+            } elseif ($t === 'buff_potion' || $t === 'potion_buff') {
+                $potionLevel = min(10, max(1, $level));
+                $bp = ProceduralItemFactory::generatePotion($potionLevel, [
+                    'max_budget_sp' => $maxBudgetSp * 0.4,
+                ]);
+                if ($bp) $consumables[] = $bp;
+            } elseif ($t === 'scroll_arcane') {
+                $scroll = ProceduralItemFactory::generateScroll($level, [
+                    'school_or_discipline' => 'Arcane',
+                    'max_budget_sp' => $maxBudgetSp * 0.4,
+                ]);
+                if ($scroll) $consumables[] = $scroll;
+            } elseif ($t === 'scroll_divine') {
+                $scroll = ProceduralItemFactory::generateScroll($level, [
+                    'school_or_discipline' => 'Divine',
+                    'max_budget_sp' => $maxBudgetSp * 0.4,
+                ]);
+                if ($scroll) $consumables[] = $scroll;
+            } elseif ($t === 'power_stone') {
+                $stone = ProceduralItemFactory::generateScroll($level, [
+                    'type' => 'power_stone',
+                    'max_budget_sp' => $maxBudgetSp * 0.4,
+                ]);
+                if ($stone) $consumables[] = $stone;
             }
         }
 
@@ -419,36 +601,28 @@ class EquipmentBlueprintService
     }
 
     /**
-     * Generate Accessories / Wondrous Items for mid-to-high levels
+     * Generate Accessories / Wondrous Items based on blueprint accessory slots
      */
-    protected static function generateLoadoutAccessories(string $archetype, int $level, float $maxBudgetSp, float $remainingBudgetSp): array
+    protected static function generateLoadoutAccessories(array $blueprint, int $level, float $maxBudgetSp, float $remainingBudgetSp): array
     {
         $accessories = [];
-        $slotsToTry = [];
-
-        if ($archetype === self::ARCHETYPE_HEAVY_MARTIAL) {
-            $slotsToTry = ['waist', 'shoulders', 'ring', 'neck'];
-        } elseif ($archetype === self::ARCHETYPE_AGILE_SKIRMISHER) {
-            $slotsToTry = ['feet', 'shoulders', 'hands', 'ring'];
-        } elseif ($archetype === self::ARCHETYPE_ARCANE_CASTER) {
-            $slotsToTry = ['head', 'ring', 'shoulders', 'neck'];
-        } elseif ($archetype === self::ARCHETYPE_DIVINE_CASTER) {
-            $slotsToTry = ['neck', 'shoulders', 'ring', 'waist'];
-        } else {
-            $slotsToTry = ['ring', 'shoulders', 'feet', 'waist'];
+        $slotsStr = $blueprint['AccessorySlots'] ?? 'waist,shoulders,ring,neck';
+        $slots = array_filter(array_map('trim', explode(',', $slotsStr)));
+        if (empty($slots)) {
+            $slots = ['waist', 'shoulders', 'ring', 'neck'];
         }
 
         $count = $level >= 15 ? 3 : ($level >= 9 ? 2 : 1);
-        $slotsToTry = array_slice($slotsToTry, 0, $count);
+        $slotsToTry = array_slice($slots, 0, $count);
 
         foreach ($slotsToTry as $slot) {
             $item = ProceduralItemFactory::generateWondrousItem($level, [
                 'slot' => $slot,
                 'max_budget_sp' => min($maxBudgetSp, $remainingBudgetSp),
             ]);
-            if ($item && $item['value_sp'] <= $remainingBudgetSp) {
+            if ($item && ($item['value_sp'] ?? $item['value'] ?? 0) <= $remainingBudgetSp) {
                 $accessories[] = array_merge($item, ['slot' => $slot]);
-                $remainingBudgetSp -= $item['value_sp'];
+                $remainingBudgetSp -= (float)($item['value_sp'] ?? $item['value'] ?? 0);
             }
         }
 

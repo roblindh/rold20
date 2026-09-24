@@ -1393,11 +1393,25 @@ function characterViewerApp() {
             this.lvlData.remainingSp = Math.round((this.lvlData.remainingSp - delta) * 10) / 10;
         },
 
-        // Buy Items Shop State
+        // Buy Items & Market Shop State
+        marketTab: 'catalog',
         buySearchQuery: '',
         buySelectedType: '',
         shopCatalog: rawEquipment || [],
         cartItems: [],
+
+        // Settlement Shops State
+        settlementSize: 'Small town',
+        settlementShopType: 'general',
+        townShopItems: [],
+        townShopGPLimitSp: 8000,
+        loadingTownShop: false,
+
+        // Magic & Commission Forge State
+        commissionType: 'weapon',
+        commissionLevel: {{ max(1, min(20, (int)($totalLevel ?? 1))) }},
+        commissionItem: null,
+        generatingCommission: false,
 
         get filteredShopItems() {
             let list = this.shopCatalog;
@@ -1414,17 +1428,105 @@ function characterViewerApp() {
             return list;
         },
 
-        addItemToCart(item) {
-            const existing = this.cartItems.find(c => c.id === item.ID);
-            if (existing) {
-                existing.qty++;
-            } else {
-                this.cartItems.push({
-                    id: item.ID,
-                    name: item.Name,
-                    unit_price: parseFloat(item.BaseValue || 0),
-                    qty: 1
+        async fetchTownShop() {
+            this.loadingTownShop = true;
+            try {
+                const res = await fetch('{{ route('utilities.itemgen.shop', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        _token: '{{ csrf_token() }}',
+                        settlement: this.settlementSize,
+                        shop_type: this.settlementShopType,
+                        count: 24
+                    })
                 });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.success) {
+                        this.townShopItems = data.items || [];
+                        this.townShopGPLimitSp = Number(data.gplimit_sp) || 8000;
+                    }
+                }
+            } catch (e) {
+                console.error('Error fetching town shop:', e);
+            }
+            this.loadingTownShop = false;
+        },
+
+        async generateCommissionItem() {
+            this.generatingCommission = true;
+            try {
+                const res = await fetch('{{ route('utilities.itemgen.procedural', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        _token: '{{ csrf_token() }}',
+                        type: this.commissionType,
+                        level: Number(this.commissionLevel) || 1,
+                        is_npc: false
+                    })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.success && data.item) {
+                        this.commissionItem = data.item;
+                    }
+                }
+            } catch (e) {
+                console.error('Error generating commission item:', e);
+            }
+            this.generatingCommission = false;
+        },
+
+        addItemToCart(item, isCustom = false) {
+            if (isCustom) {
+                const configStr = item.config_string || item.config || item.name;
+                const unitPrice = parseFloat(item.value_sp || item.value || item.unit_price || 0);
+                const weight = parseFloat(item.weight_kg || item.weight || 0);
+                const existing = this.cartItems.find(c => c.custom && (c.config_string === configStr || c.name === item.name));
+                if (existing) {
+                    existing.qty++;
+                } else {
+                    this.cartItems.push({
+                        id: null,
+                        custom: true,
+                        name: item.name,
+                        config_string: configStr,
+                        unit_price: unitPrice,
+                        weight: weight,
+                        dr: item.dr || '0',
+                        traits: item.traits || '',
+                        mods: item.mods || '',
+                        qty: 1
+                    });
+                }
+            } else {
+                const existing = this.cartItems.find(c => !c.custom && c.id === item.ID);
+                if (existing) {
+                    existing.qty++;
+                } else {
+                    this.cartItems.push({
+                        id: item.ID,
+                        custom: false,
+                        name: item.Name,
+                        config_string: item.Name,
+                        unit_price: parseFloat(item.BaseValue || 0),
+                        weight: parseFloat(item.Weight || 0),
+                        dr: item.DR ? String(item.DR) : '0',
+                        traits: '',
+                        mods: '',
+                        qty: 1
+                    });
+                }
             }
         },
 

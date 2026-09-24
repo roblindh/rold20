@@ -976,83 +976,174 @@ class UtilityController extends Controller
     }
 
     /**
-     * Buy items with character's wealth
+     * Buy items with character's wealth (supports standard items, town shops, and custom/procedural items)
      */
-    public function buyCharacterItems(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    public function buyCharacterItems(Request $request, int $id): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
     {
         $character = DB::table('characters')->where('ID', $id)->first();
         if (!$character) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Character not found.'], 404);
+            }
             return back()->with('error', 'Character not found.');
         }
 
         if (!$this->isAuthorizedToManageCharacter($character)) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Unauthorized: Only a GM or this character\'s player can buy items for this character.'], 403);
+            }
             return back()->with('error', 'Unauthorized: Only a GM or this character\'s player can buy items for this character.');
         }
 
         $validated = $request->validate([
             'items' => 'required|array|min:1',
-            'items.*.id' => 'required|integer|exists:ref_items,ID',
+            'items.*.id' => 'nullable',
             'items.*.qty' => 'required|integer|min:1|max:100',
+            'items.*.custom' => 'nullable',
+            'items.*.name' => 'nullable|string',
+            'items.*.unit_price' => 'nullable|numeric|min:0',
+            'items.*.weight' => 'nullable|numeric|min:0',
+            'items.*.config_string' => 'nullable|string',
+            'items.*.category' => 'nullable|string',
+            'items.*.item_type_id' => 'nullable|integer',
+            'items.*.subtype' => 'nullable|integer',
+            'items.*.dr' => 'nullable|string',
+            'items.*.traits' => 'nullable|string',
+            'items.*.mods' => 'nullable|string',
         ]);
 
         $currentWealth = (int)($character->Wealth ?? 0);
         $totalCost = 0;
         $itemsToAdd = [];
 
-        $itemIds = array_column($validated['items'], 'id');
-        $catalog = DB::table('ref_items')
-            ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
-            ->whereIn('ref_items.ID', $itemIds)
-            ->select('ref_items.*', 'ref_itemsubtypes.Type as ItemTypeID', 'ref_itemsubtypes.Name as SubtypeName')
-            ->get()
-            ->keyBy('ID');
+        // Collect standard item IDs
+        $standardItemIds = [];
+        foreach ($validated['items'] as $it) {
+            if (empty($it['custom']) && !empty($it['id']) && is_numeric($it['id'])) {
+                $standardItemIds[] = (int)$it['id'];
+            }
+        }
+
+        $catalog = collect();
+        if (!empty($standardItemIds)) {
+            $catalog = DB::table('ref_items')
+                ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
+                ->whereIn('ref_items.ID', $standardItemIds)
+                ->select('ref_items.*', 'ref_itemsubtypes.Type as ItemTypeID', 'ref_itemsubtypes.Name as SubtypeName')
+                ->get()
+                ->keyBy('ID');
+        }
 
         foreach ($validated['items'] as $it) {
-            $ref = $catalog[$it['id']] ?? null;
-            if (!$ref) continue;
             $qty = (int)$it['qty'];
-            $unitPrice = (float)($ref->BaseValue ?? 0);
-            $totalCost += (int)round($unitPrice * $qty);
+            $isCustom = !empty($it['custom']) || empty($it['id']) || !is_numeric($it['id']) || !isset($catalog[(int)$it['id']]);
 
-            $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($ref);
-            $isContainer = \App\Services\Entity\EquipmentManager::isContainer($ref);
-            $uid = uniqid('item_');
+            if (!$isCustom && isset($catalog[(int)$it['id']])) {
+                $ref = $catalog[(int)$it['id']];
+                $unitPrice = (float)($ref->BaseValue ?? 0);
+                $totalCost += (int)round($unitPrice * $qty);
 
-            $itemsToAdd[] = [
-                'id' => $uid,
-                'uid' => $uid,
-                'item_id' => $ref->ID,
-                'ID' => $ref->ID,
-                'name' => $ref->Name . ($qty > 1 ? " (x{$qty})" : ''),
-                'Name' => $ref->Name,
-                'qty' => $qty,
-                'Qty' => $qty,
-                'unit_price' => $unitPrice,
-                'value' => (float)$unitPrice * $qty,
-                'BaseValue' => $unitPrice,
-                'weight' => (float)($ref->Weight ?? 0) * $qty,
-                'BaseWeight' => (float)($ref->Weight ?? 0),
-                'size' => $ref->Size ?? 'Medium (M)',
-                'dr' => (string)($ref->DR ?? 0),
-                'config' => $ref->Name,
-                'location' => $defaultLoc,
-                'Location' => $defaultLoc,
-                'locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
-                'Locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
-                'container_id' => null,
-                'ContainerID' => null,
-                'is_container' => $isContainer,
-                'IsContainer' => $isContainer,
-                'ItemTypeID' => $ref->ItemTypeID ?? $ref->Type ?? null,
-                'Subtype' => $ref->Subtype ?? null,
-                'SubtypeName' => $ref->SubtypeName ?? null,
-                'ECMod' => (int)($ref->ECMod ?? 0),
-                'added_at' => date('Y-m-d H:i:s'),
-            ];
+                $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($ref);
+                $isContainer = \App\Services\Entity\EquipmentManager::isContainer($ref);
+                $uid = uniqid('item_');
+
+                $itemsToAdd[] = [
+                    'id' => $uid,
+                    'uid' => $uid,
+                    'item_id' => $ref->ID,
+                    'ID' => $ref->ID,
+                    'name' => $ref->Name . ($qty > 1 ? " (x{$qty})" : ''),
+                    'Name' => $ref->Name,
+                    'qty' => $qty,
+                    'Qty' => $qty,
+                    'unit_price' => $unitPrice,
+                    'value' => (float)$unitPrice * $qty,
+                    'BaseValue' => $unitPrice,
+                    'weight' => (float)($ref->Weight ?? 0) * $qty,
+                    'BaseWeight' => (float)($ref->Weight ?? 0),
+                    'size' => $ref->Size ?? 'Medium (M)',
+                    'dr' => (string)($ref->DR ?? 0),
+                    'config' => $ref->Name,
+                    'location' => $defaultLoc,
+                    'Location' => $defaultLoc,
+                    'locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
+                    'Locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
+                    'container_id' => null,
+                    'ContainerID' => null,
+                    'is_container' => $isContainer,
+                    'IsContainer' => $isContainer,
+                    'ItemTypeID' => $ref->ItemTypeID ?? $ref->Type ?? null,
+                    'Subtype' => $ref->Subtype ?? null,
+                    'SubtypeName' => $ref->SubtypeName ?? null,
+                    'ECMod' => (int)($ref->ECMod ?? 0),
+                    'added_at' => date('Y-m-d H:i:s'),
+                ];
+            } else {
+                // Procedural or custom item
+                $configString = (string)($it['config_string'] ?? $it['config'] ?? $it['name'] ?? 'Custom Item');
+                $name = (string)($it['name'] ?? 'Custom Item');
+                $unitPrice = (float)($it['unit_price'] ?? $it['value'] ?? 0);
+                $weight = (float)($it['weight'] ?? 0);
+
+                // If config_string is available, verify with ProceduralItemFactory
+                if (!empty($configString)) {
+                    $inst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem($configString);
+                    if ($inst) {
+                        $name = $inst['name'] ?? $name;
+                        if ($unitPrice <= 0) {
+                            $unitPrice = (float)($inst['value_sp'] ?? $inst['value'] ?? 0);
+                        }
+                        if ($weight <= 0) {
+                            $weight = (float)($inst['weight_kg'] ?? $inst['weight'] ?? 0);
+                        }
+                    }
+                }
+
+                $totalCost += (int)round($unitPrice * $qty);
+                $uid = uniqid('item_');
+                $defaultLoc = 1; // Default carried
+
+                $itemsToAdd[] = [
+                    'id' => $uid,
+                    'uid' => $uid,
+                    'item_id' => null,
+                    'name' => $name . ($qty > 1 ? " (x{$qty})" : ''),
+                    'Name' => $name,
+                    'qty' => $qty,
+                    'Qty' => $qty,
+                    'unit_price' => $unitPrice,
+                    'value' => (float)$unitPrice * $qty,
+                    'BaseValue' => $unitPrice,
+                    'weight' => (float)$weight * $qty,
+                    'BaseWeight' => (float)$weight,
+                    'size' => $it['size'] ?? 'Medium (M)',
+                    'dr' => (string)($it['dr'] ?? '0'),
+                    'traits' => (string)($it['traits'] ?? ''),
+                    'mods' => (string)($it['mods'] ?? ''),
+                    'config' => $configString,
+                    'config_string' => $configString,
+                    'location' => $defaultLoc,
+                    'Location' => $defaultLoc,
+                    'locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
+                    'Locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
+                    'container_id' => null,
+                    'ContainerID' => null,
+                    'is_container' => !empty($it['is_container']),
+                    'IsContainer' => !empty($it['is_container']),
+                    'ItemTypeID' => $it['item_type_id'] ?? null,
+                    'Subtype' => $it['subtype'] ?? null,
+                    'ECMod' => 0,
+                    'added_at' => date('Y-m-d H:i:s'),
+                ];
+            }
         }
 
         if ($totalCost > $currentWealth) {
-            return back()->with('error', "Insufficient funds. Total cost is {$totalCost} sp, but {$character->Name} only has {$currentWealth} sp.");
+            $msg = "Insufficient funds. Total cost is {$totalCost} sp, but {$character->Name} only has {$currentWealth} sp.";
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $msg], 422);
+            }
+            return back()->with('error', $msg);
         }
 
         $charEquip = [];
@@ -1068,12 +1159,24 @@ class UtilityController extends Controller
             $charEquip[] = $item;
         }
 
+        $newWealth = max(0, $currentWealth - $totalCost);
         DB::table('characters')->where('ID', $id)->update([
-            'Wealth' => $currentWealth - $totalCost,
+            'Wealth' => $newWealth,
             'Equipment' => json_encode($charEquip),
         ]);
 
-        return back()->with('status', "Successfully purchased items for {$totalCost} sp! New balance: " . ($currentWealth - $totalCost) . " sp.");
+        $successMsg = "Successfully purchased items for {$totalCost} sp! New balance: {$newWealth} sp.";
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => $successMsg,
+                'new_wealth' => $newWealth,
+                'total_cost' => $totalCost,
+                'added_items' => $itemsToAdd,
+            ]);
+        }
+
+        return back()->with('status', $successMsg);
     }
 
     /**
@@ -1530,6 +1633,7 @@ class UtilityController extends Controller
         $classes = DB::table('ref_classes')->orderBy('Name')->get();
         $socialClasses = DB::table('ref_socialclasses')->orderBy('ID')->get();
         $wealthClasses = DB::table('ref_wealthclasses')->orderBy('ID')->get();
+        $archetypeBlueprints = DB::table('ref_archetypeblueprints')->orderBy('Name')->get();
 
         // Pre-render initial Human stat block in PHP for instant rendering
         $initialConfig = "Human { }";
@@ -1569,11 +1673,52 @@ class UtilityController extends Controller
             'classes',
             'socialClasses',
             'wealthClasses',
+            'archetypeBlueprints',
             'initialStatblockHtml',
             'initialConfig',
             'myCampaigns',
             'selectedCampaignId'
         ));
+    }
+
+    /**
+     * AJAX endpoint to generate equipment loadout from an archetype blueprint
+     */
+    public function generateBlueprintLoadout(Request $request): JsonResponse
+    {
+        try {
+            $blueprintKey = $request->input('blueprint');
+            $level = max(1, min(40, (int)$request->input('level', 1)));
+            $classConfigId = $request->input('class_config_id') ? (int)$request->input('class_config_id') : null;
+            $isNpc = $request->input('is_npc', true);
+
+            $loadout = \App\Services\ItemGeneration\EquipmentBlueprintService::generateLoadout($level, $classConfigId, (bool)$isNpc, [
+                'blueprint' => $blueprintKey,
+                'archetype' => $blueprintKey,
+            ]);
+
+            // Build RoL NPC formatted equipment string: "Equipped=... (Item=...: Mod=...:); Carried=... (...:);"
+            $equipParts = [];
+            foreach ($loadout['items'] as $item) {
+                $prefix = !empty($item['equipped']) ? 'Equipped=' : 'Carried=';
+                $config = $item['config_string'] ?? ($item['name'] . ' (Item=' . $item['name'] . ':)');
+                $equipParts[] = $prefix . $config . ';';
+            }
+            $formattedString = implode(' ', $equipParts);
+
+            return response()->json([
+                'success' => true,
+                'blueprint' => $loadout['blueprint_name'] ?? 'Archetype',
+                'archetype' => $loadout['archetype'] ?? 'custom',
+                'formatted_string' => $formattedString,
+                'loadout' => $loadout,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

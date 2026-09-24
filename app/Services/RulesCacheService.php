@@ -19,6 +19,7 @@ class RulesCacheService
             'actiontypes' => ['table' => 'ref_actiontypes', 'key' => 'ID'],
             'activitylevels' => ['table' => 'ref_activitylevels', 'key' => 'ID'],
             'agecats' => ['table' => 'ref_ages', 'key' => 'ID'],
+            'archetypeblueprints' => ['table' => 'ref_archetypeblueprints', 'key' => 'ID'],
             'bodycats' => ['table' => 'ref_bodytypes', 'key' => 'ID'],
             'classconfigs' => ['table' => 'ref_classconfigs', 'key' => 'ID'],
             'classes' => ['table' => 'ref_classes', 'key' => 'ID'],

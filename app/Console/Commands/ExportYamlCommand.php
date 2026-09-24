@@ -26,7 +26,7 @@ class ExportYamlCommand extends Command
             'creatures.yaml' => ['creaturetypes', 'creaturesubtypes', 'creatures', 'templates', 'naturalattacks'],
             'items.yaml' => ['itemtypes', 'itemsubtypes', 'items', 'itemmodsmundane', 'itemmodsmagic', 'itemsartifacts', 'itemsmodified', 'materials', 'materialtypes', 'lightsources'],
             'actions.yaml' => ['actiontypes', 'actions', 'hazards', 'trapfeatures'],
-            'classes.yaml' => ['classes', 'classconfigs', 'companionimprovements'],
+            'classes.yaml' => ['classes', 'classconfigs', 'companionimprovements', 'archetypeblueprints'],
             'cultures.yaml' => ['cultures', 'socialclasses', 'wealthclasses', 'wealthperlevel', 'towntypes', 'buildingfeatures'],
             'world.yaml' => ['deities', 'pantheons', 'planes', 'organizations', 'organizationtypes'],
             'environment.yaml' => ['terraintypes', 'terraineffects', 'environmenteffects', 'underwatereffects', 'weather'],

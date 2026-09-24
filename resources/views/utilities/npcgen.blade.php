@@ -418,39 +418,103 @@
                 </div>
             </div>
 
-            <!-- 13. Equipment -->
-            <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-2">
+            <!-- 13. Equipment & Archetype Blueprints -->
+            <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-2.5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                     <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                        13. Equipment
+                        13. Equipment & Archetype Blueprint
                     </label>
-                    <!-- Quick Presets -->
-                    <div class="flex flex-wrap items-center gap-1">
-                        <button type="button" @click="setEquipmentPreset('guard')"
-                                class="px-1.5 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-[10px] font-semibold border border-slate-200 cursor-pointer">
-                            🛡️ Guard
-                        </button>
-                        <button type="button" @click="setEquipmentPreset('archer')"
-                                class="px-1.5 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-[10px] font-semibold border border-slate-200 cursor-pointer">
-                            🏹 Archer
-                        </button>
-                        <button type="button" @click="setEquipmentPreset('knight')"
-                                class="px-1.5 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-[10px] font-semibold border border-slate-200 cursor-pointer">
-                            ⚔️ Knight
-                        </button>
-                        <button type="button" @click="setEquipmentPreset('mage')"
-                                class="px-1.5 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-[10px] font-semibold border border-slate-200 cursor-pointer">
-                            🧙‍♂️ Mage
-                        </button>
+                    <div class="flex items-center gap-1.5">
+                        <span x-show="generatingEquipment" class="text-[10px] text-indigo-600 font-semibold flex items-center gap-1">
+                            <span class="animate-spin">⏳</span> Outfitting...
+                        </span>
                         <button type="button" @click="equipment = ''"
-                                class="px-1.5 py-0.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded text-[10px] font-semibold border border-rose-200 cursor-pointer">
+                                class="px-2 py-0.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded text-[10px] font-semibold border border-rose-200 cursor-pointer">
                             Clear
                         </button>
                     </div>
                 </div>
 
+                <!-- Quick Archetype Blueprint Buttons -->
+                <div class="flex flex-wrap items-center gap-1">
+                    <button type="button" @click="applyBlueprintLoadout('sword_fighter')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        ⚔️ Swordsman
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('axe_fighter')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        🪓 Axeman
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('mace_fighter')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        🔨 Hammerman
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('duelist')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        🗡️ Duelist
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('archery_ranger')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        🏹 Archer
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('cavalry_knight')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        🛡️ Knight
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('barbarian')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        🩸 Barbarian
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('arcane_caster')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        🧙‍♂️ Mage
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('battlemage')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        ⚡ Battlemage
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('cleric_life')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        🕊️ Cleric (Life)
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('cleric_war')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        ⛪ Cleric (War)
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('druid')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        🌿 Druid
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('witch_doctor')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        💀 Witch Doctor
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('unarmed_monk')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        🥋 Monk
+                    </button>
+                    <button type="button" @click="applyBlueprintLoadout('psionic_manifester')"
+                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                        🔮 Psion
+                    </button>
+                </div>
+
+                <!-- Dropdown for All Blueprints -->
+                <div class="flex items-center gap-2 pt-1 border-t border-slate-100">
+                    <select x-model="selectedBlueprintSlug" class="flex-1 px-2 py-1 border border-slate-300 rounded-lg text-xs bg-white text-slate-900">
+                        <option value="">-- Select Archetype Blueprint to Auto-Outfit --</option>
+                        @foreach($archetypeBlueprints as $ab)
+                            <option value="{{ $ab->Slug }}">{{ $ab->Name }}</option>
+                        @endforeach
+                    </select>
+                    <button type="button" @click="applyBlueprintLoadout(selectedBlueprintSlug)" :disabled="!selectedBlueprintSlug || generatingEquipment"
+                            class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold cursor-pointer shrink-0">
+                        Auto-Outfit Gear
+                    </button>
+                </div>
+
                 <textarea x-model="equipment" rows="2"
-                          placeholder="e.g. Equipped=Longsword (Item=Sword, long-: Mod=MwMeleeWp:); Equipped=Full plate (Item=Full plate: Mod=ExcepArmor:);"
+                          placeholder="e.g. Equipped=Sword, long- +1 (Item=Sword, long-: Mod=MwMeleeWp: Mod=WpEnh&x=1:); Equipped=Full plate (Item=Full plate: Mod=ExcepArmor:);"
                           class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-mono text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
@@ -553,6 +617,8 @@ function npcGeneratorWizard() {
         equipment: '',
 
         selectedCampaignId: {{ $selectedCampaignId ?? 0 }},
+        selectedBlueprintSlug: '',
+        generatingEquipment: false,
         loading: false,
         rollingAbil: false,
         savingCamp: false,
@@ -664,16 +730,50 @@ function npcGeneratorWizard() {
             this.rollingAbil = false;
         },
 
-        setEquipmentPreset(preset) {
-            if (preset === 'guard') {
-                this.equipment = 'Equipped=Longsword (Item=Sword, long-: Mod=MwMeleeWp:); Equipped=Full plate (Item=Full plate: Mod=ExcepArmor:);';
-            } else if (preset === 'archer') {
-                this.equipment = 'Equipped=Composite longbow (Item=Bow, composite long-: Mod=MwRangedWp:); Equipped=Studded leather (Item=Studded leather: Mod=MwArmor:);';
-            } else if (preset === 'knight') {
-                this.equipment = 'Equipped=Greatsword (Item=Sword, great-: Mod=MwMeleeWp:); Equipped=Full plate (Item=Full plate: Mod=ExcepArmor:);';
-            } else if (preset === 'mage') {
-                this.equipment = 'Equipped=Quarterstaff (Item=Quarterstaff: Mod=MwMeleeWp:); Equipped=Clothing (Item=Clothing:);';
+        async applyBlueprintLoadout(blueprintSlug) {
+            if (!blueprintSlug) return;
+            this.generatingEquipment = true;
+            try {
+                let firstClassId = this.background_class_id;
+                if (!firstClassId && this.classes.length > 0 && this.classes[0].config_id) {
+                    firstClassId = this.classes[0].config_id;
+                }
+
+                let totalLvl = 0;
+                if (this.background_class_id) totalLvl += 1;
+                for (const c of this.classes) {
+                    totalLvl += Number(c.level) || 1;
+                }
+                if (totalLvl < 1) totalLvl = 1;
+
+                const res = await fetch('{{ route('utilities.npcgen.loadout', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        _token: '{{ csrf_token() }}',
+                        blueprint: blueprintSlug,
+                        level: totalLvl,
+                        class_config_id: firstClassId,
+                        is_npc: true
+                    })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.success && data.formatted_string) {
+                        this.equipment = data.formatted_string;
+                    }
+                } else {
+                    console.warn('Loadout generation failed HTTP ' + res.status);
+                }
+            } catch (e) {
+                console.error('Error applying blueprint loadout:', e);
             }
+            this.generatingEquipment = false;
         },
 
         resetForm() {

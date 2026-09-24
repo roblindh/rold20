@@ -143,7 +143,11 @@ class ProceduralItemFactory
         if ($baseItemName) {
             foreach ($_APP['items'] as $it) {
                 if (strcasecmp($it['Name'], $baseItemName) === 0) {
-                    $baseItem = $it;
+                    if (!isset($options['ignore_budget']) && (float)($it['BaseValue'] ?? 0) > $maxBudgetSp) {
+                        $baseItem = null;
+                    } else {
+                        $baseItem = $it;
+                    }
                     break;
                 }
             }
@@ -398,7 +402,11 @@ class ProceduralItemFactory
         if ($baseItemName) {
             foreach ($_APP['items'] as $it) {
                 if (strcasecmp($it['Name'], $baseItemName) === 0) {
-                    $baseItem = $it;
+                    if (!isset($options['ignore_budget']) && (float)($it['BaseValue'] ?? 0) > $maxBudgetSp) {
+                        $baseItem = null;
+                    } else {
+                        $baseItem = $it;
+                    }
                     break;
                 }
             }

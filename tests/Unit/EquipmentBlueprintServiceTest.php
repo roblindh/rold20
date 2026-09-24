@@ -15,43 +15,67 @@ class EquipmentBlueprintServiceTest extends TestCase
         EquipmentBlueprintService::ensureAppLoaded();
     }
 
-    public function testArchetypeResolution(): void
+    public function testDatabaseBlueprintsLoaded(): void
     {
-        // Fighter (ID 9) -> heavy_martial
-        $this->assertEquals(
-            EquipmentBlueprintService::ARCHETYPE_HEAVY_MARTIAL,
-            EquipmentBlueprintService::resolveArchetype(9)
-        );
+        $all = EquipmentBlueprintService::getAllBlueprints();
+        $this->assertNotEmpty($all);
+        $this->assertGreaterThanOrEqual(20, count($all));
 
-        // Rogue (ID 22) -> agile_skirmisher
-        $this->assertEquals(
-            EquipmentBlueprintService::ARCHETYPE_AGILE_SKIRMISHER,
-            EquipmentBlueprintService::resolveArchetype(22)
-        );
+        $axe = EquipmentBlueprintService::getBlueprint('axe_fighter');
+        $this->assertNotNull($axe);
+        $this->assertEquals('Axe Fighter / Axeman', $axe['Name']);
+        $this->assertEquals('axe', $axe['PrimaryWeaponCategory']);
+    }
+
+    public function testFineGrainedArchetypeResolution(): void
+    {
+        // Fighter (ID 9) -> sword_fighter
+        $this->assertEquals('sword_fighter', EquipmentBlueprintService::resolveArchetype(9));
+
+        // Axe Fighter (ID 85) -> axe_fighter
+        $this->assertEquals('axe_fighter', EquipmentBlueprintService::resolveArchetype(85));
+
+        // Mace Fighter (ID 86) -> mace_fighter
+        $this->assertEquals('mace_fighter', EquipmentBlueprintService::resolveArchetype(86));
+
+        // Spear Fighter (ID 87) -> spear_fighter
+        $this->assertEquals('spear_fighter', EquipmentBlueprintService::resolveArchetype(87));
+
+        // Barbarian (ID 10) -> barbarian
+        $this->assertEquals('barbarian', EquipmentBlueprintService::resolveArchetype(10));
+
+        // Duelist (ID 11) -> duelist
+        $this->assertEquals('duelist', EquipmentBlueprintService::resolveArchetype(11));
+
+        // Archery Ranger (ID 20) -> archery_ranger
+        $this->assertEquals('archery_ranger', EquipmentBlueprintService::resolveArchetype(20));
+
+        // Rogue (ID 22) -> rogue_scout
+        $this->assertEquals('rogue_scout', EquipmentBlueprintService::resolveArchetype(22));
 
         // Wizard (ID 28) -> arcane_caster
-        $this->assertEquals(
-            EquipmentBlueprintService::ARCHETYPE_ARCANE_CASTER,
-            EquipmentBlueprintService::resolveArchetype(28)
-        );
+        $this->assertEquals('arcane_caster', EquipmentBlueprintService::resolveArchetype(28));
 
-        // Cleric of Life (ID 4) -> divine_caster
-        $this->assertEquals(
-            EquipmentBlueprintService::ARCHETYPE_DIVINE_CASTER,
-            EquipmentBlueprintService::resolveArchetype(4)
-        );
+        // Cleric of Life (ID 4) -> cleric_life
+        $this->assertEquals('cleric_life', EquipmentBlueprintService::resolveArchetype(4));
+
+        // Cleric of War (ID 7) -> cleric_war
+        $this->assertEquals('cleric_war', EquipmentBlueprintService::resolveArchetype(7));
+
+        // Witch Doctor (ID 45) -> witch_doctor
+        $this->assertEquals('witch_doctor', EquipmentBlueprintService::resolveArchetype(45));
+
+        // Battlemage (ID 51) -> battlemage
+        $this->assertEquals('battlemage', EquipmentBlueprintService::resolveArchetype(51));
 
         // Monk (ID 12) -> unarmed_monk
-        $this->assertEquals(
-            EquipmentBlueprintService::ARCHETYPE_UNARMED_MONK,
-            EquipmentBlueprintService::resolveArchetype(12)
-        );
+        $this->assertEquals('unarmed_monk', EquipmentBlueprintService::resolveArchetype(12));
 
         // Seer (ID 13) -> psionic_manifester
-        $this->assertEquals(
-            EquipmentBlueprintService::ARCHETYPE_PSIONIC_MANIFESTER,
-            EquipmentBlueprintService::resolveArchetype(13)
-        );
+        $this->assertEquals('psionic_manifester', EquipmentBlueprintService::resolveArchetype(13));
+
+        // Psiwarrior (ID 19) -> psiwarrior
+        $this->assertEquals('psiwarrior', EquipmentBlueprintService::resolveArchetype(19));
     }
 
     public function testGenerateLoadoutRespects25PercentWealthRule(): void
@@ -63,10 +87,11 @@ class EquipmentBlueprintServiceTest extends TestCase
 
             $this->assertNotEmpty($loadout['items']);
             foreach ($loadout['items'] as $it) {
+                $val = (float)($it['value_sp'] ?? $it['value'] ?? 0);
                 $this->assertLessThanOrEqual(
                     $maxSingleSp + 1.0, // allow 1 sp rounding threshold
-                    $it['value_sp'],
-                    "Item '{$it['name']}' ({$it['value_sp']} sp) exceeded 25% single item cap ({$maxSingleSp} sp) at Level {$lvl}"
+                    $val,
+                    "Item '{$it['name']}' ({$val} sp) exceeded 25% single item cap ({$maxSingleSp} sp) at Level {$lvl}"
                 );
             }
         }
