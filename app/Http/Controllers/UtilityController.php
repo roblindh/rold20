@@ -1825,6 +1825,8 @@ class UtilityController extends Controller
                 }
             }
 
+            $primaryClassId = $bgClassId;
+            $totalLevel = 0;
             if (is_array($classes)) {
                 foreach ($classes as $c) {
                     $cId = (int)($c['config_id'] ?? $c['class_id'] ?? $c['id'] ?? 0);
@@ -1832,8 +1834,16 @@ class UtilityController extends Controller
                     if ($cId > 0 && $lvl > 0 && isset($_APP['classconfigs'][$cId])) {
                         $config .= "Class=" . $_APP['classconfigs'][$cId]['Name'] . "; ";
                         $config .= "Level=" . $lvl . "; ";
+                        $totalLevel += $lvl;
+                        if (!$primaryClassId) {
+                            $primaryClassId = $cId;
+                        }
                     }
                 }
+            }
+
+            if ($totalLevel <= 0) {
+                $totalLevel = 1;
             }
 
             if ($socialClass != 0) {
@@ -1843,10 +1853,18 @@ class UtilityController extends Controller
                 $config .= "WC=" . $wealthClass . "; ";
             }
 
-            if (!empty($equipment)) {
+            if (!empty($equipment) && strtolower(trim((string)$equipment)) !== 'auto') {
                 $cleanEquip = trim((string)$equipment);
                 if (!empty($cleanEquip)) {
                     $config .= rtrim($cleanEquip, "; ") . "; ";
+                }
+            } else {
+                // Auto-generate sensible gear based on level and archetype blueprints
+                $loadout = \App\Services\ItemGeneration\EquipmentBlueprintService::generateLoadout($totalLevel, $primaryClassId, true);
+                foreach ($loadout['items'] as $it) {
+                    if (!empty($it['config_string'])) {
+                        $config .= "Item=" . $it['config_string'] . "; ";
+                    }
                 }
             }
 
@@ -2336,7 +2354,7 @@ class UtilityController extends Controller
     }
 
     /**
-     * Roll Procedural Treasure Hoard with cPossession engine
+     * Roll Procedural Treasure Hoard with ProceduralItemFactory & ref_treasurerandom tables
      */
     public function rollTreasure(Request $request): JsonResponse
     {
@@ -2345,93 +2363,47 @@ class UtilityController extends Controller
             require_once base_path('page_start.php');
         }
 
-        $el = max(1, min(20, (int)$request->input('el', 1)));
+        $el = max(1, min(40, (int)$request->input('el', 1)));
+        $creatureId = (int)$request->input('creature_id', 0);
 
-        // 1. Currency calculations scaled to EL
-        $gold = rand(10, 40) * $el * ($el >= 10 ? 2 : 1) + rand(5, 20);
-        $silver = rand(50, 150) * $el + rand(20, 80);
-        $platinum = $el >= 6 ? rand(1, 8) * ($el - 4) : 0;
+        $coinsMul = 1.0;
+        $goodsMul = 1.0;
+        $itemsMul = 1.0;
 
-        // 2. Mundane goods / Art objects
-        $mundaneCount = rand(1, 3);
-        $mundane = DB::table('ref_treasuremundane')->inRandomOrder()->limit($mundaneCount)->get();
-
-        // 3. Procedural Magic Items using cPossession
-        $magicItems = [];
-        $magicCount = rand(0, min(3, max(1, (int)ceil($el / 5))));
-
-        $adventureSubtypes = [
-            'Melee Weapons', 'Projectile Weapons', 'Shields', 'Light Armor', 'Medium Armor', 'Heavy Armor',
-            'Headwear', 'Handwear', 'Footwear', 'Cloaks', 'Rings', 'Necklaces', 'Belts & Girdles', 'Bracelets',
-            'Eyewear', 'Implements', 'Wands', 'Scrolls', 'Alchemy'
-        ];
-
-        $candidateItems = collect($_APP['items'] ?? [])
-            ->filter(function($it) use ($_APP, $adventureSubtypes) {
-                if (!is_array($it) || empty($it['Name']) || empty($it['BaseValue'])) return false;
-                $st = $it['Subtype'] ?? 0;
-                $stName = $_APP['itemsubtypes'][$st]['Name'] ?? '';
-                return in_array($stName, $adventureSubtypes);
-            })
-            ->values()
-            ->all();
-
-        $magicMods = collect($_APP['itemmodsmagic'] ?? [])
-            ->filter(fn($m) => is_array($m) && !empty($m['Abbreviation']) && !empty($m['Description']))
-            ->values()
-            ->all();
-
-        if (!empty($candidateItems)) {
-            for ($k = 0; $k < $magicCount; $k++) {
-                try {
-                    $baseItem = \App\Services\Random\WeightedSelector::choice($candidateItems, 'Frequency');
-                    if (!$baseItem) {
-                        continue;
-                    }
-                    $baseName = $baseItem['Name'];
-
-                    $chosenMods = [];
-                    if (!empty($magicMods)) {
-                        $modCount = rand(1, min(3, max(1, (int)ceil($el / 6))));
-                        $pickedMods = \App\Services\Random\WeightedSelector::sample($magicMods, $modCount, 'Frequency', false);
-                        foreach ($pickedMods as $m) {
-                            $abbr = $m['Abbreviation'];
-                            $x = null;
-                            if (str_contains($m['Description'], '(x)') || str_contains($m['SpecialInfo'] ?? '', '(x)')) {
-                                $x = max(1, min(5, (int)ceil($el / 4)));
-                            }
-                            $chosenMods[] = "Mod=" . $abbr . ($x ? "&x=$x" : "");
-                        }
-                    }
-
-                    $config = $baseName . " (Item=" . $baseName . ": " . implode(": ", $chosenMods) . ($chosenMods ? ": " : "") . ")";
-                    $entity = new \cPossession();
-                    $entity->GenerateItem($config);
-
-                    $sizeIdx = min(max($entity->GetCurrentSize(), -4), 4);
-                    $sizeAbbr = $_APP['sizecats'][$sizeIdx]['Abbreviation'] ?? 'M';
-
-                    $rawTraits = isset($_APP['items'][$entity->Item]['Traits']) ? $entity->TraitEffects->ProcessTraits($_APP['items'][$entity->Item]['Traits'], 0, $entity) : '';
-                    $rawMods = $entity->GetModsStr();
-
-                    $magicItems[] = [
-                        'name' => $entity->Name,
-                        'config_string' => $config,
-                        'value' => $entity->GetValue(),
-                        'weight' => $entity->GetWeight(),
-                        'size' => $sizeAbbr,
-                        'ec' => $entity->GetECMod(),
-                        'pl' => $entity->GetPowerLevel(),
-                        'dr' => $entity->GetDR(),
-                        'hp' => $entity->GetHPTotal(),
-                        'traits' => $rawTraits,
-                        'traits_html' => str_replace(["\r\n", "\n", "\\n"], "<br/>", htmlspecialchars($rawTraits, ENT_QUOTES, 'UTF-8')),
-                        'mods' => $rawMods,
-                        'mods_html' => str_replace(["\r\n", "\n", "\\n"], "<br/>", htmlspecialchars($rawMods, ENT_QUOTES, 'UTF-8')),
-                    ];
-                } catch (\Throwable $t) {}
+        if ($creatureId > 0) {
+            $creature = DB::table('ref_creatures')->where('ID', $creatureId)->first();
+            if ($creature && !empty($creature->Treasure)) {
+                $tStr = strtolower($creature->Treasure);
+                if (str_contains($tStr, 'none') || str_contains($tStr, 'no coins; no goods; no items')) {
+                    $coinsMul = 0;
+                    $goodsMul = 0;
+                    $itemsMul = 0;
+                } elseif (str_contains($tStr, 'triple')) {
+                    $coinsMul = 3.0;
+                    $goodsMul = 3.0;
+                    $itemsMul = 3.0;
+                } elseif (str_contains($tStr, 'double')) {
+                    $coinsMul = 2.0;
+                    $goodsMul = 2.0;
+                    $itemsMul = 2.0;
+                } elseif (str_contains($tStr, '1/2') || str_contains($tStr, 'half')) {
+                    $coinsMul = 0.5;
+                }
             }
         }
+
+        $hoard = \App\Services\ItemGeneration\ProceduralItemFactory::generateTreasureHoard($el, [
+            'coins_multiplier' => $coinsMul,
+            'goods_multiplier' => $goodsMul,
+            'items_multiplier' => $itemsMul,
+        ]);
+
+        $gold = $hoard['gold'];
+        $silver = $hoard['silver'];
+        $platinum = $hoard['platinum'];
+        $copper = $hoard['copper'];
+        $mundane = $hoard['mundane'];
+        $magicItems = $hoard['magic_items'];
 
         $campaigns = DB::table('campaigns')->orderBy('Name')->get();
         $characters = DB::table('characters')->where(function($q) {
@@ -2440,11 +2412,75 @@ class UtilityController extends Controller
 
         return response()->json([
             'success' => true,
-            'coins' => compact('gold', 'silver', 'platinum'),
+            'coins' => compact('gold', 'silver', 'platinum', 'copper'),
             'mundane' => $mundane,
             'magic' => $magicItems,
-            'html' => view('utilities.partials.treasure_result', compact('el', 'gold', 'silver', 'platinum', 'mundane', 'magicItems', 'campaigns', 'characters'))->render(),
+            'html' => view('utilities.partials.treasure_result', compact('el', 'gold', 'silver', 'platinum', 'copper', 'mundane', 'magicItems', 'campaigns', 'characters'))->render(),
         ]);
+    }
+
+    /**
+     * AJAX endpoint to generate a procedural item by type and level
+     */
+    public function generateProceduralItem(Request $request): JsonResponse
+    {
+        try {
+            $type = strtolower((string)$request->input('type', 'weapon'));
+            $level = max(1, min(40, (int)$request->input('level', 1)));
+            $isNpc = (bool)$request->input('is_npc', false);
+            $options = $request->except(['type', 'level']);
+            $options['is_npc'] = $isNpc;
+
+            $item = match ($type) {
+                'weapon' => \App\Services\ItemGeneration\ProceduralItemFactory::generateWeapon($level, $options),
+                'armor' => \App\Services\ItemGeneration\ProceduralItemFactory::generateArmor($level, $options),
+                'shield' => \App\Services\ItemGeneration\ProceduralItemFactory::generateShield($level, $options),
+                'potion', 'oil', 'tattoo' => \App\Services\ItemGeneration\ProceduralItemFactory::generatePotion($level, array_merge($options, ['type' => $type])),
+                'scroll', 'power_stone' => \App\Services\ItemGeneration\ProceduralItemFactory::generateScroll($level, array_merge($options, ['type' => $type])),
+                'wand', 'dorje' => \App\Services\ItemGeneration\ProceduralItemFactory::generateWand($level, array_merge($options, ['type' => $type])),
+                'wondrous', 'ring', 'accessory' => \App\Services\ItemGeneration\ProceduralItemFactory::generateWondrousItem($level, $options),
+                default => \App\Services\ItemGeneration\ProceduralItemFactory::generateRandomTreasureItem($level, 'minor'),
+            };
+
+            return response()->json([
+                'success' => true,
+                'item' => $item,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * AJAX endpoint to generate a town shop inventory based on settlement GPLimit
+     */
+    public function generateShopInventory(Request $request): JsonResponse
+    {
+        try {
+            $settlement = $request->input('settlement', 'Small town');
+            $shopType = (string)$request->input('shop_type', 'general');
+            $count = max(1, min(50, (int)$request->input('count', 20)));
+
+            $inventory = \App\Services\ItemGeneration\ProceduralItemFactory::generateShopInventory($settlement, $shopType, $count);
+            $gplimitSp = \App\Services\ItemGeneration\ProceduralItemFactory::getSettlementGPLimitSP($settlement);
+
+            return response()->json([
+                'success' => true,
+                'settlement' => $settlement,
+                'gplimit_sp' => $gplimitSp,
+                'gplimit_gp' => $gplimitSp / 10.0,
+                'shop_type' => $shopType,
+                'items' => $inventory,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

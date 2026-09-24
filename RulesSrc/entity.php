@@ -1138,9 +1138,11 @@ class cIndividual extends cEntity {
                             break;
                         case 3: // Armor
                             $ECRed = 0;
-                            foreach ($aArmorCats as $idx => $iCat) {
-                                if (strpos($iPossession->TraitEffects->ArmorStats->ArmorCats, $iCat) !== FALSE)
-                                    $ECRed = max($ECRed, $this->TraitEffects->ModsArmorEC[$idx]->Total());
+                            if (isset($iPossession->TraitEffects->ArmorStats->ArmorCats)) {
+                                foreach ($aArmorCats as $idx => $iCat) {
+                                    if (strpos($iPossession->TraitEffects->ArmorStats->ArmorCats, $iCat) !== FALSE)
+                                        $ECRed = max($ECRed, $this->TraitEffects->ModsArmorEC[$idx]->Total());
+                                }
                             }
                             $totEC += $iPossession->Quantity * max($iPossession->GetECMod() - $ECRed, 0);
                             break;
@@ -1329,16 +1331,18 @@ class cIndividual extends cEntity {
                 $hitProbCrit = $this->GetHitProbCrit($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
                 $critMul = 2 + $iAtt->CritMul;
             } else {
-                $avgDmg = $this->GetAverageDamage($parser,
-                                $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->Damage,
+                $ammoDmg = (!empty($this->lAmmo) && isset($this->lPossessions[$this->lAmmo[0]]) && $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats) ? $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->Damage : '1d6';
+                $ammoCritRng = (!empty($this->lAmmo) && isset($this->lPossessions[$this->lAmmo[0]]) && $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats) ? $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng : 20;
+                $ammoCritMul = (!empty($this->lAmmo) && isset($this->lPossessions[$this->lAmmo[0]]) && $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats) ? $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritMul : 0;
+                $avgDmg = $this->GetAverageDamage($parser, $ammoDmg,
                                 $iAtt->WeaponCats, $iWeap->TraitEffects->DmgDice) + ((int) $iAtt->Damage) +
                         ($iWeap->TraitEffects->ModsDmg->Total() != 0 ? signedstr($iWeap->TraitEffects->ModsDmg->Total()) : 0) +
                         ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
                 $hitProbNormal = $this->GetHitProbNormal($attMod, $dec,
-                        $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt));
+                        $ammoCritRng + $this->GetAttCritMod($iAtt));
                 $hitProbCrit = $this->GetHitProbCrit($attMod, $dec,
-                        $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt));
-                $critMul = 2 + $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritMul;
+                        $ammoCritRng + $this->GetAttCritMod($iAtt));
+                $critMul = 2 + $ammoCritMul;
             }
             $dmg += $avgDmg * ($hitProbNormal + $hitProbCrit * $critMul);
         }
@@ -1371,16 +1375,19 @@ class cIndividual extends cEntity {
                     $hitProbCrit = $this->GetHitProbCrit($attMod, $dec, $iAtt->CritRng + $this->GetAttCritMod($iAtt));
                     $critMul = 2 + $iAtt->CritMul;
                 } else {
+                    $ammoDmg = (!empty($this->lAmmo) && isset($this->lPossessions[$this->lAmmo[0]]) && $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats) ? $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->Damage : '1d6';
+                    $ammoCritRng = (!empty($this->lAmmo) && isset($this->lPossessions[$this->lAmmo[0]]) && $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats) ? $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng : 20;
+                    $ammoCritMul = (!empty($this->lAmmo) && isset($this->lPossessions[$this->lAmmo[0]]) && $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats) ? $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritMul : 0;
                     $avgDmg = $this->GetAverageDamage($parser,
-                                    $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->Damage,
+                                    $ammoDmg,
                                     $iAtt->WeaponCats, $iWeap->TraitEffects->DmgDice) + ((int) $iAtt->Damage) +
                             ($iWeap->TraitEffects->ModsDmg->Total() != 0 ? signedstr($iWeap->TraitEffects->ModsDmg->Total()) : 0) +
                             ($vitalattack ? 2 + $this->GetSkillLevel(52) / 6 : 0);
                     $hitProbNormal = $this->GetHitProbNormal($attMod, $dec,
-                            $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt));
+                            $ammoCritRng + $this->GetAttCritMod($iAtt));
                     $hitProbCrit = $this->GetHitProbCrit($attMod, $dec,
-                            $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritRng + $this->GetAttCritMod($iAtt));
-                    $critMul = 2 + $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->CritMul;
+                            $ammoCritRng + $this->GetAttCritMod($iAtt));
+                    $critMul = 2 + $ammoCritMul;
                 }
                 $dmg += $i * ($hitProbNormal * max(0, $avgDmg + $APBonus - ($dr * (1 - $hitProbNormal / 3))) +
                         $hitProbCrit * max(0, $avgDmg * $critMul + $APBonus - $dr / 2));
@@ -2108,11 +2115,13 @@ class cIndividual extends cEntity {
                                 $iWeap->TraitEffects->DmgDice) .
                         ($numWeaps == 1 && $sizeDiff >= 0 ? "+2" : "") . // Increased Str modifier for two-handed use
                         ($iWeap->TraitEffects->ModsDmg->Total() != 0 ? signedstr($iWeap->TraitEffects->ModsDmg->Total()) : "");
-            else
+            else {
+                $ammoDmg = (!empty($this->lAmmo) && isset($this->lPossessions[$this->lAmmo[0]]) && $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats) ? $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->Damage : '1d6';
                 $strDmg .= ($idx > 0 ? "/" : "") . $this->GetDamageStr($parser,
-                                $this->lPossessions[$this->lAmmo[0]]->TraitEffects->WeaponStats->Damage, $iAtt->WeaponCats,
+                                $ammoDmg, $iAtt->WeaponCats,
                                 $iWeap->TraitEffects->DmgDice) . $iAtt->Damage .
                         ($iWeap->TraitEffects->ModsDmg->Total() != 0 ? signedstr($iWeap->TraitEffects->ModsDmg->Total()) : "");
+            }
         }
         $AP += ($numWeaps == 2 ? -2 : ($numWeaps == 3 ? -4 : ($numWeaps == 4 ? -6 : ($numWeaps == 5 ? -9 : ($numWeaps == 6 ? -12 : ($numWeaps == 7 ? -16 : 0))))));
 
@@ -2540,7 +2549,9 @@ class cPossession extends cEntity {
 
         $this->Reset();
         $this->Name = trim(substr($config, 0, $i));
-        $aParams = explode(":", substr($config, $i + 1));
+        $paramsStr = trim(substr($config, $i + 1));
+        $paramsStr = rtrim($paramsStr, ')');
+        $aParams = explode(":", $paramsStr);
 
         $this->GenerateItemFromParams($aParams);
     }
@@ -2553,7 +2564,7 @@ class cPossession extends cEntity {
                 continue;
 
             $pKey = trim(substr($iParam, 0, $i));
-            $pVal = trim(substr($iParam, $i + 1));
+            $pVal = trim(substr($iParam, $i + 1), " \t\n\r\0\x0B)");
 
             switch ($pKey) {
                 case "Item":
@@ -2564,6 +2575,7 @@ class cPossession extends cEntity {
                         }
                     }
                     break;
+                case "Mat":
                 case "Material":
                     foreach ($_APP['materials'] as $iMaterial) {
                         if (strcasecmp($iMaterial['Name'], $pVal) === 0) {
@@ -2573,7 +2585,9 @@ class cPossession extends cEntity {
                     }
                     break;
                 case "Mod":
-                    $aModParams = array_map('trim', explode("&", $pVal));
+                    $aModParams = array_map(function($p) {
+                        return trim($p, " \t\n\r\0\x0B)");
+                    }, explode("&", $pVal));
                     foreach ($_APP['itemmodsmundane'] as $iMod) {
                         if ($iMod['Abbreviation'] == $aModParams[0] || $iMod['Description'] == $aModParams[0]) {
                             $this->lMods[] = $iMod['ID'];

@@ -1548,6 +1548,15 @@ deities:
     OtherNotes: null
 pantheons:
   -
+    ID: 1
+    Name: None
+  -
+    ID: 2
+    Name: Faerûnian
+  -
+    ID: 3
+    Name: Mulhorandi
+  -
     ID: 4
     Name: Drow
   -
@@ -1557,20 +1566,11 @@ pantheons:
     ID: 6
     Name: Elven
   -
-    ID: 2
-    Name: Faerûnian
-  -
     ID: 7
     Name: Gnome
   -
     ID: 8
     Name: Halfling
-  -
-    ID: 3
-    Name: Mulhorandi
-  -
-    ID: 1
-    Name: None
   -
     ID: 9
     Name: Orc
@@ -1718,7 +1718,8 @@ organizations:
     ID: 1
     Name: 'Craft & Trade Guild'
     Type: 1
-    InspirationalNames: 'The Ironwright Guild, The Guild of Master Stonemasons, The Weavers'' & Dyers'' Fellowship'
+    Campaign: null
+    InspirationalNames: "The Ironwright Guild, The Guild of Master Stonemasons, The Weavers' & Dyers' Fellowship"
     Description: 'An association of artisans, craftsmen, and trade masters controlling local production standards, prices, apprentice training, and trade monopolies within a city or municipality.'
     TypicalMembers: 'Blacksmiths, stonemasons, carpenters, weavers, alchemists, jewelers, apprentices, journeymen, and trade masters.'
     MemberBenefits: 'Exclusive legal right to practice and sell trade goods within municipal boundaries; access to shared guild workshops, high-quality bulk raw materials, apprentice labor, price-fixing protections, and legal defense in trade disputes.'
@@ -1730,11 +1731,11 @@ organizations:
     FavoredSkills: 'Crafting (any specialization), Appraisal, Negotiation, Knowledge - Architecture/Engineering, Law'
     Alignment: 'LN, N, LG'
     Scale: 'Local City to Regional Province'
-    Campaign: null
   -
     ID: 2
-    Name: 'Alchemists'' & Apothecaries'' Guild'
+    Name: "Alchemists' & Apothecaries' Guild"
     Type: 1
+    Campaign: null
     InspirationalNames: 'The Crucible Society, The Guild of Phial & Retort, The Herbalist Conclave'
     Description: 'A specialized guild of potion-brewers, herbalists, venom-distillers, and pyrotechnicians who regulate the manufacture, quality testing, and trade of chemical and alchemical reagents.'
     TypicalMembers: 'Alchemists, apothecaries, herbalists, chirurgeons, potion-brewers, glassblowers, laboratory assistants.'
@@ -1747,11 +1748,11 @@ organizations:
     FavoredSkills: 'Crafting - Alchemy, Knowledge - Nature, Heal, Appraisal, Perception'
     Alignment: 'N, LN, CN'
     Scale: 'Regional Province to Kingdom-Wide'
-    Campaign: null
   -
     ID: 3
     Name: 'Merchant Trading Consortium'
     Type: 2
+    Campaign: null
     InspirationalNames: 'The Golden Scale Consortium, The Silver Spire Trading Company, The High Sea Merchant League'
     Description: 'A powerhouse commercial league financing overland caravans, merchant fleets, trade outposts, and chartered monopolies between kingdoms and international ports.'
     TypicalMembers: 'Caravan masters, ship captains, supercargoes, merchant factors, accountants, warehouse overseers, hired caravan guards.'
@@ -1764,28 +1765,28 @@ organizations:
     FavoredSkills: 'Negotiation, Appraisal, Knowledge - Geography/Law, Linguistics, Navigation'
     Alignment: 'LN, N, LE'
     Scale: 'Kingdom-Wide to Continental'
-    Campaign: null
   -
     ID: 4
     Name: 'Merchant Banking House'
     Type: 2
+    Campaign: null
     InspirationalNames: 'The Iron Vault Financial House, The Gilded Crest Bank, The Coffer & Coin Syndicate'
     Description: 'An elite financial institution providing letters of credit, secure deposit vaults, currency exchange, kingdom loans, and sovereign debt financing to nobles, monarchs, and trade cartels.'
     TypicalMembers: 'Bankers, moneylenders, auditors, vault guards, debt collectors, notary scribes, investment factors.'
     MemberBenefits: 'High-security vault storage for gold and artifacts; international letters of credit; investment dividends; currency minting and assaying verification.'
     MemberResponsibilities: 'Strict fiduciary audits; protection of client confidentiality; upholding debt enforcement treaties; maintenance of required gold solvency reserves.'
-    UsesOfInfluence: 'Calling in a noble debtor''s note to apply political pressure (3-4 Inf); securing a massive emergency line of credit in gems or platinum (2-5 Inf); tracing large financial transactions and money laundering (2 Inf); freezing a rival faction''s accounts (4 Inf).'
+    UsesOfInfluence: "Calling in a noble debtor's note to apply political pressure (3-4 Inf); securing a massive emergency line of credit in gems or platinum (2-5 Inf); tracing large financial transactions and money laundering (2 Inf); freezing a rival faction's accounts (4 Inf)."
     RanksAndTitles: 'Clerk -> Teller -> Auditor -> Chief Assayer -> Vault Chancellor -> Senior Partner.'
     SocialClassRange: 'SC 1 (Clerk) to SC 4 (Senior Partner)'
     WealthClassRange: 'WC 2 (Well-Off) to WC 6 (Fabulously Wealthy)'
     FavoredSkills: 'Mathematics/Accounting, Appraisal, Sense Motive, Law, Bluff, Psychology'
     Alignment: 'LN, LE, N'
     Scale: 'Regional to Continental'
-    Campaign: null
   -
     ID: 5
-    Name: 'Urban Thieves'' Guild'
+    Name: "Urban Thieves' Guild"
     Type: 3
+    Campaign: null
     InspirationalNames: 'The Shadow Hand, The Night Watchers, The Velvet Dagger Syndicate'
     Description: 'An organized underworld syndicate controlling citywide street theft, racketeering, smuggling, fencing of stolen loot, gambling dens, and black-market enterprises.'
     TypicalMembers: 'Pickpockets, burglars, fences, cutpurses, lookouts, enforcers, rogue spies, corrupt watchmen.'
@@ -1798,11 +1799,11 @@ organizations:
     FavoredSkills: 'Thievery, Stealth, Streetwise, Sense Motive, Athletics - Climb, Sleight of Hand'
     Alignment: 'NE, LE, CE, N'
     Scale: 'Local City to Regional Province'
-    Campaign: null
   -
     ID: 6
-    Name: 'Smugglers'' & Freebooters'' Syndicate'
+    Name: "Smugglers' & Freebooters' Syndicate"
     Type: 3
+    Campaign: null
     InspirationalNames: 'The Hidden Cove Syndicate, The Salt-Mist Brotherhood, The Shadow Keel League'
     Description: 'A maritime and border network specializing in contraband transport, tax evasion, secret harbor landings, and dodging naval patrols.'
     TypicalMembers: 'Smuggler captains, sailors, dockers, corrupt customs officers, lighthouse keepers, black-market fences.'
@@ -1815,11 +1816,11 @@ organizations:
     FavoredSkills: 'Navigation, Sailing, Stealth, Bluff, Survival - Maritime, Thievery'
     Alignment: 'CN, N, NE'
     Scale: 'Regional Coastline to Maritime Realm'
-    Campaign: null
   -
     ID: 7
     Name: 'Arcane Academy & Wizard College'
     Type: 4
+    Campaign: null
     InspirationalNames: 'The High Collegium of Magics, The Grand Scriptorium & Spire, The Arcane Conservatory'
     Description: 'A prestigious institution of higher magical learning, spell research, and mystical experimentation with extensive libraries, observatories, and laboratories.'
     TypicalMembers: 'Wizards, sorcerers, artificers, scribes, scholars, alchemists, apprentice spellcasters.'
@@ -1832,16 +1833,16 @@ organizations:
     FavoredSkills: 'Spellcraft, Knowledge - Arcana/Planes/History, Linguistics, Concentration, Crafting - Artifice'
     Alignment: 'LN, N, NG, LG'
     Scale: 'Regional Province to Continental'
-    Campaign: null
   -
     ID: 8
     Name: 'Secret Esoteric Circle'
     Type: 4
+    Campaign: null
     InspirationalNames: 'The Veiled Eye, The Obsidian Cabal, The Order of the Hidden Star'
     Description: 'A clandestine society of mages pursuing forbidden lore, planar travel, ancient relics, and secret metaphysics away from public and ecclesiastical oversight.'
     TypicalMembers: 'Mages, psions, occultists, planar travelers, renegade scholars, arcanists.'
     MemberBenefits: 'Access to banned grimoires, eldritch research, planar portals, and a covert network of spellcasters pledged to mutual aid against inquisitors.'
-    MemberResponsibilities: 'Absolute secrecy upon pain of death or mind wipe; active acquisition of ancient artifacts and rare texts for the circle''s vault.'
+    MemberResponsibilities: "Absolute secrecy upon pain of death or mind wipe; active acquisition of ancient artifacts and rare texts for the circle's vault."
     UsesOfInfluence: 'Sourcing forbidden spells or dark grimoires (3 Inf); requesting secret planar sanctuary or portal transport (3-4 Inf); activating occult wards to foil scrying (2-3 Inf).'
     RanksAndTitles: 'Neophyte -> Adept -> Epopt -> Master of the Veil -> Hierophant of the Inner Eye.'
     SocialClassRange: 'SC 1 (Adept) to SC 4 (Hierophant)'
@@ -1849,11 +1850,11 @@ organizations:
     FavoredSkills: 'Knowledge - Arcana/Planes/Occult, Spellcraft, Stealth, Deception, Concentration'
     Alignment: 'N, NE, CN, LE'
     Scale: 'Continental to Planar'
-    Campaign: null
   -
     ID: 9
     Name: 'Holy Temple & Religious Order'
     Type: 5
+    Campaign: null
     InspirationalNames: 'The High Temple of the Radiant Dawn, The Sisterhood of Healing Waters, The Order of the Eternal Light'
     Description: 'An established ecclesiastical church serving a deity, operating urban cathedrals, hospices, orphanages, and clerical synods.'
     TypicalMembers: 'Clerics, priests, acolytes, temple guards, healers, monastic scribes, lay devotees.'
@@ -1866,11 +1867,11 @@ organizations:
     FavoredSkills: 'Knowledge - Religion, Psychology, Heal, Spellcraft, Diplomacy'
     Alignment: 'LG, NG, LN (or aligned to deity)'
     Scale: 'Local City to Kingdom-Wide'
-    Campaign: null
   -
     ID: 10
     Name: 'Crusading Militant Order'
     Type: 5
+    Campaign: null
     InspirationalNames: 'The Knights of the Holy Sepulchre, The Order of the Silver Chalice, The Radiant Templars'
     Description: 'A zealous military arm of the church tasked with purging fiends, undead, heretics, and monsters threatening the faithful.'
     TypicalMembers: 'Paladins, templars, war priests, heavy cavalry, devout squires.'
@@ -1883,11 +1884,11 @@ organizations:
     FavoredSkills: 'Weapons - Heavy, Knowledge - Religion, Athletics, Psychology, Riding'
     Alignment: 'LG, LN'
     Scale: 'Kingdom-Wide to Continental'
-    Campaign: null
   -
     ID: 11
     Name: 'Knightly Order & Chivalric Brotherhood'
     Type: 6
+    Campaign: null
     InspirationalNames: 'The Order of the Golden Griffin, The Knights of the White Hart, The Order of the Dragon Crest'
     Description: 'A prestigious secular chivalric brotherhood recognized by the crown, dedicated to martial prowess, realm defense, and high chivalric ideals.'
     TypicalMembers: 'Knights, cavaliers, noble scions, men-at-arms, squires, armorers.'
@@ -1899,12 +1900,12 @@ organizations:
     WealthClassRange: 'WC 2 (Landed) to WC 4 (Very Wealthy)'
     FavoredSkills: 'Weapons - Martial/Polearms, Riding, Athletics, Etiquette/Diplomacy, Warfare'
     Alignment: 'LG, LN, NG'
-    Scale: 'Kingdom-Wide'
-    Campaign: null
+    Scale: Kingdom-Wide
   -
     ID: 12
     Name: 'Mercenary Free Company'
     Type: 7
+    Campaign: null
     InspirationalNames: 'The Iron Vanguard, The Red Boar Company, The Free Company of the Black Eagle'
     Description: 'A battle-tested private military regiment contracting out heavy infantry, crossbowmen, cavalry, and siege engineers for campaigns and wars.'
     TypicalMembers: 'Veterans, sellswords, crossbowmen, pikemen, siege engineers, field chirurgeons, quartermasters.'
@@ -1917,12 +1918,12 @@ organizations:
     FavoredSkills: 'Weapons (any), Warfare, Athletics, Survival, Intimidate, Siegecraft'
     Alignment: 'N, LN, CN, LE'
     Scale: 'Regional to Continental'
-    Campaign: null
   -
     ID: 13
-    Name: 'Adventurer Guild & Explorers'' League'
+    Name: "Adventurer Guild & Explorers' League"
     Type: 8
-    InspirationalNames: 'The League of Seekers, The Wayfarers'' & Explorers'' Guild, The Cartographers'' Expedition Society'
+    Campaign: null
+    InspirationalNames: "The League of Seekers, The Wayfarers' & Explorers' Guild, The Cartographers' Expedition Society"
     Description: 'A chartered hall coordinating freelance adventuring parties, monster bounties, dungeon clearances, artifact salvage, and cartographic exploration.'
     TypicalMembers: 'Adventurers, dungeon delvers, monster hunters, cartographers, scouts, spellswords.'
     MemberBenefits: 'Access to the guild bounty board and official exploration charters; safe identification and auctioning of dungeon salvage; lodging and guild tavern rates; monster lore archives.'
@@ -1934,11 +1935,11 @@ organizations:
     FavoredSkills: 'Survival, Dungeoneering, Knowledge - Monsters, Perception, Athletics, Combat'
     Alignment: 'Any (typically N, NG, CG)'
     Scale: 'Regional to Continental'
-    Campaign: null
   -
     ID: 14
     Name: 'Bard College & Minstrel Society'
     Type: 9
+    Campaign: null
     InspirationalNames: 'The College of the Silver Lyre, The Whispering Heralds, The Society of Chroniclers'
     Description: 'An artistic and academic society of musicians, poets, heralds, dramatists, and spies dedicated to preserving history, news gathering, and high performance.'
     TypicalMembers: 'Bards, minstrels, poets, actors, court heralds, folklorists, covert informants.'
@@ -1951,11 +1952,11 @@ organizations:
     FavoredSkills: 'Perform (all), Knowledge - History/Nobility, Psychology, Bluff, Linguistics, Streetwise'
     Alignment: 'CG, NG, N, CN'
     Scale: 'Regional to Kingdom-Wide'
-    Campaign: null
   -
     ID: 15
     Name: 'Martial Arts Monastery & Fighting Dojo'
     Type: 10
+    Campaign: null
     InspirationalNames: 'The Monastery of the Iron Mountain, The Dojo of the Seven Winds, The School of the Flowing River'
     Description: 'A disciplined monastic academy teaching unarmed martial arts, ki manipulation, body conditioning, meditation, and sword mastery.'
     TypicalMembers: 'Monks, martial artists, duelists, ascetics, weapon masters, meditators.'
@@ -1968,11 +1969,11 @@ organizations:
     FavoredSkills: 'Athletics, Acrobatics, Weapons - Unarmed/Natural, Concentration, Knowledge - Philosophy'
     Alignment: 'LN, LG, N'
     Scale: 'Local Monastery to Regional'
-    Campaign: null
   -
     ID: 16
     Name: 'Gladiatorial Stable & Fencing Academy'
     Type: 10
+    Campaign: null
     InspirationalNames: 'The Red Sands Arena Stable, The Dueling Guild of the Golden Rapier, The Vanguard Fighting Pit'
     Description: 'A commercial combat school and arena stable training gladiators, pit fighters, and aristocratic fencing duelists.'
     TypicalMembers: 'Gladiators, duelists, fencing masters, arena promoters, weaponsmiths, beast handlers.'
@@ -1985,11 +1986,11 @@ organizations:
     FavoredSkills: 'Weapons - Light/Fencing/Brawling, Acrobatics, Intimidate, Bluff, Athletics'
     Alignment: 'N, CN, NE'
     Scale: 'Citywide to Regional'
-    Campaign: null
   -
     ID: 17
     Name: 'Landed Noble House & Aristocratic Dynasty'
     Type: 11
+    Campaign: null
     InspirationalNames: 'House Valerius, House Ravencrest, House Silverthorn'
     Description: 'A hereditary aristocratic bloodline holding ancestral estates, castles, tenant farmers, political titles, and feudal voting rights in the royal council.'
     TypicalMembers: 'Lords, ladies, noble heirs, retainers, household guards, heralds, majordomos, castellans.'
@@ -2002,12 +2003,12 @@ organizations:
     FavoredSkills: 'Etiquette, Politics, Law, Warfare, Riding, Negotiation'
     Alignment: 'LN, LG, LE, N'
     Scale: 'Regional Province to Kingdom-Wide'
-    Campaign: null
   -
     ID: 18
-    Name: 'Gentlemen''s Social Club & Scholarly Salon'
+    Name: "Gentlemen's Social Club & Scholarly Salon"
     Type: 12
-    InspirationalNames: 'The Obsidian Quill Society, The Reformers'' Club, The Antiquarian Salon'
+    Campaign: null
+    InspirationalNames: "The Obsidian Quill Society, The Reformers' Club, The Antiquarian Salon"
     Description: 'An exclusive private salon for high-born gentlemen, wealthy patrons, scholars, and political elites to discuss philosophy, politics, art, and high finance.'
     TypicalMembers: 'Aristocrats, wealthy merchants, philosophers, diplomats, antiquarians, retired generals.'
     MemberBenefits: 'Luxurious private clubhouses with dining, private libraries, and smoking lounges; high-level networking with civic leaders, judges, and ministers; complete privacy and discretion.'
@@ -2019,11 +2020,11 @@ organizations:
     FavoredSkills: 'Etiquette, Negotiation, Politics, Knowledge (any), Sense Motive'
     Alignment: 'LN, N, LE, NG'
     Scale: 'Capital City to Regional'
-    Campaign: null
   -
     ID: 19
     Name: 'Assassin Brotherhood & Death Cult'
     Type: 13
+    Campaign: null
     InspirationalNames: 'The Silent Blade Covenant, The Crimson Shroud, The Brotherhood of the Night Whisper'
     Description: 'A secret society of contract killers, venom specialists, and stealth masters executing targets for coin, religious fanaticism, or political upheaval.'
     TypicalMembers: 'Assassins, shadowdancers, poison-brewers, disguise artists, infiltrators, cult zealots.'
@@ -2036,11 +2037,11 @@ organizations:
     FavoredSkills: 'Stealth, Thievery, Crafting - Poison, Disguise, Weapons - Concealed, Perception'
     Alignment: 'LE, NE, CE'
     Scale: 'Regional to Kingdom-Wide'
-    Campaign: null
   -
     ID: 20
     Name: 'Druidic Circle & Woodland Wardens'
     Type: 14
+    Campaign: null
     InspirationalNames: 'The Circle of the Ancient Oak, The Wardens of the Greenwood, The Sylvan Conclave'
     Description: 'A secluded conclave of druids, rangers, and primal wardens defending primordial forests, sacred standing stones, and natural balance from desecration.'
     TypicalMembers: 'Druids, rangers, shamans, beastmasters, woodland scouts, herbalists.'
@@ -2053,7 +2054,6 @@ organizations:
     FavoredSkills: 'Survival, Knowledge - Nature, Handle Animal, Heal, Spellcraft - Primal, Stealth'
     Alignment: 'N, NG, CG, LN'
     Scale: 'Regional Wilderness to Continental'
-    Campaign: null
 organizationtypes:
   -
     ID: 1
@@ -2065,7 +2065,7 @@ organizationtypes:
     Description: 'Commercial ventures, maritime trading cartels, and banking syndicates operating trade routes, caravans, and financial services.'
   -
     ID: 3
-    Type: 'Thieves'' Guild & Underworld Syndicate'
+    Type: "Thieves' Guild & Underworld Syndicate"
     Description: 'Organized criminal enterprises managing black markets, smuggling, racketeering, burglary, fencing, and underworld security.'
   -
     ID: 4
@@ -2085,7 +2085,7 @@ organizationtypes:
     Description: 'Professional soldiers-for-hire, free companies, siege units, and military contractors selling martial prowess to rulers and factions.'
   -
     ID: 8
-    Type: 'Adventurer Guild & Explorers'' League'
+    Type: "Adventurer Guild & Explorers' League"
     Description: 'Chartered leagues organizing expeditions, cataloging ruins, brokering bounties, and managing adventuring charters.'
   -
     ID: 9
@@ -2094,14 +2094,14 @@ organizationtypes:
   -
     ID: 10
     Type: 'Martial Arts Monastery & Fighting School'
-    Description: 'Monastic retreats, weapon masters'' dojos, and gladiatorial stables refining hand-to-hand combat, ki mastery, and martial philosophy.'
+    Description: "Monastic retreats, weapon masters' dojos, and gladiatorial stables refining hand-to-hand combat, ki mastery, and martial philosophy."
   -
     ID: 11
     Type: 'Noble House & Aristocratic Dynasty'
     Description: 'Hereditary patrician dynasties, feudal landed houses, and aristocratic bloodlines holding political power, estates, and vassals.'
   -
     ID: 12
-    Type: 'Gentlemen''s Club & Scholarly Fraternity'
+    Type: "Gentlemen's Club & Scholarly Fraternity"
     Description: 'Exclusive private social clubs, antiquarian societies, and philosophical salons for elites, academics, and patrons of the arts.'
   -
     ID: 13
@@ -2111,4 +2111,3 @@ organizationtypes:
     ID: 14
     Type: 'Druidic Circle & Woodland Wardens'
     Description: 'Conclaves of druids, rangers, and primal wardens safeguarding ancient forests, sacred groves, balance of nature, and wildlife.'
-

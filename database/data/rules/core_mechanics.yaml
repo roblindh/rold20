@@ -383,7 +383,7 @@ sizes:
     CombatMod: 2
     GrappleMod: -8
     AttSpdMod: -2
-    HPMult: 1
+    HPMult: 1.0
     WeightMult: 0.5
     MaxLength: 0.6
     MaxVolume: 0.004
@@ -401,7 +401,7 @@ sizes:
     CombatMod: 1
     GrappleMod: -4
     AttSpdMod: -1
-    HPMult: 1
+    HPMult: 1.0
     WeightMult: 0.75
     MaxLength: 1.2
     MaxVolume: 0.03
@@ -419,8 +419,8 @@ sizes:
     CombatMod: 0
     GrappleMod: 0
     AttSpdMod: 0
-    HPMult: 1
-    WeightMult: 1
+    HPMult: 1.0
+    WeightMult: 1.0
     MaxLength: 2.5
     MaxVolume: 0.25
     Space: '1x1 sq'
@@ -438,9 +438,9 @@ sizes:
     GrappleMod: 4
     AttSpdMod: 1
     HPMult: 1.5
-    WeightMult: 2
-    MaxLength: 5
-    MaxVolume: 2
+    WeightMult: 2.0
+    MaxLength: 5.0
+    MaxVolume: 2.0
     Space: '2x2 sq'
     Reach: 1
     ManeuverMod: 0
@@ -455,10 +455,10 @@ sizes:
     CombatMod: -2
     GrappleMod: 8
     AttSpdMod: 2
-    HPMult: 2
-    WeightMult: 4
-    MaxLength: 10
-    MaxVolume: 15
+    HPMult: 2.0
+    WeightMult: 4.0
+    MaxLength: 10.0
+    MaxVolume: 15.0
     Space: '3x3 sq'
     Reach: 2
     ManeuverMod: -1
@@ -473,10 +473,10 @@ sizes:
     CombatMod: -4
     GrappleMod: 12
     AttSpdMod: 3
-    HPMult: 3
-    WeightMult: 8
-    MaxLength: 20
-    MaxVolume: 120
+    HPMult: 3.0
+    WeightMult: 8.0
+    MaxLength: 20.0
+    MaxVolume: 120.0
     Space: '4x4 sq'
     Reach: 3
     ManeuverMod: -1
@@ -491,8 +491,8 @@ sizes:
     CombatMod: -8
     GrappleMod: 16
     AttSpdMod: 4
-    HPMult: 4
-    WeightMult: 16
+    HPMult: 4.0
+    WeightMult: 16.0
     MaxLength: null
     MaxVolume: null
     Space: '6x6 sq or more'
@@ -506,16 +506,16 @@ bodytypes:
   -
     ID: 0
     Description: Generic
-    WeightMult: 1
-    HeightMult: 1
+    WeightMult: 1.0
+    HeightMult: 1.0
     ReachMod: 0
     ManeuverMod: 0
     Traits: null
   -
     ID: 1
     Description: Biped
-    WeightMult: 1
-    HeightMult: 2
+    WeightMult: 1.0
+    HeightMult: 2.0
     ReachMod: 1
     ManeuverMod: 0
     Traits: 'Equipment { Qual=WearArmor; Type=humanoid; } Equipment { Qual=WearClothing; Type=humanoid; } Equipment { Qual=WearCloak; } Equipment { Qual=WearBelt; } Equipment { Qual=WearNecklace; }'
@@ -523,7 +523,7 @@ bodytypes:
     ID: 2
     Description: 'Biped, winged'
     WeightMult: 0.75
-    HeightMult: 2
+    HeightMult: 2.0
     ReachMod: 1
     ManeuverMod: 0
     Traits: 'Equipment { Qual=WearArmor; Type=winged humanoid; } Equipment { Qual=WearClothing; Type=winged humanoid; } Equipment { Qual=WearBelt; } Equipment { Qual=WearNecklace; }'
@@ -531,15 +531,15 @@ bodytypes:
     ID: 3
     Description: Quadruped
     WeightMult: 1.5
-    HeightMult: 1
+    HeightMult: 1.0
     ReachMod: 0
     ManeuverMod: 1
     Traits: 'Equipment { Qual=WearArmor; Type=quadruped; } Equipment { Qual=WearNecklace; } Equipment { Qual=WearSaddle; }'
   -
     ID: 4
     Description: 'Quadruped, winged'
-    WeightMult: 1
-    HeightMult: 1
+    WeightMult: 1.0
+    HeightMult: 1.0
     ReachMod: 0
     ManeuverMod: 1
     Traits: 'Equipment { Qual=WearArmor; Type=winged quadruped; } Equipment { Qual=WearNecklace; } Equipment { Qual=WearSaddle; }'
@@ -547,23 +547,23 @@ bodytypes:
     ID: 5
     Description: Multiped
     WeightMult: 1.5
-    HeightMult: 1
+    HeightMult: 1.0
     ReachMod: 0
     ManeuverMod: 1
     Traits: 'Equipment { Qual=WearArmor; Type=multiped; } Equipment { Qual=WearNecklace; } Equipment { Qual=WearSaddle; }'
   -
     ID: 6
     Description: 'Multiped, winged'
-    WeightMult: 1
-    HeightMult: 1
+    WeightMult: 1.0
+    HeightMult: 1.0
     ReachMod: 0
     ManeuverMod: 1
     Traits: 'Equipment { Qual=WearArmor; Type=winged multiped; } Equipment { Qual=WearNecklace; } Equipment { Qual=WearSaddle; }'
   -
     ID: 7
     Description: Blob
-    WeightMult: 1
-    HeightMult: 1
+    WeightMult: 1.0
+    HeightMult: 1.0
     ReachMod: 0
     ManeuverMod: 2
     Traits: null
@@ -571,15 +571,15 @@ bodytypes:
     ID: 8
     Description: Centauroid
     WeightMult: 1.5
-    HeightMult: 1
+    HeightMult: 1.0
     ReachMod: 1
     ManeuverMod: 1
     Traits: 'Equipment { Qual=WearArmor; Type=centauroid; } Equipment { Qual=WearClothing; Type=centauroid; } Equipment { Qual=WearCloak; } Equipment { Qual=WearBelt; } Equipment { Qual=WearNecklace; } Equipment { Qual=WearSaddle; }'
   -
     ID: 9
     Description: 'Centauroid, winged'
-    WeightMult: 1
-    HeightMult: 1
+    WeightMult: 1.0
+    HeightMult: 1.0
     ReachMod: 1
     ManeuverMod: 1
     Traits: 'Equipment { Qual=WearArmor; Type=winged centauroid; } Equipment { Qual=WearClothing; Type=winged centauroid; } Equipment { Qual=WearBelt; } Equipment { Qual=WearNecklace; } Equipment { Qual=WearSaddle; }'
@@ -587,7 +587,7 @@ bodytypes:
     ID: 10
     Description: Ichtyoid
     WeightMult: 1.5
-    HeightMult: 1
+    HeightMult: 1.0
     ReachMod: 0
     ManeuverMod: 0
     Traits: 'Equipment { Qual=WearSaddle; }'
@@ -595,7 +595,7 @@ bodytypes:
     ID: 11
     Description: Avian
     WeightMult: 0.5
-    HeightMult: 2
+    HeightMult: 2.0
     ReachMod: 1
     ManeuverMod: 0
     Traits: 'Equipment { Qual=WearNecklace; }'
@@ -603,25 +603,25 @@ bodytypes:
     ID: 12
     Description: Ophidian
     WeightMult: 1.5
-    HeightMult: 1
+    HeightMult: 1.0
     ReachMod: 0
     ManeuverMod: 2
     Traits: null
   -
     ID: 13
     Description: 'Ophidian, winged'
-    WeightMult: 1
-    HeightMult: 1
+    WeightMult: 1.0
+    HeightMult: 1.0
     ReachMod: 0
     ManeuverMod: 2
     Traits: null
 genders:
   -
-    ID: 2
-    Name: Female
-  -
     ID: 1
     Name: Male
+  -
+    ID: 2
+    Name: Female
   -
     ID: 3
     Name: Other
@@ -673,7 +673,7 @@ ages:
     IntAdj: 0
     WisAdj: 0
     ChaAdj: 0
-    RLMult: 1
+    RLMult: 1.0
     SizeAdj: 0
     StrAdjSN: 0
     ConAdjSN: 0
@@ -681,7 +681,7 @@ ages:
     IntAdjSN: 0
     WisAdjSN: 0
     ChaAdjSN: 0
-    RLMultSN: 1
+    RLMultSN: 1.0
     SizeAdjSN: 0
   -
     ID: 4
@@ -692,7 +692,7 @@ ages:
     IntAdj: 1
     WisAdj: 1
     ChaAdj: 1
-    RLMult: 1
+    RLMult: 1.0
     SizeAdj: 0
     StrAdjSN: 1
     ConAdjSN: 1
@@ -711,7 +711,7 @@ ages:
     IntAdj: 2
     WisAdj: 2
     ChaAdj: 2
-    RLMult: 1
+    RLMult: 1.0
     SizeAdj: 0
     StrAdjSN: 2
     ConAdjSN: 2
@@ -719,7 +719,7 @@ ages:
     IntAdjSN: 2
     WisAdjSN: 2
     ChaAdjSN: 2
-    RLMultSN: 2
+    RLMultSN: 2.0
     SizeAdjSN: 1
   -
     ID: 6
@@ -730,7 +730,7 @@ ages:
     IntAdj: 3
     WisAdj: 3
     ChaAdj: 3
-    RLMult: 1
+    RLMult: 1.0
     SizeAdj: 0
     StrAdjSN: 3
     ConAdjSN: 3
@@ -738,7 +738,7 @@ ages:
     IntAdjSN: 3
     WisAdjSN: 3
     ChaAdjSN: 3
-    RLMultSN: 3
+    RLMultSN: 3.0
     SizeAdjSN: 1
 alignments:
   -
@@ -1340,8 +1340,8 @@ distanceunits:
     RangeDescription: 'The effect works similar to a ranged weapon and requires an attack roll against the DeC of each target (typically in addition to the action check itself).\nThe specified range is actually a range increment, and each multiple incurs a cumulative -2 attack penalty. The maximum range is ten range increments, unless otherwise specified.'
   -
     ID: 5
-    Name: 0
-    ShortName: 0
+    Name: '0'
+    ShortName: '0'
     SquaresFactor: 0
     RangeDescription: "You are the effect's point of origin (but the area can still affect other targets)."
   -
@@ -1512,33 +1512,33 @@ encumbranceclasses:
     ID: 0
     MaxDexBonus: 99
     EP: 0
-    SpeedMultLand: 1
-    SpeedMultAir: 1
+    SpeedMultLand: 1.0
+    SpeedMultAir: 1.0
     WeightLimitFactor: 0.5
-    FatigueMult: 1
+    FatigueMult: 1.0
   -
     ID: 1
     MaxDexBonus: 8
     EP: 0
-    SpeedMultLand: 1
+    SpeedMultLand: 1.0
     SpeedMultAir: 0.9
-    WeightLimitFactor: 1
-    FatigueMult: 1
+    WeightLimitFactor: 1.0
+    FatigueMult: 1.0
   -
     ID: 2
     MaxDexBonus: 6
     EP: 0
-    SpeedMultLand: 1
+    SpeedMultLand: 1.0
     SpeedMultAir: 0.8
-    WeightLimitFactor: 2
-    FatigueMult: 1
+    WeightLimitFactor: 2.0
+    FatigueMult: 1.0
   -
     ID: 3
     MaxDexBonus: 5
     EP: -1
     SpeedMultLand: 0.9
     SpeedMultAir: 0.7
-    WeightLimitFactor: 3
+    WeightLimitFactor: 3.0
     FatigueMult: 1.5
   -
     ID: 4
@@ -1546,7 +1546,7 @@ encumbranceclasses:
     EP: -2
     SpeedMultLand: 0.8
     SpeedMultAir: 0.6
-    WeightLimitFactor: 4
+    WeightLimitFactor: 4.0
     FatigueMult: 1.5
   -
     ID: 5
@@ -1554,7 +1554,7 @@ encumbranceclasses:
     EP: -3
     SpeedMultLand: 0.8
     SpeedMultAir: 0.6
-    WeightLimitFactor: 5
+    WeightLimitFactor: 5.0
     FatigueMult: 1.5
   -
     ID: 6
@@ -1562,111 +1562,111 @@ encumbranceclasses:
     EP: -4
     SpeedMultLand: 0.7
     SpeedMultAir: 0.5
-    WeightLimitFactor: 6
-    FatigueMult: 2
+    WeightLimitFactor: 6.0
+    FatigueMult: 2.0
   -
     ID: 7
     MaxDexBonus: 2
     EP: -5
     SpeedMultLand: 0.7
     SpeedMultAir: 0.5
-    WeightLimitFactor: 7
-    FatigueMult: 2
+    WeightLimitFactor: 7.0
+    FatigueMult: 2.0
   -
     ID: 8
     MaxDexBonus: 1
     EP: -6
     SpeedMultLand: 0.6
-    SpeedMultAir: 0
-    WeightLimitFactor: 8
-    FatigueMult: 2
+    SpeedMultAir: 0.0
+    WeightLimitFactor: 8.0
+    FatigueMult: 2.0
   -
     ID: 9
     MaxDexBonus: 0
     EP: -7
     SpeedMultLand: 0.6
-    SpeedMultAir: 0
-    WeightLimitFactor: 9
-    FatigueMult: 3
+    SpeedMultAir: 0.0
+    WeightLimitFactor: 9.0
+    FatigueMult: 3.0
   -
     ID: 10
     MaxDexBonus: -1
     EP: -8
     SpeedMultLand: 0.5
-    SpeedMultAir: 0
-    WeightLimitFactor: 10
-    FatigueMult: 3
+    SpeedMultAir: 0.0
+    WeightLimitFactor: 10.0
+    FatigueMult: 3.0
   -
     ID: 11
     MaxDexBonus: -2
     EP: -9
     SpeedMultLand: 0.5
-    SpeedMultAir: 0
-    WeightLimitFactor: 12
-    FatigueMult: 3
+    SpeedMultAir: 0.0
+    WeightLimitFactor: 12.0
+    FatigueMult: 3.0
   -
     ID: 12
     MaxDexBonus: -3
     EP: -10
     SpeedMultLand: 0.4
-    SpeedMultAir: 0
-    WeightLimitFactor: 14
-    FatigueMult: 4
+    SpeedMultAir: 0.0
+    WeightLimitFactor: 14.0
+    FatigueMult: 4.0
   -
     ID: 13
     MaxDexBonus: -4
     EP: -12
     SpeedMultLand: 0.3
-    SpeedMultAir: 0
-    WeightLimitFactor: 16
-    FatigueMult: 4
+    SpeedMultAir: 0.0
+    WeightLimitFactor: 16.0
+    FatigueMult: 4.0
   -
     ID: 14
     MaxDexBonus: -5
     EP: -15
     SpeedMultLand: 0.2
-    SpeedMultAir: 0
-    WeightLimitFactor: 18
-    FatigueMult: 6
+    SpeedMultAir: 0.0
+    WeightLimitFactor: 18.0
+    FatigueMult: 6.0
   -
     ID: 15
     MaxDexBonus: -6
     EP: -20
-    SpeedMultLand: 0
-    SpeedMultAir: 0
-    WeightLimitFactor: 20
-    FatigueMult: 8
+    SpeedMultLand: 0.0
+    SpeedMultAir: 0.0
+    WeightLimitFactor: 20.0
+    FatigueMult: 8.0
 strweightlimits:
   -
     Str: 1
     BaseWeightLimit: 0.5
   -
     Str: 2
-    BaseWeightLimit: 1
+    BaseWeightLimit: 1.0
   -
     Str: 3
     BaseWeightLimit: 1.5
   -
     Str: 4
-    BaseWeightLimit: 2
+    BaseWeightLimit: 2.0
   -
     Str: 5
     BaseWeightLimit: 2.5
   -
     Str: 6
-    BaseWeightLimit: 3
+    BaseWeightLimit: 3.0
   -
     Str: 7
     BaseWeightLimit: 3.5
   -
     Str: 8
-    BaseWeightLimit: 4
+    BaseWeightLimit: 4.0
   -
     Str: 9
     BaseWeightLimit: 4.5
   -
     Str: 10
-    BaseWeightLimit: 5
+    BaseWeightLimit: 5.0
   -
     Str: 11
     BaseWeightLimit: 5.5
@@ -1681,68 +1681,68 @@ strweightlimits:
     BaseWeightLimit: 8.5
   -
     Str: 15
-    BaseWeightLimit: 10
+    BaseWeightLimit: 10.0
   -
     Str: 16
     BaseWeightLimit: 11.5
   -
     Str: 17
-    BaseWeightLimit: 13
+    BaseWeightLimit: 13.0
   -
     Str: 18
-    BaseWeightLimit: 15
+    BaseWeightLimit: 15.0
   -
     Str: 19
     BaseWeightLimit: 17.5
   -
     Str: 20
-    BaseWeightLimit: 20
+    BaseWeightLimit: 20.0
   -
     Str: 21
-    BaseWeightLimit: 23
+    BaseWeightLimit: 23.0
   -
     Str: 22
-    BaseWeightLimit: 26
+    BaseWeightLimit: 26.0
   -
     Str: 23
-    BaseWeightLimit: 30
+    BaseWeightLimit: 30.0
   -
     Str: 24
-    BaseWeightLimit: 35
+    BaseWeightLimit: 35.0
   -
     Str: 25
-    BaseWeightLimit: 40
+    BaseWeightLimit: 40.0
   -
     Str: 26
-    BaseWeightLimit: 46
+    BaseWeightLimit: 46.0
   -
     Str: 27
-    BaseWeightLimit: 52
+    BaseWeightLimit: 52.0
   -
     Str: 28
-    BaseWeightLimit: 60
+    BaseWeightLimit: 60.0
   -
     Str: 29
-    BaseWeightLimit: 70
+    BaseWeightLimit: 70.0
 conditiontypes:
-  -
-    ID: 4
-    ConditionType: Disease
-  -
-    ID: 6
-    ConditionType: Drug
   -
     ID: 1
     ConditionType: Dying
   -
-    ID: 5
-    ConditionType: Insanity
+    ID: 2
+    ConditionType: Possession
   -
     ID: 3
     ConditionType: Poison
   -
-    ID: 2
-    ConditionType: Possession
+    ID: 4
+    ConditionType: Disease
+  -
+    ID: 5
+    ConditionType: Insanity
+  -
+    ID: 6
+    ConditionType: Drug
 stagedconditions:
   -
     ID: 1
@@ -3071,7 +3071,7 @@ hpeffects:
     Description: 'Bloodied: The creature is seriously injured.\n(Broken: The object or construct is damaged enough to suffer a -2 penalty on related actions.)'
   -
     ID: 4
-    CurrentHP: 0
+    CurrentHP: '0'
     Description: 'Disabled: The creature can only use half its AP/MP each round, and any action that costs SP or PP will also cause it the same number of HP (and probably render it unconscious).\n(Destroyed: Most objects, undead, constructs, and plants are destroyed at 0 HP.)'
   -
     ID: 5
@@ -3096,7 +3096,7 @@ speffects:
     Description: 'Fatigued: The creature is seriously fatigued. Many physical actions suffer a -2 penalty (see PAM).'
   -
     ID: 4
-    CurrentSP: 0
+    CurrentSP: '0'
     Description: 'Exhausted: The creature is near collapse. It can only use half its AP/MP each round, and further SP costs are converted to HP damage on a point-for-point basis. Each such SP cost or loss requires a Fortitude defense to avoid falling unconscious (d20! + SP cost vs. Fort). Many physical actions suffer a -6 penalty (PAM).'
 ppeffects:
   -
@@ -3113,7 +3113,7 @@ ppeffects:
     Description: 'Tired: The creature is very tired. Many mental actions suffer a -2 penalty (see MAM).'
   -
     ID: 4
-    CurrentPP: 0
+    CurrentPP: '0'
     Description: 'Drained: The creature is mentally drained and near collapse. It can only use half its AP/MP each round, and further PP costs are converted to HP damage on a point-for-point basis. Each such PP cost or loss requires a Will defense to avoid falling unconscious (d20! + PP cost vs. Will). Many mental actions suffer a -6 penalty (MAM).'
 implementtypes:
   -
@@ -3285,27 +3285,27 @@ improvements:
     ID: 1
     Improvement: 'Improvement bonus to Str, Con, Dex, Int, Wis, or Cha'
     Cost: '10 per +1'
-    MaxBonus: 5
+    MaxBonus: '5'
   -
     ID: 2
     Improvement: 'Improvement bonus to DeC'
     Cost: '10 per +1'
-    MaxBonus: 5
+    MaxBonus: '5'
   -
     ID: 3
     Improvement: 'Improvement bonus to Fort, Ref, or Will'
     Cost: '5 per +1'
-    MaxBonus: 5
+    MaxBonus: '5'
   -
     ID: 4
     Improvement: 'Improvement bonus to HP, SP, or PP'
     Cost: '2 per +1'
-    MaxBonus: 25
+    MaxBonus: '25'
   -
     ID: 5
     Improvement: 'Improvement bonus to (non-prestige) skill level'
     Cost: '10 per +1'
-    MaxBonus: 5
+    MaxBonus: '5'
 improvementtraits:
   -
     ID: 1
@@ -3401,23 +3401,23 @@ improvementads:
   -
     ID: 4
     Advantage: 'Longevity (add 50% to age ranges)'
-    Cost: 5
+    Cost: '5'
   -
     ID: 5
     Advantage: 'Sleep immunity'
-    Cost: 5
+    Cost: '5'
   -
     ID: 6
     Advantage: 'Magically gifted (+2 improvement bonus on all spell-related skill checks (not attacks), but same bonus applies to such checks against you)'
-    Cost: 5
+    Cost: '5'
   -
     ID: 7
     Advantage: 'Magically resistant (+2 improvement bonus to MR but also -2 improvement penalty on all spell-related skill checks)'
-    Cost: 5
+    Cost: '5'
   -
     ID: 8
     Advantage: 'Allied organization/individual'
-    Cost: 2
+    Cost: '2'
   -
     ID: 9
     Advantage: 'Member of organization (bonus influence points)'
@@ -3441,7 +3441,7 @@ improvementads:
   -
     ID: 14
     Advantage: 'Unusual training (choose any class for background skills and racial levels)'
-    Cost: 15
+    Cost: '15'
   -
     ID: 15
     Advantage: 'Lucky (start with additional fate points)'
@@ -3454,15 +3454,15 @@ improvementdisads:
   -
     ID: 2
     Disadvantage: 'Scars, disfiguring (-2 improvement penalty on some social actions; easily identified)'
-    Cost: -2
+    Cost: '-2'
   -
     ID: 3
     Disadvantage: 'Color blindness'
-    Cost: -2
+    Cost: '-2'
   -
     ID: 4
     Disadvantage: Allergy
-    Cost: -2
+    Cost: '-2'
   -
     ID: 5
     Disadvantage: 'Insanity or amnesia'
@@ -3470,7 +3470,7 @@ improvementdisads:
   -
     ID: 6
     Disadvantage: Addiction
-    Cost: -2
+    Cost: '-2'
   -
     ID: 7
     Disadvantage: Phobia
@@ -3486,15 +3486,15 @@ improvementdisads:
   -
     ID: 10
     Disadvantage: 'Duty to organization/individual'
-    Cost: -2
+    Cost: '-2'
   -
     ID: 11
     Disadvantage: 'Enemy organization/individual'
-    Cost: -2
+    Cost: '-2'
   -
     ID: 12
     Disadvantage: 'Bastardy (-2 improvement penalty on some social actions)'
-    Cost: -2
+    Cost: '-2'
   -
     ID: 13
     Disadvantage: 'Fury (you are easily provoked and fight with abandon; Will check required to inflict non-lethal damage or break off a fight)'
@@ -3506,7 +3506,7 @@ improvementdisads:
   -
     ID: 15
     Disadvantage: 'Mute (unable to communicate verbally or perform actions with a verbal component)'
-    Cost: -5
+    Cost: '-5'
   -
     ID: 16
     Disadvantage: 'Eyesight, impaired'
@@ -3526,7 +3526,7 @@ improvementdisads:
   -
     ID: 20
     Disadvantage: 'Distinguishing mark (hard to conceal and easily identified)'
-    Cost: -2
+    Cost: '-2'
   -
     ID: 21
     Disadvantage: 'Bad reputation (improvement penalty on some social actions)'
@@ -3537,17 +3537,17 @@ improvementdisads:
     Cost: '-1 per 2 PL'
 playertypes:
   -
-    ID: 4
-    PlayerType: 'Campaign Master'
-  -
-    ID: 3
-    PlayerType: 'Dungeon Master'
-  -
     ID: 1
     PlayerType: Player
   -
     ID: 2
     PlayerType: 'Power Player'
+  -
+    ID: 3
+    PlayerType: 'Dungeon Master'
+  -
+    ID: 4
+    PlayerType: 'Campaign Master'
 techlevelsm:
   -
     TL: 0
@@ -3579,99 +3579,99 @@ techlevelsm:
     Technologies: null
   -
     TL: 7
-    Year: 0
+    Year: '0'
     Technologies: Mithril
   -
     TL: 8
-    Year: 500
+    Year: '500'
     Technologies: null
   -
     TL: 9
-    Year: 1000
+    Year: '1000'
     Technologies: null
   -
     TL: 10
-    Year: 1400
+    Year: '1400'
     Technologies: Adamantium
   -
     TL: 11
-    Year: 1700
+    Year: '1700'
     Technologies: null
   -
     TL: 12
-    Year: 1800
+    Year: '1800'
     Technologies: null
   -
     TL: 13
-    Year: 1900
+    Year: '1900'
     Technologies: null
   -
     TL: 14
-    Year: 1930
+    Year: '1930'
     Technologies: null
   -
     TL: 15
-    Year: 1960
+    Year: '1960'
     Technologies: null
   -
     TL: 16
-    Year: 1980
+    Year: '1980'
     Technologies: null
   -
     TL: 17
-    Year: 2000
+    Year: '2000'
     Technologies: null
   -
     TL: 18
-    Year: 2010
+    Year: '2010'
     Technologies: null
   -
     TL: 19
-    Year: 2020
+    Year: '2020'
     Technologies: null
   -
     TL: 20
-    Year: 2030
+    Year: '2030'
     Technologies: null
   -
     TL: 21
-    Year: 2040
+    Year: '2040'
     Technologies: null
   -
     TL: 22
-    Year: 2050
+    Year: '2050'
     Technologies: null
   -
     TL: 23
-    Year: 2060
+    Year: '2060'
     Technologies: null
   -
     TL: 24
-    Year: 2070
+    Year: '2070'
     Technologies: null
   -
     TL: 25
-    Year: 2080
+    Year: '2080'
     Technologies: null
   -
     TL: 26
-    Year: 2090
+    Year: '2090'
     Technologies: null
   -
     TL: 27
-    Year: 2100
+    Year: '2100'
     Technologies: null
   -
     TL: 28
-    Year: 2110
+    Year: '2110'
     Technologies: null
   -
     TL: 29
-    Year: 2120
+    Year: '2120'
     Technologies: null
   -
     TL: 30
-    Year: 2130
+    Year: '2130'
     Technologies: null
 techlevelst:
   -
@@ -3704,99 +3704,99 @@ techlevelst:
     Technologies: 'Glass, first use of iron and steel, papyrus'
   -
     TL: 7
-    Year: 0
+    Year: '0'
     Technologies: 'Iron and steel tools, siege engines, use of sulfur and pitch in warfare, cement, paper, distilled liquor, amputations, simple prosthetics, sewers'
   -
     TL: 8
-    Year: 500
+    Year: '500'
     Technologies: 'Compass, stirrups, Greek fire'
   -
     TL: 9
-    Year: 1000
+    Year: '1000'
     Technologies: 'First explosives, petroleum, navigation, banking and paper money, simple chemistry'
   -
     TL: 10
-    Year: 1400
+    Year: '1400'
     Technologies: 'Matchlock firearms, steel crossbows, cannons, printing, global exploration, colonization, magnetism, simple physics, telescope, microscope, mechanical clocks, glass mirrors'
   -
     TL: 11
-    Year: 1700
+    Year: '1700'
     Technologies: 'Flintlock firearms, simple steam engines, electricity, ironclad ships, lighter-than-air flight, compasses, anesthetics, sanitation, theory of natural selection'
   -
     TL: 12
-    Year: 1800
+    Year: '1800'
     Technologies: 'Percussion firearms, dynamite, airguns, rubber, steam engines, industrialization, telegraphy, airships, parachute, alternating current electricity, simple batteries, propellers, vaccines, refrigeration, machine tools, theory of evolution'
   -
     TL: 13
-    Year: 1900
+    Year: '1900'
     Technologies: 'Cartridge firearms, machine guns, explosive warheads, missile launchers, aluminum, concrete, combustion engines, airplanes, automobiles, submarines, radio, electricity network, telephony, primitive computers, radar, steam turbines, primitive jet engines, plastic surgery, antibiotics, mass production, induced mutations'
   -
     TL: 14
-    Year: 1930
+    Year: '1930'
     Technologies: 'Submachine guns, flechette ammunition, nuclear fission, nuclear weapons, plastic, electronic computers, television, jet engines, hovercraft, solar energy, rangefinders, rotary-wing aircraft, electron microscope'
   -
     TL: 15
-    Year: 1960
+    Year: '1960'
     Technologies: 'Light assault rifles, bullpup rifles, submunition warheads, hydrogen bomb, Kevlar, bulletproof glass, reactive armor, gas turbines, fuel cells, homopolar generators, laser, satellites, orbital spacecraft, composite materials, IR sensors, ramjets, organ transplants, industrial robotics, DNA discovered'
   -
     TL: 16
-    Year: 1980
+    Year: '1980'
     Technologies: 'Autoburst firearms, rifle grenades, proximity mines, guided missiles, tasers, orbital shuttles, microchips, cellular phone network, global computer network, fiberoptics, legged vehicles, laser communicators, ladar, thermal sensors, sandcasters, magnetohydrodynamic turbines, turbofans, artificial skin growth, stealth materials, primitive cloning, primitive geneering, basic gene therapy, genome mapping, DNA forensics, robotic vehicles, orbital research'
   -
     TL: 17
-    Year: 2000
+    Year: '2000'
     Technologies: 'Caseless ammunition, human cloning, inferior artificial organs, UAVs, airfoils'
   -
     TL: 18
-    Year: 2010
+    Year: '2010'
     Technologies: 'Large laser weapons, large railguns, wireless tasers, electrostatic armor, robotic soldiers, powered exoskeletons, artificial organs, cybernetic limbs, organ cloning, designer drugs, 3D displays, nanotech materials, geneering, nerve splicing, Magnus spheres, millimeter wave scanners, detection of Earth-like planets'
   -
     TL: 19
-    Year: 2020
+    Year: '2020'
     Technologies: 'Supercomputer AI, orbital laser weapons, large particle weapons, powered armor, self-repairing materials, robotic servants, ballistic airplanes, primitive vectorjets, cure for cancer, neural interface, biochips, 3D entertainment, autonomous cars, insectile UAVs, hive robotics, adaptive camouflage, orbital factories, solar sails, maglev trains, neutrino sensors, vat-grown meat, discovery of extraterrestrial life'
   -
     TL: 20
-    Year: 2030
+    Year: '2030'
     Technologies: 'Personal AI, personal railguns, personal laser weapons, room-temperature superconduction, virtual "telepathy", VR entertainment, artificial wombs, growth tanks, morphing materials, biotech, advanced geneering, cold fusion, quantum entanglement communication (FTL), simple gravity manipulation, EMS radar, microscopic sensors, vectorjets, smart pathogens, private orbital stations'
   -
     TL: 21
-    Year: 2040
+    Year: '2040'
     Technologies: 'Reflec armor, full immersion VR, software-based AI, brain scanning, non-invasive neural interfaces, nanotech robotics, memory enhancement, intelligence enhancement, nanoboosted immune system, antiagathics, universal vaccine, domed arkologies, underwater colonies, space elevator, didactic imprinting, cryogenic hibernation, vactrains, fusion energy'
   -
     TL: 22
-    Year: 2050
+    Year: '2050'
     Technologies: 'Personal particle weapons, memory scanning, skill imprinting, cloaking, artificial gravity, contra-gravity, geneered animals, early star system colonization, monofilaments, simple androids, densitometers'
   -
     TL: 23
-    Year: 2060
+    Year: '2060'
     Technologies: 'Universal fabricators, DNA reconstruction, inertial dampening'
   -
     TL: 24
-    Year: 2070
+    Year: '2070'
     Technologies: 'Experimental jump drive, superdense materials'
   -
     TL: 25
-    Year: 2080
+    Year: '2080'
     Technologies: 'Antimatter production, asteroid mining, jump drives, nuclear dampers'
   -
     TL: 26
-    Year: 2090
+    Year: '2090'
     Technologies: 'Meson screens, tractor beams, meson weapons, nanoviruses'
   -
     TL: 27
-    Year: 2100
+    Year: '2100'
     Technologies: 'Smart dust, neural activity sensors, wormhole detector'
   -
     TL: 28
-    Year: 2110
+    Year: '2110'
     Technologies: 'Experimental stargate'
   -
     TL: 29
-    Year: 2120
+    Year: '2120'
     Technologies: 'Gas giant refineries, jump drive tracker'
   -
     TL: 30
-    Year: 2130
+    Year: '2130'
     Technologies: Stargates
   -
     TL: 31

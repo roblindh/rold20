@@ -13,7 +13,7 @@
     <div x-show="toastMsg" x-text="toastMsg" class="p-3 bg-emerald-50 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-bold shadow-sm"></div>
 
     <!-- Currency Breakdown -->
-    <div class="grid grid-cols-1 sm:grid-cols-{{ ($platinum ?? 0) > 0 ? '3' : '2' }} gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-{{ (($platinum ?? 0) > 0 ? 1 : 0) + 2 + (($copper ?? 0) > 0 ? 1 : 0) }} gap-3">
         @if(($platinum ?? 0) > 0)
         <div class="p-3.5 bg-slate-100 rounded-xl border border-slate-300 text-center">
             <div class="text-[11px] font-bold text-slate-700 uppercase tracking-wider">Platinum Pieces (pp)</div>
@@ -31,6 +31,13 @@
             <div class="text-xl sm:text-2xl font-black text-slate-800 mt-0.5">{{ number_format($silver) }} sp</div>
             <span class="text-[10px] text-slate-500 font-medium">Standard currency</span>
         </div>
+        @if(($copper ?? 0) > 0)
+        <div class="p-3.5 bg-orange-50 rounded-xl border border-orange-200 text-center">
+            <div class="text-[11px] font-bold text-orange-800 uppercase tracking-wider">Copper Pieces (cp)</div>
+            <div class="text-xl sm:text-2xl font-black text-orange-900 mt-0.5">{{ number_format($copper) }} cp</div>
+            <span class="text-[10px] text-orange-600 font-medium">({{ number_format($copper / 10, 1) }} sp)</span>
+        </div>
+        @endif
     </div>
 
     <!-- Mundane Goods & Trade Objects -->

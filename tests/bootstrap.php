@@ -49,3 +49,11 @@ if (!defined('PHPUNIT_TESTSUITE')) {
 
 // Disable production mode for testing
 Logger::setProductionMode(false);
+
+// Bootstrap Laravel Application for DB / Eloquent / Services
+$app = require $projectRoot . '/bootstrap/app.php';
+$app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+if (function_exists('application_start')) {
+    application_start();
+}
+

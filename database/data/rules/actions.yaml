@@ -381,7 +381,7 @@ actions:
     Trigger: null
     Implements: 'C, spray weapon'
     Cost: '1 SP'
-    Range: 0
+    Range: '0'
     Duration: null
     Target: 'Per weapon (default 1 sq conical burst)'
     Description: 'You use a spray weapon against one or more opponents within range. Even throwing sand or flour can be considered a spray attack.'
@@ -2414,7 +2414,7 @@ actions:
     Trigger: null
     Implements: 'C, music and/or song'
     Cost: '3 PP'
-    Range: 0
+    Range: '0'
     Duration: Concentration
     Target: '6 sq radius sphere'
     Description: 'You use your music to counter magical effects that depend on sound ([Sonic] or [Lang] descriptors). Compare the result against any such ongoing effect or effect being initiated within the area.'
@@ -2737,7 +2737,7 @@ actions:
     Trigger: null
     Implements: C
     Cost: null
-    Range: 0
+    Range: '0'
     Duration: Concentration
     Target: 'Cone emanation 12 sq'
     Description: 'You sense the presence of evil auras.'
@@ -2756,7 +2756,7 @@ actions:
     Trigger: null
     Implements: C
     Cost: null
-    Range: 0
+    Range: '0'
     Duration: Concentration
     Target: 'Cone emanation 12 sq'
     Description: 'You sense the presence of good auras.'
@@ -3041,7 +3041,7 @@ actions:
     Trigger: null
     Implements: 'C, breath'
     Cost: '20 SP'
-    Range: 0
+    Range: '0'
     Duration: Instantaneous
     Target: '12 sq line or 6 sq cone'
     Description: 'You expel a line or cone of the appropriate energy type through your mouth.'
@@ -3193,7 +3193,7 @@ actions:
     Trigger: null
     Implements: 'C, S'
     Cost: '6 PP + (1 PP per d6 damage)\n(up to (5 + skill lvl) PP)'
-    Range: 0
+    Range: '0'
     Duration: Instantaneous
     Target: 'Spherical burst, 6 sq radius'
     Description: 'You create a massive burst of fire around yourself.'
@@ -3497,7 +3497,7 @@ actions:
     Trigger: null
     Implements: 'C, S'
     Cost: '6 SP + (1 SP per d6 damage)\n(up to (13 + skill level) SP)'
-    Range: 0
+    Range: '0'
     Duration: Instantaneous
     Target: 'Line 12 sq long\nor Conical burst, 8 sq long'
     Description: 'You unleash a blast of silver-white fire.'
@@ -4295,7 +4295,7 @@ actions:
     Trigger: null
     Implements: 'C, breath'
     Cost: '10 SP'
-    Range: 0
+    Range: '0'
     Duration: Instantaneous
     Target: '3 sq cone'
     Description: 'You expel a cone of poison through your mouth.'
@@ -4314,7 +4314,7 @@ actions:
     Trigger: null
     Implements: 'C, breath'
     Cost: '10 SP'
-    Range: 0
+    Range: '0'
     Duration: Instantaneous
     Target: '6 sq cone'
     Description: 'You expel a cone of the appropriate energy type through your mouth.'
@@ -4352,7 +4352,7 @@ actions:
     Trigger: null
     Implements: C
     Cost: '10 SP'
-    Range: 0
+    Range: '0'
     Duration: Encounter
     Target: '2 sq radius'
     Description: 'You expel an ink cloud that provides total concealment.'
@@ -4409,7 +4409,7 @@ actions:
     Trigger: null
     Implements: 'C, V'
     Cost: '5 SP'
-    Range: 0
+    Range: '0'
     Duration: Instantaneous
     Target: Var
     Description: 'You emit a sound attack.'
@@ -4447,7 +4447,7 @@ actions:
     Trigger: null
     Implements: 'C, V'
     Cost: '3 SP'
-    Range: 0
+    Range: '0'
     Duration: Var
     Target: Var
     Description: 'You emit a subsonic moan with one of the following effects:\nUnnerve: 12 sq spread; -2 on attack and damage rolls. After six consecutive rounds, a successful attack causes a trance that lasts as long as the moan continues.\nFear: 6 sq spread; panic for 2 rounds\nNausea: 6 sq cone; nauseated for d4+1 rounds.\nStupor: Single creature within 6 sq; paralysis for 5 r.'
@@ -4485,7 +4485,7 @@ actions:
     Trigger: null
     Implements: 'C, breath'
     Cost: '10 SP'
-    Range: 0
+    Range: '0'
     Duration: Instantaneous
     Target: '6 sq cone'
     Description: 'You expel a cone of mental energy through your mouth, causing the effect specified by the trait.'
@@ -4523,7 +4523,7 @@ actions:
     Trigger: null
     Implements: C
     Cost: '2 SP'
-    Range: 0
+    Range: '0'
     Duration: Instantaneous
     Target: '1 sq radius'
     Description: 'You turn stone and earth in adjacent squares to mud (triple movement cost).'
@@ -4542,7 +4542,7 @@ actions:
     Trigger: null
     Implements: 'C, V'
     Cost: '10 PP'
-    Range: 0
+    Range: '0'
     Duration: 'Concentration + 1 r'
     Target: '60 sq spread'
     Description: 'You captivate living creatures within range.'
@@ -5890,7 +5890,7 @@ trapfeatures:
   -
     ID: 2
     TrapFeature: 'Pit trap, spiked'
-    EL: 1
+    EL: '1'
     Cost: '+50 gp'
     Details: 'As pit trap, but victims also suffer 1d4 spike attacks (+10 vs DeC; d6+2 HP P damage each).'
   -
@@ -5926,37 +5926,37 @@ trapfeatures:
   -
     ID: 8
     TrapFeature: 'Easy to find'
-    EL: -1
+    EL: '-1'
     Cost: '-50 gp'
     Details: '-5 Search DC'
   -
     ID: 9
     TrapFeature: 'Hard to find'
-    EL: 1
+    EL: '1'
     Cost: '+100 gp'
     Details: '+5 Search DC'
   -
     ID: 10
     TrapFeature: 'Very hard to find'
-    EL: 2
+    EL: '2'
     Cost: '+200 gp'
     Details: '+10 Search DC'
   -
     ID: 11
     TrapFeature: 'Easy to disable'
-    EL: -1
+    EL: '-1'
     Cost: '-50 gp'
     Details: '-5 Sabotage DC'
   -
     ID: 12
     TrapFeature: 'Hard to disable'
-    EL: 1
+    EL: '1'
     Cost: '+100 gp'
     Details: '+5 Sabotage DC'
   -
     ID: 13
     TrapFeature: 'Very hard to disable'
-    EL: 2
+    EL: '2'
     Cost: '+200 gp'
     Details: '+10 Sabotage DC'
   -
@@ -5974,120 +5974,120 @@ trapfeatures:
   -
     ID: 16
     TrapFeature: 'Never miss'
-    EL: 5
+    EL: '5'
     Cost: '+1000 gp'
     Details: "The trap's attack is impossible to avoid by normal means. For example, this could involve a crushing ceiling or contact poison gas."
   -
     ID: 17
     TrapFeature: Liquid
-    EL: 5
+    EL: '5'
     Cost: '+100 gp'
     Details: 'The trap involves liquid and has a chance of drowning the victims.'
   -
     ID: 18
     TrapFeature: 'Multiple targets'
-    EL: 1
+    EL: '1'
     Cost: '+100 gp'
     Details: 'The trap can affect more than one creature or square.'
   -
     ID: 19
     TrapFeature: 'Onset delay'
-    EL: 2
+    EL: '2'
     Cost: '+100 gp'
     Details: 'The trap has a delay of 1 or more rounds before it deals damage.'
   -
     ID: 20
     TrapFeature: 'Location trigger'
-    EL: 0
-    Cost: 0
+    EL: '0'
+    Cost: '0'
     Details: 'Triggered by weight in a certain location.'
   -
     ID: 21
     TrapFeature: 'Proximity trigger'
-    EL: 0
+    EL: '0'
     Cost: '+100 gp'
     Details: 'Trigger activates when a creature of a minimum size approaches within a certain distance. Magic triggers can be set to certain creature types.'
   -
     ID: 22
     TrapFeature: 'Sound trigger'
-    EL: 1
+    EL: '1'
     Cost: '+100 gp'
     Details: 'This is a magic trigger that responds to sound. It can make a Listen check with a +15 bonus once per round.'
   -
     ID: 23
     TrapFeature: 'Visual trigger, basic'
-    EL: 1
+    EL: '1'
     Cost: '+200 gp'
     Details: 'This is a magic trigger that can actually see. It can make a +15 Spot check within a 2 sq radius once per round.'
   -
     ID: 24
     TrapFeature: 'Visual trigger, regular'
-    EL: 1
+    EL: '1'
     Cost: '+300 gp'
     Details: 'Visual trigger that makes a +20 Spot once per round with line of sight.'
   -
     ID: 25
     TrapFeature: 'Visual trigger, advanced'
-    EL: 2
+    EL: '2'
     Cost: '+500 gp'
     Details: 'Visual trigger that makes a +25 Spot once per round with line of sight. It also has darkvision within 12 sq and can detect invisible creatures.'
   -
     ID: 26
     TrapFeature: 'Touch trigger'
-    EL: 0
-    Cost: 0
+    EL: '0'
+    Cost: '0'
     Details: 'Triggers when touched.'
   -
     ID: 27
     TrapFeature: 'Timed trigger'
-    EL: 0
+    EL: '0'
     Cost: '+100 gp'
     Details: 'Triggers periodically, whether creatures are present or not.'
   -
     ID: 28
     TrapFeature: 'No reset'
-    EL: 0
+    EL: '0'
     Cost: '-50 gp'
     Details: 'The trap can only trigger once.'
   -
     ID: 29
     TrapFeature: 'Repair reset'
-    EL: 0
+    EL: '0'
     Cost: '-20 gp'
     Details: 'The trap can be reset by using Crafting (trapmaking) to repair it. This takes one-fifth the time (and cost) of creating it.'
   -
     ID: 30
     TrapFeature: 'Manual reset'
-    EL: 0
-    Cost: 0
+    EL: '0'
+    Cost: '0'
     Details: 'The trap is easy to reset, but it has to be done manually.'
   -
     ID: 31
     TrapFeature: 'Automatic reset'
-    EL: 0
+    EL: '0'
     Cost: '+50 gp'
     Details: 'The trap resets automatically, immediately or after an interval.'
   -
     ID: 32
     TrapFeature: 'Lock bypass'
-    EL: 0
+    EL: '0'
     Cost: '+10 gp'
     Details: 'The trap can be bypassed with a Thievery (Open Lock) check against DC 30.'
   -
     ID: 33
     TrapFeature: 'Hidden switch bypass'
-    EL: 0
+    EL: '0'
     Cost: '+20 gp'
     Details: 'The trap can be bypassed by throwing a hidden switch (Search DC 25).'
   -
     ID: 34
     TrapFeature: 'Hidden lock bypass'
-    EL: 0
+    EL: '0'
     Cost: '+30 gp'
     Details: 'The trap can be bypassed by picking a hidden lock (Open Lock DC 30 and Search DC 25).'
   -
     ID: 35
     TrapFeature: Portable
-    EL: 0
+    EL: '0'
     Cost: ×3
     Details: 'The trap is portable and can be deployed with a full-round action. If the trap can be reset, it can be packed up and reused.'

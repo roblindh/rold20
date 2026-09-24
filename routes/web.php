@@ -125,6 +125,10 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::get('/itemgen', [UtilityController::class, 'itemGenerator']);
     Route::post('/item-generator/generate', [UtilityController::class, 'generateItem'])->name('itemgen.generate');
     Route::post('/itemgen/generate', [UtilityController::class, 'generateItem']);
+    Route::post('/item-generator/procedural', [UtilityController::class, 'generateProceduralItem'])->name('itemgen.procedural');
+    Route::post('/itemgen/procedural', [UtilityController::class, 'generateProceduralItem']);
+    Route::post('/item-generator/shop', [UtilityController::class, 'generateShopInventory'])->name('itemgen.shop');
+    Route::post('/itemgen/shop', [UtilityController::class, 'generateShopInventory']);
     Route::post('/item-generator/save-to-character', [UtilityController::class, 'saveItemToCharacter'])->name('itemgen.save-to-character');
     Route::post('/itemgen/save-to-character', [UtilityController::class, 'saveItemToCharacter']);
     Route::post('/item-generator/save-to-campaign', [UtilityController::class, 'saveItemToCampaign'])->name('itemgen.save-to-campaign');
@@ -133,6 +137,7 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::get('/treasure-generator', [UtilityController::class, 'treasureGenerator'])->name('treasuregen');
     Route::get('/treasuregen', [UtilityController::class, 'treasureGenerator']);
     Route::post('/treasure-generator/roll', [UtilityController::class, 'rollTreasure'])->name('treasuregen.roll');
+    Route::post('/treasuregen/roll', [UtilityController::class, 'rollTreasure']);
 
     Route::get('/combat-tracker', [UtilityController::class, 'combatTracker'])->name('combattracker');
     Route::get('/combat', [UtilityController::class, 'combatTracker']);

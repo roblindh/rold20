@@ -640,7 +640,7 @@ classconfigs:
     ClassID: 13
     PrimSkills: 'Heal, Know, Surv, WpLtB, WpBaM, SplCr, AAff'
     SecSkills: 'Craft, Percp, WpGen, ArcIl, ArcTr, DivCh, DivIn, DivLi, DivPr, Famil'
-    Equipment: null
+    Equipment: 'Clothing, SimpleWeapon, DivineFocus, AdventurerKit'
     AbilityPrio: 'Wis, Con, Dex, Int, Cha, Str'
     ShowPCGen: 1
   -
@@ -649,7 +649,7 @@ classconfigs:
     ClassID: 13
     PrimSkills: 'AnEmp, Craft, Heal, Know, WpClb, AAff'
     SecSkills: 'Percp, WpGen, WpBaM, CmbIn, DivAn, DivCh, DivIn, DivLi, DivNa, DivPr, DivRe, SplCr'
-    Equipment: null
+    Equipment: 'LtArmor, SimpleWeapon, DivineFocus, AdventurerKit'
     AbilityPrio: 'Wis, Con, Dex, Int, Cha, Str'
     ShowPCGen: 1
   -
@@ -658,7 +658,7 @@ classconfigs:
     ClassID: 13
     PrimSkills: 'Craft, Know, WpClb, WpStv, SplCr, AAff'
     SecSkills: 'Heal, Percp, Ride, Compo, WpGen, WpBaM, ArcIl, ArcTr, DivIn, DivPr, EncIt, Famil'
-    Equipment: null
+    Equipment: 'LtArmor, SimpleWeapon, DivineFocus, AdventurerKit'
     AbilityPrio: 'Wis, Int, Dex, Cha, Con, Str'
     ShowPCGen: 1
   -
@@ -667,7 +667,7 @@ classconfigs:
     ClassID: 4
     PrimSkills: 'Athle, WpGen, WpHvB, WpLtB, WpCrs, WpShd, ArmMd, ArmHv, CmbIn, DmRed'
     SecSkills: 'Craft, Percp, Ride, WpBow, DaSns, FSPow, FSPre, Warfr'
-    Equipment: null
+    Equipment: 'HvArmor, Shield, HvWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: 1
   -
@@ -676,7 +676,7 @@ classconfigs:
     ClassID: 8
     PrimSkills: 'AnEmp, Athle, Percp, Steal, Surv, WpAxe, WpHvB, WpBow, ArmLt, CmbIn, EnSpc, FSMob, FSMul'
     SecSkills: 'Craft, Heal, Know, Ride, WpGen, WpSmT, DaSns, DivAn, DivNa, AniCm'
-    Equipment: null
+    Equipment: 'LtArmor, MdWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Dex, Con, Str, Wis, Int, Cha'
     ShowPCGen: 1
   -
@@ -685,7 +685,7 @@ classconfigs:
     ClassID: 9
     PrimSkills: 'Craft, Know, Percp, Steal, Thiev, WpLtB, WpSmT, DaSns, FSMul, PsMag'
     SecSkills: 'Lingu, Psych, WpGen, ArmLt, FSMob, FSTri, ArcDi, ArcIl, ArcTr'
-    Equipment: null
+    Equipment: 'LtArmor, LtWeapon, Crossbow, AdventurerKit'
     AbilityPrio: 'Int, Dex, Cha, Wis, Str, Con'
     ShowPCGen: 1
   -
@@ -694,7 +694,7 @@ classconfigs:
     ClassID: 9
     PrimSkills: 'Acrob, Athle, Lingu, Percp, Compo, Steal, Thiev, WpFnc, WpSmT, DaSns, FSMul, VitAt'
     SecSkills: 'Psych, WpGen, WpLtB, ArmLt, FSMob, FSTri, ArcIl, PsMag'
-    Equipment: null
+    Equipment: 'LtArmor, LtWeapon, Crossbow, AdventurerKit'
     AbilityPrio: 'Dex, Wis, Int, Cha, Str, Con'
     ShowPCGen: 1
   -
@@ -703,7 +703,7 @@ classconfigs:
     ClassID: 9
     PrimSkills: 'Athle, WpNat, WpBrl, WpGen, WpFnc, WpCrs, WpSmT, ArmLt, CmbIn, FSMul, FSTri, VitAt'
     SecSkills: 'Psych, Steal, Thiev, FSMob, FSPow'
-    Equipment: null
+    Equipment: 'MdArmor, MdWeapon, AdventurerKit'
     AbilityPrio: 'Str, Dex, Con, Cha, Wis, Int'
     ShowPCGen: 1
   -
@@ -730,7 +730,7 @@ classconfigs:
     ClassID: 14
     PrimSkills: 'Lingu, Ride, WpFnc, WpBow, WpFir, ArmLt, ArmMd'
     SecSkills: 'Athle, Know, Percp, Perfm, Surv, WpGen, WpShd, FSPre, FSPow, Warfr'
-    Equipment: null
+    Equipment: 'Clothing, LtWeapon, AdventurerKit'
     AbilityPrio: 'Cha, Int, Dex, Str, Con, Wis'
     ShowPCGen: 1
   -
@@ -739,7 +739,7 @@ classconfigs:
     ClassID: 14
     PrimSkills: 'Know, Lingu, Perfm, Psych'
     SecSkills: 'Percp, Ride, WpFnc, WpGen, Warfr'
-    Equipment: null
+    Equipment: 'Clothing, LtWeapon, AdventurerKit'
     AbilityPrio: 'Cha, Int, Wis, Con, Dex, Str'
     ShowPCGen: 1
   -
@@ -748,7 +748,7 @@ classconfigs:
     ClassID: 15
     PrimSkills: 'Craft, Prof'
     SecSkills: 'AnEmp, Athle, Surv, WpNat, WpBrl, WpGen'
-    Equipment: null
+    Equipment: 'Clothing, SimpleWeapon, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Cha, Wis, Int'
     ShowPCGen: 1
   -
@@ -757,7 +757,7 @@ classconfigs:
     ClassID: 15
     PrimSkills: 'Percp, Prof'
     SecSkills: 'Craft, Heal, Psych, Ride, WpGen'
-    Equipment: null
+    Equipment: 'Clothing, AdventurerKit'
     AbilityPrio: 'Wis, Int, Cha, Con, Dex, Str'
     ShowPCGen: 1
   -
@@ -766,7 +766,7 @@ classconfigs:
     ClassID: 16
     PrimSkills: 'Craft, Prof, Ride'
     SecSkills: 'Psych, WpGen, Surv'
-    Equipment: null
+    Equipment: 'Clothing, LtWeapon, AdventurerKit'
     AbilityPrio: 'Wis, Cha, Int, Con, Dex, Str'
     ShowPCGen: 1
   -
@@ -775,7 +775,7 @@ classconfigs:
     ClassID: 16
     PrimSkills: 'Craft, Prof'
     SecSkills: Know
-    Equipment: null
+    Equipment: 'Clothing, Tools, AdventurerKit'
     AbilityPrio: 'Str, Dex, Int, Wis, Cha, Con'
     ShowPCGen: 1
   -
@@ -784,7 +784,7 @@ classconfigs:
     ClassID: 16
     PrimSkills: 'Know, Lingu, Psych'
     SecSkills: 'Craft, Heal, Perfm, Prof'
-    Equipment: null
+    Equipment: 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Wis, Cha, Dex, Con, Str'
     ShowPCGen: 1
   -
@@ -793,7 +793,7 @@ classconfigs:
     ClassID: 17
     PrimSkills: 'WpGen, WpLtB, WpCrs, ArmLt, ArmMd'
     SecSkills: 'Percp, Ride, WpHvB, WpPlA, WpShd, CmbIn'
-    Equipment: null
+    Equipment: 'HvArmor, Shield, MdWeapon, Crossbow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: 1
   -
@@ -802,7 +802,7 @@ classconfigs:
     ClassID: 17
     PrimSkills: 'Athle, WpAxe, WpGen, WpClb, WpBow, WpSmT, ArmLt, CmbIn'
     SecSkills: 'Percp, Ride, Steal, Surv, WpBrl, WpShd'
-    Equipment: null
+    Equipment: 'LtArmor, HvWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Str, Dex, Con, Wis, Cha, Int'
     ShowPCGen: 1
   -
@@ -829,7 +829,7 @@ classconfigs:
     ClassID: 9
     PrimSkills: 'Acrob, Athle, Percp, Steal, Thiev, WpNat, WpFnc, WpCrs, WpSmT, ArmLt, DaSns, FSMul, FSPre, VitAt'
     SecSkills: 'Perfm, Psych, Compo, WpGen, CmbIn, FSMob, FSTri, ArcIl'
-    Equipment: null
+    Equipment: 'LtArmor, LtWeapon, Crossbow, Tools, AdventurerKit'
     AbilityPrio: 'Dex, Str, Int, Con, Wis, Cha'
     ShowPCGen: 1
   -
@@ -838,7 +838,7 @@ classconfigs:
     ClassID: 4
     PrimSkills: 'Athle, WpNat, WpGen, WpExo, WpBrl, WpHvB, WpSpr, WpShd, ArmLt, ArmMd, CmbIn, DmRed, FSMul, FSMob, FSPow'
     SecSkills: 'Acrob, Bersk, DaSns, FSTri'
-    Equipment: null
+    Equipment: 'MdArmor, Shield, HvWeapon, AdventurerKit'
     AbilityPrio: 'Str, Dex, Con, Cha, Int, Wis'
     ShowPCGen: 1
   -
@@ -865,7 +865,7 @@ classconfigs:
     ClassID: 4
     PrimSkills: 'Athle, WpLtB, WpBow, WpCrs, ArmLt, ArmMd'
     SecSkills: 'Craft, Percp, Ride, WGen, WpHvB, WpFir, WpShd, CmbIn, DmRed, DaSns, FSMob, Warfr'
-    Equipment: null
+    Equipment: 'LtArmor, Bow, MdWeapon, AdventurerKit'
     AbilityPrio: 'Dex, Str, Wis, Con, Int, Cha'
     ShowPCGen: 1
   -
@@ -1018,7 +1018,7 @@ classconfigs:
     ClassID: 4
     PrimSkills: 'Athle, WpGen, WpAxe, WpPlA, WpLtB, WpCrs, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow'
     SecSkills: 'Craft, Ride, Percp, Surv, WpNat, WpHvB, WpExo, DaSns, FSTri, Warfr'
-    Equipment: null
+    Equipment: 'HvArmor, Shield, Axe, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Cha, Wis, Int'
     ShowPCGen: 1
   -
@@ -1027,7 +1027,7 @@ classconfigs:
     ClassID: 4
     PrimSkills: 'Athle, WpGen, WpClb, WpFll, WpLtB, WpCrs, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow'
     SecSkills: 'Craft, Ride, Percp, Surv, WpNat, WpAxe, WpExo, DaSns, FSTri, Warfr'
-    Equipment: null
+    Equipment: 'HvArmor, Shield, Mace, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Cha, Wis, Int'
     ShowPCGen: 1
   -
@@ -1036,7 +1036,7 @@ classconfigs:
     ClassID: 4
     PrimSkills: 'Athle, WpGen, WpSpr, WpPlA, WpLtB, WpCrs, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow'
     SecSkills: 'Craft, Ride, Percp, Surv, WpNat, WpAxe, WpExo, DaSns, FSTri, Warfr'
-    Equipment: null
+    Equipment: 'HvArmor, Spear, Bow, AdventurerKit'
     AbilityPrio: 'Dex, Str, Con, Cha, Wis, Int'
     ShowPCGen: 1
   -
@@ -1045,7 +1045,7 @@ classconfigs:
     ClassID: 17
     PrimSkills: 'WpGen, WpAxe, WpCrs, ArmLt, ArmMd'
     SecSkills: 'Percp, Ride, WpLtB, WpPlA, WpShd, CmbIn'
-    Equipment: null
+    Equipment: 'HvArmor, Shield, Axe, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: 1
   -
@@ -1054,7 +1054,7 @@ classconfigs:
     ClassID: 17
     PrimSkills: 'WpGen, WpClb, WpCrs, ArmLt, ArmMd'
     SecSkills: 'Percp, Ride, WpLtB, WpPlA, WpShd, CmbIn'
-    Equipment: null
+    Equipment: 'HvArmor, Shield, Mace, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: 1
   -
@@ -1063,7 +1063,7 @@ classconfigs:
     ClassID: 17
     PrimSkills: 'WpGen, WpSpr, WpCrs, ArmLt, ArmMd'
     SecSkills: 'Percp, Ride, WpLtB, WpPlA, WpShd, CmbIn'
-    Equipment: null
+    Equipment: 'HvArmor, Spear, Bow, AdventurerKit'
     AbilityPrio: 'Dex, Str, Con, Wis, Cha, Int'
     ShowPCGen: 1
   -
@@ -1072,7 +1072,7 @@ classconfigs:
     ClassID: 17
     PrimSkills: 'WpGen, WpHvB, WpCrs, ArmLt, ArmMd'
     SecSkills: 'Percp, Ride, WpLtB, WpPlA, WpShd, CmbIn'
-    Equipment: null
+    Equipment: 'HvArmor, Shield, Longsword, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: 1
   -
@@ -1081,7 +1081,7 @@ classconfigs:
     ClassID: 5
     PrimSkills: 'WpNat, WpBrl, FSMob, FSMul, KiDef, KiMed, KiMob, KiOff, KiSAi, KiSEa, KiSFi, KiSWa'
     SecSkills: 'Acrob, Athle, Percp, Psych, Compo, Steal, WpGen, CmbIn, DaSns, FSPow, FSPre, FSTri'
-    Equipment: null
+    Equipment: 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Wis, Dex, Str, Con, Int, Cha'
     ShowPCGen: 1
   -
@@ -1090,7 +1090,7 @@ classconfigs:
     ClassID: 5
     PrimSkills: 'Acrob, Athle, WpNat, WpBrl, CmbIn, FSMob, FSMul, KiDef, KiMed, KiMob, KiOff, KiSAi'
     SecSkills: 'Heal, Know, Percp, Psych, Compo, Steal, WpGen, WpExo, DaSns, FSPow, FSPre, FSTri'
-    Equipment: null
+    Equipment: 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Dex, Wis, Str, Con, Int, Cha'
     ShowPCGen: 1
   -
@@ -1099,7 +1099,7 @@ classconfigs:
     ClassID: 5
     PrimSkills: 'Acrob, Athle, WpNat, WpBrl, CmbIn, FSPow, FSMul, KiDef, KiMed, KiMob, KiOff, KiSEa'
     SecSkills: 'Heal, Know, Percp, Psych, Compo, Steal, WpGen, WpExo, DaSns, FSMob, FSPre, FSTri'
-    Equipment: null
+    Equipment: 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Str, Wis, Con, Dex, Int, Cha'
     ShowPCGen: 1
   -
@@ -1108,7 +1108,7 @@ classconfigs:
     ClassID: 5
     PrimSkills: 'Acrob, Athle, WpNat, WpGen, CmbIn, FSPre, FSMul, KiDef, KiMed, KiMob, KiOff, KiSFi'
     SecSkills: 'Heal, Know, Percp, Psych, Compo, Steal, WpBrl, WpExo, DaSns, FSPow, FSMob, FSTri'
-    Equipment: null
+    Equipment: 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Dex, Wis, Str, Con, Int, Cha'
     ShowPCGen: 1
   -
@@ -1117,7 +1117,7 @@ classconfigs:
     ClassID: 5
     PrimSkills: 'Acrob, Athle, WpNat, WpBrl, CmbIn, FSMob, FSMul, KiDef, KiMed, KiMob, KiOff, KiSWa'
     SecSkills: 'Heal, Know, Percp, Psych, Compo, Steal, WpGen, WpExo, DaSns, FSPow, FSPre, FSTri'
-    Equipment: null
+    Equipment: 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Wis, Dex, Str, Con, Int, Cha'
     ShowPCGen: 1
   -
@@ -1126,7 +1126,7 @@ classconfigs:
     ClassID: 4
     PrimSkills: 'Athle, Surv, WpGen, WpAxe, WpClb, WpHvB, WpBow, WpBrl, ArmMd, ArmHv, CmbIn, FSPow, FSPre'
     SecSkills: 'Craft, Ride, Percp, WpNat, WpLtB, WpShd, DaSns, DmRed, FSTri, Warfr'
-    Equipment: null
+    Equipment: 'HvArmor, HvWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: null
   -
@@ -1135,7 +1135,7 @@ classconfigs:
     ClassID: 17
     PrimSkills: 'Athle, WpAxe, WpGen, WpClb, WpBow, WpSmT, ArmLt, CmbIn'
     SecSkills: 'Percp, Ride, Surv, WpBrl, WpShd, ArmMd'
-    Equipment: null
+    Equipment: 'HvArmor, HvWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: null
   -
@@ -1144,7 +1144,7 @@ classconfigs:
     ClassID: 6
     PrimSkills: 'Know, Compo, WpAre, WpBaM, WpRay, PsiCs, PsiMc, PsiPk, PsiPm, PsiPp, PsiTp, PATp, PsCry, PsMob, SplCr, CmbTp'
     SecSkills: 'Percp, Psych, WpGen, ArmLt'
-    Equipment: null
+    Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
     AbilityPrio: 'Cha, Int, Wis, Dex, Con, Str'
     ShowPCGen: null
   -
@@ -1153,7 +1153,7 @@ classconfigs:
     ClassID: 7
     PrimSkills: 'Athle, WpNat, WpHvB, WpGen, WpShd, WpBow, WpBaM, ArmMd, CmbIn, FSPow, PsMob, PsOff, CmbTp'
     SecSkills: 'Percp, Compo, WpExo, WpRay, FSMob, PsiCs, PsiPk, PsiPm, PsiPp, PAPm'
-    Equipment: null
+    Equipment: 'HvArmor, HvWeapon, Bow, PsiFocus, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Int, Cha'
     ShowPCGen: null
   -
@@ -1162,7 +1162,7 @@ classconfigs:
     ClassID: 12
     PrimSkills: 'WpAre, ArcAb, ArcAe, ArcCo, ArcDi, ArcEn, ArcIm, ArcIl, ArcKi, ArcOu, ArcPy, ArcTr, WAGen, CmbTp'
     SecSkills: 'Know, WpBaM, WpRay, ArcHy, ArcLi, EncIt, Famil, SplCr'
-    Equipment: null
+    Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: null
   -
@@ -1171,7 +1171,7 @@ classconfigs:
     ClassID: 4
     PrimSkills: 'WpGen, WpHvB, WpLtB, WpBow, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow, FSPre, MiOMa'
     SecSkills: 'Athle, Ride, Percp, Surv, WpNat, WpAxe, WpExo, DaSns, FSTri, Warfr'
-    Equipment: null
+    Equipment: 'HvArmor, HvWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: null
 companionimprovements:

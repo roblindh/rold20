@@ -628,19 +628,19 @@ wealthclasses:
   -
     ID: -2
     Description: 'Seriously in debt.'
-    RenewIncome: 0
-    MinInvest: 0
-    Expenses: 0
+    RenewIncome: '0'
+    MinInvest: '0'
+    Expenses: '0'
   -
     ID: -1
     Description: 'Destitute; homeless and starving; no resources or possessions.'
-    RenewIncome: 0
+    RenewIncome: '0'
     MinInvest: '1 gp'
-    Expenses: 0
+    Expenses: '0'
   -
     ID: 0
     Description: 'Poor; lives with others or in a shack and eats very simple meals; a few cheap possessions.'
-    RenewIncome: 0
+    RenewIncome: '0'
     MinInvest: '2 gp'
     Expenses: '0.1 sp/day'
   -
@@ -847,8 +847,8 @@ towntypes:
     TownType: Thorp
     Population: 20-80
     GPLimit: '4 gp'
-    PowerMod: -1
-    CommunityMod: -3
+    PowerMod: '-1'
+    CommunityMod: '-3'
     Organizations: '0-1 temples'
   -
     ID: 2
@@ -856,8 +856,8 @@ towntypes:
     TownType: Hamlet
     Population: 81-400
     GPLimit: '10 gp'
-    PowerMod: 0
-    CommunityMod: -2
+    PowerMod: '0'
+    CommunityMod: '-2'
     Organizations: '1 temple, ruler'
   -
     ID: 3
@@ -865,8 +865,8 @@ towntypes:
     TownType: Village
     Population: 401-900
     GPLimit: '20 gp'
-    PowerMod: 1
-    CommunityMod: -1
+    PowerMod: '1'
+    CommunityMod: '-1'
     Organizations: '1-2 temples, ruler'
   -
     ID: 4
@@ -874,8 +874,8 @@ towntypes:
     TownType: 'Small town'
     Population: '901-2,000'
     GPLimit: '80 gp'
-    PowerMod: 2
-    CommunityMod: 0
+    PowerMod: '2'
+    CommunityMod: '0'
     Organizations: 'Temples, guilds, mayor…'
   -
     ID: 5
@@ -883,8 +883,8 @@ towntypes:
     TownType: 'Medium town'
     Population: '2,001-5,000'
     GPLimit: '200 gp'
-    PowerMod: 2
-    CommunityMod: 2
+    PowerMod: '2'
+    CommunityMod: '2'
     Organizations: 'Temples, guilds, nobles, mayor...'
   -
     ID: 6
@@ -892,8 +892,8 @@ towntypes:
     TownType: 'Large town'
     Population: '5,001-12,000'
     GPLimit: '500 gp'
-    PowerMod: 3
-    CommunityMod: 3
+    PowerMod: '3'
+    CommunityMod: '3'
     Organizations: 'Temples, guilds, nobles, mayor...'
   -
     ID: 7
@@ -924,7 +924,7 @@ towntypes:
     Organizations: 'Temples, guilds, nobles, mayor...'
   -
     ID: 10
-    DieRoll: 100
+    DieRoll: '100'
     TownType: Metropolis
     Population: '200,001+'
     GPLimit: '20,000 gp'

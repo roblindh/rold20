@@ -7478,7 +7478,7 @@ return array (
       'ClassID' => 13,
       'PrimSkills' => 'Heal, Know, Surv, WpLtB, WpBaM, SplCr, AAff',
       'SecSkills' => 'Craft, Percp, WpGen, ArcIl, ArcTr, DivCh, DivIn, DivLi, DivPr, Famil',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, SimpleWeapon, DivineFocus, AdventurerKit',
       'AbilityPrio' => 'Wis, Con, Dex, Int, Cha, Str',
       'ShowPCGen' => 1,
     ),
@@ -7489,7 +7489,7 @@ return array (
       'ClassID' => 13,
       'PrimSkills' => 'AnEmp, Craft, Heal, Know, WpClb, AAff',
       'SecSkills' => 'Percp, WpGen, WpBaM, CmbIn, DivAn, DivCh, DivIn, DivLi, DivNa, DivPr, DivRe, SplCr',
-      'Equipment' => NULL,
+      'Equipment' => 'LtArmor, SimpleWeapon, DivineFocus, AdventurerKit',
       'AbilityPrio' => 'Wis, Con, Dex, Int, Cha, Str',
       'ShowPCGen' => 1,
     ),
@@ -7500,7 +7500,7 @@ return array (
       'ClassID' => 13,
       'PrimSkills' => 'Craft, Know, WpClb, WpStv, SplCr, AAff',
       'SecSkills' => 'Heal, Percp, Ride, Compo, WpGen, WpBaM, ArcIl, ArcTr, DivIn, DivPr, EncIt, Famil',
-      'Equipment' => NULL,
+      'Equipment' => 'LtArmor, SimpleWeapon, DivineFocus, AdventurerKit',
       'AbilityPrio' => 'Wis, Int, Dex, Cha, Con, Str',
       'ShowPCGen' => 1,
     ),
@@ -7511,7 +7511,7 @@ return array (
       'ClassID' => 4,
       'PrimSkills' => 'Athle, WpGen, WpHvB, WpLtB, WpCrs, WpShd, ArmMd, ArmHv, CmbIn, DmRed',
       'SecSkills' => 'Craft, Percp, Ride, WpBow, DaSns, FSPow, FSPre, Warfr',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, Shield, HvWeapon, Bow, AdventurerKit',
       'AbilityPrio' => 'Str, Con, Dex, Wis, Cha, Int',
       'ShowPCGen' => 1,
     ),
@@ -7522,7 +7522,7 @@ return array (
       'ClassID' => 8,
       'PrimSkills' => 'AnEmp, Athle, Percp, Steal, Surv, WpAxe, WpHvB, WpBow, ArmLt, CmbIn, EnSpc, FSMob, FSMul',
       'SecSkills' => 'Craft, Heal, Know, Ride, WpGen, WpSmT, DaSns, DivAn, DivNa, AniCm',
-      'Equipment' => NULL,
+      'Equipment' => 'LtArmor, MdWeapon, Bow, AdventurerKit',
       'AbilityPrio' => 'Dex, Con, Str, Wis, Int, Cha',
       'ShowPCGen' => 1,
     ),
@@ -7533,7 +7533,7 @@ return array (
       'ClassID' => 9,
       'PrimSkills' => 'Craft, Know, Percp, Steal, Thiev, WpLtB, WpSmT, DaSns, FSMul, PsMag',
       'SecSkills' => 'Lingu, Psych, WpGen, ArmLt, FSMob, FSTri, ArcDi, ArcIl, ArcTr',
-      'Equipment' => NULL,
+      'Equipment' => 'LtArmor, LtWeapon, Crossbow, AdventurerKit',
       'AbilityPrio' => 'Int, Dex, Cha, Wis, Str, Con',
       'ShowPCGen' => 1,
     ),
@@ -7544,7 +7544,7 @@ return array (
       'ClassID' => 9,
       'PrimSkills' => 'Acrob, Athle, Lingu, Percp, Compo, Steal, Thiev, WpFnc, WpSmT, DaSns, FSMul, VitAt',
       'SecSkills' => 'Psych, WpGen, WpLtB, ArmLt, FSMob, FSTri, ArcIl, PsMag',
-      'Equipment' => NULL,
+      'Equipment' => 'LtArmor, LtWeapon, Crossbow, AdventurerKit',
       'AbilityPrio' => 'Dex, Wis, Int, Cha, Str, Con',
       'ShowPCGen' => 1,
     ),
@@ -7555,7 +7555,7 @@ return array (
       'ClassID' => 9,
       'PrimSkills' => 'Athle, WpNat, WpBrl, WpGen, WpFnc, WpCrs, WpSmT, ArmLt, CmbIn, FSMul, FSTri, VitAt',
       'SecSkills' => 'Psych, Steal, Thiev, FSMob, FSPow',
-      'Equipment' => NULL,
+      'Equipment' => 'MdArmor, MdWeapon, AdventurerKit',
       'AbilityPrio' => 'Str, Dex, Con, Cha, Wis, Int',
       'ShowPCGen' => 1,
     ),
@@ -7588,7 +7588,7 @@ return array (
       'ClassID' => 14,
       'PrimSkills' => 'Lingu, Ride, WpFnc, WpBow, WpFir, ArmLt, ArmMd',
       'SecSkills' => 'Athle, Know, Percp, Perfm, Surv, WpGen, WpShd, FSPre, FSPow, Warfr',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, LtWeapon, AdventurerKit',
       'AbilityPrio' => 'Cha, Int, Dex, Str, Con, Wis',
       'ShowPCGen' => 1,
     ),
@@ -7599,7 +7599,7 @@ return array (
       'ClassID' => 14,
       'PrimSkills' => 'Know, Lingu, Perfm, Psych',
       'SecSkills' => 'Percp, Ride, WpFnc, WpGen, Warfr',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, LtWeapon, AdventurerKit',
       'AbilityPrio' => 'Cha, Int, Wis, Con, Dex, Str',
       'ShowPCGen' => 1,
     ),
@@ -7610,7 +7610,7 @@ return array (
       'ClassID' => 15,
       'PrimSkills' => 'Craft, Prof',
       'SecSkills' => 'AnEmp, Athle, Surv, WpNat, WpBrl, WpGen',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, SimpleWeapon, AdventurerKit',
       'AbilityPrio' => 'Str, Con, Dex, Cha, Wis, Int',
       'ShowPCGen' => 1,
     ),
@@ -7621,7 +7621,7 @@ return array (
       'ClassID' => 15,
       'PrimSkills' => 'Percp, Prof',
       'SecSkills' => 'Craft, Heal, Psych, Ride, WpGen',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, AdventurerKit',
       'AbilityPrio' => 'Wis, Int, Cha, Con, Dex, Str',
       'ShowPCGen' => 1,
     ),
@@ -7632,7 +7632,7 @@ return array (
       'ClassID' => 16,
       'PrimSkills' => 'Craft, Prof, Ride',
       'SecSkills' => 'Psych, WpGen, Surv',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, LtWeapon, AdventurerKit',
       'AbilityPrio' => 'Wis, Cha, Int, Con, Dex, Str',
       'ShowPCGen' => 1,
     ),
@@ -7643,7 +7643,7 @@ return array (
       'ClassID' => 16,
       'PrimSkills' => 'Craft, Prof',
       'SecSkills' => 'Know',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, Tools, AdventurerKit',
       'AbilityPrio' => 'Str, Dex, Int, Wis, Cha, Con',
       'ShowPCGen' => 1,
     ),
@@ -7654,7 +7654,7 @@ return array (
       'ClassID' => 16,
       'PrimSkills' => 'Know, Lingu, Psych',
       'SecSkills' => 'Craft, Heal, Perfm, Prof',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit',
       'AbilityPrio' => 'Int, Wis, Cha, Dex, Con, Str',
       'ShowPCGen' => 1,
     ),
@@ -7665,7 +7665,7 @@ return array (
       'ClassID' => 17,
       'PrimSkills' => 'WpGen, WpLtB, WpCrs, ArmLt, ArmMd',
       'SecSkills' => 'Percp, Ride, WpHvB, WpPlA, WpShd, CmbIn',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, Shield, MdWeapon, Crossbow, AdventurerKit',
       'AbilityPrio' => 'Str, Con, Dex, Wis, Cha, Int',
       'ShowPCGen' => 1,
     ),
@@ -7676,7 +7676,7 @@ return array (
       'ClassID' => 17,
       'PrimSkills' => 'Athle, WpAxe, WpGen, WpClb, WpBow, WpSmT, ArmLt, CmbIn',
       'SecSkills' => 'Percp, Ride, Steal, Surv, WpBrl, WpShd',
-      'Equipment' => NULL,
+      'Equipment' => 'LtArmor, HvWeapon, Bow, AdventurerKit',
       'AbilityPrio' => 'Str, Dex, Con, Wis, Cha, Int',
       'ShowPCGen' => 1,
     ),
@@ -7709,7 +7709,7 @@ return array (
       'ClassID' => 9,
       'PrimSkills' => 'Acrob, Athle, Percp, Steal, Thiev, WpNat, WpFnc, WpCrs, WpSmT, ArmLt, DaSns, FSMul, FSPre, VitAt',
       'SecSkills' => 'Perfm, Psych, Compo, WpGen, CmbIn, FSMob, FSTri, ArcIl',
-      'Equipment' => NULL,
+      'Equipment' => 'LtArmor, LtWeapon, Crossbow, Tools, AdventurerKit',
       'AbilityPrio' => 'Dex, Str, Int, Con, Wis, Cha',
       'ShowPCGen' => 1,
     ),
@@ -7720,7 +7720,7 @@ return array (
       'ClassID' => 4,
       'PrimSkills' => 'Athle, WpNat, WpGen, WpExo, WpBrl, WpHvB, WpSpr, WpShd, ArmLt, ArmMd, CmbIn, DmRed, FSMul, FSMob, FSPow',
       'SecSkills' => 'Acrob, Bersk, DaSns, FSTri',
-      'Equipment' => NULL,
+      'Equipment' => 'MdArmor, Shield, HvWeapon, AdventurerKit',
       'AbilityPrio' => 'Str, Dex, Con, Cha, Int, Wis',
       'ShowPCGen' => 1,
     ),
@@ -7753,7 +7753,7 @@ return array (
       'ClassID' => 4,
       'PrimSkills' => 'Athle, WpLtB, WpBow, WpCrs, ArmLt, ArmMd',
       'SecSkills' => 'Craft, Percp, Ride, WGen, WpHvB, WpFir, WpShd, CmbIn, DmRed, DaSns, FSMob, Warfr',
-      'Equipment' => NULL,
+      'Equipment' => 'LtArmor, Bow, MdWeapon, AdventurerKit',
       'AbilityPrio' => 'Dex, Str, Wis, Con, Int, Cha',
       'ShowPCGen' => 1,
     ),
@@ -7940,7 +7940,7 @@ return array (
       'ClassID' => 4,
       'PrimSkills' => 'Athle, WpGen, WpAxe, WpPlA, WpLtB, WpCrs, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow',
       'SecSkills' => 'Craft, Ride, Percp, Surv, WpNat, WpHvB, WpExo, DaSns, FSTri, Warfr',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, Shield, Axe, Bow, AdventurerKit',
       'AbilityPrio' => 'Str, Con, Dex, Cha, Wis, Int',
       'ShowPCGen' => 1,
     ),
@@ -7951,7 +7951,7 @@ return array (
       'ClassID' => 4,
       'PrimSkills' => 'Athle, WpGen, WpClb, WpFll, WpLtB, WpCrs, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow',
       'SecSkills' => 'Craft, Ride, Percp, Surv, WpNat, WpAxe, WpExo, DaSns, FSTri, Warfr',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, Shield, Mace, Bow, AdventurerKit',
       'AbilityPrio' => 'Str, Con, Dex, Cha, Wis, Int',
       'ShowPCGen' => 1,
     ),
@@ -7962,7 +7962,7 @@ return array (
       'ClassID' => 4,
       'PrimSkills' => 'Athle, WpGen, WpSpr, WpPlA, WpLtB, WpCrs, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow',
       'SecSkills' => 'Craft, Ride, Percp, Surv, WpNat, WpAxe, WpExo, DaSns, FSTri, Warfr',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, Spear, Bow, AdventurerKit',
       'AbilityPrio' => 'Dex, Str, Con, Cha, Wis, Int',
       'ShowPCGen' => 1,
     ),
@@ -7973,7 +7973,7 @@ return array (
       'ClassID' => 17,
       'PrimSkills' => 'WpGen, WpAxe, WpCrs, ArmLt, ArmMd',
       'SecSkills' => 'Percp, Ride, WpLtB, WpPlA, WpShd, CmbIn',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, Shield, Axe, Bow, AdventurerKit',
       'AbilityPrio' => 'Str, Con, Dex, Wis, Cha, Int',
       'ShowPCGen' => 1,
     ),
@@ -7984,7 +7984,7 @@ return array (
       'ClassID' => 17,
       'PrimSkills' => 'WpGen, WpClb, WpCrs, ArmLt, ArmMd',
       'SecSkills' => 'Percp, Ride, WpLtB, WpPlA, WpShd, CmbIn',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, Shield, Mace, Bow, AdventurerKit',
       'AbilityPrio' => 'Str, Con, Dex, Wis, Cha, Int',
       'ShowPCGen' => 1,
     ),
@@ -7995,7 +7995,7 @@ return array (
       'ClassID' => 17,
       'PrimSkills' => 'WpGen, WpSpr, WpCrs, ArmLt, ArmMd',
       'SecSkills' => 'Percp, Ride, WpLtB, WpPlA, WpShd, CmbIn',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, Spear, Bow, AdventurerKit',
       'AbilityPrio' => 'Dex, Str, Con, Wis, Cha, Int',
       'ShowPCGen' => 1,
     ),
@@ -8006,7 +8006,7 @@ return array (
       'ClassID' => 17,
       'PrimSkills' => 'WpGen, WpHvB, WpCrs, ArmLt, ArmMd',
       'SecSkills' => 'Percp, Ride, WpLtB, WpPlA, WpShd, CmbIn',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, Shield, Longsword, Bow, AdventurerKit',
       'AbilityPrio' => 'Str, Con, Dex, Wis, Cha, Int',
       'ShowPCGen' => 1,
     ),
@@ -8017,7 +8017,7 @@ return array (
       'ClassID' => 5,
       'PrimSkills' => 'WpNat, WpBrl, FSMob, FSMul, KiDef, KiMed, KiMob, KiOff, KiSAi, KiSEa, KiSFi, KiSWa',
       'SecSkills' => 'Acrob, Athle, Percp, Psych, Compo, Steal, WpGen, CmbIn, DaSns, FSPow, FSPre, FSTri',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit',
       'AbilityPrio' => 'Wis, Dex, Str, Con, Int, Cha',
       'ShowPCGen' => 1,
     ),
@@ -8028,7 +8028,7 @@ return array (
       'ClassID' => 5,
       'PrimSkills' => 'Acrob, Athle, WpNat, WpBrl, CmbIn, FSMob, FSMul, KiDef, KiMed, KiMob, KiOff, KiSAi',
       'SecSkills' => 'Heal, Know, Percp, Psych, Compo, Steal, WpGen, WpExo, DaSns, FSPow, FSPre, FSTri',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit',
       'AbilityPrio' => 'Dex, Wis, Str, Con, Int, Cha',
       'ShowPCGen' => 1,
     ),
@@ -8039,7 +8039,7 @@ return array (
       'ClassID' => 5,
       'PrimSkills' => 'Acrob, Athle, WpNat, WpBrl, CmbIn, FSPow, FSMul, KiDef, KiMed, KiMob, KiOff, KiSEa',
       'SecSkills' => 'Heal, Know, Percp, Psych, Compo, Steal, WpGen, WpExo, DaSns, FSMob, FSPre, FSTri',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit',
       'AbilityPrio' => 'Str, Wis, Con, Dex, Int, Cha',
       'ShowPCGen' => 1,
     ),
@@ -8050,7 +8050,7 @@ return array (
       'ClassID' => 5,
       'PrimSkills' => 'Acrob, Athle, WpNat, WpGen, CmbIn, FSPre, FSMul, KiDef, KiMed, KiMob, KiOff, KiSFi',
       'SecSkills' => 'Heal, Know, Percp, Psych, Compo, Steal, WpBrl, WpExo, DaSns, FSPow, FSMob, FSTri',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit',
       'AbilityPrio' => 'Dex, Wis, Str, Con, Int, Cha',
       'ShowPCGen' => 1,
     ),
@@ -8061,7 +8061,7 @@ return array (
       'ClassID' => 5,
       'PrimSkills' => 'Acrob, Athle, WpNat, WpBrl, CmbIn, FSMob, FSMul, KiDef, KiMed, KiMob, KiOff, KiSWa',
       'SecSkills' => 'Heal, Know, Percp, Psych, Compo, Steal, WpGen, WpExo, DaSns, FSPow, FSPre, FSTri',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit',
       'AbilityPrio' => 'Wis, Dex, Str, Con, Int, Cha',
       'ShowPCGen' => 1,
     ),
@@ -8072,7 +8072,7 @@ return array (
       'ClassID' => 4,
       'PrimSkills' => 'Athle, Surv, WpGen, WpAxe, WpClb, WpHvB, WpBow, WpBrl, ArmMd, ArmHv, CmbIn, FSPow, FSPre',
       'SecSkills' => 'Craft, Ride, Percp, WpNat, WpLtB, WpShd, DaSns, DmRed, FSTri, Warfr',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, HvWeapon, Bow, AdventurerKit',
       'AbilityPrio' => 'Str, Con, Dex, Wis, Cha, Int',
       'ShowPCGen' => NULL,
     ),
@@ -8083,7 +8083,7 @@ return array (
       'ClassID' => 17,
       'PrimSkills' => 'Athle, WpAxe, WpGen, WpClb, WpBow, WpSmT, ArmLt, CmbIn',
       'SecSkills' => 'Percp, Ride, Surv, WpBrl, WpShd, ArmMd',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, HvWeapon, Bow, AdventurerKit',
       'AbilityPrio' => 'Str, Con, Dex, Wis, Cha, Int',
       'ShowPCGen' => NULL,
     ),
@@ -8094,7 +8094,7 @@ return array (
       'ClassID' => 6,
       'PrimSkills' => 'Know, Compo, WpAre, WpBaM, WpRay, PsiCs, PsiMc, PsiPk, PsiPm, PsiPp, PsiTp, PATp, PsCry, PsMob, SplCr, CmbTp',
       'SecSkills' => 'Percp, Psych, WpGen, ArmLt',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit',
       'AbilityPrio' => 'Cha, Int, Wis, Dex, Con, Str',
       'ShowPCGen' => NULL,
     ),
@@ -8105,7 +8105,7 @@ return array (
       'ClassID' => 7,
       'PrimSkills' => 'Athle, WpNat, WpHvB, WpGen, WpShd, WpBow, WpBaM, ArmMd, CmbIn, FSPow, PsMob, PsOff, CmbTp',
       'SecSkills' => 'Percp, Compo, WpExo, WpRay, FSMob, PsiCs, PsiPk, PsiPm, PsiPp, PAPm',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, HvWeapon, Bow, PsiFocus, AdventurerKit',
       'AbilityPrio' => 'Str, Con, Dex, Wis, Int, Cha',
       'ShowPCGen' => NULL,
     ),
@@ -8116,7 +8116,7 @@ return array (
       'ClassID' => 12,
       'PrimSkills' => 'WpAre, ArcAb, ArcAe, ArcCo, ArcDi, ArcEn, ArcIm, ArcIl, ArcKi, ArcOu, ArcPy, ArcTr, WAGen, CmbTp',
       'SecSkills' => 'Know, WpBaM, WpRay, ArcHy, ArcLi, EncIt, Famil, SplCr',
-      'Equipment' => NULL,
+      'Equipment' => 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit',
       'AbilityPrio' => 'Int, Dex, Wis, Con, Cha, Str',
       'ShowPCGen' => NULL,
     ),
@@ -8127,7 +8127,7 @@ return array (
       'ClassID' => 4,
       'PrimSkills' => 'WpGen, WpHvB, WpLtB, WpBow, WpBrl, WpShd, ArmMd, ArmHv, CmbIn, DmRed, FSPow, FSPre, MiOMa',
       'SecSkills' => 'Athle, Ride, Percp, Surv, WpNat, WpAxe, WpExo, DaSns, FSTri, Warfr',
-      'Equipment' => NULL,
+      'Equipment' => 'HvArmor, HvWeapon, Bow, AdventurerKit',
       'AbilityPrio' => 'Str, Con, Dex, Wis, Cha, Int',
       'ShowPCGen' => NULL,
     ),
@@ -67943,6 +67943,4457 @@ return array (
       'DurationDescription' => NULL,
     ),
   ),
+  'towntypes' => 
+  array (
+    1 => 
+    array (
+      'ID' => 1,
+      'DieRoll' => '01-10',
+      'TownType' => 'Thorp',
+      'Population' => '20-80',
+      'GPLimit' => '4 gp',
+      'PowerMod' => '-1',
+      'CommunityMod' => '-3',
+      'Organizations' => '0-1 temples',
+    ),
+    2 => 
+    array (
+      'ID' => 2,
+      'DieRoll' => '11-30',
+      'TownType' => 'Hamlet',
+      'Population' => '81-400',
+      'GPLimit' => '10 gp',
+      'PowerMod' => '0',
+      'CommunityMod' => '-2',
+      'Organizations' => '1 temple, ruler',
+    ),
+    3 => 
+    array (
+      'ID' => 3,
+      'DieRoll' => '31-50',
+      'TownType' => 'Village',
+      'Population' => '401-900',
+      'GPLimit' => '20 gp',
+      'PowerMod' => '1',
+      'CommunityMod' => '-1',
+      'Organizations' => '1-2 temples, ruler',
+    ),
+    4 => 
+    array (
+      'ID' => 4,
+      'DieRoll' => '51-65',
+      'TownType' => 'Small town',
+      'Population' => '901-2,000',
+      'GPLimit' => '80 gp',
+      'PowerMod' => '2',
+      'CommunityMod' => '0',
+      'Organizations' => 'Temples, guilds, mayor…',
+    ),
+    5 => 
+    array (
+      'ID' => 5,
+      'DieRoll' => '66-75',
+      'TownType' => 'Medium town',
+      'Population' => '2,001-5,000',
+      'GPLimit' => '200 gp',
+      'PowerMod' => '2',
+      'CommunityMod' => '2',
+      'Organizations' => 'Temples, guilds, nobles, mayor...',
+    ),
+    6 => 
+    array (
+      'ID' => 6,
+      'DieRoll' => '76-85',
+      'TownType' => 'Large town',
+      'Population' => '5,001-12,000',
+      'GPLimit' => '500 gp',
+      'PowerMod' => '3',
+      'CommunityMod' => '3',
+      'Organizations' => 'Temples, guilds, nobles, mayor...',
+    ),
+    7 => 
+    array (
+      'ID' => 7,
+      'DieRoll' => '86-90',
+      'TownType' => 'Small city',
+      'Population' => '12,001-30,000',
+      'GPLimit' => '1,500 gp',
+      'PowerMod' => '+4 (2 rolls)',
+      'CommunityMod' => '+6 (2 rolls)',
+      'Organizations' => 'Temples, guilds, nobles, mayor...',
+    ),
+    8 => 
+    array (
+      'ID' => 8,
+      'DieRoll' => '91-95',
+      'TownType' => 'Medium city',
+      'Population' => '30,001-75,000',
+      'GPLimit' => '4,000 gp',
+      'PowerMod' => '+5 (3 rolls)',
+      'CommunityMod' => '+9 (3 rolls)',
+      'Organizations' => 'Temples, guilds, nobles, mayor...',
+    ),
+    9 => 
+    array (
+      'ID' => 9,
+      'DieRoll' => '96-99',
+      'TownType' => 'Large city',
+      'Population' => '75,001-200,000',
+      'GPLimit' => '10,000 gp',
+      'PowerMod' => '+6 (4 rolls)',
+      'CommunityMod' => '+12 (4 rolls)',
+      'Organizations' => 'Temples, guilds, nobles, mayor...',
+    ),
+    10 => 
+    array (
+      'ID' => 10,
+      'DieRoll' => '100',
+      'TownType' => 'Metropolis',
+      'Population' => '200,001+',
+      'GPLimit' => '20,000 gp',
+      'PowerMod' => '+7 (5 rolls)',
+      'CommunityMod' => '+15 (5 rolls)',
+      'Organizations' => 'Temples, guilds, nobles, royalty...',
+    ),
+  ),
+  'treasurerandom' => 
+  array (
+    1 => 
+    array (
+      'EL' => 1,
+      'cp' => '15%: 6d100',
+      'sp' => '23%: 8d10',
+      'gp' => '43%: 2d8',
+      'pp' => '5%: 1d2',
+      'Gems' => '5%: 1',
+      'Art' => '5%: 1',
+      'MundaneItems' => '24%: 1',
+      'MinorItems' => '5%: 1',
+      'MediumItems' => NULL,
+      'MajorItems' => NULL,
+      'AverageTotal' => 300,
+    ),
+    2 => 
+    array (
+      'EL' => 2,
+      'cp' => '10%: 10d100',
+      'sp' => '20%: 10d20',
+      'gp' => '52%: 4d10',
+      'pp' => '5%: 1d4',
+      'Gems' => '14%: 1d3',
+      'Art' => '5%: 1d3',
+      'MundaneItems' => '36%: 1',
+      'MinorItems' => '15%: 1',
+      'MediumItems' => NULL,
+      'MajorItems' => NULL,
+      'AverageTotal' => 600,
+    ),
+    3 => 
+    array (
+      'EL' => 3,
+      'cp' => '10%: 10d200',
+      'sp' => '20%: 10d32',
+      'gp' => '54%: 4d10',
+      'pp' => '5%: 1d6',
+      'Gems' => '18%: 1d3',
+      'Art' => '5%: 1d3',
+      'MundaneItems' => '30%: 1d3',
+      'MinorItems' => '21%: 1',
+      'MediumItems' => NULL,
+      'MajorItems' => NULL,
+      'AverageTotal' => 900,
+    ),
+    4 => 
+    array (
+      'EL' => 4,
+      'cp' => '10%: 10d300',
+      'sp' => '20%: 10d48',
+      'gp' => '54%: 6d10',
+      'pp' => '5%: 1d8',
+      'Gems' => '25%: 1d4',
+      'Art' => '5%: 1d3',
+      'MundaneItems' => '20%: 1d4',
+      'MinorItems' => '38%: 1',
+      'MediumItems' => NULL,
+      'MajorItems' => NULL,
+      'AverageTotal' => 1200,
+    ),
+    5 => 
+    array (
+      'EL' => 5,
+      'cp' => '9%: 10d400',
+      'sp' => '19%: 10d60',
+      'gp' => '57%: 8d10',
+      'pp' => '5%: 1d10',
+      'Gems' => '35%: 1d4',
+      'Art' => '5%: 1d4',
+      'MundaneItems' => '10%: 1d4',
+      'MinorItems' => '33%: 1d3',
+      'MediumItems' => NULL,
+      'MajorItems' => NULL,
+      'AverageTotal' => 1600,
+    ),
+    6 => 
+    array (
+      'EL' => 6,
+      'cp' => '8%: 10d600',
+      'sp' => '21%: 10d80',
+      'gp' => '58%: 10d10',
+      'pp' => '5%: 1d12',
+      'Gems' => '36%: 1d4',
+      'Art' => '8%: 1d4',
+      'MundaneItems' => '5%: 1d4',
+      'MinorItems' => '40%: 1d3',
+      'MediumItems' => '1%: 1',
+      'MajorItems' => NULL,
+      'AverageTotal' => 2000,
+    ),
+    7 => 
+    array (
+      'EL' => 7,
+      'cp' => '7%: 10d1000',
+      'sp' => '17%: 10d120',
+      'gp' => '58%: 10d12',
+      'pp' => '7%: 3d4',
+      'Gems' => '40%: 1d4',
+      'Art' => '12%: 1d4',
+      'MundaneItems' => NULL,
+      'MinorItems' => '48%: 1d3',
+      'MediumItems' => '3%: 1',
+      'MajorItems' => NULL,
+      'AverageTotal' => 2600,
+    ),
+    8 => 
+    array (
+      'EL' => 8,
+      'cp' => '5%: 10d1200',
+      'sp' => '14%: 10d120',
+      'gp' => '58%: 10d16',
+      'pp' => '13%: 3d6',
+      'Gems' => '40%: 1d6',
+      'Art' => '15%: 1d4',
+      'MundaneItems' => NULL,
+      'MinorItems' => '48%: 1d4',
+      'MediumItems' => '4%: 1',
+      'MajorItems' => NULL,
+      'AverageTotal' => 3400,
+    ),
+    9 => 
+    array (
+      'EL' => 9,
+      'cp' => '5%: 10d1200',
+      'sp' => '14%: 10d160',
+      'gp' => '56%: 10d20',
+      'pp' => '15%: 2d12',
+      'Gems' => '40%: 1d8',
+      'Art' => '20%: 1d4',
+      'MundaneItems' => NULL,
+      'MinorItems' => '48%: 1d4',
+      'MediumItems' => '9%: 1',
+      'MajorItems' => NULL,
+      'AverageTotal' => 4500,
+    ),
+    10 => 
+    array (
+      'EL' => 10,
+      'cp' => NULL,
+      'sp' => '14%: 10d200',
+      'gp' => '56%: 10d24',
+      'pp' => '21%: 5d6',
+      'Gems' => '44%: 1d8',
+      'Art' => '21%: 1d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => '48%: 1d4',
+      'MediumItems' => '11%: 1',
+      'MajorItems' => '1%: 1',
+      'AverageTotal' => 5800,
+    ),
+    11 => 
+    array (
+      'EL' => 11,
+      'cp' => NULL,
+      'sp' => '6%: 10d300',
+      'gp' => '61%: 10d32',
+      'pp' => '25%: 4d10',
+      'Gems' => '51%: 1d10',
+      'Art' => '26%: 1d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => '53%: 1d4',
+      'MediumItems' => '14%: 1',
+      'MajorItems' => '2%: 1',
+      'AverageTotal' => 7500,
+    ),
+    12 => 
+    array (
+      'EL' => 12,
+      'cp' => NULL,
+      'sp' => '6%: 10d360',
+      'gp' => '61%: 10d40',
+      'pp' => '25%: 6d10',
+      'Gems' => '53%: 1d10',
+      'Art' => '30%: 1d8',
+      'MundaneItems' => NULL,
+      'MinorItems' => '55%: 1d6',
+      'MediumItems' => '15%: 1',
+      'MajorItems' => '3%: 1',
+      'AverageTotal' => 9800,
+    ),
+    13 => 
+    array (
+      'EL' => 13,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '67%: 10d50',
+      'pp' => '25%: 10d10',
+      'Gems' => '55%: 1d12',
+      'Art' => '34%: 1d10',
+      'MundaneItems' => NULL,
+      'MinorItems' => '54%: 1d6',
+      'MediumItems' => '22%: 1',
+      'MajorItems' => '5%: 1',
+      'AverageTotal' => 13000,
+    ),
+    14 => 
+    array (
+      'EL' => 14,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '67%: 10d60',
+      'pp' => '25%: 10d12',
+      'Gems' => '55%: 2d8',
+      'Art' => '34%: 2d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => '39%: 1d6',
+      'MediumItems' => '34%: 1',
+      'MajorItems' => '8%: 1',
+      'AverageTotal' => 17000,
+    ),
+    15 => 
+    array (
+      'EL' => 15,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '71%: 10d80',
+      'pp' => '26%: 10d14',
+      'Gems' => '56%: 2d10',
+      'Art' => '35%: 2d8',
+      'MundaneItems' => NULL,
+      'MinorItems' => '35%: 1d10',
+      'MediumItems' => '44%: 1',
+      'MajorItems' => '10%: 1',
+      'AverageTotal' => 22000,
+    ),
+    16 => 
+    array (
+      'EL' => 16,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '71%: 10d120',
+      'pp' => '26%: 10d16',
+      'Gems' => '57%: 4d6',
+      'Art' => '36%: 2d10',
+      'MundaneItems' => NULL,
+      'MinorItems' => '6%: 1d10',
+      'MediumItems' => '44%: 1d3',
+      'MajorItems' => '10%: 1',
+      'AverageTotal' => 28000,
+    ),
+    17 => 
+    array (
+      'EL' => 17,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '65%: 10d150',
+      'pp' => '32%: 10d20',
+      'Gems' => '59%: 4d8',
+      'Art' => '37%: 3d8',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '50%: 1d3',
+      'MajorItems' => '17%: 1',
+      'AverageTotal' => 36000,
+    ),
+    18 => 
+    array (
+      'EL' => 18,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '63%: 10d180',
+      'pp' => '35%: 10d20',
+      'Gems' => '50%: 3d12',
+      'Art' => '46%: 3d10',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '56%: 1d4',
+      'MajorItems' => '20%: 1',
+      'AverageTotal' => 47000,
+    ),
+    19 => 
+    array (
+      'EL' => 19,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '63%: 10d240',
+      'pp' => '35%: 10d30',
+      'Gems' => '47%: 6d6',
+      'Art' => '50%: 6d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '66%: 1d4',
+      'MajorItems' => '30%: 1',
+      'AverageTotal' => 61000,
+    ),
+    20 => 
+    array (
+      'EL' => 20,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '63%: 10d320',
+      'pp' => '35%: 10d40',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '35%: 1d3',
+      'AverageTotal' => 80000,
+    ),
+    21 => 
+    array (
+      'EL' => 21,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d360',
+      'pp' => '35%: 10d50',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '40%: 1d4',
+      'AverageTotal' => 87000,
+    ),
+    22 => 
+    array (
+      'EL' => 22,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d400',
+      'pp' => '35%: 10d60',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '45%: 1d6',
+      'AverageTotal' => 96000,
+    ),
+    23 => 
+    array (
+      'EL' => 23,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d440',
+      'pp' => '35%: 10d70',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '50%: 1d8',
+      'AverageTotal' => 106000,
+    ),
+    24 => 
+    array (
+      'EL' => 24,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d480',
+      'pp' => '35%: 10d80',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '55%: 1d10',
+      'AverageTotal' => 116000,
+    ),
+    25 => 
+    array (
+      'EL' => 25,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d520',
+      'pp' => '35%: 10d90',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '60%: 2d6',
+      'AverageTotal' => 128000,
+    ),
+    26 => 
+    array (
+      'EL' => 26,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d560',
+      'pp' => '35%: 10d100',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '65%: 2d8',
+      'AverageTotal' => 141000,
+    ),
+    27 => 
+    array (
+      'EL' => 27,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d600',
+      'pp' => '35%: 10d120',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '70%: 2d10',
+      'AverageTotal' => 155000,
+    ),
+    28 => 
+    array (
+      'EL' => 28,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d640',
+      'pp' => '35%: 10d140',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '75%: 3d8',
+      'AverageTotal' => 170000,
+    ),
+    29 => 
+    array (
+      'EL' => 29,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d680',
+      'pp' => '35%: 10d160',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '80%: 4d8',
+      'AverageTotal' => 187000,
+    ),
+    30 => 
+    array (
+      'EL' => 30,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d720',
+      'pp' => '35%: 10d180',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '80%: 4d10',
+      'AverageTotal' => 206000,
+    ),
+    31 => 
+    array (
+      'EL' => 31,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d760',
+      'pp' => '35%: 10d200',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '80%: 4d10',
+      'AverageTotal' => 227000,
+    ),
+    32 => 
+    array (
+      'EL' => 32,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d800',
+      'pp' => '35%: 10d220',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '80%: 4d10',
+      'AverageTotal' => 249000,
+    ),
+    33 => 
+    array (
+      'EL' => 33,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d840',
+      'pp' => '35%: 10d240',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '80%: 4d10',
+      'AverageTotal' => 274000,
+    ),
+    34 => 
+    array (
+      'EL' => 34,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d880',
+      'pp' => '35%: 10d260',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '80%: 4d10',
+      'AverageTotal' => 302000,
+    ),
+    35 => 
+    array (
+      'EL' => 35,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d920',
+      'pp' => '35%: 10d280',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '80%: 4d10',
+      'AverageTotal' => 332000,
+    ),
+    36 => 
+    array (
+      'EL' => 36,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d960',
+      'pp' => '35%: 10d300',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '80%: 4d10',
+      'AverageTotal' => 365000,
+    ),
+    37 => 
+    array (
+      'EL' => 37,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d1000',
+      'pp' => '35%: 10d320',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '80%: 4d10',
+      'AverageTotal' => 401000,
+    ),
+    38 => 
+    array (
+      'EL' => 38,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d1000',
+      'pp' => '35%: 10d340',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '80%: 4d10',
+      'AverageTotal' => 442000,
+    ),
+    39 => 
+    array (
+      'EL' => 39,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d1000',
+      'pp' => '35%: 10d360',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '80%: 4d10',
+      'AverageTotal' => 486000,
+    ),
+    40 => 
+    array (
+      'EL' => 40,
+      'cp' => NULL,
+      'sp' => NULL,
+      'gp' => '60%: 10d1000',
+      'pp' => '35%: 10d380',
+      'Gems' => '36%: 4d10',
+      'Art' => '62%: 7d6',
+      'MundaneItems' => NULL,
+      'MinorItems' => NULL,
+      'MediumItems' => '40%: 1d4',
+      'MajorItems' => '80%: 4d10',
+      'AverageTotal' => 534000,
+    ),
+  ),
+  'treasuremundane' => 
+  array (
+    1 => 
+    array (
+      'ID' => 1,
+      'Range' => '01-17',
+      'MundaneType' => '1d6 alchemical items (acid, smokesticks, holy water, thunderstones, etc.)',
+    ),
+    2 => 
+    array (
+      'ID' => 2,
+      'Range' => '18-35',
+      'MundaneType' => 'Armor or shield',
+    ),
+    3 => 
+    array (
+      'ID' => 3,
+      'Range' => '36-50',
+      'MundaneType' => 'Masterwork armor or shield',
+    ),
+    4 => 
+    array (
+      'ID' => 4,
+      'Range' => '51-72',
+      'MundaneType' => 'Masterwork melee weapon',
+    ),
+    5 => 
+    array (
+      'ID' => 5,
+      'Range' => '73-83',
+      'MundaneType' => 'Masterwork ranged weapon',
+    ),
+    6 => 
+    array (
+      'ID' => 6,
+      'Range' => '84-00',
+      'MundaneType' => 'Tools and valuable gear',
+    ),
+  ),
+  'treasuremagic' => 
+  array (
+    1 => 
+    array (
+      'ID' => 1,
+      'MinorRange' => '01-35',
+      'MediumRange' => '01-10',
+      'MajorRange' => '01-05',
+      'Category' => 'Potions and oils',
+      'Details' => '10% chance - 1d4+1 doses',
+    ),
+    2 => 
+    array (
+      'ID' => 2,
+      'MinorRange' => '36-70',
+      'MediumRange' => '11-25',
+      'MajorRange' => '06-15',
+      'Category' => 'Scrolls',
+      'Details' => NULL,
+    ),
+    3 => 
+    array (
+      'ID' => 3,
+      'MinorRange' => '71-74',
+      'MediumRange' => '26-35',
+      'MajorRange' => '16-25',
+      'Category' => 'Weapons',
+      'Details' => 'Random size; 30% chance - sheds light; 10% chance - intelligent; 5% chance - unusual material',
+    ),
+    4 => 
+    array (
+      'ID' => 4,
+      'MinorRange' => '75-76',
+      'MediumRange' => '36-40',
+      'MajorRange' => '26-30',
+      'Category' => 'Shields',
+      'Details' => 'Random size; 20% chance - sheds light; 1% chance - intelligent; 5% chance - unusual material',
+    ),
+    5 => 
+    array (
+      'ID' => 5,
+      'MinorRange' => '77-78',
+      'MediumRange' => '41-45',
+      'MajorRange' => '31-35',
+      'Category' => 'Armor and clothing',
+      'Details' => 'Random size; 1% chance - intelligent; 5% chance - unusual material',
+    ),
+    6 => 
+    array (
+      'ID' => 6,
+      'MinorRange' => '-',
+      'MediumRange' => '46',
+      'MajorRange' => '47',
+      'Category' => 'Vests and shirts',
+      'Details' => 'Random size; 1% chance - intelligent',
+    ),
+    7 => 
+    array (
+      'ID' => 7,
+      'MinorRange' => '79',
+      'MediumRange' => '47-48',
+      'MajorRange' => '48-49',
+      'Category' => 'Helmets and hats',
+      'Details' => 'Random size; 1% chance - intelligent',
+    ),
+    8 => 
+    array (
+      'ID' => 8,
+      'MinorRange' => '80',
+      'MediumRange' => '49',
+      'MajorRange' => '50',
+      'Category' => 'Goggles and lenses',
+      'Details' => 'Random size',
+    ),
+    9 => 
+    array (
+      'ID' => 9,
+      'MinorRange' => '81',
+      'MediumRange' => '50-51',
+      'MajorRange' => '51-52',
+      'Category' => 'Gloves and gauntlets',
+      'Details' => 'Random size; 1% chance - intelligent',
+    ),
+    10 => 
+    array (
+      'ID' => 10,
+      'MinorRange' => '82',
+      'MediumRange' => '52-53',
+      'MajorRange' => '53-54',
+      'Category' => 'Boots and shoes',
+      'Details' => 'Random size; 1% chance - intelligent',
+    ),
+    11 => 
+    array (
+      'ID' => 11,
+      'MinorRange' => '83',
+      'MediumRange' => '54-56',
+      'MajorRange' => '55-57',
+      'Category' => 'Cloaks and mantles',
+      'Details' => 'Random size; 1% chance - intelligent',
+    ),
+    12 => 
+    array (
+      'ID' => 12,
+      'MinorRange' => '84',
+      'MediumRange' => '57-58',
+      'MajorRange' => '58-59',
+      'Category' => 'Girdles and belts',
+      'Details' => 'Random size; 1% chance - intelligent',
+    ),
+    13 => 
+    array (
+      'ID' => 13,
+      'MinorRange' => '85-91',
+      'MediumRange' => '59-68',
+      'MajorRange' => '60-64',
+      'Category' => 'Wands',
+      'Details' => 'Random charges; 20% chance - sheds light; 1% chance - intelligent',
+    ),
+    14 => 
+    array (
+      'ID' => 14,
+      'MinorRange' => '-',
+      'MediumRange' => '69-71',
+      'MajorRange' => '65-79',
+      'Category' => 'Staves',
+      'Details' => 'Random charges; 20% chance - sheds light; 10% chance - intelligent',
+    ),
+    15 => 
+    array (
+      'ID' => 15,
+      'MinorRange' => '92-94',
+      'MediumRange' => '72-76',
+      'MajorRange' => '80-84',
+      'Category' => 'Holy symbols',
+      'Details' => '30% chance - sheds light; 1% chance - intelligent',
+    ),
+    16 => 
+    array (
+      'ID' => 16,
+      'MinorRange' => '-',
+      'MediumRange' => '77-81',
+      'MajorRange' => '85-90',
+      'Category' => 'Rods',
+      'Details' => 'Random size; 10% chance - sheds light; 5% chance - intelligent',
+    ),
+    17 => 
+    array (
+      'ID' => 17,
+      'MinorRange' => '95-96',
+      'MediumRange' => '82-91',
+      'MajorRange' => '91-94',
+      'Category' => 'Rings',
+      'Details' => 'Random size; 1% chance - intelligent',
+    ),
+    18 => 
+    array (
+      'ID' => 18,
+      'MinorRange' => '97',
+      'MediumRange' => '92-94',
+      'MajorRange' => '95-96',
+      'Category' => 'Amulets and necklaces',
+      'Details' => 'Random size; 1% chance - intelligent',
+    ),
+    19 => 
+    array (
+      'ID' => 19,
+      'MinorRange' => '98',
+      'MediumRange' => '95-97',
+      'MajorRange' => '97-98',
+      'Category' => 'Bracers and bracelets',
+      'Details' => 'Random size; 1% chance - intelligent',
+    ),
+    20 => 
+    array (
+      'ID' => 20,
+      'MinorRange' => '99-00',
+      'MediumRange' => '98-00',
+      'MajorRange' => '99-00',
+      'Category' => 'Wondrous items',
+      'Details' => '1% chance - intelligent',
+    ),
+  ),
+  'itemsmodified' => 
+  array (
+    1 => 
+    array (
+      'ID' => 1,
+      'Name' => 'Potion of Healing (10 HP)',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=1&y=Heal Wounds:)',
+      'Description' => 'Instantly cures 10 HP',
+      'Frequency' => 7,
+    ),
+    2 => 
+    array (
+      'ID' => 2,
+      'Name' => 'Potion of Healing (15 HP)',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Heal Wounds:)',
+      'Description' => 'Instantly cures 15 HP',
+      'Frequency' => 7,
+    ),
+    3 => 
+    array (
+      'ID' => 3,
+      'Name' => 'Potion of Healing (20 HP)',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=5&y=Heal Wounds:)',
+      'Description' => 'Instantly cures 20 HP',
+      'Frequency' => 6,
+    ),
+    4 => 
+    array (
+      'ID' => 4,
+      'Name' => 'Potion of Force Amor +2',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=4&y=Force Armor:)',
+      'Description' => 'Gives +2 armor bonus to DR for 1 h',
+      'Frequency' => 5,
+    ),
+    5 => 
+    array (
+      'ID' => 5,
+      'Name' => 'Oil of Enchant Weapon +1',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Enchant Weapon:)',
+      'Description' => 'Gives a +1 enhancement bonus to weapon\'s attack and damage for encounter',
+      'Frequency' => 7,
+    ),
+    6 => 
+    array (
+      'ID' => 6,
+      'Name' => 'Oil of Enchant Shield +1',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Enchant Shield:)',
+      'Description' => 'Gives a +1 enhancement bonus to shield\'s parry for encounter',
+      'Frequency' => 7,
+    ),
+    7 => 
+    array (
+      'ID' => 7,
+      'Name' => 'Oil of Enchant Armor +1',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Enchant Armor:)',
+      'Description' => 'Gives a +1 enhancement bonus to armor\'s DR for encounter',
+      'Frequency' => 7,
+    ),
+    8 => 
+    array (
+      'ID' => 8,
+      'Name' => 'Potion of Growth',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=5&y=Resize Creature:)',
+      'Description' => 'Increases a person\'s size by 30% for 1 hour',
+      'Frequency' => 5,
+    ),
+    9 => 
+    array (
+      'ID' => 9,
+      'Name' => 'Potion of Shrinking',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=5&y=Resize Creature:)',
+      'Description' => 'Decreases a person\'s size by 30% for 1 hour',
+      'Frequency' => 5,
+    ),
+    10 => 
+    array (
+      'ID' => 10,
+      'Name' => 'Potion of Strength',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Enhance Physical Ability:)',
+      'Description' => 'Gives a +4 enhancement bonus to Str for encounter',
+      'Frequency' => 5,
+    ),
+    11 => 
+    array (
+      'ID' => 11,
+      'Name' => 'Potion of Constitution',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Enhance Physical Ability:)',
+      'Description' => 'Gives a +4 enhancement bonus to Con for encounter',
+      'Frequency' => 5,
+    ),
+    12 => 
+    array (
+      'ID' => 12,
+      'Name' => 'Potion of Dexterity',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Enhance Physical Ability:)',
+      'Description' => 'Gives a +4 enhancement bonus to Dex for encounter',
+      'Frequency' => 5,
+    ),
+    13 => 
+    array (
+      'ID' => 13,
+      'Name' => 'Potion of Intelligence',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Enhance Mental Ability:)',
+      'Description' => 'Gives a +4 enhancement bonus to Int for encounter',
+      'Frequency' => 5,
+    ),
+    14 => 
+    array (
+      'ID' => 14,
+      'Name' => 'Potion of Wisdom',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Enhance Mental Ability:)',
+      'Description' => 'Gives a +4 enhancement bonus to Wis for encounter',
+      'Frequency' => 5,
+    ),
+    15 => 
+    array (
+      'ID' => 15,
+      'Name' => 'Potion of Charisma',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Enhance Mental Ability:)',
+      'Description' => 'Gives a +4 enhancement bonus to Cha for encounter',
+      'Frequency' => 5,
+    ),
+    16 => 
+    array (
+      'ID' => 16,
+      'Name' => 'Oil of Darkness',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Darkness:)',
+      'Description' => 'Radiates darkness in a 4 sq radius for 1 hour',
+      'Frequency' => 4,
+    ),
+    17 => 
+    array (
+      'ID' => 17,
+      'Name' => 'Potion of Darkvision',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Enhance Senses:)',
+      'Description' => 'Grants darkvision for 1 hour',
+      'Frequency' => 5,
+    ),
+    18 => 
+    array (
+      'ID' => 18,
+      'Name' => 'Potion of Invisibility',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Invisibility:)',
+      'Description' => 'Grants true invisibility for encounter',
+      'Frequency' => 5,
+    ),
+    19 => 
+    array (
+      'ID' => 19,
+      'Name' => 'Potion of Restoration',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=5&y=Cure Affliction:)',
+      'Description' => 'Restores all ability damage and also ability drain to one ability score',
+      'Frequency' => 5,
+    ),
+    20 => 
+    array (
+      'ID' => 20,
+      'Name' => 'Potion of Fire Resistance',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Energy Resistance:)',
+      'Description' => 'Grants fire resistance 10 for 1 hour',
+      'Frequency' => 5,
+    ),
+    21 => 
+    array (
+      'ID' => 21,
+      'Name' => 'Potion of Cold Resistance',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Energy Resistance:)',
+      'Description' => 'Grants cold resistance 10 for 1 hour',
+      'Frequency' => 5,
+    ),
+    22 => 
+    array (
+      'ID' => 22,
+      'Name' => 'Oil of Daylight',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=5&y=Light:)',
+      'Description' => 'Radiates bright light in 8 sq radius for 1 hour',
+      'Frequency' => 4,
+    ),
+    23 => 
+    array (
+      'ID' => 23,
+      'Name' => 'Potion of Flying',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=5&y=Levitate:)',
+      'Description' => 'Grants flying speed of 8 with average maneuverability for encounter',
+      'Frequency' => 5,
+    ),
+    24 => 
+    array (
+      'ID' => 24,
+      'Name' => 'Potion of Polymorph',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=5&y=Shapechange:)',
+      'Description' => 'Changes drinker\'s shape for encounter (grade II shapechange; potion creator chooses shape)',
+      'Frequency' => 5,
+    ),
+    25 => 
+    array (
+      'ID' => 25,
+      'Name' => 'Potion of Haste',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Manipulate Time:)',
+      'Description' => 'Grants +2 enhancement bonus to AP for encounter',
+      'Frequency' => 5,
+    ),
+    26 => 
+    array (
+      'ID' => 26,
+      'Name' => 'Potion of Neutralize Poison',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=5&y=Cure Affliction:)',
+      'Description' => 'Neutralizes poisons and grants immunity to poison for 1 day',
+      'Frequency' => 5,
+    ),
+    27 => 
+    array (
+      'ID' => 27,
+      'Name' => 'Potion of Cure Disease',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=5&y=Cure Affliction:)',
+      'Description' => 'Cures all diseases (and kills parasites)',
+      'Frequency' => 5,
+    ),
+    28 => 
+    array (
+      'ID' => 28,
+      'Name' => 'Potion of Water Breathing',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=5&y=Shapechange:)',
+      'Description' => 'Grants the ability to breathe water for 1 hour',
+      'Frequency' => 5,
+    ),
+    29 => 
+    array (
+      'ID' => 29,
+      'Name' => 'Tattoo of the Beast',
+      'Subtype' => 67,
+      'Config' => '(Item=Psionic tattoo: Mod=UseSpellLtd&x=4&y=Attack of the Beast:)',
+      'Description' => 'Wearer gains a bite attack causing 1d10 P HP for encounter',
+      'Frequency' => 4,
+    ),
+    30 => 
+    array (
+      'ID' => 30,
+      'Name' => 'Tattoo of Neutralize Poison',
+      'Subtype' => 67,
+      'Config' => '(Item=Psionic tattoo: Mod=UseSpellLtd&x=5&y=Cure Affliction:)',
+      'Description' => 'Neutralizes poisons and grants immunity to poison for 1 day',
+      'Frequency' => 4,
+    ),
+    31 => 
+    array (
+      'ID' => 31,
+      'Name' => 'Tattoo of Deflection',
+      'Subtype' => 67,
+      'Config' => '(Item=Psionic tattoo: Mod=UseSpellLtd&x=5&y=Deflective Shield:)',
+      'Description' => 'Grants a +2 deflection bonus to DeC for encounter',
+      'Frequency' => 4,
+    ),
+    32 => 
+    array (
+      'ID' => 32,
+      'Name' => 'Tattoo of Intelligence',
+      'Subtype' => 67,
+      'Config' => '(Item=Psionic tattoo: Mod=UseSpellLtd&x=3&y=Enhance Mental Ability:)',
+      'Description' => 'Gives a +4 enhancement bonus to Int for encounter',
+      'Frequency' => 4,
+    ),
+    33 => 
+    array (
+      'ID' => 33,
+      'Name' => 'Tattoo of Scent',
+      'Subtype' => 67,
+      'Config' => '(Item=Psionic tattoo: Mod=UseSpellLtd&x=3&y=Enhance Senses:)',
+      'Description' => 'Grants the scent special sense for 1 hour',
+      'Frequency' => 4,
+    ),
+    34 => 
+    array (
+      'ID' => 34,
+      'Name' => 'Tattoo of Foresight',
+      'Subtype' => 67,
+      'Config' => '(Item=Psionic tattoo: Mod=UseSpellLtd&x=5&y=Foresight:)',
+      'Description' => 'Grants a +1 insight bonus to attack rolls for 1 round',
+      'Frequency' => 4,
+    ),
+    35 => 
+    array (
+      'ID' => 35,
+      'Name' => 'Tattoo of Freedom',
+      'Subtype' => 67,
+      'Config' => '(Item=Psionic tattoo: Mod=UseSpellLtd&x=5&y=Freedom:)',
+      'Description' => 'Move with full speed through slowing obstacles and gain +10 defense against grappling and slowing attacks for encounter',
+      'Frequency' => 4,
+    ),
+    36 => 
+    array (
+      'ID' => 36,
+      'Name' => 'Tattoo of Healing (15 HP)',
+      'Subtype' => 67,
+      'Config' => '(Item=Psionic tattoo: Mod=UseSpellLtd&x=3&y=Heal Wounds:)',
+      'Description' => 'Instantly cures 15 HP',
+      'Frequency' => 7,
+    ),
+    37 => 
+    array (
+      'ID' => 37,
+      'Name' => 'Tattoo of Haste',
+      'Subtype' => 67,
+      'Config' => '(Item=Psionic tattoo: Mod=UseSpellLtd&x=3&y=Manipulate Time:)',
+      'Description' => 'Grants +2 enhancement bonus to AP for encounter',
+      'Frequency' => 4,
+    ),
+    38 => 
+    array (
+      'ID' => 38,
+      'Name' => 'Tattoo of Mind Blank',
+      'Subtype' => 67,
+      'Config' => '(Item=Psionic tattoo: Mod=UseSpellLtd&x=5&y=Mind Blank:)',
+      'Description' => 'Grants +3 bonus to Will defense for encounter',
+      'Frequency' => 4,
+    ),
+    39 => 
+    array (
+      'ID' => 39,
+      'Name' => 'Tattoo of Teleport',
+      'Subtype' => 67,
+      'Config' => '(Item=Psionic tattoo: Mod=UseSpellLtd&x=5&y=Teleport:)',
+      'Description' => 'You teleport yourself to a location within 7 squares',
+      'Frequency' => 4,
+    ),
+    40 => 
+    array (
+      'ID' => 40,
+      'Name' => 'Tattoo of Stoneskin',
+      'Subtype' => 67,
+      'Config' => '(Item=Psionic tattoo: Mod=UseSpellLtd&x=3&y=Toughen Skin:)',
+      'Description' => 'Grants +2 enhancement bonus to base DR for encounter',
+      'Frequency' => 4,
+    ),
+    41 => 
+    array (
+      'ID' => 41,
+      'Name' => 'Scroll of Touch of Fire (3d6 HP)',
+      'Subtype' => 68,
+      'Config' => '(Item=Scroll: Mod=SkillSpell&x=1&y=Touch of Fire:)',
+      'Description' => 'Scroll with Touch of Fire arcane spell, caster level 1',
+      'Frequency' => 4,
+    ),
+    42 => 
+    array (
+      'ID' => 42,
+      'Name' => 'Scroll of Touch of Fire (13d6 HP)',
+      'Subtype' => 68,
+      'Config' => '(Item=Scroll: Mod=SkillSpell&x=11&y=Touch of Fire:)',
+      'Description' => 'Scroll with Touch of Fire arcane spell, caster level 11',
+      'Frequency' => 4,
+    ),
+    43 => 
+    array (
+      'ID' => 43,
+      'Name' => 'Scroll of Touch of Fire (23d6 HP)',
+      'Subtype' => 68,
+      'Config' => '(Item=Scroll: Mod=SkillSpell&x=21&y=Touch of Fire:)',
+      'Description' => 'Scroll with Touch of Fire arcane spell, caster level 21',
+      'Frequency' => 4,
+    ),
+    44 => 
+    array (
+      'ID' => 44,
+      'Name' => 'Scroll of Heal Wounds (10 HP)',
+      'Subtype' => 68,
+      'Config' => '(Item=Scroll: Mod=SkillSpell&x=1&y=Heal Wounds:)',
+      'Description' => 'Scroll with Heal Wounds divine spell, caster level 1',
+      'Frequency' => 4,
+    ),
+    45 => 
+    array (
+      'ID' => 45,
+      'Name' => 'Scroll of Heal Wounds (35 HP)',
+      'Subtype' => 68,
+      'Config' => '(Item=Scroll: Mod=SkillSpell&x=11&y=Heal Wounds:)',
+      'Description' => 'Scroll with Heal Wounds divine spell, caster level 11',
+      'Frequency' => 4,
+    ),
+    46 => 
+    array (
+      'ID' => 46,
+      'Name' => 'Scroll of Heal Wounds (60 HP)',
+      'Subtype' => 68,
+      'Config' => '(Item=Scroll: Mod=SkillSpell&x=21&y=Heal Wounds:)',
+      'Description' => 'Scroll with Heal Wounds divine spell, caster level 21',
+      'Frequency' => 4,
+    ),
+    47 => 
+    array (
+      'ID' => 47,
+      'Name' => 'Power Stone of Disintegrate (3d6 HP)',
+      'Subtype' => 69,
+      'Config' => '(Item=Power stone: Mod=SkillSpell&x=1&y=Disintegrate:)',
+      'Description' => 'Power stone with Disintegrate psionic power, range touch, caster level 1',
+      'Frequency' => 4,
+    ),
+    48 => 
+    array (
+      'ID' => 48,
+      'Name' => 'Power Stone of Disintegrate (13d6 HP)',
+      'Subtype' => 69,
+      'Config' => '(Item=Power stone: Mod=SkillSpell&x=11&y=Disintegrate:)',
+      'Description' => 'Power stone with Disintegrate psionic power, range touch, caster level 11',
+      'Frequency' => 4,
+    ),
+    49 => 
+    array (
+      'ID' => 49,
+      'Name' => 'Power Stone of Disintegrate (23d6 HP)',
+      'Subtype' => 69,
+      'Config' => '(Item=Power stone: Mod=SkillSpell&x=21&y=Disintegrate:)',
+      'Description' => 'Power stone with Disintegrate psionic power, range touch, caster level 21',
+      'Frequency' => 4,
+    ),
+    50 => 
+    array (
+      'ID' => 50,
+      'Name' => 'Wand of Force Missiles',
+      'Subtype' => 59,
+      'Config' => '(Item=Wand: Mod=PPool&x=20: Mod=AffinitySpell&x=1&y=Force Missile&mul=0.5:)',
+      'Description' => 'Wand with Force Missile arcane spell',
+      'Frequency' => 4,
+    ),
+    51 => 
+    array (
+      'ID' => 51,
+      'Name' => 'Holy Symbol of Heal Wounds',
+      'Subtype' => 60,
+      'Config' => '(Item=Holy symbol, silver: Mod=PPool&x=20: Mod=AffinitySpell&x=1&y=Heal Wounds&mul=0.5:)',
+      'Description' => 'Holy symbol with Heal Wounds divine spell',
+      'Frequency' => 4,
+    ),
+    52 => 
+    array (
+      'ID' => 52,
+      'Name' => 'Dorje of Charm Person',
+      'Subtype' => 61,
+      'Config' => '(Item=Dorje: Mod=PPool&x=20: Mod=AffinitySpell&x=1&y=Charm Creature&mul=0.5:)',
+      'Description' => 'Dorje with Charm Creature psionic power',
+      'Frequency' => 4,
+    ),
+    53 => 
+    array (
+      'ID' => 53,
+      'Name' => 'Wand +1 of Force Missiles',
+      'Subtype' => 59,
+      'Config' => '(Item=Wand: Mod=ImplementEnh&x=1: Mod=PPoolRech&x=20&mul=0.5: Mod=AffinitySpell&x=5&y=Force Missile&mul=0.5:)',
+      'Description' => 'Wand +1 with Force Missile arcane spell',
+      'Frequency' => 6,
+    ),
+    54 => 
+    array (
+      'ID' => 54,
+      'Name' => 'Holy Symbol of Casting +1 and Heal Wounds',
+      'Subtype' => 60,
+      'Config' => '(Item=Holy symbol, silver: Mod=SpellcastEnh&x=1: Mod=PoolRegen&x=20&mul=0.5: Mod=AffinitySpell&x=3&y=Heal Wounds&mul=0.5:)',
+      'Description' => 'Holy symbol of spellcasting +1 with Heal Wounds divine spell',
+      'Frequency' => 6,
+    ),
+    55 => 
+    array (
+      'ID' => 55,
+      'Name' => 'Dorje of Body & Mind +2 and Charm Person',
+      'Subtype' => 61,
+      'Config' => '(Item=Dorje: Mod=ImplementBaMEnh&x=2: Mod=PoolAttun&x=20&mul=0.5: Mod=AffinitySpell&x=3&y=Charm Creature&mul=0.5:)',
+      'Description' => 'Dorje of Body & Mind +2 with Charm Creature psionic power',
+      'Frequency' => 5,
+    ),
+    56 => 
+    array (
+      'ID' => 56,
+      'Name' => 'Staff of Abjuration',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Dispel Magic: Mod=AffinitySpellBoost&x=1&y=Energy Resistance&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Deflective Shield&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Antimagic&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    57 => 
+    array (
+      'ID' => 57,
+      'Name' => 'Staff of Charming',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Charm Creature: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    58 => 
+    array (
+      'ID' => 58,
+      'Name' => 'Staff of Conjuration',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Summon Outsider: Mod=AffinitySpellBoost&x=5&y=Summon Elemental&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    59 => 
+    array (
+      'ID' => 59,
+      'Name' => 'Rod of Defense',
+      'Subtype' => 63,
+      'Config' => '(Item=Mace, heavy: Mod=AffinitySpellBoost&x=5&y=Toughen Skin: Mod=AffinitySpellBoost&x=1&y=Deflective Shield&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Divine Aura&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Sanctuary&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    60 => 
+    array (
+      'ID' => 60,
+      'Name' => 'Staff of Divination',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Scrying: Mod=AffinitySpellBoost&x=1&y=Enhance Senses&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Discern Location&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Comprehend Languages&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    61 => 
+    array (
+      'ID' => 61,
+      'Name' => 'Staff of Earth and Stone',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=11&y=Control Earth: Mod=AffinitySpellBoost&x=1&y=Transmute Rock&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    62 => 
+    array (
+      'ID' => 62,
+      'Name' => 'Staff of Enchantment',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Control Emotions: Mod=AffinitySpellBoost&x=1&y=Sleep&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Charm Creature&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    63 => 
+    array (
+      'ID' => 63,
+      'Name' => 'Staff of Evocation',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Sonic Disruption: Mod=AffinitySpellBoost&x=1&y=Force Field&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Force Missile&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    64 => 
+    array (
+      'ID' => 64,
+      'Name' => 'Staff of Fire',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Bolt of Fire: Mod=AffinitySpellBoost&x=5&y=Touch of Fire&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    65 => 
+    array (
+      'ID' => 65,
+      'Name' => 'Staff of Frost',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Bolt of Ice: Mod=AffinitySpellBoost&x=5&y=Touch of Ice&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    66 => 
+    array (
+      'ID' => 66,
+      'Name' => 'Rod of Healing',
+      'Subtype' => 63,
+      'Config' => '(Item=Mace, heavy: Mod=AffinitySpellBoost&x=5&y=Cure Affliction: Mod=AffinitySpellBoost&x=5&y=Heal Wounds&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    67 => 
+    array (
+      'ID' => 67,
+      'Name' => 'Staff of Illusion',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Illusory Double: Mod=AffinitySpellBoost&x=1&y=Illusion&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Illusory Disguise&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    68 => 
+    array (
+      'ID' => 68,
+      'Name' => 'Staff of Illumination',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Illuminate: Mod=AffinitySpellBoost&x=5&y=Light&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    69 => 
+    array (
+      'ID' => 69,
+      'Name' => 'Rod of Life',
+      'Subtype' => 63,
+      'Config' => '(Item=Mace, heavy: Mod=AffinitySpellBoost&x=13&y=Resurrection: Mod=AffinitySpellBoost&x=1&y=Heal Wounds&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    70 => 
+    array (
+      'ID' => 70,
+      'Name' => 'Staff of Necromancy',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=9&y=Slay Living: Mod=AffinitySpellBoost&x=1&y=Control Undead&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Enervation&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    71 => 
+    array (
+      'ID' => 71,
+      'Name' => 'Staff of Passage',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=9&y=Phase Door: Mod=AffinitySpellBoost&x=5&y=Teleport&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    72 => 
+    array (
+      'ID' => 72,
+      'Name' => 'Staff of Power',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=ExcepMeleeWp: Mod=DeCLuck&x=1: Mod=NDDLuck&x=1&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Force Missile: Mod=AffinitySpellBoost&x=1&y=Levitate&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Bolt of Fire&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Bolt of Lightning&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Hold Creature&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Antimagic&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 2,
+    ),
+    73 => 
+    array (
+      'ID' => 73,
+      'Name' => 'Staff of Size Alteration',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Resize Creature: Mod=AffinitySpellBoost&x=5&y=Resize Object&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    74 => 
+    array (
+      'ID' => 74,
+      'Name' => 'Rod of Swarming Insects',
+      'Subtype' => 63,
+      'Config' => '(Item=Club: Mod=AffinitySpellBoost&x=5&y=Summon Vermin: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    75 => 
+    array (
+      'ID' => 75,
+      'Name' => 'Staff of Transmutation',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Shapechange: Mod=AffinitySpellBoost&x=5&y=Disintegrate&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    76 => 
+    array (
+      'ID' => 76,
+      'Name' => 'Rod of Woodlands',
+      'Subtype' => 63,
+      'Config' => '(Item=Club: Mod=AffinitySpellBoost&x=5&y=Wall of Thorns: Mod=AffinitySpellBoost&x=2&y=Summon Animal or Plant&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Charm Animal/Plant&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Animate Plants&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    77 => 
+    array (
+      'ID' => 77,
+      'Name' => 'Psicrown of Astral Legion',
+      'Subtype' => 64,
+      'Config' => '(Item=Psicrown: Mod=AffinitySpellBoost&x=9&y=Astral Construct: Mod=PPool&x=200&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    78 => 
+    array (
+      'ID' => 78,
+      'Name' => 'Psicrown of the Beast',
+      'Subtype' => 64,
+      'Config' => '(Item=Psicrown: Mod=AffinitySpellBoost&x=5&y=Attack of the Beast: Mod=AffinitySpellBoost&x=1&y=Enchant Weapon&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Enhance Mobility&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    79 => 
+    array (
+      'ID' => 79,
+      'Name' => 'Psicrown of Cautious Warrior',
+      'Subtype' => 64,
+      'Config' => '(Item=Psicrown: Mod=AffinitySpellBoost&x=5&y=Foresight: Mod=AffinitySpellBoost&x=1&y=Energy Resistance&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Toughen Skin&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    80 => 
+    array (
+      'ID' => 80,
+      'Name' => 'Psicrown of Discerning Watcher',
+      'Subtype' => 64,
+      'Config' => '(Item=Psicrown: Mod=AffinitySpellBoost&x=5&y=Scrying: Mod=AffinitySpellBoost&x=1&y=Enhance Senses&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Detect Magic&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    81 => 
+    array (
+      'ID' => 81,
+      'Name' => 'Psicrown of Dominator',
+      'Subtype' => 64,
+      'Config' => '(Item=Psicrown: Mod=AffinitySpellBoost&x=7&y=Dominate Creature: Mod=AffinitySpellBoost&x=1&y=Charm Creature&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    82 => 
+    array (
+      'ID' => 82,
+      'Name' => 'Psicrown of Evader',
+      'Subtype' => 64,
+      'Config' => '(Item=Psicrown: Mod=AffinitySpellBoost&x=5&y=Freedom: Mod=AffinitySpellBoost&x=1&y=Enhance Mobility&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Levitate&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    83 => 
+    array (
+      'ID' => 83,
+      'Name' => 'Psicrown of Fiery Ruin',
+      'Subtype' => 64,
+      'Config' => '(Item=Psicrown: Mod=AffinitySpellBoost&x=7&y=Fire Stride: Mod=AffinitySpellBoost&x=1&y=Bolt of Fire&mul=0.5: Mod=AffinitySpellBoost&x=1&y=Touch of Fire&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    84 => 
+    array (
+      'ID' => 84,
+      'Name' => 'Psicrown of Temporal Juggler',
+      'Subtype' => 64,
+      'Config' => '(Item=Psicrown: Mod=AffinitySpellBoost&x=5&y=Manipulate Time: Mod=AffinitySpellBoost&x=5&y=Metabolic Trance&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    85 => 
+    array (
+      'ID' => 85,
+      'Name' => 'Psicrown of Traveler',
+      'Subtype' => 64,
+      'Config' => '(Item=Psicrown: Mod=AffinitySpellBoost&x=9&y=Planar Travel: Mod=AffinitySpellBoost&x=5&y=Teleport&mul=0.5: Mod=PPool&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    86 => 
+    array (
+      'ID' => 86,
+      'Name' => 'Mithral Shirt',
+      'Subtype' => 11,
+      'Config' => '(Item=Chain shirt: Material=Mithril: Mod=MwArmor:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    87 => 
+    array (
+      'ID' => 87,
+      'Name' => 'Dragonhide Plate',
+      'Subtype' => 13,
+      'Config' => '(Item=Full plate: Material=Dragonhide: Mod=ExcepArmor:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    88 => 
+    array (
+      'ID' => 88,
+      'Name' => 'Elven Chain',
+      'Subtype' => 12,
+      'Config' => '(Item=Chainmail: Material=Mithril: Mod=OutstArmor:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    89 => 
+    array (
+      'ID' => 89,
+      'Name' => 'Rhino Hide',
+      'Subtype' => 12,
+      'Config' => '(Item=Hide armor: Mod=ExcepArmor: Mod=ChargeDmgMul&x=1.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    90 => 
+    array (
+      'ID' => 90,
+      'Name' => 'Banded Mail of Luck',
+      'Subtype' => 13,
+      'Config' => '(Item=Banded mail: Mod=MwArmor: Mod=ArmorEnh&x=3: Mod=UseSpell&x=11&y=Foresight&mul=0.5: Mod=PoolRegen&x=11&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    91 => 
+    array (
+      'ID' => 91,
+      'Name' => 'Breastplate of Command',
+      'Subtype' => 12,
+      'Config' => '(Item=Breastplate: Mod=ExcepArmor: Mod=ChaEnh&x=2: Mod=SkillAdvEnh&x=2&y=Warfare&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    92 => 
+    array (
+      'ID' => 92,
+      'Name' => 'Celestial Armor',
+      'Subtype' => 12,
+      'Config' => '(Item=Chainmail: Mod=MwArmor: Mod=ArmorEnh&x=3: Mod=UseSpell&x=5&y=Levitate&mul=0.5: Mod=PoolRegen&x=5&mul=0.5: Mod=Lightweight&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    93 => 
+    array (
+      'ID' => 93,
+      'Name' => 'Adamantine Breastplate',
+      'Subtype' => 12,
+      'Config' => '(Item=Breastplate: Material=Adamantine: Mod=OutstArmor:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    94 => 
+    array (
+      'ID' => 94,
+      'Name' => 'Demon Armor',
+      'Subtype' => 13,
+      'Config' => '(Item=Full plate: Mod=MwArmor: Mod=ArmorEnh&x=4:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    95 => 
+    array (
+      'ID' => 95,
+      'Name' => 'Claws of the Demon',
+      'Subtype' => 16,
+      'Config' => '(Item=Gauntlets, spiked: Mod=MwMeleeWp: Mod=WeaponEnh&x=2: Mod=CauseDisease&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    96 => 
+    array (
+      'ID' => 96,
+      'Name' => 'Dwarven Plate',
+      'Subtype' => 13,
+      'Config' => '(Item=Full plate: Material=Adamantine: Mod=OutstArmor:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    97 => 
+    array (
+      'ID' => 97,
+      'Name' => 'Mithral Full Plate of Speed',
+      'Subtype' => 13,
+      'Config' => '(Item=Full plate: Material=Mithril: Mod=OutstArmor: Mod=APEnh&x=2:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    98 => 
+    array (
+      'ID' => 98,
+      'Name' => 'Plate Armor of the Deep',
+      'Subtype' => 13,
+      'Config' => '(Item=Full plate: Mod=OutstArmor: Mod=Swim: Mod=BreatheWater&mul=0.5: Mod=Speech&y=Aquan&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    99 => 
+    array (
+      'ID' => 99,
+      'Name' => 'Absorbing Shield',
+      'Subtype' => 9,
+      'Config' => '(Item=Shield, heavy wooden: Mod=OutstShield: Mod=UseSpell&x=3&y=Disintegrate: Mod=PoolRegen&x=3&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    100 => 
+    array (
+      'ID' => 100,
+      'Name' => 'Darkwood Light Shield',
+      'Subtype' => 9,
+      'Config' => '(Item=Shield, light wooden: Material=Darkwood: Mod=MwShield:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    101 => 
+    array (
+      'ID' => 101,
+      'Name' => 'Darkwood Heavy Shield',
+      'Subtype' => 9,
+      'Config' => '(Item=Shield, heavy wooden: Material=Darkwood: Mod=MwShield:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    102 => 
+    array (
+      'ID' => 102,
+      'Name' => 'Mithral Shield',
+      'Subtype' => 9,
+      'Config' => '(Item=Shield, heavy steel: Material=Mithril: Mod=MwShield:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    103 => 
+    array (
+      'ID' => 103,
+      'Name' => 'Winged Shield',
+      'Subtype' => 9,
+      'Config' => '(Item=Shield, heavy wooden: Mod=MwShield: Mod=ParryEnh&x=3: Mod=UseSpell&x=5&y=Levitate&mul=0.5: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    104 => 
+    array (
+      'ID' => 104,
+      'Name' => 'Adamantine Battleaxe',
+      'Subtype' => 6,
+      'Config' => '(Item=Axe, battle-: Material=Adamantine: Mod=OutstMeleeWp:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    105 => 
+    array (
+      'ID' => 105,
+      'Name' => 'Adamantine Dagger',
+      'Subtype' => 6,
+      'Config' => '(Item=Dagger: Material=Adamantine: Mod=OutstMeleeWp:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    106 => 
+    array (
+      'ID' => 106,
+      'Name' => 'Assassin\'s Dagger',
+      'Subtype' => 6,
+      'Config' => '(Item=Dagger: Mod=ExcepMeleeWp: Mod=SkillAdvEnh&x=1&y=Vital Attack:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    107 => 
+    array (
+      'ID' => 107,
+      'Name' => 'Dagger of Venom',
+      'Subtype' => 6,
+      'Config' => '(Item=Dagger: Mod=OutstMeleeWp: Mod=CausePoison:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    108 => 
+    array (
+      'ID' => 108,
+      'Name' => 'Dwarven Thrower',
+      'Subtype' => 6,
+      'Config' => '(Item=Hammer, war-: Mod=MwMeleeWp: Mod=WeaponEnh&x=3: Mod=WeaponReturn&mul=0.5: Mod=WeaponThrow&mul=0.5: Mod=FavoredEnemy&y=Giants&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    109 => 
+    array (
+      'ID' => 109,
+      'Name' => 'Flame Tongue',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, long-: Mod=OutstMeleeWp: Mod=UseSpell&x=5&y=Bolt of Fire: Mod=PoolRegen&x=5&mul=0.5: Mod=WeaponFire&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    110 => 
+    array (
+      'ID' => 110,
+      'Name' => 'Frost Brand',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, great-: Mod=MwMeleeWp: Mod=WeaponEnh&x=3: Mod=FireRes&x=10&mul=0.5: Mod=UseSpell&x=5&y=Control Fire&mul=0.5: Mod=PoolRegen&x=5&mul=0.5: Mod=WeaponCold&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    111 => 
+    array (
+      'ID' => 111,
+      'Name' => 'Holy Avenger',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, long-: Material=Iron, cold: Mod=OutstMeleeWp: Mod=WeaponEnh&x=5: Mod=WeaponHoly&mul=0.5: Mod=MRRes&x=5&mul=0.5: Mod=UseSpell&x=5&y=Dispel Magic&mul=0.5: Mod=UseSpell&x=5&y=Antimagic&mul=0.5: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 2,
+    ),
+    112 => 
+    array (
+      'ID' => 112,
+      'Name' => 'Javelin of Lightning',
+      'Subtype' => 6,
+      'Config' => '(Item=Javelin: Mod=MwMeleeWp: Mod=WeaponElec:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    113 => 
+    array (
+      'ID' => 113,
+      'Name' => 'Life-Drinker',
+      'Subtype' => 6,
+      'Config' => '(Item=Axe, great-: Mod=OutstMeleeWp: Mod=UseSpell&x=9&y=Enervation: Mod=PoolRegen&x=9&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    114 => 
+    array (
+      'ID' => 114,
+      'Name' => 'Luck Blade',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, short: Mod=ExcepMeleeWp: Mod=UseSpell&x=11&y=Foresight: Mod=PoolRegen&x=11&mul=0.5: Mod=NDDLuck&x=1&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    115 => 
+    array (
+      'ID' => 115,
+      'Name' => 'Mace of Smiting',
+      'Subtype' => 6,
+      'Config' => '(Item=Mace, heavy: Mod=MwMeleeWp: Mod=WeaponEnh&x=3: Mod=FavoredEnemy&y=Constructs&mul=0.5: Mod=FavoredEnemy&y=Outsiders&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    116 => 
+    array (
+      'ID' => 116,
+      'Name' => 'Mace of Terror',
+      'Subtype' => 6,
+      'Config' => '(Item=Mace, heavy: Mod=ExcepMeleeWp: Mod=UseSpell&x=5&y=Fear: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    117 => 
+    array (
+      'ID' => 117,
+      'Name' => 'Masterwork Cold Iron Longsword',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, long-: Material=Iron, cold: Mod=MwMeleeWp:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    118 => 
+    array (
+      'ID' => 118,
+      'Name' => 'Rapier of Puncturing',
+      'Subtype' => 6,
+      'Config' => '(Item=Rapier: Mod=ExcepMeleeWp: Mod=WeaponWound&x=2: Mod=UseSpell&x=3&y=Touch of Enfeeblement&mul=0.5: Mod=PoolRegen&x=6&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    119 => 
+    array (
+      'ID' => 119,
+      'Name' => 'Shatterspike',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, long-: Mod=OutstMeleeWp: Mod=WeaponAP&x=3:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    120 => 
+    array (
+      'ID' => 120,
+      'Name' => 'Shifter\'s Sorrow',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, two-bladed: Mod=OutstMeleeWp: Mod=FavoredEnemy&y=Shapeshifters:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    121 => 
+    array (
+      'ID' => 121,
+      'Name' => 'Masterwork Silver Dagger',
+      'Subtype' => 6,
+      'Config' => '(Item=Dagger: Material=Silver, alchemical: Mod=MwMeleeWp:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    122 => 
+    array (
+      'ID' => 122,
+      'Name' => 'Arrow of Dragon Slaying',
+      'Subtype' => 8,
+      'Config' => '(Item=Arrow, sheaf (20): Mod=OutstAmmo: Mod=FavoredEnemy&y=Dragons:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    123 => 
+    array (
+      'ID' => 123,
+      'Name' => 'Sleep Arrow',
+      'Subtype' => 8,
+      'Config' => '(Item=Arrow, flight (20): Mod=OutstAmmo: Mod=WeaponMercy: Mod=UseSpell&x=3&y=Sleep&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    124 => 
+    array (
+      'ID' => 124,
+      'Name' => 'Sun Blade',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, bastard: Mod=ExcepMeleeWp: Mod=WeaponHoly: Mod=LightMedium&mul=0.5: Mod=UseSpell&x=5&y=Bolt of Radiance&mul=0.5: Mod=UseSpell&x=5&y=Light&mul=0.5: Mod=PoolRegen&x=5&mul=0.5: Mod=WeightHalf&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    125 => 
+    array (
+      'ID' => 125,
+      'Name' => 'Ring of Animal Friendship',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=3&y=Charm Animal/Plant: Mod=PoolRegen&x=15&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    126 => 
+    array (
+      'ID' => 126,
+      'Name' => 'Ring of Blinking',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=5&y=Blink: Mod=PoolRegen&x=25&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    127 => 
+    array (
+      'ID' => 127,
+      'Name' => 'Ring of Chameleon Power',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=ActionBasicComp&x=10&y=Hide: Mod=UseSpell&x=1&y=Illusory Disguise&mul=0.5: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    128 => 
+    array (
+      'ID' => 128,
+      'Name' => 'Ring of Climbing',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=ActionBasicComp&x=10&y=Climb:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    129 => 
+    array (
+      'ID' => 129,
+      'Name' => 'Ring of Elemental Air',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=11&y=Bolt of Lightning: Mod=UseSpell&x=10&y=Control Air&mul=0.5: Mod=UseSpell&x=7&y=Air Walk&mul=0.5: Mod=PoolRegen&x=30&mul=0.5: Mod=Speech&y=Auran&mul=0.5: Mod=FeatherFall&mul=0.5: Mod=ElecRes&x=20&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    130 => 
+    array (
+      'ID' => 130,
+      'Name' => 'Ring of Elemental Earth',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=11&y=Control Earth: Mod=UseSpell&x=9&y=Create Wall&mul=0.5: Mod=UseSpell&x=9&y=Transmute Rock&mul=0.5: Mod=UseSpell&x=7&y=Toughen Skin&mul=0.5: Mod=UseSpell&x=5&y=Meld with Nature&mul=0.5: Mod=PoolRegen&x=30&mul=0.5: Mod=Speech&y=Terran&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    131 => 
+    array (
+      'ID' => 131,
+      'Name' => 'Ring of Elemental Fire',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=11&y=Bolt of Fire: Mod=UseSpell&x=7&y=Wall of Energy (Fire)&mul=0.5: Mod=UseSpell&x=5&y=Touch of Fire&mul=0.5: Mod=UseSpell&x=3&y=Control Fire&mul=0.5: Mod=PoolRegen&x=30&mul=0.5: Mod=Speech&y=Ignan&mul=0.5: Mod=FireRes&x=30&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    132 => 
+    array (
+      'ID' => 132,
+      'Name' => 'Ring of Elemental Water',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=11&y=Bolt of Ice: Mod=UseSpell&x=9&y=Control Water&mul=0.5: Mod=UseSpell&x=7&y=Wall of Energy (Cold)&mul=0.5: Mod=PoolRegen&x=30&mul=0.5: Mod=Speech&y=Aquan&mul=0.5: Mod=BreatheWater: Mod=ColdRes&x=20&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    133 => 
+    array (
+      'ID' => 133,
+      'Name' => 'Ring of Fire Resistance',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=FireRes&x=20:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    134 => 
+    array (
+      'ID' => 134,
+      'Name' => 'Ring of Evasion',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=SkillBasicEnh&x=10&y=Acrobatics:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    135 => 
+    array (
+      'ID' => 135,
+      'Name' => 'Ring of Feather Falling',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=FeatherFall:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    136 => 
+    array (
+      'ID' => 136,
+      'Name' => 'Ring of Force Shield',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=1&y=Blade Barrier: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    137 => 
+    array (
+      'ID' => 137,
+      'Name' => 'Ring of Freedom',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=Freedom:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    138 => 
+    array (
+      'ID' => 138,
+      'Name' => 'Ring of Invisibility',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=3&y=Invisibility (self): Mod=PoolRegen&x=15&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    139 => 
+    array (
+      'ID' => 139,
+      'Name' => 'Ring of Jumping',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=ActionBasicComp&x=10&y=Jump:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    140 => 
+    array (
+      'ID' => 140,
+      'Name' => 'Ring of Melding',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=5&y=Meld with Nature: Mod=PoolRegen&x=25&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    141 => 
+    array (
+      'ID' => 141,
+      'Name' => 'Ring of Mind Shielding',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=MentalRes&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    142 => 
+    array (
+      'ID' => 142,
+      'Name' => 'Ring of Protection +1',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=DeCDefl&x=1:)',
+      'Description' => NULL,
+      'Frequency' => 6,
+    ),
+    143 => 
+    array (
+      'ID' => 143,
+      'Name' => 'Ring of Protection +3',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=DeCDefl&x=3:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    144 => 
+    array (
+      'ID' => 144,
+      'Name' => 'Ring of Protection +5',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=DeCDefl&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 2,
+    ),
+    145 => 
+    array (
+      'ID' => 145,
+      'Name' => 'Ring of the Ram',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=13&y=Forceful Hand: Mod=PPool&x=200&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    146 => 
+    array (
+      'ID' => 146,
+      'Name' => 'Ring of Regeneration',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=RegenHP&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    147 => 
+    array (
+      'ID' => 147,
+      'Name' => 'Ring of Shooting Stars',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=5&y=Bolt of Lightning: Mod=UseSpell&x=3&y=Light&mul=0.5: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    148 => 
+    array (
+      'ID' => 148,
+      'Name' => 'Ring of Spell Storing',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=SpellStore&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    149 => 
+    array (
+      'ID' => 149,
+      'Name' => 'Ring of Spell Turning',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=MReflect&x=10:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    150 => 
+    array (
+      'ID' => 150,
+      'Name' => 'Ring of Sustenance',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=Sustenance:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    151 => 
+    array (
+      'ID' => 151,
+      'Name' => 'Ring of Swimming',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=ActionBasicComp&x=10&y=Swim:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    152 => 
+    array (
+      'ID' => 152,
+      'Name' => 'Ring of Telekinesis',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=9&y=Telekinesis: Mod=PoolRegen&x=45&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    153 => 
+    array (
+      'ID' => 153,
+      'Name' => 'Ring of Water Walking',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=UseSpell&x=2&y=Levitate: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    154 => 
+    array (
+      'ID' => 154,
+      'Name' => 'Ring of Wizardry',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=RegenPP&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    155 => 
+    array (
+      'ID' => 155,
+      'Name' => 'Ring of X-Ray Vision',
+      'Subtype' => 35,
+      'Config' => '(Item=Silver ring: Mod=XRayVis:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    156 => 
+    array (
+      'ID' => 156,
+      'Name' => 'Outstanding Longsword',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, long-: Mod=OutstMeleeWp:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    157 => 
+    array (
+      'ID' => 157,
+      'Name' => 'Exceptional Longsword',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, long-: Mod=ExcepMeleeWp:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    158 => 
+    array (
+      'ID' => 158,
+      'Name' => 'Longsword +1',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, long-: Mod=MwMeleeWp: Mod=WeaponEnh&x=1:)',
+      'Description' => NULL,
+      'Frequency' => 6,
+    ),
+    159 => 
+    array (
+      'ID' => 159,
+      'Name' => 'Longsword +3',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, long-: Mod=MwMeleeWp: Mod=WeaponEnh&x=3:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    160 => 
+    array (
+      'ID' => 160,
+      'Name' => 'Longsword +5',
+      'Subtype' => 6,
+      'Config' => '(Item=Sword, long-: Mod=MwMeleeWp: Mod=WeaponEnh&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 2,
+    ),
+    161 => 
+    array (
+      'ID' => 161,
+      'Name' => 'Gloves of Striking +3',
+      'Subtype' => 16,
+      'Config' => '(Item=Gloves: Mod=MwMeleeWp: Mod=WeaponEnh&x=3:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    162 => 
+    array (
+      'ID' => 162,
+      'Name' => 'Boots of Kicking +3',
+      'Subtype' => 17,
+      'Config' => '(Item=Boots: Mod=MwMeleeWp: Mod=WeaponEnh&x=3:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    163 => 
+    array (
+      'ID' => 163,
+      'Name' => 'Outstanding Light Shield',
+      'Subtype' => 9,
+      'Config' => '(Item=Shield, light steel: Mod=OutstShield:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    164 => 
+    array (
+      'ID' => 164,
+      'Name' => 'Exceptional Heavy Shield',
+      'Subtype' => 9,
+      'Config' => '(Item=Shield, heavy wooden: Mod=ExcepShield:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    165 => 
+    array (
+      'ID' => 165,
+      'Name' => 'Buckler +1',
+      'Subtype' => 9,
+      'Config' => '(Item=Buckler: Mod=MwShield: Mod=ParryEnh&x=1:)',
+      'Description' => NULL,
+      'Frequency' => 6,
+    ),
+    166 => 
+    array (
+      'ID' => 166,
+      'Name' => 'Light Shield +3',
+      'Subtype' => 9,
+      'Config' => '(Item=Shield, light steel: Mod=MwShield: Mod=ParryEnh&x=3:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    167 => 
+    array (
+      'ID' => 167,
+      'Name' => 'Heavy Shield +5',
+      'Subtype' => 9,
+      'Config' => '(Item=Shield, heavy wooden: Mod=MwShield: Mod=ParryEnh&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 2,
+    ),
+    168 => 
+    array (
+      'ID' => 168,
+      'Name' => 'Outstanding Chain Shirt',
+      'Subtype' => 11,
+      'Config' => '(Item=Chain shirt: Mod=OutstArmor:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    169 => 
+    array (
+      'ID' => 169,
+      'Name' => 'Exceptional Breastplate',
+      'Subtype' => 12,
+      'Config' => '(Item=Breastplate: Mod=ExcepArmor:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    170 => 
+    array (
+      'ID' => 170,
+      'Name' => 'Full Plate +1',
+      'Subtype' => 13,
+      'Config' => '(Item=Full plate: Mod=MwArmor: Mod=ArmorEnh&x=1:)',
+      'Description' => NULL,
+      'Frequency' => 6,
+    ),
+    171 => 
+    array (
+      'ID' => 171,
+      'Name' => 'Chainmail +3',
+      'Subtype' => 12,
+      'Config' => '(Item=Chainmail: Mod=MwArmor: Mod=ArmorEnh&x=3:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    172 => 
+    array (
+      'ID' => 172,
+      'Name' => 'Clothing +5',
+      'Subtype' => 14,
+      'Config' => '(Item=Clothing: Mod=MwArmor: Mod=ArmorEnh&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 2,
+    ),
+    173 => 
+    array (
+      'ID' => 173,
+      'Name' => 'Staff of Absorption',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=MAbsorb&x=10: Mod=PoolAttun&x=40&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    174 => 
+    array (
+      'ID' => 174,
+      'Name' => 'Rod of Alertness',
+      'Subtype' => 63,
+      'Config' => '(Item=Mace, heavy: Mod=OutstMeleeWp: Mod=UseSpell&x=11&y=Animate Objects: Mod=UseSpell&x=1&y=Detect Alignment&mul=0.5: Mod=UseSpell&x=1&y=Detect Magic&mul=0.5: Mod=UseSpell&x=1&y=Light&mul=0.5: Mod=UseSpell&x=1&y=Arcane Ward&mul=0.5: Mod=UseSpell&x=3&y=Enhance Senses&mul=0.5: Mod=PoolRegen&x=20&mul=0.5: Mod=InitEnh&x=1&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    175 => 
+    array (
+      'ID' => 175,
+      'Name' => 'Rod of Cancellation',
+      'Subtype' => 63,
+      'Config' => '(Item=Mace, heavy: Mod=UseSpell&x=17&y=Dispel Magic: Mod=PPool&x=20&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    176 => 
+    array (
+      'ID' => 176,
+      'Name' => 'Wand of Enemy Detection',
+      'Subtype' => 59,
+      'Config' => '(Item=Wand: Mod=UseSpell&x=3&y=Detect Thoughts: Mod=UseSpell&x=3&y=Enhance Senses&mul=0.5: Mod=UseSpell&x=1&y=Arcane Ward&mul=0.5: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    177 => 
+    array (
+      'ID' => 177,
+      'Name' => 'Rod of Flailing',
+      'Subtype' => 63,
+      'Config' => '(Item=Flail, dire: Mod=MwMeleeWp: Mod=UseSpell&x=9&y=Divine Aura: Mod=PoolRegen&x=10&mul=0.5: Mod=WeaponEnh&x=3&mul=0.5: Mod=ItemTransform&y=Rod&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    178 => 
+    array (
+      'ID' => 178,
+      'Name' => 'Staff of Controlling Flames',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=AffinitySpellBoost&x=5&y=Control Fire: Mod=PPool&x=50&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    179 => 
+    array (
+      'ID' => 179,
+      'Name' => 'Rod of Lordly Might',
+      'Subtype' => 63,
+      'Config' => '(Item=Mace, light: Mod=MwMeleeWp: Mod=WeaponEnh&x=4: Mod=ItemTransform&y=Sword, long-&mul=0.5: Mod=ItemTransform&y=Axe, battle-&mul=0.5: Mod=ItemTransform&y=Spear, short-&mul=0.5: Mod=ItemTransform&y=Spear, long-&mul=0.5: Mod=ItemTransform&y=Ladder (up to 15 m)&mul=0.5: Mod=UseSpell&x=1&y=Discern Location&mul=0.5: Mod=UseSpell&x=3&y=Hold Creature&mul=0.5: Mod=UseSpell&x=7&y=Fear&mul=0.5: Mod=UseSpell&x=5&y=Touch of Death&mul=0.5: Mod=PoolRegen&x=15&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    180 => 
+    array (
+      'ID' => 180,
+      'Name' => 'Wand of Locating',
+      'Subtype' => 59,
+      'Config' => '(Item=Wand: Mod=PoolRegen&x=10: Mod=UseSpell&x=1&y=Discern Location&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    181 => 
+    array (
+      'ID' => 181,
+      'Name' => 'Staff of Negation',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=UseSpell&x=15&y=Dispel Magic: Mod=PoolRegen&x=30&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    182 => 
+    array (
+      'ID' => 182,
+      'Name' => 'Staff of the Python',
+      'Subtype' => 62,
+      'Config' => '(Item=Quarterstaff: Mod=OutstMeleeWp: Mod=ConstructTransform&x=7&y=Snake, Constrictor:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    183 => 
+    array (
+      'ID' => 183,
+      'Name' => 'Rod of the Viper',
+      'Subtype' => 63,
+      'Config' => '(Item=Mace, heavy: Mod=ExcepMeleeWp: Mod=UseSpell&x=3&y=Affliction: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    184 => 
+    array (
+      'ID' => 184,
+      'Name' => 'Rod of Rulership',
+      'Subtype' => 63,
+      'Config' => '(Item=Mace, light: Mod=UseSpell&x=18&y=Charm Creature: Mod=PPool&x=50&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    185 => 
+    array (
+      'ID' => 185,
+      'Name' => 'Rod of Security',
+      'Subtype' => 63,
+      'Config' => '(Item=Mace, light: Mod=UseSpell&x=15&y=Extradimensional Shelter: Mod=PoolRegen&x=15&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    186 => 
+    array (
+      'ID' => 186,
+      'Name' => 'Rod of Splendor',
+      'Subtype' => 63,
+      'Config' => '(Item=Mace, light: Mod=ChaEnh&x=4: Mod=UseSpell&x=11&y=Create Sustenance&mul=0.5: Mod=UseSpell&x=11&y=Create Object&mul=0.5: Mod=PoolRegen&x=20&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    187 => 
+    array (
+      'ID' => 187,
+      'Name' => 'Rod of Thunder and Lightning',
+      'Subtype' => 63,
+      'Config' => '(Item=Mace, light: Mod=ExcepMeleeWp: Mod=UseSpell&x=9&y=Bolt of Lightning: Mod=UseSpell&x=5&y=Bolt of Sound&mul=0.5: Mod=UseSpell&x=3&y=Touch of Lightning&mul=0.5: Mod=UseSpell&x=3&y=Touch of Sound&mul=0.5: Mod=PoolRegen&x=20&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    188 => 
+    array (
+      'ID' => 188,
+      'Name' => 'Rod of Withering',
+      'Subtype' => 63,
+      'Config' => '(Item=Mace, light: Mod=OutstMeleeWp: Mod=UseSpell&x=9&y=Enervation: Mod=PoolRegen&x=30&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    189 => 
+    array (
+      'ID' => 189,
+      'Name' => 'Amulet of Health +2',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=ConEnh&x=2:)',
+      'Description' => NULL,
+      'Frequency' => 5,
+    ),
+    190 => 
+    array (
+      'ID' => 190,
+      'Name' => 'Amulet of Health +4',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=ConEnh&x=4:)',
+      'Description' => NULL,
+      'Frequency' => 3,
+    ),
+    191 => 
+    array (
+      'ID' => 191,
+      'Name' => 'Amulet of Health +6',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=ConEnh&x=6:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    192 => 
+    array (
+      'ID' => 192,
+      'Name' => 'Amulet of Mighty Fists +1',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=SkillAdvEnh&x=1&y=Weapons - Natural:)',
+      'Description' => NULL,
+      'Frequency' => 6,
+    ),
+    193 => 
+    array (
+      'ID' => 193,
+      'Name' => 'Amulet of Mighty Fists +3',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=SkillAdvEnh&x=3&y=Weapons - Natural:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    194 => 
+    array (
+      'ID' => 194,
+      'Name' => 'Amulet of Mighty Fists +5',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=SkillAdvEnh&x=5&y=Weapons - Natural:)',
+      'Description' => NULL,
+      'Frequency' => 2,
+    ),
+    195 => 
+    array (
+      'ID' => 195,
+      'Name' => 'Amulet of Natural Armor +1',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=NatArmEnh&x=1:)',
+      'Description' => NULL,
+      'Frequency' => 6,
+    ),
+    196 => 
+    array (
+      'ID' => 196,
+      'Name' => 'Amulet of Natural Armor +3',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=NatArmEnh&x=3:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    197 => 
+    array (
+      'ID' => 197,
+      'Name' => 'Amulet of Natural Armor +5',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=NatArmEnh&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 2,
+    ),
+    198 => 
+    array (
+      'ID' => 198,
+      'Name' => 'Amulet of the Planes',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=UseSpell&x=15&y=Planar Travel: Mod=PoolRegen&x=60&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    199 => 
+    array (
+      'ID' => 199,
+      'Name' => 'Amulet of Proof against Detection and Location',
+      'Subtype' => 37,
+      'Config' => '(Item=Silver necklace: Mod=DetectRes&x=10:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    200 => 
+    array (
+      'ID' => 200,
+      'Name' => 'Bag of Holding (1 cb.m)',
+      'Subtype' => 24,
+      'Config' => '(Item=Sack: Mod=ExtraSpace&x=1:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    201 => 
+    array (
+      'ID' => 201,
+      'Name' => 'Bag of Holding (2 cb.m)',
+      'Subtype' => 24,
+      'Config' => '(Item=Sack: Mod=ExtraSpace&x=2:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    202 => 
+    array (
+      'ID' => 202,
+      'Name' => 'Bag of Holding (4 cb.m)',
+      'Subtype' => 24,
+      'Config' => '(Item=Sack: Mod=ExtraSpace&x=4:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    203 => 
+    array (
+      'ID' => 203,
+      'Name' => 'Bag of Holding (8 cb.m)',
+      'Subtype' => 24,
+      'Config' => '(Item=Sack: Mod=ExtraSpace&x=8:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    204 => 
+    array (
+      'ID' => 204,
+      'Name' => 'Bag of Tricks',
+      'Subtype' => 24,
+      'Config' => '(Item=Sack: Mod=UseSpell&x=10&y=Summon Animal or Plant: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    205 => 
+    array (
+      'ID' => 205,
+      'Name' => 'Bead of Force',
+      'Subtype' => 38,
+      'Config' => '(Item=Glass bead: Mod=UseSpellLtd&x=7&y=Force Field:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    206 => 
+    array (
+      'ID' => 206,
+      'Name' => 'Monk\'s Belt',
+      'Subtype' => 18,
+      'Config' => '(Item=Belt: Mod=SkillAdvEnh&x=5&y=Ki - Defense: Mod=SkillAdvEnh&x=5&y=Ki - Offense&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    207 => 
+    array (
+      'ID' => 207,
+      'Name' => 'Belt of Dwarvenkind',
+      'Subtype' => 18,
+      'Config' => '(Item=Belt: Mod=ConEnh&x=2: Mod=MRRes&x=2&mul=0.5: Mod=PoisonRes&x=2&mul=0.5: Mod=Darkvision&mul=0.5: Mod=Speech&y=Dwarves&mul=0.5: Mod=Empathy&y=Dwarves&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    208 => 
+    array (
+      'ID' => 208,
+      'Name' => 'Belt of Giant Strength +2',
+      'Subtype' => 18,
+      'Config' => '(Item=Belt: Mod=StrEnh&x=2:)',
+      'Description' => NULL,
+      'Frequency' => 5,
+    ),
+    209 => 
+    array (
+      'ID' => 209,
+      'Name' => 'Belt of Giant Strength +4',
+      'Subtype' => 18,
+      'Config' => '(Item=Belt: Mod=StrEnh&x=4:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    210 => 
+    array (
+      'ID' => 210,
+      'Name' => 'Belt of Giant Strength +6',
+      'Subtype' => 18,
+      'Config' => '(Item=Belt: Mod=StrEnh&x=6:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    211 => 
+    array (
+      'ID' => 211,
+      'Name' => 'Folding Boat',
+      'Subtype' => 24,
+      'Config' => '(Item=Box: Mod=ItemTransform&y=Rowboat: Mod=ItemTransform&y=Keelboat&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    212 => 
+    array (
+      'ID' => 212,
+      'Name' => 'Boots of Elvenkind',
+      'Subtype' => 17,
+      'Config' => '(Item=Boots: Mod=ActionBasicComp&x=5&y=Move Silently:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    213 => 
+    array (
+      'ID' => 213,
+      'Name' => 'Boots of Levitation',
+      'Subtype' => 17,
+      'Config' => '(Item=Boots: Mod=Levitate:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    214 => 
+    array (
+      'ID' => 214,
+      'Name' => 'Boots of Speed',
+      'Subtype' => 17,
+      'Config' => '(Item=Boots: Mod=UseSpell&x=3&y=Manipulate Time: Mod=PoolRegen&x=3&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    215 => 
+    array (
+      'ID' => 215,
+      'Name' => 'Boots of Striding and Springing',
+      'Subtype' => 17,
+      'Config' => '(Item=Boots: Mod=SpeedEnh&x=2: Mod=ActionBasicComp&x=5&y=Jump&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    216 => 
+    array (
+      'ID' => 216,
+      'Name' => 'Boots of Teleportation',
+      'Subtype' => 17,
+      'Config' => '(Item=Boots: Mod=UseSpellLtd&x=9&y=Teleport: Mod=PoolRegen&x=18&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    217 => 
+    array (
+      'ID' => 217,
+      'Name' => 'Boots of the Winterlands',
+      'Subtype' => 17,
+      'Config' => '(Item=Boots: Mod=SkillBasicEnh&x=10&y=Survival (Tundra):)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    218 => 
+    array (
+      'ID' => 218,
+      'Name' => 'Winged Boots',
+      'Subtype' => 17,
+      'Config' => '(Item=Boots: Mod=UseSpellLtd&x=5&y=Levitate: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    219 => 
+    array (
+      'ID' => 219,
+      'Name' => 'Bottle of Air',
+      'Subtype' => 24,
+      'Config' => '(Item=Bottle, glass: Mod=BreatheNothing:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    220 => 
+    array (
+      'ID' => 220,
+      'Name' => 'Bowl of Commanding Water Elementals',
+      'Subtype' => 38,
+      'Config' => '(Item=Silver bowl: Mod=UseSpellLtd&x=11&y=Summon Elemental: Mod=PoolRegen&x=11&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    221 => 
+    array (
+      'ID' => 221,
+      'Name' => 'Bracers of Archery',
+      'Subtype' => 36,
+      'Config' => '(Item=Bracers: Mod=SkillAdvEnh&x=5&y=Weapons - Bows:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    222 => 
+    array (
+      'ID' => 222,
+      'Name' => 'Bracers of Armor +2',
+      'Subtype' => 36,
+      'Config' => '(Item=Bracers: Mod=ForceArm&x=2:)',
+      'Description' => NULL,
+      'Frequency' => 5,
+    ),
+    223 => 
+    array (
+      'ID' => 223,
+      'Name' => 'Bracers of Armor +4',
+      'Subtype' => 36,
+      'Config' => '(Item=Bracers: Mod=ForceArm&x=4:)',
+      'Description' => NULL,
+      'Frequency' => 3,
+    ),
+    224 => 
+    array (
+      'ID' => 224,
+      'Name' => 'Bracers of Armor +6',
+      'Subtype' => 36,
+      'Config' => '(Item=Bracers: Mod=ForceArm&x=6:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    225 => 
+    array (
+      'ID' => 225,
+      'Name' => 'Bracers of Armor +8',
+      'Subtype' => 36,
+      'Config' => '(Item=Bracers: Mod=ForceArm&x=8:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    226 => 
+    array (
+      'ID' => 226,
+      'Name' => 'Brazier of Commanding Fire Elementals',
+      'Subtype' => 38,
+      'Config' => '(Item=Silver bowl: Mod=UseSpellLtd&x=11&y=Summon Elemental: Mod=PoolRegen&x=11&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    227 => 
+    array (
+      'ID' => 227,
+      'Name' => 'Brooch of Shielding',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=PPool&x=30: Mod=UseSpell&x=1&y=Blade Barrier&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    228 => 
+    array (
+      'ID' => 228,
+      'Name' => 'Candle of Invocation',
+      'Subtype' => 72,
+      'Config' => '(Item=Potion: Mod=UseSpell&x=17&y=Divine Aura:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    229 => 
+    array (
+      'ID' => 229,
+      'Name' => 'Candle of Truth',
+      'Subtype' => 72,
+      'Config' => '(Item=Potion: Mod=UseSpell&x=5&y=Zone of Revelation:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    230 => 
+    array (
+      'ID' => 230,
+      'Name' => 'Cape of the Mountebank',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=UseSpellLtd&x=5&y=Teleport: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    231 => 
+    array (
+      'ID' => 231,
+      'Name' => 'Censer of Controlling Air Elementals',
+      'Subtype' => 38,
+      'Config' => '(Item=Silver bowl: Mod=UseSpellLtd&x=11&y=Summon Elemental: Mod=PoolRegen&x=11&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    232 => 
+    array (
+      'ID' => 232,
+      'Name' => 'Diamond of the Divine',
+      'Subtype' => 38,
+      'Config' => '(Item=Diamond, huge uncut: Mod=UseSpell&x=13&y=Holy Word: Mod=UseSpell&x=9&y=Divine Aura&mul=0.5: Mod=UseSpell&x=9&y=Charm Creature&mul=0.5: Mod=PoolRegen&x=50&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    233 => 
+    array (
+      'ID' => 233,
+      'Name' => 'Chime of Interruption',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small metal: Mod=UseSpellLtd&x=13&y=Antimagic: Mod=PoolRegen&x=13&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    234 => 
+    array (
+      'ID' => 234,
+      'Name' => 'Chime of Opening',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small metal: Mod=UseSpellLtd&x=3&y=Telekinesis: Mod=PPool&x=30&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    235 => 
+    array (
+      'ID' => 235,
+      'Name' => 'Circlet of Blasting',
+      'Subtype' => 15,
+      'Config' => '(Item=Headband: Mod=UseSpell&x=7&y=Bolt of Radiance: Mod=PoolRegen&x=7&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    236 => 
+    array (
+      'ID' => 236,
+      'Name' => 'Circlet of Persuasion',
+      'Subtype' => 15,
+      'Config' => '(Item=Headband: Mod=ActionBasicComp&x=3&y=Bluff:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    237 => 
+    array (
+      'ID' => 237,
+      'Name' => 'Cloak of Arachnida',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=ActionBasicComp&x=12&y=Climb: Mod=UseSpell&x=3&y=Create Web&mul=0.5: Mod=PoolRegen&x=3&mul=0.5: Mod=PoisonRes&x=2&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    238 => 
+    array (
+      'ID' => 238,
+      'Name' => 'Cloak of the Bat',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=UseSpellLtd&x=5&y=Levitate: Mod=UseSpellLtd&x=5&y=Shapechange&mul=0.5: Mod=PoolRegen&x=10&mul=0.5: Mod=ActionBasicComp&x=5&y=Hide&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    239 => 
+    array (
+      'ID' => 239,
+      'Name' => 'Cloak of Charisma +2',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=ChaEnh&x=2:)',
+      'Description' => NULL,
+      'Frequency' => 5,
+    ),
+    240 => 
+    array (
+      'ID' => 240,
+      'Name' => 'Cloak of Charisma +4',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=ChaEnh&x=4:)',
+      'Description' => NULL,
+      'Frequency' => 3,
+    ),
+    241 => 
+    array (
+      'ID' => 241,
+      'Name' => 'Cloak of Charisma +6',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=ChaEnh&x=6:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    242 => 
+    array (
+      'ID' => 242,
+      'Name' => 'Cloak of Displacement',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=UseSpellLtd&x=5&y=Displacement: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    243 => 
+    array (
+      'ID' => 243,
+      'Name' => 'Cloak of Elvenkind',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=ActionBasicComp&x=5&y=Hide:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    244 => 
+    array (
+      'ID' => 244,
+      'Name' => 'Cloak of Etherealness',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=Ethereal: Mod=PoolRegen&x=50&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    245 => 
+    array (
+      'ID' => 245,
+      'Name' => 'Cloak of the Manta Ray',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=UseSpellLtd&x=5&y=Shapechange&mul=0.5: Mod=PoolRegen&x=20&mul=0.5: Mod=Swim&mul=0.5: Mod=BreatheWater&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    246 => 
+    array (
+      'ID' => 246,
+      'Name' => 'Cloak of Resistance +1',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=NDDRes&x=1:)',
+      'Description' => NULL,
+      'Frequency' => 6,
+    ),
+    247 => 
+    array (
+      'ID' => 247,
+      'Name' => 'Cloak of Resistance +3',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=NDDRes&x=3:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    248 => 
+    array (
+      'ID' => 248,
+      'Name' => 'Cloak of Resistance +5',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=NDDRes&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 2,
+    ),
+    249 => 
+    array (
+      'ID' => 249,
+      'Name' => 'Crystal Ball',
+      'Subtype' => 38,
+      'Config' => '(Item=Crystal, large: Mod=AffinitySpellBoost&x=12&y=Scrying: Mod=PoolRegen&x=36&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    250 => 
+    array (
+      'ID' => 250,
+      'Name' => 'Cube of Force',
+      'Subtype' => 21,
+      'Config' => '(Item=Dice (one six-sided): Mod=UseSpell&x=15&y=Prismatic Barrier: Mod=PoolRegen&x=15&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    251 => 
+    array (
+      'ID' => 251,
+      'Name' => 'Cube of Sheltering',
+      'Subtype' => 21,
+      'Config' => '(Item=Dice (one six-sided): Mod=UseSpell&x=3&y=Secure Shelter: Mod=PoolRegen&x=9&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    252 => 
+    array (
+      'ID' => 252,
+      'Name' => 'Decanter of Endless Water',
+      'Subtype' => 24,
+      'Config' => '(Item=Flask: Mod=UseSpellLtd&x=1&y=Create Sustenance: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    253 => 
+    array (
+      'ID' => 253,
+      'Name' => 'Deck of Illusions',
+      'Subtype' => 21,
+      'Config' => '(Item=Tarot (or Talis) deck: Mod=PPool&x=200&mul=0.5: Mod=UseSpellLtd&x=7&y=Illusion&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    254 => 
+    array (
+      'ID' => 254,
+      'Name' => 'Drums of Panic',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small wood: Mod=UseSpellLtd&x=7&y=Fear: Mod=PoolRegen&x=7&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    255 => 
+    array (
+      'ID' => 255,
+      'Name' => 'Dust of Appearance',
+      'Subtype' => 72,
+      'Config' => '(Item=Dust: Mod=UseSpellLtd&x=3&y=Zone of Revelation:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    256 => 
+    array (
+      'ID' => 256,
+      'Name' => 'Dust of Tracelessness',
+      'Subtype' => 72,
+      'Config' => '(Item=Dust: Mod=UseSpellLtd&x=7&y=Illusory Terrain:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    257 => 
+    array (
+      'ID' => 257,
+      'Name' => 'Efficient Quiver',
+      'Subtype' => 24,
+      'Config' => '(Item=Quiver: Mod=ExtraSpace&x=1:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    258 => 
+    array (
+      'ID' => 258,
+      'Name' => 'Elemental Gem',
+      'Subtype' => 38,
+      'Config' => '(Item=Crystal, small: Mod=UseSpellLtd&x=11&y=Summon Elemental:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    259 => 
+    array (
+      'ID' => 259,
+      'Name' => 'Eversmoking Bottle',
+      'Subtype' => 24,
+      'Config' => '(Item=Bottle, glass: Mod=UseSpellLtd&x=1&y=Fog Cloud: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    260 => 
+    array (
+      'ID' => 260,
+      'Name' => 'Eyes of Charming',
+      'Subtype' => 66,
+      'Config' => '(Item=Eyeglasses: Mod=UseSpell&x=1&y=Charm Creature: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    261 => 
+    array (
+      'ID' => 261,
+      'Name' => 'Eyes of Doom',
+      'Subtype' => 66,
+      'Config' => '(Item=Eyeglasses: Mod=UseSpell&x=7&y=Evil Eye: Mod=PoolRegen&x=35&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    262 => 
+    array (
+      'ID' => 262,
+      'Name' => 'Eyes of the Eagle',
+      'Subtype' => 66,
+      'Config' => '(Item=Eyeglasses: Mod=ActionBasicComp&x=5&y=Spot:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    263 => 
+    array (
+      'ID' => 263,
+      'Name' => 'Eyes of Petrification',
+      'Subtype' => 66,
+      'Config' => '(Item=Eyeglasses: Mod=UseSpellLtd&x=11&y=Petrification: Mod=PoolRegen&x=55&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    264 => 
+    array (
+      'ID' => 264,
+      'Name' => 'Gauntlets of Rust',
+      'Subtype' => 16,
+      'Config' => '(Item=Gauntlets: Mod=UseSpellLtd&x=7&y=Transmute Metal: Mod=PoolRegen&x=7&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    265 => 
+    array (
+      'ID' => 265,
+      'Name' => 'Gem of Brightness',
+      'Subtype' => 38,
+      'Config' => '(Item=Crystal, average: Mod=UseSpellLtd&x=3&y=Light&mul=0.5: Mod=UseSpellLtd&x=5&y=Illuminate: Mod=PPool&x=50&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    266 => 
+    array (
+      'ID' => 266,
+      'Name' => 'Gem of Seeing',
+      'Subtype' => 38,
+      'Config' => '(Item=Crystal, average: Mod=UseSpellLtd&x=13&y=Enhance Senses: Mod=PoolRegen&x=13&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    267 => 
+    array (
+      'ID' => 267,
+      'Name' => 'Gloves of Arrow Snaring',
+      'Subtype' => 16,
+      'Config' => '(Item=Gloves: Mod=ActionBasicComp&x=5&y=Deflect Projectile:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    268 => 
+    array (
+      'ID' => 268,
+      'Name' => 'Gloves of Dexterity +2',
+      'Subtype' => 16,
+      'Config' => '(Item=Gloves: Mod=DexEnh&x=2:)',
+      'Description' => NULL,
+      'Frequency' => 5,
+    ),
+    269 => 
+    array (
+      'ID' => 269,
+      'Name' => 'Gloves of Dexterity +4',
+      'Subtype' => 16,
+      'Config' => '(Item=Gloves: Mod=DexEnh&x=4:)',
+      'Description' => NULL,
+      'Frequency' => 3,
+    ),
+    270 => 
+    array (
+      'ID' => 270,
+      'Name' => 'Gloves of Dexterity +6',
+      'Subtype' => 16,
+      'Config' => '(Item=Gloves: Mod=DexEnh&x=6:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    271 => 
+    array (
+      'ID' => 271,
+      'Name' => 'Gloves of Storing',
+      'Subtype' => 16,
+      'Config' => '(Item=Gloves: Mod=UseSpellLtd&x=11&y=Resize Object: Mod=PoolRegen&x=11&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    272 => 
+    array (
+      'ID' => 272,
+      'Name' => 'Gloves of Swimming and Climbing',
+      'Subtype' => 16,
+      'Config' => '(Item=Gloves: Mod=ActionBasicComp&x=5&y=Climb: Mod=ActionBasicComp&x=5&y=Swim or Dive&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    273 => 
+    array (
+      'ID' => 273,
+      'Name' => 'Goggles of Minute Seeing',
+      'Subtype' => 66,
+      'Config' => '(Item=Eyeglasses: Mod=ActionBasicComp&x=5&y=Search:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    274 => 
+    array (
+      'ID' => 274,
+      'Name' => 'Goggles of Night',
+      'Subtype' => 66,
+      'Config' => '(Item=Eyeglasses: Mod=Darkvision:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    275 => 
+    array (
+      'ID' => 275,
+      'Name' => 'Hand of the Mage',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=UseSpell&x=1&y=Telekinesis&mul=0.5: Mod=PoolRegen&x=10:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    276 => 
+    array (
+      'ID' => 276,
+      'Name' => 'Handy Haversack',
+      'Subtype' => 24,
+      'Config' => '(Item=Backpack: Mod=ExtraSpace&x=1:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    277 => 
+    array (
+      'ID' => 277,
+      'Name' => 'Harp of Charming',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small wood: Mod=UseSpell&x=5&y=Enthrall: Mod=PoolRegen&x=20&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    278 => 
+    array (
+      'ID' => 278,
+      'Name' => 'Hat of Disguise',
+      'Subtype' => 15,
+      'Config' => '(Item=Hat: Mod=UseSpell&x=1&y=Illusory Disguise: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    279 => 
+    array (
+      'ID' => 279,
+      'Name' => 'Headband of Intellect +2',
+      'Subtype' => 15,
+      'Config' => '(Item=Headband: Mod=IntEnh&x=2:)',
+      'Description' => NULL,
+      'Frequency' => 5,
+    ),
+    280 => 
+    array (
+      'ID' => 280,
+      'Name' => 'Headband of Intellect +4',
+      'Subtype' => 15,
+      'Config' => '(Item=Headband: Mod=IntEnh&x=4:)',
+      'Description' => NULL,
+      'Frequency' => 3,
+    ),
+    281 => 
+    array (
+      'ID' => 281,
+      'Name' => 'Headband of Intellect +6',
+      'Subtype' => 15,
+      'Config' => '(Item=Headband: Mod=IntEnh&x=6:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    282 => 
+    array (
+      'ID' => 282,
+      'Name' => 'Helm of Brilliance',
+      'Subtype' => 15,
+      'Config' => '(Item=Helmet, full: Mod=FireRes&x=30: Mod=WeaponFire&mul=0.5: Mod=LightCond&mul=0.5: Mod=UseSpell&x=13&y=Prismatic Attack&mul=0.5: Mod=UseSpell&x=11&y=Bolt of Fire&mul=0.5: Mod=UseSpell&x=5&y=Light&mul=0.5: Mod=PPool&x=500&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    283 => 
+    array (
+      'ID' => 283,
+      'Name' => 'Helm of Comprehend Languages',
+      'Subtype' => 15,
+      'Config' => '(Item=Helmet, cap: Mod=ActionBasicComp&x=5&y=Decipher Script: Mod=UseSpell&x=1&y=Comprehend Languages&mul=0.5: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    284 => 
+    array (
+      'ID' => 284,
+      'Name' => 'Helm of Telepathy',
+      'Subtype' => 15,
+      'Config' => '(Item=Helmet, cap: Mod=UseSpell&x=5&y=Telepathy: Mod=UseSpell&x=3&y=Detect Thoughts&mul=0.5: Mod=PoolRegen&x=20&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    285 => 
+    array (
+      'ID' => 285,
+      'Name' => 'Helm of Teleportation',
+      'Subtype' => 15,
+      'Config' => '(Item=Helmet, cap: Mod=UseSpellLtd&x=9&y=Teleport: Mod=PoolRegen&x=20&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    286 => 
+    array (
+      'ID' => 286,
+      'Name' => 'Helm of Underwater Action',
+      'Subtype' => 15,
+      'Config' => '(Item=Helmet, full: Mod=BreatheWater:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    287 => 
+    array (
+      'ID' => 287,
+      'Name' => 'Horn of Blasting',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small metal: Mod=UseSpell&x=11&y=Bolt of Sound: Mod=PoolRegen&x=11&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    288 => 
+    array (
+      'ID' => 288,
+      'Name' => 'Horn of Fog',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small metal: Mod=UseSpellLtd&x=1&y=Fog Cloud: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    289 => 
+    array (
+      'ID' => 289,
+      'Name' => 'Horn of Protection',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small metal: Mod=UseSpell&x=1&y=Divine Aura: Mod=PoolRegen&x=1&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    290 => 
+    array (
+      'ID' => 290,
+      'Name' => 'Horn of the Tritons',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small metal: Mod=UseSpell&x=9&y=Control Water: Mod=UseSpellLtd&x=8&y=Summon Animal or Plant&mul=0.5: Mod=UseSpellLtd&x=7&y=Fear&mul=0.5: Mod=PoolRegen&x=16&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    291 => 
+    array (
+      'ID' => 291,
+      'Name' => 'Horn of Valhalla',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small metal: Mod=UseSpell&x=11&y=Summon Outsider: Mod=PoolRegen&x=11&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    292 => 
+    array (
+      'ID' => 292,
+      'Name' => 'Horseshoes of Speed',
+      'Subtype' => 28,
+      'Config' => '(Item=Horseshoes: Mod=SpeedEnh&x=6:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    293 => 
+    array (
+      'ID' => 293,
+      'Name' => 'Horseshoes of a Zephyr',
+      'Subtype' => 28,
+      'Config' => '(Item=Horseshoes: Mod=Levitate:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    294 => 
+    array (
+      'ID' => 294,
+      'Name' => 'Instant Fortress',
+      'Subtype' => 21,
+      'Config' => '(Item=Dice (one six-sided): Mod=ItemTransform&y=Tower&mul=8:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    295 => 
+    array (
+      'ID' => 295,
+      'Name' => 'Lantern of Revealing',
+      'Subtype' => 23,
+      'Config' => '(Item=Lantern, hooded: Mod=UseSpell&x=3&y=Zone of Revelation: Mod=PoolRegen&x=12&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    296 => 
+    array (
+      'ID' => 296,
+      'Name' => 'Lens of Detection',
+      'Subtype' => 21,
+      'Config' => '(Item=Magnifying glass: Mod=ActionBasicComp&x=5&y=Search: Mod=ActionBasicComp&x=5&y=Find or Follow Tracks&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    297 => 
+    array (
+      'ID' => 297,
+      'Name' => 'Lyre of Building',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw large wood: Mod=UseSpell&x=9&y=Create Wall: Mod=PoolRegen&x=9&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    298 => 
+    array (
+      'ID' => 298,
+      'Name' => 'Mantle of Faith',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=Invulnerability&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    299 => 
+    array (
+      'ID' => 299,
+      'Name' => 'Mantle of Spell Resistance',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=MRRes&x=10:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    300 => 
+    array (
+      'ID' => 300,
+      'Name' => 'Marvelous Pigments',
+      'Subtype' => 72,
+      'Config' => '(Item=Potion: Mod=UseSpell&x=15&y=Create Object:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    301 => 
+    array (
+      'ID' => 301,
+      'Name' => 'Mask of the Skull',
+      'Subtype' => 66,
+      'Config' => '(Item=Mask, full face: Mod=UseSpellLtd&x=12&y=Slay Living: Mod=PoolRegen&x=12&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    302 => 
+    array (
+      'ID' => 302,
+      'Name' => 'Mattock of the Titans',
+      'Subtype' => 6,
+      'Config' => '(Item=Hammer, war-: Material=Adamantine: Mod=MadeForG: Mod=WeaponEnh&x=3:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    303 => 
+    array (
+      'ID' => 303,
+      'Name' => 'Maul of the Titans',
+      'Subtype' => 6,
+      'Config' => '(Item=Maul: Material=Adamantine: Mod=MadeForG: Mod=WeaponEnh&x=3:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    304 => 
+    array (
+      'ID' => 304,
+      'Name' => 'Medallion of Thoughts',
+      'Subtype' => 37,
+      'Config' => '(Item=Silver necklace: Mod=UseSpell&x=3&y=Detect Thoughts: Mod=PoolRegen&x=15&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    305 => 
+    array (
+      'ID' => 305,
+      'Name' => 'Necklace of Adaptation',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=BreatheNothing:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    306 => 
+    array (
+      'ID' => 306,
+      'Name' => 'Necklace of Fireballs',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=UseSpell&x=10&y=Bolt of Fire: Mod=PPool&x=40&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    307 => 
+    array (
+      'ID' => 307,
+      'Name' => 'Orb of Storms',
+      'Subtype' => 38,
+      'Config' => '(Item=Crystal, large: Mod=UseSpell&x=11&y=Control Weather: Mod=PoolRegen&x=11&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    308 => 
+    array (
+      'ID' => 308,
+      'Name' => 'Pearl of Power +4',
+      'Subtype' => 38,
+      'Config' => '(Item=Crystal, small: Mod=PPEnh&x=4:)',
+      'Description' => NULL,
+      'Frequency' => 3,
+    ),
+    309 => 
+    array (
+      'ID' => 309,
+      'Name' => 'Pearl of Power +8',
+      'Subtype' => 38,
+      'Config' => '(Item=Crystal, small: Mod=PPEnh&x=8:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    310 => 
+    array (
+      'ID' => 310,
+      'Name' => 'Pearl of Power +12',
+      'Subtype' => 38,
+      'Config' => '(Item=Crystal, small: Mod=PPEnh&x=12:)',
+      'Description' => NULL,
+      'Frequency' => 6,
+    ),
+    311 => 
+    array (
+      'ID' => 311,
+      'Name' => 'Pearl of the Sirines',
+      'Subtype' => 38,
+      'Config' => '(Item=Crystal, small: Mod=Freedom: Mod=Swim&mul=0.5: Mod=BreatheWater&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    312 => 
+    array (
+      'ID' => 312,
+      'Name' => 'Periapt of Health',
+      'Subtype' => 37,
+      'Config' => '(Item=Silver necklace: Mod=DiseaseRes&x=20:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    313 => 
+    array (
+      'ID' => 313,
+      'Name' => 'Periapt of Proof against Poison',
+      'Subtype' => 37,
+      'Config' => '(Item=Silver necklace: Mod=PoisonRes&x=20:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    314 => 
+    array (
+      'ID' => 314,
+      'Name' => 'Periapt of Wisdom +2',
+      'Subtype' => 37,
+      'Config' => '(Item=Silver necklace: Mod=WisEnh&x=2:)',
+      'Description' => NULL,
+      'Frequency' => 5,
+    ),
+    315 => 
+    array (
+      'ID' => 315,
+      'Name' => 'Periapt of Wisdom +4',
+      'Subtype' => 37,
+      'Config' => '(Item=Silver necklace: Mod=WisEnh&x=4:)',
+      'Description' => NULL,
+      'Frequency' => 3,
+    ),
+    316 => 
+    array (
+      'ID' => 316,
+      'Name' => 'Periapt of Wisdom +6',
+      'Subtype' => 37,
+      'Config' => '(Item=Silver necklace: Mod=WisEnh&x=6:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    317 => 
+    array (
+      'ID' => 317,
+      'Name' => 'Periapt of Wound Closure',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=RegenHP&x=1:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    318 => 
+    array (
+      'ID' => 318,
+      'Name' => 'Phylactery of Faithfulness',
+      'Subtype' => 15,
+      'Config' => '(Item=Headband: Mod=UseSpell&x=3&y=Divination: Mod=PoolRegen&x=6&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    319 => 
+    array (
+      'ID' => 319,
+      'Name' => 'Phylactery of Undead Turning',
+      'Subtype' => 15,
+      'Config' => '(Item=Headband: Mod=ActionBasicComp&x=4&y=Turn Undead&mul=4:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    320 => 
+    array (
+      'ID' => 320,
+      'Name' => 'Pipes of Haunting',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small wood: Mod=UseSpellLtd&x=5&y=Fear: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    321 => 
+    array (
+      'ID' => 321,
+      'Name' => 'Pipes of Pain',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small wood: Mod=UseSpell&x=7&y=Sonic Disruption: Mod=PoolRegen&x=14&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    322 => 
+    array (
+      'ID' => 322,
+      'Name' => 'Pipes of the Sewers',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small wood: Mod=UseSpellLtd&x=3&y=Summon Animal or Plant: Mod=PoolRegen&x=6&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    323 => 
+    array (
+      'ID' => 323,
+      'Name' => 'Pipes of Sounding',
+      'Subtype' => 65,
+      'Config' => '(Item=Musical instrument, mw small wood: Mod=UseSpell&x=1&y=Ghost Sound: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    324 => 
+    array (
+      'ID' => 324,
+      'Name' => 'Portable Hole',
+      'Subtype' => 24,
+      'Config' => '(Item=Sack: Mod=ExtraSpace&x=10:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    325 => 
+    array (
+      'ID' => 325,
+      'Name' => 'Restorative Ointment',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpell&x=5&y=Heal Wounds: Mod=UseSpell&x=5&y=Cure Affliction&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    326 => 
+    array (
+      'ID' => 326,
+      'Name' => 'Robe of the Archmagi',
+      'Subtype' => 14,
+      'Config' => '(Item=Robe: Mod=NDDRes&x=4: Mod=MRRes&x=8&mul=0.5: Mod=ForceArm&x=5&mul=0.5: Mod=SpellcastEnh&x=2&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 2,
+    ),
+    327 => 
+    array (
+      'ID' => 327,
+      'Name' => 'Robe of Blending',
+      'Subtype' => 14,
+      'Config' => '(Item=Robe: Mod=ActionBasicComp&x=10&y=Hide: Mod=UseSpell&x=1&y=Illusory Disguise&mul=0.5: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    328 => 
+    array (
+      'ID' => 328,
+      'Name' => 'Robe of Bones',
+      'Subtype' => 14,
+      'Config' => '(Item=Robe: Mod=UseSpell&x=5&y=Create Undead: Mod=PPool&x=20&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    329 => 
+    array (
+      'ID' => 329,
+      'Name' => 'Robe of Eyes',
+      'Subtype' => 14,
+      'Config' => '(Item=Robe: Mod=AllAroundVis: Mod=SeeInvis&mul=0.5: Mod=Darkvision&mul=0.5: Mod=ActionBasicComp&x=10&y=Spot&mul=0.5: Mod=ActionBasicComp&x=10&y=Search&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    330 => 
+    array (
+      'ID' => 330,
+      'Name' => 'Robe of Scintillating Colors',
+      'Subtype' => 14,
+      'Config' => '(Item=Robe: Mod=Conceal: Mod=UseSpell&x=5&y=Color Spray&mul=0.5: Mod=PoolRegen&x=10&mul=0.5: Mod=LightMedium&mul=0.5:',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    331 => 
+    array (
+      'ID' => 331,
+      'Name' => 'Robe of Stars',
+      'Subtype' => 14,
+      'Config' => '(Item=Robe: Mod=UseSpell&x=15&y=Planar Projection: Mod=UseSpell&x=3&y=Force Missile&mul=0.5: Mod=PoolRegen&x=30&mul=0.5: Mod=NDDLuck&x=1&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    332 => 
+    array (
+      'ID' => 332,
+      'Name' => 'Robe of Useful Items',
+      'Subtype' => 14,
+      'Config' => '(Item=Robe: Mod=UseSpell&x=9&y=Create Object: Mod=PPool&x=100&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    333 => 
+    array (
+      'ID' => 333,
+      'Name' => 'Rope of Climbing',
+      'Subtype' => 20,
+      'Config' => '(Item=Rope, hempen (20 m): Mod=UseSpellLtd&x=5&y=Animate Objects: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    334 => 
+    array (
+      'ID' => 334,
+      'Name' => 'Rope of Entanglement',
+      'Subtype' => 20,
+      'Config' => '(Item=Rope, hempen (20 m): Mod=UseSpellLtd&x=7&y=Animate Objects: Mod=PoolRegen&x=7&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    335 => 
+    array (
+      'ID' => 335,
+      'Name' => 'Scabbard of Keen Edges',
+      'Subtype' => 24,
+      'Config' => '(Item=Scabbard: Mod=UseSpell&x=5&y=Enchant Weapon: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    336 => 
+    array (
+      'ID' => 336,
+      'Name' => 'Scarab of Protection',
+      'Subtype' => 37,
+      'Config' => '(Item=Silver necklace: Mod=MRRes&x=10: Mod=NecroRes&x=20&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    337 => 
+    array (
+      'ID' => 337,
+      'Name' => 'Golembane Scarab',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=FavoredEnemy&y=Golems:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    338 => 
+    array (
+      'ID' => 338,
+      'Name' => 'Shrouds of Disintegration',
+      'Subtype' => 14,
+      'Config' => '(Item=Blanket: Mod=UseSpellLtd&x=1&y=Disintegrate:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    339 => 
+    array (
+      'ID' => 339,
+      'Name' => 'Slippers of Spider Climbing',
+      'Subtype' => 17,
+      'Config' => '(Item=Shoes: Mod=ActionBasicComp&x=20&y=Climb:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    340 => 
+    array (
+      'ID' => 340,
+      'Name' => 'Oil of Repairing',
+      'Subtype' => 39,
+      'Config' => '(Item=Potion: Mod=UseSpellLtd&x=3&y=Repair Object:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    341 => 
+    array (
+      'ID' => 341,
+      'Name' => 'Stone of Alarm',
+      'Subtype' => 21,
+      'Config' => '(Item=Dice (one six-sided): Mod=UseSpellLtd&x=1&y=Arcane Ward: Mod=PoolRegen&x=1&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    342 => 
+    array (
+      'ID' => 342,
+      'Name' => 'Stone of Controlling Earth Elementals',
+      'Subtype' => 38,
+      'Config' => '(Item=Crystal, large: Mod=UseSpellLtd&x=11&y=Summon Elemental: Mod=PoolRegen&x=11&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    343 => 
+    array (
+      'ID' => 343,
+      'Name' => 'Stone of Good Luck',
+      'Subtype' => 38,
+      'Config' => '(Item=Crystal, average: Mod=NDDLuck&x=1:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    344 => 
+    array (
+      'ID' => 344,
+      'Name' => 'Strand of Prayer Beads, Lesser',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=UseSpell&x=5&y=Heal Wounds: Mod=UseSpell&x=5&y=Cure Affliction&mul=0.5: Mod=UseSpell&x=3&y=Divine Favor&mul=0.5: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    345 => 
+    array (
+      'ID' => 345,
+      'Name' => 'Strand of Prayer Beads',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=UseSpell&x=9&y=Heal Wounds: Mod=UseSpell&x=9&y=Cure Affliction&mul=0.5: Mod=UseSpell&x=7&y=Holy Smite&mul=0.5: Mod=PoolRegen&x=25&mul=0.5: Mod=SpellcastEnh&x=2&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    346 => 
+    array (
+      'ID' => 346,
+      'Name' => 'Strand of Prayer Beads, Greater',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=UseSpell&x=15&y=Heal Wounds: Mod=UseSpell&x=11&y=Cure Affliction&mul=0.5: Mod=UseSpell&x=12&y=Summon Outsider&mul=0.5: Mod=UseSpell&x=13&y=Air Walk&mul=0.5: Mod=PoolRegen&x=50&mul=0.5: Mod=SpellcastEnh&x=2&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    347 => 
+    array (
+      'ID' => 347,
+      'Name' => 'Sustaining Spoon',
+      'Subtype' => 20,
+      'Config' => '(Item=Silver spoon: Mod=UseSpell&x=5&y=Create Sustenance: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    348 => 
+    array (
+      'ID' => 348,
+      'Name' => 'Vest of Escape',
+      'Subtype' => 14,
+      'Config' => '(Item=Tunic: Mod=ActionBasicComp&x=6&y=Escape Hold: Mod=ActionBasicComp&x=4&y=Open Lock&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    349 => 
+    array (
+      'ID' => 349,
+      'Name' => 'Druid\'s Vestment',
+      'Subtype' => 14,
+      'Config' => '(Item=Tunic: Mod=SkillAdvEnh&x=2&y=Wild Shape:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    350 => 
+    array (
+      'ID' => 350,
+      'Name' => 'Wind Fan',
+      'Subtype' => 21,
+      'Config' => '(Item=Paper (1 sheet): Mod=UseSpell&x=3&y=Control Air: Mod=PoolRegen&x=3&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    351 => 
+    array (
+      'ID' => 351,
+      'Name' => 'Wings of Flying',
+      'Subtype' => 19,
+      'Config' => '(Item=Cloak: Mod=FlyFast:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    352 => 
+    array (
+      'ID' => 352,
+      'Name' => 'Amulet of Catapsi',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold necklace: Mod=UseSpellLtd&x=11&y=Antimagic: Mod=PoolRegen&x=11&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    353 => 
+    array (
+      'ID' => 353,
+      'Name' => 'Boots of Landing',
+      'Subtype' => 17,
+      'Config' => '(Item=Boots: Mod=ActionBasicComp&x=10&y=Land Softly:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    354 => 
+    array (
+      'ID' => 354,
+      'Name' => 'Mask of Detection',
+      'Subtype' => 66,
+      'Config' => '(Item=Mask, half face: Mod=ActionBasicComp&x=10&y=Search:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    355 => 
+    array (
+      'ID' => 355,
+      'Name' => 'Mask of Discernment',
+      'Subtype' => 66,
+      'Config' => '(Item=Mask, half face: Mod=ActionBasicComp&x=10&y=Sense Motive:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    356 => 
+    array (
+      'ID' => 356,
+      'Name' => 'Mask of Dread',
+      'Subtype' => 66,
+      'Config' => '(Item=Mask, half face: Mod=ActionBasicComp&x=10&y=Intimidate:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    357 => 
+    array (
+      'ID' => 357,
+      'Name' => 'Mask of Eyes',
+      'Subtype' => 66,
+      'Config' => '(Item=Mask, half face: Mod=ActionBasicComp&x=9&y=Search: Mod=ActionBasicComp&x=9&y=Spot&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    358 => 
+    array (
+      'ID' => 358,
+      'Name' => 'Mask of Knowledge',
+      'Subtype' => 66,
+      'Config' => '(Item=Mask, half face: Mod=ActionBasicComp&x=5&y=Know Answer:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    359 => 
+    array (
+      'ID' => 359,
+      'Name' => 'Mask of Mind Armor',
+      'Subtype' => 66,
+      'Config' => '(Item=Mask, half face: Mod=MentalRes&x=4:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    360 => 
+    array (
+      'ID' => 360,
+      'Name' => 'Mask of Spellcraft',
+      'Subtype' => 66,
+      'Config' => '(Item=Mask, half face: Mod=ActionBasicComp&x=10&y=Identify Effect:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    361 => 
+    array (
+      'ID' => 361,
+      'Name' => 'Eyes of Expanded Vision',
+      'Subtype' => 66,
+      'Config' => '(Item=Eyeglasses: Mod=AllAroundVis:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    362 => 
+    array (
+      'ID' => 362,
+      'Name' => 'Gloves of Object Reading',
+      'Subtype' => 16,
+      'Config' => '(Item=Gloves: Mod=UseSpell&x=5&y=History Reading: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    363 => 
+    array (
+      'ID' => 363,
+      'Name' => 'Gloves of Titan\'s Grip',
+      'Subtype' => 16,
+      'Config' => '(Item=Gloves: Mod=SkillAdvEnh&x=5&y=Weapons - Brawling:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    364 => 
+    array (
+      'ID' => 364,
+      'Name' => 'Gloves of the Claw',
+      'Subtype' => 16,
+      'Config' => '(Item=Gloves: Mod=UseSpellLtd&x=4&y=Attack of the Beast: Mod=PoolRegen&x=20&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    365 => 
+    array (
+      'ID' => 365,
+      'Name' => 'Skin of the Defender',
+      'Subtype' => 14,
+      'Config' => '(Item=Clothing: Mod=NatArmEnh&x=4:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    366 => 
+    array (
+      'ID' => 366,
+      'Name' => 'Skin of Fiery Response',
+      'Subtype' => 14,
+      'Config' => '(Item=Clothing: Mod=UseSpellLtd&x=5&y=Energy Resistance: Mod=PoolRegen&x=5&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    367 => 
+    array (
+      'ID' => 367,
+      'Name' => 'Skin of the Hero',
+      'Subtype' => 14,
+      'Config' => '(Item=Clothing: Mod=DeCDefl&x=3: Mod=NDDRes&x=3&mul=0.5: Mod=HPEnh&x=20&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    368 => 
+    array (
+      'ID' => 368,
+      'Name' => 'Skin of Iron',
+      'Subtype' => 14,
+      'Config' => '(Item=Clothing: Mod=UseSpellLtd&x=11&y=Toughen Skin: Mod=PoolRegen&x=22&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    369 => 
+    array (
+      'ID' => 369,
+      'Name' => 'Skin of Nimbleness',
+      'Subtype' => 14,
+      'Config' => '(Item=Clothing: Mod=SkillBasicEnh&x=10&y=Acrobatics:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    370 => 
+    array (
+      'ID' => 370,
+      'Name' => 'Skin of Proteus',
+      'Subtype' => 14,
+      'Config' => '(Item=Clothing: Mod=UseSpellLtd&x=7&y=Shapechange: Mod=PoolRegen&x=35&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    371 => 
+    array (
+      'ID' => 371,
+      'Name' => 'Skin of the Psion',
+      'Subtype' => 14,
+      'Config' => '(Item=Clothing: Mod=MRRes&x=10: Mod=PPEnh&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    372 => 
+    array (
+      'ID' => 372,
+      'Name' => 'Skin of the Troll',
+      'Subtype' => 14,
+      'Config' => '(Item=Clothing: Mod=RegenHP&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    373 => 
+    array (
+      'ID' => 373,
+      'Name' => 'Mask of Concealment',
+      'Subtype' => 66,
+      'Config' => '(Item=Mask, half face: Mod=DetectRes&x=10:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    374 => 
+    array (
+      'ID' => 374,
+      'Name' => 'Mask of Concentration',
+      'Subtype' => 66,
+      'Config' => '(Item=Mask, half face: Mod=SkillBasicEnh&x=10&y=Composure:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    375 => 
+    array (
+      'ID' => 375,
+      'Name' => 'Eyes of Domination',
+      'Subtype' => 66,
+      'Config' => '(Item=Eyeglasses: Mod=UseSpell&x=13&y=Dominate Creature: Mod=PoolRegen&x=13&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    376 => 
+    array (
+      'ID' => 376,
+      'Name' => 'Eyes of Gathering',
+      'Subtype' => 66,
+      'Config' => '(Item=Eyeglasses: Mod=ActionBasicComp&x=10&y=Gather Information:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    377 => 
+    array (
+      'ID' => 377,
+      'Name' => 'Eyes of Penetration',
+      'Subtype' => 66,
+      'Config' => '(Item=Eyeglasses: Mod=SpellcastEnh&x=2:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    378 => 
+    array (
+      'ID' => 378,
+      'Name' => 'Eyes of Sensing',
+      'Subtype' => 66,
+      'Config' => '(Item=Eyeglasses: Mod=UseSpellLtd&x=9&y=Scrying: Mod=PoolRegen&x=27&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    379 => 
+    array (
+      'ID' => 379,
+      'Name' => 'Torc of Free Will',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold chain: Mod=MentalRes&x=8:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    380 => 
+    array (
+      'ID' => 380,
+      'Name' => 'Torc of Power',
+      'Subtype' => 37,
+      'Config' => '(Item=Gold chain: Mod=PoolAttun&x=40:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    381 => 
+    array (
+      'ID' => 381,
+      'Name' => 'Eyes of Power Leech',
+      'Subtype' => 66,
+      'Config' => '(Item=Eyeglasses: Mod=UseSpellLtd&x=10&y=Empathic Transfer: Mod=PoolRegen&x=10&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    382 => 
+    array (
+      'ID' => 382,
+      'Name' => 'Mirror of Mind Switch',
+      'Subtype' => 21,
+      'Config' => '(Item=Mirror, small steel: Mod=UseSpellLtd&x=13&y=Transfer Soul: Mod=PoolRegen&x=13&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    383 => 
+    array (
+      'ID' => 383,
+      'Name' => 'Mirror of Suggestion',
+      'Subtype' => 21,
+      'Config' => '(Item=Mirror, small steel: Mod=UseSpellLtd&x=7&y=Charm Creature: Mod=PoolRegen&x=14&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    384 => 
+    array (
+      'ID' => 384,
+      'Name' => 'Mirror of Time Hop',
+      'Subtype' => 21,
+      'Config' => '(Item=Mirror, small steel: Mod=UseSpellLtd&x=9&y=Teleport: Mod=PoolRegen&x=18&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    385 => 
+    array (
+      'ID' => 385,
+      'Name' => 'Magical Restraints',
+      'Subtype' => 21,
+      'Config' => '(Item=Manacles, masterwork: Mod=SpellDampen&x=10:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    386 => 
+    array (
+      'ID' => 386,
+      'Name' => 'Magical Restraints, Lesser',
+      'Subtype' => 21,
+      'Config' => '(Item=Manacles, masterwork: Mod=SpellDampen&x=5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    387 => 
+    array (
+      'ID' => 387,
+      'Name' => 'Magical Restraints, Greater',
+      'Subtype' => 21,
+      'Config' => '(Item=Manacles, masterwork: Mod=SpellDampen&x=15:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    388 => 
+    array (
+      'ID' => 388,
+      'Name' => 'Magical Restraints, Superior',
+      'Subtype' => 21,
+      'Config' => '(Item=Manacles, masterwork: Mod=SpellDampen&x=20:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    389 => 
+    array (
+      'ID' => 389,
+      'Name' => 'Belt of Physical Perfection',
+      'Subtype' => 18,
+      'Config' => '(Item=Belt: Mod=StrEnh&x=6: Mod=ConEnh&x=6&mul=0.5: Mod=DexEnh&x=6&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+    390 => 
+    array (
+      'ID' => 390,
+      'Name' => 'Headband of Mental Superiority',
+      'Subtype' => 15,
+      'Config' => '(Item=Headband: Mod=IntEnh&x=6: Mod=WisEnh&x=6&mul=0.5: Mod=ChaEnh&x=6&mul=0.5:)',
+      'Description' => NULL,
+      'Frequency' => 4,
+    ),
+  ),
   'wealthclasses' => 
   array (
     -2 => 
@@ -68020,241 +72471,241 @@ return array (
   ),
   'wealthperlevel' => 
   array (
-    0 => 
+    1 => 
     array (
       'Level' => 1,
       'PCWealth' => 125,
       'NPCWealth' => 900,
     ),
-    1 => 
+    2 => 
     array (
       'Level' => 2,
       'PCWealth' => 900,
       'NPCWealth' => 2000,
     ),
-    2 => 
+    3 => 
     array (
       'Level' => 3,
       'PCWealth' => 2700,
       'NPCWealth' => 2500,
     ),
-    3 => 
+    4 => 
     array (
       'Level' => 4,
       'PCWealth' => 5400,
       'NPCWealth' => 3300,
     ),
-    4 => 
+    5 => 
     array (
       'Level' => 5,
       'PCWealth' => 9000,
       'NPCWealth' => 4300,
     ),
-    5 => 
+    6 => 
     array (
       'Level' => 6,
       'PCWealth' => 13000,
       'NPCWealth' => 5600,
     ),
-    6 => 
+    7 => 
     array (
       'Level' => 7,
       'PCWealth' => 19000,
       'NPCWealth' => 7200,
     ),
-    7 => 
+    8 => 
     array (
       'Level' => 8,
       'PCWealth' => 27000,
       'NPCWealth' => 9400,
     ),
-    8 => 
+    9 => 
     array (
       'Level' => 9,
       'PCWealth' => 36000,
       'NPCWealth' => 12000,
     ),
-    9 => 
+    10 => 
     array (
       'Level' => 10,
       'PCWealth' => 49000,
       'NPCWealth' => 16000,
     ),
-    10 => 
+    11 => 
     array (
       'Level' => 11,
       'PCWealth' => 66000,
       'NPCWealth' => 21000,
     ),
-    11 => 
+    12 => 
     array (
       'Level' => 12,
       'PCWealth' => 88000,
       'NPCWealth' => 27000,
     ),
-    12 => 
+    13 => 
     array (
       'Level' => 13,
       'PCWealth' => 110000,
       'NPCWealth' => 35000,
     ),
-    13 => 
+    14 => 
     array (
       'Level' => 14,
       'PCWealth' => 150000,
       'NPCWealth' => 45000,
     ),
-    14 => 
+    15 => 
     array (
       'Level' => 15,
       'PCWealth' => 200000,
       'NPCWealth' => 59000,
     ),
-    15 => 
+    16 => 
     array (
       'Level' => 16,
       'PCWealth' => 260000,
       'NPCWealth' => 77000,
     ),
-    16 => 
+    17 => 
     array (
       'Level' => 17,
       'PCWealth' => 340000,
       'NPCWealth' => 100000,
     ),
-    17 => 
+    18 => 
     array (
       'Level' => 18,
       'PCWealth' => 440000,
       'NPCWealth' => 130000,
     ),
-    18 => 
+    19 => 
     array (
       'Level' => 19,
       'PCWealth' => 580000,
       'NPCWealth' => 170000,
     ),
-    19 => 
+    20 => 
     array (
       'Level' => 20,
       'PCWealth' => 760000,
       'NPCWealth' => 220000,
     ),
-    20 => 
+    21 => 
     array (
       'Level' => 21,
       'PCWealth' => 975000,
       'NPCWealth' => 240000,
     ),
-    21 => 
+    22 => 
     array (
       'Level' => 22,
       'PCWealth' => 1200000,
       'NPCWealth' => 265000,
     ),
-    22 => 
+    23 => 
     array (
       'Level' => 23,
       'PCWealth' => 1500000,
       'NPCWealth' => 290000,
     ),
-    23 => 
+    24 => 
     array (
       'Level' => 24,
       'PCWealth' => 1800000,
       'NPCWealth' => 320000,
     ),
-    24 => 
+    25 => 
     array (
       'Level' => 25,
       'PCWealth' => 2100000,
       'NPCWealth' => 350000,
     ),
-    25 => 
+    26 => 
     array (
       'Level' => 26,
       'PCWealth' => 2500000,
       'NPCWealth' => 390000,
     ),
-    26 => 
+    27 => 
     array (
       'Level' => 27,
       'PCWealth' => 2900000,
       'NPCWealth' => 430000,
     ),
-    27 => 
+    28 => 
     array (
       'Level' => 28,
       'PCWealth' => 3300000,
       'NPCWealth' => 470000,
     ),
-    28 => 
+    29 => 
     array (
       'Level' => 29,
       'PCWealth' => 3800000,
       'NPCWealth' => 520000,
     ),
-    29 => 
+    30 => 
     array (
       'Level' => 30,
       'PCWealth' => 4300000,
       'NPCWealth' => 570000,
     ),
-    30 => 
+    31 => 
     array (
       'Level' => 31,
       'PCWealth' => 4900000,
       'NPCWealth' => 620000,
     ),
-    31 => 
+    32 => 
     array (
       'Level' => 32,
       'PCWealth' => 5600000,
       'NPCWealth' => 670000,
     ),
-    32 => 
+    33 => 
     array (
       'Level' => 33,
       'PCWealth' => 6300000,
       'NPCWealth' => 730000,
     ),
-    33 => 
+    34 => 
     array (
       'Level' => 34,
       'PCWealth' => 7000000,
       'NPCWealth' => 790000,
     ),
-    34 => 
+    35 => 
     array (
       'Level' => 35,
       'PCWealth' => 7900000,
       'NPCWealth' => 850000,
     ),
-    35 => 
+    36 => 
     array (
       'Level' => 36,
       'PCWealth' => 8800000,
       'NPCWealth' => 910000,
     ),
-    36 => 
+    37 => 
     array (
       'Level' => 37,
       'PCWealth' => 9900000,
       'NPCWealth' => 980000,
     ),
-    37 => 
+    38 => 
     array (
       'Level' => 38,
       'PCWealth' => 11000000,
       'NPCWealth' => 1050000,
     ),
-    38 => 
+    39 => 
     array (
       'Level' => 39,
       'PCWealth' => 12300000,
       'NPCWealth' => 1130000,
     ),
-    39 => 
+    40 => 
     array (
       'Level' => 40,
       'PCWealth' => 13600000,

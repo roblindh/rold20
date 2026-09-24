@@ -1,7 +1,7 @@
 encountercombos:
   -
     EL: 1
-    Creatures1: 3
+    Creatures1: '3'
     Creatures2: '2 x 1'
     Creatures3: '3 x 1/2'
     Creatures4: '4 x 1/3'
@@ -10,7 +10,7 @@ encountercombos:
     Mixed: '2 + 1/2'
   -
     EL: 2
-    Creatures1: 4
+    Creatures1: '4'
     Creatures2: '2 x 2'
     Creatures3: '3 x 1'
     Creatures4: '4 x 1/2'
@@ -19,7 +19,7 @@ encountercombos:
     Mixed: '3 + 1'
   -
     EL: 3
-    Creatures1: 5
+    Creatures1: '5'
     Creatures2: '2 x 3'
     Creatures3: '3 x 2'
     Creatures4: '4 x 1'
@@ -28,7 +28,7 @@ encountercombos:
     Mixed: '4 + 2'
   -
     EL: 4
-    Creatures1: 6
+    Creatures1: '6'
     Creatures2: '2 x 4'
     Creatures3: '3 x 3'
     Creatures4: '4 x 2'
@@ -37,7 +37,7 @@ encountercombos:
     Mixed: '5 + 3'
   -
     EL: 5
-    Creatures1: 7
+    Creatures1: '7'
     Creatures2: '2 x 5'
     Creatures3: '3 x 4'
     Creatures4: '4 x 3'
@@ -46,7 +46,7 @@ encountercombos:
     Mixed: '6 + 4'
   -
     EL: 6
-    Creatures1: 8
+    Creatures1: '8'
     Creatures2: '2 x 6'
     Creatures3: '3 x 5'
     Creatures4: '4 x 4'
@@ -55,7 +55,7 @@ encountercombos:
     Mixed: '7 + 5'
   -
     EL: 7
-    Creatures1: 9
+    Creatures1: '9'
     Creatures2: '2 x 7'
     Creatures3: '3 x 6'
     Creatures4: '4 x 5'
@@ -64,7 +64,7 @@ encountercombos:
     Mixed: '8 + 6'
   -
     EL: 8
-    Creatures1: 10
+    Creatures1: '10'
     Creatures2: '2 x 8'
     Creatures3: '3 x 7'
     Creatures4: '4 x 6'
@@ -73,7 +73,7 @@ encountercombos:
     Mixed: '9 + 7'
   -
     EL: 9
-    Creatures1: 11
+    Creatures1: '11'
     Creatures2: '2 x 9'
     Creatures3: '3 x 8'
     Creatures4: '4 x 7'
@@ -82,7 +82,7 @@ encountercombos:
     Mixed: '10 + 8'
   -
     EL: 10
-    Creatures1: 12
+    Creatures1: '12'
     Creatures2: '2 x 10'
     Creatures3: '3 x 9'
     Creatures4: '4 x 8'
@@ -91,7 +91,7 @@ encountercombos:
     Mixed: '11 + 9'
   -
     EL: 11
-    Creatures1: 13
+    Creatures1: '13'
     Creatures2: '2 x 11'
     Creatures3: '3 x 10'
     Creatures4: '4 x 9'
@@ -100,7 +100,7 @@ encountercombos:
     Mixed: '12 + 10'
   -
     EL: 12
-    Creatures1: 14
+    Creatures1: '14'
     Creatures2: '2 x 12'
     Creatures3: '3 x 11'
     Creatures4: '4 x 10'
@@ -109,7 +109,7 @@ encountercombos:
     Mixed: '13 + 11'
   -
     EL: 13
-    Creatures1: 15
+    Creatures1: '15'
     Creatures2: '2 x 13'
     Creatures3: '3 x 12'
     Creatures4: '4 x 11'
@@ -118,7 +118,7 @@ encountercombos:
     Mixed: '14 + 12'
   -
     EL: 14
-    Creatures1: 16
+    Creatures1: '16'
     Creatures2: '2 x 14'
     Creatures3: '3 x 13'
     Creatures4: '4 x 12'
@@ -127,7 +127,7 @@ encountercombos:
     Mixed: '15 + 13'
   -
     EL: 15
-    Creatures1: 17
+    Creatures1: '17'
     Creatures2: '2 x 15'
     Creatures3: '3 x 14'
     Creatures4: '4 x 13'
@@ -136,7 +136,7 @@ encountercombos:
     Mixed: '16 + 14'
   -
     EL: 16
-    Creatures1: 18
+    Creatures1: '18'
     Creatures2: '2 x 16'
     Creatures3: '3 x 15'
     Creatures4: '4 x 14'
@@ -145,7 +145,7 @@ encountercombos:
     Mixed: '17 + 15'
   -
     EL: 17
-    Creatures1: 19
+    Creatures1: '19'
     Creatures2: '2 x 17'
     Creatures3: '3 x 16'
     Creatures4: '4 x 15'
@@ -154,7 +154,7 @@ encountercombos:
     Mixed: '18 + 16'
   -
     EL: 18
-    Creatures1: 20
+    Creatures1: '20'
     Creatures2: '2 x 18'
     Creatures3: '3 x 17'
     Creatures4: '4 x 16'
@@ -163,7 +163,7 @@ encountercombos:
     Mixed: '19 + 17'
   -
     EL: 19
-    Creatures1: 21
+    Creatures1: '21'
     Creatures2: '2 x 19'
     Creatures3: '3 x 18'
     Creatures4: '4 x 17'
@@ -172,7 +172,7 @@ encountercombos:
     Mixed: '20 + 18'
   -
     EL: 20
-    Creatures1: 22
+    Creatures1: '22'
     Creatures2: '2 x 20'
     Creatures3: '3 x 19'
     Creatures4: '4 x 18'
@@ -181,7 +181,7 @@ encountercombos:
     Mixed: '21 + 19'
   -
     EL: 21
-    Creatures1: 23
+    Creatures1: '23'
     Creatures2: '2 x 21'
     Creatures3: '3 x 20'
     Creatures4: '4 x 19'
@@ -190,7 +190,7 @@ encountercombos:
     Mixed: '22 + 20'
   -
     EL: 22
-    Creatures1: 24
+    Creatures1: '24'
     Creatures2: '2 x 22'
     Creatures3: '3 x 21'
     Creatures4: '4 x 20'
@@ -199,7 +199,7 @@ encountercombos:
     Mixed: '23 + 21'
   -
     EL: 23
-    Creatures1: 25
+    Creatures1: '25'
     Creatures2: '2 x 23'
     Creatures3: '3 x 22'
     Creatures4: '4 x 21'
@@ -208,7 +208,7 @@ encountercombos:
     Mixed: '24 + 22'
   -
     EL: 24
-    Creatures1: 26
+    Creatures1: '26'
     Creatures2: '2 x 24'
     Creatures3: '3 x 23'
     Creatures4: '4 x 22'
@@ -217,7 +217,7 @@ encountercombos:
     Mixed: '25 + 23'
   -
     EL: 25
-    Creatures1: 27
+    Creatures1: '27'
     Creatures2: '2 x 25'
     Creatures3: '3 x 24'
     Creatures4: '4 x 23'
@@ -226,7 +226,7 @@ encountercombos:
     Mixed: '26 + 24'
   -
     EL: 26
-    Creatures1: 28
+    Creatures1: '28'
     Creatures2: '2 x 26'
     Creatures3: '3 x 25'
     Creatures4: '4 x 24'
@@ -235,7 +235,7 @@ encountercombos:
     Mixed: '27 + 25'
   -
     EL: 27
-    Creatures1: 29
+    Creatures1: '29'
     Creatures2: '2 x 27'
     Creatures3: '3 x 26'
     Creatures4: '4 x 25'
@@ -244,7 +244,7 @@ encountercombos:
     Mixed: '28 + 26'
   -
     EL: 28
-    Creatures1: 30
+    Creatures1: '30'
     Creatures2: '2 x 28'
     Creatures3: '3 x 27'
     Creatures4: '4 x 26'
@@ -253,7 +253,7 @@ encountercombos:
     Mixed: '29 + 27'
   -
     EL: 29
-    Creatures1: 31
+    Creatures1: '31'
     Creatures2: '2 x 29'
     Creatures3: '3 x 28'
     Creatures4: '4 x 27'
@@ -262,7 +262,7 @@ encountercombos:
     Mixed: '30 + 28'
   -
     EL: 30
-    Creatures1: 32
+    Creatures1: '32'
     Creatures2: '2 x 30'
     Creatures3: '3 x 29'
     Creatures4: '4 x 28'
@@ -271,7 +271,7 @@ encountercombos:
     Mixed: '31 + 29'
   -
     EL: 31
-    Creatures1: 33
+    Creatures1: '33'
     Creatures2: '2 x 31'
     Creatures3: '3 x 30'
     Creatures4: '4 x 29'
@@ -280,7 +280,7 @@ encountercombos:
     Mixed: '32 + 30'
   -
     EL: 32
-    Creatures1: 34
+    Creatures1: '34'
     Creatures2: '2 x 32'
     Creatures3: '3 x 31'
     Creatures4: '4 x 30'
@@ -289,7 +289,7 @@ encountercombos:
     Mixed: '33 + 31'
   -
     EL: 33
-    Creatures1: 35
+    Creatures1: '35'
     Creatures2: '2 x 33'
     Creatures3: '3 x 32'
     Creatures4: '4 x 31'
@@ -298,7 +298,7 @@ encountercombos:
     Mixed: '34 + 32'
   -
     EL: 34
-    Creatures1: 36
+    Creatures1: '36'
     Creatures2: '2 x 34'
     Creatures3: '3 x 33'
     Creatures4: '4 x 32'
@@ -307,7 +307,7 @@ encountercombos:
     Mixed: '35 + 33'
   -
     EL: 35
-    Creatures1: 37
+    Creatures1: '37'
     Creatures2: '2 x 35'
     Creatures3: '3 x 34'
     Creatures4: '4 x 33'
@@ -316,7 +316,7 @@ encountercombos:
     Mixed: '36 + 34'
   -
     EL: 36
-    Creatures1: 38
+    Creatures1: '38'
     Creatures2: '2 x 36'
     Creatures3: '3 x 35'
     Creatures4: '4 x 34'
@@ -325,7 +325,7 @@ encountercombos:
     Mixed: '37 + 35'
   -
     EL: 37
-    Creatures1: 39
+    Creatures1: '39'
     Creatures2: '2 x 37'
     Creatures3: '3 x 36'
     Creatures4: '4 x 35'
@@ -334,7 +334,7 @@ encountercombos:
     Mixed: '38 + 36'
   -
     EL: 38
-    Creatures1: 40
+    Creatures1: '40'
     Creatures2: '2 x 38'
     Creatures3: '3 x 37'
     Creatures4: '4 x 36'
@@ -343,7 +343,7 @@ encountercombos:
     Mixed: '39 + 37'
   -
     EL: 39
-    Creatures1: 41
+    Creatures1: '41'
     Creatures2: '2 x 39'
     Creatures3: '3 x 38'
     Creatures4: '4 x 37'
@@ -352,7 +352,7 @@ encountercombos:
     Mixed: '40 + 38'
   -
     EL: 40
-    Creatures1: 42
+    Creatures1: '42'
     Creatures2: '2 x 40'
     Creatures3: '3 x 39'
     Creatures4: '4 x 38'
@@ -366,8 +366,8 @@ maneuverability:
     Turn: '45&deg;/2'
     TurnInPlace: '-'
     Reverse: 'N'
-    AccelDecel: 6
-    AttDecMod: -4
+    AccelDecel: '6'
+    AttDecMod: '-4'
     Hover: 'N (1/2 spd)'
     Ascent: '45&deg;, 1/2 spd'
     Descent: '45&deg;, x2 spd'
@@ -378,7 +378,7 @@ maneuverability:
     Turn: '45&deg;/sq'
     TurnInPlace: '-'
     Reverse: 'N'
-    AccelDecel: 12
+    AccelDecel: '12'
     AttDecMod: '-'
     Hover: 'N (1/2 spd)'
     Ascent: '45&deg;, 1/2 spd'
@@ -390,7 +390,7 @@ maneuverability:
     Turn: '45&deg;/sq'
     TurnInPlace: '45&deg;/MP'
     Reverse: 'N'
-    AccelDecel: 24
+    AccelDecel: '24'
     AttDecMod: '-'
     Hover: 'N (1/2 spd)'
     Ascent: '60&deg;, 1/2 spd'
@@ -459,48 +459,48 @@ treasuremagic:
   -
     ID: 6
     MinorRange: '-'
-    MediumRange: 46
-    MajorRange: 47
+    MediumRange: '46'
+    MajorRange: '47'
     Category: 'Vests and shirts'
     Details: 'Random size; 1% chance - intelligent'
   -
     ID: 7
-    MinorRange: 79
+    MinorRange: '79'
     MediumRange: 47-48
     MajorRange: 48-49
     Category: 'Helmets and hats'
     Details: 'Random size; 1% chance - intelligent'
   -
     ID: 8
-    MinorRange: 80
-    MediumRange: 49
-    MajorRange: 50
+    MinorRange: '80'
+    MediumRange: '49'
+    MajorRange: '50'
     Category: 'Goggles and lenses'
     Details: 'Random size'
   -
     ID: 9
-    MinorRange: 81
+    MinorRange: '81'
     MediumRange: 50-51
     MajorRange: 51-52
     Category: 'Gloves and gauntlets'
     Details: 'Random size; 1% chance - intelligent'
   -
     ID: 10
-    MinorRange: 82
+    MinorRange: '82'
     MediumRange: 52-53
     MajorRange: 53-54
     Category: 'Boots and shoes'
     Details: 'Random size; 1% chance - intelligent'
   -
     ID: 11
-    MinorRange: 83
+    MinorRange: '83'
     MediumRange: 54-56
     MajorRange: 55-57
     Category: 'Cloaks and mantles'
     Details: 'Random size; 1% chance - intelligent'
   -
     ID: 12
-    MinorRange: 84
+    MinorRange: '84'
     MediumRange: 57-58
     MajorRange: 58-59
     Category: 'Girdles and belts'
@@ -542,14 +542,14 @@ treasuremagic:
     Details: 'Random size; 1% chance - intelligent'
   -
     ID: 18
-    MinorRange: 97
+    MinorRange: '97'
     MediumRange: 92-94
     MajorRange: 95-96
     Category: 'Amulets and necklaces'
     Details: 'Random size; 1% chance - intelligent'
   -
     ID: 19
-    MinorRange: 98
+    MinorRange: '98'
     MediumRange: 95-97
     MajorRange: 97-98
     Category: 'Bracers and bracelets'

@@ -44,357 +44,357 @@ itemsubtypes:
     ID: 1
     Type: 1
     Name: Cloth
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 2
     Type: 1
     Name: Spices
-    PLValueMul: 50
+    PLValueMul: 50.0
   -
     ID: 3
     Type: 1
     Name: Metals
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 4
     Type: 1
     Name: Foodstuff
-    PLValueMul: 50
+    PLValueMul: 50.0
   -
     ID: 5
     Type: 1
     Name: Livestock
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 6
     Type: 2
     Name: 'Melee Weapons'
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 7
     Type: 2
     Name: 'Projectile Weapons'
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 8
     Type: 2
     Name: Ammunition
-    PLValueMul: 20
+    PLValueMul: 20.0
   -
     ID: 9
     Type: 2
     Name: Shields
-    PLValueMul: 500
+    PLValueMul: 500.0
   -
     ID: 10
     Type: 2
     Name: 'Siege Weapons'
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 11
     Type: 3
     Name: 'Light Armor'
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 12
     Type: 3
     Name: 'Medium Armor'
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 13
     Type: 3
     Name: 'Heavy Armor'
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 14
     Type: 3
     Name: Clothing
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 15
     Type: 3
     Name: Headwear
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 16
     Type: 3
     Name: Handwear
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 17
     Type: 3
     Name: Footwear
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 18
     Type: 3
     Name: 'Belts & Girdles'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 19
     Type: 3
     Name: Cloaks
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 20
     Type: 5
     Name: Camping
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 21
     Type: 5
     Name: 'Crafting & Tools'
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 22
     Type: 5
     Name: Alchemy
-    PLValueMul: 50
+    PLValueMul: 50.0
   -
     ID: 23
     Type: 5
     Name: 'Light Sources'
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 24
     Type: 5
     Name: Containers
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 25
     Type: 6
     Name: Mounts
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 26
     Type: 6
     Name: Wagons
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 27
     Type: 6
     Name: Ships
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 28
     Type: 6
     Name: Gear
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 29
     Type: 8
     Name: 'Food & Drink'
-    PLValueMul: 50
+    PLValueMul: 50.0
   -
     ID: 30
     Type: 8
     Name: Lodging
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 32
     Type: 8
     Name: Hirelings
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 33
     Type: 8
     Name: Transportation
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 34
     Type: 8
     Name: 'Tolls & Taxes'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 35
     Type: 9
     Name: Rings
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 36
     Type: 9
     Name: Bracelets
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 37
     Type: 9
     Name: Necklaces
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 38
     Type: 9
     Name: 'Art Objects'
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 39
     Type: 10
     Name: 'Potions & Oils'
-    PLValueMul: 50
+    PLValueMul: 50.0
   -
     ID: 40
     Type: 10
     Name: 'Magic Weapons'
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 41
     Type: 10
     Name: 'Magic Armor'
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 42
     Type: 10
     Name: 'Magic Headwear'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 43
     Type: 10
     Name: 'Magic Handwear'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 44
     Type: 10
     Name: 'Magic Footwear'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 45
     Type: 10
     Name: 'Magic Belts'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 46
     Type: 10
     Name: 'Magic Cloaks'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 47
     Type: 10
     Name: 'Magic Eyewear'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 48
     Type: 10
     Name: 'Magic Rods'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 49
     Type: 10
     Name: 'Magic Staves'
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 50
     Type: 10
     Name: 'Magic Rings'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 51
     Type: 10
     Name: 'Magic Necklaces'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 52
     Type: 10
     Name: 'Magic Bracers'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 53
     Type: 10
     Name: 'Magic Books'
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 54
     Type: 10
     Name: 'Magic Instruments'
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 55
     Type: 10
     Name: 'Magic Structures'
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 56
     Type: 10
     Name: 'Wondrous Items'
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 57
     Type: 7
     Name: Buildings
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 58
     Type: 7
     Name: 'Building Features'
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 59
     Type: 4
     Name: Wands
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 60
     Type: 4
     Name: 'Holy Symbols'
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 61
     Type: 4
     Name: Dorjes
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 62
     Type: 4
     Name: 'Arcane Staves'
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 63
     Type: 4
     Name: 'Divine Rods'
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 64
     Type: 4
     Name: Psicrowns
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 65
     Type: 4
     Name: Implements
-    PLValueMul: 800
+    PLValueMul: 800.0
   -
     ID: 66
     Type: 3
     Name: Eyewear
-    PLValueMul: 1000
+    PLValueMul: 1000.0
   -
     ID: 67
     Type: 10
     Name: 'Psionic Tattoos'
-    PLValueMul: 50
+    PLValueMul: 50.0
   -
     ID: 68
     Type: 10
     Name: Scrolls
-    PLValueMul: 20
+    PLValueMul: 20.0
   -
     ID: 69
     Type: 10
     Name: 'Power Stones'
-    PLValueMul: 20
+    PLValueMul: 20.0
   -
     ID: 70
     Type: 10
     Name: 'Magic Constructs'
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 71
     Type: 6
     Name: Aircraft
-    PLValueMul: 2000
+    PLValueMul: 2000.0
   -
     ID: 72
     Type: 10
     Name: 'Other Consumables'
-    PLValueMul: 50
+    PLValueMul: 50.0
 items:
   -
     ID: 1
@@ -416,8 +416,8 @@ items:
     Name: Cinnamon
     Subtype: 2
     Descriptors: null
-    BaseValue: 4
-    BaseWeight: 1
+    BaseValue: 4.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 28
@@ -431,8 +431,8 @@ items:
     Name: Cloves
     Subtype: 2
     Descriptors: null
-    BaseValue: 6
-    BaseWeight: 1
+    BaseValue: 6.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 28
@@ -446,8 +446,8 @@ items:
     Name: Copper
     Subtype: 3
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 1
+    BaseValue: 10.0
+    BaseWeight: 1.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 6
@@ -462,7 +462,7 @@ items:
     Subtype: 4
     Descriptors: null
     BaseValue: 0.1
-    BaseWeight: 2
+    BaseWeight: 2.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 26
@@ -477,7 +477,7 @@ items:
     Subtype: 4
     Descriptors: null
     BaseValue: 0.05
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 28
@@ -491,8 +491,8 @@ items:
     Name: Ginger
     Subtype: 2
     Descriptors: null
-    BaseValue: 4
-    BaseWeight: 1
+    BaseValue: 4.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 28
@@ -506,8 +506,8 @@ items:
     Name: Gold
     Subtype: 3
     Descriptors: null
-    BaseValue: 1000
-    BaseWeight: 1
+    BaseValue: 1000.0
+    BaseWeight: 1.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 10
@@ -521,8 +521,8 @@ items:
     Name: Iron
     Subtype: 3
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 1
+    BaseValue: 2.0
+    BaseWeight: 1.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 12
@@ -536,8 +536,8 @@ items:
     Name: 'Linen (sq.m)'
     Subtype: 1
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 1
+    BaseValue: 2.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 5
@@ -551,8 +551,8 @@ items:
     Name: Pepper
     Subtype: 2
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 1
+    BaseValue: 5.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 28
@@ -566,8 +566,8 @@ items:
     Name: Platinum
     Subtype: 3
     Descriptors: null
-    BaseValue: 10000
-    BaseWeight: 1
+    BaseValue: 10000.0
+    BaseWeight: 1.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 19
@@ -581,8 +581,8 @@ items:
     Name: Saffron
     Subtype: 2
     Descriptors: null
-    BaseValue: 30
-    BaseWeight: 1
+    BaseValue: 30.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 28
@@ -596,8 +596,8 @@ items:
     Name: Salt
     Subtype: 2
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 1
+    BaseValue: 10.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 27
@@ -611,7 +611,7 @@ items:
     Name: 'Silk (sq.m)'
     Subtype: 1
     Descriptors: null
-    BaseValue: 12
+    BaseValue: 12.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -626,8 +626,8 @@ items:
     Name: Silver
     Subtype: 3
     Descriptors: null
-    BaseValue: 100
-    BaseWeight: 1
+    BaseValue: 100.0
+    BaseWeight: 1.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 21
@@ -641,8 +641,8 @@ items:
     Name: Sugar
     Subtype: 2
     Descriptors: null
-    BaseValue: 4
-    BaseWeight: 1
+    BaseValue: 4.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 27
@@ -657,7 +657,7 @@ items:
     Subtype: 2
     Descriptors: null
     BaseValue: 0.8
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 28
@@ -671,8 +671,8 @@ items:
     Name: Tobacco
     Subtype: 2
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 1
+    BaseValue: 5.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 28
@@ -687,7 +687,7 @@ items:
     Subtype: 4
     Descriptors: null
     BaseValue: 0.02
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 28
@@ -701,8 +701,8 @@ items:
     Name: 'Wool, good (sq.m)'
     Subtype: 1
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 1
+    BaseValue: 5.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 5
@@ -731,8 +731,8 @@ items:
     Name: Cow
     Subtype: 5
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 400
+    BaseValue: 10.0
+    BaseWeight: 400.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 26
@@ -747,7 +747,7 @@ items:
     Subtype: 5
     Descriptors: null
     BaseValue: 1.5
-    BaseWeight: 30
+    BaseWeight: 30.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 26
@@ -762,7 +762,7 @@ items:
     Subtype: 5
     Descriptors: null
     BaseValue: 0.6
-    BaseWeight: 3
+    BaseWeight: 3.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 26
@@ -776,8 +776,8 @@ items:
     Name: Ox
     Subtype: 5
     Descriptors: null
-    BaseValue: 15
-    BaseWeight: 600
+    BaseValue: 15.0
+    BaseWeight: 600.0
     BaseSize: 2
     ECMod: null
     BaseMaterial: 26
@@ -791,8 +791,8 @@ items:
     Name: Pig
     Subtype: 5
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 80
+    BaseValue: 3.0
+    BaseWeight: 80.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: 26
@@ -806,8 +806,8 @@ items:
     Name: Sheep
     Subtype: 5
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 40
+    BaseValue: 2.0
+    BaseWeight: 40.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 26
@@ -821,8 +821,8 @@ items:
     Name: 'Axe, battle-'
     Subtype: 6
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 3
+    BaseValue: 3.0
+    BaseWeight: 3.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -836,8 +836,8 @@ items:
     Name: 'Axe, Dwarven war-'
     Subtype: 6
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 4
+    BaseValue: 10.0
+    BaseWeight: 4.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -851,8 +851,8 @@ items:
     Name: 'Axe, great-'
     Subtype: 6
     Descriptors: null
-    BaseValue: 6
-    BaseWeight: 6
+    BaseValue: 6.0
+    BaseWeight: 6.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -866,7 +866,7 @@ items:
     Name: 'Axe, hand-'
     Subtype: 6
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: 1.5
     BaseSize: -2
     ECMod: 0
@@ -881,7 +881,7 @@ items:
     Name: 'Axe, Orc double'
     Subtype: 6
     Descriptors: null
-    BaseValue: 20
+    BaseValue: 20.0
     BaseWeight: 7.5
     BaseSize: 0
     ECMod: 2
@@ -897,7 +897,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 2.5
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 23
@@ -912,7 +912,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 1.5
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -926,8 +926,8 @@ items:
     Name: 'Chain, spiked'
     Subtype: 6
     Descriptors: null
-    BaseValue: 8
-    BaseWeight: 5
+    BaseValue: 8.0
+    BaseWeight: 5.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -941,8 +941,8 @@ items:
     Name: Chakram
     Subtype: 6
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 1
+    BaseValue: 5.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 23
@@ -956,8 +956,8 @@ items:
     Name: 'Claw bracer'
     Subtype: 6
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 1
+    BaseValue: 10.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 23
@@ -971,7 +971,7 @@ items:
     Name: Club
     Subtype: 6
     Descriptors: null
-    BaseValue: 0
+    BaseValue: 0.0
     BaseWeight: 1.5
     BaseSize: -1
     ECMod: 1
@@ -987,7 +987,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 1.5
-    BaseWeight: 4
+    BaseWeight: 4.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -1016,7 +1016,7 @@ items:
     Name: Cutlass
     Subtype: 6
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: 1.5
     BaseSize: -1
     ECMod: 1
@@ -1091,8 +1091,8 @@ items:
     Name: Falchion
     Subtype: 6
     Descriptors: null
-    BaseValue: 25
-    BaseWeight: 4
+    BaseValue: 25.0
+    BaseWeight: 4.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -1121,8 +1121,8 @@ items:
     Name: 'Flail, dire'
     Subtype: 6
     Descriptors: null
-    BaseValue: 30
-    BaseWeight: 5
+    BaseValue: 30.0
+    BaseWeight: 5.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -1136,8 +1136,8 @@ items:
     Name: 'Flail, heavy'
     Subtype: 6
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 5
+    BaseValue: 5.0
+    BaseWeight: 5.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -1152,7 +1152,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 2.5
-    BaseWeight: 5
+    BaseWeight: 5.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -1166,8 +1166,8 @@ items:
     Name: Guisarme
     Subtype: 6
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 6
+    BaseValue: 3.0
+    BaseWeight: 6.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -1181,8 +1181,8 @@ items:
     Name: Halberd
     Subtype: 6
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 6
+    BaseValue: 3.0
+    BaseWeight: 6.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -1197,7 +1197,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 6.5
-    BaseWeight: 6
+    BaseWeight: 6.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -1212,7 +1212,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 0.3
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 23
@@ -1226,7 +1226,7 @@ items:
     Name: 'Hammer, war-'
     Subtype: 6
     Descriptors: null
-    BaseValue: 4
+    BaseValue: 4.0
     BaseWeight: 2.5
     BaseSize: -1
     ECMod: 1
@@ -1242,7 +1242,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 0.3
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 25
@@ -1257,7 +1257,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 0.8
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 23
@@ -1271,8 +1271,8 @@ items:
     Name: Khopesh
     Subtype: 6
     Descriptors: null
-    BaseValue: 6
-    BaseWeight: 6
+    BaseValue: 6.0
+    BaseWeight: 6.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -1287,7 +1287,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 2.5
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 23
@@ -1301,8 +1301,8 @@ items:
     Name: Lance
     Subtype: 6
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 5
+    BaseValue: 3.0
+    BaseWeight: 5.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 25
@@ -1317,7 +1317,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 2.5
-    BaseWeight: 4
+    BaseWeight: 4.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 25
@@ -1331,8 +1331,8 @@ items:
     Name: 'Mace, heavy'
     Subtype: 6
     Descriptors: null
-    BaseValue: 4
-    BaseWeight: 4
+    BaseValue: 4.0
+    BaseWeight: 4.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -1347,7 +1347,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 1.5
-    BaseWeight: 2
+    BaseWeight: 2.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 23
@@ -1361,8 +1361,8 @@ items:
     Name: Maul
     Subtype: 6
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 10
+    BaseValue: 5.0
+    BaseWeight: 10.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -1377,7 +1377,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 2.5
-    BaseWeight: 3
+    BaseWeight: 3.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -1391,8 +1391,8 @@ items:
     Name: Net
     Subtype: 6
     Descriptors: null
-    BaseValue: 6
-    BaseWeight: 3
+    BaseValue: 6.0
+    BaseWeight: 3.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 20
@@ -1407,7 +1407,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 0.6
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 25
@@ -1422,7 +1422,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 2.5
-    BaseWeight: 3
+    BaseWeight: 3.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -1451,8 +1451,8 @@ items:
     Name: Quarterstaff
     Subtype: 6
     Descriptors: null
-    BaseValue: 0
-    BaseWeight: 2
+    BaseValue: 0.0
+    BaseWeight: 2.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -1466,8 +1466,8 @@ items:
     Name: Ranseur
     Subtype: 6
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 6
+    BaseValue: 3.0
+    BaseWeight: 6.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -1481,8 +1481,8 @@ items:
     Name: Rapier
     Subtype: 6
     Descriptors: null
-    BaseValue: 6
-    BaseWeight: 1
+    BaseValue: 6.0
+    BaseWeight: 1.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -1496,8 +1496,8 @@ items:
     Name: Sabre
     Subtype: 6
     Descriptors: null
-    BaseValue: 6
-    BaseWeight: 2
+    BaseValue: 6.0
+    BaseWeight: 2.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -1527,7 +1527,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 0.3
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 15
@@ -1541,8 +1541,8 @@ items:
     Name: Scimitar
     Subtype: 6
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 2
+    BaseValue: 5.0
+    BaseWeight: 2.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -1556,8 +1556,8 @@ items:
     Name: Scourge
     Subtype: 6
     Descriptors: null
-    BaseValue: 6
-    BaseWeight: 1
+    BaseValue: 6.0
+    BaseWeight: 1.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 15
@@ -1571,8 +1571,8 @@ items:
     Name: Scythe
     Subtype: 6
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 5
+    BaseValue: 5.0
+    BaseWeight: 5.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -1601,7 +1601,7 @@ items:
     Name: Siangham
     Subtype: 6
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: 0.5
     BaseSize: -2
     ECMod: 0
@@ -1616,8 +1616,8 @@ items:
     Name: Sickle
     Subtype: 6
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 1
+    BaseValue: 2.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 23
@@ -1632,7 +1632,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 0.6
-    BaseWeight: 3
+    BaseWeight: 3.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -1676,8 +1676,8 @@ items:
     Name: 'Sword, bastard'
     Subtype: 6
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 3
+    BaseValue: 10.0
+    BaseWeight: 3.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -1691,8 +1691,8 @@ items:
     Name: 'Sword, great-'
     Subtype: 6
     Descriptors: null
-    BaseValue: 15
-    BaseWeight: 4
+    BaseValue: 15.0
+    BaseWeight: 4.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -1706,8 +1706,8 @@ items:
     Name: 'Sword, long-'
     Subtype: 6
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 2
+    BaseValue: 5.0
+    BaseWeight: 2.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -1721,8 +1721,8 @@ items:
     Name: 'Sword, short'
     Subtype: 6
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 1
+    BaseValue: 3.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 23
@@ -1736,8 +1736,8 @@ items:
     Name: 'Sword, two-bladed'
     Subtype: 6
     Descriptors: null
-    BaseValue: 35
-    BaseWeight: 5
+    BaseValue: 35.0
+    BaseWeight: 5.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -1751,8 +1751,8 @@ items:
     Name: Trident
     Subtype: 6
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 2
+    BaseValue: 5.0
+    BaseWeight: 2.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -1766,8 +1766,8 @@ items:
     Name: 'Urgrosh, Dwarven'
     Subtype: 6
     Descriptors: null
-    BaseValue: 16
-    BaseWeight: 6
+    BaseValue: 16.0
+    BaseWeight: 6.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -1782,7 +1782,7 @@ items:
     Subtype: 6
     Descriptors: null
     BaseValue: 0.3
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 15
@@ -1796,8 +1796,8 @@ items:
     Name: 'Ram, large (with canopy)'
     Subtype: 10
     Descriptors: null
-    BaseValue: 50
-    BaseWeight: 350
+    BaseValue: 50.0
+    BaseWeight: 350.0
     BaseSize: 2
     ECMod: null
     BaseMaterial: 25
@@ -1811,8 +1811,8 @@ items:
     Name: 'Ram, log'
     Subtype: 10
     Descriptors: null
-    BaseValue: 0
-    BaseWeight: 60
+    BaseValue: 0.0
+    BaseWeight: 60.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 25
@@ -1826,8 +1826,8 @@ items:
     Name: 'Ram, small'
     Subtype: 10
     Descriptors: null
-    BaseValue: 15
-    BaseWeight: 85
+    BaseValue: 15.0
+    BaseWeight: 85.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 25
@@ -1841,8 +1841,8 @@ items:
     Name: 'Siege tower'
     Subtype: 10
     Descriptors: null
-    BaseValue: 1200
-    BaseWeight: 75000
+    BaseValue: 1200.0
+    BaseWeight: 75000.0
     BaseSize: 4
     ECMod: null
     BaseMaterial: 25
@@ -1857,7 +1857,7 @@ items:
     Subtype: 7
     Descriptors: null
     BaseValue: 0.3
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 25
@@ -1872,7 +1872,7 @@ items:
     Subtype: 8
     Descriptors: null
     BaseValue: 0.5
-    BaseWeight: 0
+    BaseWeight: 0.0
     BaseSize: -5
     ECMod: null
     BaseMaterial: 23
@@ -1886,7 +1886,7 @@ items:
     Name: 'Bow, composite long- (Str 10)'
     Subtype: 7
     Descriptors: null
-    BaseValue: 30
+    BaseValue: 30.0
     BaseWeight: 1.5
     BaseSize: 0
     ECMod: 2
@@ -1901,7 +1901,7 @@ items:
     Name: 'Bow, composite long- (Str 12)'
     Subtype: 7
     Descriptors: null
-    BaseValue: 60
+    BaseValue: 60.0
     BaseWeight: 1.5
     BaseSize: 0
     ECMod: 2
@@ -1916,7 +1916,7 @@ items:
     Name: 'Bow, composite long- (Str 14)'
     Subtype: 7
     Descriptors: null
-    BaseValue: 90
+    BaseValue: 90.0
     BaseWeight: 1.5
     BaseSize: 0
     ECMod: 2
@@ -1931,7 +1931,7 @@ items:
     Name: 'Bow, composite long- (Str 16)'
     Subtype: 7
     Descriptors: null
-    BaseValue: 120
+    BaseValue: 120.0
     BaseWeight: 1.5
     BaseSize: 0
     ECMod: 2
@@ -1946,7 +1946,7 @@ items:
     Name: 'Bow, composite long- (Str 18)'
     Subtype: 7
     Descriptors: null
-    BaseValue: 150
+    BaseValue: 150.0
     BaseWeight: 1.5
     BaseSize: 0
     ECMod: 2
@@ -1961,8 +1961,8 @@ items:
     Name: 'Bow, composite short- (Str 10)'
     Subtype: 7
     Descriptors: null
-    BaseValue: 25
-    BaseWeight: 1
+    BaseValue: 25.0
+    BaseWeight: 1.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -1976,8 +1976,8 @@ items:
     Name: 'Bow, composite short- (Str 12)'
     Subtype: 7
     Descriptors: null
-    BaseValue: 50
-    BaseWeight: 1
+    BaseValue: 50.0
+    BaseWeight: 1.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -1991,8 +1991,8 @@ items:
     Name: 'Bow, composite short- (Str 14)'
     Subtype: 7
     Descriptors: null
-    BaseValue: 75
-    BaseWeight: 1
+    BaseValue: 75.0
+    BaseWeight: 1.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -2006,8 +2006,8 @@ items:
     Name: 'Bow, composite short- (Str 16)'
     Subtype: 7
     Descriptors: null
-    BaseValue: 100
-    BaseWeight: 1
+    BaseValue: 100.0
+    BaseWeight: 1.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -2021,8 +2021,8 @@ items:
     Name: 'Bow, composite short- (Str 18)'
     Subtype: 7
     Descriptors: null
-    BaseValue: 125
-    BaseWeight: 1
+    BaseValue: 125.0
+    BaseWeight: 1.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -2036,7 +2036,7 @@ items:
     Name: 'Bow, long-'
     Subtype: 7
     Descriptors: null
-    BaseValue: 25
+    BaseValue: 25.0
     BaseWeight: 1.5
     BaseSize: 0
     ECMod: 2
@@ -2051,8 +2051,8 @@ items:
     Name: 'Bow, short-'
     Subtype: 7
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 1
+    BaseValue: 10.0
+    BaseWeight: 1.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -2082,7 +2082,7 @@ items:
     Subtype: 8
     Descriptors: null
     BaseValue: 0.5
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 25
@@ -2111,8 +2111,8 @@ items:
     Name: 'Crossbow, hand'
     Subtype: 7
     Descriptors: null
-    BaseValue: 35
-    BaseWeight: 1
+    BaseValue: 35.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 25
@@ -2141,8 +2141,8 @@ items:
     Name: 'Crossbow, heavy'
     Subtype: 7
     Descriptors: null
-    BaseValue: 15
-    BaseWeight: 4
+    BaseValue: 15.0
+    BaseWeight: 4.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -2156,8 +2156,8 @@ items:
     Name: 'Crossbow, heavy repeating'
     Subtype: 7
     Descriptors: null
-    BaseValue: 120
-    BaseWeight: 6
+    BaseValue: 120.0
+    BaseWeight: 6.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -2171,8 +2171,8 @@ items:
     Name: 'Crossbow, heavy double'
     Subtype: 7
     Descriptors: null
-    BaseValue: 30
-    BaseWeight: 5
+    BaseValue: 30.0
+    BaseWeight: 5.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -2201,8 +2201,8 @@ items:
     Name: 'Crossbow, light'
     Subtype: 7
     Descriptors: null
-    BaseValue: 12
-    BaseWeight: 2
+    BaseValue: 12.0
+    BaseWeight: 2.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 25
@@ -2216,8 +2216,8 @@ items:
     Name: 'Crossbow, light repeating'
     Subtype: 7
     Descriptors: null
-    BaseValue: 80
-    BaseWeight: 3
+    BaseValue: 80.0
+    BaseWeight: 3.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 25
@@ -2231,7 +2231,7 @@ items:
     Name: 'Crossbow, light double'
     Subtype: 7
     Descriptors: null
-    BaseValue: 22
+    BaseValue: 22.0
     BaseWeight: 2.5
     BaseSize: -1
     ECMod: 1
@@ -2246,7 +2246,7 @@ items:
     Name: 'Crossbow, light triple'
     Subtype: 7
     Descriptors: null
-    BaseValue: 30
+    BaseValue: 30.0
     BaseWeight: 2.5
     BaseSize: -1
     ECMod: 1
@@ -2276,7 +2276,7 @@ items:
     Name: Sling
     Subtype: 7
     Descriptors: null
-    BaseValue: 0
+    BaseValue: 0.0
     BaseWeight: 0.1
     BaseSize: -1
     ECMod: 0
@@ -2306,7 +2306,7 @@ items:
     Name: 'Stone, sling (10)'
     Subtype: 8
     Descriptors: null
-    BaseValue: 0
+    BaseValue: 0.0
     BaseWeight: 2.5
     BaseSize: -2
     ECMod: null
@@ -2321,8 +2321,8 @@ items:
     Name: 'Carbine, flint-lock'
     Subtype: 7
     Descriptors: null
-    BaseValue: 45
-    BaseWeight: 3
+    BaseValue: 45.0
+    BaseWeight: 3.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -2336,8 +2336,8 @@ items:
     Name: 'Carbine, wheel-lock'
     Subtype: 7
     Descriptors: null
-    BaseValue: 60
-    BaseWeight: 3
+    BaseValue: 60.0
+    BaseWeight: 3.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -2351,8 +2351,8 @@ items:
     Name: Musket
     Subtype: 7
     Descriptors: null
-    BaseValue: 35
-    BaseWeight: 5
+    BaseValue: 35.0
+    BaseWeight: 5.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -2366,7 +2366,7 @@ items:
     Name: 'Pistol, flint-lock'
     Subtype: 7
     Descriptors: null
-    BaseValue: 50
+    BaseValue: 50.0
     BaseWeight: 1.5
     BaseSize: -2
     ECMod: 0
@@ -2381,7 +2381,7 @@ items:
     Name: 'Pistol, wheel-lock'
     Subtype: 7
     Descriptors: null
-    BaseValue: 60
+    BaseValue: 60.0
     BaseWeight: 1.5
     BaseSize: -2
     ECMod: 0
@@ -2396,8 +2396,8 @@ items:
     Name: 'Bullet & powder (10)'
     Subtype: 8
     Descriptors: null
-    BaseValue: 12
-    BaseWeight: 2
+    BaseValue: 12.0
+    BaseWeight: 2.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 14
@@ -2411,8 +2411,8 @@ items:
     Name: 'Catapult, small'
     Subtype: 10
     Descriptors: null
-    BaseValue: 300
-    BaseWeight: 2500
+    BaseValue: 300.0
+    BaseWeight: 2500.0
     BaseSize: 2
     ECMod: null
     BaseMaterial: 25
@@ -2426,8 +2426,8 @@ items:
     Name: 'Catapult, medium'
     Subtype: 10
     Descriptors: null
-    BaseValue: 1400
-    BaseWeight: 15000
+    BaseValue: 1400.0
+    BaseWeight: 15000.0
     BaseSize: 3
     ECMod: null
     BaseMaterial: 25
@@ -2441,8 +2441,8 @@ items:
     Name: 'Catapult, large'
     Subtype: 10
     Descriptors: null
-    BaseValue: 5000
-    BaseWeight: 65000
+    BaseValue: 5000.0
+    BaseWeight: 65000.0
     BaseSize: 4
     ECMod: null
     BaseMaterial: 25
@@ -2456,8 +2456,8 @@ items:
     Name: 'Stone, small catapult'
     Subtype: 8
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 10
+    BaseValue: 1.0
+    BaseWeight: 10.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 24
@@ -2471,8 +2471,8 @@ items:
     Name: 'Ballista, small'
     Subtype: 10
     Descriptors: null
-    BaseValue: 280
-    BaseWeight: 2000
+    BaseValue: 280.0
+    BaseWeight: 2000.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 25
@@ -2486,8 +2486,8 @@ items:
     Name: 'Ballista, medium'
     Subtype: 10
     Descriptors: null
-    BaseValue: 400
-    BaseWeight: 4000
+    BaseValue: 400.0
+    BaseWeight: 4000.0
     BaseSize: 2
     ECMod: null
     BaseMaterial: 25
@@ -2501,8 +2501,8 @@ items:
     Name: 'Ballista, large'
     Subtype: 10
     Descriptors: null
-    BaseValue: 800
-    BaseWeight: 9000
+    BaseValue: 800.0
+    BaseWeight: 9000.0
     BaseSize: 3
     ECMod: null
     BaseMaterial: 25
@@ -2516,8 +2516,8 @@ items:
     Name: 'Javelin, small ballista'
     Subtype: 8
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 3
+    BaseValue: 5.0
+    BaseWeight: 3.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 25
@@ -2531,8 +2531,8 @@ items:
     Name: Spitfire
     Subtype: 10
     Descriptors: null
-    BaseValue: 100
-    BaseWeight: 50
+    BaseValue: 100.0
+    BaseWeight: 50.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 25
@@ -2547,7 +2547,7 @@ items:
     Subtype: 8
     Descriptors: '[Fire]'
     BaseValue: 0.6
-    BaseWeight: 5
+    BaseWeight: 5.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 29
@@ -2576,8 +2576,8 @@ items:
     Name: 'Shield, heavy wooden'
     Subtype: 9
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 6
+    BaseValue: 3.0
+    BaseWeight: 6.0
     BaseSize: -1
     ECMod: 3
     BaseMaterial: 25
@@ -2591,8 +2591,8 @@ items:
     Name: 'Shield, heavy spiked'
     Subtype: 9
     Descriptors: null
-    BaseValue: 9
-    BaseWeight: 9
+    BaseValue: 9.0
+    BaseWeight: 9.0
     BaseSize: -1
     ECMod: 3
     BaseMaterial: 25
@@ -2606,8 +2606,8 @@ items:
     Name: 'Shield, light steel'
     Subtype: 9
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 3
+    BaseValue: 2.0
+    BaseWeight: 3.0
     BaseSize: -2
     ECMod: 2
     BaseMaterial: 23
@@ -2621,8 +2621,8 @@ items:
     Name: 'Shield, light spiked'
     Subtype: 9
     Descriptors: null
-    BaseValue: 6
-    BaseWeight: 5
+    BaseValue: 6.0
+    BaseWeight: 5.0
     BaseSize: -2
     ECMod: 2
     BaseMaterial: 23
@@ -2636,8 +2636,8 @@ items:
     Name: 'Shield, tower'
     Subtype: 9
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 20
+    BaseValue: 5.0
+    BaseWeight: 20.0
     BaseSize: 0
     ECMod: 4
     BaseMaterial: 25
@@ -2681,7 +2681,7 @@ items:
     Name: Main-gauche
     Subtype: 6
     Descriptors: null
-    BaseValue: 8
+    BaseValue: 8.0
     BaseWeight: 0.3
     BaseSize: -2
     ECMod: 0
@@ -2696,7 +2696,7 @@ items:
     Name: Cedeku
     Subtype: 6
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: 1.5
     BaseSize: -2
     ECMod: 0
@@ -2711,8 +2711,8 @@ items:
     Name: 'Fighting knife, Elven'
     Subtype: 6
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 1
+    BaseValue: 3.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 23
@@ -2726,8 +2726,8 @@ items:
     Name: Vardatch
     Subtype: 6
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 6
+    BaseValue: 3.0
+    BaseWeight: 6.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -2741,8 +2741,8 @@ items:
     Name: 'Vardatch, greater'
     Subtype: 6
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 8
+    BaseValue: 5.0
+    BaseWeight: 8.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 23
@@ -2756,8 +2756,8 @@ items:
     Name: Clothing
     Subtype: 14
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 1
+    BaseValue: 1.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 5
@@ -2771,8 +2771,8 @@ items:
     Name: 'Padded armor'
     Subtype: 11
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 5
+    BaseValue: 5.0
+    BaseWeight: 5.0
     BaseSize: -2
     ECMod: 1
     BaseMaterial: 5
@@ -2786,7 +2786,7 @@ items:
     Name: 'Leather armor'
     Subtype: 11
     Descriptors: null
-    BaseValue: 10
+    BaseValue: 10.0
     BaseWeight: 7.5
     BaseSize: -2
     ECMod: 2
@@ -2801,8 +2801,8 @@ items:
     Name: 'Studded leather'
     Subtype: 11
     Descriptors: null
-    BaseValue: 25
-    BaseWeight: 10
+    BaseValue: 25.0
+    BaseWeight: 10.0
     BaseSize: -2
     ECMod: 3
     BaseMaterial: 15
@@ -2816,7 +2816,7 @@ items:
     Name: 'Chain shirt'
     Subtype: 11
     Descriptors: null
-    BaseValue: 100
+    BaseValue: 100.0
     BaseWeight: 12.5
     BaseSize: -1
     ECMod: 4
@@ -2831,7 +2831,7 @@ items:
     Name: 'Hide armor'
     Subtype: 12
     Descriptors: null
-    BaseValue: 15
+    BaseValue: 15.0
     BaseWeight: 12.5
     BaseSize: -1
     ECMod: 5
@@ -2846,8 +2846,8 @@ items:
     Name: 'Scale mail'
     Subtype: 12
     Descriptors: null
-    BaseValue: 50
-    BaseWeight: 15
+    BaseValue: 50.0
+    BaseWeight: 15.0
     BaseSize: -1
     ECMod: 6
     BaseMaterial: 23
@@ -2861,8 +2861,8 @@ items:
     Name: Chainmail
     Subtype: 12
     Descriptors: null
-    BaseValue: 150
-    BaseWeight: 20
+    BaseValue: 150.0
+    BaseWeight: 20.0
     BaseSize: -1
     ECMod: 7
     BaseMaterial: 23
@@ -2876,8 +2876,8 @@ items:
     Name: Breastplate
     Subtype: 12
     Descriptors: null
-    BaseValue: 200
-    BaseWeight: 15
+    BaseValue: 200.0
+    BaseWeight: 15.0
     BaseSize: -1
     ECMod: 6
     BaseMaterial: 23
@@ -2891,7 +2891,7 @@ items:
     Name: 'Splint mail'
     Subtype: 13
     Descriptors: null
-    BaseValue: 200
+    BaseValue: 200.0
     BaseWeight: 22.5
     BaseSize: 0
     ECMod: 9
@@ -2906,7 +2906,7 @@ items:
     Name: 'Banded mail'
     Subtype: 13
     Descriptors: null
-    BaseValue: 250
+    BaseValue: 250.0
     BaseWeight: 17.5
     BaseSize: 0
     ECMod: 8
@@ -2921,8 +2921,8 @@ items:
     Name: Half-plate
     Subtype: 13
     Descriptors: null
-    BaseValue: 440
-    BaseWeight: 25
+    BaseValue: 440.0
+    BaseWeight: 25.0
     BaseSize: 0
     ECMod: 9
     BaseMaterial: 23
@@ -2936,8 +2936,8 @@ items:
     Name: 'Full plate'
     Subtype: 13
     Descriptors: null
-    BaseValue: 600
-    BaseWeight: 25
+    BaseValue: 600.0
+    BaseWeight: 25.0
     BaseSize: 0
     ECMod: 8
     BaseMaterial: 23
@@ -2951,8 +2951,8 @@ items:
     Name: 'Helmet, cap'
     Subtype: 15
     Descriptors: null
-    BaseValue: 4
-    BaseWeight: 1
+    BaseValue: 4.0
+    BaseWeight: 1.0
     BaseSize: -3
     ECMod: 0
     BaseMaterial: 23
@@ -2966,7 +2966,7 @@ items:
     Name: 'Helmet, full'
     Subtype: 15
     Descriptors: null
-    BaseValue: 14
+    BaseValue: 14.0
     BaseWeight: 2.5
     BaseSize: -2
     ECMod: 0
@@ -2996,7 +2996,7 @@ items:
     Name: Gauntlets
     Subtype: 16
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: 0.5
     BaseSize: -2
     ECMod: 0
@@ -3011,7 +3011,7 @@ items:
     Name: 'Gauntlets, locked'
     Subtype: 16
     Descriptors: null
-    BaseValue: 10
+    BaseValue: 10.0
     BaseWeight: 1.5
     BaseSize: -2
     ECMod: 0
@@ -3026,7 +3026,7 @@ items:
     Name: 'Gauntlets, spiked'
     Subtype: 16
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: 0.5
     BaseSize: -2
     ECMod: 0
@@ -3057,7 +3057,7 @@ items:
     Subtype: 17
     Descriptors: null
     BaseValue: 0.6
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 15
@@ -3071,8 +3071,8 @@ items:
     Name: 'Boots, plate'
     Subtype: 17
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 2
+    BaseValue: 2.0
+    BaseWeight: 2.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 23
@@ -3086,8 +3086,8 @@ items:
     Name: 'Boots, blade'
     Subtype: 17
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 1
+    BaseValue: 5.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 15
@@ -3116,8 +3116,8 @@ items:
     Name: Bell
     Subtype: 21
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 0
+    BaseValue: 1.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 3
@@ -3146,7 +3146,7 @@ items:
     Name: 'Block and tackle'
     Subtype: 21
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: 2.5
     BaseSize: -2
     ECMod: null
@@ -3161,8 +3161,8 @@ items:
     Name: Caltrops
     Subtype: 21
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 1
+    BaseValue: 1.0
+    BaseWeight: 1.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 12
@@ -3176,8 +3176,8 @@ items:
     Name: 'Chain (3 m)'
     Subtype: 21
     Descriptors: null
-    BaseValue: 30
-    BaseWeight: 1
+    BaseValue: 30.0
+    BaseWeight: 1.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 23
@@ -3192,7 +3192,7 @@ items:
     Subtype: 21
     Descriptors: null
     BaseValue: 0.01
-    BaseWeight: 0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 29
@@ -3206,7 +3206,7 @@ items:
     Name: Crowbar
     Subtype: 21
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: 2.5
     BaseSize: -1
     ECMod: 1
@@ -3222,7 +3222,7 @@ items:
     Subtype: 20
     Descriptors: null
     BaseValue: 0.01
-    BaseWeight: 10
+    BaseWeight: 10.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 25
@@ -3237,7 +3237,7 @@ items:
     Subtype: 21
     Descriptors: null
     BaseValue: 0.1
-    BaseWeight: 0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 23
@@ -3251,7 +3251,7 @@ items:
     Name: 'Fishing net (2 sq.m)'
     Subtype: 21
     Descriptors: null
-    BaseValue: 4
+    BaseValue: 4.0
     BaseWeight: 2.5
     BaseSize: 0
     ECMod: null
@@ -3266,8 +3266,8 @@ items:
     Name: 'Flint and steel'
     Subtype: 20
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 0
+    BaseValue: 1.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 24
@@ -3281,8 +3281,8 @@ items:
     Name: 'Grappling hook'
     Subtype: 21
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 2
+    BaseValue: 1.0
+    BaseWeight: 2.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 12
@@ -3297,7 +3297,7 @@ items:
     Subtype: 21
     Descriptors: null
     BaseValue: 0.5
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 23
@@ -3312,7 +3312,7 @@ items:
     Subtype: 20
     Descriptors: null
     BaseValue: 0.1
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 5
@@ -3326,7 +3326,7 @@ items:
     Name: 'Ink, black (1 dl)'
     Subtype: 21
     Descriptors: null
-    BaseValue: 8
+    BaseValue: 8.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: null
@@ -3341,7 +3341,7 @@ items:
     Name: 'Ink, disappearing (1 dl)'
     Subtype: 21
     Descriptors: null
-    BaseValue: 50
+    BaseValue: 50.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: null
@@ -3356,7 +3356,7 @@ items:
     Name: 'Ink, non-black (1 dl)'
     Subtype: 21
     Descriptors: null
-    BaseValue: 16
+    BaseValue: 16.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: null
@@ -3372,7 +3372,7 @@ items:
     Subtype: 21
     Descriptors: null
     BaseValue: 0.1
-    BaseWeight: 0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 29
@@ -3386,7 +3386,7 @@ items:
     Name: 'Insect netting'
     Subtype: 20
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: 0.5
     BaseSize: -2
     ECMod: null
@@ -3401,8 +3401,8 @@ items:
     Name: 'Ladder (3 m)'
     Subtype: 21
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 10
+    BaseValue: 1.0
+    BaseWeight: 10.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: 25
@@ -3416,7 +3416,7 @@ items:
     Name: 'Lock, simple'
     Subtype: 21
     Descriptors: null
-    BaseValue: 20
+    BaseValue: 20.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -3431,7 +3431,7 @@ items:
     Name: 'Lock, average'
     Subtype: 21
     Descriptors: null
-    BaseValue: 40
+    BaseValue: 40.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -3446,7 +3446,7 @@ items:
     Name: 'Lock, good'
     Subtype: 21
     Descriptors: null
-    BaseValue: 80
+    BaseValue: 80.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -3461,7 +3461,7 @@ items:
     Name: 'Lock, superior'
     Subtype: 21
     Descriptors: null
-    BaseValue: 150
+    BaseValue: 150.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -3476,8 +3476,8 @@ items:
     Name: Manacles
     Subtype: 21
     Descriptors: null
-    BaseValue: 15
-    BaseWeight: 1
+    BaseValue: 15.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 23
@@ -3491,8 +3491,8 @@ items:
     Name: 'Manacles, masterwork'
     Subtype: 21
     Descriptors: null
-    BaseValue: 50
-    BaseWeight: 1
+    BaseValue: 50.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 23
@@ -3506,8 +3506,8 @@ items:
     Name: 'Manacles (Large)'
     Subtype: 21
     Descriptors: null
-    BaseValue: 150
-    BaseWeight: 2
+    BaseValue: 150.0
+    BaseWeight: 2.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 23
@@ -3521,8 +3521,8 @@ items:
     Name: 'Manacles (Huge)'
     Subtype: 21
     Descriptors: null
-    BaseValue: 1500
-    BaseWeight: 4
+    BaseValue: 1500.0
+    BaseWeight: 4.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 23
@@ -3536,7 +3536,7 @@ items:
     Name: 'Mirror, small steel'
     Subtype: 21
     Descriptors: null
-    BaseValue: 10
+    BaseValue: 10.0
     BaseWeight: 0.25
     BaseSize: -2
     ECMod: null
@@ -3567,7 +3567,7 @@ items:
     Subtype: 21
     Descriptors: null
     BaseValue: 0.4
-    BaseWeight: 0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 18
@@ -3582,7 +3582,7 @@ items:
     Subtype: 21
     Descriptors: null
     BaseValue: 0.2
-    BaseWeight: 0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 18
@@ -3596,8 +3596,8 @@ items:
     Name: "Pick, miner's"
     Subtype: 21
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 5
+    BaseValue: 3.0
+    BaseWeight: 5.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 23
@@ -3627,7 +3627,7 @@ items:
     Subtype: 21
     Descriptors: null
     BaseValue: 0.2
-    BaseWeight: 4
+    BaseWeight: 4.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -3641,8 +3641,8 @@ items:
     Name: 'Ram, portable'
     Subtype: 21
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 10
+    BaseValue: 10.0
+    BaseWeight: 10.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 12
@@ -3671,8 +3671,8 @@ items:
     Name: 'Rope, hempen (20 m)'
     Subtype: 20
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 5
+    BaseValue: 1.0
+    BaseWeight: 5.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 20
@@ -3686,7 +3686,7 @@ items:
     Name: 'Rope, silk (20 m)'
     Subtype: 20
     Descriptors: null
-    BaseValue: 10
+    BaseValue: 10.0
     BaseWeight: 2.5
     BaseSize: -2
     ECMod: null
@@ -3701,7 +3701,7 @@ items:
     Name: 'Sealing wax'
     Subtype: 21
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -3717,7 +3717,7 @@ items:
     Subtype: 21
     Descriptors: null
     BaseValue: 0.5
-    BaseWeight: 0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 23
@@ -3732,7 +3732,7 @@ items:
     Subtype: 21
     Descriptors: null
     BaseValue: 0.8
-    BaseWeight: 0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 23
@@ -3746,8 +3746,8 @@ items:
     Name: 'Signet ring'
     Subtype: 35
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 0
+    BaseValue: 5.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 21
@@ -3761,8 +3761,8 @@ items:
     Name: Sledge
     Subtype: 21
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 5
+    BaseValue: 1.0
+    BaseWeight: 5.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 25
@@ -3791,8 +3791,8 @@ items:
     Name: 'Spade or shovel'
     Subtype: 21
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 4
+    BaseValue: 1.0
+    BaseWeight: 4.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 12
@@ -3806,7 +3806,7 @@ items:
     Name: Spyglass
     Subtype: 21
     Descriptors: null
-    BaseValue: 1000
+    BaseValue: 1000.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -3821,8 +3821,8 @@ items:
     Name: 'Tent (2 people; 2x2 sq)'
     Subtype: 20
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 10
+    BaseValue: 10.0
+    BaseWeight: 10.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: 5
@@ -3836,8 +3836,8 @@ items:
     Name: 'Tent, small pavilion (2 sq diameter)'
     Subtype: 20
     Descriptors: null
-    BaseValue: 50
-    BaseWeight: 25
+    BaseValue: 50.0
+    BaseWeight: 25.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 5
@@ -3851,8 +3851,8 @@ items:
     Name: 'Tent, medium pavilion (4 sq diameter)'
     Subtype: 20
     Descriptors: null
-    BaseValue: 80
-    BaseWeight: 40
+    BaseValue: 80.0
+    BaseWeight: 40.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 5
@@ -3866,8 +3866,8 @@ items:
     Name: 'Tent, large pavilion (6 sq diameter)'
     Subtype: 20
     Descriptors: null
-    BaseValue: 125
-    BaseWeight: 60
+    BaseValue: 125.0
+    BaseWeight: 60.0
     BaseSize: 2
     ECMod: null
     BaseMaterial: 5
@@ -3896,8 +3896,8 @@ items:
     Name: Backpack
     Subtype: 24
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 1
+    BaseValue: 2.0
+    BaseWeight: 1.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 15
@@ -3926,7 +3926,7 @@ items:
     Name: 'Bandoleer, masterwork'
     Subtype: 24
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: 0.25
     BaseSize: -3
     ECMod: null
@@ -3942,7 +3942,7 @@ items:
     Subtype: 24
     Descriptors: null
     BaseValue: 0.8
-    BaseWeight: 15
+    BaseWeight: 15.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: 25
@@ -3987,7 +3987,7 @@ items:
     Subtype: 24
     Descriptors: null
     BaseValue: 0.5
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 25
@@ -4001,7 +4001,7 @@ items:
     Name: 'Case, scroll'
     Subtype: 24
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: 0.25
     BaseSize: -3
     ECMod: null
@@ -4031,8 +4031,8 @@ items:
     Name: Coffer
     Subtype: 24
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 15
+    BaseValue: 1.0
+    BaseWeight: 15.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 25
@@ -4062,7 +4062,7 @@ items:
     Subtype: 24
     Descriptors: null
     BaseValue: 0.05
-    BaseWeight: 4
+    BaseWeight: 4.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 29
@@ -4107,7 +4107,7 @@ items:
     Subtype: 24
     Descriptors: null
     BaseValue: 0.5
-    BaseWeight: 5
+    BaseWeight: 5.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 12
@@ -4121,7 +4121,7 @@ items:
     Name: 'Potion belt'
     Subtype: 24
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: 0.5
     BaseSize: -2
     ECMod: null
@@ -4136,7 +4136,7 @@ items:
     Name: 'Potion belt, masterwork'
     Subtype: 24
     Descriptors: null
-    BaseValue: 60
+    BaseValue: 60.0
     BaseWeight: 0.5
     BaseSize: -2
     ECMod: null
@@ -4151,7 +4151,7 @@ items:
     Name: 'Pouch, belt'
     Subtype: 24
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: 0.25
     BaseSize: -3
     ECMod: null
@@ -4166,8 +4166,8 @@ items:
     Name: 'Pouches, component'
     Subtype: 24
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 1
+    BaseValue: 5.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 15
@@ -4211,7 +4211,7 @@ items:
     Name: 'Scroll organizer'
     Subtype: 24
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: 0.25
     BaseSize: -2
     ECMod: null
@@ -4226,7 +4226,7 @@ items:
     Name: 'Vial, glass or clay'
     Subtype: 24
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: null
@@ -4241,7 +4241,7 @@ items:
     Name: Waterskin
     Subtype: 24
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: 0.2
     BaseSize: -2
     ECMod: null
@@ -4301,7 +4301,7 @@ items:
     Name: 'Lantern, bullseye'
     Subtype: 23
     Descriptors: '[Fire]'
-    BaseValue: 12
+    BaseValue: 12.0
     BaseWeight: 1.5
     BaseSize: -2
     ECMod: 0
@@ -4316,8 +4316,8 @@ items:
     Name: 'Lantern, hooded'
     Subtype: 23
     Descriptors: '[Fire]'
-    BaseValue: 7
-    BaseWeight: 1
+    BaseValue: 7.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 3
@@ -4331,7 +4331,7 @@ items:
     Name: Sunrod
     Subtype: 23
     Descriptors: '[Radiant]'
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: 0
@@ -4361,7 +4361,7 @@ items:
     Name: 'Torch, everburning'
     Subtype: 23
     Descriptors: '[Radiant]'
-    BaseValue: 110
+    BaseValue: 110.0
     BaseWeight: 0.5
     BaseSize: -2
     ECMod: 0
@@ -4376,7 +4376,7 @@ items:
     Name: 'Acid (0.5 l flask)'
     Subtype: 22
     Descriptors: '[Acid]'
-    BaseValue: 10
+    BaseValue: 10.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -4391,7 +4391,7 @@ items:
     Name: "Alchemist's fire (0.5 l flask)"
     Subtype: 22
     Descriptors: '[Fire]'
-    BaseValue: 20
+    BaseValue: 20.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -4406,7 +4406,7 @@ items:
     Name: Antitoxin
     Subtype: 22
     Descriptors: null
-    BaseValue: 50
+    BaseValue: 50.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: null
@@ -4422,7 +4422,7 @@ items:
     Subtype: 22
     Descriptors: '[Fire]'
     BaseValue: 0.6
-    BaseWeight: 6
+    BaseWeight: 6.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: null
@@ -4436,8 +4436,8 @@ items:
     Name: 'Boiling oil (barrel)'
     Subtype: 22
     Descriptors: '[Fire]'
-    BaseValue: 7
-    BaseWeight: 100
+    BaseValue: 7.0
+    BaseWeight: 100.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: null
@@ -4451,7 +4451,7 @@ items:
     Name: 'Bomb, gunpowder'
     Subtype: 22
     Descriptors: '[Fire]'
-    BaseValue: 150
+    BaseValue: 150.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -4466,7 +4466,7 @@ items:
     Name: 'Gunpowder, powderhorn'
     Subtype: 22
     Descriptors: '[Fire]'
-    BaseValue: 35
+    BaseValue: 35.0
     BaseWeight: 1.5
     BaseSize: -2
     ECMod: null
@@ -4481,8 +4481,8 @@ items:
     Name: 'Gunpowder, keg'
     Subtype: 22
     Descriptors: '[Fire]'
-    BaseValue: 250
-    BaseWeight: 10
+    BaseValue: 250.0
+    BaseWeight: 10.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: null
@@ -4496,8 +4496,8 @@ items:
     Name: 'Herb, Cassil (per dose)'
     Subtype: 22
     Descriptors: null
-    BaseValue: 4
-    BaseWeight: 0
+    BaseValue: 4.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -4511,8 +4511,8 @@ items:
     Name: 'Herb, Nararoot (per dose)'
     Subtype: 22
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 0
+    BaseValue: 1.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -4526,7 +4526,7 @@ items:
     Name: 'Holy water (0.5 l flask)'
     Subtype: 22
     Descriptors: '[Radiant]'
-    BaseValue: 25
+    BaseValue: 25.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -4541,8 +4541,8 @@ items:
     Name: 'Scentbreaker (per dose)'
     Subtype: 22
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 0
+    BaseValue: 5.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -4556,7 +4556,7 @@ items:
     Name: Smokestick
     Subtype: 22
     Descriptors: null
-    BaseValue: 20
+    BaseValue: 20.0
     BaseWeight: 0.25
     BaseSize: -3
     ECMod: null
@@ -4571,8 +4571,8 @@ items:
     Name: 'Tanglefoot bag'
     Subtype: 22
     Descriptors: null
-    BaseValue: 50
-    BaseWeight: 2
+    BaseValue: 50.0
+    BaseWeight: 2.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: null
@@ -4586,7 +4586,7 @@ items:
     Name: Thunderstone
     Subtype: 22
     Descriptors: '[Sonic]'
-    BaseValue: 30
+    BaseValue: 30.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -4601,8 +4601,8 @@ items:
     Name: Tindertwig
     Subtype: 22
     Descriptors: '[Fire]'
-    BaseValue: 1
-    BaseWeight: 0
+    BaseValue: 1.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 25
@@ -4616,7 +4616,7 @@ items:
     Name: 'Unholy water (0.5 l flask)'
     Subtype: 22
     Descriptors: '[Necrotic]'
-    BaseValue: 25
+    BaseValue: 25.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -4631,8 +4631,8 @@ items:
     Name: "Alchemist's lab"
     Subtype: 21
     Descriptors: null
-    BaseValue: 500
-    BaseWeight: 20
+    BaseValue: 500.0
+    BaseWeight: 20.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: 9
@@ -4646,7 +4646,7 @@ items:
     Name: "Artisan's tools"
     Subtype: 21
     Descriptors: null
-    BaseValue: 20
+    BaseValue: 20.0
     BaseWeight: 2.5
     BaseSize: -2
     ECMod: null
@@ -4661,7 +4661,7 @@ items:
     Name: "Artisan's tools, mw"
     Subtype: 21
     Descriptors: null
-    BaseValue: 220
+    BaseValue: 220.0
     BaseWeight: 2.5
     BaseSize: -2
     ECMod: null
@@ -4676,8 +4676,8 @@ items:
     Name: "Armorer's tools"
     Subtype: 21
     Descriptors: null
-    BaseValue: 275
-    BaseWeight: 5
+    BaseValue: 275.0
+    BaseWeight: 5.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 12
@@ -4691,7 +4691,7 @@ items:
     Name: Aspergillum
     Subtype: 22
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: 1.5
     BaseSize: -2
     ECMod: 0
@@ -4706,8 +4706,8 @@ items:
     Name: 'Book, average'
     Subtype: 21
     Descriptors: null
-    BaseValue: 15
-    BaseWeight: 3
+    BaseValue: 15.0
+    BaseWeight: 3.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 18
@@ -4721,8 +4721,8 @@ items:
     Name: 'Chess set, common'
     Subtype: 21
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 2
+    BaseValue: 2.0
+    BaseWeight: 2.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 25
@@ -4736,8 +4736,8 @@ items:
     Name: 'Chess set, fine'
     Subtype: 21
     Descriptors: null
-    BaseValue: 25
-    BaseWeight: 3
+    BaseValue: 25.0
+    BaseWeight: 3.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 24
@@ -4751,7 +4751,7 @@ items:
     Name: "Climber's kit"
     Subtype: 20
     Descriptors: null
-    BaseValue: 80
+    BaseValue: 80.0
     BaseWeight: 2.5
     BaseSize: -2
     ECMod: null
@@ -4766,8 +4766,8 @@ items:
     Name: 'Disguise kit'
     Subtype: 21
     Descriptors: null
-    BaseValue: 50
-    BaseWeight: 4
+    BaseValue: 50.0
+    BaseWeight: 4.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: null
@@ -4781,8 +4781,8 @@ items:
     Name: 'Draughts set (checkers)'
     Subtype: 21
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 1
+    BaseValue: 1.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 25
@@ -4796,7 +4796,7 @@ items:
     Name: "Healer's kit"
     Subtype: 21
     Descriptors: null
-    BaseValue: 50
+    BaseValue: 50.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -4811,8 +4811,8 @@ items:
     Name: 'Holly and mistletoe'
     Subtype: 21
     Descriptors: null
-    BaseValue: 0
-    BaseWeight: 0
+    BaseValue: 0.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: 0
     BaseMaterial: null
@@ -4826,7 +4826,7 @@ items:
     Name: Hourglass
     Subtype: 21
     Descriptors: null
-    BaseValue: 25
+    BaseValue: 25.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -4841,7 +4841,7 @@ items:
     Name: 'Magnifying glass'
     Subtype: 21
     Descriptors: null
-    BaseValue: 100
+    BaseValue: 100.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: 0
@@ -4856,7 +4856,7 @@ items:
     Name: 'Marbles (two dozen)'
     Subtype: 21
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -4886,7 +4886,7 @@ items:
     Name: "Scale, merchant's"
     Subtype: 21
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -4901,7 +4901,7 @@ items:
     Name: 'Spellbook (blank)'
     Subtype: 21
     Descriptors: null
-    BaseValue: 15
+    BaseValue: 15.0
     BaseWeight: 1.5
     BaseSize: -2
     ECMod: null
@@ -4916,7 +4916,7 @@ items:
     Name: 'Tarot (or Talis) deck'
     Subtype: 21
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: null
@@ -4931,7 +4931,7 @@ items:
     Name: "Thieves' tools"
     Subtype: 21
     Descriptors: null
-    BaseValue: 30
+    BaseValue: 30.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -4946,8 +4946,8 @@ items:
     Name: "Thieves' tools, masterwork"
     Subtype: 21
     Descriptors: null
-    BaseValue: 100
-    BaseWeight: 1
+    BaseValue: 100.0
+    BaseWeight: 1.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 23
@@ -4961,7 +4961,7 @@ items:
     Name: 'Tool, masterwork'
     Subtype: 21
     Descriptors: null
-    BaseValue: 50
+    BaseValue: 50.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -4976,8 +4976,8 @@ items:
     Name: 'Water clock'
     Subtype: 21
     Descriptors: null
-    BaseValue: 1000
-    BaseWeight: 100
+    BaseValue: 1000.0
+    BaseWeight: 100.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: 25
@@ -4991,7 +4991,7 @@ items:
     Name: 'Holy symbol, wooden'
     Subtype: 60
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: 0.2
     BaseSize: -3
     ECMod: 0
@@ -5006,7 +5006,7 @@ items:
     Name: 'Holy symbol, silver'
     Subtype: 60
     Descriptors: null
-    BaseValue: 25
+    BaseValue: 25.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: 0
@@ -5021,8 +5021,8 @@ items:
     Name: 'Musical instrument, small wood'
     Subtype: 65
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 1
+    BaseValue: 5.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 25
@@ -5036,8 +5036,8 @@ items:
     Name: 'Musical instrument, mw small wood'
     Subtype: 65
     Descriptors: null
-    BaseValue: 100
-    BaseWeight: 1
+    BaseValue: 100.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 25
@@ -5051,7 +5051,7 @@ items:
     Name: Wand
     Subtype: 59
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: 0.2
     BaseSize: -3
     ECMod: 0
@@ -5066,7 +5066,7 @@ items:
     Name: Dorje
     Subtype: 61
     Descriptors: null
-    BaseValue: 10
+    BaseValue: 10.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: 0
@@ -5081,8 +5081,8 @@ items:
     Name: Psicrown
     Subtype: 64
     Descriptors: null
-    BaseValue: 20
-    BaseWeight: 1
+    BaseValue: 20.0
+    BaseWeight: 1.0
     BaseSize: -3
     ECMod: 0
     BaseMaterial: 23
@@ -5096,8 +5096,8 @@ items:
     Name: "Artisan's outfit"
     Subtype: 14
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 2
+    BaseValue: 1.0
+    BaseWeight: 2.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 5
@@ -5111,8 +5111,8 @@ items:
     Name: "Cleric's vestments"
     Subtype: 14
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 3
+    BaseValue: 5.0
+    BaseWeight: 3.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 5
@@ -5126,7 +5126,7 @@ items:
     Name: 'Cold weather outfit'
     Subtype: 14
     Descriptors: null
-    BaseValue: 8
+    BaseValue: 8.0
     BaseWeight: 3.5
     BaseSize: -1
     ECMod: 1
@@ -5141,8 +5141,8 @@ items:
     Name: "Courtier's outfit"
     Subtype: 14
     Descriptors: null
-    BaseValue: 30
-    BaseWeight: 3
+    BaseValue: 30.0
+    BaseWeight: 3.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 5
@@ -5156,8 +5156,8 @@ items:
     Name: "Entertainer's outfit"
     Subtype: 14
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 2
+    BaseValue: 3.0
+    BaseWeight: 2.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 5
@@ -5171,8 +5171,8 @@ items:
     Name: "Explorer's outfit"
     Subtype: 14
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 4
+    BaseValue: 10.0
+    BaseWeight: 4.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 15
@@ -5186,8 +5186,8 @@ items:
     Name: "Landowner's outfit"
     Subtype: 14
     Descriptors: null
-    BaseValue: 9
-    BaseWeight: 4
+    BaseValue: 9.0
+    BaseWeight: 4.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 5
@@ -5201,8 +5201,8 @@ items:
     Name: Fur
     Subtype: 14
     Descriptors: null
-    BaseValue: 50
-    BaseWeight: 4
+    BaseValue: 50.0
+    BaseWeight: 4.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 15
@@ -5231,8 +5231,8 @@ items:
     Name: "Monk's outfit"
     Subtype: 14
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 1
+    BaseValue: 3.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 5
@@ -5246,8 +5246,8 @@ items:
     Name: "Noble's outfit"
     Subtype: 14
     Descriptors: null
-    BaseValue: 75
-    BaseWeight: 5
+    BaseValue: 75.0
+    BaseWeight: 5.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 5
@@ -5261,8 +5261,8 @@ items:
     Name: "Peasant's outfit"
     Subtype: 14
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 1
+    BaseValue: 1.0
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 5
@@ -5276,8 +5276,8 @@ items:
     Name: Robe
     Subtype: 14
     Descriptors: null
-    BaseValue: 6
-    BaseWeight: 2
+    BaseValue: 6.0
+    BaseWeight: 2.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 5
@@ -5291,7 +5291,7 @@ items:
     Name: 'Royal outfit'
     Subtype: 14
     Descriptors: null
-    BaseValue: 200
+    BaseValue: 200.0
     BaseWeight: 7.5
     BaseSize: -1
     ECMod: 1
@@ -5306,8 +5306,8 @@ items:
     Name: "Scholar's outfit"
     Subtype: 14
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 3
+    BaseValue: 5.0
+    BaseWeight: 3.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 5
@@ -5321,7 +5321,7 @@ items:
     Name: Tabard
     Subtype: 19
     Descriptors: null
-    BaseValue: 3
+    BaseValue: 3.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: 0
@@ -5336,7 +5336,7 @@ items:
     Name: "Traveler's outfit"
     Subtype: 14
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: 2.5
     BaseSize: -2
     ECMod: 0
@@ -5367,7 +5367,7 @@ items:
     Subtype: 29
     Descriptors: null
     BaseValue: 0.2
-    BaseWeight: 4
+    BaseWeight: 4.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: null
@@ -5396,7 +5396,7 @@ items:
     Name: 'Banquet (1 person)'
     Subtype: 29
     Descriptors: null
-    BaseValue: 10
+    BaseValue: 10.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5411,7 +5411,7 @@ items:
     Name: 'Barn, large'
     Subtype: 57
     Descriptors: null
-    BaseValue: 1600
+    BaseValue: 1600.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5441,7 +5441,7 @@ items:
     Name: 'Castle, moderate'
     Subtype: 57
     Descriptors: null
-    BaseValue: 50000
+    BaseValue: 50000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5456,7 +5456,7 @@ items:
     Name: 'Castle, large'
     Subtype: 57
     Descriptors: null
-    BaseValue: 100000
+    BaseValue: 100000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5486,7 +5486,7 @@ items:
     Name: 'Church, average'
     Subtype: 57
     Descriptors: null
-    BaseValue: 3000
+    BaseValue: 3000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5502,7 +5502,7 @@ items:
     Subtype: 29
     Descriptors: null
     BaseValue: 0.5
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: null
@@ -5531,7 +5531,7 @@ items:
     Name: 'House, cottage'
     Subtype: 57
     Descriptors: null
-    BaseValue: 40
+    BaseValue: 40.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5546,7 +5546,7 @@ items:
     Name: 'House, row'
     Subtype: 57
     Descriptors: null
-    BaseValue: 75
+    BaseValue: 75.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5561,7 +5561,7 @@ items:
     Name: "House, craftsman's"
     Subtype: 57
     Descriptors: null
-    BaseValue: 250
+    BaseValue: 250.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5576,7 +5576,7 @@ items:
     Name: "House, merchant's"
     Subtype: 57
     Descriptors: null
-    BaseValue: 1000
+    BaseValue: 1000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5591,7 +5591,7 @@ items:
     Name: 'House, mansion'
     Subtype: 57
     Descriptors: null
-    BaseValue: 2500
+    BaseValue: 2500.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5606,7 +5606,7 @@ items:
     Name: 'Inn, good (per day)'
     Subtype: 30
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5651,7 +5651,7 @@ items:
     Name: Keep
     Subtype: 57
     Descriptors: null
-    BaseValue: 8000
+    BaseValue: 8000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5726,7 +5726,7 @@ items:
     Name: 'Rent, cottage (per year)'
     Subtype: 30
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5741,7 +5741,7 @@ items:
     Name: "Rent, craftsman's house (per year)"
     Subtype: 30
     Descriptors: null
-    BaseValue: 20
+    BaseValue: 20.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5756,7 +5756,7 @@ items:
     Name: "Rent, merchant's house (per year)"
     Subtype: 30
     Descriptors: null
-    BaseValue: 50
+    BaseValue: 50.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5771,7 +5771,7 @@ items:
     Name: Tower
     Subtype: 57
     Descriptors: null
-    BaseValue: 2500
+    BaseValue: 2500.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5786,7 +5786,7 @@ items:
     Name: 'Upkeep, self-sufficient (per month)'
     Subtype: 30
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5801,7 +5801,7 @@ items:
     Name: 'Upkeep, meager (per month)'
     Subtype: 30
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5816,7 +5816,7 @@ items:
     Name: 'Upkeep, poor (per month)'
     Subtype: 30
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5831,7 +5831,7 @@ items:
     Name: 'Upkeep, common (per month)'
     Subtype: 30
     Descriptors: null
-    BaseValue: 20
+    BaseValue: 20.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5846,7 +5846,7 @@ items:
     Name: 'Upkeep, good (per month)'
     Subtype: 30
     Descriptors: null
-    BaseValue: 50
+    BaseValue: 50.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5861,7 +5861,7 @@ items:
     Name: 'Upkeep, extravagant (per month)'
     Subtype: 30
     Descriptors: null
-    BaseValue: 100
+    BaseValue: 100.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5877,7 +5877,7 @@ items:
     Subtype: 29
     Descriptors: null
     BaseValue: 0.5
-    BaseWeight: 3
+    BaseWeight: 3.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: null
@@ -5891,7 +5891,7 @@ items:
     Name: 'Wine, fine bottle'
     Subtype: 29
     Descriptors: null
-    BaseValue: 10
+    BaseValue: 10.0
     BaseWeight: 0.75
     BaseSize: -3
     ECMod: null
@@ -5906,7 +5906,7 @@ items:
     Name: Barge
     Subtype: 27
     Descriptors: null
-    BaseValue: 4000
+    BaseValue: 4000.0
     BaseWeight: null
     BaseSize: 7
     ECMod: null
@@ -5921,7 +5921,7 @@ items:
     Name: 'Berth, boat (per day)'
     Subtype: 33
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5936,7 +5936,7 @@ items:
     Name: 'Berth, small ship (per day)'
     Subtype: 33
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5951,7 +5951,7 @@ items:
     Name: 'Berth, large ship (per day)'
     Subtype: 33
     Descriptors: null
-    BaseValue: 20
+    BaseValue: 20.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -5966,7 +5966,7 @@ items:
     Name: 'Bit and bridle'
     Subtype: 28
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: 0.5
     BaseSize: -2
     ECMod: null
@@ -5981,8 +5981,8 @@ items:
     Name: 'Canoe, small'
     Subtype: 27
     Descriptors: null
-    BaseValue: 30
-    BaseWeight: 30
+    BaseValue: 30.0
+    BaseWeight: 30.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 25
@@ -5996,8 +5996,8 @@ items:
     Name: 'Canoe, war'
     Subtype: 27
     Descriptors: null
-    BaseValue: 500
-    BaseWeight: 400
+    BaseValue: 500.0
+    BaseWeight: 400.0
     BaseSize: 4
     ECMod: null
     BaseMaterial: 25
@@ -6011,8 +6011,8 @@ items:
     Name: 'Carriage, simple'
     Subtype: 26
     Descriptors: null
-    BaseValue: 100
-    BaseWeight: 300
+    BaseValue: 100.0
+    BaseWeight: 300.0
     BaseSize: 2
     ECMod: null
     BaseMaterial: 25
@@ -6026,8 +6026,8 @@ items:
     Name: 'Carriage, luxurious'
     Subtype: 26
     Descriptors: null
-    BaseValue: 2000
-    BaseWeight: 350
+    BaseValue: 2000.0
+    BaseWeight: 350.0
     BaseSize: 2
     ECMod: null
     BaseMaterial: 25
@@ -6041,8 +6041,8 @@ items:
     Name: Cart
     Subtype: 26
     Descriptors: null
-    BaseValue: 12
-    BaseWeight: 100
+    BaseValue: 12.0
+    BaseWeight: 100.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 25
@@ -6056,7 +6056,7 @@ items:
     Name: 'Dog, guard'
     Subtype: 25
     Descriptors: null
-    BaseValue: 20
+    BaseValue: 20.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6071,7 +6071,7 @@ items:
     Name: 'Dog, riding'
     Subtype: 25
     Descriptors: null
-    BaseValue: 50
+    BaseValue: 50.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6086,7 +6086,7 @@ items:
     Name: Donkey
     Subtype: 25
     Descriptors: null
-    BaseValue: 10
+    BaseValue: 10.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6102,7 +6102,7 @@ items:
     Subtype: 29
     Descriptors: null
     BaseValue: 0.05
-    BaseWeight: 5
+    BaseWeight: 5.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: null
@@ -6116,7 +6116,7 @@ items:
     Name: 'Galley, large'
     Subtype: 27
     Descriptors: null
-    BaseValue: 10000
+    BaseValue: 10000.0
     BaseWeight: null
     BaseSize: 16
     ECMod: null
@@ -6131,7 +6131,7 @@ items:
     Name: 'Horse, draught'
     Subtype: 25
     Descriptors: null
-    BaseValue: 30
+    BaseValue: 30.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6146,7 +6146,7 @@ items:
     Name: 'Horse, heavy'
     Subtype: 25
     Descriptors: null
-    BaseValue: 100
+    BaseValue: 100.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6161,7 +6161,7 @@ items:
     Name: 'Horse, heavy war-'
     Subtype: 25
     Descriptors: null
-    BaseValue: 800
+    BaseValue: 800.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6176,7 +6176,7 @@ items:
     Name: 'Horse, light'
     Subtype: 25
     Descriptors: null
-    BaseValue: 40
+    BaseValue: 40.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6191,7 +6191,7 @@ items:
     Name: 'Horse, light war-'
     Subtype: 25
     Descriptors: null
-    BaseValue: 250
+    BaseValue: 250.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6206,7 +6206,7 @@ items:
     Name: 'Horse, pony'
     Subtype: 25
     Descriptors: null
-    BaseValue: 20
+    BaseValue: 20.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6221,7 +6221,7 @@ items:
     Name: 'Horse, warpony'
     Subtype: 25
     Descriptors: null
-    BaseValue: 150
+    BaseValue: 150.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6236,7 +6236,7 @@ items:
     Name: Keelboat
     Subtype: 27
     Descriptors: null
-    BaseValue: 2000
+    BaseValue: 2000.0
     BaseWeight: null
     BaseSize: 7
     ECMod: null
@@ -6251,7 +6251,7 @@ items:
     Name: Longship
     Subtype: 27
     Descriptors: null
-    BaseValue: 6000
+    BaseValue: 6000.0
     BaseWeight: null
     BaseSize: 8
     ECMod: null
@@ -6266,7 +6266,7 @@ items:
     Name: Mule
     Subtype: 25
     Descriptors: null
-    BaseValue: 12
+    BaseValue: 12.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6281,8 +6281,8 @@ items:
     Name: Oar
     Subtype: 28
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 5
+    BaseValue: 2.0
+    BaseWeight: 5.0
     BaseSize: 0
     ECMod: 2
     BaseMaterial: 25
@@ -6296,8 +6296,8 @@ items:
     Name: Rowboat
     Subtype: 27
     Descriptors: null
-    BaseValue: 50
-    BaseWeight: 50
+    BaseValue: 50.0
+    BaseWeight: 50.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 25
@@ -6311,8 +6311,8 @@ items:
     Name: 'Saddle, military'
     Subtype: 28
     Descriptors: null
-    BaseValue: 20
-    BaseWeight: 15
+    BaseValue: 20.0
+    BaseWeight: 15.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: 15
@@ -6326,7 +6326,7 @@ items:
     Name: 'Saddle, pack'
     Subtype: 28
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: 7.5
     BaseSize: -1
     ECMod: null
@@ -6341,7 +6341,7 @@ items:
     Name: 'Saddle, riding'
     Subtype: 28
     Descriptors: null
-    BaseValue: 10
+    BaseValue: 10.0
     BaseWeight: 12.5
     BaseSize: 0
     ECMod: null
@@ -6356,8 +6356,8 @@ items:
     Name: Saddlebags
     Subtype: 28
     Descriptors: null
-    BaseValue: 4
-    BaseWeight: 4
+    BaseValue: 4.0
+    BaseWeight: 4.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 15
@@ -6371,7 +6371,7 @@ items:
     Name: 'Sailing ship'
     Subtype: 27
     Descriptors: null
-    BaseValue: 5000
+    BaseValue: 5000.0
     BaseWeight: null
     BaseSize: 11
     ECMod: null
@@ -6386,8 +6386,8 @@ items:
     Name: 'Sedan chair'
     Subtype: 26
     Descriptors: null
-    BaseValue: 250
-    BaseWeight: 150
+    BaseValue: 250.0
+    BaseWeight: 150.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 25
@@ -6401,8 +6401,8 @@ items:
     Name: Sled
     Subtype: 26
     Descriptors: null
-    BaseValue: 20
-    BaseWeight: 150
+    BaseValue: 20.0
+    BaseWeight: 150.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 25
@@ -6431,8 +6431,8 @@ items:
     Name: Wagon
     Subtype: 26
     Descriptors: null
-    BaseValue: 35
-    BaseWeight: 200
+    BaseValue: 35.0
+    BaseWeight: 200.0
     BaseSize: 2
     ECMod: null
     BaseMaterial: 25
@@ -6446,7 +6446,7 @@ items:
     Name: Warship
     Subtype: 27
     Descriptors: null
-    BaseValue: 14000
+    BaseValue: 14000.0
     BaseWeight: null
     BaseSize: 14
     ECMod: null
@@ -6476,7 +6476,7 @@ items:
     Name: 'Caravan guard (per day)'
     Subtype: 32
     Descriptors: null
-    BaseValue: 10
+    BaseValue: 10.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6521,7 +6521,7 @@ items:
     Name: 'Cleaning metal armor'
     Subtype: 32
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6536,7 +6536,7 @@ items:
     Name: 'Dowry, peasant'
     Subtype: 34
     Descriptors: null
-    BaseValue: 40
+    BaseValue: 40.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6551,7 +6551,7 @@ items:
     Name: 'Dowry, knight'
     Subtype: 34
     Descriptors: null
-    BaseValue: 1200
+    BaseValue: 1200.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6566,7 +6566,7 @@ items:
     Name: 'Dowry, noble'
     Subtype: 34
     Descriptors: null
-    BaseValue: 25000
+    BaseValue: 25000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6581,7 +6581,7 @@ items:
     Name: 'Education, monastery (per year)'
     Subtype: 34
     Descriptors: null
-    BaseValue: 40
+    BaseValue: 40.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6596,7 +6596,7 @@ items:
     Name: 'Education, school (per year)'
     Subtype: 34
     Descriptors: null
-    BaseValue: 120
+    BaseValue: 120.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6611,7 +6611,7 @@ items:
     Name: 'Education, university (per year)'
     Subtype: 34
     Descriptors: null
-    BaseValue: 200
+    BaseValue: 200.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6656,7 +6656,7 @@ items:
     Name: 'Funeral, wealthy'
     Subtype: 34
     Descriptors: null
-    BaseValue: 1500
+    BaseValue: 1500.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6686,7 +6686,7 @@ items:
     Name: 'Hireling, skilled (generic skill; per day)'
     Subtype: 32
     Descriptors: null
-    BaseValue: 40
+    BaseValue: 40.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6701,7 +6701,7 @@ items:
     Name: 'Hireling, skilled (combat skill; per day)'
     Subtype: 32
     Descriptors: null
-    BaseValue: 80
+    BaseValue: 80.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6716,7 +6716,7 @@ items:
     Name: 'Hireling, skilled (supernat. skill; per day)'
     Subtype: 32
     Descriptors: null
-    BaseValue: 200
+    BaseValue: 200.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6761,7 +6761,7 @@ items:
     Name: 'Instruction, fencing (per month)'
     Subtype: 34
     Descriptors: null
-    BaseValue: 10
+    BaseValue: 10.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6776,7 +6776,7 @@ items:
     Name: 'Join guild'
     Subtype: 34
     Descriptors: null
-    BaseValue: 12
+    BaseValue: 12.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6791,7 +6791,7 @@ items:
     Name: 'Mercenary, man-at-arms (per day)'
     Subtype: 32
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6806,7 +6806,7 @@ items:
     Name: 'Mercenary, knight (per day)'
     Subtype: 32
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6821,7 +6821,7 @@ items:
     Name: 'Mercenary, knight banneret (per day)'
     Subtype: 32
     Descriptors: null
-    BaseValue: 4
+    BaseValue: 4.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6851,7 +6851,7 @@ items:
     Name: 'Messenger bird'
     Subtype: 33
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6866,7 +6866,7 @@ items:
     Name: 'Penance, minor'
     Subtype: 34
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6881,7 +6881,7 @@ items:
     Name: 'Penance, moderate'
     Subtype: 34
     Descriptors: null
-    BaseValue: 300
+    BaseValue: 300.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6896,7 +6896,7 @@ items:
     Name: 'Penance, major'
     Subtype: 34
     Descriptors: null
-    BaseValue: 1500
+    BaseValue: 1500.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6911,7 +6911,7 @@ items:
     Name: 'Ransom, knight'
     Subtype: 34
     Descriptors: null
-    BaseValue: 2000
+    BaseValue: 2000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6926,7 +6926,7 @@ items:
     Name: 'Ransom, lesser noble'
     Subtype: 34
     Descriptors: null
-    BaseValue: 5000
+    BaseValue: 5000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -6941,7 +6941,7 @@ items:
     Name: 'Ransom, greater noble'
     Subtype: 34
     Descriptors: null
-    BaseValue: 12000
+    BaseValue: 12000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7046,7 +7046,7 @@ items:
     Name: 'Soldier, drummer (per day)'
     Subtype: 32
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7061,7 +7061,7 @@ items:
     Name: 'Soldier, sergeant (per day)'
     Subtype: 32
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7076,7 +7076,7 @@ items:
     Name: 'Soldier, ensign (per day)'
     Subtype: 32
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7091,7 +7091,7 @@ items:
     Name: 'Soldier, lieutenant (per day)'
     Subtype: 32
     Descriptors: null
-    BaseValue: 4
+    BaseValue: 4.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7106,7 +7106,7 @@ items:
     Name: 'Soldier, captain (per day)'
     Subtype: 32
     Descriptors: null
-    BaseValue: 8
+    BaseValue: 8.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7136,7 +7136,7 @@ items:
     Name: 'Wedding feast, common (per guest)'
     Subtype: 29
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7151,7 +7151,7 @@ items:
     Name: 'Wedding feast, wealthy (per guest)'
     Subtype: 29
     Descriptors: null
-    BaseValue: 20
+    BaseValue: 20.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7166,8 +7166,8 @@ items:
     Name: 'Silver spoon'
     Subtype: 38
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 0
+    BaseValue: 2.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 21
@@ -7181,8 +7181,8 @@ items:
     Name: 'Diamond ring'
     Subtype: 35
     Descriptors: null
-    BaseValue: 160
-    BaseWeight: 0
+    BaseValue: 160.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 10
@@ -7196,8 +7196,8 @@ items:
     Name: 'Ruby ring'
     Subtype: 35
     Descriptors: null
-    BaseValue: 27
-    BaseWeight: 0
+    BaseValue: 27.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 10
@@ -7211,8 +7211,8 @@ items:
     Name: 'Pearl necklace'
     Subtype: 37
     Descriptors: null
-    BaseValue: 25
-    BaseWeight: 0
+    BaseValue: 25.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 27
@@ -7226,8 +7226,8 @@ items:
     Name: 'Gold necklace'
     Subtype: 37
     Descriptors: null
-    BaseValue: 20
-    BaseWeight: 0
+    BaseValue: 20.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 10
@@ -7241,7 +7241,7 @@ items:
     Name: 'Gold chain'
     Subtype: 37
     Descriptors: null
-    BaseValue: 250
+    BaseValue: 250.0
     BaseWeight: 0.2
     BaseSize: -4
     ECMod: null
@@ -7256,7 +7256,7 @@ items:
     Name: Cathedral
     Subtype: 57
     Descriptors: null
-    BaseValue: 100000
+    BaseValue: 100000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7271,7 +7271,7 @@ items:
     Name: 'House, hovel'
     Subtype: 57
     Descriptors: null
-    BaseValue: 16
+    BaseValue: 16.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7286,7 +7286,7 @@ items:
     Name: 'Well (per fathom)'
     Subtype: 58
     Descriptors: null
-    BaseValue: 3
+    BaseValue: 3.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7301,7 +7301,7 @@ items:
     Name: 'Education, private tutor (per year)'
     Subtype: 34
     Descriptors: null
-    BaseValue: 25
+    BaseValue: 25.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7316,7 +7316,7 @@ items:
     Name: 'Falcon, trained'
     Subtype: 25
     Descriptors: null
-    BaseValue: 8
+    BaseValue: 8.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7331,8 +7331,8 @@ items:
     Name: 'Cider, tun'
     Subtype: 29
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 40
+    BaseValue: 10.0
+    BaseWeight: 40.0
     BaseSize: null
     ECMod: null
     BaseMaterial: null
@@ -7376,8 +7376,8 @@ items:
     Name: Anvil
     Subtype: 21
     Descriptors: null
-    BaseValue: 40
-    BaseWeight: 35
+    BaseValue: 40.0
+    BaseWeight: 35.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 12
@@ -7391,8 +7391,8 @@ items:
     Name: Plough
     Subtype: 21
     Descriptors: null
-    BaseValue: 6
-    BaseWeight: 80
+    BaseValue: 6.0
+    BaseWeight: 80.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 12
@@ -7406,8 +7406,8 @@ items:
     Name: Yoke
     Subtype: 21
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 12
+    BaseValue: 3.0
+    BaseWeight: 12.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: 25
@@ -7421,7 +7421,7 @@ items:
     Name: 'Galley, small'
     Subtype: 27
     Descriptors: null
-    BaseValue: 4000
+    BaseValue: 4000.0
     BaseWeight: null
     BaseSize: 8
     ECMod: null
@@ -7436,7 +7436,7 @@ items:
     Name: 'Galley, medium'
     Subtype: 27
     Descriptors: null
-    BaseValue: 6000
+    BaseValue: 6000.0
     BaseWeight: null
     BaseSize: 12
     ECMod: null
@@ -7451,7 +7451,7 @@ items:
     Name: 'Patent of nobility'
     Subtype: 34
     Descriptors: null
-    BaseValue: 5000
+    BaseValue: 5000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -7466,7 +7466,7 @@ items:
     Name: 'Studded collar'
     Subtype: 37
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: null
@@ -7481,8 +7481,8 @@ items:
     Name: 'Residuum (1 dl)'
     Subtype: 22
     Descriptors: null
-    BaseValue: 10000
-    BaseWeight: 1
+    BaseValue: 10000.0
+    BaseWeight: 1.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7496,8 +7496,8 @@ items:
     Name: 'Arsenic (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 120
-    BaseWeight: 0
+    BaseValue: 120.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7511,8 +7511,8 @@ items:
     Name: 'Basilisk blood (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 1000
-    BaseWeight: 0
+    BaseValue: 1000.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7526,8 +7526,8 @@ items:
     Name: 'Basilisk venom (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 1000
-    BaseWeight: 0
+    BaseValue: 1000.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7541,8 +7541,8 @@ items:
     Name: 'Black Adder venom (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 120
-    BaseWeight: 0
+    BaseValue: 120.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7556,8 +7556,8 @@ items:
     Name: 'Black Lotus extract (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 4500
-    BaseWeight: 0
+    BaseValue: 4500.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7571,8 +7571,8 @@ items:
     Name: 'Bloodroot (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 100
-    BaseWeight: 0
+    BaseValue: 100.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7586,8 +7586,8 @@ items:
     Name: 'Blue Whinnis (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 120
-    BaseWeight: 0
+    BaseValue: 120.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7601,8 +7601,8 @@ items:
     Name: 'Burnt Othur fumes (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 2100
-    BaseWeight: 0
+    BaseValue: 2100.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7616,8 +7616,8 @@ items:
     Name: 'Carrion Crawler brain juice (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 200
-    BaseWeight: 0
+    BaseValue: 200.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7631,8 +7631,8 @@ items:
     Name: 'Dark Reaver powder (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 300
-    BaseWeight: 0
+    BaseValue: 300.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7646,8 +7646,8 @@ items:
     Name: 'Deathblade (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 1800
-    BaseWeight: 0
+    BaseValue: 1800.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7661,8 +7661,8 @@ items:
     Name: 'Dragon bile (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 1500
-    BaseWeight: 0
+    BaseValue: 1500.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7676,8 +7676,8 @@ items:
     Name: 'Drow poison (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 75
-    BaseWeight: 0
+    BaseValue: 75.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7691,8 +7691,8 @@ items:
     Name: 'Firemilk (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 50
-    BaseWeight: 0
+    BaseValue: 50.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7706,8 +7706,8 @@ items:
     Name: 'Giant Wasp poison (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 210
-    BaseWeight: 0
+    BaseValue: 210.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7721,8 +7721,8 @@ items:
     Name: 'Greenblood oil (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 100
-    BaseWeight: 0
+    BaseValue: 100.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7736,8 +7736,8 @@ items:
     Name: 'Greycap (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 50
-    BaseWeight: 0
+    BaseValue: 50.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7751,8 +7751,8 @@ items:
     Name: 'Id Moss (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 125
-    BaseWeight: 0
+    BaseValue: 125.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7766,8 +7766,8 @@ items:
     Name: 'Insanity mist (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 1500
-    BaseWeight: 0
+    BaseValue: 1500.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7781,8 +7781,8 @@ items:
     Name: 'Large Scorpion venom (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 200
-    BaseWeight: 0
+    BaseValue: 200.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7796,8 +7796,8 @@ items:
     Name: 'Lich dust (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 250
-    BaseWeight: 0
+    BaseValue: 250.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7811,8 +7811,8 @@ items:
     Name: 'Malyss Root paste (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 500
-    BaseWeight: 0
+    BaseValue: 500.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7826,8 +7826,8 @@ items:
     Name: 'Medium Spider venom (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 150
-    BaseWeight: 0
+    BaseValue: 150.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7841,8 +7841,8 @@ items:
     Name: 'Milk of the Poppy (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 1000
-    BaseWeight: 0
+    BaseValue: 1000.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7856,8 +7856,8 @@ items:
     Name: 'Myrish Fire (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 200
-    BaseWeight: 0
+    BaseValue: 200.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7871,8 +7871,8 @@ items:
     Name: 'Nightshade (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 200
-    BaseWeight: 0
+    BaseValue: 200.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7886,8 +7886,8 @@ items:
     Name: 'Nitharit (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 650
-    BaseWeight: 0
+    BaseValue: 650.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7901,8 +7901,8 @@ items:
     Name: 'Oil of Taggit (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 90
-    BaseWeight: 0
+    BaseValue: 90.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7916,8 +7916,8 @@ items:
     Name: 'Pennyroyal, mild (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 10
-    BaseWeight: 0
+    BaseValue: 10.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7931,8 +7931,8 @@ items:
     Name: 'Pennyroyal, strong (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 20
-    BaseWeight: 0
+    BaseValue: 20.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7946,8 +7946,8 @@ items:
     Name: 'Purple Worm poison (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 700
-    BaseWeight: 0
+    BaseValue: 700.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7961,8 +7961,8 @@ items:
     Name: 'Sassone Leaf residue (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 300
-    BaseWeight: 0
+    BaseValue: 300.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7976,8 +7976,8 @@ items:
     Name: 'Shadow essence (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 250
-    BaseWeight: 0
+    BaseValue: 250.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -7991,8 +7991,8 @@ items:
     Name: 'Sleep gas (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 60
-    BaseWeight: 0
+    BaseValue: 60.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8006,8 +8006,8 @@ items:
     Name: 'Small Centipede poison (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 90
-    BaseWeight: 0
+    BaseValue: 90.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8021,8 +8021,8 @@ items:
     Name: 'Strangler (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 6000
-    BaseWeight: 0
+    BaseValue: 6000.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8036,8 +8036,8 @@ items:
     Name: 'Striped Toadstool (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 180
-    BaseWeight: 0
+    BaseValue: 180.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8051,8 +8051,8 @@ items:
     Name: 'Sweetsleep (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 240
-    BaseWeight: 0
+    BaseValue: 240.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8066,8 +8066,8 @@ items:
     Name: 'Tansy, mild (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 10
-    BaseWeight: 0
+    BaseValue: 10.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8081,8 +8081,8 @@ items:
     Name: 'Tansy, strong (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 30
-    BaseWeight: 0
+    BaseValue: 30.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8096,8 +8096,8 @@ items:
     Name: 'Tears of Lys (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 4000
-    BaseWeight: 0
+    BaseValue: 4000.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8111,8 +8111,8 @@ items:
     Name: 'Terinav root (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 750
-    BaseWeight: 0
+    BaseValue: 750.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8126,8 +8126,8 @@ items:
     Name: 'Ungol dust (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 1000
-    BaseWeight: 0
+    BaseValue: 1000.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8141,8 +8141,8 @@ items:
     Name: 'Wasting potion (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 100
-    BaseWeight: 0
+    BaseValue: 100.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8156,8 +8156,8 @@ items:
     Name: "Widow's Blood (per dose)"
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 2000
-    BaseWeight: 0
+    BaseValue: 2000.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8171,8 +8171,8 @@ items:
     Name: 'Wolfsbane powder (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 200
-    BaseWeight: 0
+    BaseValue: 200.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8186,8 +8186,8 @@ items:
     Name: 'Wolfsbane smoke (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 2000
-    BaseWeight: 0
+    BaseValue: 2000.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8201,8 +8201,8 @@ items:
     Name: 'Wyvern poison (per dose)'
     Subtype: 22
     Descriptors: '[Poison]'
-    BaseValue: 3000
-    BaseWeight: 0
+    BaseValue: 3000.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: null
@@ -8561,8 +8561,8 @@ items:
     Name: 'Backpack, masterwork'
     Subtype: 24
     Descriptors: null
-    BaseValue: 20
-    BaseWeight: 1
+    BaseValue: 20.0
+    BaseWeight: 1.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 15
@@ -8576,7 +8576,7 @@ items:
     Name: Potion
     Subtype: 22
     Descriptors: null
-    BaseValue: 0
+    BaseValue: 0.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: null
@@ -8591,8 +8591,8 @@ items:
     Name: Scroll
     Subtype: 68
     Descriptors: null
-    BaseValue: 0
-    BaseWeight: 0
+    BaseValue: 0.0
+    BaseWeight: 0.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 18
@@ -8606,8 +8606,8 @@ items:
     Name: 'Psionic tattoo'
     Subtype: 67
     Descriptors: null
-    BaseValue: 0
-    BaseWeight: 0
+    BaseValue: 0.0
+    BaseWeight: 0.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 26
@@ -8621,7 +8621,7 @@ items:
     Name: 'Power stone'
     Subtype: 69
     Descriptors: null
-    BaseValue: 0
+    BaseValue: 0.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: null
@@ -8636,8 +8636,8 @@ items:
     Name: Construct
     Subtype: 70
     Descriptors: null
-    BaseValue: 0
-    BaseWeight: 0
+    BaseValue: 0.0
+    BaseWeight: 0.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: 24
@@ -8651,8 +8651,8 @@ items:
     Name: 'Silver ring'
     Subtype: 35
     Descriptors: null
-    BaseValue: 3
-    BaseWeight: 0
+    BaseValue: 3.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 21
@@ -8666,8 +8666,8 @@ items:
     Name: 'Silver necklace'
     Subtype: 37
     Descriptors: null
-    BaseValue: 4
-    BaseWeight: 0
+    BaseValue: 4.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 21
@@ -8681,8 +8681,8 @@ items:
     Name: 'Glass bead'
     Subtype: 38
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 0
+    BaseValue: 1.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 9
@@ -8712,7 +8712,7 @@ items:
     Subtype: 24
     Descriptors: null
     BaseValue: 0.3
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 25
@@ -8726,7 +8726,7 @@ items:
     Name: 'Silver bowl'
     Subtype: 38
     Descriptors: null
-    BaseValue: 100
+    BaseValue: 100.0
     BaseWeight: 1.5
     BaseSize: -2
     ECMod: null
@@ -8741,7 +8741,7 @@ items:
     Name: Bracers
     Subtype: 36
     Descriptors: null
-    BaseValue: 8
+    BaseValue: 8.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -8756,8 +8756,8 @@ items:
     Name: Cloak
     Subtype: 19
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 1
+    BaseValue: 2.0
+    BaseWeight: 1.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 5
@@ -8771,7 +8771,7 @@ items:
     Name: 'Diamond, huge uncut'
     Subtype: 38
     Descriptors: null
-    BaseValue: 2000
+    BaseValue: 2000.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: null
@@ -8786,7 +8786,7 @@ items:
     Name: Headband
     Subtype: 15
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: 0.2
     BaseSize: -4
     ECMod: null
@@ -8801,8 +8801,8 @@ items:
     Name: 'Crystal, large'
     Subtype: 38
     Descriptors: null
-    BaseValue: 200
-    BaseWeight: 3
+    BaseValue: 200.0
+    BaseWeight: 3.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 27
@@ -8816,8 +8816,8 @@ items:
     Name: 'Dice (one six-sided)'
     Subtype: 21
     Descriptors: null
-    BaseValue: 1
-    BaseWeight: 0
+    BaseValue: 1.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 2
@@ -8831,7 +8831,7 @@ items:
     Name: Dust
     Subtype: 22
     Descriptors: null
-    BaseValue: 0
+    BaseValue: 0.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: null
@@ -8846,7 +8846,7 @@ items:
     Name: Quiver
     Subtype: 24
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: 0.4
     BaseSize: -3
     ECMod: null
@@ -8861,7 +8861,7 @@ items:
     Name: 'Crystal, average'
     Subtype: 38
     Descriptors: null
-    BaseValue: 20
+    BaseValue: 20.0
     BaseWeight: 0.3
     BaseSize: -4
     ECMod: null
@@ -8876,8 +8876,8 @@ items:
     Name: 'Crystal, small'
     Subtype: 38
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 0
+    BaseValue: 2.0
+    BaseWeight: 0.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 27
@@ -8891,7 +8891,7 @@ items:
     Name: Eyeglasses
     Subtype: 66
     Descriptors: null
-    BaseValue: 100
+    BaseValue: 100.0
     BaseWeight: 0.1
     BaseSize: -4
     ECMod: null
@@ -8907,7 +8907,7 @@ items:
     Subtype: 28
     Descriptors: null
     BaseValue: 0.5
-    BaseWeight: 2
+    BaseWeight: 2.0
     BaseSize: -4
     ECMod: null
     BaseMaterial: 12
@@ -8936,7 +8936,7 @@ items:
     Name: Scabbard
     Subtype: 24
     Descriptors: null
-    BaseValue: 1
+    BaseValue: 1.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -8951,8 +8951,8 @@ items:
     Name: 'Shield, heavy steel'
     Subtype: 9
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 6
+    BaseValue: 5.0
+    BaseWeight: 6.0
     BaseSize: -1
     ECMod: 3
     BaseMaterial: 23
@@ -8967,7 +8967,7 @@ items:
     Subtype: 9
     Descriptors: null
     BaseValue: 1.5
-    BaseWeight: 3
+    BaseWeight: 3.0
     BaseSize: -2
     ECMod: 2
     BaseMaterial: 25
@@ -8981,8 +8981,8 @@ items:
     Name: 'Stone, medium catapult'
     Subtype: 8
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 20
+    BaseValue: 2.0
+    BaseWeight: 20.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 24
@@ -8996,8 +8996,8 @@ items:
     Name: 'Stone, large catapult'
     Subtype: 8
     Descriptors: null
-    BaseValue: 4
-    BaseWeight: 40
+    BaseValue: 4.0
+    BaseWeight: 40.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 24
@@ -9011,8 +9011,8 @@ items:
     Name: 'Javelin, medium ballista'
     Subtype: 8
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 6
+    BaseValue: 10.0
+    BaseWeight: 6.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 25
@@ -9026,8 +9026,8 @@ items:
     Name: 'Javelin, large ballista'
     Subtype: 8
     Descriptors: null
-    BaseValue: 20
-    BaseWeight: 12
+    BaseValue: 20.0
+    BaseWeight: 12.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 25
@@ -9041,7 +9041,7 @@ items:
     Name: Airship
     Subtype: 71
     Descriptors: null
-    BaseValue: 20000
+    BaseValue: 20000.0
     BaseWeight: null
     BaseSize: 5
     ECMod: null
@@ -9056,7 +9056,7 @@ items:
     Name: 'Clockwork toy'
     Subtype: 21
     Descriptors: null
-    BaseValue: 100
+    BaseValue: 100.0
     BaseWeight: 0.5
     BaseSize: -4
     ECMod: null
@@ -9071,7 +9071,7 @@ items:
     Name: 'Music box'
     Subtype: 21
     Descriptors: null
-    BaseValue: 100
+    BaseValue: 100.0
     BaseWeight: 0.5
     BaseSize: -4
     ECMod: null
@@ -9086,8 +9086,8 @@ items:
     Name: Abacus
     Subtype: 21
     Descriptors: null
-    BaseValue: 2
-    BaseWeight: 1
+    BaseValue: 2.0
+    BaseWeight: 1.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 25
@@ -9101,8 +9101,8 @@ items:
     Name: 'Hunting trap'
     Subtype: 20
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 10
+    BaseValue: 5.0
+    BaseWeight: 10.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 23
@@ -9116,7 +9116,7 @@ items:
     Name: 'Mess kit'
     Subtype: 20
     Descriptors: null
-    BaseValue: 2
+    BaseValue: 2.0
     BaseWeight: 0.5
     BaseSize: -3
     ECMod: null
@@ -9131,7 +9131,7 @@ items:
     Name: 'Perfume (vial)'
     Subtype: 22
     Descriptors: null
-    BaseValue: 5
+    BaseValue: 5.0
     BaseWeight: 0.1
     BaseSize: -5
     ECMod: null
@@ -9146,8 +9146,8 @@ items:
     Name: 'Musical instrument, small metal'
     Subtype: 65
     Descriptors: null
-    BaseValue: 20
-    BaseWeight: 2
+    BaseValue: 20.0
+    BaseWeight: 2.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 3
@@ -9161,8 +9161,8 @@ items:
     Name: 'Musical instrument, mw small metal'
     Subtype: 65
     Descriptors: null
-    BaseValue: 200
-    BaseWeight: 2
+    BaseValue: 200.0
+    BaseWeight: 2.0
     BaseSize: -2
     ECMod: 0
     BaseMaterial: 3
@@ -9176,8 +9176,8 @@ items:
     Name: 'Musical instrument, large wood'
     Subtype: 65
     Descriptors: null
-    BaseValue: 25
-    BaseWeight: 4
+    BaseValue: 25.0
+    BaseWeight: 4.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 25
@@ -9191,8 +9191,8 @@ items:
     Name: 'Musical instrument, mw large wood'
     Subtype: 65
     Descriptors: null
-    BaseValue: 250
-    BaseWeight: 4
+    BaseValue: 250.0
+    BaseWeight: 4.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 25
@@ -9206,8 +9206,8 @@ items:
     Name: 'Musical instrument, large metal'
     Subtype: 65
     Descriptors: null
-    BaseValue: 35
-    BaseWeight: 6
+    BaseValue: 35.0
+    BaseWeight: 6.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 3
@@ -9221,8 +9221,8 @@ items:
     Name: 'Musical instrument, mw large metal'
     Subtype: 65
     Descriptors: null
-    BaseValue: 350
-    BaseWeight: 6
+    BaseValue: 350.0
+    BaseWeight: 6.0
     BaseSize: -1
     ECMod: 1
     BaseMaterial: 3
@@ -9236,8 +9236,8 @@ items:
     Name: 'Navigation tools'
     Subtype: 20
     Descriptors: null
-    BaseValue: 25
-    BaseWeight: 1
+    BaseValue: 25.0
+    BaseWeight: 1.0
     BaseSize: -3
     ECMod: null
     BaseMaterial: 23
@@ -9251,7 +9251,7 @@ items:
     Name: Camel
     Subtype: 25
     Descriptors: null
-    BaseValue: 80
+    BaseValue: 80.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -9266,7 +9266,7 @@ items:
     Name: Elephant
     Subtype: 25
     Descriptors: null
-    BaseValue: 400
+    BaseValue: 400.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -9281,7 +9281,7 @@ items:
     Name: 'Elephant, war'
     Subtype: 25
     Descriptors: null
-    BaseValue: 3200
+    BaseValue: 3200.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -9297,7 +9297,7 @@ items:
     Subtype: 1
     Descriptors: null
     BaseValue: 0.2
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 5
@@ -9311,7 +9311,7 @@ items:
     Name: "Rent, merchant's stall (per year)"
     Subtype: 30
     Descriptors: null
-    BaseValue: 15
+    BaseValue: 15.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -9326,7 +9326,7 @@ items:
     Name: 'Rent, tavern (per year)'
     Subtype: 30
     Descriptors: null
-    BaseValue: 300
+    BaseValue: 300.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -9341,7 +9341,7 @@ items:
     Name: 'Castle, small'
     Subtype: 57
     Descriptors: null
-    BaseValue: 25000
+    BaseValue: 25000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -9356,7 +9356,7 @@ items:
     Name: 'Castle, huge'
     Subtype: 57
     Descriptors: null
-    BaseValue: 200000
+    BaseValue: 200000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -9371,7 +9371,7 @@ items:
     Name: 'Castle, royal'
     Subtype: 57
     Descriptors: null
-    BaseValue: 800000
+    BaseValue: 800000.0
     BaseWeight: null
     BaseSize: null
     ECMod: null
@@ -9386,8 +9386,8 @@ items:
     Name: Kayak
     Subtype: 27
     Descriptors: null
-    BaseValue: 25
-    BaseWeight: 10
+    BaseValue: 25.0
+    BaseWeight: 10.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: 15
@@ -9401,8 +9401,8 @@ items:
     Name: Raft
     Subtype: 27
     Descriptors: null
-    BaseValue: 30
-    BaseWeight: 60
+    BaseValue: 30.0
+    BaseWeight: 60.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 25
@@ -9431,7 +9431,7 @@ items:
     Name: 'Galley, great'
     Subtype: 27
     Descriptors: null
-    BaseValue: 20000
+    BaseValue: 20000.0
     BaseWeight: null
     BaseSize: 18
     ECMod: null
@@ -9446,7 +9446,7 @@ items:
     Name: Cog
     Subtype: 27
     Descriptors: null
-    BaseValue: 3000
+    BaseValue: 3000.0
     BaseWeight: null
     BaseSize: 9
     ECMod: null
@@ -9461,8 +9461,8 @@ items:
     Name: Coracle
     Subtype: 27
     Descriptors: null
-    BaseValue: 5
-    BaseWeight: 20
+    BaseValue: 5.0
+    BaseWeight: 20.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: 15
@@ -9476,8 +9476,8 @@ items:
     Name: Dugout
     Subtype: 27
     Descriptors: null
-    BaseValue: 10
-    BaseWeight: 30
+    BaseValue: 10.0
+    BaseWeight: 30.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 25
@@ -9491,7 +9491,7 @@ items:
     Name: 'Elven Wingship'
     Subtype: 27
     Descriptors: null
-    BaseValue: 40000
+    BaseValue: 40000.0
     BaseWeight: null
     BaseSize: 7
     ECMod: null
@@ -9506,7 +9506,7 @@ items:
     Name: Greatship
     Subtype: 27
     Descriptors: null
-    BaseValue: 50000
+    BaseValue: 50000.0
     BaseWeight: null
     BaseSize: 25
     ECMod: null
@@ -9521,7 +9521,7 @@ items:
     Name: Ironclad
     Subtype: 27
     Descriptors: null
-    BaseValue: 50000
+    BaseValue: 50000.0
     BaseWeight: null
     BaseSize: 9
     ECMod: null
@@ -9536,8 +9536,8 @@ items:
     Name: Launch
     Subtype: 27
     Descriptors: null
-    BaseValue: 300
-    BaseWeight: 150
+    BaseValue: 300.0
+    BaseWeight: 150.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 25
@@ -9551,7 +9551,7 @@ items:
     Name: Pinnace
     Subtype: 27
     Descriptors: null
-    BaseValue: 3000
+    BaseValue: 3000.0
     BaseWeight: null
     BaseSize: 7
     ECMod: null
@@ -9566,8 +9566,8 @@ items:
     Name: 'Bombard, small'
     Subtype: 10
     Descriptors: null
-    BaseValue: 2000
-    BaseWeight: 250
+    BaseValue: 2000.0
+    BaseWeight: 250.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 12
@@ -9581,8 +9581,8 @@ items:
     Name: 'Bombard, medium'
     Subtype: 10
     Descriptors: null
-    BaseValue: 8000
-    BaseWeight: 1000
+    BaseValue: 8000.0
+    BaseWeight: 1000.0
     BaseSize: 2
     ECMod: null
     BaseMaterial: 12
@@ -9596,8 +9596,8 @@ items:
     Name: 'Bombard, large'
     Subtype: 10
     Descriptors: null
-    BaseValue: 32000
-    BaseWeight: 4000
+    BaseValue: 32000.0
+    BaseWeight: 4000.0
     BaseSize: 3
     ECMod: null
     BaseMaterial: 12
@@ -9611,8 +9611,8 @@ items:
     Name: Firespout
     Subtype: 10
     Descriptors: null
-    BaseValue: 4000
-    BaseWeight: 750
+    BaseValue: 4000.0
+    BaseWeight: 750.0
     BaseSize: 2
     ECMod: null
     BaseMaterial: 6
@@ -9626,8 +9626,8 @@ items:
     Name: 'Firebomb, small'
     Subtype: 8
     Descriptors: null
-    BaseValue: 50
-    BaseWeight: 10
+    BaseValue: 50.0
+    BaseWeight: 10.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 24
@@ -9641,8 +9641,8 @@ items:
     Name: 'Firebomb, medium'
     Subtype: 8
     Descriptors: null
-    BaseValue: 100
-    BaseWeight: 20
+    BaseValue: 100.0
+    BaseWeight: 20.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 24
@@ -9656,8 +9656,8 @@ items:
     Name: 'Firebomb, large'
     Subtype: 8
     Descriptors: null
-    BaseValue: 200
-    BaseWeight: 40
+    BaseValue: 200.0
+    BaseWeight: 40.0
     BaseSize: -1
     ECMod: null
     BaseMaterial: 24
@@ -9671,8 +9671,8 @@ items:
     Name: 'Firespout barrel'
     Subtype: 8
     Descriptors: null
-    BaseValue: 500
-    BaseWeight: 12
+    BaseValue: 500.0
+    BaseWeight: 12.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 25
@@ -9686,8 +9686,8 @@ items:
     Name: 'Davit, large'
     Subtype: 28
     Descriptors: null
-    BaseValue: 500
-    BaseWeight: 500
+    BaseValue: 500.0
+    BaseWeight: 500.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 23
@@ -9701,8 +9701,8 @@ items:
     Name: 'Davit, huge'
     Subtype: 28
     Descriptors: null
-    BaseValue: 1500
-    BaseWeight: 1500
+    BaseValue: 1500.0
+    BaseWeight: 1500.0
     BaseSize: 2
     ECMod: null
     BaseMaterial: 23
@@ -9716,8 +9716,8 @@ items:
     Name: 'Diving bell'
     Subtype: 28
     Descriptors: null
-    BaseValue: 7000
-    BaseWeight: 500
+    BaseValue: 7000.0
+    BaseWeight: 500.0
     BaseSize: 1
     ECMod: null
     BaseMaterial: 12
@@ -9731,8 +9731,8 @@ items:
     Name: 'Grappling ramp'
     Subtype: 28
     Descriptors: null
-    BaseValue: 500
-    BaseWeight: 500
+    BaseValue: 500.0
+    BaseWeight: 500.0
     BaseSize: 2
     ECMod: null
     BaseMaterial: 23
@@ -9746,8 +9746,8 @@ items:
     Name: 'Ship netting (per square)'
     Subtype: 28
     Descriptors: null
-    BaseValue: 20
-    BaseWeight: 2
+    BaseValue: 20.0
+    BaseWeight: 2.0
     BaseSize: 0
     ECMod: null
     BaseMaterial: 20
@@ -9762,7 +9762,7 @@ items:
     Subtype: 20
     Descriptors: null
     BaseValue: 0.3
-    BaseWeight: 1
+    BaseWeight: 1.0
     BaseSize: -2
     ECMod: null
     BaseMaterial: 5
@@ -9779,10 +9779,10 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
-    ValueMul: 5
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 0.0
+    ValueMul: 5.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: null
     SpecialInfo: null
@@ -9795,10 +9795,10 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
+    ValueAdd: 0.0
     ValueMul: 0.5
-    WeightAdd: 0
-    WeightMul: 1
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: null
     SpecialInfo: null
@@ -9811,9 +9811,9 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
-    ValueMul: 3
-    WeightAdd: 0
+    ValueAdd: 0.0
+    ValueMul: 3.0
+    WeightAdd: 0.0
     WeightMul: 1.1
     SizeMod: 0
     Traits: null
@@ -9827,10 +9827,10 @@ itemmodsmundane:
     Type: 2
     Subtype: 6
     Descriptors: null
-    ValueAdd: 150
-    ValueMul: 5
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 150.0
+    ValueMul: 5.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'AttMod { Qual=Attack; Type=enh; Value=+1; }'
     SpecialInfo: null
@@ -9843,10 +9843,10 @@ itemmodsmundane:
     Type: 2
     Subtype: 7
     Descriptors: null
-    ValueAdd: 150
-    ValueMul: 5
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 150.0
+    ValueMul: 5.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'AttMod { Qual=Attack; Type=enh; Value=+1; }'
     SpecialInfo: null
@@ -9859,10 +9859,10 @@ itemmodsmundane:
     Type: 2
     Subtype: 9
     Descriptors: null
-    ValueAdd: 100
-    ValueMul: 5
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 100.0
+    ValueMul: 5.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; }'
     SpecialInfo: null
@@ -9875,10 +9875,10 @@ itemmodsmundane:
     Type: 2
     Subtype: 6
     Descriptors: null
-    ValueAdd: 300
-    ValueMul: 20
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 300.0
+    ValueMul: 20.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'AttMod { Qual=Attack; Type=enh; Value=+1; } AttMod { Qual=Damage; Type=enh; Value=+1; }'
     SpecialInfo: null
@@ -9891,10 +9891,10 @@ itemmodsmundane:
     Type: 2
     Subtype: 7
     Descriptors: null
-    ValueAdd: 300
-    ValueMul: 20
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 300.0
+    ValueMul: 20.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'AttMod { Qual=Attack; Type=enh; Value=+1; } AttMod { Qual=Damage; Type=enh; Value=+1; }'
     SpecialInfo: null
@@ -9907,10 +9907,10 @@ itemmodsmundane:
     Type: 2
     Subtype: 8
     Descriptors: null
-    ValueAdd: 5
-    ValueMul: 20
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 5.0
+    ValueMul: 20.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'AttMod { Qual=Damage; Type=enh; Value=+1; }'
     SpecialInfo: null
@@ -9923,10 +9923,10 @@ itemmodsmundane:
     Type: 2
     Subtype: 9
     Descriptors: null
-    ValueAdd: 200
-    ValueMul: 20
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 200.0
+    ValueMul: 20.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; } DefMod { Qual=Parry; Type=enh; Value=+1; }'
     SpecialInfo: null
@@ -9939,10 +9939,10 @@ itemmodsmundane:
     Type: 2
     Subtype: 6
     Descriptors: null
-    ValueAdd: 600
-    ValueMul: 40
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 600.0
+    ValueMul: 40.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'AttMod { Qual=Attack; Type=enh; Value=+2; } AttMod { Qual=Damage; Type=enh; Value=+2; }'
     SpecialInfo: null
@@ -9955,10 +9955,10 @@ itemmodsmundane:
     Type: 2
     Subtype: 7
     Descriptors: null
-    ValueAdd: 600
-    ValueMul: 40
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 600.0
+    ValueMul: 40.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'AttMod { Qual=Attack; Type=enh; Value=+2; } AttMod { Qual=Damage; Type=enh; Value=+2; }'
     SpecialInfo: null
@@ -9971,10 +9971,10 @@ itemmodsmundane:
     Type: 2
     Subtype: 8
     Descriptors: null
-    ValueAdd: 10
-    ValueMul: 40
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 10.0
+    ValueMul: 40.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'AttMod { Qual=Damage; Type=enh; Value=+2; }'
     SpecialInfo: null
@@ -9987,10 +9987,10 @@ itemmodsmundane:
     Type: 2
     Subtype: 9
     Descriptors: null
-    ValueAdd: 400
-    ValueMul: 40
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 400.0
+    ValueMul: 40.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; } DefMod { Qual=Parry; Type=enh; Value=+2; }'
     SpecialInfo: null
@@ -10003,10 +10003,10 @@ itemmodsmundane:
     Type: 2
     Subtype: 6
     Descriptors: null
-    ValueAdd: 0
-    ValueMul: 1
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 0.0
+    ValueMul: 1.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: null
     SpecialInfo: 'Defaults to non-lethal (SP) damage'
@@ -10019,10 +10019,10 @@ itemmodsmundane:
     Type: 3
     Subtype: 0
     Descriptors: null
-    ValueAdd: 100
-    ValueMul: 5
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 100.0
+    ValueMul: 5.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; }'
     SpecialInfo: null
@@ -10035,10 +10035,10 @@ itemmodsmundane:
     Type: 3
     Subtype: 0
     Descriptors: null
-    ValueAdd: 200
-    ValueMul: 20
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 200.0
+    ValueMul: 20.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; } DefMod { Qual=DR; Type=enh; Value=+1; }'
     SpecialInfo: null
@@ -10051,10 +10051,10 @@ itemmodsmundane:
     Type: 3
     Subtype: 0
     Descriptors: null
-    ValueAdd: 400
-    ValueMul: 40
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 400.0
+    ValueMul: 40.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; } DefMod { Qual=DR; Type=enh; Value=+2; }'
     SpecialInfo: null
@@ -10067,10 +10067,10 @@ itemmodsmundane:
     Type: 3
     Subtype: 13
     Descriptors: null
-    ValueAdd: 50
-    ValueMul: 1
-    WeightAdd: 5
-    WeightMul: 1
+    ValueAdd: 50.0
+    ValueMul: 1.0
+    WeightAdd: 5.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'Weapon { Qual=Brl || LtB; AttMod=DexMod; Dmg=d6+StrMod P; MinReach=0; }'
     SpecialInfo: 'Improves damage when grappling and brawling; Spikes can also be used in melee as one or two daggers.'
@@ -10083,9 +10083,9 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
+    ValueAdd: 0.0
     ValueMul: 0.4
-    WeightAdd: 0
+    WeightAdd: 0.0
     WeightMul: 0.06
     SizeMod: -4
     Traits: 'AttMod { Qual=DmgDice; Value=-4; }'
@@ -10099,9 +10099,9 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
+    ValueAdd: 0.0
     ValueMul: 0.5
-    WeightAdd: 0
+    WeightAdd: 0.0
     WeightMul: 0.12
     SizeMod: -3
     Traits: 'AttMod { Qual=DmgDice; Value=-3; }'
@@ -10115,9 +10115,9 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
+    ValueAdd: 0.0
     ValueMul: 0.6
-    WeightAdd: 0
+    WeightAdd: 0.0
     WeightMul: 0.25
     SizeMod: -2
     Traits: 'AttMod { Qual=DmgDice; Value=-2; }'
@@ -10131,9 +10131,9 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
+    ValueAdd: 0.0
     ValueMul: 0.75
-    WeightAdd: 0
+    WeightAdd: 0.0
     WeightMul: 0.5
     SizeMod: -1
     Traits: 'AttMod { Qual=DmgDice; Value=-1; }'
@@ -10147,10 +10147,10 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
-    ValueMul: 2
-    WeightAdd: 0
-    WeightMul: 2
+    ValueAdd: 0.0
+    ValueMul: 2.0
+    WeightAdd: 0.0
+    WeightMul: 2.0
     SizeMod: 1
     Traits: 'AttMod { Qual=DmgDice; Value=+1; }'
     SpecialInfo: 'Size increased by 1 step; Weapon: increased damage, reach x2, range x1.5; Armor: DR x1'
@@ -10163,10 +10163,10 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
-    ValueMul: 4
-    WeightAdd: 0
-    WeightMul: 4
+    ValueAdd: 0.0
+    ValueMul: 4.0
+    WeightAdd: 0.0
+    WeightMul: 4.0
     SizeMod: 2
     Traits: 'AttMod { Qual=DmgDice; Value=+2; }'
     SpecialInfo: 'Size increased by 2 steps; Weapon: increased damage, reach x2, range x2; Armor: DR x1'
@@ -10179,10 +10179,10 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
-    ValueMul: 8
-    WeightAdd: 0
-    WeightMul: 8
+    ValueAdd: 0.0
+    ValueMul: 8.0
+    WeightAdd: 0.0
+    WeightMul: 8.0
     SizeMod: 3
     Traits: 'AttMod { Qual=DmgDice; Value=+3; }'
     SpecialInfo: 'Size increased by 3 steps; Weapon: increased damage, reach x3, range x3; Armor: DR x1'
@@ -10195,10 +10195,10 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
-    ValueMul: 16
-    WeightAdd: 0
-    WeightMul: 16
+    ValueAdd: 0.0
+    ValueMul: 16.0
+    WeightAdd: 0.0
+    WeightMul: 16.0
     SizeMod: 4
     Traits: 'AttMod { Qual=DmgDice; Value=+4; }'
     SpecialInfo: 'Size increased by 4 steps; Weapon: increased damage, reach x4, range x4; Armor: DR x1'
@@ -10211,10 +10211,10 @@ itemmodsmundane:
     Type: 3
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
-    ValueMul: 2
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 0.0
+    ValueMul: 2.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: null
     SpecialInfo: 'Also known as barding'
@@ -10227,10 +10227,10 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
-    ValueMul: 10
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 0.0
+    ValueMul: 10.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'ActMod { Qual=var; Type=crc; Type=+2; }'
     SpecialInfo: '+2 circumstance bonus (if applicable)'
@@ -10243,10 +10243,10 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
-    ValueMul: 40
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 0.0
+    ValueMul: 40.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'ActMod { Qual=var; Type=crc; Type=+4; }'
     SpecialInfo: '+4 circumstance bonus (if applicable)'
@@ -10259,10 +10259,10 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
-    ValueMul: 90
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 0.0
+    ValueMul: 90.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: 'ActMod { Qual=var; Type=crc; Type=+6; }'
     SpecialInfo: '+6 circumstance bonus (if applicable)'
@@ -10275,10 +10275,10 @@ itemmodsmundane:
     Type: 3
     Subtype: 0
     Descriptors: null
-    ValueAdd: 0
+    ValueAdd: 0.0
     ValueMul: 1.25
-    WeightAdd: 0
-    WeightMul: 1
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: null
     SpecialInfo: "Custom-fitted for an individual (within the item's size category)"
@@ -10291,10 +10291,10 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 10
-    ValueMul: 5
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 10.0
+    ValueMul: 5.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: null
     SpecialInfo: 'Silver coating for any steel or iron item'
@@ -10307,10 +10307,10 @@ itemmodsmundane:
     Type: 0
     Subtype: 0
     Descriptors: null
-    ValueAdd: 50
-    ValueMul: 25
-    WeightAdd: 0
-    WeightMul: 1
+    ValueAdd: 50.0
+    ValueMul: 25.0
+    WeightAdd: 0.0
+    WeightMul: 1.0
     SizeMod: 0
     Traits: null
     SpecialInfo: 'Gold coating for any steel or iron item'
@@ -10474,12 +10474,12 @@ itemmodsmagic:
     Type: 0
     Subtype: 19
     Descriptors: null
-    PLAdd: 8
+    PLAdd: '8'
     Traits: null
     SpecialInfo: 'Concealment for wearer'
     AssociatedSpells: Displacement
     AssociatedSpecial: null
-    RecommendedSpellPL: 5
+    RecommendedSpellPL: '5'
     MutualExclusion: 1
     Frequency: 2
   -
@@ -10489,12 +10489,12 @@ itemmodsmagic:
     Type: 0
     Subtype: 19
     Descriptors: null
-    PLAdd: 13
+    PLAdd: '13'
     Traits: null
     SpecialInfo: 'Good concealment for wearer'
     AssociatedSpells: Displacement
     AssociatedSpecial: null
-    RecommendedSpellPL: 10
+    RecommendedSpellPL: '10'
     MutualExclusion: 1
     Frequency: 2
   -
@@ -10744,7 +10744,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Acid]'
-    PLAdd: 4
+    PLAdd: '4'
     Traits: null
     SpecialInfo: 'Successful attack also deals 1d6 HP of acid damage'
     AssociatedSpells: 'Touch of Acid'
@@ -10759,7 +10759,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Cold]'
-    PLAdd: 4
+    PLAdd: '4'
     Traits: null
     SpecialInfo: 'Successful attack also deals 1d6 HP of cold damage'
     AssociatedSpells: 'Touch of Ice'
@@ -10774,7 +10774,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Electric]'
-    PLAdd: 4
+    PLAdd: '4'
     Traits: null
     SpecialInfo: 'Successful attack also deals 1d6 HP of electricity damage'
     AssociatedSpells: 'Touch of Lightning'
@@ -10789,7 +10789,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Fire]'
-    PLAdd: 4
+    PLAdd: '4'
     Traits: null
     SpecialInfo: 'Successful attack also deals 1d6 HP of fire damage'
     AssociatedSpells: 'Touch of Fire'
@@ -10804,7 +10804,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Necrotic]'
-    PLAdd: 4
+    PLAdd: '4'
     Traits: null
     SpecialInfo: 'Successful attack also deals 1d6 HP of necrotic damage'
     AssociatedSpells: 'Touch of Death'
@@ -10819,7 +10819,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Radiant]'
-    PLAdd: 4
+    PLAdd: '4'
     Traits: null
     SpecialInfo: 'Successful attack also deals 1d6 HP of radiant damage'
     AssociatedSpells: 'Touch of Radiance'
@@ -10834,7 +10834,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Sonic]'
-    PLAdd: 4
+    PLAdd: '4'
     Traits: null
     SpecialInfo: 'Successful attack also deals 1d6 HP of sonic damage'
     AssociatedSpells: 'Touch of Sound'
@@ -10849,7 +10849,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Good]'
-    PLAdd: 8
+    PLAdd: '8'
     Traits: null
     SpecialInfo: 'If the target is evil, a successful attack also deals 2d6 HP divine damage.'
     AssociatedSpells: 'Holy Smite'
@@ -10864,7 +10864,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Evil]'
-    PLAdd: 8
+    PLAdd: '8'
     Traits: null
     SpecialInfo: 'If the target is good, a successful attack also deals 2d6 HP divine damage.'
     AssociatedSpells: 'Holy Smite'
@@ -10879,7 +10879,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Lawful]'
-    PLAdd: 8
+    PLAdd: '8'
     Traits: null
     SpecialInfo: 'If the target is chaotic, a successful attack also deals 2d6 HP divine damage.'
     AssociatedSpells: 'Holy Smite'
@@ -10894,7 +10894,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Chaotic]'
-    PLAdd: 8
+    PLAdd: '8'
     Traits: null
     SpecialInfo: 'If the target is lawful, a successful attack also deals 2d6 HP divine damage.'
     AssociatedSpells: 'Holy Smite'
@@ -10909,7 +10909,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: null
-    PLAdd: 4
+    PLAdd: '4'
     Traits: null
     SpecialInfo: 'Against (y), the weapon provides a +2 attack bonus and deals 2d6 HP extra damage'
     AssociatedSpells: null
@@ -10939,7 +10939,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: null
-    PLAdd: 15
+    PLAdd: '15'
     Traits: null
     SpecialInfo: 'Increase open-ended range by one step and crit multiplier by two steps'
     AssociatedSpells: null
@@ -10954,7 +10954,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: null
-    PLAdd: 9
+    PLAdd: '9'
     Traits: null
     SpecialInfo: 'Reduce AP cost for attacks with this weapon by 1'
     AssociatedSpells: null
@@ -11164,7 +11164,7 @@ itemmodsmagic:
     Type: 3
     Subtype: 0
     Descriptors: null
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: 'Item weighs half as much as normal. Reduce EC by 1, if applicable.'
     AssociatedSpells: null
@@ -11179,7 +11179,7 @@ itemmodsmagic:
     Type: 3
     Subtype: 0
     Descriptors: null
-    PLAdd: 6
+    PLAdd: '6'
     Traits: null
     SpecialInfo: 'Item is practically weightless. Reduce EC by up to 2, if applicable.'
     AssociatedSpells: null
@@ -11269,7 +11269,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Light]'
-    PLAdd: 1
+    PLAdd: '1'
     Traits: null
     SpecialInfo: 'Item glows on command (dim light up to 4 squares)'
     AssociatedSpells: Light
@@ -11284,7 +11284,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Light]'
-    PLAdd: 2
+    PLAdd: '2'
     Traits: null
     SpecialInfo: 'Item glows on command (normal light up to 4 squares)'
     AssociatedSpells: Light
@@ -11299,7 +11299,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Light]'
-    PLAdd: 4
+    PLAdd: '4'
     Traits: null
     SpecialInfo: 'Item glows on command (bright light up to 8 squares)'
     AssociatedSpells: Light
@@ -11314,7 +11314,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Light]'
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: 'Item glows (dim light within 4 squares) when the specified type of item or creature is within 10 squares'
     AssociatedSpells: Light
@@ -11374,7 +11374,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: 'Grants wearer base swimming speed of 6 (but not the ability to breathe water)'
     AssociatedSpells: null
@@ -11389,7 +11389,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: 'Wearer falls 12 squares per round'
     AssociatedSpells: Levitate
@@ -11404,7 +11404,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 5
+    PLAdd: '5'
     Traits: null
     SpecialInfo: 'Wearer can levitate and move up or down up to 4 squares per round'
     AssociatedSpells: Levitate
@@ -11419,7 +11419,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 7
+    PLAdd: '7'
     Traits: null
     SpecialInfo: 'Grants wearer base flying speed of 6 and good maneuverability'
     AssociatedSpells: Levitate
@@ -11434,7 +11434,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 7
+    PLAdd: '7'
     Traits: null
     SpecialInfo: 'Grants wearer base flying speed of 8 and average maneuverability'
     AssociatedSpells: Levitate
@@ -11449,7 +11449,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 15
     Descriptors: null
-    PLAdd: 5
+    PLAdd: '5'
     Traits: null
     SpecialInfo: 'Grants wearer darkvision with 12 square range'
     AssociatedSpells: 'Enhance Senses'
@@ -11464,7 +11464,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 15
     Descriptors: null
-    PLAdd: 5
+    PLAdd: '5'
     Traits: null
     SpecialInfo: 'Grants wearer the ability to see invisible creatures and items'
     AssociatedSpells: 'Enhance Senses'
@@ -11479,7 +11479,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 15
     Descriptors: null
-    PLAdd: 7
+    PLAdd: '7'
     Traits: null
     SpecialInfo: 'Grants wearer all-around vision'
     AssociatedSpells: 'Enhance Senses'
@@ -11494,7 +11494,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 15
     Descriptors: null
-    PLAdd: 14
+    PLAdd: '14'
     Traits: null
     SpecialInfo: 'Grants wearer truesight within 24 squares range'
     AssociatedSpells: 'Enhance Senses'
@@ -11614,7 +11614,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 2
+    PLAdd: '2'
     Traits: null
     SpecialInfo: 'Item can transform into a (y)'
     AssociatedSpells: null
@@ -11659,7 +11659,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: '[Light]'
-    PLAdd: 5
+    PLAdd: '5'
     Traits: null
     SpecialInfo: 'Command-activated blinding flash in 4 sq radius (area attack vs Ref; instantaneous; 6 PP cost)'
     AssociatedSpells: 'Bolt of Radiance'
@@ -11674,7 +11674,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: '[Dimension]'
-    PLAdd: 12
+    PLAdd: '12'
     Traits: null
     SpecialInfo: 'On command, turn ethereal (cost 5 PP per round)'
     AssociatedSpells: 'Planar Travel'
@@ -11689,7 +11689,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 9
+    PLAdd: '9'
     Traits: null
     SpecialInfo: 'Item and its powers have full effect against incorporeal creatures. It can also be used by incorporeal creatures.'
     AssociatedSpells: null
@@ -11719,7 +11719,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: '[Illusion]'
-    PLAdd: 1
+    PLAdd: '1'
     Traits: null
     SpecialInfo: 'Item can be commanded to look like some other item of the same size and general type'
     AssociatedSpells: 'Illusory Disguise'
@@ -11749,7 +11749,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 9
+    PLAdd: '9'
     Traits: null
     SpecialInfo: 'Item has its full effect and powers even when melded with owner due to shapechanging'
     AssociatedSpells: Shapechange
@@ -11809,7 +11809,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 5
+    PLAdd: '5'
     Traits: null
     SpecialInfo: 'Cause deafness (d20! + PL vs Fort)'
     AssociatedSpells: Affliction
@@ -11824,7 +11824,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 6
+    PLAdd: '6'
     Traits: null
     SpecialInfo: 'Cause blindness (d20! + PL vs Fort)'
     AssociatedSpells: Affliction
@@ -11839,7 +11839,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 7
+    PLAdd: '7'
     Traits: null
     SpecialInfo: 'Cause disease (as Affliction; d20! + PL vs Fort)'
     AssociatedSpells: Affliction
@@ -11854,7 +11854,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 7
+    PLAdd: '7'
     Traits: null
     SpecialInfo: 'Poison (as Affliction; d20! + PL vs Fort)'
     AssociatedSpells: Affliction
@@ -11869,7 +11869,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: 'Speak with (y)'
     AssociatedSpells: 'Comprehend Languages'
@@ -11884,7 +11884,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: 'Ability to breathe in both air and water'
     AssociatedSpells: Shapechange
@@ -11899,7 +11899,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 7
+    PLAdd: '7'
     Traits: null
     SpecialInfo: 'Removes the need to breathe and gives immunity to gases'
     AssociatedSpells: Shapechange
@@ -11914,7 +11914,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 15
     Descriptors: null
-    PLAdd: 6
+    PLAdd: '6'
     Traits: null
     SpecialInfo: 'Telepathy with (y) within 12 sq'
     AssociatedSpells: Telepathy
@@ -11929,7 +11929,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 15
     Descriptors: null
-    PLAdd: 4
+    PLAdd: '4'
     Traits: null
     SpecialInfo: 'Empathy with (y) within 12 sq'
     AssociatedSpells: Telepathy
@@ -11959,7 +11959,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 7
     Descriptors: null
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: 'Weapon has double its normal range increment'
     AssociatedSpells: null
@@ -11974,7 +11974,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 6
     Descriptors: null
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: 'Weapon can be used for ki-based attacks as if it was a natural weapon'
     AssociatedSpells: null
@@ -11989,7 +11989,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: null
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: 'When used to cause SP instead of HP damage, the weapon deals 1d6 extra SP'
     AssociatedSpells: null
@@ -12004,7 +12004,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 6
     Descriptors: null
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: "When thrown, the weapon returns to the wielder's hand (or the wielder's square) just before his next turn"
     AssociatedSpells: null
@@ -12019,7 +12019,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 7
     Descriptors: null
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: 'Weapon ignores bonuses to DeC and DR based on cover and concealment'
     AssociatedSpells: null
@@ -12034,7 +12034,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 6
     Descriptors: null
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: "Weapon's range increment increases by 2 sq (or gains that range increment)"
     AssociatedSpells: null
@@ -12064,7 +12064,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 6
     Descriptors: null
-    PLAdd: 9
+    PLAdd: '9'
     Traits: null
     SpecialInfo: 'On a successful critical hit, the wielder gains temporary HP equal to the damage dealt (after reductions for DR)'
     AssociatedSpells: null
@@ -12079,7 +12079,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: null
-    PLAdd: 6
+    PLAdd: '6'
     Traits: null
     SpecialInfo: 'Weapon also deals SP damage equal to base HP damage dealt (before DR reductions)'
     AssociatedSpells: null
@@ -12094,7 +12094,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: '[Psych]'
-    PLAdd: 6
+    PLAdd: '6'
     Traits: null
     SpecialInfo: 'Weapon also deals psychic PP damage equal to base HP damage dealt (before DR reductions)'
     AssociatedSpells: null
@@ -12109,7 +12109,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 6
     Descriptors: null
-    PLAdd: 9
+    PLAdd: '9'
     Traits: null
     SpecialInfo: 'On a successful critical hit, the wielder gains temporary PP equal to the damage dealt (after reductions for DR)'
     AssociatedSpells: null
@@ -12124,7 +12124,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 35
     Descriptors: null
-    PLAdd: 15
+    PLAdd: '15'
     Traits: null
     SpecialInfo: 'Move freely through water, mud, etc. and gain +10 enhancement bonus to defenses against slowing, entangling, paralyzing, and grappling attacks'
     AssociatedSpells: Freedom
@@ -12199,7 +12199,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 35
     Descriptors: null
-    PLAdd: 2
+    PLAdd: '2'
     Traits: null
     SpecialInfo: 'Sustains wearer (removes the need for food and drink and reduces the need for sleep to 25% normal)'
     AssociatedSpells: 'Metabolic Trance'
@@ -12214,7 +12214,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 35
     Descriptors: null
-    PLAdd: 12
+    PLAdd: '12'
     Traits: null
     SpecialInfo: 'Wearer gains X-ray vision'
     AssociatedSpells: 'Enhance Senses'
@@ -12259,7 +12259,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 7
     Descriptors: null
-    PLAdd: 3
+    PLAdd: '3'
     Traits: null
     SpecialInfo: 'Weapon can create non-magical ammunition when drawn/loaded'
     AssociatedSpells: 'Create Object'
@@ -12274,7 +12274,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 4
+    PLAdd: '4'
     Traits: null
     SpecialInfo: "Item can be modified or improved even by those without the Enchant Item skill. Instead, treat the user's TL as their equivalent level in Enchant Item. All other requirements and costs still apply in full."
     AssociatedSpells: null
@@ -12289,7 +12289,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 0
+    PLAdd: '0'
     Traits: null
     SpecialInfo: 'Use of item requires (x) levels in skill (y)'
     AssociatedSpells: null
@@ -12304,7 +12304,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 0
+    PLAdd: '0'
     Traits: null
     SpecialInfo: "Only members of (y) can use item's powers"
     AssociatedSpells: null
@@ -12319,7 +12319,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 0
+    PLAdd: '0'
     Traits: null
     SpecialInfo: "Only those with levels in class (y) can use item's powers"
     AssociatedSpells: null
@@ -12334,7 +12334,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 0
+    PLAdd: '0'
     Traits: null
     SpecialInfo: "Only powers of a PL at or below user's TL can be used"
     AssociatedSpells: null
@@ -12349,7 +12349,7 @@ itemmodsmagic:
     Type: 0
     Subtype: 0
     Descriptors: null
-    PLAdd: 0
+    PLAdd: '0'
     Traits: null
     SpecialInfo: 'Use of the item requires completion of an attunement ritual or quest'
     AssociatedSpells: null
@@ -12379,7 +12379,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: null
-    PLAdd: 6
+    PLAdd: '6'
     Traits: null
     SpecialInfo: 'On critical hit, stun target for 1 round (d20! + PL vs Fort)'
     AssociatedSpells: null
@@ -12394,7 +12394,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: null
-    PLAdd: 9
+    PLAdd: '9'
     Traits: null
     SpecialInfo: 'On critical hit, paralyze target for 1 round (d20! + PL vs Fort)'
     AssociatedSpells: null
@@ -12439,7 +12439,7 @@ itemmodsmagic:
     Type: 2
     Subtype: 0
     Descriptors: null
-    PLAdd: 4
+    PLAdd: '4'
     Traits: null
     SpecialInfo: 'Enhancement bonus to attack and damage increases by 2 against flat-footed creatures'
     AssociatedSpells: null
@@ -15289,11 +15289,11 @@ materials:
     ID: 1
     Name: Adamantine
     DR: 20
-    HP: 16
+    HP: '16'
     BreakDC: 30/cm
     DSDC: 20/cm
     MR: 10/cm
-    BaseValue: 1500
+    BaseValue: 1500.0
     Density: 8.4
     Traits: 'AttMod { Qual=Attack; Type=mat; Value=+1; } AttMod { Qual=Damage; Type=mat; Value=+1; } DefMod { Qual=DR; Type=mat; Value=+1; }'
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold\n+1 DR for metal armor\n+1 attack and damage for metal weapons'
@@ -15302,10 +15302,10 @@ materials:
     ID: 2
     Name: Bone
     DR: 4
-    HP: 3
+    HP: '3'
     BreakDC: 5/cm
     DSDC: 1/cm
-    MR: 0
+    MR: '0'
     BaseValue: 0.1
     Density: 1.1
     Traits: null
@@ -15315,11 +15315,11 @@ materials:
     ID: 3
     Name: Brass
     DR: 9
-    HP: 10
+    HP: '10'
     BreakDC: 18/cm
     DSDC: 10/cm
     MR: 2/cm
-    BaseValue: 3
+    BaseValue: 3.0
     Density: 8.4
     Traits: 'AttMod { Qual=Damage; Type=mat; Value=-1; } DefMod { Qual=DR; Type=mat; Value=-1; }'
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold\n-1 DR for metal armor\n-1 damage for metal weapons'
@@ -15328,11 +15328,11 @@ materials:
     ID: 4
     Name: Bronze
     DR: 8
-    HP: 8
+    HP: '8'
     BreakDC: 15/cm
     DSDC: 10/cm
     MR: 2/cm
-    BaseValue: 5
+    BaseValue: 5.0
     Density: 7.5
     Traits: 'AttMod { Qual=Damage; Type=mat; Value=-1; } DefMod { Qual=DR; Type=mat; Value=-2; }'
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold\n-2 DR for metal armor\n-1 damage for metal weapons'
@@ -15341,10 +15341,10 @@ materials:
     ID: 5
     Name: Cloth
     DR: 0
-    HP: 1
+    HP: '1'
     BreakDC: 8/cm
-    DSDC: 0
-    MR: 0
+    DSDC: '0'
+    MR: '0'
     BaseValue: 0.1
     Density: 0.8
     Traits: null
@@ -15354,12 +15354,12 @@ materials:
     ID: 6
     Name: Copper
     DR: 9
-    HP: 10
+    HP: '10'
     BreakDC: 18/cm
     DSDC: 10/cm
     MR: 2/cm
-    BaseValue: 10
-    Density: 9
+    BaseValue: 10.0
+    Density: 9.0
     Traits: 'AttMod { Qual=Damage; Type=mat; Value=-1; } DefMod { Qual=DR; Type=mat; Value=-1; }'
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold\n-1 DR for metal armor\n-1 damage for metal weapons'
     Type: 1
@@ -15367,11 +15367,11 @@ materials:
     ID: 7
     Name: Darkwood
     DR: 5
-    HP: 8
+    HP: '8'
     BreakDC: 12/cm
     DSDC: 1/cm
-    MR: 0
-    BaseValue: 50
+    MR: '0'
+    BaseValue: 50.0
     Density: 0.8
     Traits: 'AttMod { Qual=Attack; Type=mat; Value=-1; } AttMod { Qual=Damage; Type=mat; Value=-1; } SpdSpcl { Qual=ECRed; Type=mat; Value=1; }'
     SpecialInfo: '1/2 dmg from electricity, 1/4 dmg from cold\n-1 EC for "metal" items\n-1 attack and dmg for "metal" weapons\nCan replace metal in armor and weapons'
@@ -15380,11 +15380,11 @@ materials:
     ID: 8
     Name: Dragonhide
     DR: 10
-    HP: 4
+    HP: '4'
     BreakDC: 15/cm
     DSDC: 2/cm
     MR: 10/cm
-    BaseValue: 1500
+    BaseValue: 1500.0
     Density: 1.8
     Traits: 'DefMod { Qual=DR; Type=mat; Value=+1; }'
     SpecialInfo: '1/2 dmg from electricity, 1/4 dmg from cold\n+1 DR for leather armor'
@@ -15393,11 +15393,11 @@ materials:
     ID: 9
     Name: Glass
     DR: 1
-    HP: 0.5
+    HP: '0.5'
     BreakDC: 5/cm
-    DSDC: 0
-    MR: 0
-    BaseValue: 5
+    DSDC: '0'
+    MR: '0'
+    BaseValue: 5.0
     Density: 2.5
     Traits: null
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold'
@@ -15406,11 +15406,11 @@ materials:
     ID: 10
     Name: Gold
     DR: 8
-    HP: 8
+    HP: '8'
     BreakDC: 15/cm
     DSDC: 20/cm
     MR: 4/cm
-    BaseValue: 1000
+    BaseValue: 1000.0
     Density: 19.3
     Traits: null
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold\nToo heavy/soft for armor and weapons'
@@ -15419,10 +15419,10 @@ materials:
     ID: 11
     Name: Ice
     DR: 0
-    HP: 1
+    HP: '1'
     BreakDC: 5/cm
-    DSDC: 0
-    MR: 0
+    DSDC: '0'
+    MR: '0'
     BaseValue: 0.1
     Density: 0.9
     Traits: null
@@ -15432,11 +15432,11 @@ materials:
     ID: 12
     Name: Iron
     DR: 9
-    HP: 10
+    HP: '10'
     BreakDC: 15/cm
     DSDC: 10/cm
     MR: 2/cm
-    BaseValue: 2
+    BaseValue: 2.0
     Density: 7.9
     Traits: 'AttMod { Qual=Damage; Type=mat; Value=-1; } DefMod { Qual=DR; Type=mat; Value=-1; }'
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold\n-1 DR for metal armor\n-1 damage for S/P weapons'
@@ -15445,11 +15445,11 @@ materials:
     ID: 13
     Name: 'Iron, cold'
     DR: 10
-    HP: 12
+    HP: '12'
     BreakDC: 20/cm
     DSDC: 10/cm
     MR: 2/cm
-    BaseValue: 4
+    BaseValue: 4.0
     Density: 7.9
     Traits: null
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold'
@@ -15458,11 +15458,11 @@ materials:
     ID: 14
     Name: Lead
     DR: 5
-    HP: 4
+    HP: '4'
     BreakDC: 10/cm
     DSDC: 40/cm
     MR: 8/cm
-    BaseValue: 3
+    BaseValue: 3.0
     Density: 11.4
     Traits: null
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold\nToo heavy/soft for armor and weapons'
@@ -15471,10 +15471,10 @@ materials:
     ID: 15
     Name: 'Leather or hide'
     DR: 2
-    HP: 2
+    HP: '2'
     BreakDC: 10/cm
     DSDC: 1/cm
-    MR: 0
+    MR: '0'
     BaseValue: 0.1
     Density: 1.1
     Traits: null
@@ -15484,11 +15484,11 @@ materials:
     ID: 16
     Name: Mithril
     DR: 15
-    HP: 12
+    HP: '12'
     BreakDC: 25/cm
     DSDC: 10/cm
     MR: 5/cm
-    BaseValue: 600
+    BaseValue: 600.0
     Density: 4.2
     Traits: 'SpdSpcl { Qual=ECRed; Type=mat; Value=1; }'
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold\n-1 EC for metal items'
@@ -15497,12 +15497,12 @@ materials:
     ID: 17
     Name: Obsidian
     DR: 6
-    HP: 5
+    HP: '5'
     BreakDC: 8/cm
     DSDC: 5/cm
     MR: 1/cm
-    BaseValue: 4
-    Density: 3
+    BaseValue: 4.0
+    Density: 3.0
     Traits: 'AttMod { Qual=Damage; Type=mat; Value=+1; }'
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold\n+1 damage for "metal" weapons'
     Type: 1
@@ -15510,10 +15510,10 @@ materials:
     ID: 18
     Name: Paper
     DR: 0
-    HP: 1
+    HP: '1'
     BreakDC: 5/cm
-    DSDC: 0
-    MR: 0
+    DSDC: '0'
+    MR: '0'
     BaseValue: 0.1
     Density: 0.9
     Traits: null
@@ -15523,11 +15523,11 @@ materials:
     ID: 19
     Name: Platinum
     DR: 8
-    HP: 8
+    HP: '8'
     BreakDC: 15/cm
     DSDC: 20/cm
     MR: 4/cm
-    BaseValue: 10000
+    BaseValue: 10000.0
     Density: 21.5
     Traits: null
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold\nToo heavy for armor and weapons'
@@ -15536,10 +15536,10 @@ materials:
     ID: 20
     Name: Rope
     DR: 0
-    HP: 1
+    HP: '1'
     BreakDC: 10/cm
-    DSDC: 0
-    MR: 0
+    DSDC: '0'
+    MR: '0'
     BaseValue: 0.1
     Density: 0.4
     Traits: null
@@ -15549,11 +15549,11 @@ materials:
     ID: 21
     Name: Silver
     DR: 8
-    HP: 8
+    HP: '8'
     BreakDC: 15/cm
     DSDC: 10/cm
     MR: 2/cm
-    BaseValue: 100
+    BaseValue: 100.0
     Density: 10.5
     Traits: 'AttMod { Qual=Damage; Type=mat; Value=-1; } DefMod { Qual=DR; Type=mat; Value=-2; }'
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold\n-2 DR for metal armor\n-1 damage for metal weapons'
@@ -15562,12 +15562,12 @@ materials:
     ID: 22
     Name: 'Silver, alchemical'
     DR: 9
-    HP: 10
+    HP: '10'
     BreakDC: 18/cm
     DSDC: 10/cm
     MR: 2/cm
-    BaseValue: 50
-    Density: 9
+    BaseValue: 50.0
+    Density: 9.0
     Traits: 'AttMod { Qual=Damage; Type=mat; Value=-1; } DefMod { Qual=DR; Type=mat; Value=-1; }'
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold\n-1 DR for metal armor\n-1 damage for metal weapons'
     Type: 1
@@ -15575,11 +15575,11 @@ materials:
     ID: 23
     Name: Steel
     DR: 10
-    HP: 12
+    HP: '12'
     BreakDC: 20/cm
     DSDC: 10/cm
     MR: 2/cm
-    BaseValue: 4
+    BaseValue: 4.0
     Density: 7.8
     Traits: null
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold'
@@ -15588,7 +15588,7 @@ materials:
     ID: 24
     Name: Stone
     DR: 8
-    HP: 6
+    HP: '6'
     BreakDC: 10/cm
     DSDC: 5/cm
     MR: 1/cm
@@ -15601,10 +15601,10 @@ materials:
     ID: 25
     Name: Wood
     DR: 5
-    HP: 4
+    HP: '4'
     BreakDC: 5/cm
     DSDC: 1/cm
-    MR: 0
+    MR: '0'
     BaseValue: 0.1
     Density: 0.7
     Traits: null
@@ -15614,12 +15614,12 @@ materials:
     ID: 26
     Name: Flesh
     DR: 0
-    HP: 1
+    HP: '1'
     BreakDC: 5/cm
-    DSDC: 0
-    MR: 0
+    DSDC: '0'
+    MR: '0'
     BaseValue: 0.1
-    Density: 1
+    Density: 1.0
     Traits: null
     SpecialInfo: null
     Type: 0
@@ -15627,12 +15627,12 @@ materials:
     ID: 27
     Name: Crystal
     DR: 8
-    HP: 6
+    HP: '6'
     BreakDC: 8/cm
     DSDC: 5/cm
-    MR: 0
-    BaseValue: 100
-    Density: 5
+    MR: '0'
+    BaseValue: 100.0
+    Density: 5.0
     Traits: null
     SpecialInfo: '1/2 dmg from fire/electr., 1/4 dmg from cold'
     Type: 0
@@ -15640,12 +15640,12 @@ materials:
     ID: 28
     Name: Plant
     DR: 0
-    HP: 1
+    HP: '1'
     BreakDC: 5/cm
-    DSDC: 0
-    MR: 0
+    DSDC: '0'
+    MR: '0'
     BaseValue: 0.1
-    Density: 1
+    Density: 1.0
     Traits: null
     SpecialInfo: null
     Type: 0
@@ -15653,12 +15653,12 @@ materials:
     ID: 29
     Name: Ceramic
     DR: 4
-    HP: 2
+    HP: '2'
     BreakDC: 8/cm
     DSDC: 2/cm
-    MR: 0
-    BaseValue: 2
-    Density: 5
+    MR: '0'
+    BaseValue: 2.0
+    Density: 5.0
     Traits: null
     SpecialInfo: null
     Type: 0
@@ -15666,12 +15666,12 @@ materials:
     ID: 31
     Name: Leafweave
     DR: 2
-    HP: 2
+    HP: '2'
     BreakDC: 10/cm
     DSDC: 1/cm
-    MR: 0
-    BaseValue: 1
-    Density: 1
+    MR: '0'
+    BaseValue: 1.0
+    Density: 1.0
     Traits: null
     SpecialInfo: '1/2 dmg from electricity, 1/4 dmg from cold\nCan replace leather'
     Type: 3
@@ -15679,12 +15679,12 @@ materials:
     ID: 32
     Name: Water
     DR: 0
-    HP: 0
+    HP: '0'
     BreakDC: 0/cm
-    DSDC: 0
-    MR: 0
+    DSDC: '0'
+    MR: '0'
     BaseValue: 0.1
-    Density: 1
+    Density: 1.0
     Traits: null
     SpecialInfo: null
     Type: 2
@@ -15692,19 +15692,16 @@ materials:
     ID: 33
     Name: Residuum
     DR: 0
-    HP: 0
+    HP: '0'
     BreakDC: 0/cm
     DSDC: 20/cm
     MR: 10/cm
-    BaseValue: 10000
-    Density: 10
+    BaseValue: 10000.0
+    Density: 10.0
     Traits: null
     SpecialInfo: null
     Type: 2
 materialtypes:
-  -
-    ID: 3
-    Name: Flexible
   -
     ID: 1
     Name: Gas
@@ -15712,11 +15709,14 @@ materialtypes:
     ID: 2
     Name: Liquid
   -
-    ID: 5
-    Name: Metal
+    ID: 3
+    Name: Flexible
   -
     ID: 4
     Name: Solid
+  -
+    ID: 5
+    Name: Metal
 lightsources:
   -
     ID: 1
