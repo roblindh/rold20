@@ -12,6 +12,15 @@
     remains familiar, preserving the heroic, high-fantasy spirit of traditional tabletop role-playing.
 </p>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/intro_party_journey.jpg" alt="Adventurers embarking on a grand quest" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        An intrepid adventuring party sets forth across untamed wilderness toward ancient citadels.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h3 id="Motivation">Motivation</h3>
 <p>
     A wide range of design goals motivated the creation of this comprehensive ruleset.
@@ -36,6 +45,15 @@
     <li><strong>Fate Points Over Routine Resurrection:</strong> To make character death meaningful while protecting heroes from unceremonious bad luck,
         Fate Points give characters a heroic safety net without relying on ubiquitous resurrection magic.</li>
 </ul>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/intro_dragon_encounter.jpg" alt="Confronting a dragon in its ancient hoard" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Facing ancient horrors and claiming legendary treasures in the deep darkness.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h3 id="MainFeatures">Key Changes and Features</h3>
 <p>Below is a summary of the core innovations in RoL d20 compared to traditional 3.5E D&amp;D:</p>
@@ -82,6 +100,15 @@
         </ul>
     </li>
 </ul>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/intro_dungeon_relic.jpg" alt="Unearthing ancient arcane relics" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Investigating long-lost tombs and uncovering ancient eldritch secrets.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h3 id="OptionalRules">Optional Rules</h3>
 <div class="optionalrule">

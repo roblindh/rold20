@@ -87,6 +87,15 @@
 
 <?php show_companionimprovements(); ?> 
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/culture_holy_knights.jpg" alt="Chivalric knights and faithful companions" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Faithful mounts, familiars, and knightly retinues share deep bonds forged through service and trial.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h3 id="Organizations">Organizations</h3>
 <p>
     Organizations represent collective institutions—guilds, knightly orders, religious inquisitions, merchant cartels, arcane academies, and shadowy syndicates—that hold wealth, political sway, and military force far exceeding any single individual. Joining, navigating, and commanding organizations is one of the primary avenues through which adventurers transform personal heroic power into enduring geopolitical influence.
@@ -128,6 +137,15 @@
     <li><strong>Institutional vs. Personal Standing:</strong> An elite knightly order or grand bank may boast SC 4 (Nobility) and WC 5 (Vast Treasury), while its individual junior members start at SC 1 or 2 with modest personal funds. However, representing the organization allows members to command respect and credit far above their personal station.</li>
     <li><strong>Rank Progression &amp; Elevation:</strong> Advancing to officer or grandmaster ranks typically elevates a character's personal Social Class and provides regular stipends, land grants, or access to institutional wealth. Conversely, expulsion or dishonorable discharge immediately strips these privileges.</li>
 </ul>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/culture_social_orders.jpg" alt="High nobility and courtly influence" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Nobility, courtly hierarchy, and feudal alliances shape the governance of great kingdoms.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h4 id="OrgInfluence">Using Influence within Organizations</h4>
 <p>
@@ -262,6 +280,15 @@
         <div><a href="https://www.d20srd.org/d20/magic/shop.html" target="_blank" rel="noopener" class="text-amber-800 hover:text-amber-900 font-semibold">&rarr; Random Magic Shop Generator</a></div>
     </div>
 </div>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/culture_settlement_life.jpg" alt="Lively settlement market and cultural life" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Bustling urban markets, taverns, and guilds bring communities together in trade and song.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h3 id="Trading">Trading and Economy</h3>
 <p>

@@ -1,6 +1,7 @@
 @extends('layouts.app', ['title' => 'Complete Ruleset - Printable'])
 
 @section('content')
+<?php $isPrintableRuleset = true; ?>
 <div class="space-y-6 printable-ruleset-container">
     <!-- Top Action Bar / Print Controls -->
     <div class="no-print bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
@@ -172,6 +173,9 @@
 </div>
 
 <style>
+    .printable-ruleset-container .rules-illustration {
+        display: none !important;
+    }
     @media print {
         .ruleset-chapter {
             page-break-before: always !important;

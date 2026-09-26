@@ -86,6 +86,15 @@
     <li><em>Encounter (enc):</em> A distinct scene of dramatic conflict (a combat encounter, a chase, or high-stakes negotiations), typically spanning from 30 seconds to several minutes. When an encounter duration is not self-evident, it defaults to 1 minute per skill level (or Total Level).</li>
 </ul>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/core_action_initiative.jpg" alt="Dynamic combat reflexes and initiative" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Split-second reflexes, timing, and decisive action dictate survival in the heat of battle.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h3 id="RaceChars">Racial Characteristics</h3>
 <p>
     <em>Race / Species:</em> The biological species to which an individual belongs. Many races feature subraces with distinct racial traits and cultural temperaments (such as sylvan elves and drow).
@@ -182,6 +191,15 @@
 </div>
 
 <?php show_abilityscoremods(); ?> 
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/core_attributes_strength.jpg" alt="Raw physical power and ability checks" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Mighty ability scores and heroic attributes allow characters to overcome insurmountable odds.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h3 id="HealthScores">Health Points</h3>
 <p>
@@ -401,6 +419,15 @@
     <img src="/images/Reach2.svg" alt="Spacing and Reach Diagram 2" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
     <img src="/images/Reach3.svg" alt="Spacing and Reach Diagram 3" class="max-w-full h-auto rounded border border-slate-200 shadow-sm" />
 </div>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/core_reach_spacing.jpg" alt="Tactical weapon reach and spatial control" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Polearms and reach weapons allow disciplined fighters to control combat spacing and intercept charging foes.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h4 id="NaturalAttacks">Natural Attacks</h4>
 <p>

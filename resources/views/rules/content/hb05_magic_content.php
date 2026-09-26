@@ -33,6 +33,15 @@
     Each magic tradition is intrinsically specialized. A druid excels at commanding weather, beasts, and plant growth, but struggles to influence inorganic metallurgy or project illusionary deceptions.
 </p>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/magic_arcane_weaving.jpg" alt="Arcane spellcasting and rune weaving" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Wizards manipulate the arcane tapestry through intricate gestures, incantations, and intellectual precision.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h3 id="LearningSpells">Learning Spells and Powers</h3>
 <p>
     A character's skill level in the corresponding supernatural skill governs their capacity to master spells and powers:
@@ -185,6 +194,15 @@
 <p>
     Spells with ongoing concentration require steady focus. While sustaining concentration, a caster may spend only up to <strong>half their total Action Points and Movement Points</strong> on other actions, and cannot perform any secondary action that itself requires concentration. Taking damage or suffering sudden disorientation forces an immediate concentration check to prevent the maintained effect from collapsing.
 </p>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/magic_divine_channeling.jpg" alt="Divine channeling and holy magic" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Clerics channel divine faith into radiant miracles, holy healing, and righteous defense.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h4>Spellcasting Examples</h4>
 <p>
@@ -445,6 +463,15 @@
 <p>
     A dominant soul gradually overwrites the host brain with its own neural patterns, whereas a weaker invading soul risks being suppressed, expunged, or permanently merged with the host.
 </p>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/magic_psionic_focus.jpg" alt="Psionic manifestation and mental discipline" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Psions focus intense mental discipline and crystalline psionic energy to reshape reality.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h3 id="Residuum">Residuum</h3>
 <p>

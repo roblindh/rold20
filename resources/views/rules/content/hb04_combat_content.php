@@ -61,6 +61,15 @@
     <li><strong>Burning &amp; Heated Weapons:</strong> Weapons enveloped in flame or glowing hot deal an additional <strong>1d2 to 1d4 fire damage</strong> depending on heat intensity.</li>
 </ul>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/combat_melee_clash.jpg" alt="Dynamic melee clash on the battlefield" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Steel clashes against axe in the brutal fury of melee combat.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h4>Supernatural Touch and Reach Attacks</h4>
 <p>
     Actions with a range of Reach (<code>Rch</code>) or Touch (<code>Tch</code>) used against unwilling targets are resolved as melee weapon attacks targeting the defender's <em>DeC</em>. Attack modifiers derive from the weapon or implement used, including all relevant weapon skill bonuses:
@@ -132,6 +141,15 @@
 <h4 id="WeaponSkills">Weapon Skills</h4>
 <?php show_weaponskilleffects(); ?> 
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/combat_martial_discipline.jpg" alt="Martial training and weapon mastery" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Martial discipline, armor proficiency, and shield mastery form the bedrock of martial dominance.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h3 id="WeaponSize">Weapon Usage</h3>
 <p>
     Weapon size directly governs attack speed, effective reach, and wieldability. In RoL d20, combat mechanics distinguish between three key measurements:
@@ -197,6 +215,15 @@
     <li>Attacking an opponent who is <strong>flat-footed, stunned, or has exhausted its reactions</strong>.</li>
     <li>Attacking from behind cover or under good concealment.</li>
 </ul>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/combat_ranged_marksmanship.jpg" alt="Ranged archery and tactical marksmanship" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Ranged attacks and precision marksmanship demand sharp sight, steady aim, and proper distance.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h3 id="CombatMods">Combat Modifiers</h3>
 

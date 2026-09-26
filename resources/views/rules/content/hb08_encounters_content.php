@@ -52,6 +52,15 @@
     <li><strong>Preparation Rounds:</strong> If an aware party detects unaware foes from a distance or behind concealment, the aware group may spend multiple tactical rounds preparing (casting defensive spells, positioning archers, applying weapon poisons) while maintaining stealth. The surprise round only triggers once direct engagement begins or when the unaware foes detect the ambush.</li>
 </ul>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/encounters_wilderness_ambush.jpg" alt="Wilderness scout detecting an ambush" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Keen awareness and sharp scouting turn deadly ambushes into decisive tactical advantages.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h4>Starting and Ending Encounters</h4>
 <p>
     The DM typically declares the formal start of an encounter, but players may request the start of an encounter at any time—such as when timing-critical spells are cast, when exact positioning is required, or when coordinated group actions occur.
@@ -228,6 +237,15 @@
     Magic items that emit light typically provide bright illumination within a radius of <strong>4 squares</strong> and dim light for an additional <strong>8 squares</strong>. Unless specifically noted otherwise in an item's description, this radiance is continuous; the bearer may sheath, cover, or conceal the item to block the light, but cannot extinguish the enchantment.
 </p>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/encounters_dungeon_surprise.jpg" alt="Disarming traps and claiming ancient dungeon hoard" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Careful investigation and lockpicking bypass lethal warding runes to uncover priceless treasures.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h4>Treasure Generation Tools</h4>
 <div class="not-prose my-4 p-4 rounded-xl bg-stone-50 border border-stone-200 text-stone-800 text-xs">
     <div class="font-bold text-stone-900 text-sm font-serif mb-2">💎 External Treasure &amp; Magic Item Generators</div>
@@ -272,6 +290,15 @@
 <p>
     Major villains, recurring nemeses, and pivotal NPC champions should be granted <strong>1 to 3 Fate Points</strong>. This reflects their narrative significance, bolsters their tactical resilience, and grants them realistic avenues to survive or retreat when an encounter turns against them.
 </p>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/encounters_night_camp.jpg" alt="Adventurers encamped under the night stars" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Between perils and explorations, a quiet campsite and watchful sentry restore stamina and resolve.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h4>Encounter Generation Tools</h4>
 <div class="not-prose my-4 p-4 rounded-xl bg-stone-50 border border-stone-200 text-stone-800 text-xs">

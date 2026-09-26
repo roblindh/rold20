@@ -33,6 +33,15 @@
     <li><strong>Name Your Character:</strong> Select a name suited to your character's heritage and culture.</li>
 </ol>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/chargen_heroic_origins.jpg" alt="Adventurers preparing for heroic destinies" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Every legend begins with a humble fellowship assembling maps, lore, and equipment for the journey ahead.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h3 id="AbilityGen">Ability Score Generation</h3>
 <p>
     Generate <a href="/rules/core#AbilityScores">base ability scores</a> using one of the approved campaign methods below (subject to DM discretion):
@@ -144,6 +153,15 @@
     </ul>
 </div>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/chargen_level_advancement.jpg" alt="Heroic advancement and honors" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Earning experience and rising in level unlocks greater feats, martial honors, and divine favors.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h3 id="CharSkills">Learning Skills</h3>
 
 <h4>Acquiring Skills</h4>
@@ -161,6 +179,15 @@
 <p>
     Before formal adventuring careers begin, characters acquire life experience through their upbringing. An adult member of any culture receives background skill points equivalent to <strong>(RL + 1) levels</strong> in one of their culture's designated background classes.
 </p>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/chargen_training_skills.jpg" alt="Mastery and martial skill training" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Disciplined practice and master instruction hone raw talent into deadly battlefield mastery.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h4 id="OptionalSkillRules">Optional Skill Rules</h4>
 <div class="optionalrule">

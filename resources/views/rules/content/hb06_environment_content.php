@@ -91,6 +91,15 @@
     For dynamic meteorological conditions during campaigns, see the <a href="https://donjon.bin.sh/d20/weather/" target="_blank" rel="noopener">Donjon Random Weather Generator</a>.
 </p>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/env_wilderness_nature.jpg" alt="Untamed wilderness and natural groves" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Ancient primeval forests and changing weather demand deep attunement to the wilderness.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h3 id="Necessities">Necessities</h3>
 
 <h4 id="Hunger">Hunger and Thirst</h4>
@@ -181,6 +190,15 @@
     </p>
 </div>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/env_high_peaks.jpg" alt="Braving perilous mountain peaks" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Perilous precipices, high altitude, and severe terrain test physical endurance and agility.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h3 id="BuildingFeatures">Dungeon and Building Features</h3>
 <p>
     Standard architectural components, doors, walls, and portcullises—including their typical Damage Reduction (DR), Hit Points (HP), Break DC, and Climb DC—are detailed in the <a href="/reference/equipment">List of Equipment</a>.
@@ -235,6 +253,15 @@
 </ul>
 
 <?php show_underwatereffects(); ?> 
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/env_arid_wastelands.jpg" alt="Harsh desert wasteland and environmental extremes" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Arid wastelands and extreme environmental climates test survival skills and resource management.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h3 id="Multiverse">The Multiverse</h3>
 <p>
