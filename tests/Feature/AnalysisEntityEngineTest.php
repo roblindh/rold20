@@ -180,4 +180,59 @@ class AnalysisEntityEngineTest extends TestCase
         $this->assertArrayHasKey('single_debil', $other);
         $this->assertArrayHasKey('buff_combo', $other);
     }
+
+    /**
+     * Test Weapon DPR Graph data returns 21 builds across 30 levels with target range benchmarks.
+     */
+    public function test_weapon_dpr_graph_data_returns_all_builds_and_levels(): void
+    {
+        $controller = app(\App\Http\Controllers\AnalysisController::class);
+        $graphData = $controller->getWeaponDprGraphData('basic');
+
+        $this->assertArrayHasKey('levels', $graphData);
+        $this->assertCount(30, $graphData['levels']);
+        $this->assertArrayHasKey('target_min', $graphData);
+        $this->assertArrayHasKey('target_max', $graphData);
+        $this->assertArrayHasKey('target_avg', $graphData);
+        $this->assertArrayHasKey('level_stats', $graphData);
+        $this->assertArrayHasKey('builds', $graphData);
+        $this->assertCount(21, $graphData['builds']);
+
+        // Check target range calculation (14 + 8*TL HP over 3 to 5 rounds)
+        // Level 1: HP 22 -> Min 4.4, Max 7.3, Avg 5.5
+        $this->assertEquals(4.4, $graphData['target_min'][0]);
+        $this->assertEquals(7.3, $graphData['target_max'][0]);
+        $this->assertEquals(5.5, $graphData['target_avg'][0]);
+
+        // Level 30: HP 254 -> Min 50.8, Max 84.7, Avg 63.5
+        $this->assertEquals(50.8, $graphData['target_min'][29]);
+        $this->assertEquals(84.7, $graphData['target_max'][29]);
+
+        // Check builds have 30 DPR values
+        foreach ($graphData['builds'] as $build) {
+            $this->assertCount(30, $build['data']);
+            $this->assertGreaterThan(0.0, $build['data'][0]); // Lvl 1 DPR > 0
+            $this->assertGreaterThan($build['data'][0], $build['data'][29]); // Lvl 30 DPR > Lvl 1 DPR
+        }
+
+        // Check level stats formulas (DeC = 10 + TL/2, DR = 5 + TL/2)
+        $this->assertEquals(10.5, $graphData['level_stats'][1]['dec']);
+        $this->assertEquals(5.5, $graphData['level_stats'][1]['dr']);
+        $this->assertEquals(25.0, $graphData['level_stats'][30]['dec']);
+        $this->assertEquals(20.0, $graphData['level_stats'][30]['dr']);
+    }
+
+    /**
+     * Test /analysis?tab=weapongraph renders the graph tab and chart canvas.
+     */
+    public function test_weapon_dpr_graph_tab_renders_on_analysis_page(): void
+    {
+        $request = \Illuminate\Http\Request::create('/analysis?tab=weapongraph', 'GET');
+        $response = $this->app->handle($request);
+        $this->assertEquals(200, $response->getStatusCode());
+        $content = $response->getContent();
+        $this->assertStringContainsString('Weapon DPR Graph', $content);
+        $this->assertStringContainsString('weaponDprChartCanvas', $content);
+        $this->assertStringContainsString('chart.umd.min.js', $content);
+    }
 }

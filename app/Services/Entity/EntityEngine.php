@@ -4033,7 +4033,7 @@ class EntityEngine
     /**
      * Calculate DPAP (Damage Per Action Point) of the most effective attack routine against a given target DeC.
      */
-    public static function calculateDPAP(array $calcState, int $targetDec, bool $vitalAttack = false): float
+    public static function calculateDPAP(array $calcState, int|float $targetDec, bool $vitalAttack = false): float
     {
         $options = self::getCombatAttackOptions($calcState, $vitalAttack);
         if (empty($options)) return 0.0;
@@ -4071,7 +4071,7 @@ class EntityEngine
     /**
      * Calculate DPR (Damage Per Round) of the most effective attack routine against a given target DeC and DR.
      */
-    public static function calculateDPR(array $calcState, int $targetDec, int $targetDr = 0, bool $vitalAttack = false): float
+    public static function calculateDPR(array $calcState, int|float $targetDec, int|float $targetDr = 0, bool $vitalAttack = false): float
     {
         $options = self::getCombatAttackOptions($calcState, $vitalAttack);
         if (empty($options)) return 0.0;

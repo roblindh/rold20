@@ -94,6 +94,9 @@
         <button @click="tab = 'weapons'" :class="tab === 'weapons' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer">
             <span>⚔️</span> Weapon DPR & DPAP
         </button>
+        <button @click="tab = 'weapongraph'" :class="tab === 'weapongraph' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer">
+            <span>📈</span> Weapon DPR Graph
+        </button>
         <button @click="tab = 'spellcost'" :class="tab === 'spellcost' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer">
             <span>🔮</span> Spell Cost
         </button>
@@ -492,7 +495,181 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- TAB 5: Spell Cost -->
+    <!-- TAB 5: Weapon DPR Graph (Levels 1–30) -->
+    <!-- ========================================================================= -->
+    <div x-show="tab === 'weapongraph'" x-data="weaponDprGraph({ graphData: @json($weaponDprGraphData) })" class="space-y-4">
+        <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs space-y-4">
+            <!-- Header & Mode Controls -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span>📈</span> Weapon DPR Progression Graph (Levels 1–30)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        Damage Per Round (DPR) calculated against level-scaled typical defenses (<code class="font-mono bg-slate-100 px-1 py-0.5 rounded text-slate-700">DeC = 10 + TL/2</code>, <code class="font-mono bg-slate-100 px-1 py-0.5 rounded text-slate-700">DR = 5 + TL/2</code>) compared against the target DPR band.
+                    </p>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-3 shrink-0">
+                    <!-- Equipment Mode Toggle -->
+                    <div class="inline-flex bg-slate-100 p-1 rounded-lg border border-slate-200">
+                        <a href="?tab=weapongraph&weapon_lvl={{ $weaponLvl ?? 1 }}&equip_mode=basic"
+                           class="px-2.5 py-1 text-xs font-bold rounded-md transition {{ ($equipMode ?? 'basic') === 'basic' ? 'bg-indigo-600 text-white shadow-2xs' : 'text-slate-700 hover:text-slate-900' }}">
+                            🛡️ Basic Gear
+                        </a>
+                        <a href="?tab=weapongraph&weapon_lvl={{ $weaponLvl ?? 1 }}&equip_mode=level"
+                           class="px-2.5 py-1 text-xs font-bold rounded-md transition {{ ($equipMode ?? 'basic') === 'level' ? 'bg-indigo-600 text-white shadow-2xs' : 'text-slate-700 hover:text-slate-900' }}">
+                            ✨ Level-Appropriate
+                        </a>
+                    </div>
+
+                    <!-- Target Overlays Toggles -->
+                    <div class="inline-flex items-center gap-2 bg-amber-50/70 border border-amber-200 px-2.5 py-1 rounded-lg text-xs font-medium text-amber-950">
+                        <label class="flex items-center gap-1.5 cursor-pointer select-none">
+                            <input type="checkbox" x-model="showTargetBand" class="rounded text-amber-600 focus:ring-amber-500">
+                            <span>🎯 Target Range (3–5 rds)</span>
+                        </label>
+                        <span class="text-amber-300">|</span>
+                        <label class="flex items-center gap-1.5 cursor-pointer select-none">
+                            <input type="checkbox" x-model="showTargetAvg" class="rounded text-amber-600 focus:ring-amber-500">
+                            <span>⚖️ Baseline (4 rds)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mathematical Context Callout -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 bg-slate-50 rounded-lg text-xs text-slate-700 border border-slate-200">
+                <div class="space-y-0.5">
+                    <span class="font-bold text-slate-900 block">Typical Target Defenses</span>
+                    <p class="text-[11px] text-slate-600 font-mono">DeC = 10 + TL/2 &nbsp;|&nbsp; DR = 5 + TL/2</p>
+                    <p class="text-[11px] text-slate-500">Opponents of equal level (e.g. Lvl 1: DeC 10.5, DR 5.5; Lvl 20: DeC 20, DR 15).</p>
+                </div>
+                <div class="space-y-0.5">
+                    <span class="font-bold text-amber-900 block">Target DPR Band (3–5 Rounds)</span>
+                    <p class="text-[11px] text-amber-800 font-mono">DPR = (14 + 8 &times; TL) / [3 .. 5]</p>
+                    <p class="text-[11px] text-amber-700">Yellow shaded zone: 3 rounds for offensive builds, 5 rounds for defensive builds.</p>
+                </div>
+                <div class="space-y-0.5">
+                    <span class="font-bold text-indigo-900 block">Equipment Scaling</span>
+                    <p class="text-[11px] text-indigo-800">
+                        {{ ($equipMode ?? 'basic') === 'level' ? '✨ Level-Appropriate: +1 to +5 weapon enhancements, stat booster belts & gauntlets.' : '🛡️ Basic Equipment: Masterwork mundane gear without level-scaled magical bonuses.' }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Build Selection Toolbar -->
+            <div class="space-y-2.5 bg-slate-50/70 border border-slate-200 rounded-xl p-3.5">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2">
+                    <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                        <span>⚔️</span> Select Class Builds to Plot (<span x-text="selectedBuilds.length"></span>/<span x-text="(graphData.builds || []).length"></span> active):
+                    </div>
+                    
+                    <!-- Quick Preset Filters -->
+                    <div class="flex flex-wrap items-center gap-1 text-[11px]">
+                        <button type="button" @click="selectPreset('top')" class="px-2 py-0.5 rounded bg-white hover:bg-slate-200 border border-slate-300 font-medium text-slate-700 transition cursor-pointer">
+                            ⭐ Core Builds (6)
+                        </button>
+                        <button type="button" @click="selectPreset('fighters')" class="px-2 py-0.5 rounded bg-blue-50 hover:bg-blue-100 border border-blue-200 font-medium text-blue-800 transition cursor-pointer">
+                            🛡️ Fighters (7)
+                        </button>
+                        <button type="button" @click="selectPreset('rogues')" class="px-2 py-0.5 rounded bg-amber-50 hover:bg-amber-100 border border-amber-200 font-medium text-amber-800 transition cursor-pointer">
+                            🗡️ Rogues (7)
+                        </button>
+                        <button type="button" @click="selectPreset('monks_druids')" class="px-2 py-0.5 rounded bg-rose-50 hover:bg-rose-100 border border-rose-200 font-medium text-rose-800 transition cursor-pointer">
+                            🥋 Monks & Druid (5)
+                        </button>
+                        <button type="button" @click="selectPreset('ranged')" class="px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 font-medium text-emerald-800 transition cursor-pointer">
+                            🏹 Ranged (2)
+                        </button>
+                        <button type="button" @click="selectPreset('all')" class="px-2 py-0.5 rounded bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 font-bold text-indigo-700 transition cursor-pointer">
+                            Select All
+                        </button>
+                        <button type="button" @click="selectPreset('none')" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-600 transition cursor-pointer">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Build Checkbox Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 pt-1 max-h-[160px] overflow-y-auto pr-1">
+                    <template x-for="b in (graphData.builds || [])" :key="b.id">
+                        <label class="flex items-center gap-2 p-1.5 rounded-lg border text-xs cursor-pointer transition select-none"
+                               :class="isBuildSelected(b.id) ? 'bg-white border-slate-300 shadow-2xs' : 'bg-slate-100/60 border-slate-200 text-slate-400 opacity-70'">
+                            <input type="checkbox" 
+                                   :value="b.id" 
+                                   x-model="selectedBuilds"
+                                   class="rounded text-indigo-600 focus:ring-indigo-500">
+                            <span class="w-2.5 h-2.5 rounded-full shrink-0" :style="'background-color: ' + b.color"></span>
+                            <span class="font-medium truncate" :class="isBuildSelected(b.id) ? 'text-slate-900' : 'text-slate-500'" x-text="b.name"></span>
+                        </label>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Chart.js Graph Canvas Container -->
+            <div class="bg-white rounded-xl border border-slate-200 p-3 sm:p-4 shadow-2xs">
+                <div class="w-full relative" style="height: 520px; min-height: 440px;">
+                    <canvas id="weaponDprChartCanvas"></canvas>
+                </div>
+            </div>
+
+            <!-- Expandable Numerical Data Table -->
+            <div class="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-2xs">
+                <button type="button" @click="showDataTable = !showDataTable" 
+                        class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 text-left text-xs font-bold text-slate-700 flex items-center justify-between transition cursor-pointer">
+                    <span class="flex items-center gap-2">
+                        <span>📊</span> Numerical DPR Progression Table (Levels 1–30)
+                    </span>
+                    <span class="text-xs text-slate-500 font-mono" x-text="showDataTable ? '▲ Hide Table' : '▼ View Numerical Data'"></span>
+                </button>
+
+                <div x-show="showDataTable" x-collapse class="analysis-table-container border-t border-slate-200">
+                    <table class="w-full text-left border-collapse analysis-table font-mono text-xs">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-800 border-b border-slate-300">
+                                <th class="text-left font-bold font-sans">Build / Target</th>
+                                <template x-for="l in (graphData.levels || [])" :key="l">
+                                    <th class="text-center font-bold px-2 py-1" x-text="'L' + l"></th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <!-- Target Defenses Row -->
+                            <tr class="bg-slate-50 text-[11px] text-slate-600">
+                                <td class="font-bold font-sans text-slate-800">Target DeC / DR</td>
+                                <template x-for="l in (graphData.levels || [])" :key="l">
+                                    <td class="text-center text-slate-600 font-mono text-[10px]" x-text="(graphData.level_stats[l] ? graphData.level_stats[l].dec + '/' + graphData.level_stats[l].dr : '-')"></td>
+                                </template>
+                            </tr>
+                            <!-- Target DPR Range Row -->
+                            <tr class="bg-amber-50/80 font-bold text-amber-950">
+                                <td class="font-sans text-amber-900">🎯 Target DPR Band (3–5 rds)</td>
+                                <template x-for="(l, idx) in (graphData.levels || [])" :key="l">
+                                    <td class="text-center text-amber-900 text-[11px]" x-text="(graphData.target_min[idx] || 0) + '–' + (graphData.target_max[idx] || 0)"></td>
+                                </template>
+                            </tr>
+                            <!-- Selected Builds Rows -->
+                            <template x-for="b in (graphData.builds || [])" :key="b.id">
+                                <tr x-show="isBuildSelected(b.id)" class="hover:bg-slate-50 transition">
+                                    <td class="font-sans font-bold whitespace-nowrap flex items-center gap-1.5 py-1">
+                                        <span class="w-2 h-2 rounded-full shrink-0" :style="'background-color: ' + b.color"></span>
+                                        <span x-text="b.name"></span>
+                                    </td>
+                                    <template x-for="(dprVal, dprIdx) in b.data" :key="dprIdx">
+                                        <td class="text-center font-mono font-bold text-slate-800" x-text="dprVal"></td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 6: Spell Cost -->
     <!-- ========================================================================= -->
     <div x-show="tab === 'spellcost'" class="space-y-4">
         <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs space-y-4">
@@ -857,4 +1034,289 @@
         </div>
     </div>
 </div>
+
+<script src="/js/chart.umd.min.js"></script>
+<script>
+function weaponDprGraph(config) {
+    return {
+        graphData: config.graphData || {},
+        selectedBuilds: [
+            'fighter_longsword_shield',
+            'fighter_greatsword',
+            'archer_longbow',
+            'enlarged_fighter_large_greatsword',
+            'rogue_dual_short_swords',
+            'monk_unarmed'
+        ],
+        showTargetBand: true,
+        showTargetAvg: true,
+        showDataTable: false,
+        chartInstance: null,
+
+        init() {
+            this.$nextTick(() => {
+                if (this.tab === 'weapongraph') {
+                    this.renderChart();
+                }
+            });
+
+            this.$watch('tab', (val) => {
+                if (val === 'weapongraph') {
+                    this.$nextTick(() => {
+                        this.renderChart();
+                    });
+                }
+            });
+
+            this.$watch('selectedBuilds', () => {
+                this.updateChartData();
+            });
+
+            this.$watch('showTargetBand', () => {
+                this.updateChartData();
+            });
+
+            this.$watch('showTargetAvg', () => {
+                this.updateChartData();
+            });
+        },
+
+        selectAll() {
+            this.selectedBuilds = (this.graphData.builds || []).map(b => b.id);
+        },
+
+        deselectAll() {
+            this.selectedBuilds = [];
+        },
+
+        selectPreset(preset) {
+            if (preset === 'all') {
+                this.selectAll();
+            } else if (preset === 'none') {
+                this.deselectAll();
+            } else if (preset === 'top') {
+                this.selectedBuilds = [
+                    'fighter_longsword_shield',
+                    'fighter_greatsword',
+                    'archer_longbow',
+                    'enlarged_fighter_large_greatsword',
+                    'rogue_dual_short_swords',
+                    'monk_unarmed'
+                ];
+            } else if (preset === 'fighters') {
+                this.selectedBuilds = (this.graphData.builds || []).filter(b => b.group === 'Fighters').map(b => b.id);
+            } else if (preset === 'rogues') {
+                this.selectedBuilds = (this.graphData.builds || []).filter(b => b.group === 'Rogues').map(b => b.id);
+            } else if (preset === 'monks_druids') {
+                this.selectedBuilds = (this.graphData.builds || []).filter(b => b.group === 'Monks' || b.group === 'Druids').map(b => b.id);
+            } else if (preset === 'ranged') {
+                this.selectedBuilds = (this.graphData.builds || []).filter(b => b.group === 'Ranged').map(b => b.id);
+            }
+        },
+
+        isBuildSelected(id) {
+            return this.selectedBuilds.includes(id);
+        },
+
+        renderChart() {
+            const canvas = document.getElementById('weaponDprChartCanvas');
+            if (!canvas || typeof Chart === 'undefined') return;
+
+            if (this.chartInstance) {
+                this.chartInstance.destroy();
+                this.chartInstance = null;
+            }
+
+            const ctx = canvas.getContext('2d');
+            const levels = this.graphData.levels || [];
+            const targetMin = this.graphData.target_min || [];
+            const targetMax = this.graphData.target_max || [];
+            const targetAvg = this.graphData.target_avg || [];
+            const builds = this.graphData.builds || [];
+            const levelStats = this.graphData.level_stats || {};
+
+            const datasets = [];
+
+            // Dataset 0: Target Max (3 rounds, Offensive)
+            datasets.push({
+                id: '__target_max',
+                label: 'Target Max (3 rds, Offensive)',
+                data: targetMax,
+                borderColor: 'rgba(217, 119, 6, 0.75)',
+                backgroundColor: 'rgba(254, 240, 138, 0.28)',
+                borderWidth: 1.5,
+                borderDash: [5, 5],
+                fill: '+1',
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                tension: 0.15,
+                hidden: !this.showTargetBand,
+                order: 99
+            });
+
+            // Dataset 1: Target Min (5 rounds, Defensive)
+            datasets.push({
+                id: '__target_min',
+                label: 'Target Min (5 rds, Defensive)',
+                data: targetMin,
+                borderColor: 'rgba(217, 119, 6, 0.75)',
+                backgroundColor: 'transparent',
+                borderWidth: 1.5,
+                borderDash: [5, 5],
+                fill: false,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                tension: 0.15,
+                hidden: !this.showTargetBand,
+                order: 99
+            });
+
+            // Dataset 2: Target Baseline (4 rounds, Average)
+            datasets.push({
+                id: '__target_avg',
+                label: 'Target Baseline (4 rds)',
+                data: targetAvg,
+                borderColor: 'rgba(180, 83, 9, 0.95)',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                borderDash: [2, 2],
+                fill: false,
+                pointRadius: 0,
+                pointHoverRadius: 5,
+                tension: 0.15,
+                hidden: !this.showTargetAvg,
+                order: 98
+            });
+
+            // Datasets 3+: Class Builds
+            builds.forEach((b, idx) => {
+                datasets.push({
+                    id: b.id,
+                    label: b.name,
+                    data: b.data,
+                    borderColor: b.color,
+                    backgroundColor: b.color,
+                    borderWidth: 2.2,
+                    pointRadius: 2.5,
+                    pointHoverRadius: 6,
+                    tension: 0.2,
+                    hidden: !this.selectedBuilds.includes(b.id),
+                    order: idx + 1
+                });
+            });
+
+            this.chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: levels.map(l => 'Lvl ' + l),
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 350
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            titleColor: '#f8fafc',
+                            titleFont: { size: 12, weight: 'bold' },
+                            bodyColor: '#e2e8f0',
+                            bodyFont: { size: 11 },
+                            padding: 10,
+                            boxPadding: 4,
+                            cornerRadius: 8,
+                            filter: function(item) {
+                                return item.dataset.hidden !== true;
+                            },
+                            callbacks: {
+                                title: (tooltipItems) => {
+                                    if (!tooltipItems.length) return '';
+                                    const lvlIdx = tooltipItems[0].dataIndex;
+                                    const lvl = levels[lvlIdx];
+                                    const stats = levelStats[lvl] || {};
+                                    return `Level ${lvl}  (Target DeC: ${stats.dec}, Target DR: ${stats.dr}, Baseline HP: ${stats.hp})`;
+                                },
+                                label: (context) => {
+                                    const label = context.dataset.label || '';
+                                    const val = context.parsed.y;
+                                    if (val === null || val === undefined) return null;
+                                    return ` ${label}: ${val} DPR`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Character Level (TL 1 – 30)',
+                                font: { weight: 'bold', size: 12 },
+                                color: '#475569'
+                            },
+                            grid: {
+                                color: 'rgba(226, 232, 240, 0.8)'
+                            },
+                            ticks: {
+                                color: '#475569',
+                                font: { size: 10 }
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Damage Per Round (DPR)',
+                                font: { weight: 'bold', size: 12 },
+                                color: '#475569'
+                            },
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(226, 232, 240, 0.8)'
+                            },
+                            ticks: {
+                                color: '#475569',
+                                font: { size: 10 }
+                            }
+                        }
+                    }
+                }
+            });
+        },
+
+        updateChartData() {
+            if (!this.chartInstance) {
+                this.renderChart();
+                return;
+            }
+
+            // Update Target Band visibility
+            if (this.chartInstance.data.datasets[0]) {
+                this.chartInstance.data.datasets[0].hidden = !this.showTargetBand;
+            }
+            if (this.chartInstance.data.datasets[1]) {
+                this.chartInstance.data.datasets[1].hidden = !this.showTargetBand;
+            }
+            if (this.chartInstance.data.datasets[2]) {
+                this.chartInstance.data.datasets[2].hidden = !this.showTargetAvg;
+            }
+
+            // Update build datasets visibility
+            for (let i = 3; i < this.chartInstance.data.datasets.length; i++) {
+                const ds = this.chartInstance.data.datasets[i];
+                ds.hidden = !this.selectedBuilds.includes(ds.id);
+            }
+
+            this.chartInstance.update('none');
+        }
+    };
+}
+</script>
 @endsection

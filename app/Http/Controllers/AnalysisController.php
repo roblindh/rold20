@@ -43,6 +43,7 @@ class AnalysisController extends Controller
         $classBenchmarks = $this->getClassBenchmarks($classLvl, $equipMode);
         $creatureBenchmarks = $this->getCreatureBenchmarks();
         $weaponDprData = $this->getWeaponDprMatrix($weaponLvl, $equipMode);
+        $weaponDprGraphData = $this->getWeaponDprGraphData($equipMode);
         $casterProgression = $this->getCasterProgression($spellLvl, $equipMode);
         $spellDprTables = $this->getSpellDprTables();
         $otherSpellTables = $this->getOtherSpellBalancingTables();
@@ -55,6 +56,7 @@ class AnalysisController extends Controller
             'classBenchmarks',
             'creatureBenchmarks',
             'weaponDprData',
+            'weaponDprGraphData',
             'casterProgression',
             'spellDprTables',
             'otherSpellTables'
@@ -209,6 +211,89 @@ class AnalysisController extends Controller
             return [
                 'target_decs' => $targetDecs,
                 'rows' => $rows,
+            ];
+        });
+    }
+
+    public function getWeaponDprGraphData(string $equipMode = 'basic'): array
+    {
+        return Cache::remember("analysis.weapon_dpr_graph.v6.{$equipMode}", 86400, function () use ($equipMode) {
+            $weaponConfigs = [
+                ['id' => 'fighter_longsword_shield', 'race' => 1, 'name' => 'Fighter (Longsword + Shield)', 'group' => 'Fighters', 'config_tpl' => "Fighter { Str=16; Con=14; Dex=12; Int=8; Wis=12; Cha=10; Class=Fighter; Lvl={lvl}; Weapon1=Mw longsword (Item=Sword, long-: Mod=MwMeleeWp:); Weapon2=Mw shield (Item=Shield, heavy wooden: Mod=MwShield:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor:); }", 'va' => false, 'color' => '#2563eb'],
+                ['id' => 'fighter_battleaxe_shield', 'race' => 1, 'name' => 'Fighter (Battleaxe + Shield)', 'group' => 'Fighters', 'config_tpl' => "Fighter { Str=16; Con=14; Dex=12; Int=8; Wis=12; Cha=10; Class=Axe Fighter; Lvl={lvl}; Weapon1=Mw battleaxe (Item=Axe, battle-: Mod=MwMeleeWp:); Weapon2=Mw shield (Item=Shield, heavy wooden: Mod=MwShield:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor:); }", 'va' => false, 'color' => '#0284c7'],
+                ['id' => 'fighter_heavy_mace_shield', 'race' => 1, 'name' => 'Fighter (Heavy Mace + Shield)', 'group' => 'Fighters', 'config_tpl' => "Fighter { Str=16; Con=14; Dex=12; Int=8; Wis=12; Cha=10; Class=Mace Fighter; Lvl={lvl}; Weapon1=Mw mace (Item=Mace, heavy: Mod=MwMeleeWp:); Weapon2=Mw shield (Item=Shield, heavy wooden: Mod=MwShield:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor:); }", 'va' => false, 'color' => '#0d9488'],
+                ['id' => 'fighter_flail_shield', 'race' => 1, 'name' => 'Fighter (Flail + Shield)', 'group' => 'Fighters', 'config_tpl' => "Fighter { Str=16; Con=14; Dex=12; Int=8; Wis=12; Cha=10; Class=Mace Fighter; Lvl={lvl}; Weapon1=Mw flail (Item=Flail: Mod=MwMeleeWp:); Weapon2=Mw shield (Item=Shield, heavy wooden: Mod=MwShield:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor:); }", 'va' => false, 'color' => '#0891b2'],
+                ['id' => 'fighter_double_shields', 'race' => 1, 'name' => 'Fighter (Double Shields)', 'group' => 'Fighters', 'config_tpl' => "Fighter { Str=16; Con=14; Dex=12; Int=8; Wis=12; Cha=10; Class=Fighter; Lvl={lvl}; Weapon1=Mw shield (Item=Shield, light steel: Mod=MwShield:); Weapon2=Mw shield (Item=Shield, light steel: Mod=MwShield:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor:); }", 'va' => false, 'color' => '#64748b'],
+                ['id' => 'fighter_greatsword', 'race' => 1, 'name' => 'Fighter (Greatsword)', 'group' => 'Fighters', 'config_tpl' => "Fighter { Str=16; Con=14; Dex=12; Int=8; Wis=12; Cha=10; Class=Fighter; Lvl={lvl}; Weapon1=Mw greatsword (Item=Sword, great-: Mod=MwMeleeWp:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor:); }", 'va' => false, 'color' => '#1d4ed8'],
+                ['id' => 'archer_longbow', 'race' => 1, 'name' => 'Archer (Longbow)', 'group' => 'Ranged', 'config_tpl' => "Fighter { Str=12; Con=14; Dex=16; Int=8; Wis=12; Cha=10; Class=Archer; Lvl={lvl}; Ranged=Mw longbow (Item=Bow, long-: Mod=MwProjWp:); Ammo=Arrows (Item=Arrow, sheaf (20):); Armor=Mw chain shirt (Item=Chain shirt: Mod=MwArmor:); }", 'va' => false, 'color' => '#16a34a'],
+                ['id' => 'archer_heavy_crossbow', 'race' => 1, 'name' => 'Archer (Heavy Crossbow)', 'group' => 'Ranged', 'config_tpl' => "Fighter { Str=12; Con=14; Dex=16; Int=8; Wis=12; Cha=10; Class=Archer; Lvl={lvl}; Ranged=Mw crossbow (Item=Crossbow, heavy: Mod=MwProjWp:); Ammo=Bolts (Item=Bolt, heavy (10):); Armor=Mw chain shirt (Item=Chain shirt: Mod=MwArmor:); }", 'va' => false, 'color' => '#15803d'],
+                ['id' => 'enlarged_fighter_large_greatsword', 'race' => 1, 'name' => 'Enlarged Fighter (Large Greatsword)', 'group' => 'Fighters', 'config_tpl' => "Enlarged Fighter { Str=16; Con=14; Dex=12; Int=8; Wis=12; Cha=10; Class=Fighter; Lvl={lvl}; SzMod=1; Weapon1=Mw greatsword (Item=Sword, great-: Mod=MwMeleeWp: Mod=MadeForL:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor: Mod=MadeForL:); }", 'va' => false, 'color' => '#7c3aed'],
+                ['id' => 'rogue_rapier_buckler', 'race' => 1, 'name' => 'Rogue (Rapier + Buckler)', 'group' => 'Rogues', 'config_tpl' => "Rogue { Str=12; Con=12; Dex=16; Int=14; Wis=8; Cha=10; Class=Rogue; Lvl={lvl}; Weapon1=Mw rapier (Item=Rapier: Mod=MwMeleeWp:); Weapon2=Mw buckler (Item=Buckler: Mod=MwShield:); Armor=Mw studded leather (Item=Studded leather: Mod=MwArmor:); }", 'va' => false, 'color' => '#f59e0b'],
+                ['id' => 'rogue_rapier_dagger', 'race' => 1, 'name' => 'Rogue (Rapier + Dagger)', 'group' => 'Rogues', 'config_tpl' => "Rogue { Str=12; Con=12; Dex=16; Int=14; Wis=8; Cha=10; Class=Rogue; Lvl={lvl}; Weapon1=Mw rapier (Item=Rapier: Mod=MwMeleeWp:); Weapon2=Mw dagger (Item=Dagger: Mod=MwMeleeWp:); Armor=Mw studded leather (Item=Studded leather: Mod=MwArmor:); }", 'va' => false, 'color' => '#d97706'],
+                ['id' => 'rogue_dual_longswords', 'race' => 1, 'name' => 'Rogue (Dual Longswords)', 'group' => 'Rogues', 'config_tpl' => "Rogue { Str=12; Con=12; Dex=16; Int=14; Wis=8; Cha=10; Class=Rogue; Lvl={lvl}; Weapon1=Mw longsword (Item=Sword, long-: Mod=MwMeleeWp:); Weapon2=Mw longsword (Item=Sword, long-: Mod=MwMeleeWp:); Armor=Mw studded leather (Item=Studded leather: Mod=MwArmor:); }", 'va' => false, 'color' => '#b45309'],
+                ['id' => 'rogue_dual_short_swords', 'race' => 1, 'name' => 'Rogue (Dual Short Swords)', 'group' => 'Rogues', 'config_tpl' => "Rogue { Str=12; Con=12; Dex=16; Int=14; Wis=8; Cha=10; Class=Rogue; Lvl={lvl}; Weapon1=Mw short sword (Item=Sword, short: Mod=MwMeleeWp:); Weapon2=Mw short sword (Item=Sword, short: Mod=MwMeleeWp:); Armor=Mw studded leather (Item=Studded leather: Mod=MwArmor:); }", 'va' => false, 'color' => '#ea580c'],
+                ['id' => 'rogue_dual_daggers', 'race' => 1, 'name' => 'Rogue (Dual Daggers)', 'group' => 'Rogues', 'config_tpl' => "Rogue { Str=12; Con=12; Dex=16; Int=14; Wis=8; Cha=10; Class=Rogue; Lvl={lvl}; Weapon1=Mw dagger (Item=Dagger: Mod=MwMeleeWp:); Weapon2=Mw dagger (Item=Dagger: Mod=MwMeleeWp:); Armor=Mw studded leather (Item=Studded leather: Mod=MwArmor:); }", 'va' => false, 'color' => '#c2410c'],
+                ['id' => 'rogue_va_short_swords', 'race' => 1, 'name' => 'Rogue (Vital Attack, Short Swords)', 'group' => 'Rogues', 'config_tpl' => "Rogue (VA) { Str=12; Con=12; Dex=16; Int=14; Wis=8; Cha=10; Class=Rogue; Lvl={lvl}; Weapon1=Mw short sword (Item=Sword, short: Mod=MwMeleeWp:); Weapon2=Mw short sword (Item=Sword, short: Mod=MwMeleeWp:); Armor=Mw studded leather (Item=Studded leather: Mod=MwArmor:); }", 'va' => true, 'color' => '#e11d48'],
+                ['id' => 'rogue_va_daggers', 'race' => 1, 'name' => 'Rogue (Vital Attack, Daggers)', 'group' => 'Rogues', 'config_tpl' => "Rogue (VA) { Str=12; Con=12; Dex=16; Int=14; Wis=8; Cha=10; Class=Rogue; Lvl={lvl}; Weapon1=Mw dagger (Item=Dagger: Mod=MwMeleeWp:); Weapon2=Mw dagger (Item=Dagger: Mod=MwMeleeWp:); Armor=Mw studded leather (Item=Studded leather: Mod=MwArmor:); }", 'va' => true, 'color' => '#be123c'],
+                ['id' => 'monk_unarmed', 'race' => 1, 'name' => 'Monk (Unarmed)', 'group' => 'Monks', 'config_tpl' => "Monk { Str=12; Con=12; Dex=16; Int=10; Wis=14; Cha=8; Class=Monk; Lvl={lvl}; Armor=Clothing (Item=Clothing:); }", 'va' => false, 'color' => '#ec4899'],
+                ['id' => 'halfling_monk_elements', 'race' => 18, 'name' => 'Halfling Monk (Student of Elements)', 'group' => 'Monks', 'config_tpl' => "Halfling Monk { Str=12; Con=12; Dex=16; Int=10; Wis=14; Cha=8; Class=Student of Elements; Lvl={lvl}; Armor=Clothing (Item=Clothing:); }", 'va' => false, 'color' => '#db2777'],
+                ['id' => 'monk_quarterstaff', 'race' => 1, 'name' => 'Monk (Quarterstaff)', 'group' => 'Monks', 'config_tpl' => "Monk { Str=12; Con=12; Dex=16; Int=10; Wis=14; Cha=8; Class=Monk; Lvl={lvl}; Weapon1=Mw staff (Item=Quarterstaff: Mod=MwMeleeWp:); Armor=Clothing (Item=Clothing:); }", 'va' => false, 'color' => '#a855f7'],
+                ['id' => 'monk_dual_sai', 'race' => 1, 'name' => 'Monk (Dual Sai)', 'group' => 'Monks', 'config_tpl' => "Monk { Str=12; Con=12; Dex=16; Int=10; Wis=14; Cha=8; Class=Monk; Lvl={lvl}; Weapon1=Mw sai (Item=Sai: Mod=MwMeleeWp:); Weapon2=Mw sai (Item=Sai: Mod=MwMeleeWp:); Armor=Clothing (Item=Clothing:); }", 'va' => false, 'color' => '#9333ea'],
+                ['id' => 'druid_brown_bear', 'race' => 1, 'name' => 'Druid (Brown Bear Wild Shape)', 'group' => 'Druids', 'config_tpl' => "Druid as Brown Bear { Str=12; Con=10; Dex=14; Int=8; Wis=16; Cha=12; Class=Druid; Lvl={lvl}; Shape=Brown Bear; }", 'va' => false, 'color' => '#854d0e'],
+            ];
+
+            $levels = range(1, 30);
+            $targetMin = [];
+            $targetMax = [];
+            $targetAvg = [];
+            $levelStats = [];
+
+            foreach ($levels as $l) {
+                $hp = 14 + 8 * $l;
+                $dec = 10 + ($l / 2.0);
+                $dr = 5 + ($l / 2.0);
+                $targetMin[] = round($hp / 5.0, 1);
+                $targetMax[] = round($hp / 3.0, 1);
+                $targetAvg[] = round($hp / 4.0, 1);
+                $levelStats[$l] = [
+                    'hp' => $hp,
+                    'dec' => $dec,
+                    'dr' => $dr,
+                    'target_min' => round($hp / 5.0, 1),
+                    'target_max' => round($hp / 3.0, 1),
+                    'target_avg' => round($hp / 4.0, 1),
+                ];
+            }
+
+            $buildDatasets = [];
+            foreach ($weaponConfigs as $b) {
+                $dprs = [];
+                foreach ($levels as $l) {
+                    $cfg = str_replace('{lvl}', (string)$l, $b['config_tpl']);
+                    $charData = EntityEngine::buildEntityFromConfigString($b['race'], $cfg, $equipMode);
+                    $calc = EntityEngine::calculate($charData);
+                    $dec = 10 + ($l / 2.0);
+                    $dr = 5 + ($l / 2.0);
+                    $dpr = round(EntityEngine::calculateDPR($calc, $dec, $dr, $b['va']), 1);
+                    $dprs[] = $dpr;
+                }
+                $buildDatasets[] = [
+                    'id' => $b['id'],
+                    'name' => $b['name'],
+                    'group' => $b['group'],
+                    'color' => $b['color'],
+                    'va' => $b['va'],
+                    'data' => $dprs,
+                ];
+            }
+
+            return [
+                'levels' => $levels,
+                'target_min' => $targetMin,
+                'target_max' => $targetMax,
+                'target_avg' => $targetAvg,
+                'level_stats' => $levelStats,
+                'builds' => $buildDatasets,
             ];
         });
     }
