@@ -1154,34 +1154,44 @@ class ProceduralItemFactory
         $gemCount = $tableRow ? (int)round(self::rollDiceChance($tableRow->Gems) * $goodsMul) : 0;
         $gems = [];
         $gemTypes = [
-            ['name' => 'Banded Agate', 'val_gp' => 10],
-            ['name' => 'Eye Agate', 'val_gp' => 10],
-            ['name' => 'Lapis Lazuli', 'val_gp' => 10],
-            ['name' => 'Tiger Eye', 'val_gp' => 10],
-            ['name' => 'Bloodstone', 'val_gp' => 50],
-            ['name' => 'Moonstone', 'val_gp' => 50],
-            ['name' => 'Jasper', 'val_gp' => 50],
-            ['name' => 'Amber', 'val_gp' => 100],
-            ['name' => 'Amethyst', 'val_gp' => 100],
-            ['name' => 'Garnet', 'val_gp' => 100],
-            ['name' => 'Pearl (White)', 'val_gp' => 100],
-            ['name' => 'Topaz', 'val_gp' => 500],
-            ['name' => 'Aquamarine', 'val_gp' => 500],
-            ['name' => 'Black Pearl', 'val_gp' => 500],
-            ['name' => 'Emerald', 'val_gp' => 1000],
-            ['name' => 'Ruby', 'val_gp' => 1000],
-            ['name' => 'Sapphire', 'val_gp' => 1000],
-            ['name' => 'Diamond', 'val_gp' => 5000],
+            ['name' => 'Banded Agate', 'val_gp' => 10, 'weight' => 0.01],
+            ['name' => 'Eye Agate', 'val_gp' => 10, 'weight' => 0.01],
+            ['name' => 'Lapis Lazuli', 'val_gp' => 10, 'weight' => 0.01],
+            ['name' => 'Tiger Eye', 'val_gp' => 10, 'weight' => 0.01],
+            ['name' => 'Bloodstone', 'val_gp' => 50, 'weight' => 0.01],
+            ['name' => 'Moonstone', 'val_gp' => 50, 'weight' => 0.01],
+            ['name' => 'Jasper', 'val_gp' => 50, 'weight' => 0.01],
+            ['name' => 'Amber', 'val_gp' => 100, 'weight' => 0.02],
+            ['name' => 'Amethyst', 'val_gp' => 100, 'weight' => 0.02],
+            ['name' => 'Garnet', 'val_gp' => 100, 'weight' => 0.02],
+            ['name' => 'Pearl (White)', 'val_gp' => 100, 'weight' => 0.01],
+            ['name' => 'Topaz', 'val_gp' => 500, 'weight' => 0.02],
+            ['name' => 'Aquamarine', 'val_gp' => 500, 'weight' => 0.02],
+            ['name' => 'Black Pearl', 'val_gp' => 500, 'weight' => 0.01],
+            ['name' => 'Emerald', 'val_gp' => 1000, 'weight' => 0.03],
+            ['name' => 'Ruby', 'val_gp' => 1000, 'weight' => 0.03],
+            ['name' => 'Sapphire', 'val_gp' => 1000, 'weight' => 0.03],
+            ['name' => 'Diamond', 'val_gp' => 5000, 'weight' => 0.02],
+            ['name' => 'Star Ruby', 'val_gp' => 10000, 'weight' => 0.05],
+            ['name' => 'Flawless Diamond', 'val_gp' => 25000, 'weight' => 0.05],
         ];
 
         for ($i = 0; $i < $gemCount; $i++) {
             $maxIdx = min(count($gemTypes) - 1, max(3, (int)floor($el * 0.9)));
             $gem = $gemTypes[rand(0, $maxIdx)];
+            $valSp = (float)($gem['val_gp'] * 10);
             $gems[] = (object)[
+                'id' => uniqid('gem_'),
                 'Item' => "Gem: {$gem['name']}",
-                'Description' => "Gemstone ({$gem['name']})",
-                'Value' => $gem['val_gp'] * 10,
-                'ValueGp' => $gem['val_gp'],
+                'name' => "Gem: {$gem['name']}",
+                'Description' => "Precious gemstone ({$gem['name']})",
+                'Value' => $valSp,
+                'ValueGp' => (float)$gem['val_gp'],
+                'value' => $valSp,
+                'weight' => (float)($gem['weight'] ?? 0.01),
+                'item_type' => 9,
+                'is_valuable' => true,
+                'valuable_type' => 'gem',
             ];
         }
 
@@ -1189,25 +1199,68 @@ class ProceduralItemFactory
         $artCount = $tableRow ? (int)round(self::rollDiceChance($tableRow->Art) * $goodsMul) : 0;
         $artObjects = [];
         $artTypes = [
-            ['name' => 'Silver ewer', 'val_gp' => 25],
-            ['name' => 'Carved ivory statuette', 'val_gp' => 50],
-            ['name' => 'Gold chalice with lapis lazuli', 'val_gp' => 150],
-            ['name' => 'Embroidered silk tapestry', 'val_gp' => 250],
-            ['name' => 'Silver comb with moonstones', 'val_gp' => 350],
-            ['name' => 'Gold ceremonial dagger with garnets', 'val_gp' => 500],
-            ['name' => 'Gold music box with emerald inlay', 'val_gp' => 1000],
-            ['name' => 'Jeweled platinum crown', 'val_gp' => 3000],
+            ['name' => 'Silver ewer', 'val_gp' => 25, 'weight' => 0.5],
+            ['name' => 'Carved ivory statuette', 'val_gp' => 50, 'weight' => 0.3],
+            ['name' => 'Gold chalice with lapis lazuli', 'val_gp' => 150, 'weight' => 0.8],
+            ['name' => 'Embroidered silk tapestry', 'val_gp' => 250, 'weight' => 2.0],
+            ['name' => 'Silver comb with moonstones', 'val_gp' => 350, 'weight' => 0.2],
+            ['name' => 'Gold ceremonial dagger with garnets', 'val_gp' => 500, 'weight' => 0.6],
+            ['name' => 'Gold music box with emerald inlay', 'val_gp' => 1000, 'weight' => 1.2],
+            ['name' => 'Jeweled platinum crown', 'val_gp' => 3000, 'weight' => 1.5],
+            ['name' => 'Masterwork dragon-scale mask with sapphires', 'val_gp' => 7500, 'weight' => 1.0],
         ];
 
         for ($i = 0; $i < $artCount; $i++) {
             $maxIdx = min(count($artTypes) - 1, max(1, (int)floor($el * 0.4)));
             $art = $artTypes[rand(0, $maxIdx)];
+            $valSp = (float)($art['val_gp'] * 10);
             $artObjects[] = (object)[
+                'id' => uniqid('art_'),
                 'Item' => "Art: {$art['name']}",
+                'name' => "Art: {$art['name']}",
                 'Description' => "Art object ({$art['name']})",
-                'Value' => $art['val_gp'] * 10,
-                'ValueGp' => $art['val_gp'],
+                'Value' => $valSp,
+                'ValueGp' => (float)$art['val_gp'],
+                'value' => $valSp,
+                'weight' => (float)($art['weight'] ?? 1.0),
+                'item_type' => 9,
+                'is_valuable' => true,
+                'valuable_type' => 'art',
             ];
+        }
+
+        // Bullion & Trade Bars for mid-to-high EL hoards
+        $tradeBars = [];
+        if ($el >= 6 && rand(1, 100) <= min(75, $el * 5)) {
+            $barCount = rand(1, (int)ceil($el / 6));
+            for ($b = 0; $b < $barCount; $b++) {
+                $isGold = ($el >= 10 && rand(1, 100) <= 50);
+                $isPlat = ($el >= 16 && rand(1, 100) <= 25);
+                if ($isPlat) {
+                    $bName = 'Platinum Trade Bar (1 kg)';
+                    $bVal = 10000.0;
+                } elseif ($isGold) {
+                    $bName = 'Gold Trade Bar (1 kg)';
+                    $bVal = 1000.0;
+                } else {
+                    $bName = 'Silver Trade Bar (1 kg)';
+                    $bVal = 100.0;
+                }
+                $tradeBars[] = (object)[
+                    'id' => uniqid('bar_'),
+                    'Item' => $bName,
+                    'name' => $bName,
+                    'Description' => 'Standard refined trade bullion ingot (1 kg)',
+                    'Value' => $bVal,
+                    'ValueGp' => $bVal / 10.0,
+                    'value' => $bVal,
+                    'weight' => 1.0,
+                    'item_type' => 1,
+                    'subtype' => 3,
+                    'is_valuable' => true,
+                    'valuable_type' => 'bullion',
+                ];
+            }
         }
 
         // 4. Mundane Items
@@ -1220,9 +1273,12 @@ class ProceduralItemFactory
                 if ($p) {
                     $mundaneItems[] = (object)[
                         'Item' => $p['name'],
+                        'name' => $p['name'],
                         'Description' => 'Alchemical item',
                         'Value' => (int)$p['value_sp'],
                         'ValueGp' => (float)$p['value_gp'],
+                        'value' => (float)$p['value_sp'],
+                        'weight' => (float)($p['weight'] ?? 0.1),
                     ];
                 }
             } elseif ($roll <= 50) {
@@ -1230,9 +1286,12 @@ class ProceduralItemFactory
                 if ($a) {
                     $mundaneItems[] = (object)[
                         'Item' => $a['name'],
+                        'name' => $a['name'],
                         'Description' => 'Armor / Shield',
                         'Value' => (int)$a['value_sp'],
                         'ValueGp' => (float)$a['value_gp'],
+                        'value' => (float)$a['value_sp'],
+                        'weight' => (float)($a['weight'] ?? 10.0),
                     ];
                 }
             } elseif ($roll <= 83) {
@@ -1240,23 +1299,29 @@ class ProceduralItemFactory
                 if ($w) {
                     $mundaneItems[] = (object)[
                         'Item' => $w['name'],
+                        'name' => $w['name'],
                         'Description' => 'Weapon',
                         'Value' => (int)$w['value_sp'],
                         'ValueGp' => (float)$w['value_gp'],
+                        'value' => (float)$w['value_sp'],
+                        'weight' => (float)($w['weight'] ?? 2.0),
                     ];
                 }
             } else {
                 $val = rand(10, 50);
                 $mundaneItems[] = (object)[
                     'Item' => 'Adventurer gear & tools',
+                    'name' => 'Adventurer gear & tools',
                     'Description' => 'Valuable gear and tools',
                     'Value' => $val * 10,
                     'ValueGp' => $val,
+                    'value' => (float)($val * 10),
+                    'weight' => 5.0,
                 ];
             }
         }
 
-        $allGoods = array_merge($gems, $artObjects, $mundaneItems);
+        $allGoods = array_merge($gems, $artObjects, $tradeBars, $mundaneItems);
 
         // 5. Magic Items
         $magicItems = [];
@@ -1278,12 +1343,22 @@ class ProceduralItemFactory
             $magicItems[] = self::generateRandomTreasureItem($el, 'minor');
         }
 
+        $coinsArray = ['cp' => $cp, 'sp' => $sp, 'gp' => $gp, 'pp' => $pp];
+        $coinsSp = CurrencyService::coinsToSp($coinsArray);
+        $coinsWeight = CurrencyService::calculateCoinWeight($coinsArray);
+
         return [
             'el' => $el,
             'gold' => $gp,
             'silver' => $sp,
             'copper' => $cp,
             'platinum' => $pp,
+            'coins' => $coinsArray,
+            'coins_sp' => $coinsSp,
+            'coins_weight_kg' => $coinsWeight,
+            'gems' => $gems,
+            'art' => $artObjects,
+            'bullion' => $tradeBars,
             'mundane' => $allGoods,
             'magic_items' => $magicItems,
         ];

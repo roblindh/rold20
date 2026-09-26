@@ -22,9 +22,11 @@ class RandomSelectionTest extends TestCase
 
     public function testTreasureGeneratorEndpointProducesWeightedProceduralItems(): void
     {
-        $response = $this->app->handle(Request::create('/utilities/treasure-generator/roll', 'POST', [
+        $controller = new \App\Http\Controllers\UtilityController();
+        $request = Request::create('/utilities/treasure-generator/roll', 'POST', [
             'el' => 5,
-        ], [], [], ['HTTP_ACCEPT' => 'application/json']));
+        ]);
+        $response = $controller->rollTreasure($request);
 
         $this->assertEquals(200, $response->getStatusCode());
         $data = json_decode($response->getContent(), true);

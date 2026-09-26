@@ -30,6 +30,11 @@
                     class="px-3 py-1.5 rounded-lg border transition flex items-center gap-1.5 cursor-pointer">
                 <span>✨</span> Magic & Commission Forge
             </button>
+            <button type="button" @click="marketTab = 'sell'"
+                    :class="marketTab === 'sell' ? 'bg-white text-emerald-700 shadow-2xs border-slate-300' : 'hover:bg-slate-200 text-slate-600 border-transparent'"
+                    class="px-3 py-1.5 rounded-lg border transition flex items-center gap-1.5 cursor-pointer">
+                <span>💎</span> Sell Valuables (<span x-text="valuableItemsInInventory.length"></span>)
+            </button>
         </div>
 
         <form action="{{ route('utilities.charview.buy-items', ['id' => $character->ID], false) }}" method="POST" class="p-6 overflow-y-auto space-y-4 flex-1 text-xs">
@@ -257,6 +262,80 @@
                                 </div>
                             </div>
                         </template>
+                    </div>
+
+                    <!-- TAB 4: SELL VALUABLES -->
+                    <div x-show="marketTab === 'sell'" class="space-y-3" style="display: none;">
+                        <div class="bg-amber-50/70 p-3 rounded-xl border border-amber-200 space-y-2">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-200 pb-2">
+                                <div class="font-bold text-amber-950 text-xs flex items-center gap-1.5">
+                                    <span>💎</span> Liquidate Valuables &amp; Goods
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <label class="text-[10px] font-bold text-slate-700 uppercase">Merchant Type:</label>
+                                    <select x-model="valuableShopType" @change="onValuableShopTypeChange()" class="px-2 py-1 bg-white border border-slate-300 rounded text-xs text-black">
+                                        <option value="jeweler">💎 Jeweler / Magic Shop (100% value)</option>
+                                        <option value="smith">⚒️ Armorsmith / Weaponsmith (90% value)</option>
+                                        <option value="fence">🕶️ Black Market / Fence (85% value)</option>
+                                        <option value="general">🏪 General Merchant (80% value)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="text-[11px] text-slate-600 flex items-center justify-between">
+                                <span>Sell gems, art pieces, and trade bullion to the local merchant to receive silver and gold into your coin purse.</span>
+                                <button type="button" @click="toggleAllValuablesSelection()" class="text-indigo-600 hover:text-indigo-800 font-bold underline shrink-0 ml-2">
+                                    <span x-text="selectedValuablesToSell.length === valuableItemsInInventory.length ? 'Deselect All' : 'Select All'"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Toast Message -->
+                        <div x-show="sellToastMessage" x-text="sellToastMessage" class="p-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-lg text-xs font-bold shadow-xs"></div>
+
+                        <template x-if="valuableItemsInInventory.length === 0">
+                            <div class="p-8 text-center text-slate-400 italic bg-slate-50 rounded-xl border border-slate-200">
+                                No gems, art objects, or trade bullion found in your inventory.
+                            </div>
+                        </template>
+
+                        <div class="space-y-1.5 max-h-80 overflow-y-auto pr-1" x-show="valuableItemsInInventory.length > 0">
+                            <template x-for="item in valuableItemsInInventory" :key="item.uid || item.id">
+                                <label class="bg-white border border-slate-200 hover:border-emerald-300 p-2.5 rounded-lg flex items-center justify-between gap-2 shadow-2xs transition cursor-pointer">
+                                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                                        <input type="checkbox" :value="item.uid || item.id" x-model="selectedValuablesToSell" class="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer">
+                                        <div class="min-w-0 flex-1">
+                                            <div class="flex items-center gap-1.5">
+                                                <span class="font-bold text-slate-800 truncate" x-text="item.name || item.Name"></span>
+                                                <span x-show="item.is_valuable || (item.item_type_id == 9)" class="text-[9px] px-1.5 py-0.2 bg-emerald-100 text-emerald-800 rounded font-bold">Valuable</span>
+                                            </div>
+                                            <div class="text-[10px] text-slate-500 font-mono">
+                                                <span>Base: <strong x-text="(item.unit_price || item.BaseValue || item.value || 0) + ' sp'"></strong></span>
+                                                <span> &bull; Qty: <strong x-text="item.qty || item.Qty || 1"></strong></span>
+                                                <span x-show="item.unit_weight || item.BaseWeight"> &bull; Weight: <strong x-text="(item.unit_weight || item.BaseWeight) + ' kg'"></strong></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right shrink-0 font-mono">
+                                        <div class="text-xs font-bold text-emerald-700" x-text="((item.unit_price || item.BaseValue || item.value || 0) * (item.qty || item.Qty || 1) * valuablePayoutMultiplier).toFixed(1) + ' sp'"></div>
+                                        <div class="text-[10px] text-slate-400 font-sans" x-text="'(' + Math.round(valuablePayoutMultiplier * 100) + '% payout)'"></div>
+                                    </div>
+                                </label>
+                            </template>
+                        </div>
+
+                        <!-- Sell Action Bar -->
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between gap-3" x-show="valuableItemsInInventory.length > 0">
+                            <div>
+                                <span class="text-xs text-slate-600">Selected Payout:</span>
+                                <strong class="text-emerald-800 font-mono text-sm ml-1" x-text="totalValuablePayoutSp + ' sp'"></strong>
+                            </div>
+                            <button type="button" @click="sellSelectedValuablesAction()"
+                                    :disabled="selectedValuablesToSell.length === 0 || sellingValuables"
+                                    class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold text-xs rounded-lg shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                                <span x-show="!sellingValuables">💰 Liquidate (<span x-text="selectedValuablesToSell.length"></span>) to Coin Purse</span>
+                                <span x-show="sellingValuables">Selling...</span>
+                            </button>
+                        </div>
                     </div>
 
                 </div>

@@ -137,5 +137,179 @@ function treasureGeneratorApp() {
         }
     };
 }
+
+function hoardDistributor(config) {
+    return {
+        hoard: config.hoard || {},
+        allCharacters: config.characters || [],
+        campaigns: config.campaigns || [],
+        selectedCampaign: '',
+        selectedCharIds: [],
+        mode: 'quick_split',
+        assignedMagic: {},
+        assignedGoods: {},
+        distributing: false,
+        distributed: false,
+        distributionMessage: '',
+
+        init() {
+            if (this.campaigns.length > 0) {
+                this.selectedCampaign = this.campaigns[0].ID;
+                this.syncCampaignParty();
+            } else {
+                this.selectedCharIds = this.allCharacters.slice(0, 6).map(c => c.ID);
+            }
+
+            (this.hoard.magic_items || []).forEach((item, idx) => {
+                this.assignedMagic[idx] = (this.selectedCharIds.length > 0) ? this.selectedCharIds[idx % this.selectedCharIds.length] : 'vault';
+            });
+
+            (this.hoard.goods || []).forEach((item, idx) => {
+                this.assignedGoods[idx] = 'vault';
+            });
+        },
+
+        syncCampaignParty() {
+            if (!this.selectedCampaign) {
+                this.selectedCharIds = this.allCharacters.map(c => c.ID);
+                return;
+            }
+            const campId = parseInt(this.selectedCampaign);
+            const campChars = this.allCharacters.filter(c => c.Campaign === campId || c.Campaign == campId);
+            if (campChars.length > 0) {
+                this.selectedCharIds = campChars.map(c => c.ID);
+            } else {
+                this.selectedCharIds = this.allCharacters.map(c => c.ID);
+            }
+        },
+
+        toggleChar(id) {
+            id = parseInt(id);
+            if (this.selectedCharIds.includes(id)) {
+                this.selectedCharIds = this.selectedCharIds.filter(x => x !== id);
+            } else {
+                this.selectedCharIds.push(id);
+            }
+        },
+
+        selectAll() {
+            this.selectedCharIds = this.displayCharacters.map(c => c.ID);
+        },
+
+        deselectAll() {
+            this.selectedCharIds = [];
+        },
+
+        get displayCharacters() {
+            if (!this.selectedCampaign) return this.allCharacters;
+            const campId = parseInt(this.selectedCampaign);
+            const filtered = this.allCharacters.filter(c => c.Campaign === campId || c.Campaign == campId);
+            return filtered.length > 0 ? filtered : this.allCharacters;
+        },
+
+        get partyCount() {
+            return this.selectedCharIds.length;
+        },
+
+        get coinsSp() {
+            if (this.hoard.coins_sp !== undefined) return this.hoard.coins_sp;
+            const c = this.hoard.coins || {};
+            return ((c.pp || 0) * 100) + ((c.gp || 0) * 10) + (c.sp || 0) + ((c.cp || 0) / 10);
+        },
+
+        get goodsSp() {
+            const goods = this.hoard.goods || [];
+            return goods.reduce((sum, g) => sum + (parseFloat(g.value || g.Value || 0)), 0);
+        },
+
+        get totalLiquidSp() {
+            return Math.round(this.coinsSp + this.goodsSp);
+        },
+
+        get quickSplitPerCharSp() {
+            if (this.partyCount === 0) return 0;
+            return Math.floor(this.totalLiquidSp / this.partyCount);
+        },
+
+        get quickSplitRemainderSp() {
+            if (this.partyCount === 0) return 0;
+            return Math.round(this.totalLiquidSp - (this.quickSplitPerCharSp * this.partyCount));
+        },
+
+        get realisticSplitCoinsPerChar() {
+            if (this.partyCount === 0) return { pp: 0, gp: 0, sp: 0, cp: 0 };
+            const c = this.hoard.coins || {};
+            return {
+                pp: Math.floor((c.pp || 0) / this.partyCount),
+                gp: Math.floor((c.gp || 0) / this.partyCount),
+                sp: Math.floor((c.sp || 0) / this.partyCount),
+                cp: Math.floor((c.cp || 0) / this.partyCount)
+            };
+        },
+
+        get realisticSplitRemainderSp() {
+            if (this.partyCount === 0) return 0;
+            const c = this.hoard.coins || {};
+            const remPp = (c.pp || 0) % this.partyCount;
+            const remGp = (c.gp || 0) % this.partyCount;
+            const remSp = (c.sp || 0) % this.partyCount;
+            const remCp = (c.cp || 0) % this.partyCount;
+            return (remPp * 100) + (remGp * 10) + remSp + (remCp / 10);
+        },
+
+        async executeDistribution() {
+            if (this.partyCount === 0) {
+                alert('Please select at least one party member to receive loot.');
+                return;
+            }
+            this.distributing = true;
+            this.distributed = false;
+            this.distributionMessage = '';
+
+            try {
+                const goodsPayload = (this.hoard.goods || []).map((g, idx) => ({
+                    ...g,
+                    assign_to: this.mode === 'realistic_split' ? (this.assignedGoods[idx] || 'vault') : 'vault'
+                }));
+
+                const magicPayload = (this.hoard.magic_items || []).map((m, idx) => ({
+                    ...m,
+                    assign_to: this.assignedMagic[idx] || 'vault'
+                }));
+
+                const payload = {
+                    mode: this.mode,
+                    character_ids: this.selectedCharIds,
+                    campaign_id: this.selectedCampaign ? parseInt(this.selectedCampaign) : null,
+                    coins: this.hoard.coins || {},
+                    goods: goodsPayload,
+                    magic: magicPayload
+                };
+
+                const res = await fetch('{{ route("utilities.treasuregen.distribute", [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || 'Failed to distribute hoard.');
+                }
+
+                this.distributed = true;
+                this.distributionMessage = data.message;
+            } catch (err) {
+                alert('Distribution error: ' + err.message);
+            } finally {
+                this.distributing = false;
+            }
+        }
+    };
+}
 </script>
 @endsection

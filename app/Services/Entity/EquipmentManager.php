@@ -87,9 +87,31 @@ class EquipmentManager
      */
     protected array $items = [];
 
+    /**
+     * Character coin purse (wallet).
+     * @var array{cp: int, sp: int, gp: int, pp: int}
+     */
+    protected array $wallet = ['cp' => 0, 'sp' => 0, 'gp' => 0, 'pp' => 0];
+
     public function __construct(int $activeConfig = self::CONFIG_COMBAT)
     {
         $this->activeConfig = $activeConfig;
+    }
+
+    public function setCoins(mixed $coinsData, int|float|null $wealthSp = null): self
+    {
+        $this->wallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($coinsData, $wealthSp);
+        return $this;
+    }
+
+    public function getWallet(): array
+    {
+        return $this->wallet;
+    }
+
+    public function getCoinWeight(): float
+    {
+        return \App\Services\ItemGeneration\CurrencyService::calculateCoinWeight($this->wallet);
     }
 
     public function setActiveConfig(int $config): self
@@ -340,6 +362,9 @@ class EquipmentManager
                 $totalWeight += ($qty * $unitW);       // 100% weight for carried gear
             }
         }
+
+        // Add carried coin weight from wallet
+        $totalWeight += $this->getCoinWeight();
 
         return round($totalWeight, 2);
     }

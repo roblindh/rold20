@@ -97,6 +97,8 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/charview/{id}/trade', [UtilityController::class, 'tradePartyAssets']);
     Route::post('/character-viewer/{id}/buy-items', [UtilityController::class, 'buyCharacterItems'])->name('charview.buy-items');
     Route::post('/charview/{id}/buy-items', [UtilityController::class, 'buyCharacterItems']);
+    Route::post('/character-viewer/{id}/sell-items', [UtilityController::class, 'sellCharacterItems'])->name('charview.sell-items');
+    Route::post('/charview/{id}/sell-items', [UtilityController::class, 'sellCharacterItems']);
     Route::post('/character-viewer/{id}/equipment/placement', [UtilityController::class, 'updateEquipmentPlacement'])->name('charview.equipment.placement');
     Route::post('/charview/{id}/equipment/placement', [UtilityController::class, 'updateEquipmentPlacement']);
     Route::post('/character-viewer/{id}/manage-equipment', [UtilityController::class, 'manageCharacterEquipment'])->name('charview.manage-equipment');
@@ -140,6 +142,8 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::get('/treasuregen', [UtilityController::class, 'treasureGenerator']);
     Route::post('/treasure-generator/roll', [UtilityController::class, 'rollTreasure'])->name('treasuregen.roll');
     Route::post('/treasuregen/roll', [UtilityController::class, 'rollTreasure']);
+    Route::post('/treasure-generator/distribute', [UtilityController::class, 'distributeHoardLoot'])->name('treasuregen.distribute');
+    Route::post('/treasuregen/distribute', [UtilityController::class, 'distributeHoardLoot']);
 
     Route::get('/combat-tracker', [UtilityController::class, 'combatTracker'])->name('combattracker');
     Route::get('/combat', [UtilityController::class, 'combatTracker']);

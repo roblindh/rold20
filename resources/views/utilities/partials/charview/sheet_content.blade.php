@@ -1813,10 +1813,21 @@
                 @if(!$isWizard)
                     <tr class="bg-stone-200/60">
                         <td class="cvsml" colspan="7">
-                            <div class="flex items-center justify-between text-xs px-1 text-stone-700">
-                                <span><strong>Weight:</strong> {{ $calc['equipment']['total_weight'] }} kg</span>
-                                <span><strong>Encumbrance:</strong> Class {{ $calc['equipment']['effective_ec'] }} (EP: {{ $calc['equipment']['encumbrance_penalty'] }}, Max Dex: {{ $calc['equipment']['max_dex_bonus'] < 90 ? '+' . $calc['equipment']['max_dex_bonus'] : 'None' }})</span>
-                                <span><strong>Wealth:</strong> {{ $wealth }} sp</span>
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs px-1 text-stone-700 gap-1.5 py-0.5">
+                                <div>
+                                    <span><strong>Carried Weight:</strong> {{ $calc['equipment']['total_weight'] }} kg</span>
+                                    <span class="mx-1.5">&bull;</span>
+                                    <span><strong>Encumbrance:</strong> Class {{ $calc['equipment']['effective_ec'] }} (EP: {{ $calc['equipment']['encumbrance_penalty'] }}, Max Dex: {{ $calc['equipment']['max_dex_bonus'] < 90 ? '+' . $calc['equipment']['max_dex_bonus'] : 'None' }})</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="font-bold text-slate-800">💰 Purse:</span>
+                                    <span class="bg-amber-100 text-amber-950 px-1.5 py-0.5 rounded font-mono text-[11px] font-bold border border-amber-300">
+                                        {{ $formattedCoins }}
+                                    </span>
+                                    <span class="text-stone-500 font-mono text-[11px]">
+                                        ({{ number_format($wealth) }} sp &bull; {{ number_format($coinWeight, 2) }} kg)
+                                    </span>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -1854,11 +1865,23 @@
                             $itemTraitsRaw = $itemRefObj ? ($itemRefObj->Traits ?: '') : '';
                             $itemTraitsDesc = \App\Services\Entity\EntityEngine::formatItemTraitsDescription($itemTraitsRaw, true);
                             $itemTraitsStr = !empty($itemTraitsDesc) ? $itemTraitsDesc : ($itemTraitsRaw ?: '–');
+
+                            $iName = strtolower($it['Name'] ?? $it['name'] ?? '');
+                            $isGem = (!empty($it['is_valuable']) && ($it['valuable_type'] ?? '') === 'gem') || str_starts_with($iName, 'gem:');
+                            $isArt = (!empty($it['is_valuable']) && ($it['valuable_type'] ?? '') === 'art') || str_starts_with($iName, 'art:');
+                            $isBullion = (!empty($it['is_valuable']) && ($it['valuable_type'] ?? '') === 'bullion') || str_contains($iName, 'trade bar');
                         @endphp
                         <tr>
                             <td class="cvlist">
                                 <div class="flex items-center gap-1.5 flex-wrap">
                                     <span class="font-bold text-stone-900">{{ $it['Name'] ?? $it['name'] ?? 'Item' }}</span>
+                                    @if($isGem)
+                                        <span class="text-[9px] px-1 py-0.2 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded font-bold">💎 Gem</span>
+                                    @elseif($isArt)
+                                        <span class="text-[9px] px-1 py-0.2 bg-purple-100 text-purple-900 border border-purple-300 rounded font-bold">🎨 Art</span>
+                                    @elseif($isBullion)
+                                        <span class="text-[9px] px-1 py-0.2 bg-yellow-100 text-yellow-900 border border-yellow-300 rounded font-bold">🪙 Bullion</span>
+                                    @endif
                                     @if(!empty($it['is_container']) || !empty($it['IsContainer']))
                                         <span class="text-[9px] px-1 py-0.2 bg-amber-100 text-amber-900 border border-amber-300 rounded font-bold">🎒 Container</span>
                                     @endif

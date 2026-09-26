@@ -198,19 +198,50 @@
                 </div>
             </div>
 
-            <!-- Footer & Wealth Adjustment -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-200">
-                <div class="flex items-center gap-2">
-                    <label class="font-bold text-slate-700 text-xs">Total Character Wealth (sp):</label>
-                    <input type="number" name="wealth" value="{{ $wealth }}" min="0" class="w-28 px-2.5 py-1 border border-slate-300 rounded bg-white text-slate-900 font-mono font-bold text-xs">
+            <!-- Footer & Coin Purse / Wealth Adjustment -->
+            <div class="space-y-3 pt-3 border-t border-slate-200">
+                <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-200 pb-2 mb-2.5">
+                        <div class="flex items-center gap-1.5 font-bold text-amber-950 text-xs font-serif">
+                            <span>💰</span> Coin Purse &amp; Monetary Wealth
+                        </div>
+                        <div class="flex items-center gap-2 text-[11px] text-slate-600">
+                            <span>Total Wealth: <strong class="text-amber-900 font-mono text-xs" x-text="calcPurseSp().toLocaleString() + ' sp'"></strong></span>
+                            <span>&bull;</span>
+                            <span>Coins Weight: <strong class="text-indigo-900 font-mono text-xs" x-text="calcPurseWeight().toFixed(2) + ' kg'"></strong></span>
+                            <button type="button" @click="optimizePurseCoins()" class="text-indigo-600 hover:text-indigo-800 font-bold ml-1 flex items-center gap-0.5" title="Convert smaller coins to platinum/gold to reduce carried weight">
+                                <span>⚡</span> Condense Coins
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 uppercase mb-0.5">Platinum (pp = 100 sp)</label>
+                            <input type="number" name="coins[pp]" x-model.number="wallet.pp" min="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded bg-white text-black font-mono font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-amber-800 uppercase mb-0.5">Gold (gp = 10 sp)</label>
+                            <input type="number" name="coins[gp]" x-model.number="wallet.gp" min="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded bg-white text-black font-mono font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-800 uppercase mb-0.5">Silver (sp = 1 sp)</label>
+                            <input type="number" name="coins[sp]" x-model.number="wallet.sp" min="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded bg-white text-black font-mono font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-orange-800 uppercase mb-0.5">Copper (cp = 0.1 sp)</label>
+                            <input type="number" name="coins[cp]" x-model.number="wallet.cp" min="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded bg-white text-black font-mono font-bold">
+                        </div>
+                    </div>
+                    <input type="hidden" name="wealth" :value="calcPurseSp()">
                 </div>
 
-                <div class="flex items-center gap-2 justify-end">
+                <div class="flex items-center justify-end gap-2">
                     <button type="button" @click="showEquipmentModal = false" class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-800 cursor-pointer">Cancel</button>
                     <button type="submit"
                             style="background-color: #059669; color: #ffffff;"
                             class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-lg shadow-md border border-emerald-800 transition flex items-center gap-1.5 cursor-pointer">
-                        <span>💾</span> Save Equipment &amp; Presets
+                        <span>💾</span> Save Equipment &amp; Coin Purse
                     </button>
                 </div>
             </div>

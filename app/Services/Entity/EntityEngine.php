@@ -912,6 +912,7 @@ class EntityEngine
         // STAGE 3: EQUIPMENT, WEAPONS & ENCUMBRANCE
         // =========================================================================
         $equipmentManager = new EquipmentManager();
+        $equipmentManager->setCoins($e->Coins ?? null, $e->Wealth ?? null);
         $rawPossessions = $e->Possessions ?? $e->Equipment ?? $e->Inventory ?? [];
         if (is_string($rawPossessions) && (str_starts_with(trim($rawPossessions), '[') || str_starts_with(trim($rawPossessions), '{'))) {
             $rawPossessions = json_decode($rawPossessions, true) ?? [];

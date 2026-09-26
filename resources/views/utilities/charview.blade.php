@@ -345,7 +345,11 @@
                     'subtype' => $it['Subtype'] ?? $it['subtype'] ?? null,
                 ];
             }
-            $wealth = (int)($character->Wealth ?? 0);
+            $rawCoins = $character->Coins ?? null;
+            $wallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($rawCoins, (int)($character->Wealth ?? 0));
+            $wealth = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($wallet));
+            $coinWeight = \App\Services\ItemGeneration\CurrencyService::calculateCoinWeight($wallet);
+            $formattedCoins = \App\Services\ItemGeneration\CurrencyService::formatCoins($wallet);
 
             // --- 10. Physical & Social Attributes ---
             $isFemale = $character->Gender == 2 || $character->Gender === 'Female';
@@ -1020,6 +1024,34 @@ function characterViewerApp() {
         },
         equipmentItems: @json($equipmentList ?? []),
 
+        // Coin Purse & Wallet State
+        wallet: {{ json_encode($wallet ?? ['cp' => 0, 'sp' => 0, 'gp' => 0, 'pp' => 0]) }},
+
+        calcPurseSp() {
+            const cp = parseInt(this.wallet.cp) || 0;
+            const sp = parseInt(this.wallet.sp) || 0;
+            const gp = parseInt(this.wallet.gp) || 0;
+            const pp = parseInt(this.wallet.pp) || 0;
+            return Math.round(((cp * 0.1) + (sp * 1.0) + (gp * 10.0) + (pp * 100.0)) * 100) / 100;
+        },
+
+        calcPurseWeight() {
+            const totalCoins = (parseInt(this.wallet.cp) || 0) + (parseInt(this.wallet.sp) || 0) + (parseInt(this.wallet.gp) || 0) + (parseInt(this.wallet.pp) || 0);
+            return Math.round(totalCoins * 0.01 * 100) / 100;
+        },
+
+        optimizePurseCoins() {
+            const totalSp = this.calcPurseSp();
+            const cu = Math.round(totalSp * 10);
+            const pp = Math.floor(cu / 1000);
+            const rem1 = cu % 1000;
+            const gp = Math.floor(rem1 / 100);
+            const rem2 = rem1 % 100;
+            const sp = Math.floor(rem2 / 10);
+            const cp = rem2 % 10;
+            this.wallet = { cp, sp, gp, pp };
+        },
+
         isItemContainer(item) {
             if (item.is_container || item.IsContainer) return true;
             const subtype = parseInt(item.subtype || item.Subtype) || 0;
@@ -1132,7 +1164,7 @@ function characterViewerApp() {
         },
 
         calcPresetWeight(presetIdx) {
-            let total = 0;
+            let total = this.calcPurseWeight();
             const items = this.equipmentItems || [];
             const containerMap = {};
             items.forEach(it => {
@@ -1540,6 +1572,96 @@ function characterViewerApp() {
 
         get remainingWealth() {
             return currentWealth - this.cartTotalCost;
+        },
+
+        // Sell Valuables State
+        selectedValuablesToSell: [],
+        valuableShopType: 'general',
+        valuablePayoutMultiplier: 0.8,
+        sellingValuables: false,
+        sellToastMessage: '',
+
+        get valuableItemsInInventory() {
+            const items = this.equipmentItems || [];
+            return items.filter(it => {
+                const typeId = parseInt(it.item_type_id || it.ItemTypeID || 0);
+                const isVal = Boolean(it.is_valuable || it.IsValuable);
+                const name = (it.name || it.Name || '').toLowerCase();
+                return isVal || typeId === 9 || /gem:|art:|trade bar|ingot|ruby|sapphire|emerald|diamond|agate|chalice|ewer|comb with|statuette/i.test(name);
+            });
+        },
+
+        onValuableShopTypeChange() {
+            if (this.valuableShopType === 'jeweler' || this.valuableShopType === 'magic') {
+                this.valuablePayoutMultiplier = 1.0;
+            } else if (this.valuableShopType === 'smith') {
+                this.valuablePayoutMultiplier = 0.9;
+            } else if (this.valuableShopType === 'fence') {
+                this.valuablePayoutMultiplier = 0.85;
+            } else {
+                this.valuablePayoutMultiplier = 0.8;
+            }
+        },
+
+        toggleAllValuablesSelection() {
+            const valList = this.valuableItemsInInventory;
+            if (this.selectedValuablesToSell.length === valList.length) {
+                this.selectedValuablesToSell = [];
+            } else {
+                this.selectedValuablesToSell = valList.map(it => it.uid || it.id);
+            }
+        },
+
+        get totalValuablePayoutSp() {
+            const selectedSet = new Set(this.selectedValuablesToSell);
+            let sum = 0;
+            this.valuableItemsInInventory.forEach(it => {
+                const uid = it.uid || it.id;
+                if (selectedSet.has(uid)) {
+                    const qty = parseInt(it.qty) || 1;
+                    const val = parseFloat(it.unit_price || it.BaseValue || it.value) || 0;
+                    sum += val * qty * this.valuablePayoutMultiplier;
+                }
+            });
+            return Math.round(sum * 10) / 10;
+        },
+
+        async sellSelectedValuablesAction() {
+            if (this.selectedValuablesToSell.length === 0) return;
+            this.sellingValuables = true;
+            try {
+                const res = await fetch('{{ route('utilities.charview.sell-items', ['id' => $character->ID], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        _token: '{{ csrf_token() }}',
+                        item_uids: this.selectedValuablesToSell,
+                        payout_multiplier: this.valuablePayoutMultiplier,
+                        shop_name: this.valuableShopType + ' shop'
+                    })
+                });
+                const data = await res.json();
+                if (data && data.success) {
+                    const soldSet = new Set(this.selectedValuablesToSell);
+                    this.equipmentItems = this.equipmentItems.filter(it => !soldSet.has(it.uid || it.id));
+                    if (data.wallet) {
+                        this.wallet = data.wallet;
+                    }
+                    this.selectedValuablesToSell = [];
+                    this.sellToastMessage = data.message;
+                    setTimeout(() => { this.sellToastMessage = ''; }, 4000);
+                } else {
+                    alert(data.message || 'Failed to sell items.');
+                }
+            } catch (e) {
+                console.error('Error selling valuables:', e);
+                alert('Error processing sale.');
+            }
+            this.sellingValuables = false;
         },
 
         // Learn Spells State

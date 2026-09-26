@@ -1138,8 +1138,11 @@ class UtilityController extends Controller
             }
         }
 
-        if ($totalCost > $currentWealth) {
-            $msg = "Insufficient funds. Total cost is {$totalCost} sp, but {$character->Name} only has {$currentWealth} sp.";
+        $wallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($character->Coins ?? null, $currentWealth);
+        $deductResult = \App\Services\ItemGeneration\CurrencyService::deductCost($wallet, (float)$totalCost, true);
+
+        if (!$deductResult['success']) {
+            $msg = $deductResult['error'] ?? "Insufficient funds. Total cost is {$totalCost} sp, but {$character->Name} only has {$currentWealth} sp.";
             if ($request->expectsJson()) {
                 return response()->json(['success' => false, 'message' => $msg], 422);
             }
@@ -1159,20 +1162,129 @@ class UtilityController extends Controller
             $charEquip[] = $item;
         }
 
-        $newWealth = max(0, $currentWealth - $totalCost);
+        $newWallet = $deductResult['wallet'];
+        $newWealth = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($newWallet));
+
         DB::table('characters')->where('ID', $id)->update([
+            'Coins' => json_encode($newWallet),
             'Wealth' => $newWealth,
             'Equipment' => json_encode($charEquip),
         ]);
 
-        $successMsg = "Successfully purchased items for {$totalCost} sp! New balance: {$newWealth} sp.";
+        $spentFormatted = \App\Services\ItemGeneration\CurrencyService::formatCoins($deductResult['spent']);
+        $changeFormatted = \App\Services\ItemGeneration\CurrencyService::formatCoins($deductResult['change']);
+        $successMsg = "Successfully purchased items for {$totalCost} sp (Spent: {$spentFormatted})! New balance: {$newWealth} sp.";
+
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
                 'message' => $successMsg,
                 'new_wealth' => $newWealth,
+                'wallet' => $newWallet,
+                'formatted_wallet' => \App\Services\ItemGeneration\CurrencyService::formatCoins($newWallet),
                 'total_cost' => $totalCost,
                 'added_items' => $itemsToAdd,
+            ]);
+        }
+
+        return back()->with('status', $successMsg);
+    }
+
+    /**
+     * Sell / liquidate items (gems, art, bullion, equipment) from character inventory to settlement merchant.
+     */
+    public function sellCharacterItems(Request $request, int $id): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Character not found.'], 404);
+            }
+            return back()->with('error', 'Character not found.');
+        }
+
+        if (!$this->isAuthorizedToManageCharacter($character)) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Unauthorized: Only a GM or this character\'s player can sell items.'], 403);
+            }
+            return back()->with('error', 'Unauthorized.');
+        }
+
+        $validated = $request->validate([
+            'item_uids' => 'required|array|min:1',
+            'item_uids.*' => 'required|string',
+            'payout_multiplier' => 'nullable|numeric|min:0.1|max:2.0',
+            'shop_name' => 'nullable|string|max:100',
+        ]);
+
+        $multiplier = (float)($validated['payout_multiplier'] ?? 1.0);
+        $uidsToSell = $validated['item_uids'];
+
+        $charEquip = [];
+        if (!empty($character->Equipment)) {
+            $raw = $character->Equipment;
+            if (str_starts_with($raw, '[')) {
+                $charEquip = json_decode($raw, true) ?? [];
+            }
+        }
+
+        $totalPayoutSp = 0.0;
+        $remainingEquip = [];
+        $soldItems = [];
+
+        foreach ($charEquip as $it) {
+            $uid = (string)($it['uid'] ?? $it['id'] ?? '');
+            if (in_array($uid, $uidsToSell, true)) {
+                $qty = max(1, (int)($it['qty'] ?? $it['Qty'] ?? 1));
+                $unitVal = (float)($it['unit_price'] ?? $it['BaseValue'] ?? $it['value'] ?? 0);
+                if ($unitVal <= 0 && isset($it['value'])) {
+                    $unitVal = (float)$it['value'] / $qty;
+                }
+                $itemTotalSp = $unitVal * $qty * $multiplier;
+                $totalPayoutSp += $itemTotalSp;
+                $soldItems[] = [
+                    'name' => $it['name'] ?? $it['Name'] ?? 'Item',
+                    'qty' => $qty,
+                    'payout_sp' => $itemTotalSp,
+                ];
+            } else {
+                $remainingEquip[] = $it;
+            }
+        }
+
+        if (empty($soldItems)) {
+            $msg = "No matching items found to sell.";
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $msg], 422);
+            }
+            return back()->with('error', $msg);
+        }
+
+        // Add payout to character's wallet
+        $currentWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($character->Coins ?? null, (int)($character->Wealth ?? 0));
+        $payoutCoins = \App\Services\ItemGeneration\CurrencyService::spToCoins($totalPayoutSp, true);
+        $newWallet = \App\Services\ItemGeneration\CurrencyService::addCoins($currentWallet, $payoutCoins);
+        $newWealth = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($newWallet));
+
+        DB::table('characters')->where('ID', $id)->update([
+            'Coins' => json_encode($newWallet),
+            'Wealth' => $newWealth,
+            'Equipment' => json_encode($remainingEquip),
+        ]);
+
+        $soldCount = count($soldItems);
+        $formattedPayout = number_format($totalPayoutSp, 1);
+        $shopStr = !empty($validated['shop_name']) ? " to {$validated['shop_name']}" : "";
+        $successMsg = "Successfully sold {$soldCount} item(s){$shopStr} for {$formattedPayout} sp!";
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => $successMsg,
+                'payout_sp' => $totalPayoutSp,
+                'new_wealth' => $newWealth,
+                'wallet' => $newWallet,
+                'formatted_wallet' => \App\Services\ItemGeneration\CurrencyService::formatCoins($newWallet),
             ]);
         }
 
@@ -1362,8 +1474,15 @@ class UtilityController extends Controller
         }
 
         $updateData = ['Equipment' => json_encode($updatedEquip)];
-        if (isset($validated['wealth'])) {
-            $updateData['Wealth'] = (int)$validated['wealth'];
+        if (isset($request->coins) && is_array($request->coins)) {
+            $coinsWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($request->coins);
+            $totalWealthSp = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($coinsWallet));
+            $updateData['Coins'] = json_encode($coinsWallet);
+            $updateData['Wealth'] = $totalWealthSp;
+        } elseif (isset($validated['wealth'])) {
+            $wSp = (int)$validated['wealth'];
+            $updateData['Wealth'] = $wSp;
+            $updateData['Coins'] = json_encode(\App\Services\ItemGeneration\CurrencyService::spToCoins($wSp, true));
         }
 
         DB::table('characters')->where('ID', $id)->update($updateData);
@@ -2558,9 +2677,234 @@ class UtilityController extends Controller
         return response()->json([
             'success' => true,
             'coins' => compact('gold', 'silver', 'platinum', 'copper'),
+            'hoard' => $hoard,
             'mundane' => $mundane,
             'magic' => $magicItems,
-            'html' => view('utilities.partials.treasure_result', compact('el', 'gold', 'silver', 'platinum', 'copper', 'mundane', 'magicItems', 'campaigns', 'characters'))->render(),
+            'html' => view('utilities.partials.treasure_result', compact('el', 'gold', 'silver', 'platinum', 'copper', 'hoard', 'mundane', 'magicItems', 'campaigns', 'characters'))->render(),
+        ]);
+    }
+
+    /**
+     * AJAX endpoint to distribute generated hoard loot to a party / campaign vault.
+     */
+    public function distributeHoardLoot(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'mode' => 'required|string|in:quick_split,realistic_split',
+            'character_ids' => 'required|array|min:1',
+            'character_ids.*' => 'required|integer|exists:characters,ID',
+            'campaign_id' => 'nullable|integer|exists:campaigns,ID',
+            'coins' => 'nullable|array',
+            'goods' => 'nullable|array',
+            'magic' => 'nullable|array',
+        ]);
+
+        $mode = $validated['mode'];
+        $charIds = $validated['character_ids'];
+        $charCount = count($charIds);
+        $campaignId = !empty($validated['campaign_id']) ? (int)$validated['campaign_id'] : null;
+
+        $coins = \App\Services\ItemGeneration\CurrencyService::parseWallet($validated['coins'] ?? []);
+        $goods = $validated['goods'] ?? [];
+        $magic = $validated['magic'] ?? [];
+
+        $characters = DB::table('characters')->whereIn('ID', $charIds)->get()->keyBy('ID');
+        $campaign = $campaignId ? DB::table('campaigns')->where('ID', $campaignId)->first() : null;
+
+        $totalCoinsSp = \App\Services\ItemGeneration\CurrencyService::coinsToSp($coins);
+
+        DB::transaction(function() use ($mode, $charIds, $charCount, $characters, $campaign, $campaignId, $coins, $goods, $magic, $totalCoinsSp) {
+            if ($mode === 'quick_split') {
+                // Sum all coins + goods values into total SP
+                $totalGoodsSp = 0.0;
+                foreach ($goods as $g) {
+                    $totalGoodsSp += (float)($g['value'] ?? $g['Value'] ?? 0);
+                }
+
+                $grandTotalSp = $totalCoinsSp + $totalGoodsSp;
+                $spPerChar = (int)floor($grandTotalSp / $charCount);
+                $remSp = (int)round($grandTotalSp - ($spPerChar * $charCount));
+
+                // Award SP to each character
+                foreach ($charIds as $idx => $cId) {
+                    if (!isset($characters[$cId])) continue;
+                    $char = $characters[$cId];
+                    $extraSp = ($idx === 0 && $campaignId === null) ? $remSp : 0;
+                    $gainSp = $spPerChar + $extraSp;
+
+                    $currentWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($char->Coins ?? null, (int)($char->Wealth ?? 0));
+                    $gainCoins = \App\Services\ItemGeneration\CurrencyService::spToCoins((float)$gainSp, true);
+                    $newWallet = \App\Services\ItemGeneration\CurrencyService::addCoins($currentWallet, $gainCoins);
+                    $newWealth = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($newWallet));
+
+                    DB::table('characters')->where('ID', $cId)->update([
+                        'Coins' => json_encode($newWallet),
+                        'Wealth' => $newWealth,
+                    ]);
+                }
+
+                // If campaign exists and there's remainder SP
+                if ($campaign && $remSp > 0) {
+                    $vault = json_decode($campaign->Vault ?? '[]', true) ?? [];
+                    $vaultFunds = (int)($vault['funds'] ?? 0) + $remSp;
+                    $vaultItems = $vault['items'] ?? (is_array($vault) && !isset($vault['funds']) ? $vault : []);
+                    DB::table('campaigns')->where('ID', $campaign->ID)->update([
+                        'Vault' => json_encode(['funds' => $vaultFunds, 'items' => $vaultItems]),
+                    ]);
+                }
+
+                // Award any magic items assigned to characters/vault
+                foreach ($magic as $m) {
+                    $assignTo = $m['assign_to'] ?? null;
+                    if (!empty($assignTo) && is_numeric($assignTo) && isset($characters[(int)$assignTo])) {
+                        $cId = (int)$assignTo;
+                        $char = $characters[$cId];
+                        $equip = json_decode($char->Equipment ?? '[]', true) ?? [];
+                        $equip[] = [
+                            'id' => uniqid('magic_'),
+                            'uid' => uniqid('magic_'),
+                            'name' => $m['name'] ?? 'Magic Item',
+                            'config' => $m['config_string'] ?? $m['name'] ?? 'Magic Item',
+                            'value' => (float)($m['value'] ?? 0),
+                            'weight' => (float)($m['weight'] ?? 0),
+                            'size' => $m['size'] ?? 'Medium (M)',
+                            'ec' => (int)($m['ec'] ?? 0),
+                            'pl' => (string)($m['pl'] ?? '0'),
+                            'dr' => (string)($m['dr'] ?? '0'),
+                            'hp' => (int)($m['hp'] ?? 1),
+                            'traits' => $m['traits'] ?? '',
+                            'mods' => $m['mods'] ?? '',
+                            'location' => 1,
+                            'locations' => [1, 1, 1, 1, 1],
+                            'added_at' => date('Y-m-d H:i:s'),
+                        ];
+                        DB::table('characters')->where('ID', $cId)->update(['Equipment' => json_encode($equip)]);
+                    } elseif (($assignTo === 'vault' || empty($assignTo)) && $campaign) {
+                        $vault = json_decode($campaign->Vault ?? '[]', true) ?? [];
+                        $vaultFunds = (int)($vault['funds'] ?? 0);
+                        $vaultItems = $vault['items'] ?? (is_array($vault) && !isset($vault['funds']) ? $vault : []);
+                        $vaultItems[] = [
+                            'id' => uniqid('vault_magic_'),
+                            'name' => $m['name'] ?? 'Magic Item',
+                            'config' => $m['config_string'] ?? $m['name'] ?? 'Magic Item',
+                            'value' => (float)($m['value'] ?? 0),
+                            'weight' => (float)($m['weight'] ?? 0),
+                            'size' => $m['size'] ?? 'Medium (M)',
+                            'ec' => (int)($m['ec'] ?? 0),
+                            'pl' => (string)($m['pl'] ?? '0'),
+                            'dr' => (string)($m['dr'] ?? '0'),
+                            'hp' => (int)($m['hp'] ?? 1),
+                            'traits' => $m['traits'] ?? '',
+                            'mods' => $m['mods'] ?? '',
+                            'added_at' => date('Y-m-d H:i:s'),
+                        ];
+                        DB::table('campaigns')->where('ID', $campaign->ID)->update([
+                            'Vault' => json_encode(['funds' => $vaultFunds, 'items' => $vaultItems]),
+                        ]);
+                    }
+                }
+
+            } else {
+                // Realistic Split: physical coins split + discrete goods & magic assigned
+                $ppPerChar = (int)intdiv($coins['pp'], $charCount);
+                $gpPerChar = (int)intdiv($coins['gp'], $charCount);
+                $spPerChar = (int)intdiv($coins['sp'], $charCount);
+                $cpPerChar = (int)intdiv($coins['cp'], $charCount);
+
+                $remCoins = [
+                    'pp' => $coins['pp'] % $charCount,
+                    'gp' => $coins['gp'] % $charCount,
+                    'sp' => $coins['sp'] % $charCount,
+                    'cp' => $coins['cp'] % $charCount,
+                ];
+
+                $eachCoins = ['cp' => $cpPerChar, 'sp' => $spPerChar, 'gp' => $gpPerChar, 'pp' => $ppPerChar];
+
+                foreach ($charIds as $idx => $cId) {
+                    if (!isset($characters[$cId])) continue;
+                    $char = $characters[$cId];
+                    $extraCoins = ($idx === 0 && $campaignId === null) ? $remCoins : ['cp' => 0, 'sp' => 0, 'gp' => 0, 'pp' => 0];
+                    $charAddCoins = \App\Services\ItemGeneration\CurrencyService::addCoins($eachCoins, $extraCoins);
+
+                    $currentWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($char->Coins ?? null, (int)($char->Wealth ?? 0));
+                    $newWallet = \App\Services\ItemGeneration\CurrencyService::addCoins($currentWallet, $charAddCoins);
+                    $newWealth = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($newWallet));
+
+                    DB::table('characters')->where('ID', $cId)->update([
+                        'Coins' => json_encode($newWallet),
+                        'Wealth' => $newWealth,
+                    ]);
+                }
+
+                // If campaign exists and there's remainder coins, deposit remainder in vault funds
+                if ($campaign) {
+                    $remSp = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($remCoins));
+                    if ($remSp > 0) {
+                        $vault = json_decode($campaign->Vault ?? '[]', true) ?? [];
+                        $vaultFunds = (int)($vault['funds'] ?? 0) + $remSp;
+                        $vaultItems = $vault['items'] ?? (is_array($vault) && !isset($vault['funds']) ? $vault : []);
+                        DB::table('campaigns')->where('ID', $campaign->ID)->update([
+                            'Vault' => json_encode(['funds' => $vaultFunds, 'items' => $vaultItems]),
+                        ]);
+                    }
+                }
+
+                // Award goods (gems, art, bullion, mundane items)
+                $allItems = array_merge($goods, $magic);
+                foreach ($allItems as $it) {
+                    $assignTo = $it['assign_to'] ?? null;
+                    $isVal = !empty($it['is_valuable']) || ($it['item_type'] ?? 0) === 9;
+                    $valType = $it['valuable_type'] ?? ($isVal ? 'gem' : null);
+
+                    $itemEntry = [
+                        'id' => uniqid('loot_'),
+                        'uid' => uniqid('loot_'),
+                        'name' => $it['name'] ?? $it['Item'] ?? 'Treasure Item',
+                        'Name' => $it['name'] ?? $it['Item'] ?? 'Treasure Item',
+                        'config' => $it['config_string'] ?? $it['name'] ?? $it['Item'] ?? 'Treasure Item',
+                        'value' => (float)($it['value'] ?? $it['Value'] ?? 0),
+                        'BaseValue' => (float)($it['value'] ?? $it['Value'] ?? 0),
+                        'unit_price' => (float)($it['value'] ?? $it['Value'] ?? 0),
+                        'weight' => (float)($it['weight'] ?? 0.1),
+                        'BaseWeight' => (float)($it['weight'] ?? 0.1),
+                        'unit_weight' => (float)($it['weight'] ?? 0.1),
+                        'size' => $it['size'] ?? 'Medium (M)',
+                        'ec' => (int)($it['ec'] ?? 0),
+                        'pl' => (string)($it['pl'] ?? '0'),
+                        'dr' => (string)($it['dr'] ?? '0'),
+                        'hp' => (int)($it['hp'] ?? 1),
+                        'traits' => $it['traits'] ?? '',
+                        'mods' => $it['mods'] ?? '',
+                        'is_valuable' => $isVal,
+                        'valuable_type' => $valType,
+                        'location' => 1,
+                        'locations' => [1, 1, 1, 1, 1],
+                        'added_at' => date('Y-m-d H:i:s'),
+                    ];
+
+                    if (!empty($assignTo) && is_numeric($assignTo) && isset($characters[(int)$assignTo])) {
+                        $cId = (int)$assignTo;
+                        $char = $characters[$cId];
+                        $equip = json_decode($char->Equipment ?? '[]', true) ?? [];
+                        $equip[] = $itemEntry;
+                        DB::table('characters')->where('ID', $cId)->update(['Equipment' => json_encode($equip)]);
+                    } elseif (($assignTo === 'vault' || empty($assignTo)) && $campaign) {
+                        $vault = json_decode($campaign->Vault ?? '[]', true) ?? [];
+                        $vaultFunds = (int)($vault['funds'] ?? 0);
+                        $vaultItems = $vault['items'] ?? (is_array($vault) && !isset($vault['funds']) ? $vault : []);
+                        $vaultItems[] = $itemEntry;
+                        DB::table('campaigns')->where('ID', $campaign->ID)->update([
+                            'Vault' => json_encode(['funds' => $vaultFunds, 'items' => $vaultItems]),
+                        ]);
+                    }
+                }
+            }
+        });
+
+        $modeLabel = $mode === 'quick_split' ? 'Quick Liquidate & Split' : 'Realistic Split & Stash';
+        return response()->json([
+            'success' => true,
+            'message' => "Hoard successfully distributed to {$charCount} character(s) via {$modeLabel}!",
         ]);
     }
 
