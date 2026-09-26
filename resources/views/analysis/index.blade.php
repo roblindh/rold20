@@ -6,6 +6,8 @@
 window.weaponDprGraphMeta = @json($weaponDprGraphMeta);
 window.graphAjaxUrl = "{{ route('analysis.graph-data', [], false) }}";
 
+let weaponDprChart = null;
+
 function analysisApp() {
     return {
         tab: '{{ request()->input('tab', 'discussion') }}',
@@ -32,7 +34,6 @@ function analysisApp() {
         showTargetBand: true,
         showTargetAvg: true,
         showDataTable: false,
-        chartInstance: null,
 
         init() {
             // If starting directly on the graph tab
@@ -51,38 +52,18 @@ function analysisApp() {
                 }
             });
 
-            // Watch selected builds deeply to load missing data and update chart
-            this.$watch('selectedBuilds', () => {
-                if (this.tab === 'weapongraph') {
-                    this.fetchMissingBuildsAndRender();
-                }
-            }, { deep: true });
-
-            // Watch target overlays
-            this.$watch('showTargetBand', () => {
-                if (this.tab === 'weapongraph') {
-                    this.updateChartData();
-                }
-            });
-
-            this.$watch('showTargetAvg', () => {
-                if (this.tab === 'weapongraph') {
-                    this.updateChartData();
-                }
-            });
-
             // Handle window resize cleanly
             window.addEventListener('resize', () => {
-                if (this.tab === 'weapongraph' && this.chartInstance) {
-                    this.chartInstance.resize();
+                if (this.tab === 'weapongraph' && weaponDprChart) {
+                    weaponDprChart.resize();
                 }
             });
         },
 
         async onGraphTabOpen() {
             await this.fetchMissingBuildsAndRender();
-            if (this.chartInstance) {
-                this.chartInstance.resize();
+            if (weaponDprChart) {
+                weaponDprChart.resize();
             }
         },
 
@@ -94,7 +75,7 @@ function analysisApp() {
                     const res = await fetch(`${this.graphAjaxUrl}?equip_mode=${encodeURIComponent(this.equipMode)}&builds=${encodeURIComponent(missing.join(','))}`);
                     const json = await res.json();
                     if (json.builds) {
-                        Object.assign(this.loadedBuildDprs, json.builds);
+                        this.loadedBuildDprs = { ...this.loadedBuildDprs, ...json.builds };
                     }
                 } catch (e) {
                     console.error('Failed to load DPR build data', e);
@@ -107,6 +88,15 @@ function analysisApp() {
 
         isBuildSelected(id) {
             return this.selectedBuilds.includes(id);
+        },
+
+        toggleBuild(id) {
+            if (this.selectedBuilds.includes(id)) {
+                this.selectedBuilds = this.selectedBuilds.filter(x => x !== id);
+            } else {
+                this.selectedBuilds = [...this.selectedBuilds, id];
+            }
+            this.fetchMissingBuildsAndRender();
         },
 
         selectAll() {
@@ -147,244 +137,179 @@ function analysisApp() {
             this.fetchMissingBuildsAndRender();
         },
 
-        renderOrUpdateChart() {
-            if (!this.chartInstance) {
-                this.renderChart();
-            } else {
-                this.updateChartData();
-            }
-        },
-
-        renderChart() {
-            const canvas = document.getElementById('weaponDprChartCanvas');
-            if (!canvas || typeof Chart === 'undefined') return;
-
-            if (this.chartInstance) {
-                this.chartInstance.destroy();
-                this.chartInstance = null;
-            }
-
-            const ctx = canvas.getContext('2d');
-            const levels = this.graphMeta.levels || [];
-            const targetMin = this.graphMeta.target_min || [];
-            const targetMax = this.graphMeta.target_max || [];
-            const targetAvg = this.graphMeta.target_avg || [];
-            const builds = this.graphMeta.builds || [];
-            const levelStats = this.graphMeta.level_stats || {};
-
+        getChartDatasets() {
             const datasets = [];
 
-            // Dataset 0: Target Max (3 rounds, Offensive)
-            datasets.push({
-                id: '__target_max',
-                label: 'Target Max (3 rds, Offensive)',
-                data: targetMax,
-                borderColor: 'rgba(217, 119, 6, 0.75)',
-                backgroundColor: 'rgba(254, 240, 138, 0.28)',
-                borderWidth: 1.5,
-                borderDash: [5, 5],
-                fill: '+1',
-                pointRadius: 0,
-                pointHoverRadius: 4,
-                tension: 0.15,
-                hidden: !this.showTargetBand,
-                order: 99
-            });
-
-            // Dataset 1: Target Min (5 rounds, Defensive)
-            datasets.push({
-                id: '__target_min',
-                label: 'Target Min (5 rds, Defensive)',
-                data: targetMin,
-                borderColor: 'rgba(217, 119, 6, 0.75)',
-                backgroundColor: 'transparent',
-                borderWidth: 1.5,
-                borderDash: [5, 5],
-                fill: false,
-                pointRadius: 0,
-                pointHoverRadius: 4,
-                tension: 0.15,
-                hidden: !this.showTargetBand,
-                order: 99
-            });
+            // Dataset 0 & 1: Target Min & Max (Shaded Area)
+            if (this.showTargetBand) {
+                datasets.push({
+                    id: '__target_max',
+                    label: 'Target Max (3 rds, Offensive)',
+                    data: this.graphMeta.target_max || [],
+                    borderColor: 'rgba(217, 119, 6, 0.75)',
+                    backgroundColor: 'rgba(254, 240, 138, 0.28)',
+                    borderWidth: 1.5,
+                    borderDash: [5, 5],
+                    fill: '+1',
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    tension: 0.15,
+                    order: 99
+                });
+                datasets.push({
+                    id: '__target_min',
+                    label: 'Target Min (5 rds, Defensive)',
+                    data: this.graphMeta.target_min || [],
+                    borderColor: 'rgba(217, 119, 6, 0.75)',
+                    backgroundColor: 'transparent',
+                    borderWidth: 1.5,
+                    borderDash: [5, 5],
+                    fill: false,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    tension: 0.15,
+                    order: 99
+                });
+            }
 
             // Dataset 2: Target Baseline (4 rounds, Average)
-            datasets.push({
-                id: '__target_avg',
-                label: 'Target Baseline (4 rds)',
-                data: targetAvg,
-                borderColor: 'rgba(180, 83, 9, 0.95)',
-                backgroundColor: 'transparent',
-                borderWidth: 2,
-                borderDash: [2, 2],
-                fill: false,
-                pointRadius: 0,
-                pointHoverRadius: 5,
-                tension: 0.15,
-                hidden: !this.showTargetAvg,
-                order: 98
-            });
-
-            // Datasets 3+: Class Builds
-            builds.forEach((b, idx) => {
+            if (this.showTargetAvg) {
                 datasets.push({
-                    id: b.id,
-                    label: b.name,
-                    data: this.loadedBuildDprs[b.id] || [],
-                    borderColor: b.color,
-                    backgroundColor: b.color,
-                    borderWidth: 2.2,
-                    pointRadius: 2.5,
-                    pointHoverRadius: 6,
-                    tension: 0.2,
-                    hidden: !this.selectedBuilds.includes(b.id),
-                    order: idx + 1
+                    id: '__target_avg',
+                    label: 'Target Baseline (4 rds)',
+                    data: this.graphMeta.target_avg || [],
+                    borderColor: 'rgba(180, 83, 9, 0.95)',
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    borderDash: [2, 2],
+                    fill: false,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    tension: 0.15,
+                    order: 98
                 });
-            });
+            }
 
-            this.chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: levels.map(l => 'Lvl ' + l),
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: {
-                        duration: 350
-                    },
-                    interaction: {
-                        mode: 'index',
-                        intersect: false,
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                            titleColor: '#f8fafc',
-                            titleFont: { size: 12, weight: 'bold' },
-                            bodyColor: '#e2e8f0',
-                            bodyFont: { size: 11 },
-                            padding: 10,
-                            boxPadding: 4,
-                            cornerRadius: 8,
-                            filter: function(item) {
-                                if (typeof item.chart.isDatasetVisible === 'function') {
-                                    return item.chart.isDatasetVisible(item.datasetIndex);
-                                }
-                                return item.dataset.hidden !== true;
-                            },
-                            callbacks: {
-                                title: (tooltipItems) => {
-                                    if (!tooltipItems.length) return '';
-                                    const lvlIdx = tooltipItems[0].dataIndex;
-                                    const lvl = levels[lvlIdx];
-                                    const stats = levelStats[lvl] || {};
-                                    return `Level ${lvl}  (Target DeC: ${stats.dec}, Target DR: ${stats.dr}, Baseline HP: ${stats.hp})`;
-                                },
-                                label: (context) => {
-                                    const label = context.dataset.label || '';
-                                    const val = context.parsed.y;
-                                    if (val === null || val === undefined) return null;
-                                    return ` ${label}: ${val} DPR`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Character Level (TL 1 – 30)',
-                                font: { weight: 'bold', size: 12 },
-                                color: '#475569'
-                            },
-                            grid: {
-                                color: 'rgba(226, 232, 240, 0.8)'
-                            },
-                            ticks: {
-                                color: '#475569',
-                                font: { size: 10 }
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Damage Per Round (DPR)',
-                                font: { weight: 'bold', size: 12 },
-                                color: '#475569'
-                            },
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(226, 232, 240, 0.8)'
-                            },
-                            ticks: {
-                                color: '#475569',
-                                font: { size: 10 }
-                            }
-                        }
+            // Datasets 3+: Selected Builds
+            const builds = this.graphMeta.builds || [];
+            builds.forEach((b, idx) => {
+                if (this.selectedBuilds.includes(b.id)) {
+                    const dprData = this.loadedBuildDprs[b.id];
+                    if (dprData && dprData.length > 0) {
+                        datasets.push({
+                            id: b.id,
+                            label: b.name,
+                            data: dprData,
+                            borderColor: b.color,
+                            backgroundColor: b.color,
+                            borderWidth: 2.2,
+                            pointRadius: 2.5,
+                            pointHoverRadius: 6,
+                            tension: 0.2,
+                            order: idx + 1
+                        });
                     }
                 }
             });
+
+            return datasets;
         },
 
-        updateChartData() {
-            if (!this.chartInstance) {
-                this.renderChart();
-                return;
-            }
+        renderOrUpdateChart() {
+            const canvas = document.getElementById('weaponDprChartCanvas');
+            if (!canvas || typeof Chart === 'undefined') return;
 
-            // Update Target Band visibility
-            const showBand = !!this.showTargetBand;
-            if (this.chartInstance.data.datasets[0]) {
-                this.chartInstance.data.datasets[0].hidden = !showBand;
-                if (typeof this.chartInstance.setDatasetVisibility === 'function') {
-                    this.chartInstance.setDatasetVisibility(0, showBand);
-                }
-                const meta0 = this.chartInstance.getDatasetMeta(0);
-                if (meta0) meta0.hidden = !showBand;
-            }
-            if (this.chartInstance.data.datasets[1]) {
-                this.chartInstance.data.datasets[1].hidden = !showBand;
-                if (typeof this.chartInstance.setDatasetVisibility === 'function') {
-                    this.chartInstance.setDatasetVisibility(1, showBand);
-                }
-                const meta1 = this.chartInstance.getDatasetMeta(1);
-                if (meta1) meta1.hidden = !showBand;
-            }
+            const levels = this.graphMeta.levels || [];
+            const levelStats = this.graphMeta.level_stats || {};
+            const datasets = this.getChartDatasets();
 
-            // Update Target Average visibility
-            const showAvg = !!this.showTargetAvg;
-            if (this.chartInstance.data.datasets[2]) {
-                this.chartInstance.data.datasets[2].hidden = !showAvg;
-                if (typeof this.chartInstance.setDatasetVisibility === 'function') {
-                    this.chartInstance.setDatasetVisibility(2, showAvg);
-                }
-                const meta2 = this.chartInstance.getDatasetMeta(2);
-                if (meta2) meta2.hidden = !showAvg;
+            if (!weaponDprChart) {
+                const ctx = canvas.getContext('2d');
+                weaponDprChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: levels.map(l => 'Lvl ' + l),
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 250
+                        },
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                titleColor: '#f8fafc',
+                                titleFont: { size: 12, weight: 'bold' },
+                                bodyColor: '#e2e8f0',
+                                bodyFont: { size: 11 },
+                                padding: 10,
+                                boxPadding: 4,
+                                cornerRadius: 8,
+                                callbacks: {
+                                    title: (tooltipItems) => {
+                                        if (!tooltipItems.length) return '';
+                                        const lvlIdx = tooltipItems[0].dataIndex;
+                                        const lvl = levels[lvlIdx];
+                                        const stats = levelStats[lvl] || {};
+                                        return `Level ${lvl}  (Target DeC: ${stats.dec}, Target DR: ${stats.dr}, Baseline HP: ${stats.hp})`;
+                                    },
+                                    label: (context) => {
+                                        const label = context.dataset.label || '';
+                                        const val = context.parsed.y;
+                                        if (val === null || val === undefined) return null;
+                                        return ` ${label}: ${val} DPR`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Character Level (TL 1 – 30)',
+                                    font: { weight: 'bold', size: 12 },
+                                    color: '#475569'
+                                },
+                                grid: {
+                                    color: 'rgba(226, 232, 240, 0.8)'
+                                },
+                                ticks: {
+                                    color: '#475569',
+                                    font: { size: 10 }
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Damage Per Round (DPR)',
+                                    font: { weight: 'bold', size: 12 },
+                                    color: '#475569'
+                                },
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(226, 232, 240, 0.8)'
+                                },
+                                ticks: {
+                                    color: '#475569',
+                                    font: { size: 10 }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                weaponDprChart.data.datasets = datasets;
+                weaponDprChart.update();
             }
-
-            // Update build datasets visibility and data
-            for (let i = 3; i < this.chartInstance.data.datasets.length; i++) {
-                const ds = this.chartInstance.data.datasets[i];
-                const isSelected = this.selectedBuilds.includes(ds.id);
-                if (this.loadedBuildDprs[ds.id] && this.loadedBuildDprs[ds.id].length > 0) {
-                    ds.data = this.loadedBuildDprs[ds.id];
-                }
-                ds.hidden = !isSelected;
-                if (typeof this.chartInstance.setDatasetVisibility === 'function') {
-                    this.chartInstance.setDatasetVisibility(i, isSelected);
-                }
-                const meta = this.chartInstance.getDatasetMeta(i);
-                if (meta) {
-                    meta.hidden = !isSelected;
-                }
-            }
-
-            this.chartInstance.update();
         }
     };
 }
@@ -909,12 +834,12 @@ function analysisApp() {
                     <!-- Target Overlays Toggles -->
                     <div class="inline-flex items-center gap-2 bg-amber-50/70 border border-amber-200 px-2.5 py-1 rounded-lg text-xs font-medium text-amber-950">
                         <label class="flex items-center gap-1.5 cursor-pointer select-none">
-                            <input type="checkbox" x-model="showTargetBand" @change="updateChartData()" class="rounded text-amber-600 focus:ring-amber-500">
+                            <input type="checkbox" x-model="showTargetBand" @change="renderOrUpdateChart()" class="rounded text-amber-600 focus:ring-amber-500">
                             <span>🎯 Target Range (3–5 rds)</span>
                         </label>
                         <span class="text-amber-300">|</span>
                         <label class="flex items-center gap-1.5 cursor-pointer select-none">
-                            <input type="checkbox" x-model="showTargetAvg" @change="updateChartData()" class="rounded text-amber-600 focus:ring-amber-500">
+                            <input type="checkbox" x-model="showTargetAvg" @change="renderOrUpdateChart()" class="rounded text-amber-600 focus:ring-amber-500">
                             <span>⚖️ Baseline (4 rds)</span>
                         </label>
                     </div>
@@ -981,8 +906,8 @@ function analysisApp() {
                                :class="isBuildSelected(b.id) ? 'bg-white border-slate-300 shadow-2xs' : 'bg-slate-100/60 border-slate-200 text-slate-400 opacity-70'">
                             <input type="checkbox" 
                                    :value="b.id" 
-                                   x-model="selectedBuilds"
-                                   @change="fetchMissingBuildsAndRender()"
+                                   :checked="isBuildSelected(b.id)"
+                                   @change="toggleBuild(b.id)"
                                    class="rounded text-indigo-600 focus:ring-indigo-500">
                             <span class="w-2.5 h-2.5 rounded-full shrink-0" :style="'background-color: ' + b.color"></span>
                             <span class="font-medium truncate" :class="isBuildSelected(b.id) ? 'text-slate-900' : 'text-slate-500'" x-text="b.name"></span>
