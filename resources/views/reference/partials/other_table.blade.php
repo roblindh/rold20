@@ -83,6 +83,7 @@
                                     3 => 'bg-emerald-100 text-emerald-950 border-emerald-300', // Poison
                                     4 => 'bg-purple-100 text-purple-950 border-purple-300',   // Disease
                                     5 => 'bg-rose-100 text-rose-950 border-rose-300',       // Insanity
+                                    6 => 'bg-teal-100 text-teal-950 border-teal-300',       // Drug
                                     1 => 'bg-red-100 text-red-950 border-red-300',         // Dying
                                     2 => 'bg-indigo-100 text-indigo-950 border-indigo-300',   // Possession
                                     default => 'bg-amber-100 text-amber-950 border-amber-300',

@@ -75,6 +75,7 @@ Route::prefix('reference')->name('reference.')->group(function () {
     Route::get('/conditions/{name}', [ReferenceController::class, 'showOther']);
     Route::get('/poisons', fn() => redirect('/reference/other?type=3'));
     Route::get('/diseases', fn() => redirect('/reference/other?type=4'));
+    Route::get('/drugs', fn() => redirect('/reference/other?type=6'));
     Route::get('/organizations', [ReferenceController::class, 'other']);
 });
 

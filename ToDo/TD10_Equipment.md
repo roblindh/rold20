@@ -3,25 +3,25 @@
 - [ ] Weapons
   - [ ] Advanced siege engines (pf435+)
 - [ ] Poisons and drugs
-  - [ ] The Fort DC could be modified by dosage and time elapsed.
-  - [ ] Add rules for addiction, tolerance, and withdrawal (tolerance applies to poisons as well as drugs).
-  - [ ] Different levels as attacks vs Will.
-  - [ ] Reduced efficiency with increased use?
-  - [ ] Treat addiction as disease (also with regards to magical healing).
-  - [ ] New attack vs. Fort (at +2 per use or dose) when taking drug to increase addiction stage.
-  - [ ] New attack once per day (after abstaining) to reduce stage.
-  - [ ] Penalty to Con, Str, Dex, and/or Wis at different stages (temporarily mitigated when taking the drug?).
-  - [ ] Attack vs. Wis to avoid using the drug again (also part of each addiction stage?).
-  - [ ] Aether: inhaled, moderate addiction, +6 vs Fort, 20 sp/dose, spellcasting bonus +1 but can’t take 10 for 1 h, d2 Con damage
-  - [ ] Dwarven Fire Ale: ingested, moderate addiction, +10 vs Fort, 50 sp/dose, berserking bonus and cold res 5 for 1 h, d2 Con damage
-  - [ ] Elven Absinthe: ingested, moderate addiction, +6 vs Fort, 500 sp/dose, d4 Cha bonus for 1 h, d4 Con damage
-  - [ ] Flayleaf: inhaled or ingested, minor addiction, +2 vs Fort, 10 sp/dose, +2 bonus against mind attacks for 1 h, 1 Wis and 2d6 SP damage
-  - [ ] Opium: inhaled, ingested, or injury, major addiction, +10 vs Fort, 25 sp/dose, +d8 temp HP and +2 Fort save bonus for 1 h, d4 Con, d4 Wis, and 2d6 SP damage
-  - [ ] Pesh: ingested or inhaled, moderate addiction, +10 vs Fort, 15 sp/dose, +d2 bonus to Str and -2 against mind attacks for 1 h, d2 Con, d2 Wis, and d6 SP damage
-  - [ ] Scour: ingested or inhaled, major addiction, +14 vs Fort, 45 sp/dose, +d4 Dex bonus and -d4 Wis penalty for 3 h, d6 Con damage
-  - [ ] Shiver: injury or ingested, major addiction, +8 vs Fort, 500 sp/dose, immune to fear for d4 min and +8 vs Fort or fall asleep for d4 h, d2 Con damage
-  - [ ] Zerk: injury, minor addiction, +8 vs Fort, 50 sp/dose, +1 bonus to initiative and +d2 Str for 1 h, d2 Con damage
-  - [ ] Alcohol: ingested, minor or moderate addiction?, sickened?
+  - [x] The Fort DC could be modified by dosage and time elapsed.
+  - [x] Add rules for addiction, tolerance, and withdrawal (tolerance applies to poisons as well as drugs).
+  - [x] Different levels as attacks vs Will.
+  - [x] Reduced efficiency with increased use?
+  - [x] Treat addiction as disease (also with regards to magical healing).
+  - [x] New attack vs. Fort (at +2 per use or dose) when taking drug to increase addiction stage.
+  - [x] New attack once per day (after abstaining) to reduce stage.
+  - [x] Penalty to Con, Str, Dex, and/or Wis at different stages (temporarily mitigated when taking the drug?).
+  - [x] Attack vs. Wis to avoid using the drug again (also part of each addiction stage?).
+  - [x] Aether: inhaled, moderate addiction, +6 vs Fort, 20 sp/dose, spellcasting bonus +1 but can’t take 10 for 1 h, d2 Con damage
+  - [x] Dwarven Fire Ale: ingested, moderate addiction, +10 vs Fort, 50 sp/dose, berserking bonus and cold res 5 for 1 h, d2 Con damage
+  - [x] Elven Absinthe: ingested, moderate addiction, +6 vs Fort, 500 sp/dose, d4 Cha bonus for 1 h, d4 Con damage
+  - [x] Flayleaf: inhaled or ingested, minor addiction, +2 vs Fort, 10 sp/dose, +2 bonus against mind attacks for 1 h, 1 Wis and 2d6 SP damage
+  - [x] Opium: inhaled, ingested, or injury, major addiction, +10 vs Fort, 25 sp/dose, +d8 temp HP and +2 Fort save bonus for 1 h, d4 Con, d4 Wis, and 2d6 SP damage
+  - [x] Pesh: ingested or inhaled, moderate addiction, +10 vs Fort, 15 sp/dose, +d2 bonus to Str and -2 against mind attacks for 1 h, d2 Con, d2 Wis, and d6 SP damage
+  - [x] Scour: ingested or inhaled, major addiction, +14 vs Fort, 45 sp/dose, +d4 Dex bonus and -d4 Wis penalty for 3 h, d6 Con damage
+  - [x] Shiver: injury or ingested, major addiction, +8 vs Fort, 500 sp/dose, immune to fear for d4 min and +8 vs Fort or fall asleep for d4 h, d2 Con damage
+  - [x] Zerk: injury, minor addiction, +8 vs Fort, 50 sp/dose, +1 bonus to initiative and +d2 Str for 1 h, d2 Con damage
+  - [x] Alcohol: ingested, minor or moderate addiction?, sickened?
   - [ ] Poison-specific antidotes?
 - [ ] More equipment and services
   - [ ] Skis, skates, crampons, snowshoes.

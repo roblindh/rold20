@@ -724,15 +724,16 @@ class ReferenceController extends Controller
         $this->ensureRulesLoaded();
 
         $poisons = DB::table('ref_stagedconditions')->where('Type', 3)->orderBy('Name')->get();
+        $drugs = DB::table('ref_stagedconditions')->where('Type', 6)->orderBy('Name')->get();
         $diseases = DB::table('ref_stagedconditions')->where('Type', 4)->orderBy('Name')->get();
         $mentalIllnesses = DB::table('ref_stagedconditions')->where('Type', 5)->orderBy('Name')->get();
-        $specialConditions = DB::table('ref_stagedconditions')->whereIn('Type', [1, 2, 6])->orderBy('Name')->get();
+        $specialConditions = DB::table('ref_stagedconditions')->whereIn('Type', [1, 2])->orderBy('Name')->get();
         $organizations = DB::table('ref_organizations')
             ->leftJoin('ref_organizationtypes', 'ref_organizations.Type', '=', 'ref_organizationtypes.ID')
             ->select('ref_organizations.*', 'ref_organizationtypes.Type as TypeName')
             ->orderBy('ref_organizations.Name')
             ->get();
 
-        return view('reference.other_list', compact('poisons', 'diseases', 'mentalIllnesses', 'specialConditions', 'organizations'));
+        return view('reference.other_list', compact('poisons', 'drugs', 'diseases', 'mentalIllnesses', 'specialConditions', 'organizations'));
     }
 }

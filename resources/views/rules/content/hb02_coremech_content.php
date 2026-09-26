@@ -1279,6 +1279,97 @@
     </div>
 </div>
 
+<h3 id="Drugs">Drugs, Addiction &amp; Withdrawal</h3>
+<p>
+    Drugs are potent biological, herbal, or alchemical substances that alter perception, metabolism, and consciousness. Unlike lethal poisons designed purely to debilitate or kill, drugs provide immediate <strong>primary benefits</strong> (such as heightened spellcasting focus, combat morale, surges of physical power, temporary resilience, or pain suppression) alongside acute <strong>secondary drawbacks</strong> (such as ability damage, spell point drain, or reduced coordination) and the insidious peril of progressive <strong>addiction</strong>.
+</p>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-3">
+    <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs">
+        <strong class="text-slate-900 block font-bold mb-0.5">💨 Inhaled</strong>
+        Absorbed rapidly through respiratory membranes via pipe smoke, vapors, or snuffed powders. Takes effect within 1 round.
+    </div>
+    <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs">
+        <strong class="text-slate-900 block font-bold mb-0.5">🍖 Ingested</strong>
+        Introduced through swallowed potions, distilled spirits, herbal infusions, or chewed resin. Takes effect in 1d4 rounds (or minutes for heavy brews).
+    </div>
+    <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs">
+        <strong class="text-slate-900 block font-bold mb-0.5">🗡️ Injury</strong>
+        Injected directly into veins or muscle tissue via syringes, darts, or auto-plungers. Takes effect instantaneously.
+    </div>
+    <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs">
+        <strong class="text-slate-900 block font-bold mb-0.5">✋ Contact</strong>
+        Absorbed transdermally through skin patches or balms. Takes effect after 1 minute of skin contact.
+    </div>
+</div>
+
+<h4 id="DrugEffectsAndOverdose">Drug Effects &amp; Overdose</h4>
+<p class="text-sm text-slate-700 leading-relaxed">
+    Upon consuming a dose of a drug, the user immediately gains its designated <strong>primary benefit</strong> for the listed duration (typically 1 hour) and suffers its <strong>secondary damage</strong> (e.g., 1d2 Constitution or Wisdom damage).
+</p>
+<ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
+    <li><strong>Overdose &amp; Acute Toxicity:</strong> Consuming an additional dose of the same drug before the duration of a prior dose has expired triggers an immediate overdose. The user takes double the secondary ability damage, must make an immediate saving throw against the drug's <strong>Stage 4 Crisis</strong> effect, and gains the <em>Sickened</em> (or <em>Nauseated</em>) condition for 1 hour per excess dose.</li>
+    <li><strong>Tolerance:</strong> Prolonged, habitual use builds metabolic tolerance. A creature at Stage 2 or higher addiction experiences halved primary bonuses or halved durations from standard doses, often tempting them to double dosages and risk fatal overdose. However, chronic exposure grants a +2 metabolic bonus on Fortitude defense against lethal poisons of similar chemical composition.</li>
+</ul>
+
+<h4 id="AddictionMechanics">Addiction Mechanics</h4>
+<p class="text-sm text-slate-700 leading-relaxed">
+    Addiction is modeled as a <strong>staged condition</strong> (governed by Fortitude and Willpower). Every time a creature takes a dose of an addictive substance, an <strong>Addiction Attack Roll</strong> is resolved against the user's <strong>Fortitude Defense</strong>:
+</p>
+<div class="formula-box">
+    <strong>Addiction Attack Roll</strong> = d20! + Base Drug Attack Bonus + (2 &times; Additional Doses Taken in Past 24 Hours) vs. Fortitude Defense
+</div>
+<p class="text-sm text-slate-700 leading-relaxed">
+    On a successful hit, the creature contracts <strong>Stage 1 Addiction</strong> (or advances by +1 stage if already addicted). Addiction progresses across four severity stages:
+</p>
+
+<div class="space-y-2.5 my-3">
+    <div class="p-3 bg-amber-50/50 border border-amber-200 rounded-lg text-xs space-y-1">
+        <span class="font-bold text-amber-950 block text-sm">Stage 1: Mild / Latent Addiction</span>
+        <p class="text-stone-700">Psychological craving and mild restlessness. The addict feels a recurring desire for the drug. If deprived for 7 days (or 3 days for major addictive substances), they suffer a <strong>-1 penalty</strong> on Will defense, concentration checks, and associated attribute rolls.</p>
+    </div>
+    <div class="p-3 bg-amber-100/50 border border-amber-300 rounded-lg text-xs space-y-1">
+        <span class="font-bold text-amber-950 block text-sm">Stage 2: Moderate Addiction</span>
+        <p class="text-stone-700">Habitual physiological dependency. The addict requires a dose every 3 days. When deprived, moderate withdrawal sets in: <strong>-2 penalty</strong> on associated ability checks, saving throws, and attack rolls, accompanied by visible tremors, mood swings, or lethargy.</p>
+    </div>
+    <div class="p-3 bg-rose-50/60 border border-rose-300 rounded-lg text-xs space-y-1">
+        <span class="font-bold text-rose-950 block text-sm">Stage 3: Severe / Chronic Addiction</span>
+        <p class="text-stone-700">Debilitating physical dependence. The addict must consume a dose every 24 hours. When deprived, severe withdrawal agony takes hold: <strong>-4 penalty</strong> on all ability checks, saving throws, and defenses, persistent <em>Fatigue</em> or <em>Shaken</em> condition, and 1 point of Constitution damage per day deprived.</p>
+    </div>
+    <div class="p-3 bg-red-100/60 border border-red-400 rounded-lg text-xs space-y-1">
+        <span class="font-bold text-red-950 block text-sm">Stage 4: Overdose / Crisis / Terminal Collapse</span>
+        <p class="text-stone-700">Acute toxic shock, respiratory depression, or violent seizure from overdose or catastrophic abrupt withdrawal. The addict risks coma, catatonia, permanent brain injury, or fatal organ collapse without immediate medical resuscitation or curative magic.</p>
+    </div>
+</div>
+
+<h4 id="WithdrawalAndRecovery">Withdrawal, Cravings &amp; Rehabilitation</h4>
+<ul class="list-disc pl-6 space-y-1.5 text-sm text-slate-700">
+    <li><strong>Suppressing Withdrawal:</strong> Ingesting a standard dose of the drug temporarily suppresses all withdrawal penalties for the duration of the high. However, doing so counts as a new exposure and triggers an Addiction check to advance the addiction stage.</li>
+    <li><strong>Resisting Cravings:</strong> When exposed to the drug or confronted with active temptation, an addicted character must succeed on a <strong>Will defense check (or Wisdom check)</strong> against the drug's base DC to resist consuming a dose.</li>
+    <li><strong>Natural Detoxification &amp; Recovery:</strong> For each period of complete abstinence maintained while weathering withdrawal, the patient rolls a <strong>Fortitude recovery check</strong> (<code>d20! vs. Base DC</code>):
+        <ul class="list-circle pl-5 mt-1 space-y-0.5 text-xs text-stone-600">
+            <li><em>Minor Addiction:</em> 1 successful Fort check after 2 days of continuous abstinence reduces the addiction by 1 stage.</li>
+            <li><em>Moderate Addiction:</em> 2 consecutive daily successful Fort checks after 3 days of abstinence reduce the addiction by 1 stage.</li>
+            <li><em>Major Addiction:</em> 3 consecutive daily successful Fort checks after 3 days of abstinence reduce the addiction by 1 stage.</li>
+            <li>Reducing an addiction below Stage 1 completely cures the physiological dependence.</li>
+        </ul>
+    </li>
+    <li><strong>Medical &amp; Magical Treatment:</strong> A dedicated physician applying a <em>Heal</em> skill check (DC equal to the drug's DC) grants a +2 circumstance bonus (+4 on exceptional success) on daily recovery rolls. Spells such as <em>Remove Disease</em> or <em>Neutralize Poison</em> provide an immediate recovery check with a +4 bonus or step down the addiction by 1 stage. High restorative magic (<em>Restoration</em>, <em>Heal</em>, <em>Miracle</em>) instantly cleanses physical dependency stages, though psychological cravings may still require a successful Will save to permanently shake off temptation.</li>
+</ul>
+
+<div class="my-4 p-4 bg-teal-50/80 border border-teal-300/80 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+    <div>
+        <span class="font-bold text-teal-950 flex items-center gap-1.5 text-sm font-serif">
+            <span>💊</span> Complete Drug &amp; Addiction Reference Catalogue
+        </span>
+        <p class="text-xs text-stone-700 mt-0.5">Explore benefits, delivery vectors, addiction check DCs, withdrawal penalties, and overdose thresholds for all 10 drugs in the Reference Compendium.</p>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+        <a href="/reference/other?type=6" class="btn-rol-primary text-xs py-1.5 px-3">🔍 Search Drugs</a>
+        <a href="/reference/other/list#Drugs" class="btn-rol-secondary text-xs py-1.5 px-3">📋 Complete Drug List</a>
+    </div>
+</div>
+
 <h3 id="Disease">Disease</h3>
 
 <h4 id="PhysicalDisease">Physical Illness</h4>

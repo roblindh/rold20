@@ -45,6 +45,7 @@
                         3 => 'bg-emerald-800/80 text-emerald-200 border-emerald-500',
                         4 => 'bg-purple-800/80 text-purple-200 border-purple-500',
                         5 => 'bg-rose-800/80 text-rose-200 border-rose-500',
+                        6 => 'bg-teal-800/80 text-teal-200 border-teal-500',
                         1 => 'bg-red-800/80 text-red-200 border-red-500',
                         2 => 'bg-indigo-800/80 text-indigo-200 border-indigo-500',
                         default => 'bg-amber-800/80 text-amber-200 border-amber-500',

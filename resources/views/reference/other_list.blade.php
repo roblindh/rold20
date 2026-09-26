@@ -18,11 +18,12 @@
             <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
                 <span>📜</span> Other Lists - Complete Catalogue
             </h1>
-            <p class="text-slate-600 text-sm mt-1">Complete catalogue of staged conditions (poisons, physical diseases, mental illnesses, dying, possession), world organizations, and divine pantheons and deities.</p>
+            <p class="text-slate-600 text-sm mt-1">Complete catalogue of staged conditions (poisons, drugs &amp; addiction, physical diseases, mental illnesses, dying, possession), world organizations, and divine pantheons and deities.</p>
         </div>
         <!-- Quick Jump Links -->
         <div class="flex items-center gap-1.5 flex-wrap text-xs">
             <a href="#Poisons" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">🧪 Poisons</a>
+            <a href="#Drugs" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">💊 Drugs</a>
             <a href="#Diseases" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">🦠 Diseases</a>
             <a href="#MentalIllnesses" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">🧠 Mental Illnesses</a>
             <a href="#SpecialConditions" class="px-2.5 py-1 rounded bg-amber-50 hover:bg-amber-700 hover:text-white text-amber-900 transition font-medium border border-amber-200">⚡ Special</a>
@@ -39,10 +40,14 @@
         <p class="leading-relaxed text-slate-700">
             Specialized condition progressions, institutional factions, and divine patrons:
         </p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 pt-1">
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
                 <span class="font-bold text-slate-900 block mb-0.5">🧪 Poisons &amp; Toxins</span>
                 <span class="text-slate-600">Contact, ingestion, inhalation, and injury toxins with staged Fortitude checks.</span>
+            </div>
+            <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
+                <span class="font-bold text-slate-900 block mb-0.5">💊 Drugs &amp; Addiction</span>
+                <span class="text-slate-600">Combat stimulants and mind-altering substances with progressive dependency stages.</span>
             </div>
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
                 <span class="font-bold text-slate-900 block mb-0.5">🦠 Physical Diseases</span>

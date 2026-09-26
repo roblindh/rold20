@@ -10,6 +10,13 @@
 
 <?php show_stagedconditions(STAGED_POISON); ?>
 
+<h3 id="Drugs">Drugs &amp; Addiction</h3>
+<p>
+    Mind-altering substances, combat stimulants, and narcotics provide potent temporary benefits accompanied by immediate physical side effects, tolerance, and progressive addiction tracks:
+</p>
+
+<?php show_stagedconditions(STAGED_DRUG); ?>
+
 <h3 id="Diseases">Physical Diseases</h3>
 <p>
     Virulent biological infections, magical contagions, and parasitic infestations that incubate and deteriorate the victim's physical stamina until cured or terminal stages are reached:

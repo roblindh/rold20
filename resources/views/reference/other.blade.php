@@ -40,7 +40,7 @@
             <h1 class="text-2xl font-bold flex items-center gap-2">
                 <span>📜</span> Other Lists - Search
             </h1>
-            <p class="text-stone-700 text-sm mt-1">Staged conditions (poisons, physical diseases, mental illnesses, dying, possession) and world organizations.</p>
+            <p class="text-stone-700 text-sm mt-1">Staged conditions (poisons, drugs &amp; addiction, physical diseases, mental illnesses, dying, possession) and world organizations.</p>
         </div>
         <div class="flex items-center gap-2 text-xs flex-wrap">
             <span class="bg-amber-900/10 text-amber-950 px-3 py-1 rounded-full font-bold border border-amber-800/30">{{ $totalConditions }} Conditions</span>
@@ -56,10 +56,14 @@
         <p class="leading-relaxed text-stone-700">
             Staged conditions represent afflictions that evolve through successive phases based on recurring saving throws:
         </p>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 pt-1">
             <div class="parchment-inset p-3 rounded-lg shadow-xs">
                 <span class="font-bold text-amber-950 block mb-1">🧪 Poisons &amp; Toxins</span>
                 <span class="text-stone-700 leading-relaxed">Delivered via Contact, Ingestion, Inhalation, or Injury. Attack rolls vs. Fortitude determine initial contraction and stage escalation.</span>
+            </div>
+            <div class="parchment-inset p-3 rounded-lg shadow-xs">
+                <span class="font-bold text-amber-950 block mb-1">💊 Drugs &amp; Addiction</span>
+                <span class="text-stone-700 leading-relaxed">Combat stimulants and mind-altering substances. Acute benefits accompany toxicity, tolerance, and progressive addiction stages.</span>
             </div>
             <div class="parchment-inset p-3 rounded-lg shadow-xs">
                 <span class="font-bold text-amber-950 block mb-1">🦠 Physical Diseases</span>
