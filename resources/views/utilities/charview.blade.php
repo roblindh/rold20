@@ -386,6 +386,7 @@
                     $canManageCharacter = true;
                 }
             }
+            $hasCompanionSkills = $hasCompanionSkills ?? ($companionSummary['has_any_companion_skill'] ?? (!empty($skillsList[162]) || !empty($skillsList[167]) || !empty($skillsList[171]) || !empty($skillsList[189])));
         @endphp
 
         <!-- Character Sheet Action Bar Plaque -->
@@ -455,6 +456,16 @@
                     <button type="button" @click="showPortraitModal = true" class="btn-rol-secondary" title="Generate or edit AI character portrait">
                         <span>🎨 Generate AI Portrait</span>
                     </button>
+
+                    @if($hasCompanionSkills)
+                        <button type="button" @click="openCompanionsModal()" class="btn-rol-secondary" title="Manage Special Companions & Bonded Servants (Animal Companion, Mount, Familiar, Psicrystal)">
+                            <span>🐾 Special Companions</span>
+                        </button>
+                    @else
+                        <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Requires at least 1 rank in Animal Companion, Divine Mount, Familiar, or Psicrystal">
+                            <span>🐾 Special Companions</span>
+                        </button>
+                    @endif
                 @else
                     <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can level up this character">
                         <span>⬆️ Level Up</span>
@@ -486,6 +497,10 @@
 
                     <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can generate AI portraits">
                         <span>🎨 Generate AI Portrait</span>
+                    </button>
+
+                    <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can manage special companions">
+                        <span>🐾 Special Companions</span>
                     </button>
                 @endif
 
@@ -603,6 +618,7 @@ HP: {{ $hp }} / {{ $hpCurrent }} | SP: {{ $sp !== null ? $sp . ' / ' . $spCurren
         @include('utilities.partials.charview.modal_portrait_generator')
         @include('utilities.partials.charview.modal_combat_matrix')
         @include('utilities.partials.charview.modal_cast_spell')
+        @include('utilities.partials.charview.modal_special_companions')
     @else
         <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-3">
             <span class="text-5xl">🧙‍♂️</span>
@@ -774,10 +790,6 @@ function characterViewerApp() {
     }));
 
     return {
-        init() {
-            this.loadSpellFavorites();
-        },
-
         // Modal visibility
         showLevelUpModal: false,
         showModifyModal: false,
@@ -788,6 +800,31 @@ function characterViewerApp() {
         showPortraitModal: false,
         showCombatMatrixModal: false,
         showCastSpellModal: false,
+        showCompanionsModal: false,
+
+        // Special Companions State
+        companionSummary: @json($companionSummary ?? []),
+        eligibleCompanionCreatures: @json($eligibleCompanionCreatures ?? []),
+        selectedCompanionTab: 'animal_companion',
+        callingForm: {
+            base_creature_id: '',
+            name: '',
+            personality_fragment: 'Observant',
+            equipment: ''
+        },
+        callingPreview: null,
+        isCallingCompanion: false,
+        isDismissingCompanion: false,
+        companionToastMessage: '',
+        companionErrorMessage: '',
+
+        get activeTabMeta() {
+            return this.companionSummary?.companion_types?.[this.selectedCompanionTab] || {};
+        },
+
+        get eligibleCreaturesForCurrentTab() {
+            return this.eligibleCompanionCreatures?.[this.selectedCompanionTab] || [];
+        },
 
         twoHandedMode: {},
         selectedAmmo: {},
@@ -1025,7 +1062,7 @@ function characterViewerApp() {
         equipmentItems: @json($equipmentList ?? []),
 
         // Coin Purse & Wallet State
-        wallet: {{ json_encode($wallet ?? ['cp' => 0, 'sp' => 0, 'gp' => 0, 'pp' => 0]) }},
+        wallet: {!! json_encode($wallet ?? ['cp' => 0, 'sp' => 0, 'gp' => 0, 'pp' => 0]) !!},
 
         calcPurseSp() {
             const cp = parseInt(this.wallet.cp) || 0;
@@ -2428,6 +2465,165 @@ function characterViewerApp() {
                 this.selectedFavoriteId = '';
             }
             this.saveSpellFavorites();
+        },
+
+        openCompanionsModal() {
+            this.companionErrorMessage = '';
+            // Auto-select first enabled tab if current is disabled
+            const types = this.companionSummary?.companion_types || {};
+            if (!types[this.selectedCompanionTab]?.enabled) {
+                for (const [key, data] of Object.entries(types)) {
+                    if (data.enabled) {
+                        this.selectedCompanionTab = key;
+                        break;
+                    }
+                }
+            }
+            this.onCompanionTabChanged();
+            this.showCompanionsModal = true;
+        },
+
+        onCompanionTabChanged() {
+            this.companionErrorMessage = '';
+            const eligible = this.eligibleCreaturesForCurrentTab;
+            this.callingForm.base_creature_id = eligible.length > 0 ? String(eligible[0].ID) : '';
+            this.callingForm.name = '';
+            this.callingForm.personality_fragment = 'Observant';
+            this.updateCompanionPreview();
+        },
+
+        async updateCompanionPreview() {
+            const crId = this.callingForm.base_creature_id;
+            if (!crId) {
+                this.callingPreview = null;
+                return;
+            }
+
+            try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+                const res = await fetch('{{ route('utilities.charview.companions.preview', ['id' => $character->ID ?? 0], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        base_creature_id: parseInt(crId),
+                        companion_type: this.selectedCompanionTab,
+                        name: this.callingForm.name,
+                        personality_fragment: this.callingForm.personality_fragment,
+                        equipment: this.callingForm.equipment
+                    })
+                });
+
+                const data = await res.json().catch(() => null);
+                if (res.ok && data && data.success) {
+                    this.callingPreview = data.preview;
+                }
+            } catch(e) {
+                console.error('Failed to preview companion:', e);
+            }
+        },
+
+        async callCompanion() {
+            if (!this.callingForm.base_creature_id) {
+                this.companionErrorMessage = 'Please select a base creature.';
+                return;
+            }
+
+            this.isCallingCompanion = true;
+            this.companionErrorMessage = '';
+
+            try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+                const res = await fetch('{{ route('utilities.charview.companions.call', ['id' => $character->ID ?? 0], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        base_creature_id: parseInt(this.callingForm.base_creature_id),
+                        companion_type: this.selectedCompanionTab,
+                        name: this.callingForm.name,
+                        personality_fragment: this.callingForm.personality_fragment,
+                        equipment: this.callingForm.equipment
+                    })
+                });
+
+                const data = await res.json().catch(() => null);
+                if (res.ok && data && data.success) {
+                    this.companionToastMessage = data.message || 'Companion called successfully!';
+                    setTimeout(() => this.companionToastMessage = '', 3500);
+                    // Update companion summary
+                    if (this.companionSummary && this.companionSummary.companion_types && this.companionSummary.companion_types[this.selectedCompanionTab]) {
+                        const tabData = this.companionSummary.companion_types[this.selectedCompanionTab];
+                        tabData.active_companions = tabData.active_companions || [];
+                        tabData.active_companions.push(data.companion);
+                        tabData.used_cl = (tabData.used_cl || 0) + (data.companion.final_cl || 0);
+                        tabData.remaining_cl = Math.max(0, tabData.max_cl - tabData.used_cl);
+                        tabData.can_call_more = tabData.single_companion ? false : (tabData.remaining_cl >= 0);
+                    }
+                    this.callingForm.name = '';
+                    this.updateCompanionPreview();
+                } else {
+                    this.companionErrorMessage = data?.message || `Failed to call companion (status ${res.status}).`;
+                }
+            } catch(e) {
+                this.companionErrorMessage = 'Network error calling companion: ' + (e.message || e);
+            } finally {
+                this.isCallingCompanion = false;
+            }
+        },
+
+        async dismissCompanion(companionId, companionName = 'Companion') {
+            if (!confirm(`Are you sure you want to dismiss ${companionName}?`)) {
+                return;
+            }
+
+            this.isDismissingCompanion = true;
+            this.companionErrorMessage = '';
+
+            try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+                const res = await fetch('{{ route('utilities.charview.companions.dismiss', ['id' => $character->ID ?? 0], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        companion_id: companionId
+                    })
+                });
+
+                const data = await res.json().catch(() => null);
+                if (res.ok && data && data.success) {
+                    this.companionToastMessage = data.message || `Dismissed ${companionName}.`;
+                    setTimeout(() => this.companionToastMessage = '', 3500);
+                    // Update companion summary
+                    if (this.companionSummary && this.companionSummary.companion_types && this.companionSummary.companion_types[this.selectedCompanionTab]) {
+                        const tabData = this.companionSummary.companion_types[this.selectedCompanionTab];
+                        const removed = (tabData.active_companions || []).find(c => c.id === companionId);
+                        tabData.active_companions = (tabData.active_companions || []).filter(c => c.id !== companionId);
+                        if (removed) {
+                            tabData.used_cl = Math.max(0, (tabData.used_cl || 0) - (removed.final_cl || 0));
+                            tabData.remaining_cl = Math.max(0, tabData.max_cl - tabData.used_cl);
+                            tabData.can_call_more = tabData.single_companion ? true : (tabData.remaining_cl >= 0);
+                        }
+                    }
+                    this.updateCompanionPreview();
+                } else {
+                    this.companionErrorMessage = data?.message || `Failed to dismiss companion (status ${res.status}).`;
+                }
+            } catch(e) {
+                this.companionErrorMessage = 'Network error dismissing companion: ' + (e.message || e);
+            } finally {
+                this.isDismissingCompanion = false;
+            }
         }
     };
 }

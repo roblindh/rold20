@@ -113,6 +113,12 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/charview/{id}/upload-portrait', [UtilityController::class, 'uploadCharacterPortrait']);
     Route::post('/character-viewer/{id}/save-portrait-url', [UtilityController::class, 'saveCharacterPortraitUrl'])->name('charview.save-portrait-url');
     Route::post('/charview/{id}/save-portrait-url', [UtilityController::class, 'saveCharacterPortraitUrl']);
+    Route::post('/character-viewer/{id}/companions/call', [UtilityController::class, 'callCompanion'])->name('charview.companions.call');
+    Route::post('/charview/{id}/companions/call', [UtilityController::class, 'callCompanion']);
+    Route::post('/character-viewer/{id}/companions/dismiss', [UtilityController::class, 'dismissCompanion'])->name('charview.companions.dismiss');
+    Route::post('/charview/{id}/companions/dismiss', [UtilityController::class, 'dismissCompanion']);
+    Route::post('/character-viewer/{id}/companions/preview', [UtilityController::class, 'previewCompanion'])->name('charview.companions.preview');
+    Route::post('/charview/{id}/companions/preview', [UtilityController::class, 'previewCompanion']);
 
     Route::get('/npc-generator', [UtilityController::class, 'npcGenerator'])->name('npcgen');
     Route::get('/npcgen', [UtilityController::class, 'npcGenerator']);

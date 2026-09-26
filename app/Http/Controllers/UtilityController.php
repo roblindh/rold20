@@ -527,13 +527,25 @@ class UtilityController extends Controller
             }
         }
 
+        $companionSummary = $character ? \App\Services\Entity\SpecialCompanionService::getCharacterCompanionSummary($character, $calculatedState ?? []) : ['has_any_companion_skill' => false, 'companion_types' => [], 'all_companions' => []];
+        $hasCompanionSkills = $companionSummary['has_any_companion_skill'];
+
+        $masterSize = (int)($calculatedState['heritage']['size_id'] ?? 0);
+        $eligibleCompanionCreatures = [
+            'animal_companion' => \App\Services\Entity\SpecialCompanionService::getEligibleBaseCreatures('animal_companion', 20, $masterSize),
+            'divine_mount' => \App\Services\Entity\SpecialCompanionService::getEligibleBaseCreatures('divine_mount', 20, $masterSize),
+            'familiar' => \App\Services\Entity\SpecialCompanionService::getEligibleBaseCreatures('familiar', 20, $masterSize),
+            'psicrystal' => \App\Services\Entity\SpecialCompanionService::getEligibleBaseCreatures('psicrystal', 20, $masterSize),
+        ];
+
         return view('utilities.charview', compact(
             'character', 'calculatedState', 'activeConfig', 'allCharacters', 'myCharacters', 'race', 'templates', 'template', 'culture', 'bgClass',
             'classesMap', 'skillsMap', 'specializationsMap', 'improvementsMap', 'spellsMap', 'spellOptionsMap', 'itemsMap',
             'pantheonsMap', 'deitiesMap', 'sizesMap', 'bodyTypesMap', 'creatureSubtypes', 'ages', 'campaign', 'player', 'dm',
             'classes', 'skillAccess', 'skillTypes', 'skills', 'skillSpecializations', 'improvements',
             'itemTypes', 'equipment', 'spells', 'spellOptions', 'partyMembers', 'campaignVaultFunds', 'campaignVaultItems',
-            'refActions', 'commonActions', 'canManageCharacter'
+            'refActions', 'commonActions', 'canManageCharacter',
+            'companionSummary', 'hasCompanionSkills', 'eligibleCompanionCreatures'
         ));
     }
 
@@ -3764,5 +3776,90 @@ class UtilityController extends Controller
         }
 
         return ['total' => $r, 'rolls' => [$r], 'type' => 'normal', 'text' => (string)$r];
+    }
+
+    /**
+     * Preview companion creation and improvement scaling before calling.
+     */
+    public function previewCompanion(Request $request, int $id): JsonResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return response()->json(['success' => false, 'message' => 'Character not found.'], 404);
+        }
+
+        $baseCreatureId = (int)$request->input('base_creature_id', 358);
+        $companionType = (string)$request->input('companion_type', 'animal_companion');
+        $typeMeta = \App\Services\Entity\SpecialCompanionService::COMPANION_TYPES[$companionType] ?? null;
+        if (!$typeMeta) {
+            return response()->json(['success' => false, 'message' => 'Invalid companion type.'], 422);
+        }
+
+        $summary = \App\Services\Entity\SpecialCompanionService::getCharacterCompanionSummary($character);
+        $typeData = $summary['companion_types'][$companionType] ?? null;
+        $skillLevel = $typeData['skill_level'] ?? 1;
+
+        $generated = \App\Services\Entity\SpecialCompanionService::generateCompanionEntity(
+            $baseCreatureId,
+            $typeMeta['skill_id'],
+            $skillLevel,
+            [
+                'name' => (string)$request->input('name', ''),
+                'personality_fragment' => $request->input('personality_fragment'),
+                'equipment' => (string)$request->input('equipment', ''),
+            ]
+        );
+
+        return response()->json([
+            'success' => true,
+            'preview' => $generated,
+        ]);
+    }
+
+    /**
+     * Call / summon a new special companion.
+     */
+    public function callCompanion(Request $request, int $id): JsonResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return response()->json(['success' => false, 'message' => 'Character not found.'], 404);
+        }
+
+        if (!$this->isAuthorizedToManageCharacter($character)) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized. Only the character\'s player or GM can call companions.'], 403);
+        }
+
+        $result = \App\Services\Entity\SpecialCompanionService::callCompanion($character, $request->all());
+
+        if (!$result['success']) {
+            return response()->json($result, 422);
+        }
+
+        return response()->json($result);
+    }
+
+    /**
+     * Dismiss / release an active special companion.
+     */
+    public function dismissCompanion(Request $request, int $id): JsonResponse
+    {
+        $character = DB::table('characters')->where('ID', $id)->first();
+        if (!$character) {
+            return response()->json(['success' => false, 'message' => 'Character not found.'], 404);
+        }
+
+        if (!$this->isAuthorizedToManageCharacter($character)) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized. Only the character\'s player or GM can dismiss companions.'], 403);
+        }
+
+        $companionId = (string)$request->input('companion_id', '');
+        $result = \App\Services\Entity\SpecialCompanionService::dismissCompanion($character, $companionId);
+
+        if (!$result['success']) {
+            return response()->json($result, 422);
+        }
+
+        return response()->json($result);
     }
 }
