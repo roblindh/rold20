@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Services\Entity\EntityEngine;
+use App\Services\Entity\TraitEvaluator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -26,10 +28,15 @@ class AnalysisController extends Controller
             $spellLvl = 1;
         }
 
-        $classBenchmarks = $this->getClassBenchmarks($classLvl);
+        $equipMode = $request->input('equip_mode', 'basic');
+        if (!in_array($equipMode, ['basic', 'level'], true)) {
+            $equipMode = 'basic';
+        }
+
+        $classBenchmarks = $this->getClassBenchmarks($classLvl, $equipMode);
         $creatureBenchmarks = $this->getCreatureBenchmarks();
-        $weaponDprData = $this->getWeaponDprMatrix($weaponLvl);
-        $casterProgression = $this->getCasterProgression($spellLvl);
+        $weaponDprData = $this->getWeaponDprMatrix($weaponLvl, $equipMode);
+        $casterProgression = $this->getCasterProgression($spellLvl, $equipMode);
         $spellDprTables = $this->getSpellDprTables();
         $otherSpellTables = $this->getOtherSpellBalancingTables();
 
@@ -37,6 +44,7 @@ class AnalysisController extends Controller
             'classLvl',
             'weaponLvl',
             'spellLvl',
+            'equipMode',
             'classBenchmarks',
             'creatureBenchmarks',
             'weaponDprData',
@@ -46,20 +54,9 @@ class AnalysisController extends Controller
         ));
     }
 
-    private function initRules(): void
+    public function getClassBenchmarks(int $lvl, string $equipMode = 'basic'): array
     {
-        global $_APP;
-        if (!isset($_APP) || empty($_APP)) {
-            require_once base_path('page_start.php');
-        }
-    }
-
-    public function getClassBenchmarks(int $lvl): array
-    {
-        return Cache::remember("analysis.class_benchmarks.v3.lvl_{$lvl}", 86400, function () use ($lvl) {
-            $this->initRules();
-            global $_APP;
-
+        return Cache::remember("analysis.class_benchmarks.v4.lvl_{$lvl}.{$equipMode}", 86400, function () use ($lvl, $equipMode) {
             $classes = [
                 "Bard" => "Bard { Str=10; Con=8; Dex=14; Int=12; Wis=12; Cha=16; Class=Bard; Lvl={$lvl}; Weapon1=Mw rapier (Item=Rapier: Mod=MwMeleeWp:); Weapon2=Mw buckler (Item=Buckler: Mod=MwShield:); Armor=Mw chain shirt (Item=Chain shirt: Mod=MwArmor:); }",
                 "Cleric" => "Cleric { Str=12; Con=12; Dex=10; Int=8; Wis=16; Cha=14; Class=Cleric of War; Lvl={$lvl}; Weapon1=Mw flail (Item=Flail: Mod=MwMeleeWp:); Weapon2=Mw shield (Item=Shield, heavy wooden: Mod=MwShield:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor:); }",
@@ -79,29 +76,26 @@ class AnalysisController extends Controller
                 "Warrior" => "Warrior { Str=16; Con=12; Dex=14; Int=8; Wis=12; Cha=10; Class=Guard; Lvl={$lvl}; Weapon1=Mw halberd (Item=Halberd: Mod=MwMeleeWp:); Armor=Mw breastplate (Item=Breastplate: Mod=MwArmor:); }",
             ];
 
-            $entity = new \cIndividual();
             $results = [];
 
             foreach ($classes as $className => $config) {
-                $entity->GenerateNPC(1, $config);
-                $gear = [];
-                foreach ($entity->lPossessions as $pos) {
-                    $gear[] = $pos->Name;
-                }
+                $charData = EntityEngine::buildEntityFromConfigString(1, $config, $equipMode);
+                $c = EntityEngine::calculate($charData);
+                $gear = array_column($charData['Possessions'] ?? [], 'name');
 
                 $results[] = [
-                    'name' => $entity->Name,
-                    'equipment' => implode(', ', $gear),
-                    'str_con_dex' => ($entity->GetAbility(A_STR) ?? '-') . '/' . ($entity->GetAbility(A_CON) ?? '-') . '/' . ($entity->GetAbility(A_DEX) ?? '-'),
-                    'int_wis_cha' => ($entity->GetAbility(A_INT) ?? '-') . '/' . ($entity->GetAbility(A_WIS) ?? '-') . '/' . ($entity->GetAbility(A_CHA) ?? '-'),
-                    'hp_sp_pp' => $entity->GetHPTotal() . '/' . $entity->GetSPTotal() . '/' . $entity->GetPPTotal(),
-                    'init' => signedstr($entity->GetInitMod()),
-                    'spd' => $entity->GetGroundSpeed(),
-                    'dec_pa' => $entity->GetDeCPassive() . '/' . $entity->GetDeCActive(),
-                    'fort_ref_will' => $entity->GetFort() . '/' . $entity->GetRef() . '/' . $entity->GetWill(),
-                    'dr' => $entity->GetDR(),
-                    'mr' => $entity->GetMR(),
-                    'att' => $entity->GetBestAttMod(),
+                    'name' => $className,
+                    'equipment' => !empty($gear) ? implode(', ', $gear) : 'None',
+                    'str_con_dex' => ($c['final_abilities']['Str'] ?? '-') . '/' . ($c['final_abilities']['Con'] ?? '-') . '/' . ($c['final_abilities']['Dex'] ?? '-'),
+                    'int_wis_cha' => ($c['final_abilities']['Int'] ?? '-') . '/' . ($c['final_abilities']['Wis'] ?? '-') . '/' . ($c['final_abilities']['Cha'] ?? '-'),
+                    'hp_sp_pp' => $c['health']['hp']['total'] . '/' . ($c['health']['sp']['total'] ?? '-') . '/' . ($c['health']['pp']['total'] ?? '-'),
+                    'init' => ($c['defenses']['init_mod'] >= 0 ? '+' : '') . $c['defenses']['init_mod'],
+                    'spd' => $c['speeds']['ground'],
+                    'dec_pa' => $c['defenses']['dec_passive'] . '/' . $c['defenses']['dec_active'],
+                    'fort_ref_will' => $c['defenses']['fort'] . '/' . $c['defenses']['ref'] . '/' . $c['defenses']['will'],
+                    'dr' => $c['defenses']['dr'],
+                    'mr' => $c['defenses']['mr'],
+                    'att' => EntityEngine::getBestAttackBonus($c, true),
                 ];
             }
 
@@ -111,36 +105,32 @@ class AnalysisController extends Controller
 
     public function getCreatureBenchmarks(): array
     {
-        return Cache::remember("analysis.creature_benchmarks.v3", 86400, function () {
-            $this->initRules();
-            global $_APP;
-
+        return Cache::remember("analysis.creature_benchmarks.v4", 86400, function () {
             $creatureIds = [
                 1, 3, 7, 12, 16, 18, 23, 54, 57, 157, 161, 162, 180, 190, 197, 228, 22, 284, 109, 317, 323, 352, 49, 59, 116, 151, 266, 290, 294, 36, 68, 91, 132, 166
             ];
 
-            $entity = new \cIndividual();
             $results = [];
 
             foreach ($creatureIds as $cId) {
-                if (!isset($_APP['creatures'][$cId])) continue;
-                $entity->GenerateNPC($cId, ($_APP['creatures'][$cId]['NameInformal'] ?? 'Creature') . ' { }');
+                $c = EntityEngine::calculate(['RaceID' => $cId]);
+                if (empty($c['heritage']['race_name'])) continue;
 
                 $results[] = [
-                    'name' => $entity->Name,
-                    'cl' => $entity->GetChallengeLevel(),
-                    'rl' => $entity->GetRacialLevel(),
-                    'sz' => $_APP['sizecats'][$entity->GetCurrentSize()]['Abbreviation'] ?? 'M',
-                    'str_con_dex' => ($entity->GetAbility(A_STR) ?? '-') . '/' . ($entity->GetAbility(A_CON) ?? '-') . '/' . ($entity->GetAbility(A_DEX) ?? '-'),
-                    'int_wis_cha' => ($entity->GetAbility(A_INT) ?? '-') . '/' . ($entity->GetAbility(A_WIS) ?? '-') . '/' . ($entity->GetAbility(A_CHA) ?? '-'),
-                    'hp_sp_pp' => $entity->GetHPTotal() . '/' . $entity->GetSPTotal() . '/' . $entity->GetPPTotal(),
-                    'init' => signedstr($entity->GetInitMod()),
-                    'spd' => max($entity->GetGroundSpeed(), $entity->GetFlySpeed(), $entity->GetSwimSpeed()),
-                    'dec_pa' => $entity->GetDeCPassive() . '/' . $entity->GetDeCActive(),
-                    'fort_ref_will' => $entity->GetFort() . '/' . $entity->GetRef() . '/' . $entity->GetWill(),
-                    'dr' => $entity->GetDR(),
-                    'mr' => $entity->GetMR(),
-                    'att' => $entity->GetBestAttMod(),
+                    'name' => $c['heritage']['race_name_informal'] ?: $c['heritage']['race_name'],
+                    'cl' => $c['heritage']['challenge_level'],
+                    'rl' => $c['heritage']['racial_level'],
+                    'sz' => $c['heritage']['size_abbr'],
+                    'str_con_dex' => ($c['final_abilities']['Str'] ?? '-') . '/' . ($c['final_abilities']['Con'] ?? '-') . '/' . ($c['final_abilities']['Dex'] ?? '-'),
+                    'int_wis_cha' => ($c['final_abilities']['Int'] ?? '-') . '/' . ($c['final_abilities']['Wis'] ?? '-') . '/' . ($c['final_abilities']['Cha'] ?? '-'),
+                    'hp_sp_pp' => $c['health']['hp']['total'] . '/' . ($c['health']['sp']['total'] ?? '-') . '/' . ($c['health']['pp']['total'] ?? '-'),
+                    'init' => ($c['defenses']['init_mod'] >= 0 ? '+' : '') . $c['defenses']['init_mod'],
+                    'spd' => max($c['speeds']['ground'], $c['speeds']['fly'] ?? 0, $c['speeds']['swim'] ?? 0),
+                    'dec_pa' => $c['defenses']['dec_passive'] . '/' . $c['defenses']['dec_active'],
+                    'fort_ref_will' => $c['defenses']['fort'] . '/' . $c['defenses']['ref'] . '/' . $c['defenses']['will'],
+                    'dr' => $c['defenses']['dr'],
+                    'mr' => $c['defenses']['mr'],
+                    'att' => EntityEngine::getBestAttackBonus($c, true),
                 ];
             }
 
@@ -148,11 +138,9 @@ class AnalysisController extends Controller
         });
     }
 
-    public function getWeaponDprMatrix(int $lvl): array
+    public function getWeaponDprMatrix(int $lvl, string $equipMode = 'basic'): array
     {
-        return Cache::remember("analysis.weapon_dpr.v3.lvl_{$lvl}", 86400, function () use ($lvl) {
-            $this->initRules();
-
+        return Cache::remember("analysis.weapon_dpr.v4.lvl_{$lvl}.{$equipMode}", 86400, function () use ($lvl, $equipMode) {
             $weaponConfigs = [
                 ['race' => 1, 'name' => 'Fighter (Longsword + Shield)', 'config' => "Fighter { Str=16; Con=14; Dex=12; Int=8; Wis=12; Cha=10; Class=Fighter; Lvl={$lvl}; Weapon1=Mw longsword (Item=Sword, long-: Mod=MwMeleeWp:); Weapon2=Mw shield (Item=Shield, heavy wooden: Mod=MwShield:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor:); }", 'va' => false],
                 ['race' => 1, 'name' => 'Fighter (Battleaxe + Shield)', 'config' => "Fighter { Str=16; Con=14; Dex=12; Int=8; Wis=12; Cha=10; Class=Axe Fighter; Lvl={$lvl}; Weapon1=Mw battleaxe (Item=Axe, battle-: Mod=MwMeleeWp:); Weapon2=Mw shield (Item=Shield, heavy wooden: Mod=MwShield:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor:); }", 'va' => false],
@@ -178,15 +166,12 @@ class AnalysisController extends Controller
             ];
 
             $targetDecs = [10, 14, 18, 22, 26, 30];
-            $entity = new \cIndividual();
             $rows = [];
 
             foreach ($weaponConfigs as $wc) {
-                $entity->GenerateNPC($wc['race'], $wc['config']);
-                $gear = [];
-                foreach ($entity->lPossessions as $p) {
-                    $gear[] = $p->Name;
-                }
+                $charData = EntityEngine::buildEntityFromConfigString($wc['race'], $wc['config'], $equipMode);
+                $calc = EntityEngine::calculate($charData);
+                $gear = array_column($charData['Possessions'] ?? [], 'name');
 
                 $dpr0 = [];
                 $dpr5 = [];
@@ -194,19 +179,19 @@ class AnalysisController extends Controller
                 $dpap = [];
 
                 foreach ($targetDecs as $dec) {
-                    $dpr0[$dec] = round($entity->GetDPR($dec, 0, $wc['va']), 1);
-                    $dpr5[$dec] = round($entity->GetDPR($dec, 5, $wc['va']), 1);
-                    $dpr10[$dec] = round($entity->GetDPR($dec, 10, $wc['va']), 1);
-                    $dpap[$dec] = round($entity->GetDPAP($dec, $wc['va']), 2);
+                    $dpr0[$dec] = round(EntityEngine::calculateDPR($calc, $dec, 0, $wc['va']), 1);
+                    $dpr5[$dec] = round(EntityEngine::calculateDPR($calc, $dec, 5, $wc['va']), 1);
+                    $dpr10[$dec] = round(EntityEngine::calculateDPR($calc, $dec, 10, $wc['va']), 1);
+                    $dpap[$dec] = round(EntityEngine::calculateDPAP($calc, $dec, $wc['va']), 2);
                 }
 
                 $rows[] = [
                     'name' => $wc['name'],
-                    'equipment' => implode(', ', $gear),
-                    'init' => signedstr($entity->GetInitMod()),
-                    'spd' => $entity->GetGroundSpeed(),
-                    'dec_pa' => $entity->GetDeCPassive() . '/' . $entity->GetDeCActive(),
-                    'dr' => $entity->GetDR(),
+                    'equipment' => !empty($gear) ? implode(', ', $gear) : 'None',
+                    'init' => ($calc['defenses']['init_mod'] >= 0 ? '+' : '') . $calc['defenses']['init_mod'],
+                    'spd' => $calc['speeds']['ground'],
+                    'dec_pa' => $calc['defenses']['dec_passive'] . '/' . $calc['defenses']['dec_active'],
+                    'dr' => $calc['defenses']['dr'],
                     'dpr_dr0' => $dpr0,
                     'dpr_dr5' => $dpr5,
                     'dpr_dr10' => $dpr10,
@@ -221,48 +206,52 @@ class AnalysisController extends Controller
         });
     }
 
-    public function getCasterProgression(int $lvl): array
+    public function getCasterProgression(int $lvl, string $equipMode = 'basic'): array
     {
-        return Cache::remember("analysis.caster_progression.v3.lvl_{$lvl}", 86400, function () use ($lvl) {
-            $this->initRules();
-            require_once base_path('RulesSrc/showtables_analysis.php');
-
+        return Cache::remember("analysis.caster_progression.v4.lvl_{$lvl}.{$equipMode}", 86400, function () use ($lvl, $equipMode) {
             $casters = [
-                new \cCaster("Bard", "{$lvl}/1", "({$lvl}+CHAMOD)/5", "({$lvl}+CHAMOD)/5", "Bard { Str=10; Con=8; Dex=14; Int=12; Wis=12; Cha=16; Class=Bard; Lvl={$lvl}; }"),
-                new \cCaster("Cleric", "{$lvl}/1", "({$lvl}+2*WISMOD)/5", "({$lvl}+2*WISMOD)/3", "Cleric { Str=12; Con=12; Dex=10; Int=8; Wis=16; Cha=14; Class=Cleric of War; Lvl={$lvl}; }"),
-                new \cCaster("Druid", "{$lvl}/1", "({$lvl}+2*WISMOD)/5", "({$lvl}+2*WISMOD)/3", "Druid { Str=12; Con=10; Dex=14; Int=8; Wis=16; Cha=12; Class=Druid; Lvl={$lvl}; }"),
-                new \cCaster("Psion", "{$lvl}/1", "0", "({$lvl}+INTMOD+CONMOD)*2/5", "Psion { Str=8; Con=10; Dex=12; Int=14; Wis=12; Cha=16; Class=Telepath; Lvl={$lvl}; }"),
-                new \cCaster("Psiwarrior", "{$lvl}/2", "0", "({$lvl}/2+INTMOD+CHAMOD)*2/5", "Psiwarrior { Str=16; Con=14; Dex=12; Int=10; Wis=12; Cha=8; Class=Psiwarrior; Lvl={$lvl}; }"),
-                new \cCaster("Ranger", "{$lvl}/2", "({$lvl}/2+2*WISMOD)/5", "({$lvl}/2+2*WISMOD)/3", "Ranger { Str=14; Con=12; Dex=16; Int=10; Wis=12; Cha=8; Class=Ranger; Lvl={$lvl}; }"),
-                new \cCaster("Rogue", "{$lvl}/2", "0", "0", "Rogue { Str=12; Con=8; Dex=16; Int=14; Wis=12; Cha=10; Class=Rogue; Lvl={$lvl}; }"),
-                new \cCaster("Templar", "{$lvl}/2", "({$lvl}/2+2*WISMOD)/5", "({$lvl}/2+2*WISMOD)/3", "Templar { Str=14; Con=12; Dex=10; Int=8; Wis=12; Cha=16; Class=Templar of Honor; Lvl={$lvl}; }"),
-                new \cCaster("Wizard (Generalist)", "{$lvl}/1", "({$lvl}+2*INTMOD)/5", "({$lvl}+2*INTMOD)/5", "Wizard { Str=8; Con=12; Dex=14; Int=16; Wis=12; Cha=10; Class=Wizard; Lvl={$lvl}; }"),
-                new \cCaster("Wizard (Specialist)", "{$lvl}/1", "({$lvl}+2*INTMOD)/5", "({$lvl}+2*INTMOD)/3", "Wizard { Str=8; Con=12; Dex=14; Int=16; Wis=12; Cha=10; Class=Pyromancer; Lvl={$lvl}; }"),
-                new \cCaster("Wizard (Sorcerer)", "{$lvl}/1", "0", "({$lvl}+2*CHAMOD)/4", "Wizard { Str=8; Con=12; Dex=14; Int=10; Wis=12; Cha=16; Class=Sorcerer; Lvl={$lvl}; }"),
-                new \cCaster("Adept", "{$lvl}/2", "0", "({$lvl}+WISMOD)/5", "Adept { Str=8; Con=14; Dex=12; Int=12; Wis=16; Cha=10; Class=Adept; Lvl={$lvl}; }")
+                ["name" => "Bard", "spelllvl" => "{$lvl}/1", "discount1" => "({$lvl}+CHAMOD)/5", "discount2" => "({$lvl}+CHAMOD)/5", "config" => "Bard { Str=10; Con=8; Dex=14; Int=12; Wis=12; Cha=16; Class=Bard; Lvl={$lvl}; }"],
+                ["name" => "Cleric", "spelllvl" => "{$lvl}/1", "discount1" => "({$lvl}+2*WISMOD)/5", "discount2" => "({$lvl}+2*WISMOD)/3", "config" => "Cleric { Str=12; Con=12; Dex=10; Int=8; Wis=16; Cha=14; Class=Cleric of War; Lvl={$lvl}; }"],
+                ["name" => "Druid", "spelllvl" => "{$lvl}/1", "discount1" => "({$lvl}+2*WISMOD)/5", "discount2" => "({$lvl}+2*WISMOD)/3", "config" => "Druid { Str=12; Con=10; Dex=14; Int=8; Wis=16; Cha=12; Class=Druid; Lvl={$lvl}; }"],
+                ["name" => "Psion", "spelllvl" => "{$lvl}/1", "discount1" => "0", "discount2" => "({$lvl}+INTMOD+CONMOD)*2/5", "config" => "Psion { Str=8; Con=10; Dex=12; Int=14; Wis=12; Cha=16; Class=Telepath; Lvl={$lvl}; }"],
+                ["name" => "Psiwarrior", "spelllvl" => "{$lvl}/2", "discount1" => "0", "discount2" => "({$lvl}/2+INTMOD+CHAMOD)*2/5", "config" => "Psiwarrior { Str=16; Con=14; Dex=12; Int=10; Wis=12; Cha=8; Class=Psiwarrior; Lvl={$lvl}; }"],
+                ["name" => "Ranger", "spelllvl" => "{$lvl}/2", "discount1" => "({$lvl}/2+2*WISMOD)/5", "discount2" => "({$lvl}/2+2*WISMOD)/3", "config" => "Ranger { Str=14; Con=12; Dex=16; Int=10; Wis=12; Cha=8; Class=Ranger; Lvl={$lvl}; }"],
+                ["name" => "Rogue", "spelllvl" => "{$lvl}/2", "discount1" => "0", "discount2" => "0", "config" => "Rogue { Str=12; Con=8; Dex=16; Int=14; Wis=12; Cha=10; Class=Rogue; Lvl={$lvl}; }"],
+                ["name" => "Templar", "spelllvl" => "{$lvl}/2", "discount1" => "({$lvl}/2+2*WISMOD)/5", "discount2" => "({$lvl}/2+2*WISMOD)/3", "config" => "Templar { Str=14; Con=12; Dex=10; Int=8; Wis=12; Cha=16; Class=Templar of Honor; Lvl={$lvl}; }"],
+                ["name" => "Wizard (Generalist)", "spelllvl" => "{$lvl}/1", "discount1" => "({$lvl}+2*INTMOD)/5", "discount2" => "({$lvl}+2*INTMOD)/5", "config" => "Wizard { Str=8; Con=12; Dex=14; Int=16; Wis=12; Cha=10; Class=Wizard; Lvl={$lvl}; }"],
+                ["name" => "Wizard (Specialist)", "spelllvl" => "{$lvl}/1", "discount1" => "({$lvl}+2*INTMOD)/5", "discount2" => "({$lvl}+2*INTMOD)/3", "config" => "Wizard { Str=8; Con=12; Dex=14; Int=16; Wis=12; Cha=10; Class=Pyromancer; Lvl={$lvl}; }"],
+                ["name" => "Wizard (Sorcerer)", "spelllvl" => "{$lvl}/1", "discount1" => "0", "discount2" => "({$lvl}+2*CHAMOD)/4", "config" => "Wizard { Str=8; Con=12; Dex=14; Int=10; Wis=12; Cha=16; Class=Sorcerer; Lvl={$lvl}; }"],
+                ["name" => "Adept", "spelllvl" => "{$lvl}/2", "discount1" => "0", "discount2" => "({$lvl}+WISMOD)/5", "config" => "Adept { Str=8; Con=14; Dex=12; Int=12; Wis=16; Cha=10; Class=Adept; Lvl={$lvl}; }"]
             ];
 
-            $entity = new \cIndividual();
             $pls = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29];
             $rows = [];
 
             foreach ($casters as $c) {
-                $entity->GenerateNPC(1, $c->configstr);
-                $parser = new \cExpressionParser();
-                $parser->Evaluate("TL=" . $entity->GetTotalLevel());
-                $parser->Evaluate("STRMOD=" . $entity->GetAbilMod(A_STR));
-                $parser->Evaluate("CONMOD=" . $entity->GetAbilMod(A_CON));
-                $parser->Evaluate("DEXMOD=" . $entity->GetAbilMod(A_DEX));
-                $parser->Evaluate("INTMOD=" . $entity->GetAbilMod(A_INT));
-                $parser->Evaluate("WISMOD=" . $entity->GetAbilMod(A_WIS));
-                $parser->Evaluate("CHAMOD=" . $entity->GetAbilMod(A_CHA));
-                $maxlvl = $parser->Evaluate($c->spelllvl);
+                $charData = EntityEngine::buildEntityFromConfigString(1, $c['config'], $equipMode);
+                $calc = EntityEngine::calculate($charData);
+
+                $context = [
+                    'TL' => (int)($calc['heritage']['total_level'] ?? $lvl),
+                    'lvl' => $lvl,
+                    'LVL' => $lvl,
+                    'STRMOD' => (int)($calc['ability_modifiers']['Str'] ?? 0),
+                    'CONMOD' => (int)($calc['ability_modifiers']['Con'] ?? 0),
+                    'DEXMOD' => (int)($calc['ability_modifiers']['Dex'] ?? 0),
+                    'INTMOD' => (int)($calc['ability_modifiers']['Int'] ?? 0),
+                    'WISMOD' => (int)($calc['ability_modifiers']['Wis'] ?? 0),
+                    'CHAMOD' => (int)($calc['ability_modifiers']['Cha'] ?? 0),
+                ];
+
+                $maxlvl = (float)TraitEvaluator::evaluateExpression($c['spelllvl'], $context);
 
                 $costs = [];
                 foreach ($pls as $sl) {
                     if ($sl <= $maxlvl) {
-                        $c1 = max(1, $sl - floor($parser->Evaluate($c->discount1)));
-                        $c2 = max(1, $sl - floor($parser->Evaluate($c->discount2)));
+                        $disc1 = (float)TraitEvaluator::evaluateExpression($c['discount1'], $context);
+                        $disc2 = (float)TraitEvaluator::evaluateExpression($c['discount2'], $context);
+                        $c1 = max(1, (int)($sl - floor($disc1)));
+                        $c2 = max(1, (int)($sl - floor($disc2)));
                         $costs[$sl] = "{$c1}/{$c2}";
                     } else {
                         $costs[$sl] = '-';
@@ -270,10 +259,10 @@ class AnalysisController extends Controller
                 }
 
                 $rows[] = [
-                    'name' => $c->name,
-                    'str_con_dex' => ($entity->GetAbility(A_STR) ?? '-') . '/' . ($entity->GetAbility(A_CON) ?? '-') . '/' . ($entity->GetAbility(A_DEX) ?? '-'),
-                    'int_wis_cha' => ($entity->GetAbility(A_INT) ?? '-') . '/' . ($entity->GetAbility(A_WIS) ?? '-') . '/' . ($entity->GetAbility(A_CHA) ?? '-'),
-                    'hp_sp_pp' => $entity->GetHPTotal() . '/' . $entity->GetSPTotal() . '/' . $entity->GetPPTotal(),
+                    'name' => $c['name'],
+                    'str_con_dex' => ($calc['final_abilities']['Str'] ?? '-') . '/' . ($calc['final_abilities']['Con'] ?? '-') . '/' . ($calc['final_abilities']['Dex'] ?? '-'),
+                    'int_wis_cha' => ($calc['final_abilities']['Int'] ?? '-') . '/' . ($calc['final_abilities']['Wis'] ?? '-') . '/' . ($calc['final_abilities']['Cha'] ?? '-'),
+                    'hp_sp_pp' => $calc['health']['hp']['total'] . '/' . ($calc['health']['sp']['total'] ?? '-') . '/' . ($calc['health']['pp']['total'] ?? '-'),
                     'costs' => $costs,
                 ];
             }
@@ -284,6 +273,7 @@ class AnalysisController extends Controller
             ];
         });
     }
+
 
     public function getSpellDprTables(): array
     {

@@ -3703,4 +3703,449 @@ class EntityEngine
 
         return $formatWithReq($desc);
     }
+
+    /**
+     * Hit probability for a normal hit given attack modifier, target DeC, and extra crit range (e.g. 1 for 19-20, 2 for 18-20).
+     */
+    public static function calculateHitProbNormal(float $attMod, float $dec, float $critRange = 0.0): float
+    {
+        if ($dec <= $attMod) {
+            return (1.0 + $attMod - $dec) / 400.0 + (18.0 - max($critRange, $attMod - $dec)) / 20.0;
+        }
+        if ($dec <= $attMod + 20.0) {
+            return max(0.0, ((19.0 - $critRange) + $attMod - $dec)) / 20.0 + (1.0 + $critRange) * (-1.0 - $attMod + $dec) / 400.0;
+        }
+        return (1.0 + $critRange) * (40.0 + $attMod - $dec) / 400.0;
+    }
+
+    /**
+     * Hit probability for a critical hit given attack modifier, target DeC, and extra crit range.
+     */
+    public static function calculateHitProbCrit(float $attMod, float $dec, float $critRange = 0.0): float
+    {
+        if ($dec <= $attMod) {
+            return (1.0 + max($critRange, $attMod - $dec)) / 20.0;
+        }
+        if ($dec <= $attMod + 20.0) {
+            return (1.0 + $critRange) * (21.0 + $attMod - $dec) / 400.0;
+        }
+        return 0.0;
+    }
+
+    /**
+     * Action Point (AP) cost for weapon attack combinations.
+     */
+    public static function calculateWeaponAPCost(array $weapons, int $creatureSize = 0): int
+    {
+        $ap = 0;
+        $numWeaps = count($weapons);
+        foreach ($weapons as $w) {
+            $sizeDiff = (int)($w['size_diff'] ?? $w['size_offset'] ?? 0);
+            $attSpd = (int)($w['att_spd_mod'] ?? $w['att_spd'] ?? 0);
+            $ap += max(5, 8 + $creatureSize + $sizeDiff) - $attSpd;
+        }
+        $discount = match ($numWeaps) {
+            2 => -2,
+            3 => -4,
+            4 => -6,
+            5 => -9,
+            6 => -12,
+            7 => -16,
+            default => 0,
+        };
+        return max(4, $ap + $discount);
+    }
+
+    /**
+     * Get combat attack options for DPR/DPAP simulation from calculated entity state.
+     */
+    public static function getCombatAttackOptions(array $calcState, bool $vitalAttack = false): array
+    {
+        $options = [];
+        $vaRank = (float)($calcState['skills'][52] ?? $calcState['skill_ranks'][52] ?? 0.0);
+        $vaBonus = $vitalAttack ? (2.0 + ($vaRank / 6.0)) : 0.0;
+
+        // 1. Equipped Weapons
+        $weapons = array_values($calcState['attacks']['weapons'] ?? []);
+        if (!empty($weapons)) {
+            // Single weapon 1H / 2H
+            $w0 = $weapons[0];
+            $is2H = !empty($w0['badges']['2H']) || (isset($w0['slot']) && $w0['slot'] === 'two_hand') || count($weapons) === 1;
+            $wAtt = $is2H ? (float)$w0['two_handed']['attack_bonus'] : (float)$w0['one_handed']['attack_bonus'];
+            $wDmg = $is2H ? (float)$w0['two_handed']['avg_damage'] : (float)$w0['one_handed']['avg_damage'];
+            $critRng = (float)max(0, 20 - (int)($w0['crit_range'] ?? 20));
+            $critMul = (float)($w0['crit_multiplier'] ?? 2.0);
+            $ap = max(4, (int)($w0['ap'] ?? 6));
+
+            $options[] = [
+                'name' => ($w0['name'] ?? 'Weapon') . ($is2H ? ' (2H)' : ' (1H)'),
+                'ap' => $ap,
+                'strikes' => [
+                    ['attack_bonus' => $wAtt, 'avg_damage' => $wDmg, 'crit_range' => $critRng, 'crit_multiplier' => $critMul]
+                ]
+            ];
+
+            // Dual wielding if 2+ weapons
+            if (count($weapons) > 1 && (($calcState['skills'][49] ?? 0) > 2 || count($weapons) >= 2)) {
+                $w1 = $weapons[1];
+                $dwAP = max(4, (int)$w0['ap'] + (int)$w1['ap'] - 2);
+                $pen = 6;
+                $options[] = [
+                    'name' => ($w0['name'] ?? 'Weapon 1') . ' + ' . ($w1['name'] ?? 'Weapon 2'),
+                    'ap' => $dwAP,
+                    'strikes' => [
+                        ['attack_bonus' => (float)$w0['one_handed']['attack_bonus'] - $pen, 'avg_damage' => (float)$w0['one_handed']['avg_damage'], 'crit_range' => (float)max(0, 20 - (int)$w0['crit_range']), 'crit_multiplier' => (float)$w0['crit_multiplier']],
+                        ['attack_bonus' => (float)$w1['one_handed']['attack_bonus'] - $pen, 'avg_damage' => (float)$w1['one_handed']['avg_damage'], 'crit_range' => (float)max(0, 20 - (int)$w1['crit_range']), 'crit_multiplier' => (float)$w1['crit_multiplier']],
+                    ]
+                ];
+            }
+        }
+
+        // 2. Natural Attacks
+        $nats = array_values($calcState['attacks']['natural'] ?? []);
+        if (!empty($nats)) {
+            // Single primary strikes
+            foreach ($nats as $na) {
+                if (!empty($na['primary'])) {
+                    $options[] = [
+                        'name' => $na['name'] ?? 'Natural Attack',
+                        'ap' => max(4, (int)($na['ap'] ?? 6)),
+                        'strikes' => [
+                            ['attack_bonus' => (float)$na['attack_bonus'], 'avg_damage' => (float)$na['avg_damage'], 'crit_range' => (float)max(0, 20 - (int)($na['crit_range'] ?? 20)), 'crit_multiplier' => (float)($na['crit_multiplier'] ?? 2.0)]
+                        ]
+                    ];
+                }
+            }
+
+            // Natural Attack combos
+            if (count($nats) >= 2) {
+                $totalNatAP = 0;
+                $strikes = [];
+                foreach ($nats as $na) {
+                    $totalNatAP += (int)($na['ap'] ?? 6);
+                    $strikes[] = [
+                        'attack_bonus' => (float)$na['attack_bonus'],
+                        'avg_damage' => (float)$na['avg_damage'],
+                        'crit_range' => (float)max(0, 20 - (int)($na['crit_range'] ?? 20)),
+                        'crit_multiplier' => (float)($na['crit_multiplier'] ?? 2.0),
+                    ];
+                }
+                $comboAP = max(5, $totalNatAP - (count($nats) - 1) * 2);
+                $options[] = [
+                    'name' => 'Full Natural Attack',
+                    'ap' => $comboAP,
+                    'strikes' => $strikes,
+                ];
+            }
+        }
+
+        // 3. Fallback to Unarmed Strike if no options
+        if (empty($options)) {
+            $unarmed = $calcState['attacks']['available_elements'][0] ?? null;
+            $options[] = [
+                'name' => 'Unarmed Strike',
+                'ap' => max(4, (int)($unarmed['ap'] ?? 6)),
+                'strikes' => [
+                    [
+                        'attack_bonus' => (float)($unarmed['attack_bonus'] ?? 0),
+                        'avg_damage' => (float)($unarmed['avg_damage'] ?? 2.5),
+                        'crit_range' => 0.0,
+                        'crit_multiplier' => 2.0,
+                    ]
+                ]
+            ];
+        }
+
+        return $options;
+    }
+
+    /**
+     * Calculate DPAP (Damage Per Action Point) of the most effective attack routine against a given target DeC.
+     */
+    public static function calculateDPAP(array $calcState, int $targetDec, bool $vitalAttack = false): float
+    {
+        $options = self::getCombatAttackOptions($calcState, $vitalAttack);
+        if (empty($options)) return 0.0;
+
+        $vaRank = (float)($calcState['skills'][52] ?? $calcState['skill_ranks'][52] ?? 0.0);
+        $vaBonus = $vitalAttack ? (2.0 + ($vaRank / 6.0)) : 0.0;
+
+        $bestDPAP = 0.0;
+
+        foreach ($options as $opt) {
+            $ap = max(1, (int)($opt['ap'] ?? 6));
+            $dmg = 0.0;
+
+            foreach ($opt['strikes'] as $strike) {
+                $attMod = (float)$strike['attack_bonus'] + $vaBonus;
+                $avgDmg = (float)$strike['avg_damage'] + $vaBonus;
+                $critRange = (float)($strike['crit_range'] ?? 0.0);
+                $critMul = (float)($strike['crit_multiplier'] ?? 2.0);
+
+                $hitNormal = self::calculateHitProbNormal($attMod, (float)$targetDec, $critRange);
+                $hitCrit = self::calculateHitProbCrit($attMod, (float)$targetDec, $critRange);
+
+                $dmg += $avgDmg * ($hitNormal + $hitCrit * $critMul);
+            }
+
+            $dpap = $dmg / $ap;
+            if ($dpap > $bestDPAP) {
+                $bestDPAP = $dpap;
+            }
+        }
+
+        return $bestDPAP;
+    }
+
+    /**
+     * Calculate DPR (Damage Per Round) of the most effective attack routine against a given target DeC and DR.
+     */
+    public static function calculateDPR(array $calcState, int $targetDec, int $targetDr = 0, bool $vitalAttack = false): float
+    {
+        $options = self::getCombatAttackOptions($calcState, $vitalAttack);
+        if (empty($options)) return 0.0;
+
+        $totalLevel = (int)($calcState['heritage']['total_level'] ?? 1);
+        $totap = 10 + $totalLevel;
+
+        $vaRank = (float)($calcState['skills'][52] ?? $calcState['skill_ranks'][52] ?? 0.0);
+        $vaBonus = $vitalAttack ? (2.0 + ($vaRank / 6.0)) : 0.0;
+
+        $topDmg = 0.0;
+
+        foreach ($options as $opt) {
+            $ap = max(1, (int)($opt['ap'] ?? 6));
+            $maxAttacks = (int)floor($totap / $ap);
+
+            for ($i = 1; $i <= $maxAttacks; $i++) {
+                $dmg = 0.0;
+                $apBonus = ($totap - $i * $ap) / (2.0 * $i);
+
+                foreach ($opt['strikes'] as $strike) {
+                    $attMod = (float)$strike['attack_bonus'] + $apBonus + $vaBonus;
+                    $avgDmg = (float)$strike['avg_damage'] + $vaBonus;
+                    $critRange = (float)($strike['crit_range'] ?? 0.0);
+                    $critMul = (float)($strike['crit_multiplier'] ?? 2.0);
+
+                    $hitNormal = self::calculateHitProbNormal($attMod, (float)$targetDec, $critRange);
+                    $hitCrit = self::calculateHitProbCrit($attMod, (float)$targetDec, $critRange);
+
+                    $normalDmg = max(0.0, $avgDmg + $apBonus - ($targetDr * (1.0 - $hitNormal / 3.0)));
+                    $critDmg = max(0.0, $avgDmg * $critMul + $apBonus - ($targetDr / 2.0));
+
+                    $dmg += $i * ($hitNormal * $normalDmg + $hitCrit * $critDmg);
+                }
+
+                if ($dmg > $topDmg) {
+                    $topDmg = $dmg;
+                }
+            }
+        }
+
+        return $topDmg;
+    }
+
+    /**
+     * Get the highest attack modifier from weapon skills or attacks.
+     */
+    public static function getBestAttackBonus(array $calcState, bool $skillOnly = false): int
+    {
+        if ($skillOnly) {
+            $bestSkill = 0;
+            $effSkills = $calcState['skills'] ?? [];
+            foreach (self::WEAPON_SKILL_MAP as $code => $info) {
+                $eval = self::evaluateWeaponSkillsForQual($code, $effSkills);
+                $bestSkill = max($bestSkill, (int)($eval['attack_bonus'] ?? 0));
+            }
+            return $bestSkill;
+        }
+
+        $bestAtt = 0;
+        foreach ($calcState['attacks']['weapons'] ?? [] as $w) {
+            $bestAtt = max($bestAtt, (int)($w['one_handed']['attack_bonus'] ?? 0), (int)($w['two_handed']['attack_bonus'] ?? 0));
+        }
+        foreach ($calcState['attacks']['natural'] ?? [] as $na) {
+            $bestAtt = max($bestAtt, (int)($na['attack_bonus'] ?? 0));
+        }
+        foreach ($calcState['attacks']['available_elements'] ?? [] as $el) {
+            $bestAtt = max($bestAtt, (int)($el['attack_bonus'] ?? 0));
+        }
+
+        return $bestAtt;
+    }
+
+    /**
+     * Build structured character payload from legacy NPC config string (e.g. "Fighter { Str=16; Class=Fighter; Lvl=1; ... }")
+     */
+    public static function buildEntityFromConfigString(int $creatureId, string $configStr, string $equipMode = 'basic'): array
+    {
+        self::loadReferenceTables();
+        global $_APP;
+
+        $bracePos = strpos($configStr, '{');
+        $name = ($bracePos !== false) ? trim(substr($configStr, 0, $bracePos)) : 'Character';
+        $paramsStr = ($bracePos !== false) ? substr($configStr, $bracePos + 1) : $configStr;
+        $paramsStr = rtrim($paramsStr, '} ');
+
+        $str = 10; $con = 10; $dex = 10; $int = 10; $wis = 10; $cha = 10;
+        $classConfigName = '';
+        $lvl = 1;
+        $sizeAdjust = 0;
+        $currentRace = $creatureId;
+        $cultureId = (int)(self::$creaturesCache[$creatureId]['DefaultCulture'] ?? 1);
+        $templateIds = [];
+        $itemConfigs = [];
+
+        $params = explode(';', $paramsStr);
+        foreach ($params as $p) {
+            $p = trim($p);
+            if (empty($p) || !str_contains($p, '=')) continue;
+            [$k, $v] = explode('=', $p, 2);
+            $k = trim($k);
+            $v = trim($v);
+
+            match ($k) {
+                'Str' => $str = (int)$v,
+                'Con' => $con = (int)$v,
+                'Dex' => $dex = (int)$v,
+                'Int' => $int = (int)$v,
+                'Wis' => $wis = (int)$v,
+                'Cha' => $cha = (int)$v,
+                'Class' => $classConfigName = $v,
+                'Lvl', 'Level' => $lvl = (int)$v,
+                'SzMod', 'SizeMod' => $sizeAdjust = (int)$v,
+                'Culture' => $cultureId = is_numeric($v) ? (int)$v : $cultureId,
+                'Shape' => $currentRace = $v,
+                'Template' => $templateIds = is_numeric($v) ? [(int)$v] : $templateIds,
+                'Weapon1', 'Weapon2', 'Ranged', 'Ammo', 'Armor', 'Item', 'Equipped' => $itemConfigs[] = $v,
+                default => null,
+            };
+        }
+
+        // Resolve shaped race
+        if (is_string($currentRace)) {
+            $foundRace = false;
+            foreach (self::$creaturesCache ?? [] as $cId => $cRow) {
+                if (strcasecmp($cRow['Name'], $currentRace) === 0 || strcasecmp($cRow['NameInformal'] ?? '', $currentRace) === 0) {
+                    $currentRace = (int)$cId;
+                    $foundRace = true;
+                    break;
+                }
+            }
+            if (!$foundRace) {
+                $currentRace = $creatureId;
+            }
+        }
+
+        // Resolve class config
+        $classConfig = null;
+        $classConfigId = 0;
+        foreach (self::$classConfigsCache ?? [] as $cId => $cfg) {
+            if (strcasecmp($cfg['Name'], $classConfigName) === 0) {
+                $classConfig = $cfg;
+                $classConfigId = (int)$cId;
+                break;
+            }
+        }
+
+        $classIds = [];
+        $skillRanks = [];
+
+        if ($classConfig) {
+            $cId = (int)($classConfig['ClassID'] ?? 1);
+            for ($i = 0; $i < $lvl; $i++) {
+                $classIds[] = $cId;
+            }
+
+            foreach (self::$skillsCache ?? [] as $sId => $sk) {
+                $abbr = $sk['Abbreviation'] ?? '';
+                if (!empty($abbr)) {
+                    if (str_contains($classConfig['PrimSkills'] ?? '', $abbr)) {
+                        $skillRanks[(int)$sId] = ($skillRanks[(int)$sId] ?? 0) + $lvl;
+                    } elseif (str_contains($classConfig['SecSkills'] ?? '', $abbr)) {
+                        $skillRanks[(int)$sId] = ($skillRanks[(int)$sId] ?? 0) + ($lvl / 2.0);
+                    }
+                }
+            }
+        }
+
+        // Background Class skills (Racial level + 1)
+        $bgConfigId = (int)(self::$culturesCache[$cultureId]['ClassConfig'] ?? 1);
+        if ($bgConfigId > 0 && isset(self::$classConfigsCache[$bgConfigId])) {
+            $bgCfg = self::$classConfigsCache[$bgConfigId];
+            foreach (self::$skillsCache ?? [] as $sId => $sk) {
+                $abbr = $sk['Abbreviation'] ?? '';
+                if (!empty($abbr)) {
+                    if (str_contains($bgCfg['PrimSkills'] ?? '', $abbr)) {
+                        $skillRanks[(int)$sId] = ($skillRanks[(int)$sId] ?? 0) + 1;
+                    } elseif (str_contains($bgCfg['SecSkills'] ?? '', $abbr)) {
+                        $skillRanks[(int)$sId] = ($skillRanks[(int)$sId] ?? 0) + 0.5;
+                    }
+                }
+            }
+        }
+
+        // Possessions & Loadout
+        $possessions = [];
+
+        if ($equipMode === 'level' && $classConfigId > 0) {
+            $loadout = \App\Services\ItemGeneration\EquipmentBlueprintService::generateLoadout($lvl, $classConfigId, true);
+            foreach ($loadout['items'] ?? [] as $it) {
+                $refId = (int)($it['item_id'] ?? $it['ref_id'] ?? 0);
+                if ($refId === 0 && isset($it['entity']) && is_object($it['entity'])) {
+                    $refId = (int)($it['entity']->Item ?? 0);
+                }
+                $refItem = self::$itemsCache[$refId] ?? [];
+                $possessions[] = [
+                    'item_id' => $refId,
+                    'name' => $it['name'] ?? ($refItem['Name'] ?? 'Item'),
+                    'item_type' => (int)($it['item_type'] ?? $refItem['ItemTypeID'] ?? $refItem['Type'] ?? 1),
+                    'subtype' => (int)($it['subtype'] ?? $refItem['Subtype'] ?? 0),
+                    'unit_weight' => (float)($it['unit_weight'] ?? $it['weight'] ?? $refItem['Weight'] ?? 0.0),
+                    'ec_mod' => (int)($it['ec_mod'] ?? $it['ec'] ?? $refItem['ECMod'] ?? 0),
+                    'locations' => [2, 2, 2, 2, 2],
+                    'ref_data' => $refItem,
+                    'custom_traits' => $it['custom_traits'] ?? $it['traits'] ?? '',
+                ];
+            }
+        } else {
+            foreach ($itemConfigs as $ic) {
+                $inst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem($ic);
+                if ($inst && isset($inst['entity']) && is_object($inst['entity'])) {
+                    $ent = $inst['entity'];
+                    $rId = (int)$ent->Item;
+                    $refItem = self::$itemsCache[$rId] ?? [];
+                    $possessions[] = [
+                        'item_id' => $rId,
+                        'name' => $inst['name'] ?? ($refItem['Name'] ?? 'Item'),
+                        'item_type' => (int)$ent->GetItemType(),
+                        'subtype' => (int)$ent->GetItemSubtype(),
+                        'unit_weight' => (float)$inst['weight'],
+                        'ec_mod' => (int)$inst['ec'],
+                        'locations' => [2, 2, 2, 2, 2],
+                        'ref_data' => $refItem,
+                        'custom_traits' => $inst['traits'] ?? '',
+                    ];
+                }
+            }
+        }
+
+        return [
+            'Name' => $name,
+            'RaceID' => $creatureId,
+            'CurrentRace' => $currentRace,
+            'BaseStr' => $str,
+            'BaseCon' => $con,
+            'BaseDex' => $dex,
+            'BaseInt' => $int,
+            'BaseWis' => $wis,
+            'BaseCha' => $cha,
+            'CultureID' => $cultureId,
+            'Classes' => $classIds,
+            'Skills' => $skillRanks,
+            'TemplateIDs' => $templateIds,
+            'SizeAdjust' => $sizeAdjust,
+            'Possessions' => $possessions,
+        ];
+    }
 }

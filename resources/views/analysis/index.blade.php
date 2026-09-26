@@ -25,6 +25,7 @@
     classLvl: {{ $classLvl ?? 1 }},
     weaponLvl: {{ $weaponLvl ?? 1 }},
     spellLvl: {{ $spellLvl ?? 1 }},
+    equipMode: '{{ $equipMode ?? 'basic' }}',
     weaponMode: 'dpr',
     subSpellTab: 'single_debil'
 }">
@@ -39,6 +40,7 @@
             </p>
         </div>
     </div>
+
 
     <!-- 5 Top Summary Metric Cards -->
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
@@ -209,25 +211,40 @@
     <!-- ========================================================================= -->
     <div x-show="tab === 'classes'" class="space-y-4">
         <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-100 pb-3">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900">Standard Human Class Progression Benchmarks</h2>
-                    <p class="text-xs text-slate-500">Calculated characteristics for a human of a given class and level with typical ability scores, skills, and mundane equipment.</p>
+                    <p class="text-xs text-slate-500">Calculated characteristics for a human of a given class and level with typical ability scores, skills, and equipment loadout.</p>
                 </div>
-                <!-- Level Select -->
-                <div class="flex items-center gap-1.5 shrink-0">
-                    <span class="text-xs font-bold text-slate-600 mr-1">Level:</span>
-                    @foreach([1, 6, 11, 16, 21, 26] as $lvl)
-                        <a href="?tab=classes&class_lvl={{ $lvl }}" 
-                           class="px-3 py-1.5 text-xs rounded-lg font-bold transition {{ ($classLvl ?? 1) === $lvl ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">
-                            Lvl {{ $lvl }}
+                
+                <div class="flex flex-wrap items-center gap-3 shrink-0">
+                    <!-- Equipment Mode Toggle -->
+                    <div class="inline-flex bg-slate-100 p-1 rounded-lg border border-slate-200">
+                        <a href="?tab=classes&class_lvl={{ $classLvl ?? 1 }}&equip_mode=basic"
+                           class="px-2.5 py-1 text-xs font-bold rounded-md transition {{ ($equipMode ?? 'basic') === 'basic' ? 'bg-indigo-600 text-white shadow-2xs' : 'text-slate-700 hover:text-slate-900' }}">
+                            🛡️ Basic Gear (Baseline)
                         </a>
-                    @endforeach
+                        <a href="?tab=classes&class_lvl={{ $classLvl ?? 1 }}&equip_mode=level"
+                           class="px-2.5 py-1 text-xs font-bold rounded-md transition {{ ($equipMode ?? 'basic') === 'level' ? 'bg-indigo-600 text-white shadow-2xs' : 'text-slate-700 hover:text-slate-900' }}">
+                            ✨ Level-Appropriate (Wealth & Magic)
+                        </a>
+                    </div>
+
+                    <!-- Level Select -->
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-xs font-bold text-slate-600 mr-1">Level:</span>
+                        @foreach([1, 6, 11, 16, 21, 26] as $lvl)
+                            <a href="?tab=classes&class_lvl={{ $lvl }}&equip_mode={{ $equipMode ?? 'basic' }}" 
+                               class="px-3 py-1.5 text-xs rounded-lg font-bold transition {{ ($classLvl ?? 1) === $lvl ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">
+                                Lvl {{ $lvl }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
             <div class="p-3 bg-slate-50 rounded-lg text-xs text-slate-600 space-y-1 border border-slate-200">
-                <p><strong>Note:</strong> Characteristics do not include improvement points, AP bonuses, magical equipment, or buff spells. This isolates pure class baselines.</p>
+                <p><strong>Note:</strong> {{ ($equipMode ?? 'basic') === 'level' ? 'Level-appropriate mode calculates full wealth budget with magical weapon/armor enhancements and attribute-boosting accessories for the given level.' : 'Basic gear mode isolates pure class and baseline equipment progression without level-scaled magical wealth bonuses.' }}</p>
                 <p><em>Att:</em> Shows highest skill-derived attack modifier (weapons & supernatural), excluding ability score modifiers.</p>
             </div>
 
@@ -337,6 +354,18 @@
                 </div>
                 
                 <div class="flex flex-wrap items-center gap-3 shrink-0">
+                    <!-- Equipment Mode Toggle -->
+                    <div class="inline-flex bg-slate-100 p-1 rounded-lg border border-slate-200">
+                        <a href="?tab=weapons&weapon_lvl={{ $weaponLvl ?? 1 }}&equip_mode=basic"
+                           class="px-2.5 py-1 text-xs font-bold rounded-md transition {{ ($equipMode ?? 'basic') === 'basic' ? 'bg-indigo-600 text-white shadow-2xs' : 'text-slate-700 hover:text-slate-900' }}">
+                            🛡️ Basic Gear
+                        </a>
+                        <a href="?tab=weapons&weapon_lvl={{ $weaponLvl ?? 1 }}&equip_mode=level"
+                           class="px-2.5 py-1 text-xs font-bold rounded-md transition {{ ($equipMode ?? 'basic') === 'level' ? 'bg-indigo-600 text-white shadow-2xs' : 'text-slate-700 hover:text-slate-900' }}">
+                            ✨ Level-Appropriate
+                        </a>
+                    </div>
+
                     <!-- Mode Toggle (DPR vs DPAP) -->
                     <div class="inline-flex bg-slate-100 p-1 rounded-lg border border-slate-200">
                         <button type="button" @click="weaponMode = 'dpr'"
@@ -355,7 +384,7 @@
                     <div class="flex items-center gap-1.5">
                         <span class="text-xs font-bold text-slate-600">Level:</span>
                         @foreach([1, 6, 11, 16, 21, 26] as $lvl)
-                            <a href="?tab=weapons&weapon_lvl={{ $lvl }}" 
+                            <a href="?tab=weapons&weapon_lvl={{ $lvl }}&equip_mode={{ $equipMode ?? 'basic' }}" 
                                class="px-2.5 py-1 text-xs rounded-lg font-bold transition {{ ($weaponLvl ?? 1) === $lvl ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">
                                 Lvl {{ $lvl }}
                             </a>
@@ -365,6 +394,7 @@
             </div>
 
             <div class="p-3 bg-slate-50 rounded-lg text-xs text-slate-600 space-y-1 border border-slate-200">
+                <p><strong>Equipment Mode:</strong> {{ ($equipMode ?? 'basic') === 'level' ? 'Level-Appropriate Equipment includes scaled magical weapon bonuses (+1 to +5) and physical attribute boosters.' : 'Basic Equipment uses masterwork and baseline mundane weapons without level scaling enhancements.' }}</p>
                 <p><em>DPR:</em> The average damage per round using the most effective attack action against the given DeC and DR. Unused AP are split equally between attack and damage bonuses.</p>
                 <p><em>DPAP:</em> Average damage per AP of the most effective attack against the given DeC (excluding reloading time for projectile weapons).</p>
             </div>
@@ -466,25 +496,41 @@
     <!-- ========================================================================= -->
     <div x-show="tab === 'spellcost'" class="space-y-4">
         <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-100 pb-3">
                 <div>
                     <h2 class="text-lg font-bold text-slate-900">Power Point (PP) Cost Comparison</h2>
                     <p class="text-xs text-slate-500">Shows the effective PP cost of spells and powers for a human character of a given class across Power Levels (PL 1–29).</p>
                 </div>
-                <!-- Level Select -->
-                <div class="flex items-center gap-1.5 shrink-0">
-                    <span class="text-xs font-bold text-slate-600 mr-1">Level:</span>
-                    @foreach([1, 6, 11, 16, 21, 26] as $lvl)
-                        <a href="?tab=spellcost&spell_lvl={{ $lvl }}" 
-                           class="px-3 py-1.5 text-xs rounded-lg font-bold transition {{ ($spellLvl ?? 1) === $lvl ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">
-                            Lvl {{ $lvl }}
+                
+                <div class="flex flex-wrap items-center gap-3 shrink-0">
+                    <!-- Equipment Mode Toggle -->
+                    <div class="inline-flex bg-slate-100 p-1 rounded-lg border border-slate-200">
+                        <a href="?tab=spellcost&spell_lvl={{ $spellLvl ?? 1 }}&equip_mode=basic"
+                           class="px-2.5 py-1 text-xs font-bold rounded-md transition {{ ($equipMode ?? 'basic') === 'basic' ? 'bg-indigo-600 text-white shadow-2xs' : 'text-slate-700 hover:text-slate-900' }}">
+                            🛡️ Basic Gear
                         </a>
-                    @endforeach
+                        <a href="?tab=spellcost&spell_lvl={{ $spellLvl ?? 1 }}&equip_mode=level"
+                           class="px-2.5 py-1 text-xs font-bold rounded-md transition {{ ($equipMode ?? 'basic') === 'level' ? 'bg-indigo-600 text-white shadow-2xs' : 'text-slate-700 hover:text-slate-900' }}">
+                            ✨ Level-Appropriate
+                        </a>
+                    </div>
+
+                    <!-- Level Select -->
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-xs font-bold text-slate-600 mr-1">Level:</span>
+                        @foreach([1, 6, 11, 16, 21, 26] as $lvl)
+                            <a href="?tab=spellcost&spell_lvl={{ $lvl }}&equip_mode={{ $equipMode ?? 'basic' }}" 
+                               class="px-3 py-1.5 text-xs rounded-lg font-bold transition {{ ($spellLvl ?? 1) === $lvl ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200' }}">
+                                Lvl {{ $lvl }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
             <div class="p-3 bg-slate-50 rounded-lg text-xs text-slate-600 space-y-1 border border-slate-200">
                 <p>Figures shown represent characters' best spell, power, and affinity skills. Format <code class="font-mono bg-white px-1 border border-slate-200 rounded">X/Y</code> represents generalist cost vs specialist discount cost.</p>
+                <p><strong>Equipment Mode:</strong> {{ ($equipMode ?? 'basic') === 'level' ? 'Level-Appropriate mode applies casting stat bonuses from mental accessories (Headbands/Periapts) to discount calculations.' : 'Basic mode isolates base casting ability scores and skills without magical accessories.' }}</p>
             </div>
 
             <div class="analysis-table-container">
