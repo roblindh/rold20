@@ -163,4 +163,21 @@ class AnalysisEntityEngineTest extends TestCase
         // (7 + 7) - 2 = 12
         $this->assertEquals(12, $apDual);
     }
+
+    /**
+     * Test Spell DPR and other spell balancing tables calculation.
+     */
+    public function test_spell_dpr_and_balancing_tables(): void
+    {
+        $controller = app(\App\Http\Controllers\AnalysisController::class);
+        $spellDpr = $controller->getSpellDprTables();
+        $this->assertArrayHasKey('single_instant', $spellDpr);
+        $this->assertArrayHasKey('single_ongoing', $spellDpr);
+        $this->assertArrayHasKey('multi_instant', $spellDpr);
+        $this->assertArrayHasKey('multi_ongoing', $spellDpr);
+
+        $other = $controller->getOtherSpellBalancingTables();
+        $this->assertArrayHasKey('single_debil', $other);
+        $this->assertArrayHasKey('buff_combo', $other);
+    }
 }

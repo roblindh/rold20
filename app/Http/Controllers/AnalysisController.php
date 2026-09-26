@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Cache;
 
 class AnalysisController extends Controller
 {
+    protected function initRules(): void
+    {
+        if (function_exists('application_start')) {
+            application_start();
+        }
+    }
+
     public function index(Request $request): View
     {
         $classLvl = (int)$request->input('class_lvl', 1);
