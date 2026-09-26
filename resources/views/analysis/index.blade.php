@@ -51,12 +51,12 @@ function analysisApp() {
                 }
             });
 
-            // Watch selected builds to load missing data and update chart
+            // Watch selected builds deeply to load missing data and update chart
             this.$watch('selectedBuilds', () => {
                 if (this.tab === 'weapongraph') {
                     this.fetchMissingBuildsAndRender();
                 }
-            });
+            }, { deep: true });
 
             // Watch target overlays
             this.$watch('showTargetBand', () => {
@@ -87,7 +87,7 @@ function analysisApp() {
         },
 
         async fetchMissingBuildsAndRender() {
-            const missing = this.selectedBuilds.filter(id => !this.loadedBuildDprs[id]);
+            const missing = this.selectedBuilds.filter(id => !this.loadedBuildDprs[id] || !this.loadedBuildDprs[id].length);
             if (missing.length > 0) {
                 this.graphLoading = true;
                 try {
@@ -111,17 +111,21 @@ function analysisApp() {
 
         selectAll() {
             this.selectedBuilds = (this.graphMeta.builds || []).map(b => b.id);
+            this.fetchMissingBuildsAndRender();
         },
 
         deselectAll() {
             this.selectedBuilds = [];
+            this.fetchMissingBuildsAndRender();
         },
 
         selectPreset(preset) {
             if (preset === 'all') {
                 this.selectAll();
+                return;
             } else if (preset === 'none') {
                 this.deselectAll();
+                return;
             } else if (preset === 'top') {
                 this.selectedBuilds = [
                     'fighter_longsword_shield',
@@ -140,6 +144,7 @@ function analysisApp() {
             } else if (preset === 'ranged') {
                 this.selectedBuilds = (this.graphMeta.builds || []).filter(b => b.group === 'Ranged').map(b => b.id);
             }
+            this.fetchMissingBuildsAndRender();
         },
 
         renderOrUpdateChart() {
@@ -267,6 +272,9 @@ function analysisApp() {
                             boxPadding: 4,
                             cornerRadius: 8,
                             filter: function(item) {
+                                if (typeof item.chart.isDatasetVisible === 'function') {
+                                    return item.chart.isDatasetVisible(item.datasetIndex);
+                                }
                                 return item.dataset.hidden !== true;
                             },
                             callbacks: {
@@ -330,23 +338,50 @@ function analysisApp() {
             }
 
             // Update Target Band visibility
+            const showBand = !!this.showTargetBand;
             if (this.chartInstance.data.datasets[0]) {
-                this.chartInstance.data.datasets[0].hidden = !this.showTargetBand;
+                this.chartInstance.data.datasets[0].hidden = !showBand;
+                if (typeof this.chartInstance.setDatasetVisibility === 'function') {
+                    this.chartInstance.setDatasetVisibility(0, showBand);
+                }
+                const meta0 = this.chartInstance.getDatasetMeta(0);
+                if (meta0) meta0.hidden = !showBand;
             }
             if (this.chartInstance.data.datasets[1]) {
-                this.chartInstance.data.datasets[1].hidden = !this.showTargetBand;
+                this.chartInstance.data.datasets[1].hidden = !showBand;
+                if (typeof this.chartInstance.setDatasetVisibility === 'function') {
+                    this.chartInstance.setDatasetVisibility(1, showBand);
+                }
+                const meta1 = this.chartInstance.getDatasetMeta(1);
+                if (meta1) meta1.hidden = !showBand;
             }
+
+            // Update Target Average visibility
+            const showAvg = !!this.showTargetAvg;
             if (this.chartInstance.data.datasets[2]) {
-                this.chartInstance.data.datasets[2].hidden = !this.showTargetAvg;
+                this.chartInstance.data.datasets[2].hidden = !showAvg;
+                if (typeof this.chartInstance.setDatasetVisibility === 'function') {
+                    this.chartInstance.setDatasetVisibility(2, showAvg);
+                }
+                const meta2 = this.chartInstance.getDatasetMeta(2);
+                if (meta2) meta2.hidden = !showAvg;
             }
 
             // Update build datasets visibility and data
             for (let i = 3; i < this.chartInstance.data.datasets.length; i++) {
                 const ds = this.chartInstance.data.datasets[i];
-                if (this.loadedBuildDprs[ds.id]) {
+                const isSelected = this.selectedBuilds.includes(ds.id);
+                if (this.loadedBuildDprs[ds.id] && this.loadedBuildDprs[ds.id].length > 0) {
                     ds.data = this.loadedBuildDprs[ds.id];
                 }
-                ds.hidden = !this.selectedBuilds.includes(ds.id);
+                ds.hidden = !isSelected;
+                if (typeof this.chartInstance.setDatasetVisibility === 'function') {
+                    this.chartInstance.setDatasetVisibility(i, isSelected);
+                }
+                const meta = this.chartInstance.getDatasetMeta(i);
+                if (meta) {
+                    meta.hidden = !isSelected;
+                }
             }
 
             this.chartInstance.update();
@@ -874,12 +909,12 @@ function analysisApp() {
                     <!-- Target Overlays Toggles -->
                     <div class="inline-flex items-center gap-2 bg-amber-50/70 border border-amber-200 px-2.5 py-1 rounded-lg text-xs font-medium text-amber-950">
                         <label class="flex items-center gap-1.5 cursor-pointer select-none">
-                            <input type="checkbox" x-model="showTargetBand" class="rounded text-amber-600 focus:ring-amber-500">
+                            <input type="checkbox" x-model="showTargetBand" @change="updateChartData()" class="rounded text-amber-600 focus:ring-amber-500">
                             <span>🎯 Target Range (3–5 rds)</span>
                         </label>
                         <span class="text-amber-300">|</span>
                         <label class="flex items-center gap-1.5 cursor-pointer select-none">
-                            <input type="checkbox" x-model="showTargetAvg" class="rounded text-amber-600 focus:ring-amber-500">
+                            <input type="checkbox" x-model="showTargetAvg" @change="updateChartData()" class="rounded text-amber-600 focus:ring-amber-500">
                             <span>⚖️ Baseline (4 rds)</span>
                         </label>
                     </div>
@@ -947,6 +982,7 @@ function analysisApp() {
                             <input type="checkbox" 
                                    :value="b.id" 
                                    x-model="selectedBuilds"
+                                   @change="fetchMissingBuildsAndRender()"
                                    class="rounded text-indigo-600 focus:ring-indigo-500">
                             <span class="w-2.5 h-2.5 rounded-full shrink-0" :style="'background-color: ' + b.color"></span>
                             <span class="font-medium truncate" :class="isBuildSelected(b.id) ? 'text-slate-900' : 'text-slate-500'" x-text="b.name"></span>
