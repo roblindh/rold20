@@ -4241,16 +4241,18 @@ class EntityEngine
         }
 
         // Background Class skills (Racial level + 1)
+        $racialLvl = (int)(self::$creaturesCache[$currentRace]['BaseRL'] ?? self::$creaturesCache[$currentRace]['RacialLevel'] ?? self::$creaturesCache[$creatureId]['BaseRL'] ?? self::$creaturesCache[$creatureId]['RacialLevel'] ?? 0);
         $bgConfigId = (int)(self::$culturesCache[$cultureId]['ClassConfig'] ?? 1);
         if ($bgConfigId > 0 && isset(self::$classConfigsCache[$bgConfigId])) {
             $bgCfg = self::$classConfigsCache[$bgConfigId];
+            $bgLvl = $racialLvl + 1;
             foreach (self::$skillsCache ?? [] as $sId => $sk) {
                 $abbr = $sk['Abbreviation'] ?? '';
                 if (!empty($abbr)) {
                     if (str_contains($bgCfg['PrimSkills'] ?? '', $abbr)) {
-                        $skillRanks[(int)$sId] = ($skillRanks[(int)$sId] ?? 0) + 1;
+                        $skillRanks[(int)$sId] = ($skillRanks[(int)$sId] ?? 0) + $bgLvl;
                     } elseif (str_contains($bgCfg['SecSkills'] ?? '', $abbr)) {
-                        $skillRanks[(int)$sId] = ($skillRanks[(int)$sId] ?? 0) + 0.5;
+                        $skillRanks[(int)$sId] = ($skillRanks[(int)$sId] ?? 0) + ($bgLvl / 2.0);
                     }
                 }
             }

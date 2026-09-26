@@ -92,6 +92,23 @@ class AnalysisEntityEngineTest extends TestCase
         $this->assertNotNull($tiger);
         $this->assertEquals(5, $tiger['cl']);
         $this->assertEquals('L', $tiger['sz']);
+        $this->assertEquals(2, $tiger['att']);
+
+        $dragon = collect($creatures)->firstWhere('name', 'Red Dragon');
+        $this->assertNotNull($dragon);
+        $this->assertEquals(16, $dragon['cl']);
+        $this->assertEquals(22, $dragon['rl']);
+        $this->assertEquals(8, $dragon['att']);
+
+        $solar = collect($creatures)->firstWhere('name', 'Solar');
+        $this->assertNotNull($solar);
+        $this->assertEquals(24, $solar['cl']);
+        $this->assertEquals(12, $solar['att']);
+
+        $giant = collect($creatures)->firstWhere('name', 'Stone Giant');
+        $this->assertNotNull($giant);
+        $this->assertEquals(10, $giant['cl']);
+        $this->assertEquals(8, $giant['att']);
     }
 
     /**

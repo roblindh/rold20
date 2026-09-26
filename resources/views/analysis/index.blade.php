@@ -646,6 +646,7 @@ function analysisApp() {
             <div class="border-b border-slate-100 pb-3">
                 <h2 class="text-lg font-bold text-slate-900">Creature & Monster Benchmarks</h2>
                 <p class="text-xs text-slate-500">Calculated characteristics for 34 average specimens across challenge levels (CL) and sizes without magical equipment or buff spells.</p>
+                <p class="text-xs text-slate-500 mt-1"><em>Att:</em> Shows highest skill-derived attack modifier (weapons &amp; supernatural), excluding ability score modifiers.</p>
             </div>
 
             <div class="analysis-table-container">

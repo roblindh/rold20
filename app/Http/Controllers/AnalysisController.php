@@ -116,7 +116,7 @@ class AnalysisController extends Controller
 
     public function getCreatureBenchmarks(): array
     {
-        return Cache::remember("analysis.creature_benchmarks.v6", 86400, function () {
+        return Cache::remember("analysis.creature_benchmarks.v7", 86400, function () {
             $creatureIds = [
                 1, 3, 7, 12, 16, 18, 23, 54, 57, 157, 161, 162, 180, 190, 197, 228, 22, 284, 109, 317, 323, 352, 49, 59, 116, 151, 266, 290, 294, 36, 68, 91, 132, 166
             ];
@@ -124,7 +124,8 @@ class AnalysisController extends Controller
             $results = [];
 
             foreach ($creatureIds as $cId) {
-                $c = EntityEngine::calculate(['RaceID' => $cId]);
+                $charData = EntityEngine::buildEntityFromConfigString($cId, "Creature { }");
+                $c = EntityEngine::calculate($charData);
                 if (empty($c['heritage']['race_name'])) continue;
 
                 $results[] = [
