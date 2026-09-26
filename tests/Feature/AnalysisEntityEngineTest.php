@@ -235,4 +235,39 @@ class AnalysisEntityEngineTest extends TestCase
         $this->assertStringContainsString('weaponDprChartCanvas', $content);
         $this->assertStringContainsString('chart.umd.min.js', $content);
     }
+
+    /**
+     * Test lightweight metadata computation is fast and returns build definitions without running simulations.
+     */
+    public function test_weapon_dpr_graph_meta(): void
+    {
+        $controller = app(\App\Http\Controllers\AnalysisController::class);
+        $meta = $controller->getWeaponDprGraphMeta();
+
+        $this->assertArrayHasKey('levels', $meta);
+        $this->assertCount(30, $meta['levels']);
+        $this->assertArrayHasKey('builds', $meta);
+        $this->assertCount(21, $meta['builds']);
+        $this->assertArrayHasKey('id', $meta['builds'][0]);
+        $this->assertArrayHasKey('name', $meta['builds'][0]);
+        $this->assertArrayNotHasKey('data', $meta['builds'][0]); // Metadata only, no 30-level data overhead
+    }
+
+    /**
+     * Test /analysis/graph-data AJAX endpoint returns on-demand DPR arrays.
+     */
+    public function test_weapon_dpr_ajax_endpoint(): void
+    {
+        $request = \Illuminate\Http\Request::create('/analysis/graph-data?equip_mode=basic&builds=fighter_longsword_shield,archer_longbow', 'GET');
+        $response = $this->app->handle($request);
+        $this->assertEquals(200, $response->getStatusCode());
+        
+        $data = json_decode($response->getContent(), true);
+        $this->assertEquals('basic', $data['equip_mode']);
+        $this->assertArrayHasKey('builds', $data);
+        $this->assertArrayHasKey('fighter_longsword_shield', $data['builds']);
+        $this->assertArrayHasKey('archer_longbow', $data['builds']);
+        $this->assertCount(30, $data['builds']['fighter_longsword_shield']);
+        $this->assertCount(30, $data['builds']['archer_longbow']);
+    }
 }

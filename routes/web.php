@@ -176,6 +176,7 @@ Route::post('/api/calculator/evaluate', [UtilityController::class, 'evaluateExpr
 
 // Balance Analysis utility
 Route::get('/analysis', [AnalysisController::class, 'index'])->name('analysis');
+Route::get('/analysis/graph-data', [AnalysisController::class, 'getGraphDataAjax'])->name('analysis.graph-data');
 
 // Legacy AJAX script endpoints
 Route::get('/scripts/getstatblock.php', [ReferenceController::class, 'creatureStatBlockLegacy']);

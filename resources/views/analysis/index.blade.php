@@ -1,6 +1,8 @@
 @extends('layouts.app', ['title' => 'Ruleset Analysis & Balance'])
 
 @section('content')
+<script src="/js/chart.umd.min.js"></script>
+
 <style>
     .analysis-table-container {
         overflow-x: auto;
@@ -20,15 +22,15 @@
     }
 </style>
 
-<div class="space-y-6" x-data="{ 
-    tab: '{{ request()->input('tab', 'discussion') }}',
+<div class="space-y-6" x-data="analysisApp({ 
+    initialTab: '{{ request()->input('tab', 'discussion') }}',
     classLvl: {{ $classLvl ?? 1 }},
     weaponLvl: {{ $weaponLvl ?? 1 }},
     spellLvl: {{ $spellLvl ?? 1 }},
     equipMode: '{{ $equipMode ?? 'basic' }}',
-    weaponMode: 'dpr',
-    subSpellTab: 'single_debil'
-}">
+    graphMeta: @json($weaponDprGraphMeta),
+    graphAjaxUrl: '{{ route('analysis.graph-data', [], false) }}'
+})">
     <!-- Page Header -->
     <div class="border-b border-slate-200 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -495,9 +497,10 @@
     </div>
 
     <!-- ========================================================================= -->
+    <!-- ========================================================================= -->
     <!-- TAB 5: Weapon DPR Graph (Levels 1–30) -->
     <!-- ========================================================================= -->
-    <div x-show="tab === 'weapongraph'" x-data="weaponDprGraph({ graphData: @json($weaponDprGraphData) })" class="space-y-4">
+    <div x-show="tab === 'weapongraph'" class="space-y-4">
         <div class="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs space-y-4">
             <!-- Header & Mode Controls -->
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-100 pb-3">
@@ -562,7 +565,7 @@
             <div class="space-y-2.5 bg-slate-50/70 border border-slate-200 rounded-xl p-3.5">
                 <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2">
                     <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                        <span>⚔️</span> Select Class Builds to Plot (<span x-text="selectedBuilds.length"></span>/<span x-text="(graphData.builds || []).length"></span> active):
+                        <span>⚔️</span> Select Class Builds to Plot (<span x-text="selectedBuilds.length"></span>/<span x-text="(graphMeta.builds || []).length"></span> active):
                     </div>
                     
                     <!-- Quick Preset Filters -->
@@ -593,7 +596,7 @@
 
                 <!-- Build Checkbox Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 pt-1 max-h-[160px] overflow-y-auto pr-1">
-                    <template x-for="b in (graphData.builds || [])" :key="b.id">
+                    <template x-for="b in (graphMeta.builds || [])" :key="b.id">
                         <label class="flex items-center gap-2 p-1.5 rounded-lg border text-xs cursor-pointer transition select-none"
                                :class="isBuildSelected(b.id) ? 'bg-white border-slate-300 shadow-2xs' : 'bg-slate-100/60 border-slate-200 text-slate-400 opacity-70'">
                             <input type="checkbox" 
@@ -602,13 +605,30 @@
                                    class="rounded text-indigo-600 focus:ring-indigo-500">
                             <span class="w-2.5 h-2.5 rounded-full shrink-0" :style="'background-color: ' + b.color"></span>
                             <span class="font-medium truncate" :class="isBuildSelected(b.id) ? 'text-slate-900' : 'text-slate-500'" x-text="b.name"></span>
+                            <span x-show="isBuildSelected(b.id) && !loadedBuildDprs[b.id] && graphLoading" class="ml-auto text-[10px] text-indigo-500 animate-pulse font-mono">⏳</span>
                         </label>
                     </template>
                 </div>
             </div>
 
-            <!-- Chart.js Graph Canvas Container -->
-            <div class="bg-white rounded-xl border border-slate-200 p-3 sm:p-4 shadow-2xs">
+            <!-- Chart.js Graph Canvas Container with WIP Loading Overlay -->
+            <div class="bg-white rounded-xl border border-slate-200 p-3 sm:p-4 shadow-2xs relative">
+                <!-- Work-In-Progress Loading Spinner -->
+                <div x-show="graphLoading"
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     x-transition:leave="transition ease-in duration-150"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0"
+                     class="absolute inset-0 bg-white/85 backdrop-blur-xs flex flex-col items-center justify-center z-20 rounded-xl">
+                    <div class="inline-block animate-spin rounded-full h-9 w-9 border-3 border-indigo-600 border-t-transparent mb-2"></div>
+                    <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                        <span>⚔️</span> Simulating DPR Across Levels 1–30...
+                    </div>
+                    <div class="text-[11px] text-slate-500 mt-0.5">Calculating optimal attack combos against scaled DeC & DR</div>
+                </div>
+
                 <div class="w-full relative" style="height: 520px; min-height: 440px;">
                     <canvas id="weaponDprChartCanvas"></canvas>
                 </div>
@@ -629,7 +649,7 @@
                         <thead>
                             <tr class="bg-slate-100 text-slate-800 border-b border-slate-300">
                                 <th class="text-left font-bold font-sans">Build / Target</th>
-                                <template x-for="l in (graphData.levels || [])" :key="l">
+                                <template x-for="l in (graphMeta.levels || [])" :key="l">
                                     <th class="text-center font-bold px-2 py-1" x-text="'L' + l"></th>
                                 </template>
                             </tr>
@@ -638,26 +658,34 @@
                             <!-- Target Defenses Row -->
                             <tr class="bg-slate-50 text-[11px] text-slate-600">
                                 <td class="font-bold font-sans text-slate-800">Target DeC / DR</td>
-                                <template x-for="l in (graphData.levels || [])" :key="l">
-                                    <td class="text-center text-slate-600 font-mono text-[10px]" x-text="(graphData.level_stats[l] ? graphData.level_stats[l].dec + '/' + graphData.level_stats[l].dr : '-')"></td>
+                                <template x-for="l in (graphMeta.levels || [])" :key="l">
+                                    <td class="text-center text-slate-600 font-mono text-[10px]" x-text="(graphMeta.level_stats && graphMeta.level_stats[l] ? graphMeta.level_stats[l].dec + '/' + graphMeta.level_stats[l].dr : '-')"></td>
                                 </template>
                             </tr>
                             <!-- Target DPR Range Row -->
                             <tr class="bg-amber-50/80 font-bold text-amber-950">
                                 <td class="font-sans text-amber-900">🎯 Target DPR Band (3–5 rds)</td>
-                                <template x-for="(l, idx) in (graphData.levels || [])" :key="l">
-                                    <td class="text-center text-amber-900 text-[11px]" x-text="(graphData.target_min[idx] || 0) + '–' + (graphData.target_max[idx] || 0)"></td>
+                                <template x-for="(l, idx) in (graphMeta.levels || [])" :key="l">
+                                    <td class="text-center text-amber-900 text-[11px]" x-text="(graphMeta.target_min[idx] || 0) + '–' + (graphMeta.target_max[idx] || 0)"></td>
                                 </template>
                             </tr>
                             <!-- Selected Builds Rows -->
-                            <template x-for="b in (graphData.builds || [])" :key="b.id">
+                            <template x-for="b in (graphMeta.builds || [])" :key="b.id">
                                 <tr x-show="isBuildSelected(b.id)" class="hover:bg-slate-50 transition">
                                     <td class="font-sans font-bold whitespace-nowrap flex items-center gap-1.5 py-1">
                                         <span class="w-2 h-2 rounded-full shrink-0" :style="'background-color: ' + b.color"></span>
                                         <span x-text="b.name"></span>
                                     </td>
-                                    <template x-for="(dprVal, dprIdx) in b.data" :key="dprIdx">
-                                        <td class="text-center font-mono font-bold text-slate-800" x-text="dprVal"></td>
+                                    <template x-if="loadedBuildDprs[b.id]">
+                                        <template x-for="(dprVal, dprIdx) in loadedBuildDprs[b.id]" :key="dprIdx">
+                                            <td class="text-center font-mono font-bold text-slate-800" x-text="dprVal"></td>
+                                        </template>
+                                    </template>
+                                    <template x-if="!loadedBuildDprs[b.id]">
+                                        <td :colspan="(graphMeta.levels || []).length" class="text-center text-slate-400 italic text-[11px] py-1">
+                                            <span x-show="graphLoading">Computing DPR across levels 1–30...</span>
+                                            <span x-show="!graphLoading">Click to calculate</span>
+                                        </td>
                                     </template>
                                 </tr>
                             </template>
@@ -1035,11 +1063,20 @@
     </div>
 </div>
 
-<script src="/js/chart.umd.min.js"></script>
 <script>
-function weaponDprGraph(config) {
+function analysisApp(config) {
     return {
-        graphData: config.graphData || {},
+        tab: config.initialTab || 'discussion',
+        classLvl: config.classLvl || 1,
+        weaponLvl: config.weaponLvl || 1,
+        spellLvl: config.spellLvl || 1,
+        equipMode: config.equipMode || 'basic',
+        weaponMode: 'dpr',
+        subSpellTab: 'single_debil',
+        
+        // Graph State & Metadata
+        graphMeta: config.graphMeta || {},
+        graphAjaxUrl: config.graphAjaxUrl || '/analysis/graph-data',
         selectedBuilds: [
             'fighter_longsword_shield',
             'fighter_greatsword',
@@ -1048,41 +1085,90 @@ function weaponDprGraph(config) {
             'rogue_dual_short_swords',
             'monk_unarmed'
         ],
+        loadedBuildDprs: {},
+        graphLoading: false,
         showTargetBand: true,
         showTargetAvg: true,
         showDataTable: false,
         chartInstance: null,
 
         init() {
+            // If starting directly on the graph tab
             this.$nextTick(() => {
                 if (this.tab === 'weapongraph') {
-                    this.renderChart();
+                    this.onGraphTabOpen();
                 }
             });
 
+            // Tab change watcher
             this.$watch('tab', (val) => {
                 if (val === 'weapongraph') {
                     this.$nextTick(() => {
-                        this.renderChart();
+                        this.onGraphTabOpen();
                     });
                 }
             });
 
+            // Watch selected builds to load missing data and update chart
             this.$watch('selectedBuilds', () => {
-                this.updateChartData();
+                if (this.tab === 'weapongraph') {
+                    this.fetchMissingBuildsAndRender();
+                }
             });
 
+            // Watch target overlays
             this.$watch('showTargetBand', () => {
-                this.updateChartData();
+                if (this.tab === 'weapongraph') {
+                    this.updateChartData();
+                }
             });
 
             this.$watch('showTargetAvg', () => {
-                this.updateChartData();
+                if (this.tab === 'weapongraph') {
+                    this.updateChartData();
+                }
+            });
+
+            // Handle window resize cleanly
+            window.addEventListener('resize', () => {
+                if (this.tab === 'weapongraph' && this.chartInstance) {
+                    this.chartInstance.resize();
+                }
             });
         },
 
+        async onGraphTabOpen() {
+            await this.fetchMissingBuildsAndRender();
+            if (this.chartInstance) {
+                this.chartInstance.resize();
+            }
+        },
+
+        async fetchMissingBuildsAndRender() {
+            const missing = this.selectedBuilds.filter(id => !this.loadedBuildDprs[id]);
+            if (missing.length > 0) {
+                this.graphLoading = true;
+                try {
+                    const res = await fetch(`${this.graphAjaxUrl}?equip_mode=${encodeURIComponent(this.equipMode)}&builds=${encodeURIComponent(missing.join(','))}`);
+                    const json = await res.json();
+                    if (json.builds) {
+                        Object.assign(this.loadedBuildDprs, json.builds);
+                    }
+                } catch (e) {
+                    console.error('Failed to load DPR build data', e);
+                } finally {
+                    this.graphLoading = false;
+                }
+            }
+            this.renderOrUpdateChart();
+        },
+
+        isBuildSelected(id) {
+            return this.selectedBuilds.includes(id);
+        },
+
         selectAll() {
-            this.selectedBuilds = (this.graphData.builds || []).map(b => b.id);
+            this.selectedBuilds = (this.graphMeta.builds || []).map(b => b.id);
         },
 
         deselectAll() {
@@ -1104,18 +1190,22 @@ function weaponDprGraph(config) {
                     'monk_unarmed'
                 ];
             } else if (preset === 'fighters') {
-                this.selectedBuilds = (this.graphData.builds || []).filter(b => b.group === 'Fighters').map(b => b.id);
+                this.selectedBuilds = (this.graphMeta.builds || []).filter(b => b.group === 'Fighters').map(b => b.id);
             } else if (preset === 'rogues') {
-                this.selectedBuilds = (this.graphData.builds || []).filter(b => b.group === 'Rogues').map(b => b.id);
+                this.selectedBuilds = (this.graphMeta.builds || []).filter(b => b.group === 'Rogues').map(b => b.id);
             } else if (preset === 'monks_druids') {
-                this.selectedBuilds = (this.graphData.builds || []).filter(b => b.group === 'Monks' || b.group === 'Druids').map(b => b.id);
+                this.selectedBuilds = (this.graphMeta.builds || []).filter(b => b.group === 'Monks' || b.group === 'Druids').map(b => b.id);
             } else if (preset === 'ranged') {
-                this.selectedBuilds = (this.graphData.builds || []).filter(b => b.group === 'Ranged').map(b => b.id);
+                this.selectedBuilds = (this.graphMeta.builds || []).filter(b => b.group === 'Ranged').map(b => b.id);
             }
         },
 
-        isBuildSelected(id) {
-            return this.selectedBuilds.includes(id);
+        renderOrUpdateChart() {
+            if (!this.chartInstance) {
+                this.renderChart();
+            } else {
+                this.updateChartData();
+            }
         },
 
         renderChart() {
@@ -1128,12 +1218,12 @@ function weaponDprGraph(config) {
             }
 
             const ctx = canvas.getContext('2d');
-            const levels = this.graphData.levels || [];
-            const targetMin = this.graphData.target_min || [];
-            const targetMax = this.graphData.target_max || [];
-            const targetAvg = this.graphData.target_avg || [];
-            const builds = this.graphData.builds || [];
-            const levelStats = this.graphData.level_stats || {};
+            const levels = this.graphMeta.levels || [];
+            const targetMin = this.graphMeta.target_min || [];
+            const targetMax = this.graphMeta.target_max || [];
+            const targetAvg = this.graphMeta.target_avg || [];
+            const builds = this.graphMeta.builds || [];
+            const levelStats = this.graphMeta.level_stats || {};
 
             const datasets = [];
 
@@ -1193,7 +1283,7 @@ function weaponDprGraph(config) {
                 datasets.push({
                     id: b.id,
                     label: b.name,
-                    data: b.data,
+                    data: this.loadedBuildDprs[b.id] || [],
                     borderColor: b.color,
                     backgroundColor: b.color,
                     borderWidth: 2.2,
@@ -1308,13 +1398,16 @@ function weaponDprGraph(config) {
                 this.chartInstance.data.datasets[2].hidden = !this.showTargetAvg;
             }
 
-            // Update build datasets visibility
+            // Update build datasets visibility and data
             for (let i = 3; i < this.chartInstance.data.datasets.length; i++) {
                 const ds = this.chartInstance.data.datasets[i];
+                if (this.loadedBuildDprs[ds.id]) {
+                    ds.data = this.loadedBuildDprs[ds.id];
+                }
                 ds.hidden = !this.selectedBuilds.includes(ds.id);
             }
 
-            this.chartInstance.update('none');
+            this.chartInstance.update();
         }
     };
 }
