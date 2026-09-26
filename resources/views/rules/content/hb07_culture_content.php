@@ -290,6 +290,473 @@
 </figure>
 <?php endif; ?>
 
+<h3 id="CrimeAndPunishment">Crime and Punishment</h3>
+<p>
+    Justice in high-fantasy and medieval-inspired realms is rarely centralized, uniform, or bureaucratic. Instead, law and order are rooted in customary traditions, feudal oaths, civic charters, and religious creeds. The administration of justice is intensely local: a baron holds court in their great hall, a city magistrate presides over the guildhall bench, an elven elder interprets the will of the ancient forest, and an inquisitor enforces holy doctrine in the temple square.
+</p>
+<p>
+    Because legal codes and cultural philosophies vary dramatically across kingdoms, city-states, and isolated frontiers, the guidelines, crimes, and penalties presented below serve as a <strong>flexible framework and suggestion for the Game Master</strong>. GMs are encouraged to tailor specific statutes, policing methods, and judicial customs to match the flavor and moral temperament of each realm.
+</p>
+
+<h4 id="FeudalJustice">Feudal Justice and Legal Authority</h4>
+<p>
+    In a feudal society, the right to administer justice—often divided into <em>Low Justice</em> (petty disputes, brawls, and minor theft) and <em>High Justice</em> (capital felonies, murder, and treason)—belongs to the landed lord, sovereign crown, chartered municipality, or recognized church:
+</p>
+<ul>
+    <li><strong>Law Enforcement &amp; The Watch:</strong> Unlike modern police forces, medieval settlements rarely maintain exhaustive investigative departments. Major cities garrison a <em>Town Watch</em> or <em>Constabulary</em> responsible for patrolling gates, enforcing curfews, quelling tavern brawls, and guarding walls. In smaller villages and rural manors, policing relies on the <strong>Hue and Cry</strong>: when a crime is committed, any witness is legally obligated to shout and raise the alarm, and every able-bodied citizen within earshot must immediately drop their tools and join the pursuit of the fleeing suspect.</li>
+    <li><strong>Social Class and Inequality before the Law:</strong> A character's <a href="#SocialClass">Social Class (SC)</a> heavily dictates how they are treated by magistrates. High nobility (SC 3+) possess the right to be tried exclusively by a court of their peers (such as the King's Bench or High House of Lords), are virtually never subjected to torture or physical mutilation, and can typically resolve offenses through substantial monetary fines, political hostage exchanges, or ransomed surety. Commoners and freemen (SC 1–2) are subject to local manorial courts and bailiffs, while serfs, outcasts, and slaves (SC 0) enjoy few civil protections, often receiving summary judgment from a lord's reeve.</li>
+    <li><strong>Magic and Jurisprudence:</strong> In a world where magic exists, courts must contend with supernatural evidence and magical crimes:
+        <ul>
+            <li><em>Divination in Trials:</em> Spells such as <em>Zone of Truth</em>, <em>Discern Lies</em>, <em>Detect Thoughts</em>, and <em>Speak with Dead</em> can provide swift clarity in murder and theft investigations. However, sophisticated courts recognize that magical senses can be deceived through <em>Mind Blank</em>, misdirection, illusions, or false memory alteration. In conservative or superstitious realms, mind-reading magic is outlawed as a spiritual violation or dismissed as sorcerous trickery.</li>
+            <li><em>Magical Crimes:</em> Enchantment spells used to coerce contracts (mind control), unauthorized scrying into noble chambers, necromantic desecration of family crypts, and summoning extraplanar abominations are treated as major felonies or capital offenses.</li>
+        </ul>
+    </li>
+    <li><strong>Trial Methods:</strong> When conclusive eyewitness evidence is unavailable, fantasy societies resolve disputes through several traditional avenues:
+        <ul>
+            <li><em>Magisterial Inquest:</em> A hearing before a bailiff, magistrate, or noble who weighs physical evidence, witness credibility, and character testimonies (<em>compurgation</em>).</li>
+            <li><em>Trial by Combat:</em> A sacred judicial duel where the accuser and accused (or their hired champions) battle in single combat, believing the gods will grant victory to the righteous party.</li>
+            <li><em>Trial by Ordeal:</em> An ancient physical trial (such as grasping a red-hot iron bar, retrieving a ring from boiling oil, or surviving immersion in sacred water) where miraculous healing or survival is taken as divine vindication.</li>
+        </ul>
+    </li>
+</ul>
+
+<h4 id="CrimesFramework">Classification of Crimes</h4>
+<p>
+    Crimes are broadly categorized into three tiers of severity: <strong>Petty Infractions</strong> (handled summarily by the watch or local bailiff with minor fines or public shaming), <strong>Misdemeanors &amp; Property Crimes</strong> (heard in civic or manorial courts with fines, flogging, or labor), and <strong>Felonies &amp; High Crimes</strong> (serious atrocities and treason warranting harsh mutilation, slavery, or execution).
+</p>
+<p>
+    The table below presents a comprehensive catalog of offenses. The <strong>Index / d100</strong> column can be used as a lookup index or rolled randomly on percentile dice when determining what offense an NPC or party member is accused of.
+</p>
+
+<table>
+    <caption>Table: Crimes and Offenses</caption>
+    <thead>
+        <tr>
+            <th style="text-align:center; width: 8%;">Index (d100)</th>
+            <th style="width: 24%;">Crime</th>
+            <th style="text-align:center; width: 16%;">Severity &amp; Jurisdiction</th>
+            <th>Description &amp; High-Fantasy Variations</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align:center"><strong>1</strong></td>
+            <td><strong>Littering / Public Fouling</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Petty Infraction</span></td>
+            <td>Dumping waste, carcasses, or foul refuse in public squares, streets, or communal wells.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>2</strong></td>
+            <td><strong>Insult / Public Brawl</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Petty Infraction</span></td>
+            <td>Verbal brawling, drunk scuffling, or public disrespect toward commoners or merchants.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>4</strong></td>
+            <td><strong>Carelessness / Negligence</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Petty Infraction</span></td>
+            <td>Unsecured campfires near timber roofs, unmanaged work beasts, or falling scaffolding.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>5</strong></td>
+            <td><strong>Traffic Obstruction</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Petty Infraction</span></td>
+            <td>Blocking city gates, bridges, or royal highways with unhitched wagons, oxen, or market stalls.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>6</strong></td>
+            <td><strong>Illegal Entry / Trespass</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Petty Infraction</span></td>
+            <td>Entering private farmlands, closed guild workshops, or walled estates without permission.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>9</strong></td>
+            <td><strong>Slander / Defamation</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Petty Infraction</span></td>
+            <td>Spreading false rumors damaging a merchant's credit, guild's reputation, or maiden's honor.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>11</strong></td>
+            <td><strong>Shoplifting / Petty Larceny</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Petty Infraction</span></td>
+            <td>Stealing small food parcels, tools, or minor goods valued under 5 silver pieces.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>12</strong></td>
+            <td><strong>Pickpocketing / Cutpursery</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Petty Infraction</span></td>
+            <td>Snatching coin purses or small jewelry from festival crowds and bustling marketplaces.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>14</strong></td>
+            <td><strong>Reckless Riding / Drunken Conduct</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Petty Infraction</span></td>
+            <td>Galloping warhorses through crowded streets; drunkenly menacing temple or civic patrons.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>15</strong></td>
+            <td><strong>Resisting the Watch</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Petty Infraction</span></td>
+            <td>Fleeing or pushing past city constables or bailiffs during lawful questioning.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>17</strong></td>
+            <td><strong>Harassment / Menacing</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Persistent stalking, intimidating shopkeepers, or stalking guild officials.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>18</strong></td>
+            <td><strong>Instigating a Riot</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Inciting a mob, unlawful assembly, bread riots, or brawling against the city watch.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>20</strong></td>
+            <td><strong>Profiteering / Price Gouging</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Hoarding grain during famine or inflating healing potion prices during plague outbreaks.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>21</strong></td>
+            <td><strong>Destruction of Property / Vandalism</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Defacing statues, breaking tavern furnishings, or damaging cargo barges and wagons.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>23</strong></td>
+            <td><strong>Illegal Threat / Intimidation</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Brandishing drawn blades to intimidate judges, merchants, or innocent citizens.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>24</strong></td>
+            <td><strong>Assault and Battery</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Physical violence resulting in bruises, cracked ribs, or non-permanent physical harm.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>27</strong></td>
+            <td><strong>Coercion / Extortion</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Demanding protection money or using leverage to force merchant concessions.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>29</strong></td>
+            <td><strong>Fencing Stolen Goods</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Knowingly purchasing, concealing, or reselling stolen loot, jewelry, or relics.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>30</strong></td>
+            <td><strong>Possession of Illegal Substances</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Carrying outlawed lethal poisons, alchemical narcotics, or prohibited drugs.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>31</strong></td>
+            <td><strong>Possession of Forbidden Magic</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Unbonded cursed relics, soul jars, dark grimoires, or banned bloodline focuses.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>32</strong></td>
+            <td><strong>Unauthorized Arcane Scrying</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Using divination or sensor orbs to spy on noble chambers, banks, or war councils.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>33</strong></td>
+            <td><strong>Carrying Illegal Weapons</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Bearing unsheathed weapons or concealed blades in peaceful wards requiring peace bonds.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>34</strong></td>
+            <td><strong>Breaking and Entering / Burglary</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Forcing locks or bypassing ward runes to enter private homes, towers, or shops.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>35</strong></td>
+            <td><strong>Involuntary Manslaughter</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Accidentally causing death through runaway horses, spell misfires, or collapsing walls.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>36</strong></td>
+            <td><strong>Bribery &amp; Judicial Corruption</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Paying coin or gifts to gate wardens, magistrates, or jurors to alter justice.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>37</strong></td>
+            <td><strong>Harboring a Known Outlaw</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Misdemeanor</span></td>
+            <td>Providing food, shelter, or false papers to wanted bandits, fugitives, or assassins.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>38</strong></td>
+            <td><strong>Mount / Livestock Rustling</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Stealing warhorses, draft oxen, or cattle herds from manors or farming communities.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>39</strong></td>
+            <td><strong>Sabotage of Infrastructure</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Burning watermills, sabotaging aqueducts, collapsing bridges, or wrecking siege engines.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>40</strong></td>
+            <td><strong>Perjury / False Oaths</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Swearing false testimony before a holy altar, high magistrate, or king's court.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>41</strong></td>
+            <td><strong>Embezzlement</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Stealing from guild treasuries, cathedral tithe boxes, or municipal tax chests.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>42</strong></td>
+            <td><strong>Grievous Assault / Severe Maiming</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Vicious attacks causing permanent loss of limbs, sight, or disfigurement.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>43</strong></td>
+            <td><strong>Illegal Incarceration / Confinement</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Locking victims in private dungeons, oubliettes, or cages without lawful authority.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>44</strong></td>
+            <td><strong>Theft / Grand Larceny</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Stealing valuable trade cargo, prized heirlooms, or coin exceeding 50 gold pieces.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>45</strong></td>
+            <td><strong>Forgery / Counterfeiting</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Forging royal seals, land deeds, letters of marque, or minting debased/clipped coinage.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>47</strong></td>
+            <td><strong>Blackmail / Criminal Coercion</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Extorting substantial political favors or treasure under threat of revealing ruinous secrets.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>48</strong></td>
+            <td><strong>Fraud / Confidence Swindle</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Selling fake magical relics, fraudulent mining shares, or deceptive trade contracts.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>54</strong></td>
+            <td><strong>Grand Vault Theft</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Breaching bank vaults, castle strongrooms, or cathedral reliquaries.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>57</strong></td>
+            <td><strong>Arcane / Illusory Fraud</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Using illusions, transmutations (fool's gold), or mind charms to defraud trade guilds.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>60</strong></td>
+            <td><strong>Highway Robbery / Banditry</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Armed hold-ups of traveling merchants, pilgrims, and trade caravans on highways.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>63</strong></td>
+            <td><strong>Manslaughter in Unlawful Combat</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Killing an opponent during unsanctioned tavern duels or street clashes without malice.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>66</strong></td>
+            <td><strong>Smuggling of Dangerous Contraband</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Felony</span></td>
+            <td>Trafficking banned military weapons, deadly poisons, cursed relics, or slave cargo.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>69</strong></td>
+            <td><strong>Violation / Rape</strong></td>
+            <td style="text-align:center"><span class="text-red-700 dark:text-red-400 font-bold">High Felony</span></td>
+            <td>Severe violent assault violating bodily autonomy and honor.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>71</strong></td>
+            <td><strong>Piracy / Corsair Raiding</strong></td>
+            <td style="text-align:center"><span class="text-red-700 dark:text-red-400 font-bold">High Felony</span></td>
+            <td>Attacking merchant shipping on the high seas or coastal settlements.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>72</strong></td>
+            <td><strong>Kidnapping / Noble Abduction</strong></td>
+            <td style="text-align:center"><span class="text-red-700 dark:text-red-400 font-bold">High Felony</span></td>
+            <td>Seizing noble heirs, merchants, or temple priestesses for massive ransom or leverage.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>75</strong></td>
+            <td><strong>Grand Arcane Sabotage</strong></td>
+            <td style="text-align:center"><span class="text-red-700 dark:text-red-400 font-bold">High Felony</span></td>
+            <td>Disrupting citywide protective wards, unsealing demon gates, or poisoning leylines.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>77</strong></td>
+            <td><strong>Espionage / Spying</strong></td>
+            <td style="text-align:center"><span class="text-red-700 dark:text-red-400 font-bold">Capital Crime</span></td>
+            <td>Selling military fortifications, noble secrets, or defensive plans to foreign enemies.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>78</strong></td>
+            <td><strong>High Treason &amp; Regicide</strong></td>
+            <td style="text-align:center"><span class="text-red-700 dark:text-red-400 font-bold">Capital Crime</span></td>
+            <td>Plotting the assassination of the monarch, leading rebellion, or siding with monsters.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>84</strong></td>
+            <td><strong>Homicide / Premeditated Murder</strong></td>
+            <td style="text-align:center"><span class="text-red-700 dark:text-red-400 font-bold">Capital Crime</span></td>
+            <td>Deliberate, cold-blooded slaying of a freeman, noble, priest, or citizen.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><strong>85–100</strong></td>
+            <td><strong>Necromancy &amp; Dark Cult Pacts</strong></td>
+            <td style="text-align:center"><span class="text-red-700 dark:text-red-400 font-bold">Capital / Heresy</span></td>
+            <td>Desecrating cemeteries, raising undead legions, sacrificing innocents, or summoning fiends.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4 id="PunishmentsFramework">Punishments and Judicial Sentences</h4>
+<p>
+    Sentencing in fantasy societies is designed to fulfill several distinct functions: <strong>Restitution</strong> (compensating the victim or lord for loss), <strong>Deterrence &amp; Public Shaming</strong> (discouraging others through corporal punishment or public humiliation), <strong>Incapacitation</strong> (removing dangerous individuals via exile or execution), and <strong>Atonement</strong> (spiritual or magical penance).
+</p>
+
+<table>
+    <caption>Table: Punishments and Judicial Sentences</caption>
+    <thead>
+        <tr>
+            <th style="width: 28%;">Punishment</th>
+            <th style="text-align:center; width: 18%;">Severity Tier</th>
+            <th>Description, Methods &amp; High-Fantasy Variations</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Fine / Restitution (Wergild)</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Minor / Restorative</span></td>
+            <td>Payment in silver or gold pieces to the victim, guild, or lord; includes ancient <em>wergild</em> ("blood money") compensating families for injury or death based on the victim's social standing.</td>
+        </tr>
+        <tr>
+            <td><strong>Probation &amp; Surety</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Minor / Restorative</span></td>
+            <td>Peace bonds requiring cash collateral and sworn oaths of good conduct; placed under the legal supervision of kin, a master artisan, or a temple priest.</td>
+        </tr>
+        <tr>
+            <td><strong>Public Ridicule &amp; Humiliation</strong></td>
+            <td style="text-align:center"><span class="text-emerald-700 dark:text-emerald-400 font-semibold">Minor / Shaming</span></td>
+            <td>Confinement in the village stocks or pillory (where crowds throw rotten vegetables), ducking stools for slanderers, wearing shameful badges, or public parading in sackcloth and ashes.</td>
+        </tr>
+        <tr>
+            <td><strong>Corporal Punishment (Flogging)</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Moderate / Physical</span></td>
+            <td>Public whipping, caning with birch rods, or beating with cudgels (typically 10 to 50 lashes) for theft, brawling, or insubordination.</td>
+        </tr>
+        <tr>
+            <td><strong>Civic Duty &amp; Hard Labor</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Moderate / Labor</span></td>
+            <td>Sentenced to months or years of grueling labor: quarrying stone, repairing city fortifications, paving royal roads, rowing war galleys, or clearing hazardous sewer systems.</td>
+        </tr>
+        <tr>
+            <td><strong>Compelled Quest / Penance (Geas)</strong></td>
+            <td style="text-align:center"><span class="text-amber-700 dark:text-amber-400 font-semibold">Moderate / Magical</span></td>
+            <td>Placed under a mystical <em>Geas</em> or sacred oath to undertake a perilous quest—such as slaying a marauding monster, retrieving a stolen holy relic, or defending an exposed frontier chapel.</td>
+        </tr>
+        <tr>
+            <td><strong>Confiscation of Property &amp; Attainder</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Major / Financial</span></td>
+            <td>Total forfeiture of coin, horses, ships, magical equipment, manors, or noble titles to the lord, municipal treasury, or church hierarchy.</td>
+        </tr>
+        <tr>
+            <td><strong>Branding &amp; Judicial Marking</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Major / Permanent</span></td>
+            <td>Burning criminal runes or symbols into the skin (such as 'T' for thief on the palm, or 'F' for forger on the cheek) to ensure lifelong infamy.</td>
+        </tr>
+        <tr>
+            <td><strong>Penal Servitude / Slavery</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Major / Severe</span></td>
+            <td>Temporary indenture to work off unpaid debts or fines; in harsher realms, permanent enslavement in deep silver mines, volcanic quarries, or plantation estates.</td>
+        </tr>
+        <tr>
+            <td><strong>Arena Combat / Trial by Beast</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Major / Martial</span></td>
+            <td>Sentenced to fight gladiators, captured monsters, or fellow felons in public civic arenas; survival may grant freedom, pardon, or military service.</td>
+        </tr>
+        <tr>
+            <td><strong>Declaration of Outlawry</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Severe / Legal</span></td>
+            <td>Declared an <em>outlaw</em> ("bearing a wolf's head"). The criminal is completely stripped of legal rights and protections; anyone may hunt, rob, or slay them with complete impunity.</td>
+        </tr>
+        <tr>
+            <td><strong>Exile &amp; Banishment</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Severe / Expulsion</span></td>
+            <td>Permanent or timed expulsion from the city, barony, or sovereign kingdom under penalty of summary execution if caught returning. In high-magic empires, includes planar banishment.</td>
+        </tr>
+        <tr>
+            <td><strong>Incarceration &amp; Stasis</strong></td>
+            <td style="text-align:center"><span class="text-rose-700 dark:text-rose-400 font-semibold">Severe / Confinement</span></td>
+            <td>Confinement in dank castle gaols, dark oubliettes, or tower dungeons; for immortal beings or potent archmages, containment via temporal stasis, petrification, or anti-magic cells.</td>
+        </tr>
+        <tr>
+            <td><strong>Judicial Mutilation</strong></td>
+            <td style="text-align:center"><span class="text-red-700 dark:text-red-400 font-bold">Extreme / Physical</span></td>
+            <td>Amputation of fingers or hands (for chronic thieves), severing of tongues (for slanderers, perjurers, or blasphemers), ear cropping, or blinding with hot irons.</td>
+        </tr>
+        <tr>
+            <td><strong>Magical / Personality Adjustment</strong></td>
+            <td style="text-align:center"><span class="text-red-700 dark:text-red-400 font-bold">Extreme / Arcane</span></td>
+            <td>Arcane lobotomy, memory cleansing, binding curses, pacification enchantments, or the permanent severing of a rogue spellcaster's connection to magical leylines.</td>
+        </tr>
+        <tr>
+            <td><strong>Execution (Capital Punishment)</strong></td>
+            <td style="text-align:center"><span class="text-red-700 dark:text-red-400 font-bold">Capital Punishment</span></td>
+            <td>Methods vary by social rank and crime: decapitation by broadsword (the honorable death for nobility), hanging from the gallows (commoners), burning at the stake (witches, heretics, and necromancers), drawing and quartering (high treason), drowning, stoning, or being fed to magical beasts.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4 id="CulturalVariationsInLaw">Cultural and Regional Variations in Law</h4>
+<p>
+    Different societies emphasize vastly different moral priorities, reflected directly in how their legal codes function:
+</p>
+<ul>
+    <li><strong>Feudal Monarchies &amp; Chivalric Realms:</strong> Heavy emphasis on sworn oaths, social hierarchy, and loyalty to the crown. Nobles enjoy broad legal exemptions and peer trials; treason, poaching in the king's forest, and counterfeiting royal currency bring swift, gruesome executions.</li>
+    <li><strong>Merchant Republics &amp; Free Cities:</strong> Law is codified around contracts, property ownership, maritime shipping, and guild monopolies. Sentences focus heavily on monetary fines, restitution, asset seizure, commercial trade bans, and indenture rather than noble pardons.</li>
+    <li><strong>Theocracies &amp; Inquisitorial States:</strong> Divine law and ecclesiastical courts take precedence over secular law. Heresy, apostasy, blasphemy, dark sorcery, and demon worship carry the harshest penalties (burning at the stake, soul cleansing, and excommunication), while divination magic is heavily used to inspect suspects' souls.</li>
+    <li><strong>Dwarven Mountain Holds:</strong> Law is rooted in ancestral honor, clan solidarity, and strict contracts inscribed on stone tablets. Clan elders hold collective responsibility for an individual's offenses; punishments emphasize massive wergild fines, public loss of clan beard/crest, and permanent clan exile (viewed as a fate worse than death).</li>
+    <li><strong>Elven Sanctuaries:</strong> Justice focuses on restorative harmony, nature balance, and moral reflection. Crude physical mutilation and gaols are rare; elven courts prefer magical <em>geas</em> penance, century-long banishment, or meditative isolation within enchanted glades.</li>
+    <li><strong>Wilderness Frontiers &amp; Border Marches:</strong> Formal courts and magistrates are virtually nonexistent. Law is dispensed as "frontier justice" by local sheriffs, military march-wardens, or armed vigilante posses, relying on quick hanging trees, bounty boards, or outlaw declarations.</li>
+</ul>
+
+<h4 id="GMCrimeGuidance">GM Guidance: Running Crime and Justice in Campaigns</h4>
+<p>
+    When characters clash with the law—or investigate crimes on behalf of local authorities—GMs can use the following principles to enhance drama and roleplaying:
+</p>
+<ul>
+    <li><strong>The Law as a Dynamic Force:</strong> Law enforcement should feel like a living part of the setting rather than an arbitrary wall. A party's <a href="#Reputation">Reputation</a>, <a href="#SocialClass">Social Class</a>, and faction <a href="#Influence">Influence</a> can open doors to royal pardons, bail agreements, or reduced sentencing, or conversely make local magistrates eager to make an example of them.</li>
+    <li><strong>Bounties &amp; Outlaw Hunting:</strong> Declaring a villain (or a rogue PC) an outlaw introduces instant sandbox gameplay. Adventurers can hunt wanted fugitives across wilderness hexes, collect guild bounties, or navigate the underworld to clear their own framed names.</li>
+    <li><strong>Quest Alternatives to Imprisonment:</strong> Rather than derailing a campaign with long dungeon gaol terms, wise magistrates frequently sentence capable adventurers to high-risk <em>penitence quests</em>—clearing an infested dungeon, retrieving a lost artifact, or defending a remote outpost—binding them with magical <em>geas</em> spells or sworn holy oaths.</li>
+</ul>
+
 <h3 id="Trading">Trading and Economy</h3>
 <p>
     In most civilized lands, trade is regulated by municipal authorities, merchant syndicates, and craft guilds. Standardized coinage and precious metal bullion possess fixed, legally enforced exchange values. Gemstones, art objects, and bulk trade commodities (grain, timber, iron) also have established market values, leaving little room for price fluctuation in peaceful times.

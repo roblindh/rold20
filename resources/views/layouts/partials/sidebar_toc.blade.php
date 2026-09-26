@@ -162,9 +162,14 @@
                     @if($isCulture)
                         <ul class="border-l-2 border-amber-600/40 ml-3.5 pl-2.5 my-1.5 space-y-0.5 text-xs list-none">
                             <li><a href="#Connections" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Connections</a></li>
-                            <li><a href="#Trading" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Trading & Economy</a></li>
+                            <li><a href="#Organizations" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Organizations</a></li>
+                            <li><a href="#Civilization" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Civilization</a></li>
+                            <li><a href="#CrimeAndPunishment" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Crime &amp; Punishment</a></li>
+                            <li><a href="#Trading" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Trading &amp; Economy</a></li>
                             <li><a href="#Religion" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Religion</a></li>
                             <li><a href="#Technology" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Technology</a></li>
+                            <li><a href="#Entertainment" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Entertainment</a></li>
+                            <li><a href="#SocialCharacteristics" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Social Characteristics</a></li>
                         </ul>
                     @endif
                 </li>
