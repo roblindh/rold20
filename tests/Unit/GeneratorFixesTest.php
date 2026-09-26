@@ -292,4 +292,49 @@ class GeneratorFixesTest extends TestCase
         $this->assertSame(999, $calc['defenses']['fort']);
         $this->assertSame(999, $calc['defenses']['will']);
     }
+
+    /**
+     * Test that EntityEngine multiplies racial level HP by size category's HPMult:
+     * - Large (Size 1, HPMult 1.5): e.g. RL 4 with HPPerLevel 8 gives 4 * 8 * 1.5 = 48 racial HP
+     * - Huge (Size 2, HPMult 2.0): e.g. RL 8 with HPPerLevel 8 gives 8 * 8 * 2.0 = 128 racial HP
+     * - Medium (Size 0, HPMult 1.0): e.g. RL 2 with HPPerLevel 8 gives 2 * 8 * 1.0 = 16 racial HP
+     */
+    public function test_entity_engine_racial_hp_multiplied_by_size_factor(): void
+    {
+        // 1. Medium entity (Size 0, HPMult 1.0): BaseCon 12, RL 0, warrior background (HPPerLevel 8)
+        $mediumCalc = \App\Services\Entity\EntityEngine::calculate([
+            'BaseCon' => 12,
+            'BaseRace' => 1, // Human (BaseRL 0)
+            'SizeClass' => 0,
+            'BackgndClass' => 16, // Guard/Warrior (HPPerLevel 8)
+        ]);
+        $this->assertSame(12, $mediumCalc['health']['hp']['total']);
+
+        // 2. Large Creature: Ogre (RaceID 228, BaseRL 4, Size 1 Large -> HPMult 1.5, Con 14, Background Giant/Barbarian HPPerLevel 10)
+        $ogreCalc = \App\Services\Entity\EntityEngine::calculate([
+            'RaceID' => 228,
+        ]);
+        // BaseCon (10+4=14) + round(10 * 4 * 1.5) = 14 + 60 = 74
+        $this->assertSame('Large', $ogreCalc['heritage']['size_name']);
+        $this->assertSame(4, $ogreCalc['heritage']['racial_level']);
+        $this->assertSame(74, $ogreCalc['health']['hp']['total']);
+
+        // Compare with same creature if sized Medium (SizeClass 0 -> HPMult 1.0):
+        // BaseCon 14 + round(10 * 4 * 1.0) = 14 + 40 = 54
+        $mediumOgreCalc = \App\Services\Entity\EntityEngine::calculate([
+            'RaceID' => 228,
+            'SizeClass' => 0,
+        ]);
+        $this->assertSame('Medium', $mediumOgreCalc['heritage']['size_name']);
+        $this->assertSame(54, $mediumOgreCalc['health']['hp']['total']);
+
+        // 3. Huge Creature: Cloud Giant (RaceID 153, BaseRL 17, Size 2 Huge -> HPMult 2.0, Con 22, Background Giant/Barbarian HPPerLevel 10)
+        $giantCalc = \App\Services\Entity\EntityEngine::calculate([
+            'RaceID' => 153,
+        ]);
+        // BaseCon (10+12=22) + round(10 * 17 * 2.0) = 22 + 340 = 362
+        $this->assertSame('Huge', $giantCalc['heritage']['size_name']);
+        $this->assertSame(17, $giantCalc['heritage']['racial_level']);
+        $this->assertSame(362, $giantCalc['health']['hp']['total']);
+    }
 }

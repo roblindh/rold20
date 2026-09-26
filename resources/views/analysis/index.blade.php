@@ -183,23 +183,23 @@
                 <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
                     <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider">Physical Attack vs DeC Bonuses</h4>
                     <ul class="text-xs text-slate-700 space-y-1">
-                        <li>• <strong>AP-based DeB</strong> vs <strong>AP-based AB</strong></li>
-                        <li>• <strong>Shield enhancement</strong> vs <strong>Weapon enhancement</strong></li>
-                        <li>• <strong>Skill-based parry</strong> vs <strong>Skill-based attack</strong></li>
-                        <li>• <strong>Divine / Insight / Luck defense</strong> vs <strong>Divine / Insight / Luck attack</strong></li>
-                        <li>• <strong>Deflection</strong> vs <strong>Morale attack</strong></li>
+                        <li><strong>Total Level (TL)</strong> vs <strong>AP-based AB</strong></li>
+                        <li><strong>Shield enhancement</strong> vs <strong>Weapon enhancement</strong></li>
+                        <li><strong>Skill-based parry</strong> vs <strong>Skill-based attack</strong></li>
+                        <li><strong>Divine / Insight / Luck defense</strong> vs <strong>Divine / Insight / Luck attack</strong></li>
+                        <li><strong>Deflection</strong> vs <strong>Morale attack</strong></li>
                     </ul>
                 </div>
 
                 <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
                     <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider">Supernatural Attack vs NDD Bonuses</h4>
                     <ul class="text-xs text-slate-700 space-y-1">
-                        <li>• <strong>Total Level (TL)</strong> vs <strong>(AP-based AB + Skill-based attack)</strong></li>
-                        <li>• <strong>Resistance</strong> vs <strong>Focus enhancement</strong></li>
-                        <li>• <strong>Divine defense</strong> vs <strong>Divine attack</strong></li>
-                        <li>• <strong>Insight defense</strong> vs <strong>Insight attack</strong></li>
-                        <li>• <strong>Luck defense</strong> vs <strong>Luck attack</strong></li>
-                        <li>• <strong>Morale defense</strong> vs <strong>Morale attack</strong></li>
+                        <li><strong>Total Level (TL)</strong> vs <strong>(AP-based AB + Skill-based attack)</strong></li>
+                        <li><strong>Resistance</strong> vs <strong>Focus enhancement</strong></li>
+                        <li><strong>Divine defense</strong> vs <strong>Divine attack</strong></li>
+                        <li><strong>Insight defense</strong> vs <strong>Insight attack</strong></li>
+                        <li><strong>Luck defense</strong> vs <strong>Luck attack</strong></li>
+                        <li><strong>Morale defense</strong> vs <strong>Morale attack</strong></li>
                     </ul>
                 </div>
             </div>
@@ -253,7 +253,6 @@
                     <thead>
                         <tr class="bg-slate-100 text-slate-800 border-b border-slate-300">
                             <th class="text-left font-bold">Class</th>
-                            <th class="text-left font-bold">Equipment</th>
                             <th class="text-center font-bold">Str/Con/Dex</th>
                             <th class="text-center font-bold">Int/Wis/Cha</th>
                             <th class="text-center font-bold">HP/SP/PP</th>
@@ -264,13 +263,13 @@
                             <th class="text-center font-bold">DR</th>
                             <th class="text-center font-bold">MR</th>
                             <th class="text-center font-bold text-indigo-700">Att</th>
+                            <th class="text-left font-bold">Equipment</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 font-mono text-xs">
                         @foreach($classBenchmarks as $b)
                             <tr class="hover:bg-slate-50 transition">
                                 <td class="font-bold text-slate-900 font-sans whitespace-nowrap">{{ $b['name'] }}</td>
-                                <td class="text-slate-600 font-sans text-[11px] max-w-[200px] truncate" title="{{ $b['equipment'] }}">{{ $b['equipment'] }}</td>
                                 <td class="text-center text-slate-700">{{ $b['str_con_dex'] }}</td>
                                 <td class="text-center text-slate-700">{{ $b['int_wis_cha'] }}</td>
                                 <td class="text-center font-bold text-slate-900">{{ $b['hp_sp_pp'] }}</td>
@@ -281,6 +280,7 @@
                                 <td class="text-center font-bold text-rose-700">{{ $b['dr'] }}</td>
                                 <td class="text-center text-slate-700">{{ $b['mr'] }}</td>
                                 <td class="text-center font-bold text-indigo-700">+{{ $b['att'] }}</td>
+                                <td class="text-slate-600 font-sans text-[11px] max-w-[200px] truncate" title="{{ $b['equipment'] }}">{{ $b['equipment'] }}</td>
                             </tr>
                         @endforeach
                     </tbody>

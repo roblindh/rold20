@@ -84,9 +84,9 @@ class CharacterViewerOverhaulTest extends TestCase
         $arm = $calcM['attacks']['primary_natural'][1];
         $bite = $calcM['attacks']['secondary_natural'][0];
 
-        // Claw is primary: attack bonus has no -4 penalty, damage has full StrMod (+3)
+        // Claw is primary: attack bonus has no -4 penalty, uses DexMod (+1) from ref_naturalattacks, damage has full StrMod (+3)
         $this->assertTrue($claw['is_primary']);
-        $this->assertEquals(3, $claw['attack_bonus']); // StrMod(3)
+        $this->assertEquals(1, $claw['attack_bonus']); // DexMod(1)
         $this->assertStringContainsString('+3', $claw['damage']);
         // Claw relative size is -2 -> Medium(0) - 2 = -2 (Tiny 'T')
         $this->assertEquals('T', $claw['size_abbr']);
@@ -94,9 +94,9 @@ class CharacterViewerOverhaulTest extends TestCase
         // Arm relative size is -3 -> Medium(0) - 3 = -3 (Diminutive 'D')
         $this->assertEquals('D', $arm['size_abbr']);
 
-        // Bite is secondary: attack bonus has -4 penalty (3 - 4 = -1), damage has StrMod/2 (+1)
+        // Bite is secondary: attack bonus has DexMod (1) and -4 penalty (1 - 4 = -3), damage has StrMod/2 (+1)
         $this->assertFalse($bite['is_primary']);
-        $this->assertEquals(-1, $bite['attack_bonus']); // 3 - 4 = -1
+        $this->assertEquals(-3, $bite['attack_bonus']); // DexMod (1) - 4 = -3
         $this->assertStringContainsString('+1', $bite['damage']);
         // Bite relative size is -2 -> Medium(0) - 2 = -2 (Tiny 'T')
         $this->assertEquals('T', $bite['size_abbr']);

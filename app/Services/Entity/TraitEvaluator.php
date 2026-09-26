@@ -298,11 +298,20 @@ class TraitEvaluator
                 continue;
             }
 
-            // 2. Check Prerequisites
-            if (!empty($params['Req']) && !self::evaluatePrerequisite($params['Req'], $context)) {
-                continue;
+            // If evaluating an item in 'wielder' scope, skip item-local weapon/attack/damage/parry traits
+            $qual = $params['Qual'] ?? '';
+            if ($currentScope === 'wielder' && !isset($params['Target'])) {
+                if ($type === 'Weapon' || $type === 'Armor' || $type === 'AttMod' || ($type === 'DefMod' && strcasecmp($qual, 'Parry') === 0)) {
+                    continue;
+                }
             }
-            if (!empty($params['Prereq']) && !self::evaluatePrerequisite($params['Prereq'], $context)) {
+
+            // 2. Check Prerequisites
+            $req = $params['Req'] ?? $params['Prereq'] ?? '';
+            $isWeapOrArmorSelector = !empty($req) && (
+                preg_match('/^(Weapon|Armor)\s*==\s*[a-zA-Z0-9_]+$/i', trim($req))
+            );
+            if (!empty($req) && !$isWeapOrArmorSelector && !self::evaluatePrerequisite($req, $context)) {
                 continue;
             }
 
@@ -326,7 +335,7 @@ class TraitEvaluator
         $currentScope = strtolower($currentScope);
 
         if ($currentScope === 'character') {
-            return true;
+            return !in_array($traitTarget, ['mount', 'target', 'other']) && !str_starts_with($traitTarget, 'allies');
         }
 
         if ($traitTarget === 'item' && $currentScope === 'item') {
@@ -353,6 +362,38 @@ class TraitEvaluator
     }
 
     /**
+     * Extract weapon category code from requirement string.
+     */
+    public static function extractWeaponCat(string $req): string
+    {
+        $cats = [
+            "Nat", "Axe", "Clb", "Fnc", "Fll", "HvB", "LtB", "PlA", "Spr", "Stv",
+            "Exo", "Bow", "Crs", "Fir", "Sln", "SmT", "Are", "BaM", "Ray", "Sie",
+            "Brl", "Shd", "Gen"
+        ];
+        foreach ($cats as $cat) {
+            if (stripos($req, $cat) !== false) {
+                return $cat;
+            }
+        }
+        if (stripos($req, 'Mnk') !== false) {
+            return 'Nat';
+        }
+        return 'Gen';
+    }
+
+    /**
+     * Extract armor category code from requirement string.
+     */
+    public static function extractArmorCat(string $req): string
+    {
+        if (stripos($req, 'Hv') !== false || stripos($req, 'ArmHv') !== false) return 'Hv';
+        if (stripos($req, 'Md') !== false || stripos($req, 'ArmMd') !== false) return 'Md';
+        if (stripos($req, 'Lt') !== false || stripos($req, 'ArmLt') !== false) return 'Lt';
+        return 'Lt';
+    }
+
+    /**
      * Map trait properties into engine modifier calls.
      */
     protected static function registerTraitModifier(
@@ -365,6 +406,9 @@ class TraitEvaluator
         array $params
     ): void {
         $numVal = is_numeric($val) ? (float)$val : 0.0;
+        $req = $params['Req'] ?? $params['Prereq'] ?? '';
+        $isWeaponReq = !empty($req) && (str_starts_with(strtoupper($req), 'WEAPON') || str_contains(strtoupper($req), 'WP'));
+        $isArmorReq = !empty($req) && (str_starts_with(strtoupper($req), 'ARMOR') || str_contains(strtoupper($req), 'ARM'));
 
         switch ($traitType) {
             case 'AbilMod':
@@ -389,7 +433,29 @@ class TraitEvaluator
                 break;
 
             case 'DefMod':
-                $stat = match (strtoupper($qual)) {
+                $qualUpper = strtoupper($qual);
+                if ($qualUpper === 'PARRY' || $qualUpper === 'PAR') {
+                    if ($isWeaponReq) {
+                        $cat = self::extractWeaponCat($req);
+                        $engine->addModifier('WeapPar_' . $cat, $numVal, $modType, $sourceName);
+                        break;
+                    } elseif ($isArmorReq) {
+                        $cat = self::extractArmorCat($req);
+                        $engine->addModifier('ArmorPar_' . $cat, $numVal, $modType, $sourceName);
+                        break;
+                    }
+                } elseif ($isArmorReq) {
+                    $cat = self::extractArmorCat($req);
+                    if ($qualUpper === 'DEC') {
+                        $engine->addModifier('ArmorDeC_' . $cat, $numVal, $modType, $sourceName);
+                        break;
+                    } elseif ($qualUpper === 'DR') {
+                        $engine->addModifier('ArmorDR_' . $cat, $numVal, $modType, $sourceName);
+                        break;
+                    }
+                }
+
+                $stat = match ($qualUpper) {
                     'DEC' => 'DeC',
                     'FORT' => 'Fort',
                     'REF' => 'Ref',
@@ -419,14 +485,28 @@ class TraitEvaluator
                 break;
 
             case 'AttMod':
-                $stat = match (strtoupper($qual)) {
-                    'ATTACK', 'ATT' => 'Att',
-                    'DAMAGE', 'DMG' => 'Dmg',
-                    'ATTSPD', 'SPEED' => 'AttSpd',
-                    'MULTIATTACKPENRED' => 'MultiAttackPenRed',
-                    'DMGDICE' => 'DmgDice',
-                    default => 'Att_' . $qual,
-                };
+                $qualUpper = strtoupper($qual);
+                if ($isWeaponReq) {
+                    $cat = self::extractWeaponCat($req);
+                    $stat = match ($qualUpper) {
+                        'ATTACK', 'ATT' => 'WeapAtt_' . $cat,
+                        'DAMAGE', 'DMG' => 'WeapDmg_' . $cat,
+                        'PARRY', 'PAR' => 'WeapPar_' . $cat,
+                        'ATTSPD', 'SPEED' => 'WeapAttSpd_' . $cat,
+                        'MULTIATTACKPENRED' => 'MultiAttackPenRed',
+                        'DMGDICE' => 'DmgDice',
+                        default => 'WeapAtt_' . $qual . '_' . $cat,
+                    };
+                } else {
+                    $stat = match ($qualUpper) {
+                        'ATTACK', 'ATT' => 'Att',
+                        'DAMAGE', 'DMG' => 'Dmg',
+                        'ATTSPD', 'SPEED' => 'AttSpd',
+                        'MULTIATTACKPENRED' => 'MultiAttackPenRed',
+                        'DMGDICE' => 'DmgDice',
+                        default => 'Att_' . $qual,
+                    };
+                }
                 $engine->addModifier($stat, $numVal, $modType, $sourceName);
                 break;
 
@@ -451,7 +531,12 @@ class TraitEvaluator
                 if (strcasecmp($qual, 'EncumbranceRes') === 0) {
                     $engine->addModifier('EncumbranceRes', $numVal, $modType, $sourceName);
                 } elseif (strcasecmp($qual, 'ECRed') === 0) {
-                    $engine->addModifier('ECRed', $numVal, $modType, $sourceName);
+                    if ($isArmorReq) {
+                        $cat = self::extractArmorCat($req);
+                        $engine->addModifier('ArmorECRed_' . $cat, $numVal, $modType, $sourceName);
+                    } else {
+                        $engine->addModifier('ECRed', $numVal, $modType, $sourceName);
+                    }
                 } elseif (strcasecmp($qual, 'Mobility') === 0) {
                     $engine->addModifier('Mobility', $numVal, $modType, $sourceName);
                 }
@@ -464,6 +549,16 @@ class TraitEvaluator
             case 'Attack':
                 if (strcasecmp($qual, 'RefMod') === 0) {
                     $engine->addModifier('Reactions', $numVal, $modType, $sourceName);
+                } elseif (strcasecmp($qual, 'ImprSec') === 0) {
+                    $lvl = (strtolower(trim((string)$val)) === 'greater' || $numVal >= 3) ? 3 : 2;
+                    $engine->addModifier('ImprSec', $lvl, $modType, $sourceName);
+                } elseif (strcasecmp($qual, 'ImprCrit') === 0 || strcasecmp($qual, 'CritRng') === 0) {
+                    if ($isWeaponReq) {
+                        $cat = self::extractWeaponCat($req);
+                        $engine->addModifier('WeapCrit_' . $cat, $numVal, $modType, $sourceName);
+                    } else {
+                        $engine->addModifier('CritRng', $numVal, $modType, $sourceName);
+                    }
                 }
                 break;
 

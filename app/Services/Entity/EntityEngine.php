@@ -32,6 +32,8 @@ class EntityEngine
     protected static ?array $wealthClassesCache = null;
     protected static ?array $actionsCache = null;
     protected static ?array $naturalAttacksCache = null;
+    protected static ?array $mundaneModsCache = null;
+    protected static ?array $magicModsCache = null;
 
     /**
      * Complete mapping of weapon category abbreviations to Skill ID, code, and name.
@@ -346,6 +348,8 @@ class EntityEngine
             self::$wealthClassesCache = DB::table('ref_wealthclasses')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$actionsCache = DB::table('ref_actions')->where('ShowPCGen', '>=', 2)->orderBy('Name')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$naturalAttacksCache = DB::table('ref_naturalattacks')->get()->keyBy('Name')->map(fn($r) => (array)$r)->toArray();
+            self::$mundaneModsCache = DB::table('ref_itemmodsmundane')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
+            self::$magicModsCache = DB::table('ref_itemmodsmagic')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
 
             if (empty(self::$itemsCache) || empty(self::$creaturesCache)) {
                 $cacheFile = dirname(__DIR__, 3) . '/storage/framework/cache/app_data.php';
@@ -377,6 +381,8 @@ class EntityEngine
                 if (empty(self::$wealthClassesCache)) self::$wealthClassesCache = $appData['wealthclasses'] ?? [];
                 if (empty($actionsCache)) self::$actionsCache = $appData['actions'] ?? [];
                 if (empty(self::$naturalAttacksCache)) self::$naturalAttacksCache = isset($appData['naturalattacks']) ? array_column($appData['naturalattacks'], null, 'Name') : [];
+                if (empty(self::$mundaneModsCache)) self::$mundaneModsCache = $appData['itemmodsmundane'] ?? [];
+                if (empty(self::$magicModsCache)) self::$magicModsCache = $appData['itemmodsmagic'] ?? [];
             }
 
             self::ensureRulesInitialized();
@@ -416,6 +422,8 @@ class EntityEngine
         self::$wealthClassesCache = $appData['wealthclasses'] ?? [];
         self::$actionsCache = $appData['actions'] ?? [];
         self::$naturalAttacksCache = isset($appData['naturalattacks']) ? array_column($appData['naturalattacks'], null, 'Name') : [];
+        self::$mundaneModsCache = $appData['itemmodsmundane'] ?? [];
+        self::$magicModsCache = $appData['itemmodsmagic'] ?? [];
     }
 
     /**
@@ -430,7 +438,7 @@ class EntityEngine
         // =========================================================================
         // STAGE 1: HERITAGE, TEMPLATES, CLASSES & AGING
         // =========================================================================
-        $raceId = (int)($e->BaseRace ?? $e->RaceID ?? 1);
+        $raceId = (int)($e->CurrentRace ?? $e->BaseRace ?? $e->RaceID ?? 1);
         $race = self::$creaturesCache[$raceId] ?? self::$creaturesCache[1] ?? [];
         $subtypeId = (int)($race['CreatureType'] ?? $race['Subtype'] ?? 1);
         $subtype = self::$subtypesCache[$subtypeId] ?? [];
@@ -481,8 +489,8 @@ class EntityEngine
         $powerLevel = $totalLevel;
 
         // Size & Body Type
-        $baseSizeId = (int)($race['SizeClass'] ?? $race['Size'] ?? 0);
-        $sizeMod = 0;
+        $baseSizeId = (int)($e->SizeClass ?? $e->Size ?? $race['SizeClass'] ?? $race['Size'] ?? 0);
+        $sizeMod = (int)($e->SizeAdjust ?? $e->SizeMod ?? $e->SzMod ?? 0);
         foreach ($templateIds as $tId) {
             $t = self::$templatesCache[$tId] ?? null;
             if ($t && isset($t['SizeAdj'])) {
@@ -490,7 +498,18 @@ class EntityEngine
             }
         }
         $currentSizeId = max(-4, min(4, $baseSizeId + $sizeMod));
-        $sizeRow = self::$sizesCache[$currentSizeId] ?? ['CombatMod' => 0, 'Space' => 1.5, 'Reach' => 1.5, 'HPMult' => 1.0, 'WeightMult' => 1.0, 'Abbreviation' => 'M', 'Name' => 'Medium'];
+        $sizeRow = self::$sizesCache[$currentSizeId] ?? [
+            'CombatMod' => 0,
+            'GrappleMod' => 0,
+            'AttSpdMod' => 0,
+            'Space' => '1x1 sq',
+            'Reach' => 1,
+            'HPMult' => 1.0,
+            'WeightMult' => 1.0,
+            'Abbreviation' => 'M',
+            'Description' => 'Medium',
+            'Name' => 'Medium',
+        ];
 
         $bodyTypeId = (int)($race['BodyType'] ?? 1);
         $bodyTypeRow = self::$bodyTypesCache[$bodyTypeId] ?? ['ReachMod' => 0, 'Description' => 'Biped'];
@@ -539,6 +558,15 @@ class EntityEngine
         $adjInt = $noInt ? null : ($baseInt + (int)($race['IntAdj'] ?? 0) + ($ageMods['Int'] ?? 0));
         $adjWis = $noWis ? null : ($baseWis + (int)($race['WisAdj'] ?? 0) + ($ageMods['Wis'] ?? 0));
         $adjCha = $noCha ? null : ($baseCha + (int)($race['ChaAdj'] ?? 0) + ($ageMods['Cha'] ?? 0));
+
+        // Size Alteration Ability Adjustments (when current size != base race size)
+        if ($currentSizeId != $baseSizeId) {
+            $currSizeRow = self::$sizesCache[$currentSizeId] ?? [];
+            $baseSizeRow = self::$sizesCache[$baseSizeId] ?? [];
+            if ($adjStr !== null) $adjStr += (int)($currSizeRow['RelativeStr'] ?? 0) - (int)($baseSizeRow['RelativeStr'] ?? 0);
+            if ($adjCon !== null) $adjCon += (int)($currSizeRow['RelativeCon'] ?? 0) - (int)($baseSizeRow['RelativeCon'] ?? 0);
+            if ($adjDex !== null) $adjDex += (int)($currSizeRow['RelativeDex'] ?? 0) - (int)($baseSizeRow['RelativeDex'] ?? 0);
+        }
 
         // Template Adjustments
         foreach ($templateIds as $tId) {
@@ -606,7 +634,7 @@ class EntityEngine
         }
 
         // Ingest Cultural Traits
-        $cultureId = (int)($e->Culture ?? $e->CultureID ?? 0);
+        $cultureId = (int)($e->Culture ?? $e->CultureID ?? $race['DefaultCulture'] ?? 1);
         if ($cultureId > 0 && isset(self::$culturesCache[$cultureId])) {
             $cult = self::$culturesCache[$cultureId];
             if (!empty($cult['Traits'])) {
@@ -919,10 +947,10 @@ class EntityEngine
         }
 
         if (!empty($rawPossessions) && is_array($rawPossessions)) {
-            foreach ($rawPossessions as $pItem) {
+            foreach ($rawPossessions as $pIdx => $pItem) {
                 $refId = (int)($pItem['item_id'] ?? $pItem['ref_id'] ?? $pItem['ID'] ?? (is_numeric($pItem['id'] ?? null) ? $pItem['id'] : 0));
                 $refItem = self::$itemsCache[$refId] ?? [];
-                $uId = $pItem['uid'] ?? $pItem['id'] ?? (string)$refId;
+                $uId = $pItem['uid'] ?? $pItem['id'] ?? $pItem['ID'] ?? ($refId > 0 ? "item_{$refId}_{$pIdx}" : "item_{$pIdx}");
                 $itemType = (int)($pItem['item_type'] ?? $pItem['ItemTypeID'] ?? $refItem['ItemTypeID'] ?? $refItem['Type'] ?? 1);
                 $subtype = (int)($pItem['subtype'] ?? $pItem['Subtype'] ?? $refItem['Subtype'] ?? 0);
                 $name = $pItem['name'] ?? $pItem['Name'] ?? $refItem['Name'] ?? 'Item';
@@ -961,6 +989,8 @@ class EntityEngine
                     'ec_mod' => (int)($pItem['ec_mod'] ?? $refItem['ECMod'] ?? 0),
                     'ref_data' => $refItem,
                     'custom_traits' => $pItem['custom_traits'] ?? '',
+                    'size' => $pItem['size'] ?? null,
+                    'dmg_dice' => $pItem['dmg_dice'] ?? 0,
                 ]);
             }
         }
@@ -1055,7 +1085,7 @@ class EntityEngine
         // =========================================================================
         // STAGE 4: DEFENSES, PARRY RULES & TRI-POOL HEALTH (HP / SP / PP)
         // =========================================================================
-        $bgClassId = (int)($e->BackgndClass ?? $e->BackgroundClassID ?? 0);
+        $bgClassId = (int)($e->OverrideRacialClass ?? $e->BackgndClass ?? $e->BackgroundClassID ?? 0);
         $bgClass = null;
         if ($bgClassId > 0 && isset(self::$classesCache[$bgClassId])) {
             $bgClass = self::$classesCache[$bgClassId];
@@ -1200,7 +1230,7 @@ class EntityEngine
                 continue;
             }
             $ref = $it['ref_data'] ?? [];
-            $traits = TraitEvaluator::parse($ref['Traits'] ?? $it['custom_traits'] ?? '');
+            $traits = TraitEvaluator::parse(trim(($ref['Traits'] ?? '') . ' ' . ($it['custom_traits'] ?? '')));
             $inherentPar = 0;
             $weapQual = '';
             $isWieldedCombatItem = false;
@@ -1249,7 +1279,7 @@ class EntityEngine
                 continue;
             }
             $ref = $it['ref_data'] ?? [];
-            $traits = TraitEvaluator::parse($ref['Traits'] ?? $it['custom_traits'] ?? '');
+            $traits = TraitEvaluator::parse(trim(($ref['Traits'] ?? '') . ' ' . ($it['custom_traits'] ?? '')));
             foreach ($traits as $tr) {
                 if ($tr['type'] === 'Armor' && !empty($tr['params']['Qual'])) {
                     $armEval = self::evaluateArmorSkillsForQual($tr['params']['Qual'], $effectiveSkillRanks, $context);
@@ -1283,7 +1313,13 @@ class EntityEngine
                 $templateDR = max($templateDR, (int)($t['DR'] ?? 0));
             }
         }
-        $dr = max(0, $racialDR + $templateDR + (int)$modifierEngine->getTotal('DR'));
+        $sizeDR = 0;
+        if ($currentSizeId != $baseSizeId) {
+            $currSizeRow = self::$sizesCache[$currentSizeId] ?? [];
+            $baseSizeRow = self::$sizesCache[$baseSizeId] ?? [];
+            $sizeDR = max(0, (int)($currSizeRow['RelativeDR'] ?? 0) - (int)($baseSizeRow['RelativeDR'] ?? 0));
+        }
+        $dr = max(0, $racialDR + $templateDR + $sizeDR + (int)$modifierEngine->getTotal('DR'));
 
         $racialMR = (int)($race['MR'] ?? 0);
         $templateMR = 0;
@@ -1442,7 +1478,7 @@ class EntityEngine
 
         foreach ($equippedWeapons as $wId => $wItem) {
             $wRef = $wItem['ref_data'] ?? [];
-            $traits = TraitEvaluator::parse($wRef['Traits'] ?? $wItem['custom_traits'] ?? '');
+            $traits = TraitEvaluator::parse(trim(($wRef['Traits'] ?? '') . ' ' . ($wItem['custom_traits'] ?? '')));
 
             $dmgTraitStr = '';
             $critRng = 0;
@@ -1455,6 +1491,12 @@ class EntityEngine
             $weapQual = 'Gen';
             $ammoRequired = '';
             $attModTrait = '';
+            $dmgDiceMod = 0;
+            $itemAttBonus = 0;
+            $itemDmgBonus = 0;
+            $itemParryBonus = 0;
+            $itemAttSpdBonus = 0;
+            $itemCritRngBonus = 0;
 
             foreach ($traits as $tr) {
                 if ($tr['type'] === 'Weapon') {
@@ -1471,24 +1513,61 @@ class EntityEngine
                     if (!empty($tr['params']['Qual'])) {
                         $weapQual = $tr['params']['Qual'];
                     }
+                } elseif ($tr['type'] === 'AttMod') {
+                    $q = strtoupper($tr['params']['Qual'] ?? '');
+                    if ($q === 'DMGDICE') {
+                        $dmgDiceMod += (int)($tr['params']['Value'] ?? 1);
+                    } elseif ($q === 'ATTACK' || $q === 'ATT') {
+                        $itemAttBonus += (int)floor((float)TraitEvaluator::evaluateExpression((string)($tr['params']['Value'] ?? '0'), $context));
+                    } elseif ($q === 'DAMAGE' || $q === 'DMG') {
+                        $itemDmgBonus += (int)floor((float)TraitEvaluator::evaluateExpression((string)($tr['params']['Value'] ?? '0'), $context));
+                    } elseif ($q === 'PARRY' || $q === 'PAR') {
+                        $itemParryBonus += (int)floor((float)TraitEvaluator::evaluateExpression((string)($tr['params']['Value'] ?? '0'), $context));
+                    } elseif ($q === 'ATTSPD' || $q === 'SPEED') {
+                        $itemAttSpdBonus += (int)floor((float)TraitEvaluator::evaluateExpression((string)($tr['params']['Value'] ?? '0'), $context));
+                    } elseif ($q === 'IMPRCRIT' || $q === 'CRITRNG') {
+                        $itemCritRngBonus += (int)floor((float)TraitEvaluator::evaluateExpression((string)($tr['params']['Value'] ?? '0'), $context));
+                    }
+                } elseif ($tr['type'] === 'DefMod' && str_contains(strtoupper($tr['params']['Qual'] ?? ''), 'PARRY')) {
+                    $itemParryBonus += (int)floor((float)TraitEvaluator::evaluateExpression((string)($tr['params']['Value'] ?? '0'), $context));
                 }
             }
 
+            if ($dmgDiceMod !== 0) {
+                $dmgTraitStr = self::scaleDamageDie($dmgTraitStr, $dmgDiceMod);
+            }
+
             // Weapon's own size category
-            $weaponSizeVal = (int)($wRef['BaseSize'] ?? 0);
+            $weaponSizeVal = (int)($wItem['size'] ?? $wRef['BaseSize'] ?? 0);
             $weaponSizeAbbr = $sizeAbbrMap[$weaponSizeVal] ?? 'M';
 
             // Evaluate weapon skills associated with this weapon
             $wSkills = self::evaluateWeaponSkillsForQual($weapQual, $effectiveSkillRanks, $context);
-            $skillAttBonus = (int)($wSkills['attack_bonus'] ?? 0);
-            $skillDmgBonus = (int)($wSkills['damage_bonus'] ?? 0);
-            $skillAttSpdBonus = (int)($wSkills['att_spd_bonus'] ?? 0);
-            $skillCritRngBonus = (int)($wSkills['crit_rng_bonus'] ?? 0);
-            $skillParryBonus = (int)($wSkills['parry_bonus'] ?? 0);
-            $totalWeaponParry = $parMod + $skillParryBonus;
+            $weapQualTokens = is_array($weapQual) ? $weapQual : array_map('trim', preg_split('/(\|\||,)/', (string)$weapQual));
+            $catAttBonus = 0;
+            $catDmgBonus = 0;
+            $catParryBonus = 0;
+            $catAttSpdBonus = 0;
+            $catCritRngBonus = 0;
+            foreach ($weapQualTokens as $tok) {
+                if (empty($tok)) continue;
+                $cat = TraitEvaluator::extractWeaponCat($tok);
+                $catAttBonus = max($catAttBonus, (int)$modifierEngine->getTotal('WeapAtt_' . $cat));
+                $catDmgBonus = max($catDmgBonus, (int)$modifierEngine->getTotal('WeapDmg_' . $cat));
+                $catParryBonus = max($catParryBonus, (int)$modifierEngine->getTotal('WeapPar_' . $cat));
+                $catAttSpdBonus = max($catAttSpdBonus, (int)$modifierEngine->getTotal('WeapAttSpd_' . $cat));
+                $catCritRngBonus = max($catCritRngBonus, (int)$modifierEngine->getTotal('WeapCrit_' . $cat));
+            }
+
+            $skillAttBonus = max((int)($wSkills['attack_bonus'] ?? 0), $catAttBonus);
+            $skillDmgBonus = max((int)($wSkills['damage_bonus'] ?? 0), $catDmgBonus);
+            $skillAttSpdBonus = max((int)($wSkills['att_spd_bonus'] ?? 0), $catAttSpdBonus);
+            $skillCritRngBonus = max((int)($wSkills['crit_rng_bonus'] ?? 0), $catCritRngBonus);
+            $skillParryBonus = max((int)($wSkills['parry_bonus'] ?? 0), $catParryBonus);
+            $totalWeaponParry = $parMod + $skillParryBonus + $itemParryBonus;
             $maneuvers = $wSkills['maneuvers'] ?? [];
 
-            $baseAP = max(5, 8 + $currentSizeId + $weaponSizeVal - $skillAttSpdBonus) - (int)$modifierEngine->getTotal('AttSpd');
+            $baseAP = max(5, 8 + $currentSizeId + $weaponSizeVal - $skillAttSpdBonus - $itemAttSpdBonus) - (int)$modifierEngine->getTotal('AttSpd');
             $isProjectile = !empty($ammoRequired) || ((int)($wRef['Subtype'] ?? 0) === 7);
 
             $isEquippedLoc = (($wItem['location'] ?? EquipmentManager::LOCATION_EQUIPPED) === EquipmentManager::LOCATION_EQUIPPED);
@@ -1553,15 +1632,15 @@ class EntityEngine
                                 $parsedAmmoDmg = self::parseWeaponDamageFormula(
                                     $aDmgStr,
                                     $abilityModsMap,
-                                    $skillDmgBonus + $weaponFlatDmg,
+                                    $skillDmgBonus + $weaponFlatDmg + $itemDmgBonus,
                                     $charDmgMod,
                                     false
                                 );
 
                                 $totalRange = $aRange + $range;
-                                $netCritRng = 20 - ($critRng + $aCritRng + $skillCritRngBonus);
+                                $netCritRng = 20 - ($critRng + $aCritRng + $skillCritRngBonus + $itemCritRngBonus);
                                 $netCritMul = 2 + $critMul + $aCritMul;
-                                $ammoAttCheck = $statAtt + $sizeCombatMod + $aAttMod + $skillAttBonus + $charAttMod;
+                                $ammoAttCheck = $statAtt + $sizeCombatMod + $aAttMod + $skillAttBonus + $charAttMod + $itemAttBonus;
 
                                 // Check inventory possession
                                 $inInv = false;
@@ -1609,10 +1688,10 @@ class EntityEngine
                         'avg_damage' => 4.5,
                         'range' => ($range > 0 ? "{$range} m" : '16 m'),
                         'range_meters' => $range > 0 ? $range : 16,
-                        'crit_range' => 20 - $critRng,
+                        'crit_range' => 20 - ($critRng + $itemCritRngBonus),
                         'crit_multiplier' => 2 + $critMul,
                         'crit_display' => '20 (x2)',
-                        'attack_bonus' => $statAtt + $sizeCombatMod + $skillAttBonus + $charAttMod,
+                        'attack_bonus' => $statAtt + $sizeCombatMod + $skillAttBonus + $charAttMod + $itemAttBonus,
                         'parry_bonus' => $totalWeaponParry,
                     ];
                 }
@@ -1621,6 +1700,7 @@ class EntityEngine
                     'id' => $wId,
                     'name' => $wItem['name'] ?? 'Weapon',
                     'slot' => $wItem['slot'] ?? 'main_hand',
+                    'size' => $weaponSizeVal,
                     'size_abbr' => $weaponSizeAbbr,
                     'ap' => $baseAP,
                     'is_ranged' => true,
@@ -1669,12 +1749,12 @@ class EntityEngine
                 ];
             } else {
                 // Melee / Shields
-                $attBonus1H = $statAtt + $sizeCombatMod + $skillAttBonus + $charAttMod;
+                $attBonus1H = $statAtt + $sizeCombatMod + $skillAttBonus + $charAttMod + $itemAttBonus;
 
                 $parsed1H = self::parseWeaponDamageFormula(
                     $dmgTraitStr,
                     $abilityModsMap,
-                    $skillDmgBonus,
+                    $skillDmgBonus + $itemDmgBonus,
                     $charDmgMod,
                     false,
                     !$onlyRanged
@@ -1683,14 +1763,14 @@ class EntityEngine
                 $parsed2H = self::parseWeaponDamageFormula(
                     $dmgTraitStr,
                     $abilityModsMap,
-                    $skillDmgBonus,
+                    $skillDmgBonus + $itemDmgBonus,
                     $charDmgMod,
                     true,
                     !$onlyRanged
                 );
 
                 $reachDisplay = $onlyRanged ? "{$range} m" : ($minReach . '-' . max(0, $maxReach + (int)($sizeRow['Reach'] ?? 1.5) - 1) . ' sq');
-                $netCritRng = $critRng + $skillCritRngBonus;
+                $netCritRng = $critRng + $skillCritRngBonus + $itemCritRngBonus;
                 $critRangeVal = 20 - $netCritRng;
                 $critMulVal = 2 + $critMul;
                 $critDisplayStr = ($critRangeVal < 20 ? "{$critRangeVal}-20" : "20") . " (x{$critMulVal})";
@@ -1699,6 +1779,7 @@ class EntityEngine
                     'id' => $wId,
                     'name' => $wItem['name'] ?? 'Weapon',
                     'slot' => $wItem['slot'] ?? 'main_hand',
+                    'size' => $weaponSizeVal,
                     'size_abbr' => $weaponSizeAbbr,
                     'ap' => $baseAP,
                     'is_ranged' => $onlyRanged,
@@ -1757,11 +1838,16 @@ class EntityEngine
 
         if (!empty($rawNat)) {
             $natBlocks = explode('}', $rawNat);
-            $natSkills = self::evaluateWeaponSkillsForQual('Nat || Gen', $effectiveSkillRanks, $context);
-            $natAttSkill = (int)($natSkills['attack_bonus'] ?? 0);
-            $natDmgSkill = (int)($natSkills['damage_bonus'] ?? 0);
-            $natAttSpdSkill = (int)($natSkills['att_spd_bonus'] ?? 0);
-            $natCritRngSkill = (int)($natSkills['crit_rng_bonus'] ?? 0);
+            $natSkills = self::evaluateWeaponSkillsForQual('Nat || Gen || Brl', $effectiveSkillRanks, $context);
+            $catAttBonus = max((int)$modifierEngine->getTotal('WeapAtt_Nat'), (int)$modifierEngine->getTotal('WeapAtt_Gen'), (int)$modifierEngine->getTotal('WeapAtt_Brl'));
+            $catDmgBonus = max((int)$modifierEngine->getTotal('WeapDmg_Nat'), (int)$modifierEngine->getTotal('WeapDmg_Gen'), (int)$modifierEngine->getTotal('WeapDmg_Brl'));
+            $catAttSpdBonus = max((int)$modifierEngine->getTotal('WeapAttSpd_Nat'), (int)$modifierEngine->getTotal('WeapAttSpd_Gen'), (int)$modifierEngine->getTotal('WeapAttSpd_Brl'));
+            $catCritRngBonus = max((int)$modifierEngine->getTotal('WeapCrit_Nat'), (int)$modifierEngine->getTotal('WeapCrit_Gen'), (int)$modifierEngine->getTotal('WeapCrit_Brl'));
+
+            $natAttSkill = max((int)($natSkills['attack_bonus'] ?? 0), $catAttBonus);
+            $natDmgSkill = max((int)($natSkills['damage_bonus'] ?? 0), $catDmgBonus);
+            $natAttSpdSkill = max((int)($natSkills['att_spd_bonus'] ?? 0), $catAttSpdBonus);
+            $natCritRngSkill = max((int)($natSkills['crit_rng_bonus'] ?? 0), $catCritRngBonus);
             $penRed = (int)$modifierEngine->getTotal('MultiAttackPenRed') + (int)$modifierEngine->getTotal('ImprSec');
 
             foreach ($natBlocks as $nIdx => $block) {
@@ -1808,6 +1894,7 @@ class EntityEngine
                 $natRange = 0;
                 $natOnlyRanged = false;
                 $hasExplicitDmg = false;
+                $natAttModTrait = '';
 
                 foreach ($defTraits as $dt) {
                     if ($dt['type'] === 'Weapon' || $dt['type'] === 'Attack') {
@@ -1822,6 +1909,7 @@ class EntityEngine
                         if (isset($dt['params']['MaxReach'])) $natMaxReach = (int)$dt['params']['MaxReach'];
                         if (isset($dt['params']['Range'])) $natRange = (int)$dt['params']['Range'];
                         if (!empty($dt['params']['OnlyRanged'])) $natOnlyRanged = true;
+                        if (!empty($dt['params']['AttMod'])) $natAttModTrait = $dt['params']['AttMod'];
                     }
                 }
 
@@ -1842,6 +1930,7 @@ class EntityEngine
                         if (isset($ct['params']['MaxReach'])) $natMaxReach = (int)$ct['params']['MaxReach'];
                         if (isset($ct['params']['Range'])) $natRange = (int)$ct['params']['Range'];
                         if (!empty($ct['params']['OnlyRanged'])) $natOnlyRanged = true;
+                        if (!empty($ct['params']['AttMod'])) $natAttModTrait = $ct['params']['AttMod'];
                     }
                 }
 
@@ -1864,8 +1953,34 @@ class EntityEngine
                 );
 
                 $secPen = $isPrim ? 0 : max(0, 4 - $penRed);
-                $natAttBonus = $strMod + $sizeCombatMod + $natAttSkill + (int)$modifierEngine->getTotal('Att') - $secPen;
-                $natAP = max(4, 8 + $currentSizeId + $natSizeOffset - $natAttSpdSkill) - (int)$modifierEngine->getTotal('AttSpd');
+
+                $defaultNatStat = $natOnlyRanged ? $dexMod : $strMod;
+                $statNatAtt = $defaultNatStat;
+                if (!empty($natAttModTrait)) {
+                    $evalContext = array_merge($context, [
+                        'StrMod' => $strMod,
+                        'DexMod' => $dexMod,
+                        'ConMod' => $conMod,
+                        'IntMod' => $intMod,
+                        'WisMod' => $wisMod,
+                        'ChaMod' => $chaMod,
+                        'STRMOD' => $strMod,
+                        'DEXMOD' => $dexMod,
+                        'CONMOD' => $conMod,
+                        'INTMOD' => $intMod,
+                        'WISMOD' => $wisMod,
+                        'CHAMOD' => $chaMod,
+                    ]);
+                    $evalRes = TraitEvaluator::evaluateExpression($natAttModTrait, $evalContext);
+                    if (is_numeric($evalRes)) {
+                        $statNatAtt = (int)$evalRes;
+                    } elseif (preg_match('/^([+-]?\d+)$/', trim((string)$natAttModTrait), $numM)) {
+                        $statNatAtt = $defaultNatStat + (int)$numM[1];
+                    }
+                }
+
+                $natAttBonus = $statNatAtt + $sizeCombatMod + $natAttSkill + (int)$modifierEngine->getTotal('Att') - $secPen;
+                $natAP = max(5, 8 + $currentSizeId + $natSizeOffset - $natAttSpdSkill) - (int)$modifierEngine->getTotal('AttSpd');
                 $netNatCritRng = 20 - ($natCritRng + $natCritRngSkill);
                 $netNatCritMul = 2 + $natCritMul;
                 $reachStrNat = $natOnlyRanged ? "{$natRange} m" : ($natMinReach . '-' . max(0, $natMaxReach + (int)($sizeRow['Reach'] ?? 1.5) - 1) . ' sq');
@@ -1882,6 +1997,8 @@ class EntityEngine
                     'name' => $dispName,
                     'raw_name' => $attackName,
                     'quantity' => $qty,
+                    'qty' => $qty,
+                    'size' => $natSizeOffset,
                     'primary' => $isPrim,
                     'is_primary' => $isPrim,
                     'size_abbr' => $attackSizeAbbr,
@@ -2277,7 +2394,7 @@ class EntityEngine
                 'size_id' => $currentSizeId,
                 'size_combat_mod' => (int)($sizeRow['CombatMod'] ?? 0),
                 'size_grapple_mod' => (int)($sizeRow['GrappleMod'] ?? 0),
-                'size_name' => $sizeRow['Name'] ?? 'Medium',
+                'size_name' => $sizeRow['Description'] ?? $sizeRow['Name'] ?? 'Medium',
                 'size_abbr' => $sizeRow['Abbreviation'] ?? 'M',
                 'body_type_id' => $bodyTypeId,
                 'body_type_name' => $bodyTypeRow['Description'] ?? 'Biped',
@@ -2285,7 +2402,7 @@ class EntityEngine
                 'mental_age' => $mentalAge,
                 'physical_age_cat' => $physicalAgeCat,
                 'mental_age_cat' => $mentalAgeCat,
-                'space' => (float)($sizeRow['Space'] ?? 1.5) . 'x' . (float)($sizeRow['Space'] ?? 1.5) . ' sq',
+                'space' => !empty($sizeRow['Space']) ? (string)$sizeRow['Space'] : '1x1 sq',
                 'reach' => (float)($sizeRow['Reach'] ?? 1.5),
             ],
             'base_abilities' => [
@@ -3764,52 +3881,81 @@ class EntityEngine
         $options = [];
         $vaRank = (float)($calcState['skills'][52] ?? $calcState['skill_ranks'][52] ?? 0.0);
         $vaBonus = $vitalAttack ? (2.0 + ($vaRank / 6.0)) : 0.0;
+        $currentSizeId = (int)($calcState['heritage']['current_size_id'] ?? $calcState['heritage']['size_id'] ?? 0);
+        $akimboRank = (float)($calcState['skills'][49] ?? $calcState['skill_ranks'][49] ?? 0.0);
+        $multiAttackPenRed = (int)floor(($akimboRank + 3.0) / 5.0);
+        $imprSec = ($akimboRank >= 3.0) ? 'greater' : (($akimboRank >= 1.0) ? 'lesser' : 'none');
 
         // 1. Equipped Weapons
         $weapons = array_values($calcState['attacks']['weapons'] ?? []);
         if (!empty($weapons)) {
-            // Single weapon 1H / 2H
             $w0 = $weapons[0];
-            $is2H = !empty($w0['badges']['2H']) || (isset($w0['slot']) && $w0['slot'] === 'two_hand') || count($weapons) === 1;
-            $wAtt = $is2H ? (float)$w0['two_handed']['attack_bonus'] : (float)$w0['one_handed']['attack_bonus'];
-            $wDmg = $is2H ? (float)$w0['two_handed']['avg_damage'] : (float)$w0['one_handed']['avg_damage'];
-            $critRng = (float)max(0, 20 - (int)($w0['crit_range'] ?? 20));
-            $critMul = (float)($w0['crit_multiplier'] ?? 2.0);
-            $ap = max(4, (int)($w0['ap'] ?? 6));
+            if (count($weapons) === 1) {
+                // Single weapon wielded: check if versatile/2H
+                $is2H = !empty($w0['badges']['2H']) || (isset($w0['slot']) && $w0['slot'] === 'two_hand') || empty($w0['badges']['Shield']);
+                $wAtt = $is2H ? (float)$w0['two_handed']['attack_bonus'] : (float)$w0['one_handed']['attack_bonus'];
+                $wDmg = $is2H ? (float)$w0['two_handed']['avg_damage'] : (float)$w0['one_handed']['avg_damage'];
+                $critRng = (float)max(0, 20 - (int)($w0['crit_range'] ?? 20));
+                $critMul = (float)($w0['crit_multiplier'] ?? 2.0);
+                $ap = max(4, (int)($w0['ap'] ?? 6));
 
-            $options[] = [
-                'name' => ($w0['name'] ?? 'Weapon') . ($is2H ? ' (2H)' : ' (1H)'),
-                'ap' => $ap,
-                'strikes' => [
-                    ['attack_bonus' => $wAtt, 'avg_damage' => $wDmg, 'crit_range' => $critRng, 'crit_multiplier' => $critMul]
-                ]
-            ];
+                $options[] = [
+                    'name' => ($w0['name'] ?? 'Weapon') . ($is2H ? ' (2H)' : ' (1H)'),
+                    'ap' => $ap,
+                    'strikes' => [
+                        ['attack_bonus' => $wAtt, 'avg_damage' => $wDmg, 'crit_range' => $critRng, 'crit_multiplier' => $critMul]
+                    ]
+                ];
+            } else {
+                // Multiple weapons equipped (e.g. main hand + off hand)
+                // Option A: Single strike with Main Hand (1H)
+                $critRng0 = (float)max(0, 20 - (int)($w0['crit_range'] ?? 20));
+                $critMul0 = (float)($w0['crit_multiplier'] ?? 2.0);
+                $options[] = [
+                    'name' => ($w0['name'] ?? 'Main Hand') . ' (1H)',
+                    'ap' => max(4, (int)($w0['ap'] ?? 6)),
+                    'strikes' => [
+                        ['attack_bonus' => (float)$w0['one_handed']['attack_bonus'], 'avg_damage' => (float)$w0['one_handed']['avg_damage'], 'crit_range' => $critRng0, 'crit_multiplier' => $critMul0]
+                    ]
+                ];
 
-            // Dual wielding if 2+ weapons
-            if (count($weapons) > 1 && (($calcState['skills'][49] ?? 0) > 2 || count($weapons) >= 2)) {
+                // Option B: Dual-wielding combo attack
                 $w1 = $weapons[1];
                 $dwAP = max(4, (int)$w0['ap'] + (int)$w1['ap'] - 2);
-                $pen = 6;
+
+                $w0SizeDiff = (int)($w0['size'] ?? 0) - $currentSizeId;
+                $w1SizeDiff = (int)($w1['size'] ?? 0) - $currentSizeId;
+                $w0SizeMod = ($w0SizeDiff >= 0 ? 4 : ($w0SizeDiff < -2 ? -4 : ($w0SizeDiff < -1 ? -2 : 0)));
+                $w1SizeMod = ($w1SizeDiff >= 0 ? 4 : ($w1SizeDiff < -2 ? -4 : ($w1SizeDiff < -1 ? -2 : 0)));
+
+                $w0Pen = max(0, max(0, 6 + $w0SizeMod) - $multiAttackPenRed);
+                $w1Pen = max(0, max(0, 6 + $w1SizeMod) - $multiAttackPenRed);
+                $isSecW1 = !empty($w1['is_secondary']) || (isset($w1['primary']) && !$w1['primary']);
+                $secPen = $isSecW1 ? ($imprSec === 'greater' ? 0 : ($imprSec === 'lesser' ? 2 : 4)) : 0;
+
+                $critRng1 = (float)max(0, 20 - (int)($w1['crit_range'] ?? 20));
+                $critMul1 = (float)($w1['crit_multiplier'] ?? 2.0);
+
                 $options[] = [
                     'name' => ($w0['name'] ?? 'Weapon 1') . ' + ' . ($w1['name'] ?? 'Weapon 2'),
                     'ap' => $dwAP,
                     'strikes' => [
-                        ['attack_bonus' => (float)$w0['one_handed']['attack_bonus'] - $pen, 'avg_damage' => (float)$w0['one_handed']['avg_damage'], 'crit_range' => (float)max(0, 20 - (int)$w0['crit_range']), 'crit_multiplier' => (float)$w0['crit_multiplier']],
-                        ['attack_bonus' => (float)$w1['one_handed']['attack_bonus'] - $pen, 'avg_damage' => (float)$w1['one_handed']['avg_damage'], 'crit_range' => (float)max(0, 20 - (int)$w1['crit_range']), 'crit_multiplier' => (float)$w1['crit_multiplier']],
+                        ['attack_bonus' => (float)$w0['one_handed']['attack_bonus'] - $w0Pen, 'avg_damage' => (float)$w0['one_handed']['avg_damage'], 'crit_range' => $critRng0, 'crit_multiplier' => $critMul0],
+                        ['attack_bonus' => (float)$w1['one_handed']['attack_bonus'] - $w1Pen - $secPen, 'avg_damage' => (float)$w1['one_handed']['avg_damage'], 'crit_range' => $critRng1, 'crit_multiplier' => $critMul1],
                     ]
                 ];
             }
         }
 
         // 2. Natural Attacks
-        $nats = array_values($calcState['attacks']['natural'] ?? []);
-        if (!empty($nats)) {
-            // Single primary strikes
-            foreach ($nats as $na) {
+        $rawNats = array_values($calcState['attacks']['natural'] ?? []);
+        if (!empty($rawNats)) {
+            // Single primary strikes (0 penalty)
+            foreach ($rawNats as $na) {
                 if (!empty($na['primary'])) {
                     $options[] = [
                         'name' => $na['name'] ?? 'Natural Attack',
-                        'ap' => max(4, (int)($na['ap'] ?? 6)),
+                        'ap' => max(4, (int)($na['ap'] ?? 5)),
                         'strikes' => [
                             ['attack_bonus' => (float)$na['attack_bonus'], 'avg_damage' => (float)$na['avg_damage'], 'crit_range' => (float)max(0, 20 - (int)($na['crit_range'] ?? 20)), 'crit_multiplier' => (float)($na['crit_multiplier'] ?? 2.0)]
                         ]
@@ -3817,25 +3963,50 @@ class EntityEngine
                 }
             }
 
-            // Natural Attack combos
-            if (count($nats) >= 2) {
-                $totalNatAP = 0;
-                $strikes = [];
-                foreach ($nats as $na) {
-                    $totalNatAP += (int)($na['ap'] ?? 6);
-                    $strikes[] = [
-                        'attack_bonus' => (float)$na['attack_bonus'],
-                        'avg_damage' => (float)$na['avg_damage'],
-                        'crit_range' => (float)max(0, 20 - (int)($na['crit_range'] ?? 20)),
-                        'crit_multiplier' => (float)($na['crit_multiplier'] ?? 2.0),
+            // Expand natural attacks into individual attack items
+            $expandedNats = [];
+            foreach ($rawNats as $na) {
+                $q = max(1, (int)($na['quantity'] ?? $na['qty'] ?? 1));
+                for ($k = 0; $k < $q; $k++) {
+                    $expandedNats[] = $na;
+                }
+            }
+
+            $numExpanded = count($expandedNats);
+            if ($numExpanded >= 2) {
+                // Test combos of lengths K = 2, 3, 4, ... up to min(7, $numExpanded)
+                $discounts = [2 => -2, 3 => -4, 4 => -6, 5 => -9, 6 => -12, 7 => -16];
+                for ($k = 2; $k <= min(7, $numExpanded); $k++) {
+                    $subset = array_slice($expandedNats, 0, $k);
+                    $totAP = 0;
+                    foreach ($subset as $subNa) {
+                        $totAP += (int)($subNa['ap'] ?? 5);
+                    }
+                    $comboAP = max(5, $totAP + ($discounts[$k] ?? 0));
+                    $baseMultiPen = 4 + 2 * $k;
+                    $passedPen = max(0, $baseMultiPen - 4);
+
+                    $strikes = [];
+                    foreach ($subset as $sIdx => $subNa) {
+                        $netPen = max(0, $passedPen - $multiAttackPenRed);
+                        $strikes[] = [
+                            'attack_bonus' => (float)$subNa['attack_bonus'] - $netPen,
+                            'avg_damage' => (float)$subNa['avg_damage'],
+                            'crit_range' => (float)max(0, 20 - (int)($subNa['crit_range'] ?? 20)),
+                            'crit_multiplier' => (float)($subNa['crit_multiplier'] ?? 2.0),
+                        ];
+                    }
+
+                    $comboName = ($k === 2 && ($subset[0]['raw_name'] ?? '') === ($subset[1]['raw_name'] ?? ''))
+                        ? ("2 " . ($subset[0]['raw_name'] ?? 'Attack'))
+                        : ($k === $numExpanded ? 'Full Natural Attack' : "{$k}-Attack Natural Combo");
+
+                    $options[] = [
+                        'name' => $comboName,
+                        'ap' => $comboAP,
+                        'strikes' => $strikes,
                     ];
                 }
-                $comboAP = max(5, $totalNatAP - (count($nats) - 1) * 2);
-                $options[] = [
-                    'name' => 'Full Natural Attack',
-                    'ap' => $comboAP,
-                    'strikes' => $strikes,
-                ];
             }
         }
 
@@ -4109,13 +4280,37 @@ class EntityEngine
                 ];
             }
         } else {
-            foreach ($itemConfigs as $ic) {
+            foreach ($itemConfigs as $idx => $ic) {
                 $inst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem($ic);
                 if ($inst && isset($inst['entity']) && is_object($inst['entity'])) {
                     $ent = $inst['entity'];
                     $rId = (int)$ent->Item;
                     $refItem = self::$itemsCache[$rId] ?? [];
+                    $modTraits = [];
+                    foreach ($ent->lMods ?? [] as $mId) {
+                        $mRow = self::$mundaneModsCache[$mId] ?? null;
+                        if ($mRow && !empty($mRow['Traits'])) {
+                            $modTraits[] = $mRow['Traits'];
+                        }
+                    }
+                    foreach ($ent->lModsMagic ?? [] as $mIdx => $mId) {
+                        $mRow = self::$magicModsCache[$mId] ?? null;
+                        if ($mRow && !empty($mRow['Traits'])) {
+                            $trStr = $mRow['Traits'];
+                            if (isset($ent->lModsParX[$mIdx])) {
+                                $trStr = str_replace('(x)', (string)$ent->lModsParX[$mIdx], $trStr);
+                            }
+                            if (isset($ent->lModsParY[$mIdx])) {
+                                $trStr = str_replace('(y)', (string)$ent->lModsParY[$mIdx], $trStr);
+                            }
+                            $modTraits[] = $trStr;
+                        }
+                    }
+                    $customTraitsStr = implode(' ', $modTraits);
+
                     $possessions[] = [
+                        'id' => "item_{$rId}_{$idx}",
+                        'uid' => "item_{$rId}_{$idx}",
                         'item_id' => $rId,
                         'name' => $inst['name'] ?? ($refItem['Name'] ?? 'Item'),
                         'item_type' => (int)$ent->GetItemType(),
@@ -4124,7 +4319,9 @@ class EntityEngine
                         'ec_mod' => (int)$inst['ec'],
                         'locations' => [2, 2, 2, 2, 2],
                         'ref_data' => $refItem,
-                        'custom_traits' => $inst['traits'] ?? '',
+                        'custom_traits' => $customTraitsStr,
+                        'size' => (int)$ent->GetCurrentSize(),
+                        'dmg_dice' => (int)($ent->TraitEffects->DmgDice ?? 0),
                     ];
                 }
             }

@@ -63,7 +63,7 @@ class AnalysisController extends Controller
 
     public function getClassBenchmarks(int $lvl, string $equipMode = 'basic'): array
     {
-        return Cache::remember("analysis.class_benchmarks.v4.lvl_{$lvl}.{$equipMode}", 86400, function () use ($lvl, $equipMode) {
+        return Cache::remember("analysis.class_benchmarks.v6.lvl_{$lvl}.{$equipMode}", 86400, function () use ($lvl, $equipMode) {
             $classes = [
                 "Bard" => "Bard { Str=10; Con=8; Dex=14; Int=12; Wis=12; Cha=16; Class=Bard; Lvl={$lvl}; Weapon1=Mw rapier (Item=Rapier: Mod=MwMeleeWp:); Weapon2=Mw buckler (Item=Buckler: Mod=MwShield:); Armor=Mw chain shirt (Item=Chain shirt: Mod=MwArmor:); }",
                 "Cleric" => "Cleric { Str=12; Con=12; Dex=10; Int=8; Wis=16; Cha=14; Class=Cleric of War; Lvl={$lvl}; Weapon1=Mw flail (Item=Flail: Mod=MwMeleeWp:); Weapon2=Mw shield (Item=Shield, heavy wooden: Mod=MwShield:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor:); }",
@@ -112,7 +112,7 @@ class AnalysisController extends Controller
 
     public function getCreatureBenchmarks(): array
     {
-        return Cache::remember("analysis.creature_benchmarks.v4", 86400, function () {
+        return Cache::remember("analysis.creature_benchmarks.v6", 86400, function () {
             $creatureIds = [
                 1, 3, 7, 12, 16, 18, 23, 54, 57, 157, 161, 162, 180, 190, 197, 228, 22, 284, 109, 317, 323, 352, 49, 59, 116, 151, 266, 290, 294, 36, 68, 91, 132, 166
             ];
@@ -147,7 +147,7 @@ class AnalysisController extends Controller
 
     public function getWeaponDprMatrix(int $lvl, string $equipMode = 'basic'): array
     {
-        return Cache::remember("analysis.weapon_dpr.v4.lvl_{$lvl}.{$equipMode}", 86400, function () use ($lvl, $equipMode) {
+        return Cache::remember("analysis.weapon_dpr.v6.lvl_{$lvl}.{$equipMode}", 86400, function () use ($lvl, $equipMode) {
             $weaponConfigs = [
                 ['race' => 1, 'name' => 'Fighter (Longsword + Shield)', 'config' => "Fighter { Str=16; Con=14; Dex=12; Int=8; Wis=12; Cha=10; Class=Fighter; Lvl={$lvl}; Weapon1=Mw longsword (Item=Sword, long-: Mod=MwMeleeWp:); Weapon2=Mw shield (Item=Shield, heavy wooden: Mod=MwShield:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor:); }", 'va' => false],
                 ['race' => 1, 'name' => 'Fighter (Battleaxe + Shield)', 'config' => "Fighter { Str=16; Con=14; Dex=12; Int=8; Wis=12; Cha=10; Class=Axe Fighter; Lvl={$lvl}; Weapon1=Mw battleaxe (Item=Axe, battle-: Mod=MwMeleeWp:); Weapon2=Mw shield (Item=Shield, heavy wooden: Mod=MwShield:); Armor=Mw full plate (Item=Full plate: Mod=MwArmor:); }", 'va' => false],
@@ -215,7 +215,7 @@ class AnalysisController extends Controller
 
     public function getCasterProgression(int $lvl, string $equipMode = 'basic'): array
     {
-        return Cache::remember("analysis.caster_progression.v4.lvl_{$lvl}.{$equipMode}", 86400, function () use ($lvl, $equipMode) {
+        return Cache::remember("analysis.caster_progression.v6.lvl_{$lvl}.{$equipMode}", 86400, function () use ($lvl, $equipMode) {
             $casters = [
                 ["name" => "Bard", "spelllvl" => "{$lvl}/1", "discount1" => "({$lvl}+CHAMOD)/5", "discount2" => "({$lvl}+CHAMOD)/5", "config" => "Bard { Str=10; Con=8; Dex=14; Int=12; Wis=12; Cha=16; Class=Bard; Lvl={$lvl}; }"],
                 ["name" => "Cleric", "spelllvl" => "{$lvl}/1", "discount1" => "({$lvl}+2*WISMOD)/5", "discount2" => "({$lvl}+2*WISMOD)/3", "config" => "Cleric { Str=12; Con=12; Dex=10; Int=8; Wis=16; Cha=14; Class=Cleric of War; Lvl={$lvl}; }"],
