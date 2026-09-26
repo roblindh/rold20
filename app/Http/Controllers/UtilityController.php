@@ -538,6 +538,32 @@ class UtilityController extends Controller
             'psicrystal' => \App\Services\Entity\SpecialCompanionService::getEligibleBaseCreatures('psicrystal', 20, $masterSize),
         ];
 
+        $organizations = DB::table('ref_organizations')
+            ->leftJoin('ref_organizationtypes', 'ref_organizations.Type', '=', 'ref_organizationtypes.ID')
+            ->select(
+                'ref_organizations.ID',
+                'ref_organizations.Name',
+                'ref_organizations.Type',
+                'ref_organizations.Scale',
+                'ref_organizationtypes.Type as TypeName'
+            )
+            ->orderBy('ref_organizations.Name')
+            ->get();
+        $organizationsMap = $organizations->keyBy('ID');
+
+        $rawOrgs = $character->Organizations ?? null;
+        $characterOrganizations = [];
+        if (!empty($rawOrgs)) {
+            if (is_array($rawOrgs)) {
+                $characterOrganizations = $rawOrgs;
+            } elseif (is_string($rawOrgs)) {
+                $decodedOrgs = json_decode($rawOrgs, true);
+                if (is_array($decodedOrgs)) {
+                    $characterOrganizations = $decodedOrgs;
+                }
+            }
+        }
+
         return view('utilities.charview', compact(
             'character', 'calculatedState', 'activeConfig', 'allCharacters', 'myCharacters', 'race', 'templates', 'template', 'culture', 'bgClass',
             'classesMap', 'skillsMap', 'specializationsMap', 'improvementsMap', 'spellsMap', 'spellOptionsMap', 'itemsMap',
@@ -545,7 +571,8 @@ class UtilityController extends Controller
             'classes', 'skillAccess', 'skillTypes', 'skills', 'skillSpecializations', 'improvements',
             'itemTypes', 'equipment', 'spells', 'spellOptions', 'partyMembers', 'campaignVaultFunds', 'campaignVaultItems',
             'refActions', 'commonActions', 'canManageCharacter',
-            'companionSummary', 'hasCompanionSkills', 'eligibleCompanionCreatures'
+            'companionSummary', 'hasCompanionSkills', 'eligibleCompanionCreatures',
+            'organizations', 'organizationsMap', 'characterOrganizations'
         ));
     }
 
@@ -796,7 +823,35 @@ class UtilityController extends Controller
             'InfluencePts' => 'nullable|integer|min:0',
             'ReputationDesc' => 'nullable|string|max:2000',
             'Reputation' => 'nullable|integer',
+            'Organizations' => 'nullable',
         ]);
+
+        $organizationsData = [];
+        $rawOrgs = $request->input('Organizations');
+        if (is_string($rawOrgs) && !empty($rawOrgs)) {
+            $decoded = json_decode($rawOrgs, true);
+            if (is_array($decoded)) {
+                $organizationsData = $decoded;
+            }
+        } elseif (is_array($rawOrgs)) {
+            $organizationsData = $rawOrgs;
+        }
+
+        $sanitizedOrgs = [];
+        $orgsDb = DB::table('ref_organizations')->get()->keyBy('ID');
+        foreach ($organizationsData as $item) {
+            if (!is_array($item)) continue;
+            $orgId = (int)($item['id'] ?? $item['ID'] ?? 0);
+            if ($orgId <= 0) continue;
+            $orgRow = $orgsDb->get($orgId);
+            $orgName = $orgRow ? $orgRow->Name : (string)($item['name'] ?? "Organization #{$orgId}");
+            $sanitizedOrgs[] = [
+                'id' => $orgId,
+                'name' => $orgName,
+                'influence_pts' => max(0, (int)($item['influence_pts'] ?? $item['InfluencePts'] ?? 0)),
+                'is_member' => !empty($item['is_member']) || !empty($item['IsMember']),
+            ];
+        }
 
         if ($validated['Name'] !== $character->Name) {
             $exists = DB::table('characters')->where('Name', $validated['Name'])->where('ID', '!=', $id)->first();
@@ -815,6 +870,7 @@ class UtilityController extends Controller
             'InfluencePts' => isset($validated['InfluencePts']) ? (int)$validated['InfluencePts'] : $character->InfluencePts,
             'ReputationDesc' => $validated['ReputationDesc'] ?? '',
             'Reputation' => isset($validated['Reputation']) ? (int)$validated['Reputation'] : $character->Reputation,
+            'Organizations' => !empty($sanitizedOrgs) ? json_encode($sanitizedOrgs) : null,
         ]);
 
         return back()->with('status', "Profile details for '{$validated['Name']}' updated successfully!");

@@ -1,6 +1,6 @@
 <!-- Modify Character Profile Modal -->
 <div x-show="showModifyModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showModifyModal = false">
-    <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col" @click.outside="showModifyModal = false">
+    <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col" @click.outside="showModifyModal = false">
         <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
             <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
                 <span>✏️</span>
@@ -36,33 +36,100 @@
             <!-- Appearance -->
             <div>
                 <label for="mod_appearance" class="block text-xs font-bold uppercase text-slate-700 mb-1">Physical Appearance &amp; Mannerisms</label>
-                <textarea id="mod_appearance" name="Appearance" rows="3" placeholder="Describe hair, eye color, height, scars, attire, mannerisms..."
+                <textarea id="mod_appearance" name="Appearance" rows="2" placeholder="Describe hair, eye color, height, scars, attire, mannerisms..."
                           class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">{{ $character->Appearance ?? '' }}</textarea>
             </div>
 
             <!-- Personality -->
             <div>
                 <label for="mod_personality" class="block text-xs font-bold uppercase text-slate-700 mb-1">Personality &amp; Quirks</label>
-                <textarea id="mod_personality" name="Personality" rows="3" placeholder="Core personality traits, ideals, flaws, quirks..."
+                <textarea id="mod_personality" name="Personality" rows="2" placeholder="Core personality traits, ideals, flaws, quirks..."
                           class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">{{ $character->Personality ?? '' }}</textarea>
             </div>
 
             <!-- Influence & Reputation -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-200">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2 border-t border-slate-200">
+                <!-- Influence Column -->
                 <div class="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
                     <div class="font-bold text-xs text-slate-900 flex items-center justify-between">
                         <span>🏛️ Influence Details</span>
                         <div class="flex items-center gap-1">
                             <span class="text-[10px] text-slate-500">Points:</span>
-                            <input type="number" name="InfluencePts" value="{{ $character->InfluencePts ?? 0 }}" min="0"
+                            <input type="number" name="InfluencePts" x-model.number="modifyInfluencePts" min="0"
                                    class="w-16 px-1.5 py-0.5 border border-slate-300 rounded text-xs text-right font-mono font-bold">
                         </div>
                     </div>
-                    <textarea name="InfluenceDesc" rows="2" placeholder="Allies, guild connections, political favors..."
+                    <textarea name="InfluenceDesc" rows="2" placeholder="Allies, political favors, notes..."
                               class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs text-black focus:ring-1 focus:ring-indigo-500">{{ $character->InfluenceDesc ?? '' }}</textarea>
+
+                    <!-- Affiliated Organizations & Faction Influence -->
+                    <div class="mt-2.5 pt-2.5 border-t border-slate-200/80 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <div class="text-[11px] font-bold text-slate-800 flex items-center gap-1.5">
+                                <span>🏰</span>
+                                <span>Organizations &amp; Factions</span>
+                            </div>
+                            <button type="button" @click="addModifyOrganization()"
+                                    class="px-2 py-0.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded text-[11px] font-bold flex items-center gap-1 transition cursor-pointer">
+                                <span>+</span> Add Org
+                            </button>
+                        </div>
+
+                        <!-- Empty state -->
+                        <template x-if="modifyOrganizations.length === 0">
+                            <div class="text-[11px] text-slate-500 italic py-2 text-center bg-white/60 rounded border border-dashed border-slate-200">
+                                No organizations added. Click "+ Add Org" to affiliate with a faction, temple, or guild.
+                            </div>
+                        </template>
+
+                        <!-- Organizations List -->
+                        <template x-if="modifyOrganizations.length > 0">
+                            <div class="space-y-1.5 max-h-48 overflow-y-auto pr-0.5">
+                                <template x-for="(org, idx) in modifyOrganizations" :key="idx">
+                                    <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-2xs flex flex-wrap items-center gap-2">
+                                        <div class="flex-1 min-w-[140px]">
+                                            <select x-model.number="org.id" @change="onModifyOrgSelect(idx)"
+                                                    class="w-full px-2 py-1 border border-slate-300 rounded text-xs text-slate-900 focus:ring-1 focus:ring-indigo-500 bg-slate-50/50">
+                                                <template x-for="avail in allOrganizations" :key="avail.ID">
+                                                    <option :value="avail.ID" x-text="avail.Name + (avail.Scale ? ' (' + avail.Scale + ')' : '')"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+
+                                        <div class="flex items-center gap-1 shrink-0">
+                                            <span class="text-[10px] text-slate-500 font-medium">Infl:</span>
+                                            <input type="number" x-model.number="org.influence_pts" min="0" max="999" placeholder="0"
+                                                   class="w-14 px-1.5 py-1 border border-slate-300 rounded text-xs text-right font-mono font-bold text-indigo-900 focus:ring-1 focus:ring-indigo-500">
+                                        </div>
+
+                                        <label class="inline-flex items-center gap-1 text-xs text-slate-700 select-none cursor-pointer shrink-0">
+                                            <input type="checkbox" x-model="org.is_member" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                                            <span class="font-medium">Member</span>
+                                        </label>
+
+                                        <button type="button" @click="removeModifyOrganization(idx)"
+                                                class="text-slate-400 hover:text-red-600 font-bold text-sm px-1.5 py-0.5 rounded cursor-pointer transition shrink-0"
+                                                title="Remove organization">&times;</button>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <!-- Allocated summary -->
+                        <template x-if="modifyOrganizations.length > 0">
+                            <div class="text-[10px] text-slate-500 flex items-center justify-between px-0.5 pt-0.5">
+                                <span>Allocated: <strong class="text-indigo-700 font-mono font-bold" x-text="modifyAllocatedInfluence"></strong> Infl Pts</span>
+                                <span class="text-slate-400 font-mono" x-text="(modifyInfluencePts - modifyAllocatedInfluence) >= 0 ? ((modifyInfluencePts - modifyAllocatedInfluence) + ' Unassigned') : ('Exceeds pool by ' + Math.abs(modifyInfluencePts - modifyAllocatedInfluence))"></span>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Hidden JSON string input for backend -->
+                    <input type="hidden" name="Organizations" :value="JSON.stringify(modifyOrganizations)">
                 </div>
 
-                <div class="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                <!-- Reputation Column -->
+                <div class="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200 flex flex-col">
                     <div class="font-bold text-xs text-slate-900 flex items-center justify-between">
                         <span>🎖️ Reputation Details</span>
                         <div class="flex items-center gap-1">
@@ -71,8 +138,8 @@
                                    class="w-16 px-1.5 py-0.5 border border-slate-300 rounded text-xs text-right font-mono font-bold">
                         </div>
                     </div>
-                    <textarea name="ReputationDesc" rows="2" placeholder="Fame, titles, local renown, infamy..."
-                              class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs text-black focus:ring-1 focus:ring-indigo-500">{{ $character->ReputationDesc ?? '' }}</textarea>
+                    <textarea name="ReputationDesc" rows="6" placeholder="Fame, titles, local renown, infamy..."
+                              class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs text-black focus:ring-1 focus:ring-indigo-500 flex-1">{{ $character->ReputationDesc ?? '' }}</textarea>
                 </div>
             </div>
 

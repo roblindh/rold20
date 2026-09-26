@@ -2028,7 +2028,7 @@
                         <tr><td class="cvlabel" colspan="3">Titles</td></tr>
                         <tr><td class="cvsml" colspan="3">None</td></tr>
                         <tr><td class="cvlabel" colspan="3">Organizations</td></tr>
-                        <tr><td class="cvsml" colspan="3">None</td></tr>
+                        <tr><td class="cvsml" colspan="3" x-text="formatOrganizationsSummary(character.Organizations || calculatedState?.social?.organizations)"></td></tr>
                         <tr><td class="cvlabel" colspan="3">Family &amp; Relatives</td></tr>
                         <tr><td class="cvsml" colspan="3" x-text="character.Family || 'Not specified'"></td></tr>
                         <tr><td class="cvlabel" colspan="3">Connections &amp; Contacts</td></tr>
@@ -2052,7 +2052,27 @@
                         <tr><td class="cvlabel" colspan="3">Titles</td></tr>
                         <tr><td class="cvsml" colspan="3">None</td></tr>
                         <tr><td class="cvlabel" colspan="3">Organizations</td></tr>
-                        <tr><td class="cvsml" colspan="3">None</td></tr>
+                        <tr>
+                            <td class="cvsml" colspan="3">
+                                @php
+                                    $orgsList = $characterOrganizations ?? ($calc['social']['organizations'] ?? []);
+                                @endphp
+                                @if(!empty($orgsList) && count($orgsList) > 0)
+                                    <div class="space-y-0.5">
+                                        @foreach($orgsList as $org)
+                                            <div>
+                                                <span class="font-semibold">{{ $org['name'] ?? ('Organization #' . ($org['id'] ?? '')) }}</span>
+                                                <span class="text-stone-600 text-[10px]">
+                                                    (@if(!empty($org['is_member']))<span class="text-indigo-800 font-semibold">Member</span>@else<span class="text-stone-500">Associate</span>@endif@if(isset($org['influence_pts']) && (int)$org['influence_pts'] > 0), {{ (int)$org['influence_pts'] }} Infl Pts@endif)
+                                                </span>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    None
+                                @endif
+                            </td>
+                        </tr>
                         <tr><td class="cvlabel" colspan="3">Family &amp; Relatives</td></tr>
                         <tr><td class="cvsml" colspan="3">{{ $character->Family ?: 'Not specified' }}</td></tr>
                         <tr><td class="cvlabel" colspan="3">Connections &amp; Contacts</td></tr>

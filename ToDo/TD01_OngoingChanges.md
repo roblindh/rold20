@@ -50,7 +50,7 @@
   - [ ] Calculate “free” spells from spell and affinity skills. Don’t forget racial/cultural skill bonuses.
   - [ ] Choose starting spells/variants (a separate table for spell variants would be a really good idea)
     - [ ] Parent spell, Name, Skill prereqs, PP cost, Description, Parameter restrictions
-- [ ] Add companions/followers
+- [x] Add companions/followers
 - [ ] Modify name, personality, appearance, weight
 - [ ] Modify WC, SC, influence, reputation
 - [x] Adjust age

@@ -818,6 +818,55 @@ function characterViewerApp() {
         companionToastMessage: '',
         companionErrorMessage: '',
 
+        // Organizations & Influence State
+        allOrganizations: @json($organizations ?? []),
+        modifyOrganizations: @json($characterOrganizations ?? []),
+        modifyInfluencePts: {{ (int)($character->InfluencePts ?? 0) }},
+
+        addModifyOrganization() {
+            const firstOrg = (this.allOrganizations && this.allOrganizations.length > 0) ? this.allOrganizations[0] : null;
+            this.modifyOrganizations.push({
+                id: firstOrg ? firstOrg.ID : 1,
+                name: firstOrg ? firstOrg.Name : '',
+                influence_pts: 0,
+                is_member: true
+            });
+        },
+
+        removeModifyOrganization(index) {
+            this.modifyOrganizations.splice(index, 1);
+        },
+
+        onModifyOrgSelect(index) {
+            const org = this.modifyOrganizations[index];
+            if (!org) return;
+            const found = (this.allOrganizations || []).find(o => String(o.ID) === String(org.id));
+            if (found) {
+                org.name = found.Name;
+            }
+        },
+
+        get modifyAllocatedInfluence() {
+            return (this.modifyOrganizations || []).reduce((sum, o) => sum + (parseInt(o.influence_pts) || 0), 0);
+        },
+
+        formatOrganizationsSummary(orgs) {
+            if (!orgs) return 'None';
+            let list = [];
+            if (typeof orgs === 'string') {
+                try { list = JSON.parse(orgs); } catch(e) { return orgs; }
+            } else if (Array.isArray(orgs)) {
+                list = orgs;
+            }
+            if (!list || list.length === 0) return 'None';
+            return list.map(o => {
+                const parts = [];
+                if (o.is_member) parts.push('Member');
+                if (o.influence_pts > 0) parts.push(o.influence_pts + ' Infl Pts');
+                return o.name + (parts.length > 0 ? ' (' + parts.join(', ') + ')' : '');
+            }).join('; ');
+        },
+
         get activeTabMeta() {
             return this.companionSummary?.companion_types?.[this.selectedCompanionTab] || {};
         },

@@ -2207,6 +2207,20 @@ class EntityEngine
 
         $repTotal = $totalLevel + $sc + $wc + (int)$modifierEngine->getTotal('Rep');
 
+        // Extract organization affiliations and faction influence
+        $rawOrgs = is_object($e) ? ($e->Organizations ?? null) : ($e['Organizations'] ?? null);
+        $organizationsList = [];
+        if (!empty($rawOrgs)) {
+            if (is_array($rawOrgs)) {
+                $organizationsList = $rawOrgs;
+            } elseif (is_string($rawOrgs)) {
+                $decodedOrgs = json_decode($rawOrgs, true);
+                if (is_array($decodedOrgs)) {
+                    $organizationsList = $decodedOrgs;
+                }
+            }
+        }
+
         // Categorize all traits
         $categorizedTraits = self::categorizeTraits($rawTraitCollections, $improvementsList, (int)($e->ImprovementPts ?? 0), $context);
 
@@ -2367,11 +2381,39 @@ class EntityEngine
                 'influence_desc' => $inflDesc,
                 'reputation_total' => $repTotal,
                 'reputation_desc' => $repDesc,
+                'organizations' => $organizationsList,
             ],
             'traits' => $categorizedTraits,
             'affinity_discounts' => $affinityDiscounts,
             'languages' => $languages,
         ];
+    }
+
+    /**
+     * Format a summary string for character organizations.
+     */
+    public static function formatOrganizationsSummary(array $organizations): string
+    {
+        if (empty($organizations)) {
+            return 'None';
+        }
+        $parts = [];
+        foreach ($organizations as $org) {
+            $name = $org['name'] ?? ('Organization #' . ($org['id'] ?? ''));
+            $details = [];
+            if (!empty($org['is_member'])) {
+                $details[] = 'Member';
+            }
+            if (isset($org['influence_pts']) && (int)$org['influence_pts'] > 0) {
+                $details[] = (int)$org['influence_pts'] . ' Infl Pts';
+            }
+            if (!empty($details)) {
+                $parts[] = $name . ' (' . implode(', ', $details) . ')';
+            } else {
+                $parts[] = $name;
+            }
+        }
+        return !empty($parts) ? implode('; ', $parts) : 'None';
     }
 
     /**
