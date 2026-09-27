@@ -28,7 +28,8 @@
                     @if($isIntro)
                         <ul class="border-l-2 border-amber-600/40 ml-3.5 pl-2.5 my-1.5 space-y-0.5 text-xs list-none">
                             <li><a href="#Motivation" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Motivation</a></li>
-                            <li><a href="#MainFeatures" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Key Changes & Features</a></li>
+                            <li><a href="#LayeredComplexity" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Layered Learning &amp; Complexity</a></li>
+                            <li><a href="#MainFeatures" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Key Changes &amp; Features</a></li>
                             <li><a href="#OptionalRules" class="text-slate-300 hover:text-amber-200 block py-0.5 transition">Optional Rules</a></li>
                         </ul>
                     @endif
