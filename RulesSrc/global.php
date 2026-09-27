@@ -352,6 +352,7 @@ function init_traits(): void {
         new cTraitDescription("HeaMod", "FastHealSP", "", "SP regeneration, lesser %v", TYPE_OTHER),
         new cTraitDescription("HeaMod", "RegenPP", "", "PP regeneration %v", TYPE_OTHER),
         new cTraitDescription("HeaMod", "FastHealPP", "", "PP regeneration, lesser %v", TYPE_OTHER),
+        new cTraitDescription("HeaMod", "Reform", "Reform %v h", "Dissolves at 0 HP, reforming after %v hours", TYPE_INTEGER),
         new cTraitDescription("DefMod", "DeC", "%v %q", "%v %t modifier to %q", TYPE_INTEGER),
         new cTraitDescription("DefMod", "Fort", "%v %q", "%v %t modifier to %q", TYPE_INTEGER),
         new cTraitDescription("DefMod", "Ref", "%v %q", "%v %t modifier to %q", TYPE_INTEGER),
