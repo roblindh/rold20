@@ -346,7 +346,7 @@ class EntityEngine
             self::$subtypesCache = DB::table('ref_creaturesubtypes')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$socialClassesCache = DB::table('ref_socialclasses')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$wealthClassesCache = DB::table('ref_wealthclasses')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
-            self::$actionsCache = DB::table('ref_actions')->where('ShowPCGen', '>=', 2)->orderBy('Name')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
+            self::$actionsCache = DB::table('ref_actions')->orderBy('Name')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$naturalAttacksCache = DB::table('ref_naturalattacks')->get()->keyBy('Name')->map(fn($r) => (array)$r)->toArray();
             self::$mundaneModsCache = DB::table('ref_itemmodsmundane')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
             self::$magicModsCache = DB::table('ref_itemmodsmagic')->get()->keyBy('ID')->map(fn($r) => (array)$r)->toArray();
@@ -583,16 +583,30 @@ class EntityEngine
 
         // Initialize Modifier Engine
         $modifierEngine = new ModifierStackingEngine();
+        $strModInit = $adjStr !== null ? (int)floor(($adjStr - 10) / 2) : 0;
+        $conModInit = $adjCon !== null ? (int)floor(($adjCon - 10) / 2) : 0;
+        $dexModInit = $adjDex !== null ? (int)floor(($adjDex - 10) / 2) : 0;
+        $intModInit = $adjInt !== null ? (int)floor(($adjInt - 10) / 2) : 0;
+        $wisModInit = $adjWis !== null ? (int)floor(($adjWis - 10) / 2) : 0;
+        $chaModInit = $adjCha !== null ? (int)floor(($adjCha - 10) / 2) : 0;
+
         $context = [
             'TL' => $totalLevel,
             'RL' => $racialLevel,
             'CL' => $challengeLevel,
-            'STRMOD' => $adjStr !== null ? (int)floor(($adjStr - 10) / 2) : 0,
-            'CONMOD' => $adjCon !== null ? (int)floor(($adjCon - 10) / 2) : 0,
-            'DEXMOD' => $adjDex !== null ? (int)floor(($adjDex - 10) / 2) : 0,
-            'INTMOD' => $adjInt !== null ? (int)floor(($adjInt - 10) / 2) : 0,
-            'WISMOD' => $adjWis !== null ? (int)floor(($adjWis - 10) / 2) : 0,
-            'CHAMOD' => $adjCha !== null ? (int)floor(($adjCha - 10) / 2) : 0,
+            'STRMOD' => $strModInit,
+            'CONMOD' => $conModInit,
+            'DEXMOD' => $dexModInit,
+            'INTMOD' => $intModInit,
+            'WISMOD' => $wisModInit,
+            'CHAMOD' => $chaModInit,
+            'StrMod' => $strModInit,
+            'ConMod' => $conModInit,
+            'DexMod' => $dexModInit,
+            'IntMod' => $intModInit,
+            'WisMod' => $wisModInit,
+            'ChaMod' => $chaModInit,
+            'EC' => 0,
         ];
 
         // Track raw traits for categorization later
@@ -692,9 +706,13 @@ class EntityEngine
                             $traitStr = str_replace('}', "Value={$valInt}; Type=Imp; }", $impDef['Trait']);
                             $parsed = TraitEvaluator::parse($traitStr);
                             TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $impDef['Description'] ?? 'Improvement', 'character');
+                            $ipCost = (int)($impDef['IPCost'] ?? $impDef['Cost'] ?? 10);
                             $improvementsList[] = [
+                                'id' => $tId,
                                 'name' => ($impDef['Description'] ?? 'Improvement') . " +" . $valInt,
                                 'value' => $valInt,
+                                'cost' => $ipCost * $valInt,
+                                'ip_cost' => $ipCost,
                             ];
                         }
                     }
@@ -745,9 +763,13 @@ class EntityEngine
                 if ($userRank >= $reqLvl && !empty($traitsStr)) {
                     $skDef = self::$skillsCache[$sId] ?? ['Name' => "Skill #{$sId}"];
                     $skName = $skDef['Name'] ?? 'Skill';
-                    $skContext = array_merge($context, ['lvl' => (int)floor($userRank)]);
-                    $parsed = TraitEvaluator::parse($traitsStr);
+                    $skContext = array_merge($context, [
+                        'lvl' => (int)floor($userRank),
+                        'LVL' => (int)floor($userRank),
+                        'SkillLvl' => (int)floor($userRank),
+                    ]);
 
+                    $parsed = TraitEvaluator::parse($traitsStr);
                     TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $skContext, $skName, 'character');
 
                     $rawTraitCollections[] = [
@@ -1213,7 +1235,13 @@ class EntityEngine
 
         // 1. Natural attack / Brawling parry
         $natSkills = self::evaluateWeaponSkillsForQual('Nat || Brl || Gen', $effectiveSkillRanks, $context);
-        $natParry = (int)($natSkills['parry_bonus'] ?? 0);
+        $natParry = max(
+            (int)($natSkills['parry_bonus'] ?? 0),
+            (int)$modifierEngine->getTotal('WeapPar_Nat'),
+            (int)$modifierEngine->getTotal('WeapPar_Mnk'),
+            (int)$modifierEngine->getTotal('WeapPar_Gen'),
+            (int)$modifierEngine->getTotal('WeapPar_Brl')
+        );
         $primaryParryCandidates[] = $natParry;
         $wieldedParryList[] = [
             'name' => 'Unarmed / Natural',
@@ -1258,6 +1286,14 @@ class EntityEngine
             if ($isWieldedCombatItem) {
                 $wSkills = self::evaluateWeaponSkillsForQual($weapQual ?: 'Gen', $effectiveSkillRanks, $context);
                 $skillPar = (int)($wSkills['parry_bonus'] ?? 0);
+                $tokens = array_map('trim', preg_split('/(\|\||,)/', (string)$weapQual));
+                $catPar = 0;
+                foreach ($tokens as $tok) {
+                    if (empty($tok)) continue;
+                    $c = TraitEvaluator::extractWeaponCat($tok);
+                    $catPar = max($catPar, (int)$modifierEngine->getTotal('WeapPar_' . $c));
+                }
+                $skillPar = max($skillPar, $catPar);
                 $totItemPar = $inherentPar + $skillPar;
                 $primaryParryCandidates[] = $totItemPar;
                 $wieldedParryList[] = [
@@ -1839,10 +1875,10 @@ class EntityEngine
         if (!empty($rawNat)) {
             $natBlocks = explode('}', $rawNat);
             $natSkills = self::evaluateWeaponSkillsForQual('Nat || Gen || Brl', $effectiveSkillRanks, $context);
-            $catAttBonus = max((int)$modifierEngine->getTotal('WeapAtt_Nat'), (int)$modifierEngine->getTotal('WeapAtt_Gen'), (int)$modifierEngine->getTotal('WeapAtt_Brl'));
-            $catDmgBonus = max((int)$modifierEngine->getTotal('WeapDmg_Nat'), (int)$modifierEngine->getTotal('WeapDmg_Gen'), (int)$modifierEngine->getTotal('WeapDmg_Brl'));
-            $catAttSpdBonus = max((int)$modifierEngine->getTotal('WeapAttSpd_Nat'), (int)$modifierEngine->getTotal('WeapAttSpd_Gen'), (int)$modifierEngine->getTotal('WeapAttSpd_Brl'));
-            $catCritRngBonus = max((int)$modifierEngine->getTotal('WeapCrit_Nat'), (int)$modifierEngine->getTotal('WeapCrit_Gen'), (int)$modifierEngine->getTotal('WeapCrit_Brl'));
+            $catAttBonus = max((int)$modifierEngine->getTotal('WeapAtt_Nat'), (int)$modifierEngine->getTotal('WeapAtt_Gen'), (int)$modifierEngine->getTotal('WeapAtt_Brl'), (int)$modifierEngine->getTotal('WeapAtt_Mnk'));
+            $catDmgBonus = max((int)$modifierEngine->getTotal('WeapDmg_Nat'), (int)$modifierEngine->getTotal('WeapDmg_Gen'), (int)$modifierEngine->getTotal('WeapDmg_Brl'), (int)$modifierEngine->getTotal('WeapDmg_Mnk'));
+            $catAttSpdBonus = max((int)$modifierEngine->getTotal('WeapAttSpd_Nat'), (int)$modifierEngine->getTotal('WeapAttSpd_Gen'), (int)$modifierEngine->getTotal('WeapAttSpd_Brl'), (int)$modifierEngine->getTotal('WeapAttSpd_Mnk'));
+            $catCritRngBonus = max((int)$modifierEngine->getTotal('WeapCrit_Nat'), (int)$modifierEngine->getTotal('WeapCrit_Gen'), (int)$modifierEngine->getTotal('WeapCrit_Brl'), (int)$modifierEngine->getTotal('WeapCrit_Mnk'));
 
             $natAttSkill = max((int)($natSkills['attack_bonus'] ?? 0), $catAttBonus);
             $natDmgSkill = max((int)($natSkills['damage_bonus'] ?? 0), $catDmgBonus);
@@ -1988,7 +2024,13 @@ class EntityEngine
                 $natRelSize = (int)($defNatRow['RelSize'] ?? $natSizeOffset ?? -2);
                 $attackSizeVal = max(-4, min(4, $currentSizeId + $natRelSize));
                 $attackSizeAbbr = $sizeAbbrMap[$attackSizeVal] ?? 'M';
-                $natParryBonus = (int)($natSkills['parry_bonus'] ?? 0);
+                $natParryBonus = max(
+                    (int)($natSkills['parry_bonus'] ?? 0),
+                    (int)$modifierEngine->getTotal('WeapPar_Nat'),
+                    (int)$modifierEngine->getTotal('WeapPar_Mnk'),
+                    (int)$modifierEngine->getTotal('WeapPar_Gen'),
+                    (int)$modifierEngine->getTotal('WeapPar_Brl')
+                );
 
                 $dispName = ($qty > 1 ? "{$qty} " : '') . $attackName;
 
@@ -2338,8 +2380,26 @@ class EntityEngine
             }
         }
 
+        // Improvement points budget & spent
+        $bonusIP = (int)$modifierEngine->getTotal('BonusImprovementPts') + (int)$modifierEngine->getTotal('BonusIP');
+        $totalIP = ($totalLevel * 5) + $bonusIP;
+        $spentIP = array_sum(array_column($improvementsList, 'cost'));
+        $remainingIP = max(0, $totalIP - $spentIP);
+
+        // Skill points calculations
+        $bonusSkillPtsPerLevel = (int)$modifierEngine->getTotal('BonusSkillPtsPerLevel') + (int)$modifierEngine->getTotal('BonusSkillPts');
+        $bgSkillPtsPerLevel = ($bgClass['SkillPtsPerLevel'] ?? 12) + $bonusSkillPtsPerLevel;
+        $bgLevels = $racialLevel + 1;
+        $bgTotalSkillPts = $bgLevels * $bgSkillPtsPerLevel;
+
+        $classSkillPtsTotal = 0;
+        foreach ($classIds as $clsId) {
+            $clsDef = self::$classesCache[$clsId] ?? null;
+            $classSkillPtsTotal += (($clsDef['SkillPtsPerLevel'] ?? 2) + $bonusSkillPtsPerLevel);
+        }
+
         // Categorize all traits
-        $categorizedTraits = self::categorizeTraits($rawTraitCollections, $improvementsList, (int)($e->ImprovementPts ?? 0), $context);
+        $categorizedTraits = self::categorizeTraits($rawTraitCollections, $improvementsList, $remainingIP, $context);
 
         // Languages extraction (Cultural/Racial granted + Linguistics specializations)
         $languages = self::extractLanguages($rawTraitCollections, $specializationsList);
@@ -2501,6 +2561,20 @@ class EntityEngine
                 'organizations' => $organizationsList,
             ],
             'traits' => $categorizedTraits,
+            'improvement_points' => [
+                'total' => $totalIP,
+                'spent' => $spentIP,
+                'remaining' => $remainingIP,
+                'bonus' => $bonusIP,
+                'stored_leftover' => (int)($e->ImprovementPts ?? 0),
+            ],
+            'skill_points' => [
+                'bonus_per_level' => $bonusSkillPtsPerLevel,
+                'background_per_level' => $bgSkillPtsPerLevel,
+                'background_total' => $bgTotalSkillPts,
+                'class_total' => $classSkillPtsTotal,
+                'total_budget' => $bgTotalSkillPts + $classSkillPtsTotal,
+            ],
             'affinity_discounts' => $affinityDiscounts,
             'languages' => $languages,
         ];
@@ -3413,17 +3487,25 @@ class EntityEngine
             $unlocked = true;
             if (!$isUntrained) {
                 $hasReq = false;
-                foreach ($trainedSkills as $skKey => $rk) {
-                    if ($rk > 0) {
-                        $keyStr = is_numeric($skKey) ? (self::$skillsCache[$skKey]['Name'] ?? '') : (string)$skKey;
-                        if (!empty($keyStr)) {
-                            if (stripos($check, $keyStr) !== false || stripos($name, $keyStr) !== false) {
-                                $hasReq = true;
-                                break;
-                            }
-                            if ((stripos($keyStr, 'Spellcraft') !== false || (int)$skKey === 195) && stripos($check, 'Arcane/Divine/Psi') !== false) {
-                                $hasReq = true;
-                                break;
+                $modEngine = $calculatedState['modifiers_engine'] ?? null;
+                if ($modEngine instanceof ModifierStackingEngine) {
+                    if ($modEngine->getTotal('ActAcc_' . $name) > 0 || $modEngine->getTotal('ActAcc_' . strtolower($name)) > 0) {
+                        $hasReq = true;
+                    }
+                }
+                if (!$hasReq) {
+                    foreach ($trainedSkills as $skKey => $rk) {
+                        if ($rk > 0) {
+                            $keyStr = is_numeric($skKey) ? (self::$skillsCache[$skKey]['Name'] ?? '') : (string)$skKey;
+                            if (!empty($keyStr)) {
+                                if (stripos($check, $keyStr) !== false || stripos($name, $keyStr) !== false) {
+                                    $hasReq = true;
+                                    break;
+                                }
+                                if ((stripos($keyStr, 'Spellcraft') !== false || (int)$skKey === 195) && stripos($check, 'Arcane/Divine/Psi') !== false) {
+                                    $hasReq = true;
+                                    break;
+                                }
                             }
                         }
                     }

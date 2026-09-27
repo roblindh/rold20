@@ -67,7 +67,7 @@
                                 <div class="bg-slate-50 p-1 rounded">HP <strong class="block">+{{ $cls->HitPtsPerLevel ?? $cls->HPPerLevel ?? 5 }}</strong></div>
                                 <div class="bg-slate-50 p-1 rounded">SP <strong class="block">+{{ $cls->StamPtsPerLevel ?? $cls->SPPerLevel ?? 8 }}</strong></div>
                                 <div class="bg-slate-50 p-1 rounded">PP <strong class="block">+{{ $cls->PowPtsPerLevel ?? $cls->PPPerLevel ?? 0 }}</strong></div>
-                                <div class="bg-indigo-50 text-indigo-900 p-1 rounded font-bold">Skill <strong class="block">{{ $cls->SkillPtsPerLevel ?? 2 }} SP</strong></div>
+                                <div class="bg-indigo-50 text-indigo-900 p-1 rounded font-bold">Skill <strong class="block">{{ ($cls->SkillPtsPerLevel ?? 2) + ($calc['skill_points']['bonus_per_level'] ?? 0) }} SP</strong></div>
                             </div>
                         </label>
                     @endforeach

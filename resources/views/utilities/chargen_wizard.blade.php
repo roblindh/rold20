@@ -2407,9 +2407,38 @@ function characterWizard() {
             return Math.floor((score - 10) / 2);
         },
 
+        parseGenBonus(traitsStr, qualRegex) {
+            if (!traitsStr) return 0;
+            let sum = 0;
+            const blocks = traitsStr.matchAll(/Gen\s*\{([^}]+)\}/gi);
+            for (const b of blocks) {
+                const body = b[1];
+                if (qualRegex.test(body)) {
+                    const vm = body.match(/Value\s*=\s*([+-]?\d+)/i);
+                    if (vm) {
+                        sum += parseInt(vm[1]) || 0;
+                    }
+                }
+            }
+            return sum;
+        },
+
+        get traitBonusIP() {
+            let bonus = 0;
+            const qualRegex = /Qual\s*=\s*(Improvement|Impr)\b/i;
+            const race = this.getSelectedRace();
+            if (race && race.Traits) bonus += this.parseGenBonus(race.Traits, qualRegex);
+            const cult = this.getSelectedCulture();
+            if (cult && cult.Traits) bonus += this.parseGenBonus(cult.Traits, qualRegex);
+            this.getSelectedTemplates().forEach(t => {
+                if (t && t.Traits) bonus += this.parseGenBonus(t.Traits, qualRegex);
+            });
+            return bonus;
+        },
+
         // --- Improvements Logic (Step 4) ---
         get totalIP() {
-            return parseInt(this.character.Level) * 5;
+            return (parseInt(this.character.Level) * 5) + this.traitBonusIP;
         },
 
         get ipSpent() {
@@ -2453,11 +2482,25 @@ function characterWizard() {
             }
         },
 
+        get traitBonusSkillPtsPerLevel() {
+            let bonus = 0;
+            const qualRegex = /Qual\s*=\s*(SkillPts|SkillPoints)\b/i;
+            const race = this.getSelectedRace();
+            if (race && race.Traits) bonus += this.parseGenBonus(race.Traits, qualRegex);
+            const cult = this.getSelectedCulture();
+            if (cult && cult.Traits) bonus += this.parseGenBonus(cult.Traits, qualRegex);
+            this.getSelectedTemplates().forEach(t => {
+                if (t && t.Traits) bonus += this.parseGenBonus(t.Traits, qualRegex);
+            });
+            return bonus;
+        },
+
         // --- Background Skills Logic (Step 5) ---
         get totalBgSkillPoints() {
             const bgClass = this.getSelectedBackgroundClass();
             const levels = this.totalRL + 1;
-            return levels * (parseInt(bgClass.SkillPtsPerLevel) || 12);
+            const basePerLevel = parseInt(bgClass.SkillPtsPerLevel) || 12;
+            return levels * (basePerLevel + this.traitBonusSkillPtsPerLevel);
         },
 
         get totalSpecializationPoints() {
@@ -2748,7 +2791,8 @@ function characterWizard() {
 
         getLevelSkillPointsTotal(lvl) {
             const cls = this.getClassForLevel(lvl);
-            return parseInt(cls.SkillPtsPerLevel) || 18;
+            const basePerLevel = parseInt(cls.SkillPtsPerLevel) || 18;
+            return basePerLevel + this.traitBonusSkillPtsPerLevel;
         },
 
         getLevelPrestigeSkillPointsSpent(lvl) {

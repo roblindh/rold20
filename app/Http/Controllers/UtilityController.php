@@ -516,7 +516,7 @@ class UtilityController extends Controller
 
         $activeConfig = max(0, min(4, (int)$request->query('config', 0)));
         $calculatedState = $character ? \App\Services\Entity\EntityEngine::calculate($character, $activeConfig) : null;
-        $refActions = DB::table('ref_actions')->where('ShowPCGen', '>=', 2)->orderBy('Name')->get();
+        $refActions = DB::table('ref_actions')->orderBy('Name')->get();
         $commonActions = $character ? \App\Services\Entity\EntityEngine::getCommonActions($character, $refActions, $calculatedState) : [];
 
         $authUser = \Illuminate\Support\Facades\Auth::user();

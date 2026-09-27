@@ -1300,10 +1300,11 @@ function characterViewerApp() {
         lvlCopyFromLevel: '',
         earlierLevelsList: earlierLevelsList || [],
         lvlSpellSearch: '',
+        bonusSkillPtsPerLevel: {{ (int)($calc['skill_points']['bonus_per_level'] ?? 0) }},
         lvlData: {
             selectedClassId: initialClassId,
             remainingIp: 5 + initialLeftoverIp,
-            remainingSp: classesMap[initialClassId] ? parseInt(classesMap[initialClassId].SkillPtsPerLevel || classesMap[initialClassId].SkillPts || 2) : 2,
+            remainingSp: (classesMap[initialClassId] ? parseInt(classesMap[initialClassId].SkillPtsPerLevel || classesMap[initialClassId].SkillPts || 2) : 2) + {{ (int)($calc['skill_points']['bonus_per_level'] ?? 0) }},
             improvements: {},
             skills: {},
             selectedSpells: {},
@@ -1313,7 +1314,8 @@ function characterViewerApp() {
         onLvlClassChanged(clsId, spPerLvl) {
             this.lvlData.selectedClassId = clsId;
             this.lvlData.skills = {};
-            this.lvlData.remainingSp = spPerLvl || (classesMap[clsId] ? parseInt(classesMap[clsId].SkillPtsPerLevel || 2) : 2);
+            const baseSp = spPerLvl !== undefined ? spPerLvl : (classesMap[clsId] ? parseInt(classesMap[clsId].SkillPtsPerLevel || 2) : 2);
+            this.lvlData.remainingSp = baseSp + this.bonusSkillPtsPerLevel;
         },
 
         copyLvlSkillAllocations(sourceKey) {
@@ -1322,7 +1324,7 @@ function characterViewerApp() {
             if (!source || !source.allocations) return;
 
             const clsId = this.lvlData.selectedClassId;
-            const maxSp = classesMap[clsId] ? parseInt(classesMap[clsId].SkillPtsPerLevel || 2) : 2;
+            const maxSp = (classesMap[clsId] ? parseInt(classesMap[clsId].SkillPtsPerLevel || 2) : 2) + this.bonusSkillPtsPerLevel;
             this.lvlData.skills = {};
             this.lvlData.remainingSp = maxSp;
 

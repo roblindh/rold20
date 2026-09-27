@@ -102,7 +102,7 @@ class TraitEvaluator
         // Safe mathematical evaluation
         try {
             $sanitized = preg_replace('/[^0-9\+\-\*\/\(\)\.\s]/', '', $cleanExpr);
-            if (empty(trim($sanitized))) {
+            if (trim($sanitized) === '') {
                 return $expr;
             }
 
@@ -242,6 +242,10 @@ class TraitEvaluator
             $op = $m[2];
             $rightExpr = trim($m[3]);
 
+            if (strcasecmp($leftExpr, 'EC') === 0 && !isset($context['EC']) && !isset($context['ec'])) {
+                $context['EC'] = 0;
+            }
+
             $leftVal = self::evaluateExpression($leftExpr, $context);
             $rightVal = self::evaluateExpression($rightExpr, $context);
 
@@ -309,7 +313,7 @@ class TraitEvaluator
             // 2. Check Prerequisites
             $req = $params['Req'] ?? $params['Prereq'] ?? '';
             $isWeapOrArmorSelector = !empty($req) && (
-                preg_match('/^(Weapon|Armor)\s*==\s*[a-zA-Z0-9_]+$/i', trim($req))
+                preg_match('/^(Weapon|Armor)\s*==\s*[a-zA-Z0-9_\-\|]+$/i', trim($req))
             );
             if (!empty($req) && !$isWeapOrArmorSelector && !self::evaluatePrerequisite($req, $context)) {
                 continue;
@@ -367,7 +371,7 @@ class TraitEvaluator
     public static function extractWeaponCat(string $req): string
     {
         $cats = [
-            "Nat", "Axe", "Clb", "Fnc", "Fll", "HvB", "LtB", "PlA", "Spr", "Stv",
+            "Nat", "Mnk", "Axe", "Clb", "Fnc", "Fll", "HvB", "LtB", "PlA", "Spr", "Stv",
             "Exo", "Bow", "Crs", "Fir", "Sln", "SmT", "Are", "BaM", "Ray", "Sie",
             "Brl", "Shd", "Gen"
         ];
@@ -375,9 +379,6 @@ class TraitEvaluator
             if (stripos($req, $cat) !== false) {
                 return $cat;
             }
-        }
-        if (stripos($req, 'Mnk') !== false) {
-            return 'Nat';
         }
         return 'Gen';
     }
@@ -407,10 +408,25 @@ class TraitEvaluator
     ): void {
         $numVal = is_numeric($val) ? (float)$val : 0.0;
         $req = $params['Req'] ?? $params['Prereq'] ?? '';
-        $isWeaponReq = !empty($req) && (str_starts_with(strtoupper($req), 'WEAPON') || str_contains(strtoupper($req), 'WP'));
+        $isWeaponReq = !empty($req) && (str_starts_with(strtoupper($req), 'WEAPON') || str_contains(strtoupper($req), 'WP') || stripos($req, 'Mnk') !== false);
         $isArmorReq = !empty($req) && (str_starts_with(strtoupper($req), 'ARMOR') || str_contains(strtoupper($req), 'ARM'));
 
         switch ($traitType) {
+            case 'Gen':
+                $qualUpper = strtoupper($qual);
+                if ($qualUpper === 'IMPROVEMENT' || $qualUpper === 'IMPR') {
+                    $engine->addModifier('BonusImprovementPts', $numVal, $modType, $sourceName);
+                } elseif ($qualUpper === 'SKILLPTS' || $qualUpper === 'SKILLPOINTS') {
+                    $engine->addModifier('BonusSkillPtsPerLevel', $numVal, $modType, $sourceName);
+                } elseif (in_array($qualUpper, ['STR', 'CON', 'DEX', 'INT', 'WIS', 'CHA'])) {
+                    $engine->addModifier(ucfirst(strtolower($qual)), $numVal, $modType, $sourceName);
+                } elseif (in_array($qualUpper, ['HP', 'SP', 'PP'])) {
+                    $engine->addModifier($qualUpper, $numVal, $modType, $sourceName);
+                } elseif (in_array($qualUpper, ['DEC', 'FORT', 'REF', 'WILL', 'DR', 'MR', 'PARRY', 'ALL', 'NDD']) || str_ends_with(strtolower($qual), 'res')) {
+                    self::registerTraitModifier('DefMod', $qual, $val, $modType, $sourceName, $engine, $params);
+                }
+                break;
+
             case 'AbilMod':
                 $stat = match (strtoupper($qual)) {
                     'STR' => 'Str',
@@ -429,6 +445,8 @@ class TraitEvaluator
             case 'HeaMod':
                 if (in_array(strtoupper($qual), ['HP', 'SP', 'PP'])) {
                     $engine->addModifier(strtoupper($qual), $numVal, $modType, $sourceName);
+                } elseif (strcasecmp($qual, 'Regenerate') === 0 || strcasecmp($qual, 'FastHeal') === 0) {
+                    $engine->addModifier($qual, $numVal, $modType, $sourceName);
                 }
                 break;
 
@@ -462,7 +480,7 @@ class TraitEvaluator
                     'WILL' => 'Will',
                     'DR' => 'DR',
                     'MR' => 'MR',
-                    'PARRY' => 'Par',
+                    'PARRY', 'PAR' => 'Par',
                     'ALL' => ['DeC', 'Fort', 'Ref', 'Will'],
                     'NDD' => ['Fort', 'Ref', 'Will'],
                     'ACIDRES' => 'AcidRes',
@@ -472,6 +490,16 @@ class TraitEvaluator
                     'NECROTICRES', 'NECRORES' => 'NecroticRes',
                     'RADIANTRES' => 'RadiantRes',
                     'SONICRES' => 'SonicRes',
+                    'MENTALRES' => 'MentalRes',
+                    'PSYCHRES' => 'PsychRes',
+                    'SPELLRES' => 'SpellRes',
+                    'DETECTRES' => 'DetectRes',
+                    'FEARRES' => 'FearRes',
+                    'POISONRES' => 'PoisonRes',
+                    'DISEASERES' => 'DiseaseRes',
+                    'AGERES' => 'AgeRes',
+                    'CRITRES' => 'CritRes',
+                    'FALLRES' => 'FallRes',
                     default => $qual,
                 };
 
@@ -539,11 +567,34 @@ class TraitEvaluator
                     }
                 } elseif (strcasecmp($qual, 'Mobility') === 0) {
                     $engine->addModifier('Mobility', $numVal, $modType, $sourceName);
+                } elseif (strcasecmp($qual, 'Immobile') === 0) {
+                    $engine->addModifier('Immobile', $numVal, $modType, $sourceName);
+                } else {
+                    $engine->addModifier('SpdSpcl_' . $qual, $numVal > 0 ? $numVal : 1, $modType, $sourceName);
                 }
                 break;
 
             case 'InitMod':
                 $engine->addModifier('Init', $numVal, $modType, $sourceName);
+                break;
+
+            case 'ActAcc':
+                if (!empty($qual)) {
+                    $quals = explode('|', $qual);
+                    foreach ($quals as $q) {
+                        $q = trim($q);
+                        if (!empty($q)) {
+                            $engine->addModifier('ActAcc_' . $q, 1, $modType, $sourceName);
+                            $engine->addModifier('ActAcc_' . strtolower($q), 1, $modType, $sourceName);
+                        }
+                    }
+                }
+                break;
+
+            case 'SplAcc':
+                if (!empty($qual)) {
+                    $engine->addModifier('SplAcc_' . $qual, $numVal, $modType, $sourceName);
+                }
                 break;
 
             case 'Attack':
@@ -559,6 +610,8 @@ class TraitEvaluator
                     } else {
                         $engine->addModifier('CritRng', $numVal, $modType, $sourceName);
                     }
+                } else {
+                    $engine->addModifier('Attack_' . $qual, $numVal > 0 ? $numVal : 1, $modType, $sourceName);
                 }
                 break;
 
@@ -573,6 +626,8 @@ class TraitEvaluator
                     $engine->addModifier('Aid', $numVal, $modType, $sourceName);
                 } elseif (strcasecmp($qual, 'CarrCapMod') === 0) {
                     $engine->addModifier('CarrCap', $numVal, $modType, $sourceName);
+                } else {
+                    $engine->addModifier('Special_' . $qual, $numVal > 0 ? $numVal : 1, $modType, $sourceName);
                 }
                 break;
 
@@ -583,6 +638,8 @@ class TraitEvaluator
                     $engine->addModifier('Dodge', $numVal, 'Ddg', $sourceName);
                 } elseif (strcasecmp($qual, 'CritRes') === 0) {
                     $engine->addModifier('CritRes', $numVal, $modType, $sourceName);
+                } else {
+                    $engine->addModifier('Defense_' . $qual, $numVal > 0 ? $numVal : 1, $modType, $sourceName);
                 }
                 break;
 
