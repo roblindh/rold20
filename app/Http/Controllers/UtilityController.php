@@ -1385,6 +1385,26 @@ class UtilityController extends Controller
         $config = (int)($validated['config'] ?? 0);
         $newLoc = (int)$validated['location'];
 
+        if (!empty($validated['item_uid']) && in_array($validated['item_uid'], ['wallet', 'coins', 'purse'], true)) {
+            $rawCoins = $character->Coins ?? null;
+            $wallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($rawCoins, (int)($character->Wealth ?? 0));
+            $locs = $wallet['locations'] ?? [1, 1, 1, 1, 1];
+            $locs[$config] = $newLoc;
+            $wallet['locations'] = $locs;
+            $wallet['location'] = $locs[0];
+            if ($request->has('container_id')) {
+                $cId = $request->input('container_id');
+                $cId = ($cId === '' || $cId === 'none') ? null : (string)$cId;
+                $wallet['container_id'] = $cId;
+            }
+            DB::table('characters')->where('ID', $id)->update([
+                'Coins' => json_encode($wallet),
+            ]);
+            $cfgName = \App\Services\Entity\EquipmentManager::CONFIG_NAMES[$config] ?? "Preset #{$config}";
+            $locName = \App\Services\Entity\EquipmentManager::getLocationName($newLoc);
+            return back()->with('status', "Updated Coin Purse placement to {$locName} in {$cfgName} preset.");
+        }
+
         $rawEquip = $character->Equipment;
         $charEquip = [];
         if (!empty($rawEquip)) {
@@ -1483,6 +1503,13 @@ class UtilityController extends Controller
             'items.*.item_type_id' => 'nullable|integer',
             'items.*.subtype' => 'nullable|integer',
             'wealth' => 'nullable|integer|min:0',
+            'coins' => 'nullable|array',
+            'coins.pp' => 'nullable|integer|min:0',
+            'coins.gp' => 'nullable|integer|min:0',
+            'coins.sp' => 'nullable|integer|min:0',
+            'coins.cp' => 'nullable|integer|min:0',
+            'coins.locations' => 'nullable|array',
+            'coins.container_id' => 'nullable|string',
         ]);
 
         $updatedEquip = [];

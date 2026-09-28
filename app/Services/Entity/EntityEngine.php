@@ -2528,6 +2528,8 @@ class EntityEngine
             ],
             'equipment' => [
                 'total_weight' => $totalWeight,
+                'coin_weight' => $equipmentManager->getEffectiveCoinWeight($config),
+                'raw_coin_weight' => $equipmentManager->getCoinWeight(),
                 'weight_ec' => $weightEC,
                 'equipment_ec' => $equipEC,
                 'effective_ec' => $effectiveEC,

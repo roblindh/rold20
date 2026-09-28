@@ -28,6 +28,18 @@ class CurrencyService
             $wallet['sp'] = max(0, (int)($coinsData['sp'] ?? 0));
             $wallet['gp'] = max(0, (int)($coinsData['gp'] ?? 0));
             $wallet['pp'] = max(0, (int)($coinsData['pp'] ?? 0));
+
+            $rawLocs = $coinsData['locations'] ?? $coinsData['Locations'] ?? null;
+            if (is_array($rawLocs)) {
+                $wallet['locations'] = [];
+                for ($c = 0; $c < 5; $c++) {
+                    $wallet['locations'][$c] = (int)($rawLocs[$c] ?? ($rawLocs[(string)$c] ?? 1));
+                }
+            } else {
+                $wallet['locations'] = [1, 1, 1, 1, 1];
+            }
+            $wallet['location'] = $wallet['locations'][0] ?? 1;
+            $wallet['container_id'] = !empty($coinsData['container_id']) && $coinsData['container_id'] !== 'none' ? (string)$coinsData['container_id'] : null;
             return $wallet;
         }
 
@@ -38,6 +50,18 @@ class CurrencyService
                 $wallet['sp'] = max(0, (int)($decoded['sp'] ?? 0));
                 $wallet['gp'] = max(0, (int)($decoded['gp'] ?? 0));
                 $wallet['pp'] = max(0, (int)($decoded['pp'] ?? 0));
+
+                $rawLocs = $decoded['locations'] ?? $decoded['Locations'] ?? null;
+                if (is_array($rawLocs)) {
+                    $wallet['locations'] = [];
+                    for ($c = 0; $c < 5; $c++) {
+                        $wallet['locations'][$c] = (int)($rawLocs[$c] ?? ($rawLocs[(string)$c] ?? 1));
+                    }
+                } else {
+                    $wallet['locations'] = [1, 1, 1, 1, 1];
+                }
+                $wallet['location'] = $wallet['locations'][0] ?? 1;
+                $wallet['container_id'] = !empty($decoded['container_id']) && $decoded['container_id'] !== 'none' ? (string)$decoded['container_id'] : null;
                 return $wallet;
             }
         }
@@ -46,6 +70,9 @@ class CurrencyService
         if ($wealthSp !== null && $wealthSp > 0) {
             $wallet['sp'] = (int)round($wealthSp);
         }
+        $wallet['locations'] = [1, 1, 1, 1, 1];
+        $wallet['location'] = 1;
+        $wallet['container_id'] = null;
 
         return $wallet;
     }
@@ -143,12 +170,23 @@ class CurrencyService
         $w = self::parseWallet($wallet);
         $a = self::parseWallet($coinsToAdd);
 
-        return [
+        $res = [
             'cp' => $w['cp'] + $a['cp'],
             'sp' => $w['sp'] + $a['sp'],
             'gp' => $w['gp'] + $a['gp'],
             'pp' => $w['pp'] + $a['pp'],
         ];
+        if (isset($w['locations'])) {
+            $res['locations'] = $w['locations'];
+        }
+        if (isset($w['location'])) {
+            $res['location'] = $w['location'];
+        }
+        if (array_key_exists('container_id', $w)) {
+            $res['container_id'] = $w['container_id'];
+        }
+
+        return $res;
     }
 
     /**
@@ -159,8 +197,20 @@ class CurrencyService
      */
     public static function optimizeWallet(array $wallet): array
     {
-        $totalSp = self::coinsToSp($wallet);
-        return self::spToCoins($totalSp, true);
+        $w = self::parseWallet($wallet);
+        $totalSp = self::coinsToSp($w);
+        $res = self::spToCoins($totalSp, true);
+        if (isset($w['locations'])) {
+            $res['locations'] = $w['locations'];
+        }
+        if (isset($w['location'])) {
+            $res['location'] = $w['location'];
+        }
+        if (array_key_exists('container_id', $w)) {
+            $res['container_id'] = $w['container_id'];
+        }
+
+        return $res;
     }
 
     /**
@@ -355,6 +405,15 @@ class CurrencyService
             // Pay from remaining
             $finalRemainingCu = $remainingWalletCu - $remCu;
             $newWalletCoins = self::spToCoins($finalRemainingCu / 10.0, true);
+            if (isset($w['locations'])) {
+                $newWalletCoins['locations'] = $w['locations'];
+            }
+            if (isset($w['location'])) {
+                $newWalletCoins['location'] = $w['location'];
+            }
+            if (array_key_exists('container_id', $w)) {
+                $newWalletCoins['container_id'] = $w['container_id'];
+            }
             $spentTotalCoins = self::spToCoins($costSp, true);
 
             return [

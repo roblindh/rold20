@@ -1824,6 +1824,26 @@
                                     <span class="bg-amber-100 text-amber-950 px-1.5 py-0.5 rounded font-mono text-[11px] font-bold border border-amber-300">
                                         {{ $formattedCoins }}
                                     </span>
+                                    @php
+                                        $purseLoc = (int)($wallet['locations'][$activeConfig] ?? $wallet['location'] ?? 1);
+                                        $purseCId = $wallet['container_id'] ?? null;
+                                        $purseCName = '';
+                                        if ($purseCId) {
+                                            foreach ($equipmentList as $candidate) {
+                                                if (($candidate['uid'] ?? $candidate['id'] ?? null) === $purseCId) {
+                                                    $purseCName = $candidate['Name'] ?? $candidate['name'] ?? 'Container';
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    @endphp
+                                    @if($purseCName)
+                                        <span class="text-[10px] px-1.5 py-0.2 bg-indigo-50 text-indigo-800 border border-indigo-200 rounded font-mono">(In {{ $purseCName }})</span>
+                                    @else
+                                        <span class="text-[10px] px-1.5 py-0.2 rounded font-mono font-bold {{ $purseLoc === 2 ? 'bg-amber-100 text-amber-900 border border-amber-300' : ($purseLoc === 0 ? 'bg-stone-200 text-stone-600 border border-stone-300' : 'bg-slate-100 text-slate-800 border border-slate-300') }}">
+                                            {{ match($purseLoc) { 2 => '🛡️ Equipped', 1 => '🎒 Carried', default => '📦 Stowed' } }}
+                                        </span>
+                                    @endif
                                     <span class="text-stone-500 font-mono text-[11px]">
                                         ({{ number_format($wealth) }} sp &bull; {{ number_format($coinWeight, 2) }} kg)
                                     </span>

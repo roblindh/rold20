@@ -208,14 +208,14 @@
                         <div class="flex items-center gap-2 text-[11px] text-slate-600">
                             <span>Total Wealth: <strong class="text-amber-900 font-mono text-xs" x-text="calcPurseSp().toLocaleString() + ' sp'"></strong></span>
                             <span>&bull;</span>
-                            <span>Coins Weight: <strong class="text-indigo-900 font-mono text-xs" x-text="calcPurseWeight().toFixed(2) + ' kg'"></strong></span>
+                            <span>Coins Weight: <strong class="text-indigo-900 font-mono text-xs" x-text="calcPurseWeight(modalActivePreset).toFixed(2) + ' kg'"></strong></span>
                             <button type="button" @click="optimizePurseCoins()" class="text-indigo-600 hover:text-indigo-800 font-bold ml-1 flex items-center gap-0.5" title="Convert smaller coins to platinum/gold to reduce carried weight">
                                 <span>⚡</span> Condense Coins
                             </button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs mb-3">
                         <div>
                             <label class="block text-[10px] font-bold text-slate-700 uppercase mb-0.5">Platinum (pp = 100 sp)</label>
                             <input type="number" name="coins[pp]" x-model.number="wallet.pp" min="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded bg-white text-black font-mono font-bold">
@@ -233,6 +233,41 @@
                             <input type="number" name="coins[cp]" x-model.number="wallet.cp" min="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded bg-white text-black font-mono font-bold">
                         </div>
                     </div>
+
+                    <!-- Coin Purse Placement & Container Row -->
+                    <div class="pt-2.5 border-t border-amber-200/80 grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 uppercase mb-0.5">Coin Purse Container</label>
+                            <select x-model="wallet.container_id" class="px-2.5 py-1.5 border border-slate-300 rounded text-xs bg-white font-medium text-slate-800 w-full">
+                                <option value="">None (On Person / Belt)</option>
+                                <template x-for="c in getAvailableContainers({uid: 'wallet'})" :key="c.uid">
+                                    <option :value="c.uid" x-text="'In ' + (c.name || c.Name)"></option>
+                                </template>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 uppercase mb-0.5">
+                                Coin Purse Placement (<span x-text="['Combat', 'Travel', 'Rest', 'Sleep', 'Formal'][modalActivePreset]"></span>)
+                            </label>
+                            <select :value="wallet.locations ? wallet.locations[modalActivePreset] : 1"
+                                    @change="setPurseLocation(modalActivePreset, $event.target.value)"
+                                    class="px-2.5 py-1.5 border border-slate-300 rounded text-xs font-semibold text-slate-900 w-full"
+                                    :class="{
+                                        'bg-amber-50 text-amber-950 border-amber-300 font-bold': (wallet.locations ? wallet.locations[modalActivePreset] : 1) == 2,
+                                        'bg-slate-50 text-slate-800': (wallet.locations ? wallet.locations[modalActivePreset] : 1) == 1,
+                                        'bg-slate-100 text-stone-500': (wallet.locations ? wallet.locations[modalActivePreset] : 1) == 0
+                                    }">
+                                <option value="2">🛡️ Equipped (Belt Pouch — 50% Weight)</option>
+                                <option value="1">🎒 Carried (In Pocket / Hand — 100% Weight)</option>
+                                <option value="0">📦 Stowed (At Camp / Bank / Vault — 0% Weight)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="coins[container_id]" :value="wallet.container_id || ''">
+                    <template x-for="(locVal, cIdx) in (wallet.locations || [1,1,1,1,1])" :key="cIdx">
+                        <input type="hidden" :name="'coins[locations][' + cIdx + ']'" :value="locVal">
+                    </template>
                     <input type="hidden" name="wealth" :value="calcPurseSp()">
                 </div>
 

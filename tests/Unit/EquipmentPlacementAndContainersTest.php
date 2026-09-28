@@ -249,4 +249,145 @@ class EquipmentPlacementAndContainersTest extends TestCase
         $this->assertEquals('pack_bulk', $equip[1]['container_id']);
         $this->assertEquals(10, $equip[1]['Qty']);
     }
+
+    public function test_coin_purse_placement_weight_and_presets(): void
+    {
+        // 100 coins = 1.0 kg raw weight
+        $character = [
+            'Name' => 'Rich Adventurer',
+            'BaseStr' => 14,
+            'BaseCon' => 14,
+            'BaseDex' => 14,
+            'BaseInt' => 10,
+            'BaseWis' => 10,
+            'BaseCha' => 10,
+            'BaseRace' => 1,
+            'Coins' => json_encode([
+                'pp' => 0,
+                'gp' => 0,
+                'sp' => 100, // 100 coins = 1.0 kg
+                'cp' => 0,
+                'locations' => [
+                    EquipmentManager::CONFIG_COMBAT => EquipmentManager::LOCATION_EQUIPPED, // 50% = 0.5 kg
+                    EquipmentManager::CONFIG_TRAVEL => EquipmentManager::LOCATION_CARRIED,  // 100% = 1.0 kg
+                    EquipmentManager::CONFIG_SLEEP  => EquipmentManager::LOCATION_STOWED,   // 0% = 0.0 kg
+                    EquipmentManager::CONFIG_REST   => EquipmentManager::LOCATION_STOWED,
+                    EquipmentManager::CONFIG_FORMAL => EquipmentManager::LOCATION_EQUIPPED,
+                ],
+            ]),
+            'Equipment' => [],
+        ];
+
+        // Combat: Equipped = 50% of 1.0 kg = 0.5 kg
+        $calcCombat = EntityEngine::calculate($character, EquipmentManager::CONFIG_COMBAT);
+        $this->assertEquals(0.5, $calcCombat['equipment']['total_weight']);
+        $this->assertEquals(0.5, $calcCombat['equipment']['coin_weight']);
+        $this->assertEquals(1.0, $calcCombat['equipment']['raw_coin_weight']);
+
+        // Travel: Carried = 100% of 1.0 kg = 1.0 kg
+        $calcTravel = EntityEngine::calculate($character, EquipmentManager::CONFIG_TRAVEL);
+        $this->assertEquals(1.0, $calcTravel['equipment']['total_weight']);
+        $this->assertEquals(1.0, $calcTravel['equipment']['coin_weight']);
+
+        // Sleep: Stowed = 0% = 0.0 kg
+        $calcSleep = EntityEngine::calculate($character, EquipmentManager::CONFIG_SLEEP);
+        $this->assertEquals(0.0, $calcSleep['equipment']['total_weight']);
+        $this->assertEquals(0.0, $calcSleep['equipment']['coin_weight']);
+    }
+
+    public function test_coin_purse_inside_container_weight(): void
+    {
+        $character = [
+            'Name' => 'Chest Storer',
+            'BaseStr' => 14,
+            'BaseCon' => 14,
+            'BaseDex' => 14,
+            'BaseInt' => 10,
+            'BaseWis' => 10,
+            'BaseCha' => 10,
+            'BaseRace' => 1,
+            'Coins' => json_encode([
+                'pp' => 0,
+                'gp' => 10,
+                'sp' => 0,
+                'cp' => 0, // 10 coins = 0.1 kg
+                'container_id' => 'chest_1',
+                'locations' => [
+                    EquipmentManager::CONFIG_COMBAT => EquipmentManager::LOCATION_CARRIED,
+                    EquipmentManager::CONFIG_SLEEP => EquipmentManager::LOCATION_CARRIED,
+                ],
+            ]),
+            'Equipment' => [
+                [
+                    'uid' => 'chest_1',
+                    'Name' => 'Heavy Iron Chest',
+                    'BaseWeight' => 10.0,
+                    'is_container' => true,
+                    'locations' => [
+                        EquipmentManager::CONFIG_COMBAT => EquipmentManager::LOCATION_CARRIED,
+                        EquipmentManager::CONFIG_SLEEP => EquipmentManager::LOCATION_STOWED,
+                    ],
+                ],
+            ],
+        ];
+
+        // Combat: Chest is carried (10 kg), coins inside chest (0.1 kg) -> 10.1 kg
+        $calcCombat = EntityEngine::calculate($character, EquipmentManager::CONFIG_COMBAT);
+        $this->assertEquals(10.1, $calcCombat['equipment']['total_weight']);
+        $this->assertEquals(0.1, $calcCombat['equipment']['coin_weight']);
+
+        // Sleep: Chest is stowed -> container stowed zeroes coins inside -> 0.0 kg
+        $calcSleep = EntityEngine::calculate($character, EquipmentManager::CONFIG_SLEEP);
+        $this->assertEquals(0.0, $calcSleep['equipment']['total_weight']);
+        $this->assertEquals(0.0, $calcSleep['equipment']['coin_weight']);
+    }
+
+    public function test_manage_character_equipment_saves_coin_purse_placement(): void
+    {
+        $charId = DB::table('characters')->insertGetId([
+            'Name' => 'Purse Tester ' . uniqid(),
+            'Wealth' => 100,
+            'Coins' => json_encode(['cp' => 0, 'sp' => 100, 'gp' => 0, 'pp' => 0]),
+            'Equipment' => json_encode([]),
+        ]);
+
+        $controller = new UtilityController();
+
+        $request = Request::create("/utilities/charview/{$charId}/manage-equipment", 'POST', [
+            'coins' => [
+                'pp' => 1,
+                'gp' => 5,
+                'sp' => 20,
+                'cp' => 10,
+                'locations' => [2, 1, 0, 0, 2],
+                'container_id' => 'pouch_belt',
+            ],
+            'items' => [
+                [
+                    'uid' => 'pouch_belt',
+                    'name' => 'Belt Pouch',
+                    'qty' => 1,
+                    'unit_price' => 1,
+                    'unit_weight' => 0.2,
+                    'is_container' => 1,
+                    'locations' => [2, 2, 2, 0, 2],
+                ],
+            ],
+        ]);
+
+        $response = $controller->manageCharacterEquipment($request, (int)$charId);
+        $this->assertEquals(302, $response->getStatusCode());
+
+        $updated = DB::table('characters')->where('ID', $charId)->first();
+        $coins = json_decode((string)$updated->Coins, true);
+
+        $this->assertEquals(1, $coins['pp']);
+        $this->assertEquals(5, $coins['gp']);
+        $this->assertEquals(20, $coins['sp']);
+        $this->assertEquals(10, $coins['cp']);
+        $this->assertEquals([2, 1, 0, 0, 2], $coins['locations']);
+        $this->assertEquals('pouch_belt', $coins['container_id']);
+        // 1 pp (100) + 5 gp (50) + 20 sp (20) + 10 cp (1) = 171 sp
+        $this->assertEquals(171, (int)$updated->Wealth);
+    }
 }

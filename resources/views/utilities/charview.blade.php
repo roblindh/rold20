@@ -348,7 +348,8 @@
             $rawCoins = $character->Coins ?? null;
             $wallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($rawCoins, (int)($character->Wealth ?? 0));
             $wealth = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($wallet));
-            $coinWeight = \App\Services\ItemGeneration\CurrencyService::calculateCoinWeight($wallet);
+            $coinWeight = $calc['equipment']['coin_weight'] ?? \App\Services\ItemGeneration\CurrencyService::calculateCoinWeight($wallet);
+            $rawCoinWeight = $calc['equipment']['raw_coin_weight'] ?? \App\Services\ItemGeneration\CurrencyService::calculateCoinWeight($wallet);
             $formattedCoins = \App\Services\ItemGeneration\CurrencyService::formatCoins($wallet);
 
             // --- 10. Physical & Social Attributes ---
@@ -1111,7 +1112,7 @@ function characterViewerApp() {
         equipmentItems: @json($equipmentList ?? []),
 
         // Coin Purse & Wallet State
-        wallet: {!! json_encode($wallet ?? ['cp' => 0, 'sp' => 0, 'gp' => 0, 'pp' => 0]) !!},
+        wallet: {!! json_encode($wallet ?? ['cp' => 0, 'sp' => 0, 'gp' => 0, 'pp' => 0, 'locations' => [1,1,1,1,1], 'container_id' => null]) !!},
 
         calcPurseSp() {
             const cp = parseInt(this.wallet.cp) || 0;
@@ -1121,9 +1122,64 @@ function characterViewerApp() {
             return Math.round(((cp * 0.1) + (sp * 1.0) + (gp * 10.0) + (pp * 100.0)) * 100) / 100;
         },
 
-        calcPurseWeight() {
+        calcPurseWeight(presetIdx) {
             const totalCoins = (parseInt(this.wallet.cp) || 0) + (parseInt(this.wallet.sp) || 0) + (parseInt(this.wallet.gp) || 0) + (parseInt(this.wallet.pp) || 0);
-            return Math.round(totalCoins * 0.01 * 100) / 100;
+            const rawWeight = Math.round(totalCoins * 0.01 * 100) / 100;
+            if (rawWeight <= 0) return 0.0;
+            if (presetIdx === undefined || presetIdx === null) {
+                return rawWeight;
+            }
+
+            const items = this.equipmentItems || [];
+            const containerMap = {};
+            items.forEach(it => {
+                const key = it.uid || it.id;
+                if (key) containerMap[key] = it;
+            });
+
+            const isStowed = (it) => {
+                let current = it;
+                let visited = {};
+                while (current) {
+                    const locs = current.locations || [1,1,1,1,1];
+                    const loc = parseInt(locs[presetIdx] ?? current.location ?? 1);
+                    if (loc === 0) return true;
+                    const cId = current.container_id;
+                    if (!cId || !containerMap[cId] || visited[cId]) {
+                        break;
+                    }
+                    visited[cId] = true;
+                    current = containerMap[cId];
+                }
+                return false;
+            };
+
+            const cId = this.wallet.container_id;
+            if (cId && containerMap[cId]) {
+                if (isStowed(containerMap[cId])) {
+                    return 0.0;
+                }
+                return rawWeight;
+            }
+
+            const locs = this.wallet.locations || [1, 1, 1, 1, 1];
+            const loc = parseInt(locs[presetIdx] ?? this.wallet.location ?? 1);
+            if (loc === 0) {
+                return 0.0;
+            } else if (loc === 2) {
+                return Math.round(rawWeight * 0.5 * 100) / 100;
+            } else {
+                return rawWeight;
+            }
+        },
+
+        setPurseLocation(presetIndex, newLoc) {
+            newLoc = parseInt(newLoc);
+            if (!this.wallet.locations) {
+                this.wallet.locations = [1, 1, 1, 1, 1];
+            }
+            this.wallet.locations[presetIndex] = newLoc;
+            this.wallet.location = this.wallet.locations[0];
         },
 
         optimizePurseCoins() {
@@ -1135,7 +1191,10 @@ function characterViewerApp() {
             const rem2 = rem1 % 100;
             const sp = Math.floor(rem2 / 10);
             const cp = rem2 % 10;
-            this.wallet = { cp, sp, gp, pp };
+            this.wallet.cp = cp;
+            this.wallet.sp = sp;
+            this.wallet.gp = gp;
+            this.wallet.pp = pp;
         },
 
         isItemContainer(item) {
@@ -1250,7 +1309,7 @@ function characterViewerApp() {
         },
 
         calcPresetWeight(presetIdx) {
-            let total = this.calcPurseWeight();
+            let total = this.calcPurseWeight(presetIdx);
             const items = this.equipmentItems || [];
             const containerMap = {};
             items.forEach(it => {

@@ -109,9 +109,45 @@ class EquipmentManager
         return $this->wallet;
     }
 
-    public function getCoinWeight(): float
+    public function getCoinWeight(?int $config = null): float
     {
+        if ($config !== null) {
+            return $this->getEffectiveCoinWeight($config);
+        }
         return \App\Services\ItemGeneration\CurrencyService::calculateCoinWeight($this->wallet);
+    }
+
+    /**
+     * Calculate effective coin weight contributing to encumbrance for a given config.
+     * Equipped = 50% weight, Carried = 100% weight, Stowed = 0% weight,
+     * Inside a stowed/dropped container = 0% weight, Inside active container = 100% weight.
+     */
+    public function getEffectiveCoinWeight(?int $config = null): float
+    {
+        $cfg = $config ?? $this->activeConfig;
+        $rawWeight = \App\Services\ItemGeneration\CurrencyService::calculateCoinWeight($this->wallet);
+        if ($rawWeight <= 0) {
+            return 0.0;
+        }
+
+        $containerId = $this->wallet['container_id'] ?? null;
+        if (!empty($containerId) && isset($this->items[$containerId])) {
+            $walletItemProxy = ['container_id' => $containerId];
+            if ($this->isItemInsideDroppedContainer($walletItemProxy) || $this->isItemInsideStowedContainer($walletItemProxy, $cfg)) {
+                return 0.0;
+            }
+            return $rawWeight; // 100% inside container
+        }
+
+        $loc = (int)($this->wallet['locations'][$cfg] ?? $this->wallet['location'] ?? self::LOCATION_CARRIED);
+        if ($loc === self::LOCATION_STOWED) {
+            return 0.0;
+        }
+        if ($loc === self::LOCATION_EQUIPPED) {
+            return round($rawWeight * 0.5, 2);
+        }
+
+        return $rawWeight;
     }
 
     public function setActiveConfig(int $config): self
@@ -363,8 +399,8 @@ class EquipmentManager
             }
         }
 
-        // Add carried coin weight from wallet
-        $totalWeight += $this->getCoinWeight();
+        // Add coin weight from wallet based on placement / container in this config
+        $totalWeight += $this->getEffectiveCoinWeight($cfg);
 
         return round($totalWeight, 2);
     }
