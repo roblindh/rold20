@@ -3481,37 +3481,43 @@ class EntityEngine
             $descriptors = $actArr['Descriptors'] ?? '';
             $check = $actArr['ActionCheck'] ?? '';
             $name = $actArr['Name'] ?? '';
+            $showPCGen = (int)($actArr['ShowPCGen'] ?? 0);
 
-            $isUntrained = str_contains($descriptors, 'Untrained');
-
-            $unlocked = true;
-            if (!$isUntrained) {
-                $hasReq = false;
-                $modEngine = $calculatedState['modifiers_engine'] ?? null;
-                if ($modEngine instanceof ModifierStackingEngine) {
-                    if ($modEngine->getTotal('ActAcc_' . $name) > 0 || $modEngine->getTotal('ActAcc_' . strtolower($name)) > 0) {
-                        $hasReq = true;
-                    }
+            $modEngine = $calculatedState['modifiers_engine'] ?? null;
+            $hasExplicitAccess = false;
+            if ($modEngine instanceof ModifierStackingEngine) {
+                if ($modEngine->getTotal('ActAcc_' . $name) > 0 || $modEngine->getTotal('ActAcc_' . strtolower($name)) > 0) {
+                    $hasExplicitAccess = true;
                 }
-                if (!$hasReq) {
+            }
+
+            $unlocked = false;
+            if ($hasExplicitAccess) {
+                $unlocked = true;
+            } elseif ($showPCGen >= 2) {
+                $isUntrained = str_contains($descriptors, 'Untrained');
+                if ($isUntrained) {
+                    $unlocked = true;
+                } else {
                     foreach ($trainedSkills as $skKey => $rk) {
                         if ($rk > 0) {
                             $keyStr = is_numeric($skKey) ? (self::$skillsCache[$skKey]['Name'] ?? '') : (string)$skKey;
                             if (!empty($keyStr)) {
                                 if (stripos($check, $keyStr) !== false || stripos($name, $keyStr) !== false) {
-                                    $hasReq = true;
+                                    $unlocked = true;
                                     break;
                                 }
                                 if ((stripos($keyStr, 'Spellcraft') !== false || (int)$skKey === 195) && stripos($check, 'Arcane/Divine/Psi') !== false) {
-                                    $hasReq = true;
+                                    $unlocked = true;
+                                    break;
+                                }
+                                if ((stripos($keyStr, 'Psychology') !== false || (int)$skKey === 11) && (stripos($check, 'influence') !== false || stripos($name, 'influence') !== false)) {
+                                    $unlocked = true;
                                     break;
                                 }
                             }
                         }
                     }
-                }
-                if (!$hasReq) {
-                    $unlocked = false;
                 }
             }
 
