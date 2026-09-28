@@ -19,21 +19,9 @@ class UtilityController extends Controller
     public function characterGenerator(Request $request): View
     {
         $campaigns = DB::table('campaigns')->get();
-        $races = DB::table('ref_creatures')->select(
-            'ID', 'Name', 'NameInformal', 'PCSuitability', 'BaseRL', 'CLModifier',
-            'CreatureType', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj',
-            'GroundSpeed', 'FlySpeed', 'SwimSpeed', 'SizeClass', 'BodyType',
-            'AvgLengthM', 'AvgLengthF', 'AvgMassM', 'AvgMassF',
-            'AdultAge', 'MatureAge', 'OldAge', 'VenerableAge', 'DefaultCulture'
-        )->orderBy('Name')->get();
-        $templates = DB::table('ref_templates')->select(
-            'ID', 'Name', 'NameInformal', 'PCSuitability', 'RLModifier', 'CLModifier',
-            'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj',
-            'GroundSpeed', 'FlySpeed', 'SwimSpeed'
-        )->orderBy('Name')->get();
-        $cultures = DB::table('ref_cultures')->select(
-            'ID', 'Name', 'PCSuitability', 'ClassConfig', 'ClassConfigSec', 'ClassConfigTert', 'Traits'
-        )->orderBy('Name')->get();
+        $races = DB::table('ref_creatures')->orderBy('Name')->get();
+        $templates = DB::table('ref_templates')->orderBy('Name')->get();
+        $cultures = DB::table('ref_cultures')->orderBy('Name')->get();
         $classConfigs = DB::table('ref_classconfigs')->select('ID', 'Name', 'ClassID')->get()->keyBy('ID');
         $classes = DB::table('ref_classes')->orderBy('Name')->get();
         $abilityMethods = DB::table('ref_abilitygeneration')->whereNotNull('Generation')->where('Generation', '!=', '')->orderBy('ID')->get();

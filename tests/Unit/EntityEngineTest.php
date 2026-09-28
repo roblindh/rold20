@@ -224,6 +224,41 @@ class EntityEngineTest extends TestCase
         $this->assertEquals(24, $data['calculated']['health']['hp']['total']); // 14 + 10
         $this->assertEquals(22, $data['calculated']['health']['sp']['total']); // 14 + 8
         $this->assertEquals(12, $data['calculated']['health']['pp']['total']); // 10 + 2
+        $this->assertEquals(25, $data['calculated']['improvement_points']['total']); // 5 base + 10 race + 10 culture
+        $this->assertEquals(20, $data['calculated']['improvement_points']['bonus']);
+        $this->assertEquals(1, $data['calculated']['skill_points']['bonus_per_level']);
+    }
+
+    public function test_human_racial_and_cultural_bonus_ip_and_sp(): void
+    {
+        $humanChar = [
+            'Name' => 'Human Adventurer',
+            'RaceID' => 1, // Human (Gen { Qual=Improvement; Value=+10; } Gen { Qual=SkillPts; Value=+1; })
+            'CultureID' => 1, // Human Occidental (Gen { Qual=Improvement; Value=+10; })
+            'BackgroundClassID' => 1,
+            'ClassLevels' => [4], // Fighter (2 SP/lvl)
+            'Level' => 1,
+            'Strength' => 10,
+            'Constitution' => 10,
+            'Dexterity' => 10,
+            'Intelligence' => 10,
+            'Wisdom' => 10,
+            'Charisma' => 10,
+        ];
+
+        $calc = EntityEngine::calculate($humanChar);
+
+        // IP calculations: 5 (level 1) + 10 (race) + 10 (culture) = 25 IP
+        $this->assertEquals(20, $calc['improvement_points']['bonus']);
+        $this->assertEquals(25, $calc['improvement_points']['total']);
+        $this->assertEquals(25, $calc['improvement_points']['remaining']);
+
+        // SP calculations: 1 bonus SP per level from Human race
+        $this->assertEquals(1, $calc['skill_points']['bonus_per_level']);
+        // Background SP per level = base (12 for Laborer/Commoner, 18 for Scholar, etc.) + 1
+        $this->assertEquals(($calc['skill_points']['background_per_level'] - 1) + 1, $calc['skill_points']['background_per_level']);
+        // Class SP total = Fighter (18 base) + 1 bonus = 19 SP
+        $this->assertEquals(19, $calc['skill_points']['class_total']);
     }
 
     public function test_no_score_handling_for_clay_golem(): void

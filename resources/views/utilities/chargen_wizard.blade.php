@@ -331,8 +331,8 @@
                     </select>
                 </div>
 
-                <!-- Selected Race Info Box with Size Category -->
-                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-2" x-data="{ r: {} }" x-effect="r = getSelectedRace()">
+                <!-- Selected Race Info Box with Size Category & Traits -->
+                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-2.5" x-data="{ r: {} }" x-effect="r = getSelectedRace()">
                     <div class="font-bold text-slate-900 text-sm flex items-center justify-between">
                         <span x-text="r.Name || 'Race'"></span>
                         <div class="flex items-center gap-1.5 text-[11px] font-mono">
@@ -341,7 +341,7 @@
                             <span class="bg-slate-200 text-slate-700 px-2 py-0.5 rounded">Speed: <span x-text="r.GroundSpeed || 30"></span>'</span>
                         </div>
                     </div>
-                    <div class="grid grid-cols-6 gap-1 text-[11px] font-mono text-center pt-1.5 border-t border-slate-200">
+                    <div class="grid grid-cols-6 gap-1 text-[11px] font-mono text-center pt-1 border-t border-slate-200">
                         <div class="bg-white p-1 rounded border border-slate-200">STR <span class="font-bold block" x-text="r.StrAdj === null ? '–' : ((r.StrAdj >= 0 ? '+' : '') + (r.StrAdj || 0))"></span></div>
                         <div class="bg-white p-1 rounded border border-slate-200">CON <span class="font-bold block" x-text="r.ConAdj === null ? '–' : ((r.ConAdj >= 0 ? '+' : '') + (r.ConAdj || 0))"></span></div>
                         <div class="bg-white p-1 rounded border border-slate-200">DEX <span class="font-bold block" x-text="r.DexAdj === null ? '–' : ((r.DexAdj >= 0 ? '+' : '') + (r.DexAdj || 0))"></span></div>
@@ -349,6 +349,29 @@
                         <div class="bg-white p-1 rounded border border-slate-200">WIS <span class="font-bold block" x-text="r.WisAdj === null ? '–' : ((r.WisAdj >= 0 ? '+' : '') + (r.WisAdj || 0))"></span></div>
                         <div class="bg-white p-1 rounded border border-slate-200">CHA <span class="font-bold block" x-text="r.ChaAdj === null ? '–' : ((r.ChaAdj >= 0 ? '+' : '') + (r.ChaAdj || 0))"></span></div>
                     </div>
+                    <!-- Racial Traits Badges -->
+                    <template x-if="formatTraitsSummary(r.RacialTraits || r.Traits).length > 0">
+                        <div class="pt-1.5 border-t border-slate-200 space-y-1">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Racial Traits &amp; Bonuses</span>
+                            <div class="flex flex-wrap gap-1.5">
+                                <template x-for="(tr, idx) in formatTraitsSummary(r.RacialTraits || r.Traits)" :key="idx">
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold border"
+                                          :class="{
+                                              'bg-amber-100 text-amber-900 border-amber-300': tr.color === 'amber',
+                                              'bg-indigo-100 text-indigo-900 border-indigo-300': tr.color === 'indigo',
+                                              'bg-emerald-100 text-emerald-900 border-emerald-300': tr.color === 'emerald',
+                                              'bg-blue-100 text-blue-900 border-blue-300': tr.color === 'blue',
+                                              'bg-teal-100 text-teal-900 border-teal-300': tr.color === 'teal',
+                                              'bg-purple-100 text-purple-900 border-purple-300': tr.color === 'purple',
+                                              'bg-slate-100 text-slate-800 border-slate-300': tr.color === 'slate'
+                                          }"
+                                          :title="tr.desc">
+                                        <span x-text="tr.badge"></span>
+                                    </span>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
                 </div>
 
                 <!-- Multiple Templates Picker & Info Boxes -->
@@ -405,6 +428,14 @@
                                     <div class="bg-white p-1 rounded border border-purple-100">WIS <span class="font-bold block" x-text="t.WisAdj === null ? '–' : ((t.WisAdj >= 0 ? '+' : '') + (t.WisAdj || 0))"></span></div>
                                     <div class="bg-white p-1 rounded border border-purple-100">CHA <span class="font-bold block" x-text="t.ChaAdj === null ? '–' : ((t.ChaAdj >= 0 ? '+' : '') + (t.ChaAdj || 0))"></span></div>
                                 </div>
+                                <template x-if="formatTraitsSummary(t.RacialTraits || t.Traits).length > 0">
+                                    <div class="pt-1 border-t border-purple-200/60 flex flex-wrap gap-1">
+                                        <template x-for="(tr, idx) in formatTraitsSummary(t.RacialTraits || t.Traits)" :key="idx">
+                                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-purple-100 text-purple-900 border border-purple-300"
+                                                  :title="tr.desc" x-text="tr.badge"></span>
+                                        </template>
+                                    </div>
+                                </template>
                             </div>
                         </template>
                     </div>
@@ -413,15 +444,53 @@
 
             <!-- Culture, Background Class & Level Breakdown -->
             <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Culture</label>
-                    <select x-model="character.CultureID" @change="onCultureChanged()"
-                            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                        <template x-for="c in eligibleCultures" :key="c.ID">
-                            <option :value="c.ID" x-text="c.Name"></option>
+                <div class="space-y-2">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Culture</label>
+                        <select x-model="character.CultureID" @change="onCultureChanged()"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <template x-for="c in eligibleCultures" :key="c.ID">
+                                <option :value="c.ID" x-text="c.Name"></option>
+                            </template>
+                        </select>
+                        <p class="text-[11px] text-slate-500 mt-1">Default culture is automatically set from the selected race.</p>
+                    </div>
+
+                    <!-- Selected Culture Info Box -->
+                    <div class="p-3.5 bg-amber-50/70 border border-amber-200 rounded-xl text-xs space-y-2" x-data="{ c: {} }" x-effect="c = getSelectedCulture()">
+                        <div class="font-bold text-amber-950 text-sm flex items-center justify-between">
+                            <span class="flex items-center gap-1.5">
+                                <span>🏛️</span>
+                                <span x-text="c.Name || 'Culture'"></span>
+                            </span>
+                        </div>
+                        <template x-if="c.Description">
+                            <p class="text-[11px] text-stone-600 line-clamp-2" x-text="c.Description"></p>
                         </template>
-                    </select>
-                    <p class="text-[11px] text-slate-500 mt-1">Default culture is automatically set from the selected race.</p>
+                        <!-- Cultural Traits Badges -->
+                        <template x-if="formatTraitsSummary(c.Traits || c.RacialTraits).length > 0">
+                            <div class="pt-1.5 border-t border-amber-200/60 space-y-1">
+                                <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">Cultural Traits &amp; Bonuses</span>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <template x-for="(tr, idx) in formatTraitsSummary(c.Traits || c.RacialTraits)" :key="idx">
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold border"
+                                              :class="{
+                                                  'bg-amber-100 text-amber-900 border-amber-300': tr.color === 'amber',
+                                                  'bg-indigo-100 text-indigo-900 border-indigo-300': tr.color === 'indigo',
+                                                  'bg-emerald-100 text-emerald-900 border-emerald-300': tr.color === 'emerald',
+                                                  'bg-blue-100 text-blue-900 border-blue-300': tr.color === 'blue',
+                                                  'bg-teal-100 text-teal-900 border-teal-300': tr.color === 'teal',
+                                                  'bg-purple-100 text-purple-900 border-purple-300': tr.color === 'purple',
+                                                  'bg-slate-100 text-slate-800 border-slate-300': tr.color === 'slate'
+                                              }"
+                                              :title="tr.desc">
+                                            <span x-text="tr.badge"></span>
+                                        </span>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
 
                 <div>
@@ -429,7 +498,7 @@
                     <select x-model="character.BackgroundClassID" @change="onBackgroundClassChanged()"
                             class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                         <template x-for="bc in availableBackgroundClasses" :key="bc.ID">
-                            <option :value="bc.ID" x-text="bc.Name + ' (' + bc.SkillPtsPerLevel + ' SP/lvl)'"></option>
+                            <option :value="bc.ID" x-text="bc.Name + ' (' + ((parseInt(bc.SkillPtsPerLevel) || 12) + traitBonusSkillPtsPerLevel) + ' SP/lvl' + (traitBonusSkillPtsPerLevel > 0 ? ' [incl +' + traitBonusSkillPtsPerLevel + ' trait]' : '') + ')'"></option>
                         </template>
                     </select>
                     <p class="text-[11px] text-slate-500 mt-1">Background class options are strictly determined by your chosen culture.</p>
@@ -470,7 +539,29 @@
                     <span>💎</span> Step 4: Improvements
                 </h2>
                 <p class="text-xs text-slate-600 mt-0.5">Spend your improvement point budget to enhance base characteristics, defenses, health pools, or skills.</p>
-                <p class="text-[11px] text-indigo-700 font-semibold mt-0.5">Note: Leftover improvement points are safely saved for future advancement!</p>
+                <div class="flex items-center gap-2 flex-wrap mt-1 text-[11px] font-medium text-slate-600">
+                    <span class="bg-white border border-slate-200 px-2 py-0.5 rounded font-mono">
+                        Level Base: <strong class="text-slate-800" x-text="parseInt(character.Level) * 5"></strong> IP
+                    </span>
+                    <template x-if="raceBonusIP > 0">
+                        <span class="bg-amber-50 border border-amber-200 text-amber-900 px-2 py-0.5 rounded font-mono">
+                            Race: <strong x-text="'+' + raceBonusIP"></strong> IP
+                        </span>
+                    </template>
+                    <template x-if="cultureBonusIP > 0">
+                        <span class="bg-amber-50 border border-amber-200 text-amber-900 px-2 py-0.5 rounded font-mono">
+                            Culture: <strong x-text="'+' + cultureBonusIP"></strong> IP
+                        </span>
+                    </template>
+                    <template x-if="templateBonusIP > 0">
+                        <span class="bg-purple-50 border border-purple-200 text-purple-900 px-2 py-0.5 rounded font-mono">
+                            Templates: <strong x-text="'+' + templateBonusIP"></strong> IP
+                        </span>
+                    </template>
+                    <span class="text-indigo-700 font-semibold font-mono">
+                        = <span x-text="totalIP"></span> Total IP Budget
+                    </span>
+                </div>
             </div>
             
             <div class="flex items-center gap-2 shrink-0">
@@ -521,7 +612,7 @@
                     <span>📚</span> Step 5: Background Skills
                 </h2>
                 <p class="text-xs text-slate-600 mt-0.5">
-                    Allocate skill points for <strong class="text-indigo-900"><span x-text="totalRL + 1"></span> level(s)</strong> of your background class (<span class="font-bold text-slate-800" x-text="getSelectedBackgroundClass().Name"></span>).
+                    Allocate skill points for <strong class="text-indigo-900"><span x-text="totalRL + 1"></span> level(s)</strong> of your background class (<span class="font-bold text-slate-800" x-text="getSelectedBackgroundClass().Name"></span> at <span class="font-mono font-bold text-indigo-700" x-text="(parseInt(getSelectedBackgroundClass().SkillPtsPerLevel) || 12) + traitBonusSkillPtsPerLevel"></span> SP/lvl<template x-if="traitBonusSkillPtsPerLevel > 0"><span> [incl. +<span x-text="traitBonusSkillPtsPerLevel"></span> trait bonus]</span></template>).
                 </p>
                 <p class="text-[11px] text-slate-500 mt-0.5">
                     Only skills available to your background class are listed. Specializations can be learned for 1 SP each.
@@ -688,9 +779,11 @@
                             <select :value="character.ClassLevels[activeClassLevelTab - 1] || 1"
                                     @change="setClassForLevel(activeClassLevelTab, $event.target.value)"
                                     class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500">
-                                @foreach($classes as $cls)
-                                    <option value="{{ $cls->ID }}">{{ $cls->Name }} ({{ $cls->SkillPtsPerLevel }} SP/lvl)</option>
-                                @endforeach
+                                <template x-for="cls in classes" :key="cls.ID">
+                                    <option :value="cls.ID"
+                                            :selected="(character.ClassLevels[activeClassLevelTab - 1] || 1) == cls.ID"
+                                            x-text="cls.Name + ' (' + ((parseInt(cls.SkillPtsPerLevel) || 2) + traitBonusSkillPtsPerLevel) + ' SP/lvl' + (traitBonusSkillPtsPerLevel > 0 ? ' [incl +' + traitBonusSkillPtsPerLevel + ' trait]' : '') + ')'"></option>
+                                </template>
                             </select>
 
                             <!-- Copy from another level button/dropdown -->
@@ -1348,66 +1441,82 @@ function characterWizard() {
         return fallback ? parseInt(fallback[1]) : 1;
     }
 
-    function parseSpellPrereqLines(sp) {
+    function parseSpellPrereqRules(sp) {
         if (!sp || !sp.Skills) return [];
         const normalized = (sp.Skills || '').replace(/\\r\\n|\\r|\\n|\r\n|\r/g, '\n');
-        const lines = normalized.split('\n');
-        const prereqLines = [];
+        const rawLines = normalized.split('\n');
+        const rules = [];
 
-        for (let line of lines) {
-            line = line.trim();
+        for (let rawLine of rawLines) {
+            let line = rawLine.trim();
             if (!line) continue;
 
-            let lineCost = sp.baseCost;
+            let ruleCost = sp.baseCost !== undefined ? sp.baseCost : parseSpellBaseCost(sp.Cost);
             const costMatch = line.match(/\(\+(\d+)\s*PP(?:\s+cost)?\)/i);
-            if (costMatch) lineCost += parseInt(costMatch[1]);
+            if (costMatch) {
+                ruleCost += parseInt(costMatch[1]);
+            }
 
-            let cleanLine = line.replace(/\([^)]*\)/g, '').trim();
-            if (!cleanLine) continue;
+            let category = 'other';
+            const lowerRaw = line.toLowerCase();
+            if (lowerRaw.startsWith('arcane') || lowerRaw.includes('wizardry') || lowerRaw.includes('pyromancy') || lowerRaw.includes('aeromancy') || lowerRaw.includes('hydromancy') || lowerRaw.includes('geomancy') || lowerRaw.includes('ouranomancy') || lowerRaw.includes('kinetomancy') || lowerRaw.includes('necromancy') || lowerRaw.includes('illumination') || lowerRaw.includes('abjuration') || lowerRaw.includes('conjuration') || lowerRaw.includes('divination') || lowerRaw.includes('enchantment') || lowerRaw.includes('evocation') || lowerRaw.includes('illusion') || lowerRaw.includes('transmutation') || lowerRaw.includes('arcane archery')) {
+                category = 'arcane';
+            } else if (lowerRaw.startsWith('divine') || lowerRaw.startsWith('cleric') || lowerRaw.startsWith('druid') || lowerRaw.includes('holy') || lowerRaw.includes('blessing') || lowerRaw.includes('protection') || lowerRaw.includes('life') || lowerRaw.includes('nature') || lowerRaw.includes('elements') || lowerRaw.includes('animals') || lowerRaw.includes('plants') || lowerRaw.includes('death') || lowerRaw.includes('retribution') || lowerRaw.includes('summoning')) {
+                category = 'divine';
+            } else if (lowerRaw.startsWith('psi') || lowerRaw.includes('clairsentience') || lowerRaw.includes('psychokinesis') || lowerRaw.includes('psychometabolism') || lowerRaw.includes('psychoportation') || lowerRaw.includes('telepathy') || lowerRaw.includes('metacreativity')) {
+                category = 'psi';
+            }
 
-            let prefix = '';
-            let lineCategory = 'other';
-            const prefixMatch = cleanLine.match(/^(Arcane|Divine|Psi|Cleric Affinity|Ki)\s*-\s*/i);
-            if (prefixMatch) {
-                prefix = prefixMatch[1] + ' - ';
-                const pfx = prefixMatch[1].toLowerCase();
-                if (pfx === 'arcane') lineCategory = 'arcane';
-                else if (pfx === 'divine' || pfx === 'cleric affinity') lineCategory = 'divine';
-                else if (pfx === 'psi') lineCategory = 'psi';
-                cleanLine = cleanLine.substring(prefixMatch[0].length);
-            } else {
-                const lower = cleanLine.toLowerCase();
-                if (lower.includes('divine') || lower.includes('holy') || lower.includes('blessing') || lower.includes('protection') || lower.includes('life') || lower.includes('nature') || lower.includes('elements') || lower.includes('animals') || lower.includes('plants') || lower.includes('death') || lower.includes('retribution') || lower.includes('summoning') || lower.includes('wild shape')) {
-                    lineCategory = 'divine';
-                } else if (lower.includes('arcane') || lower.includes('wizardry') || lower.includes('pyromancy') || lower.includes('aeromancy') || lower.includes('hydromancy') || lower.includes('geomancy') || lower.includes('ouranomancy') || lower.includes('kinetomancy') || lower.includes('necromancy') || lower.includes('illumination') || lower.includes('abjuration') || lower.includes('conjuration') || lower.includes('divination') || lower.includes('enchantment') || lower.includes('evocation') || lower.includes('illusion') || lower.includes('transmutation')) {
-                    lineCategory = 'arcane';
-                } else if (lower.includes('psi') || lower.includes('clairsentience') || lower.includes('psychokinesis') || lower.includes('psychometabolism') || lower.includes('psychoportation') || lower.includes('telepathy') || lower.includes('metacreativity')) {
-                    lineCategory = 'psi';
+            let expandedLines = [line];
+            if (line.includes('(Life or Death)')) {
+                expandedLines = [
+                    line.replace('(Life or Death)', 'Life'),
+                    line.replace('(Life or Death)', 'Death')
+                ];
+            }
+
+            for (let expLine of expandedLines) {
+                let clean = expLine.replace(/\([^)]*\)/g, '').trim();
+                if (!clean) continue;
+
+                let prefix = '';
+                const prefixMatch = clean.match(/^([A-Za-z\s]+)\s*-\s*/);
+                if (prefixMatch) {
+                    prefix = prefixMatch[1].trim() + ' - ';
+                    clean = clean.substring(prefixMatch[0].length).trim();
+                }
+
+                const orParts = clean.split(/\s+or\s+/i);
+                for (let orPart of orParts) {
+                    orPart = orPart.trim();
+                    if (!orPart) continue;
+
+                    const andParts = orPart.split(/\s+and\s+|,\s*(?:and\s+)?/i);
+                    const requiredSkills = [];
+
+                    for (let part of andParts) {
+                        part = part.trim();
+                        if (!part) continue;
+                        const fullSkillName = part.includes(' - ') ? part : (prefix ? prefix + part : part);
+                        requiredSkills.push({
+                            fullNameLower: fullSkillName.toLowerCase().trim(),
+                            partLower: part.toLowerCase().trim(),
+                            suffixMatch: ' - ' + part.toLowerCase().trim()
+                        });
+                    }
+
+                    if (requiredSkills.length > 0) {
+                        rules.push({
+                            category,
+                            minRank: Math.max(1, ruleCost),
+                            requiredSkills
+                        });
+                    }
                 }
             }
-
-            const parts = cleanLine.split(/\s+and\s+|\s+or\s+|,\s*/i);
-            const lineParts = [];
-            for (let part of parts) {
-                part = part.trim();
-                if (!part) continue;
-                const candidateName = part.includes(' - ') ? part : (prefix + part);
-                lineParts.push({
-                    partLower: part.toLowerCase().trim(),
-                    candidateLower: candidateName.toLowerCase().trim(),
-                    suffixMatch: ' - ' + part.toLowerCase().trim()
-                });
-            }
-
-            if (lineParts.length > 0) {
-                prereqLines.push({
-                    lineCost: lineCost,
-                    category: lineCategory,
-                    parts: lineParts
-                });
-            }
         }
-        return prereqLines;
+
+        return rules;
     }
 
     function evaluatePrerequisiteExpression(prereqStr, context, skillsByAbbr = {}, skillsById = {}) {
@@ -1597,7 +1706,7 @@ function characterWizard() {
 
     (rawSpells || []).forEach(sp => {
         sp.baseCost = parseSpellBaseCost(sp.Cost);
-        sp.prereqLines = parseSpellPrereqLines(sp);
+        sp.prereqRules = parseSpellPrereqRules(sp);
         spellsById[sp.ID] = sp;
     });
 
@@ -2407,12 +2516,64 @@ function characterWizard() {
             return Math.floor((score - 10) / 2);
         },
 
+        formatTraitsSummary(traitsStr) {
+            if (!traitsStr || typeof traitsStr !== 'string') return [];
+            const results = [];
+            const matches = traitsStr.matchAll(/(\w+)\s*\{([^}]+)\}/gi);
+            for (const m of matches) {
+                const type = m[1];
+                const body = m[2];
+                const params = {};
+                body.split(';').forEach(p => {
+                    const eq = p.indexOf('=');
+                    if (eq !== -1) {
+                        params[p.substring(0, eq).trim()] = p.substring(eq + 1).trim();
+                    }
+                });
+                const qual = params.Qual || params.Type || '';
+                const val = params.Value || '';
+                const numVal = parseInt(val) || 0;
+                const sign = numVal >= 0 ? '+' : '';
+
+                if (type === 'Gen') {
+                    if (/^(improvement|impr)$/i.test(qual)) {
+                        results.push({ label: 'Bonus IP', desc: `${sign}${numVal} Improvement Points`, badge: `${sign}${numVal} IP`, color: 'amber' });
+                    } else if (/^(skillpts|skillpoints)$/i.test(qual)) {
+                        results.push({ label: 'Bonus SP', desc: `${sign}${numVal} Skill Point / Level`, badge: `${sign}${numVal} SP/lvl`, color: 'indigo' });
+                    } else {
+                        results.push({ label: qual || 'General', desc: `${qual}: ${val}`, badge: `${qual} ${val}`, color: 'slate' });
+                    }
+                } else if (type === 'SpecMod') {
+                    results.push({ label: 'Specialization', desc: `${sign}${numVal} ${qual} Specialization`, badge: `+${numVal} Spec (${qual})`, color: 'emerald' });
+                } else if (type === 'SklMod') {
+                    results.push({ label: 'Skill Bonus', desc: `${sign}${numVal} ${qual}`, badge: `${sign}${numVal} ${qual}`, color: 'emerald' });
+                } else if (type === 'Defense') {
+                    results.push({ label: 'Defense', desc: `${sign}${numVal} ${qual}`, badge: `${sign}${numVal} ${qual}`, color: 'blue' });
+                } else if (type === 'DefMod') {
+                    results.push({ label: 'Defense Mod', desc: `${sign}${numVal} ${qual}`, badge: `${sign}${numVal} ${qual}`, color: 'blue' });
+                } else if (type === 'SpdType') {
+                    results.push({ label: 'Speed', desc: `${qual} Speed ${val} sq`, badge: `${qual} ${val} sq`, color: 'teal' });
+                } else if (type === 'Sns') {
+                    results.push({ label: 'Sense', desc: `${qual}${val ? ' ' + val + ' sq' : ''}`, badge: `${qual}${val ? ' ' + val : ''}`, color: 'purple' });
+                } else if (type === 'Special') {
+                    results.push({ label: 'Special', desc: `${qual}${val ? ': ' + val : ''}${params.Cost ? ' (' + params.Cost + ')' : ''}`, badge: qual, color: 'purple' });
+                } else if (type === 'HeaMod') {
+                    results.push({ label: 'Health/Energy', desc: `${sign}${numVal} ${qual}`, badge: `${sign}${numVal} ${qual}`, color: 'rose' });
+                } else if (type === 'ActAcc') {
+                    results.push({ label: 'Action Access', desc: `Access to ${qual}`, badge: qual, color: 'blue' });
+                } else {
+                    results.push({ label: type, desc: `${qual}${val ? ' ' + val : ''}`, badge: `${type}: ${qual}`, color: 'slate' });
+                }
+            }
+            return results;
+        },
+
         parseGenBonus(traitsStr, qualRegex) {
-            if (!traitsStr) return 0;
+            if (!traitsStr || typeof traitsStr !== 'string') return 0;
             let sum = 0;
-            const blocks = traitsStr.matchAll(/Gen\s*\{([^}]+)\}/gi);
+            const blocks = traitsStr.matchAll(/(\w+)\s*\{([^}]+)\}/gi);
             for (const b of blocks) {
-                const body = b[1];
+                const body = b[2];
                 if (qualRegex.test(body)) {
                     const vm = body.match(/Value\s*=\s*([+-]?\d+)/i);
                     if (vm) {
@@ -2423,17 +2584,29 @@ function characterWizard() {
             return sum;
         },
 
-        get traitBonusIP() {
-            let bonus = 0;
-            const qualRegex = /Qual\s*=\s*(Improvement|Impr)\b/i;
+        get raceBonusIP() {
             const race = this.getSelectedRace();
-            if (race && race.Traits) bonus += this.parseGenBonus(race.Traits, qualRegex);
+            const qualRegex = /Qual\s*=\s*(Improvement|Impr)\b/i;
+            return race ? this.parseGenBonus(race.RacialTraits || race.Traits, qualRegex) : 0;
+        },
+
+        get cultureBonusIP() {
             const cult = this.getSelectedCulture();
-            if (cult && cult.Traits) bonus += this.parseGenBonus(cult.Traits, qualRegex);
+            const qualRegex = /Qual\s*=\s*(Improvement|Impr)\b/i;
+            return cult ? this.parseGenBonus(cult.Traits || cult.RacialTraits, qualRegex) : 0;
+        },
+
+        get templateBonusIP() {
+            let sum = 0;
+            const qualRegex = /Qual\s*=\s*(Improvement|Impr)\b/i;
             this.getSelectedTemplates().forEach(t => {
-                if (t && t.Traits) bonus += this.parseGenBonus(t.Traits, qualRegex);
+                if (t) sum += this.parseGenBonus(t.RacialTraits || t.Traits, qualRegex);
             });
-            return bonus;
+            return sum;
+        },
+
+        get traitBonusIP() {
+            return this.raceBonusIP + this.cultureBonusIP + this.templateBonusIP;
         },
 
         // --- Improvements Logic (Step 4) ---
@@ -2482,17 +2655,29 @@ function characterWizard() {
             }
         },
 
-        get traitBonusSkillPtsPerLevel() {
-            let bonus = 0;
-            const qualRegex = /Qual\s*=\s*(SkillPts|SkillPoints)\b/i;
+        get raceBonusSkillPtsPerLevel() {
             const race = this.getSelectedRace();
-            if (race && race.Traits) bonus += this.parseGenBonus(race.Traits, qualRegex);
+            const qualRegex = /Qual\s*=\s*(SkillPts|SkillPoints)\b/i;
+            return race ? this.parseGenBonus(race.RacialTraits || race.Traits, qualRegex) : 0;
+        },
+
+        get cultureBonusSkillPtsPerLevel() {
             const cult = this.getSelectedCulture();
-            if (cult && cult.Traits) bonus += this.parseGenBonus(cult.Traits, qualRegex);
+            const qualRegex = /Qual\s*=\s*(SkillPts|SkillPoints)\b/i;
+            return cult ? this.parseGenBonus(cult.Traits || cult.RacialTraits, qualRegex) : 0;
+        },
+
+        get templateBonusSkillPtsPerLevel() {
+            let sum = 0;
+            const qualRegex = /Qual\s*=\s*(SkillPts|SkillPoints)\b/i;
             this.getSelectedTemplates().forEach(t => {
-                if (t && t.Traits) bonus += this.parseGenBonus(t.Traits, qualRegex);
+                if (t) sum += this.parseGenBonus(t.RacialTraits || t.Traits, qualRegex);
             });
-            return bonus;
+            return sum;
+        },
+
+        get traitBonusSkillPtsPerLevel() {
+            return this.raceBonusSkillPtsPerLevel + this.cultureBonusSkillPtsPerLevel + this.templateBonusSkillPtsPerLevel;
         },
 
         // --- Background Skills Logic (Step 5) ---
@@ -2937,28 +3122,63 @@ function characterWizard() {
             return fallback ? parseInt(fallback[1]) : 1;
         },
 
+        parseSpellPrereqRules(sp) {
+            return parseSpellPrereqRules(sp);
+        },
+
+        getQualifiedCategoriesForSpell(sp, trainedMap = null) {
+            if (!sp) return [];
+            const tMap = trainedMap || this.getTrainedSkillsData().trainedMap;
+            const rules = sp.prereqRules || this.parseSpellPrereqRules(sp);
+            if (!rules || rules.length === 0) return [];
+
+            const qualified = new Set();
+            for (let i = 0; i < rules.length; i++) {
+                const rule = rules[i];
+                let ruleSatisfied = true;
+                for (let j = 0; j < rule.requiredSkills.length; j++) {
+                    const req = rule.requiredSkills[j];
+                    let rank = 0;
+                    for (const sName in tMap) {
+                        if (sName === req.fullNameLower || sName === req.partLower || sName.endsWith(req.suffixMatch)) {
+                            rank = tMap[sName];
+                            break;
+                        }
+                    }
+                    if (rank < rule.minRank || rank <= 0) {
+                        ruleSatisfied = false;
+                        break;
+                    }
+                }
+                if (ruleSatisfied) {
+                    qualified.add(rule.category || 'other');
+                }
+            }
+            return Array.from(qualified);
+        },
+
         computeSpellCategory(sp, trainedMap = null, trainedData = null) {
             if (!sp) return 'other';
-
             const tData = trainedData || this.getTrainedSkillsData();
             const tMap = trainedMap || tData.trainedMap;
             const qualified = this.getQualifiedCategoriesForSpell(sp, tMap);
 
             if (qualified.length > 0) {
-                if (qualified.includes('divine') && tData.divineCap > 0 && (tData.arcaneCap === 0 || !qualified.includes('arcane'))) return 'divine';
-                if (qualified.includes('arcane') && tData.arcaneCap > 0 && (tData.divineCap === 0 || !qualified.includes('divine'))) return 'arcane';
-                if (qualified.includes('psi') && tData.psiCap > 0) return 'psi';
-                if (qualified.includes('divine') && tData.divineCap > 0) return 'divine';
+                if (qualified.includes('arcane') && tData.arcaneCap > 0 && (tData.divineCap === 0 || !qualified.includes('divine')) && (tData.psiCap === 0 || !qualified.includes('psi'))) return 'arcane';
+                if (qualified.includes('divine') && tData.divineCap > 0 && (tData.arcaneCap === 0 || !qualified.includes('arcane')) && (tData.psiCap === 0 || !qualified.includes('psi'))) return 'divine';
+                if (qualified.includes('psi') && tData.psiCap > 0 && (tData.arcaneCap === 0 || !qualified.includes('arcane')) && (tData.divineCap === 0 || !qualified.includes('divine'))) return 'psi';
                 if (qualified.includes('arcane') && tData.arcaneCap > 0) return 'arcane';
+                if (qualified.includes('divine') && tData.divineCap > 0) return 'divine';
+                if (qualified.includes('psi') && tData.psiCap > 0) return 'psi';
                 return qualified[0];
             }
 
             const skills = (sp.Skills || '').toLowerCase();
-            if (skills.includes('divine') && tData.divineCap > 0) return 'divine';
             if (skills.includes('arcane') && tData.arcaneCap > 0) return 'arcane';
+            if (skills.includes('divine') && tData.divineCap > 0) return 'divine';
             if (skills.includes('psi') && tData.psiCap > 0) return 'psi';
-            if (skills.includes('divine')) return 'divine';
             if (skills.includes('arcane')) return 'arcane';
+            if (skills.includes('divine')) return 'divine';
             if (skills.includes('psi')) return 'psi';
             return 'other';
         },
@@ -2966,106 +3186,6 @@ function characterWizard() {
         computeSpellOptionCategory(sp, opt, trainedMap = null, trainedData = null) {
             if (!opt) return 'other';
             return sp ? this.computeSpellCategory(sp, trainedMap, trainedData) : 'other';
-        },
-
-        parseSpellPrereqLines(sp) {
-            if (!sp || !sp.Skills) return [];
-            const normalized = (sp.Skills || '').replace(/\\r\\n|\\r|\\n|\r\n|\r/g, '\n');
-            const lines = normalized.split('\n');
-            const prereqLines = [];
-
-            for (let line of lines) {
-                line = line.trim();
-                if (!line) continue;
-
-                let lineCost = sp.baseCost;
-                const costMatch = line.match(/\(\+(\d+)\s*PP(?:\s+cost)?\)/i);
-                if (costMatch) lineCost += parseInt(costMatch[1]);
-
-                let cleanLine = line.replace(/\([^)]*\)/g, '').trim();
-                if (!cleanLine) continue;
-
-                let prefix = '';
-                let lineCategory = 'other';
-                const prefixMatch = cleanLine.match(/^(Arcane|Divine|Psi|Cleric Affinity|Ki)\s*-\s*/i);
-                if (prefixMatch) {
-                    prefix = prefixMatch[1] + ' - ';
-                    const pfx = prefixMatch[1].toLowerCase();
-                    if (pfx === 'arcane') lineCategory = 'arcane';
-                    else if (pfx === 'divine' || pfx === 'cleric affinity') lineCategory = 'divine';
-                    else if (pfx === 'psi') lineCategory = 'psi';
-                    cleanLine = cleanLine.substring(prefixMatch[0].length);
-                } else {
-                    const lower = cleanLine.toLowerCase();
-                    if (lower.includes('divine') || lower.includes('holy') || lower.includes('blessing') || lower.includes('protection') || lower.includes('life') || lower.includes('nature') || lower.includes('elements') || lower.includes('animals') || lower.includes('plants') || lower.includes('death') || lower.includes('retribution') || lower.includes('summoning') || lower.includes('wild shape')) {
-                        lineCategory = 'divine';
-                    } else if (lower.includes('arcane') || lower.includes('wizardry') || lower.includes('pyromancy') || lower.includes('aeromancy') || lower.includes('hydromancy') || lower.includes('geomancy') || lower.includes('ouranomancy') || lower.includes('kinetomancy') || lower.includes('necromancy') || lower.includes('illumination') || lower.includes('abjuration') || lower.includes('conjuration') || lower.includes('divination') || lower.includes('enchantment') || lower.includes('evocation') || lower.includes('illusion') || lower.includes('transmutation')) {
-                        lineCategory = 'arcane';
-                    } else if (lower.includes('psi') || lower.includes('clairsentience') || lower.includes('psychokinesis') || lower.includes('psychometabolism') || lower.includes('psychoportation') || lower.includes('telepathy') || lower.includes('metacreativity')) {
-                        lineCategory = 'psi';
-                    }
-                }
-
-                const parts = cleanLine.split(/\s+and\s+|\s+or\s+|,\s*/i);
-                const lineParts = [];
-                for (let part of parts) {
-                    part = part.trim();
-                    if (!part) continue;
-                    const candidateName = part.includes(' - ') ? part : (prefix + part);
-                    lineParts.push({
-                        partLower: part.toLowerCase().trim(),
-                        candidateLower: candidateName.toLowerCase().trim(),
-                        suffixMatch: ' - ' + part.toLowerCase().trim()
-                    });
-                }
-
-                if (lineParts.length > 0) {
-                    prereqLines.push({
-                        lineCost: lineCost,
-                        category: lineCategory,
-                        parts: lineParts
-                    });
-                }
-            }
-            return prereqLines;
-        },
-
-        getQualifiedCategoriesForSpell(sp, trainedMap = null) {
-            if (!sp || !sp.prereqLines || sp.prereqLines.length === 0) return [];
-            const tMap = trainedMap || this.getTrainedSkillsData().trainedMap;
-            const qualified = new Set();
-
-            for (let i = 0; i < sp.prereqLines.length; i++) {
-                const line = sp.prereqLines[i];
-                let lineQualified = true;
-                let matchedAnyInPart = false;
-
-                for (let j = 0; j < line.parts.length; j++) {
-                    const p = line.parts[j];
-                    let rank = 0;
-                    let found = false;
-
-                    for (const sName in tMap) {
-                        if (sName === p.candidateLower || sName === p.partLower || sName.endsWith(p.suffixMatch)) {
-                            rank = tMap[sName];
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found || rank < line.lineCost || rank <= 0) {
-                        lineQualified = false;
-                        break;
-                    } else {
-                        matchedAnyInPart = true;
-                    }
-                }
-
-                if (lineQualified && matchedAnyInPart) {
-                    qualified.add(line.category || 'other');
-                }
-            }
-            return Array.from(qualified);
         },
 
         getTrainedSkillsData() {
@@ -3123,7 +3243,7 @@ function characterWizard() {
             const list = [];
             for (const id in trainedById) {
                 const sk = this.skillsById[id];
-                if (sk && [4, 5, 6, 8].includes(parseInt(sk.Type))) {
+                if (sk && ([4, 5, 6, 8].includes(parseInt(sk.Type)) || (parseInt(sk.Type) === 7 && sk.Name.toLowerCase().includes('generalist')))) {
                     list.push(sk);
                 }
             }
@@ -3145,42 +3265,46 @@ function characterWizard() {
         get learnedSpellCounts() {
             const counts = { arcane: 0, divine: 0, psi: 0, other: 0 };
             const tData = this.getTrainedSkillsData();
+            const items = [];
 
             for (const spellId in this.character.LearnedSpells) {
                 const sp = this.spellsById[spellId];
-                if (sp) {
-                    let cat = 'other';
-                    const qualified = sp._qualifiedCategories || [];
-                    if (qualified.length > 0) {
-                        if (qualified.includes('divine') && tData.divineCap > 0 && counts.divine < tData.divineCap) {
-                            cat = 'divine';
-                        } else if (qualified.includes('arcane') && tData.arcaneCap > 0 && counts.arcane < tData.arcaneCap) {
-                            cat = 'arcane';
-                        } else if (qualified.includes('psi') && tData.psiCap > 0 && counts.psi < tData.psiCap) {
-                            cat = 'psi';
-                        } else if (qualified.includes('divine') && tData.divineCap > 0) {
-                            cat = 'divine';
-                        } else if (qualified.includes('arcane') && tData.arcaneCap > 0) {
-                            cat = 'arcane';
-                        } else if (qualified.includes('psi') && tData.psiCap > 0) {
-                            cat = 'psi';
-                        } else {
-                            cat = qualified[0];
-                        }
-                    } else {
-                        cat = sp._defaultCategory || 'other';
-                    }
-                    counts[cat] = (counts[cat] || 0) + 1;
+                if (!sp) continue;
+                const qualified = this.getQualifiedCategoriesForSpell(sp, tData.trainedMap);
+                const optCount = (this.character.LearnedSpells[spellId] || []).length;
+                const totalPoints = 1 + optCount;
+                items.push({ spellId, sp, qualified, totalPoints });
+            }
 
-                    const opts = this.character.LearnedSpells[spellId] || [];
-                    opts.forEach(optId => {
-                        const opt = this.spellOptionsById[optId];
-                        if (opt) {
-                            counts[cat] = (counts[cat] || 0) + 1;
-                        }
-                    });
+            // 1. Single-category or unqualified items first
+            const flexible = [];
+            for (const item of items) {
+                if (item.qualified.length === 1) {
+                    const cat = item.qualified[0];
+                    counts[cat] = (counts[cat] || 0) + item.totalPoints;
+                } else if (item.qualified.length === 0) {
+                    const fallbackCat = this.computeSpellCategory(item.sp, tData.trainedMap, tData);
+                    counts[fallbackCat] = (counts[fallbackCat] || 0) + item.totalPoints;
+                } else {
+                    flexible.push(item);
                 }
             }
+
+            // 2. Multi-category items: assign to category with highest remaining allowance
+            for (const item of flexible) {
+                let bestCat = item.qualified[0];
+                let maxRem = -Infinity;
+                for (const cat of item.qualified) {
+                    const cap = cat === 'arcane' ? tData.arcaneCap : (cat === 'divine' ? tData.divineCap : (cat === 'psi' ? tData.psiCap : 0));
+                    const rem = cap - (counts[cat] || 0);
+                    if (rem > maxRem) {
+                        maxRem = rem;
+                        bestCat = cat;
+                    }
+                }
+                counts[bestCat] = (counts[bestCat] || 0) + item.totalPoints;
+            }
+
             return counts;
         },
 
@@ -3189,79 +3313,60 @@ function characterWizard() {
             if (!sp) return false;
 
             const tData = this.getTrainedSkillsData();
-            const qualified = sp._qualifiedCategories || [];
+            const qualified = this.getQualifiedCategoriesForSpell(sp, tData.trainedMap);
+            if (qualified.length === 0) return false;
+
             const counts = this.learnedSpellCounts;
-
-            if (qualified.length > 0) {
-                return qualified.some(cat => {
-                    if (cat === 'arcane') return counts.arcane < tData.arcaneCap;
-                    if (cat === 'divine') return counts.divine < tData.divineCap;
-                    if (cat === 'psi') return counts.psi < tData.psiCap;
-                    return true;
-                });
-            }
-
-            const cat = sp._defaultCategory || this.computeSpellCategory(sp, tData.trainedMap, tData);
-            if (cat === 'arcane') return counts.arcane < tData.arcaneCap;
-            if (cat === 'divine') return counts.divine < tData.divineCap;
-            if (cat === 'psi') return counts.psi < tData.psiCap;
-            return true;
+            return qualified.some(cat => {
+                if (cat === 'arcane') return counts.arcane < tData.arcaneCap;
+                if (cat === 'divine') return counts.divine < tData.divineCap;
+                if (cat === 'psi') return counts.psi < tData.psiCap;
+                return false;
+            });
         },
 
         canLearnSpellOption(spellId, optionId) {
             const sp = this.spellsById[spellId];
             const opt = this.spellOptionsById[optionId];
             if (!sp || !opt) return false;
+            if (!this.isSpellLearned(spellId)) return false;
 
             const tData = this.getTrainedSkillsData();
-            const qualified = sp._qualifiedCategories || [];
+            const qualified = this.getQualifiedCategoriesForSpell(sp, tData.trainedMap);
+            if (qualified.length === 0) return false;
+
             const counts = this.learnedSpellCounts;
-
-            if (qualified.length > 0) {
-                return qualified.some(cat => {
-                    if (cat === 'arcane') return counts.arcane < tData.arcaneCap;
-                    if (cat === 'divine') return counts.divine < tData.divineCap;
-                    if (cat === 'psi') return counts.psi < tData.psiCap;
-                    return true;
-                });
-            }
-
-            const cat = sp._defaultCategory || this.computeSpellOptionCategory(sp, opt, tData.trainedMap, tData);
-            if (cat === 'arcane') return counts.arcane < tData.arcaneCap;
-            if (cat === 'divine') return counts.divine < tData.divineCap;
-            if (cat === 'psi') return counts.psi < tData.psiCap;
-            return true;
+            return qualified.some(cat => {
+                if (cat === 'arcane') return counts.arcane < tData.arcaneCap;
+                if (cat === 'divine') return counts.divine < tData.divineCap;
+                if (cat === 'psi') return counts.psi < tData.psiCap;
+                return false;
+            });
         },
 
         isSpellEligible(sp, trainedMap) {
-            if (!sp || !sp.prereqLines || sp.prereqLines.length === 0) return false;
-            for (let i = 0; i < sp.prereqLines.length; i++) {
-                const line = sp.prereqLines[i];
-                let lineQualified = true;
-                let matchedAnyInPart = false;
+            if (!sp) return false;
+            const rules = sp.prereqRules || this.parseSpellPrereqRules(sp);
+            if (!rules || rules.length === 0) return false;
 
-                for (let j = 0; j < line.parts.length; j++) {
-                    const p = line.parts[j];
+            for (let i = 0; i < rules.length; i++) {
+                const rule = rules[i];
+                let ruleSatisfied = true;
+                for (let j = 0; j < rule.requiredSkills.length; j++) {
+                    const req = rule.requiredSkills[j];
                     let rank = 0;
-                    let found = false;
-
                     for (const sName in trainedMap) {
-                        if (sName === p.candidateLower || sName === p.partLower || sName.endsWith(p.suffixMatch)) {
+                        if (sName === req.fullNameLower || sName === req.partLower || sName.endsWith(req.suffixMatch)) {
                             rank = trainedMap[sName];
-                            found = true;
                             break;
                         }
                     }
-
-                    if (!found || rank < line.lineCost || rank <= 0) {
-                        lineQualified = false;
+                    if (rank < rule.minRank || rank <= 0) {
+                        ruleSatisfied = false;
                         break;
-                    } else {
-                        matchedAnyInPart = true;
                     }
                 }
-
-                if (lineQualified && matchedAnyInPart) return true;
+                if (ruleSatisfied) return true;
             }
             return false;
         },
@@ -3280,8 +3385,6 @@ function characterWizard() {
             for (let i = 0; i < this.spells.length; i++) {
                 const sp = this.spells[i];
                 if (this.isSpellEligible(sp, trainedMap)) {
-                    sp._qualifiedCategories = this.getQualifiedCategoriesForSpell(sp, trainedMap);
-                    sp._defaultCategory = this.computeSpellCategory(sp, trainedMap, tData);
                     list.push(sp);
                 }
             }
@@ -3290,15 +3393,18 @@ function characterWizard() {
         },
 
         isSpellLearned(spellId) {
-            return this.character.LearnedSpells[spellId] !== undefined;
+            return this.character.LearnedSpells && this.character.LearnedSpells[spellId] !== undefined;
         },
 
         toggleLearnSpell(spellId) {
-            if (this.character.LearnedSpells[spellId]) {
-                delete this.character.LearnedSpells[spellId];
+            const current = { ...(this.character.LearnedSpells || {}) };
+            if (current[spellId] !== undefined) {
+                delete current[spellId];
+                this.character.LearnedSpells = current;
             } else {
                 if (this.canLearnSpell(spellId)) {
-                    this.character.LearnedSpells[spellId] = [];
+                    current[spellId] = [];
+                    this.character.LearnedSpells = current;
                 } else {
                     alert('Cannot learn more spells in this spellcasting category (limit reached).');
                 }
@@ -3310,19 +3416,24 @@ function characterWizard() {
         },
 
         isSpellOptionSelected(spellId, optionId) {
-            const opts = this.character.LearnedSpells[spellId] || [];
+            const opts = (this.character.LearnedSpells && this.character.LearnedSpells[spellId]) || [];
             return opts.includes(optionId);
         },
 
         toggleSpellOption(spellId, optionId) {
-            if (!this.character.LearnedSpells[spellId]) return;
-            const opts = this.character.LearnedSpells[spellId];
+            if (!this.character.LearnedSpells || this.character.LearnedSpells[spellId] === undefined) return;
+            const current = { ...this.character.LearnedSpells };
+            const opts = [ ...(current[spellId] || []) ];
             const idx = opts.indexOf(optionId);
             if (idx >= 0) {
                 opts.splice(idx, 1);
+                current[spellId] = opts;
+                this.character.LearnedSpells = current;
             } else {
                 if (this.canLearnSpellOption(spellId, optionId)) {
                     opts.push(optionId);
+                    current[spellId] = opts;
+                    this.character.LearnedSpells = current;
                 } else {
                     alert('Cannot learn more spell variations in this spellcasting category (limit reached).');
                 }
