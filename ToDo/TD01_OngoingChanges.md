@@ -145,43 +145,43 @@
 ## Entity Calculations
 
 - [ ] **Missing or faulty implementation**
-  - [ ] **For alternate shapes, use current\_race for Str/Con/Dex but base\_race for Int/Wis/Cha.**
+  - [ ] **For alternate shapes, use current_race for Str/Con/Dex but base_race for Int/Wis/Cha.**
   - [x] **Fix implementation of +2 damage bonus for 2-H weapons (implement full config functionality?)**
   - [x] **In damage calculations, remember the rule of limiting bonus dmg (from Str) to no more than maximum weapon dmg.**
   - [ ] **Fix multi-attack penalties for double weapons (still count as one-handed + light?)**
-  - [ ] **Check that Weapons - Generic provides bonuses also for Brawling and Rays in entity calculations. Update skill description.**
-- [ ] Maintain a single struct (per entity) for all traits.
-  - [ ] Maintain struct of modifiers for each key characteristic.
-  - [ ] Struct should contain one bonus and one penalty for each modifier type – stackable modifiers can be lists? Or they can just accumulate the total without storing the components.
+  - [x] **Check that Weapons - Generic provides bonuses also for Brawling and Rays in entity calculations. Update skill description.**
+- [x] Maintain a single struct (per entity) for all traits.
+  - [x] Maintain struct of modifiers for each key characteristic.
+  - [x] Struct should contain one bonus and one penalty for each modifier type – stackable modifiers can be lists? Or they can just accumulate the total without storing the components.
   - [ ] Some traits can also grant a base value - use only the highest one (before applying modifiers).
-  - [ ] Calculate modifiers with two passes, one to determine modifiers (and check requirements) and one to apply them? Follow the order in the characteristics dependency diagram? Or just define an order in which traits are resolved?
+  - [x] Calculate modifiers with two passes, one to determine modifiers (and check requirements) and one to apply them? Follow the order in the characteristics dependency diagram? Or just define an order in which traits are resolved?
   - [ ] Parse all active effects
-    - [ ] For modifiers to key characteristics, update struct
+    - [x] For modifiers to key characteristics, update struct
     - [ ] For modifiers to non-key characteristics, allocate a new struct and update – keep these structs in a separate list/dictionary for each collection of non-key characteristics
-  - [ ] Do not save modifier structs – recalculate instead?
-  - [ ] For key characteristics, add modifiers and penalties.
+  - [x] Do not save modifier structs – recalculate instead?
+  - [x] For key characteristics, add modifiers and penalties.
   - [ ] For non-key characteristics, search list for modifier struct to apply.
-  - [ ] Should some modifiers (such as ability modifiers to defenses) simply be hard-coded?
+  - [x] Should some modifiers (such as ability modifiers to defenses) simply be hard-coded?
   - [ ] Requirements
-    - [ ] **Note that many traits can have conditions and requirements, meaning that they should be described and listed but not always included in modifier calculations.**
+    - [x] **Note that many traits can have conditions and requirements, meaning that they should be described and listed but not always included in modifier calculations.**
     - [x] **Add functionality for resolving requirements and applying some such traits. Weapons and armor, for example.**
     - [ ] Used for races(?), templates, classes(?), skills, actions, equipment.
     - [ ] This will also affect modifier calculations. Traits that are likely to have requirement dependencies should be parsed later than others. Conflicts are still possible - e.g. one item may grant bonus to Str score while another item may have a minimum Str requirement. Can this really be resolved by postponing some requirement checks?
-  - [ ] Trait sources: racial, cultural (often one-shot), creature type and group, class?, skill, item (equipped, carried, etc), spell/power.
-  - [ ] Source of effect specifies effect and parameters (user/wearer/wielder/carrier/owner, permanent/activated/reaction, etc)?
+  - [x] Trait sources: racial, cultural (often one-shot), creature type and group, class?, skill, item (equipped, carried, etc), spell/power.
+  - [x] Source of effect specifies effect and parameters (user/wearer/wielder/carrier/owner, permanent/activated/reaction, etc)?
 - [ ] Problematic modifier types...
   - [ ] Indirect modifiers that affect items, such as enhancement bonuses to a weapon's attack, damage, and parry or an armor's DR; from the entity’s perspective, convert the modifier type to an increased armor, weapon, etc? EC modifiers? Set up pointers to owner, carrier, wielder, rider(s), etc?
   - [x] Skill modifiers to parry to DeC. Should be applied to the creature rather than weapon but depends on which weapon is carried.
-  - [ ] Racial modifiers that can stack from one race and multiple templates (also affected by size and shapechanging)? Consider whether multiple templates really should stack.
+  - [x] Racial modifiers that can stack from one race and multiple templates (also affected by size and shapechanging)? Consider whether multiple templates really should stack.
 - [ ] **Add polymorph and size alteration to TraitEffects struct (or keep them in Entity class?). Also add to entity calculations.**
 - [ ] How to define or replace standard parameters for an action. For example, a breath weapon should probably be a single predefined action, but it can have highly variable parameters. Or separate actions for EnergyBreath, PetrifyBreath, PetrifyGaze, etc? Or even more generic actions, such as spell-like abilities and physical attacks with strange side effects?
 - [ ] Possible parameters: activation method, activation time, cost, implements, range, duration, area/target(s), effect.
 - [ ] Remember to separate between the ability to create an effect and the actual ongoing effect. But also note that an ongoing effect can be to grant the ability to activate another effect.
-- [ ] **Apply more traits and modifiers correctly (from skills, items, and item modifications).**
-- [ ] Maintain list of available actions for each character (at least special actions)? Purpose is to not have to parse all skill traits often. Avoid duplicates? Which actions to show on character sheet? Which actions to show in stat block?
+- [x] **Apply more traits and modifiers correctly (from skills, items, and item modifications).**
+- [x] Maintain list of available actions for each character (at least special actions)? Purpose is to not have to parse all skill traits often. Avoid duplicates? Which actions to show on character sheet? Which actions to show in stat block?
 - [ ] **Calculate and show maneuverability.**
 - [ ] Better handling of multiple equipment configurations
-  - [ ] **For each character, define a number (4?) of equipment configurations (unarmed, weapon(s), weapon + shield, ranged weapon, magic implement). Store separate modifiers for each configuration or just recalculate?**
+  - [x] **For each character, define a number (4?) of equipment configurations (unarmed, weapon(s), weapon + shield, ranged weapon, magic implement). Store separate modifiers for each configuration or just recalculate?**
   - [ ] **Also needed for PC/NPC generation**
     - [ ] Should support single/multi natural attacks, single/double/multi weapon attacks in different combos, weapon combined with natural attack, grappling(?), supernatural attacks, melee/ranged attacks, shields, armor.
   - [ ] **Is it necessary to keep track of which hand(s) are holding what or just the number of hands used for each implement? Can a hand holding something still be used for natural attacks?**
