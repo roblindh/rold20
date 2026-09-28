@@ -1723,8 +1723,8 @@
                             </td>
                             <td class="cvlist text-xs text-stone-700" x-html="formatSpellSkillsWithDiscount(spellsById[sp.ID])"></td>
                             <td class="cvlist text-xs font-mono text-emerald-900 bg-amber-50/30" x-html="parseActionCheck(spellsById[sp.ID] ? spellsById[sp.ID].AttackCheck : '–').replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, '<br/>')"></td>
-                            <td class="cvlist cvcenter font-mono text-xs font-bold text-stone-800" x-html="parseActionTime(spellsById[sp.ID] ? spellsById[sp.ID].ActionTime : '–').replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, '<br/>')"></td>
-                            <td class="cvlist cvcenter font-mono font-bold text-indigo-950" x-html="String(sp.Cost || '').replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, '<br/>')"></td>
+                            <td class="cvlist cvcenter font-mono text-xs font-bold text-stone-800" :title="String(spellsById[sp.ID] ? spellsById[sp.ID].ActionTime : '–').replace(/\\r\\n|\\n|\\r/g, '\n')" x-html="truncateSpellLines(parseActionTime(spellsById[sp.ID] ? spellsById[sp.ID].ActionTime : '–'), 2)"></td>
+                            <td class="cvlist cvcenter font-mono font-bold text-indigo-950" :title="String(sp.Cost || '').replace(/\\r\\n|\\n|\\r/g, '\n')" x-html="truncateSpellLines(String(sp.Cost || ''), 2)"></td>
                         </tr>
                     </template>
                     <template x-if="learnedSpellsSummary.length === 0">
@@ -1777,8 +1777,11 @@
                                 $skillsDisplayStr = !empty($finalLines) ? implode('<br/>', $finalLines) : '–';
                                 $parsedAttackCheck = \App\Services\Entity\EntityEngine::parseActionCheck((string)($spObj->AttackCheck ?: '–'), $calc['ability_modifiers'] ?? [], $skillsList ?? [], $calc['heritage']['size_combat_mod'] ?? 0);
                                 $attackCheckDisplay = str_replace(["\\r\\n", "\\n", "\\r", "\r\n", "\n", "\r"], '<br/>', $parsedAttackCheck);
-                                $actionTimeDisplay = str_replace(["\\r\\n", "\\n", "\\r", "\r\n", "\n", "\r"], '<br/>', (string)($spObj->ActionTime ?: '–'));
-                                $costDisplay = str_replace(["\\r\\n", "\\n", "\\r", "\r\n", "\n", "\r"], '<br/>', (string)$spObj->Cost);
+                                
+                                $actionTimeTruncated = \App\Services\Entity\EntityEngine::truncateLines((string)($spObj->ActionTime ?: '–'), 2);
+                                $actionTimeFull = str_replace(["\\r\\n", "\\n", "\\r"], "\n", (string)($spObj->ActionTime ?: '–'));
+                                $costTruncated = \App\Services\Entity\EntityEngine::truncateLines((string)$spObj->Cost, 2);
+                                $costFull = str_replace(["\\r\\n", "\\n", "\\r"], "\n", (string)$spObj->Cost);
                             @endphp
                             <tr>
                                 <td class="cvlist">
@@ -1804,8 +1807,8 @@
                                 </td>
                                 <td class="cvlist text-xs text-stone-700">{!! $skillsDisplayStr !!}</td>
                                 <td class="cvlist text-xs font-mono text-emerald-900 bg-amber-50/30">{!! $attackCheckDisplay !!}</td>
-                                <td class="cvlist cvcenter font-mono text-xs font-bold text-stone-800">{!! $actionTimeDisplay !!}</td>
-                                <td class="cvlist cvcenter font-mono font-bold text-indigo-950">{!! $costDisplay !!}</td>
+                                <td class="cvlist cvcenter font-mono text-xs font-bold text-stone-800" title="{{ $actionTimeFull }}">{!! $actionTimeTruncated !!}</td>
+                                <td class="cvlist cvcenter font-mono font-bold text-indigo-950" title="{{ $costFull }}">{!! $costTruncated !!}</td>
                             </tr>
                         @endif
                     @empty

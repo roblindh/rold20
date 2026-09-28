@@ -437,4 +437,42 @@ class CampaignAwardAndCharviewActionsTest extends TestCase
         $this->assertStringContainsString('allAccessibleActions', $html);
         $this->assertStringContainsString('isActionVisible', $html);
     }
+
+    public function testEntityEngineTruncateLines(): void
+    {
+        $this->assertEquals('–', \App\Services\Entity\EntityEngine::truncateLines(null));
+        $this->assertEquals('–', \App\Services\Entity\EntityEngine::truncateLines(''));
+        $this->assertEquals('7+TPC AP', \App\Services\Entity\EntityEngine::truncateLines('7+TPC AP', 2));
+        $this->assertEquals('10 min (+0)<br/>1 min (+2)', \App\Services\Entity\EntityEngine::truncateLines("10 min (+0)\n1 min (+2)", 2));
+        $this->assertEquals('1 h (+0)<br/>1 min (+4)…', \App\Services\Entity\EntityEngine::truncateLines("1 h (+0)\n1 min (+4)\n1 r (+8)", 2));
+        $this->assertEquals('1 PP for zombies<br/>+6 PP for ghouls…', \App\Services\Entity\EntityEngine::truncateLines("1 PP for zombies\n+6 PP for ghouls\n+7 PP for ghasts\n+10 PP for mummies", 2));
+    }
+
+    public function testCharviewSpellListTruncatesActionTimeAndCost(): void
+    {
+        // Spell 57 is Create Undead (3 lines AT, 9 lines Cost)
+        $charId = DB::table('characters')->insertGetId([
+            'Name' => 'Necromancer_' . uniqid(),
+            'BaseRace' => 12,
+            'Classes' => '11;11',
+            'BaseStr' => 10,
+            'BaseDex' => 10,
+            'BaseCon' => 10,
+            'BaseInt' => 16,
+            'BaseWis' => 12,
+            'BaseCha' => 10,
+            'Spells' => json_encode(['57' => []]),
+        ]);
+
+        $request = Request::create("/utilities/character-viewer/{$charId}", 'GET');
+        $view = $this->controller->characterViewer($request, (int)$charId);
+        $html = $view->render();
+
+        $this->assertIsString($html);
+        $this->assertStringContainsString('Create Undead', $html);
+        // Truncated AT (first 2 lines with ellipsis)
+        $this->assertStringContainsString('1 h (+0)<br/>1 min (+4)…', $html);
+        // Truncated Cost (first 2 lines with ellipsis)
+        $this->assertStringContainsString('1 PP for zombies and skeletons<br/>+6 PP for ghouls…', $html);
+    }
 }

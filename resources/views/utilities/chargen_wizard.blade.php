@@ -4172,6 +4172,21 @@ function characterWizard() {
             return result.join('<br/>');
         },
 
+        truncateSpellLines(text, maxLines = 2) {
+            if (!text || text === '–') return '–';
+            const lines = String(text)
+                .split(/\\r\\n|\\n|\\r|\r\n|\n|\r|<br\s*\/?>/i)
+                .map(l => l.trim())
+                .filter(l => l.length > 0);
+            if (lines.length === 0) return '–';
+            if (lines.length > maxLines) {
+                const truncated = lines.slice(0, maxLines);
+                truncated[maxLines - 1] += '…';
+                return truncated.join('<br/>');
+            }
+            return lines.join('<br/>');
+        },
+
         parseActionTime(time) {
             if (!time) return '–';
             const race = this.getSelectedRace();

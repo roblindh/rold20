@@ -3220,6 +3220,33 @@ class EntityEngine
     }
 
     /**
+     * Truncate multi-line text to a maximum number of lines (default 2), appending an ellipsis if truncated.
+     */
+    public static function truncateLines(?string $str, int $maxLines = 2, string $separator = '<br/>'): string
+    {
+        if ($str === null || trim($str) === '' || $str === '–') {
+            return '–';
+        }
+
+        $lines = array_values(array_filter(
+            preg_split('/\\\\r\\\\n|\\\\n|\\r\\n|\\n|\\r/', $str),
+            fn($l) => trim($l) !== ''
+        ));
+
+        if (empty($lines)) {
+            return '–';
+        }
+
+        if (count($lines) > $maxLines) {
+            $truncated = array_slice($lines, 0, $maxLines);
+            $truncated[$maxLines - 1] .= '…';
+            return implode($separator, array_map('htmlspecialchars', $truncated));
+        }
+
+        return implode($separator, array_map('htmlspecialchars', $lines));
+    }
+
+    /**
      * Parse weapon or ammo damage formula string into structured components and evaluated display.
      * Handles expressions such as "d10+StrMod S", "2d8+StrMod S", "d6+StrMod B SP", "d4+1+StrMod B",
      * "d4+StrMod/2 B", "d8 S", "d10 P", "+4", "Entangle", etc.
