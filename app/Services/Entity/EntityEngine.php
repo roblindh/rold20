@@ -438,8 +438,14 @@ class EntityEngine
         // =========================================================================
         // STAGE 1: HERITAGE, TEMPLATES, CLASSES & AGING
         // =========================================================================
-        $raceId = (int)($e->CurrentRace ?? $e->BaseRace ?? $e->RaceID ?? 1);
-        $race = self::$creaturesCache[$raceId] ?? self::$creaturesCache[1] ?? [];
+        $baseRaceId = (int)($e->BaseRace ?? $e->RaceID ?? 1);
+        $currentRaceId = (int)($e->CurrentRace ?? $baseRaceId);
+        $baseRace = self::$creaturesCache[$baseRaceId] ?? self::$creaturesCache[1] ?? [];
+        $currentRace = self::$creaturesCache[$currentRaceId] ?? $baseRace;
+        $isShapechanged = ($currentRaceId !== $baseRaceId);
+        $shapeGrade = (int)($e->ShapeGrade ?? $e->PolymorphGrade ?? 3);
+
+        $race = $currentRace;
         $subtypeId = (int)($race['CreatureType'] ?? $race['Subtype'] ?? 1);
         $subtype = self::$subtypesCache[$subtypeId] ?? [];
         $groupId = (int)($subtype['GroupID'] ?? 7);
@@ -517,8 +523,8 @@ class EntityEngine
         // Aging
         $physicalAge = (int)($e->PhysicalAge ?? $e->Age ?? 25);
         $mentalAge = (int)($e->MentalAge ?? $e->Age ?? 25);
-        $physicalAgeCat = self::calculateAgeCategory($raceId, $physicalAge);
-        $mentalAgeCat = self::calculateAgeCategory($raceId, $mentalAge);
+        $physicalAgeCat = self::calculateAgeCategory($currentRaceId, $physicalAge);
+        $mentalAgeCat = self::calculateAgeCategory($baseRaceId, $mentalAge);
         $ageMods = self::calculateAgeModifiers($physicalAgeCat, $mentalAgeCat);
 
         // =========================================================================
@@ -532,12 +538,13 @@ class EntityEngine
         $baseCha = isset($e->BaseCha) ? (int)$e->BaseCha : (isset($e->Charisma) ? (int)$e->Charisma : (isset($e->Cha) ? (int)$e->Cha : 10));
 
         // Check for 'No Score' (null in ref_creatures or templates)
-        $noStr = array_key_exists('StrAdj', $race) && $race['StrAdj'] === null;
-        $noCon = array_key_exists('ConAdj', $race) && $race['ConAdj'] === null;
-        $noDex = array_key_exists('DexAdj', $race) && $race['DexAdj'] === null;
-        $noInt = array_key_exists('IntAdj', $race) && $race['IntAdj'] === null;
-        $noWis = array_key_exists('WisAdj', $race) && $race['WisAdj'] === null;
-        $noCha = array_key_exists('ChaAdj', $race) && $race['ChaAdj'] === null;
+        // Physical stats check CurrentRace; Mental stats check BaseRace
+        $noStr = array_key_exists('StrAdj', $currentRace) && $currentRace['StrAdj'] === null;
+        $noCon = array_key_exists('ConAdj', $currentRace) && $currentRace['ConAdj'] === null;
+        $noDex = array_key_exists('DexAdj', $currentRace) && $currentRace['DexAdj'] === null;
+        $noInt = array_key_exists('IntAdj', $baseRace) && $baseRace['IntAdj'] === null;
+        $noWis = array_key_exists('WisAdj', $baseRace) && $baseRace['WisAdj'] === null;
+        $noCha = array_key_exists('ChaAdj', $baseRace) && $baseRace['ChaAdj'] === null;
 
         foreach ($templateIds as $tId) {
             $t = self::$templatesCache[$tId] ?? null;
@@ -551,13 +558,13 @@ class EntityEngine
             }
         }
 
-        // Racial Ability Adjustments
-        $adjStr = $noStr ? null : ($baseStr + (int)($race['StrAdj'] ?? 0) + ($ageMods['Str'] ?? 0));
-        $adjCon = $noCon ? null : ($baseCon + (int)($race['ConAdj'] ?? 0) + ($ageMods['Con'] ?? 0));
-        $adjDex = $noDex ? null : ($baseDex + (int)($race['DexAdj'] ?? 0) + ($ageMods['Dex'] ?? 0));
-        $adjInt = $noInt ? null : ($baseInt + (int)($race['IntAdj'] ?? 0) + ($ageMods['Int'] ?? 0));
-        $adjWis = $noWis ? null : ($baseWis + (int)($race['WisAdj'] ?? 0) + ($ageMods['Wis'] ?? 0));
-        $adjCha = $noCha ? null : ($baseCha + (int)($race['ChaAdj'] ?? 0) + ($ageMods['Cha'] ?? 0));
+        // Racial Ability Adjustments: Physical from CurrentRace, Mental from BaseRace
+        $adjStr = $noStr ? null : ($baseStr + (int)($currentRace['StrAdj'] ?? 0) + ($ageMods['Str'] ?? 0));
+        $adjCon = $noCon ? null : ($baseCon + (int)($currentRace['ConAdj'] ?? 0) + ($ageMods['Con'] ?? 0));
+        $adjDex = $noDex ? null : ($baseDex + (int)($currentRace['DexAdj'] ?? 0) + ($ageMods['Dex'] ?? 0));
+        $adjInt = $noInt ? null : ($baseInt + (int)($baseRace['IntAdj'] ?? 0) + ($ageMods['Int'] ?? 0));
+        $adjWis = $noWis ? null : ($baseWis + (int)($baseRace['WisAdj'] ?? 0) + ($ageMods['Wis'] ?? 0));
+        $adjCha = $noCha ? null : ($baseCha + (int)($baseRace['ChaAdj'] ?? 0) + ($ageMods['Cha'] ?? 0));
 
         // Size Alteration Ability Adjustments (when current size != base race size)
         if ($currentSizeId != $baseSizeId) {
@@ -612,12 +619,23 @@ class EntityEngine
         // Track raw traits for categorization later
         $rawTraitCollections = [];
 
-        // Ingest Racial Traits
-        $raceTraits = $race['RacialTraits'] ?? $race['Traits'] ?? '';
-        if (!empty($raceTraits)) {
-            $rawTraitCollections[] = ['source' => $race['NameInformal'] ?? $race['Name'] ?? 'Race', 'traits' => $raceTraits];
-            $parsed = TraitEvaluator::parse($raceTraits);
-            TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $race['NameInformal'] ?? 'Race', 'character');
+        // Ingest Racial Traits (Grade III+ inherits new shape traits; Grade < III does not)
+        if ($isShapechanged) {
+            if ($shapeGrade >= 3) {
+                $raceTraits = $currentRace['RacialTraits'] ?? $currentRace['Traits'] ?? '';
+                if (!empty($raceTraits)) {
+                    $rawTraitCollections[] = ['source' => ($currentRace['NameInformal'] ?? $currentRace['Name'] ?? 'Current Shape') . ' (Shape)', 'traits' => $raceTraits];
+                    $parsed = TraitEvaluator::parse($raceTraits);
+                    TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $currentRace['NameInformal'] ?? 'Current Shape', 'character');
+                }
+            }
+        } else {
+            $raceTraits = $race['RacialTraits'] ?? $race['Traits'] ?? '';
+            if (!empty($raceTraits)) {
+                $rawTraitCollections[] = ['source' => $race['NameInformal'] ?? $race['Name'] ?? 'Race', 'traits' => $raceTraits];
+                $parsed = TraitEvaluator::parse($raceTraits);
+                TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $race['NameInformal'] ?? 'Race', 'character');
+            }
         }
 
         // Ingest Creature Group Traits (Constructs, Undead, Elementals, Plants & Fungi immunities, etc.)
@@ -1404,13 +1422,7 @@ class EntityEngine
             }
         }
 
-        $speedMod = (int)$modifierEngine->getTotal('Speed');
-
-        $groundSpeed = ($finalDex === null || $finalDex <= 0) ? 0 : max(0, (int)round(($baseGroundSpeed + $speedMod) * $speedMultLand));
-        $swimSpeed = ($finalDex === null || $finalDex <= 0 || $baseSwimSpeed <= 0) ? 0 : max(0, (int)round(($baseSwimSpeed + $speedMod) * $speedMultLand));
-        $flySpeed = ($finalDex === null || $finalDex <= 0 || $baseFlySpeed <= 0) ? 0 : max(0, (int)round(($baseFlySpeed + $speedMod) * $speedMultAir));
-
-        // Speed multipliers (Climb, Swim, Burrow MP multiplier)
+        // Speed multipliers (Climb, Swim, Burrow MP multiplier) and speed types from traits
         $climbMult = 999;
         $swimMult = 999;
         $burrowMult = 999;
@@ -1418,14 +1430,18 @@ class EntityEngine
         foreach ($rawTraitCollections as $tc) {
             $parsed = TraitEvaluator::parse($tc['traits'] ?? '');
             foreach ($parsed as $tr) {
-                if ($tr['type'] === 'SpdType') {
+                if ($tr['type'] === 'SpdType' || $tr['type'] === 'Speed') {
                     $q = strtolower($tr['params']['Qual'] ?? '');
                     $v = (int)($tr['params']['Value'] ?? 0);
                     if ($v > 0) {
-                        if (str_contains($q, 'climb')) {
-                            $climbMult = min($climbMult, $v);
+                        if (str_contains($q, 'fly')) {
+                            $baseFlySpeed = max($baseFlySpeed, $v);
                         } elseif (str_contains($q, 'swim')) {
-                            $swimMult = min($swimMult, $v);
+                            $baseSwimSpeed = max($baseSwimSpeed, $v);
+                        } elseif (str_contains($q, 'ground')) {
+                            $baseGroundSpeed = max($baseGroundSpeed, $v);
+                        } elseif (str_contains($q, 'climb')) {
+                            $climbMult = min($climbMult, $v);
                         } elseif (str_contains($q, 'burrow')) {
                             $burrowMult = min($burrowMult, $v);
                         }
@@ -1437,6 +1453,75 @@ class EntityEngine
         // If Swimming skill is trained (Skill 3), default swim multiplier is 4 MP
         if (($effectiveSkillRanks[3] ?? 0) > 0 && $swimMult > 4) {
             $swimMult = 4;
+        }
+
+        $speedMod = (int)$modifierEngine->getTotal('Speed');
+
+        $groundSpeed = ($finalDex === null || $finalDex <= 0) ? 0 : max(0, (int)round(($baseGroundSpeed + $speedMod) * $speedMultLand));
+        $swimSpeed = ($finalDex === null || $finalDex <= 0 || $baseSwimSpeed <= 0) ? 0 : max(0, (int)round(($baseSwimSpeed + $speedMod) * $speedMultLand));
+        $flySpeed = ($finalDex === null || $finalDex <= 0 || $baseFlySpeed <= 0) ? 0 : max(0, (int)round(($baseFlySpeed + $speedMod) * $speedMultAir));
+
+        // Fly Maneuverability calculation
+        $flyManeuverabilityName = 'Average';
+        $flyManeuverabilityRating = 3;
+        $maneuverRatings = [
+            'clumsy' => 1,
+            'poor' => 2,
+            'average' => 3,
+            'good' => 4,
+            'perfect' => 5,
+        ];
+        $maneuverNames = [
+            1 => 'Clumsy',
+            2 => 'Poor',
+            3 => 'Average',
+            4 => 'Good',
+            5 => 'Perfect',
+        ];
+
+        // 1. Check explicit SpdType or Speed traits
+        foreach ($rawTraitCollections as $tc) {
+            $parsed = TraitEvaluator::parse($tc['traits'] ?? '');
+            foreach ($parsed as $tr) {
+                if (in_array($tr['type'], ['SpdType', 'Speed', 'SpeedMod', 'SpdMod'])) {
+                    $q = strtolower($tr['params']['Qual'] ?? '');
+                    $t = strtolower($tr['params']['Type'] ?? '');
+                    $m = strtolower($tr['params']['Maneuver'] ?? $tr['params']['Maneuverability'] ?? '');
+                    if (str_contains($q, 'fly') || str_contains($t, 'fly') || !empty($m)) {
+                        $targetStr = !empty($m) ? $m : $t;
+                        foreach ($maneuverRatings as $mKey => $mVal) {
+                            if (str_contains($targetStr, $mKey)) {
+                                $flyManeuverabilityRating = $mVal;
+                                $flyManeuverabilityName = $maneuverNames[$mVal];
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 2. Check creature record defaults if not specified by trait
+        if (!empty($race['FlyManeuverability'])) {
+            $mKey = strtolower(trim((string)$race['FlyManeuverability']));
+            if (isset($maneuverRatings[$mKey])) {
+                $flyManeuverabilityRating = $maneuverRatings[$mKey];
+                $flyManeuverabilityName = $maneuverNames[$flyManeuverabilityRating];
+            }
+        } elseif (!empty($race['Maneuverability'])) {
+            $mKey = strtolower(trim((string)$race['Maneuverability']));
+            if (isset($maneuverRatings[$mKey])) {
+                $flyManeuverabilityRating = $maneuverRatings[$mKey];
+                $flyManeuverabilityName = $maneuverNames[$flyManeuverabilityRating];
+            }
+        }
+
+        // 3. Incorporeal defaults to Good
+        if (!empty($subtype['Name']) && stripos($subtype['Name'], 'incorporeal') !== false) {
+            if ($flyManeuverabilityRating < 4) {
+                $flyManeuverabilityRating = 4;
+                $flyManeuverabilityName = 'Good';
+            }
         }
 
         $speedParts = [];
@@ -1456,7 +1541,7 @@ class EntityEngine
             $speedParts[] = "Swim {$swimSpeed} sq";
         }
         if ($flySpeed > 0) {
-            $speedParts[] = "Fly {$flySpeed} sq";
+            $speedParts[] = "Fly {$flySpeed} sq ({$flyManeuverabilityName})";
         }
         $speedDisplayStr = implode(', ', $speedParts);
 
@@ -1516,6 +1601,7 @@ class EntityEngine
             $traits = TraitEvaluator::parse(trim(($wRef['Traits'] ?? '') . ' ' . ($wItem['custom_traits'] ?? '')));
 
             $dmgTraitStr = '';
+            $dblWeapDmgStr = '';
             $critRng = 0;
             $critMul = 0;
             $parMod = 0;
@@ -1536,6 +1622,7 @@ class EntityEngine
             foreach ($traits as $tr) {
                 if ($tr['type'] === 'Weapon') {
                     $dmgTraitStr = $tr['params']['Dmg'] ?? $tr['params']['Damage'] ?? $dmgTraitStr;
+                    $dblWeapDmgStr = $tr['params']['DblWeapDmg'] ?? $tr['params']['DblDmg'] ?? $dblWeapDmgStr;
                     $critRng = (int)($tr['params']['CritRng'] ?? 0);
                     $critMul = (int)($tr['params']['CritMul'] ?? 0);
                     $parMod = (int)($tr['params']['ParMod'] ?? 0);
@@ -1804,6 +1891,19 @@ class EntityEngine
                     !$onlyRanged
                 );
 
+                $isDoubleWeapon = !empty($dblWeapDmgStr);
+                $parsedSecondaryHead = null;
+                if ($isDoubleWeapon) {
+                    $parsedSecondaryHead = self::parseWeaponDamageFormula(
+                        $dblWeapDmgStr,
+                        $abilityModsMap,
+                        $skillDmgBonus + $itemDmgBonus,
+                        $charDmgMod,
+                        false,
+                        !$onlyRanged
+                    );
+                }
+
                 $reachDisplay = $onlyRanged ? "{$range} m" : ($minReach . '-' . max(0, $maxReach + (int)($sizeRow['Reach'] ?? 1.5) - 1) . ' sq');
                 $netCritRng = $critRng + $skillCritRngBonus + $itemCritRngBonus;
                 $critRangeVal = 20 - $netCritRng;
@@ -1821,6 +1921,8 @@ class EntityEngine
                     'is_projectile' => false,
                     'is_equipped' => $isEquippedLoc,
                     'is_carried' => $isCarriedLoc,
+                    'is_double_weapon' => $isDoubleWeapon,
+                    'dbl_weap_damage_raw' => $dblWeapDmgStr,
                     'badges' => $weaponBadges,
                     'range' => $range,
                     'reach' => $reachDisplay,
@@ -1842,6 +1944,11 @@ class EntityEngine
                         'damage' => $parsed2H['display'],
                         'avg_damage' => $parsed2H['avg_damage'],
                     ],
+                    'secondary_head' => $parsedSecondaryHead ? [
+                        'attack_bonus' => $attBonus1H,
+                        'damage' => $parsedSecondaryHead['display'],
+                        'avg_damage' => $parsedSecondaryHead['avg_damage'],
+                    ] : null,
                 ];
 
                 // Add to available elements list
@@ -2439,7 +2546,11 @@ class EntityEngine
 
         return [
             'heritage' => [
-                'race_id' => $raceId,
+                'race_id' => $currentRaceId,
+                'base_race_id' => $baseRaceId,
+                'current_race_id' => $currentRaceId,
+                'is_shapechanged' => $isShapechanged,
+                'shape_grade' => $shapeGrade,
                 'race_name' => $race['Name'] ?? 'Humanoid',
                 'race_name_informal' => $race['NameInformal'] ?: ($race['Name'] ?? 'Humanoid'),
                 'creature_subtype_name' => $subtype['Name'] ?? 'Humanoid',
@@ -2510,6 +2621,8 @@ class EntityEngine
                 'ground' => $groundSpeed,
                 'swim' => $swimSpeed,
                 'fly' => $flySpeed,
+                'fly_maneuverability' => ($flySpeed > 0 ? $flyManeuverabilityName : null),
+                'fly_maneuverability_rating' => ($flySpeed > 0 ? $flyManeuverabilityRating : null),
                 'climb_mult' => ($climbMult < 999 ? $climbMult : null),
                 'swim_mult' => ($swimMult < 999 ? $swimMult : null),
                 'burrow_mult' => ($burrowMult < 999 ? $burrowMult : null),
@@ -3529,6 +3642,51 @@ class EntityEngine
             }
         }
 
+        // Append Parameterized Special Actions (e.g. Breath Weapons, Gaze attacks) from entity traits
+        if (isset($calculatedState['traits'])) {
+            $specialTraits = array_merge(
+                $calculatedState['traits']['attacks'] ?? [],
+                $calculatedState['traits']['special'] ?? []
+            );
+            $conMod = (int)($abilityMods['con'] ?? $abilityMods['Con'] ?? 0);
+            $chaMod = (int)($abilityMods['cha'] ?? $abilityMods['Cha'] ?? 0);
+            $totalLevel = (int)($calculatedState['heritage']['total_level'] ?? 1);
+
+            foreach ($specialTraits as $st) {
+                $rawTr = is_array($st) ? ($st['raw'] ?? '') : (string)$st;
+                if (empty($rawTr)) continue;
+                $parsed = TraitEvaluator::parse($rawTr);
+                foreach ($parsed as $ptr) {
+                    $ptType = $ptr['type'];
+                    $params = $ptr['params'];
+                    $qual = $params['Qual'] ?? $params['Type'] ?? '';
+                    $qualLower = strtolower($qual);
+
+                    if (in_array($ptType, ['BreathWeapon', 'SpecialAttack', 'Gaze', 'Breath']) || str_contains($qualLower, 'breath') || str_contains($qualLower, 'gaze')) {
+                        $actName = !empty($qual) ? ucwords(str_replace('_', ' ', $qual)) : ($ptType === 'BreathWeapon' ? 'Breath Weapon' : 'Special Attack');
+                        $dmg = $params['Dmg'] ?? $params['Damage'] ?? '';
+                        $area = $params['Area'] ?? $params['Range'] ?? '';
+                        $save = $params['Save'] ?? 'Ref';
+                        $evalDC = 10 + (int)floor($totalLevel / 2) + ($save === 'Will' ? $chaMod : $conMod);
+                        $freq = $params['Frequency'] ?? $params['Cooldown'] ?? 'Every 1d4 rounds';
+
+                        $results[] = [
+                            'ID' => 9000 + count($results),
+                            'Name' => $actName,
+                            'Category' => 11,
+                            'Descriptors' => '[Su, Special Attack]',
+                            'ActionTime' => '6 AP',
+                            'ActionTimeParsed' => '6 AP',
+                            'ActionCheck' => "DC {$evalDC} {$save} save",
+                            'ActionCheckParsed' => "DC {$evalDC} {$save} save",
+                            'Description' => trim("{$actName}: " . ($area ? "{$area}, " : '') . ($dmg ? "{$dmg}. " : '') . "{$freq}"),
+                            'Results' => "S - Target takes half or negates damage based on {$save} save.\nF - Target takes full damage" . ($dmg ? " ({$dmg})" : "") . ".",
+                        ];
+                    }
+                }
+            }
+        }
+
         return $results;
     }
 
@@ -3995,6 +4153,28 @@ class EntityEngine
                         ['attack_bonus' => $wAtt, 'avg_damage' => $wDmg, 'crit_range' => $critRng, 'crit_multiplier' => $critMul]
                     ]
                 ];
+
+                // If double weapon, generate dual-strike option (Primary end 1H + Secondary end Light)
+                if (!empty($w0['is_double_weapon'])) {
+                    $secHead = $w0['secondary_head'] ?? $w0['one_handed'];
+                    $secDmg = (float)($secHead['avg_damage'] ?? $w0['one_handed']['avg_damage']);
+                    $secAtt = (float)($secHead['attack_bonus'] ?? $w0['one_handed']['attack_bonus']);
+
+                    // Double weapon offhand end is treated as a light weapon (base penalty 4 instead of 6)
+                    $w0Pen = max(0, 6 - $multiAttackPenRed);
+                    $w1Pen = max(0, 4 - $multiAttackPenRed);
+                    $secPen = ($imprSec === 'greater' ? 0 : ($imprSec === 'lesser' ? 2 : 4));
+                    $dwAP = max(4, (int)$w0['ap'] + (int)$w0['ap'] - 2);
+
+                    $options[] = [
+                        'name' => ($w0['name'] ?? 'Double Weapon') . ' (Dual Strike)',
+                        'ap' => $dwAP,
+                        'strikes' => [
+                            ['attack_bonus' => (float)$w0['one_handed']['attack_bonus'] - $w0Pen, 'avg_damage' => (float)$w0['one_handed']['avg_damage'], 'crit_range' => $critRng, 'crit_multiplier' => $critMul],
+                            ['attack_bonus' => $secAtt - $w1Pen - $secPen, 'avg_damage' => $secDmg, 'crit_range' => $critRng, 'crit_multiplier' => $critMul],
+                        ]
+                    ];
+                }
             } else {
                 // Multiple weapons equipped (e.g. main hand + off hand)
                 // Option A: Single strike with Main Hand (1H)

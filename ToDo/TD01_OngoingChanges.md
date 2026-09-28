@@ -144,11 +144,11 @@
 
 ## Entity Calculations
 
-- [ ] **Missing or faulty implementation**
-  - [ ] **For alternate shapes, use current_race for Str/Con/Dex but base_race for Int/Wis/Cha.**
+- [x] **Missing or faulty implementation**
+  - [x] **For alternate shapes, use current_race for Str/Con/Dex but base_race for Int/Wis/Cha.**
   - [x] **Fix implementation of +2 damage bonus for 2-H weapons (implement full config functionality?)**
   - [x] **In damage calculations, remember the rule of limiting bonus dmg (from Str) to no more than maximum weapon dmg.**
-  - [ ] **Fix multi-attack penalties for double weapons (still count as one-handed + light?)**
+  - [x] **Fix multi-attack penalties for double weapons (still count as one-handed + light?)**
   - [x] **Check that Weapons - Generic provides bonuses also for Brawling and Rays in entity calculations. Update skill description.**
 - [x] Maintain a single struct (per entity) for all traits.
   - [x] Maintain struct of modifiers for each key characteristic.
@@ -173,13 +173,13 @@
   - [ ] Indirect modifiers that affect items, such as enhancement bonuses to a weapon's attack, damage, and parry or an armor's DR; from the entity’s perspective, convert the modifier type to an increased armor, weapon, etc? EC modifiers? Set up pointers to owner, carrier, wielder, rider(s), etc?
   - [x] Skill modifiers to parry to DeC. Should be applied to the creature rather than weapon but depends on which weapon is carried.
   - [x] Racial modifiers that can stack from one race and multiple templates (also affected by size and shapechanging)? Consider whether multiple templates really should stack.
-- [ ] **Add polymorph and size alteration to TraitEffects struct (or keep them in Entity class?). Also add to entity calculations.**
-- [ ] How to define or replace standard parameters for an action. For example, a breath weapon should probably be a single predefined action, but it can have highly variable parameters. Or separate actions for EnergyBreath, PetrifyBreath, PetrifyGaze, etc? Or even more generic actions, such as spell-like abilities and physical attacks with strange side effects?
-- [ ] Possible parameters: activation method, activation time, cost, implements, range, duration, area/target(s), effect.
-- [ ] Remember to separate between the ability to create an effect and the actual ongoing effect. But also note that an ongoing effect can be to grant the ability to activate another effect.
+- [x] **Add polymorph and size alteration to TraitEffects struct (or keep them in Entity class?). Also add to entity calculations.**
+- [x] How to define or replace standard parameters for an action. For example, a breath weapon should probably be a single predefined action, but it can have highly variable parameters. Or separate actions for EnergyBreath, PetrifyBreath, PetrifyGaze, etc? Or even more generic actions, such as spell-like abilities and physical attacks with strange side effects?
+- [x] Possible parameters: activation method, activation time, cost, implements, range, duration, area/target(s), effect.
+- [x] Remember to separate between the ability to create an effect and the actual ongoing effect. But also note that an ongoing effect can be to grant the ability to activate another effect.
 - [x] **Apply more traits and modifiers correctly (from skills, items, and item modifications).**
 - [x] Maintain list of available actions for each character (at least special actions)? Purpose is to not have to parse all skill traits often. Avoid duplicates? Which actions to show on character sheet? Which actions to show in stat block?
-- [ ] **Calculate and show maneuverability.**
+- [x] **Calculate and show maneuverability.**
 - [ ] Better handling of multiple equipment configurations
   - [x] **For each character, define a number (4?) of equipment configurations (unarmed, weapon(s), weapon + shield, ranged weapon, magic implement). Store separate modifiers for each configuration or just recalculate?**
   - [ ] **Also needed for PC/NPC generation**
