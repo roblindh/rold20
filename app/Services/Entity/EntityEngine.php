@@ -1327,9 +1327,8 @@ class EntityEngine
         $bestParryBonus = !empty($primaryParryCandidates) ? max($primaryParryCandidates) : 0;
         $bestParryBonus += $maxArmorPar;
 
-        // Active DeC = Passive DeC + max(DexMod, 0) + bestParryBonus + Dodge mods
-        $dodgeMod = (int)$modifierEngine->getTotal('Dodge');
-        $decActive = $decPassive + max($dexMod, 0) + $bestParryBonus + $dodgeMod;
+        // Active DeC = Passive DeC + max(DexMod, 0) + bestParryBonus
+        $decActive = $decPassive + max($dexMod, 0) + $bestParryBonus;
 
         // Fortitude = 10 + StrMod + ConMod + TotalLevel + Fort mods (or 999 if no Con)
         $fort = ($finalCon === null) ? 999 : (10 + $strMod + $conMod + $totalLevel + (int)$modifierEngine->getTotal('Fort'));
@@ -3887,7 +3886,7 @@ class EntityEngine
         if ($qLower === 'scent') return $formatWithReq("Scent");
         if ($qLower === 'truesight') return $formatWithReq("Truesight");
         if ($qLower === 'lightsensitive' || $qLower === 'lightsensitivity') return $formatWithReq("Light Sensitivity");
-        if ($qLower === 'dodge') return $formatWithReq("Dodge " . $formatSigned($val));
+        if ($qLower === 'dodge') return $formatWithReq("Dodge" . ($val !== '' && $val !== null ? (is_numeric($val) ? " " . $formatSigned($val) : " ({$val})") : ''));
         if ($qLower === 'immunity' && $typeParam) return $formatWithReq(ucfirst((string)$typeParam) . " imm");
         if (str_ends_with($qLower, 'res')) {
             $baseRes = ucfirst(substr((string)$qual, 0, -3));

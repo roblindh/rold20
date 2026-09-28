@@ -634,8 +634,6 @@ class TraitEvaluator
             case 'Defense':
                 if (str_ends_with(strtolower($qual), 'res')) {
                     $engine->addModifier($qual, $numVal, $modType, $sourceName);
-                } elseif (strcasecmp($qual, 'Dodge') === 0) {
-                    $engine->addModifier('Dodge', $numVal, 'Ddg', $sourceName);
                 } elseif (strcasecmp($qual, 'CritRes') === 0) {
                     $engine->addModifier('CritRes', $numVal, $modType, $sourceName);
                 } else {
