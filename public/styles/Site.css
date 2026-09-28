@@ -601,6 +601,17 @@ table.charviewsection tr:last-child td.cvlist {
     border-bottom: 1px solid var(--color-black);
 }
 
+.cv-line-clamp-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 2.8em;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
 td.cvcenter {
     text-align: center;
 }

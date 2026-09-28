@@ -470,6 +470,7 @@ class CampaignAwardAndCharviewActionsTest extends TestCase
 
         $this->assertIsString($html);
         $this->assertStringContainsString('Create Undead', $html);
+        $this->assertStringContainsString('cv-line-clamp-2', $html);
         // Truncated AT (first 2 lines with ellipsis)
         $this->assertStringContainsString('1 h (+0)<br/>1 min (+4)…', $html);
         // Truncated Cost (first 2 lines with ellipsis)

@@ -1723,8 +1723,12 @@
                             </td>
                             <td class="cvlist text-xs text-stone-700" x-html="formatSpellSkillsWithDiscount(spellsById[sp.ID])"></td>
                             <td class="cvlist text-xs font-mono text-emerald-900 bg-amber-50/30" x-html="parseActionCheck(spellsById[sp.ID] ? spellsById[sp.ID].AttackCheck : '–').replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, '<br/>')"></td>
-                            <td class="cvlist cvcenter font-mono text-xs font-bold text-stone-800" :title="String(spellsById[sp.ID] ? spellsById[sp.ID].ActionTime : '–').replace(/\\r\\n|\\n|\\r/g, '\n')" x-html="truncateSpellLines(parseActionTime(spellsById[sp.ID] ? spellsById[sp.ID].ActionTime : '–'), 2)"></td>
-                            <td class="cvlist cvcenter font-mono font-bold text-indigo-950" :title="String(sp.Cost || '').replace(/\\r\\n|\\n|\\r/g, '\n')" x-html="truncateSpellLines(String(sp.Cost || ''), 2)"></td>
+                            <td class="cvlist cvcenter font-mono text-xs font-bold text-stone-800" :title="String(spellsById[sp.ID] ? spellsById[sp.ID].ActionTime : '–').replace(/\\r\\n|\\n|\\r/g, '\n')">
+                                <div class="cv-line-clamp-2 mx-auto" x-html="truncateSpellLines(parseActionTime(spellsById[sp.ID] ? spellsById[sp.ID].ActionTime : '–'), 2)"></div>
+                            </td>
+                            <td class="cvlist cvcenter font-mono font-bold text-indigo-950" :title="String(sp.Cost || '').replace(/\\r\\n|\\n|\\r/g, '\n')">
+                                <div class="cv-line-clamp-2 mx-auto" x-html="truncateSpellLines(String(sp.Cost || ''), 2)"></div>
+                            </td>
                         </tr>
                     </template>
                     <template x-if="learnedSpellsSummary.length === 0">
@@ -1807,8 +1811,12 @@
                                 </td>
                                 <td class="cvlist text-xs text-stone-700">{!! $skillsDisplayStr !!}</td>
                                 <td class="cvlist text-xs font-mono text-emerald-900 bg-amber-50/30">{!! $attackCheckDisplay !!}</td>
-                                <td class="cvlist cvcenter font-mono text-xs font-bold text-stone-800" title="{{ $actionTimeFull }}">{!! $actionTimeTruncated !!}</td>
-                                <td class="cvlist cvcenter font-mono font-bold text-indigo-950" title="{{ $costFull }}">{!! $costTruncated !!}</td>
+                                <td class="cvlist cvcenter font-mono text-xs font-bold text-stone-800" title="{{ $actionTimeFull }}">
+                                    <div class="cv-line-clamp-2 mx-auto">{!! $actionTimeTruncated !!}</div>
+                                </td>
+                                <td class="cvlist cvcenter font-mono font-bold text-indigo-950" title="{{ $costFull }}">
+                                    <div class="cv-line-clamp-2 mx-auto">{!! $costTruncated !!}</div>
+                                </td>
                             </tr>
                         @endif
                     @empty
