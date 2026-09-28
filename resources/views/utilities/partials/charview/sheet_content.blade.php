@@ -1221,6 +1221,9 @@
         actionSearch: '', 
         actionCatFilter: 'all',
         matchesFilter(act) {
+            if (typeof isActionVisible === 'function' && !isActionVisible(act.ID ?? act.id)) {
+                return false;
+            }
             if (this.actionCatFilter !== 'all') {
                 const desc = (act.Descriptors || '').toLowerCase();
                 const name = (act.Name || '').toLowerCase();
@@ -1232,7 +1235,7 @@
             if (this.actionSearch.trim()) {
                 const q = this.actionSearch.toLowerCase();
                 const n = (act.Name || '').toLowerCase();
-                const c = (act.ActionCheck || '').toLowerCase();
+                const c = (act.ActionCheck || act.ActionCheckParsed || '').toLowerCase();
                 const d = (act.Descriptors || '').toLowerCase();
                 return n.includes(q) || c.includes(q) || d.includes(q);
             }
@@ -1245,9 +1248,16 @@
                 <tr>
                     <td class="cvheader cvcenter" colspan="6">
                         <div class="flex flex-wrap items-center justify-between gap-2 px-2 py-0.5">
-                            <span class="flex items-center gap-1.5 text-sm font-bold tracking-wide">
-                                📜 Common Actions &amp; Maneuvers
-                            </span>
+                            <div class="flex items-center gap-2">
+                                <span class="flex items-center gap-1.5 text-sm font-bold tracking-wide">
+                                    📜 Common Actions &amp; Maneuvers
+                                </span>
+                                @if(!$isWizard)
+                                    <button type="button" @click="showConfigureActionsModal = true" class="text-[11px] bg-amber-950/80 hover:bg-amber-900 text-amber-200 hover:text-white px-2 py-0.5 rounded border border-amber-600/40 shadow-xs transition cursor-pointer flex items-center gap-1 font-sans">
+                                        <span>⚙️</span> Configure Actions
+                                    </button>
+                                @endif
+                            </div>
                             
                             <!-- EP / PAM / MAM Modifiers Plaque -->
                             <div class="flex items-center gap-2 bg-amber-950/40 px-3 py-1 rounded border border-amber-500/30 text-xs font-mono">
@@ -1395,6 +1405,17 @@
                             </td>
                         </tr>
                     @endforelse
+
+                    @if(!$isWizard && !empty($actionsToRender))
+                        <tr x-show="allAccessibleActions && allAccessibleActions.length > 0 && !allAccessibleActions.some(a => matchesFilter(a))" style="display: none;">
+                            <td class="cvlist cvcenter text-stone-500 italic py-4" colspan="6">
+                                No actions match your current search, filter, or visibility configuration.
+                                <button type="button" @click="showConfigureActionsModal = true" class="text-amber-800 underline font-semibold ml-1 hover:text-amber-950 cursor-pointer">
+                                    Configure Actions
+                                </button>
+                            </td>
+                        </tr>
+                    @endif
                 @endif
             </tbody>
         </table>

@@ -411,4 +411,30 @@ class CampaignAwardAndCharviewActionsTest extends TestCase
         $this->assertArrayHasKey('5', $spells);
         $this->assertEquals([20, 21], $spells['5']);
     }
+
+    public function testCharviewRendersConfigureActionsModalAndButton(): void
+    {
+        $charId = DB::table('characters')->insertGetId([
+            'Name' => 'ActionHero_' . uniqid(),
+            'BaseRace' => 12,
+            'Classes' => '1',
+            'BaseStr' => 14,
+            'BaseDex' => 12,
+            'BaseCon' => 13,
+            'BaseInt' => 10,
+            'BaseWis' => 10,
+            'BaseCha' => 10,
+        ]);
+
+        $request = Request::create("/utilities/character-viewer/{$charId}", 'GET');
+        $view = $this->controller->characterViewer($request, (int)$charId);
+        $html = $view->render();
+
+        $this->assertIsString($html);
+        $this->assertStringContainsString('Configure Actions', $html);
+        $this->assertStringContainsString('Configure Visible Common Actions', $html);
+        $this->assertStringContainsString('showConfigureActionsModal', $html);
+        $this->assertStringContainsString('allAccessibleActions', $html);
+        $this->assertStringContainsString('isActionVisible', $html);
+    }
 }

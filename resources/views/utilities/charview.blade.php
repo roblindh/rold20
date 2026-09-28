@@ -620,6 +620,7 @@ HP: {{ $hp }} / {{ $hpCurrent }} | SP: {{ $sp !== null ? $sp . ' / ' . $spCurren
         @include('utilities.partials.charview.modal_combat_matrix')
         @include('utilities.partials.charview.modal_cast_spell')
         @include('utilities.partials.charview.modal_special_companions')
+        @include('utilities.partials.charview.modal_configure_actions')
     @else
         <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-3">
             <span class="text-5xl">🧙‍♂️</span>
@@ -802,6 +803,77 @@ function characterViewerApp() {
         showCombatMatrixModal: false,
         showCastSpellModal: false,
         showCompanionsModal: false,
+        showConfigureActionsModal: false,
+
+        // Configurable Common Actions State
+        allAccessibleActions: @json($commonActions ?? []),
+        configuredVisibleActionIds: null,
+
+        isActionVisible(actionId) {
+            if (this.configuredVisibleActionIds === null) return true;
+            return this.configuredVisibleActionIds.includes(parseInt(actionId)) || this.configuredVisibleActionIds.includes(String(actionId));
+        },
+
+        toggleActionVisibility(actionId) {
+            const id = parseInt(actionId);
+            if (this.configuredVisibleActionIds === null) {
+                this.configuredVisibleActionIds = (this.allAccessibleActions || []).map(a => parseInt(a.ID));
+            }
+            const idx = this.configuredVisibleActionIds.indexOf(id);
+            if (idx !== -1) {
+                this.configuredVisibleActionIds.splice(idx, 1);
+            } else {
+                this.configuredVisibleActionIds.push(id);
+            }
+            this.saveConfiguredActions();
+        },
+
+        selectAllActions() {
+            this.configuredVisibleActionIds = (this.allAccessibleActions || []).map(a => parseInt(a.ID));
+            this.saveConfiguredActions();
+        },
+
+        deselectAllActions() {
+            this.configuredVisibleActionIds = [];
+            this.saveConfiguredActions();
+        },
+
+        resetActionsToDefault() {
+            this.configuredVisibleActionIds = null;
+            try {
+                localStorage.removeItem('char_' + {{ (int)($character->ID ?? 0) }} + '_visible_actions');
+            } catch(e) {}
+        },
+
+        get visibleActionsCount() {
+            if (this.configuredVisibleActionIds === null) {
+                return (this.allAccessibleActions || []).length;
+            }
+            const accessibleIds = new Set((this.allAccessibleActions || []).map(a => parseInt(a.ID)));
+            return this.configuredVisibleActionIds.filter(id => accessibleIds.has(parseInt(id))).length;
+        },
+
+        saveConfiguredActions() {
+            try {
+                if (this.configuredVisibleActionIds === null) {
+                    localStorage.removeItem('char_' + {{ (int)($character->ID ?? 0) }} + '_visible_actions');
+                } else {
+                    localStorage.setItem('char_' + {{ (int)($character->ID ?? 0) }} + '_visible_actions', JSON.stringify(this.configuredVisibleActionIds));
+                }
+            } catch(e) {}
+        },
+
+        loadConfiguredActions() {
+            try {
+                const saved = localStorage.getItem('char_' + {{ (int)($character->ID ?? 0) }} + '_visible_actions');
+                if (saved !== null) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed)) {
+                        this.configuredVisibleActionIds = parsed.map(x => parseInt(x));
+                    }
+                }
+            } catch(e) {}
+        },
 
         // Special Companions State
         companionSummary: @json($companionSummary ?? []),
@@ -1097,6 +1169,7 @@ function characterViewerApp() {
             }
             this.loadCombatMatrixConfig();
             this.loadSpellFavorites();
+            this.loadConfiguredActions();
         },
 
         // Equipment Management State
