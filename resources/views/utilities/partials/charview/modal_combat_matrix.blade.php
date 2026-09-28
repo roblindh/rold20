@@ -1,33 +1,34 @@
 <!-- Combat Matrix & Attack Routine Configuration Modal -->
-<div x-show="showCombatMatrixModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showCombatMatrixModal = false">
-    <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[94vh] flex flex-col" @click.outside="showCombatMatrixModal = false">
-        
-        <!-- Modal Header -->
-        <div class="px-6 py-3.5 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
-            <div class="font-bold text-base flex items-center gap-2" style="color: #ffffff;">
-                <span>⚔️</span>
-                <span>Configure Combat Matrix &amp; Multi-Attack Routines</span>
-                @if(isset($character) && $character)
-                    <span class="text-xs bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded ml-2 font-serif">
-                        {{ $character->Name }}
-                    </span>
-                @endif
+<div x-show="showCombatMatrixModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/80 backdrop-blur-sm" @keydown.escape.window="showCombatMatrixModal = false">
+    <div class="flex min-h-full items-start sm:items-center justify-center p-3 sm:p-4 text-center">
+        <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full border border-slate-200 overflow-hidden relative z-[10000] my-auto flex flex-col max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-3.5rem)] text-left" @click.outside="showCombatMatrixModal = false">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-3.5 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
+                <div class="font-bold text-base flex items-center gap-2" style="color: #ffffff;">
+                    <span>⚔️</span>
+                    <span>Configure Combat Matrix &amp; Multi-Attack Routines</span>
+                    @if(isset($character) && $character)
+                        <span class="text-xs bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded ml-2 font-serif">
+                            {{ $character->Name }}
+                        </span>
+                    @endif
+                </div>
+                <button type="button" @click="showCombatMatrixModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
             </div>
-            <button type="button" @click="showCombatMatrixModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
-        </div>
 
-        <!-- Modal Body (Single window, no tabs) -->
-        <div class="p-5 overflow-y-auto space-y-5 flex-1 text-xs text-slate-800" x-data="{
-            newComboName: '',
-            selectedComboComponents: ['', ''],
-            addComboComponent() {
-                if (this.selectedComboComponents.length < 5) {
-                    this.selectedComboComponents.push('');
-                }
-            },
-            removeComboComponent(idx) {
-                if (this.selectedComboComponents.length > 2) {
-                    this.selectedComboComponents.splice(idx, 1);
+            <!-- Modal Body (Single window, no tabs) -->
+            <div class="p-5 overflow-y-auto min-h-0 space-y-5 flex-1 text-xs text-slate-800" x-data="{
+                newComboName: '',
+                selectedComboComponents: ['', ''],
+                addComboComponent() {
+                    if (this.selectedComboComponents.length < 5) {
+                        this.selectedComboComponents.push('');
+                    }
+                },
+                removeComboComponent(idx) {
+                    if (this.selectedComboComponents.length > 2) {
+                        this.selectedComboComponents.splice(idx, 1);
                 } else {
                     this.selectedComboComponents[idx] = '';
                 }
@@ -279,4 +280,5 @@
         </div>
 
     </div>
+</div>
 </div>
