@@ -84,6 +84,7 @@ class EntityEngine
 
         $tokens = is_array($qual) ? $qual : array_map('trim', preg_split('/(\|\||,)/', (string)$qual));
 
+        $bestRank = 0;
         $bestAtt = 0;
         $bestDmg = 0;
         $bestParry = 0;
@@ -113,6 +114,9 @@ class EntityEngine
             $skillCode = $skillInfo['code'];
             $userRank = (float)($effectiveSkillRanks[$skillId] ?? 0);
             if ($userRank <= 0) continue;
+
+            $thisRank = (int)floor($userRank);
+            $bestRank = max($bestRank, $thisRank);
 
             $matchedSkills[$skillId] = [
                 'name' => $skillInfo['name'],
@@ -192,6 +196,8 @@ class EntityEngine
         }
 
         return [
+            'rank' => $bestRank,
+            'skill_rank' => $bestRank,
             'attack_bonus' => $bestAtt,
             'damage_bonus' => $bestDmg,
             'parry_bonus' => $bestParry,
@@ -1681,6 +1687,7 @@ class EntityEngine
                 $catCritRngBonus = max($catCritRngBonus, (int)$modifierEngine->getTotal('WeapCrit_' . $cat));
             }
 
+            $skillRank = (int)($wSkills['rank'] ?? $wSkills['skill_rank'] ?? 0);
             $skillAttBonus = max((int)($wSkills['attack_bonus'] ?? 0), $catAttBonus);
             $skillDmgBonus = max((int)($wSkills['damage_bonus'] ?? 0), $catDmgBonus);
             $skillAttSpdBonus = max((int)($wSkills['att_spd_bonus'] ?? 0), $catAttSpdBonus);
@@ -1986,6 +1993,7 @@ class EntityEngine
             $catAttSpdBonus = max((int)$modifierEngine->getTotal('WeapAttSpd_Nat'), (int)$modifierEngine->getTotal('WeapAttSpd_Gen'), (int)$modifierEngine->getTotal('WeapAttSpd_Brl'), (int)$modifierEngine->getTotal('WeapAttSpd_Mnk'));
             $catCritRngBonus = max((int)$modifierEngine->getTotal('WeapCrit_Nat'), (int)$modifierEngine->getTotal('WeapCrit_Gen'), (int)$modifierEngine->getTotal('WeapCrit_Brl'), (int)$modifierEngine->getTotal('WeapCrit_Mnk'));
 
+            $natRank = (int)($natSkills['rank'] ?? $natSkills['skill_rank'] ?? 0);
             $natAttSkill = max((int)($natSkills['attack_bonus'] ?? 0), $catAttBonus);
             $natDmgSkill = max((int)($natSkills['damage_bonus'] ?? 0), $catDmgBonus);
             $natAttSpdSkill = max((int)($natSkills['att_spd_bonus'] ?? 0), $catAttSpdBonus);
@@ -2214,10 +2222,16 @@ class EntityEngine
 
         // 4. Default Brawling Maneuvers (Initiate Grapple, Grapple Attack, Bull Rush, Overrun)
         $brlSkills = self::evaluateWeaponSkillsForQual('Brl || Gen', $effectiveSkillRanks, $context);
-        $brlAttBonus = (int)($brlSkills['attack_bonus'] ?? 0);
-        $brlDmgBonus = (int)($brlSkills['damage_bonus'] ?? 0);
-        $brlAttSpdBonus = (int)($brlSkills['att_spd_bonus'] ?? 0);
-        $brlParryBonus = (int)($brlSkills['parry_bonus'] ?? 0);
+        $catBrlAttBonus = max((int)$modifierEngine->getTotal('WeapAtt_Brl'), (int)$modifierEngine->getTotal('WeapAtt_Gen'), (int)$modifierEngine->getTotal('WeapAtt_Mnk'));
+        $catBrlDmgBonus = max((int)$modifierEngine->getTotal('WeapDmg_Brl'), (int)$modifierEngine->getTotal('WeapDmg_Gen'), (int)$modifierEngine->getTotal('WeapDmg_Mnk'));
+        $catBrlAttSpdBonus = max((int)$modifierEngine->getTotal('WeapAttSpd_Brl'), (int)$modifierEngine->getTotal('WeapAttSpd_Gen'), (int)$modifierEngine->getTotal('WeapAttSpd_Mnk'));
+        $catBrlParryBonus = max((int)$modifierEngine->getTotal('WeapPar_Brl'), (int)$modifierEngine->getTotal('WeapPar_Gen'), (int)$modifierEngine->getTotal('WeapPar_Mnk'));
+
+        $brlRank = (int)($brlSkills['rank'] ?? $brlSkills['skill_rank'] ?? 0);
+        $brlAttBonus = max((int)($brlSkills['attack_bonus'] ?? 0), $catBrlAttBonus);
+        $brlDmgBonus = max((int)($brlSkills['damage_bonus'] ?? 0), $catBrlDmgBonus);
+        $brlAttSpdBonus = max((int)($brlSkills['att_spd_bonus'] ?? 0), $catBrlAttSpdBonus);
+        $brlParryBonus = max((int)($brlSkills['parry_bonus'] ?? 0), $catBrlParryBonus);
 
         $sizeGrappleMod = (int)($sizeRow['GrappleMod'] ?? 0);
         $maneuverAP = max(4, 8 + $currentSizeId - $brlAttSpdBonus) - (int)$modifierEngine->getTotal('AttSpd');
@@ -2374,6 +2388,10 @@ class EntityEngine
         $areSkills = self::evaluateWeaponSkillsForQual('Are || Gen', $effectiveSkillRanks, $context);
         $bamSkills = self::evaluateWeaponSkillsForQual('BaM || Gen', $effectiveSkillRanks, $context);
 
+        $rayRank = (int)($raySkills['rank'] ?? $raySkills['skill_rank'] ?? 0);
+        $areRank = (int)($areSkills['rank'] ?? $areSkills['skill_rank'] ?? 0);
+        $bamRank = (int)($bamSkills['rank'] ?? $bamSkills['skill_rank'] ?? 0);
+
         $focusAttMod = 0;
         $focusCritRng = 0;
         $focusCritMul = 0;
@@ -2397,10 +2415,11 @@ class EntityEngine
             }
         }
 
-        $casterAttackRay = $dexMod + $sizeCombatMod + (int)($raySkills['attack_bonus'] ?? 0) + $focusAttMod + (int)$modifierEngine->getTotal('AttRay');
-        $casterAttackArea = $dexMod + $sizeCombatMod + (int)($areSkills['attack_bonus'] ?? 0) + $focusAttMod + (int)$modifierEngine->getTotal('AttArea');
-        $casterAttackBody = $dexMod + $sizeCombatMod + (int)($bamSkills['attack_bonus'] ?? 0) + $focusAttMod + (int)$modifierEngine->getTotal('AttBody');
-        $casterAttackMind = $intMod + (int)($bamSkills['attack_bonus'] ?? 0) + $focusAttMod + (int)$modifierEngine->getTotal('AttMind');
+        $charAttMod = (int)$modifierEngine->getTotal('Att');
+        $casterAttackRay = $dexMod + $sizeCombatMod + (int)($raySkills['attack_bonus'] ?? 0) + $focusAttMod + (int)$modifierEngine->getTotal('AttRay') + $charAttMod;
+        $casterAttackArea = $dexMod + $sizeCombatMod + (int)($areSkills['attack_bonus'] ?? 0) + $focusAttMod + (int)$modifierEngine->getTotal('AttArea') + $charAttMod;
+        $casterAttackBody = $dexMod + $sizeCombatMod + (int)($bamSkills['attack_bonus'] ?? 0) + $focusAttMod + (int)$modifierEngine->getTotal('AttBody') + $charAttMod;
+        $casterAttackMind = $intMod + (int)($bamSkills['attack_bonus'] ?? 0) + $focusAttMod + (int)$modifierEngine->getTotal('AttMind') + $charAttMod;
 
         $rayCritRng = 20 - ((int)($raySkills['crit_rng_bonus'] ?? 0) + $focusCritRng);
         $rayCritMul = 2 + $focusCritMul;
@@ -4422,7 +4441,8 @@ class EntityEngine
             $effSkills = $calcState['skills'] ?? [];
             foreach (self::WEAPON_SKILL_MAP as $code => $info) {
                 $eval = self::evaluateWeaponSkillsForQual($code, $effSkills);
-                $bestSkill = max($bestSkill, (int)($eval['attack_bonus'] ?? 0));
+                $skillBonus = (int)($eval['attack_bonus'] ?? 0);
+                $bestSkill = max($bestSkill, $skillBonus);
             }
             return $bestSkill;
         }

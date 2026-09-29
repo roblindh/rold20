@@ -814,7 +814,7 @@ function analysisApp() {
                         <span>📈</span> Weapon DPR Progression Graph (Levels 1–30)
                     </h2>
                     <p class="text-xs text-slate-500 mt-0.5">
-                        Damage Per Round (DPR) calculated against level-scaled typical defenses (<code class="font-mono bg-slate-100 px-1 py-0.5 rounded text-slate-700">DeC = 10 + TL/2</code>, <code class="font-mono bg-slate-100 px-1 py-0.5 rounded text-slate-700">DR = 5 + TL/2</code>) compared against the target DPR band.
+                        Damage Per Round (DPR) calculated against level-scaled typical defenses (<code class="font-mono bg-slate-100 px-1 py-0.5 rounded text-slate-700">DeC = 10 + TL</code>, <code class="font-mono bg-slate-100 px-1 py-0.5 rounded text-slate-700">DR = 5 + TL/3</code>) compared against the target DPR band.
                     </p>
                 </div>
                 
@@ -850,8 +850,8 @@ function analysisApp() {
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 bg-slate-50 rounded-lg text-xs text-slate-700 border border-slate-200">
                 <div class="space-y-0.5">
                     <span class="font-bold text-slate-900 block">Typical Target Defenses</span>
-                    <p class="text-[11px] text-slate-600 font-mono">DeC = 10 + TL/2 &nbsp;|&nbsp; DR = 5 + TL/2</p>
-                    <p class="text-[11px] text-slate-500">Opponents of equal level (e.g. Lvl 1: DeC 10.5, DR 5.5; Lvl 20: DeC 20, DR 15).</p>
+                    <p class="text-[11px] text-slate-600 font-mono">DeC = 10 + TL &nbsp;|&nbsp; DR = 5 + TL/3</p>
+                    <p class="text-[11px] text-slate-500">Opponents of equal level (e.g. Lvl 1: DeC 11, DR 5.3; Lvl 10: DeC 20, DR 8.3; Lvl 20: DeC 30, DR 11.7; Lvl 30: DeC 40, DR 15).</p>
                 </div>
                 <div class="space-y-0.5">
                     <span class="font-bold text-amber-900 block">Target DPR Band (3–5 Rounds)</span>

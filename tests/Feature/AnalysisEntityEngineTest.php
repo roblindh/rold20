@@ -92,23 +92,23 @@ class AnalysisEntityEngineTest extends TestCase
         $this->assertNotNull($tiger);
         $this->assertEquals(5, $tiger['cl']);
         $this->assertEquals('L', $tiger['sz']);
-        $this->assertEquals(2, $tiger['att']);
+        $this->assertEquals(4, $tiger['att']);
 
         $dragon = collect($creatures)->firstWhere('name', 'Red Dragon');
         $this->assertNotNull($dragon);
         $this->assertEquals(16, $dragon['cl']);
         $this->assertEquals(22, $dragon['rl']);
-        $this->assertEquals(8, $dragon['att']);
+        $this->assertEquals(16, $dragon['att']);
 
         $solar = collect($creatures)->firstWhere('name', 'Solar');
         $this->assertNotNull($solar);
         $this->assertEquals(24, $solar['cl']);
-        $this->assertEquals(12, $solar['att']);
+        $this->assertEquals(18, $solar['att']);
 
         $giant = collect($creatures)->firstWhere('name', 'Stone Giant');
         $this->assertNotNull($giant);
         $this->assertEquals(10, $giant['cl']);
-        $this->assertEquals(8, $giant['att']);
+        $this->assertEquals(12, $giant['att']);
     }
 
     /**
@@ -232,11 +232,11 @@ class AnalysisEntityEngineTest extends TestCase
             $this->assertGreaterThan($build['data'][0], $build['data'][29]); // Lvl 30 DPR > Lvl 1 DPR
         }
 
-        // Check level stats formulas (DeC = 10 + TL/2, DR = 5 + TL/2)
-        $this->assertEquals(10.5, $graphData['level_stats'][1]['dec']);
-        $this->assertEquals(5.5, $graphData['level_stats'][1]['dr']);
-        $this->assertEquals(25.0, $graphData['level_stats'][30]['dec']);
-        $this->assertEquals(20.0, $graphData['level_stats'][30]['dr']);
+        // Check level stats formulas (DeC = 10 + TL, DR = 5 + TL/3)
+        $this->assertEquals(11.0, $graphData['level_stats'][1]['dec']);
+        $this->assertEquals(5.3, $graphData['level_stats'][1]['dr']);
+        $this->assertEquals(40.0, $graphData['level_stats'][30]['dec']);
+        $this->assertEquals(15.0, $graphData['level_stats'][30]['dr']);
     }
 
     /**

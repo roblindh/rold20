@@ -402,7 +402,7 @@ return array (
       'Name' => 'Melee Attack',
       'Category' => 3,
       'Descriptors' => '[Untrained]',
-      'ActionCheck' => 'd20! + Str or Dex mod + size mod + weapon skill + skill mod + PAM + other mods vs. DeC',
+      'ActionCheck' => 'd20! + Str or Dex mod + size mod + skill mod + PAM + other mods vs. DeC',
       'ActionTime' => '8 + weapon\'s size mod AP (minimum 5 AP)',
       'Trigger' => NULL,
       'Implements' => 'C, melee weapon',
@@ -486,7 +486,7 @@ return array (
       'Name' => 'Ranged Attack',
       'Category' => 4,
       'Descriptors' => '[Untrained]',
-      'ActionCheck' => 'd20! + Dex mod + size mod + range mod + weapon skill + skill mod + PAM + other mods vs. DeC',
+      'ActionCheck' => 'd20! + Dex mod + size mod + range mod + skill mod + PAM + other mods vs. DeC',
       'ActionTime' => '8 + weapon\'s size mod AP (minimum 5 AP)',
       'Trigger' => NULL,
       'Implements' => 'C, ranged weapon',
@@ -570,7 +570,7 @@ return array (
       'Name' => 'Splash Attack',
       'Category' => 4,
       'Descriptors' => '[Untrained]',
-      'ActionCheck' => 'd20! + Dex mod + size mod + range mod + (Weapons - Area Attacks skill) + PAM + other mods vs. DeC',
+      'ActionCheck' => 'd20! + Dex mod + size mod + range mod + (Weapons - Area Attacks skill mod) + PAM + other mods vs. DeC',
       'ActionTime' => '8 + weapon\'s size mod AP (minimum 5 AP)',
       'Trigger' => NULL,
       'Implements' => 'C, ranged splash weapon',
@@ -591,7 +591,7 @@ return array (
       'Name' => 'Spray Attack',
       'Category' => 4,
       'Descriptors' => '[Untrained]',
-      'ActionCheck' => 'd20! + Dex mod + size mod + (Weapons - Area Attacks skill) + PAM + other mods vs. Ref',
+      'ActionCheck' => 'd20! + Dex mod + size mod + (Weapons - Area Attacks skill mod) + PAM + other mods vs. Ref',
       'ActionTime' => '8 + weapon\'s size mod AP (minimum 5 AP)',
       'Trigger' => NULL,
       'Implements' => 'C, spray weapon',
@@ -612,7 +612,7 @@ return array (
       'Name' => 'Bull Rush',
       'Category' => 5,
       'Descriptors' => '[Untrained, AoO]',
-      'ActionCheck' => 'd20! + Str mod + grapple size mod + (Weapons - Brawling skill) + PAM vs. opposed d20! + Str mod + grapple size mod + (Weapons - Brawling skill) + PAM',
+      'ActionCheck' => 'd20! + Str mod + grapple size mod + (Weapons - Brawling skill mod) + PAM vs. opposed d20! + Str mod + grapple size mod + (Weapons - Brawling skill mod) + PAM',
       'ActionTime' => '8 + size mod AP (minimum 5 AP)',
       'Trigger' => NULL,
       'Implements' => 'C',
@@ -633,7 +633,7 @@ return array (
       'Name' => 'Crush',
       'Category' => 5,
       'Descriptors' => '[Untrained, AoO]',
-      'ActionCheck' => 'd20! + Str mod + (Weapons - Brawling skill) + PAM vs. Ref',
+      'ActionCheck' => 'd20! + Str mod + (Weapons - Brawling skill mod) + PAM vs. Ref',
       'ActionTime' => '8 + size mod AP (minimum 5 AP)',
       'Trigger' => NULL,
       'Implements' => 'C',
@@ -654,7 +654,7 @@ return array (
       'Name' => 'Overrun',
       'Category' => 5,
       'Descriptors' => '[Untrained, AoO]',
-      'ActionCheck' => 'd20! + Str mod + grapple size mod + (Weapons - Brawling skill) + PAM vs. opposed d20! + Str or Dex mod + grapple size mod + (Weapons - Brawling skill) + PAM',
+      'ActionCheck' => 'd20! + Str mod + grapple size mod + (Weapons - Brawling skill mod) + PAM vs. opposed d20! + Str or Dex mod + grapple size mod + (Weapons - Brawling skill mod) + PAM',
       'ActionTime' => '8 + size mod AP (minimum 5 AP)',
       'Trigger' => NULL,
       'Implements' => 'C',
@@ -675,7 +675,7 @@ return array (
       'Name' => 'Initiate Grapple',
       'Category' => 5,
       'Descriptors' => '[Untrained, AoO]',
-      'ActionCheck' => 'd20! + Dex mod + size mod + (Weapons - Brawling skill) + PAM vs. DeC',
+      'ActionCheck' => 'd20! + Dex mod + size mod + (Weapons - Brawling skill mod) + PAM vs. DeC',
       'ActionTime' => '8 + size mod AP (minimum 5 AP)',
       'Trigger' => NULL,
       'Implements' => 'C, primary attack(s)',
@@ -696,7 +696,7 @@ return array (
       'Name' => 'Grapple Attack',
       'Category' => 5,
       'Descriptors' => '[Untrained]',
-      'ActionCheck' => 'd20! + Str mod + grapple size mod + (Weapons - Brawling skill) + PAM vs. opposed grapple attack check',
+      'ActionCheck' => 'd20! + Str mod + grapple size mod + (Weapons - Brawling skill mod) + PAM vs. opposed grapple attack check',
       'ActionTime' => '6 + size mod AP (minimum 5 AP)',
       'Trigger' => NULL,
       'Implements' => 'C',
@@ -2985,7 +2985,7 @@ return array (
       'Name' => 'Suggestive Song',
       'Category' => 11,
       'Descriptors' => '[Su, MR, Boost, AoO, Mind, Lang, Charm]',
-      'ActionCheck' => 'd20! + Body & Mind skill + Cha mod + MAM vs. Will',
+      'ActionCheck' => 'd20! + Body & Mind skill mod + Cha mod + MAM vs. Will',
       'ActionTime' => '9 AP',
       'Trigger' => NULL,
       'Implements' => 'C, music and/or song',
@@ -3531,7 +3531,7 @@ return array (
       'Name' => 'Breath Weapon',
       'Category' => 11,
       'Descriptors' => '[Su]',
-      'ActionCheck' => 'd20! + Area Attacks skill + Dex mod + PAM vs. Ref',
+      'ActionCheck' => 'd20! + Area Attacks skill mod + Dex mod + PAM vs. Ref',
       'ActionTime' => '6 AP (once/r)',
       'Trigger' => NULL,
       'Implements' => 'C, breath',
@@ -3573,7 +3573,7 @@ return array (
       'Name' => 'Incorporeal Bridge',
       'Category' => 11,
       'Descriptors' => '[Su, MR, Boost, Teleport]',
-      'ActionCheck' => 'd20! + Body & Mind skill + Wis mod + MAM vs. destination creature\'s Will',
+      'ActionCheck' => 'd20! + Body & Mind skill mod + Wis mod + MAM vs. destination creature\'s Will',
       'ActionTime' => '6 AP (once/r)',
       'Trigger' => NULL,
       'Implements' => 'C',
@@ -3678,7 +3678,7 @@ return array (
       'Name' => 'Bolt of Fire',
       'Category' => 11,
       'Descriptors' => '[Su, MR, Boost, Fire]',
-      'ActionCheck' => 'd20! + Ray Attacks skill + Dex mod + MAM vs. DeC',
+      'ActionCheck' => 'd20! + Ray Attacks skill mod + Dex mod + MAM vs. DeC',
       'ActionTime' => '(5 + PP cost) AP',
       'Trigger' => NULL,
       'Implements' => 'C, S',
@@ -3699,7 +3699,7 @@ return array (
       'Name' => 'Conflagration',
       'Category' => 11,
       'Descriptors' => '[Su, MR, Boost, Fire]',
-      'ActionCheck' => 'd20! + Area Attacks skill + Dex mod + MAM vs. Ref',
+      'ActionCheck' => 'd20! + Area Attacks skill mod + Dex mod + MAM vs. Ref',
       'ActionTime' => '(5 + PP cost) AP',
       'Trigger' => NULL,
       'Implements' => 'C, S',
@@ -3804,7 +3804,7 @@ return array (
       'Name' => 'Shadow Illusion',
       'Category' => 11,
       'Descriptors' => '[Su, AoO, Dark, Illusion]',
-      'ActionCheck' => 'd20! + Body & Mind skill + Int mod + MAM vs. Will',
+      'ActionCheck' => 'd20! + Body & Mind skill mod + Int mod + MAM vs. Will',
       'ActionTime' => '9 AP',
       'Trigger' => NULL,
       'Implements' => 'C',
@@ -4035,7 +4035,7 @@ return array (
       'Name' => 'Spellfire Blast',
       'Category' => 11,
       'Descriptors' => '[Su, MR, Boost, Fire]',
-      'ActionCheck' => 'd20! + Area Attacks skill + Dex mod + PAM vs. Ref',
+      'ActionCheck' => 'd20! + Area Attacks skill mod + Dex mod + PAM vs. Ref',
       'ActionTime' => '(5 + SP cost) AP',
       'Trigger' => NULL,
       'Implements' => 'C, S',
@@ -4056,7 +4056,7 @@ return array (
       'Name' => 'Spellfire Bolt',
       'Category' => 11,
       'Descriptors' => '[Su, MR, Boost, Fire]',
-      'ActionCheck' => 'd20! + Ray Attacks skill + Dex mod + PAM vs. DeC',
+      'ActionCheck' => 'd20! + Ray Attacks skill mod + Dex mod + PAM vs. DeC',
       'ActionTime' => '(5 + SP cost) AP',
       'Trigger' => NULL,
       'Implements' => 'C, S',
@@ -4224,7 +4224,7 @@ return array (
       'Name' => 'Gaze Attack',
       'Category' => 12,
       'Descriptors' => '[Su]',
-      'ActionCheck' => 'd20! + Body & Mind skill + PAM vs. Fort',
+      'ActionCheck' => 'd20! + Body & Mind skill mod + PAM vs. Fort',
       'ActionTime' => '6 AP',
       'Trigger' => NULL,
       'Implements' => 'C, vision',
@@ -4917,7 +4917,7 @@ return array (
       'Name' => 'Poison Breath',
       'Category' => 12,
       'Descriptors' => '[Poison]',
-      'ActionCheck' => 'd20! + Area Attack skill + Dex mod + PAM vs. Fort',
+      'ActionCheck' => 'd20! + Area Attack skill mod + Dex mod + PAM vs. Fort',
       'ActionTime' => '6 AP (once/r)',
       'Trigger' => NULL,
       'Implements' => 'C, breath',
@@ -4938,7 +4938,7 @@ return array (
       'Name' => 'Energy Breath',
       'Category' => 12,
       'Descriptors' => '[Su]',
-      'ActionCheck' => 'd20! + Area Attack skill + Dex mod + PAM vs. Ref',
+      'ActionCheck' => 'd20! + Area Attack skill mod + Dex mod + PAM vs. Ref',
       'ActionTime' => '6 AP (once/r)',
       'Trigger' => NULL,
       'Implements' => 'C, breath',
@@ -5022,7 +5022,7 @@ return array (
       'Name' => 'Energy Ray',
       'Category' => 12,
       'Descriptors' => '[Su]',
-      'ActionCheck' => 'd20! + Ray Attack skill + Dex mod + PAM vs. DeC',
+      'ActionCheck' => 'd20! + Ray Attack skill mod + Dex mod + PAM vs. DeC',
       'ActionTime' => '6 AP',
       'Trigger' => NULL,
       'Implements' => 'C',
@@ -5043,7 +5043,7 @@ return array (
       'Name' => 'Sound Attack',
       'Category' => 12,
       'Descriptors' => '[Su]',
-      'ActionCheck' => 'd20! + Body & Mind skill + Con mod + PAM vs. Fort',
+      'ActionCheck' => 'd20! + Body & Mind skill mod + Con mod + PAM vs. Fort',
       'ActionTime' => '6 AP',
       'Trigger' => NULL,
       'Implements' => 'C, V',
@@ -5064,7 +5064,7 @@ return array (
       'Name' => 'Ray Attack',
       'Category' => 12,
       'Descriptors' => '[Su]',
-      'ActionCheck' => 'd20! + Ray Attack skill + Dex mod + PAM vs. DeC',
+      'ActionCheck' => 'd20! + Ray Attack skill mod + Dex mod + PAM vs. DeC',
       'ActionTime' => '6 AP',
       'Trigger' => NULL,
       'Implements' => 'C',
@@ -5085,7 +5085,7 @@ return array (
       'Name' => 'Cloaker Moan',
       'Category' => 12,
       'Descriptors' => '[Mind]',
-      'ActionCheck' => 'd20! + Body & Mind skill + Cha mod + PAM vs. Fort',
+      'ActionCheck' => 'd20! + Body & Mind skill mod + Cha mod + PAM vs. Fort',
       'ActionTime' => '6 AP',
       'Trigger' => NULL,
       'Implements' => 'C, V',
@@ -5127,7 +5127,7 @@ return array (
       'Name' => 'Mental Breath',
       'Category' => 12,
       'Descriptors' => '[Su, Mind]',
-      'ActionCheck' => 'd20! + Area Attack skill + Dex mod + PAM vs. Will',
+      'ActionCheck' => 'd20! + Area Attack skill mod + Dex mod + PAM vs. Will',
       'ActionTime' => '6 AP (once/r)',
       'Trigger' => NULL,
       'Implements' => 'C, breath',
@@ -5190,7 +5190,7 @@ return array (
       'Name' => 'Siren Song',
       'Category' => 12,
       'Descriptors' => '[Su, Mind]',
-      'ActionCheck' => 'd20! + Body & Mind skill + Cha mod + PAM vs. Will',
+      'ActionCheck' => 'd20! + Body & Mind skill mod + Cha mod + PAM vs. Will',
       'ActionTime' => '6 AP (once/r)',
       'Trigger' => NULL,
       'Implements' => 'C, V',
@@ -5295,7 +5295,7 @@ return array (
       'Name' => 'Dirge of Doom',
       'Category' => 11,
       'Descriptors' => '[Su, MR, Boost, AoO, Mind, Lang, Fear]',
-      'ActionCheck' => 'd20! + Body & Mind skill + Cha mod + MAM vs. Will',
+      'ActionCheck' => 'd20! + Body & Mind skill mod + Cha mod + MAM vs. Will',
       'ActionTime' => '9 AP',
       'Trigger' => NULL,
       'Implements' => 'C, music and/or song',
@@ -6177,7 +6177,7 @@ return array (
       'Name' => 'Fist of Thunder',
       'Category' => 11,
       'Descriptors' => NULL,
-      'ActionCheck' => 'd20! + Str mod + grapple size mod + (Weapons - Brawling skill) + PAM vs. opposed d20! + Str or Dex mod + grapple size mod + (Weapons - Brawling skill) + PAM',
+      'ActionCheck' => 'd20! + Str mod + grapple size mod + (Weapons - Brawling skill mod) + PAM vs. opposed d20! + Str or Dex mod + grapple size mod + (Weapons - Brawling skill mod) + PAM',
       'ActionTime' => '8 + size mod AP (minimum 5 AP)',
       'Trigger' => NULL,
       'Implements' => 'C',
@@ -6324,7 +6324,7 @@ return array (
       'Name' => 'Fatal Aria',
       'Category' => 11,
       'Descriptors' => '[Su, MR, Boost, AoO, Mind, Lang, Fear]',
-      'ActionCheck' => 'd20! + Body & Mind skill + Cha mod + MAM vs. Will',
+      'ActionCheck' => 'd20! + Body & Mind skill mod + Cha mod + MAM vs. Will',
       'ActionTime' => '9 AP',
       'Trigger' => NULL,
       'Implements' => 'C, music and/or song',
@@ -50016,7 +50016,7 @@ return array (
       'ID' => 27,
       'Skill' => 17,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpNat; } AttMod { Qual=Damage; Type=skill; Value=+lvl/4; Req=Weapon==WpNat; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpNat; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(2*lvl+2)/3; Req=Weapon==WpNat; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpNat; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpNat; }',
     ),
     30 => 
     array (
@@ -50044,7 +50044,7 @@ return array (
       'ID' => 33,
       'Skill' => 21,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+lvl/2; Req=Weapon==WpAxe; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpAxe; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/5; Req=Weapon==WpAxe; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(3*lvl+1)/4; Req=Weapon==WpAxe; } AttMod { Qual=Damage; Type=skill; Value=+(3*lvl+3)/4; Req=Weapon==WpAxe; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/5; Req=Weapon==WpAxe; }',
     ),
     36 => 
     array (
@@ -50072,7 +50072,7 @@ return array (
       'ID' => 39,
       'Skill' => 22,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpClb; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpClb; } DefMod { Qual=Parry; Type=skill; Value=+lvl/6; Req=Weapon==WpClb; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpClb; } AttMod { Qual=Damage; Type=skill; Value=+(2*lvl+2)/3; Req=Weapon==WpClb; } DefMod { Qual=Parry; Type=skill; Value=+lvl/6; Req=Weapon==WpClb; }',
     ),
     42 => 
     array (
@@ -50086,7 +50086,7 @@ return array (
       'ID' => 43,
       'Skill' => 23,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpFnc; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpFnc; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpFnc; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(3*lvl+3)/4; Req=Weapon==WpFnc; } AttMod { Qual=Damage; Type=skill; Value=+(3*lvl+1)/4; Req=Weapon==WpFnc; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpFnc; }',
     ),
     46 => 
     array (
@@ -50114,7 +50114,7 @@ return array (
       'ID' => 49,
       'Skill' => 24,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpFll; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpFll; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpFll; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(3*lvl+3)/4; Req=Weapon==WpFll; } AttMod { Qual=Damage; Type=skill; Value=+(2*lvl)/3; Req=Weapon==WpFll; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpFll; }',
     ),
     52 => 
     array (
@@ -50135,7 +50135,7 @@ return array (
       'ID' => 54,
       'Skill' => 25,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+lvl/2; Req=Weapon==WpHvB; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpHvB; } DefMod { Qual=Parry; Type=skill; Value=+lvl/3; Req=Weapon==WpHvB; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(3*lvl+1)/4; Req=Weapon==WpHvB; } AttMod { Qual=Damage; Type=skill; Value=+(3*lvl+3)/4; Req=Weapon==WpHvB; } DefMod { Qual=Parry; Type=skill; Value=+lvl/3; Req=Weapon==WpHvB; }',
     ),
     57 => 
     array (
@@ -50170,7 +50170,7 @@ return array (
       'ID' => 61,
       'Skill' => 26,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpLtB; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpLtB; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpLtB; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(2*lvl+2)/3; Req=Weapon==WpLtB; } AttMod { Qual=Damage; Type=skill; Value=+(2*lvl)/3; Req=Weapon==WpLtB; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpLtB; }',
     ),
     64 => 
     array (
@@ -50191,7 +50191,7 @@ return array (
       'ID' => 66,
       'Skill' => 27,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpPlA; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpPlA; } DefMod { Qual=Parry; Type=skill; Value=+lvl/4; Req=Weapon==WpPlA; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(2*lvl+1)/3; Req=Weapon==WpPlA; } AttMod { Qual=Damage; Type=skill; Value=+(3*lvl+3)/4; Req=Weapon==WpPlA; } DefMod { Qual=Parry; Type=skill; Value=+lvl/4; Req=Weapon==WpPlA; }',
     ),
     69 => 
     array (
@@ -50226,7 +50226,7 @@ return array (
       'ID' => 73,
       'Skill' => 29,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpSpr; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpSpr; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpSpr; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(2*lvl+2)/3; Req=Weapon==WpSpr; } AttMod { Qual=Damage; Type=skill; Value=+(2*lvl+1)/3; Req=Weapon==WpSpr; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpSpr; }',
     ),
     76 => 
     array (
@@ -50261,7 +50261,7 @@ return array (
       'ID' => 80,
       'Skill' => 30,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpStv; } AttMod { Qual=Damage; Type=skill; Value=+lvl/4; Req=Weapon==WpStv; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpStv; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpStv; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpStv; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpStv; }',
     ),
     83 => 
     array (
@@ -50275,7 +50275,7 @@ return array (
       'ID' => 84,
       'Skill' => 20,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpExo; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpExo; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpExo; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(2*lvl+1)/3; Req=Weapon==WpExo; } AttMod { Qual=Damage; Type=skill; Value=+(2*lvl+2)/3; Req=Weapon==WpExo; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpExo; }',
     ),
     87 => 
     array (
@@ -50303,7 +50303,7 @@ return array (
       'ID' => 90,
       'Skill' => 31,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpBow; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpBow; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(3*lvl+3)/4; Req=Weapon==WpBow; } AttMod { Qual=Damage; Type=skill; Value=+(3*lvl+1)/4; Req=Weapon==WpBow; }',
     ),
     92 => 
     array (
@@ -50380,7 +50380,7 @@ return array (
       'ID' => 102,
       'Skill' => 32,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpCrs; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpCrs; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(3*lvl+3)/4; Req=Weapon==WpCrs; } AttMod { Qual=Damage; Type=skill; Value=+(2*lvl+1)/3; Req=Weapon==WpCrs; }',
     ),
     104 => 
     array (
@@ -50429,7 +50429,7 @@ return array (
       'ID' => 110,
       'Skill' => 33,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpFir; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpFir; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(3*lvl+3)/4; Req=Weapon==WpFir; } AttMod { Qual=Damage; Type=skill; Value=+(2*lvl+1)/3; Req=Weapon==WpFir; }',
     ),
     112 => 
     array (
@@ -50471,7 +50471,7 @@ return array (
       'ID' => 117,
       'Skill' => 34,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpSln; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpSln; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(2*lvl+2)/3; Req=Weapon==WpSln; } AttMod { Qual=Damage; Type=skill; Value=+(2*lvl)/3; Req=Weapon==WpSln; }',
     ),
     119 => 
     array (
@@ -50506,7 +50506,7 @@ return array (
       'ID' => 123,
       'Skill' => 35,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpSmT; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpSmT; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(2*lvl+2)/3; Req=Weapon==WpSmT; } AttMod { Qual=Damage; Type=skill; Value=+(3*lvl+1)/4; Req=Weapon==WpSmT; }',
     ),
     125 => 
     array (
@@ -50548,7 +50548,7 @@ return array (
       'ID' => 130,
       'Skill' => 36,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpAre; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpAre; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(2*lvl+2)/3; Req=Weapon==WpAre; } AttMod { Qual=Damage; Type=skill; Value=+(2*lvl+1)/3; Req=Weapon==WpAre; }',
     ),
     132 => 
     array (
@@ -50576,14 +50576,14 @@ return array (
       'ID' => 135,
       'Skill' => 37,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpBaM; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(2*lvl+2)/3; Req=Weapon==WpBaM; }',
     ),
     136 => 
     array (
       'ID' => 136,
       'Skill' => 38,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+lvl/2; Req=Weapon==WpRay; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpRay; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(3*lvl+1)/4; Req=Weapon==WpRay; } AttMod { Qual=Damage; Type=skill; Value=+(3*lvl+3)/4; Req=Weapon==WpRay; }',
     ),
     138 => 
     array (
@@ -50618,7 +50618,7 @@ return array (
       'ID' => 142,
       'Skill' => 39,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpSie; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpSie; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(2*lvl+1)/3; Req=Weapon==WpSie; } AttMod { Qual=Damage; Type=skill; Value=+(2*lvl)/3; Req=Weapon==WpSie; }',
     ),
     144 => 
     array (
@@ -50765,7 +50765,7 @@ return array (
       'ID' => 174,
       'Skill' => 18,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpBrl; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpBrl; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(2*lvl+2)/3; Req=Weapon==WpBrl; } AttMod { Qual=Damage; Type=skill; Value=+(2*lvl+1)/3; Req=Weapon==WpBrl; }',
     ),
     177 => 
     array (
@@ -50828,7 +50828,7 @@ return array (
       'ID' => 189,
       'Skill' => 28,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/5; Req=Weapon==WpShd; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+4)/10; Req=Weapon==WpShd; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpShd; } SpdSpcl { Qual=ECRed; Value=lvl/10; Req=Weapon==WpShd; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpShd; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+3)/5; Req=Weapon==WpShd; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpShd; } SpdSpcl { Qual=ECRed; Value=lvl/10; Req=Weapon==WpShd; }',
     ),
     193 => 
     array (
@@ -52473,7 +52473,7 @@ return array (
       'ID' => 478,
       'Skill' => 19,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+3)/4; Req=Weapon==WpGen; } AttMod { Qual=Damage; Type=skill; Value=+(lvl+1)/4; Req=Weapon==WpGen; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpGen; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/2; Req=Weapon==WpGen; } AttMod { Qual=Damage; Type=skill; Value=+lvl/2; Req=Weapon==WpGen; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/4; Req=Weapon==WpGen; }',
     ),
     479 => 
     array (
@@ -53299,14 +53299,14 @@ return array (
       'ID' => 596,
       'Skill' => 207,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Damage; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpNat; } SpdSpcl { Qual=Immobile; Value=+(lvl+1)/3; }',
+      'Traits' => 'AttMod { Qual=Damage; Type=skill; Value=+(2*lvl+2)/3; Req=Weapon==WpNat; } SpdSpcl { Qual=Immobile; Value=+(lvl+1)/3; }',
     ),
     597 => 
     array (
       'ID' => 597,
       'Skill' => 208,
       'SkillLevel' => 1,
-      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(lvl+1)/3; Req=Weapon==WpMnk; } AttMod { Qual=Damage; Type=skill; Value=+lvl/3; Req=Weapon==WpMnk; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpMnk; }',
+      'Traits' => 'AttMod { Qual=Attack; Type=skill; Value=+(2*lvl+1)/3; Req=Weapon==WpMnk; } AttMod { Qual=Damage; Type=skill; Value=+(2*lvl)/3; Req=Weapon==WpMnk; } DefMod { Qual=Parry; Type=skill; Value=+(lvl+2)/3; Req=Weapon==WpMnk; }',
     ),
     598 => 
     array (

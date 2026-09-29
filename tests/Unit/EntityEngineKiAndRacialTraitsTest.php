@@ -126,7 +126,7 @@ class EntityEngineKiAndRacialTraitsTest extends TestCase
         // Verify modifier engine captures distinct modifier types for WeapDmg_Nat
         /** @var ModifierStackingEngine $engine */
         $engine = $calc['modifiers_engine'];
-        $this->assertEquals(4, $engine->getTotal('WeapDmg_Nat')); // 2 insight + 2 skill = 4
+        $this->assertEquals(5.33, round($engine->getTotal('WeapDmg_Nat'), 2)); // 2 insight + 3.33 skill = 5.33
 
         // Check Kama attack stats incorporate Monk weapon bonus
         $weapons = $calc['attacks']['weapons'] ?? [];

@@ -214,8 +214,8 @@ class CharacterViewerOverhaulTest extends TestCase
         $this->assertArrayHasKey('scimitar_1', $calc['attacks']['weapons']);
         $scimitar = $calc['attacks']['weapons']['scimitar_1'];
 
-        // AttMod = StrMod + 1 = 3 + 1 = 4. Weapons - Fencing rank 8 grants +(8+1)/2 = +4 attack bonus. Total attack = 4 + 4 = +8.
-        $this->assertEquals(8, $scimitar['one_handed']['attack_bonus']);
+        // AttMod = StrMod + 1 = 3 + 1 = 4. Weapons - Fencing rank 8 grants +(3*8+3)/4 = +6 attack bonus. Total attack = 4 + 6 = 10.
+        $this->assertEquals(10, $scimitar['one_handed']['attack_bonus']);
         // Parry bonus: Generic rank 11.5 gives +(11.5+2)/4 = +3 parry
         $this->assertEquals(3, $scimitar['parry_bonus']);
 
