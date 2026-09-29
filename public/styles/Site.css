@@ -2073,3 +2073,42 @@ td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
     line-height: 1 !important;
 }
 
+/* ==========================================================================
+   Campaign Admin Encounter Modal Foe List Layout
+   ========================================================================== */
+
+.enc-foe-header, .enc-foe-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.enc-foe-col-name {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+}
+
+.enc-foe-col-qty {
+    width: 65px !important;
+    flex: 0 0 65px !important;
+}
+
+.enc-foe-col-lvl {
+    width: 65px !important;
+    flex: 0 0 65px !important;
+}
+
+.enc-foe-col-hp {
+    width: 80px !important;
+    flex: 0 0 80px !important;
+}
+
+.enc-foe-col-del {
+    width: 32px !important;
+    flex: 0 0 32px !important;
+}
+
+

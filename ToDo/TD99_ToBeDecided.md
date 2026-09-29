@@ -318,6 +318,7 @@
 - [ ] Weapons
   - [ ] Number of required hands special for projectile weapons (or just bows; optional parameter for minimum number of hands)?
   - [ ] Alternative for projectile weapon/ammunition bonuses: Use only the highest enhancement bonus (do not add them).
+- [ ] Poison-specific antidotes?
 - [ ] Magic items
   - [ ] For spells, specify which variations are available or should the default be all variations?
   - [ ] Pool size: Maximum/starting amount of PP? 100?
@@ -384,3 +385,9 @@
 - [ ] Consider whether constructs should have natural recovery of HP/SP/PP. Special trait?
 - [ ] Ranger as default class for some elven subraces, wizard for others? Separate cultures? Separate cultures for male and female drow? Or have different gender-specific default classes in cultures?
 - [ ] Class configs with min-max-type goals, such as maximize DeC, weapon damage, etc?
+
+## Utilities
+
+- [ ] Character Viewer
+  - [ ] For players, list only the player’s PCs?
+  - [ ] For DMs, list all PCs (or those of a single campaign?)

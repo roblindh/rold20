@@ -163,6 +163,46 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/campaign/{id}/remove-character', [UtilityController::class, 'removeCharacterFromCampaign'])->name('campaign.remove-character');
     Route::post('/campaign/{id}/vault/remove', [UtilityController::class, 'removeVaultItemFromCampaign'])->name('campaign.vault.remove');
     Route::post('/campaign/{id}/award', [UtilityController::class, 'awardCampaign'])->name('campaign.award');
+
+    // Campaign Hierarchy CRUD endpoints
+    Route::get('/campaign/{id}/hierarchy', [UtilityController::class, 'getCampaignHierarchyData'])->name('campaign.hierarchy');
+    Route::post('/campaign/{id}/adventures/create', [UtilityController::class, 'createCampaignAdventure'])->name('campaign.adventures.create');
+    Route::post('/campaign/{id}/adventures/{advId}/update', [UtilityController::class, 'updateCampaignAdventure'])->name('campaign.adventures.update');
+    Route::post('/campaign/{id}/adventures/{advId}/delete', [UtilityController::class, 'deleteCampaignAdventure'])->name('campaign.adventures.delete');
+    
+    Route::post('/campaign/{id}/encounters/create', [UtilityController::class, 'createCampaignEncounter'])->name('campaign.encounters.create');
+    Route::post('/campaign/{id}/encounters/{encId}/update', [UtilityController::class, 'updateCampaignEncounter'])->name('campaign.encounters.update');
+    Route::post('/campaign/{id}/encounters/{encId}/delete', [UtilityController::class, 'deleteCampaignEncounter'])->name('campaign.encounters.delete');
+
+    Route::post('/campaign/{id}/locations/create', [UtilityController::class, 'createCampaignLocation'])->name('campaign.locations.create');
+    Route::post('/campaign/{id}/locations/{locId}/update', [UtilityController::class, 'updateCampaignLocation'])->name('campaign.locations.update');
+    Route::post('/campaign/{id}/locations/{locId}/delete', [UtilityController::class, 'deleteCampaignLocation'])->name('campaign.locations.delete');
+
+    // Procedural Generator endpoints
+    Route::post('/generator/name', [UtilityController::class, 'generateProceduralName'])->name('generator.name');
+    Route::post('/generator/personality', [UtilityController::class, 'generateProceduralPersonality'])->name('generator.personality');
+    Route::post('/generator/appearance', [UtilityController::class, 'generateProceduralAppearance'])->name('generator.appearance');
+    Route::post('/generator/background', [UtilityController::class, 'generateProceduralBackground'])->name('generator.background');
+    Route::post('/generator/full-profile', [UtilityController::class, 'generateProceduralFullProfile'])->name('generator.full-profile');
+    Route::post('/generator/adventure', [UtilityController::class, 'generateProceduralAdventure'])->name('generator.adventure');
+    Route::post('/generator/encounter', [UtilityController::class, 'generateProceduralEncounter'])->name('generator.encounter');
+    Route::post('/generator/encounter-creatures', [UtilityController::class, 'generateProceduralEncounterCreatures'])->name('generator.encounter-creatures');
+    Route::post('/generator/location', [UtilityController::class, 'generateProceduralLocation'])->name('generator.location');
+    Route::post('/generator/item-lore', [UtilityController::class, 'generateProceduralItemLore'])->name('generator.item-lore');
+});
+
+// Global API aliases for generators
+Route::prefix('api/generator')->name('api.generator.')->group(function () {
+    Route::post('/name', [UtilityController::class, 'generateProceduralName'])->name('name');
+    Route::post('/personality', [UtilityController::class, 'generateProceduralPersonality'])->name('personality');
+    Route::post('/appearance', [UtilityController::class, 'generateProceduralAppearance'])->name('appearance');
+    Route::post('/background', [UtilityController::class, 'generateProceduralBackground'])->name('background');
+    Route::post('/full-profile', [UtilityController::class, 'generateProceduralFullProfile'])->name('full-profile');
+    Route::post('/adventure', [UtilityController::class, 'generateProceduralAdventure'])->name('adventure');
+    Route::post('/encounter', [UtilityController::class, 'generateProceduralEncounter'])->name('encounter');
+    Route::post('/encounter-creatures', [UtilityController::class, 'generateProceduralEncounterCreatures'])->name('encounter-creatures');
+    Route::post('/location', [UtilityController::class, 'generateProceduralLocation'])->name('location');
+    Route::post('/item-lore', [UtilityController::class, 'generateProceduralItemLore'])->name('item-lore');
 });
 
 Route::get('/combat-tracker', [UtilityController::class, 'combatTracker']);

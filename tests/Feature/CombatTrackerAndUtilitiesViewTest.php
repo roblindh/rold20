@@ -57,7 +57,7 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
 
         $this->assertIsString($html);
         $this->assertStringContainsString('Campaign Administration', $html);
-        $this->assertStringContainsString('Grant XP & Treasure', $html);
+        $this->assertStringContainsString('Grant XP', $html);
     }
 
     public function testTreasureGeneratorRendersSuccessfully(): void

@@ -2,7 +2,7 @@
 
 - [ ] Weapons
   - [ ] Advanced siege engines (pf435+)
-- [ ] Poisons and drugs
+- [x] Poisons and drugs
   - [x] The Fort DC could be modified by dosage and time elapsed.
   - [x] Add rules for addiction, tolerance, and withdrawal (tolerance applies to poisons as well as drugs).
   - [x] Different levels as attacks vs Will.
@@ -22,7 +22,6 @@
   - [x] Shiver: injury or ingested, major addiction, +8 vs Fort, 500 sp/dose, immune to fear for d4 min and +8 vs Fort or fall asleep for d4 h, d2 Con damage
   - [x] Zerk: injury, minor addiction, +8 vs Fort, 50 sp/dose, +1 bonus to initiative and +d2 Str for 1 h, d2 Con damage
   - [x] Alcohol: ingested, minor or moderate addiction?, sickened?
-  - [ ] Poison-specific antidotes?
 - [ ] More equipment and services
   - [ ] Skis, skates, crampons, snowshoes.
   - [ ] Also add appropriate actions to Survival or Athletics skill (specializations?).

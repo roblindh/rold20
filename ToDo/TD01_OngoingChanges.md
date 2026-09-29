@@ -12,13 +12,10 @@
   - [ ] For skill access bought with IP, calculate max increment based on earliest sec/prim access (calculate IP bonus from race/culture)
 - [ ] Social page
   - [x] Validation: age within racial limits
-  - [ ] Allocate influence points?
+  - [x] Allocate influence points?
 
 ## View PC Utility
 
-- [ ] List page
-  - [ ] For players, list only the player’s PCs?
-  - [ ] For DMs, list all PCs (or those of a single campaign?)
 - [x] Core page
   - [x] Encumbrance?, (Jump, Climb, and Swim modifiers?)
   - [x] Special senses (Spot, Listen, and Search modifiers?)
@@ -33,7 +30,7 @@
   - [ ] Affinity skills and modifiers
   - [ ] Spell skills and modifiers (ranges?)
 - [ ] Equipment page
-  - [ ] Money and other treasure
+  - [x] Money and other treasure
   - [ ] Multiple equipment configurations? Show per body part?
   - [x] Encumbrance, weight limits
 - [ ] Social page
@@ -109,8 +106,6 @@
 
 ## Database Updates
 
-- [ ] Actions
-  - [ ] Validate/clarify action checks for attacks. Currently some seem to include full skill level and skill modifier.
 - [ ] Weapon categories
 - [ ] New trait required for natural attack modifications or enough with AttMod/DmgMod with prereqs? Useful also for some spells and metamorphosis skills. Modifiers to the wielder or to the weapon?
 - [ ] Items and item modifications

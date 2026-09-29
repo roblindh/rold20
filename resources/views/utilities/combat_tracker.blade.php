@@ -780,6 +780,7 @@ function combatTrackerApp() {
         allNPCs: @json($npcs),
         allCreatures: @json($creatures),
         conditionsList: @json($conditionsList),
+        selectedEncounter: @json($selectedEncounter),
         
         showMonsterModal: false,
         showCustomModal: false,
@@ -810,7 +811,47 @@ function combatTrackerApp() {
             if (this.selectedCampaignId) {
                 this.loadCampaignParty();
             }
+            if (this.selectedEncounter) {
+                this.loadEncounterEntities();
+            }
             this.logEvent('Combat Tracker initialized');
+        },
+
+        loadEncounterEntities() {
+            if (!this.selectedEncounter) return;
+            const enc = this.selectedEncounter;
+            this.logEvent(`Loaded Encounter: "${enc.name}" (EL ${enc.encounter_level || 1})`);
+            if (enc.environment) {
+                this.logEvent(`Environment: ${enc.environment}`);
+            }
+            if (enc.monsters_and_npcs && Array.isArray(enc.monsters_and_npcs)) {
+                enc.monsters_and_npcs.forEach(entry => {
+                    const count = parseInt(entry.count) || 1;
+                    const cr = this.allCreatures.find(c => c.id == entry.id || c.name.toLowerCase() === (entry.name || '').toLowerCase());
+                    for (let i = 0; i < count; i++) {
+                        if (cr) {
+                            const clone = JSON.parse(JSON.stringify(cr));
+                            if (count > 1) {
+                                clone.name = `${cr.name} #${i + 1}`;
+                            }
+                            this.addCombatant(clone);
+                        } else if (entry.name) {
+                            this.addCombatant({
+                                id: 'custom_' + Date.now() + '_' + i,
+                                name: (count > 1 ? `${entry.name} #${i + 1}` : entry.name),
+                                type: 'monster',
+                                level: parseInt(entry.level) || 1,
+                                hp_max: parseInt(entry.hp) || 20,
+                                sp_max: 20,
+                                pp_max: 0,
+                                init_mod: 0,
+                                deca: 11,
+                                decp: 11,
+                            });
+                        }
+                    }
+                });
+            }
         },
 
         get activeCombatant() {

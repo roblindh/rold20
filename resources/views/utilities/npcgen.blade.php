@@ -92,11 +92,19 @@
                     <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
                         1. Name / Description <span class="text-red-600">*</span>
                     </label>
-                    <span class="text-[11px] text-slate-500">Defaults to chosen base creature</span>
+                    <button type="button" @click="rollRandomNpcName()" class="text-[11px] text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                        <span>🎲</span> Randomize Name
+                    </button>
                 </div>
-                <input type="text" x-model="description" @keydown.enter.prevent="generateNpc()"
-                       placeholder="e.g. Town Guard, Goblin Chieftain, Veteran Archer"
-                       class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-sm font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <div class="flex gap-2">
+                    <input type="text" x-model="description" @keydown.enter.prevent="generateNpc()"
+                           placeholder="e.g. Town Guard, Goblin Chieftain, Valerie Swiftblade"
+                           class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-sm font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button type="button" @click="rollRandomNpcName()" title="Roll Random Name"
+                            class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 rounded-lg text-xs font-bold transition flex items-center justify-center shrink-0 cursor-pointer">
+                        🎲
+                    </button>
+                </div>
             </div>
 
             <!-- 2. Base Ability Scores (Row 1: STR, CON, DEX | Row 2: INT, WIS, CHA) -->
@@ -800,6 +808,32 @@ function npcGeneratorWizard() {
             this.saveMessage = '';
             this.saveError = '';
             this.generateNpc();
+        },
+
+        async rollRandomNpcName() {
+            try {
+                const curCreature = this.creatures.find(c => c.ID == this.creature_id);
+                const curCulture = this.cultures.find(c => c.ID == this.culture_id);
+                const genderVal = (this.gender_id == 2) ? 'Female' : 'Male';
+                const res = await fetch('/api/generator/name', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        race: curCreature ? curCreature.Name : 'Human',
+                        culture: curCulture ? curCulture.Name : '',
+                        gender: genderVal
+                    })
+                });
+                const data = await res.json();
+                if (data.success && data.data && data.data.full_name) {
+                    this.description = data.data.full_name;
+                }
+            } catch (e) {
+                console.error('Error rolling NPC name:', e);
+            }
         },
 
         async generateNpc() {

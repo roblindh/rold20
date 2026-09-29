@@ -18,6 +18,21 @@ class Campaign extends Model
         return $this->hasMany(Character::class, 'Campaign', 'ID');
     }
 
+    public function adventures(): HasMany
+    {
+        return $this->hasMany(CampaignAdventure::class, 'campaign_id', 'ID')->orderBy('order_index')->orderBy('id');
+    }
+
+    public function encounters(): HasMany
+    {
+        return $this->hasMany(CampaignEncounter::class, 'campaign_id', 'ID')->orderBy('order_index')->orderBy('id');
+    }
+
+    public function locations(): HasMany
+    {
+        return $this->hasMany(CampaignLocation::class, 'campaign_id', 'ID')->orderBy('name');
+    }
+
     public function gameMaster(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Player::class, 'GameMaster', 'ID');

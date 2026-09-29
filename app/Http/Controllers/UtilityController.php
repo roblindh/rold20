@@ -3062,6 +3062,19 @@ class UtilityController extends Controller
     {
         $campaigns = DB::table('campaigns')->orderBy('Name')->get();
         $selectedCampaignId = $request->query('campaign') ? (int)$request->query('campaign') : null;
+        $selectedEncounterId = $request->query('encounter') ? (int)$request->query('encounter') : null;
+        $selectedEncounter = null;
+        if ($selectedEncounterId) {
+            $rawEnc = DB::table('campaign_encounters')->where('id', $selectedEncounterId)->first();
+            if ($rawEnc) {
+                $rawEnc->monsters_and_npcs = !empty($rawEnc->monsters_and_npcs) ? json_decode($rawEnc->monsters_and_npcs, true) : [];
+                $rawEnc->traps_and_hazards = !empty($rawEnc->traps_and_hazards) ? json_decode($rawEnc->traps_and_hazards, true) : [];
+                $selectedEncounter = $rawEnc;
+                if (!$selectedCampaignId && $rawEnc->campaign_id) {
+                    $selectedCampaignId = $rawEnc->campaign_id;
+                }
+            }
+        }
 
         $races = DB::table('ref_creatures')->get()->keyBy('ID');
         $classesMap = DB::table('ref_classes')->get()->keyBy('ID');
@@ -3258,6 +3271,7 @@ class UtilityController extends Controller
         return view('utilities.combat_tracker', [
             'campaigns' => $campaigns,
             'selectedCampaignId' => $selectedCampaignId,
+            'selectedEncounter' => $selectedEncounter,
             'characters' => $characters,
             'npcs' => $npcs,
             'creatures' => $creatures,
@@ -3389,7 +3403,53 @@ class UtilityController extends Controller
             ];
         });
 
-        return view('utilities.campaign', compact('campaigns', 'campaignsJson', 'characters', 'npcs', 'unassignedCharacters', 'myCampaigns', 'abilityMethods', 'equipmentCatalog', 'modifiedItemsCatalog'));
+        $adventures = DB::table('campaign_adventures')->orderBy('order_index')->orderBy('id')->get();
+        $encounters = DB::table('campaign_encounters')->orderBy('order_index')->orderBy('id')->get();
+        $locations = DB::table('campaign_locations')->orderBy('name')->get();
+        
+        $creatureCatalog = DB::table('ref_creatures')
+            ->select('ID', 'Name', 'BaseRL', 'CreatureType', 'ConAdj', 'StrAdj', 'DR')
+            ->orderBy('Name')
+            ->get()
+            ->map(function ($cr) {
+                $rl = max(1, (int)($cr->BaseRL ?? 1));
+                $con = max(1, 10 + (int)($cr->ConAdj ?? 0));
+                $hp = max(1, $con + 5 * $rl);
+                return [
+                    'id' => $cr->ID,
+                    'name' => $cr->Name,
+                    'level' => $rl,
+                    'type' => $cr->CreatureType ?? '',
+                    'hp' => $hp,
+                    'dr' => (int)($cr->DR ?? 0),
+                ];
+            });
+
+        // Determine the single active campaign to display
+        $selectedCampaignId = $request->query('campaign') ?? session('last_viewed_campaign_id');
+        $activeCampaign = null;
+
+        if ($selectedCampaignId) {
+            $activeCampaign = $campaigns->firstWhere('ID', (int)$selectedCampaignId);
+        }
+
+        if (!$activeCampaign) {
+            if (\Illuminate\Support\Facades\Auth::check()) {
+                $activeCampaign = $myCampaigns->first() ?? $campaigns->first();
+            } else {
+                $activeCampaign = $campaigns->first();
+            }
+        }
+
+        if ($activeCampaign) {
+            session(['last_viewed_campaign_id' => $activeCampaign->ID]);
+        }
+
+        return view('utilities.campaign', compact(
+            'campaigns', 'activeCampaign', 'campaignsJson', 'characters', 'npcs',
+            'unassignedCharacters', 'myCampaigns', 'abilityMethods', 'equipmentCatalog',
+            'modifiedItemsCatalog', 'adventures', 'encounters', 'locations', 'creatureCatalog'
+        ));
     }
 
     public function createCampaign(Request $request): \Illuminate\Http\RedirectResponse
@@ -3932,5 +3992,478 @@ class UtilityController extends Controller
         }
 
         return response()->json($result);
+    }
+
+    /**
+     * Helper to verify GM / Campaign ownership
+     */
+    protected function isAuthorizedForCampaign(object|array|int $campaign): bool
+    {
+        if (!\Illuminate\Support\Facades\Auth::check()) {
+            return false;
+        }
+        $user = \Illuminate\Support\Facades\Auth::user();
+        if ($user->isGM()) {
+            return true;
+        }
+        $gmId = is_numeric($campaign)
+            ? DB::table('campaigns')->where('ID', $campaign)->value('GameMaster')
+            : (is_object($campaign) ? ($campaign->GameMaster ?? null) : ($campaign['GameMaster'] ?? null));
+        return (int)$gmId === (int)$user->ID;
+    }
+
+    /**
+     * Get campaign hierarchy JSON data
+     */
+    public function getCampaignHierarchyData(Request $request, int $id): JsonResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign) {
+            return response()->json(['success' => false, 'message' => 'Campaign not found'], 404);
+        }
+
+        $isAuthorized = $this->isAuthorizedForCampaign($campaign);
+
+        $adventures = DB::table('campaign_adventures')
+            ->where('campaign_id', $id)
+            ->orderBy('order_index')
+            ->orderBy('id')
+            ->get();
+
+        $encounters = DB::table('campaign_encounters')
+            ->where('campaign_id', $id)
+            ->orderBy('order_index')
+            ->orderBy('id')
+            ->get()
+            ->map(function ($enc) use ($isAuthorized) {
+                $enc->monsters_and_npcs = !empty($enc->monsters_and_npcs) ? json_decode($enc->monsters_and_npcs, true) : [];
+                $enc->traps_and_hazards = !empty($enc->traps_and_hazards) ? json_decode($enc->traps_and_hazards, true) : [];
+                $enc->treasure_rewards = !empty($enc->treasure_rewards) ? json_decode($enc->treasure_rewards, true) : [];
+                if (!$isAuthorized) {
+                    $enc->gm_notes = null;
+                    $enc->traps_and_hazards = [];
+                }
+                return $enc;
+            });
+
+        $locations = DB::table('campaign_locations')
+            ->where('campaign_id', $id)
+            ->orderBy('name')
+            ->get()
+            ->map(function ($loc) use ($isAuthorized) {
+                $loc->notable_npcs = !empty($loc->notable_npcs) ? json_decode($loc->notable_npcs, true) : [];
+                $loc->inventory_and_services = !empty($loc->inventory_and_services) ? json_decode($loc->inventory_and_services, true) : [];
+                $loc->rumors_and_hooks = !empty($loc->rumors_and_hooks) ? json_decode($loc->rumors_and_hooks, true) : [];
+                if (!$isAuthorized) {
+                    $loc->gm_notes = null;
+                }
+                return $loc;
+            });
+
+        return response()->json([
+            'success' => true,
+            'is_gm' => $isAuthorized,
+            'adventures' => $adventures,
+            'encounters' => $encounters,
+            'locations' => $locations,
+        ]);
+    }
+
+    /**
+     * Adventure CRUD
+     */
+    public function createCampaignAdventure(Request $request, int $id): JsonResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign) {
+            return response()->json(['success' => false, 'message' => 'Campaign not found.'], 404);
+        }
+        if (!$this->isAuthorizedForCampaign($campaign)) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized.'], 403);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:150',
+            'synopsis' => 'nullable|string|max:5000',
+            'status' => 'nullable|string|in:planning,active,completed,archived',
+            'min_level' => 'nullable|integer|min:1|max:40',
+            'max_level' => 'nullable|integer|min:1|max:40',
+            'gm_notes' => 'nullable|string|max:10000',
+        ]);
+
+        $advId = DB::table('campaign_adventures')->insertGetId([
+            'campaign_id' => $id,
+            'name' => $validated['name'],
+            'synopsis' => $validated['synopsis'] ?? '',
+            'status' => $validated['status'] ?? 'planning',
+            'min_level' => (int)($validated['min_level'] ?? 1),
+            'max_level' => (int)($validated['max_level'] ?? 20),
+            'gm_notes' => $validated['gm_notes'] ?? '',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $adventure = DB::table('campaign_adventures')->where('id', $advId)->first();
+
+        return response()->json(['success' => true, 'adventure' => $adventure, 'message' => 'Adventure created!']);
+    }
+
+    public function updateCampaignAdventure(Request $request, int $id, int $advId): JsonResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign || !$this->isAuthorizedForCampaign($campaign)) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized.'], 403);
+        }
+
+        $validated = $request->validate([
+            'name' => 'sometimes|required|string|max:150',
+            'synopsis' => 'nullable|string|max:5000',
+            'status' => 'nullable|string|in:planning,active,completed,archived',
+            'min_level' => 'nullable|integer|min:1|max:40',
+            'max_level' => 'nullable|integer|min:1|max:40',
+            'gm_notes' => 'nullable|string|max:10000',
+        ]);
+
+        $updateData = ['updated_at' => now()];
+        if (isset($validated['name'])) $updateData['name'] = $validated['name'];
+        if (isset($validated['synopsis'])) $updateData['synopsis'] = $validated['synopsis'];
+        if (isset($validated['status'])) $updateData['status'] = $validated['status'];
+        if (isset($validated['min_level'])) $updateData['min_level'] = (int)$validated['min_level'];
+        if (isset($validated['max_level'])) $updateData['max_level'] = (int)$validated['max_level'];
+        if (isset($validated['gm_notes'])) $updateData['gm_notes'] = $validated['gm_notes'];
+
+        DB::table('campaign_adventures')->where('id', $advId)->where('campaign_id', $id)->update($updateData);
+        $adventure = DB::table('campaign_adventures')->where('id', $advId)->first();
+
+        return response()->json(['success' => true, 'adventure' => $adventure, 'message' => 'Adventure updated!']);
+    }
+
+    public function deleteCampaignAdventure(Request $request, int $id, int $advId): JsonResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign || !$this->isAuthorizedForCampaign($campaign)) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized.'], 403);
+        }
+
+        DB::table('campaign_encounters')->where('adventure_id', $advId)->update(['adventure_id' => null]);
+        DB::table('campaign_adventures')->where('id', $advId)->where('campaign_id', $id)->delete();
+
+        return response()->json(['success' => true, 'message' => 'Adventure deleted.']);
+    }
+
+    /**
+     * Encounter CRUD
+     */
+    public function createCampaignEncounter(Request $request, int $id): JsonResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign || !$this->isAuthorizedForCampaign($campaign)) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized.'], 403);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:150',
+            'adventure_id' => 'nullable|integer',
+            'location_id' => 'nullable|integer',
+            'type' => 'nullable|string|max:50',
+            'encounter_level' => 'nullable|numeric|min:0|max:50',
+            'environment' => 'nullable|string|max:150',
+            'description' => 'nullable|string|max:5000',
+            'tactics_and_features' => 'nullable|string|max:5000',
+            'monsters_and_npcs' => 'nullable|array',
+            'traps_and_hazards' => 'nullable|array',
+            'treasure_rewards' => 'nullable|array',
+            'xp_award' => 'nullable|integer|min:0',
+            'status' => 'nullable|string|in:planned,in_progress,completed,bypassed',
+            'gm_notes' => 'nullable|string|max:10000',
+        ]);
+
+        $encId = DB::table('campaign_encounters')->insertGetId([
+            'campaign_id' => $id,
+            'adventure_id' => !empty($validated['adventure_id']) ? (int)$validated['adventure_id'] : null,
+            'location_id' => !empty($validated['location_id']) ? (int)$validated['location_id'] : null,
+            'name' => $validated['name'],
+            'type' => $validated['type'] ?? 'combat',
+            'encounter_level' => (float)($validated['encounter_level'] ?? 1.0),
+            'environment' => $validated['environment'] ?? '',
+            'description' => $validated['description'] ?? '',
+            'tactics_and_features' => $validated['tactics_and_features'] ?? '',
+            'monsters_and_npcs' => isset($validated['monsters_and_npcs']) ? json_encode($validated['monsters_and_npcs']) : null,
+            'traps_and_hazards' => isset($validated['traps_and_hazards']) ? json_encode($validated['traps_and_hazards']) : null,
+            'treasure_rewards' => isset($validated['treasure_rewards']) ? json_encode($validated['treasure_rewards']) : null,
+            'xp_award' => (int)($validated['xp_award'] ?? 0),
+            'status' => $validated['status'] ?? 'planned',
+            'gm_notes' => $validated['gm_notes'] ?? '',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $encounter = DB::table('campaign_encounters')->where('id', $encId)->first();
+        if ($encounter) {
+            $encounter->monsters_and_npcs = !empty($encounter->monsters_and_npcs) ? json_decode($encounter->monsters_and_npcs, true) : [];
+            $encounter->traps_and_hazards = !empty($encounter->traps_and_hazards) ? json_decode($encounter->traps_and_hazards, true) : [];
+            $encounter->treasure_rewards = !empty($encounter->treasure_rewards) ? json_decode($encounter->treasure_rewards, true) : [];
+        }
+
+        return response()->json(['success' => true, 'encounter' => $encounter, 'message' => 'Encounter created!']);
+    }
+
+    public function updateCampaignEncounter(Request $request, int $id, int $encId): JsonResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign || !$this->isAuthorizedForCampaign($campaign)) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized.'], 403);
+        }
+
+        $validated = $request->validate([
+            'name' => 'sometimes|required|string|max:150',
+            'adventure_id' => 'nullable|integer',
+            'location_id' => 'nullable|integer',
+            'type' => 'nullable|string|max:50',
+            'encounter_level' => 'nullable|numeric|min:0|max:50',
+            'environment' => 'nullable|string|max:150',
+            'description' => 'nullable|string|max:5000',
+            'tactics_and_features' => 'nullable|string|max:5000',
+            'monsters_and_npcs' => 'nullable|array',
+            'traps_and_hazards' => 'nullable|array',
+            'treasure_rewards' => 'nullable|array',
+            'xp_award' => 'nullable|integer|min:0',
+            'status' => 'nullable|string|in:planned,in_progress,completed,bypassed',
+            'gm_notes' => 'nullable|string|max:10000',
+        ]);
+
+        $updateData = ['updated_at' => now()];
+        if (isset($validated['name'])) $updateData['name'] = $validated['name'];
+        if (array_key_exists('adventure_id', $validated)) $updateData['adventure_id'] = !empty($validated['adventure_id']) ? (int)$validated['adventure_id'] : null;
+        if (array_key_exists('location_id', $validated)) $updateData['location_id'] = !empty($validated['location_id']) ? (int)$validated['location_id'] : null;
+        if (isset($validated['type'])) $updateData['type'] = $validated['type'];
+        if (isset($validated['encounter_level'])) $updateData['encounter_level'] = (float)$validated['encounter_level'];
+        if (isset($validated['environment'])) $updateData['environment'] = $validated['environment'];
+        if (isset($validated['description'])) $updateData['description'] = $validated['description'];
+        if (isset($validated['tactics_and_features'])) $updateData['tactics_and_features'] = $validated['tactics_and_features'];
+        if (isset($validated['monsters_and_npcs'])) $updateData['monsters_and_npcs'] = json_encode($validated['monsters_and_npcs']);
+        if (isset($validated['traps_and_hazards'])) $updateData['traps_and_hazards'] = json_encode($validated['traps_and_hazards']);
+        if (isset($validated['treasure_rewards'])) $updateData['treasure_rewards'] = json_encode($validated['treasure_rewards']);
+        if (isset($validated['xp_award'])) $updateData['xp_award'] = (int)$validated['xp_award'];
+        if (isset($validated['status'])) $updateData['status'] = $validated['status'];
+        if (isset($validated['gm_notes'])) $updateData['gm_notes'] = $validated['gm_notes'];
+
+        DB::table('campaign_encounters')->where('id', $encId)->where('campaign_id', $id)->update($updateData);
+        $encounter = DB::table('campaign_encounters')->where('id', $encId)->first();
+        if ($encounter) {
+            $encounter->monsters_and_npcs = !empty($encounter->monsters_and_npcs) ? json_decode($encounter->monsters_and_npcs, true) : [];
+            $encounter->traps_and_hazards = !empty($encounter->traps_and_hazards) ? json_decode($encounter->traps_and_hazards, true) : [];
+            $encounter->treasure_rewards = !empty($encounter->treasure_rewards) ? json_decode($encounter->treasure_rewards, true) : [];
+        }
+
+        return response()->json(['success' => true, 'encounter' => $encounter, 'message' => 'Encounter updated!']);
+    }
+
+    public function deleteCampaignEncounter(Request $request, int $id, int $encId): JsonResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign || !$this->isAuthorizedForCampaign($campaign)) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized.'], 403);
+        }
+
+        DB::table('campaign_encounters')->where('id', $encId)->where('campaign_id', $id)->delete();
+        return response()->json(['success' => true, 'message' => 'Encounter deleted.']);
+    }
+
+    /**
+     * Location CRUD
+     */
+    public function createCampaignLocation(Request $request, int $id): JsonResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign || !$this->isAuthorizedForCampaign($campaign)) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized.'], 403);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:150',
+            'parent_location_id' => 'nullable|integer',
+            'location_type' => 'nullable|string|max:50',
+            'summary' => 'nullable|string|max:1000',
+            'description' => 'nullable|string|max:5000',
+            'sensory_details' => 'nullable|string|max:2000',
+            'notable_npcs' => 'nullable|array',
+            'inventory_and_services' => 'nullable|array',
+            'rumors_and_hooks' => 'nullable|array',
+            'gm_notes' => 'nullable|string|max:10000',
+        ]);
+
+        $locId = DB::table('campaign_locations')->insertGetId([
+            'campaign_id' => $id,
+            'parent_location_id' => !empty($validated['parent_location_id']) ? (int)$validated['parent_location_id'] : null,
+            'name' => $validated['name'],
+            'location_type' => $validated['location_type'] ?? 'settlement',
+            'summary' => $validated['summary'] ?? '',
+            'description' => $validated['description'] ?? '',
+            'sensory_details' => $validated['sensory_details'] ?? '',
+            'notable_npcs' => isset($validated['notable_npcs']) ? json_encode($validated['notable_npcs']) : null,
+            'inventory_and_services' => isset($validated['inventory_and_services']) ? json_encode($validated['inventory_and_services']) : null,
+            'rumors_and_hooks' => isset($validated['rumors_and_hooks']) ? json_encode($validated['rumors_and_hooks']) : null,
+            'gm_notes' => $validated['gm_notes'] ?? '',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $location = DB::table('campaign_locations')->where('id', $locId)->first();
+        if ($location) {
+            $location->notable_npcs = !empty($location->notable_npcs) ? json_decode($location->notable_npcs, true) : [];
+            $location->inventory_and_services = !empty($location->inventory_and_services) ? json_decode($location->inventory_and_services, true) : [];
+            $location->rumors_and_hooks = !empty($location->rumors_and_hooks) ? json_decode($location->rumors_and_hooks, true) : [];
+        }
+
+        return response()->json(['success' => true, 'location' => $location, 'message' => 'Location created!']);
+    }
+
+    public function updateCampaignLocation(Request $request, int $id, int $locId): JsonResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign || !$this->isAuthorizedForCampaign($campaign)) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized.'], 403);
+        }
+
+        $validated = $request->validate([
+            'name' => 'sometimes|required|string|max:150',
+            'parent_location_id' => 'nullable|integer',
+            'location_type' => 'nullable|string|max:50',
+            'summary' => 'nullable|string|max:1000',
+            'description' => 'nullable|string|max:5000',
+            'sensory_details' => 'nullable|string|max:2000',
+            'notable_npcs' => 'nullable|array',
+            'inventory_and_services' => 'nullable|array',
+            'rumors_and_hooks' => 'nullable|array',
+            'gm_notes' => 'nullable|string|max:10000',
+        ]);
+
+        $updateData = ['updated_at' => now()];
+        if (isset($validated['name'])) $updateData['name'] = $validated['name'];
+        if (array_key_exists('parent_location_id', $validated)) $updateData['parent_location_id'] = !empty($validated['parent_location_id']) ? (int)$validated['parent_location_id'] : null;
+        if (isset($validated['location_type'])) $updateData['location_type'] = $validated['location_type'];
+        if (isset($validated['summary'])) $updateData['summary'] = $validated['summary'];
+        if (isset($validated['description'])) $updateData['description'] = $validated['description'];
+        if (isset($validated['sensory_details'])) $updateData['sensory_details'] = $validated['sensory_details'];
+        if (isset($validated['notable_npcs'])) $updateData['notable_npcs'] = json_encode($validated['notable_npcs']);
+        if (isset($validated['inventory_and_services'])) $updateData['inventory_and_services'] = json_encode($validated['inventory_and_services']);
+        if (isset($validated['rumors_and_hooks'])) $updateData['rumors_and_hooks'] = json_encode($validated['rumors_and_hooks']);
+        if (isset($validated['gm_notes'])) $updateData['gm_notes'] = $validated['gm_notes'];
+
+        DB::table('campaign_locations')->where('id', $locId)->where('campaign_id', $id)->update($updateData);
+        $location = DB::table('campaign_locations')->where('id', $locId)->first();
+        if ($location) {
+            $location->notable_npcs = !empty($location->notable_npcs) ? json_decode($location->notable_npcs, true) : [];
+            $location->inventory_and_services = !empty($location->inventory_and_services) ? json_decode($location->inventory_and_services, true) : [];
+            $location->rumors_and_hooks = !empty($location->rumors_and_hooks) ? json_decode($location->rumors_and_hooks, true) : [];
+        }
+
+        return response()->json(['success' => true, 'location' => $location, 'message' => 'Location updated!']);
+    }
+
+    public function deleteCampaignLocation(Request $request, int $id, int $locId): JsonResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign || !$this->isAuthorizedForCampaign($campaign)) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized.'], 403);
+        }
+
+        DB::table('campaign_locations')->where('parent_location_id', $locId)->update(['parent_location_id' => null]);
+        DB::table('campaign_encounters')->where('location_id', $locId)->update(['location_id' => null]);
+        DB::table('campaign_locations')->where('id', $locId)->where('campaign_id', $id)->delete();
+
+        return response()->json(['success' => true, 'message' => 'Location deleted.']);
+    }
+
+    /**
+     * Procedural Generators Endpoints
+     */
+    public function generateProceduralName(Request $request): JsonResponse
+    {
+        $race = $request->input('race');
+        $culture = $request->input('culture');
+        $gender = $request->input('gender');
+        $result = \App\Services\Random\ProceduralGeneratorService::name($race, $culture, $gender);
+        return response()->json(['success' => true, 'data' => $result]);
+    }
+
+    public function generateProceduralPersonality(Request $request): JsonResponse
+    {
+        $class = $request->input('class');
+        $race = $request->input('race');
+        $result = \App\Services\Random\ProceduralGeneratorService::personality($class, $race);
+        return response()->json(['success' => true, 'data' => $result]);
+    }
+
+    public function generateProceduralAppearance(Request $request): JsonResponse
+    {
+        $race = $request->input('race');
+        $gender = $request->input('gender');
+        $age = $request->input('age') ? (int)$request->input('age') : null;
+        $result = \App\Services\Random\ProceduralGeneratorService::appearance($race, $gender, $age);
+        return response()->json(['success' => true, 'data' => $result]);
+    }
+
+    public function generateProceduralBackground(Request $request): JsonResponse
+    {
+        $race = $request->input('race');
+        $class = $request->input('class');
+        $socialClass = $request->input('social_class');
+        $result = \App\Services\Random\ProceduralGeneratorService::background($race, $class, $socialClass);
+        return response()->json(['success' => true, 'data' => $result]);
+    }
+
+    public function generateProceduralFullProfile(Request $request): JsonResponse
+    {
+        $params = $request->all();
+        $result = \App\Services\Random\ProceduralGeneratorService::fullProfile($params);
+        return response()->json(['success' => true, 'data' => $result]);
+    }
+
+    public function generateProceduralAdventure(Request $request): JsonResponse
+    {
+        $minLvl = max(1, (int)$request->input('min_level', 1));
+        $maxLvl = max($minLvl, (int)$request->input('max_level', 5));
+        $result = \App\Services\Random\ProceduralGeneratorService::adventure($minLvl, $maxLvl);
+        return response()->json(['success' => true, 'data' => $result]);
+    }
+
+    public function generateProceduralEncounter(Request $request): JsonResponse
+    {
+        $type = (string)$request->input('type', 'combat');
+        $el = (float)$request->input('encounter_level', 1.0);
+        $env = $request->input('environment');
+        $result = \App\Services\Random\ProceduralGeneratorService::encounter($type, $el, $env);
+        return response()->json(['success' => true, 'data' => $result]);
+    }
+
+    public function generateProceduralEncounterCreatures(Request $request): JsonResponse
+    {
+        $el = (float)$request->input('encounter_level', 1.0);
+        $env = $request->input('environment');
+        $type = $request->input('creature_type');
+        $result = \App\Services\Random\ProceduralGeneratorService::encounterCreatures($el, $env, $type);
+        return response()->json(['success' => true, 'data' => $result]);
+    }
+
+    public function generateProceduralLocation(Request $request): JsonResponse
+    {
+        $type = $request->input('type', 'tavern');
+        if ($type === 'shop') {
+            $subType = $request->input('shop_type');
+            $result = \App\Services\Random\ProceduralGeneratorService::shop($subType);
+        } else {
+            $result = \App\Services\Random\ProceduralGeneratorService::tavern();
+        }
+        return response()->json(['success' => true, 'data' => $result]);
+    }
+
+    public function generateProceduralItemLore(Request $request): JsonResponse
+    {
+        $itemName = $request->input('name');
+        $pl = (int)$request->input('power_level', 1);
+        $result = \App\Services\Random\ProceduralGeneratorService::itemLore($itemName, $pl);
+        return response()->json(['success' => true, 'data' => $result]);
     }
 }

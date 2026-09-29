@@ -75,9 +75,20 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Character Name <span class="text-red-600">*</span></label>
-                <input type="text" x-model="character.Name" placeholder="e.g. Valerie Swiftblade"
-                       class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <div class="flex items-center justify-between mb-1">
+                    <label class="block text-xs font-semibold text-slate-700 uppercase">Character Name <span class="text-red-600">*</span></label>
+                    <button type="button" @click="rollRandomName()" class="text-[11px] text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                        <span>🎲</span> Randomize Name
+                    </button>
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" x-model="character.Name" placeholder="e.g. Valerie Swiftblade"
+                           class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button type="button" @click="rollRandomName()" title="Roll Random Name"
+                            class="px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 rounded-lg text-xs font-bold transition flex items-center justify-center shrink-0 cursor-pointer">
+                        🎲
+                    </button>
+                </div>
             </div>
 
             <div>
@@ -1183,10 +1194,16 @@
                         </h2>
                         <p class="text-xs text-slate-600 mt-0.5">Customize physical traits, religion, reputation, influence, family, and background lore.</p>
                     </div>
-                    <button type="button" @click="rollRandomPhysicalAttributes()"
-                            class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-                        <span>🎲</span> Roll Random Physical Attributes
-                    </button>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <button type="button" @click="rollRandomAllLore()"
+                                class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+                            <span>⚡</span> Roll All Details
+                        </button>
+                        <button type="button" @click="rollRandomPhysicalAttributes()"
+                                class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+                            <span>🎲</span> Roll Physical Stats
+                        </button>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -1341,6 +1358,36 @@
                     <!-- Lore, Family, Contacts Textareas -->
                     <div class="space-y-3">
                         <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="block text-xs font-semibold text-slate-700 uppercase">Appearance</label>
+                                <button type="button" @click="rollRandomAppearance()" class="text-[10px] text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                                    <span>🎲</span> Roll Appearance
+                                </button>
+                            </div>
+                            <textarea x-model="character.Appearance" rows="2" placeholder="Eye color, hair, scars, distinguishing features..."
+                                      class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="block text-xs font-semibold text-slate-700 uppercase">Personality &amp; Habits</label>
+                                <button type="button" @click="rollRandomPersonality()" class="text-[10px] text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                                    <span>🎲</span> Roll Personality
+                                </button>
+                            </div>
+                            <textarea x-model="character.Personality" rows="2" placeholder="Mannerisms, motivations, ideals, flaws..."
+                                      class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="block text-xs font-semibold text-slate-700 uppercase">Background Lore &amp; History</label>
+                                <button type="button" @click="rollRandomLore()" class="text-[10px] text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                                    <span>🎲</span> Roll Background &amp; Contacts
+                                </button>
+                            </div>
+                            <textarea x-model="character.History" rows="2" placeholder="Origin, upbringing, major life events, deeds..."
+                                      class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                        </div>
+                        <div>
                             <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Family &amp; Relatives</label>
                             <textarea x-model="character.Family" rows="2" placeholder="Parents, siblings, clan heritage, spouse, children..."
                                       class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
@@ -1348,21 +1395,6 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Connections &amp; Contacts</label>
                             <textarea x-model="character.Contacts" rows="2" placeholder="Allies, patrons, underworld contacts, informants, rivals..."
-                                      class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Appearance</label>
-                            <textarea x-model="character.Appearance" rows="2" placeholder="Eye color, hair, scars, distinguishing features..."
-                                      class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Personality &amp; Habits</label>
-                            <textarea x-model="character.Personality" rows="2" placeholder="Mannerisms, motivations, ideals, flaws..."
-                                      class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Background Lore &amp; History</label>
-                            <textarea x-model="character.History" rows="2" placeholder="Origin, upbringing, major life events, deeds..."
                                       class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
                         </div>
                     </div>
@@ -3908,6 +3940,110 @@ function characterWizard() {
             let totalWeightMultiplier = heightMultiplier * weightFactorBase;
             totalWeightMultiplier = Math.max(0.6, Math.min(3.0, totalWeightMultiplier));
             this.character.WeightFactor = parseFloat(totalWeightMultiplier.toFixed(2));
+        },
+
+        async rollRandomName() {
+            try {
+                const raceObj = this.getSelectedRace();
+                const cultureObj = this.getSelectedCulture();
+                const res = await fetch('/api/generator/name', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify({
+                        race: raceObj ? raceObj.Name : '',
+                        culture: cultureObj ? cultureObj.Name : '',
+                        gender: this.character.Gender || 'Male'
+                    })
+                });
+                const data = await res.json();
+                if (data.success && data.data && data.data.full_name) {
+                    this.character.Name = data.data.full_name;
+                }
+            } catch (e) {
+                console.error('Error rolling name:', e);
+            }
+        },
+
+        async rollRandomAppearance() {
+            try {
+                const raceObj = this.getSelectedRace();
+                const res = await fetch('/api/generator/appearance', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify({
+                        race: raceObj ? raceObj.Name : '',
+                        gender: this.character.Gender || 'Male',
+                        age: this.character.PhysicalAge || 20
+                    })
+                });
+                const data = await res.json();
+                if (data.success && data.data && data.data.summary) {
+                    this.character.Appearance = data.data.summary;
+                }
+            } catch (e) {
+                console.error('Error rolling appearance:', e);
+            }
+        },
+
+        async rollRandomPersonality() {
+            try {
+                const raceObj = this.getSelectedRace();
+                const res = await fetch('/api/generator/personality', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify({
+                        race: raceObj ? raceObj.Name : '',
+                        class: ''
+                    })
+                });
+                const data = await res.json();
+                if (data.success && data.data && data.data.summary) {
+                    this.character.Personality = data.data.summary;
+                }
+            } catch (e) {
+                console.error('Error rolling personality:', e);
+            }
+        },
+
+        async rollRandomLore() {
+            try {
+                const raceObj = this.getSelectedRace();
+                const res = await fetch('/api/generator/background', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify({
+                        race: raceObj ? raceObj.Name : '',
+                        social_class: this.character.SocialClass
+                    })
+                });
+                const data = await res.json();
+                if (data.success && data.data) {
+                    this.character.History = data.data.history || '';
+                    this.character.Family = data.data.family || '';
+                    this.character.Contacts = data.data.contacts || '';
+                }
+            } catch (e) {
+                console.error('Error rolling lore:', e);
+            }
+        },
+
+        async rollRandomAllLore() {
+            this.rollRandomPhysicalAttributes();
+            await this.rollRandomAppearance();
+            await this.rollRandomPersonality();
+            await this.rollRandomLore();
         },
 
         get calculatedHeightCm() {

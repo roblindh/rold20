@@ -1,281 +1,706 @@
-@extends('layouts.app', ['title' => 'Campaign Administration'])
+@extends('layouts.app', ['title' => 'Campaign Administration & GM Workspace'])
 
 @section('content')
+<style>
+    .enc-foe-header, .enc-foe-row {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .enc-foe-col-name {
+        flex: 1 1 0% !important;
+        min-width: 0 !important;
+    }
+    .enc-foe-col-qty {
+        width: 65px !important;
+        flex: 0 0 65px !important;
+    }
+    .enc-foe-col-lvl {
+        width: 65px !important;
+        flex: 0 0 65px !important;
+    }
+    .enc-foe-col-hp {
+        width: 80px !important;
+        flex: 0 0 80px !important;
+    }
+    .enc-foe-col-del {
+        width: 32px !important;
+        flex: 0 0 32px !important;
+    }
+</style>
 <div class="space-y-6" x-data="campaignAdmin()">
-    <!-- Header -->
+    <!-- Header with Campaign Selector Dropdown & Controls -->
     <div class="border-b border-amber-900/20 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h1 class="text-2xl font-bold flex items-center gap-2">
-                <span>🗺️</span> Campaign Administration
+                <span>🗺️</span> Campaign Administration &amp; GM Workspace
             </h1>
-            <p class="text-stone-700 text-sm mt-1">Manage active campaigns, party settings, PC suitability tiers, and player characters.</p>
+            <p class="text-stone-700 text-sm mt-1">Hierarchical campaign management: Adventures, Encounters, Locations &amp; POIs, Party Roster, and Procedural GM Generators.</p>
         </div>
-        <div>
+
+        <div class="flex items-center gap-3 flex-wrap">
+            <!-- Campaign Selector Dropdown -->
+            <div class="flex items-center gap-2">
+                <label for="campaign_selector" class="text-xs font-bold text-amber-950 uppercase tracking-wider">Campaign:</label>
+                <select id="campaign_selector" 
+                        onchange="if (this.value) window.location.href = '{{ route('utilities.campaign', [], false) }}?campaign=' + this.value"
+                        class="bg-amber-50/90 border border-amber-900/30 rounded-lg px-3 py-1.5 text-sm font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs">
+                    <option value="">-- Select Campaign --</option>
+                    @if(isset($myCampaigns) && $myCampaigns->isNotEmpty())
+                        <optgroup label="My Campaigns">
+                            @foreach($myCampaigns as $c)
+                                <option value="{{ $c->ID }}" {{ ($activeCampaign && $activeCampaign->ID == $c->ID) ? 'selected' : '' }}>
+                                    ⭐ {{ $c->Name }}
+                                </option>
+                            @endforeach
+                        </optgroup>
+                    @endif
+                    <optgroup label="All Campaigns">
+                        @foreach($campaigns as $c)
+                            <option value="{{ $c->ID }}" {{ ($activeCampaign && $activeCampaign->ID == $c->ID) ? 'selected' : '' }}>
+                                🏰 {{ $c->Name }} (GM: {{ $c->GMName ?? 'GM' }})
+                            </option>
+                        @endforeach
+                    </optgroup>
+                </select>
+            </div>
+
             @auth
                 @if(auth()->user()->isGM())
-                    <button @click="showCreateModal = true" class="btn-rol-primary">
+                    <button @click="showCreateModal = true" class="btn-rol-primary text-xs py-1.5 px-3.5 flex items-center gap-1.5 shadow-sm">
                         <span>➕</span>
-                        <span>Create New Campaign</span>
+                        <span>New Campaign</span>
                     </button>
                 @endif
             @else
-                <a href="{{ route('login', [], false) }}" class="btn-rol-secondary">
+                <a href="{{ route('login', [], false) }}" class="btn-rol-secondary text-xs py-1.5 px-3">
                     <span>👑</span>
-                    <span>Log in as GM to Create Campaigns</span>
+                    <span>Log in as GM</span>
                 </a>
             @endauth
         </div>
     </div>
 
-    <!-- Campaigns Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        @forelse($campaigns as $camp)
+    <!-- Active Campaign Card -->
+    <div>
+        @if($activeCampaign)
             @php
+                $camp = $activeCampaign;
                 $isMyCamp = auth()->check() && ($camp->GameMaster === auth()->id() || auth()->user()->isGM());
                 $campChars = $characters->where('Campaign', $camp->ID);
                 if ($campChars->isEmpty()) {
                     $campChars = $characters->where('CampaignID', $camp->ID);
                 }
                 $campNpcs = isset($npcs) ? $npcs->where('Campaign', $camp->ID) : collect();
-            @endphp
-            <div class="parchment-card p-5 shadow-md space-y-4 relative overflow-hidden flex flex-col justify-between">
-                <div>
-                    <div class="flex items-start justify-between gap-2">
-                        <div>
-                            <div class="text-lg font-bold text-amber-950 font-serif flex items-center gap-2">
-                                <span>🏰</span>
-                                <span>{{ $camp->Name }}</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-xs text-stone-600 mt-0.5">
-                                <span>GM: <strong class="text-stone-800">{{ $camp->GMName ?? 'Game Master' }}</strong></span>
-                                @if(auth()->check() && $camp->GameMaster === auth()->id())
-                                    <span class="bg-amber-900/10 text-amber-950 font-bold px-1.5 py-0.5 rounded text-[10px] border border-amber-800/30">My Campaign</span>
-                                @endif
-                            </div>
-                        </div>
-
-                        @if($isMyCamp)
-                            <div class="flex items-center gap-1.5 shrink-0">
-                                <button type="button" @click="openEditModal({{ json_encode($camp) }})" 
-                                        class="btn-rol-secondary text-xs py-1 px-2.5">
-                                    <span>✏️</span> Edit
-                                </button>
-                                <form action="{{ route('utilities.campaign.delete', ['id' => $camp->ID], false) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete campaign \'{{ addslashes($camp->Name) }}\'?');" class="inline">
-                                    @csrf
-                                    <button type="submit" class="btn-rol-danger text-xs py-1 px-2.5" title="Delete Campaign">
-                                        🗑️
-                                    </button>
-                                </form>
-                            </div>
-                        @endif
-                    </div>
-
-                    @if(!empty($camp->Description))
-                        <p class="text-xs text-stone-700 leading-relaxed mt-2.5">{{ $camp->Description }}</p>
-                    @else
-                        <p class="text-xs text-stone-500 italic mt-2.5">No description provided.</p>
-                    @endif
-
-                    <!-- Campaign Parameters Badge Grid -->
-                    <div class="grid grid-cols-2 gap-2 pt-3 text-xs">
-                        <div class="parchment-inset p-2">
-                            <span class="text-[10px] font-bold text-stone-600 uppercase block">Ability Gen</span>
-                            <span class="font-semibold text-stone-900">
-                                {{ $camp->AbilityGenMethodName ?? ('Method ' . ($camp->AbilityGenMethod ?? 2)) }}
-                            </span>
-                        </div>
-                        <div class="parchment-inset p-2">
-                            <span class="text-[10px] font-bold text-stone-600 uppercase block">Starting XP</span>
-                            <span class="font-semibold text-stone-900">
-                                {{ number_format((int)($camp->StartingXP ?? 0)) }} XP
-                            </span>
-                        </div>
-                        <div class="parchment-inset p-2">
-                            <span class="text-[10px] font-bold text-stone-600 uppercase block">Suitability Tier</span>
-                            <span class="font-semibold text-stone-900">
-                                Level {{ $camp->SuitabilityLevel ?? 3 }}
-                                <span class="text-[10px] text-stone-500">
-                                    @if(($camp->SuitabilityLevel ?? 3) >= 5) (Core Only)
-                                    @elseif(($camp->SuitabilityLevel ?? 3) == 4) (Civilized)
-                                    @elseif(($camp->SuitabilityLevel ?? 3) == 3) (Standard PC)
-                                    @elseif(($camp->SuitabilityLevel ?? 3) == 2) (Exotic)
-                                    @elseif(($camp->SuitabilityLevel ?? 3) == 1) (Monstrous)
-                                    @else (All Creatures)
-                                    @endif
-                                </span>
-                            </span>
-                        </div>
-                        <div class="parchment-inset p-2">
-                            <span class="text-[10px] font-bold text-stone-600 uppercase block">Optional Rules</span>
-                            <span class="font-semibold text-stone-900 truncate block" title="{{ $camp->OptionalRules ?? 'None' }}">
-                                {{ $camp->OptionalRules ?? 'None' }}
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- GM Notes (if any and authorized) -->
-                    @if(!empty($camp->Notes) && $isMyCamp)
-                        <div class="mt-3 parchment-inset p-2.5 text-xs text-amber-950">
-                            <div class="font-bold text-[11px] text-amber-900 uppercase flex items-center gap-1 mb-1">
-                                <span>📝</span> GM Notes
-                            </div>
-                            <p class="leading-relaxed whitespace-pre-line text-stone-800">{{ $camp->Notes }}</p>
-                        </div>
-                    @endif
-                </div>
-
-                <!-- Characters & Party Management in this campaign -->
-                <div class="pt-3 border-t border-amber-900/20 space-y-2.5">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                        <span class="font-bold text-stone-900 flex items-center gap-1.5">
-                            <span>👥</span>
-                            <span>Party Members ({{ $campChars->count() }}):</span>
-                        </span>
-                        <div class="flex items-center gap-1.5 flex-wrap">
-                            @if($isMyCamp && $campChars->isNotEmpty())
-                                <button type="button" @click="openAwardModal({{ json_encode($camp) }}, {{ json_encode($campChars->values()->all()) }})" class="btn-rol-success text-xs py-1 px-2.5">
-                                    <span>🎁</span> Grant XP &amp; Treasure
-                                </button>
-                            @endif
-                            <a href="{{ route('utilities.chargen', [], false) }}?campaign={{ $camp->ID }}" class="btn-rol-primary text-xs py-1 px-2.5">
-                                <span>➕</span> Generate PC
-                            </a>
-                            <button type="button" @click="openAddPcModal({{ json_encode(['ID' => $camp->ID, 'Name' => $camp->Name]) }})" class="btn-rol-secondary text-xs py-1 px-2.5">
-                                <span>📥</span> Add PC
-                            </button>
-                        </div>
-                    </div>
-                    @if($campChars->isNotEmpty())
-                        <div class="flex flex-wrap gap-1.5 pt-1">
-                            @foreach($campChars as $c)
-                                <div class="inline-flex items-center parchment-inset text-stone-800 text-xs px-2.5 py-1 rounded-md shadow-xs">
-                                    <a href="{{ route('utilities.charview', ['id' => $c->ID], false) }}" class="flex items-center gap-1 font-semibold text-amber-950 hover:text-amber-700 hover:underline" title="View Character Sheet">
-                                        <span>🧙‍♂️</span>
-                                        <span>{{ $c->Name }}</span>
-                                        <span class="text-stone-500 text-[10px] font-normal">({{ $c->ClassSummary ?? 'Lvl ' . ($c->Level ?? 1) }}, {{ $c->RaceName ?? 'Humanoid' }})</span>
-                                    </a>
-                                    @if($isMyCamp)
-                                        <form action="{{ route('utilities.campaign.remove-character', ['id' => $camp->ID], false) }}" method="POST" class="inline ml-1.5 pl-1.5 border-l border-amber-900/20" onsubmit="return confirm('Remove \'{{ addslashes($c->Name) }}\' from campaign \'{{ addslashes($camp->Name) }}\'?');">
-                                            @csrf
-                                            <input type="hidden" name="CharacterID" value="{{ $c->ID }}">
-                                            <button type="submit" class="text-stone-400 hover:text-red-700 font-bold text-xs cursor-pointer leading-none" title="Remove from campaign">
-                                                &times;
-                                            </button>
-                                        </form>
-                                    @endif
-                                </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <p class="text-xs text-stone-500 italic">No characters assigned to this campaign yet.</p>
-                    @endif
-                </div>
-
-                <!-- Campaign NPCs & Monsters -->
-                <div class="pt-3 border-t border-amber-900/20 space-y-2.5">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                        <span class="font-bold text-stone-900 flex items-center gap-1.5">
-                            <span>👹</span>
-                            <span>Campaign NPCs &amp; Monsters ({{ $campNpcs->count() }}):</span>
-                        </span>
-                        <div class="flex items-center gap-1.5 flex-wrap">
-                            <a href="{{ route('utilities.npcgen', [], false) }}?campaign={{ $camp->ID }}" class="btn-rol-secondary text-xs py-1 px-2.5">
-                                <span>➕</span> Generate NPC
-                            </a>
-                        </div>
-                    </div>
-                    @if($campNpcs->isNotEmpty())
-                        <div class="flex flex-wrap gap-1.5 pt-1">
-                            @foreach($campNpcs as $npc)
-                                <div class="inline-flex items-center parchment-inset text-amber-950 text-xs px-2.5 py-1 rounded-md shadow-xs">
-                                    <button type="button" @click="openNpcModal({{ json_encode($npc) }})" class="flex items-center gap-1 font-semibold text-amber-950 hover:text-amber-700 hover:underline cursor-pointer" title="View Stat Block">
-                                        <span>👹</span>
-                                        <span>{{ $npc->Name }}</span>
-                                        <span class="text-stone-500 text-[10px] font-normal">({{ $npc->RaceName ?? 'NPC' }})</span>
-                                    </button>
-                                    @if($isMyCamp)
-                                        <form action="{{ route('utilities.campaign.remove-character', ['id' => $camp->ID], false) }}" method="POST" class="inline ml-1.5 pl-1.5 border-l border-amber-900/20" onsubmit="return confirm('Remove NPC \'{{ addslashes($npc->Name) }}\' from campaign \'{{ addslashes($camp->Name) }}\'?');">
-                                            @csrf
-                                            <input type="hidden" name="CharacterID" value="{{ $npc->ID }}">
-                                            <button type="submit" class="text-stone-400 hover:text-red-700 font-bold text-xs cursor-pointer leading-none" title="Remove NPC from campaign">
-                                                &times;
-                                            </button>
-                                        </form>
-                                    @endif
-                                </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <p class="text-xs text-stone-500 italic">No NPCs stored in this campaign yet. Click "Generate NPC" to create and store monsters &amp; NPCs.</p>
-                    @endif
-                </div>
-
-                <!-- Campaign Vault & Treasure Cache -->
-                @php
-                    $vaultItems = [];
-                    if (!empty($camp->Vault)) {
-                        $rawVault = $camp->Vault;
-                        if (str_starts_with($rawVault, '[')) {
-                            $vaultItems = json_decode($rawVault, true) ?? [];
-                        }
+                $campAdventures = $adventures->where('campaign_id', $camp->ID);
+                $campEncounters = $encounters->where('campaign_id', $camp->ID);
+                $campLocations = $locations->where('campaign_id', $camp->ID);
+                
+                $vaultItems = [];
+                $vaultFunds = 0;
+                if (!empty($camp->Vault)) {
+                    $rawVault = $camp->Vault;
+                    if (str_starts_with($rawVault, '[')) {
+                        $vaultItems = json_decode($rawVault, true) ?? [];
+                    } elseif (str_starts_with($rawVault, '{')) {
+                        $parsed = json_decode($rawVault, true) ?? [];
+                        $vaultFunds = (int)($parsed['funds'] ?? 0);
+                        $vaultItems = $parsed['items'] ?? [];
                     }
-                @endphp
-                <div class="pt-3 border-t border-amber-900/20 space-y-2.5">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                        <span class="font-bold text-stone-900 flex items-center gap-1.5">
-                            <span>💎</span>
-                            <span>Campaign Vault &amp; Treasure ({{ count($vaultItems) }}):</span>
-                        </span>
-                        <div class="flex items-center gap-1.5 flex-wrap">
-                            <a href="{{ route('utilities.itemgen', [], false) }}" class="btn-rol-secondary text-xs py-1 px-2.5">
-                                <span>🗡️</span> Generate Item
-                            </a>
-                            <a href="{{ route('utilities.treasuregen', [], false) }}" class="btn-rol-primary text-xs py-1 px-2.5">
-                                <span>🎲</span> Roll Hoard
-                            </a>
-                        </div>
-                    </div>
-                    @if(!empty($vaultItems))
-                        <div class="flex flex-wrap gap-1.5 pt-1">
-                            @foreach($vaultItems as $vIdx => $vItem)
-                                <div class="inline-flex items-center bg-indigo-50/70 text-indigo-950 text-xs px-2.5 py-1 rounded-md border border-indigo-300 shadow-xs hover:border-indigo-400 transition">
-                                    <span class="font-semibold" title="{{ $vItem['config'] ?? '' }}">
-                                        ✨ {{ $vItem['name'] ?? 'Item' }}
-                                        <span class="text-indigo-600 font-normal text-[10px]">({{ number_format($vItem['value'] ?? 0) }} sp | PL {{ $vItem['pl'] ?? 0 }})</span>
-                                    </span>
-                                    @if($isMyCamp)
-                                        <form action="{{ route('utilities.campaign.vault.remove', ['id' => $camp->ID], false) }}" method="POST" class="inline ml-1.5 pl-1.5 border-l border-indigo-300" onsubmit="return confirm('Remove \'{{ addslashes($vItem['name'] ?? 'Item') }}\' from Campaign Vault?');">
-                                            @csrf
-                                            <input type="hidden" name="item_index" value="{{ $vIdx }}">
-                                            @if(isset($vItem['id']))
-                                                <input type="hidden" name="item_id" value="{{ $vItem['id'] }}">
-                                            @endif
-                                            <button type="submit" class="text-slate-400 hover:text-red-600 font-bold text-xs cursor-pointer leading-none" title="Remove from Vault">
-                                                &times;
-                                            </button>
-                                        </form>
+                }
+            @endphp
+            <div class="parchment-card shadow-lg rounded-2xl overflow-hidden border border-amber-900/20" x-data="{ activeTab: 'adventures' }">
+                <!-- Card Top Banner -->
+                <div class="px-6 py-4 border-b border-amber-900/20 flex flex-col md:flex-row md:items-center justify-between gap-3 bg-amber-950/5">
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl">🏰</span>
+                            <div>
+                                <h2 class="text-xl font-bold text-amber-950 font-serif">{{ $camp->Name }}</h2>
+                                <div class="flex items-center gap-2 text-xs text-stone-600">
+                                    <span>Game Master: <strong class="text-stone-800">{{ $camp->GMName ?? 'Game Master' }}</strong></span>
+                                    @if(auth()->check() && $camp->GameMaster === auth()->id())
+                                        <span class="bg-amber-900/10 text-amber-950 font-bold px-1.5 py-0.5 rounded text-[10px] border border-amber-800/30">My Campaign</span>
                                     @endif
                                 </div>
-                            @endforeach
+                            </div>
                         </div>
-                    @else
-                        <p class="text-xs text-slate-400 italic">No magic items or treasure stored in vault yet.</p>
+                    </div>
+
+                    @if($isMyCamp)
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button type="button" @click="openEditModal({{ json_encode($camp) }})" 
+                                    class="btn-rol-secondary text-xs py-1.5 px-3">
+                                <span>✏️</span> Edit Campaign
+                            </button>
+                            <form action="{{ route('utilities.campaign.delete', ['id' => $camp->ID], false) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete campaign \'{{ addslashes($camp->Name) }}\'?');" class="inline">
+                                @csrf
+                                <button type="submit" class="btn-rol-danger text-xs py-1.5 px-3" title="Delete Campaign">
+                                    <span>🗑️</span> Delete
+                                </button>
+                            </form>
+                        </div>
                     @endif
                 </div>
+
+                @if(!empty($camp->Description))
+                    <div class="px-6 pt-3 pb-1 text-xs text-stone-700 leading-relaxed italic">
+                        {{ $camp->Description }}
+                    </div>
+                @endif
+
+                <!-- Tabs Navigation -->
+                <div class="px-6 pt-3 border-b border-amber-900/20 flex flex-wrap gap-2 text-xs font-bold">
+                    <button type="button" @click="activeTab = 'adventures'"
+                            :class="activeTab === 'adventures' ? 'border-amber-700 text-amber-900 border-b-2 bg-amber-100/50' : 'text-stone-600 hover:text-stone-900'"
+                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer">
+                        <span>📜</span> Adventures &amp; Encounters
+                        <span class="px-1.5 py-0.2 bg-amber-200 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ $campAdventures->count() }} / {{ $campEncounters->count() }}</span>
+                    </button>
+                    <button type="button" @click="activeTab = 'locations'"
+                            :class="activeTab === 'locations' ? 'border-amber-700 text-amber-900 border-b-2 bg-amber-100/50' : 'text-stone-600 hover:text-stone-900'"
+                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer">
+                        <span>📍</span> Locations &amp; POIs
+                        <span class="px-1.5 py-0.2 bg-amber-200 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ $campLocations->count() }}</span>
+                    </button>
+                    <button type="button" @click="activeTab = 'party'"
+                            :class="activeTab === 'party' ? 'border-amber-700 text-amber-900 border-b-2 bg-amber-100/50' : 'text-stone-600 hover:text-stone-900'"
+                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer">
+                        <span>👥</span> Party &amp; Roster
+                        <span class="px-1.5 py-0.2 bg-amber-200 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ $campChars->count() }}</span>
+                    </button>
+                    <button type="button" @click="activeTab = 'vault'"
+                            :class="activeTab === 'vault' ? 'border-amber-700 text-amber-900 border-b-2 bg-amber-100/50' : 'text-stone-600 hover:text-stone-900'"
+                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer">
+                        <span>💎</span> Campaign Vault
+                        <span class="px-1.5 py-0.2 bg-amber-200 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ count($vaultItems) }}</span>
+                    </button>
+                    <button type="button" @click="activeTab = 'rules'"
+                            :class="activeTab === 'rules' ? 'border-amber-700 text-amber-900 border-b-2 bg-amber-100/50' : 'text-stone-600 hover:text-stone-900'"
+                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer">
+                        <span>⚙️</span> Rules &amp; GM Notes
+                    </button>
+                </div>
+
+                <!-- TAB CONTENTS -->
+                <div class="p-6">
+                    <!-- ============================================================= -->
+                    <!-- TAB 1: ADVENTURES & ENCOUNTERS HIERARCHY                      -->
+                    <!-- ============================================================= -->
+                    <div x-show="activeTab === 'adventures'" class="space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <h3 class="font-bold text-amber-950 text-sm flex items-center gap-1.5">
+                                    <span>📜</span> Campaign Adventures &amp; Encounters
+                                </h3>
+                                <p class="text-[11px] text-stone-600">Structured narrative arcs divided into tactical encounters, traps, hazards, and rewards.</p>
+                            </div>
+                            @if($isMyCamp)
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <button type="button" @click="openCreateAdventureModal({{ $camp->ID }})" class="btn-rol-primary text-xs py-1 px-3">
+                                        <span>➕</span> Add Adventure
+                                    </button>
+                                    <button type="button" @click="openCreateEncounterModal({{ $camp->ID }}, null)" class="btn-rol-secondary text-xs py-1 px-3">
+                                        <span>⚔️</span> Add Encounter
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Adventures Accordion List -->
+                        <div class="space-y-4">
+                            @forelse($campAdventures as $adv)
+                                @php
+                                    $advEncounters = $campEncounters->where('adventure_id', $adv->id);
+                                @endphp
+                                <div class="bg-amber-50/60 border border-amber-900/20 rounded-xl overflow-hidden shadow-xs" x-data="{ expanded: true }">
+                                    <!-- Adventure Header -->
+                                    <div class="px-4 py-3 bg-amber-900/5 border-b border-amber-900/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                        <div class="flex items-center gap-2 cursor-pointer flex-1" @click="expanded = !expanded">
+                                            <span class="text-amber-800 transform transition-transform duration-200" :class="expanded ? 'rotate-90' : ''">▶</span>
+                                            <div>
+                                                <div class="flex items-center gap-2">
+                                                    <h4 class="font-bold text-amber-950 font-serif text-sm">{{ $adv->name }}</h4>
+                                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
+                                                        {{ $adv->status === 'active' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : '' }}
+                                                        {{ $adv->status === 'planning' ? 'bg-sky-100 text-sky-800 border border-sky-300' : '' }}
+                                                        {{ $adv->status === 'completed' ? 'bg-stone-200 text-stone-700' : '' }}
+                                                        {{ $adv->status === 'archived' ? 'bg-rose-100 text-rose-700' : '' }}">
+                                                        {{ $adv->status }}
+                                                    </span>
+                                                    <span class="text-[10px] text-stone-500 font-mono">Lvl {{ $adv->min_level }}–{{ $adv->max_level }}</span>
+                                                </div>
+                                                @if(!empty($adv->synopsis))
+                                                    <p class="text-xs text-stone-600 line-clamp-1 mt-0.5">{{ $adv->synopsis }}</p>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        @if($isMyCamp)
+                                            <div class="flex items-center gap-1.5 shrink-0 self-end sm:self-center">
+                                                <button type="button" @click="openCreateEncounterModal({{ $camp->ID }}, {{ $adv->id }})" class="text-[11px] text-indigo-700 hover:text-indigo-900 font-bold px-2 py-1 rounded hover:bg-indigo-50">
+                                                    + Add Encounter
+                                                </button>
+                                                <button type="button" @click="openEditAdventureModal({{ json_encode($adv) }})" class="p-1 text-slate-500 hover:text-slate-800 rounded">
+                                                    ✏️
+                                                </button>
+                                                <button type="button" @click="deleteAdventure({{ $camp->ID }}, {{ $adv->id }}, '{{ addslashes($adv->name) }}')" class="p-1 text-rose-500 hover:text-rose-800 rounded">
+                                                    🗑️
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <!-- Adventure Body (Encounters List) -->
+                                    <div x-show="expanded" class="p-4 space-y-3">
+                                        @if(!empty($adv->gm_notes) && $isMyCamp)
+                                            <div class="p-2.5 bg-amber-100/50 border border-amber-300/60 rounded-lg text-xs text-amber-950 space-y-1">
+                                                <span class="font-bold uppercase tracking-wider text-[10px] text-amber-800">🔒 GM Secret Notes:</span>
+                                                <p class="whitespace-pre-line leading-relaxed text-stone-800">{{ $adv->gm_notes }}</p>
+                                            </div>
+                                        @endif
+
+                                        <div class="space-y-2">
+                                            @forelse($advEncounters as $enc)
+                                                @php
+                                                    $encFoes = !empty($enc->monsters_and_npcs) ? (is_string($enc->monsters_and_npcs) ? json_decode($enc->monsters_and_npcs, true) : $enc->monsters_and_npcs) : [];
+                                                    $encTraps = !empty($enc->traps_and_hazards) ? (is_string($enc->traps_and_hazards) ? json_decode($enc->traps_and_hazards, true) : $enc->traps_and_hazards) : [];
+                                                @endphp
+                                                <div class="p-3 bg-white border border-stone-200 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-amber-400 transition shadow-2xs">
+                                                    <div class="space-y-1 flex-1">
+                                                        <div class="flex items-center gap-2 flex-wrap">
+                                                            <span class="font-bold text-xs text-stone-900 font-serif">{{ $enc->name }}</span>
+                                                            <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 border border-amber-300">
+                                                                EL {{ $enc->encounter_level }}
+                                                            </span>
+                                                            <span class="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                                                                {{ number_format((int)$enc->xp_award) }} XP
+                                                            </span>
+                                                            <span class="text-[10px] uppercase font-bold text-stone-500">
+                                                                {{ $enc->type }}
+                                                            </span>
+                                                        </div>
+                                                        @if(!empty($enc->description))
+                                                            <p class="text-xs text-stone-600 line-clamp-1">{{ $enc->description }}</p>
+                                                        @endif
+                                                        @if(!empty($encFoes))
+                                                            <div class="flex items-center gap-1.5 text-[11px] text-stone-600 font-mono flex-wrap pt-0.5">
+                                                                <span class="text-stone-400">Foes:</span>
+                                                                @foreach($encFoes as $foe)
+                                                                    <span class="bg-stone-100 px-1.5 py-0.2 rounded border border-stone-200 text-[10px]">
+                                                                        {{ $foe['count'] ?? 1 }}x {{ $foe['name'] ?? 'Creature' }} (Lvl {{ $foe['level'] ?? 1 }}, {{ $foe['hp'] ?? 10 }} HP)
+                                                                    </span>
+                                                                @endforeach
+                                                            </div>
+                                                        @endif
+                                                    </div>
+
+                                                    <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                                                        <!-- Direct Launch to Combat Tracker -->
+                                                        <a href="{{ route('utilities.combattracker', ['campaign' => $camp->ID, 'encounter' => $enc->id], false) }}"
+                                                           class="btn-rol-primary text-xs py-1 px-2.5 flex items-center gap-1 font-bold shadow-xs">
+                                                            <span>⚔️</span> Run Encounter
+                                                        </a>
+                                                        @if($isMyCamp)
+                                                            <button type="button" @click="openEditEncounterModal({{ json_encode($enc) }})" class="p-1 text-slate-500 hover:text-slate-800 rounded">
+                                                                ✏️
+                                                            </button>
+                                                            <button type="button" @click="deleteEncounter({{ $camp->ID }}, {{ $enc->id }}, '{{ addslashes($enc->name) }}')" class="p-1 text-rose-500 hover:text-rose-800 rounded">
+                                                                🗑️
+                                                            </button>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @empty
+                                                <div class="p-3 bg-amber-50/40 rounded-lg text-xs text-stone-500 italic text-center border border-dashed border-amber-900/20">
+                                                    No encounters under this adventure yet. Click "+ Add Encounter" to plan battles, traps, or social parleys.
+                                                </div>
+                                            @endforelse
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="p-6 bg-amber-50/40 rounded-xl text-xs text-stone-500 italic text-center border border-dashed border-amber-900/20 space-y-2">
+                                    <p>No adventures created for this campaign yet.</p>
+                                    @if($isMyCamp)
+                                        <button type="button" @click="openCreateAdventureModal({{ $camp->ID }})" class="btn-rol-primary text-xs py-1 px-3 mx-auto">
+                                            <span>➕</span> Create First Adventure
+                                        </button>
+                                    @endif
+                                </div>
+                            @endforelse
+
+                            <!-- Standalone / Unassigned Encounters -->
+                            @php
+                                $standaloneEncounters = $campEncounters->whereNull('adventure_id');
+                            @endphp
+                            @if($standaloneEncounters->isNotEmpty())
+                                <div class="mt-4 pt-4 border-t border-amber-900/20 space-y-2">
+                                    <h4 class="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center gap-1">
+                                        <span>⚔️</span> Standalone / Wandering Encounters
+                                    </h4>
+                                    <div class="space-y-2">
+                                        @foreach($standaloneEncounters as $enc)
+                                            <div class="p-3 bg-white border border-stone-200 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+                                                <div class="space-y-1 flex-1">
+                                                    <div class="flex items-center gap-2 flex-wrap">
+                                                        <span class="font-bold text-xs text-stone-900 font-serif">{{ $enc->name }}</span>
+                                                        <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 border border-amber-300">
+                                                            EL {{ $enc->encounter_level }}
+                                                        </span>
+                                                        <span class="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                                                            {{ number_format((int)$enc->xp_award) }} XP
+                                                        </span>
+                                                    </div>
+                                                    @if(!empty($enc->description))
+                                                        <p class="text-xs text-stone-600 line-clamp-1">{{ $enc->description }}</p>
+                                                    @endif
+                                                </div>
+                                                <div class="flex items-center gap-2 shrink-0">
+                                                    <a href="{{ route('utilities.combattracker', ['campaign' => $camp->ID, 'encounter' => $enc->id], false) }}"
+                                                       class="btn-rol-primary text-xs py-1 px-2.5 flex items-center gap-1 font-bold">
+                                                        <span>⚔️</span> Run Encounter
+                                                    </a>
+                                                    @if($isMyCamp)
+                                                        <button type="button" @click="openEditEncounterModal({{ json_encode($enc) }})" class="p-1 text-slate-500 hover:text-slate-800 rounded">
+                                                            ✏️
+                                                        </button>
+                                                        <button type="button" @click="deleteEncounter({{ $camp->ID }}, {{ $enc->id }}, '{{ addslashes($enc->name) }}')" class="p-1 text-rose-500 hover:text-rose-800 rounded">
+                                                            🗑️
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- ============================================================= -->
+                    <!-- TAB 2: LOCATIONS & POINTS OF INTEREST                         -->
+                    <!-- ============================================================= -->
+                    <div x-show="activeTab === 'locations'" class="space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <h3 class="font-bold text-amber-950 text-sm flex items-center gap-1.5">
+                                    <span>📍</span> World Locations &amp; Points of Interest
+                                </h3>
+                                <p class="text-[11px] text-stone-600">Settlements, taverns, shops, ruins, and dungeons with sensory details, resident NPCs, rumors, and services.</p>
+                            </div>
+                            @if($isMyCamp)
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <button type="button" @click="openCreateLocationModal({{ $camp->ID }})" class="btn-rol-primary text-xs py-1 px-3">
+                                        <span>➕</span> Add Location
+                                    </button>
+                                    <button type="button" @click="rollTavernIntoModal({{ $camp->ID }})" class="btn-rol-secondary text-xs py-1 px-3">
+                                        <span>🍺</span> Generate Tavern
+                                    </button>
+                                    <button type="button" @click="rollShopIntoModal({{ $camp->ID }})" class="btn-rol-secondary text-xs py-1 px-3">
+                                        <span>🛒</span> Generate Shop
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Locations Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            @forelse($campLocations as $loc)
+                                @php
+                                    $locNpcs = !empty($loc->notable_npcs) ? (is_string($loc->notable_npcs) ? json_decode($loc->notable_npcs, true) : $loc->notable_npcs) : [];
+                                    $locInventory = !empty($loc->inventory_and_services) ? (is_string($loc->inventory_and_services) ? json_decode($loc->inventory_and_services, true) : $loc->inventory_and_services) : [];
+                                    $locRumors = !empty($loc->rumors_and_hooks) ? (is_string($loc->rumors_and_hooks) ? json_decode($loc->rumors_and_hooks, true) : $loc->rumors_and_hooks) : [];
+                                @endphp
+                                <div class="bg-amber-50/60 border border-amber-900/20 rounded-xl p-4 space-y-3 shadow-2xs hover:border-amber-400 transition flex flex-col justify-between">
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between gap-2 border-b border-amber-900/10 pb-2">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xl">
+                                                    {{ $loc->location_type === 'tavern' ? '🍺' : ($loc->location_type === 'shop' ? '🛒' : ($loc->location_type === 'dungeon' ? '🗝️' : ($loc->location_type === 'ruin' ? '🏛️' : '🏰'))) }}
+                                                </span>
+                                                <div>
+                                                    <h4 class="font-bold text-amber-950 font-serif text-sm">{{ $loc->name }}</h4>
+                                                    <span class="text-[10px] uppercase font-bold text-amber-800/80 tracking-wider">{{ $loc->location_type }}</span>
+                                                </div>
+                                            </div>
+                                            @if($isMyCamp)
+                                                <div class="flex items-center gap-1">
+                                                    <button type="button" @click="openEditLocationModal({{ json_encode($loc) }})" class="p-1 text-slate-500 hover:text-slate-800 rounded">
+                                                        ✏️
+                                                    </button>
+                                                    <button type="button" @click="deleteLocation({{ $camp->ID }}, {{ $loc->id }}, '{{ addslashes($loc->name) }}')" class="p-1 text-rose-500 hover:text-rose-800 rounded">
+                                                        🗑️
+                                                    </button>
+                                                </div>
+                                            @endif
+                                        </div>
+
+                                        @if(!empty($loc->summary))
+                                            <p class="text-xs text-stone-700 italic">{{ $loc->summary }}</p>
+                                        @endif
+
+                                        @if(!empty($loc->sensory_details))
+                                            <div class="text-[11px] text-amber-900/80 bg-amber-100/40 p-2 rounded border border-amber-200/50 leading-relaxed">
+                                                <strong>Sensory Atmosphere:</strong> {{ $loc->sensory_details }}
+                                            </div>
+                                        @endif
+
+                                        @if(!empty($locNpcs))
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-bold uppercase tracking-wider text-stone-600">Notable NPCs:</span>
+                                                <div class="space-y-0.5">
+                                                    @foreach($locNpcs as $npc)
+                                                        <div class="text-[11px] text-stone-800 flex items-start gap-1">
+                                                            <span>&bull;</span>
+                                                            <div>
+                                                                <strong>{{ $npc['name'] ?? 'NPC' }}</strong>
+                                                                @if(!empty($npc['role'])) <span class="text-stone-500">({{ $npc['role'] }})</span>@endif
+                                                                @if(!empty($npc['quirk'])) — <span class="italic text-stone-600">{{ $npc['quirk'] }}</span>@endif
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        @if(!empty($locRumors))
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-bold uppercase tracking-wider text-stone-600">Local Rumors &amp; Hooks:</span>
+                                                <ul class="list-disc list-inside text-[11px] text-stone-700 italic space-y-0.5">
+                                                    @foreach($locRumors as $rumor)
+                                                        <li>{{ is_array($rumor) ? ($rumor['rumor'] ?? json_encode($rumor)) : $rumor }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
+
+                                        @if(!empty($loc->gm_notes) && $isMyCamp)
+                                            <div class="p-2 bg-amber-100/60 border border-amber-300 rounded text-[11px] text-amber-950">
+                                                <strong class="uppercase text-[9px] text-amber-800">🔒 GM Secret Notes:</strong>
+                                                <p class="whitespace-pre-line mt-0.5">{{ $loc->gm_notes }}</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="col-span-2 p-6 bg-amber-50/40 rounded-xl text-xs text-stone-500 italic text-center border border-dashed border-amber-900/20 space-y-2">
+                                    <p>No locations logged for this campaign yet.</p>
+                                    @if($isMyCamp)
+                                        <div class="flex items-center justify-center gap-2 flex-wrap">
+                                            <button type="button" @click="openCreateLocationModal({{ $camp->ID }})" class="btn-rol-primary text-xs py-1 px-3">
+                                                <span>➕</span> Add Custom Location
+                                            </button>
+                                            <button type="button" @click="rollTavernIntoModal({{ $camp->ID }})" class="btn-rol-secondary text-xs py-1 px-3">
+                                                <span>🍺</span> Roll Tavern
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <!-- ============================================================= -->
+                    <!-- TAB 3: PARTY & ROSTER                                         -->
+                    <!-- ============================================================= -->
+                    <div x-show="activeTab === 'party'" class="space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <h3 class="font-bold text-amber-950 text-sm flex items-center gap-1.5">
+                                    <span>👥</span> Active Adventuring Party Roster
+                                </h3>
+                                <p class="text-[11px] text-stone-600">Player characters assigned to this campaign journey.</p>
+                            </div>
+                            @if($isMyCamp)
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <button type="button" @click="openAddPcModal({{ json_encode($camp) }})" class="btn-rol-secondary text-xs py-1 px-3">
+                                        <span>📥</span> Add Existing PC
+                                    </button>
+                                    <a href="{{ route('utilities.chargen', [], false) }}?campaign={{ $camp->ID }}" class="btn-rol-primary text-xs py-1 px-3">
+                                        <span>🧙‍♂️</span> Create New PC
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Party Members Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            @forelse($campChars as $char)
+                                <div class="bg-white border border-stone-200 rounded-xl p-4 space-y-3 shadow-2xs hover:border-amber-400 transition flex flex-col justify-between">
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between gap-2 border-b border-stone-100 pb-2">
+                                            <div>
+                                                <h4 class="font-bold text-stone-900 font-serif text-sm">
+                                                    <a href="{{ route('utilities.charview', ['id' => $char->ID], false) }}" class="hover:underline text-amber-900">
+                                                        {{ $char->Name }}
+                                                    </a>
+                                                </h4>
+                                                <span class="text-[11px] text-stone-500">Lvl {{ $char->Level }} {{ $char->RaceName ?? 'Humanoid' }} &bull; {{ $char->ClassSummary }}</span>
+                                            </div>
+                                            <span class="bg-amber-100 text-amber-900 font-mono text-[11px] font-bold px-2 py-0.5 rounded-full border border-amber-300">
+                                                {{ number_format((int)($char->ExperiencePts ?? 0)) }} XP
+                                            </span>
+                                        </div>
+
+                                        <div class="grid grid-cols-2 gap-2 text-xs text-stone-600">
+                                            <div>Player: <strong class="text-stone-800">{{ $char->PlayerName ?? 'Unassigned' }}</strong></div>
+                                            <div>Wealth: <strong class="text-amber-900 font-mono">{{ number_format((int)($char->Wealth ?? 0)) }} sp</strong></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between gap-2 pt-2 border-t border-stone-100 text-xs">
+                                        <a href="{{ route('utilities.charview', ['id' => $char->ID], false) }}" class="text-indigo-700 hover:underline font-bold">
+                                            View Sheet &rarr;
+                                        </a>
+                                        @if($isMyCamp)
+                                            <form action="{{ route('utilities.campaign.remove-character', ['id' => $camp->ID], false) }}" method="POST" onsubmit="return confirm('Remove {{ addslashes($char->Name) }} from party?');" class="inline">
+                                                @csrf
+                                                <input type="hidden" name="CharacterID" value="{{ $char->ID }}">
+                                                <button type="submit" class="text-rose-600 hover:text-rose-800 text-[11px] font-bold">
+                                                    Remove
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="col-span-full p-6 bg-amber-50/40 rounded-xl text-xs text-stone-500 italic text-center border border-dashed border-amber-900/20 space-y-2">
+                                    <p>No party members currently assigned to this campaign.</p>
+                                    @if($isMyCamp)
+                                        <button type="button" @click="openAddPcModal({{ json_encode($camp) }})" class="btn-rol-primary text-xs py-1 px-3 mx-auto">
+                                            <span>📥</span> Add Existing PC
+                                        </button>
+                                    @endif
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <!-- ============================================================= -->
+                    <!-- TAB 4: CAMPAIGN VAULT & REWARDS                               -->
+                    <!-- ============================================================= -->
+                    <div x-show="activeTab === 'vault'" class="space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <h3 class="font-bold text-amber-950 text-sm flex items-center gap-1.5">
+                                    <span>💎</span> Campaign Shared Vault &amp; Party Treasury
+                                </h3>
+                                <p class="text-[11px] text-stone-600">Shared party funds, unclaimed quest loot, and magical relics.</p>
+                            </div>
+                            @if($isMyCamp)
+                                <div class="flex items-center gap-2">
+                                    <button type="button" @click="openAwardModal({{ json_encode($camp) }}, {{ json_encode($campChars) }})" class="btn-rol-primary text-xs py-1.5 px-3.5 shadow-sm">
+                                        <span>🎁</span> Grant XP &amp; Treasure
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Vault Balance -->
+                        <div class="bg-amber-100/50 border border-amber-300 rounded-xl p-4 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl">🪙</span>
+                                <div>
+                                    <span class="text-xs uppercase font-bold text-amber-800">Shared Treasury Balance</span>
+                                    <div class="text-xl font-bold font-mono text-amber-950">{{ number_format($vaultFunds) }} Silver Pieces (sp)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vault Items Table -->
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold uppercase text-stone-700 tracking-wider">Vault Inventory ({{ count($vaultItems) }} items):</h4>
+                            <div class="space-y-1.5">
+                                @forelse($vaultItems as $vIdx => $vItem)
+                                    <div class="p-2.5 bg-white border border-stone-200 rounded-lg flex items-center justify-between gap-2 text-xs">
+                                        <div>
+                                            <strong class="text-stone-900">{{ $vItem['name'] ?? 'Item' }}</strong>
+                                            @if(!empty($vItem['value'])) <span class="text-stone-500">({{ number_format((float)$vItem['value']) }} sp)</span>@endif
+                                            @if(!empty($vItem['weight'])) <span class="text-stone-400">&bull; {{ $vItem['weight'] }} lbs</span>@endif
+                                        </div>
+                                        @if($isMyCamp)
+                                            <form action="{{ route('utilities.campaign.vault.remove', ['id' => $camp->ID], false) }}" method="POST" class="inline">
+                                                @csrf
+                                                <input type="hidden" name="item_index" value="{{ $vIdx }}">
+                                                <button type="submit" class="text-rose-600 hover:underline text-[11px] font-bold">
+                                                    Discard
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                @empty
+                                    <div class="p-4 bg-amber-50/40 rounded-lg text-xs text-stone-500 italic text-center border border-dashed border-amber-900/20">
+                                        Vault is currently empty.
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================================= -->
+                    <!-- TAB 5: RULES & GM NOTES                                       -->
+                    <!-- ============================================================= -->
+                    <div x-show="activeTab === 'rules'" class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-amber-950 text-sm flex items-center gap-1.5">
+                                <span>⚙️</span> Campaign Generation Rules &amp; Global GM Notes
+                            </h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="p-4 bg-amber-50/60 border border-amber-900/20 rounded-xl space-y-2">
+                                <h4 class="font-bold text-amber-950 uppercase tracking-wider text-[11px]">System Parameters</h4>
+                                <div class="space-y-1 text-stone-700">
+                                    <div>Ability Gen Method ID: <strong>{{ $camp->AbilityGenMethod }}</strong></div>
+                                    <div>Starting XP: <strong class="font-mono">{{ number_format((int)$camp->StartingXP) }} XP</strong></div>
+                                    <div>PC Suitability Level: <strong>{{ $camp->SuitabilityLevel }}</strong></div>
+                                    <div>Optional Rules: <strong>{{ $camp->OptionalRules ?? 'None' }}</strong></div>
+                                </div>
+                            </div>
+
+                            <div class="p-4 bg-amber-50/60 border border-amber-900/20 rounded-xl space-y-2">
+                                <h4 class="font-bold text-amber-950 uppercase tracking-wider text-[11px]">GM Notes</h4>
+                                <p class="text-stone-700 leading-relaxed whitespace-pre-line">{{ $camp->Notes ?: 'No notes recorded.' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        @empty
-            <div class="col-span-2 p-8 text-center bg-slate-50 border border-slate-200 rounded-xl text-slate-500 text-sm">
-                No active campaigns created yet.
+        @else
+            <!-- Empty state when no campaign is found or selected -->
+            <div class="parchment-card p-12 text-center rounded-2xl border border-amber-900/20 shadow-lg space-y-4">
+                <div class="text-5xl">🏰</div>
+                <h2 class="text-xl font-bold text-amber-950 font-serif">No Campaign Selected</h2>
+                <p class="text-stone-600 text-sm max-w-md mx-auto">Create a new campaign or choose an existing campaign from the dropdown above to manage adventures, encounters, and world locations.</p>
+                @auth
+                    @if(auth()->user()->isGM())
+                        <button @click="showCreateModal = true" class="btn-rol-primary mx-auto">
+                            <span>➕</span> Create New Campaign
+                        </button>
+                    @endif
+                @else
+                    <a href="{{ route('login', [], false) }}" class="btn-rol-secondary inline-flex items-center gap-1.5">
+                        <span>👑</span> Log In as GM
+                    </a>
+                @endauth
             </div>
-        @endforelse
+        @endif
     </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODALS SECTION                                                            -->
+    <!-- ========================================================================= -->
 
     <!-- Create Campaign Modal -->
     <div x-show="showCreateModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showCreateModal = false">
         <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000]" @click.outside="showCreateModal = false">
             <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
-                    <span>👑</span> Create New Campaign
+                    <span>🗺️</span> Create New Campaign
                 </div>
                 <button @click="showCreateModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
             </div>
@@ -283,18 +708,12 @@
                 @csrf
                 <div>
                     <label for="create_camp_name" class="block text-xs font-bold uppercase text-slate-700 mb-1">Campaign Name <span class="text-red-600">*</span></label>
-                    <input type="text" id="create_camp_name" name="Name" x-model="createCamp.Name" required 
-                           :class="isCreateNameDuplicate ? 'border-red-500 ring-2 ring-red-300' : 'border-slate-300'"
-                           class="w-full px-3 py-2 border rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="e.g., The Sunken Citadel">
-                    <div x-show="isCreateNameDuplicate" style="display: none;" class="mt-1.5 text-xs text-red-700 bg-red-50 border border-red-200 rounded-md p-2 flex items-center gap-1.5 font-semibold">
-                        <span>⚠️</span>
-                        <span>A campaign named "<strong x-text="createCamp.Name.trim()"></strong>" already exists! Please choose a unique name.</span>
-                    </div>
+                    <input type="text" id="create_camp_name" name="Name" x-model="createCamp.Name" required placeholder="e.g. Chronicles of the Shattered Coast" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
                 </div>
 
                 <div>
                     <label for="create_camp_desc" class="block text-xs font-bold uppercase text-slate-700 mb-1">Description / Setting</label>
-                    <textarea id="create_camp_desc" name="Description" x-model="createCamp.Description" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="Brief summary of setting, theme, starting location..."></textarea>
+                    <textarea id="create_camp_desc" name="Description" x-model="createCamp.Description" rows="2" placeholder="High-fantasy sandbox set in the northern frontier..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -302,51 +721,37 @@
                         <label for="create_camp_method" class="block text-xs font-bold uppercase text-slate-700 mb-1">Ability Gen Method</label>
                         <select id="create_camp_method" name="AbilityGenMethod" x-model="createCamp.AbilityGenMethod" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
                             @foreach($abilityMethods as $method)
-                                @php
-                                    $desc = preg_replace('/\s+/', ' ', trim($method->Description));
-                                    $truncatedDesc = \Illuminate\Support\Str::limit($desc, 60, '...');
-                                @endphp
-                                <option value="{{ $method->ID }}">
-                                    {{ $method->MethodName }}: {{ $truncatedDesc }}
-                                </option>
+                                <option value="{{ $method->ID }}">{{ $method->MethodName }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div>
                         <label for="create_camp_xp" class="block text-xs font-bold uppercase text-slate-700 mb-1">Starting XP</label>
-                        <input type="number" id="create_camp_xp" name="StartingXP" x-model="createCamp.StartingXP" min="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        <input type="number" id="create_camp_xp" name="StartingXP" x-model="createCamp.StartingXP" min="0" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
                     </div>
                 </div>
 
                 <div>
                     <label for="create_camp_suitability" class="block text-xs font-bold uppercase text-slate-700 mb-1">PC Suitability Level</label>
                     <select id="create_camp_suitability" name="SuitabilityLevel" x-model="createCamp.SuitabilityLevel" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                        <option value="5">5 - Core Humanoids Only (Humans, Elves, Dwarves, Halflings...)</option>
-                        <option value="4">4 - Extended Civilized Races &amp; Standard Templates</option>
-                        <option value="3" selected>3 - Standard PC Play (Uncommon Races &amp; Civilizations) [Default]</option>
-                        <option value="2">2 - Exotic &amp; Rare Intelligent Humanoids</option>
-                        <option value="1">1 - Monstrous &amp; Planar PC Races</option>
-                        <option value="0">0 - All Creatures, Monsters &amp; Templates Permitted</option>
+                        <option value="5">5 - Core Humanoids Only</option>
+                        <option value="4">4 - Extended Civilized Races &amp; Templates</option>
+                        <option value="3" selected>3 - Standard PC Play</option>
+                        <option value="2">2 - Exotic &amp; Rare Races</option>
+                        <option value="1">1 - Monstrous &amp; Planar Races</option>
+                        <option value="0">0 - All Creatures Permitted</option>
                     </select>
-                    <p class="text-[11px] text-slate-500 mt-1">Controls which races and templates players can select during PC generation.</p>
                 </div>
 
                 <div>
-                    <label for="create_camp_rules" class="block text-xs font-bold uppercase text-slate-700 mb-1">Optional Rules</label>
-                    <input type="text" id="create_camp_rules" name="OptionalRules" x-model="createCamp.OptionalRules" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="e.g., Armor as DR, Wound Points, Vitality">
-                </div>
-
-                <div>
-                    <label for="create_camp_notes" class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Notes</label>
-                    <textarea id="create_camp_notes" name="Notes" x-model="createCamp.Notes" rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="Private campaign notes, lore seeds..."></textarea>
+                    <label for="create_camp_notes" class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Secret Notes</label>
+                    <textarea id="create_camp_notes" name="Notes" x-model="createCamp.Notes" rows="2" placeholder="Campaign overarching plot twists, private GM secrets..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
                     <button type="button" @click="showCreateModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
-                    <button type="submit" :disabled="isCreateNameDuplicate || !createCamp.Name.trim()" 
-                            :class="isCreateNameDuplicate || !createCamp.Name.trim() ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'"
-                            class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
+                    <button type="submit" :disabled="!createCamp.Name.trim()" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
                         Create Campaign
                     </button>
                 </div>
@@ -367,13 +772,7 @@
                 @csrf
                 <div>
                     <label for="edit_camp_name" class="block text-xs font-bold uppercase text-slate-700 mb-1">Campaign Name <span class="text-red-600">*</span></label>
-                    <input type="text" id="edit_camp_name" name="Name" x-model="editCamp.Name" required 
-                           :class="isEditNameDuplicate ? 'border-red-500 ring-2 ring-red-300' : 'border-slate-300'"
-                           class="w-full px-3 py-2 border rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                    <div x-show="isEditNameDuplicate" style="display: none;" class="mt-1.5 text-xs text-red-700 bg-red-50 border border-red-200 rounded-md p-2 flex items-center gap-1.5 font-semibold">
-                        <span>⚠️</span>
-                        <span>A campaign named "<strong x-text="editCamp.Name.trim()"></strong>" already exists! Please choose a unique name.</span>
-                    </div>
+                    <input type="text" id="edit_camp_name" name="Name" x-model="editCamp.Name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
                 </div>
 
                 <div>
@@ -386,19 +785,13 @@
                         <label for="edit_camp_method" class="block text-xs font-bold uppercase text-slate-700 mb-1">Ability Gen Method</label>
                         <select id="edit_camp_method" name="AbilityGenMethod" x-model="editCamp.AbilityGenMethod" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
                             @foreach($abilityMethods as $method)
-                                @php
-                                    $desc = preg_replace('/\s+/', ' ', trim($method->Description));
-                                    $truncatedDesc = \Illuminate\Support\Str::limit($desc, 60, '...');
-                                @endphp
-                                <option value="{{ $method->ID }}">
-                                    {{ $method->MethodName }}: {{ $truncatedDesc }}
-                                </option>
+                                <option value="{{ $method->ID }}">{{ $method->MethodName }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div>
-                        <label for="edit_camp_xp" class="block text-xs font-bold uppercase text-slate-700 mb-1">Starting XP (New Characters)</label>
+                        <label for="edit_camp_xp" class="block text-xs font-bold uppercase text-slate-700 mb-1">Starting XP</label>
                         <input type="number" id="edit_camp_xp" name="StartingXP" x-model="editCamp.StartingXP" min="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
                     </div>
                 </div>
@@ -406,34 +799,306 @@
                 <div>
                     <label for="edit_camp_suitability" class="block text-xs font-bold uppercase text-slate-700 mb-1">PC Suitability Level</label>
                     <select id="edit_camp_suitability" name="SuitabilityLevel" x-model="editCamp.SuitabilityLevel" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                        <option value="5">5 - Core Humanoids Only (Humans, Elves, Dwarves, Halflings...)</option>
-                        <option value="4">4 - Extended Civilized Races &amp; Standard Templates</option>
-                        <option value="3">3 - Standard PC Play (Uncommon Races &amp; Civilizations) [Default]</option>
-                        <option value="2">2 - Exotic &amp; Rare Intelligent Humanoids</option>
-                        <option value="1">1 - Monstrous &amp; Planar PC Races</option>
-                        <option value="0">0 - All Creatures, Monsters &amp; Templates Permitted</option>
+                        <option value="5">5 - Core Humanoids Only</option>
+                        <option value="4">4 - Extended Civilized Races &amp; Templates</option>
+                        <option value="3">3 - Standard PC Play</option>
+                        <option value="2">2 - Exotic &amp; Rare Races</option>
+                        <option value="1">1 - Monstrous &amp; Planar Races</option>
+                        <option value="0">0 - All Creatures Permitted</option>
                     </select>
                 </div>
 
                 <div>
-                    <label for="edit_camp_rules" class="block text-xs font-bold uppercase text-slate-700 mb-1">Optional Rules</label>
-                    <input type="text" id="edit_camp_rules" name="OptionalRules" x-model="editCamp.OptionalRules" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                </div>
-
-                <div>
                     <label for="edit_camp_notes" class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Notes</label>
-                    <textarea id="edit_camp_notes" name="Notes" x-model="editCamp.Notes" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="Private campaign notes, lore seeds..."></textarea>
+                    <textarea id="edit_camp_notes" name="Notes" x-model="editCamp.Notes" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
                     <button type="button" @click="showEditModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
-                    <button type="submit" :disabled="isEditNameDuplicate || !editCamp.Name.trim()" 
-                            :class="isEditNameDuplicate || !editCamp.Name.trim() ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'"
-                            class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
+                    <button type="submit" :disabled="!editCamp.Name.trim()" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
                         Save Changes
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Adventure Modal (Create & Edit) -->
+    <div x-show="showAdventureModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showAdventureModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000]" @click.outside="showAdventureModal = false">
+            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl" style="background-color: #3a4f63; color: #ffffff;">
+                <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
+                    <span>📜</span> <span x-text="advForm.id ? 'Edit Adventure' : 'Create New Adventure'"></span>
+                </div>
+                <button @click="showAdventureModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <label class="block text-xs font-bold uppercase text-slate-700">Adventure Title <span class="text-red-600">*</span></label>
+                    <button type="button" @click="rollAdventureSeed()" class="text-xs text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                        <span>🎲</span> Roll Adventure Idea
+                    </button>
+                </div>
+                <input type="text" x-model="advForm.name" placeholder="e.g. The Whispering Vault" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
+
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Status</label>
+                        <select x-model="advForm.status" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black">
+                            <option value="planning">Planning</option>
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Min Level</label>
+                        <input type="number" x-model.number="advForm.min_level" min="1" max="40" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Max Level</label>
+                        <input type="number" x-model.number="advForm.max_level" min="1" max="40" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black font-mono">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Synopsis &amp; Objectives</label>
+                    <textarea x-model="advForm.synopsis" rows="3" placeholder="Overview of the adventure arc, villain faction, and climax..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Secret Notes</label>
+                    <textarea x-model="advForm.gm_notes" rows="2" placeholder="Private clues, puzzle solutions, hidden betrayals..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
+                    <button type="button" @click="showAdventureModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
+                    <button type="button" @click="saveAdventure()" :disabled="!advForm.name.trim()" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
+                        Save Adventure
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Encounter Modal (Create & Edit) -->
+    <div x-show="showEncounterModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showEncounterModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden relative z-[10000]" @click.outside="showEncounterModal = false">
+            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl" style="background-color: #3a4f63; color: #ffffff;">
+                <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
+                    <span>⚔️</span> <span x-text="encForm.id ? 'Edit Encounter' : 'Create New Encounter'"></span>
+                </div>
+                <button @click="showEncounterModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
+            </div>
+            <div class="p-6 space-y-4 max-h-[85vh] overflow-y-auto">
+                <div class="flex items-center justify-between">
+                    <label class="block text-xs font-bold uppercase text-slate-700">Encounter Name <span class="text-red-600">*</span></label>
+                    <button type="button" @click="rollEncounterSeed()" class="text-xs text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                        <span>🎲</span> Roll Encounter Idea
+                    </button>
+                </div>
+                <input type="text" x-model="encForm.name" placeholder="e.g. Ambush at the Broken Bridge" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Type</label>
+                        <select x-model="encForm.type" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black">
+                            <option value="combat">⚔️ Combat</option>
+                            <option value="social">🗣️ Social</option>
+                            <option value="trap_hazard">⚠️ Trap / Hazard</option>
+                            <option value="puzzle">🧩 Puzzle</option>
+                            <option value="exploration">🧭 Exploration</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Encounter Level (EL)</label>
+                        <input type="number" x-model.number="encForm.encounter_level" step="0.5" min="0" max="40" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">XP Award</label>
+                        <input type="number" x-model.number="encForm.xp_award" min="0" step="50" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black font-mono">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Environment / Terrain</label>
+                    <input type="text" x-model="encForm.environment" placeholder="e.g. Dungeon, Misty Forest, Cavern, Swamp, Mountain, Ruins..." class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Description &amp; Scene Setup</label>
+                    <textarea x-model="encForm.description" rows="2" placeholder="What the party sees, initial positions, read-aloud text..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Tactical Complications &amp; Features</label>
+                    <textarea x-model="encForm.tactics_and_features" rows="2" placeholder="Cover, high ground, dim lighting, waves of reinforcements..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+
+                <!-- Foes & Monsters Configuration Section -->
+                <div class="border border-slate-200 rounded-xl p-3.5 bg-slate-50 space-y-2.5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2">
+                        <div>
+                            <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                <span>👹</span> Foes &amp; Monsters List
+                            </span>
+                            <span class="text-[10px] text-slate-500">Pick standard monsters from compendium or enter custom foes.</span>
+                        </div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <button type="button" @click="rollEncounterFoes()" :disabled="isRollingFoes"
+                                    class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-lg border border-indigo-200 flex items-center gap-1 cursor-pointer transition">
+                                <span x-show="!isRollingFoes">⚡ Generate Foes (EL <span x-text="encForm.encounter_level"></span>)</span>
+                                <span x-show="isRollingFoes">⌛ Generating...</span>
+                            </button>
+                            <button type="button" @click="addMonsterToEncounter()" 
+                                    class="text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-lg border border-emerald-200 flex items-center gap-1 cursor-pointer transition">
+                                <span>➕</span> Add Foe
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Foes Header & Rows -->
+                    <div class="space-y-1.5 max-h-60 overflow-y-auto pr-0.5">
+                        <!-- Column Header -->
+                        <div class="enc-foe-header px-2.5 py-1.5 bg-slate-200/80 rounded-lg text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                            <div class="enc-foe-col-name">Monster / NPC Name</div>
+                            <div class="enc-foe-col-qty text-center">Qty</div>
+                            <div class="enc-foe-col-lvl text-center">Level</div>
+                            <div class="enc-foe-col-hp text-center">HP (Each)</div>
+                            <div class="enc-foe-col-del"></div>
+                        </div>
+
+                        <!-- Foe Item Rows -->
+                        <template x-for="(m, idx) in encForm.monsters_and_npcs" :key="idx">
+                            <div class="enc-foe-row bg-white p-2 rounded-lg border border-slate-200 shadow-2xs hover:border-amber-400 transition">
+                                <!-- Monster Name with Datalist Autocomplete -->
+                                <div class="enc-foe-col-name">
+                                    <input type="text" x-model="m.name" list="creature_datalist" @input="onCreatureNameInput(m)"
+                                           placeholder="Type or pick creature..."
+                                           class="w-full px-2.5 py-1 bg-white border border-slate-300 rounded text-xs text-slate-900 font-medium focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                </div>
+                                <!-- Qty -->
+                                <div class="enc-foe-col-qty">
+                                    <input type="number" x-model.number="m.count" min="1" max="100" placeholder="1"
+                                           class="w-full px-1 py-1 bg-white border border-slate-300 rounded text-xs font-mono font-bold text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                </div>
+                                <!-- Level / RL -->
+                                <div class="enc-foe-col-lvl">
+                                    <input type="number" x-model.number="m.level" min="0" max="40" placeholder="Lvl"
+                                           class="w-full px-1 py-1 bg-white border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                </div>
+                                <!-- HP -->
+                                <div class="enc-foe-col-hp">
+                                    <input type="number" x-model.number="m.hp" min="1" placeholder="HP"
+                                           class="w-full px-1 py-1 bg-white border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                </div>
+                                <!-- Delete Button -->
+                                <div class="enc-foe-col-del flex items-center justify-center">
+                                    <button type="button" @click="encForm.monsters_and_npcs.splice(idx, 1)" 
+                                            class="w-7 h-7 flex items-center justify-center text-rose-500 hover:text-white hover:bg-rose-600 rounded text-xs font-bold transition cursor-pointer" title="Remove Foe">
+                                        ✕
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+
+                        <div x-show="encForm.monsters_and_npcs.length === 0" class="text-xs text-stone-500 italic p-4 text-center bg-white/60 rounded-lg border border-dashed border-slate-300">
+                            No foes added. Click "⚡ Generate Foes" for automatic encounter scaling, or "➕ Add Foe" to enter manually.
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Secret Notes</label>
+                    <textarea x-model="encForm.gm_notes" rows="2" placeholder="Trap DCs, morale break points, hidden reinforcements..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
+                    <button type="button" @click="showEncounterModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
+                    <button type="button" @click="saveEncounter()" :disabled="!encForm.name.trim()" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
+                        Save Encounter
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Location Modal (Create & Edit) -->
+    <div x-show="showLocationModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showLocationModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-xl w-full border border-slate-200 overflow-hidden relative z-[10000]" @click.outside="showLocationModal = false">
+            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl" style="background-color: #3a4f63; color: #ffffff;">
+                <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
+                    <span>📍</span> <span x-text="locForm.id ? 'Edit Location' : 'Create Location'"></span>
+                </div>
+                <button @click="showLocationModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
+            </div>
+            <div class="p-6 space-y-4 max-h-[85vh] overflow-y-auto">
+                <div class="flex items-center justify-between">
+                    <label class="block text-xs font-bold uppercase text-slate-700">Location Name <span class="text-red-600">*</span></label>
+                    <div class="flex items-center gap-2">
+                        <button type="button" @click="rollTavernIntoForm()" class="text-xs text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                            <span>🍺</span> Roll Tavern
+                        </button>
+                        <button type="button" @click="rollShopIntoForm()" class="text-xs text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                            <span>🛒</span> Roll Shop
+                        </button>
+                    </div>
+                </div>
+                <input type="text" x-model="locForm.name" placeholder="e.g. The Drunken Dragon Tavern" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Location Type</label>
+                        <select x-model="locForm.location_type" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black">
+                            <option value="settlement">🏰 Settlement / City</option>
+                            <option value="tavern">🍺 Tavern / Inn</option>
+                            <option value="shop">🛒 Shop / Merchant</option>
+                            <option value="dungeon">🗝️ Dungeon / Crypt</option>
+                            <option value="ruin">🏛️ Ruin / Ancient Site</option>
+                            <option value="stronghold">🛡️ Fortress / Castle</option>
+                            <option value="wilderness">🌲 Wilderness POI</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Parent Settlement</label>
+                        <select x-model="locForm.parent_location_id" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black">
+                            <option value="">-- None (Top Level) --</option>
+                            @if(isset($campLocations))
+                                @foreach($campLocations as $pLoc)
+                                    <option value="{{ $pLoc->id }}">{{ $pLoc->name }} ({{ $pLoc->location_type }})</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Summary / Tagline</label>
+                    <input type="text" x-model="locForm.summary" placeholder="e.g. A boisterous tavern at the city docks" class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Description &amp; Atmosphere</label>
+                    <textarea x-model="locForm.description" rows="3" placeholder="Interior details, proprietor quirks, house specialties..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Sensory Atmosphere (Sights, Sounds &amp; Smells)</label>
+                    <textarea x-model="locForm.sensory_details" rows="2" placeholder="Aroma of roasted venison, flickering candlelight, creaking floorboards..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Secret Notes &amp; Rumors</label>
+                    <textarea x-model="locForm.gm_notes" rows="2" placeholder="Hidden trapdoors, corrupt informants, local secrets..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
+                    <button type="button" @click="showLocationModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
+                    <button type="button" @click="saveLocation()" :disabled="!locForm.name.trim()" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
+                        Save Location
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -459,24 +1124,15 @@
                                 </option>
                             @endforeach
                         </select>
-                        <p class="text-xs text-slate-500 mt-1.5">Only unassigned characters not currently attached to any campaign are listed.</p>
                     @else
-                        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3.5 text-xs text-amber-900 space-y-2">
-                            <p class="font-semibold">No unassigned characters found.</p>
-                            <p class="text-slate-600">All characters in the database are currently assigned to campaigns.</p>
-                            <div class="pt-1">
-                                <a :href="'{{ route('utilities.chargen', [], false) }}?campaign=' + addPcCamp.ID" class="inline-flex items-center gap-1 text-indigo-700 hover:text-indigo-900 font-bold underline">
-                                    <span>➕</span> Generate a new PC for this campaign &rarr;
-                                </a>
-                            </div>
-                        </div>
+                        <p class="text-xs text-slate-500 italic">No unassigned characters found.</p>
                     @endif
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
                     <button type="button" @click="showAddPcModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
                     @if($unassignedCharacters->isNotEmpty())
-                        <button type="submit" :disabled="!selectedCharId" :class="!selectedCharId ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
+                        <button type="submit" :disabled="!selectedCharId" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
                             Add to Campaign
                         </button>
                     @endif
@@ -485,334 +1141,60 @@
         </div>
     </div>
 
-    <!-- NPC Stat Block Modal -->
-    <div x-show="showNpcModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showNpcModal = false">
-        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[90vh] flex flex-col" @click.outside="showNpcModal = false">
-            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
-                <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
-                    <span>👹</span> <span x-text="activeNpc ? activeNpc.Name : 'NPC Stat Block'"></span>
-                </div>
-                <button @click="showNpcModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
-            </div>
-            <div class="p-6 overflow-y-auto space-y-4">
-                <template x-if="activeNpc && activeNpc.StatBlock">
-                    <div x-html="activeNpc.StatBlock"></div>
-                </template>
-                <template x-if="activeNpc && !activeNpc.StatBlock">
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-xs space-y-2">
-                        <div class="font-bold text-slate-800" x-text="activeNpc.Name"></div>
-                        <div class="text-slate-600">Base Race: <span x-text="activeNpc.RaceName || 'Human'"></span></div>
-                        <div class="text-slate-600">Scores: STR <span x-text="activeNpc.BaseStr"></span>, CON <span x-text="activeNpc.BaseCon"></span>, DEX <span x-text="activeNpc.BaseDex"></span>, INT <span x-text="activeNpc.BaseInt"></span>, WIS <span x-text="activeNpc.BaseWis"></span>, CHA <span x-text="activeNpc.BaseCha"></span></div>
-                        <template x-if="activeNpc.ConfigString">
-                            <div class="mt-2 p-2 bg-slate-900 text-amber-200 rounded font-mono text-[11px] select-all" x-text="activeNpc.ConfigString"></div>
-                        </template>
-                    </div>
-                </template>
-            </div>
-            <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-end shrink-0">
-                <button type="button" @click="showNpcModal = false" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs rounded-lg transition cursor-pointer">
-                    Close
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Grant XP & Treasure to Party Modal -->
+    <!-- Award XP & Treasure Modal -->
     <div x-show="showAwardModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showAwardModal = false">
-        <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col" @click.outside="showAwardModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col" @click.outside="showAwardModal = false">
             <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
                     <span>🎁</span>
                     <span>Grant XP &amp; Treasure — <strong x-text="awardCamp.Name"></strong></span>
-                    <span class="text-xs bg-emerald-700 text-emerald-100 font-mono px-2 py-0.5 rounded ml-2" x-text="awardParty.length + ' Party Members'"></span>
                 </div>
                 <button @click="showAwardModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
             </div>
 
-            <form :action="'{{ route('utilities.campaign.award', ['id' => '__ID__'], false) }}'.replace('__ID__', awardCamp.ID)" method="POST" class="p-6 overflow-y-auto space-y-6 flex-1">
+            <form :action="'{{ route('utilities.campaign.award', ['id' => '__ID__'], false) }}'.replace('__ID__', awardCamp.ID)" method="POST" class="p-6 overflow-y-auto space-y-5 flex-1">
                 @csrf
-                
-                <!-- 1. XP AWARD SECTION -->
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2">
-                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
-                            <span>⭐</span> Experience Points (XP)
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <label class="inline-flex items-center gap-1.5 text-xs text-slate-700 font-semibold cursor-pointer">
-                                <input type="checkbox" name="divide_xp_equally" value="1" x-model="awardData.divide_xp_equally" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
-                                <span>Divide Total Equally (<span x-text="awardParty.length ? Math.floor((awardData.total_xp || 0) / awardParty.length) : 0"></span> XP/ea)</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div class="sm:col-span-1">
-                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Total Party XP</label>
-                            <input type="number" name="total_xp" x-model.number="awardData.total_xp" min="0" step="50" placeholder="e.g. 2000"
-                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black font-mono font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                            <span class="text-[11px] text-slate-500 mt-1 block">Pool XP to split among members</span>
-                        </div>
-
-                        <div class="sm:col-span-2">
-                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Party Members XP Allocation</label>
-                            <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
-                                <template x-for="c in awardParty" :key="c.ID">
-                                    <div class="flex items-center justify-between bg-white border border-slate-200 p-2.5 rounded-lg text-xs gap-2">
-                                        <div class="min-w-0 flex-1">
-                                            <div class="font-bold text-slate-800 truncate" x-text="c.Name"></div>
-                                            <div class="text-[10px] text-slate-500 font-mono">
-                                                Current: <span x-text="parseInt(c.ExperiencePts || 0).toLocaleString()"></span> XP (Lvl <span x-text="c.Level || 1"></span>)
-                                            </div>
-                                        </div>
-
-                                        <div class="flex items-center gap-2 shrink-0">
-                                            <div class="flex items-center gap-1">
-                                                <span class="text-[10px] text-slate-500 font-semibold">+Bonus:</span>
-                                                <input type="number" :name="'char_bonus_xp[' + c.ID + ']'" x-model.number="awardData.char_bonus_xp[c.ID]" min="0" step="25" placeholder="0"
-                                                       class="w-20 px-2 py-1 border border-slate-300 rounded text-xs text-black font-mono font-bold focus:ring-1 focus:ring-emerald-500 text-right">
-                                            </div>
-
-                                            <div class="text-right min-w-24">
-                                                <span class="text-emerald-700 font-bold font-mono block text-xs" x-text="'+' + getCharXpAward(c.ID).toLocaleString() + ' XP'"></span>
-                                                <span class="text-[10px] font-mono text-slate-600 block" x-text="'New: ' + getCharNewXp(c).toLocaleString()"></span>
-                                                <template x-if="getCharNewLevel(c) > (c.Level || 1)">
-                                                    <span class="inline-block text-[9px] bg-amber-100 text-amber-900 border border-amber-300 px-1 rounded font-bold">✨ Lvl <span x-text="getCharNewLevel(c)"></span> Ready!</span>
-                                                </template>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-                    </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                    <label class="block text-xs font-bold uppercase text-slate-700">Total Party XP Award</label>
+                    <input type="number" name="total_xp" x-model.number="awardData.total_xp" min="0" step="50" placeholder="e.g. 1200" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black font-mono font-bold focus:ring-2 focus:ring-emerald-500">
                 </div>
 
-                <!-- 2. MONETARY TREASURE SECTION -->
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2">
-                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
-                            <span>💰</span> Monetary Treasure (Silver Pieces - sp)
-                        </div>
-                        <div class="flex items-center gap-3 text-xs">
-                            <label class="inline-flex items-center gap-1 text-slate-700 font-semibold cursor-pointer">
-                                <input type="radio" name="treasure_mode" value="equal" x-model="awardData.treasure_mode" class="text-amber-600 focus:ring-amber-500">
-                                <span>Equal Split</span>
-                            </label>
-                            <label class="inline-flex items-center gap-1 text-slate-700 font-semibold cursor-pointer">
-                                <input type="radio" name="treasure_mode" value="custom" x-model="awardData.treasure_mode" class="text-amber-600 focus:ring-amber-500">
-                                <span>Custom Per Member</span>
-                            </label>
-                            <label class="inline-flex items-center gap-1 text-slate-700 font-semibold cursor-pointer">
-                                <input type="radio" name="treasure_mode" value="vault" x-model="awardData.treasure_mode" class="text-amber-600 focus:ring-amber-500">
-                                <span>Deposit All to Party Vault</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div class="sm:col-span-1">
-                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Total Silver Award (sp)</label>
-                            <input type="number" name="total_silver" x-model.number="awardData.total_silver" min="0" step="10" placeholder="e.g. 500"
-                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black font-mono font-bold focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                            <span class="text-[11px] text-slate-500 mt-1 block" x-show="awardData.treasure_mode === 'equal'">
-                                = <strong x-text="awardParty.length ? Math.floor((awardData.total_silver || 0) / awardParty.length) : 0"></strong> sp per member
-                            </span>
-                            <span class="text-[11px] text-amber-700 font-semibold mt-1 block" x-show="awardData.treasure_mode === 'vault'">
-                                All <span x-text="(awardData.total_silver || 0).toLocaleString()"></span> sp will be deposited into the Campaign Vault!
-                            </span>
-                        </div>
-
-                        <div class="sm:col-span-2" x-show="awardData.treasure_mode === 'custom'">
-                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Custom Coin per Member</label>
-                            <div class="space-y-2 max-h-36 overflow-y-auto pr-1">
-                                <template x-for="c in awardParty" :key="c.ID">
-                                    <div class="flex items-center justify-between bg-white border border-slate-200 p-2 rounded-lg text-xs">
-                                        <span class="font-bold text-slate-800" x-text="c.Name"></span>
-                                        <div class="flex items-center gap-1.5">
-                                            <input type="number" :name="'char_silver[' + c.ID + ']'" x-model.number="awardData.char_silver[c.ID]" min="0" step="5" placeholder="0"
-                                                   class="w-24 px-2 py-1 border border-slate-300 rounded text-xs text-black font-mono font-bold focus:ring-1 focus:ring-amber-500 text-right">
-                                            <span class="text-slate-500 font-mono">sp</span>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-
-                        <div class="sm:col-span-2" x-show="awardData.treasure_mode !== 'custom'">
-                            <div class="bg-amber-50/60 border border-amber-200 rounded-lg p-3 text-xs text-amber-950 space-y-1">
-                                <div class="font-bold flex items-center justify-between">
-                                    <span>💎 Vault Coin Deposit (Optional Extra):</span>
-                                </div>
-                                <div class="flex items-center gap-2 pt-1">
-                                    <input type="number" name="vault_silver" x-model.number="awardData.vault_silver" min="0" step="10" placeholder="Extra sp to vault..."
-                                           class="w-36 px-2.5 py-1.5 border border-amber-300 bg-white rounded text-xs text-black font-mono font-bold focus:ring-1 focus:ring-amber-500">
-                                    <span class="text-slate-600 text-[11px]">sp will be stored directly in Party Vault pool</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                    <label class="block text-xs font-bold uppercase text-slate-700">Total Monetary Treasure (sp)</label>
+                    <input type="number" name="total_sp" x-model.number="awardData.total_sp" min="0" step="10" placeholder="e.g. 500" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black font-mono font-bold focus:ring-2 focus:ring-amber-500">
                 </div>
 
-                <!-- 3. ITEMS & LOOT REWARDS SECTION -->
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3.5">
-                    <div class="font-bold text-slate-900 text-sm flex items-center justify-between border-b border-slate-200 pb-2">
-                        <span class="flex items-center gap-1.5">
-                            <span>🗡️</span> Items &amp; Magic Loot Awards (<span x-text="awardData.items.length"></span>)
-                        </span>
-                        <span class="text-xs text-slate-500 font-normal">Choose standard gear or modified magic items from the compendium</span>
-                    </div>
-
-                    <!-- Row 1: Standard Equipment Catalog -->
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-white p-2.5 rounded-lg border border-slate-200 shadow-2xs">
-                        <div class="flex-1">
-                            <label class="block text-[10px] font-bold uppercase text-slate-500 mb-0.5">Standard Equipment Catalog</label>
-                            <select x-model="selectedCatalogItemId" class="text-xs px-2.5 py-1.5 border border-slate-300 rounded-lg bg-slate-50/50 text-slate-800 w-full focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500">
-                                <option value="">-- Choose Standard Equipment Catalog --</option>
-                                @if(isset($equipmentCatalog))
-                                    @foreach($equipmentCatalog as $eq)
-                                        <option value="{{ $eq->ID }}" data-name="{{ $eq->Name }}" data-value="{{ $eq->BaseValue ?? 0 }}" data-weight="{{ $eq->Weight ?? 0 }}" data-pl="{{ $eq->PowerLevel ?? 0 }}" data-dr="{{ $eq->DR ?? 0 }}">
-                                            {{ $eq->Name }} ({{ number_format((int)($eq->BaseValue ?? 0)) }} sp &bull; {{ $eq->SubtypeName ?? 'Gear' }})
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
-                        <div class="flex items-center gap-1.5 pt-3 sm:pt-3">
-                            <button type="button" @click="addItemFromCatalog()" :disabled="!selectedCatalogItemId" class="btn-rol-secondary text-xs py-1 px-3 disabled:opacity-40 shrink-0">
-                                ➕ Add Gear
-                            </button>
-                            <button type="button" @click="addCustomItem()" class="btn-rol-secondary text-xs py-1 px-3 shrink-0">
-                                ✏️ Custom
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Row 2: Modified & Magic Items Catalog (ref_itemsmodified) -->
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-amber-50/40 p-2.5 rounded-lg border border-amber-200/70 shadow-2xs">
-                        <div class="flex-1">
-                            <label class="block text-[10px] font-bold uppercase text-amber-900 mb-0.5 flex items-center gap-1">
-                                <span>✨</span> Modified &amp; Magic Items (<span class="font-mono">{{ isset($modifiedItemsCatalog) ? count($modifiedItemsCatalog) : 0 }}</span> items)
-                            </label>
-                            <select x-model="selectedModifiedItemId" class="text-xs px-2.5 py-1.5 border border-amber-300 rounded-lg bg-white text-slate-800 w-full focus:outline-none focus:ring-1 focus:ring-amber-500">
-                                <option value="">-- Choose from Magic / Modified Items (Potions, Scrolls, Wands, Enchanted Gear) --</option>
-                                @if(isset($modifiedItemsCatalog))
-                                    @foreach($modifiedItemsCatalog as $mIt)
-                                        <option value="{{ $mIt['ID'] }}" 
-                                                data-name="{{ $mIt['Name'] }}" 
-                                                data-config="{{ $mIt['Config'] }}"
-                                                data-value="{{ $mIt['Value'] }}" 
-                                                data-weight="{{ $mIt['Weight'] }}" 
-                                                data-pl="{{ $mIt['PowerLevel'] }}" 
-                                                data-dr="{{ $mIt['DR'] }}"
-                                                data-hp="{{ $mIt['HP'] }}"
-                                                data-size="{{ $mIt['Size'] }}">
-                                            ✨ {{ $mIt['Name'] }} ({{ number_format((int)$mIt['Value']) }} sp &bull; {{ $mIt['SubtypeName'] }} &bull; PL {{ $mIt['PowerLevel'] }})
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
-                        <div class="flex items-center gap-1.5 pt-3 sm:pt-3">
-                            <button type="button" @click="addItemFromModifiedCatalog()" :disabled="!selectedModifiedItemId" class="btn-rol-primary text-xs py-1 px-3 disabled:opacity-40 shrink-0">
-                                ✨ Add Magic Item
-                            </button>
-                        </div>
-                    </div>
-
-                    <template x-if="awardData.items.length === 0">
-                        <div class="p-4 bg-white border border-dashed border-slate-300 rounded-lg text-xs text-slate-500 text-center">
-                            No items queued for award. Use the equipment or modified items selectors above, or add custom loot.
-                        </div>
-                    </template>
-
-                    <div class="space-y-2.5 max-h-56 overflow-y-auto pr-1" x-show="awardData.items.length > 0">
-                        <template x-for="(it, idx) in awardData.items" :key="idx">
-                            <div class="bg-white border border-slate-200 p-3 rounded-lg text-xs space-y-2 shadow-2xs">
-                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                                    <div class="flex items-center gap-2 flex-1">
-                                        <input type="text" :name="'items[' + idx + '][name]'" x-model="it.name" placeholder="Item Name" required
-                                               class="font-bold text-slate-900 border border-slate-300 px-2 py-1 rounded text-xs w-full max-w-xs focus:ring-1 focus:ring-indigo-500">
-                                        <input type="hidden" :name="'items[' + idx + '][config]'" :value="it.config || it.name">
-                                        <input type="hidden" :name="'items[' + idx + '][weight]'" :value="it.weight || 0">
-                                        <input type="hidden" :name="'items[' + idx + '][size]'" :value="it.size || 'Medium (M)'">
-                                        <input type="hidden" :name="'items[' + idx + '][ec]'" :value="it.ec || 0">
-                                        <input type="hidden" :name="'items[' + idx + '][pl]'" :value="it.pl || '0'">
-                                        <input type="hidden" :name="'items[' + idx + '][dr]'" :value="it.dr || '0'">
-                                        <input type="hidden" :name="'items[' + idx + '][hp]'" :value="it.hp || 1">
-                                    </div>
-
-                                    <div class="flex items-center gap-2">
-                                        <div class="flex items-center gap-1">
-                                            <span class="text-[10px] text-slate-500">Value:</span>
-                                            <input type="number" :name="'items[' + idx + '][value]'" x-model.number="it.value" min="0" step="1"
-                                                   class="w-20 px-1.5 py-1 border border-slate-300 rounded text-xs text-right font-mono">
-                                            <span class="text-[10px] text-slate-500">sp</span>
-                                        </div>
-
-                                        <div class="flex items-center gap-1">
-                                            <span class="text-[10px] text-slate-700 font-bold">Assign to:</span>
-                                            <select :name="'items[' + idx + '][assign_to]'" x-model="it.assign_to"
-                                                    class="border border-slate-300 rounded px-2 py-1 text-xs bg-indigo-50/70 font-semibold text-indigo-950 focus:ring-1 focus:ring-indigo-500">
-                                                <option value="vault">💎 Party Pool (Campaign Vault)</option>
-                                                <template x-for="c in awardParty" :key="c.ID">
-                                                    <option :value="c.ID" x-text="'🧙‍♂️ ' + c.Name"></option>
-                                                </template>
-                                            </select>
-                                        </div>
-
-                                        <button type="button" @click="removeItem(idx)" class="text-red-500 hover:text-red-700 font-bold px-1.5 py-0.5 rounded cursor-pointer leading-none" title="Remove item">&times;</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between pt-3 border-t border-slate-200">
-                    <button type="button" @click="showAwardModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
-                    <button type="submit" class="btn-rol-success text-xs sm:text-sm px-6 py-2.5 rounded-lg shadow-md border border-emerald-900 transition flex items-center gap-2 cursor-pointer" style="background: linear-gradient(180deg, #047857 0%, #065f46 100%) !important; color: #ffffff !important;">
-                        <span>✨</span>
-                        <span>Grant Rewards to Party</span>
-                    </button>
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
+                    <button type="button" @click="showAwardModal = false" class="btn-rol-secondary text-xs py-1.5 px-4">Cancel</button>
+                    <button type="submit" class="btn-rol-primary text-xs sm:text-sm px-5 py-2">Grant Rewards</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+<!-- Datalist for Monster/Creature Autocomplete -->
+<datalist id="creature_datalist">
+    @foreach($creatureCatalog as $cr)
+        <option value="{{ $cr['name'] }}">{{ $cr['name'] }} (Lvl {{ $cr['level'] }} {{ $cr['type'] }})</option>
+    @endforeach
+</datalist>
+
 <script>
 function campaignAdmin() {
-    const rawCampaigns = @json($campaignsJson);
-    const existingNamesList = rawCampaigns.map(c => (c.Name || '').trim().toLowerCase()).filter(n => n.length > 0);
-    const campsMap = {};
-    rawCampaigns.forEach(c => {
-        campsMap[c.ID] = c;
-    });
-
     return {
         showCreateModal: false,
         showEditModal: false,
         showAddPcModal: false,
         showNpcModal: false,
         showAwardModal: false,
-        activeNpc: null,
-        addPcCamp: { ID: null, Name: '' },
-        awardCamp: { ID: null, Name: '' },
-        awardParty: [],
-        selectedCatalogItemId: '',
-        selectedModifiedItemId: '',
-        awardData: {
-            total_xp: 0,
-            divide_xp_equally: true,
-            char_bonus_xp: {},
-            total_silver: 0,
-            treasure_mode: 'equal',
-            char_silver: {},
-            vault_silver: 0,
-            items: []
-        },
-        selectedCharId: '',
+        showAdventureModal: false,
+        showEncounterModal: false,
+        showLocationModal: false,
+        isRollingFoes: false,
+
+        creaturesList: @json($creatureCatalog),
+
         createCamp: {
             Name: '',
             Description: '',
@@ -822,28 +1204,62 @@ function campaignAdmin() {
             OptionalRules: 'None',
             Notes: ''
         },
-        editCamp: {
-            ID: null,
-            Name: '',
-            Description: '',
-            AbilityGenMethod: 2,
-            StartingXP: 0,
-            SuitabilityLevel: 3,
-            OptionalRules: 'None',
-            Notes: ''
+        editCamp: { ID: 0, Name: '', Description: '', AbilityGenMethod: 2, StartingXP: 0, SuitabilityLevel: 3, OptionalRules: '', Notes: '' },
+        addPcCamp: { ID: 0, Name: '' },
+        selectedCharId: '',
+        activeNpc: null,
+        awardCamp: { ID: 0, Name: '' },
+        awardParty: [],
+        awardData: { total_xp: 0, total_sp: 0 },
+
+        // Adventure Form
+        advForm: {
+            id: null,
+            campaign_id: null,
+            name: '',
+            synopsis: '',
+            status: 'planning',
+            min_level: 1,
+            max_level: 5,
+            gm_notes: ''
         },
-        existingNames: existingNamesList,
-        get isCreateNameDuplicate() {
-            const name = this.createCamp.Name ? this.createCamp.Name.trim().toLowerCase() : '';
-            return name.length > 0 && this.existingNames.includes(name);
+
+        // Encounter Form
+        encForm: {
+            id: null,
+            campaign_id: null,
+            adventure_id: null,
+            location_id: null,
+            name: '',
+            type: 'combat',
+            encounter_level: 1.0,
+            environment: '',
+            description: '',
+            tactics_and_features: '',
+            xp_award: 300,
+            monsters_and_npcs: [],
+            traps_and_hazards: [],
+            treasure_rewards: [],
+            status: 'planned',
+            gm_notes: ''
         },
-        get isEditNameDuplicate() {
-            const name = this.editCamp.Name ? this.editCamp.Name.trim().toLowerCase() : '';
-            const orig = campsMap[this.editCamp.ID];
-            const origName = (orig && orig.Name) ? orig.Name.trim().toLowerCase() : '';
-            if (!name || name === origName) return false;
-            return this.existingNames.includes(name);
+
+        // Location Form
+        locForm: {
+            id: null,
+            campaign_id: null,
+            parent_location_id: null,
+            name: '',
+            location_type: 'settlement',
+            summary: '',
+            description: '',
+            sensory_details: '',
+            notable_npcs: [],
+            inventory_and_services: [],
+            rumors_and_hooks: [],
+            gm_notes: ''
         },
+
         openEditModal(camp) {
             this.editCamp = {
                 ID: camp.ID,
@@ -852,117 +1268,372 @@ function campaignAdmin() {
                 AbilityGenMethod: camp.AbilityGenMethod || 2,
                 StartingXP: camp.StartingXP || 0,
                 SuitabilityLevel: camp.SuitabilityLevel !== undefined ? camp.SuitabilityLevel : 3,
-                OptionalRules: camp.OptionalRules || 'None',
+                OptionalRules: camp.OptionalRules || '',
                 Notes: camp.Notes || ''
             };
             this.showEditModal = true;
         },
+
         openAddPcModal(camp) {
-            this.addPcCamp = {
-                ID: camp.ID,
-                Name: camp.Name
-            };
+            this.addPcCamp = camp;
             this.selectedCharId = '';
             this.showAddPcModal = true;
         },
-        openNpcModal(npc) {
-            this.activeNpc = npc;
-            this.showNpcModal = true;
-        },
-        openAwardModal(camp, chars) {
-            this.awardCamp = {
-                ID: camp.ID,
-                Name: camp.Name
-            };
-            this.awardParty = chars || [];
-            this.awardData = {
-                total_xp: 0,
-                divide_xp_equally: true,
-                char_bonus_xp: {},
-                total_silver: 0,
-                treasure_mode: 'equal',
-                char_silver: {},
-                vault_silver: 0,
-                items: []
-            };
-            this.selectedCatalogItemId = '';
-            this.selectedModifiedItemId = '';
+
+        openAwardModal(camp, party) {
+            this.awardCamp = camp;
+            this.awardParty = party || [];
+            this.awardData = { total_xp: 0, total_sp: 0 };
             this.showAwardModal = true;
         },
-        calculateLevelFromXp(xp) {
-            let tl = 1;
-            while (tl * (tl - 1) * 500 <= xp && tl <= 20) {
-                tl++;
+
+        // --- Adventure CRUD ---
+        openCreateAdventureModal(campaignId) {
+            this.advForm = {
+                id: null,
+                campaign_id: campaignId,
+                name: '',
+                synopsis: '',
+                status: 'active',
+                min_level: 1,
+                max_level: 4,
+                gm_notes: ''
+            };
+            this.showAdventureModal = true;
+        },
+
+        openEditAdventureModal(adv) {
+            this.advForm = Object.assign({}, adv);
+            this.showAdventureModal = true;
+        },
+
+        async rollAdventureSeed() {
+            try {
+                const res = await fetch('/api/generator/adventure', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify({ min_level: this.advForm.min_level, max_level: this.advForm.max_level })
+                });
+                const data = await res.json();
+                if (data.success && data.data) {
+                    this.advForm.name = data.data.name;
+                    this.advForm.synopsis = data.data.synopsis;
+                    this.advForm.gm_notes = `• Inciting Incident: ${data.data.inciting_incident}\n• Antagonist: ${data.data.antagonist}\n• Complication: ${data.data.complication_twist}`;
+                }
+            } catch (e) {
+                console.error('Error rolling adventure seed:', e);
             }
-            return Math.max(1, tl - 1);
         },
-        getCharXpAward(charId) {
-            const equal = (this.awardData.divide_xp_equally && this.awardParty.length > 0)
-                ? Math.floor((this.awardData.total_xp || 0) / this.awardParty.length)
-                : 0;
-            const bonus = parseInt(this.awardData.char_bonus_xp[charId] || 0) || 0;
-            return equal + bonus;
-        },
-        getCharNewXp(char) {
-            const curr = parseInt(char.ExperiencePts || 0) || 0;
-            return curr + this.getCharXpAward(char.ID);
-        },
-        getCharNewLevel(char) {
-            return this.calculateLevelFromXp(this.getCharNewXp(char));
-        },
-        addItemFromCatalog() {
-            if (!this.selectedCatalogItemId) return;
-            const selectEl = document.querySelector('select[x-model="selectedCatalogItemId"]');
-            const opt = selectEl ? selectEl.options[selectEl.selectedIndex] : null;
-            if (!opt) return;
 
-            this.awardData.items.push({
-                name: opt.getAttribute('data-name') || opt.text,
-                config: opt.getAttribute('data-name') || opt.text,
-                value: parseFloat(opt.getAttribute('data-value')) || 0,
-                weight: parseFloat(opt.getAttribute('data-weight')) || 0,
-                pl: opt.getAttribute('data-pl') || '0',
-                dr: opt.getAttribute('data-dr') || '0',
-                hp: 1,
-                size: 'Medium (M)',
-                assign_to: 'vault'
-            });
-            this.selectedCatalogItemId = '';
+        async saveAdventure() {
+            const isEdit = !!this.advForm.id;
+            const url = isEdit 
+                ? `/utilities/campaign/${this.advForm.campaign_id}/adventures/${this.advForm.id}/update`
+                : `/utilities/campaign/${this.advForm.campaign_id}/adventures/create`;
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify(this.advForm)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert(data.message || 'Failed to save adventure.');
+                }
+            } catch (e) {
+                console.error(e);
+            }
         },
-        addItemFromModifiedCatalog() {
-            if (!this.selectedModifiedItemId) return;
-            const selectEl = document.querySelector('select[x-model="selectedModifiedItemId"]');
-            const opt = selectEl ? selectEl.options[selectEl.selectedIndex] : null;
-            if (!opt) return;
 
-            this.awardData.items.push({
-                name: opt.getAttribute('data-name') || opt.text,
-                config: opt.getAttribute('data-config') || opt.getAttribute('data-name') || opt.text,
-                value: parseFloat(opt.getAttribute('data-value')) || 0,
-                weight: parseFloat(opt.getAttribute('data-weight')) || 0,
-                pl: opt.getAttribute('data-pl') || '0',
-                dr: opt.getAttribute('data-dr') || '0',
-                hp: parseInt(opt.getAttribute('data-hp')) || 1,
-                size: opt.getAttribute('data-size') || 'Medium (M)',
-                assign_to: 'vault'
-            });
-            this.selectedModifiedItemId = '';
+        async deleteAdventure(campId, advId, name) {
+            if (!confirm(`Delete adventure '${name}'? Encounters inside will be set to standalone.`)) return;
+            try {
+                const res = await fetch(`/utilities/campaign/${campId}/adventures/${advId}/delete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.location.reload();
+                }
+            } catch (e) {
+                console.error(e);
+            }
         },
-        addCustomItem() {
-            this.awardData.items.push({
-                name: 'Custom Treasure Item',
-                config: 'Custom Item',
-                value: 50,
-                weight: 1,
-                pl: '0',
-                dr: '0',
-                hp: 1,
-                size: 'Medium (M)',
-                assign_to: 'vault'
+
+        // --- Encounter CRUD ---
+        openCreateEncounterModal(campaignId, adventureId = null) {
+            this.encForm = {
+                id: null,
+                campaign_id: campaignId,
+                adventure_id: adventureId,
+                location_id: null,
+                name: '',
+                type: 'combat',
+                encounter_level: 1.0,
+                environment: '',
+                description: '',
+                tactics_and_features: '',
+                xp_award: 300,
+                monsters_and_npcs: [],
+                traps_and_hazards: [],
+                treasure_rewards: [],
+                status: 'planned',
+                gm_notes: ''
+            };
+            this.showEncounterModal = true;
+        },
+
+        openEditEncounterModal(enc) {
+            this.encForm = Object.assign({}, enc);
+            if (typeof this.encForm.monsters_and_npcs === 'string') {
+                try { this.encForm.monsters_and_npcs = JSON.parse(this.encForm.monsters_and_npcs); } catch (e) { this.encForm.monsters_and_npcs = []; }
+            }
+            if (!Array.isArray(this.encForm.monsters_and_npcs)) {
+                this.encForm.monsters_and_npcs = [];
+            }
+            this.showEncounterModal = true;
+        },
+
+        addMonsterToEncounter() {
+            if (!Array.isArray(this.encForm.monsters_and_npcs)) {
+                this.encForm.monsters_and_npcs = [];
+            }
+            const lvl = Math.max(1, Math.round(this.encForm.encounter_level || 1));
+            this.encForm.monsters_and_npcs.push({
+                name: '',
+                count: 1,
+                level: lvl,
+                hp: 10 + 5 * lvl
             });
         },
-        removeItem(idx) {
-            this.awardData.items.splice(idx, 1);
+
+        onCreatureNameInput(foe) {
+            if (!foe || !foe.name) return;
+            const cleanName = foe.name.trim().toLowerCase();
+            const match = this.creaturesList.find(c => c.name.toLowerCase() === cleanName);
+            if (match) {
+                foe.level = match.level;
+                foe.hp = match.hp;
+            }
+        },
+
+        async rollEncounterFoes() {
+            this.isRollingFoes = true;
+            try {
+                const res = await fetch('/api/generator/encounter-creatures', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify({
+                        encounter_level: this.encForm.encounter_level || 1.0,
+                        environment: this.encForm.environment || ''
+                    })
+                });
+                const data = await res.json();
+                if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+                    this.encForm.monsters_and_npcs = data.data;
+                    if (!this.encForm.name || this.encForm.name.startsWith('Battle:') || this.encForm.name.startsWith('Ambush') || this.encForm.name.startsWith('New Encounter') || this.encForm.name.trim() === '') {
+                        const foeSummary = data.data.map(f => `${f.count}x ${f.name}`).join(' & ');
+                        this.encForm.name = `Battle: ${foeSummary}`;
+                    }
+                }
+            } catch (e) {
+                console.error('Error rolling encounter foes:', e);
+            } finally {
+                this.isRollingFoes = false;
+            }
+        },
+
+        async rollEncounterSeed() {
+            try {
+                const res = await fetch('/api/generator/encounter', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify({ type: this.encForm.type, encounter_level: this.encForm.encounter_level, environment: this.encForm.environment })
+                });
+                const data = await res.json();
+                if (data.success && data.data) {
+                    this.encForm.name = data.data.name;
+                    this.encForm.environment = data.data.environment;
+                    this.encForm.description = data.data.description;
+                    this.encForm.tactics_and_features = data.data.tactics_and_features;
+                    this.encForm.xp_award = data.data.xp_award;
+                    if (Array.isArray(data.data.monsters_and_npcs) && data.data.monsters_and_npcs.length > 0) {
+                        this.encForm.monsters_and_npcs = data.data.monsters_and_npcs;
+                    }
+                }
+            } catch (e) {
+                console.error('Error rolling encounter seed:', e);
+            }
+        },
+
+        async saveEncounter() {
+            const isEdit = !!this.encForm.id;
+            const url = isEdit 
+                ? `/utilities/campaign/${this.encForm.campaign_id}/encounters/${this.encForm.id}/update`
+                : `/utilities/campaign/${this.encForm.campaign_id}/encounters/create`;
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify(this.encForm)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert(data.message || 'Failed to save encounter.');
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        },
+
+        async deleteEncounter(campId, encId, name) {
+            if (!confirm(`Delete encounter '${name}'?`)) return;
+            try {
+                const res = await fetch(`/utilities/campaign/${campId}/encounters/${encId}/delete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.location.reload();
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        },
+
+        // --- Location CRUD ---
+        openCreateLocationModal(campaignId) {
+            this.locForm = {
+                id: null,
+                campaign_id: campaignId,
+                parent_location_id: null,
+                name: '',
+                location_type: 'settlement',
+                summary: '',
+                description: '',
+                sensory_details: '',
+                notable_npcs: [],
+                inventory_and_services: [],
+                rumors_and_hooks: [],
+                gm_notes: ''
+            };
+            this.showLocationModal = true;
+        },
+
+        openEditLocationModal(loc) {
+            this.locForm = Object.assign({}, loc);
+            if (typeof this.locForm.notable_npcs === 'string') {
+                try { this.locForm.notable_npcs = JSON.parse(this.locForm.notable_npcs); } catch (e) { this.locForm.notable_npcs = []; }
+            }
+            if (typeof this.locForm.inventory_and_services === 'string') {
+                try { this.locForm.inventory_and_services = JSON.parse(this.locForm.inventory_and_services); } catch (e) { this.locForm.inventory_and_services = []; }
+            }
+            if (typeof this.locForm.rumors_and_hooks === 'string') {
+                try { this.locForm.rumors_and_hooks = JSON.parse(this.locForm.rumors_and_hooks); } catch (e) { this.locForm.rumors_and_hooks = []; }
+            }
+            this.showLocationModal = true;
+        },
+
+        async rollTavernIntoModal(campaignId) {
+            this.openCreateLocationModal(campaignId);
+            await this.rollTavernIntoForm();
+        },
+
+        async rollShopIntoModal(campaignId) {
+            this.openCreateLocationModal(campaignId);
+            await this.rollShopIntoForm();
+        },
+
+        async rollTavernIntoForm() {
+            try {
+                const res = await fetch('/api/generator/location', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify({ type: 'tavern' })
+                });
+                const data = await res.json();
+                if (data.success && data.data) {
+                    this.locForm.name = data.data.name;
+                    this.locForm.location_type = 'tavern';
+                    this.locForm.summary = data.data.summary;
+                    this.locForm.description = data.data.description;
+                    this.locForm.sensory_details = data.data.sensory_details;
+                    this.locForm.notable_npcs = data.data.notable_npcs || [];
+                    this.locForm.inventory_and_services = data.data.inventory_and_services || [];
+                    this.locForm.rumors_and_hooks = data.data.rumors_and_hooks || [];
+                    this.locForm.gm_notes = data.data.gm_notes || '';
+                }
+            } catch (e) {
+                console.error('Error rolling tavern:', e);
+            }
+        },
+
+        async rollShopIntoForm() {
+            try {
+                const res = await fetch('/api/generator/location', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify({ type: 'shop', shop_type: 'weapons_armor' })
+                });
+                const data = await res.json();
+                if (data.success && data.data) {
+                    this.locForm.name = data.data.name;
+                    this.locForm.location_type = 'shop';
+                    this.locForm.summary = data.data.summary;
+                    this.locForm.description = data.data.description;
+                    this.locForm.sensory_details = data.data.sensory_details;
+                    this.locForm.notable_npcs = data.data.notable_npcs || [];
+                    this.locForm.inventory_and_services = data.data.inventory_and_services || [];
+                    this.locForm.rumors_and_hooks = data.data.rumors_and_hooks || [];
+                    this.locForm.gm_notes = data.data.gm_notes || '';
+                }
+            } catch (e) {
+                console.error('Error rolling shop:', e);
+            }
+        },
+
+        async saveLocation() {
+            const isEdit = !!this.locForm.id;
+            const url = isEdit
+                ? `/utilities/campaign/${this.locForm.campaign_id}/locations/${this.locForm.id}/update`
+                : `/utilities/campaign/${this.locForm.campaign_id}/locations/create`;
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify(this.locForm)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert(data.message || 'Failed to save location.');
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        },
+
+        async deleteLocation(campId, locId, name) {
+            if (!confirm(`Delete location '${name}'?`)) return;
+            try {
+                const res = await fetch(`/utilities/campaign/${campId}/locations/${locId}/delete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.location.reload();
+                }
+            } catch (e) {
+                console.error(e);
+            }
         }
     };
 }
