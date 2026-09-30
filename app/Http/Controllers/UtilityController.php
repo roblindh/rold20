@@ -927,8 +927,22 @@ class UtilityController extends Controller
                 $targetChar = DB::table('characters')->where('ID', $targetId)->where('Campaign', $campaignId)->first();
                 if (!$targetChar) return back()->with('error', 'Target party member not found.');
 
-                DB::table('characters')->where('ID', $id)->update(['Wealth' => $currentCharWealth - $amount]);
-                DB::table('characters')->where('ID', $targetId)->update(['Wealth' => (int)($targetChar->Wealth ?? 0) + $amount]);
+                $sourceWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($character->Coins ?? null, $currentCharWealth);
+                $deductRes = \App\Services\ItemGeneration\CurrencyService::deductCost($sourceWallet, (float)$amount, true);
+                if (!$deductRes['success']) return back()->with('error', 'Insufficient funds in wallet.');
+
+                $targetWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($targetChar->Coins ?? null, (int)($targetChar->Wealth ?? 0));
+                $gainCoins = \App\Services\ItemGeneration\CurrencyService::spToCoins((float)$amount, true);
+                $newTargetWallet = \App\Services\ItemGeneration\CurrencyService::addCoins($targetWallet, $gainCoins);
+
+                DB::table('characters')->where('ID', $id)->update([
+                    'Wealth' => (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($deductRes['wallet'])),
+                    'Coins' => json_encode($deductRes['wallet']),
+                ]);
+                DB::table('characters')->where('ID', $targetId)->update([
+                    'Wealth' => (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($newTargetWallet)),
+                    'Coins' => json_encode($newTargetWallet),
+                ]);
 
                 return back()->with('status', "Transferred {$amount} sp from {$character->Name} to {$targetChar->Name}.");
             }
@@ -938,7 +952,14 @@ class UtilityController extends Controller
                 if ($amount <= 0) return back()->with('error', 'Invalid amount specified.');
                 if ($amount > $currentCharWealth) return back()->with('error', 'Insufficient funds.');
 
-                DB::table('characters')->where('ID', $id)->update(['Wealth' => $currentCharWealth - $amount]);
+                $sourceWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($character->Coins ?? null, $currentCharWealth);
+                $deductRes = \App\Services\ItemGeneration\CurrencyService::deductCost($sourceWallet, (float)$amount, true);
+                if (!$deductRes['success']) return back()->with('error', 'Insufficient funds in wallet.');
+
+                DB::table('characters')->where('ID', $id)->update([
+                    'Wealth' => (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($deductRes['wallet'])),
+                    'Coins' => json_encode($deductRes['wallet']),
+                ]);
                 DB::table('campaigns')->where('ID', $campaignId)->update([
                     'Vault' => json_encode(['funds' => $vaultFunds + $amount, 'items' => $vaultItems])
                 ]);
@@ -951,7 +972,14 @@ class UtilityController extends Controller
                 if ($amount <= 0) return back()->with('error', 'Invalid amount specified.');
                 if ($amount > $vaultFunds) return back()->with('error', 'Insufficient funds in Campaign Vault.');
 
-                DB::table('characters')->where('ID', $id)->update(['Wealth' => $currentCharWealth + $amount]);
+                $sourceWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($character->Coins ?? null, $currentCharWealth);
+                $gainCoins = \App\Services\ItemGeneration\CurrencyService::spToCoins((float)$amount, true);
+                $newWallet = \App\Services\ItemGeneration\CurrencyService::addCoins($sourceWallet, $gainCoins);
+
+                DB::table('characters')->where('ID', $id)->update([
+                    'Wealth' => (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($newWallet)),
+                    'Coins' => json_encode($newWallet),
+                ]);
                 DB::table('campaigns')->where('ID', $campaignId)->update([
                     'Vault' => json_encode(['funds' => $vaultFunds - $amount, 'items' => $vaultItems])
                 ]);

@@ -360,5 +360,91 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
         DB::table('campaign_encounters')->where('id', $enc['id'])->delete();
         DB::table('campaigns')->where('ID', $campId)->delete();
     }
+
+    public function testPartyTradeSynchronizesCharacterCoinsAndVault(): void
+    {
+        $user = \App\Models\Dynamic\Player::first();
+        \Illuminate\Support\Facades\Auth::login($user);
+
+        $campId = DB::table('campaigns')->insertGetId([
+            'Name' => 'Test Trade Coins Camp ' . uniqid(),
+            'GameMaster' => $user->ID,
+            'Vault' => json_encode(['funds' => 100, 'items' => []]),
+        ]);
+
+        $charId1 = DB::table('characters')->insertGetId([
+            'Name' => 'Trader One ' . uniqid(),
+            'Campaign' => $campId,
+            'Wealth' => 100,
+            'Coins' => json_encode(['cp' => 0, 'sp' => 0, 'gp' => 10, 'pp' => 0]),
+            'Equipment' => json_encode([]),
+        ]);
+
+        $charId2 = DB::table('characters')->insertGetId([
+            'Name' => 'Trader Two ' . uniqid(),
+            'Campaign' => $campId,
+            'Wealth' => 0,
+            'Coins' => json_encode(['cp' => 0, 'sp' => 0, 'gp' => 0, 'pp' => 0]),
+            'Equipment' => json_encode([]),
+        ]);
+
+        // Trade 1: Trader One gives 30 sp to Trader Two
+        $req1 = Request::create("/utilities/charview/{$charId1}/trade", 'POST', [
+            'trade_type' => 'give_money',
+            'target_character_id' => $charId2,
+            'amount' => 30,
+        ]);
+        $this->utilityController->tradePartyAssets($req1, (int)$charId1);
+
+        $c1 = DB::table('characters')->where('ID', $charId1)->first();
+        $c2 = DB::table('characters')->where('ID', $charId2)->first();
+        $this->assertEquals(70, (int)$c1->Wealth);
+        $this->assertEquals(30, (int)$c2->Wealth);
+        $c1Coins = json_decode((string)$c1->Coins, true);
+        $c2Coins = json_decode((string)$c2->Coins, true);
+        $this->assertEquals(70.0, \App\Services\ItemGeneration\CurrencyService::coinsToSp($c1Coins));
+        $this->assertEquals(30.0, \App\Services\ItemGeneration\CurrencyService::coinsToSp($c2Coins));
+
+        // Trade 2: Trader One deposits 20 sp to Vault
+        $req2 = Request::create("/utilities/charview/{$charId1}/trade", 'POST', [
+            'trade_type' => 'give_money_vault',
+            'amount' => 20,
+        ]);
+        $this->utilityController->tradePartyAssets($req2, (int)$charId1);
+
+        $c1 = DB::table('characters')->where('ID', $charId1)->first();
+        $camp = DB::table('campaigns')->where('ID', $campId)->first();
+        $this->assertEquals(50, (int)$c1->Wealth);
+        $vault = json_decode((string)$camp->Vault, true);
+        $this->assertEquals(120, (int)$vault['funds']);
+
+        // Trade 3: Trader Two withdraws 50 sp from Vault
+        $req3 = Request::create("/utilities/charview/{$charId2}/trade", 'POST', [
+            'trade_type' => 'take_money_vault',
+            'amount' => 50,
+        ]);
+        $this->utilityController->tradePartyAssets($req3, (int)$charId2);
+
+        $c2 = DB::table('characters')->where('ID', $charId2)->first();
+        $camp = DB::table('campaigns')->where('ID', $campId)->first();
+        $this->assertEquals(80, (int)$c2->Wealth);
+        $vault = json_decode((string)$camp->Vault, true);
+        $this->assertEquals(70, (int)$vault['funds']);
+
+        // Cleanup
+        DB::table('characters')->whereIn('ID', [$charId1, $charId2])->delete();
+        DB::table('campaigns')->where('ID', $campId)->delete();
+    }
+
+    public function testModalLayoutAvoidsTopClipping(): void
+    {
+        $request = Request::create('/utilities/campaign', 'GET');
+        $view = $this->utilityController->campaign($request);
+        $html = $view->render();
+
+        // Check for max-h-[92vh] and flex items-start sm:items-center to prevent top-clipping
+        $this->assertStringContainsString('max-h-[92vh]', $html);
+        $this->assertStringContainsString('flex items-start sm:items-center', $html);
+    }
 }
 

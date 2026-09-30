@@ -595,10 +595,10 @@
     <!-- Monster Reference Search Modal -->
     <div x-show="showMonsterModal" 
          style="display: none; z-index: 9999;" 
-         class="fixed inset-0 z-[9999] overflow-hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4" 
+         class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/80 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" 
          @keydown.escape.window="showMonsterModal = false">
         <div @click.outside="showMonsterModal = false" 
-             class="bg-white rounded-xl shadow-2xl max-w-5xl w-full border border-slate-300 flex flex-col overflow-hidden relative z-[10000]"
+             class="bg-white rounded-xl shadow-2xl max-w-5xl w-full border border-slate-300 flex flex-col overflow-hidden relative z-[10000] my-auto"
              style="height: 85vh; max-height: 85vh; min-height: 480px; display: flex; flex-direction: column;">
             
             <!-- Modal Header -->
@@ -816,8 +816,8 @@
     </div>
 
     <!-- Custom Combatant Modal -->
-    <div x-show="showCustomModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showCustomModal = false">
-        <div @click.outside="showCustomModal = false" class="bg-white rounded-xl shadow-2xl max-w-md w-full p-5 space-y-4 border border-slate-300 relative z-[10000]">
+    <div x-show="showCustomModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/80 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showCustomModal = false">
+        <div @click.outside="showCustomModal = false" class="bg-white rounded-xl shadow-2xl max-w-md w-full p-5 space-y-4 border border-slate-300 relative z-[10000] max-h-[92vh] flex flex-col my-auto">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h3 class="font-bold text-base text-slate-900 flex items-center gap-2">
                     <span>➕</span> Add Custom Combatant
@@ -914,10 +914,10 @@
     <!-- End Encounter Summary & Resolution Modal -->
     <div x-show="showEndEncounterModal" 
          style="display: none; z-index: 9999;" 
-         class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4" 
+         class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/80 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" 
          @keydown.escape.window="showEndEncounterModal = false">
         <div @click.outside="showEndEncounterModal = false" 
-             class="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-slate-300 flex flex-col overflow-hidden relative z-[10000] max-h-[90vh]">
+             class="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-slate-300 flex flex-col overflow-hidden relative z-[10000] max-h-[92vh] my-auto">
             
             <!-- Modal Header -->
             <div class="px-5 py-3.5 flex items-center justify-between border-b border-emerald-800 rounded-t-xl" 

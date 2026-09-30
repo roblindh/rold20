@@ -40,6 +40,12 @@ class CurrencyService
             }
             $wallet['location'] = $wallet['locations'][0] ?? 1;
             $wallet['container_id'] = !empty($coinsData['container_id']) && $coinsData['container_id'] !== 'none' ? (string)$coinsData['container_id'] : null;
+
+            // If parsed wallet has 0 coins, but wealthSp > 0, fallback to wealthSp
+            if (self::countTotalCoins($wallet) === 0 && $wealthSp !== null && $wealthSp > 0) {
+                $wallet['sp'] = max(0, (int)$wealthSp);
+            }
+
             return $wallet;
         }
 
@@ -62,13 +68,19 @@ class CurrencyService
                 }
                 $wallet['location'] = $wallet['locations'][0] ?? 1;
                 $wallet['container_id'] = !empty($decoded['container_id']) && $decoded['container_id'] !== 'none' ? (string)$decoded['container_id'] : null;
+
+                // If parsed wallet has 0 coins, but wealthSp > 0, fallback to wealthSp
+                if (self::countTotalCoins($wallet) === 0 && $wealthSp !== null && $wealthSp > 0) {
+                    $wallet['sp'] = max(0, (int)$wealthSp);
+                }
+
                 return $wallet;
             }
         }
 
-        // Fallback: If no coins array, convert wealthSp into silver coins
+        // Fallback: If no coins array, set silver pieces directly from wealthSp
         if ($wealthSp !== null && $wealthSp > 0) {
-            $wallet['sp'] = (int)round($wealthSp);
+            $wallet['sp'] = max(0, (int)$wealthSp);
         }
         $wallet['locations'] = [1, 1, 1, 1, 1];
         $wallet['location'] = 1;

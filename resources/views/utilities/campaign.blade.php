@@ -604,9 +604,20 @@
                                             </span>
                                         </div>
 
+                                        @php
+                                            $cWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($char->Coins ?? null, (int)($char->Wealth ?? 0));
+                                            $cFormattedCoins = \App\Services\ItemGeneration\CurrencyService::formatCoins($cWallet);
+                                            $cWealthSp = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($cWallet));
+                                        @endphp
                                         <div class="grid grid-cols-2 gap-2 text-xs text-stone-600">
                                             <div>Player: <strong class="text-stone-800">{{ $char->PlayerName ?? 'Unassigned' }}</strong></div>
-                                            <div>Wealth: <strong class="text-amber-900 font-mono">{{ number_format((int)($char->Wealth ?? 0)) }} sp</strong></div>
+                                            <div>
+                                                <span>Wealth:</span>
+                                                <strong class="text-amber-900 font-mono">{{ number_format($cWealthSp) }} sp</strong>
+                                                @if(!empty($cFormattedCoins) && $cFormattedCoins !== '0 sp')
+                                                    <span class="text-[10px] text-amber-800 font-semibold block font-mono">({{ $cFormattedCoins }})</span>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
 
@@ -754,15 +765,15 @@
     <!-- ========================================================================= -->
 
     <!-- Create Campaign Modal -->
-    <div x-show="showCreateModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showCreateModal = false">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000]" @click.outside="showCreateModal = false">
-            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl" style="background-color: #3a4f63; color: #ffffff;">
+    <div x-show="showCreateModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showCreateModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showCreateModal = false">
+            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
                     <span>🗺️</span> Create New Campaign
                 </div>
                 <button @click="showCreateModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
             </div>
-            <form action="{{ route('utilities.campaign.create', [], false) }}" method="POST" class="p-6 space-y-4">
+            <form action="{{ route('utilities.campaign.create', [], false) }}" method="POST" class="p-6 space-y-4 overflow-y-auto flex-1">
                 @csrf
                 <div>
                     <label for="create_camp_name" class="block text-xs font-bold uppercase text-slate-700 mb-1">Campaign Name <span class="text-red-600">*</span></label>
@@ -807,7 +818,7 @@
                     <textarea id="create_camp_notes" name="Notes" x-model="createCamp.Notes" rows="2" placeholder="Campaign overarching plot twists, private GM secrets..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
                 </div>
 
-                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 shrink-0">
                     <button type="button" @click="showCreateModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
                     <button type="submit" :disabled="!createCamp.Name.trim()" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
                         Create Campaign
@@ -818,15 +829,15 @@
     </div>
 
     <!-- Edit Campaign Modal -->
-    <div x-show="showEditModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showEditModal = false">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000]" @click.outside="showEditModal = false">
-            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl" style="background-color: #3a4f63; color: #ffffff;">
+    <div x-show="showEditModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showEditModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showEditModal = false">
+            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
                     <span>✏️</span> Edit Campaign: <span x-text="editCamp.Name" style="color: #fcd34d; font-weight: 800; margin-left: 4px;"></span>
                 </div>
                 <button @click="showEditModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
             </div>
-            <form :action="'/utilities/campaign/' + editCamp.ID + '/update'" method="POST" class="p-6 space-y-4">
+            <form :action="'/utilities/campaign/' + editCamp.ID + '/update'" method="POST" class="p-6 space-y-4 overflow-y-auto flex-1">
                 @csrf
                 <div>
                     <label for="edit_camp_name" class="block text-xs font-bold uppercase text-slate-700 mb-1">Campaign Name <span class="text-red-600">*</span></label>
@@ -871,7 +882,7 @@
                     <textarea id="edit_camp_notes" name="Notes" x-model="editCamp.Notes" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
                 </div>
 
-                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 shrink-0">
                     <button type="button" @click="showEditModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
                     <button type="submit" :disabled="!editCamp.Name.trim()" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
                         Save Changes
@@ -879,18 +890,16 @@
                 </div>
             </form>
         </div>
-    </div>
-
     <!-- Adventure Modal (Create & Edit) -->
-    <div x-show="showAdventureModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showAdventureModal = false">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000]" @click.outside="showAdventureModal = false">
-            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl" style="background-color: #3a4f63; color: #ffffff;">
+    <div x-show="showAdventureModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showAdventureModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showAdventureModal = false">
+            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
                     <span>📜</span> <span x-text="advForm.id ? 'Edit Adventure' : 'Create New Adventure'"></span>
                 </div>
                 <button @click="showAdventureModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
             </div>
-            <div class="p-6 space-y-4">
+            <div class="p-6 space-y-4 overflow-y-auto flex-1">
                 <div class="flex items-center justify-between">
                     <label class="block text-xs font-bold uppercase text-slate-700">Adventure Title <span class="text-red-600">*</span></label>
                     <button type="button" @click="rollAdventureSeed()" class="text-xs text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
@@ -929,7 +938,7 @@
                     <textarea x-model="advForm.gm_notes" rows="2" placeholder="Private clues, puzzle solutions, hidden betrayals..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500 focus:outline-none"></textarea>
                 </div>
 
-                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 shrink-0">
                     <button type="button" @click="showAdventureModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
                     <button type="button" @click="saveAdventure()" :disabled="!advForm.name.trim()" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
                         Save Adventure
@@ -940,15 +949,15 @@
     </div>
 
     <!-- Encounter Modal (Create & Edit) -->
-    <div x-show="showEncounterModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showEncounterModal = false">
-        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden relative z-[10000]" @click.outside="showEncounterModal = false">
-            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl" style="background-color: #3a4f63; color: #ffffff;">
+    <div x-show="showEncounterModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showEncounterModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showEncounterModal = false">
+            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
                     <span>⚔️</span> <span x-text="encForm.id ? 'Edit Encounter' : 'Create New Encounter'"></span>
                 </div>
                 <button @click="showEncounterModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
             </div>
-            <div class="p-6 space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="p-6 space-y-4 overflow-y-auto flex-1">
                 <div class="flex items-center justify-between">
                     <label class="block text-xs font-bold uppercase text-slate-700">Encounter Name <span class="text-red-600">*</span></label>
                     <button type="button" @click="rollEncounterSeed()" class="text-xs text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
@@ -1163,7 +1172,7 @@
                     <textarea x-model="encForm.gm_notes" rows="2" placeholder="Trap DCs, morale break points, hidden reinforcements..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500"></textarea>
                 </div>
 
-                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 shrink-0">
                     <button type="button" @click="showEncounterModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
                     <button type="button" @click="saveEncounter()" :disabled="!encForm.name || !encForm.name.trim()" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
                         Save Encounter
@@ -1174,15 +1183,15 @@
     </div>
 
     <!-- Location Modal (Create & Edit) -->
-    <div x-show="showLocationModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showLocationModal = false">
-        <div class="bg-white rounded-xl shadow-2xl max-w-xl w-full border border-slate-200 overflow-hidden relative z-[10000]" @click.outside="showLocationModal = false">
-            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl" style="background-color: #3a4f63; color: #ffffff;">
+    <div x-show="showLocationModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showLocationModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showLocationModal = false">
+            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
                     <span>📍</span> <span x-text="locForm.id ? 'Edit Location' : 'Create Location'"></span>
                 </div>
                 <button @click="showLocationModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
             </div>
-            <div class="p-6 space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="p-6 space-y-4 overflow-y-auto flex-1">
                 <div class="flex items-center justify-between">
                     <label class="block text-xs font-bold uppercase text-slate-700">Location Name <span class="text-red-600">*</span></label>
                     <div class="flex items-center gap-2">
@@ -1242,7 +1251,7 @@
                     <textarea x-model="locForm.gm_notes" rows="2" placeholder="Hidden trapdoors, corrupt informants, local secrets..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500"></textarea>
                 </div>
 
-                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 shrink-0">
                     <button type="button" @click="showLocationModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
                     <button type="button" @click="saveLocation()" :disabled="!locForm.name.trim()" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
                         Save Location
@@ -1253,15 +1262,15 @@
     </div>
 
     <!-- Add Existing PC Modal -->
-    <div x-show="showAddPcModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showAddPcModal = false">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000]" @click.outside="showAddPcModal = false">
-            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl" style="background-color: #3a4f63; color: #ffffff;">
+    <div x-show="showAddPcModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showAddPcModal = false">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showAddPcModal = false">
+            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
                     <span>📥</span> Add Existing PC to: <span x-text="addPcCamp.Name" style="color: #fcd34d; font-weight: 800; margin-left: 4px;"></span>
                 </div>
                 <button @click="showAddPcModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
             </div>
-            <form :action="'/utilities/campaign/' + addPcCamp.ID + '/add-character'" method="POST" class="p-6 space-y-4">
+            <form :action="'/utilities/campaign/' + addPcCamp.ID + '/add-character'" method="POST" class="p-6 space-y-4 overflow-y-auto flex-1">
                 @csrf
                 <div>
                     <label for="select_unassigned_char" class="block text-xs font-bold uppercase text-slate-700 mb-1">Select Unassigned Character</label>
@@ -1279,7 +1288,7 @@
                     @endif
                 </div>
 
-                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 shrink-0">
                     <button type="button" @click="showAddPcModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
                     @if($unassignedCharacters->isNotEmpty())
                         <button type="submit" :disabled="!selectedCharId" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
@@ -1292,8 +1301,8 @@
     </div>
 
     <!-- Restored Award XP & Treasure Modal -->
-    <div x-show="showAwardModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4" @keydown.escape.window="showAwardModal = false">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full border border-slate-300 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col" @click.outside="showAwardModal = false">
+    <div x-show="showAwardModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showAwardModal = false">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full border border-slate-300 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showAwardModal = false">
             <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-2xl shrink-0" style="background-color: #2b3d52; color: #ffffff;">
                 <div class="flex items-center gap-2">
                     <span class="text-2xl">🎁</span>
@@ -1541,8 +1550,23 @@ function campaignAdmin() {
             if (urlParams.get('open_award') === '1' || urlParams.get('grant') === '1') {
                 const xpParam = urlParams.get('xp') ? parseInt(urlParams.get('xp'), 10) : 0;
                 const spParam = urlParams.get('sp') ? parseInt(urlParams.get('sp'), 10) : 0;
+                const encIdParam = urlParams.get('encounter_id') ? parseInt(urlParams.get('encounter_id'), 10) : null;
+                let encItems = [];
+                if (encIdParam) {
+                    const allEncs = @json($campEncounters ?? []);
+                    const foundEnc = allEncs.find(e => e.id == encIdParam);
+                    if (foundEnc && foundEnc.treasure_rewards) {
+                        let tr = foundEnc.treasure_rewards;
+                        if (typeof tr === 'string') {
+                            try { tr = JSON.parse(tr); } catch(e) {}
+                        }
+                        if (tr && Array.isArray(tr.items)) {
+                            encItems = tr.items;
+                        }
+                    }
+                }
                 @if(isset($camp) && $camp)
-                    this.openAwardModal(@json($camp), @json($campChars->values()), { total_xp: xpParam, total_silver: spParam });
+                    this.openAwardModal(@json($camp), @json($campChars->values()), { total_xp: xpParam, total_silver: spParam, items: encItems });
                 @endif
             }
         },
