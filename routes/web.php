@@ -153,6 +153,7 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/treasuregen/distribute', [UtilityController::class, 'distributeHoardLoot']);
 
     Route::get('/combat-tracker', [UtilityController::class, 'combatTracker'])->name('combattracker');
+    Route::get('/combattracker', [UtilityController::class, 'combatTracker']);
     Route::get('/combat', [UtilityController::class, 'combatTracker']);
 
     Route::get('/campaign', [UtilityController::class, 'campaign'])->name('campaign');

@@ -62,11 +62,18 @@ class ProceduralGeneratorService
     }
 
     /**
-     * Generate Balanced Encounter Creatures for a given Encounter Level (EL)
+     * Generate Balanced Encounter Creatures for a given Encounter Level (EL) or range
      */
-    public static function encounterCreatures(float $el = 1.0, ?string $environment = null, ?string $creatureType = null): array
+    public static function encounterCreatures($minEl = 1.0, $maxEl = null, ?string $environment = null, ?string $creatureType = null): array
     {
-        return AdventureGenerator::generateEncounterCreatures($el, $environment, $creatureType);
+        if (is_string($maxEl) && $environment === null) {
+            $environment = $maxEl;
+            $maxEl = null;
+        }
+        $min = is_numeric($minEl) ? (float)$minEl : 1.0;
+        $max = is_numeric($maxEl) ? (float)$maxEl : null;
+        $result = AdventureGenerator::generateEncounterCreatures($min, $max, $environment, $creatureType);
+        return $result['monsters_and_npcs'] ?? $result['foes'] ?? [];
     }
 
     /**

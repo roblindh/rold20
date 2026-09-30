@@ -31,7 +31,7 @@
         flex: 0 0 32px !important;
     }
 </style>
-<div class="space-y-6" x-data="campaignAdmin()">
+<div class="space-y-6" x-data="campaignAdmin()" x-init="initApp()">
     <!-- Header with Campaign Selector Dropdown & Controls -->
     <div class="border-b border-amber-900/20 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -90,14 +90,14 @@
             @php
                 $camp = $activeCampaign;
                 $isMyCamp = auth()->check() && ($camp->GameMaster === auth()->id() || auth()->user()->isGM());
-                $campChars = $characters->where('Campaign', $camp->ID);
+                $campChars = $characters->where('Campaign', $camp->ID)->values();
                 if ($campChars->isEmpty()) {
-                    $campChars = $characters->where('CampaignID', $camp->ID);
+                    $campChars = $characters->where('CampaignID', $camp->ID)->values();
                 }
-                $campNpcs = isset($npcs) ? $npcs->where('Campaign', $camp->ID) : collect();
-                $campAdventures = $adventures->where('campaign_id', $camp->ID);
-                $campEncounters = $encounters->where('campaign_id', $camp->ID);
-                $campLocations = $locations->where('campaign_id', $camp->ID);
+                $campNpcs = (isset($npcs) ? $npcs->where('Campaign', $camp->ID) : collect())->values();
+                $campAdventures = $adventures->where('campaign_id', $camp->ID)->values();
+                $campEncounters = $encounters->where('campaign_id', $camp->ID)->values();
+                $campLocations = $locations->where('campaign_id', $camp->ID)->values();
                 
                 $vaultItems = [];
                 $vaultFunds = 0;
@@ -112,7 +112,7 @@
                     }
                 }
             @endphp
-            <div class="parchment-card shadow-lg rounded-2xl overflow-hidden border border-amber-900/20" x-data="{ activeTab: 'adventures' }">
+            <div class="parchment-card shadow-lg rounded-2xl overflow-hidden border border-amber-900/20" x-data="{ activeTab: '{{ request('tab', 'adventures') }}' }">
                 <!-- Card Top Banner -->
                 <div class="px-6 py-4 border-b border-amber-900/20 flex flex-col md:flex-row md:items-center justify-between gap-3 bg-amber-950/5">
                     <div>
@@ -214,7 +214,7 @@
                         <div class="space-y-4">
                             @forelse($campAdventures as $adv)
                                 @php
-                                    $advEncounters = $campEncounters->where('adventure_id', $adv->id);
+                                    $advEncounters = $campEncounters->where('adventure_id', $adv->id)->values();
                                 @endphp
                                 <div class="bg-amber-50/60 border border-amber-900/20 rounded-xl overflow-hidden shadow-xs" x-data="{ expanded: true }">
                                     <!-- Adventure Header -->
@@ -273,6 +273,13 @@
                                                     <div class="space-y-1 flex-1">
                                                         <div class="flex items-center gap-2 flex-wrap">
                                                             <span class="font-bold text-xs text-stone-900 font-serif">{{ $enc->name }}</span>
+                                                            <span class="text-[10px] font-bold px-1.5 py-0.2 rounded
+                                                                {{ ($enc->status ?? 'planned') === 'completed' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : '' }}
+                                                                {{ ($enc->status ?? 'planned') === 'in_progress' ? 'bg-amber-100 text-amber-900 border border-amber-300' : '' }}
+                                                                {{ ($enc->status ?? 'planned') === 'planned' ? 'bg-sky-100 text-sky-800 border border-sky-300' : '' }}
+                                                                {{ ($enc->status ?? 'planned') === 'bypassed' ? 'bg-stone-200 text-stone-700 border border-stone-300' : '' }}">
+                                                                {{ ($enc->status ?? 'planned') === 'completed' ? '✓ Completed' : ucfirst(str_replace('_', ' ', $enc->status ?? 'planned')) }}
+                                                            </span>
                                                             <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 border border-amber-300">
                                                                 EL {{ $enc->encounter_level }}
                                                             </span>
@@ -294,6 +301,12 @@
                                                                         {{ $foe['count'] ?? 1 }}x {{ $foe['name'] ?? 'Creature' }} (Lvl {{ $foe['level'] ?? 1 }}, {{ $foe['hp'] ?? 10 }} HP)
                                                                     </span>
                                                                 @endforeach
+                                                            </div>
+                                                        @endif
+                                                        @if(!empty($enc->resolution_notes))
+                                                            <div class="mt-1 p-2 bg-emerald-50/80 border border-emerald-200 rounded text-xs text-emerald-950">
+                                                                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-800">📜 Resolution:</span>
+                                                                <p class="mt-0.5 whitespace-pre-line text-stone-700">{{ $enc->resolution_notes }}</p>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -335,7 +348,7 @@
 
                             <!-- Standalone / Unassigned Encounters -->
                             @php
-                                $standaloneEncounters = $campEncounters->whereNull('adventure_id');
+                                $standaloneEncounters = $campEncounters->whereNull('adventure_id')->values();
                             @endphp
                             @if($standaloneEncounters->isNotEmpty())
                                 <div class="mt-4 pt-4 border-t border-amber-900/20 space-y-2">
@@ -344,24 +357,53 @@
                                     </h4>
                                     <div class="space-y-2">
                                         @foreach($standaloneEncounters as $enc)
-                                            <div class="p-3 bg-white border border-stone-200 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+                                            @php
+                                                $encFoes = !empty($enc->monsters_and_npcs) ? (is_string($enc->monsters_and_npcs) ? json_decode($enc->monsters_and_npcs, true) : $enc->monsters_and_npcs) : [];
+                                            @endphp
+                                            <div class="p-3 bg-white border border-stone-200 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs hover:border-amber-400 transition">
                                                 <div class="space-y-1 flex-1">
                                                     <div class="flex items-center gap-2 flex-wrap">
                                                         <span class="font-bold text-xs text-stone-900 font-serif">{{ $enc->name }}</span>
+                                                        <span class="text-[10px] font-bold px-1.5 py-0.2 rounded
+                                                            {{ ($enc->status ?? 'planned') === 'completed' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : '' }}
+                                                            {{ ($enc->status ?? 'planned') === 'in_progress' ? 'bg-amber-100 text-amber-900 border border-amber-300' : '' }}
+                                                            {{ ($enc->status ?? 'planned') === 'planned' ? 'bg-sky-100 text-sky-800 border border-sky-300' : '' }}
+                                                            {{ ($enc->status ?? 'planned') === 'bypassed' ? 'bg-stone-200 text-stone-700 border border-stone-300' : '' }}">
+                                                            {{ ($enc->status ?? 'planned') === 'completed' ? '✓ Completed' : ucfirst(str_replace('_', ' ', $enc->status ?? 'planned')) }}
+                                                        </span>
                                                         <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 border border-amber-300">
                                                             EL {{ $enc->encounter_level }}
                                                         </span>
                                                         <span class="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
                                                             {{ number_format((int)$enc->xp_award) }} XP
                                                         </span>
+                                                        <span class="text-[10px] uppercase font-bold text-stone-500">
+                                                            {{ $enc->type }}
+                                                        </span>
                                                     </div>
                                                     @if(!empty($enc->description))
                                                         <p class="text-xs text-stone-600 line-clamp-1">{{ $enc->description }}</p>
                                                     @endif
+                                                    @if(!empty($encFoes))
+                                                        <div class="flex items-center gap-1.5 text-[11px] text-stone-600 font-mono flex-wrap pt-0.5">
+                                                            <span class="text-stone-400">Foes:</span>
+                                                            @foreach($encFoes as $foe)
+                                                                <span class="bg-stone-100 px-1.5 py-0.2 rounded border border-stone-200 text-[10px]">
+                                                                    {{ $foe['count'] ?? 1 }}x {{ $foe['name'] ?? 'Creature' }} (Lvl {{ $foe['level'] ?? 1 }}, {{ $foe['hp'] ?? 10 }} HP)
+                                                                </span>
+                                                            @endforeach
+                                                        </div>
+                                                    @endif
+                                                    @if(!empty($enc->resolution_notes))
+                                                        <div class="mt-1 p-2 bg-emerald-50/80 border border-emerald-200 rounded text-xs text-emerald-950">
+                                                            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-800">📜 Resolution:</span>
+                                                            <p class="mt-0.5 whitespace-pre-line text-stone-700">{{ $enc->resolution_notes }}</p>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                                 <div class="flex items-center gap-2 shrink-0">
                                                     <a href="{{ route('utilities.combattracker', ['campaign' => $camp->ID, 'encounter' => $enc->id], false) }}"
-                                                       class="btn-rol-primary text-xs py-1 px-2.5 flex items-center gap-1 font-bold">
+                                                       class="btn-rol-primary text-xs py-1 px-2.5 flex items-center gap-1 font-bold shadow-xs">
                                                         <span>⚔️</span> Run Encounter
                                                     </a>
                                                     @if($isMyCamp)
@@ -593,7 +635,7 @@
                             </div>
                             @if($isMyCamp)
                                 <div class="flex items-center gap-2">
-                                    <button type="button" @click="openAwardModal({{ json_encode($camp) }}, {{ json_encode($campChars) }})" class="btn-rol-primary text-xs py-1.5 px-3.5 shadow-sm">
+                                    <button type="button" @click="openAwardModal({{ json_encode($camp) }}, {{ json_encode($campChars->values()) }})" class="btn-rol-primary text-xs py-1.5 px-3.5 shadow-sm">
                                         <span>🎁</span> Grant XP &amp; Treasure
                                     </button>
                                 </div>
@@ -899,7 +941,7 @@
                 </div>
                 <input type="text" x-model="encForm.name" placeholder="e.g. Ambush at the Broken Bridge" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Type</label>
                         <select x-model="encForm.type" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black">
@@ -917,6 +959,15 @@
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 mb-1">XP Award</label>
                         <input type="number" x-model.number="encForm.xp_award" min="0" step="50" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Status</label>
+                        <select x-model="encForm.status" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black">
+                            <option value="planned">Sky / Planned</option>
+                            <option value="in_progress">Amber / In Progress</option>
+                            <option value="completed">Emerald / Completed</option>
+                            <option value="bypassed">Slate / Bypassed</option>
+                        </select>
                     </div>
                 </div>
 
@@ -942,12 +993,20 @@
                             <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
                                 <span>👹</span> Foes &amp; Monsters List
                             </span>
-                            <span class="text-[10px] text-slate-500">Pick standard monsters from compendium or enter custom foes.</span>
+                            <span class="text-[10px] text-slate-500">Pick standard monsters from compendium or procedurally generate balanced encounters.</span>
                         </div>
                         <div class="flex items-center gap-2 flex-wrap">
+                            <!-- Min / Max EL Range -->
+                            <div class="flex items-center gap-1 bg-white border border-indigo-200 rounded-lg px-2 py-0.5 shadow-2xs text-[11px]">
+                                <span class="font-bold text-indigo-900">EL:</span>
+                                <input type="number" x-model.number="foeMinEl" min="1" max="40" placeholder="Min" class="w-9 text-center font-mono font-bold text-xs text-slate-900 border-0 focus:outline-none" title="Minimum Encounter Level">
+                                <span class="text-slate-400">–</span>
+                                <input type="number" x-model.number="foeMaxEl" min="1" max="40" placeholder="Max" class="w-9 text-center font-mono font-bold text-xs text-slate-900 border-0 focus:outline-none" title="Maximum Encounter Level">
+                            </div>
+
                             <button type="button" @click="rollEncounterFoes()" :disabled="isRollingFoes"
                                     class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-lg border border-indigo-200 flex items-center gap-1 cursor-pointer transition">
-                                <span x-show="!isRollingFoes">⚡ Generate Foes (EL <span x-text="encForm.encounter_level"></span>)</span>
+                                <span x-show="!isRollingFoes">⚡ Generate Foes</span>
                                 <span x-show="isRollingFoes">⌛ Generating...</span>
                             </button>
                             <button type="button" @click="addMonsterToEncounter()" 
@@ -1009,13 +1068,18 @@
                 </div>
 
                 <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Resolution Notes (Outcome &amp; Consequences)</label>
+                    <textarea x-model="encForm.resolution_notes" rows="2" placeholder="How was the encounter resolved? (e.g. Parleyed with leader, cleared dungeon, spared hostages)..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-emerald-500"></textarea>
+                </div>
+
+                <div>
                     <label class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Secret Notes</label>
                     <textarea x-model="encForm.gm_notes" rows="2" placeholder="Trap DCs, morale break points, hidden reinforcements..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500"></textarea>
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
                     <button type="button" @click="showEncounterModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Cancel</button>
-                    <button type="button" @click="saveEncounter()" :disabled="!encForm.name.trim()" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
+                    <button type="button" @click="saveEncounter()" :disabled="!encForm.name || !encForm.name.trim()" class="btn-rol-primary text-xs sm:text-sm px-5 py-2 rounded-lg shadow-md">
                         Save Encounter
                     </button>
                 </div>
@@ -1141,32 +1205,196 @@
         </div>
     </div>
 
-    <!-- Award XP & Treasure Modal -->
-    <div x-show="showAwardModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showAwardModal = false">
-        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col" @click.outside="showAwardModal = false">
-            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
-                <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
-                    <span>🎁</span>
-                    <span>Grant XP &amp; Treasure — <strong x-text="awardCamp.Name"></strong></span>
+    <!-- Restored Award XP & Treasure Modal -->
+    <div x-show="showAwardModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4" @keydown.escape.window="showAwardModal = false">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full border border-slate-300 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col" @click.outside="showAwardModal = false">
+            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-2xl shrink-0" style="background-color: #2b3d52; color: #ffffff;">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🎁</span>
+                    <div>
+                        <h3 class="font-bold text-lg text-white font-serif leading-tight">
+                            Grant XP &amp; Treasure — <span x-text="awardCamp.Name"></span>
+                        </h3>
+                        <p class="text-xs text-slate-300">Distribute experience points, monetary wealth, and magic loot directly to active party members or the shared vault.</p>
+                    </div>
                 </div>
-                <button @click="showAwardModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
+                <button @click="showAwardModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-2xl leading-none cursor-pointer">&times;</button>
             </div>
 
-            <form :action="'{{ route('utilities.campaign.award', ['id' => '__ID__'], false) }}'.replace('__ID__', awardCamp.ID)" method="POST" class="p-6 overflow-y-auto space-y-5 flex-1">
+            <form :action="'{{ route('utilities.campaign.award', ['id' => '__ID__'], false) }}'.replace('__ID__', awardCamp.ID)" method="POST" class="p-6 overflow-y-auto space-y-6 flex-1 text-slate-800">
                 @csrf
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-                    <label class="block text-xs font-bold uppercase text-slate-700">Total Party XP Award</label>
-                    <input type="number" name="total_xp" x-model.number="awardData.total_xp" min="0" step="50" placeholder="e.g. 1200" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black font-mono font-bold focus:ring-2 focus:ring-emerald-500">
+                
+                <!-- 1. Experience Points (XP) Section -->
+                <div class="bg-amber-50/50 border border-amber-900/20 rounded-xl p-4 space-y-4">
+                    <div class="flex items-center justify-between border-b border-amber-900/15 pb-2">
+                        <div class="font-bold text-sm text-amber-950 flex items-center gap-1.5 font-display uppercase tracking-wider">
+                            <span>✨</span> 1. Experience Points (XP)
+                        </div>
+                        <span class="text-xs text-amber-900/70 font-mono font-bold" x-text="awardParty.length + ' Active Adventurers'"></span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Total Party XP Award</label>
+                            <input type="number" name="total_xp" x-model.number="awardData.total_xp" min="0" step="50" placeholder="e.g. 1200"
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 font-mono font-bold focus:ring-2 focus:ring-emerald-500 bg-white">
+                        </div>
+                        <div class="flex items-center gap-3 pt-4 sm:pt-5">
+                            <label class="inline-flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
+                                <input type="checkbox" name="divide_xp_equally" value="1" x-model="awardData.divide_xp_equally" class="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                                <span>Divide XP equally among party members</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Individual Character Bonus / Override XP Table -->
+                    <div class="space-y-2">
+                        <div class="text-xs font-bold text-slate-700 uppercase tracking-wider">Individual Character Breakdown &amp; Bonus XP:</div>
+                        <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                            <template x-for="pc in awardParty" :key="pc.ID">
+                                <div class="p-2 bg-white rounded-lg border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-2 text-xs">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-slate-900 font-serif" x-text="pc.Name"></span>
+                                        <span class="text-[10px] text-slate-500" x-text="'Lvl ' + pc.Level + ' • Current ' + Number(pc.ExperiencePts || 0).toLocaleString() + ' XP'"></span>
+                                    </div>
+                                    <div class="flex items-center gap-3 font-mono">
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[10px] text-slate-500">Bonus/Adj:</span>
+                                            <input type="number" :name="'char_bonus_xp[' + pc.ID + ']'" x-model.number="awardData.char_bonus_xp[pc.ID]" placeholder="0"
+                                                   class="w-20 px-2 py-0.5 border border-slate-300 rounded text-center text-xs font-bold focus:outline-none focus:ring-1 focus:ring-emerald-500">
+                                        </div>
+                                        <div class="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                            +<span x-text="getCalculatedCharXp(pc.ID).toLocaleString()"></span> XP
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                            <div x-show="awardParty.length === 0" class="p-3 text-xs text-stone-500 italic bg-white/70 rounded-lg text-center border border-dashed border-slate-300">
+                                No player characters assigned to this campaign yet.
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-                    <label class="block text-xs font-bold uppercase text-slate-700">Total Monetary Treasure (sp)</label>
-                    <input type="number" name="total_sp" x-model.number="awardData.total_sp" min="0" step="10" placeholder="e.g. 500" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black font-mono font-bold focus:ring-2 focus:ring-amber-500">
+                <!-- 2. Monetary Treasure (Silver Pieces / sp) Section -->
+                <div class="bg-amber-50/50 border border-amber-900/20 rounded-xl p-4 space-y-4">
+                    <div class="flex items-center justify-between border-b border-amber-900/15 pb-2">
+                        <div class="font-bold text-sm text-amber-950 flex items-center gap-1.5 font-display uppercase tracking-wider">
+                            <span>🪙</span> 2. Monetary Treasure (Silver Pieces &bull; sp)
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Total Silver Awarded</label>
+                            <input type="number" name="total_silver" x-model.number="awardData.total_silver" min="0" step="10" placeholder="e.g. 500"
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 font-mono font-bold focus:ring-2 focus:ring-amber-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Direct to Shared Vault (sp)</label>
+                            <input type="number" name="vault_silver" x-model.number="awardData.vault_silver" min="0" step="10" placeholder="0"
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 font-mono font-bold focus:ring-2 focus:ring-amber-500 bg-white">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold uppercase text-slate-700">Distribution Mode for Party Silver</label>
+                        <div class="flex flex-wrap items-center gap-4 text-xs font-medium">
+                            <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                                <input type="radio" name="treasure_mode" value="equal" x-model="awardData.treasure_mode" class="text-amber-600 focus:ring-amber-500">
+                                <span>⚖️ Split Equally Across Party (<span x-text="awardParty.length > 0 ? Math.floor((awardData.total_silver || 0) / awardParty.length) : 0"></span> sp each)</span>
+                            </label>
+                            <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                                <input type="radio" name="treasure_mode" value="custom" x-model="awardData.treasure_mode" class="text-amber-600 focus:ring-amber-500">
+                                <span>✍️ Custom Split Per Character</span>
+                            </label>
+                            <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                                <input type="radio" name="treasure_mode" value="vault" x-model="awardData.treasure_mode" class="text-amber-600 focus:ring-amber-500">
+                                <span>💎 Deposit 100% to Vault</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Custom Silver Per Character Rows -->
+                    <div x-show="awardData.treasure_mode === 'custom'" class="space-y-1.5 pt-1">
+                        <template x-for="pc in awardParty" :key="pc.ID">
+                            <div class="p-2 bg-white rounded-lg border border-slate-200 shadow-2xs flex items-center justify-between gap-2 text-xs">
+                                <span class="font-bold text-slate-900 font-serif" x-text="pc.Name"></span>
+                                <div class="flex items-center gap-1 font-mono">
+                                    <input type="number" :name="'char_silver[' + pc.ID + ']'" x-model.number="awardData.char_silver[pc.ID]" placeholder="0" min="0"
+                                           class="w-24 px-2 py-0.5 border border-slate-300 rounded text-center text-xs font-bold focus:outline-none focus:ring-1 focus:ring-amber-500">
+                                    <span class="text-slate-500 font-semibold text-[11px]">sp</span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
 
-                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
-                    <button type="button" @click="showAwardModal = false" class="btn-rol-secondary text-xs py-1.5 px-4">Cancel</button>
-                    <button type="submit" class="btn-rol-primary text-xs sm:text-sm px-5 py-2">Grant Rewards</button>
+                <!-- 3. Magic Items & Loot Recovery Section -->
+                <div class="bg-amber-50/50 border border-amber-900/20 rounded-xl p-4 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-900/15 pb-2">
+                        <div>
+                            <div class="font-bold text-sm text-amber-950 flex items-center gap-1.5 font-display uppercase tracking-wider">
+                                <span>💎</span> 3. Magic Items &amp; Recovered Equipment
+                            </div>
+                            <span class="text-[10px] text-stone-600">Assign specific items to individual player characters or deposit directly into the Campaign Vault.</span>
+                        </div>
+                        <button type="button" @click="addItemToAward()" class="btn-rol-secondary text-xs py-1 px-2.5 font-bold cursor-pointer">
+                            <span>➕</span> Add Item
+                        </button>
+                    </div>
+
+                    <div class="space-y-2">
+                        <template x-for="(it, iIdx) in awardData.items" :key="iIdx">
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 shadow-2xs space-y-2">
+                                <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                                    <div class="flex-1">
+                                        <input type="text" :name="'items[' + iIdx + '][name]'" x-model="it.name" placeholder="Item Name (e.g. +1 Longsword, Potion of Healing)"
+                                               class="w-full px-2.5 py-1 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-amber-500">
+                                    </div>
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <div class="flex items-center gap-1 font-mono text-xs">
+                                            <span class="text-[10px] text-slate-500">Val:</span>
+                                            <input type="number" :name="'items[' + iIdx + '][value]'" x-model.number="it.value" placeholder="0" min="0"
+                                                   class="w-16 px-1 py-1 border border-slate-300 rounded text-center text-xs">
+                                            <span class="text-[10px] text-slate-500">sp</span>
+                                        </div>
+                                        <div class="flex items-center gap-1 font-mono text-xs">
+                                            <span class="text-[10px] text-slate-500">Wt:</span>
+                                            <input type="number" :name="'items[' + iIdx + '][weight]'" x-model.number="it.weight" step="0.1" placeholder="1" min="0"
+                                                   class="w-14 px-1 py-1 border border-slate-300 rounded text-center text-xs">
+                                            <span class="text-[10px] text-slate-500">lbs</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <select :name="'items[' + iIdx + '][assign_to]'" x-model="it.assign_to"
+                                                    class="bg-amber-50 border border-amber-900/30 rounded px-2 py-1 text-xs font-semibold text-slate-900 focus:outline-none">
+                                                <option value="vault">💎 Campaign Vault</option>
+                                                <optgroup label="Assign to Adventurer:">
+                                                    <template x-for="pc in awardParty" :key="pc.ID">
+                                                        <option :value="pc.ID" x-text="'🧙 ' + pc.Name"></option>
+                                                    </template>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                        <button type="button" @click="removeItemFromAward(iIdx)" class="text-rose-600 hover:text-rose-800 p-1 font-bold text-xs cursor-pointer" title="Remove item">
+                                            ✕
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <div x-show="awardData.items.length === 0" class="p-3 text-xs text-stone-500 italic bg-white/60 rounded-lg text-center border border-dashed border-slate-300">
+                            No special items added. Click "➕ Add Item" to distribute magic items, potions, or treasure to characters or the vault.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
+                    <button type="button" @click="showAwardModal = false" class="btn-rol-secondary text-xs py-2 px-4 cursor-pointer">Cancel</button>
+                    <button type="submit" class="btn-rol-primary text-xs sm:text-sm px-6 py-2 rounded-xl shadow-md font-bold">
+                        🎁 Grant Rewards to Party
+                    </button>
                 </div>
             </form>
         </div>
@@ -1194,6 +1422,8 @@ function campaignAdmin() {
         isRollingFoes: false,
 
         creaturesList: @json($creatureCatalog),
+        foeMinEl: 1,
+        foeMaxEl: 1,
 
         createCamp: {
             Name: '',
@@ -1210,7 +1440,27 @@ function campaignAdmin() {
         activeNpc: null,
         awardCamp: { ID: 0, Name: '' },
         awardParty: [],
-        awardData: { total_xp: 0, total_sp: 0 },
+        awardData: {
+            total_xp: 0,
+            divide_xp_equally: true,
+            char_bonus_xp: {},
+            total_silver: 0,
+            vault_silver: 0,
+            treasure_mode: 'equal',
+            char_silver: {},
+            items: []
+        },
+
+        initApp() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('open_award') === '1' || urlParams.get('grant') === '1') {
+                const xpParam = urlParams.get('xp') ? parseInt(urlParams.get('xp'), 10) : 0;
+                const spParam = urlParams.get('sp') ? parseInt(urlParams.get('sp'), 10) : 0;
+                @if(isset($camp) && $camp)
+                    this.openAwardModal(@json($camp), @json($campChars->values()), { total_xp: xpParam, total_silver: spParam });
+                @endif
+            }
+        },
 
         // Adventure Form
         advForm: {
@@ -1241,6 +1491,7 @@ function campaignAdmin() {
             traps_and_hazards: [],
             treasure_rewards: [],
             status: 'planned',
+            resolution_notes: '',
             gm_notes: ''
         },
 
@@ -1280,11 +1531,82 @@ function campaignAdmin() {
             this.showAddPcModal = true;
         },
 
-        openAwardModal(camp, party) {
-            this.awardCamp = camp;
-            this.awardParty = party || [];
-            this.awardData = { total_xp: 0, total_sp: 0 };
+        openAwardModal(camp, party, prefill = {}) {
+            this.awardCamp = camp || { ID: 0, Name: '' };
+            if (!party) {
+                this.awardParty = [];
+            } else if (Array.isArray(party)) {
+                this.awardParty = party;
+            } else if (typeof party === 'object') {
+                this.awardParty = Object.values(party);
+            } else {
+                this.awardParty = [];
+            }
+            
+            const bonusXp = {};
+            const charSilver = {};
+            this.awardParty.forEach(pc => {
+                if (pc && pc.ID) {
+                    bonusXp[pc.ID] = 0;
+                    charSilver[pc.ID] = 0;
+                }
+            });
+
+            this.awardData = {
+                total_xp: prefill.total_xp !== undefined ? Number(prefill.total_xp) : 0,
+                divide_xp_equally: prefill.divide_xp_equally !== undefined ? !!prefill.divide_xp_equally : true,
+                char_bonus_xp: bonusXp,
+                total_silver: prefill.total_silver !== undefined ? Number(prefill.total_silver) : (prefill.total_sp !== undefined ? Number(prefill.total_sp) : 0),
+                vault_silver: prefill.vault_silver !== undefined ? Number(prefill.vault_silver) : 0,
+                treasure_mode: prefill.treasure_mode || 'equal',
+                char_silver: charSilver,
+                items: Array.isArray(prefill.items) ? prefill.items.map(it => ({
+                    name: it.name || '',
+                    value: it.value || 0,
+                    weight: it.weight || 1,
+                    assign_to: it.assign_to || 'vault'
+                })) : []
+            };
             this.showAwardModal = true;
+        },
+
+        addItemToAward() {
+            if (!Array.isArray(this.awardData.items)) {
+                this.awardData.items = [];
+            }
+            this.awardData.items.push({
+                name: '',
+                value: 0,
+                weight: 1,
+                assign_to: 'vault'
+            });
+        },
+
+        removeItemFromAward(idx) {
+            if (Array.isArray(this.awardData.items)) {
+                this.awardData.items.splice(idx, 1);
+            }
+        },
+
+        getCalculatedCharXp(charId) {
+            const total = Number(this.awardData.total_xp) || 0;
+            const partyCount = this.awardParty.length;
+            const bonus = Number(this.awardData.char_bonus_xp[charId]) || 0;
+            if (this.awardData.divide_xp_equally && partyCount > 0) {
+                return Math.floor(total / partyCount) + bonus;
+            }
+            return bonus;
+        },
+
+        getCalculatedCharSilver(charId) {
+            if (this.awardData.treasure_mode === 'equal') {
+                const total = Number(this.awardData.total_silver) || 0;
+                const count = this.awardParty.length;
+                return count > 0 ? Math.floor(total / count) : 0;
+            } else if (this.awardData.treasure_mode === 'custom') {
+                return Number(this.awardData.char_silver[charId]) || 0;
+            }
+            return 0;
         },
 
         // --- Adventure CRUD ---
@@ -1365,9 +1687,11 @@ function campaignAdmin() {
 
         // --- Encounter CRUD ---
         openCreateEncounterModal(campaignId, adventureId = null) {
+            this.foeMinEl = 1;
+            this.foeMaxEl = 1;
             this.encForm = {
                 id: null,
-                campaign_id: campaignId,
+                campaign_id: campaignId || (@if(isset($camp) && $camp) {{ $camp->ID }} @else null @endif),
                 adventure_id: adventureId,
                 location_id: null,
                 name: '',
@@ -1381,6 +1705,7 @@ function campaignAdmin() {
                 traps_and_hazards: [],
                 treasure_rewards: [],
                 status: 'planned',
+                resolution_notes: '',
                 gm_notes: ''
             };
             this.showEncounterModal = true;
@@ -1388,11 +1713,30 @@ function campaignAdmin() {
 
         openEditEncounterModal(enc) {
             this.encForm = Object.assign({}, enc);
+            if (!this.encForm.campaign_id) {
+                @if(isset($camp) && $camp)
+                    this.encForm.campaign_id = {{ $camp->ID }};
+                @endif
+            }
+            this.foeMinEl = Math.max(1, Math.round(this.encForm.encounter_level || 1));
+            this.foeMaxEl = this.foeMinEl;
             if (typeof this.encForm.monsters_and_npcs === 'string') {
                 try { this.encForm.monsters_and_npcs = JSON.parse(this.encForm.monsters_and_npcs); } catch (e) { this.encForm.monsters_and_npcs = []; }
             }
             if (!Array.isArray(this.encForm.monsters_and_npcs)) {
                 this.encForm.monsters_and_npcs = [];
+            }
+            if (typeof this.encForm.traps_and_hazards === 'string') {
+                try { this.encForm.traps_and_hazards = JSON.parse(this.encForm.traps_and_hazards); } catch (e) { this.encForm.traps_and_hazards = []; }
+            }
+            if (!Array.isArray(this.encForm.traps_and_hazards)) {
+                this.encForm.traps_and_hazards = [];
+            }
+            if (typeof this.encForm.treasure_rewards === 'string') {
+                try { this.encForm.treasure_rewards = JSON.parse(this.encForm.treasure_rewards); } catch (e) { this.encForm.treasure_rewards = []; }
+            }
+            if (!Array.isArray(this.encForm.treasure_rewards)) {
+                this.encForm.treasure_rewards = [];
             }
             this.showEncounterModal = true;
         },
@@ -1423,17 +1767,25 @@ function campaignAdmin() {
         async rollEncounterFoes() {
             this.isRollingFoes = true;
             try {
+                const minEl = this.foeMinEl || this.encForm.encounter_level || 1.0;
+                const maxEl = this.foeMaxEl || this.foeMinEl || this.encForm.encounter_level || 1.0;
                 const res = await fetch('/api/generator/encounter-creatures', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                     body: JSON.stringify({
-                        encounter_level: this.encForm.encounter_level || 1.0,
+                        encounter_level: this.encForm.encounter_level || minEl,
+                        min_el: minEl,
+                        max_el: maxEl,
                         environment: this.encForm.environment || ''
                     })
                 });
                 const data = await res.json();
                 if (data.success && Array.isArray(data.data) && data.data.length > 0) {
                     this.encForm.monsters_and_npcs = data.data;
+                    if (data.encounter_level) {
+                        this.encForm.encounter_level = data.encounter_level;
+                        this.encForm.xp_award = Math.round(data.encounter_level * 300);
+                    }
                     if (!this.encForm.name || this.encForm.name.startsWith('Battle:') || this.encForm.name.startsWith('Ambush') || this.encForm.name.startsWith('New Encounter') || this.encForm.name.trim() === '') {
                         const foeSummary = data.data.map(f => `${f.count}x ${f.name}`).join(' & ');
                         this.encForm.name = `Battle: ${foeSummary}`;
@@ -1470,24 +1822,57 @@ function campaignAdmin() {
         },
 
         async saveEncounter() {
+            if (!this.encForm.name || !this.encForm.name.trim()) {
+                alert('Please enter an Encounter Name.');
+                return;
+            }
+            if (!this.encForm.campaign_id) {
+                @if(isset($camp) && $camp)
+                    this.encForm.campaign_id = {{ $camp->ID }};
+                @endif
+            }
             const isEdit = !!this.encForm.id;
             const url = isEdit 
                 ? `/utilities/campaign/${this.encForm.campaign_id}/encounters/${this.encForm.id}/update`
                 : `/utilities/campaign/${this.encForm.campaign_id}/encounters/create`;
+            
+            const payload = {
+                name: this.encForm.name,
+                adventure_id: this.encForm.adventure_id ? parseInt(this.encForm.adventure_id) : null,
+                location_id: this.encForm.location_id ? parseInt(this.encForm.location_id) : null,
+                type: this.encForm.type || 'combat',
+                encounter_level: parseFloat(this.encForm.encounter_level) || 1.0,
+                environment: this.encForm.environment || '',
+                description: this.encForm.description || '',
+                tactics_and_features: this.encForm.tactics_and_features || '',
+                monsters_and_npcs: Array.isArray(this.encForm.monsters_and_npcs) ? this.encForm.monsters_and_npcs : [],
+                traps_and_hazards: Array.isArray(this.encForm.traps_and_hazards) ? this.encForm.traps_and_hazards : [],
+                treasure_rewards: Array.isArray(this.encForm.treasure_rewards) ? this.encForm.treasure_rewards : [],
+                xp_award: parseInt(this.encForm.xp_award) || 0,
+                status: this.encForm.status || 'planned',
+                resolution_notes: this.encForm.resolution_notes || '',
+                gm_notes: this.encForm.gm_notes || ''
+            };
+
             try {
                 const res = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                    body: JSON.stringify(this.encForm)
+                    body: JSON.stringify(payload)
                 });
                 const data = await res.json();
                 if (data.success) {
                     window.location.reload();
                 } else {
-                    alert(data.message || 'Failed to save encounter.');
+                    let errorMsg = data.message || 'Failed to save encounter.';
+                    if (data.errors) {
+                        errorMsg += '\n' + Object.values(data.errors).flat().join('\n');
+                    }
+                    alert(errorMsg);
                 }
             } catch (e) {
                 console.error(e);
+                alert('Network/Server error while saving encounter: ' + e.message);
             }
         },
 

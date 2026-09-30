@@ -2111,4 +2111,214 @@ td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
     flex: 0 0 32px !important;
 }
 
+/* ==========================================================================
+   Combat Tracker Responsive Layout, Sticky Sidebar & Resource Dials
+   ========================================================================== */
+
+.combat-tracker-workspace {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 1.25rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.combat-tracker-main {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+.combat-tracker-sidebar {
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    flex: 0 0 300px !important;
+    position: sticky !important;
+    top: 0.75rem !important;
+    align-self: flex-start !important;
+    z-index: 20 !important;
+}
+
+@media (max-width: 1024px) {
+    .combat-tracker-workspace {
+        flex-direction: column !important;
+    }
+    .combat-tracker-sidebar {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        flex: 1 1 auto !important;
+        position: static !important;
+    }
+}
+
+/* 4 Resource Dials Container (AP, HP, SP, PP on a single row) */
+.combat-resources-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.combat-resource-box {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 6px 8px !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+@media (max-width: 640px) {
+    .combat-resources-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+.combat-dice-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+}
+
+.combat-dice-btn {
+    height: 1.75rem !important;
+    padding: 0 0.25rem !important;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 4px !important;
+    border: 1px solid rgba(120, 53, 15, 0.2) !important;
+    background-color: #fffbeb !important;
+    color: #1e293b !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+}
+
+.combat-dice-btn:hover {
+    background-color: #fef3c7 !important;
+    border-color: rgba(120, 53, 15, 0.4) !important;
+}
+
+.combat-dice-btn-highlight {
+    background-color: #fde68a !important;
+    color: #451a03 !important;
+    font-weight: 900 !important;
+    border-color: #b45309 !important;
+}
+
+.combat-dice-btn-highlight:hover {
+    background-color: #fcd34d !important;
+}
+
+.combat-log-container {
+    height: 220px !important;
+    overflow-y: auto !important;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 0.7rem !important;
+    padding-right: 0.25rem !important;
+}
+
+.combat-log-item {
+    padding: 4px 6px !important;
+    background-color: rgba(255, 255, 255, 0.85) !important;
+    border: 1px solid rgba(120, 53, 15, 0.12) !important;
+    border-radius: 4px !important;
+    color: #1e293b !important;
+    line-height: 1.3 !important;
+    margin-bottom: 4px !important;
+    word-break: break-word !important;
+}
+
+/* Combat Tracker Number Inputs & Mini Action Buttons */
+.combat-num-input {
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 36px !important;
+    height: 22px !important;
+    padding: 0 2px !important;
+    text-align: center !important;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 4px !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    -moz-appearance: textfield !important;
+}
+
+.combat-num-input::-webkit-outer-spin-button,
+.combat-num-input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+.combat-num-input:focus {
+    border-color: #b45309 !important;
+    box-shadow: 0 0 0 1px #b45309 !important;
+}
+
+.combat-num-input-muted {
+    font-weight: 500 !important;
+    color: #64748b !important;
+}
+
+.combat-btn-mini {
+    height: 20px !important;
+    padding: 0 4px !important;
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    border-radius: 3px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+    box-sizing: border-box !important;
+    background-color: #e2e8f0 !important;
+    color: #334155 !important;
+    border: 1px solid #cbd5e1 !important;
+    transition: all 0.1s ease !important;
+}
+.combat-btn-mini:hover {
+    background-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+.combat-btn-mini-danger {
+    background-color: #ffe4e6 !important;
+    color: #9f1239 !important;
+    border-color: #fecdd3 !important;
+}
+.combat-btn-mini-danger:hover {
+    background-color: #fecdd3 !important;
+    color: #881337 !important;
+}
+
+.combat-btn-mini-success {
+    background-color: #d1fae5 !important;
+    color: #065f46 !important;
+    border-color: #a7f3d0 !important;
+}
+.combat-btn-mini-success:hover {
+    background-color: #a7f3d0 !important;
+    color: #047857 !important;
+}
+
+
+
 

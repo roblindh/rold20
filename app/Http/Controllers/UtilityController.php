@@ -3063,86 +3063,280 @@ class UtilityController extends Controller
         $campaigns = DB::table('campaigns')->orderBy('Name')->get();
         $selectedCampaignId = $request->query('campaign') ? (int)$request->query('campaign') : null;
         $selectedEncounterId = $request->query('encounter') ? (int)$request->query('encounter') : null;
+        
+        $encounters = DB::table('campaign_encounters')
+            ->leftJoin('campaign_adventures', 'campaign_encounters.adventure_id', '=', 'campaign_adventures.id')
+            ->select('campaign_encounters.*', 'campaign_adventures.name as adventure_name')
+            ->orderBy('campaign_encounters.campaign_id')
+            ->orderBy('campaign_encounters.order_index')
+            ->get()
+            ->map(function ($enc) {
+                $enc->monsters_and_npcs = !empty($enc->monsters_and_npcs) ? (is_array($enc->monsters_and_npcs) ? $enc->monsters_and_npcs : json_decode($enc->monsters_and_npcs, true)) : [];
+                $enc->traps_and_hazards = !empty($enc->traps_and_hazards) ? (is_array($enc->traps_and_hazards) ? $enc->traps_and_hazards : json_decode($enc->traps_and_hazards, true)) : [];
+                return $enc;
+            });
+
         $selectedEncounter = null;
         if ($selectedEncounterId) {
-            $rawEnc = DB::table('campaign_encounters')->where('id', $selectedEncounterId)->first();
-            if ($rawEnc) {
-                $rawEnc->monsters_and_npcs = !empty($rawEnc->monsters_and_npcs) ? json_decode($rawEnc->monsters_and_npcs, true) : [];
-                $rawEnc->traps_and_hazards = !empty($rawEnc->traps_and_hazards) ? json_decode($rawEnc->traps_and_hazards, true) : [];
-                $selectedEncounter = $rawEnc;
-                if (!$selectedCampaignId && $rawEnc->campaign_id) {
-                    $selectedCampaignId = $rawEnc->campaign_id;
-                }
+            $selectedEncounter = $encounters->firstWhere('id', $selectedEncounterId);
+            if ($selectedEncounter && !$selectedCampaignId && $selectedEncounter->campaign_id) {
+                $selectedCampaignId = (int)$selectedEncounter->campaign_id;
             }
         }
 
-        $races = DB::table('ref_creatures')->get()->keyBy('ID');
-        $classesMap = DB::table('ref_classes')->get()->keyBy('ID');
+        $rawCreatureTypes = DB::table('ref_creaturetypes')->orderBy('Name')->get();
+        $creatureTypesMap = $rawCreatureTypes->keyBy('ID');
+        $creatureSubtypesMap = DB::table('ref_creaturesubtypes')->get()->keyBy('ID');
+        $rawSizes = DB::table('ref_sizes')->orderBy('ID')->get();
+        $sizesMap = $rawSizes->keyBy('ID');
 
-        $formatChar = function ($c, $type = 'pc') use ($races, $classesMap) {
-            $raceId = $c->BaseRace ?? (isset($c->Race) ? $c->Race : 1);
-            $race = $races[$raceId] ?? null;
-            $xp = (int)($c->ExperiencePts ?? 0);
-            $tl = 1;
-            while ($tl * ($tl - 1) * 500 <= $xp && $tl <= 20) {
-                $tl++;
+        $formatCombatant = function ($entity, $type = 'pc') use ($creatureTypesMap, $creatureSubtypesMap, $sizesMap) {
+            $isCreatureRef = ($type === 'monster');
+            $calcObj = $isCreatureRef ? (object)['BaseRace' => $entity->ID] : $entity;
+            $calcState = \App\Services\Entity\EntityEngine::calculate($calcObj);
+
+            $heritage = $calcState['heritage'] ?? [];
+            $defenses = $calcState['defenses'] ?? [];
+            $health = $calcState['health'] ?? [];
+            $actions = $calcState['actions'] ?? [];
+            $attacksRaw = $calcState['attacks'] ?? [];
+            $abilityMods = $calcState['ability_modifiers'] ?? [];
+
+            $weaponAttacks = [];
+            $shieldAttacks = [];
+            $carriedAttacks = [];
+            
+            // 1. Weapons
+            if (!empty($attacksRaw['weapons'])) {
+                foreach ($attacksRaw['weapons'] as $wId => $w) {
+                    $dmgStr = $w['one_handed']['damage'] ?? $w['two_handed']['damage'] ?? (is_array($w['damage'] ?? null) ? ($w['damage']['display'] ?? '1d6') : ($w['damage'] ?? '1d6'));
+                    $bonus = (int)($w['one_handed']['attack_bonus'] ?? $w['two_handed']['attack_bonus'] ?? $w['attack_bonus'] ?? 0);
+                    $bStr = ($bonus >= 0 ? "+$bonus" : "$bonus");
+                    $ap = (int)($w['ap'] ?? 6);
+                    $crit = $w['crit_display'] ?? ($w['crit'] ?? '20/x2');
+                    $reach = $w['reach'] ?? null;
+                    $range = !empty($w['range']) ? $w['range'] . 'm' : null;
+                    $isEquipped = !empty($w['is_equipped']);
+                    $isShield = str_contains(strtolower($w['name'] ?? ''), 'shield');
+                    
+                    $attEntry = [
+                        'id' => 'weapon_' . $wId,
+                        'name' => $w['name'] ?? 'Weapon',
+                        'bonus' => $bonus,
+                        'damage' => $dmgStr,
+                        'ap' => $ap,
+                        'crit' => $crit,
+                        'reach' => $reach,
+                        'range' => $range,
+                        'type' => !empty($w['is_ranged']) ? 'ranged' : ($isShield ? 'shield' : 'melee'),
+                        'is_equipped' => $isEquipped,
+                        'slot' => $w['slot'] ?? 'main_hand',
+                        'summary' => ($w['name'] ?? 'Weapon') . ' ' . $bStr . ' (' . $dmgStr . ', ' . $ap . ' AP)',
+                    ];
+
+                    if ($isShield) {
+                        $shieldAttacks[] = $attEntry;
+                    } elseif ($isEquipped) {
+                        if (($w['slot'] ?? '') === 'main_hand' || !empty($w['is_2h'])) {
+                            array_unshift($weaponAttacks, $attEntry);
+                        } else {
+                            $weaponAttacks[] = $attEntry;
+                        }
+                    } else {
+                        $carriedAttacks[] = $attEntry;
+                    }
+                }
             }
-            $totalLevel = max(1, $tl - 1);
 
-            $str = max(1, (int)($c->BaseStr ?? 10) + (int)($race->StrAdj ?? 0));
-            $con = max(1, (int)($c->BaseCon ?? 10) + (int)($race->ConAdj ?? 0));
-            $dex = max(1, (int)($c->BaseDex ?? 10) + (int)($race->DexAdj ?? 0));
-            $int = max(3, (int)($c->BaseInt ?? 10) + (int)($race->IntAdj ?? 0));
-            $wis = max(1, (int)($c->BaseWis ?? 10) + (int)($race->WisAdj ?? 0));
-            $cha = max(1, (int)($c->BaseCha ?? 10) + (int)($race->ChaAdj ?? 0));
+            // 2. Primary Natural Attacks
+            $primNaturalAttacks = [];
+            $primNaturals = $attacksRaw['primary_natural'] ?? [];
+            if (!empty($primNaturals)) {
+                foreach ($primNaturals as $nIdx => $n) {
+                    $dmgStr = is_array($n['damage'] ?? null) ? ($n['damage']['display'] ?? '1d4') : ($n['damage'] ?? '1d4');
+                    $bonus = (int)($n['attack_bonus'] ?? $n['bonus'] ?? 0);
+                    $bStr = ($bonus >= 0 ? "+$bonus" : "$bonus");
+                    $ap = (int)($n['ap'] ?? 5);
+                    $crit = $n['crit'] ?? '20/x2';
+                    $reach = $n['reach'] ?? null;
+                    
+                    $primNaturalAttacks[] = [
+                        'id' => 'natural_prim_' . $nIdx,
+                        'name' => $n['name'] ?? 'Natural Attack',
+                        'bonus' => $bonus,
+                        'damage' => $dmgStr,
+                        'ap' => $ap,
+                        'crit' => $crit,
+                        'reach' => $reach,
+                        'range' => null,
+                        'type' => 'natural',
+                        'is_equipped' => true,
+                        'slot' => 'natural',
+                        'summary' => ($n['name'] ?? 'Attack') . ' ' . $bStr . ' (' . $dmgStr . ', ' . $ap . ' AP)',
+                    ];
+                }
+            }
 
-            $strMod = (int)floor(($str - 10) / 2);
-            $conMod = (int)floor(($con - 10) / 2);
-            $dexMod = (int)floor(($dex - 10) / 2);
-            $intMod = (int)floor(($int - 10) / 2);
-            $wisMod = (int)floor(($wis - 10) / 2);
-            $chaMod = (int)floor(($cha - 10) / 2);
+            // 3. Secondary Natural Attacks
+            $secNaturalAttacks = [];
+            $secNaturals = $attacksRaw['secondary_natural'] ?? [];
+            if (!empty($secNaturals)) {
+                foreach ($secNaturals as $nIdx => $n) {
+                    $dmgStr = is_array($n['damage'] ?? null) ? ($n['damage']['display'] ?? '1d4') : ($n['damage'] ?? '1d4');
+                    $bonus = (int)($n['attack_bonus'] ?? $n['bonus'] ?? 0);
+                    $bStr = ($bonus >= 0 ? "+$bonus" : "$bonus");
+                    $ap = (int)($n['ap'] ?? 5);
+                    $crit = $n['crit'] ?? '20/x2';
+                    $reach = $n['reach'] ?? null;
+                    
+                    $secNaturalAttacks[] = [
+                        'id' => 'natural_sec_' . $nIdx,
+                        'name' => ($n['name'] ?? 'Natural Attack') . ' (Secondary)',
+                        'bonus' => $bonus,
+                        'damage' => $dmgStr,
+                        'ap' => $ap,
+                        'crit' => $crit,
+                        'reach' => $reach,
+                        'range' => null,
+                        'type' => 'natural',
+                        'is_equipped' => true,
+                        'slot' => 'natural',
+                        'summary' => ($n['name'] ?? 'Attack') . ' ' . $bStr . ' (' . $dmgStr . ', ' . $ap . ' AP)',
+                    ];
+                }
+            }
 
-            $hp = max(1, $con + 5 * $totalLevel);
-            $sp = max(1, $str + $con + 8 * $totalLevel);
-            $pp = max(0, $wis + $cha);
+            if (empty($primNaturalAttacks) && empty($secNaturalAttacks) && !empty($attacksRaw['natural'])) {
+                foreach ($attacksRaw['natural'] as $nIdx => $n) {
+                    $dmgStr = is_array($n['damage'] ?? null) ? ($n['damage']['display'] ?? '1d4') : ($n['damage'] ?? '1d4');
+                    $bonus = (int)($n['attack_bonus'] ?? $n['bonus'] ?? 0);
+                    $bStr = ($bonus >= 0 ? "+$bonus" : "$bonus");
+                    $ap = (int)($n['ap'] ?? 5);
+                    $crit = $n['crit'] ?? '20/x2';
+                    $reach = $n['reach'] ?? null;
+                    
+                    $primNaturalAttacks[] = [
+                        'id' => 'natural_' . $nIdx,
+                        'name' => $n['name'] ?? 'Natural Attack',
+                        'bonus' => $bonus,
+                        'damage' => $dmgStr,
+                        'ap' => $ap,
+                        'crit' => $crit,
+                        'reach' => $reach,
+                        'range' => null,
+                        'type' => 'natural',
+                        'is_equipped' => true,
+                        'slot' => 'natural',
+                        'summary' => ($n['name'] ?? 'Attack') . ' ' . $bStr . ' (' . $dmgStr . ', ' . $ap . ' AP)',
+                    ];
+                }
+            }
 
-            $decPassive = 10 + min(0, $dexMod) + $totalLevel;
-            $decActive = $decPassive + max(0, $dexMod);
+            $attackList = array_merge(
+                $weaponAttacks,
+                $primNaturalAttacks,
+                $carriedAttacks,
+                $secNaturalAttacks,
+                $shieldAttacks
+            );
 
-            $fort = 10 + $strMod + $conMod + $totalLevel;
-            $ref = 10 + $dexMod + $intMod + $totalLevel;
-            $will = 10 + $wisMod + $chaMod + $totalLevel;
+            // Unarmed Strike
+            $strMod = (int)($abilityMods['Str'] ?? 0);
+            $lvl = (int)($heritage['total_level'] ?? 1);
+            $bBonus = $strMod + $lvl;
+            $dmgStr = '1d3' . ($strMod >= 0 ? "+$strMod" : "$strMod") . ' B SP';
+            $unarmedAttack = [
+                'id' => 'unarmed',
+                'name' => 'Unarmed Strike',
+                'bonus' => $bBonus,
+                'damage' => $dmgStr,
+                'ap' => 5,
+                'crit' => '20/x2',
+                'reach' => '0-1 sq',
+                'range' => null,
+                'type' => 'unarmed',
+                'is_equipped' => true,
+                'slot' => 'unarmed',
+                'summary' => 'Unarmed Strike ' . ($bBonus >= 0 ? "+$bBonus" : "$bBonus") . " ($dmgStr, 5 AP)",
+            ];
+            $attackList[] = $unarmedAttack;
+
+            $mainAttack = $attackList[0];
+            $level = (int)($heritage['total_level'] ?? 1);
+            $raceName = $heritage['race_name_informal'] ?? $heritage['race_name'] ?? 'Humanoid';
+
+            if ($isCreatureRef) {
+                $subtypeId = (int)($entity->CreatureType ?? 0);
+                $subtypeObj = $creatureSubtypesMap[$subtypeId] ?? null;
+                $mainTypeId = $subtypeObj ? (int)$subtypeObj->GroupID : 0;
+                $mainTypeObj = $creatureTypesMap[$mainTypeId] ?? null;
+                $mainTypeName = $mainTypeObj ? $mainTypeObj->Name : 'Creature';
+                $subtypeName = $subtypeObj ? $subtypeObj->Name : '';
+                $sizeObj = $sizesMap[$entity->SizeClass ?? 0] ?? null;
+
+                return [
+                    'id' => $entity->ID,
+                    'name' => $entity->Name,
+                    'type' => 'monster',
+                    'level' => $level,
+                    'type_id' => $mainTypeId,
+                    'type_name' => $mainTypeName,
+                    'subtype_id' => $subtypeId,
+                    'subtype_name' => $subtypeName,
+                    'size_id' => (int)($entity->SizeClass ?? 0),
+                    'size_name' => $sizeObj ? ($sizeObj->Description ?? 'Medium') : 'Medium',
+                    'size_abbr' => $heritage['size_abbr'] ?? ($sizeObj ? ($sizeObj->Abbreviation ?? 'M') : 'M'),
+                    'descriptors' => $entity->Descriptors ?? '',
+                    'hp_max' => (int)($health['hp']['total'] ?? 20),
+                    'sp_max' => (int)($health['sp']['total'] ?? 20),
+                    'pp_max' => (int)($health['pp']['total'] ?? 0),
+                    'ap_max' => (int)($actions['ap'] ?? (10 + $level)),
+                    'init_mod' => (int)($defenses['init_mod'] ?? 0),
+                    'deca' => (int)($defenses['dec_active'] ?? 10),
+                    'decp' => (int)($defenses['dec_passive'] ?? 10),
+                    'dr' => (int)($defenses['dr'] ?? 0),
+                    'mr' => (int)($defenses['mr'] ?? 0),
+                    'fort' => (int)($defenses['fort'] ?? 10),
+                    'ref' => (int)($defenses['ref'] ?? 10),
+                    'will' => (int)($defenses['will'] ?? 10),
+                    'speed' => (string)($calcState['speeds']['display'] ?? ($entity->GroundSpeed ?? 30) . "'"),
+                    'attacks' => $attackList,
+                    'main_attack' => $mainAttack,
+                ];
+            }
 
             return [
-                'id' => ($type === 'npc' ? 'npc_' : 'pc_') . $c->ID,
-                'db_id' => $c->ID,
-                'name' => $c->Name,
-                'campaign_id' => $c->Campaign ? (int)$c->Campaign : null,
+                'id' => ($type === 'npc' ? 'npc_' : 'pc_') . $entity->ID,
+                'db_id' => $entity->ID,
+                'name' => $entity->Name,
+                'campaign_id' => $entity->Campaign ? (int)$entity->Campaign : null,
                 'type' => $type,
-                'level' => $totalLevel,
-                'race_name' => $race ? $race->Name : 'Humanoid',
-                'hp_max' => $hp,
-                'hp_curr' => $hp,
-                'sp_max' => $sp,
-                'sp_curr' => $sp,
-                'pp_max' => $pp,
-                'pp_curr' => $pp,
-                'ap_max' => 10 + $totalLevel,
-                'ap_curr' => 10 + $totalLevel,
-                'init_mod' => $dexMod,
+                'level' => $level,
+                'race_name' => $raceName,
+                'size_abbr' => $heritage['size_abbr'] ?? 'M',
+                'hp_max' => (int)($health['hp']['total'] ?? 20),
+                'hp_curr' => (int)($health['hp']['current'] ?? $health['hp']['total'] ?? 20),
+                'sp_max' => (int)($health['sp']['total'] ?? 20),
+                'sp_curr' => (int)($health['sp']['current'] ?? $health['sp']['total'] ?? 20),
+                'pp_max' => (int)($health['pp']['total'] ?? 0),
+                'pp_curr' => (int)($health['pp']['current'] ?? $health['pp']['total'] ?? 0),
+                'ap_max' => (int)($actions['ap'] ?? (10 + $level)),
+                'ap_curr' => (int)($actions['ap'] ?? (10 + $level)),
+                'init_mod' => (int)($defenses['init_mod'] ?? 0),
                 'init_roll' => null,
                 'init_total' => null,
-                'deca' => $decActive,
-                'decp' => $decPassive,
-                'dr' => (int)($race->DR ?? 0),
-                'mr' => (int)($race->MR ?? 0),
-                'fort' => $fort,
-                'ref' => $ref,
-                'will' => $will,
-                'speed' => (int)($race->GroundSpeed ?? 30) . "'",
+                'deca' => (int)($defenses['dec_active'] ?? 10),
+                'decp' => (int)($defenses['dec_passive'] ?? 10),
+                'dr' => (int)($defenses['dr'] ?? 0),
+                'mr' => (int)($defenses['mr'] ?? 0),
+                'fort' => (int)($defenses['fort'] ?? 10),
+                'ref' => (int)($defenses['ref'] ?? 10),
+                'will' => (int)($defenses['will'] ?? 10),
+                'speed' => (string)($calcState['speeds']['display'] ?? '30\''),
                 'conditions' => [],
                 'notes' => '',
+                'attacks' => $attackList,
+                'main_attack' => $mainAttack,
             ];
         };
 
@@ -3158,82 +3352,15 @@ class UtilityController extends Controller
             ->orderBy('Name')
             ->get();
 
-        $characters = $rawPCs->map(fn($c) => $formatChar($c, 'pc'))->values()->all();
-        $npcs = $rawNPCs->map(fn($c) => $formatChar($c, 'npc'))->values()->all();
-
-        $rawCreatureTypes = DB::table('ref_creaturetypes')->orderBy('Name')->get();
-        $creatureTypesMap = $rawCreatureTypes->keyBy('ID');
-        $creatureSubtypesMap = DB::table('ref_creaturesubtypes')->get()->keyBy('ID');
-        $rawSizes = DB::table('ref_sizes')->orderBy('ID')->get();
-        $sizesMap = $rawSizes->keyBy('ID');
+        $characters = $rawPCs->map(fn($c) => $formatCombatant($c, 'pc'))->values()->all();
+        $npcs = $rawNPCs->map(fn($c) => $formatCombatant($c, 'npc'))->values()->all();
 
         $rawCreatures = DB::table('ref_creatures')
             ->select('ID', 'Name', 'BaseRL', 'CLModifier', 'CreatureType', 'SizeClass', 'GroundSpeed', 'FlySpeed', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj', 'DR', 'MR', 'Descriptors')
             ->orderBy('Name')
             ->get();
 
-        $creatures = $rawCreatures->map(function ($cr) use ($creatureTypesMap, $creatureSubtypesMap, $sizesMap) {
-            $rl = max(1, (int)($cr->BaseRL ?? $cr->CLModifier ?? 1));
-            $str = max(1, 10 + (int)($cr->StrAdj ?? 0));
-            $con = max(1, 10 + (int)($cr->ConAdj ?? 0));
-            $dex = max(1, 10 + (int)($cr->DexAdj ?? 0));
-            $int = max(1, 10 + (int)($cr->IntAdj ?? 0));
-            $wis = max(1, 10 + (int)($cr->WisAdj ?? 0));
-            $cha = max(1, 10 + (int)($cr->ChaAdj ?? 0));
-
-            $strMod = (int)floor(($str - 10) / 2);
-            $conMod = (int)floor(($con - 10) / 2);
-            $dexMod = (int)floor(($dex - 10) / 2);
-            $intMod = (int)floor(($int - 10) / 2);
-            $wisMod = (int)floor(($wis - 10) / 2);
-            $chaMod = (int)floor(($cha - 10) / 2);
-
-            $hp = max(1, $con + 5 * $rl);
-            $sp = max(1, $str + $con + 8 * $rl);
-            $pp = max(0, $wis + $cha);
-
-            $decPassive = 10 + min(0, $dexMod) + $rl;
-            $decActive = $decPassive + max(0, $dexMod);
-
-            $fort = 10 + $strMod + $conMod + $rl;
-            $ref = 10 + $dexMod + $intMod + $rl;
-            $will = 10 + $wisMod + $chaMod + $rl;
-
-            $subtypeId = (int)($cr->CreatureType ?? 0);
-            $subtypeObj = $creatureSubtypesMap[$subtypeId] ?? null;
-            $mainTypeId = $subtypeObj ? (int)$subtypeObj->GroupID : 0;
-            $mainTypeObj = $creatureTypesMap[$mainTypeId] ?? null;
-            $mainTypeName = $mainTypeObj ? $mainTypeObj->Name : 'Creature';
-            $subtypeName = $subtypeObj ? $subtypeObj->Name : '';
-            $sizeObj = $sizesMap[$cr->SizeClass ?? 0] ?? null;
-
-            return [
-                'id' => $cr->ID,
-                'name' => $cr->Name,
-                'level' => $rl,
-                'type_id' => $mainTypeId,
-                'type_name' => $mainTypeName,
-                'subtype_id' => $subtypeId,
-                'subtype_name' => $subtypeName,
-                'size_id' => (int)($cr->SizeClass ?? 0),
-                'size_name' => $sizeObj ? ($sizeObj->Description ?? 'Medium') : 'Medium',
-                'size_abbr' => $sizeObj ? ($sizeObj->Abbreviation ?? 'M') : 'M',
-                'descriptors' => $cr->Descriptors ?? '',
-                'hp_max' => $hp,
-                'sp_max' => $sp,
-                'pp_max' => $pp,
-                'ap_max' => 10 + $rl,
-                'init_mod' => $dexMod,
-                'deca' => $decActive,
-                'decp' => $decPassive,
-                'dr' => (int)($cr->DR ?? 0),
-                'mr' => (int)($cr->MR ?? 0),
-                'fort' => $fort,
-                'ref' => $ref,
-                'will' => $will,
-                'speed' => ($cr->GroundSpeed ?? 30) . "'" . ($cr->FlySpeed ? ", Fly " . $cr->FlySpeed . "'" : ""),
-            ];
-        })->values()->all();
+        $creatures = $rawCreatures->map(fn($cr) => $formatCombatant($cr, 'monster'))->values()->all();
 
         $conditionsList = [
             ['name' => 'Blinded', 'desc' => 'Cannot see. -4 DeCa, fails sight-based perception checks, attackers gain +4 on attack rolls against target.'],
@@ -3270,8 +3397,10 @@ class UtilityController extends Controller
 
         return view('utilities.combat_tracker', [
             'campaigns' => $campaigns,
+            'encounters' => $encounters,
             'selectedCampaignId' => $selectedCampaignId,
             'selectedEncounter' => $selectedEncounter,
+            'selectedEncounterId' => $selectedEncounterId,
             'characters' => $characters,
             'npcs' => $npcs,
             'creatures' => $creatures,
@@ -4170,13 +4299,24 @@ class UtilityController extends Controller
             'environment' => 'nullable|string|max:150',
             'description' => 'nullable|string|max:5000',
             'tactics_and_features' => 'nullable|string|max:5000',
-            'monsters_and_npcs' => 'nullable|array',
-            'traps_and_hazards' => 'nullable|array',
-            'treasure_rewards' => 'nullable|array',
+            'monsters_and_npcs' => 'nullable',
+            'traps_and_hazards' => 'nullable',
+            'treasure_rewards' => 'nullable',
             'xp_award' => 'nullable|integer|min:0',
             'status' => 'nullable|string|in:planned,in_progress,completed,bypassed',
+            'resolution_notes' => 'nullable|string|max:10000',
             'gm_notes' => 'nullable|string|max:10000',
         ]);
+
+        $encodeField = function ($val) {
+            if ($val === null || $val === '') return null;
+            if (is_array($val)) return json_encode($val);
+            if (is_string($val)) {
+                $decoded = json_decode($val, true);
+                return json_last_error() === JSON_ERROR_NONE ? $val : json_encode($val);
+            }
+            return json_encode($val);
+        };
 
         $encId = DB::table('campaign_encounters')->insertGetId([
             'campaign_id' => $id,
@@ -4188,11 +4328,12 @@ class UtilityController extends Controller
             'environment' => $validated['environment'] ?? '',
             'description' => $validated['description'] ?? '',
             'tactics_and_features' => $validated['tactics_and_features'] ?? '',
-            'monsters_and_npcs' => isset($validated['monsters_and_npcs']) ? json_encode($validated['monsters_and_npcs']) : null,
-            'traps_and_hazards' => isset($validated['traps_and_hazards']) ? json_encode($validated['traps_and_hazards']) : null,
-            'treasure_rewards' => isset($validated['treasure_rewards']) ? json_encode($validated['treasure_rewards']) : null,
+            'monsters_and_npcs' => isset($validated['monsters_and_npcs']) ? $encodeField($validated['monsters_and_npcs']) : null,
+            'traps_and_hazards' => isset($validated['traps_and_hazards']) ? $encodeField($validated['traps_and_hazards']) : null,
+            'treasure_rewards' => isset($validated['treasure_rewards']) ? $encodeField($validated['treasure_rewards']) : null,
             'xp_award' => (int)($validated['xp_award'] ?? 0),
             'status' => $validated['status'] ?? 'planned',
+            'resolution_notes' => $validated['resolution_notes'] ?? '',
             'gm_notes' => $validated['gm_notes'] ?? '',
             'created_at' => now(),
             'updated_at' => now(),
@@ -4224,13 +4365,24 @@ class UtilityController extends Controller
             'environment' => 'nullable|string|max:150',
             'description' => 'nullable|string|max:5000',
             'tactics_and_features' => 'nullable|string|max:5000',
-            'monsters_and_npcs' => 'nullable|array',
-            'traps_and_hazards' => 'nullable|array',
-            'treasure_rewards' => 'nullable|array',
+            'monsters_and_npcs' => 'nullable',
+            'traps_and_hazards' => 'nullable',
+            'treasure_rewards' => 'nullable',
             'xp_award' => 'nullable|integer|min:0',
             'status' => 'nullable|string|in:planned,in_progress,completed,bypassed',
+            'resolution_notes' => 'nullable|string|max:10000',
             'gm_notes' => 'nullable|string|max:10000',
         ]);
+
+        $encodeField = function ($val) {
+            if ($val === null || $val === '') return null;
+            if (is_array($val)) return json_encode($val);
+            if (is_string($val)) {
+                $decoded = json_decode($val, true);
+                return json_last_error() === JSON_ERROR_NONE ? $val : json_encode($val);
+            }
+            return json_encode($val);
+        };
 
         $updateData = ['updated_at' => now()];
         if (isset($validated['name'])) $updateData['name'] = $validated['name'];
@@ -4241,11 +4393,12 @@ class UtilityController extends Controller
         if (isset($validated['environment'])) $updateData['environment'] = $validated['environment'];
         if (isset($validated['description'])) $updateData['description'] = $validated['description'];
         if (isset($validated['tactics_and_features'])) $updateData['tactics_and_features'] = $validated['tactics_and_features'];
-        if (isset($validated['monsters_and_npcs'])) $updateData['monsters_and_npcs'] = json_encode($validated['monsters_and_npcs']);
-        if (isset($validated['traps_and_hazards'])) $updateData['traps_and_hazards'] = json_encode($validated['traps_and_hazards']);
-        if (isset($validated['treasure_rewards'])) $updateData['treasure_rewards'] = json_encode($validated['treasure_rewards']);
+        if (array_key_exists('monsters_and_npcs', $validated)) $updateData['monsters_and_npcs'] = $encodeField($validated['monsters_and_npcs']);
+        if (array_key_exists('traps_and_hazards', $validated)) $updateData['traps_and_hazards'] = $encodeField($validated['traps_and_hazards']);
+        if (array_key_exists('treasure_rewards', $validated)) $updateData['treasure_rewards'] = $encodeField($validated['treasure_rewards']);
         if (isset($validated['xp_award'])) $updateData['xp_award'] = (int)$validated['xp_award'];
         if (isset($validated['status'])) $updateData['status'] = $validated['status'];
+        if (isset($validated['resolution_notes'])) $updateData['resolution_notes'] = $validated['resolution_notes'];
         if (isset($validated['gm_notes'])) $updateData['gm_notes'] = $validated['gm_notes'];
 
         DB::table('campaign_encounters')->where('id', $encId)->where('campaign_id', $id)->update($updateData);
@@ -4287,11 +4440,21 @@ class UtilityController extends Controller
             'summary' => 'nullable|string|max:1000',
             'description' => 'nullable|string|max:5000',
             'sensory_details' => 'nullable|string|max:2000',
-            'notable_npcs' => 'nullable|array',
-            'inventory_and_services' => 'nullable|array',
-            'rumors_and_hooks' => 'nullable|array',
+            'notable_npcs' => 'nullable',
+            'inventory_and_services' => 'nullable',
+            'rumors_and_hooks' => 'nullable',
             'gm_notes' => 'nullable|string|max:10000',
         ]);
+
+        $encodeField = function ($val) {
+            if ($val === null || $val === '') return null;
+            if (is_array($val)) return json_encode($val);
+            if (is_string($val)) {
+                $decoded = json_decode($val, true);
+                return json_last_error() === JSON_ERROR_NONE ? $val : json_encode($val);
+            }
+            return json_encode($val);
+        };
 
         $locId = DB::table('campaign_locations')->insertGetId([
             'campaign_id' => $id,
@@ -4301,9 +4464,9 @@ class UtilityController extends Controller
             'summary' => $validated['summary'] ?? '',
             'description' => $validated['description'] ?? '',
             'sensory_details' => $validated['sensory_details'] ?? '',
-            'notable_npcs' => isset($validated['notable_npcs']) ? json_encode($validated['notable_npcs']) : null,
-            'inventory_and_services' => isset($validated['inventory_and_services']) ? json_encode($validated['inventory_and_services']) : null,
-            'rumors_and_hooks' => isset($validated['rumors_and_hooks']) ? json_encode($validated['rumors_and_hooks']) : null,
+            'notable_npcs' => isset($validated['notable_npcs']) ? $encodeField($validated['notable_npcs']) : null,
+            'inventory_and_services' => isset($validated['inventory_and_services']) ? $encodeField($validated['inventory_and_services']) : null,
+            'rumors_and_hooks' => isset($validated['rumors_and_hooks']) ? $encodeField($validated['rumors_and_hooks']) : null,
             'gm_notes' => $validated['gm_notes'] ?? '',
             'created_at' => now(),
             'updated_at' => now(),
@@ -4333,11 +4496,21 @@ class UtilityController extends Controller
             'summary' => 'nullable|string|max:1000',
             'description' => 'nullable|string|max:5000',
             'sensory_details' => 'nullable|string|max:2000',
-            'notable_npcs' => 'nullable|array',
-            'inventory_and_services' => 'nullable|array',
-            'rumors_and_hooks' => 'nullable|array',
+            'notable_npcs' => 'nullable',
+            'inventory_and_services' => 'nullable',
+            'rumors_and_hooks' => 'nullable',
             'gm_notes' => 'nullable|string|max:10000',
         ]);
+
+        $encodeField = function ($val) {
+            if ($val === null || $val === '') return null;
+            if (is_array($val)) return json_encode($val);
+            if (is_string($val)) {
+                $decoded = json_decode($val, true);
+                return json_last_error() === JSON_ERROR_NONE ? $val : json_encode($val);
+            }
+            return json_encode($val);
+        };
 
         $updateData = ['updated_at' => now()];
         if (isset($validated['name'])) $updateData['name'] = $validated['name'];
@@ -4346,9 +4519,9 @@ class UtilityController extends Controller
         if (isset($validated['summary'])) $updateData['summary'] = $validated['summary'];
         if (isset($validated['description'])) $updateData['description'] = $validated['description'];
         if (isset($validated['sensory_details'])) $updateData['sensory_details'] = $validated['sensory_details'];
-        if (isset($validated['notable_npcs'])) $updateData['notable_npcs'] = json_encode($validated['notable_npcs']);
-        if (isset($validated['inventory_and_services'])) $updateData['inventory_and_services'] = json_encode($validated['inventory_and_services']);
-        if (isset($validated['rumors_and_hooks'])) $updateData['rumors_and_hooks'] = json_encode($validated['rumors_and_hooks']);
+        if (array_key_exists('notable_npcs', $validated)) $updateData['notable_npcs'] = $encodeField($validated['notable_npcs']);
+        if (array_key_exists('inventory_and_services', $validated)) $updateData['inventory_and_services'] = $encodeField($validated['inventory_and_services']);
+        if (array_key_exists('rumors_and_hooks', $validated)) $updateData['rumors_and_hooks'] = $encodeField($validated['rumors_and_hooks']);
         if (isset($validated['gm_notes'])) $updateData['gm_notes'] = $validated['gm_notes'];
 
         DB::table('campaign_locations')->where('id', $locId)->where('campaign_id', $id)->update($updateData);
@@ -4440,11 +4613,17 @@ class UtilityController extends Controller
 
     public function generateProceduralEncounterCreatures(Request $request): JsonResponse
     {
-        $el = (float)$request->input('encounter_level', 1.0);
+        $minEl = (float)$request->input('min_el', $request->input('encounter_level', 1.0));
+        $maxEl = (float)$request->input('max_el', $minEl);
         $env = $request->input('environment');
         $type = $request->input('creature_type');
-        $result = \App\Services\Random\ProceduralGeneratorService::encounterCreatures($el, $env, $type);
-        return response()->json(['success' => true, 'data' => $result]);
+        $result = \App\Services\Random\AdventureGenerator::generateEncounterCreatures($minEl, $maxEl, $env, $type);
+        return response()->json([
+            'success' => true,
+            'data' => $result['monsters_and_npcs'] ?? [],
+            'encounter_level' => $result['encounter_level'] ?? $minEl,
+            'xp_award' => $result['xp_award'] ?? (int)($minEl * 300),
+        ]);
     }
 
     public function generateProceduralLocation(Request $request): JsonResponse

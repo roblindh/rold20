@@ -249,9 +249,9 @@ class CampaignHierarchyAndGeneratorsTest extends TestCase
         $this->assertStringContainsString('The Lost Crypts of Azur', $campHtml);
         $this->assertStringContainsString('Skeleton Ambush', $campHtml);
         $this->assertStringContainsString('The Sunken Catacombs', $campHtml);
-        $this->assertStringContainsString('Generate Foes (EL', $campHtml);
+        $this->assertStringContainsString('Generate Foes', $campHtml);
 
-        // 6. Test Combat Tracker loads this encounter
+        // 6. Test Combat Tracker loads this encounter and has End Encounter button
         $ctReq = Request::create("/utilities/combat-tracker", 'GET', [
             'campaign' => (string)$campId,
             'encounter' => (string)$encId,
@@ -259,6 +259,7 @@ class CampaignHierarchyAndGeneratorsTest extends TestCase
         $ctView = $this->utilityController->combatTracker($ctReq);
         $ctHtml = $ctView->render();
         $this->assertStringContainsString('Skeleton Ambush', $ctHtml);
+        $this->assertStringContainsString('End Encounter', $ctHtml);
 
         // Clean up
         DB::table('campaign_encounters')->where('id', $encId)->delete();

@@ -19,74 +19,164 @@ class AdventureGenerator
         'Labyrinth of the Weeping Moon',
         'The Lost Relic of the Sun God',
         'Conspiracy at Raven\'s Watch',
-        'The Clockwork Tomb of Zanark'
+        'The Clockwork Tomb of Zanark',
+        'Echoes of the Obsidian Spire',
+        'The Forgotten Catacombs of Oakhaven',
+        'Terror at Bloodstone Pass',
+        'The Emerald Serpent\'s Crypt',
+        'Vengeance of the Drowned King',
+        'The Ashfall Necropolis',
+        'Nightmares in the Mistwood',
+        'The Starlight Scepter of Eldoria',
+        'The Broken Crown of Ironhold',
+        'Wrath of the Stormcaller',
+        'The Phantom Bazaar of Caliphate Sands',
+        'Tomb of the Forgotten Primarch',
+        'The Abyssal Rift of Mor-Goth',
+        'Secrets of the Astral Observatory',
+        'The Howling Mines of Karak-Drak',
+        'Peril in the Wyrmtooth Fjord',
+        'The Gilded Masquerade of House Vane',
+        'Lament of the Cursed Archdruid',
+        'The Dreadforge of the Fire Giant King',
+        'Voyage to the Isle of Sirens',
+        'The Moonlit Infiltration of Castle Grey',
+        'The Ruined Bastion of Dawn',
+        'The Cinderfall Incursion',
+        'Trial of the Spectral Champions',
+        'The Bleeding Forest of Morvath',
+        'Caverns of the Blind Behemoth',
+        'The Sunken Palace of the Leviathan',
+        'Heist at the Vault of the Golden Scale',
+        'The Shattered Mirror of Nexus',
+        'Riddles of the Sphinx Valley',
+        'The Haunted Manor of Blackthorn Hill',
+        'The Doomsday Engine of Gnomereach',
+        'The Void-Touched Monolith',
+        'Bounty on the Ash Warlord',
+        'The Spider Queen\'s Web of Intrigue',
+        'The Chasm of Thousand Sorrows',
+        'The Runecarver\'s Last Testament',
+        'The Frostbitten Sanctuary of Ilmater'
     ];
 
     protected static array $incitingIncidents = [
-        'A terrified courier collapses at the tavern steps bearing a blood-stained seal and a plea for aid.',
-        'A series of bizarre disappearances has struck the miners in the nearby hill district.',
-        'An ancient celestial alignment has unsealed a forgotten crypt beneath the city catacombs.',
-        'A merchant guild caravan carrying an essential diplomatic peace offering has vanished in the mist.',
+        'A terrified courier collapses at the tavern steps bearing a blood-stained seal and an urgent plea for aid.',
+        'A series of bizarre disappearances has struck the miners in the nearby hill district during the last full moon.',
+        'An ancient celestial alignment has unsealed a forgotten crypt beneath the city catacombs, releasing dark emanations.',
+        'A merchant guild caravan carrying an essential diplomatic peace offering has vanished without a trace in the mist.',
         'A dying scout warns that a warband of raiders is mobilizing under the banner of a shadowy warlord.',
-        'Strange necrotic blights are corrupting the crops and turning livestock aggressive.',
-        'An eccentric collector offers an exorbitant bounty for the retrieval of a stolen arcane codex.'
+        'Strange necrotic blights are corrupting the crops and turning placid livestock into aggressive predators.',
+        'An eccentric collector offers an exorbitant bounty for the retrieval of a stolen arcane codex before midnight.',
+        'A mysterious ghost ship drifted into harbor with torn black sails, no living crew, and a locked vault in the hold.',
+        'The local temple\'s sacred relic was desecrated overnight, causing protective warding glyphs to flicker and fail.',
+        'Earth tremors have cracked open a subterranean sinkhole inside the town square, revealing lost pre-cataclysm architecture.',
+        'A beloved local guildmaster has been falsely accused of high treason and seeks trusted outsiders to clear their name.',
+        'Wild planar rifts are opening across the countryside, spewing out elemental surges and disoriented planar beasts.',
+        'A fugitive scholar seeks sanctuary with the party, carrying forbidden blueprints of a devastating siege weapon.',
+        'The high priest fell into a comatose trance, uttering cryptic warnings of a dormant god stirring beneath the earth.',
+        'Bandits demanding tribute have blockaded the only mountain pass supplying food and medicine to the province.',
+        'An arcane pulse radiated from the abandoned wizard\'s tower on the cliffs, causing all magic items to glow violently.',
+        'A desperate distress signal using sky-runes was ignited over the frontier outpost before going dark.',
+        'A notorious bounty hunter has marked a member of the party\'s ally network, giving them 48 hours to flee or die.',
+        'Ancient statues throughout the provincial capital wept tears of molten silver, accompanied by apocalyptic omens.',
+        'A secret underground auction of prohibited magical contraband has been compromised by rival infiltrate syndicates.',
+        'The river running through the valley turned to ash and sulfur, poisoning the irrigation canals and water supplies.',
+        'A legendary hero\'s tomb was ransacked, and rumors say the resurrected hero now walks the land seeking vengeance.'
     ];
 
     protected static array $mainObjectives = [
-        'Infiltrate a fortified stronghold and recover stolen documents before dawn.',
-        'Navigate a treacherous subterranean ruin to neutralize a malfunctioning magical artifact.',
-        'Track and apprehend a rogue arcanist who escaped from the high inquisitor\'s custody.',
-        'Defend a remote garrison outpost against overwhelming waves of monstrous besiegers.',
-        'Explore a newly revealed planar rift to extract rare celestial crystals.',
-        'Uncover the mastermind behind an assassination plot targeting the regional governor.',
-        'Rescue captured townsfolk before they are sacrificed in a dark ritual atop the mountain peak.'
+        'Infiltrate a heavily fortified stronghold and recover stolen treaties before the opposing army marches at dawn.',
+        'Navigate a treacherous subterranean ruin to neutralize a malfunctioning elemental reactor before it detonates.',
+        'Track and apprehend a rogue arcanist who escaped from high-security inquisitorial custody with dangerous knowledge.',
+        'Defend a remote garrison outpost against escalating waves of monstrous besiegers until relief forces arrive.',
+        'Explore a newly revealed planar rift to extract rare celestial crystals required for a life-saving panacea.',
+        'Uncover the mastermind behind a web of political assassinations targeting regional council leaders.',
+        'Rescue captured townsfolk before they are sacrificed in an unholy blood ritual atop the mountain peak.',
+        'Retrieve the lost scepter of kingship from a beast-infested sunken temple to avert a looming civil war.',
+        'Cleanse an ancient forest heart-tree of a parasite corruption that is turning wildlife into shadow monstrosities.',
+        'Escort an eccentric cartographer through uncharted monster-infested badlands to chart a hidden passage.',
+        'Solve the interlocking puzzle locks of a clockwork dungeon to disarm a doomsday contraption.',
+        'Perform an undercover heist within a corrupt nobleman\'s manor during an opulent masquerade ball.',
+        'Defeat an ancient slumbering wyrm before it fully awakens and incinerates neighboring trade settlements.',
+        'Recover fragments of a shattered holy blade scattered across three perilous sanctums of elemental trial.',
+        'Seal five abyssal conduits carved into subterranean obelisks before planar demons flood the surface realm.',
+        'Negotiate a delicate alliance between two hostile factions while rooting out saboteurs trying to ignite war.',
+        'Exorcise a vengeful spectral lord haunting an abandoned fortress and release the trapped souls of the garrison.',
+        'Sabotage the war engines and supply depots of an invading legion camped across the river delta.'
     ];
 
     protected static array $antagonistFactions = [
-        'The Obsidian Cabal: A ruthless syndicate of renegade warlocks and cutthroats.',
-        'The Ironfang Warband: Disciplined hobgoblin mercenaries and their ferocious beast companions.',
-        'Cult of the Devouring Void: Fanatical nihilists seeking to awaken an elder planar entity.',
-        'The Ashen Syndicate: Corrupt merchants and guild officials pulling strings from the shadows.',
-        'The Bloodmoon Pack: Werecreatures and shadow beasts terrorizing the frontier forests.',
-        'The Awakened Legion: Undead warriors bound by ancient oaths to conquer living lands.'
+        'The Obsidian Cabal: A ruthless syndicate of renegade warlocks, shadow dancers, and black-market flesh peddlers.',
+        'The Ironfang Warband: Disciplined hobgoblin legionnaires, goblin sappers, and ferocious dire beast vanguards.',
+        'Cult of the Devouring Void: Fanatical nihilists seeking to unseal an elder planar horror from beyond the stars.',
+        'The Ashen Syndicate: Corrupt merchant princes and thieves guild officials pulling economic strings from the shadows.',
+        'The Bloodmoon Pack: Cursed lycanthropes, feral skinwalkers, and shadow wolves terrorizing the frontier borderlands.',
+        'The Awakened Legion: Undead warriors and skeletal knights bound by ancient eternal oaths to conquer living lands.',
+        'The Venomscale Brood: Fanatical yuan-ti purebloods and serpent cultists infiltrating noble houses and city courts.',
+        'The Frostborn Clan: Ruthless frost giant raiders and winter wolves descending from frozen mountain peaks.',
+        'The Clockwork Sovereignty: Malfunctioning biomechanical automatons executing an obsolete purge protocol.',
+        'The Drowned Covenant: Mutated aquatic aberrations and deep-sea cultists demanding humanoid sacrifices along coastlines.',
+        'The Scarlet Infallibles: Fanatical inquisitors condemning entire towns under the guise of cleansing heresy.',
+        'The Rakshasa Diarchy: Shapeshifting fiends orchestrating political collapse for their planar masters.'
     ];
 
     protected static array $complicationsAndTwists = [
-        'The person who hired the party is actually an undercover agent of the enemy faction.',
-        'A sudden raging blizzard or torrential thunderstorm cuts off all retreat routes.',
-        'A rival adventuring party is pursuing the exact same objective with ruthless methods.',
-        'The artifact in question is sentient, unstable, and actively attempting to corrupt its carrier.',
-        'Local authorities believe the party is responsible for the recent crimes and send bounties.',
-        'A peaceful third faction is caught in the crossfire and needs protection during the mission.',
-        'The dungeon is slowly flooding with poison gas or rising subterranean lava on a ticking clock.'
+        'The person who hired the party is actually an undercover lieutenant of the opposing enemy faction.',
+        'A sudden raging blizzard, toxic dust storm, or torrential flash flood cuts off all known retreat routes.',
+        'A rival adventuring company is pursuing the exact same objective with ruthless, no-holds-barred methods.',
+        'The artifact in question is sentient, telepathically manipulative, and actively trying to turn allies against one another.',
+        'Local municipal authorities mistake the party for the perpetrators and place a heavy bounty on their capture.',
+        'A peaceful refugee caravan is trapped in the crossfire and requires immediate tactical evacuation.',
+        'The dungeon is slowly flooding with poison gas, rising magma, or collapsing ceilings on a strict ticking clock.',
+        'Magic behaves erratically within the region: spells trigger wild surges and energy feedback.',
+        'The primary target is infected with a contagious planar curse that passes to anyone within melee contact.',
+        'A powerful third-party apex predator lurks in the area, hunting both the party and their enemies indiscriminately.',
+        'The stronghold\'s structural supports are so fragile that explosive or heavy blunt attacks risk collapsing the cavern.',
+        'The hostages have been charmed or brainwashed to fight alongside their captors to the death.'
     ];
 
     protected static array $climaxScenarios = [
-        'A dramatic confrontation atop a crumbling stone bridge over a roaring abyss.',
-        'A desperate battle to interrupt a glowing arcane ritual as planar rifts tear open.',
-        'A running duel across the rooftops of a burning city quarter during a festival.',
-        'A showdown in the inner sanctum against the villain empowered by an ancient relic.',
-        'A tactical battle while defending a structural mechanism from collapsing the entire cavern.'
+        'A dramatic duel atop a crumbling stone bridge arching over a bottomless abyss filled with swirling lightning.',
+        'A desperate race against time to interrupt an unholy arcane ritual as planar vortexes tear open the sky.',
+        'A high-speed running battle across rooftops and swinging cranes of a burning city quarter during fireworks.',
+        'A showdown in the inner sanctum against the chief antagonist newly empowered by a pulsing demonic relic.',
+        'A tactical siege defense while manning heavy ballistas and defending the main gates against a monstrous vanguard.',
+        'A zero-gravity melee inside a floating chamber of shattered planar architecture spinning around an energy singularity.',
+        'A battle aboard the deck of an airship or flagship during a hurricane as sails tear and lightning strikes the masts.',
+        'A fight amidst shifting clockwork gears and grinding pendulum blades that change the battlefield every round.',
+        'A confrontation in a flooded cathedral where combatants must manage breath, flotation, and aquatic hazards.'
     ];
 
     protected static array $encounterEnvironments = [
-        'Dungeon: Moss-covered stone corridors with dripping stalactites and slick flagstones.',
-        'Wilderness: Dense pine forest shrouded in thick fog with fallen timber obstacles.',
-        'Urban: Narrow cobblestone alleyways surrounded by steep tenement roofs and balconies.',
-        'Cavern: Subterranean fissure lit by bioluminescent fungi and bubbling sulfur pools.',
-        'Ruins: Crumbling temple courtyard flanked by broken marble columns and overgrown statues.',
-        'Swamp: Murky bog with treacherous quicksand patches, waist-deep stagnant water, and swarms.',
-        'Mountain: High precipice with biting freezing winds, loose scree, and sheer drops.'
+        'Dungeon: Moss-covered stone corridors with dripping stalactites, slick flagstones, and echoing drafts.',
+        'Wilderness: Dense ancient pine forest shrouded in thick mist with fallen timber barriers and concealed pitfalls.',
+        'Urban: Narrow cobblestone alleyways flanked by towering half-timbered tenements, overhanging roofs, and balconies.',
+        'Cavern: Vast subterranean fissure lit by luminescent purple fungi and bubbling thermal sulfur springs.',
+        'Ruins: Overgrown courtyard of a shattered temple flanked by cracked marble columns and headless statues.',
+        'Swamp: Murky bog with treacherous quicksand patches, waist-deep stagnant water, and buzzing insect swarms.',
+        'Mountain: High precipice with biting subzero winds, narrow scree ledges, and sheer 300-foot vertical drops.',
+        'Desert: Scorching sand dunes and baked sandstone canyon with zero cover and blinding heat shimmer.',
+        'Underdark: Jet-black basalt chambers crisscrossed by webs, bottomless ravines, and phosphorescent lichen.',
+        'Planar Rift: Floating obsidian islands linked by chains of solid force, bathed in iridescent aurora.',
+        'Sunken Vault: Half-submerged stone chambers with waist-deep brine, barnacle-encrusted doors, and rushing sluices.',
+        'Volcanic Caldera: Smoldering pumice flats bordered by flowing lava channels and toxic sulfur vents.',
+        'Crypts: Ancient ossuary lined with thousands of skulls, cold marble sarcophagi, and funeral urn niches.'
     ];
 
     protected static array $tacticalTwists = [
-        'Dim lighting / heavy fog grants partial concealment beyond 3 squares.',
-        'Unstable floor / crumbling masonry: creatures taking rapid movement must check Balance.',
-        'Rushing water / strong current pushing combatants 2 squares downstream each round.',
-        'Active magical runes: stepping on glowing glyphs triggers bursts of elemental energy.',
-        'Hostages or innocent bystanders caught in the area of effect.',
-        'Reinforcements arrive in round 3 from behind the party.',
-        'Escalating fires spreading across wooden scaffolding every 2 rounds.'
+        'Dim lighting / heavy mist grants partial concealment beyond 3 squares (15 feet).',
+        'Unstable floor / crumbling masonry: creatures taking rapid sprint movement must check Balance or stumble.',
+        'Rushing water / strong current pushes unsecured combatants 2 squares downstream at the start of each round.',
+        'Active magical runes: stepping on glowing floor glyphs triggers bursts of radiant or elemental energy.',
+        'Innocent hostages or civilian bystanders are caught in the line of fire and grant soft cover to enemies.',
+        'Enemy reinforcements arrive in round 3 from concealed side passages behind the party.',
+        'Escalating fires spread across wooden scaffolding and furniture every 2 rounds, blocking squares.',
+        'Extreme verticality: snipers and spellcasters hold fortified high ground with +2 elevation defense.',
+        'Heavy smoke / toxic spores require Fortitude checks against coughing fits, imposing -2 to attack rolls.',
+        'Antimagic aura or wild magic zone: spell costs fluctuate and magical effects trigger random collateral bursts.',
+        'Swinging blade traps and falling stone counterweights activate on specific initiative counts.',
+        'Barricades and arrow slits provide enemies with improved cover (+4 DeCa/DeCp) until breached.'
     ];
 
     /**
@@ -126,31 +216,53 @@ class AdventureGenerator
         $twist = self::$tacticalTwists[array_rand(self::$tacticalTwists)];
 
         $encounterNames = [
-            'combat' => ['Ambush at the Crossroads', 'The Sentry Watchtower', 'Den of the Beast', 'Guard Patrol Skirmish', 'Sanctum Defenders', 'Crypt Stalkers', 'Raid on the Caravan'],
-            'social' => ['Tense Guild Parley', 'Interrogation of the Informant', 'Bribe at the City Gate', 'Courtly Arbitration', 'Hostage Negotiation'],
-            'trap_hazard' => ['The Crushing Pendulum Corridor', 'Flooded Sluice Chamber', 'Glyph of Arcane Ruin', 'Poison Dart Gauntlet', 'The Collapsing Bridge'],
-            'puzzle' => ['The Astral Cipher Wheel', 'Trial of the Three Statues', 'Reflecting Mirror Matrix', 'The Elemental Pillars'],
-            'exploration' => ['Navigating the Misty Chasm', 'The Submerged Crypt Passage', 'Scaling the Frostfall Cliff', 'Tracking Through the Wastes']
+            'combat' => [
+                'Ambush at the Crossroads', 'The Sentry Watchtower', 'Den of the Apex Beast', 
+                'Guard Patrol Skirmish', 'Sanctum Elite Defenders', 'Crypt Stalkers in the Dark', 
+                'Raid on the Supply Depot', 'Chamber of the Behemoth', 'The Bloodstained Gatehouse',
+                'Infiltration Interception', 'The Obsidian Throne Guard', 'Assault on the Ritual Platform'
+            ],
+            'social' => [
+                'Tense Guild Parley', 'Interrogation of the Informant', 'Bribe at the City Gate', 
+                'Courtly Arbitration', 'Hostage Negotiation', 'Bazaar Shakedown', 
+                'Audience with the Crime Lord', 'Smuggler\'s Secret Bargain', 'Trial of the False Accusation'
+            ],
+            'trap_hazard' => [
+                'The Crushing Pendulum Corridor', 'Flooded Sluice Chamber', 'Glyph of Arcane Ruin', 
+                'Poison Dart Gauntlet', 'The Collapsing Bridge', 'Spike Pit Labyrinth', 
+                'Suffocating Sand Funnel', 'The Blazing Oil Floor', 'Chamber of Screaming Souls'
+            ],
+            'puzzle' => [
+                'The Astral Cipher Wheel', 'Trial of the Three Statues', 'Reflecting Mirror Matrix', 
+                'The Elemental Pillars', 'The Musical Crystal Lock', 'The Weighing Scales of Truth', 
+                'Labyrinth of Shifting Doors', 'The Celestial Zodiac Floor'
+            ],
+            'exploration' => [
+                'Navigating the Misty Chasm', 'The Submerged Crypt Passage', 'Scaling the Frostfall Cliff', 
+                'Tracking Through the Wastes', 'The Treacherous Rope Bridge', 'Fording the Raging Torrent', 
+                'The Desolate Lava Crossing', 'Ascending the Ruined Bell Tower'
+            ]
         ];
 
         $namePool = $encounterNames[$type] ?? $encounterNames['combat'];
         $name = $namePool[array_rand($namePool)];
 
         $descriptions = [
-            'combat' => "Hostile combatants have taken tactical positions within the area. They attempt to use elevation and cover to gain the upper hand.",
-            'social' => "A high-stakes interaction where wrong words or failed diplomacy checks could escalate to combat or closed doors.",
-            'trap_hazard' => "A lethal mechanical or magical security mechanism designed to deter intruders.",
-            'puzzle' => "An ancient riddle or interactive contraption requiring skill checks and player ingenuity to bypass.",
-            'exploration' => "Treacherous terrain and environmental obstacles testing climbing, swimming, survival, and spatial awareness."
+            'combat' => "Hostile combatants have fortified tactical positions in this area, utilizing cover, elevation, and terrain features to repel intruders.",
+            'social' => "A tense, high-stakes interaction where every word and skill check (Diplomacy, Bluff, Intimidate, Insight) influences the outcome.",
+            'trap_hazard' => "A lethal mechanical, chemical, or magical security hazard engineered to eliminate intruders or delay their progress.",
+            'puzzle' => "An ancient mechanical contraption or arcane riddle requiring collective observation, deduction, and skill tests to solve.",
+            'exploration' => "Perilous terrain and extreme environmental hazards requiring climbing, swimming, survival, and athletics checks to overcome."
         ];
 
         $desc = $descriptions[$type] ?? $descriptions['combat'];
         $foes = [];
 
         if ($type === 'combat') {
-            $foes = self::generateEncounterCreatures($el, $env);
-            if (!empty($foes)) {
-                $foeNames = array_map(fn($f) => "{$f['count']}x {$f['name']}", $foes);
+            $foeResult = self::generateEncounterCreatures($el, $el, $env);
+            $foes = $foeResult['monsters_and_npcs'] ?? $foeResult;
+            if (!empty($foes) && is_array($foes)) {
+                $foeNames = array_map(fn($f) => ($f['count'] ?? 1) . 'x ' . ($f['name'] ?? 'Foe'), $foes);
                 $name = "Battle: " . implode(' & ', $foeNames);
             }
         }
@@ -169,77 +281,143 @@ class AdventureGenerator
     }
 
     /**
-     * Procedurally generate suitable balanced creatures for a given Encounter Level (EL).
+     * Procedurally generate suitable balanced creatures for a given Encounter Level (EL) or EL range.
      *
-     * In RoL d20 rules, encounter compositions adhere to standard challenge budgets:
-     * - Solo Boss: 1 creature of level EL+1 (or EL+2)
-     * - Duo / Pair: 2 creatures of level EL
-     * - Trio: 3 creatures of level EL-1
-     * - Squad: 4 creatures of level EL-2
-     * - Mob: 5-6 creatures of level EL-3
-     * - Swarm: 8-10 creatures of level EL-4
-     * - Mixed Patrol: 1 Leader of level EL + 2-4 Minions of level EL-2
+     * In RoL d20 rules, encounter combinations strictly follow `ref_encountercombos`:
+     * - EL 1: 1x Lvl 3 OR 2x Lvl 1 OR 3x Lvl 0/0.5 OR 4x Lvl 0.33 OR Mixed (1x Lvl 2 + 1x Lvl 0.5)
+     * - EL 2: 1x Lvl 4 OR 2x Lvl 2 OR 3x Lvl 1 OR 4x Lvl 0.5 OR Mixed (1x Lvl 3 + 1x Lvl 1)
+     * - EL N: 1x Lvl N+2 OR 2x Lvl N OR 3x Lvl N-1 OR 4x Lvl N-2 OR 6x Lvl N-3 OR Mixed (1x Lvl N+1 + 2x Lvl N-1)
      *
-     * @return array<int, array{name: string, count: int, level: int, hp: int, creature_id: int|null, type: string}>
+     * @return array{encounter_level: float, xp_award: int, monsters_and_npcs: array<int, array{name: string, count: int, level: int, hp: int, creature_id: int|null, type: string}>, foes: array}
      */
-    public static function generateEncounterCreatures(float $el, ?string $environment = null, ?string $creatureType = null): array
+    public static function generateEncounterCreatures(?float $minEl = 1.0, ?float $maxEl = null, ?string $environment = null, ?string $creatureType = null): array
     {
-        $el = max(0.5, $el);
-        $intEL = (int)round($el);
+        $min = max(1.0, $minEl ?? 1.0);
+        $max = max($min, $maxEl ?? $min);
 
-        // Determine formation options based on EL
-        $formations = [];
-        if ($el <= 1.0) {
-            $formations = [
-                ['type' => 'solo', 'level' => 1, 'count' => 1],
-                ['type' => 'duo', 'level' => 1, 'count' => 2],
-                ['type' => 'trio', 'level' => 1, 'count' => 3],
-                ['type' => 'squad', 'level' => 0, 'count' => 4],
-            ];
-        } elseif ($el <= 3.0) {
-            $formations = [
-                ['type' => 'solo', 'level' => $intEL + 1, 'count' => 1],
-                ['type' => 'duo', 'level' => $intEL, 'count' => 2],
-                ['type' => 'trio', 'level' => max(1, $intEL - 1), 'count' => 3],
-                ['type' => 'squad', 'level' => max(0, $intEL - 2), 'count' => 4],
-                ['type' => 'mixed', 'leader_level' => $intEL, 'minion_level' => max(0, $intEL - 2), 'minion_count' => 3],
-            ];
-        } else {
-            $formations = [
-                ['type' => 'solo', 'level' => $intEL + 1, 'count' => 1],
-                ['type' => 'duo', 'level' => $intEL, 'count' => 2],
-                ['type' => 'trio', 'level' => max(1, $intEL - 1), 'count' => 3],
-                ['type' => 'squad', 'level' => max(1, $intEL - 2), 'count' => 4],
-                ['type' => 'mob', 'level' => max(1, $intEL - 3), 'count' => 6],
-                ['type' => 'mixed', 'leader_level' => $intEL, 'minion_level' => max(1, $intEL - 2), 'minion_count' => 4],
+        // Pick a target integer Encounter Level within the chosen range
+        $targetEL = mt_rand((int)round($min), (int)round($max));
+        $targetEL = max(1, min(40, $targetEL));
+
+        // Query database encounter combos table
+        $comboRow = DB::table('ref_encountercombos')->where('EL', $targetEL)->first();
+
+        $formationOptions = [];
+
+        if ($comboRow) {
+            // 1. Solo Boss: Creatures1 (e.g. "3" for EL 1, "4" for EL 2, "N+2" for EL N)
+            if (!empty($comboRow->Creatures1) && is_numeric($comboRow->Creatures1)) {
+                $formationOptions[] = [
+                    'type' => 'solo',
+                    'count' => 1,
+                    'level' => (int)$comboRow->Creatures1,
+                    'suffix' => ' (Boss)'
+                ];
+            }
+
+            // 2. Duo: Creatures2 (e.g. "2 x 1" for EL 1, "2 x 2" for EL 2, "2 x N" for EL N)
+            if (!empty($comboRow->Creatures2) && preg_match('/(\d+)\s*x\s*(\d+)/i', $comboRow->Creatures2, $m)) {
+                $formationOptions[] = [
+                    'type' => 'duo',
+                    'count' => (int)$m[1],
+                    'level' => (int)$m[2],
+                    'suffix' => ''
+                ];
+            }
+
+            // 3. Trio: Creatures3 (e.g. "3 x 1/2" for EL 1 -> Lvl 0/1, "3 x 1" for EL 2, "3 x 2" for EL 3)
+            if (!empty($comboRow->Creatures3) && preg_match('/(\d+)\s*x\s*([\d\/]+)/i', $comboRow->Creatures3, $m)) {
+                $lvlVal = self::parseFractionLevel($m[2]);
+                $formationOptions[] = [
+                    'type' => 'trio',
+                    'count' => (int)$m[1],
+                    'level' => $lvlVal,
+                    'suffix' => ''
+                ];
+            }
+
+            // 4. Squad: Creatures4 (e.g. "4 x 1/2" for EL 2, "4 x 1" for EL 3, "4 x 2" for EL 4)
+            if (!empty($comboRow->Creatures4) && preg_match('/(\d+)\s*x\s*([\d\/]+)/i', $comboRow->Creatures4, $m)) {
+                $lvlVal = self::parseFractionLevel($m[2]);
+                $formationOptions[] = [
+                    'type' => 'squad',
+                    'count' => (int)$m[1],
+                    'level' => $lvlVal,
+                    'suffix' => ''
+                ];
+            }
+
+            // 5. Mob: Creatures6 (e.g. "6 x 1" for EL 4, "6 x 2" for EL 5)
+            if (!empty($comboRow->Creatures6) && preg_match('/(\d+)\s*x\s*([\d\/]+)/i', $comboRow->Creatures6, $m)) {
+                $lvlVal = self::parseFractionLevel($m[2]);
+                $formationOptions[] = [
+                    'type' => 'mob',
+                    'count' => (int)$m[1],
+                    'level' => $lvlVal,
+                    'suffix' => ''
+                ];
+            }
+
+            // 6. Swarm: Creatures8
+            if (!empty($comboRow->Creatures8) && $comboRow->Creatures8 !== '-' && preg_match('/(\d+)\s*x\s*([\d\/]+)/i', $comboRow->Creatures8, $m)) {
+                $lvlVal = self::parseFractionLevel($m[2]);
+                $formationOptions[] = [
+                    'type' => 'swarm',
+                    'count' => (int)$m[1],
+                    'level' => $lvlVal,
+                    'suffix' => ''
+                ];
+            }
+
+            // 7. Mixed Leader + Minions: Mixed column (e.g. "2 + 1/2" for EL 1, "3 + 1" for EL 2, "4 + 2" for EL 3)
+            if (!empty($comboRow->Mixed) && preg_match('/([\d\/]+)\s*\+\s*([\d\/]+)/i', $comboRow->Mixed, $m)) {
+                $leaderLvl = self::parseFractionLevel($m[1]);
+                $minionLvl = self::parseFractionLevel($m[2]);
+                $formationOptions[] = [
+                    'type' => 'mixed',
+                    'leader_level' => max(1, $leaderLvl),
+                    'minion_level' => max(0, $minionLvl),
+                    'minion_count' => ($targetEL <= 1 ? 2 : 3)
+                ];
+            }
+        }
+
+        // Fallback standard math if table is missing row
+        if (empty($formationOptions)) {
+            $formationOptions = [
+                ['type' => 'solo', 'count' => 1, 'level' => $targetEL + 2, 'suffix' => ' (Boss)'],
+                ['type' => 'duo', 'count' => 2, 'level' => $targetEL, 'suffix' => ''],
+                ['type' => 'trio', 'count' => 3, 'level' => max(1, $targetEL - 1), 'suffix' => ''],
+                ['type' => 'mixed', 'leader_level' => $targetEL + 1, 'minion_level' => max(0, $targetEL - 1), 'minion_count' => 2]
             ];
         }
 
-        $chosenFormation = $formations[array_rand($formations)];
+        // Pick one formation randomly
+        $formation = $formationOptions[array_rand($formationOptions)];
         $foes = [];
 
-        if ($chosenFormation['type'] === 'mixed') {
+        if ($formation['type'] === 'mixed') {
             // Pick Leader
-            $leaderCr = self::findCreatureForLevel($chosenFormation['leader_level'], $environment, $creatureType);
+            $leaderCr = self::findCreatureForLevel($formation['leader_level'], $environment, $creatureType);
             if ($leaderCr) {
                 $foes[] = self::formatCreatureFoe($leaderCr, 1, " (Leader)");
             }
             // Pick Minions
-            $minionCr = self::findCreatureForLevel($chosenFormation['minion_level'], $environment, $creatureType, $leaderCr ? $leaderCr->ID : null);
+            $minionCr = self::findCreatureForLevel($formation['minion_level'], $environment, $creatureType, $leaderCr ? $leaderCr->ID : null);
             if ($minionCr) {
-                $foes[] = self::formatCreatureFoe($minionCr, $chosenFormation['minion_count'], " (Minion)");
+                $foes[] = self::formatCreatureFoe($minionCr, $formation['minion_count'], " (Minion)");
             }
         } else {
             // Single creature group
-            $cr = self::findCreatureForLevel($chosenFormation['level'], $environment, $creatureType);
+            $cr = self::findCreatureForLevel($formation['level'], $environment, $creatureType);
             if ($cr) {
-                $foes[] = self::formatCreatureFoe($cr, $chosenFormation['count']);
+                $foes[] = self::formatCreatureFoe($cr, $formation['count'], $formation['suffix'] ?? '');
             }
         }
 
-        // Fallback if no creature matched database query
+        // Fallback if no matching creature found in ref_creatures
         if (empty($foes)) {
-            $fallbackLvl = max(1, $intEL);
+            $fallbackLvl = max(1, $targetEL);
             $foes[] = [
                 'name' => 'Monster Foe',
                 'count' => 2,
@@ -250,33 +428,48 @@ class AdventureGenerator
             ];
         }
 
-        return $foes;
+        $xpAward = $targetEL * 300;
+
+        return [
+            'encounter_level' => (float)$targetEL,
+            'xp_award' => $xpAward,
+            'monsters_and_npcs' => $foes,
+            'foes' => $foes,
+        ];
     }
 
     /**
-     * Find a suitable creature matching the target level, optional environment, and creature type
+     * Parse fractional creature levels like "1/2", "1/3", "1/4" to integer 0 (or 1).
+     */
+    protected static function parseFractionLevel(string $str): int
+    {
+        $str = trim($str);
+        if (strpos($str, '/') !== false) {
+            return 0; // Level 0 represents sub-1 fractional RL/CL creatures in ref_creatures
+        }
+        return (int)$str;
+    }
+
+    /**
+     * Find a creature in ref_creatures with strict exact level priority, environment matching, and type filtering.
      */
     protected static function findCreatureForLevel(int $targetLevel, ?string $environment = null, ?string $creatureType = null, ?int $excludeId = null): ?object
     {
-        $query = DB::table('ref_creatures');
+        $baseQuery = DB::table('ref_creatures');
 
         if ($excludeId !== null) {
-            $query->where('ID', '!=', $excludeId);
+            $baseQuery->where('ID', '!=', $excludeId);
         }
-
-        // Target level range (allow +/- 1 level if exact level not available)
-        $targetLevel = max(0, $targetLevel);
-        $query->whereBetween('BaseRL', [max(0, $targetLevel - 1), $targetLevel + 1]);
 
         // Filter by creature type if specified
         if (!empty($creatureType)) {
-            $query->where('CreatureType', 'LIKE', "%{$creatureType}%");
+            $baseQuery->where('CreatureType', 'LIKE', "%{$creatureType}%");
         }
 
-        // Extract potential environment keywords (e.g. "Dungeon", "Forest", "Cavern", "Swamp", "Mountain", "Ruins")
+        // Extract potential environment keywords
         $envKeyword = null;
         if (!empty($environment)) {
-            $keywords = ['Dungeon', 'Forest', 'Mountain', 'Swamp', 'Desert', 'Cavern', 'Ruins', 'Aquatic', 'Plains', 'Urban', 'Underdark'];
+            $keywords = ['Dungeon', 'Forest', 'Mountain', 'Swamp', 'Desert', 'Cavern', 'Ruins', 'Aquatic', 'Plains', 'Urban', 'Underdark', 'Crypt', 'Volcanic'];
             foreach ($keywords as $kw) {
                 if (stripos($environment, $kw) !== false) {
                     $envKeyword = $kw;
@@ -285,23 +478,30 @@ class AdventureGenerator
             }
         }
 
-        $allMatches = (clone $query)->get();
+        // 1. Priority 1: Exact BaseRL match
+        $exactQuery = (clone $baseQuery)->where('BaseRL', $targetLevel);
+        $exactMatches = $exactQuery->get();
 
-        // 1. Try environment keyword match
-        if ($envKeyword && $allMatches->isNotEmpty()) {
-            $envMatches = $allMatches->filter(function ($cr) use ($envKeyword) {
-                return (stripos((string)($cr->Environment ?? ''), $envKeyword) !== false) ||
-                       (stripos((string)($cr->Descriptors ?? ''), $envKeyword) !== false) ||
-                       (stripos((string)($cr->Name ?? ''), $envKeyword) !== false);
-            });
-            if ($envMatches->isNotEmpty()) {
-                return $envMatches->random();
+        if ($exactMatches->isNotEmpty()) {
+            if ($envKeyword) {
+                $envMatches = $exactMatches->filter(function ($cr) use ($envKeyword) {
+                    return (stripos((string)($cr->Environment ?? ''), $envKeyword) !== false) ||
+                           (stripos((string)($cr->Descriptors ?? ''), $envKeyword) !== false) ||
+                           (stripos((string)($cr->Name ?? ''), $envKeyword) !== false);
+                });
+                if ($envMatches->isNotEmpty()) {
+                    return $envMatches->random();
+                }
             }
+            return $exactMatches->random();
         }
 
-        // 2. Return random match from level pool
-        if ($allMatches->isNotEmpty()) {
-            return $allMatches->random();
+        // 2. Priority 2: Closest level (+/- 1)
+        $adjacentQuery = (clone $baseQuery)->whereBetween('BaseRL', [max(0, $targetLevel - 1), $targetLevel + 1]);
+        $adjMatches = $adjacentQuery->get();
+
+        if ($adjMatches->isNotEmpty()) {
+            return $adjMatches->random();
         }
 
         // 3. Fallback: closest level across all creatures
