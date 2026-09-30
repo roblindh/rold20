@@ -2632,17 +2632,22 @@ class UtilityController extends Controller
             'added_at' => date('Y-m-d H:i:s'),
         ];
 
-        $currentVault = [];
+        $currentFunds = 0;
+        $currentItems = [];
         if (!empty($campaign->Vault)) {
             $raw = $campaign->Vault;
-            if (str_starts_with($raw, '[')) {
-                $currentVault = json_decode($raw, true) ?? [];
+            if (str_starts_with($raw, '{')) {
+                $parsed = json_decode($raw, true) ?? [];
+                $currentFunds = (int)($parsed['funds'] ?? 0);
+                $currentItems = $parsed['items'] ?? [];
+            } elseif (str_starts_with($raw, '[')) {
+                $currentItems = json_decode($raw, true) ?? [];
             }
         }
-        $currentVault[] = $itemData;
+        $currentItems[] = $itemData;
 
         DB::table('campaigns')->where('ID', $campaignId)->update([
-            'Vault' => json_encode($currentVault),
+            'Vault' => json_encode(['funds' => $currentFunds, 'items' => $currentItems]),
         ]);
 
         return response()->json([
@@ -2664,23 +2669,28 @@ class UtilityController extends Controller
         $itemIdx = $request->input('item_index');
         $itemId = $request->input('item_id');
 
-        $currentVault = [];
+        $currentFunds = 0;
+        $currentItems = [];
         if (!empty($campaign->Vault)) {
             $raw = $campaign->Vault;
-            if (str_starts_with($raw, '[')) {
-                $currentVault = json_decode($raw, true) ?? [];
+            if (str_starts_with($raw, '{')) {
+                $parsed = json_decode($raw, true) ?? [];
+                $currentFunds = (int)($parsed['funds'] ?? 0);
+                $currentItems = $parsed['items'] ?? [];
+            } elseif (str_starts_with($raw, '[')) {
+                $currentItems = json_decode($raw, true) ?? [];
             }
         }
 
         if ($itemId !== null) {
-            $currentVault = array_values(array_filter($currentVault, fn($it) => ($it['id'] ?? '') !== $itemId));
-        } elseif ($itemIdx !== null && isset($currentVault[(int)$itemIdx])) {
-            unset($currentVault[(int)$itemIdx]);
-            $currentVault = array_values($currentVault);
+            $currentItems = array_values(array_filter($currentItems, fn($it) => ($it['id'] ?? '') !== $itemId));
+        } elseif ($itemIdx !== null && isset($currentItems[(int)$itemIdx])) {
+            unset($currentItems[(int)$itemIdx]);
+            $currentItems = array_values($currentItems);
         }
 
         DB::table('campaigns')->where('ID', $id)->update([
-            'Vault' => json_encode($currentVault),
+            'Vault' => json_encode(['funds' => $currentFunds, 'items' => $currentItems]),
         ]);
 
         return back()->with('status', 'Vault item removed successfully.');
@@ -3288,9 +3298,13 @@ class UtilityController extends Controller
                     'size_abbr' => $heritage['size_abbr'] ?? ($sizeObj ? ($sizeObj->Abbreviation ?? 'M') : 'M'),
                     'descriptors' => $entity->Descriptors ?? '',
                     'hp_max' => (int)($health['hp']['total'] ?? 20),
+                    'hp_curr' => (int)($health['hp']['current'] ?? $health['hp']['total'] ?? 20),
                     'sp_max' => (int)($health['sp']['total'] ?? 20),
+                    'sp_curr' => (int)($health['sp']['current'] ?? $health['sp']['total'] ?? 20),
                     'pp_max' => (int)($health['pp']['total'] ?? 0),
+                    'pp_curr' => (int)($health['pp']['current'] ?? $health['pp']['total'] ?? 0),
                     'ap_max' => (int)($actions['ap'] ?? (10 + $level)),
+                    'ap_curr' => (int)($actions['ap'] ?? (10 + $level)),
                     'init_mod' => (int)($defenses['init_mod'] ?? 0),
                     'deca' => (int)($defenses['dec_active'] ?? 10),
                     'decp' => (int)($defenses['dec_passive'] ?? 10),
@@ -3300,6 +3314,8 @@ class UtilityController extends Controller
                     'ref' => (int)($defenses['ref'] ?? 10),
                     'will' => (int)($defenses['will'] ?? 10),
                     'speed' => (string)($calcState['speeds']['display'] ?? ($entity->GroundSpeed ?? 30) . "'"),
+                    'conditions' => [],
+                    'notes' => !empty($entity->Descriptors) ? "Descriptors: {$entity->Descriptors}" : '',
                     'attacks' => $attackList,
                     'main_attack' => $mainAttack,
                 ];
@@ -3369,6 +3385,7 @@ class UtilityController extends Controller
             ['name' => 'Compelled', 'desc' => 'Forced to obey instructions of commanding creature.'],
             ['name' => 'Confused', 'desc' => 'Acts unpredictably; roll on confusion table each turn.'],
             ['name' => 'Dazed', 'desc' => 'Unable to act normally; loses turn but can defend.'],
+            ['name' => 'Dead', 'desc' => 'HP at or below -10, or slain by lethal effect. Incapacitated and deceased.'],
             ['name' => 'Deafened', 'desc' => 'Cannot hear. -4 initiative, fails hearing checks, 20% spell failure for vocal spells.'],
             ['name' => 'Disabled', 'desc' => 'HP at 0. Can take single standard action but doing so causes 1 HP loss.'],
             ['name' => 'Drained', 'desc' => 'PP reduced to 0. Cannot cast spells or use psychic powers.'],
@@ -3719,16 +3736,22 @@ class UtilityController extends Controller
     /**
      * Award XP, monetary treasure, and items to a campaign party
      */
-    public function awardCampaign(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    public function awardCampaign(Request $request, int $id): \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
     {
         $campaign = DB::table('campaigns')->where('ID', $id)->first();
         if (!$campaign) {
+            if ($request->expectsJson() || $request->wantsJson() || $request->ajax() || $request->isJson()) {
+                return response()->json(['success' => false, 'message' => 'Campaign not found.'], 404);
+            }
             return back()->with('error', 'Campaign not found.');
         }
 
         if (\Illuminate\Support\Facades\Auth::check()) {
             $user = \Illuminate\Support\Facades\Auth::user();
             if ($campaign->GameMaster !== $user->ID && !$user->isGM()) {
+                if ($request->expectsJson() || $request->wantsJson() || $request->ajax() || $request->isJson()) {
+                    return response()->json(['success' => false, 'message' => 'You are not authorized to award XP or treasure for this campaign.'], 403);
+                }
                 return back()->with('error', 'You are not authorized to award XP or treasure for this campaign.');
             }
         }
@@ -3790,10 +3813,16 @@ class UtilityController extends Controller
                     if (isset($it['assign_to']) && (int)$it['assign_to'] === $charId) {
                         $charItems[] = [
                             'id' => uniqid('item_'),
+                            'uid' => uniqid('item_'),
                             'name' => $it['name'] ?? 'Awarded Item',
+                            'Name' => $it['name'] ?? 'Awarded Item',
                             'config' => $it['config'] ?? ($it['name'] ?? 'Item'),
                             'value' => (float)($it['value'] ?? 0),
+                            'BaseValue' => (float)($it['value'] ?? 0),
+                            'unit_price' => (float)($it['value'] ?? 0),
                             'weight' => (float)($it['weight'] ?? 0),
+                            'BaseWeight' => (float)($it['weight'] ?? 0),
+                            'unit_weight' => (float)($it['weight'] ?? 0),
                             'size' => $it['size'] ?? 'Medium (M)',
                             'ec' => (int)($it['ec'] ?? 0),
                             'pl' => (string)($it['pl'] ?? '0'),
@@ -3801,6 +3830,8 @@ class UtilityController extends Controller
                             'hp' => (int)($it['hp'] ?? 1),
                             'traits' => $it['traits'] ?? '',
                             'mods' => $it['mods'] ?? '',
+                            'location' => 1,
+                            'locations' => [1, 1, 1, 1, 1],
                             'added_at' => date('Y-m-d H:i:s'),
                         ];
                     }
@@ -3819,9 +3850,15 @@ class UtilityController extends Controller
                     $equip[] = $ci;
                 }
 
+                $currentWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($char->Coins ?? null, (int)($char->Wealth ?? 0));
+                $gainCoins = \App\Services\ItemGeneration\CurrencyService::spToCoins((float)$silverGain, true);
+                $newWallet = \App\Services\ItemGeneration\CurrencyService::addCoins($currentWallet, $gainCoins);
+                $newWealth = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($newWallet));
+
                 $updates = [
                     'ExperiencePts' => max(0, (int)($char->ExperiencePts ?? 0) + $xpGain),
-                    'Wealth' => max(0, (int)($char->Wealth ?? 0) + $silverGain),
+                    'Wealth' => $newWealth,
+                    'Coins' => json_encode($newWallet),
                 ];
                 if (!empty($charItems)) {
                     $updates['Equipment'] = json_encode($equip);
@@ -3836,10 +3873,16 @@ class UtilityController extends Controller
                 if (!isset($it['assign_to']) || $it['assign_to'] === 'vault' || empty($it['assign_to'])) {
                     $vaultItemsToAdd[] = [
                         'id' => uniqid('vault_'),
+                        'uid' => uniqid('vault_'),
                         'name' => $it['name'] ?? 'Awarded Item',
+                        'Name' => $it['name'] ?? 'Awarded Item',
                         'config' => $it['config'] ?? ($it['name'] ?? 'Item'),
                         'value' => (float)($it['value'] ?? 0),
+                        'BaseValue' => (float)($it['value'] ?? 0),
+                        'unit_price' => (float)($it['value'] ?? 0),
                         'weight' => (float)($it['weight'] ?? 0),
+                        'BaseWeight' => (float)($it['weight'] ?? 0),
+                        'unit_weight' => (float)($it['weight'] ?? 0),
                         'size' => $it['size'] ?? 'Medium (M)',
                         'ec' => (int)($it['ec'] ?? 0),
                         'pl' => (string)($it['pl'] ?? '0'),
@@ -3880,6 +3923,13 @@ class UtilityController extends Controller
                 ]);
             }
         });
+
+        if ($request->expectsJson() || $request->wantsJson() || $request->ajax() || $request->isJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'XP, treasure, and loot awarded to the party successfully!',
+            ]);
+        }
 
         return back()->with('status', 'XP, treasure, and loot awarded to the party successfully!');
     }

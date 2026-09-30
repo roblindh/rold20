@@ -191,11 +191,26 @@
             <!-- Combatants List -->
             <div class="space-y-3">
                 <template x-for="(c, idx) in sortedCombatants" :key="c.id">
-                    <div class="bg-white border rounded-2xl shadow-sm overflow-hidden transition duration-150"
+                    <div class="bg-white border rounded-2xl shadow-sm overflow-hidden transition duration-150 relative"
                          :class="{
-                             'ring-2 ring-amber-400 border-amber-300 bg-amber-50/15 shadow-md': activeIndex === idx,
-                             'border-slate-200': activeIndex !== idx
+                             'ring-2 ring-red-600 border-red-500 bg-red-50/50 shadow-lg': (c.hp_curr <= -10 || (c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))),
+                             'ring-2 ring-rose-500 border-rose-400 bg-rose-50/30 shadow-md animate-pulse': (c.hp_curr <= 0 && c.hp_curr > -10 && !(c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))),
+                             'ring-2 ring-amber-400 border-amber-300 bg-amber-50/15 shadow-md': (activeIndex === idx && c.hp_curr > 0),
+                             'border-slate-200': (activeIndex !== idx && c.hp_curr > 0)
                          }">
+                        
+                        <!-- Severe Status Banner -->
+                        <template x-if="c.hp_curr <= -10 || (c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))">
+                            <div class="bg-red-700 text-white font-black text-xs px-3 py-1 text-center tracking-widest uppercase flex items-center justify-center gap-2 shadow-inner">
+                                <span>💀</span> COMBATANT IS DEAD <span>💀</span>
+                            </div>
+                        </template>
+                        <template x-if="c.hp_curr <= 0 && c.hp_curr > -10 && !(c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))">
+                            <div class="bg-rose-600 text-white font-black text-xs px-3 py-1 text-center tracking-widest uppercase flex items-center justify-center gap-2 shadow-inner animate-pulse">
+                                <span>⚠️</span> COMBATANT IS DYING (UNCONSCIOUS &amp; BLEEDING) <span>⚠️</span>
+                            </div>
+                        </template>
+
                         <!-- Card Header & Core Identity Strip -->
                         <div class="px-3.5 py-2 bg-slate-50/90 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2.5">
                             <div class="flex items-center gap-2">
@@ -450,9 +465,16 @@
                                 <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mr-0.5">Conditions:</span>
                                 
                                 <template x-for="(cond, cIdx) in c.conditions" :key="cIdx">
-                                    <span class="inline-flex items-center gap-1 bg-amber-100 text-amber-900 text-xs font-bold px-1.5 py-0.2 rounded border border-amber-300 shadow-2xs">
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded border shadow-2xs"
+                                          :class="{
+                                              'bg-red-700 text-white border-red-800 font-extrabold': cond === 'Dead' || cond === 'DEAD',
+                                              'bg-rose-600 text-white border-rose-700 font-extrabold animate-pulse': cond === 'Dying' || cond === 'DYING',
+                                              'bg-purple-700 text-white border-purple-800 font-extrabold': cond === 'Unconscious' || cond === 'Helpless',
+                                              'bg-orange-600 text-white border-orange-700 font-extrabold': cond === 'Disabled' || cond === 'Stunned' || cond === 'Paralyzed',
+                                              'bg-amber-100 text-amber-900 border-amber-300': !['Dead', 'DEAD', 'Dying', 'DYING', 'Unconscious', 'Helpless', 'Disabled', 'Stunned', 'Paralyzed'].includes(cond)
+                                          }">
                                         <span x-text="cond"></span>
-                                        <button type="button" @click="removeCondition(c, cIdx)" class="text-amber-700 hover:text-rose-700 ml-0.5 cursor-pointer">×</button>
+                                        <button type="button" @click="removeCondition(c, cIdx)" class="opacity-80 hover:opacity-100 ml-0.5 cursor-pointer font-bold">×</button>
                                     </span>
                                 </template>
 
@@ -1168,8 +1190,11 @@ function combatTrackerApp() {
                             if (count > 1) {
                                 clone.name = `${cr.name} #${i + 1}`;
                             }
+                            clone.ap_max = clone.ap_max || (10 + (parseInt(clone.level) || 1));
+                            clone.ap_curr = clone.ap_curr !== undefined && clone.ap_curr !== null ? clone.ap_curr : clone.ap_max;
                             this.addCombatant(clone);
                         } else if (entry.name) {
+                            const lvl = parseInt(entry.level) || 1;
                             const customAttack = {
                                 id: 'strike',
                                 name: 'Strike',
@@ -1184,16 +1209,18 @@ function combatTrackerApp() {
                                 id: 'custom_' + Date.now() + '_' + i,
                                 name: (count > 1 ? `${entry.name} #${i + 1}` : entry.name),
                                 type: 'monster',
-                                level: parseInt(entry.level) || 1,
+                                level: lvl,
                                 hp_max: parseInt(entry.hp) || 20,
                                 sp_max: 20,
                                 pp_max: 0,
+                                ap_max: 10 + lvl,
+                                ap_curr: 10 + lvl,
                                 init_mod: 0,
                                 deca: 11,
                                 decp: 11,
-                                fort: 10 + (parseInt(entry.level) || 1),
-                                ref: 10 + (parseInt(entry.level) || 1),
-                                will: 10 + (parseInt(entry.level) || 1),
+                                fort: 10 + lvl,
+                                ref: 10 + lvl,
+                                will: 10 + lvl,
                                 dr: 0,
                                 mr: 0,
                                 speed: "30'",
@@ -1384,7 +1411,8 @@ function combatTrackerApp() {
             copy.hp_curr = copy.hp_curr ?? copy.hp_max;
             copy.sp_curr = copy.sp_curr ?? copy.sp_max;
             copy.pp_curr = copy.pp_curr ?? copy.pp_max;
-            copy.ap_curr = copy.ap_curr ?? copy.ap_max;
+            copy.ap_max = copy.ap_max || (10 + (parseInt(copy.level) || 1));
+            copy.ap_curr = copy.ap_curr !== undefined && copy.ap_curr !== null ? copy.ap_curr : copy.ap_max;
             copy.conditions = copy.conditions ?? [];
 
             // Match active attack from Character Viewer's localStorage if available
@@ -1616,6 +1644,15 @@ function combatTrackerApp() {
                     } else if (enc.encounter_level) {
                         xp = Math.round(enc.encounter_level * 300);
                     }
+                    if (enc.treasure_rewards) {
+                        let tr = enc.treasure_rewards;
+                        if (typeof tr === 'string') {
+                            try { tr = JSON.parse(tr); } catch(e) {}
+                        }
+                        if (typeof tr === 'object' && tr && !Array.isArray(tr) && tr.coins_sp !== undefined) {
+                            silver = parseInt(tr.coins_sp) || silver;
+                        }
+                    }
                     if (enc.resolution_notes) {
                         resolutionNotes = enc.resolution_notes;
                     }
@@ -1628,7 +1665,9 @@ function combatTrackerApp() {
                 }
             }
 
-            silver = Math.max(50, Math.round(xp / 3));
+            if (!this.selectedEncounterId) {
+                silver = Math.max(50, Math.round(xp / 3));
+            }
 
             this.endSummary = {
                 xp_award: xp,
@@ -1696,8 +1735,21 @@ function combatTrackerApp() {
         applyHpDelta(c, delta) {
             c.hp_curr += delta;
             this.logEvent(`<strong>${c.name}</strong> ${delta < 0 ? 'lost ' + Math.abs(delta) : 'healed ' + delta} HP (Now: ${c.hp_curr}/${c.hp_max})`);
-            if (c.hp_curr <= 0 && !c.conditions.includes('Dying') && !c.conditions.includes('Unconscious')) {
-                c.conditions.push('Dying');
+            if (!Array.isArray(c.conditions)) {
+                c.conditions = [];
+            }
+            if (c.hp_curr <= -10) {
+                if (!c.conditions.includes('Dead')) {
+                    c.conditions.push('Dead');
+                }
+                c.conditions = c.conditions.filter(cond => cond !== 'Dying');
+            } else if (c.hp_curr <= 0) {
+                if (!c.conditions.includes('Dying')) {
+                    c.conditions.push('Dying');
+                }
+                c.conditions = c.conditions.filter(cond => cond !== 'Dead');
+            } else {
+                c.conditions = c.conditions.filter(cond => cond !== 'Dead' && cond !== 'Dying');
             }
         },
 

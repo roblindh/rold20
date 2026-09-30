@@ -263,29 +263,30 @@
                                             </div>
                                         @endif
 
-                                        <div class="space-y-2">
+                                         <div class="space-y-2">
                                             @forelse($advEncounters as $enc)
                                                 @php
                                                     $encFoes = !empty($enc->monsters_and_npcs) ? (is_string($enc->monsters_and_npcs) ? json_decode($enc->monsters_and_npcs, true) : $enc->monsters_and_npcs) : [];
                                                     $encTraps = !empty($enc->traps_and_hazards) ? (is_string($enc->traps_and_hazards) ? json_decode($enc->traps_and_hazards, true) : $enc->traps_and_hazards) : [];
+                                                    $encTreasure = !empty($enc->treasure_rewards) ? (is_string($enc->treasure_rewards) ? json_decode($enc->treasure_rewards, true) : $enc->treasure_rewards) : null;
+                                                    $encTreasureSp = is_array($encTreasure) ? ($encTreasure['coins_sp'] ?? 0) : 0;
+                                                    $encTreasureItems = is_array($encTreasure) ? ($encTreasure['items'] ?? (array_is_list($encTreasure) ? $encTreasure : [])) : [];
                                                 @endphp
                                                 <div class="p-3 bg-white border border-stone-200 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-amber-400 transition shadow-2xs">
                                                     <div class="space-y-1 flex-1">
                                                         <div class="flex items-center gap-2 flex-wrap">
                                                             <span class="font-bold text-xs text-stone-900 font-serif">{{ $enc->name }}</span>
-                                                            <span class="text-[10px] font-bold px-1.5 py-0.2 rounded
-                                                                {{ ($enc->status ?? 'planned') === 'completed' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : '' }}
-                                                                {{ ($enc->status ?? 'planned') === 'in_progress' ? 'bg-amber-100 text-amber-900 border border-amber-300' : '' }}
-                                                                {{ ($enc->status ?? 'planned') === 'planned' ? 'bg-sky-100 text-sky-800 border border-sky-300' : '' }}
-                                                                {{ ($enc->status ?? 'planned') === 'bypassed' ? 'bg-stone-200 text-stone-700 border border-stone-300' : '' }}">
-                                                                {{ ($enc->status ?? 'planned') === 'completed' ? '✓ Completed' : ucfirst(str_replace('_', ' ', $enc->status ?? 'planned')) }}
-                                                            </span>
                                                             <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 border border-amber-300">
                                                                 EL {{ $enc->encounter_level }}
                                                             </span>
                                                             <span class="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
                                                                 {{ number_format((int)$enc->xp_award) }} XP
                                                             </span>
+                                                            @if($encTreasureSp > 0 || !empty($encTreasureItems))
+                                                                <span class="text-[10px] font-mono font-bold bg-amber-50 text-amber-900 border border-amber-200 px-1.5 py-0.2 rounded inline-flex items-center gap-1">
+                                                                    <span>🪙</span> {{ $encTreasureSp > 0 ? number_format($encTreasureSp) . ' sp' : '' }}{{ ($encTreasureSp > 0 && !empty($encTreasureItems)) ? ' • ' : '' }}{{ !empty($encTreasureItems) ? count($encTreasureItems) . ' Loot Item' . (count($encTreasureItems) > 1 ? 's' : '') : '' }}
+                                                                </span>
+                                                            @endif
                                                             <span class="text-[10px] uppercase font-bold text-stone-500">
                                                                 {{ $enc->type }}
                                                             </span>
@@ -311,7 +312,14 @@
                                                         @endif
                                                     </div>
 
-                                                    <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                                                    <div class="flex items-center gap-2.5 shrink-0 self-end sm:self-center">
+                                                        <span class="text-xs uppercase font-extrabold tracking-wider px-2.5 py-1 rounded-md border shadow-xs inline-flex items-center gap-1 shrink-0
+                                                            {{ ($enc->status ?? 'planned') === 'completed' ? 'bg-emerald-600 text-white border-emerald-700' : '' }}
+                                                            {{ ($enc->status ?? 'planned') === 'in_progress' ? 'bg-amber-500 text-amber-950 border-amber-600' : '' }}
+                                                            {{ ($enc->status ?? 'planned') === 'planned' ? 'bg-sky-100 text-sky-900 border-sky-300' : '' }}
+                                                            {{ ($enc->status ?? 'planned') === 'bypassed' ? 'bg-stone-200 text-stone-700 border-stone-400' : '' }}">
+                                                            {{ ($enc->status ?? 'planned') === 'completed' ? '✓ Completed' : (($enc->status ?? 'planned') === 'in_progress' ? '⚔️ In Progress' : ucfirst(str_replace('_', ' ', $enc->status ?? 'planned'))) }}
+                                                        </span>
                                                         <!-- Direct Launch to Combat Tracker -->
                                                         <a href="{{ route('utilities.combattracker', ['campaign' => $camp->ID, 'encounter' => $enc->id], false) }}"
                                                            class="btn-rol-primary text-xs py-1 px-2.5 flex items-center gap-1 font-bold shadow-xs">
@@ -359,24 +367,25 @@
                                         @foreach($standaloneEncounters as $enc)
                                             @php
                                                 $encFoes = !empty($enc->monsters_and_npcs) ? (is_string($enc->monsters_and_npcs) ? json_decode($enc->monsters_and_npcs, true) : $enc->monsters_and_npcs) : [];
+                                                $encTreasure = !empty($enc->treasure_rewards) ? (is_string($enc->treasure_rewards) ? json_decode($enc->treasure_rewards, true) : $enc->treasure_rewards) : null;
+                                                $encTreasureSp = is_array($encTreasure) ? ($encTreasure['coins_sp'] ?? 0) : 0;
+                                                $encTreasureItems = is_array($encTreasure) ? ($encTreasure['items'] ?? (array_is_list($encTreasure) ? $encTreasure : [])) : [];
                                             @endphp
                                             <div class="p-3 bg-white border border-stone-200 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs hover:border-amber-400 transition">
                                                 <div class="space-y-1 flex-1">
                                                     <div class="flex items-center gap-2 flex-wrap">
                                                         <span class="font-bold text-xs text-stone-900 font-serif">{{ $enc->name }}</span>
-                                                        <span class="text-[10px] font-bold px-1.5 py-0.2 rounded
-                                                            {{ ($enc->status ?? 'planned') === 'completed' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : '' }}
-                                                            {{ ($enc->status ?? 'planned') === 'in_progress' ? 'bg-amber-100 text-amber-900 border border-amber-300' : '' }}
-                                                            {{ ($enc->status ?? 'planned') === 'planned' ? 'bg-sky-100 text-sky-800 border border-sky-300' : '' }}
-                                                            {{ ($enc->status ?? 'planned') === 'bypassed' ? 'bg-stone-200 text-stone-700 border border-stone-300' : '' }}">
-                                                            {{ ($enc->status ?? 'planned') === 'completed' ? '✓ Completed' : ucfirst(str_replace('_', ' ', $enc->status ?? 'planned')) }}
-                                                        </span>
                                                         <span class="text-[10px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 border border-amber-300">
                                                             EL {{ $enc->encounter_level }}
                                                         </span>
                                                         <span class="text-[10px] font-mono text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
                                                             {{ number_format((int)$enc->xp_award) }} XP
                                                         </span>
+                                                        @if($encTreasureSp > 0 || !empty($encTreasureItems))
+                                                            <span class="text-[10px] font-mono font-bold bg-amber-50 text-amber-900 border border-amber-200 px-1.5 py-0.2 rounded inline-flex items-center gap-1">
+                                                                <span>🪙</span> {{ $encTreasureSp > 0 ? number_format($encTreasureSp) . ' sp' : '' }}{{ ($encTreasureSp > 0 && !empty($encTreasureItems)) ? ' • ' : '' }}{{ !empty($encTreasureItems) ? count($encTreasureItems) . ' Loot Item' . (count($encTreasureItems) > 1 ? 's' : '') : '' }}
+                                                            </span>
+                                                        @endif
                                                         <span class="text-[10px] uppercase font-bold text-stone-500">
                                                             {{ $enc->type }}
                                                         </span>
@@ -401,7 +410,14 @@
                                                         </div>
                                                     @endif
                                                 </div>
-                                                <div class="flex items-center gap-2 shrink-0">
+                                                <div class="flex items-center gap-2.5 shrink-0">
+                                                    <span class="text-xs uppercase font-extrabold tracking-wider px-2.5 py-1 rounded-md border shadow-xs inline-flex items-center gap-1 shrink-0
+                                                        {{ ($enc->status ?? 'planned') === 'completed' ? 'bg-emerald-600 text-white border-emerald-700' : '' }}
+                                                        {{ ($enc->status ?? 'planned') === 'in_progress' ? 'bg-amber-500 text-amber-950 border-amber-600' : '' }}
+                                                        {{ ($enc->status ?? 'planned') === 'planned' ? 'bg-sky-100 text-sky-900 border-sky-300' : '' }}
+                                                        {{ ($enc->status ?? 'planned') === 'bypassed' ? 'bg-stone-200 text-stone-700 border-stone-400' : '' }}">
+                                                        {{ ($enc->status ?? 'planned') === 'completed' ? '✓ Completed' : (($enc->status ?? 'planned') === 'in_progress' ? '⚔️ In Progress' : ucfirst(str_replace('_', ' ', $enc->status ?? 'planned'))) }}
+                                                    </span>
                                                     <a href="{{ route('utilities.combattracker', ['campaign' => $camp->ID, 'encounter' => $enc->id], false) }}"
                                                        class="btn-rol-primary text-xs py-1 px-2.5 flex items-center gap-1 font-bold shadow-xs">
                                                         <span>⚔️</span> Run Encounter
@@ -1067,6 +1083,76 @@
                     </div>
                 </div>
 
+                <!-- Treasure & Rewards Configuration Section -->
+                <div class="border border-amber-200 rounded-xl p-3.5 bg-amber-50/40 space-y-2.5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-200 pb-2">
+                        <div>
+                            <span class="text-xs font-bold text-amber-950 flex items-center gap-1.5">
+                                <span>💎</span> Treasure &amp; Spoils
+                            </span>
+                            <span class="text-[10px] text-stone-600">Monetary silver and valuable loot awarded upon overcoming this encounter.</span>
+                        </div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <button type="button" @click="rollEncounterTreasure()" :disabled="isRollingTreasure"
+                                    class="text-xs bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-2.5 py-1 rounded-lg border border-amber-300 flex items-center gap-1 cursor-pointer transition">
+                                <span x-show="!isRollingTreasure">🎲 Roll EL Treasure</span>
+                                <span x-show="isRollingTreasure">⌛ Rolling...</span>
+                            </button>
+                            <button type="button" @click="addTreasureItemToEncounter()" 
+                                    class="text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-lg border border-emerald-200 flex items-center gap-1 cursor-pointer transition">
+                                <span>➕</span> Add Loot Item
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Silver Coins Input -->
+                    <div class="flex items-center gap-3 bg-white p-2 rounded-lg border border-amber-200">
+                        <label class="text-xs font-bold text-slate-700 uppercase">Monetary Treasure:</label>
+                        <div class="flex items-center gap-1 font-mono">
+                            <input type="number" x-model.number="encForm.treasure_rewards.coins_sp" min="0" step="10" placeholder="0"
+                                   class="w-24 px-2 py-1 bg-white border border-slate-300 rounded text-xs font-bold text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                            <span class="text-xs text-amber-900 font-bold">sp (Silver Pieces)</span>
+                        </div>
+                    </div>
+
+                    <!-- Items Header & List -->
+                    <div class="space-y-1.5 max-h-48 overflow-y-auto pr-0.5">
+                        <div class="grid grid-cols-12 gap-2 px-2.5 py-1 bg-slate-200/80 rounded-lg text-[10px] font-bold text-slate-700 uppercase tracking-wider">
+                            <div class="col-span-6">Item / Valuable Description</div>
+                            <div class="col-span-3 text-center">Value (sp)</div>
+                            <div class="col-span-2 text-center">Weight (lbs)</div>
+                            <div class="col-span-1"></div>
+                        </div>
+
+                        <template x-for="(it, tIdx) in encForm.treasure_rewards.items" :key="tIdx">
+                            <div class="grid grid-cols-12 gap-2 items-center bg-white p-1.5 rounded-lg border border-slate-200 shadow-2xs">
+                                <div class="col-span-6">
+                                    <input type="text" x-model="it.name" placeholder="Item Name (e.g. +1 Dagger, Potion)"
+                                           class="w-full px-2 py-0.5 border border-slate-300 rounded text-xs text-slate-900 font-medium focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                </div>
+                                <div class="col-span-3">
+                                    <input type="number" x-model.number="it.value" min="0" placeholder="0"
+                                           class="w-full px-1 py-0.5 border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                </div>
+                                <div class="col-span-2">
+                                    <input type="number" x-model.number="it.weight" min="0" step="0.1" placeholder="1"
+                                           class="w-full px-1 py-0.5 border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                </div>
+                                <div class="col-span-1 flex items-center justify-center">
+                                    <button type="button" @click="encForm.treasure_rewards.items.splice(tIdx, 1)" 
+                                            class="text-rose-500 hover:text-rose-700 p-0.5 font-bold text-xs cursor-pointer" title="Remove Item">
+                                        ✕
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+
+                        <div x-show="!encForm.treasure_rewards.items || encForm.treasure_rewards.items.length === 0" class="text-xs text-stone-500 italic p-2 text-center bg-white/60 rounded-lg border border-dashed border-amber-200">
+                            No special loot items added. Click "🎲 Roll EL Treasure" to generate appropriate treasure hoard, or "➕ Add Loot Item".
+                        </div>
+                    </div>
+                </div>
+
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-700 mb-1">GM Resolution Notes (Outcome &amp; Consequences)</label>
                     <textarea x-model="encForm.resolution_notes" rows="2" placeholder="How was the encounter resolved? (e.g. Parleyed with leader, cleared dungeon, spared hostages)..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-emerald-500"></textarea>
@@ -1221,7 +1307,7 @@
                 <button @click="showAwardModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-2xl leading-none cursor-pointer">&times;</button>
             </div>
 
-            <form :action="'{{ route('utilities.campaign.award', ['id' => '__ID__'], false) }}'.replace('__ID__', awardCamp.ID)" method="POST" class="p-6 overflow-y-auto space-y-6 flex-1 text-slate-800">
+            <form @submit.prevent="submitAwardForm()" class="p-6 overflow-y-auto space-y-6 flex-1 text-slate-800">
                 @csrf
                 
                 <!-- 1. Experience Points (XP) Section -->
@@ -1369,11 +1455,9 @@
                                             <select :name="'items[' + iIdx + '][assign_to]'" x-model="it.assign_to"
                                                     class="bg-amber-50 border border-amber-900/30 rounded px-2 py-1 text-xs font-semibold text-slate-900 focus:outline-none">
                                                 <option value="vault">💎 Campaign Vault</option>
-                                                <optgroup label="Assign to Adventurer:">
-                                                    <template x-for="pc in awardParty" :key="pc.ID">
-                                                        <option :value="pc.ID" x-text="'🧙 ' + pc.Name"></option>
-                                                    </template>
-                                                </optgroup>
+                                                <template x-for="pc in awardParty" :key="pc.ID">
+                                                    <option :value="pc.ID" x-text="'🧙 ' + pc.Name"></option>
+                                                </template>
                                             </select>
                                         </div>
                                         <button type="button" @click="removeItemFromAward(iIdx)" class="text-rose-600 hover:text-rose-800 p-1 font-bold text-xs cursor-pointer" title="Remove item">
@@ -1420,6 +1504,7 @@ function campaignAdmin() {
         showEncounterModal: false,
         showLocationModal: false,
         isRollingFoes: false,
+        isRollingTreasure: false,
 
         creaturesList: @json($creatureCatalog),
         foeMinEl: 1,
@@ -1489,7 +1574,7 @@ function campaignAdmin() {
             xp_award: 300,
             monsters_and_npcs: [],
             traps_and_hazards: [],
-            treasure_rewards: [],
+            treasure_rewards: { coins_sp: 0, items: [] },
             status: 'planned',
             resolution_notes: '',
             gm_notes: ''
@@ -1509,6 +1594,44 @@ function campaignAdmin() {
             inventory_and_services: [],
             rumors_and_hooks: [],
             gm_notes: ''
+        },
+
+        async submitAwardForm() {
+            if (!this.awardCamp || !this.awardCamp.ID) {
+                alert('No campaign selected.');
+                return;
+            }
+            const url = `/utilities/campaign/${this.awardCamp.ID}/award`;
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        total_xp: this.awardData.total_xp,
+                        divide_xp_equally: this.awardData.divide_xp_equally ? 1 : 0,
+                        char_bonus_xp: this.awardData.char_bonus_xp,
+                        total_silver: this.awardData.total_silver,
+                        vault_silver: this.awardData.vault_silver,
+                        treasure_mode: this.awardData.treasure_mode,
+                        char_silver: this.awardData.char_silver,
+                        items: this.awardData.items
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert(data.message || 'Rewards successfully granted to party!');
+                    window.location.reload();
+                } else {
+                    alert(data.message || 'Failed to grant rewards.');
+                }
+            } catch (e) {
+                console.error('Error submitting award form:', e);
+                alert('Error submitting rewards: ' + e.message);
+            }
         },
 
         openEditModal(camp) {
@@ -1703,7 +1826,7 @@ function campaignAdmin() {
                 xp_award: 300,
                 monsters_and_npcs: [],
                 traps_and_hazards: [],
-                treasure_rewards: [],
+                treasure_rewards: { coins_sp: 0, items: [] },
                 status: 'planned',
                 resolution_notes: '',
                 gm_notes: ''
@@ -1733,10 +1856,15 @@ function campaignAdmin() {
                 this.encForm.traps_and_hazards = [];
             }
             if (typeof this.encForm.treasure_rewards === 'string') {
-                try { this.encForm.treasure_rewards = JSON.parse(this.encForm.treasure_rewards); } catch (e) { this.encForm.treasure_rewards = []; }
+                try { this.encForm.treasure_rewards = JSON.parse(this.encForm.treasure_rewards); } catch (e) { this.encForm.treasure_rewards = { coins_sp: 0, items: [] }; }
             }
-            if (!Array.isArray(this.encForm.treasure_rewards)) {
-                this.encForm.treasure_rewards = [];
+            if (!this.encForm.treasure_rewards || typeof this.encForm.treasure_rewards !== 'object') {
+                this.encForm.treasure_rewards = { coins_sp: 0, items: [] };
+            } else if (Array.isArray(this.encForm.treasure_rewards)) {
+                this.encForm.treasure_rewards = { coins_sp: 0, items: this.encForm.treasure_rewards };
+            } else {
+                if (this.encForm.treasure_rewards.coins_sp === undefined) this.encForm.treasure_rewards.coins_sp = 0;
+                if (!Array.isArray(this.encForm.treasure_rewards.items)) this.encForm.treasure_rewards.items = [];
             }
             this.showEncounterModal = true;
         },
@@ -1752,6 +1880,63 @@ function campaignAdmin() {
                 level: lvl,
                 hp: 10 + 5 * lvl
             });
+        },
+
+        addTreasureItemToEncounter() {
+            if (!this.encForm.treasure_rewards || typeof this.encForm.treasure_rewards !== 'object' || Array.isArray(this.encForm.treasure_rewards)) {
+                this.encForm.treasure_rewards = { coins_sp: 0, items: [] };
+            }
+            if (!Array.isArray(this.encForm.treasure_rewards.items)) {
+                this.encForm.treasure_rewards.items = [];
+            }
+            this.encForm.treasure_rewards.items.push({
+                name: '',
+                value: 0,
+                weight: 1
+            });
+        },
+
+        async rollEncounterTreasure() {
+            this.isRollingTreasure = true;
+            try {
+                const el = Math.max(1, Math.round(this.encForm.encounter_level || 1));
+                const res = await fetch('/treasure-generator/roll', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify({ el: el })
+                });
+                const data = await res.json();
+                if (data.success && data.hoard) {
+                    const spCoins = Math.round(Number(data.hoard.coins_sp || (data.coins ? (data.coins.gold * 10 + data.coins.silver) : 0)) || 0);
+                    const items = [];
+                    if (Array.isArray(data.mundane)) {
+                        data.mundane.forEach(m => {
+                            items.push({
+                                name: m.name || m.description || 'Mundane Item',
+                                value: Number(m.value || m.price || 0),
+                                weight: Number(m.weight || 1)
+                            });
+                        });
+                    }
+                    if (Array.isArray(data.magic)) {
+                        data.magic.forEach(m => {
+                            items.push({
+                                name: m.name || m.description || 'Magic Item',
+                                value: Number(m.value || m.price || 0),
+                                weight: Number(m.weight || 1)
+                            });
+                        });
+                    }
+                    this.encForm.treasure_rewards = {
+                        coins_sp: spCoins,
+                        items: items
+                    };
+                }
+            } catch (e) {
+                console.error('Error rolling encounter treasure:', e);
+            } finally {
+                this.isRollingTreasure = false;
+            }
         },
 
         onCreatureNameInput(foe) {
@@ -1847,7 +2032,7 @@ function campaignAdmin() {
                 tactics_and_features: this.encForm.tactics_and_features || '',
                 monsters_and_npcs: Array.isArray(this.encForm.monsters_and_npcs) ? this.encForm.monsters_and_npcs : [],
                 traps_and_hazards: Array.isArray(this.encForm.traps_and_hazards) ? this.encForm.traps_and_hazards : [],
-                treasure_rewards: Array.isArray(this.encForm.treasure_rewards) ? this.encForm.treasure_rewards : [],
+                treasure_rewards: this.encForm.treasure_rewards || { coins_sp: 0, items: [] },
                 xp_award: parseInt(this.encForm.xp_award) || 0,
                 status: this.encForm.status || 'planned',
                 resolution_notes: this.encForm.resolution_notes || '',

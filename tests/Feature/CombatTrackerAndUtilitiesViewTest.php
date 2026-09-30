@@ -276,4 +276,89 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
         DB::table('campaign_encounters')->where('id', $encId)->delete();
         DB::table('campaigns')->where('ID', $campId)->delete();
     }
+
+    public function testAwardCampaignUpdatesCharacterCoinsAndVaultStructuredFunds(): void
+    {
+        $campId = DB::table('campaigns')->insertGetId([
+            'Name' => 'Test Coins Camp ' . uniqid(),
+            'Vault' => json_encode(['funds' => 100, 'items' => []]),
+        ]);
+
+        $charId = DB::table('characters')->insertGetId([
+            'Name' => 'Coin Tester ' . uniqid(),
+            'Campaign' => $campId,
+            'Wealth' => 50,
+            'Coins' => json_encode(['gp' => 5, 'sp' => 0, 'cp' => 0]),
+            'ExperiencePts' => 100,
+        ]);
+
+        $request = Request::create("/utilities/campaign/{$campId}/award", 'POST', [
+            'total_xp' => 100,
+            'total_silver' => 200,
+            'treasure_mode' => 'equal',
+            'vault_silver' => 100,
+        ]);
+
+        $response = $this->utilityController->awardCampaign($request, (int)$campId);
+        $this->assertEquals(302, $response->getStatusCode());
+
+        $char = DB::table('characters')->where('ID', $charId)->first();
+        $this->assertNotNull($char->Coins);
+        $coins = json_decode($char->Coins, true);
+        // Original: 5 gp (50 sp) + 200 sp gained (2 pp) = 250 sp total
+        $this->assertEquals(250, (int)$char->Wealth);
+        $this->assertEquals(2, (int)($coins['pp'] ?? 0));
+        $this->assertEquals(5, (int)($coins['gp'] ?? 0));
+
+        $campaign = DB::table('campaigns')->where('ID', $campId)->first();
+        $vault = json_decode($campaign->Vault, true);
+        $this->assertEquals(200, (int)($vault['funds'] ?? 0));
+
+        // Cleanup
+        DB::table('characters')->where('ID', $charId)->delete();
+        DB::table('campaigns')->where('ID', $campId)->delete();
+    }
+
+    public function testEncounterTreasureRewardsAreStoredAndRetrievedCorrectly(): void
+    {
+        $user = \App\Models\Dynamic\Player::first();
+        \Illuminate\Support\Facades\Auth::login($user);
+
+        $campId = DB::table('campaigns')->insertGetId([
+            'Name' => 'Test Treasure Enc Camp ' . uniqid(),
+            'GameMaster' => $user->ID,
+        ]);
+
+        $req = Request::create("/utilities/campaign/{$campId}/encounters/create", 'POST', [
+            'name' => 'Treasure Vault Encounter',
+            'encounter_level' => 4.0,
+            'monsters_and_npcs' => [
+                ['name' => 'Choker', 'count' => 1, 'level' => 3, 'hp' => 30],
+                ['name' => 'Vargouille', 'count' => 3, 'level' => 2, 'hp' => 18],
+            ],
+            'treasure_rewards' => [
+                'coins_sp' => 750,
+                'items' => [
+                    ['name' => '+1 Ring of Protection', 'value' => 2000, 'weight' => 0.1],
+                ],
+            ],
+            'xp_award' => 1200,
+        ]);
+
+        $res = $this->utilityController->createCampaignEncounter($req, $campId);
+        $this->assertEquals(200, $res->getStatusCode());
+        $data = json_decode($res->getContent(), true);
+
+        $this->assertTrue($data['success']);
+        $enc = $data['encounter'];
+        $this->assertIsArray($enc['treasure_rewards']);
+        $this->assertEquals(750, $enc['treasure_rewards']['coins_sp']);
+        $this->assertCount(1, $enc['treasure_rewards']['items']);
+        $this->assertEquals('+1 Ring of Protection', $enc['treasure_rewards']['items'][0]['name']);
+
+        // Cleanup
+        DB::table('campaign_encounters')->where('id', $enc['id'])->delete();
+        DB::table('campaigns')->where('ID', $campId)->delete();
+    }
 }
+
