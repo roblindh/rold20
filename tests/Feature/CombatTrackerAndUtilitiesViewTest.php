@@ -446,5 +446,44 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
         $this->assertStringContainsString('max-h-[92vh]', $html);
         $this->assertStringContainsString('flex items-start sm:items-center', $html);
     }
+
+    public function testCampaignModalsAreTopLevelAndNotNested(): void
+    {
+        $request = Request::create('/utilities/campaign', 'GET');
+        $view = $this->utilityController->campaign($request);
+        $html = $view->render();
+
+        $modals = [
+            'showCreateModal',
+            'showEditModal',
+            'showAdventureModal',
+            'showEncounterModal',
+            'showLocationModal',
+            'showAddPcModal',
+            'showAwardModal'
+        ];
+
+        $dom = new \DOMDocument();
+        libxml_use_internal_errors(true);
+        $dom->loadHTML($html);
+        libxml_clear_errors();
+
+        $xpath = new \DOMXPath($dom);
+        foreach ($modals as $m) {
+            $nodes = $xpath->query('//*[@x-show="' . $m . '"]');
+            $this->assertGreaterThan(0, $nodes->length, "Modal $m must exist in rendered HTML.");
+            $node = $nodes->item(0);
+
+            // Ensure not nested inside another x-show
+            $parent = $node->parentNode;
+            while ($parent && $parent->nodeType === XML_ELEMENT_NODE) {
+                if ($parent->hasAttribute('x-show')) {
+                    $this->fail("Modal $m is illegally nested inside " . $parent->getAttribute('x-show'));
+                }
+                $parent = $parent->parentNode;
+            }
+        }
+    }
 }
+
 
