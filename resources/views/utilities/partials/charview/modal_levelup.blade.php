@@ -43,31 +43,29 @@
                     <p class="text-xs text-slate-600 mt-0.5">Choose which class level to add to {{ $character->Name }}. Current classes: <strong class="text-indigo-900">{{ $classesDisplayStr }}</strong></p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-80 overflow-y-auto pr-1">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-96 overflow-y-auto pr-1">
                     @foreach($classes as $cls)
                         @php
                             $isCurrent = in_array($cls->ID, $classIdsList);
                             $cnt = count(array_keys($classIdsList, $cls->ID));
                         @endphp
                         <label :class="lvlData.selectedClassId == {{ $cls->ID }} ? 'border-indigo-600 bg-indigo-50/70 ring-2 ring-indigo-400' : 'border-slate-200 bg-white hover:border-slate-300'"
-                               class="border rounded-xl p-3 cursor-pointer flex flex-col justify-between transition space-y-2">
-                            <div class="flex items-start justify-between">
-                                <div class="flex items-center gap-2">
-                                    <input type="radio" name="class_id" value="{{ $cls->ID }}" x-model.number="lvlData.selectedClassId" @change="onLvlClassChanged({{ $cls->ID }}, {{ (int)($cls->SkillPtsPerLevel ?? 2) }})" class="text-indigo-600 focus:ring-indigo-500">
-                                    <span class="font-bold text-sm text-slate-900">{{ $cls->Name }}</span>
-                                </div>
+                               class="border rounded-lg px-3 py-2 cursor-pointer flex items-center justify-between gap-2 transition text-xs shadow-2xs">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <input type="radio" name="class_id" value="{{ $cls->ID }}" x-model.number="lvlData.selectedClassId" @change="onLvlClassChanged({{ $cls->ID }}, {{ (int)($cls->SkillPtsPerLevel ?? 2) }})" class="text-indigo-600 focus:ring-indigo-500 shrink-0">
+                                <span class="font-bold text-xs sm:text-sm text-slate-900 truncate">{{ $cls->Name }}</span>
                                 @if($isCurrent)
-                                    <span class="text-[10px] bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded border border-amber-300">
-                                        Current: {{ $cnt }} lvl{{ $cnt > 1 ? 's' : '' }}
+                                    <span class="text-[10px] bg-amber-100 text-amber-900 font-bold px-1.5 py-0.2 rounded border border-amber-300 shrink-0">
+                                        Lvl {{ $cnt }}
                                     </span>
                                 @endif
                             </div>
 
-                            <div class="grid grid-cols-4 gap-1 text-[10px] font-mono text-center pt-1 border-t border-slate-100">
-                                <div class="bg-slate-50 p-1 rounded">HP <strong class="block">+{{ $cls->HitPtsPerLevel ?? $cls->HPPerLevel ?? 5 }}</strong></div>
-                                <div class="bg-slate-50 p-1 rounded">SP <strong class="block">+{{ $cls->StamPtsPerLevel ?? $cls->SPPerLevel ?? 8 }}</strong></div>
-                                <div class="bg-slate-50 p-1 rounded">PP <strong class="block">+{{ $cls->PowPtsPerLevel ?? $cls->PPPerLevel ?? 0 }}</strong></div>
-                                <div class="bg-indigo-50 text-indigo-900 p-1 rounded font-bold">Skill <strong class="block">{{ ($cls->SkillPtsPerLevel ?? 2) + ($calc['skill_points']['bonus_per_level'] ?? 0) }} SP</strong></div>
+                            <div class="flex items-center gap-1.5 text-[10px] font-mono shrink-0">
+                                <span class="bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-200" title="Hit Points per Level">HP <strong>+{{ $cls->HitPtsPerLevel ?? $cls->HPPerLevel ?? 5 }}</strong></span>
+                                <span class="bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-200" title="Stamina Points per Level">SP <strong>+{{ $cls->StamPtsPerLevel ?? $cls->SPPerLevel ?? 8 }}</strong></span>
+                                <span class="bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-200" title="Power Points per Level">PP <strong>+{{ $cls->PowPtsPerLevel ?? $cls->PPPerLevel ?? 0 }}</strong></span>
+                                <span class="bg-indigo-50 text-indigo-900 px-1.5 py-0.5 rounded border border-indigo-200 font-bold" title="Skill Points per Level">Skill <strong>+{{ ($cls->SkillPtsPerLevel ?? 2) + ($calc['skill_points']['bonus_per_level'] ?? 0) }}</strong></span>
                             </div>
                         </label>
                     @endforeach
@@ -208,10 +206,10 @@
                         <h3 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
                             <span>✨</span> Learn New Spells &amp; Variations (Optional)
                         </h3>
-                        <p class="text-xs text-slate-600 mt-0.5">Select any new spells or variations learned at this level. Learned spells &amp; variations will be added to your character.</p>
+                        <p class="text-xs text-slate-600 mt-0.5">Select any new spells or variations learned at this level. Requires trained skill rank >= spell PP cost in the spell's governing skill.</p>
                     </div>
                     <div class="shrink-0">
-                        <input type="text" x-model="lvlSpellSearch" placeholder="Filter spells..." class="px-2.5 py-1 text-xs border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                        <input type="text" x-model="lvlSpellSearch" placeholder="Filter eligible spells..." class="px-2.5 py-1 text-xs border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-1 focus:ring-indigo-500">
                     </div>
                 </div>
 
@@ -221,15 +219,21 @@
                              :class="isLvlSpellActive(sp.ID) ? 'border-indigo-400 bg-indigo-50/30' : 'border-slate-200 hover:border-slate-300'">
                             <div class="flex items-start justify-between gap-2">
                                 <div class="flex items-start gap-2 min-w-0 flex-1">
-                                    <input type="checkbox" :name="'spells[' + sp.ID + '][]'" value="0"
-                                           :checked="isLvlSpellActive(sp.ID)"
-                                           @change="toggleLvlSpellBase(sp.ID, $event.target.checked)"
-                                           class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 mt-0.5">
+                                    <template x-if="!isSpellKnown(sp.ID)">
+                                        <input type="checkbox" :name="'spells[' + sp.ID + '][]'" value="0"
+                                               :checked="isLvlSpellActive(sp.ID)"
+                                               @change="toggleLvlSpellBase(sp.ID, $event.target.checked)"
+                                               class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 mt-0.5">
+                                    </template>
+                                    <template x-if="isSpellKnown(sp.ID)">
+                                        <span class="text-indigo-600 font-bold mt-0.5 select-none text-base">✨</span>
+                                    </template>
+
                                     <div class="min-w-0 flex-1">
                                         <div class="flex items-center gap-2 flex-wrap">
                                             <span class="font-bold text-slate-900 text-sm" x-text="sp.Name"></span>
                                             <template x-if="isSpellKnown(sp.ID)">
-                                                <span class="text-[10px] bg-indigo-100 text-indigo-900 font-bold px-1.5 py-0.5 rounded">Known</span>
+                                                <span class="text-[10px] bg-indigo-100 text-indigo-900 font-bold px-1.5 py-0.5 rounded">Known (Variations Available)</span>
                                             </template>
                                             <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 font-semibold" x-text="sp.Cost || '0 PP'"></span>
                                             <template x-if="sp.School">
@@ -274,6 +278,12 @@
                             </template>
                         </div>
                     </template>
+
+                    <div x-show="filteredLvlSpells.length === 0" class="p-6 text-center text-xs text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-300 space-y-1">
+                        <div class="text-lg">✨</div>
+                        <div class="font-bold text-slate-700">No Eligible New Spells Available</div>
+                        <p>Spells require trained ranks in their governing spellcasting skill (e.g. Arcane, Divine, or Psionic disciplines) equal to or greater than the spell's PP cost.</p>
+                    </div>
                 </div>
             </div>
 

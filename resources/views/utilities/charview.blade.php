@@ -677,6 +677,100 @@ function characterViewerApp() {
     const charCreatureType = @json($race->CreatureType ?? $calc['heritage']['creature_type'] ?? '');
     const charCreatureSubtypes = @json(!empty($race->CreatureSubtype) && isset($creatureSubtypes[$race->CreatureSubtype]) ? [$creatureSubtypes[$race->CreatureSubtype]->Name] : []);
 
+    function parseSpellBaseCost(costStr) {
+        if (!costStr) return 0;
+        const normalized = costStr.replace(/\\r\\n|\\r|\\n|\r\n|\r/g, '\n');
+        const lines = normalized.split('\n');
+        const costs = [];
+        for (let line of lines) {
+            line = line.trim();
+            if (!line || line.startsWith('+') || line.startsWith('-')) continue;
+            const m = line.match(/^(\d+)\s*PP/i);
+            if (m) costs.push(parseInt(m[1]));
+        }
+        if (costs.length > 0) return Math.min(...costs);
+        const fallback = normalized.match(/(\d+)\s*PP/i);
+        return fallback ? parseInt(fallback[1]) : 1;
+    }
+
+    function parseSpellPrereqRules(sp) {
+        if (!sp || !sp.Skills) return [];
+        const normalized = (sp.Skills || '').replace(/\\r\\n|\\r|\\n|\r\n|\r/g, '\n');
+        const rawLines = normalized.split('\n');
+        const rules = [];
+
+        for (let rawLine of rawLines) {
+            let line = rawLine.trim();
+            if (!line) continue;
+
+            let ruleCost = sp.baseCost !== undefined ? sp.baseCost : parseSpellBaseCost(sp.Cost);
+            const costMatch = line.match(/\(\+(\d+)\s*PP(?:\s+cost)?\)/i);
+            if (costMatch) {
+                ruleCost += parseInt(costMatch[1]);
+            }
+
+            let category = 'other';
+            const lowerRaw = line.toLowerCase();
+            if (lowerRaw.startsWith('arcane') || lowerRaw.includes('wizardry') || lowerRaw.includes('pyromancy') || lowerRaw.includes('aeromancy') || lowerRaw.includes('hydromancy') || lowerRaw.includes('geomancy') || lowerRaw.includes('ouranomancy') || lowerRaw.includes('kinetomancy') || lowerRaw.includes('necromancy') || lowerRaw.includes('illumination') || lowerRaw.includes('abjuration') || lowerRaw.includes('conjuration') || lowerRaw.includes('divination') || lowerRaw.includes('enchantment') || lowerRaw.includes('evocation') || lowerRaw.includes('illusion') || lowerRaw.includes('transmutation') || lowerRaw.includes('arcane archery')) {
+                category = 'arcane';
+            } else if (lowerRaw.startsWith('divine') || lowerRaw.startsWith('cleric') || lowerRaw.startsWith('druid') || lowerRaw.includes('holy') || lowerRaw.includes('blessing') || lowerRaw.includes('protection') || lowerRaw.includes('life') || lowerRaw.includes('nature') || lowerRaw.includes('elements') || lowerRaw.includes('animals') || lowerRaw.includes('plants') || lowerRaw.includes('death') || lowerRaw.includes('retribution') || lowerRaw.includes('summoning')) {
+                category = 'divine';
+            } else if (lowerRaw.startsWith('psi') || lowerRaw.includes('clairsentience') || lowerRaw.includes('psychokinesis') || lowerRaw.includes('psychometabolism') || lowerRaw.includes('psychoportation') || lowerRaw.includes('telepathy') || lowerRaw.includes('metacreativity')) {
+                category = 'psi';
+            }
+
+            let expandedLines = [line];
+            if (line.includes('(Life or Death)')) {
+                expandedLines = [
+                    line.replace('(Life or Death)', 'Life'),
+                    line.replace('(Life or Death)', 'Death')
+                ];
+            }
+
+            for (let expLine of expandedLines) {
+                let clean = expLine.replace(/\([^)]*\)/g, '').trim();
+                if (!clean) continue;
+
+                let prefix = '';
+                const prefixMatch = clean.match(/^([A-Za-z\s]+)\s*-\s*/);
+                if (prefixMatch) {
+                    prefix = prefixMatch[1].trim() + ' - ';
+                    clean = clean.substring(prefixMatch[0].length).trim();
+                }
+
+                const orParts = clean.split(/\s+or\s+/i);
+                for (let orPart of orParts) {
+                    orPart = orPart.trim();
+                    if (!orPart) continue;
+
+                    const andParts = orPart.split(/\s+and\s+|,\s*(?:and\s+)?/i);
+                    const requiredSkills = [];
+
+                    for (let part of andParts) {
+                        part = part.trim();
+                        if (!part) continue;
+                        const fullSkillName = part.includes(' - ') ? part : (prefix ? prefix + part : part);
+                        requiredSkills.push({
+                            fullNameLower: fullSkillName.toLowerCase().trim(),
+                            partLower: part.toLowerCase().trim(),
+                            suffixMatch: ' - ' + part.toLowerCase().trim()
+                        });
+                    }
+
+                    if (requiredSkills.length > 0) {
+                        rules.push({
+                            category,
+                            minRank: Math.max(1, ruleCost),
+                            requiredSkills
+                        });
+                    }
+                }
+            }
+        }
+
+        return rules;
+    }
+
     function evaluatePrerequisiteExpression(prereqStr, context, skillsByAbbrMap = {}, skillsByIdMap = {}) {
         if (!prereqStr || !prereqStr.trim()) {
             return { passed: true, unmet: [], formatted: '', raw: prereqStr };
@@ -1482,11 +1576,90 @@ function characterViewerApp() {
             }
         },
 
+        isSpellKnown(spellId) {
+            return knownSpellIds.includes(parseInt(spellId)) || knownSpellIds.includes(String(spellId)) || Boolean(this.knownSpellsData && this.knownSpellsData[spellId]);
+        },
+
+        getSpellOptionsForSpell(spellId) {
+            return (this.spellOptions || rawSpellOptions || []).filter(opt => opt.SpellID == spellId);
+        },
+
+        isSpellFullyLearned(spellId) {
+            if (!this.isSpellKnown(spellId)) return false;
+            const opts = this.getSpellOptionsForSpell(spellId);
+            if (opts.length === 0) return true;
+            return opts.every(opt => this.isOptionKnown(spellId, opt.ID));
+        },
+
+        getEffectiveTrainedSkillsMap() {
+            const trainedMap = {};
+            for (const [sId, rawRank] of Object.entries(characterSkills || {})) {
+                const added = (this.lvlData && this.lvlData.skills && this.lvlData.skills[sId]) ? parseFloat(this.lvlData.skills[sId]) : 0;
+                const total = (parseFloat(rawRank) || 0) + added;
+                if (total > 0 && skillsMap[sId]) {
+                    const sk = skillsMap[sId];
+                    trainedMap[sk.Name.toLowerCase()] = total;
+                    if (sk.Abbreviation) {
+                        trainedMap[sk.Abbreviation.toLowerCase()] = total;
+                    }
+                }
+            }
+            if (this.lvlData && this.lvlData.skills) {
+                for (const [sId, addedRank] of Object.entries(this.lvlData.skills)) {
+                    const added = parseFloat(addedRank) || 0;
+                    if (added > 0 && (!characterSkills || characterSkills[sId] === undefined) && skillsMap[sId]) {
+                        const sk = skillsMap[sId];
+                        trainedMap[sk.Name.toLowerCase()] = added;
+                        if (sk.Abbreviation) {
+                            trainedMap[sk.Abbreviation.toLowerCase()] = added;
+                        }
+                    }
+                }
+            }
+            return trainedMap;
+        },
+
+        isSpellEligibleForLvl(sp, trainedMap) {
+            if (!sp) return false;
+            const rules = parseSpellPrereqRules(sp);
+            if (!rules || rules.length === 0) return true;
+
+            for (let i = 0; i < rules.length; i++) {
+                const rule = rules[i];
+                let ruleSatisfied = true;
+                for (let j = 0; j < rule.requiredSkills.length; j++) {
+                    const req = rule.requiredSkills[j];
+                    let rank = 0;
+                    for (const sName in trainedMap) {
+                        if (sName === req.fullNameLower || sName === req.partLower || sName.endsWith(req.suffixMatch)) {
+                            rank = trainedMap[sName];
+                            break;
+                        }
+                    }
+                    if (rank < rule.minRank || rank <= 0) {
+                        ruleSatisfied = false;
+                        break;
+                    }
+                }
+                if (ruleSatisfied) return true;
+            }
+            return false;
+        },
+
         get filteredLvlSpells() {
-            let list = rawSpells || [];
+            const trainedMap = this.getEffectiveTrainedSkillsMap();
+            let list = (rawSpells || []).filter(sp => {
+                if (this.isSpellFullyLearned(sp.ID)) return false;
+                return this.isSpellEligibleForLvl(sp, trainedMap);
+            });
             if (this.lvlSpellSearch.trim()) {
                 const q = this.lvlSpellSearch.toLowerCase();
-                list = list.filter(sp => (sp.Name && sp.Name.toLowerCase().includes(q)) || (sp.School && sp.School.toLowerCase().includes(q)));
+                list = list.filter(sp => 
+                    (sp.Name && sp.Name.toLowerCase().includes(q)) || 
+                    (sp.School && sp.School.toLowerCase().includes(q)) ||
+                    (sp.Summary && sp.Summary.toLowerCase().includes(q)) ||
+                    (sp.Description && sp.Description.toLowerCase().includes(q))
+                );
             }
             return list;
         },

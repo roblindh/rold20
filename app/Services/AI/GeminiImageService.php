@@ -345,7 +345,7 @@ class GeminiImageService
             File::makeDirectory($targetDir, 0755, true, true);
         }
 
-        $filename = "char_{$characterId}_" . time() . "_{$ext}";
+        $filename = "char_{$characterId}_" . time() . ".{$ext}";
         $fullPath = $targetDir . DIRECTORY_SEPARATOR . $filename;
         File::put($fullPath, $binaryData);
 
@@ -407,7 +407,7 @@ class GeminiImageService
             File::makeDirectory($targetDir, 0755, true, true);
         }
 
-        $filename = "char_{$characterId}_" . time() . "_{$ext}";
+        $filename = "char_{$characterId}_" . time() . ".{$ext}";
         $fullPath = $targetDir . DIRECTORY_SEPARATOR . $filename;
         File::put($fullPath, $response->body());
 

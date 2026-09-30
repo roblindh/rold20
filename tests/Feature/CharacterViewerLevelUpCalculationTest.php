@@ -169,5 +169,43 @@ class CharacterViewerLevelUpCalculationTest extends TestCase
         $this->assertStringContainsString('Level 1 (Templar)', $html);
         $this->assertStringContainsString('Current Trained Skills', $html);
     }
+
+    public function test_levelup_modal_compact_class_list_and_spell_filtering(): void
+    {
+        $charId = DB::table('characters')->insertGetId([
+            'Name' => 'Spell Filter Hero ' . uniqid(),
+            'BaseRace' => 1,
+            'Classes' => '11',
+            'ExperiencePts' => 3000,
+            'BaseStr' => 14,
+            'BaseCon' => 14,
+            'BaseDex' => 12,
+            'BaseInt' => 16,
+            'BaseWis' => 14,
+            'BaseCha' => 12,
+            'Skills' => '66=1.0;74=2.0;', // Pyromancy 1.0, Divine Life 2.0
+            'Spells' => json_encode([
+                '1' => []
+            ]),
+        ]);
+
+        $viewReq = Request::create("/utilities/character-viewer/{$charId}", 'GET');
+        $view = $this->controller->characterViewer($viewReq, (int)$charId);
+        $html = $view->render();
+
+        // 1. Verify Step 1 compact class layout elements
+        $this->assertStringContainsString('title="Hit Points per Level">HP <strong>+', $html);
+        $this->assertStringContainsString('title="Stamina Points per Level">SP <strong>+', $html);
+        $this->assertStringContainsString('title="Power Points per Level">PP <strong>+', $html);
+        $this->assertStringContainsString('title="Skill Points per Level">Skill <strong>+', $html);
+
+        // 2. Verify Step 4 spell filtering logic & template elements
+        $this->assertStringContainsString('filteredLvlSpells', $html);
+        $this->assertStringContainsString('isSpellFullyLearned', $html);
+        $this->assertStringContainsString('isSpellEligibleForLvl', $html);
+        $this->assertStringContainsString('getEffectiveTrainedSkillsMap', $html);
+        $this->assertStringContainsString('parseSpellPrereqRules', $html);
+        $this->assertStringContainsString('No Eligible New Spells Available', $html);
+    }
 }
 
