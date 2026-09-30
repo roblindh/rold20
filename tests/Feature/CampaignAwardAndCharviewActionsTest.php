@@ -476,4 +476,28 @@ class CampaignAwardAndCharviewActionsTest extends TestCase
         // Truncated Cost (first 2 lines with ellipsis)
         $this->assertStringContainsString('1 PP for zombies and skeletons<br/>+6 PP for ghouls…', $html);
     }
+
+    public function testCampaignAdminAwardModalScriptContainsCleanRedirect(): void
+    {
+        $gm = Player::create([
+            'Name' => 'GM_AwardView_' . uniqid(),
+            'Password' => Hash::make('secret'),
+            'Type' => Player::TYPE_GM,
+        ]);
+        Auth::login($gm);
+
+        $campaignId = DB::table('campaigns')->insertGetId([
+            'Name' => 'Redirect Campaign ' . uniqid(),
+            'GameMaster' => $gm->ID,
+            'Vault' => json_encode(['funds' => 100, 'items' => []]),
+        ]);
+
+        $request = Request::create("/utilities/campaign?campaign={$campaignId}", 'GET');
+        $view = $this->controller->campaign($request);
+        $html = $view->render();
+
+        $this->assertIsString($html);
+        $this->assertStringContainsString('this.showAwardModal = false', $html);
+        $this->assertStringContainsString('campaign=' . '${targetCampId}&tab=party', $html);
+    }
 }

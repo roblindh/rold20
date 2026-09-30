@@ -1649,8 +1649,9 @@ function campaignAdmin() {
                 });
                 const data = await res.json();
                 if (data.success) {
-                    alert(data.message || 'Rewards successfully granted to party!');
-                    window.location.reload();
+                    this.showAwardModal = false;
+                    const targetCampId = this.awardCamp.ID;
+                    window.location.href = `{{ route('utilities.campaign', [], false) }}?campaign=${targetCampId}&tab=party`;
                 } else {
                     alert(data.message || 'Failed to grant rewards.');
                 }
