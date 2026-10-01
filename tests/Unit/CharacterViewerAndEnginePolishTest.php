@@ -249,4 +249,80 @@ class CharacterViewerAndEnginePolishTest extends TestCase
         $this->assertStringContainsString('1d4', $shield['one_handed']['damage']);
         $this->assertStringContainsString('B', $shield['one_handed']['damage']);
     }
+
+    public function testModifiedItemTraitsCalculation(): void
+    {
+        $entity = (object)[
+            'Classes' => [4],
+            'BaseStr' => 18,
+            'BaseDex' => 16,
+            'BaseCon' => 16,
+            'BaseInt' => 10,
+            'BaseWis' => 13,
+            'BaseCha' => 17,
+            'Skills' => [
+                25 => 14.0, // Weapons - Heavy Blades: 14 ranks
+                28 => 14.0, // Weapons - Shields: 14 ranks
+                32 => 14.0, // Armor - Heavy: 14 ranks
+            ],
+            'Equipment' => [
+                [
+                    'uid' => 'base_sword',
+                    'Name' => 'Sword, long-',
+                    'location' => EquipmentManager::LOCATION_EQUIPPED,
+                ],
+                [
+                    'uid' => 'outst_sword',
+                    'Name' => 'Outstanding Longsword',
+                    'config' => '{"mundane_mods":["OutstMeleeWp"]}',
+                    'location' => EquipmentManager::LOCATION_EQUIPPED,
+                ],
+                [
+                    'uid' => 'excep_sword',
+                    'Name' => 'Exceptional Longsword +2',
+                    'config' => '{"mundane_mods":["OutstMeleeWp"],"magic_mods":[{"id":"EnchMeleeWp","param":2}]}',
+                    'location' => EquipmentManager::LOCATION_EQUIPPED,
+                ],
+                [
+                    'uid' => 'outst_plate',
+                    'Name' => 'Outstanding Full Plate',
+                    'config' => '{"mundane_mods":["OutstHeavyArm"]}',
+                    'location' => EquipmentManager::LOCATION_EQUIPPED,
+                ],
+                [
+                    'uid' => 'outst_shield',
+                    'Name' => 'Outstanding Heavy Steel Shield',
+                    'config' => '{"mundane_mods":["OutstShield"]}',
+                    'location' => EquipmentManager::LOCATION_EQUIPPED,
+                ],
+            ],
+        ];
+
+        $calc = EntityEngine::calculate($entity);
+        $weapons = $calc['attacks']['weapons'] ?? [];
+
+        // Base Longsword: Att +15 (17 - 2 EC), Dmg 1d10+15 S
+        $baseSword = $weapons['base_sword'] ?? null;
+        $this->assertNotNull($baseSword);
+        $this->assertEquals(15, $baseSword['one_handed']['attack_bonus']);
+        $this->assertEquals('1d10+15 S', $baseSword['one_handed']['damage']);
+
+        // Outstanding Longsword: Att +16 (+1), Dmg 1d10+16 S (+1)
+        $outstSword = $weapons['outst_sword'] ?? null;
+        $this->assertNotNull($outstSword);
+        $this->assertEquals(16, $outstSword['one_handed']['attack_bonus']);
+        $this->assertEquals('1d10+16 S', $outstSword['one_handed']['damage']);
+
+        // Exceptional Longsword +2: Att +17 (+2), Dmg 1d10+17 S (+2)
+        $excepSword = $weapons['excep_sword'] ?? null;
+        $this->assertNotNull($excepSword);
+        $this->assertEquals(17, $excepSword['one_handed']['attack_bonus']);
+        $this->assertEquals('1d10+17 S', $excepSword['one_handed']['damage']);
+
+        // Outstanding Full Plate: DR 9 (8 base + 1)
+        $this->assertEquals(9, $calc['defenses']['dr'] ?? null);
+
+        // Outstanding Heavy Steel Shield: Parry 12 (7 base + 1 mod + 4 skill)
+        $this->assertEquals(12, $calc['defenses']['parry_bonus'] ?? null);
+    }
 }

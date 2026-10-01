@@ -1186,6 +1186,17 @@ class ProceduralItemFactory
                 $weightKg = (float)($baseItemRef['BaseWeight'] ?? $baseItemRef['Weight'] ?? 0);
             }
 
+            $rawEngineTraits = class_exists(\App\Services\Entity\EquipmentManager::class)
+                ? \App\Services\Entity\EquipmentManager::resolveItemTraits([
+                    'config' => $configStr,
+                    'name' => $name,
+                    'item_id' => $baseItemId > 0 ? $baseItemId : null,
+                    'ItemTypeID' => $typeId > 0 ? $typeId : null,
+                    'Subtype' => $subtypeId > 0 ? $subtypeId : null,
+                    'ref_data' => $baseItemRef,
+                ])
+                : '';
+
             $category = match($typeId) {
                 2 => 'weapon',
                 3 => 'armor',
@@ -1202,8 +1213,11 @@ class ProceduralItemFactory
                 'name' => $name,
                 'config_string' => $configStr,
                 'item_id' => $baseItemId > 0 ? $baseItemId : null,
+                'item_type' => $typeId > 0 ? $typeId : null,
                 'item_type_id' => $typeId > 0 ? $typeId : null,
+                'ItemTypeID' => $typeId > 0 ? $typeId : null,
                 'subtype' => $subtypeId > 0 ? $subtypeId : null,
+                'Subtype' => $subtypeId > 0 ? $subtypeId : null,
                 'subtype_name' => $subtypeName,
                 'category' => $category,
                 'value' => $valSp,
@@ -1217,6 +1231,8 @@ class ProceduralItemFactory
                 'dr' => (int)$entity->GetDR(),
                 'hp' => (int)$entity->GetHPTotal(),
                 'traits' => $rawTraits,
+                'traits_raw' => $rawEngineTraits,
+                'custom_traits' => $rawEngineTraits,
                 'traits_html' => str_replace(["\r\n", "\n", "\\n"], "<br/>", htmlspecialchars($rawTraits, ENT_QUOTES, 'UTF-8')),
                 'mods' => $rawMods,
                 'mods_html' => str_replace(["\r\n", "\n", "\\n"], "<br/>", htmlspecialchars($rawMods, ENT_QUOTES, 'UTF-8')),

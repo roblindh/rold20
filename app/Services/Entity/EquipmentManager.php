@@ -239,25 +239,20 @@ class EquipmentManager
     }
 
     protected static ?array $refItemsCache = null;
+    protected static ?array $refItemModsMundaneCache = null;
+    protected static ?array $refItemModsMagicCache = null;
+    protected static ?array $refMaterialsCache = null;
 
     /**
-     * Enrich item data with ref_items and ref_itemsubtypes if ItemTypeID or Subtype is missing.
+     * Load item reference tables into static caches.
      */
-    public static function enrichItemWithRefData(array|object $item): array
+    public static function loadItemReferenceTables(): void
     {
-        $arr = (array)$item;
-        $type = $arr['ItemTypeID'] ?? $arr['item_type_id'] ?? $arr['item_type'] ?? $arr['ItemType'] ?? null;
-        $subtype = $arr['Subtype'] ?? $arr['subtype'] ?? null;
-
-        if ($type !== null && $subtype !== null && (int)$type > 0) {
-            return $arr;
-        }
-
         if (self::$refItemsCache === null) {
             try {
                 self::$refItemsCache = DB::table('ref_items')
                     ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
-                    ->select('ref_items.*', 'ref_itemsubtypes.Type as ItemTypeID')
+                    ->select('ref_items.*', 'ref_itemsubtypes.Type as ItemTypeID', 'ref_itemsubtypes.Name as SubtypeName')
                     ->get()
                     ->keyBy('ID')
                     ->map(fn($r) => (array)$r)
@@ -271,24 +266,378 @@ class EquipmentManager
             }
         }
 
-        $refId = (int)($arr['item_id'] ?? $arr['ID'] ?? $arr['id'] ?? $arr['ref_id'] ?? 0);
-        if ($refId > 0 && isset(self::$refItemsCache[$refId])) {
-            $ref = self::$refItemsCache[$refId];
-            return array_merge($ref, $arr);
+        if (self::$refItemModsMundaneCache === null) {
+            try {
+                self::$refItemModsMundaneCache = DB::table('ref_itemmodsmundane')
+                    ->get()
+                    ->keyBy('ID')
+                    ->map(fn($r) => (array)$r)
+                    ->toArray();
+            } catch (\Throwable $e) {
+                $cacheFile = dirname(__DIR__, 3) . '/storage/framework/cache/app_data.php';
+                if (file_exists($cacheFile)) {
+                    $appData = require $cacheFile;
+                    self::$refItemModsMundaneCache = $appData['itemmodsmundane'] ?? [];
+                }
+            }
         }
 
-        // Check if item has config string or procedural name that can be matched to base item
-        $config = (string)($arr['config'] ?? $arr['config_string'] ?? $arr['Name'] ?? $arr['name'] ?? '');
-        if (!empty($config) && class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
-            $base = \App\Services\ItemGeneration\ProceduralItemFactory::resolveBaseItem($config);
-            if ($base && !empty($base['ID'])) {
-                $baseId = (int)$base['ID'];
-                $ref = self::$refItemsCache[$baseId] ?? $base;
-                $arr['ItemTypeID'] = $ref['ItemTypeID'] ?? $ref['Type'] ?? null;
-                $arr['Subtype'] = $ref['Subtype'] ?? null;
-                $arr['item_id'] = $baseId;
-                return array_merge($ref, $arr);
+        if (self::$refItemModsMagicCache === null) {
+            try {
+                self::$refItemModsMagicCache = DB::table('ref_itemmodsmagic')
+                    ->get()
+                    ->keyBy('ID')
+                    ->map(fn($r) => (array)$r)
+                    ->toArray();
+            } catch (\Throwable $e) {
+                $cacheFile = dirname(__DIR__, 3) . '/storage/framework/cache/app_data.php';
+                if (file_exists($cacheFile)) {
+                    $appData = require $cacheFile;
+                    self::$refItemModsMagicCache = $appData['itemmodsmagic'] ?? [];
+                }
             }
+        }
+
+        if (self::$refMaterialsCache === null) {
+            try {
+                self::$refMaterialsCache = DB::table('ref_materials')
+                    ->get()
+                    ->keyBy('ID')
+                    ->map(fn($r) => (array)$r)
+                    ->toArray();
+            } catch (\Throwable $e) {
+                $cacheFile = dirname(__DIR__, 3) . '/storage/framework/cache/app_data.php';
+                if (file_exists($cacheFile)) {
+                    $appData = require $cacheFile;
+                    self::$refMaterialsCache = $appData['materials'] ?? [];
+                }
+            }
+        }
+    }
+
+    /**
+     * Resolve all composite traits (base item + material + mundane mods + magic mods + custom) for an item.
+     */
+    public static function resolveItemTraits(array|object $item): string
+    {
+        self::loadItemReferenceTables();
+        $arr = (array)$item;
+
+        $traitBlocks = [];
+
+        // 1. Resolve base item reference data
+        $refId = (int)($arr['item_id'] ?? $arr['ref_id'] ?? (is_numeric($arr['ID'] ?? null) ? $arr['ID'] : 0) ?? (is_numeric($arr['id'] ?? null) ? $arr['id'] : 0));
+        $baseRef = null;
+        if ($refId > 0 && isset(self::$refItemsCache[$refId])) {
+            $baseRef = self::$refItemsCache[$refId];
+        } else {
+            $config = (string)($arr['config'] ?? $arr['config_string'] ?? '');
+            $name = (string)($arr['Name'] ?? $arr['name'] ?? '');
+            if (class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
+                $base = null;
+                if (!empty($config)) {
+                    $base = \App\Services\ItemGeneration\ProceduralItemFactory::resolveBaseItem($config);
+                }
+                if (!$base && !empty($name)) {
+                    $base = \App\Services\ItemGeneration\ProceduralItemFactory::resolveBaseItem($name);
+                }
+                if ($base && !empty($base['ID'])) {
+                    $baseId = (int)$base['ID'];
+                    $baseRef = self::$refItemsCache[$baseId] ?? $base;
+                }
+            }
+        }
+
+        $custom = (string)($arr['custom_traits'] ?? $arr['traits'] ?? '');
+        $hasCustomWeapon = !empty($custom) && (bool)preg_match('/Weapon\s*\{/i', $custom);
+        $hasCustomArmor = !empty($custom) && (bool)preg_match('/Armor\s*\{/i', $custom);
+
+        // Base item traits (always take clean base from reference cache to avoid duplicate accumulation)
+        $baseTraits = '';
+        if ($baseRef && !empty($baseRef['ID']) && isset(self::$refItemsCache[$baseRef['ID']]['Traits'])) {
+            $baseTraits = trim((string)self::$refItemsCache[$baseRef['ID']]['Traits']);
+        } elseif (!empty($arr['Traits']) && str_contains($arr['Traits'], '{') && empty($arr['config'])) {
+            $baseTraits = trim((string)$arr['Traits']);
+        }
+        if (!empty($baseTraits) && str_contains($baseTraits, '{')) {
+            $baseParsed = TraitEvaluator::parse($baseTraits);
+            foreach ($baseParsed as $bp) {
+                if ($bp['type'] === 'Weapon' && $hasCustomWeapon) {
+                    continue;
+                }
+                if ($bp['type'] === 'Armor' && $hasCustomArmor) {
+                    continue;
+                }
+                $traitBlocks[] = $bp['raw'];
+            }
+        }
+
+        $typeId = (int)($arr['ItemTypeID'] ?? $arr['item_type_id'] ?? $arr['item_type'] ?? $arr['ItemType'] ?? $baseRef['ItemTypeID'] ?? $baseRef['Type'] ?? 0);
+        $subtypeId = (int)($arr['Subtype'] ?? $arr['subtype'] ?? $baseRef['Subtype'] ?? 0);
+        $isWeapon = ($typeId === 2) || in_array($subtypeId, [6, 7, 9, 10, 40]);
+        $isProjectile = ($subtypeId === 7) || in_array($subtypeId, [5, 6, 7]);
+        $isShield = ($subtypeId === 9);
+        $isArmor = ($typeId === 3) || in_array($subtypeId, [11, 12, 13, 14, 15, 16, 17, 18, 19, 41, 42, 43, 44, 45, 46]);
+
+        $configStr = (string)($arr['config'] ?? $arr['config_string'] ?? $arr['ConfigString'] ?? '');
+        $name = (string)($arr['name'] ?? $arr['Name'] ?? '');
+
+        $parsedMods = [];
+        $parsedMagicMods = [];
+        $parsedMat = null;
+
+        // 2. Parse config string if present
+        if (!empty($configStr) && str_contains($configStr, '(')) {
+            $paramsStr = trim(substr($configStr, strpos($configStr, '(') + 1));
+            $paramsStr = rtrim($paramsStr, ')');
+            $params = explode(':', $paramsStr);
+            foreach ($params as $p) {
+                $p = trim($p);
+                if (str_starts_with($p, 'Mod=')) {
+                    $mVal = substr($p, 4);
+                    $mTokens = explode('&', $mVal);
+                    $mCode = trim($mTokens[0]);
+                    $parX = null;
+                    $parY = null;
+                    foreach ($mTokens as $tok) {
+                        if (str_starts_with($tok, 'x=')) $parX = substr($tok, 2);
+                        if (str_starts_with($tok, 'y=')) $parY = substr($tok, 2);
+                    }
+
+                    $foundMundane = false;
+                    if (!empty(self::$refItemModsMundaneCache)) {
+                        foreach (self::$refItemModsMundaneCache as $mm) {
+                            if (strcasecmp((string)($mm['Abbreviation'] ?? ''), $mCode) === 0 || strcasecmp((string)($mm['Description'] ?? ''), $mCode) === 0) {
+                                $parsedMods[] = $mm;
+                                $foundMundane = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!$foundMundane && !empty(self::$refItemModsMagicCache)) {
+                        foreach (self::$refItemModsMagicCache as $mm) {
+                            if (strcasecmp((string)($mm['Abbreviation'] ?? ''), $mCode) === 0 || strcasecmp((string)($mm['Description'] ?? ''), $mCode) === 0) {
+                                $parsedMagicMods[] = ['mod' => $mm, 'x' => $parX, 'y' => $parY];
+                                break;
+                            }
+                        }
+                    }
+                } elseif (str_starts_with($p, 'Mat=') || str_starts_with($p, 'Material=')) {
+                    $matName = trim(substr($p, strpos($p, '=') + 1));
+                    if (!empty(self::$refMaterialsCache)) {
+                        foreach (self::$refMaterialsCache as $mat) {
+                            if (strcasecmp((string)($mat['Name'] ?? ''), $matName) === 0) {
+                                $parsedMat = $mat;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. Fallback Material if not found in config
+        if (!$parsedMat) {
+            $matId = (int)($arr['material'] ?? $arr['Mat'] ?? $arr['Material'] ?? $arr['OverrideMaterial'] ?? 0);
+            if ($matId > 0 && isset(self::$refMaterialsCache[$matId])) {
+                $parsedMat = self::$refMaterialsCache[$matId];
+            } else {
+                $matName = (string)($arr['material'] ?? $arr['Mat'] ?? $arr['Material'] ?? '');
+                if (empty($matName) && !empty($name)) {
+                    if (!empty(self::$refMaterialsCache)) {
+                        foreach (self::$refMaterialsCache as $mat) {
+                            $mN = (string)($mat['Name'] ?? '');
+                            if (!empty($mN) && stripos($name, $mN) !== false) {
+                                $parsedMat = $mat;
+                                break;
+                            }
+                            if ($mN === 'Mithril' && (stripos($name, 'Mithral') !== false || stripos($name, 'Mithril') !== false)) {
+                                $parsedMat = $mat;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($parsedMat && !empty($parsedMat['Traits'])) {
+            $traitBlocks[] = trim($parsedMat['Traits']);
+        }
+
+        // 4. Fallback Mundane Mod if not found in config
+        if (empty($parsedMods)) {
+            $rawLMods = $arr['lMods'] ?? $arr['mods'] ?? [];
+            if (is_array($rawLMods) && !empty($rawLMods)) {
+                foreach ($rawLMods as $lm) {
+                    if (is_numeric($lm) && isset(self::$refItemModsMundaneCache[(int)$lm])) {
+                        $parsedMods[] = self::$refItemModsMundaneCache[(int)$lm];
+                    } elseif (is_string($lm)) {
+                        foreach (self::$refItemModsMundaneCache ?? [] as $mm) {
+                            if (strcasecmp((string)($mm['Abbreviation'] ?? ''), $lm) === 0 || strcasecmp((string)($mm['Description'] ?? ''), $lm) === 0) {
+                                $parsedMods[] = $mm;
+                                break;
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (stripos($name, 'Outstanding') !== false) {
+                    $targetCode = $isShield ? 'OutstShield' : ($isArmor ? 'OutstArmor' : ($isProjectile ? 'OutstProjWp' : 'OutstMeleeWp'));
+                    foreach (self::$refItemModsMundaneCache ?? [] as $mm) {
+                        if (($mm['Abbreviation'] ?? '') === $targetCode) {
+                            $parsedMods[] = $mm;
+                            break;
+                        }
+                    }
+                } elseif (stripos($name, 'Exceptional') !== false) {
+                    $targetCode = $isShield ? 'ExcepShield' : ($isArmor ? 'ExcepArmor' : ($isProjectile ? 'ExcepProjWp' : 'ExcepMeleeWp'));
+                    foreach (self::$refItemModsMundaneCache ?? [] as $mm) {
+                        if (($mm['Abbreviation'] ?? '') === $targetCode) {
+                            $parsedMods[] = $mm;
+                            break;
+                        }
+                    }
+                } elseif (stripos($name, 'Masterwork') !== false) {
+                    $targetCode = $isShield ? 'MwShield' : ($isArmor ? 'MwArmor' : ($isProjectile ? 'MwProjWp' : 'MwMeleeWp'));
+                    foreach (self::$refItemModsMundaneCache ?? [] as $mm) {
+                        if (($mm['Abbreviation'] ?? '') === $targetCode) {
+                            $parsedMods[] = $mm;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach ($parsedMods as $mm) {
+            if (!empty($mm['Traits'])) {
+                $traitBlocks[] = trim($mm['Traits']);
+            }
+        }
+
+        // 5. Fallback Magic Mods if not found in config
+        if (empty($parsedMagicMods)) {
+            if (preg_match('/\+([1-9]\d*)/', $name, $plusM)) {
+                $plusVal = $plusM[1];
+                $magicCode = $isShield ? 'ParryEnh' : ($isArmor ? 'ArmorEnh' : ($isWeapon ? 'WeaponEnh' : null));
+                if ($magicCode) {
+                    foreach (self::$refItemModsMagicCache ?? [] as $mm) {
+                        if (($mm['Abbreviation'] ?? '') === $magicCode) {
+                            $parsedMagicMods[] = ['mod' => $mm, 'x' => $plusVal, 'y' => null];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach ($parsedMagicMods as $mmInfo) {
+            $mm = $mmInfo['mod'];
+            if (!empty($mm['Traits'])) {
+                $tStr = $mm['Traits'];
+                if ($mmInfo['x'] !== null) {
+                    $tStr = str_replace('(x)', (string)$mmInfo['x'], $tStr);
+                }
+                if ($mmInfo['y'] !== null) {
+                    $tStr = str_replace('(y)', (string)$mmInfo['y'], $tStr);
+                }
+                $traitBlocks[] = trim($tStr);
+            }
+        }
+
+        // 6. Explicit Custom Traits (if user specified standalone custom traits)
+        $custom = (string)($arr['custom_traits'] ?? $arr['traits'] ?? '');
+        if (!empty($custom) && str_contains($custom, '{')) {
+            $traitBlocks[] = trim($custom);
+        }
+
+        $rawCombined = implode(' ', array_filter($traitBlocks));
+        if (empty($rawCombined)) {
+            return '';
+        }
+
+        // Canonical deduplication of trait blocks
+        $parsedBlocks = TraitEvaluator::parse($rawCombined);
+        $uniqueBlocks = [];
+        foreach ($parsedBlocks as $pb) {
+            $params = $pb['params'];
+            unset($params['explicit_target']);
+            ksort($params);
+            $key = strtolower($pb['type']) . '|' . json_encode($params);
+            if (!isset($uniqueBlocks[$key])) {
+                $uniqueBlocks[$key] = $pb['raw'];
+            }
+        }
+
+        return implode(' ', array_values($uniqueBlocks));
+    }
+
+    /**
+     * Enrich item data with ref_items, ref_itemsubtypes, and resolved modification traits.
+     */
+    public static function enrichItemWithRefData(array|object $item): array
+    {
+        $arr = (array)$item;
+        self::loadItemReferenceTables();
+
+        $origName = (string)($arr['name'] ?? $arr['Name'] ?? '');
+        $refId = (int)($arr['item_id'] ?? $arr['ref_id'] ?? 0);
+        $base = null;
+
+        if ($refId > 0 && isset(self::$refItemsCache[$refId])) {
+            $base = self::$refItemsCache[$refId];
+        } elseif (isset($arr['ID']) && is_numeric($arr['ID']) && isset(self::$refItemsCache[(int)$arr['ID']])) {
+            $candidate = self::$refItemsCache[(int)$arr['ID']];
+            $candName = strtolower((string)($candidate['Name'] ?? ''));
+            $itemName = strtolower($origName);
+            if (empty($itemName) || str_contains($candName, $itemName) || str_contains($itemName, $candName)) {
+                $base = $candidate;
+            }
+        }
+
+        if (!$base) {
+            $config = (string)($arr['config'] ?? $arr['config_string'] ?? '');
+            if (class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
+                if (!empty($config)) {
+                    $resolvedBase = \App\Services\ItemGeneration\ProceduralItemFactory::resolveBaseItem($config);
+                    if ($resolvedBase && !empty($resolvedBase['ID'])) {
+                        $baseId = (int)$resolvedBase['ID'];
+                        $base = self::$refItemsCache[$baseId] ?? $resolvedBase;
+                    }
+                }
+                if (!$base && !empty($origName)) {
+                    $resolvedBase = \App\Services\ItemGeneration\ProceduralItemFactory::resolveBaseItem($origName);
+                    if ($resolvedBase && !empty($resolvedBase['ID'])) {
+                        $baseId = (int)$resolvedBase['ID'];
+                        $base = self::$refItemsCache[$baseId] ?? $resolvedBase;
+                    }
+                }
+            }
+        }
+
+        if ($base) {
+            $arr = array_merge($base, $arr);
+            if (!empty($origName)) {
+                $arr['name'] = $origName;
+                $arr['Name'] = $origName;
+            }
+            $arr['ItemTypeID'] = (int)($base['ItemTypeID'] ?? $base['Type'] ?? $arr['ItemTypeID'] ?? 0);
+            $arr['item_type'] = $arr['ItemTypeID'];
+            $arr['Subtype'] = (int)($base['Subtype'] ?? $arr['Subtype'] ?? 0);
+            $arr['subtype'] = $arr['Subtype'];
+            $arr['item_id'] = (int)($base['ID'] ?? $arr['item_id'] ?? 0);
+            $arr['ref_data'] = $base;
+        } else {
+            $arr['item_type'] = (int)($arr['ItemTypeID'] ?? $arr['item_type_id'] ?? $arr['item_type'] ?? $arr['ItemType'] ?? 0);
+            $arr['subtype'] = (int)($arr['Subtype'] ?? $arr['subtype'] ?? 0);
+        }
+
+        // Attach resolved composite traits to Traits and resolved_traits
+        $resolvedTraits = self::resolveItemTraits($arr);
+        if (!empty($resolvedTraits)) {
+            $arr['Traits'] = $resolvedTraits;
+            $arr['resolved_traits'] = $resolvedTraits;
         }
 
         return $arr;

@@ -39,6 +39,7 @@ class TraitEvaluator
                 'Type' => 'Nil',
                 'Value' => '',
                 'Target' => 'Wearer',
+                'explicit_target' => false,
             ];
 
             $pairs = explode(';', $paramsStr);
@@ -48,6 +49,9 @@ class TraitEvaluator
                     $k = trim(substr($pair, 0, $eqPos));
                     $v = trim(substr($pair, $eqPos + 1));
                     $params[$k] = $v;
+                    if (strcasecmp($k, 'Target') === 0) {
+                        $params['explicit_target'] = true;
+                    }
                 }
             }
 
@@ -304,7 +308,7 @@ class TraitEvaluator
 
             // If evaluating an item in 'wielder' scope, skip item-local weapon/attack/damage/parry traits
             $qual = $params['Qual'] ?? '';
-            if ($currentScope === 'wielder' && !isset($params['Target'])) {
+            if ($currentScope === 'wielder' && empty($params['explicit_target'])) {
                 if ($type === 'Weapon' || $type === 'Armor' || $type === 'AttMod' || ($type === 'DefMod' && strcasecmp($qual, 'Parry') === 0)) {
                     continue;
                 }
@@ -447,6 +451,21 @@ class TraitEvaluator
                     $engine->addModifier(strtoupper($qual), $numVal, $modType, $sourceName);
                 } elseif (strcasecmp($qual, 'Regenerate') === 0 || strcasecmp($qual, 'FastHeal') === 0) {
                     $engine->addModifier($qual, $numVal, $modType, $sourceName);
+                }
+                break;
+
+            case 'Armor':
+                if (isset($params['DR']) && is_numeric($params['DR'])) {
+                    $engine->addModifier('DR', (float)$params['DR'], 'arm', $sourceName);
+                }
+                if (isset($params['DeC']) && is_numeric($params['DeC'])) {
+                    $engine->addModifier('DeC', (float)$params['DeC'], 'arm', $sourceName);
+                }
+                if (isset($params['EC']) && is_numeric($params['EC'])) {
+                    $engine->addModifier('EC', (float)$params['EC'], 'arm', $sourceName);
+                }
+                if (isset($params['ParMod']) && is_numeric($params['ParMod'])) {
+                    $engine->addModifier('Par', (float)$params['ParMod'], 'arm', $sourceName);
                 }
                 break;
 

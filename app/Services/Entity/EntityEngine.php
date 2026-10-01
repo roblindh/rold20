@@ -994,8 +994,9 @@ class EntityEngine
 
         if (!empty($rawPossessions) && is_array($rawPossessions)) {
             foreach ($rawPossessions as $pIdx => $pItem) {
-                $refId = (int)($pItem['item_id'] ?? $pItem['ref_id'] ?? $pItem['ID'] ?? (is_numeric($pItem['id'] ?? null) ? $pItem['id'] : 0));
-                $refItem = self::$itemsCache[$refId] ?? [];
+                $pItem = EquipmentManager::enrichItemWithRefData($pItem);
+                $refItem = $pItem['ref_data'] ?? [];
+                $refId = (int)($pItem['item_id'] ?? $pItem['ref_id'] ?? (is_numeric($pItem['ID'] ?? null) ? $pItem['ID'] : 0) ?? (is_numeric($pItem['id'] ?? null) ? $pItem['id'] : 0) ?? $refItem['ID'] ?? 0);
                 $uId = $pItem['uid'] ?? $pItem['id'] ?? $pItem['ID'] ?? ($refId > 0 ? "item_{$refId}_{$pIdx}" : "item_{$pIdx}");
                 $itemType = (int)($pItem['item_type'] ?? $pItem['ItemTypeID'] ?? $refItem['ItemTypeID'] ?? $refItem['Type'] ?? 1);
                 $subtype = (int)($pItem['subtype'] ?? $pItem['Subtype'] ?? $refItem['Subtype'] ?? 0);
@@ -1019,12 +1020,18 @@ class EntityEngine
                     }
                 }
 
-                $equipmentManager->addItem([
+                $equipmentManager->addItem(array_merge($pItem, [
                     'id' => $uId,
                     'uid' => $uId,
                     'ref_id' => $refId,
+                    'item_id' => $refId,
                     'name' => $name,
                     'item_type' => $itemType,
+                    'ItemTypeID' => $itemType,
+                    'subtype' => $subtype,
+                    'Subtype' => $subtype,
+                    'config' => $pItem['config'] ?? $pItem['config_string'] ?? '',
+                    'config_string' => $pItem['config_string'] ?? $pItem['config'] ?? '',
                     'slot' => $pItem['slot'] ?? $refItem['DefaultSlot'] ?? 'carried',
                     'unit_weight' => (float)($pItem['unit_weight'] ?? $pItem['BaseWeight'] ?? $pItem['Weight'] ?? $refItem['Weight'] ?? 0.0),
                     'quantity' => (int)($pItem['quantity'] ?? $pItem['qty'] ?? $pItem['Qty'] ?? 1),
@@ -1037,21 +1044,22 @@ class EntityEngine
                     'custom_traits' => $pItem['custom_traits'] ?? '',
                     'size' => $pItem['size'] ?? null,
                     'dmg_dice' => $pItem['dmg_dice'] ?? 0,
-                ]);
+                ]));
             }
         }
 
         // Apply traits of items according to location (equipped/carried/stowed)
         foreach ($equipmentManager->getItems() as $pItem) {
             $loc = $pItem['locations'][$config] ?? EquipmentManager::LOCATION_CARRIED;
+            $itemType = (int)($pItem['item_type'] ?? $pItem['ItemTypeID'] ?? $pItem['ref_data']['ItemTypeID'] ?? $pItem['ref_data']['Type'] ?? 1);
             $scope = match ($loc) {
-                EquipmentManager::LOCATION_EQUIPPED => (!empty($pItem['container_id'])) ? 'carrier' : (in_array((int)($pItem['item_type'] ?? 1), [2, 3]) ? 'wielder' : 'wearer'),
+                EquipmentManager::LOCATION_EQUIPPED => (!empty($pItem['container_id'])) ? 'carrier' : (($itemType === 2 || in_array($pItem['slot'] ?? '', ['main_hand', 'off_hand'])) ? 'wielder' : 'wearer'),
                 EquipmentManager::LOCATION_CARRIED => 'carrier',
                 EquipmentManager::LOCATION_STOWED => 'owner',
                 default => 'owner',
             };
 
-            $itemTraits = trim(($pItem['ref_data']['Traits'] ?? '') . ' ' . ($pItem['custom_traits'] ?? ''));
+            $itemTraits = EquipmentManager::resolveItemTraits($pItem);
             if (!empty($itemTraits)) {
                 $parsed = TraitEvaluator::parse($itemTraits);
                 TraitEvaluator::applyTraitsToEngine($parsed, $modifierEngine, $context, $pItem['name'] ?? 'Equipment', $scope);
@@ -1097,7 +1105,7 @@ class EntityEngine
                 continue;
             }
 
-            $traits = TraitEvaluator::parse(($item['ref_data']['Traits'] ?? '') . ' ' . ($item['custom_traits'] ?? ''));
+            $traits = TraitEvaluator::parse(EquipmentManager::resolveItemTraits($item));
             $itemECRed = 0;
             foreach ($traits as $tr) {
                 if ($tr['type'] === 'Armor') {
@@ -1282,7 +1290,7 @@ class EntityEngine
                 continue;
             }
             $ref = $it['ref_data'] ?? [];
-            $traits = TraitEvaluator::parse(trim(($ref['Traits'] ?? '') . ' ' . ($it['custom_traits'] ?? '')));
+            $traits = TraitEvaluator::parse(EquipmentManager::resolveItemTraits($it));
             $inherentPar = 0;
             $weapQual = '';
             $isWieldedCombatItem = false;
@@ -1339,7 +1347,7 @@ class EntityEngine
                 continue;
             }
             $ref = $it['ref_data'] ?? [];
-            $traits = TraitEvaluator::parse(trim(($ref['Traits'] ?? '') . ' ' . ($it['custom_traits'] ?? '')));
+            $traits = TraitEvaluator::parse(EquipmentManager::resolveItemTraits($it));
             foreach ($traits as $tr) {
                 if ($tr['type'] === 'Armor' && !empty($tr['params']['Qual'])) {
                     $armEval = self::evaluateArmorSkillsForQual($tr['params']['Qual'], $effectiveSkillRanks, $context);
@@ -1604,7 +1612,7 @@ class EntityEngine
 
         foreach ($equippedWeapons as $wId => $wItem) {
             $wRef = $wItem['ref_data'] ?? [];
-            $traits = TraitEvaluator::parse(trim(($wRef['Traits'] ?? '') . ' ' . ($wItem['custom_traits'] ?? '')));
+            $traits = TraitEvaluator::parse(EquipmentManager::resolveItemTraits($wItem));
 
             $dmgTraitStr = '';
             $dblWeapDmgStr = '';
@@ -2400,7 +2408,7 @@ class EntityEngine
         foreach ($charPossessions as $pos) {
             $loc = $pos['locations'][$config ?? 0] ?? $pos['location'] ?? EquipmentManager::LOCATION_STOWED;
             if ($loc === EquipmentManager::LOCATION_EQUIPPED) {
-                $traitsStr = (string)($pos['ref_data']['Traits'] ?? $pos['custom_traits'] ?? $pos['traits'] ?? '');
+                $traitsStr = EquipmentManager::resolveItemTraits($pos);
                 $pTraits = TraitEvaluator::parse($traitsStr);
                 foreach ($pTraits as $pt) {
                     if ($pt['type'] === 'Implement' || $pt['type'] === 'Focus') {
