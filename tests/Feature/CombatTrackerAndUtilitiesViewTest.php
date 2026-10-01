@@ -484,6 +484,32 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
             }
         }
     }
+
+    public function testUpdatePartyLocationReturnsJson(): void
+    {
+        $uniqueName = 'Test Location Campaign ' . uniqid();
+        $campId = DB::table('campaigns')->insertGetId([
+            'Name' => $uniqueName,
+            'PartyLocation' => 'Small town',
+            'GameMaster' => null
+        ]);
+
+        $request = Request::create("/utilities/campaign/{$campId}/update-party-location", 'POST', [], [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+            'CONTENT_TYPE' => 'application/json'
+        ], json_encode(['PartyLocation' => 'Large city']));
+
+        $response = $this->utilityController->updatePartyLocation($request, $campId);
+
+        $this->assertInstanceOf(\Illuminate\Http\JsonResponse::class, $response);
+        $data = $response->getData(true);
+
+        $this->assertTrue($data['success']);
+        $this->assertEquals('Large city', $data['party_location']);
+        $this->assertEquals('Large city', DB::table('campaigns')->where('ID', $campId)->value('PartyLocation'));
+
+        DB::table('campaigns')->where('ID', $campId)->delete();
+    }
 }
 
 

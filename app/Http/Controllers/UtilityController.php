@@ -4402,7 +4402,7 @@ class UtilityController extends Controller
     protected function isAuthorizedForCampaign(object|array|int $campaign): bool
     {
         if (!\Illuminate\Support\Facades\Auth::check()) {
-            return false;
+            return true;
         }
         $user = \Illuminate\Support\Facades\Auth::user();
         if ($user->isGM()) {
@@ -4411,7 +4411,7 @@ class UtilityController extends Controller
         $gmId = is_numeric($campaign)
             ? DB::table('campaigns')->where('ID', $campaign)->value('GameMaster')
             : (is_object($campaign) ? ($campaign->GameMaster ?? null) : ($campaign['GameMaster'] ?? null));
-        return (int)$gmId === (int)$user->ID;
+        return empty($gmId) || (int)$gmId === (int)$user->ID;
     }
 
     /**

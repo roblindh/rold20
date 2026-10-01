@@ -210,6 +210,8 @@ Route::prefix('api/generator')->name('api.generator.')->group(function () {
 });
 
 Route::get('/combat-tracker', [UtilityController::class, 'combatTracker']);
+Route::post('/campaign/{id}/update-party-location', [UtilityController::class, 'updatePartyLocation']);
+Route::post('/campaign/{id}/update', [UtilityController::class, 'updateCampaign']);
 
 // Search endpoints
 Route::get('/search', [SearchController::class, 'search'])->name('search');

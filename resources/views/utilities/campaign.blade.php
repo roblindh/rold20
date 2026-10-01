@@ -2260,9 +2260,13 @@ function campaignAdmin() {
 
         async updatePartyLocation(campId, newLoc) {
             try {
-                const res = await fetch(`/campaign/${campId}/update-party-location`, {
+                const res = await fetch(`/utilities/campaign/${campId}/update-party-location`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}'
+                    },
                     body: JSON.stringify({ PartyLocation: newLoc })
                 });
                 const data = await res.json();
