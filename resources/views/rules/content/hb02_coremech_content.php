@@ -1231,6 +1231,15 @@
     <li><strong>Insidious Damage (Ability Drain):</strong> Bypasses biological recuperation entirely; natural rest cannot restore insidious damage. It can only be cleansed through specialized curative magic (such as <em>Restoration</em>).</li>
 </ul>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/core_injury_recovery.jpg" alt="Rest, nourishment, and field medicine" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Rest, nourishment, and field medicine allow battered adventurers to recover vitality between perilous encounters.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h4 id="Dying">Dying</h4>
 <p>
     When a living creature's Hit Points drop below 0, it collapses unconscious and enters the <a href="/reference/other/Dying%20Condition">Dying staged condition</a>:
@@ -1766,6 +1775,15 @@
     Unless otherwise specified, a creature is immune to its own breath weapon and damage type.
 </p>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/core_dragon_breath.jpg" alt="Dragon breath attack and protective wards" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        A valiant shield and protective wards provide vital defense against the catastrophic breath of ancient wyrms.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h4 id="DeathEffects">Death Effects [Su, MR, Necrotic]</h4>
 <p>
     Death effects channel catastrophic surges of lethal necrotic energy. If the damage dealt by a death effect reduces a creature to 0 HP or below and slays it, the victim's life force is severely disrupted, making subsequent attempts at magical resurrection considerably more difficult (-10 penalty on resurrection checks).
@@ -2074,6 +2092,15 @@
 <p>
     Traversing dimensional blocks, dimensional anchors, or warded barriers requires a spellcasting check against the ward’s PL or the <a href="/reference/equipment#Materials">material’s</a> MR.
 </p>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/core_planar_portal.jpg" alt="Planar travel and mystical astral portals" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Seasoned heroes venture beyond mortal realms, crossing mystical portals into the astral planes.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h4 id="Polymorph">Polymorph and Shapeshifting [Su, MR]</h4>
 <p>

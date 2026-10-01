@@ -1410,8 +1410,13 @@ function show_wealthperlevel() {
     global $db_server, $db_user, $db_password, $db_name;
 
     $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
-    $query = "SELECT * FROM wealthperlevel";
+    $query = "SELECT * FROM wealthperlevel ORDER BY Level ASC";
     $result = $db->query($query);
+    $wealthRows = [];
+    while ($row = $result->fetch()) {
+        $wealthRows[] = $row;
+    }
+    $halfCount = (int)ceil(count($wealthRows) / 2);
     ?>
 
     <table>
@@ -1420,14 +1425,22 @@ function show_wealthperlevel() {
             <th style="text-align:center">Level</th>
             <th style="text-align:right">PC Wealth (sp)</th>
             <th style="text-align:right">NPC Wealth (sp)</th>
+            <th class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);">Level</th>
+            <th style="text-align:right">PC Wealth (sp)</th>
+            <th style="text-align:right">NPC Wealth (sp)</th>
         </tr></thead>
         <tbody>
         <?php
-        while ($row = $result->fetch()) {
+        for ($r = 0; $r < $halfCount; $r++) {
+            $left = $wealthRows[$r] ?? null;
+            $right = $wealthRows[$r + $halfCount] ?? null;
             echo '<tr>';
-            echo '<td style="text-align:center">' . $row['Level'] . '</td>';
-            echo '<td style="text-align:right">' . $row['PCWealth'] . '</td>';
-            echo '<td style="text-align:right">' . $row['NPCWealth'] . '</td>';
+            echo '<td style="text-align:center">' . ($left ? $left['Level'] : '') . '</td>';
+            echo '<td style="text-align:right">' . ($left ? $left['PCWealth'] : '') . '</td>';
+            echo '<td style="text-align:right">' . ($left ? $left['NPCWealth'] : '') . '</td>';
+            echo '<td class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);">' . ($right ? $right['Level'] : '') . '</td>';
+            echo '<td style="text-align:right">' . ($right ? $right['PCWealth'] : '') . '</td>';
+            echo '<td style="text-align:right">' . ($right ? $right['NPCWealth'] : '') . '</td>';
             echo '</tr>';
         }
         ?>

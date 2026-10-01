@@ -35,13 +35,13 @@
 
                 <!-- Tabs Header -->
                 <div class="flex items-center gap-2 border-b border-slate-200 pb-2">
-                    <button type="button" @click="tradeTab = 'money'" :class="tradeTab === 'money' ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 py-1.5 rounded-lg transition cursor-pointer">
+                    <button type="button" @click="tradeTab = 'money'" :class="tradeTab === 'money' ? 'bg-indigo-700 text-white font-bold shadow-xs border border-indigo-800' : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300 font-semibold'" class="px-3 py-1.5 rounded-lg transition cursor-pointer">
                         🪙 Trade Money
                     </button>
-                    <button type="button" @click="tradeTab = 'give_item'" :class="tradeTab === 'give_item' ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 py-1.5 rounded-lg transition cursor-pointer">
+                    <button type="button" @click="tradeTab = 'give_item'" :class="tradeTab === 'give_item' ? 'bg-indigo-700 text-white font-bold shadow-xs border border-indigo-800' : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300 font-semibold'" class="px-3 py-1.5 rounded-lg transition cursor-pointer">
                         🎒 Give / Store Item
                     </button>
-                    <button type="button" @click="tradeTab = 'take_item'" :class="tradeTab === 'take_item' ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 py-1.5 rounded-lg transition cursor-pointer">
+                    <button type="button" @click="tradeTab = 'take_item'" :class="tradeTab === 'take_item' ? 'bg-indigo-700 text-white font-bold shadow-xs border border-indigo-800' : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300 font-semibold'" class="px-3 py-1.5 rounded-lg transition cursor-pointer">
                         💎 Take from Vault ({{ count($campaignVaultItems) }})
                     </button>
                 </div>

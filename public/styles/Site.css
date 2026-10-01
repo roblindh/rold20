@@ -295,6 +295,11 @@ th a:active, thead th a:active, .rule-content th a:active {
 }
 
 
+/* Table column divider for side-by-side section tables */
+th.table-divider-left, td.table-divider-left {
+    border-left: 2px solid var(--color-blue) !important;
+}
+
 /* Class Defaults */
 /* ============== */
 
@@ -653,8 +658,10 @@ input[type=submit].utiltab:hover, input[type=submit].utiltab:active {
 }
 
 input[type=button].utiltab:disabled, input[type=submit].utiltab:disabled {
-    color: var(--color-black);
-    background-color: var(--color-gray);
+    color: #cbd5e1 !important;
+    background-color: #334155 !important;
+    opacity: 0.7 !important;
+    cursor: not-allowed !important;
 }
 
 input[type=button].utiltabcurrent {

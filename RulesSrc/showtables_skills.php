@@ -265,7 +265,7 @@ function show_affinityskilleffects() {
                 <th style="text-align:center">x/3</th>
                 <th style="text-align:center">x/4</th>
                 <th style="text-align:center">x/5</th>
-                <th style="text-align:center">x = lvl + AbilMod</th>
+                <th class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);">x = lvl + AbilMod</th>
                 <th style="text-align:center">x&times;2/5</th>
                 <th style="text-align:center">x/3</th>
                 <th style="text-align:center">x/4</th>
@@ -275,12 +275,10 @@ function show_affinityskilleffects() {
         <tbody>
     <?php
     for ($i = 0; $i < 25; $i++) {
-        if ($i % 2)
-            echo '<tr>';
-        else
-            echo '<tr>';
+        echo '<tr>';
         for ($j = 0; $j < 2; $j++) {
-            echo '<td style="text-align:center">' . ($i + $j * 25) . '</td>';
+            $divClass = ($j > 0) ? ' class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);"' : ' style="text-align:center;"';
+            echo '<td' . $divClass . '>' . ($i + $j * 25) . '</td>';
             echo '<td style="text-align:center">' . floor(($i + $j * 25) * 2 / 5) . '</td>';
             echo '<td style="text-align:center">' . floor(($i + $j * 25) / 3) . '</td>';
             echo '<td style="text-align:center">' . floor(($i + $j * 25) / 4) . '</td>';

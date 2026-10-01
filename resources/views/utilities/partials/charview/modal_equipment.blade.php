@@ -26,7 +26,7 @@
                             <template x-for="(pName, pIdx) in ['Combat', 'Travel', 'Rest', 'Sleep', 'Formal']" :key="pIdx">
                                 <button type="button" 
                                         @click="modalActivePreset = pIdx"
-                                        :class="modalActivePreset === pIdx ? 'bg-indigo-600 text-white font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-100'"
+                                        :class="modalActivePreset === pIdx ? 'bg-indigo-700 text-white font-bold shadow-xs' : 'text-slate-800 font-semibold hover:bg-slate-100'"
                                         class="px-2.5 py-1 rounded text-xs transition cursor-pointer"
                                         x-text="pName">
                                 </button>

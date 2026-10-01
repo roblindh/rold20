@@ -19,16 +19,16 @@
             <!-- Step Tabs Header -->
             <div class="flex items-center justify-between border-b border-slate-200 pb-3">
                 <div class="flex items-center gap-2 flex-wrap">
-                    <button type="button" @click="lvlStep = 1" :class="lvlStep === 1 ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 py-1.5 rounded-lg text-xs transition cursor-pointer">
+                    <button type="button" @click="lvlStep = 1" :class="lvlStep === 1 ? 'bg-indigo-700 text-white font-bold shadow-xs border border-indigo-800' : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300 font-semibold'" class="px-3 py-1.5 rounded-lg text-xs transition cursor-pointer">
                         1. Class Selection
                     </button>
-                    <button type="button" @click="lvlStep = 2" :class="lvlStep === 2 ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 py-1.5 rounded-lg text-xs transition cursor-pointer">
+                    <button type="button" @click="lvlStep = 2" :class="lvlStep === 2 ? 'bg-indigo-700 text-white font-bold shadow-xs border border-indigo-800' : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300 font-semibold'" class="px-3 py-1.5 rounded-lg text-xs transition cursor-pointer">
                         2. Improvements (<span x-text="lvlData.remainingIp"></span> IP left)
                     </button>
-                    <button type="button" @click="lvlStep = 3" :class="lvlStep === 3 ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 py-1.5 rounded-lg text-xs transition cursor-pointer">
+                    <button type="button" @click="lvlStep = 3" :class="lvlStep === 3 ? 'bg-indigo-700 text-white font-bold shadow-xs border border-indigo-800' : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300 font-semibold'" class="px-3 py-1.5 rounded-lg text-xs transition cursor-pointer">
                         3. Skill Points (<span x-text="lvlData.remainingSp"></span> SP left)
                     </button>
-                    <button type="button" @click="lvlStep = 4" :class="lvlStep === 4 ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 py-1.5 rounded-lg text-xs transition cursor-pointer">
+                    <button type="button" @click="lvlStep = 4" :class="lvlStep === 4 ? 'bg-indigo-700 text-white font-bold shadow-xs border border-indigo-800' : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300 font-semibold'" class="px-3 py-1.5 rounded-lg text-xs transition cursor-pointer">
                         4. Spells (Optional)
                     </button>
                 </div>

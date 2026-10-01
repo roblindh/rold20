@@ -6,17 +6,18 @@ function show_abilityscoremods() {
         <caption>Ability Score Modifiers</caption>
         <thead><tr>
             <th style="text-align:center">Ability Score</th><th style="text-align:center">Ability Modifier</th>
-            <th style="text-align:center">Ability Score</th><th style="text-align:center">Ability Modifier</th>
-            <th style="text-align:center">Ability Score</th><th style="text-align:center">Ability Modifier</th>
-            <th style="text-align:center">Ability Score</th><th style="text-align:center">Ability Modifier</th>
-            <th style="text-align:center">Ability Score</th><th style="text-align:center">Ability Modifier</th>
+            <th class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);">Ability Score</th><th style="text-align:center">Ability Modifier</th>
+            <th class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);">Ability Score</th><th style="text-align:center">Ability Modifier</th>
+            <th class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);">Ability Score</th><th style="text-align:center">Ability Modifier</th>
+            <th class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);">Ability Score</th><th style="text-align:center">Ability Modifier</th>
         </tr></thead>
         <tbody>
     <?php
     for ($i = 0; $i < 10; $i++) {
         echo '<tr>';
         for ($j = 0; $j < 5; $j++) {
-            echo '<td style="text-align:center">' . ($i * 2 + $j * 20) . '-' . ($i * 2 + $j * 20 + 1) . '</td>';
+            $divClass = ($j > 0) ? ' class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);"' : ' style="text-align:center;"';
+            echo '<td' . $divClass . '>' . ($i * 2 + $j * 20) . '-' . ($i * 2 + $j * 20 + 1) . '</td>';
             echo '<td style="text-align:center">' . signedstr($i + $j * 10 - 5) . '</td>';
         }
         echo '</tr>';

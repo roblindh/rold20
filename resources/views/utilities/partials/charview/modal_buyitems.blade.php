@@ -14,24 +14,24 @@
         </div>
 
         <!-- Mode Navigation Tabs -->
-        <div class="flex items-center gap-1 bg-slate-100 px-6 py-2 border-b border-slate-200 text-xs font-bold text-slate-600 shrink-0">
+        <div class="flex items-center gap-1.5 bg-slate-100 px-6 py-2.5 border-b border-slate-300 text-xs font-bold text-slate-800 shrink-0">
             <button type="button" @click="marketTab = 'catalog'"
-                    :class="marketTab === 'catalog' ? 'bg-white text-indigo-700 shadow-2xs border-slate-300' : 'hover:bg-slate-200 text-slate-600 border-transparent'"
+                    :class="marketTab === 'catalog' ? 'bg-indigo-700 text-white font-bold shadow-xs border-indigo-800' : 'bg-white hover:bg-slate-200 text-slate-800 border-slate-300'"
                     class="px-3 py-1.5 rounded-lg border transition flex items-center gap-1.5 cursor-pointer">
                 <span>🏷️</span> Standard Catalog
             </button>
             <button type="button" @click="marketTab = 'town'; if (townShopItems.length === 0) fetchTownShop();"
-                    :class="marketTab === 'town' ? 'bg-white text-indigo-700 shadow-2xs border-slate-300' : 'hover:bg-slate-200 text-slate-600 border-transparent'"
+                    :class="marketTab === 'town' ? 'bg-indigo-700 text-white font-bold shadow-xs border-indigo-800' : 'bg-white hover:bg-slate-200 text-slate-800 border-slate-300'"
                     class="px-3 py-1.5 rounded-lg border transition flex items-center gap-1.5 cursor-pointer">
                 <span>🏘️</span> Settlement Shops
             </button>
             <button type="button" @click="marketTab = 'commission'"
-                    :class="marketTab === 'commission' ? 'bg-white text-indigo-700 shadow-2xs border-slate-300' : 'hover:bg-slate-200 text-slate-600 border-transparent'"
+                    :class="marketTab === 'commission' ? 'bg-indigo-700 text-white font-bold shadow-xs border-indigo-800' : 'bg-white hover:bg-slate-200 text-slate-800 border-slate-300'"
                     class="px-3 py-1.5 rounded-lg border transition flex items-center gap-1.5 cursor-pointer">
-                <span>✨</span> Magic & Commission Forge
+                <span>✨</span> Magic &amp; Commission Forge
             </button>
             <button type="button" @click="marketTab = 'sell'"
-                    :class="marketTab === 'sell' ? 'bg-white text-emerald-700 shadow-2xs border-slate-300' : 'hover:bg-slate-200 text-slate-600 border-transparent'"
+                    :class="marketTab === 'sell' ? 'bg-emerald-700 text-white font-bold shadow-xs border-emerald-800' : 'bg-white hover:bg-slate-200 text-emerald-900 border-slate-300'"
                     class="px-3 py-1.5 rounded-lg border transition flex items-center gap-1.5 cursor-pointer">
                 <span>💎</span> Sell Valuables (<span x-text="valuableItemsInInventory.length"></span>)
             </button>

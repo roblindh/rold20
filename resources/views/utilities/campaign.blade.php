@@ -155,32 +155,32 @@
                 <!-- Tabs Navigation -->
                 <div class="px-6 pt-3 border-b border-amber-900/20 flex flex-wrap gap-2 text-xs font-bold">
                     <button type="button" @click="activeTab = 'adventures'"
-                            :class="activeTab === 'adventures' ? 'border-amber-700 text-amber-900 border-b-2 bg-amber-100/50' : 'text-stone-600 hover:text-stone-900'"
-                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer">
+                            :class="activeTab === 'adventures' ? 'border-amber-700 text-amber-950 font-extrabold border-b-2 bg-amber-200/60 shadow-2xs' : 'text-stone-700 hover:text-stone-950 hover:bg-amber-100/50'"
+                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer rounded-t">
                         <span>📜</span> Adventures &amp; Encounters
-                        <span class="px-1.5 py-0.2 bg-amber-200 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ $campAdventures->count() }} / {{ $campEncounters->count() }}</span>
+                        <span class="px-1.5 py-0.2 bg-amber-300 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ $campAdventures->count() }} / {{ $campEncounters->count() }}</span>
                     </button>
                     <button type="button" @click="activeTab = 'locations'"
-                            :class="activeTab === 'locations' ? 'border-amber-700 text-amber-900 border-b-2 bg-amber-100/50' : 'text-stone-600 hover:text-stone-900'"
-                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer">
+                            :class="activeTab === 'locations' ? 'border-amber-700 text-amber-950 font-extrabold border-b-2 bg-amber-200/60 shadow-2xs' : 'text-stone-700 hover:text-stone-950 hover:bg-amber-100/50'"
+                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer rounded-t">
                         <span>📍</span> Locations &amp; POIs
-                        <span class="px-1.5 py-0.2 bg-amber-200 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ $campLocations->count() }}</span>
+                        <span class="px-1.5 py-0.2 bg-amber-300 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ $campLocations->count() }}</span>
                     </button>
                     <button type="button" @click="activeTab = 'party'"
-                            :class="activeTab === 'party' ? 'border-amber-700 text-amber-900 border-b-2 bg-amber-100/50' : 'text-stone-600 hover:text-stone-900'"
-                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer">
+                            :class="activeTab === 'party' ? 'border-amber-700 text-amber-950 font-extrabold border-b-2 bg-amber-200/60 shadow-2xs' : 'text-stone-700 hover:text-stone-950 hover:bg-amber-100/50'"
+                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer rounded-t">
                         <span>👥</span> Party &amp; Roster
-                        <span class="px-1.5 py-0.2 bg-amber-200 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ $campChars->count() }}</span>
+                        <span class="px-1.5 py-0.2 bg-amber-300 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ $campChars->count() }}</span>
                     </button>
                     <button type="button" @click="activeTab = 'vault'"
-                            :class="activeTab === 'vault' ? 'border-amber-700 text-amber-900 border-b-2 bg-amber-100/50' : 'text-stone-600 hover:text-stone-900'"
-                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer">
+                            :class="activeTab === 'vault' ? 'border-amber-700 text-amber-950 font-extrabold border-b-2 bg-amber-200/60 shadow-2xs' : 'text-stone-700 hover:text-stone-950 hover:bg-amber-100/50'"
+                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer rounded-t">
                         <span>💎</span> Campaign Vault
-                        <span class="px-1.5 py-0.2 bg-amber-200 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ count($vaultItems) }}</span>
+                        <span class="px-1.5 py-0.2 bg-amber-300 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ count($vaultItems) }}</span>
                     </button>
                     <button type="button" @click="activeTab = 'rules'"
-                            :class="activeTab === 'rules' ? 'border-amber-700 text-amber-900 border-b-2 bg-amber-100/50' : 'text-stone-600 hover:text-stone-900'"
-                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer">
+                            :class="activeTab === 'rules' ? 'border-amber-700 text-amber-950 font-extrabold border-b-2 bg-amber-200/60 shadow-2xs' : 'text-stone-700 hover:text-stone-950 hover:bg-amber-100/50'"
+                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer rounded-t">
                         <span>⚙️</span> Rules &amp; GM Notes
                     </button>
                 </div>

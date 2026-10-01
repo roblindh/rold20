@@ -65,21 +65,32 @@ function show_abilitygenmethods() {
     ?>
     </tbody></table>
         <?php
-        $query = "SELECT * FROM abilitypointbuy";
+        $query = "SELECT * FROM abilitypointbuy ORDER BY BaseAbility ASC";
         $result = $db->query($query);
+        $pointBuyRows = [];
+        while ($row = $result->fetch()) {
+            $pointBuyRows[] = $row;
+        }
+        $halfCount = (int)ceil(count($pointBuyRows) / 2);
         ?>
     <table>
         <caption>Ability Point Buy System</caption>
         <thead><tr>
             <th style="text-align:center">Ability Score</th>
             <th style="text-align:center">Point Cost</th>
+            <th class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);">Ability Score</th>
+            <th style="text-align:center">Point Cost</th>
         </tr></thead>
         <tbody>
     <?php
-    while ($row = $result->fetch()) {
+    for ($r = 0; $r < $halfCount; $r++) {
+        $left = $pointBuyRows[$r] ?? null;
+        $right = $pointBuyRows[$r + $halfCount] ?? null;
         echo '<tr>';
-        echo '<td style="text-align:center">' . $row['BaseAbility'] . '</td>';
-        echo '<td style="text-align:center">' . $row['PointCost'] . '</td>';
+        echo '<td style="text-align:center">' . ($left ? $left['BaseAbility'] : '') . '</td>';
+        echo '<td style="text-align:center">' . ($left ? $left['PointCost'] : '') . '</td>';
+        echo '<td class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);">' . ($right ? $right['BaseAbility'] : '') . '</td>';
+        echo '<td style="text-align:center">' . ($right ? $right['PointCost'] : '') . '</td>';
         echo '</tr>';
     }
     ?>
@@ -141,6 +152,15 @@ function show_advantages() {
 
 function show_experiencelevels() {
     global $_APP;
+    
+    $levels = [];
+    for ($i = 1, $xp = 0; $i <= 40; $xp += ($i++)) {
+        $levels[$i] = [
+            'level' => $i,
+            'xp' => $xp * 1000,
+            'ap' => $i + 10,
+        ];
+    }
     ?>    	
     <table>
         <caption>Levels and Experience</caption>
@@ -148,24 +168,25 @@ function show_experiencelevels() {
             <th style="text-align:center">TL (or CL)<sup>1</sup></th>
             <th style="text-align:right">XP</th>
             <th style="text-align:center">AP</th>
+            <th class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);">TL (or CL)<sup>1</sup></th>
+            <th style="text-align:right">XP</th>
+            <th style="text-align:center">AP</th>
         </tr></thead>
         <tbody>
     <?php
-    for ($i = 1, $xp = 0; $i <= 40; $xp += ($i++)) {
+    for ($r = 0; $r < 20; $r++) {
+        $left = $levels[$r + 1];
+        $right = $levels[$r + 21];
         echo '<tr>';
-        echo '<td style="text-align:center">' . $i . '</td>';
-        echo '<td style="text-align:right">' . ($xp * 1000) . '</td>';
-        echo '<td style="text-align:center">' . ($i + 10) . '</td>';
+        echo '<td style="text-align:center">' . $left['level'] . '</td>';
+        echo '<td style="text-align:right">' . $left['xp'] . '</td>';
+        echo '<td style="text-align:center">' . $left['ap'] . '</td>';
+        echo '<td class="table-divider-left" style="text-align:center; border-left: 2px solid var(--color-blue);">' . $right['level'] . '</td>';
+        echo '<td style="text-align:right">' . $right['xp'] . '</td>';
+        echo '<td style="text-align:center">' . $right['ap'] . '</td>';
         echo '</tr>';
     }
-/*    foreach ($_APP['experience'] as $row) {
-        echo '<tr>';
-        echo '<td style="text-align:center">' . $row['ID'] . '</td>';
-        echo '<td style="text-align:right">' . $row['Experience'] . '</td>';
-        echo '<td style="text-align:center">' . $row['ActionPoints'] . '</td>';
-        echo '</tr>';
-    }
-*/    ?>
+    ?>
     </tbody></table>
     <p>
         <sup>1</sup>CL (when it differs from TL) should be used to determine the XP requirement per level.
