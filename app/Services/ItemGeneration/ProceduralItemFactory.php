@@ -109,6 +109,13 @@ class ProceduralItemFactory
             self::$townTypesCache = DB::table('ref_towntypes')->get()->toArray();
         }
 
+        if (is_string($settlement)) {
+            $name = strtolower(trim($settlement));
+            if (in_array($name, ['dungeon', 'wilderness', 'none', 'uninhabited', 'ruin', 'ruins', 'wild', 'road', 'camp', 'cave', 'caves'])) {
+                return 0.0;
+            }
+        }
+
         $limitGp = 200.0; // default medium town
 
         if (is_numeric($settlement)) {
@@ -1619,5 +1626,48 @@ class ProceduralItemFactory
             })
             ->values()
             ->all();
+    }
+
+    /**
+     * Build a custom commissioned item from player choices (base item, material, quality, mundane mods).
+     */
+    public static function buildCustomCommissionItem(string $baseItemName, ?string $materialName = null, ?string $qualityMod = null, array $mundaneMods = []): ?array
+    {
+        self::ensureAppLoaded();
+        global $_APP;
+
+        $baseItemName = trim($baseItemName);
+        if (empty($baseItemName)) return null;
+
+        $params = ["Item={$baseItemName}"];
+        $prefixParts = [];
+
+        if (!empty($materialName) && strcasecmp($materialName, 'Default') !== 0 && strcasecmp($materialName, 'Standard') !== 0) {
+            $params[] = "Mat=" . trim($materialName);
+            $prefixParts[] = trim($materialName);
+        }
+
+        if (!empty($qualityMod) && strcasecmp($qualityMod, 'Standard') !== 0) {
+            $params[] = "Mod=" . trim($qualityMod);
+            $cleanQual = preg_replace('/(Melee|Projectile|Weapon|Armor|Shield|Item|Ammunition)\s*$/i', '', trim($qualityMod));
+            $cleanQual = trim($cleanQual);
+            if (!empty($cleanQual) && !in_array(strtolower($cleanQual), array_map('strtolower', $prefixParts))) {
+                $prefixParts[] = $cleanQual;
+            }
+        }
+
+        if (!empty($mundaneMods)) {
+            foreach ($mundaneMods as $mod) {
+                $mod = trim($mod);
+                if (empty($mod) || strcasecmp($mod, 'Standard') === 0 || strcasecmp($mod, $qualityMod ?? '') === 0) continue;
+                $params[] = "Mod={$mod}";
+            }
+        }
+
+        $prefix = !empty($prefixParts) ? implode(' ', $prefixParts) . ' ' : '';
+        $displayName = $prefix . $baseItemName;
+        $configString = "{$displayName} (" . implode(':', $params) . ")";
+
+        return self::instantiateItem($configString);
     }
 }

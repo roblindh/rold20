@@ -1,6 +1,6 @@
 <!-- Special Companions & Bonded Servants Modal -->
-<div x-show="showCompanionsModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4" @keydown.escape.window="showCompanionsModal = false">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full border border-amber-900/30 overflow-hidden relative z-[10000] max-h-[94vh] flex flex-col"
+<div x-show="showCompanionsModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/80 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showCompanionsModal = false">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full border border-amber-900/30 overflow-hidden relative z-[10000] max-h-[94vh] flex flex-col my-auto"
          @click.outside="if (!isCallingCompanion && !isDismissingCompanion) showCompanionsModal = false">
         
         <!-- Modal Header Plaque -->
@@ -38,14 +38,14 @@
                 <template x-for="(meta, typeKey) in companionSummary.companion_types" :key="typeKey">
                     <button type="button" 
                             @click="selectedCompanionTab = typeKey; onCompanionTabChanged()"
-                            class="px-3.5 py-2 rounded-t-lg font-bold text-xs flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer border-t border-x border-transparent"
+                            class="px-4 py-2 rounded-t-lg font-bold text-xs flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer border-t border-x"
                             :class="selectedCompanionTab === typeKey 
-                                ? 'bg-amber-900 text-white border-amber-900 shadow-xs' 
-                                : 'bg-amber-100/60 text-amber-950 hover:bg-amber-200/80 border-amber-800/20'">
+                                ? 'bg-amber-950 text-white font-black border-amber-950 shadow-sm ring-1 ring-amber-900/50' 
+                                : 'bg-amber-100 text-stone-900 hover:bg-amber-200 border-amber-800/30'">
                         <span x-text="meta.icon"></span>
                         <span x-text="meta.name"></span>
                         <span class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold"
-                              :class="meta.enabled ? (selectedCompanionTab === typeKey ? 'bg-amber-700 text-amber-100' : 'bg-amber-900/20 text-amber-900') : 'bg-stone-300 text-stone-600'">
+                              :class="meta.enabled ? (selectedCompanionTab === typeKey ? 'bg-amber-800 text-amber-100' : 'bg-amber-900/20 text-amber-900') : 'bg-stone-300 text-stone-600'">
                             <span x-text="'Rank ' + meta.skill_level"></span>
                         </span>
                     </button>

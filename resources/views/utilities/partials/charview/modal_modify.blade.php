@@ -1,6 +1,6 @@
 <!-- Modify Character Profile Modal -->
-<div x-show="showModifyModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4" @keydown.escape.window="showModifyModal = false">
-    <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col" @click.outside="showModifyModal = false">
+<div x-show="showModifyModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showModifyModal = false">
+    <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showModifyModal = false">
         <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
             <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
                 <span>✏️</span>
@@ -90,9 +90,9 @@
                                         <div class="flex-1 min-w-[140px]">
                                             <select x-model.number="org.id" @change="onModifyOrgSelect(idx)"
                                                     class="w-full px-2 py-1 border border-slate-300 rounded text-xs text-slate-900 focus:ring-1 focus:ring-indigo-500 bg-slate-50/50">
-                                                <template x-for="avail in allOrganizations" :key="avail.ID">
-                                                    <option :value="avail.ID" x-text="avail.Name + (avail.Scale ? ' (' + avail.Scale + ')' : '')"></option>
-                                                </template>
+                                                @foreach($organizations as $avail)
+                                                    <option value="{{ $avail->ID }}">{{ $avail->Name }}{{ !empty($avail->Scale) ? ' (' . $avail->Scale . ')' : '' }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 

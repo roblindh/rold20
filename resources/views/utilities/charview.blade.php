@@ -443,7 +443,7 @@
                     </button>
 
                     <button type="button" @click="showBuyItemsModal = true" class="btn-rol-secondary">
-                        <span>🛍️ Buy Items</span>
+                        <span>🛍️ Buy/Sell Items</span>
                     </button>
 
                     <button type="button" @click="showEquipmentModal = true" class="btn-rol-secondary">
@@ -485,7 +485,7 @@
                     </button>
 
                     <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can buy items">
-                        <span>🛍️ Buy Items</span>
+                        <span>🛍️ Buy/Sell Items</span>
                     </button>
 
                     <button type="button" disabled class="btn-rol-secondary opacity-50 cursor-not-allowed" title="Only a GM or this character's player can manage equipment">
@@ -1841,11 +1841,16 @@ function characterViewerApp() {
         shopCatalog: rawEquipment || [],
         cartItems: [],
 
+        // Party Location & GP Limits
+        partyLocation: @json($partyLocation ?? 'Small town'),
+        partyLocationGpLimitSp: {{ (float)($partyLocationGpLimitSp ?? 800) }},
+        isNoShopLocation: {{ ($isNoShopLocation ?? false) ? 'true' : 'false' }},
+
         // Settlement Shops State
-        settlementSize: 'Small town',
+        settlementSize: @json($partyLocation ?? 'Small town'),
         settlementShopType: 'general',
         townShopItems: [],
-        townShopGPLimitSp: 8000,
+        townShopGPLimitSp: {{ (float)($partyLocationGpLimitSp ?? 800) }},
         loadingTownShop: false,
 
         // Magic & Commission Forge State
@@ -1853,6 +1858,55 @@ function characterViewerApp() {
         commissionLevel: {{ max(1, min(20, (int)($totalLevel ?? 1))) }},
         commissionItem: null,
         generatingCommission: false,
+
+        // Custom Commission Builder State (Free Selection by Player)
+        commissionBaseItem: '',
+        commissionMaterial: '',
+        commissionQuality: 'Standard',
+        commissionMods: [],
+        commissionCustomPreview: null,
+        commissionPreviewLoading: false,
+        commissionError: '',
+
+        async updateCustomCommissionPreview() {
+            if (!this.commissionBaseItem) {
+                this.commissionCustomPreview = null;
+                this.commissionError = '';
+                return;
+            }
+            this.commissionPreviewLoading = true;
+            this.commissionError = '';
+            try {
+                const res = await fetch('{{ route('utilities.charview.preview-commission-item', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        _token: '{{ csrf_token() }}',
+                        base_item: this.commissionBaseItem,
+                        material: this.commissionMaterial || null,
+                        quality: this.commissionQuality || null,
+                        mundane_mods: this.commissionMods || [],
+                        location: this.partyLocation,
+                        character_wealth: {{ (int)($wealth ?? 0) }}
+                    })
+                });
+                const data = await res.json();
+                if (data && data.success && data.item) {
+                    this.commissionCustomPreview = data;
+                } else {
+                    this.commissionCustomPreview = null;
+                    this.commissionError = data?.message || 'Could not craft item with selected properties.';
+                }
+            } catch (e) {
+                console.error('Error previewing commission:', e);
+                this.commissionError = 'Error previewing custom commission.';
+            }
+            this.commissionPreviewLoading = false;
+        },
 
         get filteredShopItems() {
             let list = this.shopCatalog;
@@ -1991,61 +2045,78 @@ function characterViewerApp() {
             return currentWealth - this.cartTotalCost;
         },
 
-        // Sell Valuables State
-        selectedValuablesToSell: [],
+        // ==========================================
+        // SELL INVENTORY & VALUABLES STATE
+        // ==========================================
+        sellFilterType: 'all',
+        sellSearchQuery: '',
+        selectedItemsToSell: [],
         valuableShopType: 'general',
-        valuablePayoutMultiplier: 0.8,
-        sellingValuables: false,
+        valuablePayoutMultiplier: 0.5,
+        sellingInventory: false,
         sellToastMessage: '',
 
-        get valuableItemsInInventory() {
-            const items = this.equipmentItems || [];
-            return items.filter(it => {
-                const typeId = parseInt(it.item_type_id || it.ItemTypeID || 0);
-                const isVal = Boolean(it.is_valuable || it.IsValuable);
-                const name = (it.name || it.Name || '').toLowerCase();
-                return isVal || typeId === 9 || /gem:|art:|trade bar|ingot|ruby|sapphire|emerald|diamond|agate|chalice|ewer|comb with|statuette/i.test(name);
-            });
+        isValuableItem(item) {
+            const typeId = parseInt(item.item_type_id || item.ItemTypeID || 0);
+            const isVal = Boolean(item.is_valuable || item.IsValuable);
+            const name = (item.name || item.Name || '').toLowerCase();
+            return isVal || typeId === 9 || /gem:|art:|trade bar|ingot|ruby|sapphire|emerald|diamond|agate|chalice|ewer|comb with|statuette/i.test(name);
         },
 
-        onValuableShopTypeChange() {
-            if (this.valuableShopType === 'jeweler' || this.valuableShopType === 'magic') {
-                this.valuablePayoutMultiplier = 1.0;
-            } else if (this.valuableShopType === 'smith') {
-                this.valuablePayoutMultiplier = 0.9;
-            } else if (this.valuableShopType === 'fence') {
-                this.valuablePayoutMultiplier = 0.85;
+        calculateItemResaleValue(item) {
+            const isVal = this.isValuableItem(item);
+            const unitVal = parseFloat(item.unit_price || item.BaseValue || item.value || 0);
+            let mult = 0.5; // Default 50% for manufactured goods
+            if (this.valuableShopType === 'fence') {
+                mult = 0.25; // Black market / fence gives 25% for all goods
+            } else if (isVal) {
+                mult = 1.0; // Valuables / gems / trade goods give 100% full value
             } else {
-                this.valuablePayoutMultiplier = 0.8;
+                mult = 0.5; // Standard merchant offers 50% for gear
+            }
+            return Math.round(unitVal * mult * 10) / 10;
+        },
+
+        get filteredInventoryToSell() {
+            let list = this.equipmentItems || [];
+            if (this.sellFilterType === 'valuables') {
+                list = list.filter(it => this.isValuableItem(it));
+            } else if (this.sellFilterType === 'gear') {
+                list = list.filter(it => !this.isValuableItem(it));
+            }
+            if (this.sellSearchQuery.trim()) {
+                const q = this.sellSearchQuery.toLowerCase();
+                list = list.filter(it => (it.name || it.Name || '').toLowerCase().includes(q));
+            }
+            return list;
+        },
+
+        toggleAllInventorySelection() {
+            const list = this.filteredInventoryToSell;
+            if (this.selectedItemsToSell.length === list.length) {
+                this.selectedItemsToSell = [];
+            } else {
+                this.selectedItemsToSell = list.map(it => it.uid || it.id);
             }
         },
 
-        toggleAllValuablesSelection() {
-            const valList = this.valuableItemsInInventory;
-            if (this.selectedValuablesToSell.length === valList.length) {
-                this.selectedValuablesToSell = [];
-            } else {
-                this.selectedValuablesToSell = valList.map(it => it.uid || it.id);
-            }
-        },
-
-        get totalValuablePayoutSp() {
-            const selectedSet = new Set(this.selectedValuablesToSell);
+        get totalInventoryPayoutSp() {
+            const selectedSet = new Set(this.selectedItemsToSell);
             let sum = 0;
-            this.valuableItemsInInventory.forEach(it => {
+            (this.equipmentItems || []).forEach(it => {
                 const uid = it.uid || it.id;
                 if (selectedSet.has(uid)) {
-                    const qty = parseInt(it.qty) || 1;
-                    const val = parseFloat(it.unit_price || it.BaseValue || it.value) || 0;
-                    sum += val * qty * this.valuablePayoutMultiplier;
+                    const qty = parseInt(it.qty || it.Qty) || 1;
+                    const resaleUnit = this.calculateItemResaleValue(it);
+                    sum += resaleUnit * qty;
                 }
             });
             return Math.round(sum * 10) / 10;
         },
 
-        async sellSelectedValuablesAction() {
-            if (this.selectedValuablesToSell.length === 0) return;
-            this.sellingValuables = true;
+        async sellSelectedInventoryAction() {
+            if (this.selectedItemsToSell.length === 0 || this.isNoShopLocation) return;
+            this.sellingInventory = true;
             try {
                 const res = await fetch('{{ route('utilities.charview.sell-items', ['id' => $character->ID], false) }}', {
                     method: 'POST',
@@ -2056,29 +2127,76 @@ function characterViewerApp() {
                     },
                     body: JSON.stringify({
                         _token: '{{ csrf_token() }}',
-                        item_uids: this.selectedValuablesToSell,
-                        payout_multiplier: this.valuablePayoutMultiplier,
+                        item_uids: this.selectedItemsToSell,
+                        payout_multiplier: this.valuableShopType === 'fence' ? 0.25 : 0.5,
                         shop_name: this.valuableShopType + ' shop'
                     })
                 });
                 const data = await res.json();
                 if (data && data.success) {
-                    const soldSet = new Set(this.selectedValuablesToSell);
+                    const soldSet = new Set(this.selectedItemsToSell);
                     this.equipmentItems = this.equipmentItems.filter(it => !soldSet.has(it.uid || it.id));
                     if (data.wallet) {
                         this.wallet = data.wallet;
                     }
-                    this.selectedValuablesToSell = [];
+                    this.selectedItemsToSell = [];
                     this.sellToastMessage = data.message;
                     setTimeout(() => { this.sellToastMessage = ''; }, 4000);
                 } else {
                     alert(data.message || 'Failed to sell items.');
                 }
             } catch (e) {
-                console.error('Error selling valuables:', e);
+                console.error('Error selling inventory:', e);
                 alert('Error processing sale.');
             }
-            this.sellingValuables = false;
+            this.sellingInventory = false;
+        },
+
+        // Backward compatibility getters for old valuables tabs if referenced
+        get valuableItemsInInventory() {
+            return (this.equipmentItems || []).filter(it => this.isValuableItem(it));
+        },
+
+        // ==========================================
+        // SPELL LEARNING CAPACITY SUMMARY
+        // ==========================================
+        get spellSummary() {
+            let arcaneRanks = 0;
+            let divineRanks = 0;
+            let psionicRanks = 0;
+            
+            (rawSkills || []).forEach(s => {
+                const rank = parseFloat(characterSkills[s.ID] || 0);
+                if (s.Type == 4) arcaneRanks += rank;
+                else if (s.Type == 5) divineRanks += rank;
+                else if (s.Type == 6) psionicRanks += rank;
+            });
+
+            const knownSpells = (spellsWithKnown || []).filter(s => s.isKnown);
+            const arcaneKnown = knownSpells.filter(s => (s.Type && s.Type.toLowerCase().includes('arcane')) || (!s.Type && s.School !== 'Divine' && s.School !== 'Psionic')).length;
+            const divineKnown = knownSpells.filter(s => (s.Type && s.Type.toLowerCase().includes('divine')) || s.School === 'Divine').length;
+            const psionicKnown = knownSpells.filter(s => (s.Type && s.Type.toLowerCase().includes('psionic')) || s.School === 'Psionic').length;
+
+            return {
+                arcane: {
+                    ranks: Math.round(arcaneRanks * 10) / 10,
+                    free: Math.floor(arcaneRanks),
+                    max: Math.floor(arcaneRanks * 2),
+                    current: arcaneKnown
+                },
+                divine: {
+                    ranks: Math.round(divineRanks * 10) / 10,
+                    free: Math.floor(divineRanks * 2),
+                    max: 'Unlimited',
+                    current: divineKnown
+                },
+                psionic: {
+                    ranks: Math.round(psionicRanks * 10) / 10,
+                    free: Math.floor(psionicRanks),
+                    max: Math.floor(psionicRanks),
+                    current: psionicKnown
+                }
+            };
         },
 
         // Learn Spells State

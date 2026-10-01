@@ -249,14 +249,16 @@ class AdventureGenerator
 
         $descriptions = [
             'combat' => "Hostile combatants have fortified tactical positions in this area, utilizing cover, elevation, and terrain features to repel intruders.",
-            'social' => "A tense, high-stakes interaction where every word and skill check (Diplomacy, Bluff, Intimidate, Insight) influences the outcome.",
+            'social' => "A tense, high-stakes negotiation where every word and skill check (Diplomacy, Bluff, Intimidate, Sense Motive) influences faction allegiance and rewards.",
             'trap_hazard' => "A lethal mechanical, chemical, or magical security hazard engineered to eliminate intruders or delay their progress.",
-            'puzzle' => "An ancient mechanical contraption or arcane riddle requiring collective observation, deduction, and skill tests to solve.",
-            'exploration' => "Perilous terrain and extreme environmental hazards requiring climbing, swimming, survival, and athletics checks to overcome."
+            'puzzle' => "An ancient mechanical contraption, celestial cipher, or arcane riddle requiring collective observation, deduction, and skill tests to solve.",
+            'exploration' => "Perilous terrain and extreme environmental hazards requiring climbing, swimming, survival, and athletic checks to navigate safely."
         ];
 
         $desc = $descriptions[$type] ?? $descriptions['combat'];
         $foes = [];
+        $traps = [];
+        $tactics = "Tactical Feature: {$twist}";
 
         if ($type === 'combat') {
             $foeResult = self::generateEncounterCreatures($el, $el, $env);
@@ -265,6 +267,67 @@ class AdventureGenerator
                 $foeNames = array_map(fn($f) => ($f['count'] ?? 1) . 'x ' . ($f['name'] ?? 'Foe'), $foes);
                 $name = "Battle: " . implode(' & ', $foeNames);
             }
+        } elseif ($type === 'trap_hazard') {
+            $trapEl = max(1, (int)round($el));
+            $searchDc = 15 + min(20, (int)round($trapEl * 1.5));
+            $disableDc = 15 + min(20, (int)round($trapEl * 1.5));
+            $saveDc = 12 + min(18, (int)round($trapEl * 1.2));
+            $atkBonus = 5 + min(20, (int)round($trapEl * 1.5));
+            $dmgDice = max(1, (int)round($trapEl * 1.5));
+
+            $trapTemplates = [
+                ['name' => 'Poison Dart Wall', 'type' => 'Mechanical', 'atk_save' => "+{$atkBonus} Ranged Attack", 'damage' => "{$dmgDice}d4 piercing + Level {$trapEl} Poison (DC {$saveDc} Con)"],
+                ['name' => 'Hidden Camouflaged Pit', 'type' => 'Mechanical', 'atk_save' => "Reflex DC {$saveDc} avoids", 'damage' => "{$dmgDice}d6 falling damage + spikes (+{$atkBonus} Atk, {$dmgDice}d4 damage)"],
+                ['name' => 'Glyph of Arcane Detonation', 'type' => 'Magical', 'atk_save' => "Reflex DC {$saveDc} half", 'damage' => "{$dmgDice}d8 force / fire damage in 20ft radius"],
+                ['name' => 'Crushing Stone Ceiling', 'type' => 'Mechanical Hazard', 'atk_save' => "Reflex DC {$saveDc} escapes", 'damage' => "{$dmgDice}d10 bludgeoning + pinned condition"],
+                ['name' => 'Suffocating Spore Funnel', 'type' => 'Environmental Hazard', 'atk_save' => "Fortitude DC {$saveDc} resists", 'damage' => "1d6 Con damage per round of exposure"],
+                ['name' => 'Blazing Oil Floor Grate', 'type' => 'Mechanical / Fire', 'atk_save' => "Reflex DC {$saveDc} half", 'damage' => "{$dmgDice}d6 fire + ignites combustibles"]
+            ];
+            $t = $trapTemplates[array_rand($trapTemplates)];
+            $traps[] = [
+                'name' => $t['name'],
+                'type' => $t['type'],
+                'search_dc' => $searchDc,
+                'disable_dc' => $disableDc,
+                'attack_or_save' => $t['atk_save'],
+                'damage_effect' => $t['damage'],
+                'reset' => 'Manual / Reset mechanism'
+            ];
+            $tactics = "Hazard Trigger: Pressure plate / tripwire / proximity rune. Failure alert radius: 100 ft.";
+        } elseif ($type === 'puzzle') {
+            $checkDc = 14 + min(18, (int)round($el * 1.3));
+            $puzzles = [
+                ['name' => 'The Astral Cipher Matrix', 'desc' => 'Three rotating stone discs etched with celestial constellations must be aligned to represent the winter solstice alignment.', 'skills' => "Knowledge (Arcana/Geography) DC {$checkDc}, Decipher Script DC {$checkDc}"],
+                ['name' => 'Trial of the Three Guardians', 'desc' => 'Three marble statues each make a statement. One always lies, one always tells truth, one alternates. Deduce the safe doorway.', 'skills' => "Sense Motive DC {$checkDc}, Intelligence check DC {$checkDc}"],
+                ['name' => 'The Resonating Crystal Pillars', 'desc' => 'Five crystal pillars hum with distinct frequencies. Striking them in the correct harmonic scale opens the vault doorway.', 'skills' => "Perform / Craft (Musical) DC {$checkDc}, Spellcraft DC {$checkDc}"],
+                ['name' => 'The Weighted Scales of Anubis', 'desc' => 'Balancing sacred feather weights against golden urns of differing volumes to bypass the barrier ward.', 'skills' => "Appraise DC {$checkDc}, Disable Device DC {$checkDc}"]
+            ];
+            $p = $puzzles[array_rand($puzzles)];
+            $name = $p['name'];
+            $desc = $p['desc'];
+            $tactics = "Puzzle Skill Checks: {$p['skills']}. Penalty on 3 failures: Triggers defense ward / alarm.";
+        } elseif ($type === 'social') {
+            $checkDc = 13 + min(20, (int)round($el * 1.2));
+            $socials = [
+                ['name' => 'Negotiation with the Guard Captain', 'desc' => 'Convincing the garrison commander to allow the party passage through the quarantined district without confiscating weapons.', 'tactics' => "Diplomacy DC {$checkDc} (Indifferent -> Friendly), Bluff DC " . ($checkDc + 4) . ", Intimidate DC " . ($checkDc + 2) . " (may summon reinforcements)."],
+                ['name' => 'Parley with the Bandit Chieftain', 'desc' => 'Attempting a tense truce with the outlaw gang leader holding key hostages before weapons are drawn.', 'tactics' => "Diplomacy DC {$checkDc}, Sense Motive DC " . ($checkDc - 2) . " reveals hidden betrayal, Intimidate DC {$checkDc} establishes dominance."],
+                ['name' => 'Audience with the Arcanist Guildmaster', 'desc' => 'Bargaining for classified teleportation circle runes and access to restricted library vaults.', 'tactics' => "Diplomacy DC {$checkDc}, Knowledge (Arcana) DC " . ($checkDc - 2) . " grants +4 synergy bonus, Bribe of 200+ sp lowers DC by 5."]
+            ];
+            $s = $socials[array_rand($socials)];
+            $name = $s['name'];
+            $desc = $s['desc'];
+            $tactics = $s['tactics'];
+        } elseif ($type === 'exploration') {
+            $checkDc = 12 + min(18, (int)round($el * 1.3));
+            $explores = [
+                ['name' => 'Traversing the Misty Chasm', 'desc' => 'A 60-foot yawning crevasse spanned only by rotting guide ropes above a raging underground river.', 'tactics' => "Climb DC {$checkDc}, Balance DC " . ($checkDc - 2) . ", Use Rope DC 12. Fall causes 4d6 damage."],
+                ['name' => 'Submerged Crypt Navigation', 'desc' => 'A flooded corridor requiring underwater swimming, breath management, and navigating iron grates.', 'tactics' => "Swim DC {$checkDc}, Strength DC " . ($checkDc + 2) . " to bend rusted iron bars. Drowning hazard."],
+                ['name' => 'Scaling the Frostfall Precipice', 'desc' => 'Ascending a sheer ice-covered rock face during sub-zero winds and falling icicle hazards.', 'tactics' => "Climb DC {$checkDc}, Survival DC " . ($checkDc - 2) . " to avoid hypothermia, Reflex DC " . ($checkDc - 2) . " to dodge rockfalls."]
+            ];
+            $e = $explores[array_rand($explores)];
+            $name = $e['name'];
+            $desc = $e['desc'];
+            $tactics = $e['tactics'];
         }
 
         return [
@@ -273,8 +336,9 @@ class AdventureGenerator
             'encounter_level' => $el,
             'environment' => $env,
             'description' => $desc,
-            'tactics_and_features' => "Tactical Feature: {$twist}",
+            'tactics_and_features' => $tactics,
             'monsters_and_npcs' => $foes,
+            'traps_and_hazards' => $traps,
             'xp_award' => (int)($el * 300),
             'status' => 'planned',
         ];

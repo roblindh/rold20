@@ -1,7 +1,6 @@
 <!-- Configure Common Actions Modal -->
-<div x-show="showConfigureActionsModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/80 backdrop-blur-sm" @keydown.escape.window="showConfigureActionsModal = false">
-    <div class="flex min-h-full items-start sm:items-center justify-center p-3 sm:p-4 text-center">
-        <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full border border-slate-200 overflow-hidden relative z-[10000] my-auto flex flex-col max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-3.5rem)] text-left" @click.outside="showConfigureActionsModal = false"
+<div x-show="showConfigureActionsModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/80 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showConfigureActionsModal = false">
+    <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full border border-slate-200 overflow-hidden relative z-[10000] my-auto flex flex-col max-h-[92vh] text-left" @click.outside="showConfigureActionsModal = false"
              x-data="{
                  modalSearch: '',
                  modalFilter: 'all',

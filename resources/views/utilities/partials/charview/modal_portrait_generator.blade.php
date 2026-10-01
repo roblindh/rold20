@@ -1,6 +1,6 @@
 <!-- AI Character Portrait Generator Modal -->
-<div x-show="showPortraitModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4" @keydown.escape.window="showPortraitModal = false" @paste.window="if(showPortraitModal) handleClipboardPaste($event)">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full border border-amber-900/30 overflow-hidden relative z-[10000] max-h-[94vh] flex flex-col"
+<div x-show="showPortraitModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/80 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showPortraitModal = false" @paste.window="if(showPortraitModal) handleClipboardPaste($event)">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full border border-amber-900/30 overflow-hidden relative z-[10000] max-h-[94vh] flex flex-col my-auto"
          @click.outside="if(!isGeneratingPortraits && !isSavingPortrait) showPortraitModal = false"
          x-data="portraitGeneratorModal({{ $character ? $character->ID : 0 }}, '{{ $character ? addslashes($character->Name) : '' }}', '{{ isset($character) && $character ? addslashes(\App\Services\AI\GeminiImageService::generatePromptFromCharacter($character, $calculatedState ?? [], ['race_name' => $race->Name ?? 'Humanoid', 'templates' => (isset($templates) && $templates->isNotEmpty()) ? $templates->pluck('Name')->toArray() : [], 'classes_map' => isset($classesMap) ? collect($classesMap)->map(fn($c) => $c->Name ?? '')->toArray() : []])) : '' }}')">
         

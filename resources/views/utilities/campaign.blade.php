@@ -566,6 +566,84 @@
                     <!-- TAB 3: PARTY & ROSTER                                         -->
                     <!-- ============================================================= -->
                     <div x-show="activeTab === 'party'" class="space-y-6">
+                        <!-- Party Current Location & Market Limit Control Banner -->
+                        @php
+                            $curPartyLoc = $camp->PartyLocation ?? 'Small town';
+                            $curPartyLimit = \App\Services\ItemGeneration\ProceduralItemFactory::getSettlementGPLimitSP($curPartyLoc);
+                            $isNoShopParty = in_array(strtolower(trim($curPartyLoc)), ['dungeon', 'wilderness', 'none', 'uninhabited', 'ruin', 'ruins', 'wild', 'road', 'camp', 'cave', 'caves']);
+                        @endphp
+                        <div class="bg-gradient-to-r from-amber-900/10 via-amber-800/5 to-transparent border border-amber-900/25 rounded-xl p-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-2xs">
+                            <div class="flex items-center gap-3">
+                                <span class="text-2xl">
+                                    @if(in_array(strtolower($curPartyLoc), ['dungeon', 'ruin', 'crypt', 'cave'])) 🗝️
+                                    @elseif(in_array(strtolower($curPartyLoc), ['wilderness', 'wild', 'forest', 'swamp', 'mountain'])) 🌲
+                                    @else 🏰
+                                    @endif
+                                </span>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[11px] font-bold uppercase tracking-wider text-stone-600">Current Party Location:</span>
+                                        <span class="font-bold text-amber-950 text-sm font-serif">{{ $curPartyLoc }}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-stone-700 mt-0.5">
+                                        <span>Economy &amp; Trade Limit:</span>
+                                        @if($isNoShopParty)
+                                            <span class="font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">No Merchants / 0 sp (Dungeon/Wilderness)</span>
+                                        @else
+                                            <span class="font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-mono">{{ number_format($curPartyLimit) }} sp ({{ number_format($curPartyLimit / 10) }} gp max per item)</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if($isMyCamp)
+                                <div class="flex items-center gap-2 shrink-0 flex-wrap">
+                                    <label for="party_location_select" class="text-xs font-bold text-amber-950 uppercase">Set Location:</label>
+                                    <select id="party_location_select"
+                                            x-data="{ locVal: '{{ $curPartyLoc }}' }"
+                                            x-model="locVal"
+                                            @change="updatePartyLocation({{ $camp->ID }}, locVal)"
+                                            class="bg-white border border-amber-900/30 rounded-lg px-2.5 py-1 text-xs font-semibold text-stone-900 focus:ring-2 focus:ring-amber-500 shadow-xs">
+                                        <optgroup label="Adventure Environments">
+                                            <option value="Dungeon" {{ strcasecmp($curPartyLoc, 'Dungeon') === 0 ? 'selected' : '' }}>🗝️ Dungeon (No shops / 0 sp limit)</option>
+                                            <option value="Wilderness" {{ strcasecmp($curPartyLoc, 'Wilderness') === 0 ? 'selected' : '' }}>🌲 Wilderness (No shops / 0 sp limit)</option>
+                                        </optgroup>
+                                        <optgroup label="Settlement Scales (Economy &amp; Item Availability)">
+                                            @if(isset($refTownTypes) && $refTownTypes->isNotEmpty())
+                                                @foreach($refTownTypes as $tType)
+                                                    @php
+                                                        $tTown = $tType->TownType ?? $tType->Name ?? $tType->Type ?? '';
+                                                        $tLimit = \App\Services\ItemGeneration\ProceduralItemFactory::getSettlementGPLimitSP($tTown);
+                                                    @endphp
+                                                    <option value="{{ $tTown }}" {{ strcasecmp($curPartyLoc, $tTown) === 0 ? 'selected' : '' }}>
+                                                        🏰 {{ $tTown }} (Max {{ number_format($tLimit) }} sp / {{ number_format($tLimit / 10) }} gp)
+                                                    </option>
+                                                @endforeach
+                                            @else
+                                                <option value="Thorp">🏰 Thorp (400 sp limit)</option>
+                                                <option value="Hamlet">🏰 Hamlet (1,000 sp limit)</option>
+                                                <option value="Village">🏰 Village (2,000 sp limit)</option>
+                                                <option value="Small town">🏰 Small town (8,000 sp limit)</option>
+                                                <option value="Large town">🏰 Large town (30,000 sp limit)</option>
+                                                <option value="Small city">🏰 Small city (150,000 sp limit)</option>
+                                                <option value="Large city">🏰 Large city (400,000 sp limit)</option>
+                                                <option value="Metropolis">🏰 Metropolis (1,000,000 sp limit)</option>
+                                            @endif
+                                        </optgroup>
+                                        @if(isset($campLocations) && $campLocations->isNotEmpty())
+                                            <optgroup label="Campaign Locations &amp; POIs">
+                                                @foreach($campLocations as $cLoc)
+                                                    <option value="{{ $cLoc->name }}" {{ strcasecmp($curPartyLoc, $cLoc->name) === 0 ? 'selected' : '' }}>
+                                                        📍 {{ $cLoc->name }} ({{ ucfirst($cLoc->location_type) }})
+                                                    </option>
+                                                @endforeach
+                                            </optgroup>
+                                        @endif
+                                    </select>
+                                </div>
+                            @endif
+                        </div>
+
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div>
                                 <h3 class="font-bold text-amber-950 text-sm flex items-center gap-1.5">
@@ -765,7 +843,7 @@
     <!-- ========================================================================= -->
 
     <!-- Create Campaign Modal -->
-    <div x-show="showCreateModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showCreateModal = false">
+    <div x-show="showCreateModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showCreateModal = false">
         <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showCreateModal = false">
             <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
@@ -801,16 +879,33 @@
                     </div>
                 </div>
 
-                <div>
-                    <label for="create_camp_suitability" class="block text-xs font-bold uppercase text-slate-700 mb-1">PC Suitability Level</label>
-                    <select id="create_camp_suitability" name="SuitabilityLevel" x-model="createCamp.SuitabilityLevel" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                        <option value="5">5 - Core Humanoids Only</option>
-                        <option value="4">4 - Extended Civilized Races &amp; Templates</option>
-                        <option value="3" selected>3 - Standard PC Play</option>
-                        <option value="2">2 - Exotic &amp; Rare Races</option>
-                        <option value="1">1 - Monstrous &amp; Planar Races</option>
-                        <option value="0">0 - All Creatures Permitted</option>
-                    </select>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label for="create_camp_location" class="block text-xs font-bold uppercase text-slate-700 mb-1">Starting Location / Scale</label>
+                        <select id="create_camp_location" name="PartyLocation" x-model="createCamp.PartyLocation" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="Dungeon">🗝️ Dungeon (0 sp limit)</option>
+                            <option value="Wilderness">🌲 Wilderness (0 sp limit)</option>
+                            <option value="Thorp">🏰 Thorp (400 sp limit)</option>
+                            <option value="Hamlet">🏰 Hamlet (1,000 sp limit)</option>
+                            <option value="Village">🏰 Village (2,000 sp limit)</option>
+                            <option value="Small town" selected>🏰 Small town (8,000 sp limit)</option>
+                            <option value="Large town">🏰 Large town (30,000 sp limit)</option>
+                            <option value="Small city">🏰 Small city (150,000 sp limit)</option>
+                            <option value="Large city">🏰 Large city (400,000 sp limit)</option>
+                            <option value="Metropolis">🏰 Metropolis (1,000,000 sp limit)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="create_camp_suitability" class="block text-xs font-bold uppercase text-slate-700 mb-1">PC Suitability Level</label>
+                        <select id="create_camp_suitability" name="SuitabilityLevel" x-model="createCamp.SuitabilityLevel" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="5">5 - Core Humanoids Only</option>
+                            <option value="4">4 - Extended Civilized Races &amp; Templates</option>
+                            <option value="3" selected>3 - Standard PC Play</option>
+                            <option value="2">2 - Exotic &amp; Rare Races</option>
+                            <option value="1">1 - Monstrous &amp; Planar Races</option>
+                            <option value="0">0 - All Creatures Permitted</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div>
@@ -829,7 +924,7 @@
     </div>
 
     <!-- Edit Campaign Modal -->
-    <div x-show="showEditModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showEditModal = false">
+    <div x-show="showEditModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showEditModal = false">
         <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showEditModal = false">
             <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
@@ -865,16 +960,33 @@
                     </div>
                 </div>
 
-                <div>
-                    <label for="edit_camp_suitability" class="block text-xs font-bold uppercase text-slate-700 mb-1">PC Suitability Level</label>
-                    <select id="edit_camp_suitability" name="SuitabilityLevel" x-model="editCamp.SuitabilityLevel" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
-                        <option value="5">5 - Core Humanoids Only</option>
-                        <option value="4">4 - Extended Civilized Races &amp; Templates</option>
-                        <option value="3">3 - Standard PC Play</option>
-                        <option value="2">2 - Exotic &amp; Rare Races</option>
-                        <option value="1">1 - Monstrous &amp; Planar Races</option>
-                        <option value="0">0 - All Creatures Permitted</option>
-                    </select>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label for="edit_camp_location" class="block text-xs font-bold uppercase text-slate-700 mb-1">Current Party Location</label>
+                        <select id="edit_camp_location" name="PartyLocation" x-model="editCamp.PartyLocation" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="Dungeon">🗝️ Dungeon (0 sp limit)</option>
+                            <option value="Wilderness">🌲 Wilderness (0 sp limit)</option>
+                            <option value="Thorp">🏰 Thorp (400 sp limit)</option>
+                            <option value="Hamlet">🏰 Hamlet (1,000 sp limit)</option>
+                            <option value="Village">🏰 Village (2,000 sp limit)</option>
+                            <option value="Small town">🏰 Small town (8,000 sp limit)</option>
+                            <option value="Large town">🏰 Large town (30,000 sp limit)</option>
+                            <option value="Small city">🏰 Small city (150,000 sp limit)</option>
+                            <option value="Large city">🏰 Large city (400,000 sp limit)</option>
+                            <option value="Metropolis">🏰 Metropolis (1,000,000 sp limit)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="edit_camp_suitability" class="block text-xs font-bold uppercase text-slate-700 mb-1">PC Suitability Level</label>
+                        <select id="edit_camp_suitability" name="SuitabilityLevel" x-model="editCamp.SuitabilityLevel" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="5">5 - Core Humanoids Only</option>
+                            <option value="4">4 - Extended Civilized Races &amp; Templates</option>
+                            <option value="3">3 - Standard PC Play</option>
+                            <option value="2">2 - Exotic &amp; Rare Races</option>
+                            <option value="1">1 - Monstrous &amp; Planar Races</option>
+                            <option value="0">0 - All Creatures Permitted</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div>
@@ -893,7 +1005,7 @@
     </div>
 
     <!-- Adventure Modal (Create & Edit) -->
-    <div x-show="showAdventureModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showAdventureModal = false">
+    <div x-show="showAdventureModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showAdventureModal = false">
         <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showAdventureModal = false">
             <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
@@ -950,8 +1062,8 @@
         </div>
     </div>
 
-    <!-- Encounter Modal (Create & Edit) -->
-    <div x-show="showEncounterModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showEncounterModal = false">
+    <!-- Encounter Modal (Create & Edit with Full Non-Combat & Combat Support) -->
+    <div x-show="showEncounterModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showEncounterModal = false">
         <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showEncounterModal = false">
             <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
@@ -970,12 +1082,12 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Type</label>
-                        <select x-model="encForm.type" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black">
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Encounter Type</label>
+                        <select x-model="encForm.type" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs text-black font-semibold">
                             <option value="combat">⚔️ Combat</option>
-                            <option value="social">🗣️ Social</option>
                             <option value="trap_hazard">⚠️ Trap / Hazard</option>
-                            <option value="puzzle">🧩 Puzzle</option>
+                            <option value="puzzle">🧩 Puzzle / Riddle</option>
+                            <option value="social">🗣️ Social / Parley</option>
                             <option value="exploration">🧭 Exploration</option>
                         </select>
                     </div>
@@ -1009,20 +1121,98 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Tactical Complications &amp; Features</label>
-                    <textarea x-model="encForm.tactics_and_features" rows="2" placeholder="Cover, high ground, dim lighting, waves of reinforcements..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500"></textarea>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">
+                        <span x-text="encForm.type === 'trap_hazard' ? 'Hazard Triggers & Reset Mechanism' : (encForm.type === 'puzzle' ? 'Puzzle Mechanics & Solution Checks' : (encForm.type === 'social' ? 'Stakes, Factions & Key DCs' : (encForm.type === 'exploration' ? 'Environmental DCs & Perils' : 'Tactical Complications & Features')))"></span>
+                    </label>
+                    <textarea x-model="encForm.tactics_and_features" rows="2" placeholder="Skill DCs, cover, elevation, alarms, or environmental hazards..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+
+                <!-- Traps & Hazards Section (Prominent for trap_hazard type or optional for others) -->
+                <div x-show="encForm.type === 'trap_hazard' || (encForm.traps_and_hazards && encForm.traps_and_hazards.length > 0)" class="border border-amber-300 rounded-xl p-3.5 bg-amber-50/50 space-y-2.5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-200 pb-2">
+                        <div>
+                            <span class="text-xs font-bold text-amber-950 flex items-center gap-1.5">
+                                <span>⚠️</span> Traps &amp; Hazards Configuration
+                            </span>
+                            <span class="text-[10px] text-stone-600">Mechanical, magical, or environmental hazard specifications.</span>
+                        </div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <button type="button" @click="rollEncounterTrap()"
+                                    class="text-xs bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-2.5 py-1 rounded-lg border border-amber-300 flex items-center gap-1 cursor-pointer transition">
+                                <span>⚡ Generate Trap</span>
+                            </button>
+                            <button type="button" @click="addTrapToEncounter()" 
+                                    class="text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-lg border border-emerald-200 flex items-center gap-1 cursor-pointer transition">
+                                <span>➕</span> Add Trap
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 max-h-56 overflow-y-auto pr-0.5">
+                        <template x-for="(trap, tIdx) in encForm.traps_and_hazards" :key="tIdx">
+                            <div class="bg-white p-2.5 rounded-lg border border-amber-200 shadow-2xs space-y-2">
+                                <div class="grid grid-cols-12 gap-2 items-center">
+                                    <div class="col-span-5">
+                                        <label class="text-[10px] font-bold text-stone-600 uppercase block">Trap / Hazard Name</label>
+                                        <input type="text" x-model="trap.name" placeholder="e.g. Poison Dart Wall"
+                                               class="w-full px-2 py-1 border border-stone-300 rounded text-xs text-stone-900 font-medium focus:ring-1 focus:ring-amber-500">
+                                    </div>
+                                    <div class="col-span-3">
+                                        <label class="text-[10px] font-bold text-stone-600 uppercase block">Type</label>
+                                        <select x-model="trap.type" class="w-full px-1.5 py-1 border border-stone-300 rounded text-xs text-stone-900">
+                                            <option value="Mechanical">Mechanical</option>
+                                            <option value="Magical">Magical</option>
+                                            <option value="Environmental Hazard">Environmental</option>
+                                            <option value="Poison Gas">Poison Gas</option>
+                                            <option value="Pit / Falling">Pit / Falling</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-span-2">
+                                        <label class="text-[10px] font-bold text-stone-600 uppercase block">Search DC</label>
+                                        <input type="number" x-model.number="trap.search_dc" placeholder="20"
+                                               class="w-full px-1 py-1 border border-stone-300 rounded text-xs font-mono text-center">
+                                    </div>
+                                    <div class="col-span-2 flex items-center justify-between">
+                                        <div>
+                                            <label class="text-[10px] font-bold text-stone-600 uppercase block">Disable DC</label>
+                                            <input type="number" x-model.number="trap.disable_dc" placeholder="20"
+                                                   class="w-14 px-1 py-1 border border-stone-300 rounded text-xs font-mono text-center">
+                                        </div>
+                                        <button type="button" @click="encForm.traps_and_hazards.splice(tIdx, 1)" 
+                                                class="text-rose-500 hover:text-white hover:bg-rose-600 p-1 rounded font-bold text-xs cursor-pointer ml-1" title="Remove Trap">
+                                            ✕
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <input type="text" x-model="trap.attack_or_save" placeholder="Attack or Save (e.g. +10 Atk or Reflex DC 18)"
+                                               class="w-full px-2 py-0.5 border border-stone-300 rounded text-xs text-stone-800">
+                                    </div>
+                                    <div>
+                                        <input type="text" x-model="trap.damage_effect" placeholder="Damage / Effect (e.g. 3d6 fire or 1d6 Con poison)"
+                                               class="w-full px-2 py-0.5 border border-stone-300 rounded text-xs text-stone-800">
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <div x-show="!encForm.traps_and_hazards || encForm.traps_and_hazards.length === 0" class="text-xs text-stone-500 italic p-3 text-center bg-white/60 rounded-lg border border-dashed border-amber-300">
+                            No traps configured. Click "⚡ Generate Trap" or "➕ Add Trap".
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Foes & Monsters Configuration Section -->
-                <div class="border border-slate-200 rounded-xl p-3.5 bg-slate-50 space-y-2.5">
+                <div class="border border-slate-200 rounded-xl p-3.5 bg-slate-50 space-y-2.5" x-data="{ foesOpen: true }">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2">
-                        <div>
+                        <div class="flex items-center gap-2 cursor-pointer" @click="foesOpen = !foesOpen">
                             <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
                                 <span>👹</span> Foes &amp; Monsters List
+                                <span class="text-[10px] font-normal text-slate-500 font-mono" x-text="'(' + (encForm.monsters_and_npcs ? encForm.monsters_and_npcs.length : 0) + ')'"></span>
                             </span>
-                            <span class="text-[10px] text-slate-500">Pick standard monsters from compendium or procedurally generate balanced encounters.</span>
+                            <span class="text-xs text-slate-400" x-text="foesOpen ? '▲' : '▼'"></span>
                         </div>
-                        <div class="flex items-center gap-2 flex-wrap">
+                        <div class="flex items-center gap-2 flex-wrap" x-show="foesOpen">
                             <!-- Min / Max EL Range -->
                             <div class="flex items-center gap-1 bg-white border border-indigo-200 rounded-lg px-2 py-0.5 shadow-2xs text-[11px]">
                                 <span class="font-bold text-indigo-900">EL:</span>
@@ -1040,11 +1230,15 @@
                                     class="text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-lg border border-emerald-200 flex items-center gap-1 cursor-pointer transition">
                                 <span>➕</span> Add Foe
                             </button>
+                            <button type="button" @click="addTrapToEncounter()" x-show="encForm.type !== 'trap_hazard' && (!encForm.traps_and_hazards || encForm.traps_and_hazards.length === 0)"
+                                    class="text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold px-2 py-1 rounded-lg border border-amber-300 flex items-center gap-1 cursor-pointer transition">
+                                <span>⚠️</span> + Trap
+                            </button>
                         </div>
                     </div>
 
                     <!-- Foes Header & Rows -->
-                    <div class="space-y-1.5 max-h-60 overflow-y-auto pr-0.5">
+                    <div x-show="foesOpen" class="space-y-1.5 max-h-60 overflow-y-auto pr-0.5">
                         <!-- Column Header -->
                         <div class="enc-foe-header px-2.5 py-1.5 bg-slate-200/80 rounded-lg text-[11px] font-bold text-slate-700 uppercase tracking-wider">
                             <div class="enc-foe-col-name">Monster / NPC Name</div>
@@ -1088,7 +1282,7 @@
                             </div>
                         </template>
 
-                        <div x-show="encForm.monsters_and_npcs.length === 0" class="text-xs text-stone-500 italic p-4 text-center bg-white/60 rounded-lg border border-dashed border-slate-300">
+                        <div x-show="!encForm.monsters_and_npcs || encForm.monsters_and_npcs.length === 0" class="text-xs text-stone-500 italic p-4 text-center bg-white/60 rounded-lg border border-dashed border-slate-300">
                             No foes added. Click "⚡ Generate Foes" for automatic encounter scaling, or "➕ Add Foe" to enter manually.
                         </div>
                     </div>
@@ -1185,7 +1379,7 @@
     </div>
 
     <!-- Location Modal (Create & Edit) -->
-    <div x-show="showLocationModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showLocationModal = false">
+    <div x-show="showLocationModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showLocationModal = false">
         <div class="bg-white rounded-xl shadow-2xl max-w-xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showLocationModal = false">
             <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
@@ -1264,7 +1458,7 @@
     </div>
 
     <!-- Add Existing PC Modal -->
-    <div x-show="showAddPcModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showAddPcModal = false">
+    <div x-show="showAddPcModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showAddPcModal = false">
         <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showAddPcModal = false">
             <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
                 <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
@@ -1303,7 +1497,7 @@
     </div>
 
     <!-- Restored Award XP & Treasure Modal -->
-    <div x-show="showAwardModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showAwardModal = false">
+    <div x-show="showAwardModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showAwardModal = false">
         <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full border border-slate-300 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showAwardModal = false">
             <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-2xl shrink-0" style="background-color: #2b3d52; color: #ffffff;">
                 <div class="flex items-center gap-2">
@@ -2010,6 +2204,79 @@ function campaignAdmin() {
             }
         },
 
+        addTrapToEncounter() {
+            if (!Array.isArray(this.encForm.traps_and_hazards)) {
+                this.encForm.traps_and_hazards = [];
+            }
+            const el = Math.max(1, Math.round(this.encForm.encounter_level || 1));
+            const searchDc = 15 + Math.min(20, Math.round(el * 1.5));
+            const disableDc = 15 + Math.min(20, Math.round(el * 1.5));
+            const saveDc = 12 + Math.min(18, Math.round(el * 1.2));
+            this.encForm.traps_and_hazards.push({
+                name: 'Mechanical Trap',
+                type: 'Mechanical',
+                search_dc: searchDc,
+                disable_dc: disableDc,
+                attack_or_save: `Reflex DC ${saveDc}`,
+                damage_effect: `${Math.max(1, Math.round(el * 1.5))}d6 damage`,
+                reset: 'Manual'
+            });
+        },
+
+        async rollEncounterTrap() {
+            const el = Math.max(1, Math.round(this.encForm.encounter_level || 1));
+            const searchDc = 15 + Math.min(20, Math.round(el * 1.5));
+            const disableDc = 15 + Math.min(20, Math.round(el * 1.5));
+            const saveDc = 12 + Math.min(18, Math.round(el * 1.2));
+            const atkBonus = 5 + Math.min(20, Math.round(el * 1.5));
+            const dmgDice = Math.max(1, Math.round(el * 1.5));
+
+            const templates = [
+                { name: 'Poison Dart Wall', type: 'Mechanical', attack_or_save: `+${atkBonus} Ranged Attack`, damage_effect: `${dmgDice}d4 piercing + Level ${el} Poison (DC ${saveDc} Con)` },
+                { name: 'Hidden Camouflaged Pit', type: 'Pit / Falling', attack_or_save: `Reflex DC ${saveDc} avoids`, damage_effect: `${dmgDice}d6 falling damage + spikes (+${atkBonus} Atk)` },
+                { name: 'Glyph of Arcane Detonation', type: 'Magical', attack_or_save: `Reflex DC ${saveDc} half`, damage_effect: `${dmgDice}d8 force/fire damage in 20ft radius` },
+                { name: 'Crushing Stone Ceiling', type: 'Mechanical', attack_or_save: `Reflex DC ${saveDc} escapes`, damage_effect: `${dmgDice}d10 bludgeoning + pinned condition` },
+                { name: 'Suffocating Spore Funnel', type: 'Poison Gas', attack_or_save: `Fortitude DC ${saveDc} resists`, damage_effect: `1d6 Con damage per round of exposure` },
+                { name: 'Blazing Oil Floor Grate', type: 'Environmental Hazard', attack_or_save: `Reflex DC ${saveDc} half`, damage_effect: `${dmgDice}d6 fire + ignites combustibles` }
+            ];
+
+            const pick = templates[Math.floor(Math.random() * templates.length)];
+            if (!Array.isArray(this.encForm.traps_and_hazards)) {
+                this.encForm.traps_and_hazards = [];
+            }
+            this.encForm.traps_and_hazards.push({
+                name: pick.name,
+                type: pick.type,
+                search_dc: searchDc,
+                disable_dc: disableDc,
+                attack_or_save: pick.attack_or_save,
+                damage_effect: pick.damage_effect,
+                reset: 'Manual / Reset mechanism'
+            });
+            if (!this.encForm.name || this.encForm.name.startsWith('Hazard:') || this.encForm.name.startsWith('Battle:') || this.encForm.name.trim() === '') {
+                this.encForm.name = `Hazard: ${pick.name}`;
+            }
+        },
+
+        async updatePartyLocation(campId, newLoc) {
+            try {
+                const res = await fetch(`/campaign/${campId}/update-party-location`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify({ PartyLocation: newLoc })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert(data.message || 'Failed to update party location.');
+                }
+            } catch (e) {
+                console.error('Error updating party location:', e);
+                alert('Network error updating party location: ' + e.message);
+            }
+        },
+
         async rollEncounterSeed() {
             try {
                 const res = await fetch('/api/generator/encounter', {
@@ -2024,8 +2291,11 @@ function campaignAdmin() {
                     this.encForm.description = data.data.description;
                     this.encForm.tactics_and_features = data.data.tactics_and_features;
                     this.encForm.xp_award = data.data.xp_award;
-                    if (Array.isArray(data.data.monsters_and_npcs) && data.data.monsters_and_npcs.length > 0) {
+                    if (Array.isArray(data.data.monsters_and_npcs)) {
                         this.encForm.monsters_and_npcs = data.data.monsters_and_npcs;
+                    }
+                    if (Array.isArray(data.data.traps_and_hazards)) {
+                        this.encForm.traps_and_hazards = data.data.traps_and_hazards;
                     }
                 }
             } catch (e) {

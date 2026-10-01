@@ -100,6 +100,8 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/charview/{id}/buy-items', [UtilityController::class, 'buyCharacterItems']);
     Route::post('/character-viewer/{id}/sell-items', [UtilityController::class, 'sellCharacterItems'])->name('charview.sell-items');
     Route::post('/charview/{id}/sell-items', [UtilityController::class, 'sellCharacterItems']);
+    Route::post('/character-viewer/preview-commission-item', [UtilityController::class, 'previewCommissionItem'])->name('charview.preview-commission-item');
+    Route::post('/charview/preview-commission-item', [UtilityController::class, 'previewCommissionItem']);
     Route::post('/character-viewer/{id}/equipment/placement', [UtilityController::class, 'updateEquipmentPlacement'])->name('charview.equipment.placement');
     Route::post('/charview/{id}/equipment/placement', [UtilityController::class, 'updateEquipmentPlacement']);
     Route::post('/character-viewer/{id}/manage-equipment', [UtilityController::class, 'manageCharacterEquipment'])->name('charview.manage-equipment');
@@ -159,6 +161,7 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::get('/campaign', [UtilityController::class, 'campaign'])->name('campaign');
     Route::post('/campaign/create', [UtilityController::class, 'createCampaign'])->name('campaign.create');
     Route::post('/campaign/{id}/update', [UtilityController::class, 'updateCampaign'])->name('campaign.update');
+    Route::post('/campaign/{id}/update-party-location', [UtilityController::class, 'updatePartyLocation'])->name('campaign.update-party-location');
     Route::post('/campaign/{id}/delete', [UtilityController::class, 'deleteCampaign'])->name('campaign.delete');
     Route::post('/campaign/{id}/add-character', [UtilityController::class, 'addCharacterToCampaign'])->name('campaign.add-character');
     Route::post('/campaign/{id}/remove-character', [UtilityController::class, 'removeCharacterFromCampaign'])->name('campaign.remove-character');

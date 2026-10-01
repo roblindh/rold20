@@ -539,6 +539,22 @@ class UtilityController extends Controller
             ->get();
         $organizationsMap = $organizations->keyBy('ID');
 
+        $refTownTypes = DB::table('ref_towntypes')->orderBy('ID')->get();
+        $refMaterials = DB::table('ref_materials')->orderBy('Name')->get();
+        $refItemModsMundane = DB::table('ref_itemmodsmundane')->orderBy('Description')->get();
+
+        $partyLocation = 'Small town';
+        $partyLocationId = null;
+        $partyLocationGpLimitSp = 800.0;
+        $isNoShopLocation = false;
+
+        if ($campaign) {
+            $partyLocation = !empty($campaign->PartyLocation) ? $campaign->PartyLocation : 'Small town';
+            $partyLocationId = $campaign->PartyLocationID ?? null;
+            $partyLocationGpLimitSp = \App\Services\ItemGeneration\ProceduralItemFactory::getSettlementGPLimitSP($partyLocation);
+            $isNoShopLocation = in_array(strtolower(trim($partyLocation)), ['dungeon', 'wilderness', 'none', 'uninhabited', 'ruin', 'ruins', 'wild', 'road', 'camp', 'cave', 'caves']);
+        }
+
         $rawOrgs = $character->Organizations ?? null;
         $characterOrganizations = [];
         if (!empty($rawOrgs)) {
@@ -560,7 +576,9 @@ class UtilityController extends Controller
             'itemTypes', 'equipment', 'spells', 'spellOptions', 'partyMembers', 'campaignVaultFunds', 'campaignVaultItems',
             'refActions', 'commonActions', 'canManageCharacter',
             'companionSummary', 'hasCompanionSkills', 'eligibleCompanionCreatures',
-            'organizations', 'organizationsMap', 'characterOrganizations'
+            'organizations', 'organizationsMap', 'characterOrganizations',
+            'refTownTypes', 'refMaterials', 'refItemModsMundane',
+            'partyLocation', 'partyLocationId', 'partyLocationGpLimitSp', 'isNoShopLocation'
         ));
     }
 
@@ -1335,6 +1353,19 @@ class UtilityController extends Controller
             return back()->with('error', 'Unauthorized.');
         }
 
+        $campaign = !empty($character->Campaign) ? DB::table('campaigns')->where('ID', $character->Campaign)->first() : null;
+        $partyLocation = $campaign ? ($campaign->PartyLocation ?? 'Small town') : 'Small town';
+        $locationLimitSp = \App\Services\ItemGeneration\ProceduralItemFactory::getSettlementGPLimitSP($partyLocation);
+        $isNoShop = in_array(strtolower(trim($partyLocation)), ['dungeon', 'wilderness', 'none', 'uninhabited', 'ruin', 'ruins', 'wild', 'road', 'camp', 'cave', 'caves']);
+
+        if ($isNoShop) {
+            $msg = "Cannot sell items: The party is currently situated in '{$partyLocation}' where no merchants or market outposts exist.";
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $msg], 422);
+            }
+            return back()->with('error', $msg);
+        }
+
         $validated = $request->validate([
             'item_uids' => 'required|array|min:1',
             'item_uids.*' => 'required|string',
@@ -1342,7 +1373,7 @@ class UtilityController extends Controller
             'shop_name' => 'nullable|string|max:100',
         ]);
 
-        $multiplier = (float)($validated['payout_multiplier'] ?? 1.0);
+        $multiplier = (float)($validated['payout_multiplier'] ?? 0.5);
         $uidsToSell = $validated['item_uids'];
 
         $charEquip = [];
@@ -1365,6 +1396,16 @@ class UtilityController extends Controller
                 if ($unitVal <= 0 && isset($it['value'])) {
                     $unitVal = (float)$it['value'] / $qty;
                 }
+
+                // Check item limit against settlement limit
+                if ($locationLimitSp > 0 && $unitVal > $locationLimitSp) {
+                    $msg = "Cannot sell '{$it['name']}': Its value of " . number_format($unitVal) . " sp exceeds the maximum purchase limit (" . number_format($locationLimitSp) . " sp) of {$partyLocation}.";
+                    if ($request->expectsJson()) {
+                        return response()->json(['success' => false, 'message' => $msg], 422);
+                    }
+                    return back()->with('error', $msg);
+                }
+
                 $itemTotalSp = $unitVal * $qty * $multiplier;
                 $totalPayoutSp += $itemTotalSp;
                 $soldItems[] = [
@@ -1414,6 +1455,55 @@ class UtilityController extends Controller
         }
 
         return back()->with('status', $successMsg);
+    }
+
+    /**
+     * Preview custom commissioned item in Character Viewer Magic & Commission Forge
+     */
+    public function previewCommissionItem(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validated = $request->validate([
+            'base_item' => 'required|string|max:100',
+            'material' => 'nullable|string|max:100',
+            'quality' => 'nullable|string|max:100',
+            'mundane_mods' => 'nullable|array',
+            'location' => 'nullable|string|max:100',
+            'character_wealth' => 'nullable|numeric',
+        ]);
+
+        $baseItem = trim($validated['base_item']);
+        $material = !empty($validated['material']) ? trim($validated['material']) : null;
+        $quality = !empty($validated['quality']) ? trim($validated['quality']) : null;
+        $mundaneMods = $validated['mundane_mods'] ?? [];
+
+        $item = \App\Services\ItemGeneration\ProceduralItemFactory::buildCustomCommissionItem(
+            $baseItem,
+            $material,
+            $quality,
+            $mundaneMods
+        );
+
+        if (!$item) {
+            return response()->json(['success' => false, 'message' => 'Could not generate item with selected parameters.'], 422);
+        }
+
+        $location = $validated['location'] ?? 'Small town';
+        $locationLimitSp = \App\Services\ItemGeneration\ProceduralItemFactory::getSettlementGPLimitSP($location);
+        $isNoShop = in_array(strtolower(trim($location)), ['dungeon', 'wilderness', 'none', 'uninhabited', 'ruin', 'ruins', 'wild', 'road', 'camp', 'cave', 'caves']);
+        $itemValueSp = (float)($item['value_sp'] ?? $item['value'] ?? 0);
+        $charWealth = (float)($validated['character_wealth'] ?? 0);
+
+        $exceedsLocationLimit = $isNoShop || ($locationLimitSp > 0 && $itemValueSp > $locationLimitSp);
+        $exceedsWealth = $itemValueSp > $charWealth;
+
+        return response()->json([
+            'success' => true,
+            'item' => $item,
+            'location_limit_sp' => $locationLimitSp,
+            'is_no_shop' => $isNoShop,
+            'exceeds_location_limit' => $exceedsLocationLimit,
+            'exceeds_wealth' => $exceedsWealth,
+        ]);
     }
 
     /**
@@ -3643,6 +3733,8 @@ class UtilityController extends Controller
                 ];
             });
 
+        $refTownTypes = DB::table('ref_towntypes')->orderBy('ID')->get();
+
         // Determine the single active campaign to display
         $selectedCampaignId = $request->query('campaign') ?? session('last_viewed_campaign_id');
         $activeCampaign = null;
@@ -3666,7 +3758,8 @@ class UtilityController extends Controller
         return view('utilities.campaign', compact(
             'campaigns', 'activeCampaign', 'campaignsJson', 'characters', 'npcs',
             'unassignedCharacters', 'myCampaigns', 'abilityMethods', 'equipmentCatalog',
-            'modifiedItemsCatalog', 'adventures', 'encounters', 'locations', 'creatureCatalog'
+            'modifiedItemsCatalog', 'adventures', 'encounters', 'locations', 'creatureCatalog',
+            'refTownTypes'
         ));
     }
 
@@ -3680,6 +3773,8 @@ class UtilityController extends Controller
             'SuitabilityLevel' => 'nullable|integer|min:0|max:5',
             'OptionalRules' => 'nullable|string|max:500',
             'Notes' => 'nullable|string|max:5000',
+            'PartyLocation' => 'nullable|string|max:100',
+            'PartyLocationID' => 'nullable|integer',
         ]);
 
         DB::table('campaigns')->insert([
@@ -3691,6 +3786,8 @@ class UtilityController extends Controller
             'SuitabilityLevel' => (int)($validated['SuitabilityLevel'] ?? 3),
             'OptionalRules' => !empty($validated['OptionalRules']) ? $validated['OptionalRules'] : 'None',
             'Notes' => $validated['Notes'] ?? '',
+            'PartyLocation' => $validated['PartyLocation'] ?? 'Small town',
+            'PartyLocationID' => !empty($validated['PartyLocationID']) ? (int)$validated['PartyLocationID'] : null,
         ]);
 
         return back()->with('status', "Campaign '{$validated['Name']}' created successfully!");
@@ -3718,6 +3815,8 @@ class UtilityController extends Controller
             'SuitabilityLevel' => 'nullable|integer|min:0|max:5',
             'OptionalRules' => 'nullable|string|max:500',
             'Notes' => 'nullable|string|max:5000',
+            'PartyLocation' => 'nullable|string|max:100',
+            'PartyLocationID' => 'nullable|integer',
         ]);
 
         $updateData = [
@@ -3733,10 +3832,62 @@ class UtilityController extends Controller
             $updateData['Name'] = $validated['Name'];
         }
 
+        if (array_key_exists('PartyLocation', $validated)) {
+            $updateData['PartyLocation'] = $validated['PartyLocation'] ?? 'Small town';
+        }
+        if (array_key_exists('PartyLocationID', $validated)) {
+            $updateData['PartyLocationID'] = !empty($validated['PartyLocationID']) ? (int)$validated['PartyLocationID'] : null;
+        }
+
         DB::table('campaigns')->where('ID', $id)->update($updateData);
 
         $name = $validated['Name'] ?? $campaign->Name;
         return back()->with('status', "Campaign '{$name}' updated successfully!");
+    }
+
+    public function updatePartyLocation(Request $request, int $id): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Campaign not found.'], 404);
+            }
+            return back()->with('error', 'Campaign not found.');
+        }
+
+        if (!$this->isAuthorizedForCampaign($campaign)) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Unauthorized: Only the GM can change the party location.'], 403);
+            }
+            return back()->with('error', 'Unauthorized.');
+        }
+
+        $validated = $request->validate([
+            'PartyLocation' => 'required|string|max:100',
+            'PartyLocationID' => 'nullable|integer',
+        ]);
+
+        $locationName = trim($validated['PartyLocation']);
+        $locationId = !empty($validated['PartyLocationID']) ? (int)$validated['PartyLocationID'] : null;
+
+        DB::table('campaigns')->where('ID', $id)->update([
+            'PartyLocation' => $locationName,
+            'PartyLocationID' => $locationId,
+        ]);
+
+        $gpLimitSp = \App\Services\ItemGeneration\ProceduralItemFactory::getSettlementGPLimitSP($locationName);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'party_location' => $locationName,
+                'party_location_id' => $locationId,
+                'gp_limit_sp' => $gpLimitSp,
+                'message' => "Party location updated to '{$locationName}'."
+            ]);
+        }
+
+        return back()->with('status', "Party location updated to '{$locationName}'.");
     }
 
     public function deleteCampaign(Request $request, int $id): \Illuminate\Http\RedirectResponse

@@ -42,7 +42,7 @@
     </div>
 
     <!-- Encounter Control Banner (Round, Turn, Global Actions) -->
-    <div class="charview-action-bar text-white rounded-2xl p-3.5 sm:p-4 shadow-lg flex flex-col lg:flex-row items-center justify-between gap-3 border border-amber-500/30">
+    <div class="charview-action-bar text-white rounded-2xl p-3.5 sm:p-4 shadow-lg flex flex-col lg:flex-row items-center justify-between gap-3 border border-amber-500/30 sticky top-2 z-30 backdrop-blur-md">
         <!-- Round & Active Turn Status -->
         <div class="flex flex-wrap items-center gap-4 sm:gap-6">
             <!-- Round Counter -->
@@ -110,7 +110,7 @@
         <!-- Initiative Ladder & Combatant Cards -->
         <div class="combat-tracker-main space-y-3.5">
             <!-- Add Combatant Action Bar -->
-            <div class="parchment-card p-2.5 sm:p-3 flex flex-wrap items-center justify-between gap-2 shadow-sm border border-amber-900/20">
+            <div class="parchment-card p-2.5 sm:p-3 flex flex-wrap items-center justify-between gap-2 shadow-sm border border-amber-900/20 sticky top-[74px] z-20 backdrop-blur-xs bg-amber-50/95">
                 <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
                     <!-- Import Party Button -->
                     <button type="button" @click="loadCampaignParty()" 
@@ -188,8 +188,8 @@
                 <p class="text-xs text-slate-500 max-w-md mx-auto">Choose a Campaign Encounter from the header, or click <strong>Import Party</strong>, Add PC, Add NPC, or Bestiary to populate combatants.</p>
             </div>
 
-            <!-- Combatants List -->
-            <div class="space-y-3">
+            <!-- Combatants List (Separately Scrollable) -->
+            <div class="space-y-3 max-h-[calc(100vh-230px)] overflow-y-auto pr-1 sm:pr-2">
                 <template x-for="(c, idx) in sortedCombatants" :key="c.id">
                     <div class="bg-white border rounded-2xl shadow-sm overflow-hidden transition duration-150 relative"
                          :class="{
@@ -502,7 +502,7 @@
         </div>
 
         <!-- Fixed Sticky GM Toolkit Sidebar (300px on desktop) -->
-        <div class="combat-tracker-sidebar space-y-3">
+        <div class="combat-tracker-sidebar space-y-3 sticky top-4 self-start max-h-[calc(100vh-2rem)] overflow-y-auto pr-1">
             <!-- Compact GM Dice Roller -->
             <div class="parchment-card p-2.5 space-y-2 shadow-sm border border-amber-900/25">
                 <div class="flex items-center justify-between border-b border-amber-900/15 pb-1">
@@ -595,7 +595,7 @@
     <!-- Monster Reference Search Modal -->
     <div x-show="showMonsterModal" 
          style="display: none; z-index: 9999;" 
-         class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/80 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" 
+         class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/80 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" 
          @keydown.escape.window="showMonsterModal = false">
         <div @click.outside="showMonsterModal = false" 
              class="bg-white rounded-xl shadow-2xl max-w-5xl w-full border border-slate-300 flex flex-col overflow-hidden relative z-[10000] my-auto"
@@ -816,7 +816,7 @@
     </div>
 
     <!-- Custom Combatant Modal -->
-    <div x-show="showCustomModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/80 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" @keydown.escape.window="showCustomModal = false">
+    <div x-show="showCustomModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/80 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showCustomModal = false">
         <div @click.outside="showCustomModal = false" class="bg-white rounded-xl shadow-2xl max-w-md w-full p-5 space-y-4 border border-slate-300 relative z-[10000] max-h-[92vh] flex flex-col my-auto">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h3 class="font-bold text-base text-slate-900 flex items-center gap-2">
@@ -914,7 +914,7 @@
     <!-- End Encounter Summary & Resolution Modal -->
     <div x-show="showEndEncounterModal" 
          style="display: none; z-index: 9999;" 
-         class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/80 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4" 
+         class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/80 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" 
          @keydown.escape.window="showEndEncounterModal = false">
         <div @click.outside="showEndEncounterModal = false" 
              class="bg-white rounded-xl shadow-2xl max-w-2xl w-full border border-slate-300 flex flex-col overflow-hidden relative z-[10000] max-h-[92vh] my-auto">
