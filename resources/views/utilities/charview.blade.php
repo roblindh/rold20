@@ -390,12 +390,16 @@
                 if ($authUser->isGM() || (isset($campaign) && $campaign && (int)$campaign->GameMaster === (int)$authUser->ID) || (isset($character) && $character && !empty($character->Player) && (int)$character->Player === (int)$authUser->ID)) {
                     $canManageCharacter = true;
                 }
+            } elseif (!$canManageCharacter && !$authUser) {
+                if (isset($character) && empty($character->Player)) {
+                    $canManageCharacter = true;
+                }
             }
             $hasCompanionSkills = $hasCompanionSkills ?? ($companionSummary['has_any_companion_skill'] ?? (!empty($skillsList[162]) || !empty($skillsList[167]) || !empty($skillsList[171]) || !empty($skillsList[189])));
         @endphp
 
         <!-- Character Sheet Action Bar Plaque -->
-        <div class="no-print charview-action-bar flex flex-wrap items-center justify-between gap-3.5 p-3 rounded-xl shadow-lg" x-data="{ copiedMd: false, copiedTxt: false }">
+        <div class="no-print charview-action-bar flex flex-wrap items-center justify-between gap-3.5 p-3 rounded-xl shadow-lg">
             <div class="flex items-center gap-3.5 flex-wrap">
                 <span class="text-2xl filter drop-shadow">🧙‍♂️</span>
                 <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2.5">
@@ -902,6 +906,10 @@ function characterViewerApp() {
         showCastSpellModal: false,
         showCompanionsModal: false,
         showConfigureActionsModal: false,
+
+        // Export copy state
+        copiedMd: false,
+        copiedTxt: false,
 
         // Configurable Common Actions State
         allAccessibleActions: @json($commonActions ?? []),
@@ -2315,14 +2323,18 @@ function characterViewerApp() {
         },
 
         openCastSpellModal(spellId = null) {
-            this.loadSpellFavorites();
-            if (spellId !== null && spellId !== undefined) {
-                this.castSpellState.selectedSpellId = String(spellId);
-                this.onCastSpellChanged();
-            } else if (!this.castSpellState.selectedSpellId) {
-                const known = this.knownSpellsCatalog;
-                this.castSpellState.selectedSpellId = known.length > 0 ? String(known[0].ID) : (rawSpells.length > 0 ? String(rawSpells[0].ID) : null);
-                this.onCastSpellChanged();
+            try {
+                this.loadSpellFavorites();
+                if (spellId !== null && spellId !== undefined) {
+                    this.castSpellState.selectedSpellId = String(spellId);
+                    this.onCastSpellChanged();
+                } else if (!this.castSpellState.selectedSpellId) {
+                    const known = this.knownSpellsCatalog || [];
+                    this.castSpellState.selectedSpellId = (known && known.length > 0) ? String(known[0].ID) : ((rawSpells && rawSpells.length > 0) ? String(rawSpells[0].ID) : null);
+                    this.onCastSpellChanged();
+                }
+            } catch(e) {
+                console.error("Error opening cast spell modal:", e);
             }
             this.showCastSpellModal = true;
         },
@@ -2966,18 +2978,22 @@ function characterViewerApp() {
         },
 
         openCompanionsModal() {
-            this.companionErrorMessage = '';
-            // Auto-select first enabled tab if current is disabled
-            const types = this.companionSummary?.companion_types || {};
-            if (!types[this.selectedCompanionTab]?.enabled) {
-                for (const [key, data] of Object.entries(types)) {
-                    if (data.enabled) {
-                        this.selectedCompanionTab = key;
-                        break;
+            try {
+                this.companionErrorMessage = '';
+                // Auto-select first enabled tab if current is disabled
+                const types = this.companionSummary?.companion_types || {};
+                if (!types[this.selectedCompanionTab]?.enabled) {
+                    for (const [key, data] of Object.entries(types)) {
+                        if (data.enabled) {
+                            this.selectedCompanionTab = key;
+                            break;
+                        }
                     }
                 }
+                this.onCompanionTabChanged();
+            } catch(e) {
+                console.error("Error opening companions modal:", e);
             }
-            this.onCompanionTabChanged();
             this.showCompanionsModal = true;
         },
 

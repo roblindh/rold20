@@ -244,7 +244,7 @@
                                         </select>
                                         <button type="button" @click="saveLootToChar({{ json_encode($mag) }}, targetChar, {{ $loop->index }})"
                                                 :disabled="savingItemIdx === {{ $loop->index }}"
-                                                class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded text-xs transition cursor-pointer">
+                                                class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-600 text-white font-bold rounded text-xs transition cursor-pointer shadow-xs">
                                             <span x-show="savingItemIdx !== {{ $loop->index }}">+ Character</span>
                                             <span x-show="savingItemIdx === {{ $loop->index }}">Saving...</span>
                                         </button>
@@ -261,7 +261,7 @@
                                         </select>
                                         <button type="button" @click="saveLootToCamp({{ json_encode($mag) }}, targetCamp, {{ $loop->index }})"
                                                 :disabled="savingItemIdx === {{ $loop->index }}"
-                                                class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded text-xs transition cursor-pointer">
+                                                class="px-2.5 py-1 bg-indigo-700 hover:bg-indigo-600 text-white font-bold rounded text-xs transition cursor-pointer shadow-xs">
                                             <span x-show="savingItemIdx !== {{ $loop->index }}">+ Vault</span>
                                             <span x-show="savingItemIdx === {{ $loop->index }}">Saving...</span>
                                         </button>
@@ -271,7 +271,7 @@
 
                             <button type="button" 
                                     @click="navigator.clipboard.writeText({{ json_encode($mag['config_string']) }}); alert('Item configuration string copied to clipboard!');"
-                                    class="text-xs text-slate-500 hover:text-indigo-700 underline font-mono cursor-pointer">
+                                    class="text-xs text-indigo-700 hover:text-indigo-900 font-bold underline font-mono cursor-pointer">
                                 Copy Config
                             </button>
                         </div>
@@ -298,16 +298,16 @@
                 </div>
 
                 <!-- Distribution Mode Switch -->
-                <div class="inline-flex p-1 bg-black/40 rounded-xl border border-white/10 text-xs">
+                <div class="inline-flex p-1 bg-black/60 rounded-xl border border-white/20 text-xs">
                     <button type="button"
                             @click="mode = 'quick_split'"
-                            :class="mode === 'quick_split' ? 'bg-amber-500 text-slate-950 font-bold shadow' : 'text-slate-300 hover:text-white'"
+                            :class="mode === 'quick_split' ? 'bg-amber-500 text-slate-950 font-black shadow' : 'text-slate-200 hover:text-white font-bold'"
                             class="px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5">
                         <span>⚡</span> Quick Liquidate &amp; Split
                     </button>
                     <button type="button"
                             @click="mode = 'realistic_split'"
-                            :class="mode === 'realistic_split' ? 'bg-indigo-500 text-white font-bold shadow' : 'text-slate-300 hover:text-white'"
+                            :class="mode === 'realistic_split' ? 'bg-indigo-600 text-white font-black shadow' : 'text-slate-200 hover:text-white font-bold'"
                             class="px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5">
                         <span>🎒</span> Realistic Physical Split
                     </button>
@@ -343,9 +343,9 @@
                             Party Members (<span x-text="partyCount"></span> Selected)
                         </label>
                         <div class="flex items-center gap-2 text-[10px]">
-                            <button type="button" @click="selectAll()" class="text-amber-400 hover:underline cursor-pointer">Select All</button>
+                            <button type="button" @click="selectAll()" class="text-amber-300 hover:text-amber-200 font-bold underline cursor-pointer">Select All</button>
                             <span>•</span>
-                            <button type="button" @click="deselectAll()" class="text-slate-400 hover:text-white cursor-pointer">Deselect All</button>
+                            <button type="button" @click="deselectAll()" class="text-slate-300 hover:text-white font-bold underline cursor-pointer">Deselect All</button>
                         </div>
                     </div>
 
@@ -420,7 +420,7 @@
                     <button type="button"
                             @click="executeDistribution()"
                             :disabled="distributing || partyCount === 0"
-                            class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50">
+                            class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-sm shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50">
                         <span x-show="!distributing">⚡ Liquidate Valuables &amp; Distribute Funds (<span x-text="totalLiquidSp.toLocaleString()"></span> sp)</span>
                         <span x-show="distributing">Distributing to Party...</span>
                     </button>
@@ -492,7 +492,7 @@
                     <button type="button"
                             @click="executeDistribution()"
                             :disabled="distributing || partyCount === 0"
-                            class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50">
+                            class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-xl text-sm shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50">
                         <span x-show="!distributing">🎒 Distribute Physical Coins &amp; Assign Items</span>
                         <span x-show="distributing">Distributing to Party...</span>
                     </button>

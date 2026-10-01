@@ -2143,7 +2143,7 @@ td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
     max-width: 300px !important;
     flex: 0 0 300px !important;
     position: sticky !important;
-    top: 0.75rem !important;
+    top: 7.5rem !important;
     align-self: flex-start !important;
     z-index: 20 !important;
 }

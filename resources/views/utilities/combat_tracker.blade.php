@@ -41,67 +41,142 @@
         </div>
     </div>
 
-    <!-- Encounter Control Banner (Round, Turn, Global Actions) -->
-    <div class="charview-action-bar text-white rounded-2xl p-3.5 sm:p-4 shadow-lg flex flex-col lg:flex-row items-center justify-between gap-3 border border-amber-500/30 sticky top-2 z-30 backdrop-blur-md">
-        <!-- Round & Active Turn Status -->
-        <div class="flex flex-wrap items-center gap-4 sm:gap-6">
-            <!-- Round Counter -->
-            <div class="flex items-center gap-2 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-amber-500/40 shadow-inner">
-                <span class="text-xs uppercase tracking-wider text-amber-300 font-bold">Round</span>
-                <span class="text-2xl font-black text-amber-400 font-mono" x-text="round">1</span>
-                <div class="flex flex-col gap-0.5 ml-1">
-                    <button type="button" @click="round = Math.max(1, round + 1); logEvent('Advanced to Round ' + round)" class="text-slate-400 hover:text-white text-xs px-1 hover:bg-slate-700 rounded cursor-pointer leading-none">▲</button>
-                    <button type="button" @click="round = Math.max(1, round - 1); logEvent('Reverted to Round ' + round)" class="text-slate-400 hover:text-white text-xs px-1 hover:bg-slate-700 rounded cursor-pointer leading-none">▼</button>
+    <!-- Sticky Top Toolbars (Encounter Controls & Add Combatants) -->
+    <div class="sticky top-0 z-30 space-y-2 pb-1 bg-slate-950/85 backdrop-blur-md pt-0.5">
+        <!-- Encounter Control Banner (Round, Turn, Global Actions) -->
+        <div class="charview-action-bar text-white rounded-2xl p-3 sm:p-3.5 shadow-lg flex flex-col lg:flex-row items-center justify-between gap-3 border border-amber-500/30">
+            <!-- Round & Active Turn Status -->
+            <div class="flex flex-wrap items-center gap-4 sm:gap-6">
+                <!-- Round Counter -->
+                <div class="flex items-center gap-2 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-amber-500/40 shadow-inner">
+                    <span class="text-xs uppercase tracking-wider text-amber-300 font-bold">Round</span>
+                    <span class="text-2xl font-black text-amber-400 font-mono" x-text="round">1</span>
+                    <div class="flex flex-col gap-0.5 ml-1">
+                        <button type="button" @click="round = Math.max(1, round + 1); logEvent('Advanced to Round ' + round)" class="text-slate-400 hover:text-white text-xs px-1 hover:bg-slate-700 rounded cursor-pointer leading-none">▲</button>
+                        <button type="button" @click="round = Math.max(1, round - 1); logEvent('Reverted to Round ' + round)" class="text-slate-400 hover:text-white text-xs px-1 hover:bg-slate-700 rounded cursor-pointer leading-none">▼</button>
+                    </div>
+                </div>
+
+                <!-- Active Turn Display -->
+                <div class="space-y-0.5">
+                    <div class="text-[11px] text-amber-200/70 uppercase tracking-wider font-semibold">Active Turn</div>
+                    <div class="flex items-center gap-2">
+                        <template x-if="activeCombatant">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-sm"></span>
+                                <span class="font-bold text-sm sm:text-base text-amber-200 font-serif" x-text="activeCombatant.name"></span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold"
+                                      :class="{
+                                          'bg-sky-900/60 text-sky-200 border border-sky-400/50': activeCombatant.type === 'pc',
+                                          'bg-amber-900/60 text-amber-200 border border-amber-400/50': activeCombatant.type === 'npc',
+                                          'bg-rose-900/60 text-rose-200 border border-rose-400/50': activeCombatant.type === 'monster'
+                                      }"
+                                      x-text="activeCombatant.type.toUpperCase()"></span>
+                            </div>
+                        </template>
+                        <template x-if="!activeCombatant">
+                            <span class="text-xs text-slate-400 italic">No combatants in initiative</span>
+                        </template>
+                    </div>
                 </div>
             </div>
 
-            <!-- Active Turn Display -->
-            <div class="space-y-0.5">
-                <div class="text-[11px] text-amber-200/70 uppercase tracking-wider font-semibold">Active Turn</div>
-                <div class="flex items-center gap-2">
-                    <template x-if="activeCombatant">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-sm"></span>
-                            <span class="font-bold text-sm sm:text-base text-amber-200 font-serif" x-text="activeCombatant.name"></span>
-                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold"
-                                  :class="{
-                                      'bg-sky-900/60 text-sky-200 border border-sky-400/50': activeCombatant.type === 'pc',
-                                      'bg-amber-900/60 text-amber-200 border border-amber-400/50': activeCombatant.type === 'npc',
-                                      'bg-rose-900/60 text-rose-200 border border-rose-400/50': activeCombatant.type === 'monster'
-                                  }"
-                                  x-text="activeCombatant.type.toUpperCase()"></span>
-                        </div>
-                    </template>
-                    <template x-if="!activeCombatant">
-                        <span class="text-xs text-slate-400 italic">No combatants in initiative</span>
-                    </template>
-                </div>
+            <!-- Turn Stepper & Global Controls -->
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <button type="button" @click="prevTurn()" :disabled="combatants.length === 0"
+                        class="btn-rol-secondary text-xs py-1.5 px-2.5 disabled:opacity-40">
+                    <span>◀</span> Prev Turn
+                </button>
+                <button type="button" @click="nextTurn()" :disabled="combatants.length === 0"
+                        class="btn-rol-primary text-xs py-1.5 px-3 font-bold disabled:opacity-40">
+                    <span>▶</span> Next Turn
+                </button>
+                <button type="button" @click="rollAllInitiative()" :disabled="combatants.length === 0"
+                        class="btn-rol-secondary text-xs py-1.5 px-2.5 disabled:opacity-40">
+                    <span>🎲</span> Roll All Init
+                </button>
+                <button type="button" @click="openEndEncounterModal()" :disabled="combatants.length === 0"
+                        class="btn-rol-primary text-xs py-1.5 px-3 font-bold cursor-pointer disabled:opacity-40"
+                        style="background: linear-gradient(135deg, #10b981, #059669); border-color: #047857;">
+                    <span>🏆</span> End Encounter
+                </button>
+                <button type="button" @click="resetCombat()"
+                        class="btn-rol-danger text-xs py-1.5 px-2.5">
+                    <span>🔄</span> Reset
+                </button>
             </div>
         </div>
 
-        <!-- Turn Stepper & Global Controls -->
-        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <button type="button" @click="prevTurn()" :disabled="combatants.length === 0"
-                    class="btn-rol-secondary text-xs py-1.5 px-2.5 disabled:opacity-40">
-                <span>◀</span> Prev Turn
-            </button>
-            <button type="button" @click="nextTurn()" :disabled="combatants.length === 0"
-                    class="btn-rol-primary text-xs py-1.5 px-3 font-bold disabled:opacity-40">
-                <span>▶</span> Next Turn
-            </button>
-            <button type="button" @click="rollAllInitiative()" :disabled="combatants.length === 0"
-                    class="btn-rol-secondary text-xs py-1.5 px-2.5 disabled:opacity-40">
-                <span>🎲</span> Roll All Init
-            </button>
-            <button type="button" @click="openEndEncounterModal()" :disabled="combatants.length === 0"
-                    class="btn-rol-primary text-xs py-1.5 px-3 font-bold cursor-pointer disabled:opacity-40"
-                    style="background: linear-gradient(135deg, #10b981, #059669); border-color: #047857;">
-                <span>🏆</span> End Encounter
-            </button>
-            <button type="button" @click="resetCombat()"
-                    class="btn-rol-danger text-xs py-1.5 px-2.5">
-                <span>🔄</span> Reset
-            </button>
+        <!-- Add Combatant Action Bar -->
+        <div class="parchment-card p-2 sm:p-2.5 flex flex-wrap items-center justify-between gap-2 shadow-sm border border-amber-900/20 bg-amber-50/95 rounded-xl">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <!-- Import Party Button -->
+                <button type="button" @click="loadCampaignParty()" 
+                        class="btn-rol-primary text-xs py-1.5 px-3 flex items-center gap-1.5 shadow-sm cursor-pointer"
+                        :title="selectedCampaignId ? 'Import party characters from active campaign' : 'Import player characters'">
+                    <span>👥</span> <strong>Import Party</strong>
+                </button>
+
+                <!-- Quick Add PC Dropdown -->
+                <div class="relative" x-data="{ open: false }">
+                    <button type="button" @click="open = !open" 
+                            class="btn-rol-secondary text-xs py-1.5 px-2.5">
+                        <span>🧙‍♂️</span> Add PC <span class="text-[9px]">▼</span>
+                    </button>
+                    <div x-show="open" @click.outside="open = false" x-cloak
+                         class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-30 max-h-60 overflow-y-auto border border-amber-900/30">
+                        <template x-for="pc in availablePCs" :key="pc.id">
+                            <button type="button" @click="addCombatant(pc); open = false"
+                                    class="w-full text-left px-3 py-1.5 hover:bg-amber-100 text-xs font-medium text-stone-900 flex items-center justify-between border-b border-amber-900/10 last:border-0 cursor-pointer">
+                                <div>
+                                    <div class="font-bold text-slate-900" x-text="pc.name"></div>
+                                    <div class="text-[10px] text-slate-500" x-text="(pc.race_name || '') + ' • Lvl ' + pc.level"></div>
+                                </div>
+                                <span class="text-[10px] text-indigo-700 font-mono font-bold" x-text="'Init +' + pc.init_mod"></span>
+                            </button>
+                        </template>
+                        <div x-show="availablePCs.length === 0" class="px-3 py-2 text-xs text-stone-500 italic">No PCs available</div>
+                    </div>
+                </div>
+
+                <!-- Quick Add NPC Dropdown -->
+                <div class="relative" x-data="{ open: false }">
+                    <button type="button" @click="open = !open" 
+                            class="btn-rol-secondary text-xs py-1.5 px-2.5">
+                        <span>👤</span> Add NPC <span class="text-[9px]">▼</span>
+                    </button>
+                    <div x-show="open" @click.outside="open = false" x-cloak
+                         class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-30 max-h-60 overflow-y-auto border border-amber-900/30">
+                        <template x-for="npc in availableNPCs" :key="npc.id">
+                            <button type="button" @click="addCombatant(npc); open = false"
+                                    class="w-full text-left px-3 py-1.5 hover:bg-amber-100 text-xs font-medium text-stone-900 flex items-center justify-between border-b border-amber-900/10 last:border-0 cursor-pointer">
+                                <div>
+                                    <div class="font-bold text-slate-900" x-text="npc.name"></div>
+                                    <div class="text-[10px] text-slate-500" x-text="'Lvl ' + npc.level"></div>
+                                </div>
+                                <span class="text-[10px] text-amber-700 font-mono font-bold" x-text="'Init +' + npc.init_mod"></span>
+                            </button>
+                        </template>
+                        <div x-show="availableNPCs.length === 0" class="px-3 py-2 text-xs text-stone-500 italic">No saved NPCs</div>
+                    </div>
+                </div>
+
+                <!-- Add Monster Modal Trigger -->
+                <button type="button" @click="showMonsterModal = true" 
+                        class="btn-rol-secondary text-xs py-1.5 px-2.5">
+                    <span>👹</span> Bestiary...
+                </button>
+
+                <!-- Add Custom Combatant Modal Trigger -->
+                <button type="button" @click="showCustomModal = true" 
+                        class="btn-rol-secondary text-xs py-1.5 px-2.5">
+                    <span>➕</span> Custom...
+                </button>
+            </div>
+
+            <div class="text-xs text-stone-600 font-mono font-bold">
+                <span x-text="combatants.length"></span> Combatants
+            </div>
         </div>
     </div>
 
@@ -109,78 +184,6 @@
     <div class="combat-tracker-workspace">
         <!-- Initiative Ladder & Combatant Cards -->
         <div class="combat-tracker-main space-y-3.5">
-            <!-- Add Combatant Action Bar -->
-            <div class="parchment-card p-2.5 sm:p-3 flex flex-wrap items-center justify-between gap-2 shadow-sm border border-amber-900/20 sticky top-[74px] z-20 backdrop-blur-xs bg-amber-50/95">
-                <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                    <!-- Import Party Button -->
-                    <button type="button" @click="loadCampaignParty()" 
-                            class="btn-rol-primary text-xs py-1.5 px-3 flex items-center gap-1.5 shadow-sm cursor-pointer"
-                            :title="selectedCampaignId ? 'Import party characters from active campaign' : 'Import player characters'">
-                        <span>👥</span> <strong>Import Party</strong>
-                    </button>
-
-                    <!-- Quick Add PC Dropdown -->
-                    <div class="relative" x-data="{ open: false }">
-                        <button type="button" @click="open = !open" 
-                                class="btn-rol-secondary text-xs py-1.5 px-2.5">
-                            <span>🧙‍♂️</span> Add PC <span class="text-[9px]">▼</span>
-                        </button>
-                        <div x-show="open" @click.outside="open = false" x-cloak
-                             class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-30 max-h-60 overflow-y-auto border border-amber-900/30">
-                            <template x-for="pc in availablePCs" :key="pc.id">
-                                <button type="button" @click="addCombatant(pc); open = false"
-                                        class="w-full text-left px-3 py-1.5 hover:bg-amber-100 text-xs font-medium text-stone-900 flex items-center justify-between border-b border-amber-900/10 last:border-0 cursor-pointer">
-                                    <div>
-                                        <div class="font-bold text-slate-900" x-text="pc.name"></div>
-                                        <div class="text-[10px] text-slate-500" x-text="(pc.race_name || '') + ' • Lvl ' + pc.level"></div>
-                                    </div>
-                                    <span class="text-[10px] text-indigo-700 font-mono font-bold" x-text="'Init +' + pc.init_mod"></span>
-                                </button>
-                            </template>
-                            <div x-show="availablePCs.length === 0" class="px-3 py-2 text-xs text-stone-500 italic">No PCs available</div>
-                        </div>
-                    </div>
-
-                    <!-- Quick Add NPC Dropdown -->
-                    <div class="relative" x-data="{ open: false }">
-                        <button type="button" @click="open = !open" 
-                                class="btn-rol-secondary text-xs py-1.5 px-2.5">
-                            <span>👤</span> Add NPC <span class="text-[9px]">▼</span>
-                        </button>
-                        <div x-show="open" @click.outside="open = false" x-cloak
-                             class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-30 max-h-60 overflow-y-auto border border-amber-900/30">
-                            <template x-for="npc in availableNPCs" :key="npc.id">
-                                <button type="button" @click="addCombatant(npc); open = false"
-                                        class="w-full text-left px-3 py-1.5 hover:bg-amber-100 text-xs font-medium text-stone-900 flex items-center justify-between border-b border-amber-900/10 last:border-0 cursor-pointer">
-                                    <div>
-                                        <div class="font-bold text-slate-900" x-text="npc.name"></div>
-                                        <div class="text-[10px] text-slate-500" x-text="'Lvl ' + npc.level"></div>
-                                    </div>
-                                    <span class="text-[10px] text-amber-700 font-mono font-bold" x-text="'Init +' + npc.init_mod"></span>
-                                </button>
-                            </template>
-                            <div x-show="availableNPCs.length === 0" class="px-3 py-2 text-xs text-stone-500 italic">No saved NPCs</div>
-                        </div>
-                    </div>
-
-                    <!-- Add Monster Modal Trigger -->
-                    <button type="button" @click="showMonsterModal = true" 
-                            class="btn-rol-secondary text-xs py-1.5 px-2.5">
-                        <span>👹</span> Bestiary...
-                    </button>
-
-                    <!-- Add Custom Combatant Modal Trigger -->
-                    <button type="button" @click="showCustomModal = true" 
-                            class="btn-rol-secondary text-xs py-1.5 px-2.5">
-                        <span>➕</span> Custom...
-                    </button>
-                </div>
-
-                <div class="text-xs text-stone-600 font-mono font-bold">
-                    <span x-text="combatants.length"></span> Combatants
-                </div>
-            </div>
-
             <!-- Empty State -->
             <div x-show="combatants.length === 0" class="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center space-y-3">
                 <span class="text-4xl">⚔️</span>

@@ -513,6 +513,10 @@ class UtilityController extends Controller
             if ($authUser->isGM() || ($campaign && (int)$campaign->GameMaster === (int)$authUser->ID) || ($character && !empty($character->Player) && (int)$character->Player === (int)$authUser->ID)) {
                 $canManageCharacter = true;
             }
+        } else {
+            if ($character && empty($character->Player)) {
+                $canManageCharacter = true;
+            }
         }
 
         $companionSummary = $character ? \App\Services\Entity\SpecialCompanionService::getCharacterCompanionSummary($character, $calculatedState ?? []) : ['has_any_companion_skill' => false, 'companion_types' => [], 'all_companions' => []];
