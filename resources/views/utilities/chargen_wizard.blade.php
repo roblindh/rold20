@@ -3560,7 +3560,17 @@ function characterWizard() {
             }
 
             // 7. Armor, Weapons, Clothing, Foci, Jewelry, Magic Wearables
-            if ([2, 3, 4, 9, 10].includes(type)) {
+            const traits = (item.Traits || item.traits || '').toLowerCase();
+            const config = (item.Config || item.config || item.config_string || '').toLowerCase();
+            const isEquippableType = [2, 3, 4, 9, 10].includes(type);
+            const isEquippableSubtype = [6, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50].includes(subtype);
+            const hasEquippableTraits = traits.includes('weapon {') || traits.includes('weapon{') ||
+                                        traits.includes('armor {') || traits.includes('armor{') ||
+                                        traits.includes('shield {') || traits.includes('shield{') ||
+                                        traits.includes('def {') || traits.includes('def{');
+            const hasEquippableName = /\b(sword|blade|dagger|axe|bow|crossbow|mace|hammer|spear|halberd|glaive|flail|morningstar|scimitar|rapier|greatsword|shortsword|longsword|bastard sword|quarterstaff|javelin|dart|sling|whip|trident|lance|scythe|club|staff|katana|wakizashi|tanto|naginata|falchion|kukri|estoc|dirk|pike|polearm|warhammer|pick|morning star|greatclub|shortbow|longbow|shield|buckler|pavise|targe|armor|mail|plate|cuirass|greaves|hauberk|brigandine|gambeson|padded|leather|scale|splint|chainmail|full plate|breastplate|chain shirt|half plate|hide armor|studded leather|tunic|tabard|robe|cloak|cape|boots|shoes|sandals|slippers|gloves|gauntlets|bracers|belt|girdle|sash|helm|helmet|coif|cap|hat|crown|circlet|tiara|hood|mask|ring|amulet|necklace|pendant|brooch|medallion|periapt|talisman|scarf|vest|pants|breeches|trousers|skirt|kilt|shirt|doublet|jerkin|surcoat|scabbard|sheath|holster|goggles|spectacles|monocle)\b/i.test(name + ' ' + config);
+
+            if (isEquippableType || isEquippableSubtype || hasEquippableTraits || hasEquippableName) {
                 return [{ value: 2, label: '🛡️ Equipped (Worn/Wielded)' }, { value: 1, label: '🎒 Carried' }, { value: 0, label: '📦 Stowed' }];
             }
 

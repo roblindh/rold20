@@ -246,15 +246,10 @@ class EquipmentManager
     public static function enrichItemWithRefData(array|object $item): array
     {
         $arr = (array)$item;
-        $type = $arr['ItemTypeID'] ?? $arr['item_type'] ?? $arr['ItemType'] ?? null;
+        $type = $arr['ItemTypeID'] ?? $arr['item_type_id'] ?? $arr['item_type'] ?? $arr['ItemType'] ?? null;
         $subtype = $arr['Subtype'] ?? $arr['subtype'] ?? null;
 
-        if ($type !== null && $subtype !== null) {
-            return $arr;
-        }
-
-        $refId = (int)($arr['item_id'] ?? $arr['ID'] ?? $arr['id'] ?? $arr['ref_id'] ?? 0);
-        if ($refId <= 0) {
+        if ($type !== null && $subtype !== null && (int)$type > 0) {
             return $arr;
         }
 
@@ -276,9 +271,24 @@ class EquipmentManager
             }
         }
 
-        if (isset(self::$refItemsCache[$refId])) {
+        $refId = (int)($arr['item_id'] ?? $arr['ID'] ?? $arr['id'] ?? $arr['ref_id'] ?? 0);
+        if ($refId > 0 && isset(self::$refItemsCache[$refId])) {
             $ref = self::$refItemsCache[$refId];
             return array_merge($ref, $arr);
+        }
+
+        // Check if item has config string or procedural name that can be matched to base item
+        $config = (string)($arr['config'] ?? $arr['config_string'] ?? $arr['Name'] ?? $arr['name'] ?? '');
+        if (!empty($config) && class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
+            $base = \App\Services\ItemGeneration\ProceduralItemFactory::resolveBaseItem($config);
+            if ($base && !empty($base['ID'])) {
+                $baseId = (int)$base['ID'];
+                $ref = self::$refItemsCache[$baseId] ?? $base;
+                $arr['ItemTypeID'] = $ref['ItemTypeID'] ?? $ref['Type'] ?? null;
+                $arr['Subtype'] = $ref['Subtype'] ?? null;
+                $arr['item_id'] = $baseId;
+                return array_merge($ref, $arr);
+            }
         }
 
         return $arr;
@@ -293,9 +303,11 @@ class EquipmentManager
     public static function getAllowedLocations(array|object $item): array
     {
         $arr = self::enrichItemWithRefData($item);
-        $type = (int)($arr['ItemTypeID'] ?? $arr['item_type'] ?? $arr['ItemType'] ?? 0);
+        $type = (int)($arr['ItemTypeID'] ?? $arr['item_type_id'] ?? $arr['item_type'] ?? $arr['ItemType'] ?? 0);
         $subtype = (int)($arr['Subtype'] ?? $arr['subtype'] ?? 0);
         $name = strtolower((string)($arr['Name'] ?? $arr['name'] ?? ''));
+        $traits = strtolower((string)($arr['Traits'] ?? $arr['traits'] ?? $arr['custom_traits'] ?? ''));
+        $config = strtolower((string)($arr['Config'] ?? $arr['config'] ?? $arr['config_string'] ?? ''));
 
         // 1. Buildings (Type 7 / Subtypes 57, 58)
         if ($type === 7 || in_array($subtype, [57, 58]) || preg_match('/house|manor|tower|castle|estate|temple|inn|tavern|shop|farm|warehouse/i', $name)) {
@@ -331,7 +343,16 @@ class EquipmentManager
         }
 
         // 7. Armor, Clothing, Weapons, Shields, Foci, Jewelry, Magic Wearables
-        if (in_array($type, [2, 3, 4, 9, 10])) {
+        $isEquippableType = in_array($type, [2, 3, 4, 9, 10]);
+        $isEquippableSubtype = in_array($subtype, [6, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]);
+        $hasEquippableTraits = str_contains($traits, 'weapon {') || str_contains($traits, 'weapon{')
+            || str_contains($traits, 'armor {') || str_contains($traits, 'armor{')
+            || str_contains($traits, 'shield {') || str_contains($traits, 'shield{')
+            || str_contains($traits, 'def {') || str_contains($traits, 'def{');
+        
+        $hasEquippableName = (bool)preg_match('/\b(sword|blade|dagger|axe|bow|crossbow|mace|hammer|spear|halberd|glaive|flail|morningstar|scimitar|rapier|greatsword|shortsword|longsword|bastard sword|quarterstaff|javelin|dart|sling|whip|trident|lance|scythe|club|staff|katana|wakizashi|tanto|naginata|falchion|kukri|estoc|dirk|pike|polearm|warhammer|pick|morning star|greatclub|shortbow|longbow|shield|buckler|pavise|targe|armor|mail|plate|cuirass|greaves|hauberk|brigandine|gambeson|padded|leather|scale|splint|chainmail|full plate|breastplate|chain shirt|half plate|hide armor|studded leather|tunic|tabard|robe|cloak|cape|boots|shoes|sandals|slippers|gloves|gauntlets|bracers|belt|girdle|sash|helm|helmet|coif|cap|hat|crown|circlet|tiara|hood|mask|ring|amulet|necklace|pendant|brooch|medallion|periapt|talisman|scarf|vest|pants|breeches|trousers|skirt|kilt|shirt|doublet|jerkin|surcoat|scabbard|sheath|holster|goggles|spectacles|monocle)\b/i', $name . ' ' . $config);
+
+        if ($isEquippableType || $isEquippableSubtype || $hasEquippableTraits || $hasEquippableName) {
             return [self::LOCATION_EQUIPPED, self::LOCATION_CARRIED, self::LOCATION_STOWED];
         }
 

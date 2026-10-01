@@ -300,6 +300,7 @@
             $equipmentList = [];
             foreach ($rawEquipmentList as $idx => $it) {
                 if (!is_array($it)) continue;
+                $it = \App\Services\Entity\EquipmentManager::enrichItemWithRefData($it);
                 $uid = (string)($it['uid'] ?? $it['id'] ?? ('item_' . $idx . '_' . ($it['item_id'] ?? $it['ID'] ?? '0')));
                 $name = (string)($it['Name'] ?? $it['name'] ?? 'Item');
                 $qty = max(1, (int)($it['Qty'] ?? $it['qty'] ?? 1));
@@ -343,6 +344,9 @@
                     'IsContainer' => $isContainer,
                     'item_type_id' => $it['ItemTypeID'] ?? $it['item_type_id'] ?? $it['Type'] ?? null,
                     'subtype' => $it['Subtype'] ?? $it['subtype'] ?? null,
+                    'traits' => $it['Traits'] ?? $it['traits'] ?? '',
+                    'mods' => $it['Mods'] ?? $it['mods'] ?? '',
+                    'config' => $it['Config'] ?? $it['config'] ?? $it['config_string'] ?? '',
                 ];
             }
             $rawCoins = $character->Coins ?? null;
@@ -1373,9 +1377,11 @@ function characterViewerApp() {
         },
 
         getAllowedLocations(item) {
-            const type = parseInt(item.item_type_id || item.ItemTypeID || 0);
+            const type = parseInt(item.item_type_id || item.ItemTypeID || item.Type || 0);
             const subtype = parseInt(item.subtype || item.Subtype || 0);
             const name = (item.name || item.Name || '').toLowerCase();
+            const traits = (item.traits || item.Traits || item.custom_traits || '').toLowerCase();
+            const config = (item.config || item.config_string || item.Config || '').toLowerCase();
 
             // 1. Buildings (Type 7 / Subtypes 57, 58)
             if (type === 7 || subtype === 57 || subtype === 58 || /house|manor|tower|castle|estate|temple|inn|tavern|shop|farm|warehouse/i.test(name)) {
@@ -1410,7 +1416,15 @@ function characterViewerApp() {
             }
 
             // 7. Armor, Weapons, Clothes, Foci, Jewelry, Magic Wearables
-            if ([2, 3, 4, 9, 10].includes(type)) {
+            const isEquippableType = [2, 3, 4, 9, 10].includes(type);
+            const isEquippableSubtype = [6, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50].includes(subtype);
+            const hasEquippableTraits = traits.includes('weapon {') || traits.includes('weapon{') ||
+                                        traits.includes('armor {') || traits.includes('armor{') ||
+                                        traits.includes('shield {') || traits.includes('shield{') ||
+                                        traits.includes('def {') || traits.includes('def{');
+            const hasEquippableName = /\b(sword|blade|dagger|axe|bow|crossbow|mace|hammer|spear|halberd|glaive|flail|morningstar|scimitar|rapier|greatsword|shortsword|longsword|bastard sword|quarterstaff|javelin|dart|sling|whip|trident|lance|scythe|club|staff|katana|wakizashi|tanto|naginata|falchion|kukri|estoc|dirk|pike|polearm|warhammer|pick|morning star|greatclub|shortbow|longbow|shield|buckler|pavise|targe|armor|mail|plate|cuirass|greaves|hauberk|brigandine|gambeson|padded|leather|scale|splint|chainmail|full plate|breastplate|chain shirt|half plate|hide armor|studded leather|tunic|tabard|robe|cloak|cape|boots|shoes|sandals|slippers|gloves|gauntlets|bracers|belt|girdle|sash|helm|helmet|coif|cap|hat|crown|circlet|tiara|hood|mask|ring|amulet|necklace|pendant|brooch|medallion|periapt|talisman|scarf|vest|pants|breeches|trousers|skirt|kilt|shirt|doublet|jerkin|surcoat|scabbard|sheath|holster|goggles|spectacles|monocle)\b/i.test(name + ' ' + config);
+
+            if (isEquippableType || isEquippableSubtype || hasEquippableTraits || hasEquippableName) {
                 return [{ value: 2, label: '🛡️ Equipped (Worn/Wielded)' }, { value: 1, label: '🎒 Carried' }, { value: 0, label: '📦 Stowed' }];
             }
 
@@ -1449,7 +1463,9 @@ function characterViewerApp() {
             if (!this.customItem.name.trim()) return;
             const uid = 'item_custom_' + Date.now();
             const isCont = Boolean(this.customItem.is_container);
-            const defaultLoc = isCont ? 2 : 1;
+            const tempItem = { name: this.customItem.name.trim(), is_container: isCont };
+            const allowed = this.getAllowedLocations(tempItem);
+            const defaultLoc = isCont ? 2 : (allowed.some(l => l.value === 2) ? 2 : 1);
             this.equipmentItems.push({
                 uid: uid,
                 id: uid,
@@ -1922,15 +1938,19 @@ function characterViewerApp() {
                     existing.qty++;
                 } else {
                     this.cartItems.push({
-                        id: null,
+                        id: item.item_id || item.ID || null,
+                        item_id: item.item_id || item.ID || null,
                         custom: true,
-                        name: item.name,
+                        name: item.name || item.Name,
                         config_string: configStr,
                         unit_price: unitPrice,
                         weight: weight,
                         dr: item.dr || '0',
                         traits: item.traits || '',
                         mods: item.mods || '',
+                        item_type_id: item.item_type_id || item.ItemTypeID || item.Type || null,
+                        subtype: item.subtype || item.Subtype || null,
+                        category: item.category || item.Category || null,
                         qty: 1
                     });
                 }
@@ -1941,6 +1961,7 @@ function characterViewerApp() {
                 } else {
                     this.cartItems.push({
                         id: item.ID,
+                        item_id: item.ID,
                         custom: false,
                         name: item.Name,
                         config_string: item.Name,
@@ -1949,6 +1970,9 @@ function characterViewerApp() {
                         dr: item.DR ? String(item.DR) : '0',
                         traits: '',
                         mods: '',
+                        item_type_id: item.ItemTypeID || item.Type || null,
+                        subtype: item.Subtype || null,
+                        category: item.Category || null,
                         qty: 1
                     });
                 }

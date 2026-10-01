@@ -42,6 +42,32 @@ class ProceduralItemFactory
             if (function_exists('application_start') && (empty($_APP) || empty($_APP['items']))) {
                 application_start();
             }
+            if (empty($_APP['items'])) {
+                $cacheFile = dirname(__DIR__, 3) . '/storage/framework/cache/app_data.php';
+                if (file_exists($cacheFile)) {
+                    $appData = require $cacheFile;
+                    if (is_array($appData)) {
+                        $_APP = $appData;
+                    }
+                }
+            }
+            if (empty($_APP['items'])) {
+                try {
+                    $items = DB::table('ref_items')
+                        ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
+                        ->select('ref_items.*', 'ref_itemsubtypes.Type as ItemTypeID', 'ref_itemsubtypes.Name as SubtypeName')
+                        ->get()
+                        ->keyBy('ID')
+                        ->map(fn($r) => (array)$r)
+                        ->toArray();
+                    if (!empty($items)) {
+                        if (!isset($_APP) || !is_array($_APP)) {
+                            $_APP = [];
+                        }
+                        $_APP['items'] = $items;
+                    }
+                } catch (\Throwable $e) {}
+            }
         }
     }
 
@@ -1024,6 +1050,86 @@ class ProceduralItemFactory
     }
 
     /**
+     * Resolve base reference item from an item name, query, or config string.
+     */
+    public static function resolveBaseItem(string $query): ?array
+    {
+        self::ensureAppLoaded();
+        global $_APP;
+
+        $items = $_APP['items'] ?? [];
+        if (empty($items)) {
+            return null;
+        }
+
+        $q = strtolower(trim($query));
+        if (empty($q)) {
+            return null;
+        }
+
+        // If query has parameters like "Item Name (Item=Sword, long-: Mod=...)", check Item parameter first
+        if (preg_match('/\bItem=([^:\)]+)/i', $q, $m)) {
+            $paramItem = trim($m[1]);
+            foreach ($items as $it) {
+                if (strcasecmp($it['Name'] ?? '', $paramItem) === 0) {
+                    return $it;
+                }
+            }
+        }
+
+        // Strip config parentheses to get base name
+        if (str_contains($q, '(')) {
+            $q = trim(substr($q, 0, strpos($q, '(')));
+        }
+
+        // 1. Direct case-insensitive match
+        foreach ($items as $it) {
+            $name = strtolower($it['Name'] ?? '');
+            if ($name === $q) {
+                $sub = (int)($it['Subtype'] ?? 0);
+                if ($sub > 0 && isset($_APP['itemsubtypes'][$sub])) {
+                    $it['ItemTypeID'] = (int)($_APP['itemsubtypes'][$sub]['Type'] ?? 0);
+                    $it['Type'] = $it['ItemTypeID'];
+                    $it['SubtypeName'] = (string)($_APP['itemsubtypes'][$sub]['Name'] ?? '');
+                }
+                return $it;
+            }
+        }
+
+        // 2. Generate natural aliases for inverted names (e.g. "Sword, long-" -> ["longsword", "long sword", "sword, long", "sword long"])
+        foreach ($items as $it) {
+            $raw = $it['Name'] ?? '';
+            $rawLower = strtolower($raw);
+            $clean = strtolower(rtrim(str_replace(['-', ','], ' ', $raw), ' '));
+
+            $aliases = [$rawLower, $clean];
+            if (str_contains($raw, ',')) {
+                $parts = explode(',', $raw, 2);
+                $main = strtolower(trim($parts[0]));
+                $spec = strtolower(rtrim(trim($parts[1]), '- '));
+                $aliases[] = "{$spec} {$main}";
+                $aliases[] = "{$spec}{$main}";
+                $aliases[] = "{$main} {$spec}";
+                $aliases[] = "{$main}, {$spec}";
+            }
+
+            foreach ($aliases as $alias) {
+                if ($alias === $q || preg_match('/\b' . preg_quote($alias, '/') . '\b/i', $q)) {
+                    $sub = (int)($it['Subtype'] ?? 0);
+                    if ($sub > 0 && isset($_APP['itemsubtypes'][$sub])) {
+                        $it['ItemTypeID'] = (int)($_APP['itemsubtypes'][$sub]['Type'] ?? 0);
+                        $it['Type'] = $it['ItemTypeID'];
+                        $it['SubtypeName'] = (string)($_APP['itemsubtypes'][$sub]['Name'] ?? '');
+                    }
+                    return $it;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Instantiate cPossession and extract structured details.
      */
     public static function instantiateItem(string $configStr): ?array
@@ -1032,25 +1138,79 @@ class ProceduralItemFactory
         global $_APP;
 
         try {
+            $effectiveConfig = trim($configStr);
+            $parsedName = $effectiveConfig;
+
+            if (str_contains($effectiveConfig, '(')) {
+                $parsedName = trim(substr($effectiveConfig, 0, strpos($effectiveConfig, '(')));
+            } else {
+                $matchedItem = self::resolveBaseItem($effectiveConfig);
+                if ($matchedItem) {
+                    $effectiveConfig = "{$effectiveConfig} (Item={$matchedItem['Name']})";
+                }
+            }
+
             $entity = new \cPossession();
-            $entity->GenerateItem($configStr);
+            if (str_contains($effectiveConfig, '(')) {
+                $entity->GenerateItem($effectiveConfig);
+            }
+
+            $name = !empty($entity->Name) ? $entity->Name : $parsedName;
+            $baseItemId = (int)($entity->Item ?? 0);
+            if ($baseItemId === 0) {
+                $matched = self::resolveBaseItem($name);
+                if ($matched) {
+                    $baseItemId = (int)($matched['ID'] ?? 0);
+                }
+            }
+
+            $baseItemRef = ($baseItemId > 0 && isset($_APP['items'][$baseItemId])) ? $_APP['items'][$baseItemId] : null;
+            $subtypeId = $baseItemRef ? (int)($baseItemRef['Subtype'] ?? 0) : 0;
+            $subtypeRef = ($subtypeId > 0 && isset($_APP['itemsubtypes'][$subtypeId])) ? $_APP['itemsubtypes'][$subtypeId] : null;
+            $typeId = $baseItemRef ? (int)($baseItemRef['ItemTypeID'] ?? $baseItemRef['Type'] ?? ($subtypeRef['Type'] ?? 0)) : 0;
+            $subtypeName = $subtypeRef ? (string)($subtypeRef['Name'] ?? '') : '';
 
             $sizeIdx = min(max($entity->GetCurrentSize(), -4), 4);
             $sizeAbbr = $_APP['sizecats'][$sizeIdx]['Abbreviation'] ?? 'M';
 
-            $rawTraits = isset($_APP['items'][$entity->Item]['Traits'])
-                ? $entity->TraitEffects->ProcessTraits($_APP['items'][$entity->Item]['Traits'], 0, $entity)
+            $rawTraits = ($baseItemId > 0 && isset($_APP['items'][$baseItemId]['Traits']))
+                ? $entity->TraitEffects->ProcessTraits($_APP['items'][$baseItemId]['Traits'], 0, $entity)
                 : '';
             $rawMods = $entity->GetModsStr();
             $valSp = (float)$entity->GetValue();
+            if ($valSp <= 0 && $baseItemRef) {
+                $valSp = (float)($baseItemRef['BaseValue'] ?? 0);
+            }
+            $weightKg = (float)$entity->GetWeight();
+            if ($weightKg <= 0 && $baseItemRef) {
+                $weightKg = (float)($baseItemRef['BaseWeight'] ?? $baseItemRef['Weight'] ?? 0);
+            }
+
+            $category = match($typeId) {
+                2 => 'weapon',
+                3 => 'armor',
+                4 => 'focus',
+                6 => 'vehicle',
+                7 => 'building',
+                8 => 'service',
+                9 => 'valuable',
+                10 => 'magic',
+                default => 'general'
+            };
 
             return [
-                'name' => $entity->Name,
+                'name' => $name,
                 'config_string' => $configStr,
+                'item_id' => $baseItemId > 0 ? $baseItemId : null,
+                'item_type_id' => $typeId > 0 ? $typeId : null,
+                'subtype' => $subtypeId > 0 ? $subtypeId : null,
+                'subtype_name' => $subtypeName,
+                'category' => $category,
                 'value' => $valSp,
                 'value_sp' => $valSp,
                 'value_gp' => $valSp / 10.0,
-                'weight' => (float)$entity->GetWeight(),
+                'weight' => $weightKg,
+                'weight_kg' => $weightKg,
                 'size' => $sizeAbbr,
                 'ec' => (int)$entity->GetECMod(),
                 'pl' => (int)$entity->GetPowerLevel(),

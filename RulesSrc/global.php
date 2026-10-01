@@ -44,13 +44,13 @@ function application_start(): void {
 
     // Fast memory/file cache for application data
     $cacheFile = __DIR__ . '/../storage/framework/cache/app_data.php';
-    if (!isset($_APP) && file_exists($cacheFile)) {
+    if ((!isset($_APP) || empty($_APP) || empty($_APP['items'])) && file_exists($cacheFile)) {
         $_APP = require $cacheFile;
         return;
     }
 
     // If data file exists, load application variables
-    if (!isset($_APP) && file_exists(APP_DATA_FILE)) {
+    if ((!isset($_APP) || empty($_APP)) && file_exists(APP_DATA_FILE)) {
         // Read data file
         $file = fopen(APP_DATA_FILE, "r");
         if ($file) {

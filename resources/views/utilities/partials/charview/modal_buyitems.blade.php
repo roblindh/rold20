@@ -365,6 +365,7 @@
                                         
                                         <!-- Form Hidden Inputs -->
                                         <input type="hidden" :name="'items[' + cIdx + '][id]'" :value="cIt.id || ''">
+                                        <input type="hidden" :name="'items[' + cIdx + '][item_id]'" :value="cIt.item_id || cIt.id || ''">
                                         <input type="hidden" :name="'items[' + cIdx + '][custom]'" :value="cIt.custom ? 1 : 0">
                                         <input type="hidden" :name="'items[' + cIdx + '][name]'" :value="cIt.name">
                                         <input type="hidden" :name="'items[' + cIdx + '][config_string]'" :value="cIt.config_string || ''">
@@ -374,6 +375,9 @@
                                         <input type="hidden" :name="'items[' + cIdx + '][dr]'" :value="cIt.dr || '0'">
                                         <input type="hidden" :name="'items[' + cIdx + '][traits]'" :value="cIt.traits || ''">
                                         <input type="hidden" :name="'items[' + cIdx + '][mods]'" :value="cIt.mods || ''">
+                                        <input type="hidden" :name="'items[' + cIdx + '][item_type_id]'" :value="cIt.item_type_id || ''">
+                                        <input type="hidden" :name="'items[' + cIdx + '][subtype]'" :value="cIt.subtype || ''">
+                                        <input type="hidden" :name="'items[' + cIdx + '][category]'" :value="cIt.category || ''">
                                     </div>
 
                                     <div class="flex items-center gap-1.5 shrink-0">

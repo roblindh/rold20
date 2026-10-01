@@ -1168,9 +1168,16 @@ class UtilityController extends Controller
                 $name = (string)($it['name'] ?? 'Custom Item');
                 $unitPrice = (float)($it['unit_price'] ?? $it['value'] ?? 0);
                 $weight = (float)($it['weight'] ?? 0);
+                $itemId = !empty($it['item_id']) ? (int)$it['item_id'] : (!empty($it['id']) && is_numeric($it['id']) ? (int)$it['id'] : null);
+                $itemTypeId = $it['item_type_id'] ?? null;
+                $subtype = $it['subtype'] ?? null;
+                $category = $it['category'] ?? null;
+                $traits = (string)($it['traits'] ?? '');
+                $mods = (string)($it['mods'] ?? '');
+                $dr = (string)($it['dr'] ?? '0');
 
                 // If config_string is available, verify with ProceduralItemFactory
-                if (!empty($configString)) {
+                if (!empty($configString) && class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
                     $inst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem($configString);
                     if ($inst) {
                         $name = $inst['name'] ?? $name;
@@ -1180,17 +1187,50 @@ class UtilityController extends Controller
                         if ($weight <= 0) {
                             $weight = (float)($inst['weight_kg'] ?? $inst['weight'] ?? 0);
                         }
+                        if (empty($itemId) && !empty($inst['item_id'])) {
+                            $itemId = (int)$inst['item_id'];
+                        }
+                        if ($itemTypeId === null && !empty($inst['item_type_id'])) {
+                            $itemTypeId = (int)$inst['item_type_id'];
+                        }
+                        if ($subtype === null && !empty($inst['subtype'])) {
+                            $subtype = (int)$inst['subtype'];
+                        }
+                        if ($category === null && !empty($inst['category'])) {
+                            $category = $inst['category'];
+                        }
+                        if (empty($traits) && !empty($inst['traits'])) {
+                            $traits = (string)$inst['traits'];
+                        }
+                        if (empty($mods) && !empty($inst['mods'])) {
+                            $mods = (string)$inst['mods'];
+                        }
+                        if (($dr === '0' || empty($dr)) && !empty($inst['dr'])) {
+                            $dr = (string)$inst['dr'];
+                        }
                     }
                 }
 
                 $totalCost += (int)round($unitPrice * $qty);
                 $uid = uniqid('item_');
-                $defaultLoc = 1; // Default carried
+
+                $itemRef = [
+                    'Name' => $name,
+                    'name' => $name,
+                    'item_id' => $itemId,
+                    'ItemTypeID' => $itemTypeId,
+                    'Subtype' => $subtype,
+                    'Traits' => $traits,
+                    'Config' => $configString,
+                ];
+                $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($itemRef);
+                $isContainer = !empty($it['is_container']) || \App\Services\Entity\EquipmentManager::isContainer($itemRef);
 
                 $itemsToAdd[] = [
                     'id' => $uid,
                     'uid' => $uid,
-                    'item_id' => null,
+                    'item_id' => $itemId,
+                    'ID' => $itemId,
                     'name' => $name . ($qty > 1 ? " (x{$qty})" : ''),
                     'Name' => $name,
                     'qty' => $qty,
@@ -1201,9 +1241,9 @@ class UtilityController extends Controller
                     'weight' => (float)$weight * $qty,
                     'BaseWeight' => (float)$weight,
                     'size' => $it['size'] ?? 'Medium (M)',
-                    'dr' => (string)($it['dr'] ?? '0'),
-                    'traits' => (string)($it['traits'] ?? ''),
-                    'mods' => (string)($it['mods'] ?? ''),
+                    'dr' => $dr,
+                    'traits' => $traits,
+                    'mods' => $mods,
                     'config' => $configString,
                     'config_string' => $configString,
                     'location' => $defaultLoc,
@@ -1212,10 +1252,11 @@ class UtilityController extends Controller
                     'Locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
                     'container_id' => null,
                     'ContainerID' => null,
-                    'is_container' => !empty($it['is_container']),
-                    'IsContainer' => !empty($it['is_container']),
-                    'ItemTypeID' => $it['item_type_id'] ?? null,
-                    'Subtype' => $it['subtype'] ?? null,
+                    'is_container' => $isContainer,
+                    'IsContainer' => $isContainer,
+                    'ItemTypeID' => $itemTypeId,
+                    'Subtype' => $subtype,
+                    'Category' => $category,
                     'ECMod' => 0,
                     'added_at' => date('Y-m-d H:i:s'),
                 ];
@@ -1540,8 +1581,11 @@ class UtilityController extends Controller
                 $itemRef = [
                     'Name' => $name,
                     'name' => $name,
+                    'item_id' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
                     'ItemTypeID' => $it['item_type_id'] ?? null,
                     'Subtype' => $it['subtype'] ?? null,
+                    'Traits' => $it['traits'] ?? '',
+                    'Config' => $it['config'] ?? $it['config_string'] ?? '',
                 ];
                 $allowed = \App\Services\Entity\EquipmentManager::getAllowedLocations($itemRef);
                 $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($itemRef);

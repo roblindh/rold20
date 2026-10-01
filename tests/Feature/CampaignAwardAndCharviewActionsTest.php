@@ -500,4 +500,101 @@ class CampaignAwardAndCharviewActionsTest extends TestCase
         $this->assertStringContainsString('this.showAwardModal = false', $html);
         $this->assertStringContainsString('campaign=' . '${targetCampId}&tab=party', $html);
     }
+
+    public function testProceduralAndCustomWeaponsCanBeEquipped(): void
+    {
+        // 1. Verify ProceduralItemFactory instantiates base item and item type metadata
+        $inst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem('Outstanding Longsword');
+        $this->assertNotNull($inst);
+        $this->assertEquals('Outstanding Longsword', $inst['name']);
+        $this->assertNotEmpty($inst['item_id']);
+        $this->assertEquals(2, $inst['item_type_id']); // Type 2 = Weapon
+
+        // 2. Verify EquipmentManager allows Location 2 (Equipped) for procedural and custom gear
+        $allowedProc = \App\Services\Entity\EquipmentManager::getAllowedLocations([
+            'Name' => 'Outstanding Longsword',
+            'config' => 'Outstanding Longsword',
+        ]);
+        $this->assertContains(\App\Services\Entity\EquipmentManager::LOCATION_EQUIPPED, $allowedProc);
+
+        $allowedCustom = \App\Services\Entity\EquipmentManager::getAllowedLocations([
+            'name' => 'Elven Boots',
+        ]);
+        $this->assertContains(\App\Services\Entity\EquipmentManager::LOCATION_EQUIPPED, $allowedCustom);
+
+        // 3. Create Player and Character
+        $player = Player::create([
+            'Name' => 'Player_Equip_' . uniqid(),
+            'Password' => Hash::make('secret'),
+            'Type' => Player::TYPE_PLAYER,
+        ]);
+        Auth::login($player);
+
+        $charId = DB::table('characters')->insertGetId([
+            'Name' => 'Obarion Griffin ' . uniqid(),
+            'Player' => $player->ID,
+            'Wealth' => 500,
+            'Coins' => json_encode(['sp' => 500]),
+            'Equipment' => json_encode([]),
+        ]);
+
+        // 4. Buy Outstanding Longsword
+        $buyRequest = Request::create("/utilities/character-viewer/{$charId}/buy-items", 'POST', [
+            'items' => [
+                [
+                    'custom' => 1,
+                    'name' => 'Outstanding Longsword',
+                    'config_string' => 'Outstanding Longsword',
+                    'qty' => 1,
+                    'unit_price' => 150,
+                    'weight' => 2.0,
+                ]
+            ]
+        ]);
+        $response = $this->controller->buyCharacterItems($buyRequest, (int)$charId);
+        $this->assertEquals(302, $response->getStatusCode());
+
+        $char = DB::table('characters')->where('ID', $charId)->first();
+        $equip = json_decode($char->Equipment, true);
+        $this->assertCount(1, $equip);
+        $sword = $equip[0];
+        $this->assertEquals('Outstanding Longsword', $sword['name']);
+        $this->assertEquals(2, $sword['ItemTypeID']);
+
+        // 5. Update placement to Location 2 (Equipped) in preset 0 (Combat)
+        $placeRequest = Request::create("/utilities/character-viewer/{$charId}/update-equipment", 'POST', [
+            'item_uid' => $sword['uid'],
+            'location' => 2,
+            'config' => 0,
+        ]);
+        $placeResponse = $this->controller->updateEquipmentPlacement($placeRequest, (int)$charId);
+        $this->assertEquals(302, $placeResponse->getStatusCode());
+
+        $updatedChar = DB::table('characters')->where('ID', $charId)->first();
+        $updatedEquip = json_decode($updatedChar->Equipment, true);
+        $this->assertEquals(2, $updatedEquip[0]['locations'][0]);
+
+        // 6. Test Manage Equipment bulk update saving location 2
+        $manageRequest = Request::create("/utilities/character-viewer/{$charId}/manage-equipment", 'POST', [
+            'items' => [
+                [
+                    'uid' => $sword['uid'],
+                    'item_id' => $sword['item_id'],
+                    'name' => 'Outstanding Longsword',
+                    'qty' => 1,
+                    'unit_price' => 150,
+                    'unit_weight' => 2.0,
+                    'item_type_id' => $sword['ItemTypeID'],
+                    'subtype' => $sword['Subtype'],
+                    'locations' => [2, 1, 1, 0, 2], // Equipped in Combat & Formal
+                ]
+            ]
+        ]);
+        $manageResponse = $this->controller->manageCharacterEquipment($manageRequest, (int)$charId);
+        $this->assertEquals(302, $manageResponse->getStatusCode());
+
+        $finalChar = DB::table('characters')->where('ID', $charId)->first();
+        $finalEquip = json_decode($finalChar->Equipment, true);
+        $this->assertEquals([2, 1, 1, 0, 2], $finalEquip[0]['locations']);
+    }
 }
