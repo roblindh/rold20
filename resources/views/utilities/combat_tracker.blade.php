@@ -1176,6 +1176,109 @@ function combatTrackerApp() {
             }
         },
 
+        findMatchingCreature(entry) {
+            if (!entry) return null;
+            const id = entry.id || entry.creature_id || entry.creatureId;
+            if (id) {
+                const foundById = this.allCreatures.find(c => c.id == id);
+                if (foundById) return foundById;
+            }
+
+            const rawName = (entry.name || '').trim();
+            if (!rawName) return null;
+
+            let clean = rawName
+                .replace(/^\d+\s*x\s*/i, '')
+                .replace(/\s*\([^)]*\)/g, '')
+                .replace(/\s*#\d+/g, '')
+                .trim();
+            const cleanLower = clean.toLowerCase();
+
+            // 1. Exact match (case-insensitive)
+            let found = this.allCreatures.find(c => c.name.toLowerCase() === cleanLower);
+            if (found) return found;
+
+            // 2. Singularize clean name
+            let singular = cleanLower;
+            if (singular.endsWith('ies')) {
+                singular = singular.slice(0, -3) + 'y';
+            } else if (singular.endsWith('ves')) {
+                singular = singular.slice(0, -3) + 'f';
+            } else if (singular.endsWith('es') && (singular.endsWith('shes') || singular.endsWith('ches') || singular.endsWith('sses') || singular.endsWith('xes') || singular.endsWith('zes'))) {
+                singular = singular.slice(0, -2);
+            } else if (singular.endsWith('s') && !singular.endsWith('ss') && !singular.endsWith('us') && !singular.endsWith('is')) {
+                singular = singular.slice(0, -1);
+            }
+
+            if (singular !== cleanLower) {
+                found = this.allCreatures.find(c => c.name.toLowerCase() === singular);
+                if (found) return found;
+            }
+
+            // 3. Comma inversion: e.g. "Infected Skeleton" -> "Skeleton, Infected"
+            const words = cleanLower.split(/\s+/);
+            if (words.length === 2) {
+                const inv = words[1] + ', ' + words[0];
+                found = this.allCreatures.find(c => c.name.toLowerCase() === inv);
+                if (found) return found;
+
+                const wordsSing = singular.split(/\s+/);
+                if (wordsSing.length === 2) {
+                    const invSing = wordsSing[1] + ', ' + wordsSing[0];
+                    found = this.allCreatures.find(c => c.name.toLowerCase() === invSing);
+                    if (found) return found;
+                }
+            } else if (words.length === 3) {
+                const inv1 = words[2] + ', ' + words[0] + ' ' + words[1];
+                found = this.allCreatures.find(c => c.name.toLowerCase() === inv1);
+                if (found) return found;
+            }
+
+            // 4. Inverted from database comma name (handling hyphens): e.g. "Orc, Half-" matching "Half-Orc"
+            for (const c of this.allCreatures) {
+                const dbName = c.name.toLowerCase().replace(/[\s-]+$/, '');
+                if (dbName.includes(',')) {
+                    const parts = dbName.split(',');
+                    if (parts.length === 2) {
+                        const normal1 = (parts[1].trim() + '-' + parts[0].trim()).toLowerCase();
+                        const normal2 = (parts[1].trim() + ' ' + parts[0].trim()).toLowerCase();
+                        const normal3 = (parts[1].trim() + parts[0].trim()).toLowerCase();
+                        if ([normal1, normal2, normal3].includes(cleanLower) || [normal1, normal2, normal3].includes(singular)) {
+                            return c;
+                        }
+                    }
+                }
+            }
+
+            // 5. Strip common monster role words (e.g. "Orc Guard" -> "Orc", "Goblin Archer" -> "Goblin")
+            const rolePattern = /\b(guard|warrior|soldier|archer|leader|minion|brute|champion|mage|shaman|priest|scout|captain|bandit|thug|veteran|chief|sergeant|berserker|acolyte|cultist)\b/gi;
+            const strippedRole = cleanLower.replace(rolePattern, '').trim();
+            if (strippedRole && strippedRole !== cleanLower) {
+                found = this.allCreatures.find(c => c.name.toLowerCase() === strippedRole);
+                if (found) return found;
+                let singRole = strippedRole;
+                if (singRole.endsWith('s') && !singRole.endsWith('ss')) singRole = singRole.slice(0, -1);
+                found = this.allCreatures.find(c => c.name.toLowerCase() === singRole);
+                if (found) return found;
+            }
+
+            // 6. Word-boundary or prefix comma match
+            found = this.allCreatures.find(c => {
+                const cn = c.name.toLowerCase();
+                return cn.startsWith(cleanLower + ',') || cn.startsWith(singular + ',');
+            });
+            if (found) return found;
+
+            // 7. Loose substring match
+            found = this.allCreatures.find(c => {
+                const cn = c.name.toLowerCase();
+                return cn.includes(cleanLower) || cn.includes(singular);
+            });
+            if (found) return found;
+
+            return null;
+        },
+
         loadEncounterEntitiesFromObject(enc) {
             this.logEvent(`Loaded Encounter: "<strong>${enc.name}</strong>" (EL ${enc.encounter_level || 1})`);
             if (enc.environment) {
@@ -1183,13 +1286,28 @@ function combatTrackerApp() {
             }
             if (enc.monsters_and_npcs && Array.isArray(enc.monsters_and_npcs)) {
                 enc.monsters_and_npcs.forEach(entry => {
-                    const count = parseInt(entry.count) || 1;
-                    const cr = this.allCreatures.find(c => c.id == entry.id || c.name.toLowerCase() === (entry.name || '').toLowerCase());
+                    let count = parseInt(entry.count) || 1;
+                    if (count <= 1 && entry.name) {
+                        const mCount = entry.name.match(/^(\d+)\s*x\s*/i);
+                        if (mCount) {
+                            count = parseInt(mCount[1]) || count;
+                        }
+                    }
+                    const cr = this.findMatchingCreature(entry);
                     for (let i = 0; i < count; i++) {
                         if (cr) {
                             const clone = JSON.parse(JSON.stringify(cr));
+                            let displayName = cr.name;
+                            if (entry.name) {
+                                const cleanEntryName = entry.name.replace(/^\d+\s*x\s*/i, '').trim();
+                                if (cleanEntryName && !cleanEntryName.match(/s$/i)) {
+                                    displayName = cleanEntryName;
+                                }
+                            }
                             if (count > 1) {
-                                clone.name = `${cr.name} #${i + 1}`;
+                                clone.name = `${displayName} #${i + 1}`;
+                            } else {
+                                clone.name = displayName;
                             }
                             clone.ap_max = clone.ap_max || (10 + (parseInt(clone.level) || 1));
                             clone.ap_curr = clone.ap_curr !== undefined && clone.ap_curr !== null ? clone.ap_curr : clone.ap_max;

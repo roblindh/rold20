@@ -3260,16 +3260,22 @@ class UtilityController extends Controller
             }
         }
 
+        if (!function_exists('show_agecategories') && file_exists(base_path('RulesSrc/global.php'))) {
+            require_once base_path('RulesSrc/global.php');
+            if (function_exists('application_start')) {
+                application_start();
+            }
+        }
+        global $_APP;
+
         $rawCreatureTypes = DB::table('ref_creaturetypes')->orderBy('Name')->get();
         $creatureTypesMap = $rawCreatureTypes->keyBy('ID');
         $creatureSubtypesMap = DB::table('ref_creaturesubtypes')->get()->keyBy('ID');
         $rawSizes = DB::table('ref_sizes')->orderBy('ID')->get();
         $sizesMap = $rawSizes->keyBy('ID');
 
-        $formatCombatant = function ($entity, $type = 'pc') use ($creatureTypesMap, $creatureSubtypesMap, $sizesMap) {
-            $isCreatureRef = ($type === 'monster');
-            $calcObj = $isCreatureRef ? (object)['BaseRace' => $entity->ID] : $entity;
-            $calcState = \App\Services\Entity\EntityEngine::calculate($calcObj);
+        $formatCombatant = function ($entity, $type = 'pc') {
+            $calcState = \App\Services\Entity\EntityEngine::calculate($entity);
 
             $heritage = $calcState['heritage'] ?? [];
             $defenses = $calcState['defenses'] ?? [];
@@ -3441,52 +3447,6 @@ class UtilityController extends Controller
             $level = (int)($heritage['total_level'] ?? 1);
             $raceName = $heritage['race_name_informal'] ?? $heritage['race_name'] ?? 'Humanoid';
 
-            if ($isCreatureRef) {
-                $subtypeId = (int)($entity->CreatureType ?? 0);
-                $subtypeObj = $creatureSubtypesMap[$subtypeId] ?? null;
-                $mainTypeId = $subtypeObj ? (int)$subtypeObj->GroupID : 0;
-                $mainTypeObj = $creatureTypesMap[$mainTypeId] ?? null;
-                $mainTypeName = $mainTypeObj ? $mainTypeObj->Name : 'Creature';
-                $subtypeName = $subtypeObj ? $subtypeObj->Name : '';
-                $sizeObj = $sizesMap[$entity->SizeClass ?? 0] ?? null;
-
-                return [
-                    'id' => $entity->ID,
-                    'name' => $entity->Name,
-                    'type' => 'monster',
-                    'level' => $level,
-                    'type_id' => $mainTypeId,
-                    'type_name' => $mainTypeName,
-                    'subtype_id' => $subtypeId,
-                    'subtype_name' => $subtypeName,
-                    'size_id' => (int)($entity->SizeClass ?? 0),
-                    'size_name' => $sizeObj ? ($sizeObj->Description ?? 'Medium') : 'Medium',
-                    'size_abbr' => $heritage['size_abbr'] ?? ($sizeObj ? ($sizeObj->Abbreviation ?? 'M') : 'M'),
-                    'descriptors' => $entity->Descriptors ?? '',
-                    'hp_max' => (int)($health['hp']['total'] ?? 20),
-                    'hp_curr' => (int)($health['hp']['current'] ?? $health['hp']['total'] ?? 20),
-                    'sp_max' => (int)($health['sp']['total'] ?? 20),
-                    'sp_curr' => (int)($health['sp']['current'] ?? $health['sp']['total'] ?? 20),
-                    'pp_max' => (int)($health['pp']['total'] ?? 0),
-                    'pp_curr' => (int)($health['pp']['current'] ?? $health['pp']['total'] ?? 0),
-                    'ap_max' => (int)($actions['ap'] ?? (10 + $level)),
-                    'ap_curr' => (int)($actions['ap'] ?? (10 + $level)),
-                    'init_mod' => (int)($defenses['init_mod'] ?? 0),
-                    'deca' => (int)($defenses['dec_active'] ?? 10),
-                    'decp' => (int)($defenses['dec_passive'] ?? 10),
-                    'dr' => (int)($defenses['dr'] ?? 0),
-                    'mr' => (int)($defenses['mr'] ?? 0),
-                    'fort' => (int)($defenses['fort'] ?? 10),
-                    'ref' => (int)($defenses['ref'] ?? 10),
-                    'will' => (int)($defenses['will'] ?? 10),
-                    'speed' => (string)($calcState['speeds']['display'] ?? ($entity->GroundSpeed ?? 30) . "'"),
-                    'conditions' => [],
-                    'notes' => !empty($entity->Descriptors) ? "Descriptors: {$entity->Descriptors}" : '',
-                    'attacks' => $attackList,
-                    'main_attack' => $mainAttack,
-                ];
-            }
-
             return [
                 'id' => ($type === 'npc' ? 'npc_' : 'pc_') . $entity->ID,
                 'db_id' => $entity->ID,
@@ -3522,6 +3482,245 @@ class UtilityController extends Controller
             ];
         };
 
+        $parser = new \cExpressionParser();
+
+        $formatMonster = function ($entity) use ($creatureTypesMap, $creatureSubtypesMap, $sizesMap, $parser) {
+            $subtypeId = (int)($entity->CreatureType ?? 0);
+            $subtypeObj = $creatureSubtypesMap[$subtypeId] ?? null;
+            $mainTypeId = $subtypeObj ? (int)$subtypeObj->GroupID : 0;
+            $mainTypeObj = $creatureTypesMap[$mainTypeId] ?? null;
+            $mainTypeName = $mainTypeObj ? $mainTypeObj->Name : 'Creature';
+            $subtypeName = $subtypeObj ? $subtypeObj->Name : '';
+            $sizeObj = $sizesMap[$entity->SizeClass ?? 0] ?? null;
+
+            try {
+                $ind = new \cIndividual();
+                $configs = explode("}", $entity->StatBlockConfigs ?? '');
+                $used = false;
+                foreach ($configs as $cfg) {
+                    if (strpos($cfg, '{') !== false) {
+                        $ind->GenerateNPC($entity->ID, trim($cfg));
+                        $used = true;
+                        break;
+                    }
+                }
+                if (!$used) {
+                    $ind->GenerateNPC($entity->ID, 'Adult { }');
+                }
+
+                $parser->Evaluate("TL=" . $ind->GetTotalLevel());
+                $parser->Evaluate("STRMOD=" . $ind->GetAbilMod(A_STR));
+                $parser->Evaluate("CONMOD=" . $ind->GetAbilMod(A_CON));
+                $parser->Evaluate("DEXMOD=" . $ind->GetAbilMod(A_DEX));
+                $parser->Evaluate("INTMOD=" . $ind->GetAbilMod(A_INT));
+                $parser->Evaluate("WISMOD=" . $ind->GetAbilMod(A_WIS));
+                $parser->Evaluate("CHAMOD=" . $ind->GetAbilMod(A_CHA));
+
+                $attacks = [];
+                $weaponAttacks = [];
+                $shieldAttacks = [];
+
+                // 1. Weapons from cIndividual
+                if (count($ind->lWeapons) > 0) {
+                    foreach ($ind->lWeapons as $wIdx => $pIdx) {
+                        $weap = $ind->lPossessions[$pIdx] ?? null;
+                        if ($weap && $weap->TraitEffects && $weap->TraitEffects->WeaponStats) {
+                            $ws = $weap->TraitEffects->WeaponStats;
+                            $bonus = $ind->GetAttMod($parser, $ws, $weap->TraitEffects, 0);
+                            $dmgStr = $ind->GetDamageStr($parser, $ws->Damage, $ws->WeaponCats, $weap->TraitEffects->DmgDice);
+                            if ($weap->TraitEffects->ModsDmg->Total() != 0) {
+                                $dmgStr .= signedstr($weap->TraitEffects->ModsDmg->Total());
+                            }
+                            $ap = max(5, 8 + $ind->GetCurrentSize() + $ws->Size);
+                            $isRanged = !empty($ws->OnlyRanged);
+                            $isShield = str_contains(strtolower($weap->Name ?? ''), 'shield');
+                            $bStr = ($bonus >= 0 ? "+$bonus" : "$bonus");
+                            $critRangeStr = ($ws->CritRng > 0) ? ((20 - $ws->CritRng) . "-20") : "20";
+                            $critMulStr = "x" . (2 + (int)($ws->CritMul ?? 0));
+
+                            $attEntry = [
+                                'id' => 'weap_' . $wIdx,
+                                'name' => $weap->Name,
+                                'bonus' => (int)$bonus,
+                                'damage' => $dmgStr,
+                                'ap' => (int)$ap,
+                                'crit' => "$critRangeStr/$critMulStr",
+                                'reach' => ($ws->MinReach ?? 0) . '-' . ($ws->MaxReach ?? 1) . ' sq',
+                                'range' => !empty($ws->Range) ? $ws->Range . 'm' : null,
+                                'type' => $isRanged ? 'ranged' : ($isShield ? 'shield' : 'melee'),
+                                'is_equipped' => true,
+                                'slot' => 'main_hand',
+                                'summary' => $weap->Name . ' ' . $bStr . ' (' . $dmgStr . ', ' . $ap . ' AP)',
+                            ];
+
+                            if ($isShield) {
+                                $shieldAttacks[] = $attEntry;
+                            } else {
+                                $weaponAttacks[] = $attEntry;
+                            }
+                        }
+                    }
+                }
+
+                // 2. Natural Attacks from cIndividual
+                $naturalAttacks = [];
+                if (count($ind->lNaturalAttacks) > 0) {
+                    foreach ($ind->lNaturalAttacks as $nIdx => $nat) {
+                        $bonus = $ind->GetAttMod($parser, $nat, null, 0);
+                        $dmgStr = $ind->GetDamageStr($parser, $nat->Damage, $nat->WeaponCats, $ind->GetCurrentSize() - $ind->GetBaseSize());
+                        $ap = max(5, 8 + $ind->GetCurrentSize() + $nat->Size) - $ind->GetAttSpdMod($nat);
+                        $bStr = ($bonus >= 0 ? "+$bonus" : "$bonus");
+                        $critRangeStr = ($nat->CritRng > 0) ? ((20 - $nat->CritRng) . "-20") : "20";
+                        $critMulStr = "x" . (2 + (int)($nat->CritMul ?? 0));
+
+                        $naturalAttacks[] = [
+                            'id' => 'nat_' . $nIdx,
+                            'name' => $nat->Name,
+                            'bonus' => (int)$bonus,
+                            'damage' => $dmgStr,
+                            'ap' => (int)$ap,
+                            'crit' => "$critRangeStr/$critMulStr",
+                            'reach' => ($nat->MinReach ?? 0) . '-' . ($nat->MaxReach ?? 1) . ' sq',
+                            'range' => null,
+                            'type' => 'natural',
+                            'is_equipped' => true,
+                            'slot' => 'natural',
+                            'summary' => $nat->Name . ' ' . $bStr . ' (' . $dmgStr . ', ' . $ap . ' AP)',
+                        ];
+                    }
+                }
+
+                $attacks = array_merge($weaponAttacks, $naturalAttacks, $shieldAttacks);
+
+                // Unarmed Strike
+                $strMod = (int)$ind->GetAbilMod(A_STR);
+                $lvl = (int)$ind->GetTotalLevel();
+                $bBonus = $strMod + $lvl;
+                $dmgStr = '1d3' . ($strMod >= 0 ? "+$strMod" : "$strMod") . ' B SP';
+                $unarmedAttack = [
+                    'id' => 'unarmed',
+                    'name' => 'Unarmed Strike',
+                    'bonus' => $bBonus,
+                    'damage' => $dmgStr,
+                    'ap' => 5,
+                    'crit' => '20/x2',
+                    'reach' => '0-1 sq',
+                    'range' => null,
+                    'type' => 'unarmed',
+                    'is_equipped' => true,
+                    'slot' => 'unarmed',
+                    'summary' => 'Unarmed Strike ' . ($bBonus >= 0 ? "+$bBonus" : "$bBonus") . " ($dmgStr, 5 AP)",
+                ];
+                $attacks[] = $unarmedAttack;
+
+                $mainAttack = $attacks[0];
+                $level = max(1, (int)$ind->GetTotalLevel());
+                $speedRaw = $ind->GetSpeedStr();
+                $speedDisplay = !empty($speedRaw) ? html_entity_decode(strip_tags($speedRaw), ENT_QUOTES | ENT_HTML5, 'UTF-8') : (($entity->GroundSpeed ?? 30) . "'");
+
+                $hp = $ind->GetHPTotal();
+                $sp = $ind->GetSPTotal();
+                $pp = $ind->GetPPTotal();
+
+                return [
+                    'id' => $entity->ID,
+                    'name' => $entity->Name,
+                    'type' => 'monster',
+                    'level' => $level,
+                    'cl' => (int)$ind->GetChallengeLevel(),
+                    'type_id' => $mainTypeId,
+                    'type_name' => $mainTypeName,
+                    'subtype_id' => $subtypeId,
+                    'subtype_name' => $subtypeName,
+                    'size_id' => (int)($entity->SizeClass ?? 0),
+                    'size_name' => $sizeObj ? ($sizeObj->Description ?? 'Medium') : 'Medium',
+                    'size_abbr' => $sizeObj ? ($sizeObj->Abbreviation ?? 'M') : 'M',
+                    'descriptors' => $entity->Descriptors ?? '',
+                    'hp_max' => (int)($hp ?? 20),
+                    'hp_curr' => (int)($hp ?? 20),
+                    'sp_max' => (int)($sp ?? 0),
+                    'sp_curr' => (int)($sp ?? 0),
+                    'pp_max' => (int)($pp ?? 0),
+                    'pp_curr' => (int)($pp ?? 0),
+                    'ap_max' => (int)$ind->GetActionPts(),
+                    'ap_curr' => (int)$ind->GetActionPts(),
+                    'init_mod' => (int)$ind->GetInitMod(),
+                    'deca' => (int)$ind->GetDeCActive(),
+                    'decp' => (int)$ind->GetDeCPassive(),
+                    'dr' => (int)$ind->GetDR(),
+                    'mr' => (int)$ind->GetMR(),
+                    'fort' => (int)$ind->GetFort(),
+                    'ref' => (int)$ind->GetRef(),
+                    'will' => (int)$ind->GetWill(),
+                    'speed' => (string)$speedDisplay,
+                    'conditions' => [],
+                    'notes' => !empty($entity->Descriptors) ? "Descriptors: {$entity->Descriptors}" : '',
+                    'attacks' => $attacks,
+                    'main_attack' => $mainAttack,
+                ];
+            } catch (\Throwable $e) {
+                // Fallback to EntityEngine calculation if cIndividual throws
+                $calcState = \App\Services\Entity\EntityEngine::calculate((object)['BaseRace' => $entity->ID]);
+                $heritage = $calcState['heritage'] ?? [];
+                $defenses = $calcState['defenses'] ?? [];
+                $health = $calcState['health'] ?? [];
+                $actions = $calcState['actions'] ?? [];
+                $level = (int)($heritage['total_level'] ?? 1);
+
+                $unarmedAttack = [
+                    'id' => 'unarmed',
+                    'name' => 'Unarmed Strike',
+                    'bonus' => 0,
+                    'damage' => '1d3 B SP',
+                    'ap' => 5,
+                    'crit' => '20/x2',
+                    'reach' => '0-1 sq',
+                    'range' => null,
+                    'type' => 'unarmed',
+                    'is_equipped' => true,
+                    'slot' => 'unarmed',
+                    'summary' => 'Unarmed Strike +0 (1d3 B SP, 5 AP)',
+                ];
+
+                return [
+                    'id' => $entity->ID,
+                    'name' => $entity->Name,
+                    'type' => 'monster',
+                    'level' => $level,
+                    'cl' => (int)($heritage['cl'] ?? $level),
+                    'type_id' => $mainTypeId,
+                    'type_name' => $mainTypeName,
+                    'subtype_id' => $subtypeId,
+                    'subtype_name' => $subtypeName,
+                    'size_id' => (int)($entity->SizeClass ?? 0),
+                    'size_name' => $sizeObj ? ($sizeObj->Description ?? 'Medium') : 'Medium',
+                    'size_abbr' => $heritage['size_abbr'] ?? ($sizeObj ? ($sizeObj->Abbreviation ?? 'M') : 'M'),
+                    'descriptors' => $entity->Descriptors ?? '',
+                    'hp_max' => (int)($health['hp']['total'] ?? 20),
+                    'hp_curr' => (int)($health['hp']['current'] ?? $health['hp']['total'] ?? 20),
+                    'sp_max' => (int)($health['sp']['total'] ?? 20),
+                    'sp_curr' => (int)($health['sp']['current'] ?? $health['sp']['total'] ?? 20),
+                    'pp_max' => (int)($health['pp']['total'] ?? 0),
+                    'pp_curr' => (int)($health['pp']['current'] ?? $health['pp']['total'] ?? 0),
+                    'ap_max' => (int)($actions['ap'] ?? (10 + $level)),
+                    'ap_curr' => (int)($actions['ap'] ?? (10 + $level)),
+                    'init_mod' => (int)($defenses['init_mod'] ?? 0),
+                    'deca' => (int)($defenses['dec_active'] ?? 10),
+                    'decp' => (int)($defenses['dec_passive'] ?? 10),
+                    'dr' => (int)($defenses['dr'] ?? 0),
+                    'mr' => (int)($defenses['mr'] ?? 0),
+                    'fort' => (int)($defenses['fort'] ?? 10),
+                    'ref' => (int)($defenses['ref'] ?? 10),
+                    'will' => (int)($defenses['will'] ?? 10),
+                    'speed' => (string)($calcState['speeds']['display'] ?? ($entity->GroundSpeed ?? 30) . "'"),
+                    'conditions' => [],
+                    'notes' => !empty($entity->Descriptors) ? "Descriptors: {$entity->Descriptors}" : '',
+                    'attacks' => [$unarmedAttack],
+                    'main_attack' => $unarmedAttack,
+                ];
+            }
+        };
+
         $rawPCs = DB::table('characters')
             ->where(function($q) {
                 $q->whereNull('IsNPC')->orWhere('IsNPC', 0);
@@ -3538,11 +3737,11 @@ class UtilityController extends Controller
         $npcs = $rawNPCs->map(fn($c) => $formatCombatant($c, 'npc'))->values()->all();
 
         $rawCreatures = DB::table('ref_creatures')
-            ->select('ID', 'Name', 'BaseRL', 'CLModifier', 'CreatureType', 'SizeClass', 'GroundSpeed', 'FlySpeed', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj', 'DR', 'MR', 'Descriptors')
+            ->select('ID', 'Name', 'StatBlockConfigs', 'BaseRL', 'CLModifier', 'CreatureType', 'SizeClass', 'GroundSpeed', 'FlySpeed', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj', 'DR', 'MR', 'Descriptors')
             ->orderBy('Name')
             ->get();
 
-        $creatures = $rawCreatures->map(fn($cr) => $formatCombatant($cr, 'monster'))->values()->all();
+        $creatures = $rawCreatures->map(fn($cr) => $formatMonster($cr))->values()->all();
 
         $conditionsList = [
             ['name' => 'Blinded', 'desc' => 'Cannot see. -4 DeCa, fails sight-based perception checks, attackers gain +4 on attack rolls against target.'],
