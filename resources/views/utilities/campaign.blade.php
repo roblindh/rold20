@@ -2121,7 +2121,7 @@ function campaignAdmin() {
             this.isRollingTreasure = true;
             try {
                 const el = Math.max(1, Math.round(this.encForm.encounter_level || 1));
-                const res = await fetch('/treasure-generator/roll', {
+                const res = await fetch('{{ route("utilities.treasuregen.roll") }}', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                     body: JSON.stringify({ el: el })
@@ -2130,24 +2130,67 @@ function campaignAdmin() {
                 if (data.success && data.hoard) {
                     const spCoins = Math.round(Number(data.hoard.coins_sp || (data.coins ? (data.coins.gold * 10 + data.coins.silver) : 0)) || 0);
                     const items = [];
+
+                    // 1. Gems
+                    if (Array.isArray(data.hoard.gems)) {
+                        data.hoard.gems.forEach(g => {
+                            const val = Math.round(Number(g.value || g.Value || (g.val_gp ? g.val_gp * 10 : 0)) || 0);
+                            items.push({
+                                name: g.name || g.Item || 'Gemstone',
+                                value: val,
+                                weight: Number(g.weight || 0.01)
+                            });
+                        });
+                    }
+
+                    // 2. Art Objects
+                    if (Array.isArray(data.hoard.art)) {
+                        data.hoard.art.forEach(a => {
+                            const val = Math.round(Number(a.value || a.Value || (a.val_gp ? a.val_gp * 10 : 0)) || 0);
+                            items.push({
+                                name: a.name || a.Item || 'Art Object',
+                                value: val,
+                                weight: Number(a.weight || 1.0)
+                            });
+                        });
+                    }
+
+                    // 3. Bullion & Trade Bars
+                    if (Array.isArray(data.hoard.bullion)) {
+                        data.hoard.bullion.forEach(b => {
+                            const val = Math.round(Number(b.value || b.Value || 0) || 0);
+                            items.push({
+                                name: b.name || b.Item || 'Trade Bar',
+                                value: val,
+                                weight: Number(b.weight || 1.0)
+                            });
+                        });
+                    }
+
+                    // 4. Mundane Goods
                     if (Array.isArray(data.mundane)) {
                         data.mundane.forEach(m => {
+                            const val = Math.round(Number(m.value || m.Value || m.price || 0) || 0);
                             items.push({
-                                name: m.name || m.description || 'Mundane Item',
-                                value: Number(m.value || m.price || 0),
-                                weight: Number(m.weight || 1)
+                                name: m.name || m.Item || m.description || 'Mundane Item',
+                                value: val,
+                                weight: Number(m.weight || 1.0)
                             });
                         });
                     }
+
+                    // 5. Magic Items
                     if (Array.isArray(data.magic)) {
                         data.magic.forEach(m => {
+                            const val = Math.round(Number(m.value || m.Value || m.price || (m.val_gp ? m.val_gp * 10 : 0) || 0) || 0);
                             items.push({
-                                name: m.name || m.description || 'Magic Item',
-                                value: Number(m.value || m.price || 0),
-                                weight: Number(m.weight || 1)
+                                name: m.name || m.Item || m.description || 'Magic Item',
+                                value: val,
+                                weight: Number(m.weight || 1.0)
                             });
                         });
                     }
+
                     this.encForm.treasure_rewards = {
                         coins_sp: spCoins,
                         items: items

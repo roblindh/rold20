@@ -210,6 +210,10 @@ Route::prefix('api/generator')->name('api.generator.')->group(function () {
 });
 
 Route::get('/combat-tracker', [UtilityController::class, 'combatTracker']);
+Route::post('/treasure-generator/roll', [UtilityController::class, 'rollTreasure']);
+Route::post('/treasuregen/roll', [UtilityController::class, 'rollTreasure']);
+Route::post('/treasure-generator/distribute', [UtilityController::class, 'distributeHoardLoot']);
+Route::post('/treasuregen/distribute', [UtilityController::class, 'distributeHoardLoot']);
 Route::post('/campaign/{id}/update-party-location', [UtilityController::class, 'updatePartyLocation']);
 Route::post('/campaign/{id}/update', [UtilityController::class, 'updateCampaign']);
 
