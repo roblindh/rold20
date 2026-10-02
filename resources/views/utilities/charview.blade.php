@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Character Sheet Viewer'])
+@extends('layouts.app', ['title' => 'Character Sheet Viewer', 'hideFooter' => true])
 
 @section('content')
 <div class="space-y-6" x-data="characterViewerApp()">
@@ -458,7 +458,7 @@
                         <span>✨ Learn Spells</span>
                     </button>
 
-                    <button type="button" @click="openCastSpellModal()" class="btn-rol-secondary" title="Open Rules of Magic Cast Spell Assistant">
+                    <button type="button" @click="showCastSpellModal = true; openCastSpellModal()" class="btn-rol-secondary" title="Open Rules of Magic Cast Spell Assistant">
                         <span>🪄 Cast Spell</span>
                     </button>
 
@@ -467,7 +467,7 @@
                     </button>
 
                     @if($hasCompanionSkills)
-                        <button type="button" @click="openCompanionsModal()" class="btn-rol-secondary" title="Manage Special Companions & Bonded Servants (Animal Companion, Mount, Familiar, Psicrystal)">
+                        <button type="button" @click="showCompanionsModal = true; openCompanionsModal()" class="btn-rol-secondary" title="Manage Special Companions & Bonded Servants (Animal Companion, Mount, Familiar, Psicrystal)">
                             <span>🐾 Special Companions</span>
                         </button>
                     @else
@@ -2308,6 +2308,19 @@ function characterViewerApp() {
         get knownSpellsCatalog() {
             const list = (spellsWithKnown || []).filter(s => s.isKnown);
             return list.length > 0 ? list : spellsWithKnown;
+        },
+
+        get castSpellDisplayList() {
+            if (!this.castSpellState.showAllSpells) {
+                return (this.knownSpellsCatalog || []).map(sp => ({
+                    id: String(sp.ID),
+                    label: sp.Name + ' (' + (sp.Cost || '0 PP') + ')'
+                }));
+            }
+            return (this.allSpellsCatalog || []).map(sp => ({
+                id: String(sp.ID),
+                label: sp.Name + (sp.isKnown ? ' ⭐ (Known)' : '') + ' (' + (sp.Cost || '0 PP') + ')'
+            }));
         },
 
         get activeCastSpell() {

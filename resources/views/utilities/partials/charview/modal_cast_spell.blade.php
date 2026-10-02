@@ -104,19 +104,8 @@
                     <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-center">
                         <div class="sm:col-span-8">
                             <select x-model="castSpellState.selectedSpellId" @change="onCastSpellChanged()" class="w-full bg-amber-50/40 border border-stone-300 rounded-lg px-2.5 py-1.5 text-xs font-medium text-stone-900 focus:outline-none focus:border-indigo-600">
-                                <template x-if="!castSpellState.showAllSpells">
-                                    <optgroup label="✨ Known Spells">
-                                        <template x-for="sp in knownSpellsCatalog" :key="sp.ID">
-                                            <option :value="sp.ID" x-text="sp.Name + ' (' + (sp.Cost || '0 PP') + ')'"></option>
-                                        </template>
-                                    </optgroup>
-                                </template>
-                                <template x-if="castSpellState.showAllSpells">
-                                    <optgroup label="📜 All Available Spells &amp; Powers">
-                                        <template x-for="sp in allSpellsCatalog" :key="sp.ID">
-                                            <option :value="sp.ID" x-text="sp.Name + (sp.isKnown ? ' ⭐ (Known)' : '') + ' (' + (sp.Cost || '0 PP') + ')'"></option>
-                                        </template>
-                                    </optgroup>
+                                <template x-for="sp in castSpellDisplayList" :key="sp.id">
+                                    <option :value="sp.id" x-text="sp.label"></option>
                                 </template>
                             </select>
                         </div>
@@ -569,5 +558,4 @@
             </div>
         </div>
     </div>
-</div>
 </div>

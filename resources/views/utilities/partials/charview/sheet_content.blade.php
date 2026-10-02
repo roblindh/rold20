@@ -1803,7 +1803,7 @@
                                             @endif
                                         </div>
                                         @if(!$isWizard && $canManageCharacter)
-                                            <button type="button" @click="openCastSpellModal({{ $spObj->ID }})" class="no-print text-[11px] bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-800/30 px-2 py-0.5 rounded font-bold shadow-2xs cursor-pointer transition flex items-center gap-1 shrink-0" title="Open Cast Spell Assistant for {{ $spObj->Name }}">
+                                            <button type="button" @click="showCastSpellModal = true; openCastSpellModal({{ $spObj->ID }})" class="no-print text-[11px] bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-800/30 px-2 py-0.5 rounded font-bold shadow-2xs cursor-pointer transition flex items-center gap-1 shrink-0" title="Open Cast Spell Assistant for {{ $spObj->Name }}">
                                                 <span>🪄 Cast</span>
                                             </button>
                                         @endif
