@@ -298,17 +298,18 @@
                 </div>
 
                 <!-- Distribution Mode Switch -->
-                <div class="inline-flex p-1 bg-black/60 rounded-xl border border-white/20 text-xs">
+                <div class="inline-flex p-1 bg-slate-950 rounded-xl border border-slate-700 text-xs shadow-inner">
                     <button type="button"
                             @click="mode = 'quick_split'"
-                            :class="mode === 'quick_split' ? 'bg-amber-500 text-slate-950 font-black shadow' : 'text-slate-200 hover:text-white font-bold'"
-                            class="px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5">
+                            :class="mode === 'quick_split' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400' : 'bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 font-bold border border-slate-700/60'"
+                            class="px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5"
+                            :style="mode === 'quick_split' ? 'color: #020617;' : ''">
                         <span>⚡</span> Quick Liquidate &amp; Split
                     </button>
                     <button type="button"
                             @click="mode = 'realistic_split'"
-                            :class="mode === 'realistic_split' ? 'bg-indigo-600 text-white font-black shadow' : 'text-slate-200 hover:text-white font-bold'"
-                            class="px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5">
+                            :class="mode === 'realistic_split' ? 'bg-indigo-600 text-white font-black shadow-md border border-indigo-400' : 'bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 font-bold border border-slate-700/60'"
+                            class="px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5">
                         <span>🎒</span> Realistic Physical Split
                     </button>
                 </div>
@@ -420,7 +421,8 @@
                     <button type="button"
                             @click="executeDistribution()"
                             :disabled="distributing || partyCount === 0"
-                            class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-sm shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50">
+                            class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-sm shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50 border border-amber-400"
+                            style="color: #020617;">
                         <span x-show="!distributing">⚡ Liquidate Valuables &amp; Distribute Funds (<span x-text="totalLiquidSp.toLocaleString()"></span> sp)</span>
                         <span x-show="distributing">Distributing to Party...</span>
                     </button>
@@ -492,7 +494,7 @@
                     <button type="button"
                             @click="executeDistribution()"
                             :disabled="distributing || partyCount === 0"
-                            class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-xl text-sm shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50">
+                            class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-xl text-sm shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50 border border-indigo-400">
                         <span x-show="!distributing">🎒 Distribute Physical Coins &amp; Assign Items</span>
                         <span x-show="distributing">Distributing to Party...</span>
                     </button>
