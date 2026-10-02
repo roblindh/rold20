@@ -119,7 +119,7 @@
                         <div class="flex items-center gap-3">
                             <span class="text-3xl">🏰</span>
                             <div>
-                                <h2 class="text-xl font-bold text-amber-950 font-serif">{{ $camp->Name }}</h2>
+                                <h2 class="text-xl font-bold text-stone-900 font-serif">{{ $camp->Name }}</h2>
                                 <div class="flex items-center gap-2 text-xs text-stone-600">
                                     <span>Game Master: <strong class="text-stone-800">{{ $camp->GMName ?? 'Game Master' }}</strong></span>
                                     @if(auth()->check() && $camp->GameMaster === auth()->id())
@@ -193,7 +193,7 @@
                     <div x-show="activeTab === 'adventures'" class="space-y-6">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div>
-                                <h3 class="font-bold text-amber-950 text-sm flex items-center gap-1.5">
+                                <h3 class="font-bold text-stone-900 text-sm flex items-center gap-1.5">
                                     <span>📜</span> Campaign Adventures &amp; Encounters
                                 </h3>
                                 <p class="text-[11px] text-stone-600">Structured narrative arcs divided into tactical encounters, traps, hazards, and rewards.</p>
@@ -223,7 +223,7 @@
                                             <span class="text-amber-800 transform transition-transform duration-200" :class="expanded ? 'rotate-90' : ''">▶</span>
                                             <div>
                                                 <div class="flex items-center gap-2">
-                                                    <h4 class="font-bold text-amber-950 font-serif text-sm">{{ $adv->name }}</h4>
+                                                    <h4 class="font-bold text-stone-900 font-serif text-sm">{{ $adv->name }}</h4>
                                                     <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
                                                         {{ $adv->status === 'active' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : '' }}
                                                         {{ $adv->status === 'planning' ? 'bg-sky-100 text-sky-800 border border-sky-300' : '' }}
@@ -445,7 +445,7 @@
                     <div x-show="activeTab === 'locations'" class="space-y-6">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div>
-                                <h3 class="font-bold text-amber-950 text-sm flex items-center gap-1.5">
+                                <h3 class="font-bold text-stone-900 text-sm flex items-center gap-1.5">
                                     <span>📍</span> World Locations &amp; Points of Interest
                                 </h3>
                                 <p class="text-[11px] text-stone-600">Settlements, taverns, shops, ruins, and dungeons with sensory details, resident NPCs, rumors, and services.</p>
@@ -481,7 +481,7 @@
                                                     {{ $loc->location_type === 'tavern' ? '🍺' : ($loc->location_type === 'shop' ? '🛒' : ($loc->location_type === 'dungeon' ? '🗝️' : ($loc->location_type === 'ruin' ? '🏛️' : '🏰'))) }}
                                                 </span>
                                                 <div>
-                                                    <h4 class="font-bold text-amber-950 font-serif text-sm">{{ $loc->name }}</h4>
+                                                    <h4 class="font-bold text-stone-900 font-serif text-sm">{{ $loc->name }}</h4>
                                                     <span class="text-[10px] uppercase font-bold text-amber-800/80 tracking-wider">{{ $loc->location_type }}</span>
                                                 </div>
                                             </div>
@@ -646,7 +646,7 @@
 
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div>
-                                <h3 class="font-bold text-amber-950 text-sm flex items-center gap-1.5">
+                                <h3 class="font-bold text-stone-900 text-sm flex items-center gap-1.5">
                                     <span>👥</span> Active Adventuring Party Roster
                                 </h3>
                                 <p class="text-[11px] text-stone-600">Player characters assigned to this campaign journey.</p>
@@ -733,7 +733,7 @@
                     <div x-show="activeTab === 'vault'" class="space-y-6">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div>
-                                <h3 class="font-bold text-amber-950 text-sm flex items-center gap-1.5">
+                                <h3 class="font-bold text-stone-900 text-sm flex items-center gap-1.5">
                                     <span>💎</span> Campaign Shared Vault &amp; Party Treasury
                                 </h3>
                                 <p class="text-[11px] text-stone-600">Shared party funds, unclaimed quest loot, and magical relics.</p>
@@ -793,14 +793,14 @@
                     <!-- ============================================================= -->
                     <div x-show="activeTab === 'rules'" class="space-y-6">
                         <div class="flex items-center justify-between">
-                            <h3 class="font-bold text-amber-950 text-sm flex items-center gap-1.5">
+                            <h3 class="font-bold text-stone-900 text-sm flex items-center gap-1.5">
                                 <span>⚙️</span> Campaign Generation Rules &amp; Global GM Notes
                             </h3>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                             <div class="p-4 bg-amber-50/60 border border-amber-900/20 rounded-xl space-y-2">
-                                <h4 class="font-bold text-amber-950 uppercase tracking-wider text-[11px]">System Parameters</h4>
+                                <h4 class="font-bold text-stone-800 uppercase tracking-wider text-[11px]">System Parameters</h4>
                                 <div class="space-y-1 text-stone-700">
                                     <div>Ability Gen Method ID: <strong>{{ $camp->AbilityGenMethod }}</strong></div>
                                     <div>Starting XP: <strong class="font-mono">{{ number_format((int)$camp->StartingXP) }} XP</strong></div>
@@ -810,7 +810,7 @@
                             </div>
 
                             <div class="p-4 bg-amber-50/60 border border-amber-900/20 rounded-xl space-y-2">
-                                <h4 class="font-bold text-amber-950 uppercase tracking-wider text-[11px]">GM Notes</h4>
+                                <h4 class="font-bold text-stone-800 uppercase tracking-wider text-[11px]">GM Notes</h4>
                                 <p class="text-stone-700 leading-relaxed whitespace-pre-line">{{ $camp->Notes ?: 'No notes recorded.' }}</p>
                             </div>
                         </div>
@@ -821,7 +821,7 @@
             <!-- Empty state when no campaign is found or selected -->
             <div class="parchment-card p-12 text-center rounded-2xl border border-amber-900/20 shadow-lg space-y-4">
                 <div class="text-5xl">🏰</div>
-                <h2 class="text-xl font-bold text-amber-950 font-serif">No Campaign Selected</h2>
+                <h2 class="text-xl font-bold text-stone-900 font-serif">No Campaign Selected</h2>
                 <p class="text-stone-600 text-sm max-w-md mx-auto">Create a new campaign or choose an existing campaign from the dropdown above to manage adventures, encounters, and world locations.</p>
                 @auth
                     @if(auth()->user()->isGM())

@@ -1314,6 +1314,37 @@ p, .rule-content p {
     justify-content: space-between;
 }
 
+/* Ensure headings inside parchment cards, panels, modals, and tool components do not inherit dark rulebook plaques */
+.parchment-card h2:not(.plaque),
+.parchment-card h3:not(.plaque),
+.parchment-card h4:not(.plaque),
+.parchment-card h5:not(.plaque),
+.parchment-panel h2:not(.plaque),
+.parchment-panel h3:not(.plaque),
+.parchment-panel h4:not(.plaque),
+.parchment-panel h5:not(.plaque),
+.fixed h2:not(.plaque),
+.fixed h3:not(.plaque),
+.fixed h4:not(.plaque),
+.fixed h5:not(.plaque),
+.modal h2:not(.plaque),
+.modal h3:not(.plaque),
+.modal h4:not(.plaque),
+.modal h5:not(.plaque) {
+    background: transparent !important;
+    border: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    text-shadow: none !important;
+    color: #17212d;
+}
+
 .parchment-inset, .bg-slate-50, .bg-gray-50 {
     background-color: var(--rol-bg-parchment-alt) !important;
     border: 1px solid var(--rol-border-parchment) !important;
@@ -2327,11 +2358,11 @@ td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
 }
 
 .text-slate-950 {
-    color: #020617 !important;
+    color: #020617;
 }
 
 .text-amber-950 {
-    color: #451a03 !important;
+    color: #451a03;
 }
 
 /* High-Contrast Segmented Mode Switch Tabs */
