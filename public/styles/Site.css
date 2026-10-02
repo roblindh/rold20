@@ -2168,15 +2168,30 @@ td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
     width: 100% !important;
 }
 
+/* Sticky High-Contrast Turn Control Toolbar */
+.combat-turn-toolbar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 40 !important;
+    background-color: #0f172a !important;
+    background: linear-gradient(135deg, #090d16 0%, #172334 50%, #0d1522 100%) !important;
+    border: 1.5px solid #d97706 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    border-radius: 10px !important;
+    color: #f8fafc !important;
+}
+
 .combat-tracker-sidebar {
     width: 300px !important;
     min-width: 300px !important;
     max-width: 300px !important;
     flex: 0 0 300px !important;
     position: sticky !important;
-    top: 0.5rem !important;
+    top: 4.75rem !important;
     align-self: flex-start !important;
     z-index: 20 !important;
+    max-height: calc(100vh - 120px) !important;
+    overflow-y: auto !important;
 }
 
 @media (max-width: 1024px) {
@@ -2189,6 +2204,7 @@ td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
         max-width: 100% !important;
         flex: 1 1 auto !important;
         position: static !important;
+        max-height: none !important;
     }
 }
 

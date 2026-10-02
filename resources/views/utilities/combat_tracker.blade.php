@@ -1,182 +1,179 @@
-@extends('layouts.app', ['title' => 'Combat & Initiative Tracker', 'containerClass' => 'max-w-[1400px] w-full'])
+@extends('layouts.app', ['title' => 'Combat & Initiative Tracker', 'containerClass' => 'max-w-[1400px] w-full', 'hideFooter' => true])
 
 @section('content')
 <div class="space-y-4" x-data="combatTrackerApp()" x-init="initApp()">
-    <!-- Sticky Top Control Center (Header, Turn Controls & Add Combatants) -->
-    <div class="sticky top-0 z-30 space-y-2 pb-2 pt-0.5 bg-amber-50/95 backdrop-blur-md -mx-2 px-2 sm:-mx-4 sm:px-4 border-b border-amber-900/20 shadow-xs">
-        <!-- Header & Breadcrumb -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-amber-900/15 pb-2 gap-2">
-            <div>
-                <h1 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
-                    <span>⚔️</span> Combat &amp; Initiative Tracker
-                </h1>
-                <p class="text-stone-700 text-xs mt-0.5 hidden sm:block">Real-time encounter management, initiative order, Action Points (AP), dual defenses, health dials (HP/SP/PP), and active attack actions.</p>
-            </div>
-
-            <!-- Quick Campaign & Encounter Selector -->
-            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-                <!-- Campaign Select -->
-                <div class="flex items-center gap-1.5">
-                    <label class="text-xs font-bold text-amber-950 uppercase tracking-wider">Campaign:</label>
-                    <select x-model="selectedCampaignId" @change="onCampaignChange()"
-                            class="bg-amber-50/80 border border-amber-900/30 rounded-lg px-2.5 py-1 text-xs font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs">
-                        <option value="">-- Standalone / All --</option>
-                        @foreach($campaigns as $camp)
-                            <option value="{{ $camp->ID }}" {{ $selectedCampaignId == $camp->ID ? 'selected' : '' }}>
-                                🏰 {{ $camp->Name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Encounter Select (Shown when campaign has encounters) -->
-                <div class="flex items-center gap-1.5" x-show="selectedCampaignId">
-                    <label class="text-xs font-bold text-amber-950 uppercase tracking-wider">Encounter:</label>
-                    <select x-model="selectedEncounterId" @change="onEncounterChange()"
-                            class="bg-amber-50/80 border border-amber-900/30 rounded-lg px-2.5 py-1 text-xs font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs max-w-xs">
-                        <option value="">-- Choose Encounter / Free Combat --</option>
-                        <template x-for="enc in availableEncounters" :key="enc.id">
-                            <option :value="enc.id" x-text="(enc.adventure_name ? '[' + enc.adventure_name + '] ' : '') + enc.name + ' (EL ' + (enc.encounter_level || 1) + ')'"></option>
-                        </template>
-                    </select>
-                </div>
-            </div>
+    <!-- Header & Breadcrumb -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-amber-900/15 pb-2 gap-2">
+        <div>
+            <h1 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                <span>⚔️</span> Combat &amp; Initiative Tracker
+            </h1>
+            <p class="text-stone-700 text-xs mt-0.5 hidden sm:block">Real-time encounter management, initiative order, Action Points (AP), dual defenses, health dials (HP/SP/PP), and active attack actions.</p>
         </div>
 
-        <!-- Encounter Control Banner (Round, Turn, Global Actions) -->
-        <div class="charview-action-bar text-white rounded-xl p-2.5 sm:p-3 shadow-md flex flex-col lg:flex-row items-center justify-between gap-2.5 border border-amber-500/30">
-            <!-- Round & Active Turn Status -->
-            <div class="flex flex-wrap items-center gap-4 sm:gap-6">
-                <!-- Round Counter -->
-                <div class="flex items-center gap-2 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-amber-500/40 shadow-inner">
-                    <span class="text-xs uppercase tracking-wider text-amber-300 font-bold">Round</span>
-                    <span class="text-2xl font-black text-amber-400 font-mono" x-text="round">1</span>
-                    <div class="flex flex-col gap-0.5 ml-1">
-                        <button type="button" @click="round = Math.max(1, round + 1); logEvent('Advanced to Round ' + round)" class="text-slate-400 hover:text-white text-xs px-1 hover:bg-slate-700 rounded cursor-pointer leading-none">▲</button>
-                        <button type="button" @click="round = Math.max(1, round - 1); logEvent('Reverted to Round ' + round)" class="text-slate-400 hover:text-white text-xs px-1 hover:bg-slate-700 rounded cursor-pointer leading-none">▼</button>
-                    </div>
-                </div>
+        <!-- Quick Campaign & Encounter Selector -->
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+            <!-- Campaign Select -->
+            <div class="flex items-center gap-1.5">
+                <label class="text-xs font-bold text-amber-950 uppercase tracking-wider">Campaign:</label>
+                <select x-model="selectedCampaignId" @change="onCampaignChange()"
+                        class="bg-amber-50/80 border border-amber-900/30 rounded-lg px-2.5 py-1 text-xs font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs">
+                    <option value="">-- Standalone / All --</option>
+                    @foreach($campaigns as $camp)
+                        <option value="{{ $camp->ID }}" {{ $selectedCampaignId == $camp->ID ? 'selected' : '' }}>
+                            🏰 {{ $camp->Name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-                <!-- Active Turn Display -->
-                <div class="space-y-0.5">
-                    <div class="text-[11px] text-amber-200/70 uppercase tracking-wider font-semibold">Active Turn</div>
-                    <div class="flex items-center gap-2">
-                        <template x-if="activeCombatant">
-                            <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-sm"></span>
-                                <span class="font-bold text-sm sm:text-base text-amber-200 font-serif" x-text="activeCombatant.name"></span>
-                                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold"
-                                      :class="{
-                                          'bg-sky-900/60 text-sky-200 border border-sky-400/50': activeCombatant.type === 'pc',
-                                          'bg-amber-900/60 text-amber-200 border border-amber-400/50': activeCombatant.type === 'npc',
-                                          'bg-rose-900/60 text-rose-200 border border-rose-400/50': activeCombatant.type === 'monster'
-                                      }"
-                                      x-text="activeCombatant.type.toUpperCase()"></span>
+            <!-- Encounter Select (Shown when campaign has encounters) -->
+            <div class="flex items-center gap-1.5" x-show="selectedCampaignId">
+                <label class="text-xs font-bold text-amber-950 uppercase tracking-wider">Encounter:</label>
+                <select x-model="selectedEncounterId" @change="onEncounterChange()"
+                        class="bg-amber-50/80 border border-amber-900/30 rounded-lg px-2.5 py-1 text-xs font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs max-w-xs">
+                    <option value="">-- Choose Encounter / Free Combat --</option>
+                    <template x-for="enc in availableEncounters" :key="enc.id">
+                        <option :value="enc.id" x-text="(enc.adventure_name ? '[' + enc.adventure_name + '] ' : '') + enc.name + ' (EL ' + (enc.encounter_level || 1) + ')'"></option>
+                    </template>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Combatant Action Bar -->
+    <div class="parchment-card p-2 sm:p-2.5 flex flex-wrap items-center justify-between gap-2 shadow-sm border border-amber-900/20 bg-amber-50/95 rounded-xl">
+        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <!-- Import Party Button -->
+            <button type="button" @click="loadCampaignParty()" 
+                    class="btn-rol-primary text-xs py-1.5 px-3 flex items-center gap-1.5 shadow-sm cursor-pointer"
+                    :title="selectedCampaignId ? 'Import party characters from active campaign' : 'Import player characters'">
+                <span>👥</span> <strong>Import Party</strong>
+            </button>
+
+            <!-- Quick Add PC Dropdown -->
+            <div class="relative" x-data="{ open: false }">
+                <button type="button" @click="open = !open" 
+                        class="btn-rol-secondary text-xs py-1.5 px-2.5">
+                    <span>🧙‍♂️</span> Add PC <span class="text-[9px]">▼</span>
+                </button>
+                <div x-show="open" @click.outside="open = false" x-cloak
+                     class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-30 max-h-60 overflow-y-auto border border-amber-900/30">
+                    <template x-for="pc in availablePCs" :key="pc.id">
+                        <button type="button" @click="addCombatant(pc); open = false"
+                                class="w-full text-left px-3 py-1.5 hover:bg-amber-100 text-xs font-medium text-stone-900 flex items-center justify-between border-b border-amber-900/10 last:border-0 cursor-pointer">
+                            <div>
+                                <div class="font-bold text-slate-900" x-text="pc.name"></div>
+                                <div class="text-[10px] text-slate-500" x-text="(pc.race_name || '') + ' • Lvl ' + pc.level"></div>
                             </div>
-                        </template>
-                        <template x-if="!activeCombatant">
-                            <span class="text-xs text-slate-400 italic">No combatants in initiative</span>
-                        </template>
-                    </div>
+                            <span class="text-[10px] text-indigo-700 font-mono font-bold" x-text="'Init +' + pc.init_mod"></span>
+                        </button>
+                    </template>
+                    <div x-show="availablePCs.length === 0" class="px-3 py-2 text-xs text-stone-500 italic">No PCs available</div>
                 </div>
             </div>
 
-            <!-- Turn Stepper & Global Controls -->
-            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                <button type="button" @click="prevTurn()" :disabled="combatants.length === 0"
-                        class="btn-rol-secondary text-xs py-1.5 px-2.5 disabled:opacity-40">
-                    <span>◀</span> Prev Turn
+            <!-- Quick Add NPC Dropdown -->
+            <div class="relative" x-data="{ open: false }">
+                <button type="button" @click="open = !open" 
+                        class="btn-rol-secondary text-xs py-1.5 px-2.5">
+                    <span>👤</span> Add NPC <span class="text-[9px]">▼</span>
                 </button>
-                <button type="button" @click="nextTurn()" :disabled="combatants.length === 0"
-                        class="btn-rol-primary text-xs py-1.5 px-3 font-bold disabled:opacity-40">
-                    <span>▶</span> Next Turn
-                </button>
-                <button type="button" @click="rollAllInitiative()" :disabled="combatants.length === 0"
-                        class="btn-rol-secondary text-xs py-1.5 px-2.5 disabled:opacity-40">
-                    <span>🎲</span> Roll All Init
-                </button>
-                <button type="button" @click="openEndEncounterModal()" :disabled="combatants.length === 0"
-                        class="btn-rol-primary text-xs py-1.5 px-3 font-bold cursor-pointer disabled:opacity-40"
-                        style="background: linear-gradient(135deg, #10b981, #059669); border-color: #047857;">
-                    <span>🏆</span> End Encounter
-                </button>
-                <button type="button" @click="resetCombat()"
-                        class="btn-rol-danger text-xs py-1.5 px-2.5">
-                    <span>🔄</span> Reset
-                </button>
+                <div x-show="open" @click.outside="open = false" x-cloak
+                     class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-30 max-h-60 overflow-y-auto border border-amber-900/30">
+                    <template x-for="npc in availableNPCs" :key="npc.id">
+                        <button type="button" @click="addCombatant(npc); open = false"
+                                class="w-full text-left px-3 py-1.5 hover:bg-amber-100 text-xs font-medium text-stone-900 flex items-center justify-between border-b border-amber-900/10 last:border-0 cursor-pointer">
+                            <div>
+                                <div class="font-bold text-slate-900" x-text="npc.name"></div>
+                                <div class="text-[10px] text-slate-500" x-text="'Lvl ' + npc.level"></div>
+                            </div>
+                            <span class="text-[10px] text-amber-700 font-mono font-bold" x-text="'Init +' + npc.init_mod"></span>
+                        </button>
+                    </template>
+                    <div x-show="availableNPCs.length === 0" class="px-3 py-2 text-xs text-stone-500 italic">No saved NPCs</div>
+                </div>
+            </div>
+
+            <!-- Add Monster Modal Trigger -->
+            <button type="button" @click="showMonsterModal = true" 
+                    class="btn-rol-secondary text-xs py-1.5 px-2.5">
+                <span>👹</span> Bestiary...
+            </button>
+
+            <!-- Add Custom Combatant Modal Trigger -->
+            <button type="button" @click="showCustomModal = true" 
+                    class="btn-rol-secondary text-xs py-1.5 px-2.5">
+                <span>➕</span> Custom...
+            </button>
+        </div>
+
+        <div class="text-xs text-stone-600 font-mono font-bold">
+            <span x-text="combatants.length"></span> Combatants
+        </div>
+    </div>
+
+    <!-- Sticky Encounter Control Toolbar (Always visible & accessible on scroll) -->
+    <div class="combat-turn-toolbar p-2.5 sm:p-3 flex flex-col lg:flex-row items-center justify-between gap-2.5">
+        <!-- Round & Active Turn Status -->
+        <div class="flex flex-wrap items-center gap-3 sm:gap-5">
+            <!-- Round Counter -->
+            <div class="flex items-center gap-2 bg-slate-950/90 px-3 py-1.5 rounded-xl border border-amber-500/50 shadow-inner">
+                <span class="text-xs uppercase tracking-wider text-amber-300 font-bold">Round</span>
+                <span class="text-2xl font-black text-amber-400 font-mono" x-text="round">1</span>
+                <div class="flex flex-col gap-0.5 ml-1">
+                    <button type="button" @click="round = Math.max(1, round + 1); logEvent('Advanced to Round ' + round)" class="text-slate-400 hover:text-white text-xs px-1 hover:bg-slate-700 rounded cursor-pointer leading-none">▲</button>
+                    <button type="button" @click="round = Math.max(1, round - 1); logEvent('Reverted to Round ' + round)" class="text-slate-400 hover:text-white text-xs px-1 hover:bg-slate-700 rounded cursor-pointer leading-none">▼</button>
+                </div>
+            </div>
+
+            <!-- Active Turn Display -->
+            <div class="space-y-0.5">
+                <div class="text-[10px] text-amber-200/70 uppercase tracking-wider font-semibold">Active Turn</div>
+                <div class="flex items-center gap-2">
+                    <template x-if="activeCombatant">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-sm"></span>
+                            <span class="font-bold text-sm sm:text-base text-amber-200 font-serif" x-text="activeCombatant.name"></span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold"
+                                  :class="{
+                                      'bg-sky-900 text-sky-200 border border-sky-400/60': activeCombatant.type === 'pc',
+                                      'bg-amber-900 text-amber-200 border border-amber-400/60': activeCombatant.type === 'npc',
+                                      'bg-rose-900 text-rose-200 border border-rose-400/60': activeCombatant.type === 'monster'
+                                  }"
+                                  x-text="activeCombatant.type.toUpperCase()"></span>
+                        </div>
+                    </template>
+                    <template x-if="!activeCombatant">
+                        <span class="text-xs text-slate-400 italic">No combatants in initiative</span>
+                    </template>
+                </div>
             </div>
         </div>
 
-        <!-- Add Combatant Action Bar -->
-        <div class="parchment-card p-2 sm:p-2.5 flex flex-wrap items-center justify-between gap-2 shadow-sm border border-amber-900/20 bg-amber-50/95 rounded-xl">
-            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                <!-- Import Party Button -->
-                <button type="button" @click="loadCampaignParty()" 
-                        class="btn-rol-primary text-xs py-1.5 px-3 flex items-center gap-1.5 shadow-sm cursor-pointer"
-                        :title="selectedCampaignId ? 'Import party characters from active campaign' : 'Import player characters'">
-                    <span>👥</span> <strong>Import Party</strong>
-                </button>
-
-                <!-- Quick Add PC Dropdown -->
-                <div class="relative" x-data="{ open: false }">
-                    <button type="button" @click="open = !open" 
-                            class="btn-rol-secondary text-xs py-1.5 px-2.5">
-                        <span>🧙‍♂️</span> Add PC <span class="text-[9px]">▼</span>
-                    </button>
-                    <div x-show="open" @click.outside="open = false" x-cloak
-                         class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-30 max-h-60 overflow-y-auto border border-amber-900/30">
-                        <template x-for="pc in availablePCs" :key="pc.id">
-                            <button type="button" @click="addCombatant(pc); open = false"
-                                    class="w-full text-left px-3 py-1.5 hover:bg-amber-100 text-xs font-medium text-stone-900 flex items-center justify-between border-b border-amber-900/10 last:border-0 cursor-pointer">
-                                <div>
-                                    <div class="font-bold text-slate-900" x-text="pc.name"></div>
-                                    <div class="text-[10px] text-slate-500" x-text="(pc.race_name || '') + ' • Lvl ' + pc.level"></div>
-                                </div>
-                                <span class="text-[10px] text-indigo-700 font-mono font-bold" x-text="'Init +' + pc.init_mod"></span>
-                            </button>
-                        </template>
-                        <div x-show="availablePCs.length === 0" class="px-3 py-2 text-xs text-stone-500 italic">No PCs available</div>
-                    </div>
-                </div>
-
-                <!-- Quick Add NPC Dropdown -->
-                <div class="relative" x-data="{ open: false }">
-                    <button type="button" @click="open = !open" 
-                            class="btn-rol-secondary text-xs py-1.5 px-2.5">
-                        <span>👤</span> Add NPC <span class="text-[9px]">▼</span>
-                    </button>
-                    <div x-show="open" @click.outside="open = false" x-cloak
-                         class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-30 max-h-60 overflow-y-auto border border-amber-900/30">
-                        <template x-for="npc in availableNPCs" :key="npc.id">
-                            <button type="button" @click="addCombatant(npc); open = false"
-                                    class="w-full text-left px-3 py-1.5 hover:bg-amber-100 text-xs font-medium text-stone-900 flex items-center justify-between border-b border-amber-900/10 last:border-0 cursor-pointer">
-                                <div>
-                                    <div class="font-bold text-slate-900" x-text="npc.name"></div>
-                                    <div class="text-[10px] text-slate-500" x-text="'Lvl ' + npc.level"></div>
-                                </div>
-                                <span class="text-[10px] text-amber-700 font-mono font-bold" x-text="'Init +' + npc.init_mod"></span>
-                            </button>
-                        </template>
-                        <div x-show="availableNPCs.length === 0" class="px-3 py-2 text-xs text-stone-500 italic">No saved NPCs</div>
-                    </div>
-                </div>
-
-                <!-- Add Monster Modal Trigger -->
-                <button type="button" @click="showMonsterModal = true" 
-                        class="btn-rol-secondary text-xs py-1.5 px-2.5">
-                    <span>👹</span> Bestiary...
-                </button>
-
-                <!-- Add Custom Combatant Modal Trigger -->
-                <button type="button" @click="showCustomModal = true" 
-                        class="btn-rol-secondary text-xs py-1.5 px-2.5">
-                    <span>➕</span> Custom...
-                </button>
-            </div>
-
-            <div class="text-xs text-stone-600 font-mono font-bold">
-                <span x-text="combatants.length"></span> Combatants
-            </div>
+        <!-- Turn Stepper & Global Controls -->
+        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <button type="button" @click="prevTurn()" :disabled="combatants.length === 0"
+                    class="btn-rol-secondary text-xs py-1.5 px-3 font-semibold disabled:opacity-40 shadow-sm" title="Previous Combatant">
+                <span>◀</span> Prev Turn
+            </button>
+            <button type="button" @click="nextTurn()" :disabled="combatants.length === 0"
+                    class="btn-rol-primary text-xs py-1.5 px-3.5 font-bold disabled:opacity-40 shadow-sm" title="Next Combatant (Advances Round on cycle)">
+                <span>▶</span> Next Turn
+            </button>
+            <button type="button" @click="rollAllInitiative()" :disabled="combatants.length === 0"
+                    class="btn-rol-secondary text-xs py-1.5 px-2.5 disabled:opacity-40" title="Roll 1d20 + Mod for all combatants">
+                <span>🎲</span> Roll All Init
+            </button>
+            <button type="button" @click="openEndEncounterModal()" :disabled="combatants.length === 0"
+                    class="btn-rol-primary text-xs py-1.5 px-3 font-bold cursor-pointer disabled:opacity-40 shadow-sm"
+                    style="background: linear-gradient(135deg, #10b981, #059669); border-color: #047857;" title="Conclude encounter, award XP and loot">
+                <span>🏆</span> End Encounter
+            </button>
+            <button type="button" @click="resetCombat()"
+                    class="btn-rol-danger text-xs py-1.5 px-2.5 font-semibold" title="Reset all HP/SP/AP and rounds">
+                <span>🔄</span> Reset
+            </button>
         </div>
     </div>
 
@@ -191,10 +188,11 @@
                 <p class="text-xs text-slate-500 max-w-md mx-auto">Choose a Campaign Encounter from the header, or click <strong>Import Party</strong>, Add PC, Add NPC, or Bestiary to populate combatants.</p>
             </div>
 
-            <!-- Combatants List (Separately Scrollable) -->
-            <div class="space-y-3 max-h-[calc(100vh-270px)] overflow-y-auto pr-1 sm:pr-2">
+            <!-- Combatants List (Natural Smooth Scrolling) -->
+            <div class="space-y-3 pr-1 sm:pr-2">
                 <template x-for="(c, idx) in sortedCombatants" :key="c.id">
-                    <div class="bg-white border rounded-2xl shadow-sm overflow-hidden transition duration-150 relative"
+                    <div :id="'combatant-card-' + c.id"
+                         class="bg-white border rounded-2xl shadow-sm overflow-hidden transition duration-150 relative"
                          :class="{
                              'ring-2 ring-red-600 border-red-500 bg-red-50/50 shadow-lg': (c.hp_curr <= -10 || (c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))),
                              'ring-2 ring-rose-500 border-rose-400 bg-rose-50/30 shadow-md animate-pulse': (c.hp_curr <= 0 && c.hp_curr > -10 && !(c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))),
@@ -505,7 +503,7 @@
         </div>
 
         <!-- Fixed Sticky GM Toolkit Sidebar (300px on desktop) -->
-        <div class="combat-tracker-sidebar space-y-3 sticky top-2 self-start max-h-[calc(100vh-270px)] overflow-y-auto pr-1">
+        <div class="combat-tracker-sidebar space-y-3">
             <!-- Compact GM Dice Roller -->
             <div class="parchment-card p-2.5 space-y-2 shadow-sm border border-amber-900/25">
                 <div class="flex items-center justify-between border-b border-amber-900/15 pb-1">
@@ -1595,6 +1593,19 @@ function combatTrackerApp() {
             });
             this.activeIndex = 0;
             this.logEvent('Rolled initiative for all combatants');
+            this.scrollToActiveCombatant();
+        },
+
+        scrollToActiveCombatant() {
+            this.$nextTick(() => {
+                const active = this.activeCombatant;
+                if (active) {
+                    const el = document.getElementById('combatant-card-' + active.id);
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }
+            });
         },
 
         nextTurn() {
@@ -1610,6 +1621,7 @@ function combatTrackerApp() {
                 active.ap_curr = active.ap_max; // auto reset AP on turn start
                 this.logEvent(`<strong>${active.name}</strong>'s turn (Round ${this.round})`);
             }
+            this.scrollToActiveCombatant();
         },
 
         prevTurn() {
@@ -1619,6 +1631,11 @@ function combatTrackerApp() {
                 this.round = Math.max(1, this.round - 1);
                 this.activeIndex = this.sortedCombatants.length - 1;
             }
+            const active = this.activeCombatant;
+            if (active) {
+                this.logEvent(`<strong>${active.name}</strong>'s turn (Round ${this.round})`);
+            }
+            this.scrollToActiveCombatant();
         },
 
         resetCombat() {
