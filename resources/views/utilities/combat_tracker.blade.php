@@ -1,50 +1,50 @@
 @extends('layouts.app', ['title' => 'Combat & Initiative Tracker', 'containerClass' => 'max-w-[1400px] w-full'])
 
 @section('content')
-<div class="space-y-5" x-data="combatTrackerApp()" x-init="initApp()">
-    <!-- Header & Breadcrumb -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-amber-900/20 pb-4 gap-4">
-        <div>
-            <h1 class="text-2xl font-bold flex items-center gap-2">
-                <span>⚔️</span> Combat &amp; Initiative Tracker
-            </h1>
-            <p class="text-stone-700 text-sm mt-0.5">Real-time encounter management, initiative order, Action Points (AP), dual defenses, health dials (HP/SP/PP), and active attack actions.</p>
-        </div>
-
-        <!-- Quick Campaign & Encounter Selector -->
-        <div class="flex flex-wrap items-center gap-3">
-            <!-- Campaign Select -->
-            <div class="flex items-center gap-1.5">
-                <label class="text-xs font-bold text-amber-950 uppercase tracking-wider">Campaign:</label>
-                <select x-model="selectedCampaignId" @change="onCampaignChange()"
-                        class="bg-amber-50/80 border border-amber-900/30 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs">
-                    <option value="">-- Standalone / All --</option>
-                    @foreach($campaigns as $camp)
-                        <option value="{{ $camp->ID }}" {{ $selectedCampaignId == $camp->ID ? 'selected' : '' }}>
-                            🏰 {{ $camp->Name }}
-                        </option>
-                    @endforeach
-                </select>
+<div class="space-y-4" x-data="combatTrackerApp()" x-init="initApp()">
+    <!-- Sticky Top Control Center (Header, Turn Controls & Add Combatants) -->
+    <div class="sticky top-0 z-30 space-y-2 pb-2 pt-0.5 bg-amber-50/95 backdrop-blur-md -mx-2 px-2 sm:-mx-4 sm:px-4 border-b border-amber-900/20 shadow-xs">
+        <!-- Header & Breadcrumb -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-amber-900/15 pb-2 gap-2">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                    <span>⚔️</span> Combat &amp; Initiative Tracker
+                </h1>
+                <p class="text-stone-700 text-xs mt-0.5 hidden sm:block">Real-time encounter management, initiative order, Action Points (AP), dual defenses, health dials (HP/SP/PP), and active attack actions.</p>
             </div>
 
-            <!-- Encounter Select (Shown when campaign has encounters) -->
-            <div class="flex items-center gap-1.5" x-show="selectedCampaignId">
-                <label class="text-xs font-bold text-amber-950 uppercase tracking-wider">Encounter:</label>
-                <select x-model="selectedEncounterId" @change="onEncounterChange()"
-                        class="bg-amber-50/80 border border-amber-900/30 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs max-w-xs">
-                    <option value="">-- Choose Encounter / Free Combat --</option>
-                    <template x-for="enc in availableEncounters" :key="enc.id">
-                        <option :value="enc.id" x-text="(enc.adventure_name ? '[' + enc.adventure_name + '] ' : '') + enc.name + ' (EL ' + (enc.encounter_level || 1) + ')'"></option>
-                    </template>
-                </select>
+            <!-- Quick Campaign & Encounter Selector -->
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <!-- Campaign Select -->
+                <div class="flex items-center gap-1.5">
+                    <label class="text-xs font-bold text-amber-950 uppercase tracking-wider">Campaign:</label>
+                    <select x-model="selectedCampaignId" @change="onCampaignChange()"
+                            class="bg-amber-50/80 border border-amber-900/30 rounded-lg px-2.5 py-1 text-xs font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs">
+                        <option value="">-- Standalone / All --</option>
+                        @foreach($campaigns as $camp)
+                            <option value="{{ $camp->ID }}" {{ $selectedCampaignId == $camp->ID ? 'selected' : '' }}>
+                                🏰 {{ $camp->Name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Encounter Select (Shown when campaign has encounters) -->
+                <div class="flex items-center gap-1.5" x-show="selectedCampaignId">
+                    <label class="text-xs font-bold text-amber-950 uppercase tracking-wider">Encounter:</label>
+                    <select x-model="selectedEncounterId" @change="onEncounterChange()"
+                            class="bg-amber-50/80 border border-amber-900/30 rounded-lg px-2.5 py-1 text-xs font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs max-w-xs">
+                        <option value="">-- Choose Encounter / Free Combat --</option>
+                        <template x-for="enc in availableEncounters" :key="enc.id">
+                            <option :value="enc.id" x-text="(enc.adventure_name ? '[' + enc.adventure_name + '] ' : '') + enc.name + ' (EL ' + (enc.encounter_level || 1) + ')'"></option>
+                        </template>
+                    </select>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Sticky Top Toolbars (Encounter Controls & Add Combatants) -->
-    <div class="sticky top-0 z-30 space-y-2 pb-1 bg-slate-950/85 backdrop-blur-md pt-0.5">
         <!-- Encounter Control Banner (Round, Turn, Global Actions) -->
-        <div class="charview-action-bar text-white rounded-2xl p-3 sm:p-3.5 shadow-lg flex flex-col lg:flex-row items-center justify-between gap-3 border border-amber-500/30">
+        <div class="charview-action-bar text-white rounded-xl p-2.5 sm:p-3 shadow-md flex flex-col lg:flex-row items-center justify-between gap-2.5 border border-amber-500/30">
             <!-- Round & Active Turn Status -->
             <div class="flex flex-wrap items-center gap-4 sm:gap-6">
                 <!-- Round Counter -->
@@ -192,7 +192,7 @@
             </div>
 
             <!-- Combatants List (Separately Scrollable) -->
-            <div class="space-y-3 max-h-[calc(100vh-230px)] overflow-y-auto pr-1 sm:pr-2">
+            <div class="space-y-3 max-h-[calc(100vh-270px)] overflow-y-auto pr-1 sm:pr-2">
                 <template x-for="(c, idx) in sortedCombatants" :key="c.id">
                     <div class="bg-white border rounded-2xl shadow-sm overflow-hidden transition duration-150 relative"
                          :class="{
@@ -505,7 +505,7 @@
         </div>
 
         <!-- Fixed Sticky GM Toolkit Sidebar (300px on desktop) -->
-        <div class="combat-tracker-sidebar space-y-3 sticky top-4 self-start max-h-[calc(100vh-2rem)] overflow-y-auto pr-1">
+        <div class="combat-tracker-sidebar space-y-3 sticky top-2 self-start max-h-[calc(100vh-270px)] overflow-y-auto pr-1">
             <!-- Compact GM Dice Roller -->
             <div class="parchment-card p-2.5 space-y-2 shadow-sm border border-amber-900/25">
                 <div class="flex items-center justify-between border-b border-amber-900/15 pb-1">

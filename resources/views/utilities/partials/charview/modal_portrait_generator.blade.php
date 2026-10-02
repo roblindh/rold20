@@ -40,54 +40,54 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                     <!-- Microsoft Designer (Most Popular Free Tier) -->
                     <button type="button" @click="copyAndLaunch('https://designer.microsoft.com/image-creator', 'Microsoft Designer (DALL-E 3)')"
-                            class="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-800 text-white font-bold hover:from-blue-800 hover:to-indigo-900 transition shadow-sm cursor-pointer group text-left">
+                            class="flex items-center justify-between p-3 rounded-xl bg-blue-50 hover:bg-blue-100 border-2 border-blue-400 text-blue-950 font-bold transition shadow-2xs cursor-pointer group text-left">
                         <div class="flex items-center gap-2.5">
-                            <span class="text-lg">✨</span>
+                            <span class="text-xl">✨</span>
                             <div>
-                                <div class="font-bold text-xs">Microsoft Designer</div>
-                                <div class="text-[10px] text-blue-200 font-normal">Most Popular Free DALL-E 3 Generator</div>
+                                <div class="font-bold text-xs text-blue-950">Microsoft Designer</div>
+                                <div class="text-[10px] text-blue-800 font-medium">Most Popular Free DALL-E 3 Generator</div>
                             </div>
                         </div>
-                        <span class="text-xs group-hover:translate-x-0.5 transition font-mono">↗</span>
+                        <span class="text-xs text-blue-900 group-hover:translate-x-0.5 transition font-mono font-bold">↗</span>
                     </button>
 
                     <!-- Bing Image Creator -->
                     <button type="button" @click="copyAndLaunch('https://www.bing.com/images/create', 'Bing Image Creator')"
-                            class="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-teal-700 to-cyan-800 text-white font-bold hover:from-teal-800 hover:to-cyan-900 transition shadow-sm cursor-pointer group text-left">
+                            class="flex items-center justify-between p-3 rounded-xl bg-teal-50 hover:bg-teal-100 border-2 border-teal-400 text-teal-950 font-bold transition shadow-2xs cursor-pointer group text-left">
                         <div class="flex items-center gap-2.5">
-                            <span class="text-lg">🎨</span>
+                            <span class="text-xl">🎨</span>
                             <div>
-                                <div class="font-bold text-xs">Bing Image Creator</div>
-                                <div class="text-[10px] text-teal-200 font-normal">Free AI Studio by Microsoft</div>
+                                <div class="font-bold text-xs text-teal-950">Bing Image Creator</div>
+                                <div class="text-[10px] text-teal-800 font-medium">Free AI Studio by Microsoft</div>
                             </div>
                         </div>
-                        <span class="text-xs group-hover:translate-x-0.5 transition font-mono">↗</span>
+                        <span class="text-xs text-teal-900 group-hover:translate-x-0.5 transition font-mono font-bold">↗</span>
                     </button>
 
                     <!-- Leonardo.ai (RPG Art Specialist) -->
                     <button type="button" @click="copyAndLaunch('https://leonardo.ai', 'Leonardo.ai')"
-                            class="flex items-center justify-between p-2.5 rounded-xl bg-purple-900/10 hover:bg-purple-900/20 border border-purple-800/30 text-purple-950 font-bold transition cursor-pointer group text-left">
+                            class="flex items-center justify-between p-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 border-2 border-purple-400 text-purple-950 font-bold transition shadow-2xs cursor-pointer group text-left">
                         <div class="flex items-center gap-2">
-                            <span>🎭</span>
+                            <span class="text-xl">🎭</span>
                             <div>
-                                <div class="font-bold text-xs">Leonardo.ai</div>
-                                <div class="text-[10px] text-stone-500 font-normal">150 Free Fast Generations Daily (RPG Art)</div>
+                                <div class="font-bold text-xs text-purple-950">Leonardo.ai</div>
+                                <div class="text-[10px] text-purple-800 font-medium">150 Free Fast Generations Daily (RPG Art)</div>
                             </div>
                         </div>
-                        <span class="text-xs group-hover:translate-x-0.5 transition font-mono">↗</span>
+                        <span class="text-xs text-purple-900 group-hover:translate-x-0.5 transition font-mono font-bold">↗</span>
                     </button>
 
                     <!-- Pollinations.ai (No Login Instant) -->
                     <button type="button" @click="copyAndLaunch('https://pollinations.ai', 'Pollinations.ai')"
-                            class="flex items-center justify-between p-2.5 rounded-xl bg-amber-900/10 hover:bg-amber-900/20 border border-amber-800/30 text-amber-950 font-bold transition cursor-pointer group text-left">
+                            class="flex items-center justify-between p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 border-2 border-amber-400 text-amber-950 font-bold transition shadow-2xs cursor-pointer group text-left">
                         <div class="flex items-center gap-2">
-                            <span>⚡</span>
+                            <span class="text-xl">⚡</span>
                             <div>
-                                <div class="font-bold text-xs">Pollinations.ai</div>
-                                <div class="text-[10px] text-stone-500 font-normal">Instant Open FLUX (No Login Required)</div>
+                                <div class="font-bold text-xs text-amber-950">Pollinations.ai</div>
+                                <div class="text-[10px] text-amber-800 font-medium">Instant Open FLUX (No Login Required)</div>
                             </div>
                         </div>
-                        <span class="text-xs group-hover:translate-x-0.5 transition font-mono">↗</span>
+                        <span class="text-xs text-amber-900 group-hover:translate-x-0.5 transition font-mono font-bold">↗</span>
                     </button>
                 </div>
             </div>

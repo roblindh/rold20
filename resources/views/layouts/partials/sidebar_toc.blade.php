@@ -368,7 +368,7 @@
                 </li>
                 <li class="list-none p-0 m-0">
                     <a href="{{ route('analysis', [], false) }}" class="sidebar-nav-item {{ request()->routeIs('analysis*') ? 'active' : '' }}">
-                        <span>📊 Analysis & Tools</span>
+                        <span>📊 Analysis & Balance</span>
                     </a>
                 </li>
             </ul>

@@ -35,23 +35,23 @@
         <!-- Mode Navigation Tabs -->
         <div class="flex items-center gap-1.5 bg-slate-100 px-6 py-2.5 border-b border-slate-300 text-xs font-bold text-slate-800 shrink-0 overflow-x-auto">
             <button type="button" @click="marketTab = 'catalog'"
-                    :class="marketTab === 'catalog' ? 'bg-amber-950 text-white font-black shadow-xs border-amber-950 ring-1 ring-amber-900/50' : 'bg-white hover:bg-slate-200 text-slate-800 border-slate-300'"
-                    class="px-3 py-1.5 rounded-lg border transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+                    :class="marketTab === 'catalog' ? 'modal-tab-active' : 'modal-tab-inactive'"
+                    class="modal-tab-btn">
                 <span>🏷️</span> Standard Catalog
             </button>
             <button type="button" @click="marketTab = 'town'; if (townShopItems.length === 0) fetchTownShop();"
-                    :class="marketTab === 'town' ? 'bg-amber-950 text-white font-black shadow-xs border-amber-950 ring-1 ring-amber-900/50' : 'bg-white hover:bg-slate-200 text-slate-800 border-slate-300'"
-                    class="px-3 py-1.5 rounded-lg border transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+                    :class="marketTab === 'town' ? 'modal-tab-active' : 'modal-tab-inactive'"
+                    class="modal-tab-btn">
                 <span>🏘️</span> Settlement Shops
             </button>
             <button type="button" @click="marketTab = 'commission'"
-                    :class="marketTab === 'commission' ? 'bg-amber-950 text-white font-black shadow-xs border-amber-950 ring-1 ring-amber-900/50' : 'bg-white hover:bg-slate-200 text-slate-800 border-slate-300'"
-                    class="px-3 py-1.5 rounded-lg border transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+                    :class="marketTab === 'commission' ? 'modal-tab-active' : 'modal-tab-inactive'"
+                    class="modal-tab-btn">
                 <span>✨</span> Magic &amp; Commission Forge
             </button>
             <button type="button" @click="marketTab = 'sell'"
-                    :class="marketTab === 'sell' ? 'bg-amber-950 text-white font-black shadow-xs border-amber-950 ring-1 ring-amber-900/50' : 'bg-white hover:bg-slate-200 text-slate-800 border-slate-300'"
-                    class="px-3 py-1.5 rounded-lg border transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+                    :class="marketTab === 'sell' ? 'modal-tab-active' : 'modal-tab-inactive'"
+                    class="modal-tab-btn">
                 <span>💰</span> Sell Inventory (<span x-text="equipmentItems.length"></span>)
             </button>
         </div>

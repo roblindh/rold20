@@ -2181,9 +2181,42 @@ function characterViewerApp() {
             });
 
             const knownSpells = (spellsWithKnown || []).filter(s => s.isKnown);
-            const arcaneKnown = knownSpells.filter(s => (s.Type && s.Type.toLowerCase().includes('arcane')) || (!s.Type && s.School !== 'Divine' && s.School !== 'Psionic')).length;
-            const divineKnown = knownSpells.filter(s => (s.Type && s.Type.toLowerCase().includes('divine')) || s.School === 'Divine').length;
-            const psionicKnown = knownSpells.filter(s => (s.Type && s.Type.toLowerCase().includes('psionic')) || s.School === 'Psionic').length;
+            let arcaneKnown = 0;
+            let divineKnown = 0;
+            let psionicKnown = 0;
+
+            knownSpells.forEach(sp => {
+                const skillsText = sp.Skills || sp.School || sp.Type || '';
+                const isArc = /arcane/i.test(skillsText);
+                const isDiv = /divine|wild shape/i.test(skillsText);
+                const isPsi = /psi/i.test(skillsText);
+
+                const canArc = isArc && (arcaneRanks > 0);
+                const canDiv = isDiv && (divineRanks > 0);
+                const canPsi = isPsi && (psionicRanks > 0);
+
+                if (canDiv && !canArc && !canPsi) {
+                    divineKnown++;
+                } else if (canArc && !canDiv && !canPsi) {
+                    arcaneKnown++;
+                } else if (canPsi && !canArc && !canDiv) {
+                    psionicKnown++;
+                } else if (canDiv) {
+                    divineKnown++;
+                } else if (canArc) {
+                    arcaneKnown++;
+                } else if (canPsi) {
+                    psionicKnown++;
+                } else {
+                    // Inherent spell tradition fallback if character has 0 ranks
+                    if (isDiv && !isArc && !isPsi) divineKnown++;
+                    else if (isArc && !isDiv && !isPsi) arcaneKnown++;
+                    else if (isPsi && !isArc && !isDiv) psionicKnown++;
+                    else if (isDiv) divineKnown++;
+                    else if (isPsi) psionicKnown++;
+                    else arcaneKnown++;
+                }
+            });
 
             return {
                 arcane: {
@@ -2244,14 +2277,22 @@ function characterViewerApp() {
         get filteredSpellCatalog() {
             let list = this.spellsCatalog;
             if (this.spellFilterType) {
-                list = list.filter(sp => (sp.School && sp.School.toLowerCase().includes(this.spellFilterType.toLowerCase())) ||
-                                         (sp.Type && sp.Type.toLowerCase().includes(this.spellFilterType.toLowerCase())));
+                const ft = this.spellFilterType.toLowerCase();
+                list = list.filter(sp => {
+                    const sk = (sp.Skills || sp.School || sp.Type || '').toLowerCase();
+                    if (ft === 'arcane') return sk.includes('arcane');
+                    if (ft === 'divine') return sk.includes('divine') || sk.includes('wild shape');
+                    if (ft === 'psionic') return sk.includes('psi');
+                    return sk.includes(ft);
+                });
             }
             if (this.spellSearchQuery.trim()) {
                 const q = this.spellSearchQuery.toLowerCase();
                 list = list.filter(sp => 
                     (sp.Name && sp.Name.toLowerCase().includes(q)) ||
+                    (sp.Skills && sp.Skills.toLowerCase().includes(q)) ||
                     (sp.School && sp.School.toLowerCase().includes(q)) ||
+                    (sp.Descriptors && sp.Descriptors.toLowerCase().includes(q)) ||
                     (sp.Summary && sp.Summary.toLowerCase().includes(q)) ||
                     (sp.Description && sp.Description.toLowerCase().includes(q))
                 );

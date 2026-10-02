@@ -10,92 +10,63 @@
             <button @click="showLearnSpellsModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
         </div>
 
-        <!-- Spell Learning Capacity & Summary Cards -->
-        <div class="bg-slate-100/90 border-b border-slate-200 px-4 py-2 shrink-0 space-y-1.5">
-            <div class="flex items-center justify-between text-[10px] font-bold text-slate-700 uppercase tracking-wider">
-                <span>📊 Spell Learning Capacity &amp; Supernatural Disciplines</span>
-                <span class="text-[9px] text-slate-500 font-normal lowercase">Rules of Magic &amp; Psionics hb05/hb06</span>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2 text-xs">
-                <!-- Arcane Spells Card -->
-                <div class="p-2 bg-white rounded-lg border border-indigo-200 shadow-2xs space-y-1"
-                     :class="spellSummary.arcane.ranks > 0 ? 'ring-1 ring-indigo-300' : 'opacity-80'">
-                    <div class="flex items-center justify-between gap-1">
-                        <span class="font-bold text-indigo-950 flex items-center gap-1 text-[11px] truncate">
-                            <span>🔮</span> Arcane
-                        </span>
-                        <span class="text-[9px] font-mono px-1 py-0.2 rounded font-bold shrink-0"
-                              :class="spellSummary.arcane.ranks > 0 ? 'bg-indigo-100 text-indigo-900' : 'bg-slate-100 text-slate-600'"
-                              x-text="'Rank ' + spellSummary.arcane.ranks"></span>
+        <!-- Spell Learning Capacity Strip (Side-by-side on single line) -->
+        <div class="bg-slate-100/90 border-b border-slate-300 px-4 py-2 shrink-0">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <!-- Arcane Spells -->
+                <div class="bg-white rounded-lg border border-indigo-300/80 px-2.5 py-1.5 shadow-2xs flex items-center justify-between gap-2"
+                     :class="spellSummary.arcane.ranks > 0 ? 'ring-1 ring-indigo-400 bg-indigo-50/20' : 'opacity-85'">
+                    <div class="flex items-center gap-1.5 min-w-0">
+                        <span class="text-base">🔮</span>
+                        <div>
+                            <div class="font-bold text-indigo-950 text-xs leading-tight">Arcane</div>
+                            <div class="text-[9px] text-indigo-800 font-mono font-semibold" x-text="'Rank ' + spellSummary.arcane.ranks"></div>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-0.5 pt-1 border-t border-slate-100 text-center font-mono text-[10px]">
-                        <div>
-                            <div class="text-[8px] text-slate-500 uppercase font-sans leading-none">Known</div>
-                            <strong class="text-indigo-950 text-xs font-bold" x-text="spellSummary.arcane.current"></strong>
-                        </div>
-                        <div>
-                            <div class="text-[8px] text-slate-500 uppercase font-sans leading-none">Free</div>
-                            <strong class="text-emerald-700 text-xs font-bold" x-text="spellSummary.arcane.free"></strong>
-                        </div>
-                        <div>
-                            <div class="text-[8px] text-slate-500 uppercase font-sans leading-none">Max</div>
-                            <strong class="text-slate-800 text-xs font-bold" x-text="spellSummary.arcane.max"></strong>
-                        </div>
+                    <div class="flex items-center gap-2 font-mono text-[11px] shrink-0 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
+                        <span title="Known Spells">Known: <strong class="text-indigo-950 font-bold" x-text="spellSummary.arcane.current"></strong></span>
+                        <span class="text-slate-300">|</span>
+                        <span title="Free Spells from Skills">Free: <strong class="text-emerald-700 font-bold" x-text="spellSummary.arcane.free"></strong></span>
+                        <span class="text-slate-300">|</span>
+                        <span title="Max Learnable Spells">Max: <strong class="text-slate-800 font-bold" x-text="spellSummary.arcane.max"></strong></span>
                     </div>
                 </div>
 
-                <!-- Divine Spells Card -->
-                <div class="p-2 bg-white rounded-lg border border-amber-200 shadow-2xs space-y-1"
-                     :class="spellSummary.divine.ranks > 0 ? 'ring-1 ring-amber-300' : 'opacity-80'">
-                    <div class="flex items-center justify-between gap-1">
-                        <span class="font-bold text-amber-950 flex items-center gap-1 text-[11px] truncate">
-                            <span>✝️</span> Divine
-                        </span>
-                        <span class="text-[9px] font-mono px-1 py-0.2 rounded font-bold shrink-0"
-                              :class="spellSummary.divine.ranks > 0 ? 'bg-amber-100 text-amber-900' : 'bg-slate-100 text-slate-600'"
-                              x-text="'Rank ' + spellSummary.divine.ranks"></span>
+                <!-- Divine Spells -->
+                <div class="bg-white rounded-lg border border-amber-300/80 px-2.5 py-1.5 shadow-2xs flex items-center justify-between gap-2"
+                     :class="spellSummary.divine.ranks > 0 ? 'ring-1 ring-amber-400 bg-amber-50/20' : 'opacity-85'">
+                    <div class="flex items-center gap-1.5 min-w-0">
+                        <span class="text-base">✝️</span>
+                        <div>
+                            <div class="font-bold text-amber-950 text-xs leading-tight">Divine</div>
+                            <div class="text-[9px] text-amber-800 font-mono font-semibold" x-text="'Rank ' + spellSummary.divine.ranks"></div>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-0.5 pt-1 border-t border-slate-100 text-center font-mono text-[10px]">
-                        <div>
-                            <div class="text-[8px] text-slate-500 uppercase font-sans leading-none">Known</div>
-                            <strong class="text-amber-950 text-xs font-bold" x-text="spellSummary.divine.current"></strong>
-                        </div>
-                        <div>
-                            <div class="text-[8px] text-slate-500 uppercase font-sans leading-none">Free</div>
-                            <strong class="text-emerald-700 text-xs font-bold" x-text="spellSummary.divine.free"></strong>
-                        </div>
-                        <div>
-                            <div class="text-[8px] text-slate-500 uppercase font-sans leading-none">Max</div>
-                            <strong class="text-slate-800 text-[10px] font-bold" x-text="spellSummary.divine.max"></strong>
-                        </div>
+                    <div class="flex items-center gap-2 font-mono text-[11px] shrink-0 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
+                        <span title="Known Spells">Known: <strong class="text-amber-950 font-bold" x-text="spellSummary.divine.current"></strong></span>
+                        <span class="text-slate-300">|</span>
+                        <span title="Free Spells from Skills">Free: <strong class="text-emerald-700 font-bold" x-text="spellSummary.divine.free"></strong></span>
+                        <span class="text-slate-300">|</span>
+                        <span title="Max Learnable Spells">Max: <strong class="text-slate-800 font-bold" x-text="spellSummary.divine.max"></strong></span>
                     </div>
                 </div>
 
-                <!-- Psionic Powers Card -->
-                <div class="p-2 bg-white rounded-lg border border-teal-200 shadow-2xs space-y-1"
-                     :class="spellSummary.psionic.ranks > 0 ? 'ring-1 ring-teal-300' : 'opacity-80'">
-                    <div class="flex items-center justify-between gap-1">
-                        <span class="font-bold text-teal-950 flex items-center gap-1 text-[11px] truncate">
-                            <span>🧠</span> Psionic
-                        </span>
-                        <span class="text-[9px] font-mono px-1 py-0.2 rounded font-bold shrink-0"
-                              :class="spellSummary.psionic.ranks > 0 ? 'bg-teal-100 text-teal-900' : 'bg-slate-100 text-slate-600'"
-                              x-text="'Rank ' + spellSummary.psionic.ranks"></span>
+                <!-- Psionic Powers -->
+                <div class="bg-white rounded-lg border border-teal-300/80 px-2.5 py-1.5 shadow-2xs flex items-center justify-between gap-2"
+                     :class="spellSummary.psionic.ranks > 0 ? 'ring-1 ring-teal-400 bg-teal-50/20' : 'opacity-85'">
+                    <div class="flex items-center gap-1.5 min-w-0">
+                        <span class="text-base">🧠</span>
+                        <div>
+                            <div class="font-bold text-teal-950 text-xs leading-tight">Psionic</div>
+                            <div class="text-[9px] text-teal-800 font-mono font-semibold" x-text="'Rank ' + spellSummary.psionic.ranks"></div>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-0.5 pt-1 border-t border-slate-100 text-center font-mono text-[10px]">
-                        <div>
-                            <div class="text-[8px] text-slate-500 uppercase font-sans leading-none">Known</div>
-                            <strong class="text-teal-950 text-xs font-bold" x-text="spellSummary.psionic.current"></strong>
-                        </div>
-                        <div>
-                            <div class="text-[8px] text-slate-500 uppercase font-sans leading-none">Free</div>
-                            <strong class="text-emerald-700 text-xs font-bold" x-text="spellSummary.psionic.free"></strong>
-                        </div>
-                        <div>
-                            <div class="text-[8px] text-slate-500 uppercase font-sans leading-none">Max</div>
-                            <strong class="text-slate-800 text-xs font-bold" x-text="spellSummary.psionic.max"></strong>
-                        </div>
+                    <div class="flex items-center gap-2 font-mono text-[11px] shrink-0 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
+                        <span title="Known Powers">Known: <strong class="text-teal-950 font-bold" x-text="spellSummary.psionic.current"></strong></span>
+                        <span class="text-slate-300">|</span>
+                        <span title="Free Powers from Skills">Free: <strong class="text-emerald-700 font-bold" x-text="spellSummary.psionic.free"></strong></span>
+                        <span class="text-slate-300">|</span>
+                        <span title="Max Learnable Powers">Max: <strong class="text-slate-800 font-bold" x-text="spellSummary.psionic.max"></strong></span>
                     </div>
                 </div>
             </div>
@@ -121,7 +92,7 @@
             </div>
 
             <!-- Spells List with Variations Expansion -->
-            <div class="space-y-3 max-h-96 overflow-y-auto pr-1">
+            <div class="space-y-3 max-h-96 overflow-y-auto pr-1 sm:pr-2">
                 <template x-for="sp in filteredSpellCatalog" :key="sp.ID">
                     <div class="bg-white border p-3 rounded-xl shadow-2xs space-y-2 transition"
                          :class="spellsToLearn[sp.ID] ? 'border-indigo-500 bg-indigo-50/40 ring-1 ring-indigo-400' : (sp.isKnown ? 'border-slate-300 bg-slate-50/80' : 'border-slate-200 hover:border-slate-300')">
@@ -137,17 +108,14 @@
                                 
                                 <div class="min-w-0 flex-1">
                                     <div class="flex items-center gap-2 flex-wrap">
-                                        <span class="font-bold text-slate-900 text-sm" x-text="sp.Name"></span>
+                                        <span class="font-bold text-slate-900 text-sm font-serif" x-text="sp.Name"></span>
                                         <template x-if="sp.isKnown">
                                             <span class="text-[9px] bg-emerald-100 text-emerald-900 border border-emerald-300 px-1.5 py-0.2 rounded font-bold">✓ Already Known</span>
                                         </template>
                                         <span class="text-[10px] bg-indigo-100 text-indigo-900 px-1.5 py-0.2 rounded font-mono font-bold" x-text="'Cost: ' + (sp.Cost || 0) + ' PP'"></span>
                                     </div>
                                     <div class="text-[10px] text-slate-500 font-mono mt-0.5">
-                                        <span x-text="sp.School || 'Spell'"></span>
-                                        <template x-if="sp.Subschool">
-                                            <span> (<span x-text="sp.Subschool"></span>)</span>
-                                        </template>
+                                        <span x-text="sp.Skills ? sp.Skills.replace(/\r?\n/g, ' • ') : (sp.School || 'Spell')"></span>
                                         <template x-if="sp.Descriptors">
                                             <span> &bull; [<span x-text="sp.Descriptors"></span>]</span>
                                         </template>

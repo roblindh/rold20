@@ -35,17 +35,17 @@
 
             <!-- Companion Type Tabs -->
             <div class="flex border-b border-amber-900/20 gap-2 overflow-x-auto pb-1">
-                <template x-for="(meta, typeKey) in companionSummary.companion_types" :key="typeKey">
+                <template x-for="(meta, typeKey) in (companionSummary?.companion_types || {})" :key="typeKey">
                     <button type="button" 
                             @click="selectedCompanionTab = typeKey; onCompanionTabChanged()"
                             class="px-4 py-2 rounded-t-lg font-bold text-xs flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer border-t border-x"
                             :class="selectedCompanionTab === typeKey 
-                                ? 'bg-amber-950 text-white font-black border-amber-950 shadow-sm ring-1 ring-amber-900/50' 
-                                : 'bg-amber-100 text-stone-900 hover:bg-amber-200 border-amber-800/30'">
+                                ? 'modal-tab-active' 
+                                : 'modal-tab-inactive'">
                         <span x-text="meta.icon"></span>
                         <span x-text="meta.name"></span>
                         <span class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold"
-                              :class="meta.enabled ? (selectedCompanionTab === typeKey ? 'bg-amber-800 text-amber-100' : 'bg-amber-900/20 text-amber-900') : 'bg-stone-300 text-stone-600'">
+                              :class="meta.enabled ? (selectedCompanionTab === typeKey ? 'bg-slate-700 text-amber-200' : 'bg-slate-200 text-slate-800') : 'bg-stone-200 text-stone-500'">
                             <span x-text="'Rank ' + meta.skill_level"></span>
                         </span>
                     </button>
