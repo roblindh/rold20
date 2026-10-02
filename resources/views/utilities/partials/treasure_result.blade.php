@@ -299,17 +299,17 @@
                 </div>
 
                 <!-- Distribution Mode Switch -->
-                <div class="inline-flex p-1 bg-slate-200/80 rounded-xl border border-slate-300 text-xs font-bold shrink-0 shadow-2xs">
+                <div class="inline-flex p-1 bg-slate-200 rounded-xl border border-slate-300 text-xs font-bold shrink-0 shadow-inner">
                     <button type="button"
                             @click="mode = 'quick_split'"
-                            :class="mode === 'quick_split' ? 'bg-amber-800 text-white font-bold shadow-xs border border-amber-900' : 'bg-transparent text-slate-700 hover:text-slate-950 hover:bg-slate-300/60 font-semibold border border-transparent'"
-                            class="px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5">
+                            :class="mode === 'quick_split' ? 'treasure-mode-tab-active' : 'treasure-mode-tab-inactive'"
+                            class="treasure-mode-tab">
                         <span>⚡</span> Quick Liquidate &amp; Split
                     </button>
                     <button type="button"
                             @click="mode = 'realistic_split'"
-                            :class="mode === 'realistic_split' ? 'bg-slate-800 text-white font-bold shadow-xs border border-slate-900' : 'bg-transparent text-slate-700 hover:text-slate-950 hover:bg-slate-300/60 font-semibold border border-transparent'"
-                            class="px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5">
+                            :class="mode === 'realistic_split' ? 'treasure-mode-tab-active' : 'treasure-mode-tab-inactive'"
+                            class="treasure-mode-tab">
                         <span>🎒</span> Realistic Physical Split
                     </button>
                 </div>

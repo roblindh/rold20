@@ -2334,6 +2334,39 @@ td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
     color: #451a03 !important;
 }
 
+/* High-Contrast Segmented Mode Switch Tabs */
+.treasure-mode-tab {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    border-radius: 0.5rem !important;
+    transition: all 0.15s ease-in-out !important;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    text-decoration: none !important;
+}
+
+.treasure-mode-tab-active {
+    background-color: #0f172a !important; /* Deep Solid Charcoal Slate */
+    color: #ffffff !important;           /* Pure White Text */
+    border-color: #020617 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+}
+
+.treasure-mode-tab-inactive {
+    background-color: transparent !important;
+    color: #1e293b !important;          /* Dark Slate Text */
+    border-color: transparent !important;
+}
+
+.treasure-mode-tab-inactive:hover {
+    background-color: #cbd5e1 !important; /* Soft Slate Hover */
+    color: #020617 !important;           /* Deep Black Text */
+}
+
 
 
 
