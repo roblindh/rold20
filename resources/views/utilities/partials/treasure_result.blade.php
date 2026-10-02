@@ -232,83 +232,83 @@
                         @endif
 
                         <!-- Individual Action Buttons to Save Loot -->
-                        <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-                            <div class="flex flex-wrap items-center gap-2">
-                                <!-- Save to Character -->
-                                @if(!empty($characters) && $characters->isNotEmpty())
-                                    <div class="inline-flex items-center gap-1 bg-white p-1 rounded-lg border border-slate-200 shadow-2xs text-xs">
-                                        <select x-model="targetChar" class="px-2 py-1 bg-transparent text-xs text-slate-800 focus:outline-none">
-                                            @foreach($characters as $char)
-                                                <option value="{{ $char->ID }}">{{ $char->Name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <button type="button" @click="saveLootToChar({{ json_encode($mag) }}, targetChar, {{ $loop->index }})"
-                                                :disabled="savingItemIdx === {{ $loop->index }}"
-                                                class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-600 text-white font-bold rounded text-xs transition cursor-pointer shadow-xs">
-                                            <span x-show="savingItemIdx !== {{ $loop->index }}">+ Character</span>
-                                            <span x-show="savingItemIdx === {{ $loop->index }}">Saving...</span>
-                                        </button>
-                                    </div>
-                                @endif
+                    <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <!-- Save to Character -->
+                            @if(!empty($characters) && $characters->isNotEmpty())
+                                <div class="inline-flex items-center gap-1.5 bg-white p-1 rounded-lg border border-slate-300 shadow-2xs text-xs">
+                                    <select x-model="targetChar" class="px-2 py-1 bg-transparent text-xs font-medium text-slate-800 focus:outline-none">
+                                        @foreach($characters as $char)
+                                            <option value="{{ $char->ID }}">{{ $char->Name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button type="button" @click="saveLootToChar({{ json_encode($mag) }}, targetChar, {{ $loop->index }})"
+                                            :disabled="savingItemIdx === {{ $loop->index }}"
+                                            class="btn-rol-success text-xs py-1 px-2.5">
+                                        <span x-show="savingItemIdx !== {{ $loop->index }}">+ Character</span>
+                                        <span x-show="savingItemIdx === {{ $loop->index }}">Saving...</span>
+                                    </button>
+                                </div>
+                            @endif
 
-                                <!-- Save to Campaign Vault -->
-                                @if(!empty($campaigns) && $campaigns->isNotEmpty())
-                                    <div class="inline-flex items-center gap-1 bg-white p-1 rounded-lg border border-slate-200 shadow-2xs text-xs">
-                                        <select x-model="targetCamp" class="px-2 py-1 bg-transparent text-xs text-slate-800 focus:outline-none">
-                                            @foreach($campaigns as $camp)
-                                                <option value="{{ $camp->ID }}">{{ $camp->Name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <button type="button" @click="saveLootToCamp({{ json_encode($mag) }}, targetCamp, {{ $loop->index }})"
-                                                :disabled="savingItemIdx === {{ $loop->index }}"
-                                                class="px-2.5 py-1 bg-indigo-700 hover:bg-indigo-600 text-white font-bold rounded text-xs transition cursor-pointer shadow-xs">
-                                            <span x-show="savingItemIdx !== {{ $loop->index }}">+ Vault</span>
-                                            <span x-show="savingItemIdx === {{ $loop->index }}">Saving...</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <button type="button" 
-                                    @click="navigator.clipboard.writeText({{ json_encode($mag['config_string']) }}); alert('Item configuration string copied to clipboard!');"
-                                    class="text-xs text-indigo-700 hover:text-indigo-900 font-bold underline font-mono cursor-pointer">
-                                Copy Config
-                            </button>
+                            <!-- Save to Campaign Vault -->
+                            @if(!empty($campaigns) && $campaigns->isNotEmpty())
+                                <div class="inline-flex items-center gap-1.5 bg-white p-1 rounded-lg border border-slate-300 shadow-2xs text-xs">
+                                    <select x-model="targetCamp" class="px-2 py-1 bg-transparent text-xs font-medium text-slate-800 focus:outline-none">
+                                        @foreach($campaigns as $camp)
+                                            <option value="{{ $camp->ID }}">{{ $camp->Name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button type="button" @click="saveLootToCamp({{ json_encode($mag) }}, targetCamp, {{ $loop->index }})"
+                                            :disabled="savingItemIdx === {{ $loop->index }}"
+                                            class="btn-rol-secondary text-xs py-1 px-2.5">
+                                        <span x-show="savingItemIdx !== {{ $loop->index }}">+ Vault</span>
+                                        <span x-show="savingItemIdx === {{ $loop->index }}">Saving...</span>
+                                    </button>
+                                </div>
+                            @endif
                         </div>
+
+                        <button type="button" 
+                                @click="navigator.clipboard.writeText({{ json_encode($mag['config_string']) }}); alert('Item configuration string copied to clipboard!');"
+                                class="text-xs text-indigo-700 hover:text-indigo-900 font-bold underline font-mono cursor-pointer flex items-center gap-1">
+                            <span>📋</span> Copy Config
+                        </button>
                     </div>
-                @endforeach
-            </div>
+                </div>
+            @endforeach
         </div>
-    @endif
+    </div>
+@endif
 
     <!-- ========================================== -->
     <!-- PARTY LOOT DISTRIBUTION PANEL              -->
     <!-- ========================================== -->
     <div class="pt-4 border-t-2 border-slate-200 space-y-4">
-        <div class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white p-5 rounded-2xl shadow-lg space-y-4">
+        <div class="bg-amber-50/30 border border-amber-900/20 text-slate-900 p-5 sm:p-6 rounded-2xl shadow-sm space-y-5">
             
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
+            <!-- Panel Header & Mode Switch -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-amber-900/15">
                 <div>
-                    <h4 class="text-base font-bold flex items-center gap-2 text-amber-400">
+                    <h4 class="text-lg font-bold flex items-center gap-2 text-stone-900">
                         <span>⚔️</span> Distribute Hoard to Party &amp; Vault
                     </h4>
-                    <p class="text-xs text-slate-300 mt-0.5">
+                    <p class="text-xs text-stone-600 mt-0.5">
                         Equitably split monetary rewards and allocate items to party members or the campaign vault.
                     </p>
                 </div>
 
                 <!-- Distribution Mode Switch -->
-                <div class="inline-flex p-1 bg-slate-950 rounded-xl border border-slate-700 text-xs shadow-inner">
+                <div class="inline-flex p-1 bg-slate-200/80 rounded-xl border border-slate-300 text-xs font-bold shrink-0 shadow-2xs">
                     <button type="button"
                             @click="mode = 'quick_split'"
-                            :class="mode === 'quick_split' ? 'bg-amber-500 text-slate-950 font-black shadow-md border border-amber-400' : 'bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 font-bold border border-slate-700/60'"
-                            class="px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5"
-                            :style="mode === 'quick_split' ? 'color: #020617;' : ''">
+                            :class="mode === 'quick_split' ? 'bg-amber-800 text-white font-bold shadow-xs border border-amber-900' : 'bg-transparent text-slate-700 hover:text-slate-950 hover:bg-slate-300/60 font-semibold border border-transparent'"
+                            class="px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5">
                         <span>⚡</span> Quick Liquidate &amp; Split
                     </button>
                     <button type="button"
                             @click="mode = 'realistic_split'"
-                            :class="mode === 'realistic_split' ? 'bg-indigo-600 text-white font-black shadow-md border border-indigo-400' : 'bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 font-bold border border-slate-700/60'"
+                            :class="mode === 'realistic_split' ? 'bg-slate-800 text-white font-bold shadow-xs border border-slate-900' : 'bg-transparent text-slate-700 hover:text-slate-950 hover:bg-slate-300/60 font-semibold border border-transparent'"
                             class="px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5">
                         <span>🎒</span> Realistic Physical Split
                     </button>
@@ -316,45 +316,45 @@
             </div>
 
             <!-- Distribution Feedback Banner -->
-            <div x-show="distributed" x-transition class="p-4 bg-emerald-500/20 border border-emerald-400/50 rounded-xl text-emerald-200 text-xs space-y-1">
-                <div class="font-bold flex items-center gap-1.5 text-emerald-300">
+            <div x-show="distributed" x-transition class="p-4 bg-emerald-50 border border-emerald-400 rounded-xl text-emerald-950 text-xs space-y-1 shadow-2xs" style="display: none;">
+                <div class="font-bold flex items-center gap-1.5 text-emerald-900 text-sm">
                     <span>✓</span> <span x-text="distributionMessage"></span>
                 </div>
-                <p class="text-emerald-400/80">All character wallets, inventories, and campaign vaults have been updated in the database.</p>
+                <p class="text-emerald-800">All character wallets, inventories, and campaign vaults have been updated in the database.</p>
             </div>
 
             <!-- Configuration: Campaign & Party Members -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- Select Campaign -->
-                <div class="space-y-1">
-                    <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider">Campaign Vault</label>
-                    <select x-model="selectedCampaign" @change="syncCampaignParty()" class="w-full px-3 py-2 bg-slate-800/80 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider">Campaign Vault</label>
+                    <select x-model="selectedCampaign" @change="syncCampaignParty()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs">
                         <option value="">No Campaign (Direct to Characters)</option>
                         <template x-for="camp in campaigns" :key="camp.ID">
                             <option :value="camp.ID" x-text="camp.Name"></option>
                         </template>
                     </select>
-                    <span class="text-[10px] text-slate-400 block">Remainder coins and unassigned items deposit into vault.</span>
+                    <span class="text-[11px] text-stone-500 block">Remainder coins and unassigned items deposit into campaign vault.</span>
                 </div>
 
                 <!-- Select Party Members Checkboxes -->
                 <div class="md:col-span-2 space-y-1.5">
                     <div class="flex items-center justify-between">
-                        <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider">
-                            Party Members (<span x-text="partyCount"></span> Selected)
+                        <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider">
+                            Party Members (<span x-text="partyCount" class="text-amber-900 font-black"></span> Selected)
                         </label>
-                        <div class="flex items-center gap-2 text-[10px]">
-                            <button type="button" @click="selectAll()" class="text-amber-300 hover:text-amber-200 font-bold underline cursor-pointer">Select All</button>
-                            <span>•</span>
-                            <button type="button" @click="deselectAll()" class="text-slate-300 hover:text-white font-bold underline cursor-pointer">Deselect All</button>
+                        <div class="flex items-center gap-2 text-xs font-semibold">
+                            <button type="button" @click="selectAll()" class="text-amber-800 hover:text-amber-950 underline cursor-pointer">Select All</button>
+                            <span class="text-stone-300">•</span>
+                            <button type="button" @click="deselectAll()" class="text-stone-600 hover:text-stone-900 underline cursor-pointer">Deselect All</button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-40 overflow-y-auto pr-1">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-44 overflow-y-auto pr-1">
                         <template x-for="char in displayCharacters" :key="char.ID">
-                            <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-800/60 border border-white/5 hover:border-white/20 transition cursor-pointer text-xs"
-                                   :class="selectedCharIds.includes(char.ID) ? 'border-amber-400/50 bg-amber-500/10 text-white font-medium' : 'text-slate-400'">
-                                <input type="checkbox" :checked="selectedCharIds.includes(char.ID)" @change="toggleChar(char.ID)" class="rounded text-amber-500 focus:ring-0">
+                            <label class="flex items-center gap-2 p-2 rounded-lg border transition cursor-pointer text-xs select-none"
+                                   :class="selectedCharIds.includes(char.ID) ? 'border-amber-400 bg-amber-100/70 text-amber-950 font-bold ring-1 ring-amber-300 shadow-2xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'">
+                                <input type="checkbox" :checked="selectedCharIds.includes(char.ID)" @change="toggleChar(char.ID)" class="rounded text-amber-700 focus:ring-amber-500 border-slate-300">
                                 <span class="truncate" x-text="char.Name"></span>
                             </label>
                         </template>
@@ -363,48 +363,50 @@
             </div>
 
             <!-- MODE 1: Quick Liquidate & Split View -->
-            <div x-show="mode === 'quick_split'" class="space-y-4 pt-2 border-t border-white/10">
-                <div class="bg-black/30 p-4 rounded-xl border border-white/10 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div class="text-xs text-slate-300">
-                            <strong>Liquidation Summary:</strong>
-                            <span class="text-slate-400">All coins (<span x-text="coinsSp.toLocaleString()"></span> sp) + valuables (<span x-text="goodsSp.toLocaleString()"></span> sp) are liquidated into standard silver.</span>
+            <div x-show="mode === 'quick_split'" class="space-y-4 pt-3 border-t border-amber-900/15">
+                <div class="bg-white p-4 sm:p-5 rounded-xl border border-amber-200/80 shadow-2xs space-y-3.5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-100 pb-3">
+                        <div class="text-xs text-stone-700">
+                            <strong class="text-amber-950">Liquidation Summary:</strong>
+                            <span class="text-stone-600">All coins (<span x-text="coinsSp.toLocaleString()" class="font-bold text-stone-800"></span> sp) + valuables (<span x-text="goodsSp.toLocaleString()" class="font-bold text-stone-800"></span> sp) are liquidated into standard silver.</span>
                         </div>
-                        <span class="text-xs bg-amber-400/20 text-amber-300 px-2.5 py-1 rounded font-bold">
-                            Total Liquidated: <span x-text="totalLiquidSp.toLocaleString()"></span> sp
+                        <span class="text-xs bg-amber-100 text-amber-950 border border-amber-300 px-3 py-1 rounded-lg font-bold shrink-0 self-start sm:self-auto">
+                            Total Liquidated: <span x-text="totalLiquidSp.toLocaleString()" class="font-black"></span> sp
                         </span>
                     </div>
 
                     <!-- Split Math Breakdown -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-white/5 text-xs">
-                        <div class="p-3 bg-white/5 rounded-lg border border-white/5">
-                            <div class="text-[11px] text-slate-400 uppercase font-bold">Each Party Member Receives</div>
-                            <div class="text-lg font-black text-amber-400 mt-0.5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 text-xs">
+                        <div class="p-3.5 bg-amber-50/60 rounded-xl border border-amber-300 text-center">
+                            <div class="text-[11px] text-amber-900 uppercase font-bold tracking-wider">Each Party Member Receives</div>
+                            <div class="text-2xl font-black text-amber-950 mt-1">
                                 <span x-text="quickSplitPerCharSp.toLocaleString()"></span> sp
                             </div>
-                            <div class="text-[10px] text-slate-400">Auto-condensed into platinum &amp; gold denominations in wallet.</div>
+                            <div class="text-[11px] text-amber-800 font-medium mt-1">Auto-condensed into platinum &amp; gold denominations in wallet.</div>
                         </div>
 
-                        <div class="p-3 bg-white/5 rounded-lg border border-white/5">
-                            <div class="text-[11px] text-slate-400 uppercase font-bold">Remainder into Vault</div>
-                            <div class="text-lg font-black text-slate-300 mt-0.5">
+                        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-300 text-center">
+                            <div class="text-[11px] text-slate-700 uppercase font-bold tracking-wider">Remainder into Vault</div>
+                            <div class="text-2xl font-black text-slate-800 mt-1">
                                 <span x-text="quickSplitRemainderSp.toLocaleString()"></span> sp
                             </div>
-                            <div class="text-[10px] text-slate-400">Fractional remainder deposited to Campaign Vault funds.</div>
+                            <div class="text-[11px] text-slate-600 font-medium mt-1">Fractional remainder deposited to Campaign Vault funds.</div>
                         </div>
                     </div>
 
                     <!-- Magic items assignment in quick split -->
                     <template x-if="hoard.magic_items && hoard.magic_items.length > 0">
-                        <div class="space-y-2 pt-2 border-t border-white/5">
-                            <div class="text-xs font-bold text-indigo-300">Assign Magic Items:</div>
-                            <div class="space-y-1.5 max-h-48 overflow-y-auto">
+                        <div class="space-y-2 pt-3 border-t border-slate-100">
+                            <div class="text-xs font-bold text-indigo-950 flex items-center gap-1.5">
+                                <span>✨</span> Assign Magic Items to Party Members:
+                            </div>
+                            <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
                                 <template x-for="(mag, idx) in hoard.magic_items" :key="idx">
-                                    <div class="flex items-center justify-between gap-3 p-2 bg-white/5 rounded-lg text-xs">
-                                        <span class="font-bold text-slate-200 flex items-center gap-1.5 truncate">
+                                    <div class="flex items-center justify-between gap-3 p-2.5 bg-indigo-50/50 border border-indigo-200 rounded-lg text-xs">
+                                        <span class="font-bold text-indigo-950 flex items-center gap-1.5 truncate">
                                             <span>✨</span> <span x-text="mag.name"></span>
                                         </span>
-                                        <select x-model="assignedMagic[idx]" class="px-2 py-1 bg-slate-800 border border-white/10 rounded text-xs text-white focus:outline-none shrink-0">
+                                        <select x-model="assignedMagic[idx]" class="px-2.5 py-1 bg-white border border-indigo-200 rounded text-xs text-stone-900 focus:outline-none focus:ring-1 focus:ring-indigo-500 shrink-0 font-medium">
                                             <option value="vault">Campaign Vault</option>
                                             <template x-for="char in displayCharacters" :key="char.ID">
                                                 <option :value="char.ID" x-text="char.Name"></option>
@@ -417,52 +419,51 @@
                     </template>
                 </div>
 
-                <div class="flex justify-end">
+                <div class="flex justify-end pt-1">
                     <button type="button"
                             @click="executeDistribution()"
                             :disabled="distributing || partyCount === 0"
-                            class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-sm shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50 border border-amber-400"
-                            style="color: #020617;">
+                            class="btn-rol-primary text-sm py-2.5 px-6 font-bold shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-50">
                         <span x-show="!distributing">⚡ Liquidate Valuables &amp; Distribute Funds (<span x-text="totalLiquidSp.toLocaleString()"></span> sp)</span>
-                        <span x-show="distributing">Distributing to Party...</span>
+                        <span x-show="distributing" class="animate-pulse">Distributing to Party...</span>
                     </button>
                 </div>
             </div>
 
             <!-- MODE 2: Realistic Physical Split View -->
-            <div x-show="mode === 'realistic_split'" class="space-y-4 pt-2 border-t border-white/10">
-                <div class="bg-black/30 p-4 rounded-xl border border-white/10 space-y-3">
-                    <div class="text-xs text-slate-300">
-                        <strong>Physical Denomination Division:</strong>
-                        <span class="text-slate-400">Each coin type is divided equally. Valuables (gems, art, bullion) and magic items are individually assigned to character inventories.</span>
+            <div x-show="mode === 'realistic_split'" class="space-y-4 pt-3 border-t border-amber-900/15" style="display: none;">
+                <div class="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-2xs space-y-3.5">
+                    <div class="text-xs text-stone-700">
+                        <strong class="text-slate-900">Physical Denomination Division:</strong>
+                        <span class="text-stone-600">Each coin type is divided equally among selected party members. Valuables (gems, art, bullion) and magic items are individually assigned to character inventories.</span>
                     </div>
 
                     <!-- Physical coins share -->
-                    <div class="p-3 bg-white/5 rounded-lg border border-white/5 space-y-1.5 text-xs">
-                        <div class="text-[11px] font-bold text-indigo-300 uppercase">Physical Coins Per Selected Character:</div>
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+                        <div class="text-[11px] font-bold text-slate-700 uppercase tracking-wider">Physical Coins Per Selected Character:</div>
                         <div class="flex flex-wrap items-center gap-3 text-sm font-black">
-                            <span class="text-slate-200"><span x-text="realisticSplitCoinsPerChar.pp"></span> pp</span>
-                            <span class="text-amber-400"><span x-text="realisticSplitCoinsPerChar.gp"></span> gp</span>
-                            <span class="text-slate-300"><span x-text="realisticSplitCoinsPerChar.sp"></span> sp</span>
-                            <span class="text-orange-400"><span x-text="realisticSplitCoinsPerChar.cp"></span> cp</span>
+                            <span class="px-2.5 py-1 bg-slate-200 text-slate-800 rounded border border-slate-300"><span x-text="realisticSplitCoinsPerChar.pp"></span> pp</span>
+                            <span class="px-2.5 py-1 bg-amber-100 text-amber-900 rounded border border-amber-300"><span x-text="realisticSplitCoinsPerChar.gp"></span> gp</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded border border-slate-300"><span x-text="realisticSplitCoinsPerChar.sp"></span> sp</span>
+                            <span class="px-2.5 py-1 bg-orange-100 text-orange-900 rounded border border-orange-300"><span x-text="realisticSplitCoinsPerChar.cp"></span> cp</span>
                         </div>
-                        <div class="text-[10px] text-slate-400">
-                            Remainder coins (<span x-text="realisticSplitRemainderSp.toFixed(1)"></span> sp equivalent) deposited to Campaign Vault.
+                        <div class="text-[11px] text-stone-500 font-medium">
+                            Remainder coins (<span x-text="realisticSplitRemainderSp.toFixed(1)" class="font-bold text-stone-700"></span> sp equivalent) deposited to Campaign Vault.
                         </div>
                     </div>
 
                     <!-- Discrete Item Assignment Table -->
-                    <div class="space-y-2 pt-2 border-t border-white/5">
-                        <div class="text-xs font-bold text-slate-200">Assign Goods, Valuables &amp; Relics:</div>
-                        <div class="space-y-1.5 max-h-60 overflow-y-auto pr-1">
+                    <div class="space-y-2 pt-2 border-t border-slate-100">
+                        <div class="text-xs font-bold text-stone-900">Assign Goods, Valuables &amp; Relics:</div>
+                        <div class="space-y-2 max-h-60 overflow-y-auto pr-1">
                             <!-- Goods / Valuables -->
                             <template x-for="(g, idx) in (hoard.goods || [])" :key="'g_'+idx">
-                                <div class="flex items-center justify-between gap-3 p-2 bg-white/5 rounded-lg text-xs">
+                                <div class="flex items-center justify-between gap-3 p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs">
                                     <div class="truncate">
-                                        <span class="font-bold text-slate-200" x-text="(g.description || g.Item || 'Trade Good')"></span>
-                                        <span class="text-[10px] text-slate-400 ml-1">(<span x-text="g.value || g.Value || 0"></span> sp, <span x-text="g.weight || 0.1"></span> kg)</span>
+                                        <span class="font-bold text-stone-900" x-text="(g.description || g.Item || 'Trade Good')"></span>
+                                        <span class="text-[11px] text-stone-500 ml-1">(<span x-text="g.value || g.Value || 0" class="font-bold text-amber-900"></span> sp, <span x-text="g.weight || 0.1"></span> kg)</span>
                                     </div>
-                                    <select x-model="assignedGoods[idx]" class="px-2 py-1 bg-slate-800 border border-white/10 rounded text-xs text-white focus:outline-none shrink-0">
+                                    <select x-model="assignedGoods[idx]" class="px-2.5 py-1 bg-white border border-slate-300 rounded text-xs text-stone-900 focus:outline-none focus:ring-1 focus:ring-indigo-500 shrink-0 font-medium">
                                         <option value="vault">Campaign Vault</option>
                                         <template x-for="char in displayCharacters" :key="char.ID">
                                             <option :value="char.ID" x-text="char.Name"></option>
@@ -473,12 +474,12 @@
 
                             <!-- Magic Items -->
                             <template x-for="(mag, idx) in (hoard.magic_items || [])" :key="'m_'+idx">
-                                <div class="flex items-center justify-between gap-3 p-2 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-xs">
+                                <div class="flex items-center justify-between gap-3 p-2.5 bg-indigo-50/50 border border-indigo-200 rounded-lg text-xs">
                                     <div class="truncate">
-                                        <span class="font-bold text-indigo-300">✨ <span x-text="mag.name"></span></span>
-                                        <span class="text-[10px] text-slate-400 ml-1">(<span x-text="mag.value"></span> sp, <span x-text="mag.weight"></span> kg)</span>
+                                        <span class="font-bold text-indigo-950">✨ <span x-text="mag.name"></span></span>
+                                        <span class="text-[11px] text-indigo-700 ml-1">(<span x-text="mag.value" class="font-bold text-amber-900"></span> sp, <span x-text="mag.weight"></span> kg)</span>
                                     </div>
-                                    <select x-model="assignedMagic[idx]" class="px-2 py-1 bg-slate-800 border border-white/10 rounded text-xs text-white focus:outline-none shrink-0">
+                                    <select x-model="assignedMagic[idx]" class="px-2.5 py-1 bg-white border border-indigo-200 rounded text-xs text-stone-900 focus:outline-none focus:ring-1 focus:ring-indigo-500 shrink-0 font-medium">
                                         <option value="vault">Campaign Vault</option>
                                         <template x-for="char in displayCharacters" :key="char.ID">
                                             <option :value="char.ID" x-text="char.Name"></option>
@@ -490,13 +491,13 @@
                     </div>
                 </div>
 
-                <div class="flex justify-end">
+                <div class="flex justify-end pt-1">
                     <button type="button"
                             @click="executeDistribution()"
                             :disabled="distributing || partyCount === 0"
-                            class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-xl text-sm shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-50 border border-indigo-400">
+                            class="btn-rol-secondary text-sm py-2.5 px-6 font-bold shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-50">
                         <span x-show="!distributing">🎒 Distribute Physical Coins &amp; Assign Items</span>
-                        <span x-show="distributing">Distributing to Party...</span>
+                        <span x-show="distributing" class="animate-pulse">Distributing to Party...</span>
                     </button>
                 </div>
             </div>
