@@ -1344,7 +1344,7 @@
     Upon consuming a dose of a drug, the user immediately gains its designated <strong>primary benefit</strong> for the listed duration (typically 1 hour) and suffers its <strong>secondary damage</strong> (e.g., 1d2 Constitution or Wisdom damage).
 </p>
 <ul class="list-disc pl-6 space-y-1 text-sm text-slate-700">
-    <li><strong>Overdose &amp; Acute Toxicity:</strong> Consuming an additional dose of the same drug before the duration of a prior dose has expired triggers an immediate overdose. The user takes double the secondary ability damage, must make an immediate saving throw against the drug's <strong>Stage 4 Crisis</strong> effect, and gains the <em>Sickened</em> (or <em>Nauseated</em>) condition for 1 hour per excess dose.</li>
+    <li><strong>Overdose &amp; Acute Toxicity:</strong> Consuming an additional dose of the same drug before the duration of a prior dose has expired triggers an immediate overdose. The user takes double the secondary ability damage, must defend against an immediate attack based on the drug's <strong>Stage 4 Crisis</strong> effect, and gains the <em>Sickened</em> (or <em>Nauseated</em>) condition for 1 hour per excess dose.</li>
     <li><strong>Tolerance:</strong> Prolonged, habitual use builds metabolic tolerance. A creature at Stage 2 or higher addiction experiences halved primary bonuses or halved durations from standard doses, often tempting them to double dosages and risk fatal overdose. However, chronic exposure grants a +2 metabolic bonus on Fortitude defense against lethal poisons of similar chemical composition.</li>
 </ul>
 
@@ -1366,11 +1366,11 @@
     </div>
     <div class="p-3 bg-amber-100/50 border border-amber-300 rounded-lg text-xs space-y-1">
         <span class="font-bold text-amber-950 block text-sm">Stage 2: Moderate Addiction</span>
-        <p class="text-stone-700">Habitual physiological dependency. The addict requires a dose every 3 days. When deprived, moderate withdrawal sets in: <strong>-2 penalty</strong> on associated ability checks, saving throws, and attack rolls, accompanied by visible tremors, mood swings, or lethargy.</p>
+        <p class="text-stone-700">Habitual physiological dependency. The addict requires a dose every 3 days. When deprived, moderate withdrawal sets in: <strong>-2 penalty</strong> on associated ability checks, Fort/Ref/Will, and attack rolls, accompanied by visible tremors, mood swings, or lethargy.</p>
     </div>
     <div class="p-3 bg-rose-50/60 border border-rose-300 rounded-lg text-xs space-y-1">
         <span class="font-bold text-rose-950 block text-sm">Stage 3: Severe / Chronic Addiction</span>
-        <p class="text-stone-700">Debilitating physical dependence. The addict must consume a dose every 24 hours. When deprived, severe withdrawal agony takes hold: <strong>-4 penalty</strong> on all ability checks, saving throws, and defenses, persistent <em>Fatigue</em> or <em>Shaken</em> condition, and 1 point of Constitution damage per day deprived.</p>
+        <p class="text-stone-700">Debilitating physical dependence. The addict must consume a dose every 24 hours. When deprived, severe withdrawal agony takes hold: <strong>-4 penalty</strong> on all ability checks and defenses, persistent <em>Fatigue</em> or <em>Shaken</em> condition, and 1 point of Constitution damage per day deprived.</p>
     </div>
     <div class="p-3 bg-red-100/60 border border-red-400 rounded-lg text-xs space-y-1">
         <span class="font-bold text-red-950 block text-sm">Stage 4: Overdose / Crisis / Terminal Collapse</span>

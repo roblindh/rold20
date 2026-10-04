@@ -219,7 +219,7 @@
 <?php show_elmods(); ?> 
 
 <p>
-    As demonstrated in the calculation tables above, a balanced challenge for four characters of a given Creature Level (CL) is typically two opponents of equal CL, or a single formidable opponent of <code>CL + 2</code>.
+    As demonstrated in the calculation tables above, a balanced challenge for four characters of a given Challenge Level (CL) is typically two opponents of equal CL, or a single formidable opponent of <code>CL + 2</code>.
 </p>
 
 <h4>Experience for Work</h4>

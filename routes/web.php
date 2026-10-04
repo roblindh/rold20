@@ -42,37 +42,37 @@ Route::get('/legal', [RulesController::class, 'legal']);
 Route::prefix('reference')->name('reference.')->group(function () {
     Route::get('/skills', [ReferenceController::class, 'skills'])->name('skills');
     Route::get('/skills/list', [ReferenceController::class, 'skillsList'])->name('skills.list');
-    Route::get('/skills/{name}', [ReferenceController::class, 'showSkill'])->name('skills.show');
+    Route::get('/skills/{name}', [ReferenceController::class, 'showSkill'])->where('name', '.*')->name('skills.show');
 
     Route::get('/spells', [ReferenceController::class, 'spells'])->name('spells');
     Route::get('/spells/list', [ReferenceController::class, 'spellsList'])->name('spells.list');
     Route::get('/spells/by-skill', [ReferenceController::class, 'spellsBySkill'])->name('spells.by-skill');
-    Route::get('/spells/{name}', [ReferenceController::class, 'showSpell'])->name('spells.show');
+    Route::get('/spells/{name}', [ReferenceController::class, 'showSpell'])->where('name', '.*')->name('spells.show');
 
     Route::get('/creatures', [ReferenceController::class, 'creatures'])->name('creatures');
     Route::get('/creatures/list', [ReferenceController::class, 'creaturesList'])->name('creatures.list');
     Route::get('/creatures/{id}/statblock', [ReferenceController::class, 'creatureStatBlock'])->whereNumber('id')->name('creatures.statblock');
     Route::get('/creatures/scripts/getstatblock.php', [ReferenceController::class, 'creatureStatBlockLegacy']);
-    Route::get('/creatures/{name}', [ReferenceController::class, 'showCreature'])->name('creatures.show');
+    Route::get('/creatures/{name}', [ReferenceController::class, 'showCreature'])->where('name', '.*')->name('creatures.show');
 
     Route::get('/equipment', [ReferenceController::class, 'equipment'])->name('equipment');
     Route::get('/equipment/list', [ReferenceController::class, 'equipmentList'])->name('equipment.list');
-    Route::get('/equipment/{name}', [ReferenceController::class, 'showEquipment'])->name('equipment.show');
+    Route::get('/equipment/{name}', [ReferenceController::class, 'showEquipment'])->where('name', '.*')->name('equipment.show');
 
     Route::get('/actions', [ReferenceController::class, 'actions'])->name('actions');
     Route::get('/actions/list', [ReferenceController::class, 'actionsList'])->name('actions.list');
-    Route::get('/actions/{name}', [ReferenceController::class, 'showAction'])->name('actions.show');
+    Route::get('/actions/{name}', [ReferenceController::class, 'showAction'])->where('name', '.*')->name('actions.show');
 
     Route::get('/cultures', [ReferenceController::class, 'cultures'])->name('cultures');
     Route::get('/cultures/list', [ReferenceController::class, 'culturesList'])->name('cultures.list');
-    Route::get('/cultures/{name}', [ReferenceController::class, 'showCulture'])->name('cultures.show');
+    Route::get('/cultures/{name}', [ReferenceController::class, 'showCulture'])->where('name', '.*')->name('cultures.show');
 
     Route::get('/other', [ReferenceController::class, 'other'])->name('other');
     Route::get('/other/list', [ReferenceController::class, 'otherList'])->name('other.list');
-    Route::get('/other/{name}', [ReferenceController::class, 'showOther'])->name('other.show');
+    Route::get('/other/{name}', [ReferenceController::class, 'showOther'])->where('name', '.*')->name('other.show');
     Route::get('/conditions', [ReferenceController::class, 'other']);
     Route::get('/conditions/list', [ReferenceController::class, 'otherList']);
-    Route::get('/conditions/{name}', [ReferenceController::class, 'showOther']);
+    Route::get('/conditions/{name}', [ReferenceController::class, 'showOther'])->where('name', '.*');
     Route::get('/poisons', fn() => redirect('/reference/other?type=3'));
     Route::get('/diseases', fn() => redirect('/reference/other?type=4'));
     Route::get('/drugs', fn() => redirect('/reference/other?type=6'));

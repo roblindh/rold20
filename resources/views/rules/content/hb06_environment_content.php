@@ -1,4 +1,13 @@
 <h2 id="EnvironmentRules">Rules of Environment</h2>
+<p>
+    Beyond the immediate clash of swords and spells lies the vast and unforgiving world itself. The environment is not merely a static backdrop for adventure, but an active, dynamic force that tests heroes at every step. From treacherous subterranean chasms and burning volcanic wastes to uncharted primeval forests and tempestuous oceans, the physical realm demands vigilance, physical endurance, and careful resource management from every explorer.
+</p>
+<p>
+    This chapter details the comprehensive rules governing travel, survival, and environmental interaction. It establishes tactical grid movement, daily overland marches, and speed conversions alongside realistic rules for biological necessities—such as hunger, thirst, oxygen consumption, and sleep deprivation. Adventurers must navigate hazardous terrain, weather extremes, varying illumination levels, lethal falls, crushing cave-ins, and complex architectural traps that guard ancient dungeons and fortress ruins.
+</p>
+<p>
+    When journeys venture beyond solid ground, specialized rules provide guidance for mid-air flight, aerial maneuverability, and submerged aquatic combat where pressure, currents, and water drag transform physical and magical encounters. Finally, the chapter unveils the grand architecture of the Multiverse—mapping the physical elemental sphere, the spiritual planes of alignment and belief, the intervening Astral and Ethereal dimensions, and the fluctuating ambient magic levels that define existence across the cosmos.
+</p>
 
 <h3 id="Movement">Movement and Travel</h3>
 <h4>Speed</h4>

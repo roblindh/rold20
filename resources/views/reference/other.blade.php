@@ -54,7 +54,7 @@
             <span>🧪</span> Staged Condition Progression &amp; Affliction Rules
         </div>
         <p class="leading-relaxed text-stone-700">
-            Staged conditions represent afflictions that evolve through successive phases based on recurring saving throws:
+            Staged conditions represent afflictions that evolve through successive phases based on recurring attack rolls against Fort/Ref/Will:
         </p>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 pt-1">
             <div class="parchment-inset p-3 rounded-lg shadow-xs">

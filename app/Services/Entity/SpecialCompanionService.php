@@ -487,7 +487,7 @@ class SpecialCompanionService
         if ($baseRL > $typeData['max_cl']) {
             return [
                 'success' => false,
-                'message' => "Base creature level (CL {$baseRL}) exceeds character's maximum allowed companion level (CL {$typeData['max_cl']}).",
+                'message' => "Base Challenge level (CL {$baseRL}) exceeds character's maximum allowed companion level (CL {$typeData['max_cl']}).",
             ];
         }
 

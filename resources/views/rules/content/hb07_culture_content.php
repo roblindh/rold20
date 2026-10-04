@@ -1,6 +1,12 @@
 <h2 id="Culture">Rules of Culture</h2>
 <p>
-    Culture, social standing, and personal networks shape how characters interact with civilization, law, economy, and power structures. While combat and adventuring skills measure physical or magical prowess, a character's place within their family, faction, community, and realm determines their broader influence on the world.
+    While martial prowess and magical mastery define how adventurers survive dungeons and battlefields, their place within civilization determines their enduring legacy upon the realm. Heroes do not operate in a vacuum; they belong to families, swear oaths to knightly fellowships, navigate urban syndicates, worship in grand temples, and answer to the laws and courts of sovereign nations. Culture, social standing, and institutional ties form the living tapestry in which every campaign unfolds.
+</p>
+<p>
+    This chapter provides the framework for navigating the social, political, and economic structures of civilized realms. It codifies key social characteristics—Social Class (SC), Wealth Class (WC), Reputation, and Influence—enabling characters to leverage earned prestige into tangible political capital. Adventurers can forge deep networks with contacts, hire professional retainers, bond with extraordinary companions and familiars, and rise through the hierarchical ranks of powerful organizations, from local craft guilds to multiversal cabals.
+</p>
+<p>
+    Furthermore, this chapter explores the societal pillars that maintain order across kingdoms and city-states: legal codes and trials by combat, municipal government structures, international trade and currencies, divine pantheons and clerical domains, grand chivalric tournaments, and formal arcane spell duels. It also introduces the dual progression of Physical Technology Levels (TL) and Metaphysical Technology Levels (MTL), establishing how mundane engineering and high magic coexist across diverse campaign settings.
 </p>
 
 <h3 id="Connections">Connections</h3>
@@ -46,7 +52,7 @@
 <ul>
     <li><strong>Animal Companions:</strong> Gained through the <em>Animal Companion</em> skill (inspired by druids and rangers), this mystical affinity attracts one or more natural animals into devoted service.
         <ul>
-            <li><em>Creature Limit:</em> The total Creature Level (CL) sum of all active animal companions cannot exceed the master's <code>(skill level &minus; 1)</code>.</li>
+            <li><em>Creature Limit:</em> The total Challenge Level (CL) sum of all active animal companions cannot exceed the master's <code>(skill level &minus; 1)</code>.</li>
             <li><em>Empathy &amp; Handling:</em> The master can handle and command their companion via verbal commands as a free action (0 AP cost) through Animal Empathy.</li>
             <li><em>Shared Magic:</em> Any spell the master casts on themselves can automatically affect the animal companion if within 1 square (at no extra cost; the effect ends if the companion moves more than 1 square away).</li>
             <li><em>Calling &amp; Dismissal:</em> Attracting a new animal companion requires a 24-hour ritual and meditation in an appropriate natural habitat (via <em>Call Animal Companion</em>). Releasing a companion is instantaneous (via <em>Dismiss Animal Companion</em>).</li>

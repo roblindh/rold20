@@ -503,7 +503,7 @@ class AdventureGenerator
     }
 
     /**
-     * Parse fractional creature levels like "1/2", "1/3", "1/4" to integer 0 (or 1).
+     * Parse fractional challenge levels like "1/2", "1/3", "1/4" to integer 0 (or 1).
      */
     protected static function parseFractionLevel(string $str): int
     {

@@ -74,7 +74,7 @@
     <!-- Attack / Saving Check Banner -->
     @if(!empty($spell->AttackCheck))
         <div class="bg-slate-100/80 border border-slate-300 rounded-xl p-4">
-            <span class="text-xs uppercase font-bold text-slate-500 tracking-wider block">Attack Check / Saving Throw:</span>
+            <span class="text-xs uppercase font-bold text-slate-500 tracking-wider block">Attack Check:</span>
             <div class="text-sm font-bold text-slate-900 font-mono mt-0.5">{!! \App\Helpers\RolLink::formatText($spell->AttackCheck) !!}</div>
         </div>
     @endif

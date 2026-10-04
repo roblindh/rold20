@@ -1,6 +1,12 @@
 <h2 id="Magic">Rules of Magic</h2>
 <p>
-    Magic plays a vital part in RoL d20, encompassing a rich spectrum of supernatural disciplines. A wizard's blazing fireball, a cleric's restorative prayer, a druid shifting into the form of a dire wolf, a dragon's fiery breath, and a mind flayer's psionic blast are all distinct manifestations of magical energy.
+    Magic represents the fundamental art and science of bending the fabric of reality through willpower, arcane knowledge, divine communion, and mental discipline. In RoL d20, supernatural power encompasses a rich spectrum of diverse traditions: wizards and sorcerers channeling planar currents through arcane formulae, clerics and druids petitioning deities and primal natural spirits, and psionic manifesters awakening the latent metaphysical energies of the conscious mind and soul.
+</p>
+<p>
+    Casting in RoL d20 breaks free from rigid Vancian spell slots and restrictive daily memorization. Spells and powers are powered by a flexible pool of Power Points (PP) and governed by open-ended activation checks. Casters can dynamically modulate their spells on the fly—expanding areas of effect, amplifying ranges, prolonging durations, or investing Action Points to boost penetration against counterspells or dampen mystical signatures to evade detection.
+</p>
+<p>
+    Beyond momentary spellcasting, this chapter establishes the deeper metaphysical principles of the cosmos. Discover how ambient magic levels shape reality, how anti-magic and wild magic zones alter spellcraft, and how disembodied souls interact with astral projection, possession, and undeath. Additionally, it details the utilization of <em>Residuum</em> as crystallized life force, the creation and identification of permanent magic items, and the resonant foci, scrolls, potions, and psionic tattoos that heroes wield across their epic journeys.
 </p>
 
 <h3 id="MagicTypes">Types and Sources of Magic</h3>
@@ -80,6 +86,13 @@
 <p>
     <strong>Standard Scribe Capacity &amp; Costs:</strong> The length of a spell's written transcription equals its maximum possible Power Point cost (adding all variations and maximum parameters, capped at a maximum of 30 pages). Transcribing each page costs <strong>20 silver pieces (sp)</strong> and requires <strong>2 hours</strong> of dedicated scribe work. A standard grimoire contains up to 300 pages.
 </p>
+
+<div class="related-ref-box">
+    <div class="related-ref-title">⚡ Related Action:</div>
+    <div class="related-ref-links">
+        <a href="/reference/actions/Learn%20Spell" class="related-ref-link">⚡ Learn Spell</a>
+    </div>
+</div>
 
 <h3 id="CastingSpells">Casting Spells and Using Supernatural Powers</h3>
 <p>
@@ -384,6 +397,14 @@
     </div>
 </div>
 
+<div class="related-ref-box">
+    <div class="related-ref-title">⚡ Related Actions:</div>
+    <div class="related-ref-links">
+        <a href="/reference/actions/Cast%20Spell" class="related-ref-link">⚡ Cast Spell</a>
+        <a href="/reference/actions/Counterspell" class="related-ref-link">⚡ Counterspell</a>
+    </div>
+</div>
+
 <h3 id="CircleMagic">Circle Magic</h3>
 <p>
     Multiple spellcasters or psionicists with sufficient ranks in <em>Spellcraft</em> can join in cooperative ritual circles to channel immense magical energy:
@@ -398,6 +419,13 @@
 <p>
     The spells and psionic powers detailed in the rules catalog represent standardized, widely taught formulas. Arcane scholars, devout hierarchs, and enlightened psions can engage in scholarly research during extended downtime to invent entirely new spells, develop novel variations, or customize unique supernatural manifestations tailored to their known skills.
 </p>
+
+<div class="related-ref-box">
+    <div class="related-ref-title">⚡ Related Action:</div>
+    <div class="related-ref-links">
+        <a href="/reference/actions/Research%20Spell" class="related-ref-link">⚡ Research Spell</a>
+    </div>
+</div>
 
 <h3 id="Metaphysics">Metaphysics</h3>
 <p>
@@ -781,3 +809,12 @@
     <div><strong>Animated Constructs (gp):</strong> (Construct CL&sup2; + Minimum PL &times; Actual PL) &times; 200 + Mundane Vessel Cost</div>
     <div><strong>Other Magic Items (gp):</strong> Minimum PL &times; Actual PL &times; 100 + Mundane Item Cost</div>
 </div>
+
+<div class="related-ref-box">
+    <div class="related-ref-title">✨ Related Skills &amp; Actions:</div>
+    <div class="related-ref-links">
+        <a href="/reference/skills/Enchant%20Item" class="related-ref-link">📜 Enchant Item (Skill)</a>
+        <a href="/reference/actions/Enchant%20Item" class="related-ref-link">⚡ Enchant Item (Action)</a>
+    </div>
+</div>
+

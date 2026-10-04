@@ -1,4 +1,13 @@
 <h2 id="Combat">Rules of Combat</h2>
+<p>
+    Combat in RoL d20 is a fast-paced, fluid, and tactical simulation of life-or-death martial encounters. Rather than relying on rigid, turn-based turn structures or static defenses, combat is driven by dynamic Action Point (AP) expenditure, flexible Movement Point (MP) maneuverability, and active defensive reactions such as parrying and attacks of opportunity. Every split-second tactical choice—from delivering an aggressive two-handed cleave to executing a calculated defensive feint—directly influences the momentum and outcome of the battlefield.
+</p>
+<p>
+    Central to RoL d20 is a realistic, unified paradigm for resolving attacks and defense. Attacks target a defender's active or passive Defense Class (DeC), Reflexes, Fortitude, or Willpower, while equipped armor and natural toughness provide true Damage Resistance (DR) that absorbs and deflects incoming physical trauma rather than making a combatant harder to touch. Martial prowess scales both offensively and defensively, ensuring that skilled warriors can reliably breach enemy guards while deflecting incoming blows with equal finesse.
+</p>
+<p>
+    This chapter details the complete rules governing tactical engagements, ranging from standard melee strikes, ranged marksmanship, and akimbo dual-wielding to supernatural rays, touch powers, area explosions, and psychic onslaughts. Furthermore, comprehensive systems for weapon size superiority, combat modifiers, diverse physical and energy damage types, mounted and vehicular combat, and psychological morale ensure that clashes—from chaotic tavern brawls to grand military sieges—resolve with tactical depth, clarity, and visceral excitement.
+</p>
 
 <h3 id="AttackTypes">Combat Attack Actions</h3>
 <p>
@@ -56,8 +65,8 @@
 <ul class="space-y-1.5 my-2">
     <li><strong>Strength Modifier:</strong> Strength modifies the damage of melee weapons, thrown weapons, and heavy composite bows. Wielding a weapon with two hands increases the applied Strength modifier by <strong>+2</strong>. A Strength bonus cannot exceed the maximum possible roll on the weapon's base damage dice (for example, a dagger with base 1d4 damage can receive at most a +4 Strength modifier; a greatsword with base 2d6 damage can receive up to +12).</li>
     <li><strong>Minimum Damage:</strong> Penalties and negative modifiers can reduce weapon damage, but a successful hit always deals at least <strong>1 HP</strong> (or 1 SP).</li>
-    <li><strong>Exceptional Hits:</strong> An exceptional success (beating defense by 5–9) or better halves the target's Damage Resistance (DR).</li>
-    <li><strong>Critical Hits:</strong> A critical success (beating defense by 10+) multiplies total damage by the weapon's critical multiplier (default <strong>&times;2</strong> unless specified otherwise). The multiplier applies to base weapon damage and all flat modifiers (such as Strength and AP boosts), but does <em>not</em> multiply bonus damage dice (such as sneak attack or flaming weapon dice). All damage types (HP, SP, PP, and ability damage) are multiplied.</li>
+    <li><strong>Exceptional Hits:</strong> An exceptional success or better halves the target's Damage Resistance (DR).</li>
+    <li><strong>Critical Hits:</strong> A critical success multiplies total damage by the weapon's critical multiplier (default <strong>&times;2</strong> unless specified otherwise). The multiplier applies to base weapon damage and all flat modifiers (such as Strength and AP boosts), but does <em>not</em> multiply bonus damage dice (such as sneak attack or flaming weapon dice). All damage types (HP, SP, PP, and ability damage) are multiplied.</li>
     <li><strong>Burning &amp; Heated Weapons:</strong> Weapons enveloped in flame or glowing hot deal an additional <strong>1d2 to 1d4 fire damage</strong> depending on heat intensity.</li>
 </ul>
 
@@ -80,7 +89,7 @@
     <li><strong>Target Limits &amp; Dismissal:</strong> Each attack swing consumes one target charge, regardless of whether the attack hits. Unused charges remain active until all charges are expended, the instigator dismisses them, or the instigator begins a new action requiring concentration.</li>
     <li><strong>Penetrating Defenses:</strong> Supernatural effects delivered by touch or reach require a successful hit against DeC, but their magical/supernatural payload bypasses physical Damage Resistance (DR) unless physical weapon damage is also dealt.</li>
     <li><strong>Exceptional &amp; Critical Hits:</strong> Exceptional hits halve any applicable energy resistance. Critical hits double the resulting supernatural effect or damage.</li>
-    <li><strong>Targeting Fortitude or Will via Touch:</strong> When a touch or reach attack delivers an effect that normally targets Fortitude or Willpower, the attack against DeC replaces the saving defense check, and the wielder's weapon skill replaces <em>Weapons - Body &amp; Mind</em>.</li>
+    <li><strong>Targeting Fortitude or Will via Touch:</strong> When a touch or reach attack delivers an effect that normally targets Fortitude or Willpower, the attack against DeC replaces the attack aginst Fort/Ref/Will, and the wielder's weapon skill replaces <em>Weapons - Body &amp; Mind</em>.</li>
 </ul>
 
 <h4>Ray Attacks</h4>
@@ -112,6 +121,20 @@
     <li><strong>Critical Success:</strong> A critical success amplifies the effect, extending duration, inflicting maximum damage, or imposing secondary debilitating conditions.</li>
 </ul>
 
+<div class="related-ref-box">
+    <div class="related-ref-title">⚡ Related Actions:</div>
+    <div class="related-ref-links">
+        <a href="/reference/actions/Melee%20Attack" class="related-ref-link">⚡ Melee Attack</a>
+        <a href="/reference/actions/Ranged%20Attack" class="related-ref-link">⚡ Ranged Attack</a>
+        <a href="/reference/actions/Reload%20Projectile%20Weapon" class="related-ref-link">⚡ Reload Projectile Weapon</a>
+        <a href="/reference/actions/Charge%20Attack" class="related-ref-link">⚡ Charge Attack</a>
+        <a href="/reference/actions/Initiate%20Grapple" class="related-ref-link">⚡ Initiate Grapple</a>
+        <a href="/reference/actions/Grapple%20Attack" class="related-ref-link">⚡ Grapple Attack</a>
+        <a href="/reference/actions/Bull%20Rush" class="related-ref-link">⚡ Bull Rush</a>
+        <a href="/reference/actions/Overrun" class="related-ref-link">⚡ Overrun</a>
+    </div>
+</div>
+
 <h3 id="CombatReactions">Combat Reactions</h3>
 
 <h4 id="AoO">Attacks of Opportunity</h4>
@@ -129,6 +152,13 @@
 <p>
     A combatant who is not flat-footed and wields a ready weapon or primary attack form capable of a melee attack costing <strong>9 AP or less</strong> may expend a reaction to parry an incoming melee strike, using its weapon skill and parry bonuses to deflect the blow.
 </p>
+
+<div class="related-ref-box">
+    <div class="related-ref-title">⚡ Related Action:</div>
+    <div class="related-ref-links">
+        <a href="/reference/actions/Parry%20Melee%20Attack" class="related-ref-link">⚡ Parry Melee Attack</a>
+    </div>
+</div>
 
 <h3 id="CombatSkills">Combat Skills</h3>
 <p>
@@ -340,6 +370,14 @@
     Akimbo combat accommodates versatile fighting styles: classic twin daggers, sword and shield bash, dual scimitars, a monk's staff sweep and flying kick, a drow hand crossbow shot combined with a rapier thrust, or a dragon's simultaneous bite, claw, and tail attacks.
 </p>
 
+<div class="related-ref-box">
+    <div class="related-ref-title">⚔️ Related Skills &amp; Actions:</div>
+    <div class="related-ref-links">
+        <a href="/reference/skills/Fighting%20Style%20-%20Akimbo" class="related-ref-link">📜 Fighting Style - Akimbo</a>
+        <a href="/reference/actions/Akimbo%20Attack" class="related-ref-link">⚡ Akimbo Attack</a>
+    </div>
+</div>
+
 <h4 id="MountedCombat">Mounted Combat</h4>
 <p>
     War-trained mounts and natural predators navigate battlefields instinctively under their rider's guidance. Untrained mounts require active <em>Ride</em> checks for all tactical maneuvers and combat actions.
@@ -356,6 +394,14 @@
     <li><strong>Mount Spacing &amp; Reach:</strong> The mount's footprint defines space for both creatures. Opportunity attacks provoked by movement can target either mount or rider. Attacks targeting smaller foes benefit from higher-ground bonuses.</li>
     <li><strong>Forced Movement:</strong> Any effect that forcibly moves the rider immediately dismounts and unseats them.</li>
 </ul>
+
+<div class="related-ref-box">
+    <div class="related-ref-title">⚔️ Related Skills &amp; Actions:</div>
+    <div class="related-ref-links">
+        <a href="/reference/skills/Riding" class="related-ref-link">📜 Riding</a>
+        <a href="/reference/actions/Mounted%20Attack" class="related-ref-link">⚡ Mounted Attack</a>
+    </div>
+</div>
 
 <h4 id="VehicleCombat">Vehicle Combat</h4>
 <p>
@@ -376,6 +422,14 @@
     <li><strong>Movement Reactions:</strong> Opportunity attacks provoked by vehicle movement can target the vehicle structure or exposed passengers within reach.</li>
 </ul>
 
+<div class="related-ref-box">
+    <div class="related-ref-title">⚔️ Related Skills &amp; Actions:</div>
+    <div class="related-ref-links">
+        <a href="/reference/skills/Profession" class="related-ref-link">📜 Profession</a>
+        <a href="/reference/actions/Drive/Pilot%20Vehicle" class="related-ref-link">⚡ Drive/Pilot Vehicle</a>
+    </div>
+</div>
+
 <h3 id="Morale">Morale</h3>
 <p>
     High-stakes battles, terrifying supernatural entities, and severe losses require morale checks to determine whether combatants stand their ground, surrender, or rout in panic. A morale check is resolved as an attack against the creature's Willpower defense (<em>Will</em>) and is classified as a <code>[Fear]</code> effect (with applicable [Fear] resistances and immunities applied).
@@ -387,3 +441,11 @@
 <?php show_moralemods(); ?> 
 
 <?php show_moraleresults(); ?> 
+
+<div class="related-ref-box">
+    <div class="related-ref-title">⚔️ Related Skills &amp; Actions:</div>
+    <div class="related-ref-links">
+        <a href="/reference/skills/Warfare" class="related-ref-link">📜 Warfare</a>
+        <a href="/reference/actions/Rally%20Troops" class="related-ref-link">⚡ Rally Troops</a>
+    </div>
+</div> 

@@ -41,7 +41,7 @@
             </div>
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
                 <span class="font-bold text-slate-900 block mb-0.5">Defense Class (DeC)</span>
-                <span class="text-slate-600">Includes Active Defense (DeCa) and Passive Defense (DeCp), along with critical hit resistance and saving throws.</span>
+                <span class="text-slate-600">Includes Active Defense (DeCa) and Passive Defense (DeCp), along with critical hit resistance and Fort/Ref/Will.</span>
             </div>
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
                 <span class="font-bold text-slate-900 block mb-0.5">Stat Blocks</span>
