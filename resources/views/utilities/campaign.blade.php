@@ -744,12 +744,12 @@
                             </div>
                             @if($isMyCamp)
                                 <div class="flex items-center gap-2">
-                                    <button type="button" @click="openSellVaultModal()"
+                                    <button type="button" @click.stop="openSellVaultModal()"
                                             @if(count($vaultItems) === 0) disabled @endif
                                             class="btn-rol-secondary text-xs py-1.5 px-3.5 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
                                         <span>💰</span> Sell Items
                                     </button>
-                                    <button type="button" @click="openAwardModal()" class="btn-rol-primary text-xs py-1.5 px-3.5 shadow-sm cursor-pointer">
+                                    <button type="button" @click.stop="openAwardModal()" class="btn-rol-primary text-xs py-1.5 px-3.5 shadow-sm cursor-pointer">
                                         <span>🎁</span> Grant XP &amp; Treasure
                                     </button>
                                 </div>
@@ -776,7 +776,7 @@
                             <div class="flex items-center justify-between">
                                 <h4 class="text-xs font-bold uppercase text-stone-700 tracking-wider">Vault Inventory ({{ count($vaultItems) }} items):</h4>
                                 @if($isMyCamp && count($vaultItems) > 0)
-                                    <button type="button" @click="openSellVaultModal()"
+                                    <button type="button" @click.stop="openSellVaultModal()"
                                             class="text-xs font-bold text-emerald-700 hover:text-emerald-900 underline flex items-center gap-1 cursor-pointer">
                                         <span>💰</span> Liquidate / Sell Vault Items
                                     </button>
@@ -1709,117 +1709,117 @@
             </form>
         </div>
     </div>
-</div>
 
-<!-- ============================================================= -->
-<!-- SELL VAULT ITEMS MODAL (LIQUIDATION TO VAULT TREASURY)        -->
-<!-- ============================================================= -->
-<div x-show="showSellVaultModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4" style="display: none;">
-    <div class="bg-white rounded-2xl max-w-2xl w-full border border-slate-200 shadow-2xl p-6 space-y-4" @click.away="showSellVaultModal = false">
-        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-            <div class="flex items-center gap-2.5">
-                <span class="text-2xl">💰</span>
-                <div>
-                    <h3 class="font-bold text-slate-900 text-base">Liquidate &amp; Sell Campaign Vault Items</h3>
-                    <p class="text-xs text-slate-500">Sell shared loot and recovered items to settlement merchants in <strong x-text="sellVaultPartyLocation"></strong>.</p>
+    <!-- ============================================================= -->
+    <!-- SELL VAULT ITEMS MODAL (LIQUIDATION TO VAULT TREASURY)        -->
+    <!-- ============================================================= -->
+    <div x-show="showSellVaultModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showSellVaultModal = false">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full border border-slate-300 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto p-6 space-y-4" @click.outside="showSellVaultModal = false">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-2xl">💰</span>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base">Liquidate &amp; Sell Campaign Vault Items</h3>
+                        <p class="text-xs text-slate-500">Sell shared loot and recovered items to settlement merchants in <strong x-text="sellVaultPartyLocation"></strong>.</p>
+                    </div>
                 </div>
-            </div>
-            <button type="button" @click="showSellVaultModal = false" class="text-slate-400 hover:text-slate-600 font-bold text-lg cursor-pointer">&times;</button>
-        </div>
-
-        <!-- Merchant Settings & Rules -->
-        <div class="bg-amber-50/80 p-3.5 rounded-xl border border-amber-300 space-y-2.5">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-200/80 pb-2">
-                <div>
-                    <span class="font-bold text-amber-950 text-xs flex items-center gap-1">
-                        <span>🏪</span> Settlement Merchant Economics
-                    </span>
-                    <p class="text-[11px] text-stone-600">
-                        Manufactured gear (50%), gems &amp; bullion (100%), or black market fence (25%).
-                    </p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <label class="text-[10px] font-bold text-slate-700 uppercase">Merchant:</label>
-                    <select x-model="sellVaultShopType" class="px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-xs text-black font-medium">
-                        <option value="general">🏪 Standard Merchant (50% gear, 100% gems)</option>
-                        <option value="jeweler">💎 Jeweler &amp; Reliquary (100% gems, 50% gear)</option>
-                        <option value="fence">🕶️ Black Market / Fence (25% all goods)</option>
-                    </select>
-                </div>
+                <button type="button" @click="showSellVaultModal = false" class="text-slate-400 hover:text-slate-600 font-bold text-lg cursor-pointer">&times;</button>
             </div>
 
-            <!-- Filters & Search -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                <div class="flex items-center gap-2 flex-1">
-                    <input type="text" x-model="sellVaultSearchQuery" placeholder="Search vault items..." class="px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-xs text-black flex-1">
-                    <select x-model="sellVaultFilterType" class="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs text-black">
-                        <option value="all">All Vault Items (<span x-text="sellVaultItems.length"></span>)</option>
-                        <option value="valuables">💎 Valuables &amp; Bullion Only (<span x-text="sellVaultItems.filter(it => isVaultValuable(it)).length"></span>)</option>
-                        <option value="gear">⚔️ Weapons, Armor &amp; Gear Only (<span x-text="sellVaultItems.filter(it => !isVaultValuable(it)).length"></span>)</option>
-                    </select>
+            <!-- Merchant Settings & Rules -->
+            <div class="bg-amber-50/80 p-3.5 rounded-xl border border-amber-300 space-y-2.5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-200/80 pb-2">
+                    <div>
+                        <span class="font-bold text-amber-950 text-xs flex items-center gap-1">
+                            <span>🏪</span> Settlement Merchant Economics
+                        </span>
+                        <p class="text-[11px] text-stone-600">
+                            Manufactured gear (50%), gems &amp; bullion (100%), or black market fence (25%).
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label class="text-[10px] font-bold text-slate-700 uppercase">Merchant:</label>
+                        <select x-model="sellVaultShopType" class="px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-xs text-black font-medium">
+                            <option value="general">🏪 Standard Merchant (50% gear, 100% gems)</option>
+                            <option value="jeweler">💎 Jeweler &amp; Reliquary (100% gems, 50% gear)</option>
+                            <option value="fence">🕶️ Black Market / Fence (25% all goods)</option>
+                        </select>
+                    </div>
                 </div>
-                <button type="button" @click="toggleAllVaultSelection()" class="text-indigo-700 hover:text-indigo-900 font-bold underline cursor-pointer shrink-0">
-                    <span x-text="selectedVaultItemsToSell.length === filteredVaultToSell.length ? 'Deselect All' : 'Select All Filtered'"></span>
-                </button>
+
+                <!-- Filters & Search -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                    <div class="flex items-center gap-2 flex-1">
+                        <input type="text" x-model="sellVaultSearchQuery" placeholder="Search vault items..." class="px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-xs text-black flex-1">
+                        <select x-model="sellVaultFilterType" class="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs text-black">
+                            <option value="all">All Vault Items (<span x-text="sellVaultItems.length"></span>)</option>
+                            <option value="valuables">💎 Valuables &amp; Bullion Only (<span x-text="sellVaultItems.filter(it => isVaultValuable(it)).length"></span>)</option>
+                            <option value="gear">⚔️ Weapons, Armor &amp; Gear Only (<span x-text="sellVaultItems.filter(it => !isVaultValuable(it)).length"></span>)</option>
+                        </select>
+                    </div>
+                    <button type="button" @click="toggleAllVaultSelection()" class="text-indigo-700 hover:text-indigo-900 font-bold underline cursor-pointer shrink-0">
+                        <span x-text="selectedVaultItemsToSell.length === filteredVaultToSell.length ? 'Deselect All' : 'Select All Filtered'"></span>
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <!-- Toast / Message -->
-        <div x-show="sellVaultToastMessage" x-text="sellVaultToastMessage" class="p-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-lg text-xs font-bold shadow-xs"></div>
-        <div x-show="sellVaultError" x-text="sellVaultError" class="p-2.5 bg-rose-100 text-rose-900 border border-rose-300 rounded-lg text-xs font-bold shadow-xs"></div>
+            <!-- Toast / Message -->
+            <div x-show="sellVaultToastMessage" x-text="sellVaultToastMessage" class="p-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-lg text-xs font-bold shadow-xs"></div>
+            <div x-show="sellVaultError" x-text="sellVaultError" class="p-2.5 bg-rose-100 text-rose-900 border border-rose-300 rounded-lg text-xs font-bold shadow-xs"></div>
 
-        <template x-if="filteredVaultToSell.length === 0">
-            <div class="p-8 text-center text-slate-400 italic bg-slate-50 rounded-xl border border-slate-200">
-                No items in the Campaign Vault match your search or filter.
-            </div>
-        </template>
+            <template x-if="filteredVaultToSell.length === 0">
+                <div class="p-8 text-center text-slate-400 italic bg-slate-50 rounded-xl border border-slate-200">
+                    No items in the Campaign Vault match your search or filter.
+                </div>
+            </template>
 
-        <!-- Items to Sell List -->
-        <div class="space-y-1.5 max-h-72 overflow-y-auto pr-1" x-show="filteredVaultToSell.length > 0">
-            <template x-for="(item, vIdx) in filteredVaultToSell" :key="item.uid || item.id || vIdx">
-                <label class="bg-white border hover:border-emerald-400 p-2.5 rounded-lg flex items-center justify-between gap-3 shadow-2xs transition cursor-pointer"
-                       :class="selectedVaultItemsToSell.includes(item.uid || item.id || vIdx) ? 'border-emerald-500 bg-emerald-50/40 ring-1 ring-emerald-400' : 'border-slate-200'">
-                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                        <input type="checkbox" :value="item.uid || item.id || vIdx" x-model="selectedVaultItemsToSell" class="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer">
-                        <div class="min-w-0 flex-1">
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="font-bold text-slate-900 truncate" x-text="item.name || item.Name || 'Item'"></span>
-                                <template x-if="isVaultValuable(item)">
-                                    <span class="text-[9px] px-1.5 py-0.2 bg-emerald-100 text-emerald-800 rounded font-bold">💎 Valuable (100%)</span>
-                                </template>
-                                <template x-if="!isVaultValuable(item)">
-                                    <span class="text-[9px] px-1.5 py-0.2 bg-slate-100 text-slate-700 rounded font-bold">⚔️ Gear (50%)</span>
-                                </template>
-                            </div>
-                            <div class="text-[10px] text-slate-500 font-mono">
-                                <span>Base Value: <strong x-text="(item.value || item.BaseValue || 0) + ' sp'"></strong></span>
-                                <span> &bull; Qty: <strong x-text="item.qty || item.Qty || 1"></strong></span>
-                                <span x-show="item.weight || item.BaseWeight"> &bull; Weight: <strong x-text="(item.weight || item.BaseWeight) + ' kg'"></strong></span>
+            <!-- Items to Sell List -->
+            <div class="space-y-1.5 max-h-72 overflow-y-auto pr-1" x-show="filteredVaultToSell.length > 0">
+                <template x-for="(item, vIdx) in filteredVaultToSell" :key="item.uid || item.id || vIdx">
+                    <label class="bg-white border hover:border-emerald-400 p-2.5 rounded-lg flex items-center justify-between gap-3 shadow-2xs transition cursor-pointer"
+                           :class="selectedVaultItemsToSell.includes(item.uid || item.id || vIdx) ? 'border-emerald-500 bg-emerald-50/40 ring-1 ring-emerald-400' : 'border-slate-200'">
+                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                            <input type="checkbox" :value="item.uid || item.id || vIdx" x-model="selectedVaultItemsToSell" class="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer">
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="font-bold text-slate-900 truncate" x-text="item.name || item.Name || 'Item'"></span>
+                                    <template x-if="isVaultValuable(item)">
+                                        <span class="text-[9px] px-1.5 py-0.2 bg-emerald-100 text-emerald-800 rounded font-bold">💎 Valuable (100%)</span>
+                                    </template>
+                                    <template x-if="!isVaultValuable(item)">
+                                        <span class="text-[9px] px-1.5 py-0.2 bg-slate-100 text-slate-700 rounded font-bold">⚔️ Gear (50%)</span>
+                                    </template>
+                                </div>
+                                <div class="text-[10px] text-slate-500 font-mono">
+                                    <span>Base Value: <strong x-text="(item.value || item.BaseValue || 0) + ' sp'"></strong></span>
+                                    <span> &bull; Qty: <strong x-text="item.qty || item.Qty || 1"></strong></span>
+                                    <span x-show="item.weight || item.BaseWeight"> &bull; Weight: <strong x-text="(item.weight || item.BaseWeight) + ' kg'"></strong></span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="text-right shrink-0 font-mono">
-                        <div class="text-xs font-bold text-emerald-700" x-text="(calculateVaultResaleValue(item) * (item.qty || item.Qty || 1)).toFixed(1) + ' sp'"></div>
-                        <div class="text-[10px] text-slate-400 font-sans" x-text="'(' + calculateVaultResaleValue(item) + ' sp each)'"></div>
-                    </div>
-                </label>
-            </template>
-        </div>
-
-        <!-- Action Bar -->
-        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-                <span class="text-xs text-slate-600">Selected Sale Proceeds:</span>
-                <strong class="text-emerald-800 font-mono text-base ml-1" x-text="totalVaultPayoutSp + ' sp (' + (totalVaultPayoutSp / 10).toFixed(1) + ' gp)'"></strong>
+                        <div class="text-right shrink-0 font-mono">
+                            <div class="text-xs font-bold text-emerald-700" x-text="(calculateVaultResaleValue(item) * (item.qty || item.Qty || 1)).toFixed(1) + ' sp'"></div>
+                            <div class="text-[10px] text-slate-400 font-sans" x-text="'(' + calculateVaultResaleValue(item) + ' sp each)'"></div>
+                        </div>
+                    </label>
+                </template>
             </div>
-            <div class="flex items-center gap-2">
-                <button type="button" @click="showSellVaultModal = false" class="btn-rol-secondary text-xs py-2 px-4 cursor-pointer">Cancel</button>
-                <button type="button" @click="submitSellVaultItems()"
-                        :disabled="selectedVaultItemsToSell.length === 0 || sellingVault"
-                        class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold text-xs sm:text-sm rounded-lg shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
-                    <span x-show="!sellingVault">💰 Liquidate Selected (<span x-text="selectedVaultItemsToSell.length"></span>) to Vault</span>
-                    <span x-show="sellingVault">Liquidating items...</span>
-                </button>
+
+            <!-- Action Bar -->
+            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <span class="text-xs text-slate-600">Selected Sale Proceeds:</span>
+                    <strong class="text-emerald-800 font-mono text-base ml-1" x-text="totalVaultPayoutSp + ' sp (' + (totalVaultPayoutSp / 10).toFixed(1) + ' gp)'"></strong>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" @click="showSellVaultModal = false" class="btn-rol-secondary text-xs py-2 px-4 cursor-pointer">Cancel</button>
+                    <button type="button" @click="submitSellVaultItems()"
+                            :disabled="selectedVaultItemsToSell.length === 0 || sellingVault"
+                            class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold text-xs sm:text-sm rounded-lg shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
+                        <span x-show="!sellingVault">💰 Liquidate Selected (<span x-text="selectedVaultItemsToSell.length"></span>) to Vault</span>
+                        <span x-show="sellingVault">Liquidating items...</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1860,9 +1860,9 @@ function campaignAdmin() {
         sellVaultError: '',
 
         activeCampaign: @json($activeCampaign),
-        activeVaultItems: @json($vaultItems),
-        activeVaultFunds: {{ (int)$vaultFunds }},
-        activeCampChars: @json($campChars->values()),
+        activeVaultItems: @json($vaultItems ?? []),
+        activeVaultFunds: {{ (int)($vaultFunds ?? 0) }},
+        activeCampChars: @json(isset($campChars) ? $campChars->values() : []),
 
         creaturesList: @json($creatureCatalog),
         foeMinEl: 1,
@@ -2111,10 +2111,10 @@ function campaignAdmin() {
 
         // --- Sell Vault Items Methods ---
         openSellVaultModal(camp = null, items = null, funds = null) {
-            this.sellVaultCamp = camp || this.activeCampaign;
-            const rawItems = items !== null ? items : this.activeVaultItems;
+            this.sellVaultCamp = camp || this.activeCampaign || @json($camp ?? null);
+            const rawItems = items !== null ? items : (this.activeVaultItems || @json($vaultItems ?? []));
             this.sellVaultItems = Array.isArray(rawItems) ? JSON.parse(JSON.stringify(rawItems)) : [];
-            this.sellVaultFunds = funds !== null ? funds : this.activeVaultFunds;
+            this.sellVaultFunds = funds !== null ? funds : (this.activeVaultFunds || {{ (int)($vaultFunds ?? 0) }});
             this.sellVaultPartyLocation = (this.sellVaultCamp && this.sellVaultCamp.PartyLocation) ? this.sellVaultCamp.PartyLocation : 'Small town';
             this.selectedVaultItemsToSell = [];
             this.sellVaultSearchQuery = '';
@@ -2125,6 +2125,7 @@ function campaignAdmin() {
         },
 
         isVaultValuable(item) {
+            if (!item) return false;
             const typeId = parseInt(item.item_type_id || item.ItemTypeID || item.Type || 0);
             const isVal = Boolean(item.is_valuable || item.IsValuable);
             const name = (item.name || item.Name || '').toLowerCase();
@@ -2132,8 +2133,9 @@ function campaignAdmin() {
         },
 
         calculateVaultResaleValue(item) {
+            if (!item) return 0;
             const isVal = this.isVaultValuable(item);
-            const unitVal = parseFloat(item.unit_price || item.BaseValue || item.value || 0);
+            const unitVal = parseFloat(item.unit_price || item.BaseValue || item.value || item.Value || 0);
             let mult = 0.5;
             if (this.sellVaultShopType === 'fence') {
                 mult = 0.25;
