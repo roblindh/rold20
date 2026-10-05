@@ -77,6 +77,14 @@ class ProceduralGeneratorService
     }
 
     /**
+     * Generate Encounter Treasure appropriate to Foes List and EL
+     */
+    public static function encounterTreasure(float $el = 1.0, array $foes = []): array
+    {
+        return \App\Services\ItemGeneration\ProceduralItemFactory::generateEncounterTreasure($el, $foes);
+    }
+
+    /**
      * Generate Tavern
      */
     public static function tavern(): array

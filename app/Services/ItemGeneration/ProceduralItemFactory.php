@@ -1548,6 +1548,398 @@ class ProceduralItemFactory
     }
 
     /**
+     * Parse a creature's Treasure rating string from ref_creatures table.
+     * Extracts coins, goods, and items multipliers, along with any special guaranteed additions.
+     *
+     * @param string|null $treasureStr e.g. "Standard", "Double standard", "None", "1/10 coins; 50% goods; 50% items"
+     * @return array
+     */
+    public static function parseCreatureTreasure(?string $treasureStr): array
+    {
+        $raw = trim((string)($treasureStr ?? 'Standard'));
+        $t = strtolower($raw);
+
+        if (empty($t) || $t === 'none' || str_contains($t, 'no coins; no goods; no items')) {
+            return [
+                'coins_mul' => 0.0,
+                'goods_mul' => 0.0,
+                'items_mul' => 0.0,
+                'special_items' => [],
+                'description' => 'None',
+            ];
+        }
+
+        if ($t === 'standard') {
+            return [
+                'coins_mul' => 1.0,
+                'goods_mul' => 1.0,
+                'items_mul' => 1.0,
+                'special_items' => [],
+                'description' => 'Standard',
+            ];
+        }
+
+        if ($t === 'double' || $t === 'double standard') {
+            return [
+                'coins_mul' => 2.0,
+                'goods_mul' => 2.0,
+                'items_mul' => 2.0,
+                'special_items' => [],
+                'description' => 'Double Standard',
+            ];
+        }
+
+        if ($t === 'triple' || $t === 'triple standard') {
+            return [
+                'coins_mul' => 3.0,
+                'goods_mul' => 3.0,
+                'items_mul' => 3.0,
+                'special_items' => [],
+                'description' => 'Triple Standard',
+            ];
+        }
+
+        $coinsMul = 1.0;
+        $goodsMul = 1.0;
+        $itemsMul = 1.0;
+        $specialItems = [];
+
+        // Coins parsing
+        if (str_contains($t, 'no coins')) {
+            $coinsMul = 0.0;
+        } elseif (preg_match('/1\/10(?:th)?\s*coins/i', $t)) {
+            $coinsMul = 0.1;
+        } elseif (preg_match('/(?:1\/4|25%)\s*coins/i', $t)) {
+            $coinsMul = 0.25;
+        } elseif (preg_match('/(?:1\/2|half|50%)\s*coins/i', $t)) {
+            $coinsMul = 0.5;
+        } elseif (preg_match('/double\s*coins/i', $t)) {
+            $coinsMul = 2.0;
+        } elseif (preg_match('/triple\s*coins/i', $t)) {
+            $coinsMul = 3.0;
+        } elseif (str_contains($t, 'standard (coins only)')) {
+            $coinsMul = 1.0;
+            $goodsMul = 0.0;
+            $itemsMul = 0.0;
+        }
+
+        // Goods parsing
+        if (str_contains($t, 'no goods')) {
+            $goodsMul = 0.0;
+        } elseif (preg_match('/(?:1\/4|25%)\s*goods/i', $t)) {
+            $goodsMul = 0.25;
+        } elseif (preg_match('/(?:1\/2|half|50%)\s*goods/i', $t)) {
+            $goodsMul = 0.5;
+        } elseif (preg_match('/double\s*goods/i', $t)) {
+            $goodsMul = 2.0;
+        } elseif (preg_match('/triple\s*goods/i', $t)) {
+            $goodsMul = 3.0;
+        }
+
+        // Items parsing
+        if (str_contains($t, 'no items')) {
+            $itemsMul = 0.0;
+        } elseif (preg_match('/(?:1\/4|25%)\s*items/i', $t)) {
+            $itemsMul = 0.25;
+        } elseif (preg_match('/(?:1\/2|half|50%)\s*items/i', $t)) {
+            $itemsMul = 0.5;
+        } elseif (preg_match('/double\s*items/i', $t)) {
+            $itemsMul = 2.0;
+        } elseif (preg_match('/triple\s*items/i', $t)) {
+            $itemsMul = 3.0;
+        }
+
+        // Check for special additions like "plus 1d4 magic weapons", "plus rope and +1 flaming composite longbow (+5 Str bonus)"
+        if (preg_match('/plus\s+(.+)$/i', $raw, $pm)) {
+            $specialItems[] = trim($pm[1]);
+        }
+
+        return [
+            'coins_mul' => $coinsMul,
+            'goods_mul' => $goodsMul,
+            'items_mul' => $itemsMul,
+            'special_items' => $specialItems,
+            'description' => $raw,
+        ];
+    }
+
+    /**
+     * Generate treasure for an encounter based on Encounter Level (EL) and Foes & Monsters List.
+     * Evaluates ref_creatures.Treasure for each monster/NPC in the encounter.
+     *
+     * @param float|int $el Encounter Level
+     * @param array $foes Array of foes: [['name' => '...', 'count' => 2, 'level' => 3, 'creature_id' => 12], ...]
+     * @param array $options Additional generator options
+     * @return array
+     */
+    public static function generateEncounterTreasure(float $el, array $foes = [], array $options = []): array
+    {
+        self::ensureAppLoaded();
+
+        $el = max(1, min(40, (float)$el));
+
+        if (empty($foes)) {
+            $hoard = self::generateTreasureHoard((int)round($el), $options);
+            $items = self::extractHoardItemsList($hoard);
+            $totalCoinsSp = (int)round(
+                (($hoard['platinum'] ?? 0) * 100) +
+                (($hoard['gold'] ?? 0) * 10) +
+                ($hoard['silver'] ?? 0) +
+                (($hoard['copper'] ?? 0) * 0.1)
+            );
+
+            return [
+                'success' => true,
+                'encounter_level' => $el,
+                'coins_sp' => $totalCoinsSp,
+                'coins' => [
+                    'gold' => $hoard['gold'] ?? 0,
+                    'silver' => $hoard['silver'] ?? 0,
+                    'platinum' => $hoard['platinum'] ?? 0,
+                    'copper' => $hoard['copper'] ?? 0,
+                ],
+                'items' => $items,
+                'hoard' => $hoard,
+                'foe_breakdown' => [],
+                'multipliers' => ['coins' => 1.0, 'goods' => 1.0, 'items' => 1.0],
+                'summary' => "Standard treasure generated for EL " . round($el, 1) . ".",
+            ];
+        }
+
+        $creaturesDb = DB::table('ref_creatures')->select('ID', 'Name', 'BaseRL', 'Treasure')->get()->keyBy('ID');
+        $creaturesByName = [];
+        foreach ($creaturesDb as $cr) {
+            $creaturesByName[strtolower(trim($cr->Name))] = $cr;
+        }
+
+        $totalThreat = 0.0;
+        $weightedCoins = 0.0;
+        $weightedGoods = 0.0;
+        $weightedItems = 0.0;
+        $specialBonusItems = [];
+        $foeBreakdown = [];
+
+        foreach ($foes as $foe) {
+            $rawName = (string)($foe['name'] ?? 'Creature');
+            $cleanName = strtolower(trim(preg_replace('/\s*\([^)]*\)/', '', $rawName)));
+            $count = max(1, (int)($foe['count'] ?? 1));
+            $lvl = max(1, (int)($foe['level'] ?? 1));
+            $cId = (int)($foe['creature_id'] ?? 0);
+
+            $cr = null;
+            if ($cId > 0 && isset($creaturesDb[$cId])) {
+                $cr = $creaturesDb[$cId];
+            } elseif (!empty($cleanName) && isset($creaturesByName[$cleanName])) {
+                $cr = $creaturesByName[$cleanName];
+            } else {
+                foreach ($creaturesByName as $kName => $kCr) {
+                    if (str_contains($cleanName, $kName) || str_contains($kName, $cleanName)) {
+                        $cr = $kCr;
+                        break;
+                    }
+                }
+            }
+
+            $treasureStr = (isset($foe['treasure']) && !empty($foe['treasure']))
+                ? (string)$foe['treasure']
+                : ($cr ? ($cr->Treasure ?? 'Standard') : 'Standard');
+
+            $parsed = self::parseCreatureTreasure($treasureStr);
+
+            $threatWeight = $count * max(1, $lvl);
+            $totalThreat += $threatWeight;
+
+            $weightedCoins += $threatWeight * $parsed['coins_mul'];
+            $weightedGoods += $threatWeight * $parsed['goods_mul'];
+            $weightedItems += $threatWeight * $parsed['items_mul'];
+
+            if (!empty($parsed['special_items'])) {
+                foreach ($parsed['special_items'] as $spItem) {
+                    $specialBonusItems[] = $spItem;
+                }
+            }
+
+            $foeBreakdown[] = [
+                'name' => $rawName,
+                'count' => $count,
+                'level' => $lvl,
+                'treasure' => $treasureStr,
+                'coins_mul' => $parsed['coins_mul'],
+                'goods_mul' => $parsed['goods_mul'],
+                'items_mul' => $parsed['items_mul'],
+            ];
+        }
+
+        $coinsMul = $totalThreat > 0 ? ($weightedCoins / $totalThreat) : 1.0;
+        $goodsMul = $totalThreat > 0 ? ($weightedGoods / $totalThreat) : 1.0;
+        $itemsMul = $totalThreat > 0 ? ($weightedItems / $totalThreat) : 1.0;
+
+        // If all foes have None and no special items, return zero hoard
+        if ($coinsMul <= 0 && $goodsMul <= 0 && $itemsMul <= 0 && empty($specialBonusItems)) {
+            $summaryParts = [];
+            foreach ($foeBreakdown as $fb) {
+                $summaryParts[] = "{$fb['count']}x {$fb['name']} ({$fb['treasure']})";
+            }
+            $foeStr = implode(', ', $summaryParts);
+
+            return [
+                'success' => true,
+                'encounter_level' => $el,
+                'coins_sp' => 0,
+                'coins' => ['gold' => 0, 'silver' => 0, 'platinum' => 0, 'copper' => 0],
+                'items' => [],
+                'hoard' => [
+                    'el' => $el,
+                    'gold' => 0,
+                    'silver' => 0,
+                    'copper' => 0,
+                    'platinum' => 0,
+                    'coins_sp' => 0,
+                    'gems' => [],
+                    'art' => [],
+                    'bullion' => [],
+                    'mundane' => [],
+                    'magic_items' => [],
+                ],
+                'foe_breakdown' => $foeBreakdown,
+                'multipliers' => ['coins' => 0.0, 'goods' => 0.0, 'items' => 0.0],
+                'summary' => "Encounter foes [{$foeStr}] have no treasure rating (Treasure: None).",
+            ];
+        }
+
+        $hoard = self::generateTreasureHoard((int)round($el), array_merge($options, [
+            'coins_multiplier' => $coinsMul,
+            'goods_multiplier' => $goodsMul,
+            'items_multiplier' => $itemsMul,
+        ]));
+
+        $items = self::extractHoardItemsList($hoard);
+
+        // Process special bonus items from creature treasure strings
+        if (!empty($specialBonusItems)) {
+            foreach ($specialBonusItems as $spStr) {
+                if (stripos($spStr, '1d4 magic weapons') !== false) {
+                    $wCount = rand(1, 4);
+                    for ($w = 0; $w < $wCount; $w++) {
+                        $wItem = self::generateWeapon(max(1, (int)round($el)));
+                        if ($wItem) {
+                            $items[] = [
+                                'name' => $wItem['name'],
+                                'value' => (int)round($wItem['value_sp'] ?? $wItem['Value'] ?? 500),
+                                'weight' => (float)($wItem['weight'] ?? 2.0),
+                            ];
+                        }
+                    }
+                }
+                if (stripos($spStr, 'flaming composite longbow') !== false) {
+                    $items[] = [
+                        'name' => '+1 Flaming Composite Longbow (+5 Str)',
+                        'value' => 8750,
+                        'weight' => 1.5,
+                    ];
+                }
+                if (stripos($spStr, 'rope') !== false) {
+                    $items[] = [
+                        'name' => 'Silk Rope (15m)',
+                        'value' => 100,
+                        'weight' => 2.5,
+                    ];
+                }
+            }
+        }
+
+        $totalCoinsSp = (int)round(
+            (($hoard['platinum'] ?? 0) * 100) +
+            (($hoard['gold'] ?? 0) * 10) +
+            ($hoard['silver'] ?? 0) +
+            (($hoard['copper'] ?? 0) * 0.1)
+        );
+
+        $summaryParts = [];
+        foreach ($foeBreakdown as $fb) {
+            $summaryParts[] = "{$fb['count']}x {$fb['name']} ({$fb['treasure']})";
+        }
+        $foeStr = implode(', ', $summaryParts);
+        $multStr = "Coins: " . round($coinsMul * 100) . "%, Goods: " . round($goodsMul * 100) . "%, Items: " . round($itemsMul * 100) . "%";
+        $summary = "Treasure generated for EL " . round($el, 1) . " based on foes: [{$foeStr}] — Multipliers: {$multStr}.";
+
+        return [
+            'success' => true,
+            'encounter_level' => $el,
+            'coins_sp' => $totalCoinsSp,
+            'coins' => [
+                'gold' => $hoard['gold'] ?? 0,
+                'silver' => $hoard['silver'] ?? 0,
+                'platinum' => $hoard['platinum'] ?? 0,
+                'copper' => $hoard['copper'] ?? 0,
+            ],
+            'items' => $items,
+            'hoard' => $hoard,
+            'foe_breakdown' => $foeBreakdown,
+            'multipliers' => [
+                'coins' => round($coinsMul, 2),
+                'goods' => round($goodsMul, 2),
+                'items' => round($itemsMul, 2),
+            ],
+            'summary' => $summary,
+        ];
+    }
+
+    /**
+     * Helper to extract standardized item records array from a raw hoard result.
+     */
+    public static function extractHoardItemsList(array $hoard): array
+    {
+        $items = [];
+
+        // 1. Gems
+        if (!empty($hoard['gems']) && is_array($hoard['gems'])) {
+            foreach ($hoard['gems'] as $g) {
+                $items[] = [
+                    'name' => is_object($g) ? ($g->name ?? $g->Item ?? 'Gemstone') : ($g['name'] ?? $g['Item'] ?? 'Gemstone'),
+                    'value' => (int)round(is_object($g) ? ($g->value ?? $g->Value ?? 0) : ($g['value'] ?? $g['Value'] ?? 0)),
+                    'weight' => (float)(is_object($g) ? ($g->weight ?? 0.01) : ($g['weight'] ?? 0.01)),
+                ];
+            }
+        }
+
+        // 2. Art Objects
+        if (!empty($hoard['art']) && is_array($hoard['art'])) {
+            foreach ($hoard['art'] as $a) {
+                $items[] = [
+                    'name' => is_object($a) ? ($a->name ?? $a->Item ?? 'Art Object') : ($a['name'] ?? $a['Item'] ?? 'Art Object'),
+                    'value' => (int)round(is_object($a) ? ($a->value ?? $a->Value ?? 0) : ($a['value'] ?? $a['Value'] ?? 0)),
+                    'weight' => (float)(is_object($a) ? ($a->weight ?? 1.0) : ($a['weight'] ?? 1.0)),
+                ];
+            }
+        }
+
+        // 3. Trade Bars / Bullion
+        if (!empty($hoard['bullion']) && is_array($hoard['bullion'])) {
+            foreach ($hoard['bullion'] as $b) {
+                $items[] = [
+                    'name' => is_object($b) ? ($b->name ?? $b->Item ?? 'Trade Bar') : ($b['name'] ?? $b['Item'] ?? 'Trade Bar'),
+                    'value' => (int)round(is_object($b) ? ($b->value ?? $b->Value ?? 0) : ($b['value'] ?? $b['Value'] ?? 0)),
+                    'weight' => (float)(is_object($b) ? ($b->weight ?? 1.0) : ($b['weight'] ?? 1.0)),
+                ];
+            }
+        }
+
+        // 4. Magic Items
+        if (!empty($hoard['magic_items']) && is_array($hoard['magic_items'])) {
+            foreach ($hoard['magic_items'] as $m) {
+                $items[] = [
+                    'name' => is_object($m) ? ($m->name ?? $m->Item ?? $m->description ?? 'Magic Item') : ($m['name'] ?? $m['Item'] ?? $m['description'] ?? 'Magic Item'),
+                    'value' => (int)round(is_object($m) ? ($m->value ?? $m->Value ?? $m->price ?? 0) : ($m['value'] ?? $m['Value'] ?? $m['price'] ?? 0)),
+                    'weight' => (float)(is_object($m) ? ($m->weight ?? 1.0) : ($m['weight'] ?? 1.0)),
+                ];
+            }
+        }
+
+        return $items;
+    }
+
+    /**
      * Check if a 1-100 roll falls within table range string (e.g. "01-35", "79", "99-00", "-")
      */
     protected static function checkRollInRange(int $roll, ?string $range): bool

@@ -1272,11 +1272,15 @@
                         <!-- Foe Item Rows -->
                         <template x-for="(m, idx) in encForm.monsters_and_npcs" :key="idx">
                             <div class="enc-foe-row bg-white p-2 rounded-lg border border-slate-200 shadow-2xs hover:border-amber-400 transition">
-                                <!-- Monster Name with Datalist Autocomplete -->
-                                <div class="enc-foe-col-name">
+                                <!-- Monster Name with Datalist Autocomplete & Treasure Tag -->
+                                <div class="enc-foe-col-name flex items-center gap-1.5 min-w-0">
                                     <input type="text" x-model="m.name" list="creature_datalist" @input="onCreatureNameInput(m)"
                                            placeholder="Type or pick creature..."
                                            class="w-full px-2.5 py-1 bg-white border border-slate-300 rounded text-xs text-slate-900 font-medium focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                    <template x-if="m.treasure">
+                                        <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-100/90 text-amber-900 border border-amber-300/80 font-mono shrink-0 hidden md:inline-block max-w-[130px] truncate"
+                                              :title="'Creature Treasure Rating: ' + m.treasure" x-text="m.treasure"></span>
+                                    </template>
                                 </div>
                                 <!-- Qty -->
                                 <div class="enc-foe-col-qty">
@@ -1319,9 +1323,16 @@
                             <span class="text-[10px] text-stone-600">Monetary silver and valuable loot awarded upon overcoming this encounter.</span>
                         </div>
                         <div class="flex items-center gap-2 flex-wrap">
+                            <button type="button" @click="rollEncounterTreasureFromFoes()" :disabled="isRollingTreasure"
+                                    class="text-xs bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-1 rounded-lg border border-amber-700 shadow-xs flex items-center gap-1 cursor-pointer transition"
+                                    title="Generate encounter treasure scaled directly to the Foes & Monsters List (using ref_creatures.Treasure relative to EL)">
+                                <span x-show="!isRollingTreasure">⚔️ Generate Foe Treasure</span>
+                                <span x-show="isRollingTreasure">⌛ Generating...</span>
+                            </button>
                             <button type="button" @click="rollEncounterTreasure()" :disabled="isRollingTreasure"
-                                    class="text-xs bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-2.5 py-1 rounded-lg border border-amber-300 flex items-center gap-1 cursor-pointer transition">
-                                <span x-show="!isRollingTreasure">🎲 Roll EL Treasure</span>
+                                    class="text-xs bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-2.5 py-1 rounded-lg border border-amber-300 flex items-center gap-1 cursor-pointer transition"
+                                    title="Roll standard treasure hoard for Encounter Level (EL) without foe modifiers">
+                                <span x-show="!isRollingTreasure">🎲 Roll EL Hoard</span>
                                 <span x-show="isRollingTreasure">⌛ Rolling...</span>
                             </button>
                             <button type="button" @click="addTreasureItemToEncounter()" 
@@ -1329,6 +1340,15 @@
                                 <span>➕</span> Add Loot Item
                             </button>
                         </div>
+                    </div>
+
+                    <!-- Foe Treasure Breakdown Notice -->
+                    <div x-show="encounterTreasureSummary" class="p-2 bg-amber-100/90 border border-amber-300 rounded-lg text-[11px] text-amber-950 flex items-center justify-between gap-2 shadow-2xs">
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <span>💡</span>
+                            <span class="font-medium" x-text="encounterTreasureSummary"></span>
+                        </div>
+                        <button type="button" @click="encounterTreasureSummary = ''" class="text-amber-800 hover:text-amber-950 font-bold text-xs cursor-pointer shrink-0">&times;</button>
                     </div>
 
                     <!-- Silver Coins Input -->
@@ -1374,7 +1394,7 @@
                         </template>
 
                         <div x-show="!encForm.treasure_rewards.items || encForm.treasure_rewards.items.length === 0" class="text-xs text-stone-500 italic p-2 text-center bg-white/60 rounded-lg border border-dashed border-amber-200">
-                            No special loot items added. Click "🎲 Roll EL Treasure" to generate appropriate treasure hoard, or "➕ Add Loot Item".
+                            No special loot items added. Click "⚔️ Generate Foe Treasure" to generate appropriate treasure based on your foes list, or "➕ Add Loot Item".
                         </div>
                     </div>
                 </div>
@@ -1846,6 +1866,7 @@ function campaignAdmin() {
         showLocationModal: false,
         isRollingFoes: false,
         isRollingTreasure: false,
+        encounterTreasureSummary: '',
 
         sellVaultCamp: null,
         sellVaultItems: [],
@@ -2314,6 +2335,7 @@ function campaignAdmin() {
         openCreateEncounterModal(campaignId, adventureId = null) {
             this.foeMinEl = 1;
             this.foeMaxEl = 1;
+            this.encounterTreasureSummary = '';
             this.encForm = {
                 id: null,
                 campaign_id: campaignId || (@if(isset($camp) && $camp) {{ $camp->ID }} @else null @endif),
@@ -2338,6 +2360,7 @@ function campaignAdmin() {
 
         openEditEncounterModal(enc) {
             this.encForm = Object.assign({}, enc);
+            this.encounterTreasureSummary = '';
             if (!this.encForm.campaign_id) {
                 @if(isset($camp) && $camp)
                     this.encForm.campaign_id = {{ $camp->ID }};
@@ -2380,7 +2403,8 @@ function campaignAdmin() {
                 name: '',
                 count: 1,
                 level: lvl,
-                hp: 10 + 5 * lvl
+                hp: 10 + 5 * lvl,
+                treasure: 'Standard'
             });
         },
 
@@ -2398,8 +2422,40 @@ function campaignAdmin() {
             });
         },
 
+        async rollEncounterTreasureFromFoes() {
+            this.isRollingTreasure = true;
+            this.encounterTreasureSummary = '';
+            try {
+                const el = Math.max(1, Math.round(this.encForm.encounter_level || 1));
+                const foes = Array.isArray(this.encForm.monsters_and_npcs) ? this.encForm.monsters_and_npcs : [];
+                const res = await fetch('/api/generator/encounter-treasure', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    body: JSON.stringify({
+                        encounter_level: el,
+                        foes: foes
+                    })
+                });
+                const data = await res.json();
+                if (data.success && data.data) {
+                    this.encForm.treasure_rewards = {
+                        coins_sp: data.data.coins_sp || 0,
+                        items: data.data.items || []
+                    };
+                    if (data.data.summary) {
+                        this.encounterTreasureSummary = data.data.summary;
+                    }
+                }
+            } catch (e) {
+                console.error('Error rolling foe encounter treasure:', e);
+            } finally {
+                this.isRollingTreasure = false;
+            }
+        },
+
         async rollEncounterTreasure() {
             this.isRollingTreasure = true;
+            this.encounterTreasureSummary = '';
             try {
                 const el = Math.max(1, Math.round(this.encForm.encounter_level || 1));
                 const res = await fetch('{{ route("utilities.treasuregen.roll") }}', {
@@ -2491,6 +2547,9 @@ function campaignAdmin() {
             if (match) {
                 foe.level = match.level;
                 foe.hp = match.hp;
+                if (match.treasure) {
+                    foe.treasure = match.treasure;
+                }
             }
         },
 

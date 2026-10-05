@@ -2874,8 +2874,42 @@ class UtilityController extends Controller
             require_once base_path('page_start.php');
         }
 
-        $el = max(1, min(40, (int)$request->input('el', 1)));
+        $el = max(1, min(40, (int)$request->input('el', $request->input('encounter_level', 1))));
         $creatureId = (int)$request->input('creature_id', 0);
+        $foes = $request->input('foes', $request->input('monsters_and_npcs', []));
+        if (is_string($foes)) {
+            $foes = json_decode($foes, true) ?? [];
+        }
+
+        if (!empty($foes) && is_array($foes)) {
+            $encTreasure = \App\Services\ItemGeneration\ProceduralItemFactory::generateEncounterTreasure($el, $foes);
+            $hoard = $encTreasure['hoard'];
+            $gold = $hoard['gold'] ?? 0;
+            $silver = $hoard['silver'] ?? 0;
+            $platinum = $hoard['platinum'] ?? 0;
+            $copper = $hoard['copper'] ?? 0;
+            $mundane = $hoard['mundane'] ?? [];
+            $magicItems = $hoard['magic_items'] ?? [];
+
+            $campaigns = DB::table('campaigns')->orderBy('Name')->get();
+            $characters = DB::table('characters')->where(function($q) {
+                $q->whereNull('IsNPC')->orWhere('IsNPC', 0);
+            })->orderBy('Name')->get();
+
+            return response()->json([
+                'success' => true,
+                'coins' => compact('gold', 'silver', 'platinum', 'copper'),
+                'hoard' => $hoard,
+                'coins_sp' => $encTreasure['coins_sp'],
+                'items' => $encTreasure['items'],
+                'summary' => $encTreasure['summary'],
+                'multipliers' => $encTreasure['multipliers'],
+                'foe_breakdown' => $encTreasure['foe_breakdown'],
+                'mundane' => $mundane,
+                'magic' => $magicItems,
+                'html' => view('utilities.partials.treasure_result', compact('el', 'gold', 'silver', 'platinum', 'copper', 'hoard', 'mundane', 'magicItems', 'campaigns', 'characters'))->render(),
+            ]);
+        }
 
         $coinsMul = 1.0;
         $goodsMul = 1.0;
@@ -2884,22 +2918,10 @@ class UtilityController extends Controller
         if ($creatureId > 0) {
             $creature = DB::table('ref_creatures')->where('ID', $creatureId)->first();
             if ($creature && !empty($creature->Treasure)) {
-                $tStr = strtolower($creature->Treasure);
-                if (str_contains($tStr, 'none') || str_contains($tStr, 'no coins; no goods; no items')) {
-                    $coinsMul = 0;
-                    $goodsMul = 0;
-                    $itemsMul = 0;
-                } elseif (str_contains($tStr, 'triple')) {
-                    $coinsMul = 3.0;
-                    $goodsMul = 3.0;
-                    $itemsMul = 3.0;
-                } elseif (str_contains($tStr, 'double')) {
-                    $coinsMul = 2.0;
-                    $goodsMul = 2.0;
-                    $itemsMul = 2.0;
-                } elseif (str_contains($tStr, '1/2') || str_contains($tStr, 'half')) {
-                    $coinsMul = 0.5;
-                }
+                $parsed = \App\Services\ItemGeneration\ProceduralItemFactory::parseCreatureTreasure($creature->Treasure);
+                $coinsMul = $parsed['coins_mul'];
+                $goodsMul = $parsed['goods_mul'];
+                $itemsMul = $parsed['items_mul'];
             }
         }
 
@@ -2915,6 +2937,8 @@ class UtilityController extends Controller
         $copper = $hoard['copper'];
         $mundane = $hoard['mundane'];
         $magicItems = $hoard['magic_items'];
+        $items = \App\Services\ItemGeneration\ProceduralItemFactory::extractHoardItemsList($hoard);
+        $totalCoinsSp = (int)round(($platinum * 100) + ($gold * 10) + $silver + ($copper * 0.1));
 
         $campaigns = DB::table('campaigns')->orderBy('Name')->get();
         $characters = DB::table('characters')->where(function($q) {
@@ -2925,6 +2949,8 @@ class UtilityController extends Controller
             'success' => true,
             'coins' => compact('gold', 'silver', 'platinum', 'copper'),
             'hoard' => $hoard,
+            'coins_sp' => $totalCoinsSp,
+            'items' => $items,
             'mundane' => $mundane,
             'magic' => $magicItems,
             'html' => view('utilities.partials.treasure_result', compact('el', 'gold', 'silver', 'platinum', 'copper', 'hoard', 'mundane', 'magicItems', 'campaigns', 'characters'))->render(),
@@ -3862,7 +3888,7 @@ class UtilityController extends Controller
         $locations = DB::table('campaign_locations')->orderBy('name')->get();
         
         $creatureCatalog = DB::table('ref_creatures')
-            ->select('ID', 'Name', 'BaseRL', 'CreatureType', 'ConAdj', 'StrAdj', 'DR')
+            ->select('ID', 'Name', 'BaseRL', 'CreatureType', 'ConAdj', 'StrAdj', 'DR', 'Treasure')
             ->orderBy('Name')
             ->get()
             ->map(function ($cr) {
@@ -3876,6 +3902,7 @@ class UtilityController extends Controller
                     'type' => $cr->CreatureType ?? '',
                     'hp' => $hp,
                     'dr' => (int)($cr->DR ?? 0),
+                    'treasure' => (string)($cr->Treasure ?? 'Standard'),
                 ];
             });
 
@@ -4996,6 +5023,29 @@ class UtilityController extends Controller
             'data' => $result['monsters_and_npcs'] ?? [],
             'encounter_level' => $result['encounter_level'] ?? $minEl,
             'xp_award' => $result['xp_award'] ?? (int)($minEl * 300),
+        ]);
+    }
+
+    public function generateProceduralEncounterTreasure(Request $request): JsonResponse
+    {
+        $el = (float)$request->input('encounter_level', $request->input('el', 1.0));
+        $foes = $request->input('foes', $request->input('monsters_and_npcs', []));
+        if (is_string($foes)) {
+            $foes = json_decode($foes, true) ?? [];
+        }
+
+        $result = \App\Services\ItemGeneration\ProceduralItemFactory::generateEncounterTreasure($el, $foes);
+
+        return response()->json([
+            'success' => true,
+            'data' => $result,
+            'coins_sp' => $result['coins_sp'],
+            'coins' => $result['coins'],
+            'items' => $result['items'],
+            'summary' => $result['summary'],
+            'multipliers' => $result['multipliers'],
+            'foe_breakdown' => $result['foe_breakdown'],
+            'hoard' => $result['hoard'],
         ]);
     }
 

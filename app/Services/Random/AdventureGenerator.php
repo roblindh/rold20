@@ -593,6 +593,7 @@ class AdventureGenerator
             'hp' => $hp,
             'creature_id' => (int)$cr->ID,
             'type' => (string)($cr->CreatureType ?? 'Monstrosity'),
+            'treasure' => (string)($cr->Treasure ?? 'Standard'),
         ];
     }
 }

@@ -661,4 +661,100 @@ class CampaignAwardAndCharviewActionsTest extends TestCase
         $this->assertCount(1, $vaultData['items']);
         $this->assertEquals('vault_potion_1', $vaultData['items'][0]['uid']);
     }
+
+    public function testParseCreatureTreasureStrings(): void
+    {
+        $factory = app(\App\Services\ItemGeneration\ProceduralItemFactory::class);
+
+        // Standard
+        $p1 = $factory->parseCreatureTreasure('Standard');
+        $this->assertEquals(1.0, $p1['coins_mul']);
+        $this->assertEquals(1.0, $p1['goods_mul']);
+        $this->assertEquals(1.0, $p1['items_mul']);
+
+        // None
+        $p2 = $factory->parseCreatureTreasure('None');
+        $this->assertEquals(0.0, $p2['coins_mul']);
+        $this->assertEquals(0.0, $p2['goods_mul']);
+        $this->assertEquals(0.0, $p2['items_mul']);
+
+        // Double standard
+        $p3 = $factory->parseCreatureTreasure('Double standard');
+        $this->assertEquals(2.0, $p3['coins_mul']);
+        $this->assertEquals(2.0, $p3['goods_mul']);
+        $this->assertEquals(2.0, $p3['items_mul']);
+
+        // Triple standard
+        $p4 = $factory->parseCreatureTreasure('Triple standard');
+        $this->assertEquals(3.0, $p4['coins_mul']);
+        $this->assertEquals(3.0, $p4['goods_mul']);
+        $this->assertEquals(3.0, $p4['items_mul']);
+
+        // Fractional / Mixed e.g. "1/10 coins; 50% goods; 50% items"
+        $p5 = $factory->parseCreatureTreasure('1/10 coins; 50% goods; 50% items');
+        $this->assertEquals(0.1, $p5['coins_mul']);
+        $this->assertEquals(0.5, $p5['goods_mul']);
+        $this->assertEquals(0.5, $p5['items_mul']);
+
+        // Special additions e.g. "plus 1d4 magic weapons"
+        $p6 = $factory->parseCreatureTreasure('Standard plus 1d4 magic weapons');
+        $this->assertEquals(1.0, $p6['coins_mul']);
+        $this->assertNotEmpty($p6['special_items']);
+    }
+
+    public function testGenerateEncounterTreasureWithNoneFoes(): void
+    {
+        $factory = app(\App\Services\ItemGeneration\ProceduralItemFactory::class);
+        $foes = [
+            ['name' => 'Dire Wolf', 'count' => 3, 'level' => 3, 'treasure' => 'None']
+        ];
+        $result = $factory->generateEncounterTreasure(5.0, $foes);
+
+        $this->assertEquals(0, $result['coins_sp']);
+        $this->assertEmpty($result['items']);
+        $this->assertStringContainsString('None', $result['summary']);
+    }
+
+    public function testGenerateEncounterTreasureWithStandardAndSpecialFoes(): void
+    {
+        $factory = app(\App\Services\ItemGeneration\ProceduralItemFactory::class);
+        $foes = [
+            ['name' => 'Ogre', 'count' => 1, 'level' => 3, 'treasure' => 'Standard'],
+            ['name' => 'Wolf', 'count' => 2, 'level' => 1, 'treasure' => 'None']
+        ];
+        $result = $factory->generateEncounterTreasure(3.0, $foes);
+
+        $this->assertArrayHasKey('coins_sp', $result);
+        $this->assertArrayHasKey('items', $result);
+        $this->assertArrayHasKey('summary', $result);
+        $this->assertNotEmpty($result['summary']);
+    }
+
+    public function testEncounterTreasureEndpoint(): void
+    {
+        $gm = Player::create([
+            'Name' => 'EncTreasureGM_' . uniqid(),
+            'Password' => Hash::make('secret'),
+            'Type' => Player::TYPE_GM,
+        ]);
+        Auth::login($gm);
+
+        $request = Request::create('/api/generator/encounter-treasure', 'POST', [
+            'encounter_level' => 4,
+            'foes' => [
+                ['name' => 'Orc Warrior', 'count' => 4, 'level' => 1, 'treasure' => 'Standard'],
+                ['name' => 'Orc Chief', 'count' => 1, 'level' => 3, 'treasure' => 'Standard']
+            ]
+        ]);
+        $request->headers->set('Accept', 'application/json');
+
+        $response = $this->controller->generateProceduralEncounterTreasure($request);
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $data = json_decode($response->getContent(), true);
+        $this->assertTrue($data['success']);
+        $this->assertArrayHasKey('coins_sp', $data['data']);
+        $this->assertArrayHasKey('items', $data['data']);
+        $this->assertArrayHasKey('summary', $data['data']);
+    }
 }

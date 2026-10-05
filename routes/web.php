@@ -192,6 +192,7 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/generator/adventure', [UtilityController::class, 'generateProceduralAdventure'])->name('generator.adventure');
     Route::post('/generator/encounter', [UtilityController::class, 'generateProceduralEncounter'])->name('generator.encounter');
     Route::post('/generator/encounter-creatures', [UtilityController::class, 'generateProceduralEncounterCreatures'])->name('generator.encounter-creatures');
+    Route::post('/generator/encounter-treasure', [UtilityController::class, 'generateProceduralEncounterTreasure'])->name('generator.encounter-treasure');
     Route::post('/generator/location', [UtilityController::class, 'generateProceduralLocation'])->name('generator.location');
     Route::post('/generator/item-lore', [UtilityController::class, 'generateProceduralItemLore'])->name('generator.item-lore');
 });
@@ -206,6 +207,7 @@ Route::prefix('api/generator')->name('api.generator.')->group(function () {
     Route::post('/adventure', [UtilityController::class, 'generateProceduralAdventure'])->name('adventure');
     Route::post('/encounter', [UtilityController::class, 'generateProceduralEncounter'])->name('encounter');
     Route::post('/encounter-creatures', [UtilityController::class, 'generateProceduralEncounterCreatures'])->name('encounter-creatures');
+    Route::post('/encounter-treasure', [UtilityController::class, 'generateProceduralEncounterTreasure'])->name('encounter-treasure');
     Route::post('/location', [UtilityController::class, 'generateProceduralLocation'])->name('location');
     Route::post('/item-lore', [UtilityController::class, 'generateProceduralItemLore'])->name('item-lore');
 });
