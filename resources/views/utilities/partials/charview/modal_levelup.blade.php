@@ -206,10 +206,72 @@
                         <h3 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
                             <span>✨</span> Learn New Spells &amp; Variations (Optional)
                         </h3>
-                        <p class="text-xs text-slate-600 mt-0.5">Select any new spells or variations learned at this level. Requires trained skill rank >= spell PP cost in the spell's governing skill.</p>
+                        <p class="text-xs text-slate-600 mt-0.5">Select any new spells or variations learned at this level. Requires trained skill rank &gt;= spell PP cost in the spell's governing skill.</p>
                     </div>
                     <div class="shrink-0">
                         <input type="text" x-model="lvlSpellSearch" placeholder="Filter eligible spells..." class="px-2.5 py-1 text-xs border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                    </div>
+                </div>
+
+                <!-- Spell Learning Capacity Strip (Consistent with Learn Spells Modal) -->
+                <div class="bg-slate-100/90 border border-slate-200 rounded-xl p-2.5 shadow-2xs">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                        <!-- Arcane Spells -->
+                        <div class="bg-white rounded-lg border border-indigo-300/80 px-2.5 py-1.5 shadow-2xs flex items-center justify-between gap-2"
+                             :class="spellSummary.arcane.ranks > 0 ? 'ring-1 ring-indigo-400 bg-indigo-50/20' : 'opacity-85'">
+                            <div class="flex items-center gap-1.5 min-w-0">
+                                <span class="text-base">🔮</span>
+                                <div>
+                                    <div class="font-bold text-indigo-950 text-xs leading-tight">Arcane</div>
+                                    <div class="text-[9px] text-indigo-800 font-mono font-semibold" x-text="'Rank ' + spellSummary.arcane.ranks"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 font-mono text-[11px] shrink-0 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
+                                <span title="Known Spells">Known: <strong class="text-indigo-950 font-bold" x-text="spellSummary.arcane.current"></strong></span>
+                                <span class="text-slate-300">|</span>
+                                <span title="Free Spells from Skills">Free: <strong class="text-emerald-700 font-bold" x-text="spellSummary.arcane.free"></strong></span>
+                                <span class="text-slate-300">|</span>
+                                <span title="Max Learnable Spells">Max: <strong class="text-slate-800 font-bold" x-text="spellSummary.arcane.max"></strong></span>
+                            </div>
+                        </div>
+
+                        <!-- Divine Spells -->
+                        <div class="bg-white rounded-lg border border-amber-300/80 px-2.5 py-1.5 shadow-2xs flex items-center justify-between gap-2"
+                             :class="spellSummary.divine.ranks > 0 ? 'ring-1 ring-amber-400 bg-amber-50/20' : 'opacity-85'">
+                            <div class="flex items-center gap-1.5 min-w-0">
+                                <span class="text-base">✝️</span>
+                                <div>
+                                    <div class="font-bold text-amber-950 text-xs leading-tight">Divine</div>
+                                    <div class="text-[9px] text-amber-800 font-mono font-semibold" x-text="'Rank ' + spellSummary.divine.ranks"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 font-mono text-[11px] shrink-0 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
+                                <span title="Known Spells">Known: <strong class="text-amber-950 font-bold" x-text="spellSummary.divine.current"></strong></span>
+                                <span class="text-slate-300">|</span>
+                                <span title="Free Spells from Skills">Free: <strong class="text-emerald-700 font-bold" x-text="spellSummary.divine.free"></strong></span>
+                                <span class="text-slate-300">|</span>
+                                <span title="Max Learnable Spells">Max: <strong class="text-slate-800 font-bold" x-text="spellSummary.divine.max"></strong></span>
+                            </div>
+                        </div>
+
+                        <!-- Psionic Powers -->
+                        <div class="bg-white rounded-lg border border-teal-300/80 px-2.5 py-1.5 shadow-2xs flex items-center justify-between gap-2"
+                             :class="spellSummary.psionic.ranks > 0 ? 'ring-1 ring-teal-400 bg-teal-50/20' : 'opacity-85'">
+                            <div class="flex items-center gap-1.5 min-w-0">
+                                <span class="text-base">🧠</span>
+                                <div>
+                                    <div class="font-bold text-teal-950 text-xs leading-tight">Psionic</div>
+                                    <div class="text-[9px] text-teal-800 font-mono font-semibold" x-text="'Rank ' + spellSummary.psionic.ranks"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 font-mono text-[11px] shrink-0 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
+                                <span title="Known Powers">Known: <strong class="text-teal-950 font-bold" x-text="spellSummary.psionic.current"></strong></span>
+                                <span class="text-slate-300">|</span>
+                                <span title="Free Powers from Skills">Free: <strong class="text-emerald-700 font-bold" x-text="spellSummary.psionic.free"></strong></span>
+                                <span class="text-slate-300">|</span>
+                                <span title="Max Learnable Powers">Max: <strong class="text-slate-800 font-bold" x-text="spellSummary.psionic.max"></strong></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

@@ -191,28 +191,31 @@
             <div class="space-y-3 pr-1 sm:pr-2">
                 <template x-for="(c, idx) in sortedCombatants" :key="c.id">
                     <div :id="'combatant-card-' + c.id"
-                         class="bg-white border rounded-2xl shadow-sm overflow-hidden transition duration-150 relative"
+                         x-data="{ condOpen: false, condSearch: '' }"
+                         class="bg-white border rounded-2xl shadow-sm transition duration-150 relative"
                          :class="{
                              'ring-2 ring-red-600 border-red-500 bg-red-50/50 shadow-lg': (c.hp_curr <= -10 || (c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))),
                              'ring-2 ring-rose-500 border-rose-400 bg-rose-50/30 shadow-md animate-pulse': (c.hp_curr <= 0 && c.hp_curr > -10 && !(c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))),
                              'ring-2 ring-amber-400 border-amber-300 bg-amber-50/15 shadow-md': (activeIndex === idx && c.hp_curr > 0),
-                             'border-slate-200': (activeIndex !== idx && c.hp_curr > 0)
+                             'border-slate-200': (activeIndex !== idx && c.hp_curr > 0),
+                             'z-30': condOpen
                          }">
                         
                         <!-- Severe Status Banner -->
                         <template x-if="c.hp_curr <= -10 || (c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))">
-                            <div class="bg-red-700 text-white font-black text-xs px-3 py-1 text-center tracking-widest uppercase flex items-center justify-center gap-2 shadow-inner">
+                            <div class="bg-red-700 text-white font-black text-xs px-3 py-1 text-center tracking-widest uppercase flex items-center justify-center gap-2 shadow-inner rounded-t-2xl">
                                 <span>💀</span> COMBATANT IS DEAD <span>💀</span>
                             </div>
                         </template>
                         <template x-if="c.hp_curr <= 0 && c.hp_curr > -10 && !(c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))">
-                            <div class="bg-rose-600 text-white font-black text-xs px-3 py-1 text-center tracking-widest uppercase flex items-center justify-center gap-2 shadow-inner animate-pulse">
+                            <div class="bg-rose-600 text-white font-black text-xs px-3 py-1 text-center tracking-widest uppercase flex items-center justify-center gap-2 shadow-inner animate-pulse rounded-t-2xl">
                                 <span>⚠️</span> COMBATANT IS DYING (UNCONSCIOUS &amp; BLEEDING) <span>⚠️</span>
                             </div>
                         </template>
 
                         <!-- Card Header & Core Identity Strip -->
-                        <div class="px-3.5 py-2 bg-slate-50/90 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2.5">
+                        <div class="px-3.5 py-2 bg-slate-50/90 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2.5"
+                             :class="{ 'rounded-t-2xl': !(c.hp_curr <= 0 || (c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))) }">
                             <div class="flex items-center gap-2">
                                 <!-- Reorder Buttons -->
                                 <div class="flex flex-col gap-0.5">
@@ -478,20 +481,33 @@
                                     </span>
                                 </template>
 
-                                <div class="relative" x-data="{ condOpen: false }">
-                                    <button type="button" @click="condOpen = !condOpen"
-                                            class="text-[11px] px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-semibold border border-slate-300 flex items-center gap-1 cursor-pointer">
+                                <div class="relative">
+                                    <button type="button" @click="condOpen = !condOpen; condSearch = ''"
+                                            class="text-[11px] px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-semibold border border-slate-300 flex items-center gap-1 cursor-pointer transition">
                                         <span>+ Add Condition</span>
                                     </button>
                                     <div x-show="condOpen" @click.outside="condOpen = false" x-cloak
-                                         class="absolute left-0 mt-1 w-56 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-30 max-h-56 overflow-y-auto">
-                                        <template x-for="condObj in conditionsList" :key="condObj.name">
-                                            <button type="button" @click="addCondition(c, condObj.name); condOpen = false"
-                                                    class="w-full text-left px-3 py-1.5 hover:bg-amber-50 text-xs text-slate-800 flex items-center justify-between cursor-pointer">
-                                                <span class="font-medium" x-text="condObj.name"></span>
-                                                <span x-show="c.conditions.includes(condObj.name)" class="text-amber-600 font-bold">✓</span>
-                                            </button>
-                                        </template>
+                                         class="absolute left-0 top-full mt-1 w-64 bg-white rounded-xl shadow-2xl border border-slate-300 py-1.5 z-50 ring-1 ring-black/10">
+                                        <!-- Search filter -->
+                                        <div class="px-2 py-1 border-b border-slate-200" @click.stop>
+                                            <input type="text" x-model="condSearch" placeholder="Filter conditions..."
+                                                   class="w-full px-2 py-1 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-500 bg-slate-50 text-slate-900" />
+                                        </div>
+                                        <div class="max-h-56 overflow-y-auto pr-0.5 divide-y divide-slate-100">
+                                            <template x-for="condObj in filteredConditions(condSearch)" :key="condObj.name">
+                                                <button type="button" @click="addCondition(c, condObj.name); condOpen = false"
+                                                        class="w-full text-left px-3 py-1.5 hover:bg-amber-50 text-xs text-slate-800 flex items-center justify-between cursor-pointer transition">
+                                                    <div class="min-w-0 flex-1 pr-1">
+                                                        <div class="font-bold text-slate-900 leading-tight" x-text="condObj.name"></div>
+                                                        <div class="text-[10px] text-slate-500 truncate" x-text="condObj.desc"></div>
+                                                    </div>
+                                                    <span x-show="c.conditions && c.conditions.includes(condObj.name)" class="text-emerald-600 font-black text-sm shrink-0">✓</span>
+                                                </button>
+                                            </template>
+                                            <div x-show="filteredConditions(condSearch).length === 0" class="px-3 py-2 text-center text-[11px] text-slate-400 italic">
+                                                No matching conditions
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1027,7 +1043,7 @@
                                 Encounter Experience Points (XP)
                             </label>
                             <div class="flex items-center gap-2">
-                                <input type="number" x-model.number="endSummary.xp_award" min="0" step="50"
+                                <input type="number" x-model.number="endSummary.xp_award" min="0" step="1"
                                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-sm font-mono font-bold text-slate-900 focus:ring-2 focus:ring-emerald-500">
                                 <span class="text-xs font-mono font-bold text-emerald-800 bg-emerald-50 px-2 py-1 rounded border border-emerald-200 shrink-0">
                                     <span x-text="partyCombatants.length > 0 ? Math.floor((endSummary.xp_award || 0) / partyCombatants.length) : 0"></span> XP/PC
@@ -1041,7 +1057,7 @@
                                 Recovered Treasure (sp)
                             </label>
                             <div class="flex items-center gap-2">
-                                <input type="number" x-model.number="endSummary.silver_award" min="0" step="10"
+                                <input type="number" x-model.number="endSummary.silver_award" min="0" step="1"
                                        class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-sm font-mono font-bold text-slate-900 focus:ring-2 focus:ring-amber-500">
                                 <span class="text-xs font-mono font-bold text-amber-900 bg-amber-100 px-2 py-1 rounded border border-amber-300 shrink-0">
                                     <span x-text="partyCombatants.length > 0 ? Math.floor((endSummary.silver_award || 0) / partyCombatants.length) : 0"></span> sp/PC

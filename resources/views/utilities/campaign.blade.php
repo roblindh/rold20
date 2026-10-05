@@ -1355,7 +1355,7 @@
                     <div class="flex items-center gap-3 bg-white p-2 rounded-lg border border-amber-200">
                         <label class="text-xs font-bold text-slate-700 uppercase">Monetary Treasure:</label>
                         <div class="flex items-center gap-1 font-mono">
-                            <input type="number" x-model.number="encForm.treasure_rewards.coins_sp" min="0" step="10" placeholder="0"
+                            <input type="number" x-model.number="encForm.treasure_rewards.coins_sp" min="0" step="1" placeholder="0"
                                    class="w-24 px-2 py-1 bg-white border border-slate-300 rounded text-xs font-bold text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
                             <span class="text-xs text-amber-900 font-bold">sp (Silver Pieces)</span>
                         </div>
@@ -1619,12 +1619,12 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Total Silver Awarded</label>
-                            <input type="number" name="total_silver" x-model.number="awardData.total_silver" min="0" step="10" placeholder="e.g. 500"
+                            <input type="number" name="total_silver" x-model.number="awardData.total_silver" min="0" step="1" placeholder="e.g. 500"
                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 font-mono font-bold focus:ring-2 focus:ring-amber-500 bg-white">
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Direct to Shared Vault (sp)</label>
-                            <input type="number" name="vault_silver" x-model.number="awardData.vault_silver" min="0" step="10" placeholder="0"
+                            <input type="number" name="vault_silver" x-model.number="awardData.vault_silver" min="0" step="1" placeholder="0"
                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 font-mono font-bold focus:ring-2 focus:ring-amber-500 bg-white">
                         </div>
                     </div>

@@ -2330,13 +2330,14 @@ function characterViewerApp() {
             let psionicRanks = 0;
             
             (rawSkills || []).forEach(s => {
-                const rank = parseFloat(characterSkills[s.ID] || 0);
+                const added = (this.lvlData && this.lvlData.skills && this.lvlData.skills[s.ID]) ? parseFloat(this.lvlData.skills[s.ID]) : 0;
+                const rank = (parseFloat(characterSkills[s.ID] || 0)) + added;
                 if (s.Type == 4) arcaneRanks += rank;
                 else if (s.Type == 5) divineRanks += rank;
                 else if (s.Type == 6) psionicRanks += rank;
             });
 
-            const knownSpells = (spellsWithKnown || []).filter(s => s.isKnown);
+            const knownSpells = (spellsWithKnown || []).filter(s => s.isKnown || (this.lvlData && this.lvlData.selectedSpells && this.lvlData.selectedSpells[s.ID]));
             let arcaneKnown = 0;
             let divineKnown = 0;
             let psionicKnown = 0;
