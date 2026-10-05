@@ -987,10 +987,8 @@ class EntityEngine
         // =========================================================================
         $equipmentManager = new EquipmentManager();
         $equipmentManager->setCoins($e->Coins ?? null, $e->Wealth ?? null);
-        $rawPossessions = $e->Possessions ?? $e->Equipment ?? $e->Inventory ?? [];
-        if (is_string($rawPossessions) && (str_starts_with(trim($rawPossessions), '[') || str_starts_with(trim($rawPossessions), '{'))) {
-            $rawPossessions = json_decode($rawPossessions, true) ?? [];
-        }
+        $rawPossessions = EquipmentManager::decodeEquipment($e->Possessions ?? $e->Equipment ?? $e->Inventory ?? []);
+
 
         if (!empty($rawPossessions) && is_array($rawPossessions)) {
             foreach ($rawPossessions as $pIdx => $pItem) {
@@ -1116,6 +1114,8 @@ class EntityEngine
                     $qual = $tr['params']['Qual'] ?? '';
                     $weapEval = self::evaluateWeaponSkillsForQual($qual, $effectiveSkillRanks, $context);
                     $itemECRed = max($itemECRed, (int)($weapEval['ec_red'] ?? 0));
+                } elseif ($tr['type'] === 'SpdSpcl' && strcasecmp($tr['params']['Qual'] ?? '', 'ECRed') === 0) {
+                    $itemECRed += (int)($tr['params']['Value'] ?? 0);
                 }
             }
 

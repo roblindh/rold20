@@ -2588,24 +2588,46 @@ class cPossession extends cEntity {
                     $aModParams = array_map(function($p) {
                         return trim($p, " \t\n\r\0\x0B)");
                     }, explode("&", $pVal));
+                    $foundMod = false;
                     foreach ($_APP['itemmodsmundane'] as $iMod) {
-                        if ($iMod['Abbreviation'] == $aModParams[0] || $iMod['Description'] == $aModParams[0]) {
+                        if (strcasecmp($iMod['Abbreviation'], $aModParams[0]) === 0 || strcasecmp($iMod['Description'], $aModParams[0]) === 0) {
                             $this->lMods[] = $iMod['ID'];
-                            break 2;
+                            $foundMod = true;
+                            break;
                         }
                     }
-                    foreach ($_APP['itemmodsmagic'] as $iMod) {
-                        if ($iMod['Abbreviation'] == $aModParams[0] || $iMod['Description'] == $aModParams[0]) {
-                            $this->lModsMagic[] = $iMod['ID'];
-                            foreach ($aModParams as $iModParam) {
-                                if (substr($iModParam, 0, 2) == "x=")
-                                    $this->lModsParX[count($this->lModsMagic) - 1] = substr($iModParam, 2);
-                                else if (substr($iModParam, 0, 2) == "y=")
-                                    $this->lModsParY[count($this->lModsMagic) - 1] = substr($iModParam, 2);
-                                else if (substr($iModParam, 0, 4) == "mul=")
-                                    $this->lModsMul[count($this->lModsMagic) - 1] = substr($iModParam, 4);
+                    if (!$foundMod) {
+                        $baseItem = ($this->Item > 0 && isset($_APP['items'][$this->Item])) ? $_APP['items'][$this->Item] : null;
+                        $tId = $baseItem ? (int)($baseItem['ItemTypeID'] ?? $baseItem['Type'] ?? 0) : 0;
+                        $sId = $baseItem ? (int)($baseItem['Subtype'] ?? 0) : 0;
+                        $isArm = ($tId === 3) || in_array($sId, [11, 12, 13, 14, 15, 16, 17, 18, 19, 41, 42, 43, 44, 45, 46]);
+                        $isShd = ($sId === 9);
+                        $isProj = ($sId === 7) || in_array($sId, [5, 6, 7]);
+                        $isMel = ($tId === 2) && !$isProj;
+                        $catSuffix = $isArm ? 'Armor' : ($isShd ? 'Shield' : ($isProj ? 'Projectile Weapon' : ($isMel ? 'Melee Weapon' : 'Item')));
+                        $candidateName = trim($aModParams[0] . ' ' . $catSuffix);
+                        foreach ($_APP['itemmodsmundane'] as $iMod) {
+                            if (strcasecmp($iMod['Abbreviation'], $candidateName) === 0 || strcasecmp($iMod['Description'], $candidateName) === 0) {
+                                $this->lMods[] = $iMod['ID'];
+                                $foundMod = true;
+                                break;
                             }
-                            break 2;
+                        }
+                    }
+                    if (!$foundMod) {
+                        foreach ($_APP['itemmodsmagic'] as $iMod) {
+                            if (strcasecmp($iMod['Abbreviation'], $aModParams[0]) === 0 || strcasecmp($iMod['Description'], $aModParams[0]) === 0) {
+                                $this->lModsMagic[] = $iMod['ID'];
+                                foreach ($aModParams as $iModParam) {
+                                    if (substr($iModParam, 0, 2) == "x=")
+                                        $this->lModsParX[count($this->lModsMagic) - 1] = substr($iModParam, 2);
+                                    else if (substr($iModParam, 0, 2) == "y=")
+                                        $this->lModsParY[count($this->lModsMagic) - 1] = substr($iModParam, 2);
+                                    else if (substr($iModParam, 0, 4) == "mul=")
+                                        $this->lModsMul[count($this->lModsMagic) - 1] = substr($iModParam, 4);
+                                }
+                                break;
+                            }
                         }
                     }
                     break;

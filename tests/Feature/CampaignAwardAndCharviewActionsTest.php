@@ -380,8 +380,8 @@ class CampaignAwardAndCharviewActionsTest extends TestCase
         $this->assertEquals(100, (int)$updated->Wealth);
         $equip = json_decode((string)$updated->Equipment, true);
         $this->assertCount(1, $equip);
-        $this->assertEquals($refItem->Name, $equip[0]['Name']);
-        $this->assertEquals(2, $equip[0]['Qty']);
+        $this->assertEquals($refItem->Name, $equip[0]['name']);
+        $this->assertEquals(2, $equip[0]['qty']);
     }
 
     public function testLearnCharacterSpells(): void

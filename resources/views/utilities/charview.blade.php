@@ -288,15 +288,8 @@
             }
 
             // --- 9. Parse Equipment & Wealth ---
-            $rawEquipmentList = [];
-            if (!empty($character->Equipment)) {
-                $rawEquip = $character->Equipment;
-                if (str_starts_with($rawEquip, '[')) {
-                    $rawEquipmentList = json_decode($rawEquip, true) ?? [];
-                } elseif (is_string($rawEquip) && trim($rawEquip) !== '') {
-                    $rawEquipmentList = [['name' => $rawEquip, 'Name' => $rawEquip, 'location' => 1]];
-                }
-            }
+            $rawEquipmentList = \App\Services\Entity\EquipmentManager::decodeEquipment($character->Equipment ?? []);
+
             $equipmentList = [];
             foreach ($rawEquipmentList as $idx => $it) {
                 if (!is_array($it)) continue;
@@ -2008,8 +2001,9 @@ function characterViewerApp() {
                         unit_price: unitPrice,
                         weight: weight,
                         dr: item.dr || '0',
-                        traits: item.traits || '',
+                        traits: item.traits_raw || item.custom_traits || item.traits || '',
                         mods: item.mods || '',
+
                         item_type_id: item.item_type_id || item.ItemTypeID || item.Type || null,
                         subtype: item.subtype || item.Subtype || null,
                         category: item.category || item.Category || null,

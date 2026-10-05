@@ -123,6 +123,9 @@
                                         <input type="hidden" :name="'items[' + idx + '][is_container]'" :value="item.is_container ? '1' : '0'">
                                         <input type="hidden" :name="'items[' + idx + '][item_type_id]'" :value="item.item_type_id">
                                         <input type="hidden" :name="'items[' + idx + '][subtype]'" :value="item.subtype">
+                                        <input type="hidden" :name="'items[' + idx + '][traits]'" :value="item.traits || item.Traits || ''">
+                                        <input type="hidden" :name="'items[' + idx + '][mods]'" :value="item.mods || item.Mods || ''">
+                                        <input type="hidden" :name="'items[' + idx + '][config]'" :value="item.config || item.Config || item.config_string || ''">
                                         <input type="hidden" :name="'items[' + idx + '][container_id]'" :value="item.container_id || ''">
                                         <template x-for="(locVal, cIdx) in (item.locations || [1,1,1,1,1])" :key="cIdx">
                                             <input type="hidden" :name="'items[' + idx + '][locations][' + cIdx + ']'" :value="locVal">

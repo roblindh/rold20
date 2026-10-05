@@ -46,6 +46,9 @@ function application_start(): void {
     $cacheFile = __DIR__ . '/../storage/framework/cache/app_data.php';
     if ((!isset($_APP) || empty($_APP) || empty($_APP['items'])) && file_exists($cacheFile)) {
         $_APP = require $cacheFile;
+        if (is_array($_APP)) {
+            $_APP['initialized'] = true;
+        }
         return;
     }
 

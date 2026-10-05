@@ -1639,6 +1639,14 @@ class ProceduralItemFactory
         $baseItemName = trim($baseItemName);
         if (empty($baseItemName)) return null;
 
+        $baseItemRef = self::resolveBaseItem($baseItemName);
+        $typeId = (int)($baseItemRef['ItemTypeID'] ?? $baseItemRef['Type'] ?? 0);
+        $subtypeId = (int)($baseItemRef['Subtype'] ?? 0);
+        $isArmor = ($typeId === 3) || in_array($subtypeId, [11, 12, 13, 14, 15, 16, 17, 18, 19, 41, 42, 43, 44, 45, 46]);
+        $isShield = ($subtypeId === 9);
+        $isProjectile = ($subtypeId === 7) || in_array($subtypeId, [5, 6, 7]);
+        $isMelee = ($typeId === 2) && !$isProjectile;
+
         $params = ["Item={$baseItemName}"];
         $prefixParts = [];
 
@@ -1648,12 +1656,27 @@ class ProceduralItemFactory
         }
 
         if (!empty($qualityMod) && strcasecmp($qualityMod, 'Standard') !== 0) {
-            $params[] = "Mod=" . trim($qualityMod);
-            $cleanQual = preg_replace('/(Melee|Projectile|Weapon|Armor|Shield|Item|Ammunition)\s*$/i', '', trim($qualityMod));
+            $cleanQual = preg_replace('/(Melee(\s*Weapon)?|Projectile(\s*Weapon)?|Weapon|Armor|Shield|Item|Ammunition)\s*$/i', '', trim($qualityMod));
             $cleanQual = trim($cleanQual);
             if (!empty($cleanQual) && !in_array(strtolower($cleanQual), array_map('strtolower', $prefixParts))) {
                 $prefixParts[] = $cleanQual;
             }
+
+            $targetCategoryMod = $isArmor ? "{$cleanQual} Armor"
+                : ($isShield ? "{$cleanQual} Shield"
+                : ($isProjectile ? "{$cleanQual} Projectile Weapon"
+                : ($isMelee ? "{$cleanQual} Melee Weapon" : "{$cleanQual} Item")));
+
+            $matchedModName = null;
+            if (!empty($_APP['itemmodsmundane'])) {
+                foreach ($_APP['itemmodsmundane'] as $mm) {
+                    if (strcasecmp($mm['Description'] ?? '', $targetCategoryMod) === 0 || strcasecmp($mm['Abbreviation'] ?? '', $targetCategoryMod) === 0 || strcasecmp($mm['Description'] ?? '', $qualityMod) === 0) {
+                        $matchedModName = $mm['Description'];
+                        break;
+                    }
+                }
+            }
+            $params[] = "Mod=" . ($matchedModName ?: $targetCategoryMod);
         }
 
         if (!empty($mundaneMods)) {

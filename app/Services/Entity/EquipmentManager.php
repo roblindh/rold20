@@ -37,6 +37,35 @@ class EquipmentManager
     }
 
     /**
+     * Safely decode equipment column payload (JSON array string, bare JSON object string, array, or text)
+     * into a normalized list of item arrays.
+     */
+    public static function decodeEquipment(mixed $raw): array
+    {
+        if (empty($raw)) {
+            return [];
+        }
+        if (is_array($raw)) {
+            return !array_is_list($raw) ? [$raw] : $raw;
+        }
+        if (is_string($raw)) {
+            $raw = trim($raw);
+            if ($raw === '') {
+                return [];
+            }
+            if (str_starts_with($raw, '[') || str_starts_with($raw, '{')) {
+                $decoded = json_decode($raw, true);
+                if (is_array($decoded) && !empty($decoded)) {
+                    return !array_is_list($decoded) ? [$decoded] : $decoded;
+                }
+                return [];
+            }
+            return [['name' => $raw, 'Name' => $raw, 'config' => $raw, 'location' => self::LOCATION_CARRIED]];
+        }
+        return [];
+    }
+
+    /**
      * Standard equipment slots.
      */
     public const SLOTS = [
@@ -239,6 +268,7 @@ class EquipmentManager
     }
 
     protected static ?array $refItemsCache = null;
+    protected static ?array $refItemSubtypesCache = null;
     protected static ?array $refItemModsMundaneCache = null;
     protected static ?array $refItemModsMagicCache = null;
     protected static ?array $refMaterialsCache = null;
@@ -248,6 +278,22 @@ class EquipmentManager
      */
     public static function loadItemReferenceTables(): void
     {
+        if (self::$refItemSubtypesCache === null) {
+            try {
+                self::$refItemSubtypesCache = DB::table('ref_itemsubtypes')
+                    ->get()
+                    ->keyBy('ID')
+                    ->map(fn($r) => (array)$r)
+                    ->toArray();
+            } catch (\Throwable $e) {
+                $cacheFile = dirname(__DIR__, 3) . '/storage/framework/cache/app_data.php';
+                if (file_exists($cacheFile)) {
+                    $appData = require $cacheFile;
+                    self::$refItemSubtypesCache = $appData['itemsubtypes'] ?? [];
+                }
+            }
+        }
+
         if (self::$refItemsCache === null) {
             try {
                 self::$refItemsCache = DB::table('ref_items')
@@ -413,6 +459,17 @@ class EquipmentManager
                                 break;
                             }
                         }
+                        if (!$foundMundane) {
+                            $targetCatStr = $isArmor ? 'Armor' : ($isShield ? 'Shield' : ($isProjectile ? 'Projectile Weapon' : ($isWeapon ? 'Melee Weapon' : 'Item')));
+                            $candidateName = trim("{$mCode} {$targetCatStr}");
+                            foreach (self::$refItemModsMundaneCache as $mm) {
+                                if (strcasecmp((string)($mm['Description'] ?? ''), $candidateName) === 0 || strcasecmp((string)($mm['Abbreviation'] ?? ''), $candidateName) === 0) {
+                                    $parsedMods[] = $mm;
+                                    $foundMundane = true;
+                                    break;
+                                }
+                            }
+                        }
                     }
                     if (!$foundMundane && !empty(self::$refItemModsMagicCache)) {
                         foreach (self::$refItemModsMagicCache as $mm) {
@@ -462,21 +519,54 @@ class EquipmentManager
         }
 
         if ($parsedMat && !empty($parsedMat['Traits'])) {
-            $traitBlocks[] = trim($parsedMat['Traits']);
+            $matParsed = TraitEvaluator::parse(trim($parsedMat['Traits']));
+            $filteredMatTraits = [];
+            foreach ($matParsed as $mtr) {
+                $mType = $mtr['type'] ?? '';
+                $mQual = strtoupper($mtr['params']['Qual'] ?? '');
+                // Skip weapon attack/damage traits on non-weapons
+                if (!$isWeapon && ($mType === 'AttMod' || $mType === 'Weapon')) {
+                    continue;
+                }
+                // Skip armor DR/EC traits on non-armors
+                if (!$isArmor && ($mType === 'Armor' || ($mType === 'DefMod' && $mQual === 'DR') || ($mType === 'SpdSpcl' && $mQual === 'ECRED'))) {
+                    continue;
+                }
+                $filteredMatTraits[] = $mtr['raw'];
+            }
+            if (!empty($filteredMatTraits)) {
+                $traitBlocks[] = implode(' ', $filteredMatTraits);
+            }
         }
+
 
         // 4. Fallback Mundane Mod if not found in config
         if (empty($parsedMods)) {
             $rawLMods = $arr['lMods'] ?? $arr['mods'] ?? [];
+            if (is_string($rawLMods)) {
+                $rawLMods = array_filter(array_map('trim', preg_split('/[,;]/', $rawLMods)));
+            }
             if (is_array($rawLMods) && !empty($rawLMods)) {
                 foreach ($rawLMods as $lm) {
                     if (is_numeric($lm) && isset(self::$refItemModsMundaneCache[(int)$lm])) {
                         $parsedMods[] = self::$refItemModsMundaneCache[(int)$lm];
                     } elseif (is_string($lm)) {
+                        $matched = false;
                         foreach (self::$refItemModsMundaneCache ?? [] as $mm) {
                             if (strcasecmp((string)($mm['Abbreviation'] ?? ''), $lm) === 0 || strcasecmp((string)($mm['Description'] ?? ''), $lm) === 0) {
                                 $parsedMods[] = $mm;
+                                $matched = true;
                                 break;
+                            }
+                        }
+                        if (!$matched) {
+                            $targetCatStr = $isArmor ? 'Armor' : ($isShield ? 'Shield' : ($isProjectile ? 'Projectile Weapon' : ($isWeapon ? 'Melee Weapon' : 'Item')));
+                            $candidateName = trim("{$lm} {$targetCatStr}");
+                            foreach (self::$refItemModsMundaneCache ?? [] as $mm) {
+                                if (strcasecmp((string)($mm['Description'] ?? ''), $candidateName) === 0 || strcasecmp((string)($mm['Abbreviation'] ?? ''), $candidateName) === 0) {
+                                    $parsedMods[] = $mm;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -641,6 +731,155 @@ class EquipmentManager
         }
 
         return $arr;
+    }
+
+    /**
+     * Create a normalized, canonical inventory item record from a config string, catalog item, or partial data.
+     * Guarantees consistent properties across all item generation and purchasing paths.
+     */
+    public static function createInventoryRecord(string|array|object $itemOrConfig, array $overrides = []): array
+    {
+        self::loadItemReferenceTables();
+
+        $configStr = '';
+        $inputArray = [];
+        if (is_string($itemOrConfig)) {
+            $configStr = trim($itemOrConfig);
+            $inputArray = ['config' => $configStr];
+        } elseif (is_object($itemOrConfig)) {
+            $inputArray = (array)$itemOrConfig;
+            $configStr = trim((string)($inputArray['config'] ?? $inputArray['config_string'] ?? $inputArray['Config'] ?? ''));
+        } elseif (is_array($itemOrConfig)) {
+            $inputArray = $itemOrConfig;
+            $configStr = trim((string)($inputArray['config'] ?? $inputArray['config_string'] ?? $inputArray['Config'] ?? ''));
+        }
+
+        $mergedInput = array_merge($inputArray, $overrides);
+        $name = trim((string)($mergedInput['name'] ?? $mergedInput['Name'] ?? ''));
+
+        // 1. ProceduralItemFactory instantiation if config or name is available
+        $inst = null;
+        if (class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
+            $lookupConfig = !empty($configStr) ? $configStr : $name;
+            if (!empty($lookupConfig)) {
+                $inst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem($lookupConfig);
+            }
+        }
+
+        // 2. Base item reference resolution
+        $baseId = (int)($mergedInput['item_id'] ?? $mergedInput['ID'] ?? ($inst['item_id'] ?? 0));
+        $baseItem = null;
+        if ($baseId > 0 && isset(self::$refItemsCache[$baseId])) {
+            $baseItem = self::$refItemsCache[$baseId];
+        } elseif (!empty($name) && class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
+            $baseItem = \App\Services\ItemGeneration\ProceduralItemFactory::resolveBaseItem($name);
+            if ($baseItem && !empty($baseItem['ID'])) {
+                $baseId = (int)$baseItem['ID'];
+            }
+        }
+
+        if (empty($name)) {
+            $name = (string)($inst['name'] ?? ($baseItem['Name'] ?? 'Custom Item'));
+        }
+
+        $subtypeId = (int)($mergedInput['subtype'] ?? $mergedInput['Subtype'] ?? ($inst['subtype'] ?? ($baseItem['Subtype'] ?? 0)));
+        $subtypeType = ($subtypeId > 0 && isset(self::$refItemSubtypesCache[$subtypeId])) ? (int)(self::$refItemSubtypesCache[$subtypeId]['Type'] ?? 0) : 0;
+        $typeId = (int)($mergedInput['item_type_id'] ?? $mergedInput['ItemTypeID'] ?? $mergedInput['item_type'] ?? ($inst['item_type_id'] ?? ($baseItem['ItemTypeID'] ?? ($baseItem['Type'] ?? ($subtypeType > 0 ? $subtypeType : 0)))));
+
+        $unitPrice = isset($overrides['unit_price']) ? (float)$overrides['unit_price']
+            : (isset($mergedInput['unit_price']) ? (float)$mergedInput['unit_price']
+            : (isset($inst['value_sp']) ? (float)$inst['value_sp']
+            : (isset($mergedInput['value']) ? (float)$mergedInput['value']
+            : (float)($baseItem['BaseValue'] ?? 0))));
+
+        $unitWeight = isset($overrides['unit_weight']) ? (float)$overrides['unit_weight']
+            : (isset($mergedInput['unit_weight']) ? (float)$mergedInput['unit_weight']
+            : (isset($inst['weight_kg']) ? (float)$inst['weight_kg']
+            : (isset($mergedInput['weight']) ? (float)$mergedInput['weight']
+            : (float)($baseItem['BaseWeight'] ?? $baseItem['Weight'] ?? 0))));
+
+        $qty = max(1, (int)($overrides['qty'] ?? $mergedInput['qty'] ?? $mergedInput['Qty'] ?? 1));
+
+        $itemStub = [
+            'name' => $name,
+            'item_id' => $baseId > 0 ? $baseId : null,
+            'ItemTypeID' => $typeId > 0 ? $typeId : null,
+            'Subtype' => $subtypeId > 0 ? $subtypeId : null,
+            'config' => !empty($configStr) ? $configStr : ($inst['config_string'] ?? $name),
+        ];
+
+        $defaultLocation = self::getDefaultLocation($itemStub);
+        $location = (int)($overrides['location'] ?? $mergedInput['location'] ?? $mergedInput['Location'] ?? $defaultLocation);
+
+        $allowedLocations = self::getAllowedLocations($itemStub);
+        if (!in_array($location, $allowedLocations, true)) {
+            $location = $defaultLocation;
+        }
+
+        $locations = $overrides['locations'] ?? $mergedInput['locations'] ?? $mergedInput['Locations'] ?? array_fill(0, 5, $location);
+        if (!is_array($locations) || count($locations) < 5) {
+            $locations = array_fill(0, 5, $location);
+        } else {
+            $locations = array_map('intval', array_slice($locations, 0, 5));
+            foreach ($locations as $i => $locVal) {
+                if (!in_array($locVal, $allowedLocations, true)) {
+                    $locations[$i] = $defaultLocation;
+                }
+            }
+        }
+
+        $isContainer = !empty($mergedInput['is_container']) || !empty($mergedInput['IsContainer']) || self::isContainer($itemStub);
+        $containerId = $mergedInput['container_id'] ?? $mergedInput['ContainerID'] ?? null;
+
+        $resolvedTraits = self::resolveItemTraits(array_merge($itemStub, [
+            'traits' => $mergedInput['traits'] ?? ($inst['traits_raw'] ?? ''),
+            'mods' => $mergedInput['mods'] ?? ($inst['mods'] ?? ''),
+        ]));
+
+        $dr = (string)($mergedInput['dr'] ?? ($inst['dr'] ?? ($baseItem['DR'] ?? '0')));
+        $ec = (int)($mergedInput['ec'] ?? ($inst['ec'] ?? ($baseItem['ECMod'] ?? 0)));
+        $hp = (int)($mergedInput['hp'] ?? ($inst['hp'] ?? 1));
+        $pl = (string)($mergedInput['pl'] ?? ($inst['pl'] ?? '0'));
+        $size = (string)($mergedInput['size'] ?? ($inst['size'] ?? ($baseItem['Size'] ?? 'Medium (M)')));
+        $mods = (string)($mergedInput['mods'] ?? ($inst['mods'] ?? ''));
+
+        $isValuable = false;
+        if (isset($overrides['is_valuable'])) {
+            $isValuable = (bool)$overrides['is_valuable'];
+        } elseif (isset($mergedInput['is_valuable'])) {
+            $isValuable = (bool)$mergedInput['is_valuable'];
+        } else {
+            $isValuable = ($typeId === 9) || in_array($subtypeId, [51, 52, 53, 54, 55, 56]);
+        }
+        $valType = $overrides['valuable_type'] ?? $mergedInput['valuable_type'] ?? ($isValuable ? 'gem' : null);
+
+        $uid = (string)($overrides['uid'] ?? $mergedInput['uid'] ?? $mergedInput['id'] ?? uniqid('item_'));
+
+        return [
+            'uid' => $uid,
+            'item_id' => $baseId > 0 ? $baseId : null,
+            'name' => $name,
+            'qty' => $qty,
+            'unit_price' => $unitPrice,
+            'unit_weight' => $unitWeight,
+            'location' => $location,
+            'locations' => $locations,
+            'container_id' => $containerId,
+            'is_container' => (bool)$isContainer,
+            'is_valuable' => (bool)$isValuable,
+            'valuable_type' => $valType,
+            'ItemTypeID' => $typeId > 0 ? $typeId : null,
+            'Subtype' => $subtypeId > 0 ? $subtypeId : null,
+            'traits' => $resolvedTraits,
+            'mods' => $mods,
+            'config' => !empty($configStr) ? $configStr : ($inst['config_string'] ?? $name),
+            'size' => $size,
+            'dr' => $dr,
+            'hp' => $hp,
+            'ec' => $ec,
+            'pl' => $pl,
+            'added_at' => $mergedInput['added_at'] ?? date('Y-m-d H:i:s'),
+        ];
     }
 
     /**

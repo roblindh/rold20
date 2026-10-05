@@ -630,11 +630,11 @@ class UtilityController extends Controller
     {
         $character = DB::table('characters')->where('ID', $id)->first();
         if (!$character) {
-            return back()->with('error', 'Character not found.');
+            return redirect()->route('utilities.charview')->with('error', 'Character not found.');
         }
 
         if (!$this->isAuthorizedToManageCharacter($character)) {
-            return back()->with('error', 'Unauthorized: Only a GM or this character\'s player can level up this character.');
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Unauthorized: Only a GM or this character\'s player can level up this character.');
         }
 
         $validated = $request->validate([
@@ -656,7 +656,7 @@ class UtilityController extends Controller
         $reqXp = \App\Services\Entity\EntityEngine::getXPRequiredForLevel($targetLvl);
         
         if ($xp < $reqXp) {
-            return back()->with('error', "Insufficient XP for level up. Required: " . number_format($reqXp) . " XP for Level {$targetLvl}, Current: " . number_format($xp) . " XP.");
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', "Insufficient XP for level up. Required: " . number_format($reqXp) . " XP for Level {$targetLvl}, Current: " . number_format($xp) . " XP.");
         }
 
         // 1. Append class
@@ -732,7 +732,7 @@ class UtilityController extends Controller
 
             $valResult = \App\Services\Entity\SkillPrerequisiteEvaluator::validateLevelSkillAllocation($validated['skills'], $context, 1.0);
             if (!$valResult['valid']) {
-                return back()->with('error', implode(' ', $valResult['errors']));
+                return redirect()->route('utilities.charview', ['id' => $id])->with('error', implode(' ', $valResult['errors']));
             }
 
             foreach ($validated['skills'] as $sId => $addRank) {
@@ -806,7 +806,7 @@ class UtilityController extends Controller
             'Spells' => $newSpellsStr,
         ]);
 
-        return back()->with('status', "Congratulations! {$character->Name} has advanced to Level {$targetLvl}!");
+        return redirect()->route('utilities.charview', ['id' => $id])->with('status', "Congratulations! {$character->Name} has advanced to Level {$targetLvl}!");
     }
 
     /**
@@ -816,11 +816,11 @@ class UtilityController extends Controller
     {
         $character = DB::table('characters')->where('ID', $id)->first();
         if (!$character) {
-            return back()->with('error', 'Character not found.');
+            return redirect()->route('utilities.charview')->with('error', 'Character not found.');
         }
 
         if (!$this->isAuthorizedToManageCharacter($character)) {
-            return back()->with('error', 'Unauthorized: Only a GM or this character\'s player can modify this character.');
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Unauthorized: Only a GM or this character\'s player can modify this character.');
         }
 
         $validated = $request->validate([
@@ -866,7 +866,7 @@ class UtilityController extends Controller
         if ($validated['Name'] !== $character->Name) {
             $exists = DB::table('characters')->where('Name', $validated['Name'])->where('ID', '!=', $id)->first();
             if ($exists) {
-                return back()->with('error', "A character named '{$validated['Name']}' already exists.");
+                return redirect()->route('utilities.charview', ['id' => $id])->with('error', "A character named '{$validated['Name']}' already exists.");
             }
         }
 
@@ -883,7 +883,7 @@ class UtilityController extends Controller
             'Organizations' => !empty($sanitizedOrgs) ? json_encode($sanitizedOrgs) : null,
         ]);
 
-        return back()->with('status', "Profile details for '{$validated['Name']}' updated successfully!");
+        return redirect()->route('utilities.charview', ['id' => $id])->with('status', "Profile details for '{$validated['Name']}' updated successfully!");
     }
 
     /**
@@ -893,21 +893,21 @@ class UtilityController extends Controller
     {
         $character = DB::table('characters')->where('ID', $id)->first();
         if (!$character) {
-            return back()->with('error', 'Character not found.');
+            return redirect()->route('utilities.charview')->with('error', 'Character not found.');
         }
 
         if (!$this->isAuthorizedToManageCharacter($character)) {
-            return back()->with('error', 'Unauthorized: Only a GM or this character\'s player can trade assets for this character.');
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Unauthorized: Only a GM or this character\'s player can trade assets for this character.');
         }
 
         if (empty($character->Campaign)) {
-            return back()->with('error', 'Character is not currently assigned to a campaign party.');
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Character is not currently assigned to a campaign party.');
         }
 
         $campaignId = (int)$character->Campaign;
         $campaign = DB::table('campaigns')->where('ID', $campaignId)->first();
         if (!$campaign) {
-            return back()->with('error', 'Campaign not found.');
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Campaign not found.');
         }
 
         $tradeType = $request->input('trade_type');
@@ -943,15 +943,15 @@ class UtilityController extends Controller
             if ($tradeType === 'give_money') {
                 $targetId = (int)$request->input('target_character_id');
                 $amount = (int)$request->input('amount', 0);
-                if ($amount <= 0) return back()->with('error', 'Invalid amount specified.');
-                if ($amount > $currentCharWealth) return back()->with('error', 'Insufficient funds.');
+                if ($amount <= 0) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Invalid amount specified.');
+                if ($amount > $currentCharWealth) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Insufficient funds.');
 
                 $targetChar = DB::table('characters')->where('ID', $targetId)->where('Campaign', $campaignId)->first();
-                if (!$targetChar) return back()->with('error', 'Target party member not found.');
+                if (!$targetChar) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Target party member not found.');
 
                 $sourceWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($character->Coins ?? null, $currentCharWealth);
                 $deductRes = \App\Services\ItemGeneration\CurrencyService::deductCost($sourceWallet, (float)$amount, true);
-                if (!$deductRes['success']) return back()->with('error', 'Insufficient funds in wallet.');
+                if (!$deductRes['success']) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Insufficient funds in wallet.');
 
                 $targetWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($targetChar->Coins ?? null, (int)($targetChar->Wealth ?? 0));
                 $gainCoins = \App\Services\ItemGeneration\CurrencyService::spToCoins((float)$amount, true);
@@ -966,17 +966,17 @@ class UtilityController extends Controller
                     'Coins' => json_encode($newTargetWallet),
                 ]);
 
-                return back()->with('status', "Transferred {$amount} sp from {$character->Name} to {$targetChar->Name}.");
+                return redirect()->route('utilities.charview', ['id' => $id])->with('status', "Transferred {$amount} sp from {$character->Name} to {$targetChar->Name}.");
             }
 
             if ($tradeType === 'give_money_vault') {
                 $amount = (int)$request->input('amount', 0);
-                if ($amount <= 0) return back()->with('error', 'Invalid amount specified.');
-                if ($amount > $currentCharWealth) return back()->with('error', 'Insufficient funds.');
+                if ($amount <= 0) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Invalid amount specified.');
+                if ($amount > $currentCharWealth) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Insufficient funds.');
 
                 $sourceWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($character->Coins ?? null, $currentCharWealth);
                 $deductRes = \App\Services\ItemGeneration\CurrencyService::deductCost($sourceWallet, (float)$amount, true);
-                if (!$deductRes['success']) return back()->with('error', 'Insufficient funds in wallet.');
+                if (!$deductRes['success']) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Insufficient funds in wallet.');
 
                 DB::table('characters')->where('ID', $id)->update([
                     'Wealth' => (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($deductRes['wallet'])),
@@ -986,13 +986,13 @@ class UtilityController extends Controller
                     'Vault' => json_encode(['funds' => $vaultFunds + $amount, 'items' => $vaultItems])
                 ]);
 
-                return back()->with('status', "Deposited {$amount} sp from {$character->Name} into the Campaign Vault.");
+                return redirect()->route('utilities.charview', ['id' => $id])->with('status', "Deposited {$amount} sp from {$character->Name} into the Campaign Vault.");
             }
 
             if ($tradeType === 'take_money_vault') {
                 $amount = (int)$request->input('amount', 0);
-                if ($amount <= 0) return back()->with('error', 'Invalid amount specified.');
-                if ($amount > $vaultFunds) return back()->with('error', 'Insufficient funds in Campaign Vault.');
+                if ($amount <= 0) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Invalid amount specified.');
+                if ($amount > $vaultFunds) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Insufficient funds in Campaign Vault.');
 
                 $sourceWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($character->Coins ?? null, $currentCharWealth);
                 $gainCoins = \App\Services\ItemGeneration\CurrencyService::spToCoins((float)$amount, true);
@@ -1006,16 +1006,16 @@ class UtilityController extends Controller
                     'Vault' => json_encode(['funds' => $vaultFunds - $amount, 'items' => $vaultItems])
                 ]);
 
-                return back()->with('status', "Withdrew {$amount} sp from Campaign Vault to {$character->Name}.");
+                return redirect()->route('utilities.charview', ['id' => $id])->with('status', "Withdrew {$amount} sp from Campaign Vault to {$character->Name}.");
             }
 
             if ($tradeType === 'give_item') {
                 $targetId = (int)$request->input('target_character_id');
                 $itemIdx = (int)$request->input('item_index');
-                if (!isset($charEquip[$itemIdx])) return back()->with('error', 'Item not found in inventory.');
+                if (!isset($charEquip[$itemIdx])) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Item not found in inventory.');
 
                 $targetChar = DB::table('characters')->where('ID', $targetId)->where('Campaign', $campaignId)->first();
-                if (!$targetChar) return back()->with('error', 'Target party member not found.');
+                if (!$targetChar) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Target party member not found.');
 
                 $itemToTransfer = $charEquip[$itemIdx];
                 unset($charEquip[$itemIdx]);
@@ -1036,12 +1036,12 @@ class UtilityController extends Controller
                 DB::table('characters')->where('ID', $targetId)->update(['Equipment' => json_encode($targetEquip)]);
 
                 $itemName = $itemToTransfer['name'] ?? 'Item';
-                return back()->with('status', "Gave '{$itemName}' to {$targetChar->Name}.");
+                return redirect()->route('utilities.charview', ['id' => $id])->with('status', "Gave '{$itemName}' to {$targetChar->Name}.");
             }
 
             if ($tradeType === 'give_item_vault') {
                 $itemIdx = (int)$request->input('item_index');
-                if (!isset($charEquip[$itemIdx])) return back()->with('error', 'Item not found in inventory.');
+                if (!isset($charEquip[$itemIdx])) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Item not found in inventory.');
 
                 $itemToTransfer = $charEquip[$itemIdx];
                 unset($charEquip[$itemIdx]);
@@ -1055,12 +1055,12 @@ class UtilityController extends Controller
                 ]);
 
                 $itemName = $itemToTransfer['name'] ?? 'Item';
-                return back()->with('status', "Deposited '{$itemName}' into Campaign Vault.");
+                return redirect()->route('utilities.charview', ['id' => $id])->with('status', "Deposited '{$itemName}' into Campaign Vault.");
             }
 
             if ($tradeType === 'take_item_vault') {
                 $itemIdx = (int)$request->input('item_index');
-                if (!isset($vaultItems[$itemIdx])) return back()->with('error', 'Item not found in Campaign Vault.');
+                if (!isset($vaultItems[$itemIdx])) return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Item not found in Campaign Vault.');
 
                 $itemToTake = $vaultItems[$itemIdx];
                 unset($vaultItems[$itemIdx]);
@@ -1074,10 +1074,10 @@ class UtilityController extends Controller
                 ]);
 
                 $itemName = $itemToTake['name'] ?? 'Item';
-                return back()->with('status', "Took '{$itemName}' from Campaign Vault into {$character->Name}'s inventory.");
+                return redirect()->route('utilities.charview', ['id' => $id])->with('status', "Took '{$itemName}' from Campaign Vault into {$character->Name}'s inventory.");
             }
 
-            return back()->with('error', 'Unknown trade action.');
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Unknown trade action.');
         });
     }
 
@@ -1141,148 +1141,22 @@ class UtilityController extends Controller
         }
 
         foreach ($validated['items'] as $it) {
-            $qty = (int)$it['qty'];
+            $qty = max(1, (int)($it['qty'] ?? 1));
             $isCustom = !empty($it['custom']) || empty($it['id']) || !is_numeric($it['id']) || !isset($catalog[(int)$it['id']]);
 
             if (!$isCustom && isset($catalog[(int)$it['id']])) {
                 $ref = $catalog[(int)$it['id']];
-                $unitPrice = (float)($ref->BaseValue ?? 0);
-                $totalCost += (int)round($unitPrice * $qty);
-
-                $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($ref);
-                $isContainer = \App\Services\Entity\EquipmentManager::isContainer($ref);
-                $uid = uniqid('item_');
-
-                $itemsToAdd[] = [
-                    'id' => $uid,
-                    'uid' => $uid,
-                    'item_id' => $ref->ID,
-                    'ID' => $ref->ID,
-                    'name' => $ref->Name . ($qty > 1 ? " (x{$qty})" : ''),
-                    'Name' => $ref->Name,
+                $record = \App\Services\Entity\EquipmentManager::createInventoryRecord($ref, [
                     'qty' => $qty,
-                    'Qty' => $qty,
-                    'unit_price' => $unitPrice,
-                    'value' => (float)$unitPrice * $qty,
-                    'BaseValue' => $unitPrice,
-                    'weight' => (float)($ref->Weight ?? 0) * $qty,
-                    'BaseWeight' => (float)($ref->Weight ?? 0),
-                    'size' => $ref->Size ?? 'Medium (M)',
-                    'dr' => (string)($ref->DR ?? 0),
-                    'config' => $ref->Name,
-                    'location' => $defaultLoc,
-                    'Location' => $defaultLoc,
-                    'locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
-                    'Locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
-                    'container_id' => null,
-                    'ContainerID' => null,
-                    'is_container' => $isContainer,
-                    'IsContainer' => $isContainer,
-                    'ItemTypeID' => $ref->ItemTypeID ?? $ref->Type ?? null,
-                    'Subtype' => $ref->Subtype ?? null,
-                    'SubtypeName' => $ref->SubtypeName ?? null,
-                    'ECMod' => (int)($ref->ECMod ?? 0),
-                    'added_at' => date('Y-m-d H:i:s'),
-                ];
+                ]);
             } else {
-                // Procedural or custom item
-                $configString = (string)($it['config_string'] ?? $it['config'] ?? $it['name'] ?? 'Custom Item');
-                $name = (string)($it['name'] ?? 'Custom Item');
-                $unitPrice = (float)($it['unit_price'] ?? $it['value'] ?? 0);
-                $weight = (float)($it['weight'] ?? 0);
-                $itemId = !empty($it['item_id']) ? (int)$it['item_id'] : (!empty($it['id']) && is_numeric($it['id']) ? (int)$it['id'] : null);
-                $itemTypeId = $it['item_type_id'] ?? null;
-                $subtype = $it['subtype'] ?? null;
-                $category = $it['category'] ?? null;
-                $traits = (string)($it['traits'] ?? '');
-                $mods = (string)($it['mods'] ?? '');
-                $dr = (string)($it['dr'] ?? '0');
-
-                // If config_string is available, verify with ProceduralItemFactory
-                if (!empty($configString) && class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
-                    $inst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem($configString);
-                    if ($inst) {
-                        $name = $inst['name'] ?? $name;
-                        if ($unitPrice <= 0) {
-                            $unitPrice = (float)($inst['value_sp'] ?? $inst['value'] ?? 0);
-                        }
-                        if ($weight <= 0) {
-                            $weight = (float)($inst['weight_kg'] ?? $inst['weight'] ?? 0);
-                        }
-                        if (empty($itemId) && !empty($inst['item_id'])) {
-                            $itemId = (int)$inst['item_id'];
-                        }
-                        if ($itemTypeId === null && !empty($inst['item_type_id'])) {
-                            $itemTypeId = (int)$inst['item_type_id'];
-                        }
-                        if ($subtype === null && !empty($inst['subtype'])) {
-                            $subtype = (int)$inst['subtype'];
-                        }
-                        if ($category === null && !empty($inst['category'])) {
-                            $category = $inst['category'];
-                        }
-                        if (empty($traits) && !empty($inst['traits'])) {
-                            $traits = (string)$inst['traits'];
-                        }
-                        if (empty($mods) && !empty($inst['mods'])) {
-                            $mods = (string)$inst['mods'];
-                        }
-                        if (($dr === '0' || empty($dr)) && !empty($inst['dr'])) {
-                            $dr = (string)$inst['dr'];
-                        }
-                    }
-                }
-
-                $totalCost += (int)round($unitPrice * $qty);
-                $uid = uniqid('item_');
-
-                $itemRef = [
-                    'Name' => $name,
-                    'name' => $name,
-                    'item_id' => $itemId,
-                    'ItemTypeID' => $itemTypeId,
-                    'Subtype' => $subtype,
-                    'Traits' => $traits,
-                    'Config' => $configString,
-                ];
-                $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($itemRef);
-                $isContainer = !empty($it['is_container']) || \App\Services\Entity\EquipmentManager::isContainer($itemRef);
-
-                $itemsToAdd[] = [
-                    'id' => $uid,
-                    'uid' => $uid,
-                    'item_id' => $itemId,
-                    'ID' => $itemId,
-                    'name' => $name . ($qty > 1 ? " (x{$qty})" : ''),
-                    'Name' => $name,
+                $record = \App\Services\Entity\EquipmentManager::createInventoryRecord($it, [
                     'qty' => $qty,
-                    'Qty' => $qty,
-                    'unit_price' => $unitPrice,
-                    'value' => (float)$unitPrice * $qty,
-                    'BaseValue' => $unitPrice,
-                    'weight' => (float)$weight * $qty,
-                    'BaseWeight' => (float)$weight,
-                    'size' => $it['size'] ?? 'Medium (M)',
-                    'dr' => $dr,
-                    'traits' => $traits,
-                    'mods' => $mods,
-                    'config' => $configString,
-                    'config_string' => $configString,
-                    'location' => $defaultLoc,
-                    'Location' => $defaultLoc,
-                    'locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
-                    'Locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
-                    'container_id' => null,
-                    'ContainerID' => null,
-                    'is_container' => $isContainer,
-                    'IsContainer' => $isContainer,
-                    'ItemTypeID' => $itemTypeId,
-                    'Subtype' => $subtype,
-                    'Category' => $category,
-                    'ECMod' => 0,
-                    'added_at' => date('Y-m-d H:i:s'),
-                ];
+                ]);
             }
+
+            $totalCost += (int)round($record['unit_price'] * $qty);
+            $itemsToAdd[] = $record;
         }
 
         $wallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($character->Coins ?? null, $currentWealth);
@@ -1296,18 +1170,11 @@ class UtilityController extends Controller
             return back()->with('error', $msg);
         }
 
-        $charEquip = [];
-        if (!empty($character->Equipment)) {
-            $raw = $character->Equipment;
-            if (str_starts_with($raw, '[')) {
-                $charEquip = json_decode($raw, true) ?? [];
-            } else {
-                $charEquip = [['name' => $raw, 'Name' => $raw, 'config' => $raw, 'location' => 1]];
-            }
-        }
+        $charEquip = \App\Services\Entity\EquipmentManager::decodeEquipment($character->Equipment ?? []);
         foreach ($itemsToAdd as $item) {
             $charEquip[] = $item;
         }
+
 
         $newWallet = $deductResult['wallet'];
         $newWealth = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($newWallet));
@@ -1380,13 +1247,8 @@ class UtilityController extends Controller
         $multiplier = (float)($validated['payout_multiplier'] ?? 0.5);
         $uidsToSell = $validated['item_uids'];
 
-        $charEquip = [];
-        if (!empty($character->Equipment)) {
-            $raw = $character->Equipment;
-            if (str_starts_with($raw, '[')) {
-                $charEquip = json_decode($raw, true) ?? [];
-            }
-        }
+        $charEquip = \App\Services\Entity\EquipmentManager::decodeEquipment($character->Equipment ?? []);
+
 
         $totalPayoutSp = 0.0;
         $remainingEquip = [];
@@ -1517,11 +1379,11 @@ class UtilityController extends Controller
     {
         $character = DB::table('characters')->where('ID', $id)->first();
         if (!$character) {
-            return back()->with('error', 'Character not found.');
+            return redirect()->route('utilities.charview')->with('error', 'Character not found.');
         }
 
         if (!$this->isAuthorizedToManageCharacter($character)) {
-            return back()->with('error', 'Unauthorized: Only a GM or this character\'s player can manage equipment for this character.');
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Unauthorized: Only a GM or this character\'s player can manage equipment for this character.');
         }
 
         $validated = $request->validate([
@@ -1553,18 +1415,11 @@ class UtilityController extends Controller
             ]);
             $cfgName = \App\Services\Entity\EquipmentManager::CONFIG_NAMES[$config] ?? "Preset #{$config}";
             $locName = \App\Services\Entity\EquipmentManager::getLocationName($newLoc);
-            return back()->with('status', "Updated Coin Purse placement to {$locName} in {$cfgName} preset.");
+            return redirect()->route('utilities.charview', ['id' => $id])->with('status', "Updated Coin Purse placement to {$locName} in {$cfgName} preset.");
         }
 
-        $rawEquip = $character->Equipment;
-        $charEquip = [];
-        if (!empty($rawEquip)) {
-            if (str_starts_with($rawEquip, '[')) {
-                $charEquip = json_decode($rawEquip, true) ?? [];
-            } else {
-                $charEquip = [['name' => $rawEquip, 'Name' => $rawEquip, 'location' => 1]];
-            }
-        }
+        $charEquip = \App\Services\Entity\EquipmentManager::decodeEquipment($character->Equipment ?? []);
+
 
         $targetIdx = null;
         if (!empty($validated['item_uid'])) {
@@ -1580,7 +1435,7 @@ class UtilityController extends Controller
         }
 
         if ($targetIdx === null || !isset($charEquip[$targetIdx])) {
-            return back()->with('error', 'Item not found in inventory.');
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Item not found in inventory.');
         }
 
         $item = &$charEquip[$targetIdx];
@@ -1589,7 +1444,7 @@ class UtilityController extends Controller
         $allowed = \App\Services\Entity\EquipmentManager::getAllowedLocations($item);
         if (!in_array($newLoc, $allowed, true)) {
             $locName = \App\Services\Entity\EquipmentManager::getLocationName($newLoc);
-            return back()->with('error', "Cannot set item to {$locName}. This item type cannot be placed there.");
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', "Cannot set item to {$locName}. This item type cannot be placed there.");
         }
 
         // Update locations array
@@ -1622,7 +1477,7 @@ class UtilityController extends Controller
         $itemName = $item['Name'] ?? $item['name'] ?? 'Item';
         $cfgName = \App\Services\Entity\EquipmentManager::CONFIG_NAMES[$config] ?? "Preset #{$config}";
         $locName = \App\Services\Entity\EquipmentManager::getLocationName($newLoc);
-        return back()->with('status', "Updated '{$itemName}' placement to {$locName} in {$cfgName} preset.");
+        return redirect()->route('utilities.charview', ['id' => $id])->with('status', "Updated '{$itemName}' placement to {$locName} in {$cfgName} preset.");
     }
 
     /**
@@ -1632,11 +1487,11 @@ class UtilityController extends Controller
     {
         $character = DB::table('characters')->where('ID', $id)->first();
         if (!$character) {
-            return back()->with('error', 'Character not found.');
+            return redirect()->route('utilities.charview')->with('error', 'Character not found.');
         }
 
         if (!$this->isAuthorizedToManageCharacter($character)) {
-            return back()->with('error', 'Unauthorized: Only a GM or this character\'s player can manage equipment for this character.');
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Unauthorized: Only a GM or this character\'s player can manage equipment for this character.');
         }
 
         $validated = $request->validate([
@@ -1645,98 +1500,115 @@ class UtilityController extends Controller
             'items.*.id' => 'nullable|string',
             'items.*.item_id' => 'nullable|integer',
             'items.*.name' => 'required|string|max:150',
-            'items.*.qty' => 'required|integer|min:1|max:1000',
+            'items.*.qty' => 'nullable|integer|min:1|max:100000',
             'items.*.unit_price' => 'nullable|numeric|min:0',
             'items.*.unit_weight' => 'nullable|numeric|min:0',
             'items.*.locations' => 'nullable|array',
             'items.*.container_id' => 'nullable|string',
-            'items.*.is_container' => 'nullable|boolean',
+            'items.*.is_container' => 'nullable',
             'items.*.item_type_id' => 'nullable|integer',
             'items.*.subtype' => 'nullable|integer',
-            'wealth' => 'nullable|integer|min:0',
+            'items.*.traits' => 'nullable|string',
+            'items.*.mods' => 'nullable|string',
+            'items.*.config' => 'nullable|string',
+            'items.*.config_string' => 'nullable|string',
+            'wealth' => 'nullable|numeric|min:0',
             'coins' => 'nullable|array',
-            'coins.pp' => 'nullable|integer|min:0',
-            'coins.gp' => 'nullable|integer|min:0',
-            'coins.sp' => 'nullable|integer|min:0',
-            'coins.cp' => 'nullable|integer|min:0',
+            'coins.pp' => 'nullable|numeric|min:0',
+            'coins.gp' => 'nullable|numeric|min:0',
+            'coins.sp' => 'nullable|numeric|min:0',
+            'coins.cp' => 'nullable|numeric|min:0',
             'coins.locations' => 'nullable|array',
             'coins.container_id' => 'nullable|string',
         ]);
 
-        $updatedEquip = [];
-        if (!empty($validated['items'])) {
-            foreach ($validated['items'] as $it) {
-                $uid = $it['uid'] ?? $it['id'] ?? uniqid('item_');
-                $name = trim($it['name']);
-                $qty = max(1, (int)$it['qty']);
-                $unitPrice = isset($it['unit_price']) ? (float)$it['unit_price'] : 0.0;
-                $unitWeight = isset($it['unit_weight']) ? (float)$it['unit_weight'] : 0.0;
+        try {
+            $updatedEquip = [];
+            if (!empty($validated['items'])) {
+                foreach ($validated['items'] as $it) {
+                    $uid = $it['uid'] ?? $it['id'] ?? uniqid('item_');
+                    $name = trim($it['name']);
+                    $qty = max(1, (int)($it['qty'] ?? 1));
+                    $unitPrice = isset($it['unit_price']) ? (float)$it['unit_price'] : 0.0;
+                    $unitWeight = isset($it['unit_weight']) ? (float)$it['unit_weight'] : 0.0;
+                    $traits = (string)($it['traits'] ?? '');
+                    $mods = (string)($it['mods'] ?? '');
+                    $configStr = (string)($it['config'] ?? $it['config_string'] ?? '');
 
-                $itemRef = [
-                    'Name' => $name,
-                    'name' => $name,
-                    'item_id' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
-                    'ItemTypeID' => $it['item_type_id'] ?? null,
-                    'Subtype' => $it['subtype'] ?? null,
-                    'Traits' => $it['traits'] ?? '',
-                    'Config' => $it['config'] ?? $it['config_string'] ?? '',
-                ];
-                $allowed = \App\Services\Entity\EquipmentManager::getAllowedLocations($itemRef);
-                $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($itemRef);
-                $isContainer = !empty($it['is_container']) || \App\Services\Entity\EquipmentManager::isContainer($itemRef);
+                    $itemRef = [
+                        'Name' => $name,
+                        'name' => $name,
+                        'item_id' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
+                        'ItemTypeID' => $it['item_type_id'] ?? null,
+                        'Subtype' => $it['subtype'] ?? null,
+                        'Traits' => $traits,
+                        'Config' => $configStr,
+                    ];
+                    $allowed = \App\Services\Entity\EquipmentManager::getAllowedLocations($itemRef);
+                    $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($itemRef);
+                    $isContainer = !empty($it['is_container']) || \App\Services\Entity\EquipmentManager::isContainer($itemRef);
 
-                $locations = [];
-                for ($c = 0; $c < 5; $c++) {
-                    $requestedLoc = isset($it['locations'][$c]) ? (int)$it['locations'][$c] : $defaultLoc;
-                    $locations[$c] = in_array($requestedLoc, $allowed, true) ? $requestedLoc : $defaultLoc;
+                    $locations = [];
+                    for ($c = 0; $c < 5; $c++) {
+                        $requestedLoc = isset($it['locations'][$c]) ? (int)$it['locations'][$c] : $defaultLoc;
+                        $locations[$c] = in_array($requestedLoc, $allowed, true) ? $requestedLoc : $defaultLoc;
+                    }
+
+                    $cId = !empty($it['container_id']) && $it['container_id'] !== 'none' && $it['container_id'] !== $uid ? (string)$it['container_id'] : null;
+
+                    $updatedEquip[] = [
+                        'uid' => $uid,
+                        'id' => $uid,
+                        'item_id' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
+                        'ID' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
+                        'Name' => $name,
+                        'name' => $name,
+                        'Qty' => $qty,
+                        'qty' => $qty,
+                        'BaseValue' => $unitPrice,
+                        'unit_price' => $unitPrice,
+                        'value' => $unitPrice * $qty,
+                        'BaseWeight' => $unitWeight,
+                        'unit_weight' => $unitWeight,
+                        'weight' => $unitWeight * $qty,
+                        'location' => $locations[0],
+                        'Location' => $locations[0],
+                        'locations' => $locations,
+                        'Locations' => $locations,
+                        'container_id' => $cId,
+                        'ContainerID' => $cId,
+                        'is_container' => $isContainer,
+                        'IsContainer' => $isContainer,
+                        'ItemTypeID' => $it['item_type_id'] ?? null,
+                        'Subtype' => $it['subtype'] ?? null,
+                        'traits' => $traits,
+                        'mods' => $mods,
+                        'config' => $configStr,
+                        'config_string' => $configStr,
+                        'added_at' => $it['added_at'] ?? date('Y-m-d H:i:s'),
+                    ];
                 }
-
-                $cId = !empty($it['container_id']) && $it['container_id'] !== 'none' ? (string)$it['container_id'] : null;
-
-                $updatedEquip[] = [
-                    'uid' => $uid,
-                    'id' => $uid,
-                    'item_id' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
-                    'ID' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
-                    'Name' => $name,
-                    'name' => $name,
-                    'Qty' => $qty,
-                    'qty' => $qty,
-                    'BaseValue' => $unitPrice,
-                    'unit_price' => $unitPrice,
-                    'value' => $unitPrice * $qty,
-                    'BaseWeight' => $unitWeight,
-                    'weight' => $unitWeight * $qty,
-                    'location' => $locations[0],
-                    'Location' => $locations[0],
-                    'locations' => $locations,
-                    'Locations' => $locations,
-                    'container_id' => $cId,
-                    'ContainerID' => $cId,
-                    'is_container' => $isContainer,
-                    'IsContainer' => $isContainer,
-                    'ItemTypeID' => $it['item_type_id'] ?? null,
-                    'Subtype' => $it['subtype'] ?? null,
-                    'added_at' => $it['added_at'] ?? date('Y-m-d H:i:s'),
-                ];
             }
+
+            $updateData = ['Equipment' => json_encode($updatedEquip)];
+            if (isset($request->coins) && is_array($request->coins)) {
+                $coinsWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($request->coins);
+                $totalWealthSp = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($coinsWallet));
+                $updateData['Coins'] = json_encode($coinsWallet);
+                $updateData['Wealth'] = $totalWealthSp;
+            } elseif (isset($validated['wealth'])) {
+                $wSp = (float)$validated['wealth'];
+                $updateData['Wealth'] = (int)round($wSp);
+                $updateData['Coins'] = json_encode(\App\Services\ItemGeneration\CurrencyService::spToCoins($wSp, true));
+            }
+
+            DB::table('characters')->where('ID', $id)->update($updateData);
+
+            return redirect()->route('utilities.charview', ['id' => $id])->with('status', 'Equipment inventory and presets updated successfully.');
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error("Error in manageCharacterEquipment for Character #{$id}: " . $e->getMessage(), ['exception' => $e]);
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Failed to save equipment: ' . $e->getMessage());
         }
-
-        $updateData = ['Equipment' => json_encode($updatedEquip)];
-        if (isset($request->coins) && is_array($request->coins)) {
-            $coinsWallet = \App\Services\ItemGeneration\CurrencyService::parseWallet($request->coins);
-            $totalWealthSp = (int)round(\App\Services\ItemGeneration\CurrencyService::coinsToSp($coinsWallet));
-            $updateData['Coins'] = json_encode($coinsWallet);
-            $updateData['Wealth'] = $totalWealthSp;
-        } elseif (isset($validated['wealth'])) {
-            $wSp = (int)$validated['wealth'];
-            $updateData['Wealth'] = $wSp;
-            $updateData['Coins'] = json_encode(\App\Services\ItemGeneration\CurrencyService::spToCoins($wSp, true));
-        }
-
-        DB::table('characters')->where('ID', $id)->update($updateData);
-
-        return back()->with('status', 'Equipment inventory and presets updated successfully.');
     }
 
     /**
@@ -1746,11 +1618,11 @@ class UtilityController extends Controller
     {
         $character = DB::table('characters')->where('ID', $id)->first();
         if (!$character) {
-            return back()->with('error', 'Character not found.');
+            return redirect()->route('utilities.charview')->with('error', 'Character not found.');
         }
 
         if (!$this->isAuthorizedToManageCharacter($character)) {
-            return back()->with('error', 'Unauthorized: Only a GM or this character\'s player can learn spells for this character.');
+            return redirect()->route('utilities.charview', ['id' => $id])->with('error', 'Unauthorized: Only a GM or this character\'s player can learn spells for this character.');
         }
 
         $validated = $request->validate([
@@ -1794,7 +1666,7 @@ class UtilityController extends Controller
             $msg .= "!";
         }
 
-        return back()->with('status', $msg);
+        return redirect()->route('utilities.charview', ['id' => $id])->with('status', $msg);
     }
 
     /**
@@ -2734,35 +2606,13 @@ class UtilityController extends Controller
             return response()->json(['success' => false, 'message' => 'Character not found.'], 404);
         }
 
-        $itemData = [
-            'id' => uniqid('item_'),
-            'name' => $request->input('name', 'Custom Item'),
-            'config' => $request->input('config_string', ''),
-            'value' => (float)$request->input('value', 0),
-            'weight' => (float)$request->input('weight', 0),
-            'size' => $request->input('size', 'Medium (M)'),
-            'ec' => (int)$request->input('ec', 0),
-            'pl' => (string)$request->input('pl', '0'),
-            'dr' => (string)$request->input('dr', '0'),
-            'hp' => (int)$request->input('hp', 1),
-            'traits' => $request->input('traits', ''),
-            'mods' => $request->input('mods', ''),
-            'added_at' => date('Y-m-d H:i:s'),
-        ];
+        $itemData = \App\Services\Entity\EquipmentManager::createInventoryRecord($request->all());
 
-        $currentEquip = [];
-        if (!empty($character->Equipment)) {
-            $raw = $character->Equipment;
-            if (str_starts_with($raw, '[')) {
-                $currentEquip = json_decode($raw, true) ?? [];
-            } else {
-                $currentEquip = [['name' => $raw, 'config' => $raw]];
-            }
-        }
+        $currentEquip = \App\Services\Entity\EquipmentManager::decodeEquipment($character->Equipment ?? []);
         $currentEquip[] = $itemData;
 
         DB::table('characters')->where('ID', $charId)->update([
-            'Equipment' => json_encode($currentEquip),
+            'Equipment' => json_encode($currentEquip, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
         ]);
 
         return response()->json([
@@ -2782,21 +2632,11 @@ class UtilityController extends Controller
             return response()->json(['success' => false, 'message' => 'Campaign not found.'], 404);
         }
 
-        $itemData = [
-            'id' => uniqid('vault_'),
-            'name' => $request->input('name', 'Custom Item'),
-            'config' => $request->input('config_string', ''),
-            'value' => (float)$request->input('value', 0),
-            'weight' => (float)$request->input('weight', 0),
-            'size' => $request->input('size', 'Medium (M)'),
-            'ec' => (int)$request->input('ec', 0),
-            'pl' => (string)$request->input('pl', '0'),
-            'dr' => (string)$request->input('dr', '0'),
-            'hp' => (int)$request->input('hp', 1),
-            'traits' => $request->input('traits', ''),
-            'mods' => $request->input('mods', ''),
-            'added_at' => date('Y-m-d H:i:s'),
-        ];
+        $itemData = \App\Services\Entity\EquipmentManager::createInventoryRecord($request->all(), [
+            'uid' => uniqid('vault_'),
+            'location' => \App\Services\Entity\EquipmentManager::LOCATION_STOWED,
+            'locations' => [0, 0, 0, 0, 0],
+        ]);
 
         $currentFunds = 0;
         $currentItems = [];
@@ -2813,7 +2653,7 @@ class UtilityController extends Controller
         $currentItems[] = $itemData;
 
         DB::table('campaigns')->where('ID', $campaignId)->update([
-            'Vault' => json_encode(['funds' => $currentFunds, 'items' => $currentItems]),
+            'Vault' => json_encode(['funds' => $currentFunds, 'items' => $currentItems], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
         ]);
 
         return response()->json([
@@ -3018,47 +2858,20 @@ class UtilityController extends Controller
                     if (!empty($assignTo) && is_numeric($assignTo) && isset($characters[(int)$assignTo])) {
                         $cId = (int)$assignTo;
                         $char = $characters[$cId];
-                        $equip = json_decode($char->Equipment ?? '[]', true) ?? [];
-                        $equip[] = [
-                            'id' => uniqid('magic_'),
-                            'uid' => uniqid('magic_'),
-                            'name' => $m['name'] ?? 'Magic Item',
-                            'config' => $m['config_string'] ?? $m['name'] ?? 'Magic Item',
-                            'value' => (float)($m['value'] ?? 0),
-                            'weight' => (float)($m['weight'] ?? 0),
-                            'size' => $m['size'] ?? 'Medium (M)',
-                            'ec' => (int)($m['ec'] ?? 0),
-                            'pl' => (string)($m['pl'] ?? '0'),
-                            'dr' => (string)($m['dr'] ?? '0'),
-                            'hp' => (int)($m['hp'] ?? 1),
-                            'traits' => $m['traits'] ?? '',
-                            'mods' => $m['mods'] ?? '',
-                            'location' => 1,
-                            'locations' => [1, 1, 1, 1, 1],
-                            'added_at' => date('Y-m-d H:i:s'),
-                        ];
-                        DB::table('characters')->where('ID', $cId)->update(['Equipment' => json_encode($equip)]);
+                        $equip = \App\Services\Entity\EquipmentManager::decodeEquipment($char->Equipment ?? []);
+                        $equip[] = \App\Services\Entity\EquipmentManager::createInventoryRecord($m, ['uid' => uniqid('magic_')]);
+                        DB::table('characters')->where('ID', $cId)->update(['Equipment' => json_encode($equip, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)]);
                     } elseif (($assignTo === 'vault' || empty($assignTo)) && $campaign) {
                         $vault = json_decode($campaign->Vault ?? '[]', true) ?? [];
                         $vaultFunds = (int)($vault['funds'] ?? 0);
                         $vaultItems = $vault['items'] ?? (is_array($vault) && !isset($vault['funds']) ? $vault : []);
-                        $vaultItems[] = [
-                            'id' => uniqid('vault_magic_'),
-                            'name' => $m['name'] ?? 'Magic Item',
-                            'config' => $m['config_string'] ?? $m['name'] ?? 'Magic Item',
-                            'value' => (float)($m['value'] ?? 0),
-                            'weight' => (float)($m['weight'] ?? 0),
-                            'size' => $m['size'] ?? 'Medium (M)',
-                            'ec' => (int)($m['ec'] ?? 0),
-                            'pl' => (string)($m['pl'] ?? '0'),
-                            'dr' => (string)($m['dr'] ?? '0'),
-                            'hp' => (int)($m['hp'] ?? 1),
-                            'traits' => $m['traits'] ?? '',
-                            'mods' => $m['mods'] ?? '',
-                            'added_at' => date('Y-m-d H:i:s'),
-                        ];
+                        $vaultItems[] = \App\Services\Entity\EquipmentManager::createInventoryRecord($m, [
+                            'uid' => uniqid('vault_magic_'),
+                            'location' => \App\Services\Entity\EquipmentManager::LOCATION_STOWED,
+                            'locations' => [0, 0, 0, 0, 0],
+                        ]);
                         DB::table('campaigns')->where('ID', $campaign->ID)->update([
-                            'Vault' => json_encode(['funds' => $vaultFunds, 'items' => $vaultItems]),
+                            'Vault' => json_encode(['funds' => $vaultFunds, 'items' => $vaultItems], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
                         ]);
                     }
                 }
@@ -3115,45 +2928,27 @@ class UtilityController extends Controller
                     $isVal = !empty($it['is_valuable']) || ($it['item_type'] ?? 0) === 9;
                     $valType = $it['valuable_type'] ?? ($isVal ? 'gem' : null);
 
-                    $itemEntry = [
-                        'id' => uniqid('loot_'),
+                    $itemEntry = \App\Services\Entity\EquipmentManager::createInventoryRecord($it, [
                         'uid' => uniqid('loot_'),
-                        'name' => $it['name'] ?? $it['Item'] ?? 'Treasure Item',
-                        'Name' => $it['name'] ?? $it['Item'] ?? 'Treasure Item',
-                        'config' => $it['config_string'] ?? $it['name'] ?? $it['Item'] ?? 'Treasure Item',
-                        'value' => (float)($it['value'] ?? $it['Value'] ?? 0),
-                        'BaseValue' => (float)($it['value'] ?? $it['Value'] ?? 0),
-                        'unit_price' => (float)($it['value'] ?? $it['Value'] ?? 0),
-                        'weight' => (float)($it['weight'] ?? 0.1),
-                        'BaseWeight' => (float)($it['weight'] ?? 0.1),
-                        'unit_weight' => (float)($it['weight'] ?? 0.1),
-                        'size' => $it['size'] ?? 'Medium (M)',
-                        'ec' => (int)($it['ec'] ?? 0),
-                        'pl' => (string)($it['pl'] ?? '0'),
-                        'dr' => (string)($it['dr'] ?? '0'),
-                        'hp' => (int)($it['hp'] ?? 1),
-                        'traits' => $it['traits'] ?? '',
-                        'mods' => $it['mods'] ?? '',
                         'is_valuable' => $isVal,
                         'valuable_type' => $valType,
-                        'location' => 1,
-                        'locations' => [1, 1, 1, 1, 1],
-                        'added_at' => date('Y-m-d H:i:s'),
-                    ];
+                    ]);
 
                     if (!empty($assignTo) && is_numeric($assignTo) && isset($characters[(int)$assignTo])) {
                         $cId = (int)$assignTo;
                         $char = $characters[$cId];
-                        $equip = json_decode($char->Equipment ?? '[]', true) ?? [];
+                        $equip = \App\Services\Entity\EquipmentManager::decodeEquipment($char->Equipment ?? []);
                         $equip[] = $itemEntry;
-                        DB::table('characters')->where('ID', $cId)->update(['Equipment' => json_encode($equip)]);
+                        DB::table('characters')->where('ID', $cId)->update(['Equipment' => json_encode($equip, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)]);
                     } elseif (($assignTo === 'vault' || empty($assignTo)) && $campaign) {
                         $vault = json_decode($campaign->Vault ?? '[]', true) ?? [];
                         $vaultFunds = (int)($vault['funds'] ?? 0);
                         $vaultItems = $vault['items'] ?? (is_array($vault) && !isset($vault['funds']) ? $vault : []);
+                        $itemEntry['location'] = \App\Services\Entity\EquipmentManager::LOCATION_STOWED;
+                        $itemEntry['locations'] = [0, 0, 0, 0, 0];
                         $vaultItems[] = $itemEntry;
                         DB::table('campaigns')->where('ID', $campaign->ID)->update([
-                            'Vault' => json_encode(['funds' => $vaultFunds, 'items' => $vaultItems]),
+                            'Vault' => json_encode(['funds' => $vaultFunds, 'items' => $vaultItems], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
                         ]);
                     }
                 }
@@ -4237,41 +4032,11 @@ class UtilityController extends Controller
                 $charItems = [];
                 foreach ($awardedItems as $it) {
                     if (isset($it['assign_to']) && (int)$it['assign_to'] === $charId) {
-                        $charItems[] = [
-                            'id' => uniqid('item_'),
-                            'uid' => uniqid('item_'),
-                            'name' => $it['name'] ?? 'Awarded Item',
-                            'Name' => $it['name'] ?? 'Awarded Item',
-                            'config' => $it['config'] ?? ($it['name'] ?? 'Item'),
-                            'value' => (float)($it['value'] ?? 0),
-                            'BaseValue' => (float)($it['value'] ?? 0),
-                            'unit_price' => (float)($it['value'] ?? 0),
-                            'weight' => (float)($it['weight'] ?? 0),
-                            'BaseWeight' => (float)($it['weight'] ?? 0),
-                            'unit_weight' => (float)($it['weight'] ?? 0),
-                            'size' => $it['size'] ?? 'Medium (M)',
-                            'ec' => (int)($it['ec'] ?? 0),
-                            'pl' => (string)($it['pl'] ?? '0'),
-                            'dr' => (string)($it['dr'] ?? '0'),
-                            'hp' => (int)($it['hp'] ?? 1),
-                            'traits' => $it['traits'] ?? '',
-                            'mods' => $it['mods'] ?? '',
-                            'location' => 1,
-                            'locations' => [1, 1, 1, 1, 1],
-                            'added_at' => date('Y-m-d H:i:s'),
-                        ];
+                        $charItems[] = \App\Services\Entity\EquipmentManager::createInventoryRecord($it);
                     }
                 }
 
-                $equip = [];
-                if (!empty($char->Equipment)) {
-                    $raw = $char->Equipment;
-                    if (str_starts_with($raw, '[')) {
-                        $equip = json_decode($raw, true) ?? [];
-                    } else {
-                        $equip = [['name' => $raw, 'config' => $raw]];
-                    }
-                }
+                $equip = \App\Services\Entity\EquipmentManager::decodeEquipment($char->Equipment ?? []);
                 foreach ($charItems as $ci) {
                     $equip[] = $ci;
                 }
@@ -4287,7 +4052,7 @@ class UtilityController extends Controller
                     'Coins' => json_encode($newWallet),
                 ];
                 if (!empty($charItems)) {
-                    $updates['Equipment'] = json_encode($equip);
+                    $updates['Equipment'] = json_encode($equip, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                 }
 
                 DB::table('characters')->where('ID', $charId)->update($updates);
@@ -4297,27 +4062,11 @@ class UtilityController extends Controller
             $vaultItemsToAdd = [];
             foreach ($awardedItems as $it) {
                 if (!isset($it['assign_to']) || $it['assign_to'] === 'vault' || empty($it['assign_to'])) {
-                    $vaultItemsToAdd[] = [
-                        'id' => uniqid('vault_'),
+                    $vaultItemsToAdd[] = \App\Services\Entity\EquipmentManager::createInventoryRecord($it, [
                         'uid' => uniqid('vault_'),
-                        'name' => $it['name'] ?? 'Awarded Item',
-                        'Name' => $it['name'] ?? 'Awarded Item',
-                        'config' => $it['config'] ?? ($it['name'] ?? 'Item'),
-                        'value' => (float)($it['value'] ?? 0),
-                        'BaseValue' => (float)($it['value'] ?? 0),
-                        'unit_price' => (float)($it['value'] ?? 0),
-                        'weight' => (float)($it['weight'] ?? 0),
-                        'BaseWeight' => (float)($it['weight'] ?? 0),
-                        'unit_weight' => (float)($it['weight'] ?? 0),
-                        'size' => $it['size'] ?? 'Medium (M)',
-                        'ec' => (int)($it['ec'] ?? 0),
-                        'pl' => (string)($it['pl'] ?? '0'),
-                        'dr' => (string)($it['dr'] ?? '0'),
-                        'hp' => (int)($it['hp'] ?? 1),
-                        'traits' => $it['traits'] ?? '',
-                        'mods' => $it['mods'] ?? '',
-                        'added_at' => date('Y-m-d H:i:s'),
-                    ];
+                        'location' => \App\Services\Entity\EquipmentManager::LOCATION_STOWED,
+                        'locations' => [0, 0, 0, 0, 0],
+                    ]);
                 }
             }
 

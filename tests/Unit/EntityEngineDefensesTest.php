@@ -114,5 +114,121 @@ class EntityEngineDefensesTest extends TestCase
         $this->assertGreaterThanOrEqual(10, $undeadCalc['defenses']['racial_crit_res']);
         $this->assertTrue($undeadCalc['defenses']['piercing_resistance']);
     }
+
+    public function testMasterworkFullPlateDamageReductionAndEncumbranceReduction(): void
+    {
+        $rawItemJson = '{"uid":"item_6ac2a394d8578","id":"item_6ac2a394d8578","item_id":170,"ID":170,"Name":"Full plate","name":"Full plate","Qty":1,"qty":1,"BaseValue":3100,"unit_price":3100,"value":3100,"BaseWeight":25,"unit_weight":25,"weight":25,"location":2,"Location":2,"locations":[2,2,2,2,2],"Locations":[2,2,2,2,2],"container_id":null,"ContainerID":null,"is_container":false,"IsContainer":false,"ItemTypeID":"3","Subtype":"13","traits":"Armor { Qual=Hv; DR=8; DonTime=400\/400\/(1d4+1)x100; }","mods":"MwArmor"}';
+
+        // 1. Test when Equipment is passed as a bare JSON string object
+        $payloadBareObject = [
+            'ID' => 17,
+            'Name' => 'Obarion Griffin',
+            'BaseRace' => 12,
+            'Templates' => 1,
+            'Classes' => '11;11',
+            'Equipment' => $rawItemJson,
+        ];
+        $calculatedBare = EntityEngine::calculate($payloadBareObject, 0);
+        $this->assertEquals(8, $calculatedBare['defenses']['dr']);
+        $this->assertEquals(7, $calculatedBare['equipment']['equipment_ec']); // EC reduced by 1 via MwArmor (8 -> 7)
+
+        // 2. Test when Equipment is passed as a JSON array string
+        $payloadArray = [
+            'ID' => 17,
+            'Name' => 'Obarion Griffin',
+            'BaseRace' => 12,
+            'Templates' => 1,
+            'Classes' => '11;11',
+            'Equipment' => '[' . $rawItemJson . ']',
+        ];
+        $calculatedArray = EntityEngine::calculate($payloadArray, 0);
+        $this->assertEquals(8, $calculatedArray['defenses']['dr']);
+        $this->assertEquals(7, $calculatedArray['equipment']['equipment_ec']);
+    }
+
+    public function testCommissionedMasterworkFullPlateFromForge(): void
+    {
+        $item = \App\Services\ItemGeneration\ProceduralItemFactory::buildCustomCommissionItem('Full plate', null, 'Masterwork', []);
+        $this->assertNotNull($item);
+        
+        // Print/inspect the item output structure
+        $cartItem = [
+            'id' => $item['item_id'] ?? null,
+            'item_id' => $item['item_id'] ?? null,
+            'custom' => true,
+            'name' => $item['name'],
+            'config_string' => $item['config_string'],
+            'unit_price' => $item['value_sp'] ?? $item['value'],
+            'weight' => $item['weight_kg'] ?? $item['weight'],
+            'dr' => $item['dr'] ?? '0',
+            'traits' => $item['traits'] ?? '',
+            'mods' => $item['mods'] ?? '',
+            'item_type_id' => $item['item_type_id'] ?? null,
+            'subtype' => $item['subtype'] ?? null,
+            'category' => $item['category'] ?? null,
+            'qty' => 1
+        ];
+
+        // What happens when buyCharacterItems processes this?
+        // Let's check what default location is assigned, what traits are stored, etc.
+        $itemRef = [
+            'Name' => $cartItem['name'],
+            'name' => $cartItem['name'],
+            'item_id' => $cartItem['item_id'],
+            'ItemTypeID' => $cartItem['item_type_id'],
+            'Subtype' => $cartItem['subtype'],
+            'Traits' => $cartItem['traits'],
+            'Config' => $cartItem['config_string'],
+        ];
+        $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($itemRef);
+
+        $boughtItem = [
+            'id' => 'item_test_123',
+            'uid' => 'item_test_123',
+            'item_id' => $cartItem['item_id'],
+            'ID' => $cartItem['item_id'],
+            'name' => $cartItem['name'],
+            'Name' => $cartItem['name'],
+            'qty' => 1,
+            'Qty' => 1,
+            'unit_price' => $cartItem['unit_price'],
+            'value' => $cartItem['unit_price'],
+            'BaseValue' => $cartItem['unit_price'],
+            'weight' => $cartItem['weight'],
+            'BaseWeight' => $cartItem['weight'],
+            'dr' => $cartItem['dr'],
+            'traits' => $cartItem['traits'],
+            'mods' => $cartItem['mods'],
+            'config' => $cartItem['config_string'],
+            'config_string' => $cartItem['config_string'],
+            'location' => $defaultLoc,
+            'Location' => $defaultLoc,
+            'locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
+            'Locations' => [$defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc, $defaultLoc],
+            'container_id' => null,
+            'ContainerID' => null,
+            'is_container' => false,
+            'IsContainer' => false,
+            'ItemTypeID' => $cartItem['item_type_id'],
+            'Subtype' => $cartItem['subtype'],
+            'Category' => $cartItem['category'],
+            'ECMod' => 0,
+            'added_at' => date('Y-m-d H:i:s'),
+        ];
+
+        $charPayload = [
+            'ID' => 17,
+            'Name' => 'Obarion Griffin',
+            'BaseRace' => 12,
+            'Templates' => 1,
+            'Classes' => '11;11',
+            'Equipment' => [$boughtItem],
+        ];
+
+        $calc = EntityEngine::calculate($charPayload, 0);
+
+        $this->assertEquals(8, $calc['defenses']['dr'], "Expected DR 8, got " . $calc['defenses']['dr'] . ". Traits was: " . var_export($boughtItem['traits'], true) . " and item: " . json_encode($boughtItem));
+    }
 }
+
 

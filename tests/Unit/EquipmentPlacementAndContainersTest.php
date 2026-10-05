@@ -390,4 +390,94 @@ class EquipmentPlacementAndContainersTest extends TestCase
         // 1 pp (100) + 5 gp (50) + 20 sp (20) + 10 cp (1) = 171 sp
         $this->assertEquals(171, (int)$updated->Wealth);
     }
+
+    public function test_manage_character_equipment_with_fractional_wealth_and_traits(): void
+    {
+        $charId = DB::table('characters')->insertGetId([
+            'Name' => 'Fractional Tester ' . uniqid(),
+            'Wealth' => 100,
+            'Coins' => json_encode(['cp' => 0, 'sp' => 100, 'gp' => 0, 'pp' => 0]),
+            'Equipment' => json_encode([]),
+        ]);
+
+        $controller = new UtilityController();
+
+        $request = Request::create("/utilities/character-viewer/{$charId}/manage-equipment", 'POST', [
+            'wealth' => 125.4,
+            'coins' => [
+                'pp' => 0,
+                'gp' => 12,
+                'sp' => 5,
+                'cp' => 4,
+                'locations' => [2, 1, 0, 0, 2],
+                'container_id' => 'pouch_1',
+            ],
+            'items' => [
+                [
+                    'uid' => 'pouch_1',
+                    'name' => 'Belt Pouch',
+                    'qty' => 1,
+                    'unit_price' => 1,
+                    'unit_weight' => 0.2,
+                    'is_container' => 1,
+                    'traits' => 'Weapon{Dmg(1d6)}',
+                    'config' => 'Custom Item (Item=Sword: Mod=OutstMeleeWp)',
+                    'locations' => [2, 2, 2, 0, 2],
+                ],
+            ],
+        ]);
+
+        $response = $controller->manageCharacterEquipment($request, (int)$charId);
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertStringContainsString("/utilities/character-viewer/{$charId}", $response->getTargetUrl());
+
+        $updated = DB::table('characters')->where('ID', $charId)->first();
+        $this->assertNotNull($updated);
+        $equip = json_decode((string)$updated->Equipment, true);
+        $this->assertCount(1, $equip);
+        $this->assertEquals('Weapon{Dmg(1d6)}', $equip[0]['traits']);
+        $this->assertEquals('Custom Item (Item=Sword: Mod=OutstMeleeWp)', $equip[0]['config']);
+        // 12 gp (120) + 5 sp (5) + 4 cp (0.4) = 125.4 rounded to 125 sp
+        $this->assertEquals(125, (int)$updated->Wealth);
+    }
+
+    public function test_create_inventory_record_standard_and_custom(): void
+    {
+        // 1. Base item by ID
+        $longsword = EquipmentManager::createInventoryRecord(['item_id' => 88, 'qty' => 2]);
+        $this->assertEquals(88, $longsword['item_id']);
+        $this->assertEquals('Sword, long-', $longsword['name']);
+        $this->assertEquals(2, $longsword['qty']);
+        $this->assertEquals(2, $longsword['ItemTypeID']); // Weapon
+        $this->assertEquals(6, $longsword['Subtype']); // Slashing Melee Weapon
+        $this->assertEquals(2, $longsword['location']); // Default location for weapon is equipped
+        $this->assertCount(5, $longsword['locations']);
+
+        // 2. Modified item by config string
+        $mwPlate = EquipmentManager::createInventoryRecord('Masterwork Full plate (Item=Full plate:Mod=Masterwork Armor)');
+        $this->assertEquals(170, $mwPlate['item_id']);
+        $this->assertEquals('Masterwork Full plate', $mwPlate['name']);
+        $this->assertEquals(3, $mwPlate['ItemTypeID']); // Armor
+        $this->assertEquals(13, $mwPlate['Subtype']); // Heavy Armor
+        $this->assertEquals(3100, $mwPlate['unit_price']);
+        $this->assertEquals(25, $mwPlate['unit_weight']);
+        $this->assertEquals(2, $mwPlate['location']); // Equipped
+        $this->assertStringContainsString('Armor { Qual=Hv; DR=8;', $mwPlate['traits']);
+        $this->assertStringContainsString('SpdSpcl { Qual=ECRed; Type=enh; Value=1; }', $mwPlate['traits']);
+
+        // 3. Silver Holy Symbol (Material filtering on non-combat items)
+        $holySymbol = EquipmentManager::createInventoryRecord('Holy symbol, silver (Item=Holy symbol:Mat=Silver)');
+        $this->assertEquals(308, $holySymbol['item_id']);
+        $this->assertEquals('Holy symbol, silver', $holySymbol['name']);
+        $this->assertEquals(4, $holySymbol['ItemTypeID']); // Focus/Implement
+        $this->assertStringNotContainsString('DefMod { Qual=DR;', $holySymbol['traits']);
+        $this->assertStringNotContainsString('AttMod { Qual=Damage;', $holySymbol['traits']);
+
+        // 4. Stowed-only item (Building)
+        $manor = EquipmentManager::createInventoryRecord(['Name' => 'Stone Manor House', 'ItemTypeID' => 7]);
+        $this->assertEquals(EquipmentManager::LOCATION_STOWED, $manor['location']);
+        $this->assertEquals([0, 0, 0, 0, 0], $manor['locations']);
+    }
 }
+
+
