@@ -33,21 +33,21 @@
 </style>
 <div class="space-y-6" x-data="campaignAdmin()" x-init="initApp()">
     <!-- Header with Campaign Selector Dropdown & Controls -->
-    <div class="border-b border-amber-900/20 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="border-b border-amber-900/15 pb-2 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
-            <h1 class="text-2xl font-bold flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-bold font-serif text-slate-900 flex items-center gap-2">
                 <span>🗺️</span> Campaign Administration &amp; GM Workspace
             </h1>
-            <p class="text-stone-700 text-sm mt-1">Hierarchical campaign management: Adventures, Encounters, Locations &amp; POIs, Party Roster, and Procedural GM Generators.</p>
+            <p class="text-stone-600 text-xs mt-0.5">Hierarchical campaign management: Adventures, Encounters, Locations &amp; POIs, Party Roster, and Procedural GM Generators.</p>
         </div>
 
-        <div class="flex items-center gap-3 flex-wrap">
+        <div class="flex items-center gap-2 shrink-0">
             <!-- Campaign Selector Dropdown -->
-            <div class="flex items-center gap-2">
-                <label for="campaign_selector" class="text-xs font-bold text-amber-950 uppercase tracking-wider">Campaign:</label>
+            <div class="flex items-center gap-1.5">
+                <label for="campaign_selector" class="text-xs font-bold text-amber-950 uppercase tracking-wider font-serif whitespace-nowrap">Campaign:</label>
                 <select id="campaign_selector" 
                         onchange="if (this.value) window.location.href = '{{ route('utilities.campaign', [], false) }}?campaign=' + this.value"
-                        class="bg-amber-50/90 border border-amber-900/30 rounded-lg px-3 py-1.5 text-sm font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs">
+                        class="select-rol text-xs py-1 max-w-[200px] sm:max-w-xs truncate">
                     <option value="">-- Select Campaign --</option>
                     @if(isset($myCampaigns) && $myCampaigns->isNotEmpty())
                         <optgroup label="My Campaigns">
@@ -70,7 +70,7 @@
 
             @auth
                 @if(auth()->user()->isGM())
-                    <button @click="showCreateModal = true" class="btn-rol-primary text-xs py-1.5 px-3.5 flex items-center gap-1.5 shadow-sm">
+                    <button @click="showCreateModal = true" class="btn-rol-primary text-xs py-1.5 px-3 flex items-center gap-1.5 shadow-sm cursor-pointer">
                         <span>➕</span>
                         <span>New Campaign</span>
                     </button>
@@ -153,34 +153,38 @@
                 @endif
 
                 <!-- Tabs Navigation -->
-                <div class="px-6 pt-3 border-b border-amber-900/20 flex flex-wrap gap-2 text-xs font-bold">
+                <div class="px-6 pt-3 pb-2 border-b border-amber-900/20 flex flex-wrap gap-2 text-xs font-bold bg-amber-900/5">
                     <button type="button" @click="activeTab = 'adventures'"
-                            :class="activeTab === 'adventures' ? 'border-amber-700 text-amber-950 font-extrabold border-b-2 bg-amber-200/60 shadow-2xs' : 'text-stone-700 hover:text-stone-950 hover:bg-amber-100/50'"
-                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer rounded-t">
+                            :class="activeTab === 'adventures' ? 'modal-tab-active' : 'modal-tab-inactive'"
+                            class="modal-tab-btn">
                         <span>📜</span> Adventures &amp; Encounters
-                        <span class="px-1.5 py-0.2 bg-amber-300 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ $campAdventures->count() }} / {{ $campEncounters->count() }}</span>
+                        <span class="px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold"
+                              :class="activeTab === 'adventures' ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-700'">{{ $campAdventures->count() }} / {{ $campEncounters->count() }}</span>
                     </button>
                     <button type="button" @click="activeTab = 'locations'"
-                            :class="activeTab === 'locations' ? 'border-amber-700 text-amber-950 font-extrabold border-b-2 bg-amber-200/60 shadow-2xs' : 'text-stone-700 hover:text-stone-950 hover:bg-amber-100/50'"
-                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer rounded-t">
+                            :class="activeTab === 'locations' ? 'modal-tab-active' : 'modal-tab-inactive'"
+                            class="modal-tab-btn">
                         <span>📍</span> Locations &amp; POIs
-                        <span class="px-1.5 py-0.2 bg-amber-300 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ $campLocations->count() }}</span>
+                        <span class="px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold"
+                              :class="activeTab === 'locations' ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-700'">{{ $campLocations->count() }}</span>
                     </button>
                     <button type="button" @click="activeTab = 'party'"
-                            :class="activeTab === 'party' ? 'border-amber-700 text-amber-950 font-extrabold border-b-2 bg-amber-200/60 shadow-2xs' : 'text-stone-700 hover:text-stone-950 hover:bg-amber-100/50'"
-                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer rounded-t">
+                            :class="activeTab === 'party' ? 'modal-tab-active' : 'modal-tab-inactive'"
+                            class="modal-tab-btn">
                         <span>👥</span> Party &amp; Roster
-                        <span class="px-1.5 py-0.2 bg-amber-300 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ $campChars->count() }}</span>
+                        <span class="px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold"
+                              :class="activeTab === 'party' ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-700'">{{ $campChars->count() }}</span>
                     </button>
                     <button type="button" @click="activeTab = 'vault'"
-                            :class="activeTab === 'vault' ? 'border-amber-700 text-amber-950 font-extrabold border-b-2 bg-amber-200/60 shadow-2xs' : 'text-stone-700 hover:text-stone-950 hover:bg-amber-100/50'"
-                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer rounded-t">
+                            :class="activeTab === 'vault' ? 'modal-tab-active' : 'modal-tab-inactive'"
+                            class="modal-tab-btn">
                         <span>💎</span> Campaign Vault
-                        <span class="px-1.5 py-0.2 bg-amber-300 text-amber-950 rounded-full text-[10px] font-mono font-bold">{{ count($vaultItems) }}</span>
+                        <span class="px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold"
+                              :class="activeTab === 'vault' ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-700'">{{ count($vaultItems) }}</span>
                     </button>
                     <button type="button" @click="activeTab = 'rules'"
-                            :class="activeTab === 'rules' ? 'border-amber-700 text-amber-950 font-extrabold border-b-2 bg-amber-200/60 shadow-2xs' : 'text-stone-700 hover:text-stone-950 hover:bg-amber-100/50'"
-                            class="pb-2 px-3 flex items-center gap-1.5 transition cursor-pointer rounded-t">
+                            :class="activeTab === 'rules' ? 'modal-tab-active' : 'modal-tab-inactive'"
+                            class="modal-tab-btn">
                         <span>⚙️</span> Rules &amp; GM Notes
                     </button>
                 </div>

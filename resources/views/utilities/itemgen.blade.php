@@ -67,27 +67,27 @@
         <div class="space-y-3.5">
             
             <!-- 1. Name & Base Item Selection -->
-            <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-3">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                    <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                        1. Item Identity & Material
+            <div class="parchment-card p-4 space-y-3">
+                <div class="flex items-center justify-between border-b border-amber-900/10 pb-2">
+                    <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
+                        1. Item Identity &amp; Material
                     </label>
-                    <span class="text-[11px] text-slate-500">Choose base equipment & description</span>
+                    <span class="text-[11px] text-stone-600">Choose base equipment &amp; description</span>
                 </div>
 
                 <div class="space-y-2.5">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Name / Description</label>
+                        <label class="block text-xs font-semibold text-stone-800 mb-1">Name / Description</label>
                         <input type="text" x-model="description" @keydown.enter.prevent="generateItem()"
                                placeholder="e.g. Flaming Longsword +1, Mithral Chain Shirt, Wand of Fireball"
-                               class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-sm font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                               class="input-rol w-full text-sm font-medium">
                     </div>
 
                     <div class="itemgen-grid-2">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Base Item</label>
+                            <label class="block text-xs font-semibold text-stone-800 mb-1">Base Item</label>
                             <select x-model.number="itemId" @change="onItemChange()"
-                                    class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs sm:text-sm font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    class="select-rol w-full text-xs sm:text-sm font-medium">
                                 @foreach($items as $it)
                                     <option value="{{ $it['id'] }}">{{ $it['name'] }}</option>
                                 @endforeach
@@ -95,12 +95,12 @@
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">
+                            <label class="block text-xs font-semibold text-stone-800 mb-1">
                                 Material Override
-                                <span class="text-[10px] text-slate-500 font-normal" x-text="'(Base: ' + getBaseMaterialName() + ')'"></span>
+                                <span class="text-[10px] text-stone-500 font-normal" x-text="'(Base: ' + getBaseMaterialName() + ')'"></span>
                             </label>
                             <select x-model.number="materialId" @change="generateItem()"
-                                    class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs sm:text-sm font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    class="select-rol w-full text-xs sm:text-sm font-medium">
                                 <option value="0">Default (from Base Item)</option>
                                 @foreach($materials as $mat)
                                     <option value="{{ $mat['id'] }}">{{ $mat['name'] }}</option>
@@ -112,36 +112,36 @@
             </div>
 
             <!-- 2. Mundane Modifications -->
-            <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-3">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                    <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+            <div class="parchment-card p-4 space-y-3">
+                <div class="flex items-center justify-between border-b border-amber-900/10 pb-2">
+                    <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                         2. Mundane Modifications
                     </label>
                     <button type="button" @click="addMundaneMod()"
-                            class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-lg text-xs font-bold border border-emerald-300 transition flex items-center gap-1 cursor-pointer">
+                            class="btn-action-pill btn-action-pill-gold">
                         <span>➕ Add Mod</span>
                     </button>
                 </div>
 
                 <template x-if="mundaneMods.length === 0">
-                    <div class="py-2.5 text-center text-xs text-slate-400 italic bg-slate-50/50 rounded-lg border border-dashed border-slate-200">
+                    <div class="py-2.5 text-center text-xs text-stone-500 italic bg-amber-50/50 rounded-lg border border-dashed border-amber-900/20">
                         No mundane modifications added (standard craftsmanship). Click "+ Add Mod" to add masterwork, reinforced, luxury, etc.
                     </div>
                 </template>
 
                 <div class="space-y-2">
                     <template x-for="(mod, index) in mundaneMods" :key="index">
-                        <div class="itemgen-mod-row bg-slate-50/80 p-2 rounded-lg border border-slate-200">
-                            <span class="text-xs font-bold text-slate-400 w-5 text-center" x-text="(index + 1) + '.'"></span>
+                        <div class="itemgen-mod-row bg-amber-50/60 p-2 rounded-lg border border-amber-900/15">
+                            <span class="text-xs font-bold text-amber-900/70 w-5 text-center font-display" x-text="(index + 1) + '.'"></span>
                             <select x-model.number="mod.id" @change="generateItem()"
-                                    class="flex-1 px-2.5 py-1 bg-white border border-slate-300 rounded text-xs font-medium text-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                                    class="select-rol flex-1 text-xs font-medium">
                                 <option value="0">-- Select Modification --</option>
                                 @foreach($mundaneMods as $m)
                                     <option value="{{ $m['id'] }}">{{ $m['description'] }} ({{ $m['abbr'] }})</option>
                                 @endforeach
                             </select>
                             <button type="button" @click="removeMundaneMod(index)" title="Remove Modification"
-                                    class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded text-xs font-bold border border-rose-200 transition cursor-pointer">
+                                    class="btn-action-pill btn-action-pill-danger px-2 py-1">
                                 ✕
                             </button>
                         </div>
@@ -150,22 +150,22 @@
             </div>
 
             <!-- 3. Magical Modifications -->
-            <div class="parchment-card p-3.5 space-y-3">
+            <div class="parchment-card p-4 space-y-3">
                 <div class="flex items-center justify-between border-b border-amber-900/10 pb-2">
                     <div>
-                        <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider font-display">
-                            3. Magical Modifications & Enchants
+                        <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
+                            3. Magical Modifications &amp; Enchants
                         </label>
-                        <span class="text-[11px] text-slate-500">Add enhancement bonuses, spells, pools, and power levels</span>
+                        <span class="text-[11px] text-stone-600">Add enhancement bonuses, spells, pools, and power levels</span>
                     </div>
                     <button type="button" @click="addMagicMod()"
-                            class="btn-rol-secondary text-xs py-1 px-2.5 flex items-center gap-1 cursor-pointer">
+                            class="btn-action-pill btn-action-pill-gold">
                         <span>➕ Add Magic Mod</span>
                     </button>
                 </div>
 
                 <template x-if="magicMods.length === 0">
-                    <div class="py-2.5 text-center text-xs text-slate-500 italic bg-amber-50/50 rounded-lg border border-dashed border-amber-900/20">
+                    <div class="py-2.5 text-center text-xs text-stone-500 italic bg-amber-50/50 rounded-lg border border-dashed border-amber-900/20">
                         No magical modifications added (mundane item). Click "+ Add Magic Mod" to enchant with spells, bonuses, or attributes.
                     </div>
                 </template>
@@ -178,7 +178,7 @@
                                 
                                 <!-- Magic Mod Dropdown -->
                                 <select x-model.number="mmod.mod_id" @change="onMagicModSelect(mmod)"
-                                        class="flex-1 min-w-[180px] px-2.5 py-1 bg-white border border-amber-900/25 rounded text-xs font-medium text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500">
+                                        class="select-rol flex-1 min-w-[180px] text-xs font-medium">
                                     <option value="0">-- Select Magic Mod --</option>
                                     @foreach($magicMods as $m)
                                         <option value="{{ $m['id'] }}">{{ $m['description'] }}</option>
@@ -187,25 +187,25 @@
 
                                 <!-- X Numeric Parameter -->
                                 <div class="flex items-center gap-1">
-                                    <span class="text-[11px] font-bold text-slate-700">x:</span>
+                                    <span class="text-[11px] font-bold text-stone-700">x:</span>
                                     <input type="text" x-model="mmod.x" @input.debounce.300ms="generateItem()"
                                            placeholder="e.g. 1, 2"
-                                           class="w-16 px-1.5 py-1 bg-white border border-amber-900/25 rounded text-xs font-mono text-center text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500">
+                                           class="input-rol w-16 text-xs font-mono text-center">
                                 </div>
 
                                 <!-- Y Text Parameter -->
                                 <div class="flex items-center gap-1">
-                                    <span class="text-[11px] font-bold text-slate-700">y:</span>
+                                    <span class="text-[11px] font-bold text-stone-700">y:</span>
                                     <input type="text" x-model="mmod.y" @input.debounce.300ms="generateItem()"
                                            placeholder="e.g. Fire, Spell"
-                                           class="w-24 sm:w-28 px-1.5 py-1 bg-white border border-amber-900/25 rounded text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500">
+                                           class="input-rol w-24 sm:w-28 text-xs">
                                 </div>
 
                                 <!-- Multiplier Select -->
                                 <div class="flex items-center gap-1">
-                                    <span class="text-[11px] font-bold text-slate-700">PL:</span>
+                                    <span class="text-[11px] font-bold text-stone-700">PL:</span>
                                     <select x-model="mmod.mul" @change="generateItem()"
-                                            class="px-1.5 py-1 bg-white border border-amber-900/25 rounded text-xs font-bold text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500">
+                                            class="select-rol text-xs font-bold">
                                         <option value="1">×1 (100%)</option>
                                         <option value="0.5">×0.5 (50%)</option>
                                         <option value="0.1">×0.1 (10%)</option>
@@ -215,14 +215,14 @@
 
                                 <!-- Remove Button -->
                                 <button type="button" @click="removeMagicMod(index)" title="Remove Magic Modification"
-                                        class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded text-xs font-bold border border-rose-200 transition cursor-pointer ml-auto">
+                                        class="btn-action-pill btn-action-pill-danger px-2 py-1 ml-auto">
                                     ✕
                                 </button>
                             </div>
 
                             <!-- Mod Info / Hint Text if available -->
                             <template x-if="getMagicModInfo(mmod.mod_id)">
-                                <div class="text-[11px] text-slate-600 italic pl-7 pr-2 font-sans" x-text="getMagicModInfo(mmod.mod_id)"></div>
+                                <div class="text-[11px] text-stone-600 italic pl-7 pr-2 font-sans" x-text="getMagicModInfo(mmod.mod_id)"></div>
                             </template>
                         </div>
                     </template>
@@ -233,7 +233,7 @@
             <div class="flex items-center justify-between gap-3 pt-2">
                 <button type="button" @click="generateItem()" :disabled="loading"
                         class="flex-1 btn-rol-primary py-2.5 text-sm flex items-center justify-center gap-2 cursor-pointer">
-                    <span x-show="!loading">⚡ Generate Stat Box & Config</span>
+                    <span x-show="!loading">⚡ Generate Stat Box &amp; Config</span>
                     <span x-show="loading" class="animate-spin">⏳ Calculating...</span>
                 </button>
                 <button type="button" @click="resetForm()"

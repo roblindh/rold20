@@ -5,19 +5,19 @@
     <!-- Header & Breadcrumb -->
     <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-amber-900/15 pb-2 gap-2">
         <div>
-            <h1 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-bold font-serif text-slate-900 flex items-center gap-2">
                 <span>⚔️</span> Combat &amp; Initiative Tracker
             </h1>
-            <p class="text-stone-700 text-xs mt-0.5 hidden sm:block">Real-time encounter management, initiative order, Action Points (AP), dual defenses, health dials (HP/SP/PP), and active attack actions.</p>
+            <p class="text-stone-600 text-xs mt-0.5">Real-time encounter management, initiative order, Action Points (AP), dual defenses, health dials (HP/SP/PP), and active attack actions.</p>
         </div>
 
         <!-- Quick Campaign & Encounter Selector -->
         <div class="flex flex-wrap items-center gap-2 sm:gap-3">
             <!-- Campaign Select -->
             <div class="flex items-center gap-1.5">
-                <label class="text-xs font-bold text-amber-950 uppercase tracking-wider">Campaign:</label>
+                <label class="text-xs font-bold text-amber-950 uppercase tracking-wider font-serif">Campaign:</label>
                 <select x-model="selectedCampaignId" @change="onCampaignChange()"
-                        class="bg-amber-50/80 border border-amber-900/30 rounded-lg px-2.5 py-1 text-xs font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs">
+                        class="select-rol text-xs py-1">
                     <option value="">-- Standalone / All --</option>
                     @foreach($campaigns as $camp)
                         <option value="{{ $camp->ID }}" {{ $selectedCampaignId == $camp->ID ? 'selected' : '' }}>
@@ -29,9 +29,9 @@
 
             <!-- Encounter Select (Shown when campaign has encounters) -->
             <div class="flex items-center gap-1.5" x-show="selectedCampaignId">
-                <label class="text-xs font-bold text-amber-950 uppercase tracking-wider">Encounter:</label>
+                <label class="text-xs font-bold text-amber-950 uppercase tracking-wider font-serif">Encounter:</label>
                 <select x-model="selectedEncounterId" @change="onEncounterChange()"
-                        class="bg-amber-50/80 border border-amber-900/30 rounded-lg px-2.5 py-1 text-xs font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs max-w-xs">
+                        class="select-rol text-xs py-1 max-w-xs">
                     <option value="">-- Choose Encounter / Free Combat --</option>
                     <template x-for="enc in availableEncounters" :key="enc.id">
                         <option :value="enc.id" x-text="(enc.adventure_name ? '[' + enc.adventure_name + '] ' : '') + enc.name + ' (EL ' + (enc.encounter_level || 1) + ')'"></option>
@@ -108,9 +108,9 @@
             </button>
         </div>
 
-        <div class="text-xs text-stone-600 font-mono font-bold">
+        <span class="px-2.5 py-1 bg-amber-100/80 text-amber-950 border border-amber-900/25 rounded-md text-xs font-mono font-bold">
             <span x-text="combatants.length"></span> Combatants
-        </div>
+        </span>
     </div>
 
     <!-- Sticky Encounter Control Toolbar (Always visible & accessible on scroll) -->
@@ -166,8 +166,7 @@
                 <span>🎲</span> Roll All Init
             </button>
             <button type="button" @click="openEndEncounterModal()" :disabled="combatants.length === 0"
-                    class="btn-rol-primary text-xs py-1.5 px-3 font-bold cursor-pointer disabled:opacity-40 shadow-sm"
-                    style="background: linear-gradient(135deg, #10b981, #059669); border-color: #047857;" title="Conclude encounter, award XP and loot">
+                    class="btn-rol-success text-xs py-1.5 px-3 font-bold cursor-pointer disabled:opacity-40 shadow-sm" title="Conclude encounter, award XP and loot">
                 <span>🏆</span> End Encounter
             </button>
             <button type="button" @click="resetCombat()"
@@ -626,14 +625,14 @@
                     <!-- Text Search Input -->
                     <div class="relative flex-1" style="min-width: 220px;">
                         <input type="text" x-model="monsterSearch" @input="monsterDisplayLimit = 50" placeholder="Search name, subtype, traits..."
-                               class="w-full pl-8 pr-7 py-1.5 bg-white border border-slate-300 rounded-lg text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-amber-500 font-medium" />
+                               class="input-rol w-full pl-8 pr-7 py-1.5 text-xs sm:text-sm font-medium" />
                         <span class="absolute left-2.5 top-2 text-xs text-slate-400">🔍</span>
                         <button type="button" x-show="monsterSearch" @click="monsterSearch = ''; monsterDisplayLimit = 50" class="absolute right-2 top-1.5 text-slate-400 hover:text-slate-700 text-sm font-bold cursor-pointer">&times;</button>
                     </div>
 
                     <!-- Creature Type Dropdown -->
                     <div style="min-width: 160px; flex: 0 1 190px;">
-                        <select x-model="monsterTypeFilter" @change="monsterDisplayLimit = 50" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
+                        <select x-model="monsterTypeFilter" @change="monsterDisplayLimit = 50" class="select-rol w-full px-2.5 py-1.5 text-xs font-medium">
                             <option value="">All Creature Types ({{ count($creatureTypes ?? []) }})</option>
                             @if(isset($creatureTypes))
                                 @foreach($creatureTypes as $ct)
@@ -645,7 +644,7 @@
 
                     <!-- Size Dropdown -->
                     <div style="min-width: 120px; flex: 0 1 140px;">
-                        <select x-model="monsterSizeFilter" @change="monsterDisplayLimit = 50" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
+                        <select x-model="monsterSizeFilter" @change="monsterDisplayLimit = 50" class="select-rol w-full px-2.5 py-1.5 text-xs font-medium">
                             <option value="">All Sizes</option>
                             @if(isset($sizes))
                                 @foreach($sizes as $sz)
@@ -657,7 +656,7 @@
 
                     <!-- Sort Order Dropdown -->
                     <div style="min-width: 140px; flex: 0 1 170px;">
-                        <select x-model="monsterSort" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-amber-500 font-medium">
+                        <select x-model="monsterSort" class="select-rol w-full px-2.5 py-1.5 text-xs font-medium">
                             <option value="name_asc">Name (A &rarr; Z)</option>
                             <option value="name_desc">Name (Z &rarr; A)</option>
                             <option value="level_asc">Level (Low &rarr; High)</option>
@@ -674,33 +673,33 @@
                     <div class="flex flex-wrap items-center gap-1">
                         <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1">Level:</span>
                         <button type="button" @click="monsterLevelFilter = ''; monsterDisplayLimit = 50"
-                                :class="monsterLevelFilter === '' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'"
-                                class="px-2 py-0.5 rounded text-[11px] transition cursor-pointer">
+                                :class="monsterLevelFilter === '' ? 'btn-action-pill-active' : ''"
+                                class="btn-action-pill text-[11px] py-0.5 px-2">
                             All
                         </button>
                         <button type="button" @click="monsterLevelFilter = '1-3'; monsterDisplayLimit = 50"
-                                :class="monsterLevelFilter === '1-3' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'"
-                                class="px-2 py-0.5 rounded text-[11px] transition cursor-pointer">
+                                :class="monsterLevelFilter === '1-3' ? 'btn-action-pill-active' : ''"
+                                class="btn-action-pill text-[11px] py-0.5 px-2">
                             1–3
                         </button>
                         <button type="button" @click="monsterLevelFilter = '4-7'; monsterDisplayLimit = 50"
-                                :class="monsterLevelFilter === '4-7' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'"
-                                class="px-2 py-0.5 rounded text-[11px] transition cursor-pointer">
+                                :class="monsterLevelFilter === '4-7' ? 'btn-action-pill-active' : ''"
+                                class="btn-action-pill text-[11px] py-0.5 px-2">
                             4–7
                         </button>
                         <button type="button" @click="monsterLevelFilter = '8-12'; monsterDisplayLimit = 50"
-                                :class="monsterLevelFilter === '8-12' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'"
-                                class="px-2 py-0.5 rounded text-[11px] transition cursor-pointer">
+                                :class="monsterLevelFilter === '8-12' ? 'btn-action-pill-active' : ''"
+                                class="btn-action-pill text-[11px] py-0.5 px-2">
                             8–12
                         </button>
                         <button type="button" @click="monsterLevelFilter = '13-16'; monsterDisplayLimit = 50"
-                                :class="monsterLevelFilter === '13-16' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'"
-                                class="px-2 py-0.5 rounded text-[11px] transition cursor-pointer">
+                                :class="monsterLevelFilter === '13-16' ? 'btn-action-pill-active' : ''"
+                                class="btn-action-pill text-[11px] py-0.5 px-2">
                             13–16
                         </button>
                         <button type="button" @click="monsterLevelFilter = '17+'; monsterDisplayLimit = 50"
-                                :class="monsterLevelFilter === '17+' ? 'bg-amber-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'"
-                                class="px-2 py-0.5 rounded text-[11px] transition cursor-pointer">
+                                :class="monsterLevelFilter === '17+' ? 'btn-action-pill-active' : ''"
+                                class="btn-action-pill text-[11px] py-0.5 px-2">
                             17+
                         </button>
 

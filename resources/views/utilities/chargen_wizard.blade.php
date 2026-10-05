@@ -19,14 +19,14 @@
 
 <div class="space-y-6" x-data="characterWizard()">
     <!-- Wizard Header -->
-    <div class="border-b border-amber-900/20 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="border-b border-amber-900/15 pb-2 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
-            <h1 class="text-2xl font-bold flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-bold font-serif text-slate-900 flex items-center gap-2">
                 <span>🧙‍♂️</span> Character Generation Wizard
             </h1>
-            <p class="text-stone-700 text-sm mt-1">Hero creation with background skills, improvements, level-by-level class progression, spell learning, equipment shopping, and lore.</p>
+            <p class="text-stone-600 text-xs mt-0.5">Hero creation with background skills, improvements, level-by-level class progression, spell learning, equipment shopping, and lore.</p>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 shrink-0">
             <!-- Loading / Initialization Indicator -->
             <div x-show="!isReady" style="display: none;" class="flex items-center gap-1.5 text-xs text-amber-800 bg-amber-100 border border-amber-300 px-2.5 py-1 rounded-lg font-medium animate-pulse">
                 <svg class="animate-spin h-3.5 w-3.5 text-amber-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -35,7 +35,7 @@
                 </svg>
                 <span>Initializing Wizard...</span>
             </div>
-            <span class="text-xs bg-amber-900/10 border border-amber-800/30 text-amber-950 px-3 py-1.5 rounded-lg font-bold">
+            <span class="text-xs bg-amber-100/80 border border-amber-900/25 text-amber-950 px-3 py-1.5 rounded-lg font-bold">
                 Step <span x-text="step">1</span> of 10: <span x-text="stepNames[step]">{{ $wizardSteps[1] }}</span>
             </span>
         </div>
@@ -69,32 +69,32 @@
     <!-- ========================================================================= -->
     <div x-show="step === 1" class="parchment-card p-6 shadow-md space-y-5">
         <div>
-            <h2 class="text-lg font-bold text-slate-900">Step 1: Character Identity &amp; Campaign Selection</h2>
+            <h2 class="text-lg font-bold text-slate-900 font-serif">Step 1: Character Identity &amp; Campaign Selection</h2>
             <p class="text-xs text-slate-600 mt-0.5">Select a campaign to inherit its starting XP, suitability tier, ability generation method, and optional rules.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <div class="flex items-center justify-between mb-1">
-                    <label class="block text-xs font-semibold text-slate-700 uppercase">Character Name <span class="text-red-600">*</span></label>
-                    <button type="button" @click="rollRandomName()" class="text-[11px] text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                    <label class="block text-xs font-bold text-slate-700 uppercase">Character Name <span class="text-red-600">*</span></label>
+                    <button type="button" @click="rollRandomName()" class="btn-action-pill btn-action-pill-gold text-[11px] py-0.5 px-2">
                         <span>🎲</span> Randomize Name
                     </button>
                 </div>
                 <div class="flex gap-2">
                     <input type="text" x-model="character.Name" placeholder="e.g. Valerie Swiftblade"
-                           class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                           class="input-rol w-full px-3 py-2 text-sm">
                     <button type="button" @click="rollRandomName()" title="Roll Random Name"
-                            class="px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 rounded-lg text-xs font-bold transition flex items-center justify-center shrink-0 cursor-pointer">
+                            class="btn-action-pill btn-action-pill-gold px-3 py-2 text-xs font-bold transition flex items-center justify-center shrink-0 cursor-pointer">
                         🎲
                     </button>
                 </div>
             </div>
 
             <div>
-                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Campaign</label>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Campaign</label>
                 <select x-model="character.CampaignID" @change="onCampaignChanged()" 
-                        class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        class="select-rol w-full px-3 py-2 text-sm">
                     <option value="">Standalone / No Campaign (Default: 0 XP, Suitability 3)</option>
                     @foreach($campaigns as $camp)
                         <option value="{{ $camp->ID }}">{{ $camp->Name }} ({{ number_format((int)($camp->StartingXP ?? 0)) }} XP)</option>
@@ -103,16 +103,16 @@
             </div>
 
             <div>
-                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Gender</label>
-                <select x-model="character.Gender" @change="rollRandomPhysicalAttributes()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Gender</label>
+                <select x-model="character.Gender" @change="rollRandomPhysicalAttributes()" class="select-rol w-full px-3 py-2 text-sm">
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
             </div>
 
             <div>
-                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Alignment</label>
-                <select x-model="character.Alignment" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Alignment</label>
+                <select x-model="character.Alignment" class="select-rol w-full px-3 py-2 text-sm">
                     @foreach($alignments as $al)
                         <option value="{{ $al->Name }}">{{ $al->Name }}</option>
                     @endforeach
@@ -121,8 +121,8 @@
         </div>
 
         <!-- Campaign Rules & Parameters Banner (with increased top spacing) -->
-        <div class="mt-6 pt-2 bg-indigo-50/70 border border-indigo-200 rounded-xl p-4 text-xs space-y-3">
-            <div class="flex items-center justify-between font-bold text-indigo-900 border-b border-indigo-200 pb-2">
+        <div class="mt-6 pt-2 bg-amber-50/70 border border-amber-900/20 rounded-xl p-4 text-xs space-y-3">
+            <div class="flex items-center justify-between font-bold text-amber-950 border-b border-amber-900/15 pb-2">
                 <span class="flex items-center gap-1.5">
                     <span>⚙️</span> Active Campaign Rules &amp; Environment
                 </span>

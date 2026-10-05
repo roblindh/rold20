@@ -87,70 +87,70 @@
         <div class="space-y-3.5">
             
             <!-- 1. Name/Description -->
-            <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-1.5">
+            <div class="parchment-card p-4 space-y-2">
                 <div class="flex items-center justify-between">
-                    <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                        1. Name / Description <span class="text-red-600">*</span>
+                    <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
+                        1. Name / Description <span class="text-rose-600">*</span>
                     </label>
-                    <button type="button" @click="rollRandomNpcName()" class="text-[11px] text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                    <button type="button" @click="rollRandomNpcName()" class="btn-action-pill btn-action-pill-gold text-[11px]">
                         <span>🎲</span> Randomize Name
                     </button>
                 </div>
                 <div class="flex gap-2">
                     <input type="text" x-model="description" @keydown.enter.prevent="generateNpc()"
                            placeholder="e.g. Town Guard, Goblin Chieftain, Valerie Swiftblade"
-                           class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-sm font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                           class="input-rol w-full text-sm font-medium">
                     <button type="button" @click="rollRandomNpcName()" title="Roll Random Name"
-                            class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 rounded-lg text-xs font-bold transition flex items-center justify-center shrink-0 cursor-pointer">
+                            class="btn-action-pill btn-action-pill-gold px-3 text-xs shrink-0">
                         🎲
                     </button>
                 </div>
             </div>
 
             <!-- 2. Base Ability Scores (Row 1: STR, CON, DEX | Row 2: INT, WIS, CHA) -->
-            <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-2">
-                <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-2 border-b border-slate-100 pb-2">
+            <div class="parchment-card p-4 space-y-3">
+                <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-2 border-b border-amber-900/10 pb-2">
                     <div>
-                        <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                        <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                             2. Base Ability Scores
                         </label>
-                        <span class="text-[11px] text-slate-500">Base scores before racial, template, and age modifiers</span>
+                        <span class="text-[11px] text-stone-600">Base scores before racial, template, and age modifiers</span>
                     </div>
                     <!-- 6 Generation & Preset Buttons -->
                     <div class="flex flex-wrap items-center gap-1.5 shrink-0">
                         <!-- Fixed Score Presets -->
-                        <div class="inline-flex rounded-md shadow-2xs" role="group">
+                        <div class="inline-flex rounded-md shadow-2xs gap-1" role="group">
                             <button type="button" @click="setAbilities(10)"
-                                    class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-l-md text-xs font-semibold transition cursor-pointer"
+                                    class="btn-action-pill text-xs font-semibold"
                                     title="Set all base scores to 10 (Average)">
                                 Average
                             </button>
                             <button type="button" @click="setAbilities(12)"
-                                    class="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border-t border-b border-r border-amber-300 text-xs font-semibold transition cursor-pointer"
+                                    class="btn-action-pill btn-action-pill-gold text-xs font-semibold"
                                     title="Set all base scores to 12 (Elite)">
                                 Elite
                             </button>
                             <button type="button" @click="setAbilities(14)"
-                                    class="px-2 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border-t border-b border-r border-indigo-300 rounded-r-md text-xs font-semibold transition cursor-pointer"
+                                    class="btn-action-pill text-xs font-semibold"
                                     title="Set all base scores to 14 (Heroic)">
                                 Heroic
                             </button>
                         </div>
 
                         <!-- Random Roll Tiers -->
-                        <div class="inline-flex rounded-md shadow-2xs" role="group">
+                        <div class="inline-flex rounded-md shadow-2xs gap-1" role="group">
                             <button type="button" @click="rollAbilities('average')" :disabled="rollingAbil"
-                                    class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-l-md text-xs font-bold transition cursor-pointer flex items-center gap-1"
+                                    class="btn-action-pill text-xs font-bold flex items-center gap-1"
                                     title="Roll 3d6 per score prioritized by class/background (Average - Random)">
                                 <span>🎲</span> Average - Random
                             </button>
                             <button type="button" @click="rollAbilities('elite')" :disabled="rollingAbil"
-                                    class="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border-t border-b border-r border-amber-300 text-xs font-bold transition cursor-pointer flex items-center gap-1"
+                                    class="btn-action-pill btn-action-pill-gold text-xs font-bold flex items-center gap-1"
                                     title="Roll 4d6 discard lowest per score prioritized by class/background (Elite - Random)">
                                 <span>🎲</span> Elite - Random
                             </button>
                             <button type="button" @click="rollAbilities('heroic')" :disabled="rollingAbil"
-                                    class="px-2 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border-t border-b border-r border-indigo-300 rounded-r-md text-xs font-bold transition cursor-pointer flex items-center gap-1"
+                                    class="btn-action-pill text-xs font-bold flex items-center gap-1"
                                     title="Roll 5d6 total 3 highest per score prioritized by class/background (Heroic - Random)">
                                 <span>🎲</span> Heroic - Random
                             </button>
@@ -161,32 +161,32 @@
                 <div class="space-y-2 pt-0.5">
                     <!-- Row 1: STR, CON, DEX on a single row -->
                     <div class="npcgen-row-3">
-                        <div class="npcgen-col-3 bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:bg-white">
-                            <label for="score-str">STR</label>
+                        <div class="npcgen-col-3 bg-white border border-amber-900/25 rounded-lg px-2.5 py-1.5 shadow-2xs focus-within:ring-2 focus-within:ring-amber-500/40">
+                            <label for="score-str" class="text-amber-950 font-bold">STR</label>
                             <input id="score-str" type="number" min="1" max="50" x-model.number="str">
                         </div>
-                        <div class="npcgen-col-3 bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:bg-white">
-                            <label for="score-con">CON</label>
+                        <div class="npcgen-col-3 bg-white border border-amber-900/25 rounded-lg px-2.5 py-1.5 shadow-2xs focus-within:ring-2 focus-within:ring-amber-500/40">
+                            <label for="score-con" class="text-amber-950 font-bold">CON</label>
                             <input id="score-con" type="number" min="1" max="50" x-model.number="con">
                         </div>
-                        <div class="npcgen-col-3 bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:bg-white">
-                            <label for="score-dex">DEX</label>
+                        <div class="npcgen-col-3 bg-white border border-amber-900/25 rounded-lg px-2.5 py-1.5 shadow-2xs focus-within:ring-2 focus-within:ring-amber-500/40">
+                            <label for="score-dex" class="text-amber-950 font-bold">DEX</label>
                             <input id="score-dex" type="number" min="1" max="50" x-model.number="dex">
                         </div>
                     </div>
 
                     <!-- Row 2: INT, WIS, CHA on a single row -->
                     <div class="npcgen-row-3">
-                        <div class="npcgen-col-3 bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:bg-white">
-                            <label for="score-int">INT</label>
+                        <div class="npcgen-col-3 bg-white border border-amber-900/25 rounded-lg px-2.5 py-1.5 shadow-2xs focus-within:ring-2 focus-within:ring-amber-500/40">
+                            <label for="score-int" class="text-amber-950 font-bold">INT</label>
                             <input id="score-int" type="number" min="1" max="50" x-model.number="int">
                         </div>
-                        <div class="npcgen-col-3 bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:bg-white">
-                            <label for="score-wis">WIS</label>
+                        <div class="npcgen-col-3 bg-white border border-amber-900/25 rounded-lg px-2.5 py-1.5 shadow-2xs focus-within:ring-2 focus-within:ring-amber-500/40">
+                            <label for="score-wis" class="text-amber-950 font-bold">WIS</label>
                             <input id="score-wis" type="number" min="1" max="50" x-model.number="wis">
                         </div>
-                        <div class="npcgen-col-3 bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:bg-white">
-                            <label for="score-cha">CHA</label>
+                        <div class="npcgen-col-3 bg-white border border-amber-900/25 rounded-lg px-2.5 py-1.5 shadow-2xs focus-within:ring-2 focus-within:ring-amber-500/40">
+                            <label for="score-cha" class="text-amber-950 font-bold">CHA</label>
                             <input id="score-cha" type="number" min="1" max="50" x-model.number="cha">
                         </div>
                     </div>
@@ -196,15 +196,15 @@
             <!-- 3. Base Creature & 4. Templates Grid -->
             <div class="npcgen-grid-2">
                 <!-- 3. Base Creature -->
-                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-1.5">
+                <div class="parchment-card p-3.5 space-y-1.5">
                     <div class="flex items-center justify-between">
-                        <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                        <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                             3. Base Creature
                         </label>
-                        <span class="text-[10px] text-slate-500">Default: Human</span>
+                        <span class="text-[10px] text-stone-600 font-medium">Default: Human</span>
                     </div>
                     <select x-model.number="creature_id" @change="onCreatureChanged()"
-                            class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            class="select-rol w-full text-xs font-medium">
                         @foreach($creatures as $c)
                             @php
                                 $clPart = '';
@@ -219,19 +219,19 @@
                 </div>
 
                 <!-- 4. Templates -->
-                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-1.5">
+                <div class="parchment-card p-3.5 space-y-1.5">
                     <div class="flex items-center justify-between">
-                        <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                        <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                             4. Templates
                         </label>
                         <button type="button" @click="addTemplate()"
-                                class="px-2 py-0.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded text-[11px] font-bold flex items-center gap-1 transition cursor-pointer">
-                            <span>+</span> Add
+                                class="btn-action-pill btn-action-pill-gold text-[11px]">
+                            <span>➕ Add</span>
                         </button>
                     </div>
 
                     <template x-if="templates.length === 0">
-                        <div class="py-1.5 px-2 bg-slate-50 border border-dashed border-slate-200 rounded-lg text-center text-[11px] text-slate-400">
+                        <div class="py-1.5 px-2 bg-amber-50/50 border border-dashed border-amber-900/20 rounded-lg text-center text-[11px] text-stone-500 italic">
                             None (Pure creature).
                         </div>
                     </template>
@@ -240,7 +240,7 @@
                         <template x-for="(tId, idx) in templates" :key="idx">
                             <div class="flex items-center gap-1.5">
                                 <select x-model.number="templates[idx]"
-                                        class="flex-1 px-2 py-1 bg-slate-50 border border-slate-300 rounded-md text-[11px] font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                                        class="select-rol flex-1 text-[11px] font-medium">
                                     <option value="0">-- Select Template --</option>
                                     @foreach($templates as $tpl)
                                         @php
@@ -256,7 +256,7 @@
                                     @endforeach
                                 </select>
                                 <button type="button" @click="removeTemplate(idx)"
-                                        class="w-6 h-6 flex items-center justify-center bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded text-xs font-bold transition cursor-pointer"
+                                        class="btn-action-pill btn-action-pill-danger w-6 h-6 p-0 text-xs font-bold"
                                         title="Remove template">
                                     &times;
                                 </button>
@@ -269,12 +269,12 @@
             <!-- 5. Gender & 6. Age Category -->
             <div class="npcgen-grid-2">
                 <!-- 5. Gender -->
-                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-1.5">
-                    <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                <div class="parchment-card p-3.5 space-y-1.5">
+                    <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                         5. Gender
                     </label>
                     <select x-model.number="gender"
-                            class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            class="select-rol w-full text-xs font-medium">
                         @foreach($genders as $g)
                             <option value="{{ $g->ID }}">{{ $g->Name }}</option>
                         @endforeach
@@ -282,12 +282,12 @@
                 </div>
 
                 <!-- 6. Age Category -->
-                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-1.5">
-                    <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                <div class="parchment-card p-3.5 space-y-1.5">
+                    <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                         6. Age Category
                     </label>
                     <select x-model.number="age_cat"
-                            class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            class="select-rol w-full text-xs font-medium">
                         @foreach($ages as $a)
                             <option value="{{ $a->ID }}">{{ $a->Description }}</option>
                         @endforeach
@@ -298,39 +298,39 @@
             <!-- 7. RL Modifier & 8. Size Modifier -->
             <div class="npcgen-grid-2">
                 <!-- 7. RL Modifier -->
-                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-1.5">
+                <div class="parchment-card p-3.5 space-y-1.5">
                     <div class="flex items-center justify-between">
-                        <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                        <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                             7. RL Modifier
                         </label>
-                        <span class="text-[10px] text-slate-500">Default: 0</span>
+                        <span class="text-[10px] text-stone-600 font-medium">Default: 0</span>
                     </div>
                     <input type="number" min="-10" max="30" x-model.number="rl_mod"
-                           class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                           class="input-rol w-full text-xs font-medium">
                 </div>
 
                 <!-- 8. Size Modifier -->
-                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-1.5">
+                <div class="parchment-card p-3.5 space-y-1.5">
                     <div class="flex items-center justify-between">
-                        <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                        <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                             8. Size Modifier
                         </label>
-                        <span class="text-[10px] text-slate-500">Default: 0</span>
+                        <span class="text-[10px] text-stone-600 font-medium">Default: 0</span>
                     </div>
                     <input type="number" min="-5" max="5" x-model.number="size_mod"
-                           class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                           class="input-rol w-full text-xs font-medium">
                 </div>
             </div>
 
             <!-- 9. Culture and Background Class -->
             <div class="npcgen-grid-2">
                 <!-- Culture -->
-                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-1.5">
-                    <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                <div class="parchment-card p-3.5 space-y-1.5">
+                    <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                         9. Culture
                     </label>
                     <select x-model.number="culture_id" @change="onCultureChanged()"
-                            class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                            class="select-rol w-full text-xs font-medium">
                         <option value="0">Default (Creature Default)</option>
                         @foreach($cultures as $cult)
                             <option value="{{ $cult->ID }}">{{ $cult->Name }}</option>
@@ -339,12 +339,12 @@
                 </div>
 
                 <!-- Background Class -->
-                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-1.5">
-                    <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                <div class="parchment-card p-3.5 space-y-1.5">
+                    <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                         Background Class
                     </label>
                     <select x-model.number="background_class_id"
-                            class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                            class="select-rol w-full text-xs font-medium">
                         <option value="0">Default (Culture Default)</option>
                         @foreach($classConfigs as $cfg)
                             <option value="{{ $cfg->ID }}">{{ $cfg->Name }} ({{ $cfg->AbilityPrio }})</option>
@@ -354,21 +354,21 @@
             </div>
 
             <!-- 10. Classes and Levels -->
-            <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-2">
+            <div class="parchment-card p-4 space-y-2">
                 <div class="flex items-center justify-between">
                     <div>
-                        <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                        <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                             10. Classes &amp; Levels
                         </label>
                     </div>
                     <button type="button" @click="addClass()"
-                            class="px-2 py-0.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded text-[11px] font-bold flex items-center gap-1 transition cursor-pointer">
-                        <span>+</span> Add Class
+                            class="btn-action-pill btn-action-pill-gold text-[11px]">
+                        <span>➕ Add Class</span>
                     </button>
                 </div>
 
                 <template x-if="classes.length === 0">
-                    <div class="py-1.5 px-2 bg-slate-50 border border-dashed border-slate-200 rounded-lg text-center text-[11px] text-slate-400">
+                    <div class="py-1.5 px-2 bg-amber-50/50 border border-dashed border-amber-900/20 rounded-lg text-center text-[11px] text-stone-500 italic">
                         Natural / background progression only.
                     </div>
                 </template>
@@ -377,18 +377,18 @@
                     <template x-for="(clsRow, idx) in classes" :key="idx">
                         <div class="flex items-center gap-1.5">
                             <select x-model.number="clsRow.config_id"
-                                    class="flex-1 px-2 py-1 bg-slate-50 border border-slate-300 rounded-md text-[11px] font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                                    class="select-rol flex-1 text-[11px] font-medium">
                                 @foreach($classConfigs as $cfg)
                                     <option value="{{ $cfg->ID }}">{{ $cfg->Name }}</option>
                                 @endforeach
                             </select>
                             <div class="flex items-center gap-1 shrink-0">
-                                <span class="text-[11px] text-slate-500 font-semibold">Lvl:</span>
+                                <span class="text-[11px] text-stone-600 font-semibold">Lvl:</span>
                                 <input type="number" min="1" max="20" x-model.number="clsRow.level"
-                                       class="w-12 text-center px-1 py-1 bg-slate-50 border border-slate-300 rounded-md text-xs font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                                       class="input-rol w-12 text-center text-xs font-bold">
                             </div>
                             <button type="button" @click="removeClass(idx)"
-                                    class="w-6 h-6 flex items-center justify-center bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded text-xs font-bold transition cursor-pointer"
+                                    class="btn-action-pill btn-action-pill-danger w-6 h-6 p-0 text-xs font-bold"
                                     title="Remove class">
                                 &times;
                             </button>
@@ -400,12 +400,12 @@
             <!-- 11. Social Class & 12. Wealth Class -->
             <div class="npcgen-grid-2">
                 <!-- 11. Social Class -->
-                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-1.5">
-                    <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                <div class="parchment-card p-3.5 space-y-1.5">
+                    <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                         11. Social Class
                     </label>
                     <select x-model.number="social_class"
-                            class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            class="select-rol w-full text-xs font-medium">
                         @foreach($socialClasses as $sc)
                             <option value="{{ $sc->ID }}">{{ $sc->ID }}: {{ $sc->Examples }}</option>
                         @endforeach
@@ -413,12 +413,12 @@
                 </div>
 
                 <!-- 12. Wealth Class -->
-                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-1.5">
-                    <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                <div class="parchment-card p-3.5 space-y-1.5">
+                    <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                         12. Wealth Class
                     </label>
                     <select x-model.number="wealth_class"
-                            class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            class="select-rol w-full text-xs font-medium">
                         @foreach($wealthClasses as $wc)
                             <option value="{{ $wc->ID }}">{{ $wc->ID }}: {{ Str::limit($wc->Description, 40) }}</option>
                         @endforeach
@@ -427,17 +427,17 @@
             </div>
 
             <!-- 13. Equipment & Archetype Blueprints -->
-            <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-2.5">
+            <div class="parchment-card p-4 space-y-2.5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-                    <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                        13. Equipment & Archetype Blueprint
+                    <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
+                        13. Equipment &amp; Archetype Blueprint
                     </label>
                     <div class="flex items-center gap-1.5">
-                        <span x-show="generatingEquipment" class="text-[10px] text-indigo-600 font-semibold flex items-center gap-1">
+                        <span x-show="generatingEquipment" class="text-[10px] text-amber-800 font-semibold flex items-center gap-1 animate-pulse">
                             <span class="animate-spin">⏳</span> Outfitting...
                         </span>
                         <button type="button" @click="equipment = ''"
-                                class="px-2 py-0.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded text-[10px] font-semibold border border-rose-200 cursor-pointer">
+                                class="btn-action-pill btn-action-pill-danger text-[10px] font-semibold">
                             Clear
                         </button>
                     </div>
@@ -446,90 +446,90 @@
                 <!-- Quick Archetype Blueprint Buttons -->
                 <div class="flex flex-wrap items-center gap-1">
                     <button type="button" @click="applyBlueprintLoadout('sword_fighter')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         ⚔️ Swordsman
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('axe_fighter')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         🪓 Axeman
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('mace_fighter')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         🔨 Hammerman
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('duelist')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         🗡️ Duelist
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('archery_ranger')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         🏹 Archer
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('cavalry_knight')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         🛡️ Knight
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('barbarian')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         🩸 Barbarian
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('arcane_caster')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         🧙‍♂️ Mage
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('battlemage')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         ⚡ Battlemage
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('cleric_life')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         🕊️ Cleric (Life)
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('cleric_war')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         ⛪ Cleric (War)
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('druid')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         🌿 Druid
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('witch_doctor')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         💀 Witch Doctor
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('unarmed_monk')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         🥋 Monk
                     </button>
                     <button type="button" @click="applyBlueprintLoadout('psionic_manifester')"
-                            class="px-2 py-1 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 rounded text-[11px] font-semibold border border-slate-200 cursor-pointer transition">
+                            class="btn-action-pill text-[11px] font-semibold">
                         🔮 Psion
                     </button>
                 </div>
 
                 <!-- Dropdown for All Blueprints -->
-                <div class="flex items-center gap-2 pt-1 border-t border-slate-100">
-                    <select x-model="selectedBlueprintSlug" class="flex-1 px-2 py-1 border border-slate-300 rounded-lg text-xs bg-white text-slate-900">
+                <div class="flex items-center gap-2 pt-1 border-t border-amber-900/10">
+                    <select x-model="selectedBlueprintSlug" class="select-rol flex-1 text-xs font-medium">
                         <option value="">-- Select Archetype Blueprint to Auto-Outfit --</option>
                         @foreach($archetypeBlueprints as $ab)
                             <option value="{{ $ab->Slug }}">{{ $ab->Name }}</option>
                         @endforeach
                     </select>
                     <button type="button" @click="applyBlueprintLoadout(selectedBlueprintSlug)" :disabled="!selectedBlueprintSlug || generatingEquipment"
-                            class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold cursor-pointer shrink-0">
+                            class="btn-rol-primary text-xs py-1.5 px-3 font-bold cursor-pointer shrink-0 disabled:opacity-50">
                         Auto-Outfit Gear
                     </button>
                 </div>
 
                 <textarea x-model="equipment" rows="2"
                           placeholder="e.g. Equipped=Sword, long- +1 (Item=Sword, long-: Mod=MwMeleeWp: Mod=WpEnh&x=1:); Equipped=Full plate (Item=Full plate: Mod=ExcepArmor:);"
-                          class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-mono text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                          class="input-rol w-full font-mono text-xs"></textarea>
             </div>
 
             <!-- 14. Actions & Save to Campaign -->
             <div class="space-y-2 pt-1">
                 <button type="button" @click="generateNpc()" :disabled="loading"
-                        class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-bold rounded-xl text-sm shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
+                        class="w-full py-2.5 btn-rol-primary text-sm flex items-center justify-center gap-2 cursor-pointer shadow-sm">
                     <span x-show="!loading">⚡ Generate Stat Block</span>
                     <span x-show="loading" class="flex items-center gap-2">
                         <span class="animate-spin">⏳</span> Generating...
@@ -538,11 +538,11 @@
 
                 @if($myCampaigns->isNotEmpty())
                     <!-- GM Campaign Storage Bar -->
-                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+                    <div class="parchment-card p-3 flex flex-col sm:flex-row items-center justify-between gap-2.5">
                         <div class="flex items-center gap-2 w-full sm:w-auto">
-                            <span class="text-xs font-bold text-amber-900 shrink-0">🏰 Campaign:</span>
+                            <span class="text-xs font-bold text-amber-950 uppercase tracking-wider shrink-0 font-display">🏰 Campaign:</span>
                             <select x-model.number="selectedCampaignId"
-                                    class="px-2.5 py-1.5 bg-white border border-amber-300 rounded-lg text-xs font-medium text-slate-900 focus:ring-2 focus:ring-amber-500 flex-1 sm:w-48">
+                                    class="select-rol text-xs font-medium flex-1 sm:w-48">
                                 <option value="0">-- Select a Campaign --</option>
                                 @foreach($myCampaigns as $mc)
                                     <option value="{{ $mc->ID }}" {{ $selectedCampaignId === $mc->ID ? 'selected' : '' }}>{{ $mc->Name }}</option>
@@ -550,7 +550,7 @@
                             </select>
                         </div>
                         <button type="button" @click="saveToCampaign()" :disabled="savingCamp || !selectedCampaignId"
-                                class="w-full sm:w-auto px-4 py-1.5 bg-amber-700 hover:bg-amber-800 disabled:opacity-50 text-white font-bold rounded-lg text-xs shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer shrink-0">
+                                class="w-full sm:w-auto btn-rol-success text-xs py-1.5 px-3.5 flex items-center justify-center gap-1.5 cursor-pointer shrink-0 disabled:opacity-50">
                             <span x-show="!savingCamp">💾 Save to Campaign</span>
                             <span x-show="savingCamp" class="animate-spin">⏳</span>
                         </button>

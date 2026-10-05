@@ -1,9 +1,9 @@
 <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden space-y-4">
     <!-- Statblock Header & Action Bar -->
-    <div class="bg-slate-900 text-white px-5 py-3.5 flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-2">
+    <div class="bg-slate-900 border-b border-amber-500/40 text-white px-5 py-3.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5">
             <span class="text-xl">📜</span>
-            <span class="font-bold text-sm sm:text-base text-amber-400">Generated Stat Block</span>
+            <span class="font-bold text-sm sm:text-base text-amber-300 font-serif">Generated Stat Block</span>
         </div>
         <div class="flex items-center gap-2" x-data="{ copiedSb: false, copiedCfg: false, copiedMd: false }">
             <button type="button" 
@@ -16,7 +16,8 @@
                             setTimeout(() => copiedMd = false, 2000);
                         }
                     "
-                    class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                    class="btn-action-pill"
+                    :class="copiedMd ? 'btn-action-pill-active' : ''">
                 <span x-show="!copiedMd">📝 Markdown</span>
                 <span x-show="copiedMd" class="text-emerald-400 font-bold">✓ Copied!</span>
             </button>
@@ -30,7 +31,8 @@
                             setTimeout(() => copiedSb = false, 2000);
                         }
                     "
-                    class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+                    class="btn-action-pill"
+                    :class="copiedSb ? 'btn-action-pill-active' : ''">
                 <span x-show="!copiedSb">📋 Plaintext</span>
                 <span x-show="copiedSb" class="text-emerald-400 font-bold">✓ Copied!</span>
             </button>
@@ -42,7 +44,8 @@
                             setTimeout(() => copiedCfg = false, 2000);
                         }
                     "
-                    class="px-2.5 py-1.5 bg-indigo-900/60 hover:bg-indigo-800 text-indigo-200 hover:text-white rounded-lg text-xs font-semibold border border-indigo-700 flex items-center gap-1.5 transition cursor-pointer">
+                    class="btn-action-pill btn-action-pill-gold"
+                    :class="copiedCfg ? 'btn-action-pill-active' : ''">
                 <span x-show="!copiedCfg">⚙️ Config</span>
                 <span x-show="copiedCfg" class="text-emerald-400 font-bold">✓ Copied!</span>
             </button>

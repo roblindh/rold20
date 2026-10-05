@@ -1,31 +1,31 @@
 @extends('layouts.app', ['title' => 'Treasure Generator'])
 
 @section('content')
-<div class="space-y-6" x-data="treasureGeneratorApp()" x-init="rollTreasure()">
+<div class="space-y-4" x-data="treasureGeneratorApp()" x-init="rollTreasure()">
     <!-- Header -->
-    <div class="border-b border-amber-900/20 pb-4">
-        <h1 class="text-2xl font-bold text-stone-900 flex items-center gap-2">
-            <span>💎</span> Random Treasure & Hoard Generator
-        </h1>
-        <p class="text-stone-600 text-sm mt-1">Generate balanced loot hoards based on Encounter Level (EL), including coins, trade goods, gems, and procedurally rolled magic items.</p>
-    </div>
-
-    <!-- Generator Control -->
-    <div class="bg-amber-50/40 p-4 sm:p-5 rounded-xl border border-amber-900/20 flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-end justify-between shadow-2xs">
-        <div class="w-full sm:w-72">
-            <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider mb-1.5">Encounter Level (EL)</label>
-            <select x-model="el" @change="rollTreasure()" class="w-full px-3 py-2 bg-white border border-amber-900/30 rounded-lg text-sm font-semibold text-stone-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs">
-                @foreach($levels as $lvl)
-                    <option value="{{ $lvl }}">Encounter Level {{ $lvl }}</option>
-                @endforeach
-            </select>
+    <div class="border-b border-amber-900/20 pb-3 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+            <h1 class="text-xl sm:text-2xl font-bold text-stone-900 flex items-center gap-2">
+                <span>💎</span> Random Treasure & Hoard Generator
+            </h1>
+            <p class="text-stone-700 text-xs mt-0.5">Generate balanced loot hoards based on Encounter Level (EL), including coins, trade goods, gems, and procedurally rolled magic items.</p>
         </div>
 
-        <button @click="rollTreasure()" :disabled="loading" class="btn-rol-primary px-6 py-2.5 rounded-lg text-sm shadow transition flex items-center justify-center gap-2 cursor-pointer shrink-0 disabled:opacity-50">
-            <span x-show="!loading">🎲 Roll Random Hoard</span>
-            <span x-show="loading" class="animate-spin">⏳</span>
-            <span x-show="loading">Rolling Hoard...</span>
-        </button>
+        <div class="flex items-center gap-2.5 shrink-0 flex-wrap">
+            <div class="flex items-center gap-1.5">
+                <label class="text-xs font-bold text-amber-950 uppercase tracking-wider font-display shrink-0">EL:</label>
+                <select x-model="el" @change="rollTreasure()" class="select-rol text-xs sm:text-sm font-semibold">
+                    @foreach($levels as $lvl)
+                        <option value="{{ $lvl }}">Encounter Level {{ $lvl }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <button @click="rollTreasure()" :disabled="loading" class="btn-rol-primary text-xs sm:text-sm py-1.5 px-3.5 shadow-sm shrink-0">
+                <span x-show="!loading">🎲 Roll Hoard</span>
+                <span x-show="loading" class="animate-spin">⏳</span>
+                <span x-show="loading">Rolling...</span>
+            </button>
+        </div>
     </div>
 
     <!-- Results Display -->

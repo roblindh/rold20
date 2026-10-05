@@ -3,25 +3,25 @@
 @section('content')
 <div class="space-y-6" x-data="characterViewerApp()">
     <!-- Page Header & Character Switcher -->
-    <div class="no-print flex flex-col md:flex-row md:items-center justify-between border-b border-amber-900/20 pb-4 gap-4">
+    <div class="no-print flex flex-col md:flex-row md:items-center justify-between border-b border-amber-900/15 pb-2 gap-3">
         <div>
-            <h1 class="text-2xl font-bold flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-bold font-serif text-slate-900 flex items-center gap-2">
                 <span>📜</span> Character Sheet Viewer
             </h1>
-            <p class="text-stone-700 text-sm mt-1">Official classic character statistics, combat parameters, dual-ability defenses, skills, equipment, and lore.</p>
+            <p class="text-stone-600 text-xs mt-0.5">Official classic character statistics, combat parameters, dual-ability defenses, skills, equipment, and lore.</p>
         </div>
 
         <!-- Character Selector Dropdown -->
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 shrink-0">
             @auth
                 @if(isset($myCharacters) && $myCharacters->isNotEmpty())
-                    <span class="text-xs bg-amber-900/10 text-amber-950 font-bold px-3 py-1 rounded-full border border-amber-800/30">
+                    <span class="text-xs bg-amber-900/10 text-amber-950 font-bold px-2.5 py-0.5 rounded-full border border-amber-800/30">
                         🧙‍♂️ {{ $myCharacters->count() }} Mine
                     </span>
                 @endif
             @endauth
             <select onchange="if (this.value) window.location.href = '{{ route('utilities.charview', [], false) }}/' + this.value" 
-                    class="bg-amber-50/80 border border-amber-900/30 rounded-lg px-3 py-2 text-sm font-medium text-stone-900 focus:outline-none focus:border-amber-600 shadow-xs">
+                    class="select-rol text-xs py-1 max-w-[220px] sm:max-w-xs truncate">
                 <option value="">Select a Character...</option>
                 @if(isset($myCharacters) && $myCharacters->isNotEmpty())
                     <optgroup label="My Characters">

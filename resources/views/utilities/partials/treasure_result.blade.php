@@ -22,7 +22,7 @@
     $grandTotalSp = $coinsSp + $totalGoodsSp + $totalMagicSp;
 @endphp
 
-<div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-md space-y-6"
+<div class="parchment-card p-6 shadow-md space-y-6"
      x-data="hoardDistributor({
         hoard: {{ json_encode($hoard) }},
         characters: {{ json_encode($characters) }},
@@ -30,16 +30,16 @@
      })">
 
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-amber-900/15">
         <div>
-            <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <h3 class="text-xl font-bold text-amber-950 flex items-center gap-2 font-display">
                 <span>💰</span> Generated Hoard (Encounter Level {{ $el }})
             </h3>
-            <p class="text-xs text-slate-500 mt-0.5">Procedurally rolled based on RoL d20 economy and encounter tables.</p>
+            <p class="text-xs text-stone-600 mt-0.5">Procedurally rolled based on RoL d20 economy and encounter tables.</p>
         </div>
         <div class="flex items-center gap-2">
-            <span class="text-xs bg-amber-50 text-amber-900 border border-amber-200 px-3 py-1.5 rounded-lg font-bold">
-                Total Value: {{ number_format($grandTotalSp) }} sp <span class="text-amber-700 font-normal">({{ number_format($grandTotalSp / 10, 1) }} gp)</span>
+            <span class="text-xs bg-amber-100/90 text-amber-950 border border-amber-800/30 px-3 py-1.5 rounded-lg font-bold shadow-2xs">
+                Total Value: {{ number_format($grandTotalSp) }} sp <span class="text-amber-800 font-normal">({{ number_format($grandTotalSp / 10, 1) }} gp)</span>
             </span>
         </div>
     </div>

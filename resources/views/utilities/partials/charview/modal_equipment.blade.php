@@ -22,12 +22,12 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-2">
                     <div class="flex items-center gap-1.5 flex-wrap">
                         <span class="font-bold text-slate-800 font-serif">Preset View:</span>
-                        <div class="flex items-center gap-1 bg-white p-1 rounded-lg border border-slate-200 shadow-2xs">
+                        <div class="flex items-center gap-1">
                             <template x-for="(pName, pIdx) in ['Combat', 'Travel', 'Rest', 'Sleep', 'Formal']" :key="pIdx">
                                 <button type="button" 
                                         @click="modalActivePreset = pIdx"
-                                        :class="modalActivePreset === pIdx ? 'bg-indigo-700 text-white font-bold shadow-xs' : 'text-slate-800 font-semibold hover:bg-slate-100'"
-                                        class="px-2.5 py-1 rounded text-xs transition cursor-pointer"
+                                        :class="modalActivePreset === pIdx ? 'modal-tab-active' : 'modal-tab-inactive'"
+                                        class="modal-tab-btn"
                                         x-text="pName">
                                 </button>
                             </template>
