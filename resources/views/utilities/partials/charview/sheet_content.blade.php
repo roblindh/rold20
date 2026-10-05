@@ -1433,19 +1433,19 @@
                     @if($isWizard)
                         <tr>
                             <td class="cvlabel">Purchased Improvement</td>
-                            <td class="cvlabel cvcenter" style="width: 25%;">Points</td>
+                            <td class="cvlabel cvcenter" style="width: 25%;">Value</td>
                         </tr>
                         <template x-for="(pts, impId) in character.IPAllocations" :key="impId">
                             <tr x-show="pts > 0">
-                                <td class="cvlist" x-text="improvementsById[impId] ? improvementsById[impId].Name : 'Improvement #' + impId"></td>
-                                <td class="cvlist cvcenter font-mono font-bold" x-text="pts + ' IP'"></td>
+                                <td class="cvlist" x-text="improvementsById[impId] ? (improvementsById[impId].Description || improvementsById[impId].Name) : 'Improvement #' + impId"></td>
+                                <td class="cvlist cvcenter font-mono font-bold" x-text="'+' + pts"></td>
                             </tr>
                         </template>
-                        <template x-if="Object.values(character.IPAllocations).filter(p => p > 0).length === 0">
+                        <template x-if="Object.values(character.IPAllocations || {}).filter(p => p > 0).length === 0">
                             <tr><td class="cvlist" colspan="2">No improvements chosen.</td></tr>
                         </template>
                         <tr><td class="cvlabel cvcenter" colspan="2">Remaining Improvement Points</td></tr>
-                        <tr><td class="cvmdm cvcenter font-bold text-amber-950" colspan="2" x-text="remainingIP + ' IP'"></td></tr>
+                        <tr><td class="cvmdm cvcenter font-bold text-amber-950" colspan="2" x-text="(ipRemaining !== undefined ? ipRemaining : (remainingIP || 0)) + ' IP'"></td></tr>
                     @else
                         <tr>
                             <td class="cvlabel">Purchased Improvement</td>

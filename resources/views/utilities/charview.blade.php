@@ -338,7 +338,16 @@
                     'item_type_id' => $it['ItemTypeID'] ?? $it['item_type_id'] ?? $it['Type'] ?? null,
                     'subtype' => $it['Subtype'] ?? $it['subtype'] ?? null,
                     'traits' => $it['Traits'] ?? $it['traits'] ?? '',
+                    'Traits' => $it['Traits'] ?? $it['traits'] ?? '',
+                    'description' => $it['Description'] ?? $it['description'] ?? '',
+                    'Description' => $it['Description'] ?? $it['description'] ?? '',
+                    'SubtypeName' => $it['SubtypeName'] ?? $it['subtype_name'] ?? '',
+                    'subtype_name' => $it['SubtypeName'] ?? $it['subtype_name'] ?? '',
+                    'BaseMaterial' => $it['BaseMaterial'] ?? $it['material'] ?? '',
+                    'material' => $it['BaseMaterial'] ?? $it['material'] ?? '',
+                    'dr' => $it['DR'] ?? $it['dr'] ?? '0',
                     'mods' => $it['Mods'] ?? $it['mods'] ?? '',
+                    'Mods' => $it['Mods'] ?? $it['mods'] ?? '',
                     'config' => $it['Config'] ?? $it['config'] ?? $it['config_string'] ?? '',
                 ];
             }
@@ -643,6 +652,8 @@ function characterViewerApp() {
     const rawSkills = @json($skills ?? []);
     const rawImprovements = @json($improvements ?? []);
     const rawEquipment = @json($equipment ?? []);
+    const rawItemTypes = @json($itemTypes ?? []);
+    const rawItemModsMundane = @json($refItemModsMundane ?? []);
     const rawSpells = @json($spells ?? []);
     const rawSpellOptions = @json($spellOptions ?? []);
     const knownSpellIds = @json(isset($spellsList) ? array_keys($spellsList) : []);
@@ -1274,6 +1285,7 @@ function characterViewerApp() {
         // Equipment Management State
         modalActivePreset: {{ (int)$activeConfig }},
         showAddCustomItem: false,
+        selectedEquipmentPreviewItem: null,
         customItem: {
             name: '',
             qty: 1,
@@ -1282,6 +1294,50 @@ function characterViewerApp() {
             is_container: false
         },
         equipmentItems: @json($equipmentList ?? []),
+
+        getItemTraitsBadges(item) {
+            if (!item) return [];
+            const results = [];
+            const rawTraits = item.Traits || item.traits_raw || item.traits || item.custom_traits || '';
+            if (rawTraits && typeof rawTraits === 'string') {
+                const matches = rawTraits.matchAll(/(\w+)\s*\{([^}]+)\}/gi);
+                for (const m of matches) {
+                    const type = m[1];
+                    const body = m[2];
+                    const params = {};
+                    body.split(';').forEach(p => {
+                        const eq = p.indexOf('=');
+                        if (eq !== -1) {
+                            params[p.substring(0, eq).trim()] = p.substring(eq + 1).trim();
+                        }
+                    });
+
+                    if (type === 'Armor') {
+                        if (params.DR) results.push({ label: 'Armor DR', value: '+' + params.DR, badge: 'DR ' + params.DR, color: 'emerald' });
+                        if (params.Qual) results.push({ label: 'Armor Type', value: params.Qual, badge: params.Qual + ' Armor', color: 'slate' });
+                        if (params.DonTime) results.push({ label: 'Don Time', value: params.DonTime + ' AP', badge: 'Don: ' + params.DonTime + ' AP', color: 'slate' });
+                    } else if (type === 'Shield') {
+                        if (params.DR) results.push({ label: 'Shield DR', value: '+' + params.DR, badge: 'DR ' + params.DR, color: 'emerald' });
+                        if (params.DeC) results.push({ label: 'DeC Bonus', value: '+' + params.DeC, badge: 'DeC +' + params.DeC, color: 'indigo' });
+                    } else if (type === 'WpnStats' || type === 'Weapon') {
+                        if (params.Dmg) results.push({ label: 'Damage', value: params.Dmg, badge: 'Dmg ' + params.Dmg, color: 'amber' });
+                        if (params.Crit) results.push({ label: 'Critical', value: params.Crit, badge: 'Crit ' + params.Crit, color: 'rose' });
+                        if (params.Type) results.push({ label: 'Dmg Type', value: params.Type, badge: params.Type, color: 'slate' });
+                        if (params.Rng) results.push({ label: 'Range', value: params.Rng + ' sq', badge: 'Rng ' + params.Rng, color: 'blue' });
+                    } else if (type === 'Container') {
+                        if (params.CapWeight) results.push({ label: 'Capacity', value: params.CapWeight + ' kg', badge: 'Holds ' + params.CapWeight + ' kg', color: 'teal' });
+                    } else if (type === 'SpdSpcl') {
+                        if (params.Qual === 'ECRed') results.push({ label: 'EC Reduction', value: '-' + params.Value, badge: 'EC -' + params.Value, color: 'purple' });
+                    } else if (type === 'AttMod') {
+                        results.push({ label: params.Qual || 'Attack', value: params.Value || '+1', badge: (params.Qual || 'Att') + ' ' + (params.Value || '+1'), color: 'indigo' });
+                    }
+                }
+            }
+            if (item.dr && parseFloat(item.dr) > 0 && !results.some(r => r.label.includes('DR'))) {
+                results.push({ label: 'DR', value: '+' + item.dr, badge: 'DR ' + item.dr, color: 'emerald' });
+            }
+            return results;
+        },
 
         // Coin Purse & Wallet State
         wallet: {!! json_encode($wallet ?? ['cp' => 0, 'sp' => 0, 'gp' => 0, 'pp' => 0, 'locations' => [1,1,1,1,1], 'container_id' => null]) !!},
@@ -1839,6 +1895,7 @@ function characterViewerApp() {
         marketTab: 'catalog',
         buySearchQuery: '',
         buySelectedType: '',
+        selectedMarketPreviewItem: null,
         shopCatalog: rawEquipment || [],
         cartItems: [],
 
@@ -1861,13 +1918,90 @@ function characterViewerApp() {
         generatingCommission: false,
 
         // Custom Commission Builder State (Free Selection by Player)
+        itemTypes: rawItemTypes || [],
+        refItemModsMundane: rawItemModsMundane || [],
+        commissionCategory: '',
         commissionBaseItem: '',
         commissionMaterial: '',
-        commissionQuality: 'Standard',
         commissionMods: [],
         commissionCustomPreview: null,
         commissionPreviewLoading: false,
         commissionError: '',
+
+        get commissionFilteredBaseItems() {
+            if (!this.commissionCategory) {
+                return this.shopCatalog || [];
+            }
+            return (this.shopCatalog || []).filter(it => it.ItemTypeID == this.commissionCategory || it.Type == this.commissionCategory);
+        },
+
+        get selectedCommissionBaseItemObj() {
+            if (!this.commissionBaseItem) return null;
+            return (this.shopCatalog || []).find(it => it.Name === this.commissionBaseItem) || null;
+        },
+
+        isCommissionModAllowed(mod) {
+            const item = this.selectedCommissionBaseItemObj;
+            if (!item) return false;
+            const itemTypeId = parseInt(item.ItemTypeID || item.Type || 0);
+            const itemSubtypeId = parseInt(item.Subtype || 0);
+
+            const modType = parseInt(mod.Type || 0);
+            const modSubtype = parseInt(mod.Subtype || 0);
+
+            // If modType is specified (not 0), must match item's ItemTypeID
+            if (modType !== 0 && modType !== itemTypeId) {
+                return false;
+            }
+
+            // If modSubtype is specified (not 0), must match item's Subtype
+            if (modSubtype !== 0 && modSubtype !== itemSubtypeId) {
+                return false;
+            }
+
+            return true;
+        },
+
+        toggleCommissionMod(mod) {
+            if (!this.isCommissionModAllowed(mod)) return;
+
+            const modDesc = mod.Description;
+            const idx = this.commissionMods.indexOf(modDesc);
+
+            if (idx !== -1) {
+                this.commissionMods.splice(idx, 1);
+            } else {
+                if (mod.MutualExclusion) {
+                    const groupMods = (this.refItemModsMundane || [])
+                        .filter(m => m.MutualExclusion === mod.MutualExclusion)
+                        .map(m => m.Description);
+                    this.commissionMods = this.commissionMods.filter(m => !groupMods.includes(m));
+                }
+                this.commissionMods.push(modDesc);
+            }
+
+            this.updateCustomCommissionPreview();
+        },
+
+        onCommissionCategoryChange() {
+            if (this.commissionBaseItem) {
+                const stillValid = this.commissionFilteredBaseItems.some(it => it.Name === this.commissionBaseItem);
+                if (!stillValid) {
+                    this.commissionBaseItem = '';
+                    this.commissionMods = [];
+                    this.commissionCustomPreview = null;
+                }
+            }
+            this.updateCustomCommissionPreview();
+        },
+
+        onCommissionBaseItemChange() {
+            this.commissionMods = (this.commissionMods || []).filter(modDesc => {
+                const modObj = (this.refItemModsMundane || []).find(m => m.Description === modDesc);
+                return modObj ? this.isCommissionModAllowed(modObj) : false;
+            });
+            this.updateCustomCommissionPreview();
+        },
 
         async updateCustomCommissionPreview() {
             if (!this.commissionBaseItem) {
@@ -1889,7 +2023,6 @@ function characterViewerApp() {
                         _token: '{{ csrf_token() }}',
                         base_item: this.commissionBaseItem,
                         material: this.commissionMaterial || null,
-                        quality: this.commissionQuality || null,
                         mundane_mods: this.commissionMods || [],
                         location: this.partyLocation,
                         character_wealth: {{ (int)($wealth ?? 0) }}

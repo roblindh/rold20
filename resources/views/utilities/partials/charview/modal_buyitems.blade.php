@@ -89,28 +89,101 @@
                             <span class="text-[10px] text-slate-500 font-mono" x-text="filteredShopItems.length + ' matches'"></span>
                         </div>
 
-                        <div class="space-y-1.5 max-h-96 overflow-y-auto pr-1">
+                        <div class="space-y-1.5 max-h-72 overflow-y-auto pr-1">
                             <template x-for="item in filteredShopItems" :key="item.ID">
-                                <div class="bg-white border border-slate-200 hover:border-indigo-300 p-2.5 rounded-lg flex items-center justify-between gap-2 shadow-2xs transition">
+                                <div class="bg-white border border-slate-200 hover:border-indigo-300 p-2.5 rounded-lg flex items-center justify-between gap-2 shadow-2xs transition cursor-pointer"
+                                     :class="selectedMarketPreviewItem?.ID === item.ID ? 'bg-indigo-50/80 border-l-4 border-indigo-600 ring-1 ring-indigo-300' : ''"
+                                     @click="selectedMarketPreviewItem = (selectedMarketPreviewItem?.ID === item.ID ? null : item)">
                                     <div class="min-w-0 flex-1">
-                                        <div class="font-bold text-slate-800 truncate" x-text="item.Name"></div>
+                                        <div class="flex items-center gap-1.5 flex-wrap">
+                                            <span class="font-bold text-slate-800 truncate" x-text="item.Name"></span>
+                                            <template x-if="item.SubtypeName">
+                                                <span class="text-[10px] text-slate-400 font-medium" x-text="'(' + item.SubtypeName + ')'"></span>
+                                            </template>
+                                            <span class="text-[10px] text-indigo-600 hover:text-indigo-800 font-bold ml-1">ℹ️ Details</span>
+                                        </div>
                                         <div class="text-[10px] text-slate-500 font-mono">
                                             <span class="text-indigo-700 font-bold" x-text="parseFloat(item.BaseValue || 0) + ' sp'"></span>
-                                            <template x-if="item.SubtypeName">
-                                                <span> &bull; <span x-text="item.SubtypeName"></span></span>
-                                            </template>
                                             <template x-if="item.Weight">
                                                 <span> &bull; <span x-text="item.Weight + ' kg'"></span></span>
+                                            </template>
+                                            <template x-if="item.BaseMaterial">
+                                                <span> &bull; <span x-text="item.BaseMaterial"></span></span>
                                             </template>
                                         </div>
                                     </div>
 
-                                    <button type="button" @click="addItemToCart(item, false)" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded text-[11px] shrink-0 cursor-pointer">
+                                    <button type="button" @click.stop="addItemToCart(item, false)" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded text-[11px] shrink-0 cursor-pointer">
                                         + Add
                                     </button>
                                 </div>
                             </template>
                         </div>
+
+                        <!-- Selected Catalog Item Details Card -->
+                        <template x-if="selectedMarketPreviewItem">
+                            <div class="p-3 bg-gradient-to-br from-amber-50/90 to-indigo-50/80 border border-indigo-200 rounded-xl space-y-2 shadow-xs">
+                                <div class="flex items-start justify-between gap-2 border-b border-indigo-200/60 pb-1.5">
+                                    <div>
+                                        <div class="font-bold text-xs sm:text-sm text-slate-900 flex items-center gap-1.5 flex-wrap">
+                                            <span x-text="selectedMarketPreviewItem.Name || selectedMarketPreviewItem.name"></span>
+                                            <template x-if="selectedMarketPreviewItem.SubtypeName || selectedMarketPreviewItem.category">
+                                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 font-semibold" x-text="selectedMarketPreviewItem.SubtypeName || selectedMarketPreviewItem.category"></span>
+                                            </template>
+                                        </div>
+                                        <div class="text-[11px] text-slate-600 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
+                                            <span>Price: <strong class="text-indigo-900" x-text="(parseFloat(selectedMarketPreviewItem.BaseValue || selectedMarketPreviewItem.value_sp || selectedMarketPreviewItem.value || selectedMarketPreviewItem.unit_price || 0)) + ' sp'"></strong></span>
+                                            <span>&bull;</span>
+                                            <span>Weight: <strong class="text-slate-800" x-text="(parseFloat(selectedMarketPreviewItem.Weight || selectedMarketPreviewItem.weight_kg || selectedMarketPreviewItem.weight || selectedMarketPreviewItem.unit_weight || 0)) + ' kg'"></strong></span>
+                                            <template x-if="selectedMarketPreviewItem.BaseMaterial || selectedMarketPreviewItem.material">
+                                                <span>&bull; Mat: <span x-text="selectedMarketPreviewItem.BaseMaterial || selectedMarketPreviewItem.material"></span></span>
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-1 shrink-0">
+                                        <button type="button" @click="addItemToCart(selectedMarketPreviewItem, selectedMarketPreviewItem.ID ? false : true)"
+                                                class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded text-xs transition cursor-pointer">
+                                            + Add
+                                        </button>
+                                        <button type="button" @click="selectedMarketPreviewItem = null" class="w-5 h-5 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold flex items-center justify-center cursor-pointer text-xs">&times;</button>
+                                    </div>
+                                </div>
+
+                                <!-- Parsed Traits Badges -->
+                                <template x-if="getItemTraitsBadges(selectedMarketPreviewItem).length > 0">
+                                    <div class="flex flex-wrap gap-1 pt-0.5">
+                                        <template x-for="(tr, trIdx) in getItemTraitsBadges(selectedMarketPreviewItem)" :key="trIdx">
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border"
+                                                  :class="{
+                                                      'bg-emerald-100 text-emerald-900 border-emerald-300': tr.color === 'emerald',
+                                                      'bg-amber-100 text-amber-900 border-amber-300': tr.color === 'amber',
+                                                      'bg-indigo-100 text-indigo-900 border-indigo-300': tr.color === 'indigo',
+                                                      'bg-rose-100 text-rose-900 border-rose-300': tr.color === 'rose',
+                                                      'bg-blue-100 text-blue-900 border-blue-300': tr.color === 'blue',
+                                                      'bg-teal-100 text-teal-900 border-teal-300': tr.color === 'teal',
+                                                      'bg-purple-100 text-purple-900 border-purple-300': tr.color === 'purple',
+                                                      'bg-slate-100 text-slate-800 border-slate-300': tr.color === 'slate'
+                                                  }"
+                                                  :title="tr.label + ': ' + tr.value"
+                                                  x-text="tr.badge">
+                                            </span>
+                                        </template>
+                                    </div>
+                                </template>
+
+                                <!-- Custom Mods / Enhancements (if any) -->
+                                <template x-if="selectedMarketPreviewItem.mods">
+                                    <div class="text-[11px] text-indigo-900 bg-indigo-50/60 p-1.5 rounded border border-indigo-100 font-mono">
+                                        <strong>Mods:</strong> <span x-text="selectedMarketPreviewItem.mods"></span>
+                                    </div>
+                                </template>
+
+                                <!-- Full Description -->
+                                <div class="text-xs text-slate-700 bg-white/80 p-2 rounded-lg border border-slate-200 whitespace-pre-line leading-relaxed"
+                                     x-text="selectedMarketPreviewItem.Description || selectedMarketPreviewItem.description || (selectedMarketPreviewItem.mods ? 'Custom crafted and enchanted item.' : 'Standard adventuring equipment item.')">
+                                </div>
+                            </div>
+                        </template>
                     </div>
 
                     <!-- TAB 2: SETTLEMENT SHOPS -->
@@ -164,7 +237,7 @@
                             <span class="text-[10px] text-slate-500 font-mono" x-text="townShopItems.length + ' wares in stock'"></span>
                         </div>
 
-                        <div class="space-y-1.5 max-h-80 overflow-y-auto pr-1">
+                        <div class="space-y-1.5 max-h-72 overflow-y-auto pr-1">
                             <template x-if="townShopItems.length === 0 && !loadingTownShop">
                                 <div class="p-6 text-center text-slate-400 italic">
                                     No items in stock. Click "Refresh Town Stock" above.
@@ -172,9 +245,14 @@
                             </template>
 
                             <template x-for="(tItem, tIdx) in townShopItems" :key="tIdx">
-                                <div class="bg-white border border-slate-200 hover:border-indigo-300 p-2.5 rounded-lg flex items-center justify-between gap-2 shadow-2xs transition">
+                                <div class="bg-white border border-slate-200 hover:border-indigo-300 p-2.5 rounded-lg flex items-center justify-between gap-2 shadow-2xs transition cursor-pointer"
+                                     :class="selectedMarketPreviewItem === tItem ? 'bg-indigo-50/80 border-l-4 border-indigo-600 ring-1 ring-indigo-300' : ''"
+                                     @click="selectedMarketPreviewItem = (selectedMarketPreviewItem === tItem ? null : tItem)">
                                     <div class="min-w-0 flex-1">
-                                        <div class="font-bold text-slate-800" x-text="tItem.name"></div>
+                                        <div class="flex items-center gap-1.5 flex-wrap">
+                                            <span class="font-bold text-slate-800" x-text="tItem.name"></span>
+                                            <span class="text-[10px] text-indigo-600 hover:text-indigo-800 font-bold ml-1">ℹ️ Details</span>
+                                        </div>
                                         <div class="text-[10px] text-slate-500 font-mono flex flex-wrap items-center gap-1.5">
                                             <span class="text-indigo-700 font-bold" x-text="parseFloat(tItem.value_sp || tItem.value || 0) + ' sp (' + ((tItem.value_sp || tItem.value || 0) / 10) + ' gp)'"></span>
                                             <template x-if="tItem.category">
@@ -186,12 +264,74 @@
                                         </div>
                                     </div>
 
-                                    <button type="button" @click="addItemToCart(tItem, true)" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded text-[11px] shrink-0 cursor-pointer">
+                                    <button type="button" @click.stop="addItemToCart(tItem, true)" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded text-[11px] shrink-0 cursor-pointer">
                                         + Add
                                     </button>
                                 </div>
                             </template>
                         </div>
+
+                        <!-- Selected Town Item Details Card -->
+                        <template x-if="selectedMarketPreviewItem">
+                            <div class="p-3 bg-gradient-to-br from-amber-50/90 to-indigo-50/80 border border-indigo-200 rounded-xl space-y-2 shadow-xs">
+                                <div class="flex items-start justify-between gap-2 border-b border-indigo-200/60 pb-1.5">
+                                    <div>
+                                        <div class="font-bold text-xs sm:text-sm text-slate-900 flex items-center gap-1.5 flex-wrap">
+                                            <span x-text="selectedMarketPreviewItem.Name || selectedMarketPreviewItem.name"></span>
+                                            <template x-if="selectedMarketPreviewItem.category || selectedMarketPreviewItem.SubtypeName">
+                                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 font-semibold" x-text="selectedMarketPreviewItem.category || selectedMarketPreviewItem.SubtypeName"></span>
+                                            </template>
+                                        </div>
+                                        <div class="text-[11px] text-slate-600 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
+                                            <span>Price: <strong class="text-indigo-900" x-text="(parseFloat(selectedMarketPreviewItem.value_sp || selectedMarketPreviewItem.value || selectedMarketPreviewItem.BaseValue || selectedMarketPreviewItem.unit_price || 0)) + ' sp'"></strong></span>
+                                            <span>&bull;</span>
+                                            <span>Weight: <strong class="text-slate-800" x-text="(parseFloat(selectedMarketPreviewItem.weight_kg || selectedMarketPreviewItem.weight || selectedMarketPreviewItem.BaseWeight || selectedMarketPreviewItem.unit_weight || 0)) + ' kg'"></strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-1 shrink-0">
+                                        <button type="button" @click="addItemToCart(selectedMarketPreviewItem, true)"
+                                                class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded text-xs transition cursor-pointer">
+                                            + Add
+                                        </button>
+                                        <button type="button" @click="selectedMarketPreviewItem = null" class="w-5 h-5 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold flex items-center justify-center cursor-pointer text-xs">&times;</button>
+                                    </div>
+                                </div>
+
+                                <!-- Parsed Traits Badges -->
+                                <template x-if="getItemTraitsBadges(selectedMarketPreviewItem).length > 0">
+                                    <div class="flex flex-wrap gap-1 pt-0.5">
+                                        <template x-for="(tr, trIdx) in getItemTraitsBadges(selectedMarketPreviewItem)" :key="trIdx">
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border"
+                                                  :class="{
+                                                      'bg-emerald-100 text-emerald-900 border-emerald-300': tr.color === 'emerald',
+                                                      'bg-amber-100 text-amber-900 border-amber-300': tr.color === 'amber',
+                                                      'bg-indigo-100 text-indigo-900 border-indigo-300': tr.color === 'indigo',
+                                                      'bg-rose-100 text-rose-900 border-rose-300': tr.color === 'rose',
+                                                      'bg-blue-100 text-blue-900 border-blue-300': tr.color === 'blue',
+                                                      'bg-teal-100 text-teal-900 border-teal-300': tr.color === 'teal',
+                                                      'bg-purple-100 text-purple-900 border-purple-300': tr.color === 'purple',
+                                                      'bg-slate-100 text-slate-800 border-slate-300': tr.color === 'slate'
+                                                  }"
+                                                  :title="tr.label + ': ' + tr.value"
+                                                  x-text="tr.badge">
+                                            </span>
+                                        </template>
+                                    </div>
+                                </template>
+
+                                <!-- Custom Mods / Enhancements (if any) -->
+                                <template x-if="selectedMarketPreviewItem.mods">
+                                    <div class="text-[11px] text-indigo-900 bg-indigo-50/60 p-1.5 rounded border border-indigo-100 font-mono">
+                                        <strong>Mods:</strong> <span x-text="selectedMarketPreviewItem.mods"></span>
+                                    </div>
+                                </template>
+
+                                <!-- Full Description -->
+                                <div class="text-xs text-slate-700 bg-white/80 p-2 rounded-lg border border-slate-200 whitespace-pre-line leading-relaxed"
+                                     x-text="selectedMarketPreviewItem.Description || selectedMarketPreviewItem.description || (selectedMarketPreviewItem.mods ? 'Custom crafted and enchanted item in town.' : 'Settlement merchant wares.')">
+                                </div>
+                            </div>
+                        </template>
                     </div>
 
                     <!-- TAB 3: MAGIC & COMMISSION FORGE -->
@@ -210,63 +350,60 @@
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                                <!-- 1. Base Item Selector -->
+                                <!-- 1. Category Selector -->
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-700 uppercase mb-0.5">1. Base Item</label>
-                                    <select x-model="commissionBaseItem" @change="updateCustomCommissionPreview()" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs bg-white text-slate-900">
-                                        <option value="">-- Choose Base Item --</option>
-                                        @php
-                                            $groupedItems = $equipment->groupBy('SubtypeName');
-                                        @endphp
-                                        @foreach($groupedItems as $groupName => $itemsInGroup)
-                                            <optgroup label="{{ $groupName ?: 'General Equipment' }}">
-                                                @foreach($itemsInGroup as $it)
-                                                    <option value="{{ $it->Name }}">{{ $it->Name }} ({{ number_format($it->BaseValue) }} sp)</option>
-                                                @endforeach
-                                            </optgroup>
+                                    <label class="block text-[10px] font-bold text-slate-700 uppercase mb-0.5">1. Item Category</label>
+                                    <select x-model="commissionCategory" @change="onCommissionCategoryChange()" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs bg-white text-slate-900 focus:ring-1 focus:ring-indigo-500">
+                                        <option value="">All Categories</option>
+                                        @foreach($itemTypes as $itType)
+                                            <option value="{{ $itType->ID }}">{{ $itType->Name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
-                                <!-- 2. Material Selector -->
+                                <!-- 2. Base Item Selector -->
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-700 uppercase mb-0.5">2. Material</label>
-                                    <select x-model="commissionMaterial" @change="updateCustomCommissionPreview()" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs bg-white text-slate-900">
-                                        <option value="">Standard (Steel / Iron / Wood)</option>
+                                    <label class="block text-[10px] font-bold text-slate-700 uppercase mb-0.5">2. Base Item</label>
+                                    <select x-model="commissionBaseItem" @change="onCommissionBaseItemChange()" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs bg-white text-slate-900 focus:ring-1 focus:ring-indigo-500">
+                                        <option value="">-- Choose Base Item --</option>
+                                        <template x-for="item in commissionFilteredBaseItems" :key="item.ID">
+                                            <option :value="item.Name" x-text="item.Name + (item.BaseValue ? ' (' + parseFloat(item.BaseValue).toLocaleString() + ' sp)' : '')"></option>
+                                        </template>
+                                    </select>
+                                </div>
+
+                                <!-- 3. Material Selector -->
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-700 uppercase mb-0.5">3. Material Override</label>
+                                    <select x-model="commissionMaterial" @change="updateCustomCommissionPreview()" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs bg-white text-slate-900 focus:ring-1 focus:ring-indigo-500">
+                                        <option value="">Standard / Default Material</option>
                                         @foreach($refMaterials as $mat)
                                             <option value="{{ $mat->Name }}">{{ $mat->Name }} (+{{ number_format($mat->BasePriceMod ?? 0) }} sp)</option>
                                         @endforeach
                                     </select>
                                 </div>
-
-                                <!-- 3. Craft Quality -->
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-700 uppercase mb-0.5">3. Craftsmanship Quality</label>
-                                    <select x-model="commissionQuality" @change="updateCustomCommissionPreview()" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs bg-white text-slate-900">
-                                        <option value="Standard">Standard (+0 sp)</option>
-                                        <option value="Fine">Fine (+100 sp)</option>
-                                        <option value="Masterwork">Masterwork (+300 sp, +1 Attack/Bonus)</option>
-                                        <option value="Exceptional">Exceptional (+1,000 sp, +2 Bonus)</option>
-                                        <option value="Superior">Superior (+3,000 sp, +3 Bonus)</option>
-                                        <option value="Flawless">Flawless (+10,000 sp, +4 Bonus)</option>
-                                        <option value="Mythic">Mythic (+30,000 sp, +5 Bonus)</option>
-                                    </select>
-                                </div>
                             </div>
 
                             <!-- 4. Mundane Modifications Checkboxes -->
-                            <div class="space-y-1 pt-1 border-t border-amber-200/60">
-                                <label class="block text-[10px] font-bold text-slate-700 uppercase">4. Mundane Modifications</label>
-                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 max-h-32 overflow-y-auto pr-1 bg-white/70 p-2 rounded-lg border border-slate-200 text-[11px]">
-                                    @foreach($refItemModsMundane as $mod)
-                                        @php
-                                            $modLabel = $mod->Description ?? $mod->Name ?? '';
-                                        @endphp
-                                        <label class="flex items-center gap-1.5 cursor-pointer hover:text-indigo-900">
-                                            <input type="checkbox" value="{{ $modLabel }}" x-model="commissionMods" @change="updateCustomCommissionPreview()" class="rounded text-indigo-600 focus:ring-0">
-                                            <span class="truncate" title="{{ $modLabel }}">{{ $modLabel }}</span>
+                            <div class="space-y-1.5 pt-2 border-t border-amber-200/60">
+                                <div class="flex items-center justify-between">
+                                    <label class="block text-[10px] font-bold text-slate-700 uppercase">4. Mundane Modifications</label>
+                                    <span class="text-[10px] text-slate-500" x-show="!commissionBaseItem">Select a Base Item to enable modifications</span>
+                                    <span class="text-[10px] text-indigo-700 font-semibold" x-show="commissionBaseItem" x-text="commissionMods.length + ' selected'"></span>
+                                </div>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 max-h-36 overflow-y-auto pr-1 bg-white/70 p-2 rounded-lg border border-slate-200 text-[11px]">
+                                    <template x-for="mod in refItemModsMundane" :key="mod.ID">
+                                        <label class="flex items-center gap-1.5 p-1 rounded transition select-none"
+                                               :class="isCommissionModAllowed(mod) ? 'cursor-pointer hover:bg-indigo-50 text-slate-900' : 'opacity-35 cursor-not-allowed text-slate-400'">
+                                            <input type="checkbox"
+                                                   :value="mod.Description"
+                                                   :disabled="!isCommissionModAllowed(mod)"
+                                                   :checked="commissionMods.includes(mod.Description)"
+                                                   @change="toggleCommissionMod(mod)"
+                                                   class="rounded text-indigo-600 focus:ring-0">
+                                            <span class="truncate" :title="mod.Description" x-text="mod.Description"></span>
                                         </label>
-                                    @endforeach
+                                    </template>
                                 </div>
                             </div>
 
@@ -296,6 +433,27 @@
                                                     <span class="text-slate-500 font-normal">&bull; DR <span x-text="commissionCustomPreview.item.dr"></span></span>
                                                 </template>
                                             </div>
+                                            <!-- Parsed Traits Badges -->
+                                            <template x-if="getItemTraitsBadges(commissionCustomPreview.item).length > 0">
+                                                <div class="flex flex-wrap gap-1 pt-1">
+                                                    <template x-for="(tr, trIdx) in getItemTraitsBadges(commissionCustomPreview.item)" :key="trIdx">
+                                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border"
+                                                              :class="{
+                                                                  'bg-emerald-100 text-emerald-900 border-emerald-300': tr.color === 'emerald',
+                                                                  'bg-amber-100 text-amber-900 border-amber-300': tr.color === 'amber',
+                                                                  'bg-indigo-100 text-indigo-900 border-indigo-300': tr.color === 'indigo',
+                                                                  'bg-rose-100 text-rose-900 border-rose-300': tr.color === 'rose',
+                                                                  'bg-blue-100 text-blue-900 border-blue-300': tr.color === 'blue',
+                                                                  'bg-teal-100 text-teal-900 border-teal-300': tr.color === 'teal',
+                                                                  'bg-purple-100 text-purple-900 border-purple-300': tr.color === 'purple',
+                                                                  'bg-slate-100 text-slate-800 border-slate-300': tr.color === 'slate'
+                                                              }"
+                                                              :title="tr.label + ': ' + tr.value"
+                                                              x-text="tr.badge">
+                                                        </span>
+                                                    </template>
+                                                </div>
+                                            </template>
                                         </div>
 
                                         <button type="button" @click="addItemToCart(commissionCustomPreview.item, true)"
@@ -389,6 +547,27 @@
                                             + Add
                                         </button>
                                     </div>
+                                    <!-- Parsed Traits Badges -->
+                                    <template x-if="getItemTraitsBadges(commissionItem).length > 0">
+                                        <div class="flex flex-wrap gap-1 pt-0.5">
+                                            <template x-for="(tr, trIdx) in getItemTraitsBadges(commissionItem)" :key="trIdx">
+                                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border"
+                                                      :class="{
+                                                          'bg-emerald-100 text-emerald-900 border-emerald-300': tr.color === 'emerald',
+                                                          'bg-amber-100 text-amber-900 border-amber-300': tr.color === 'amber',
+                                                          'bg-indigo-100 text-indigo-900 border-indigo-300': tr.color === 'indigo',
+                                                          'bg-rose-100 text-rose-900 border-rose-300': tr.color === 'rose',
+                                                          'bg-blue-100 text-blue-900 border-blue-300': tr.color === 'blue',
+                                                          'bg-teal-100 text-teal-900 border-teal-300': tr.color === 'teal',
+                                                          'bg-purple-100 text-purple-900 border-purple-300': tr.color === 'purple',
+                                                          'bg-slate-100 text-slate-800 border-slate-300': tr.color === 'slate'
+                                                      }"
+                                                      :title="tr.label + ': ' + tr.value"
+                                                      x-text="tr.badge">
+                                                </span>
+                                            </template>
+                                        </div>
+                                    </template>
                                     <div class="text-[11px] text-slate-600 font-mono">
                                         <template x-if="commissionItem.traits">
                                             <div><strong>Traits:</strong> <span x-text="commissionItem.traits"></span></div>

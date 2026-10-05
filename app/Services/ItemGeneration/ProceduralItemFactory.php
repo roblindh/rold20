@@ -622,7 +622,7 @@ class ProceduralItemFactory
         $maxCost = min(5, max(1, (int)($options['max_power_cost'] ?? (int)ceil($level / 2))));
 
         // Filter valid potion spells
-        $spells = self::getPotionCandidateSpells($maxCost);
+        $spells = self::getPotionCandidateSpells($maxCost, $type);
         $spellName = $options['spell_name'] ?? null;
         $spell = null;
 
@@ -1577,24 +1577,78 @@ class ProceduralItemFactory
     }
 
     /**
-     * Get candidate spells for potions
+     * Get candidate spells for potions, oils, and tattoos strictly adhering to Rules of Magic:
+     * - Potions & Oils: Arcane or Divine, Action Time <= 15 AP, Range Personal/Touch/Reach/0, targeting single creature (or object/area for oils). Max TPC <= 5.
+     * - Tattoos: Psionic, Action Time <= 15 AP, Range Personal/Touch, targeting You or 1 creature. Max TPC <= 5.
      */
-    protected static function getPotionCandidateSpells(int $maxCost = 5): array
+    public static function getPotionCandidateSpells(int $maxCost = 5, string $type = 'potion'): array
     {
         global $_APP;
+        $maxCost = min(5, max(1, $maxCost));
+        $isTattoo = ($type === 'tattoo');
+        $isOil = ($type === 'oil');
+
         return collect($_APP['spells'] ?? [])
-            ->filter(function ($s) use ($maxCost) {
+            ->filter(function ($s) use ($maxCost, $isTattoo, $isOil) {
                 if (empty($s['Name']) || empty($s['Cost'])) return false;
                 $cost = self::extractPowerCost($s['Cost']);
                 if ($cost > $maxCost) return false;
 
-                $range = strtolower($s['Range'] ?? '');
-                $isSelfOrTouch = str_contains($range, 'tch') || str_contains($range, 'rch') || str_contains($range, 'personal') || str_contains($range, '+0');
-                if (!$isSelfOrTouch) return false;
+                $skills = strtolower($s['Skills'] ?? '');
+                if ($isTattoo) {
+                    if (!str_contains($skills, 'psi')) return false;
+                } else {
+                    // Potions and oils must be Arcane or Divine (exclude psi-only spells)
+                    $isArcaneOrDivine = str_contains($skills, 'arcane') || str_contains($skills, 'divine')
+                        || str_contains($skills, 'wizardry') || str_contains($skills, 'pyromancy') || str_contains($skills, 'aeromancy')
+                        || str_contains($skills, 'hydromancy') || str_contains($skills, 'geomancy') || str_contains($skills, 'ouranomancy')
+                        || str_contains($skills, 'kinetomancy') || str_contains($skills, 'necromancy') || str_contains($skills, 'illumination')
+                        || str_contains($skills, 'abjuration') || str_contains($skills, 'conjuration') || str_contains($skills, 'divination')
+                        || str_contains($skills, 'enchantment') || str_contains($skills, 'evocation') || str_contains($skills, 'illusion')
+                        || str_contains($skills, 'transmutation') || str_contains($skills, 'arcane archery')
+                        || str_contains($skills, 'cleric') || str_contains($skills, 'druid') || str_contains($skills, 'holy')
+                        || str_contains($skills, 'blessing') || str_contains($skills, 'protection') || str_contains($skills, 'life')
+                        || str_contains($skills, 'nature') || str_contains($skills, 'elements') || str_contains($skills, 'animals')
+                        || str_contains($skills, 'plants') || str_contains($skills, 'death') || str_contains($skills, 'retribution')
+                        || str_contains($skills, 'summoning');
+                    if (!$isArcaneOrDivine && !empty($skills)) return false;
+                }
 
+                // Action Time: 15 AP or less (exclude hours, minutes, days, or >15 AP)
                 $actionTime = strtolower($s['ActionTime'] ?? '');
-                if (str_contains($actionTime, '1 h') || str_contains($actionTime, '1 min') || str_contains($actionTime, '10 min')) {
+                if (str_contains($actionTime, '1 h') || str_contains($actionTime, '10 min') || str_contains($actionTime, '1 min') || str_contains($actionTime, 'day') || str_contains($actionTime, 'round') || str_contains($actionTime, '1 r')) {
                     return false;
+                }
+                if (preg_match('/(\d+)\s*\+\s*tpc\s*ap/i', $actionTime, $atm)) {
+                    $baseAp = (int)$atm[1];
+                    if ($baseAp + $cost > 15) return false;
+                } elseif (preg_match('/(\d+)\s*ap/i', $actionTime, $atm)) {
+                    $ap = (int)$atm[1];
+                    if ($ap > 15) return false;
+                }
+
+                // Range: Personal, Touch, Reach, or 0
+                $range = strtolower($s['Range'] ?? '');
+                $firstRangeLine = explode("\n", str_replace(["\r\n", "\r"], "\n", $range))[0] ?? $range;
+                $hasValidRange = str_contains($firstRangeLine, 'tch') || str_contains($firstRangeLine, 'touch')
+                    || str_contains($firstRangeLine, 'rch') || str_contains($firstRangeLine, 'reach')
+                    || str_contains($firstRangeLine, 'personal') || str_contains($firstRangeLine, '0 (+0)')
+                    || str_contains($firstRangeLine, '0') || str_contains($firstRangeLine, '+0')
+                    || str_contains($firstRangeLine, 'you') || str_contains($firstRangeLine, 'self');
+                if (!$hasValidRange) return false;
+
+                // Target: Single creature (or object/area for oils)
+                $target = strtolower($s['Target'] ?? '');
+                if (!$isOil) {
+                    $isSingleCreature = str_contains($target, '1 creat') || str_contains($target, '1 living') || str_contains($target, '1 willing')
+                        || str_contains($target, 'one creat') || str_contains($target, 'you') || str_contains($target, 'personal')
+                        || str_contains($target, '1 person') || str_contains($target, '1 humanoid') || str_contains($target, 'self')
+                        || str_contains($target, 'touch');
+                    if (!$isSingleCreature && !empty($target)) {
+                        if (str_contains($target, 'sq') || str_contains($target, 'emanation') || str_contains($target, 'burst') || str_contains($target, 'spread') || str_contains($target, 'cone') || str_contains($target, 'line') || str_contains($target, 'creatures') || str_contains($target, 'all')) {
+                            return false;
+                        }
+                    }
                 }
 
                 return true;

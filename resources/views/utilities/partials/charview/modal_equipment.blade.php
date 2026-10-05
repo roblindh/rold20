@@ -132,14 +132,42 @@
                                         </template>
 
                                         <div class="flex items-center gap-1.5 flex-wrap">
-                                            <span class="font-bold text-slate-900" x-text="item.name"></span>
+                                            <span class="font-bold text-slate-900 hover:text-indigo-700 cursor-pointer"
+                                                  @click="selectedEquipmentPreviewItem = (selectedEquipmentPreviewItem?.uid === item.uid ? null : item)"
+                                                  x-text="item.name"></span>
+                                            <template x-if="item.SubtypeName || item.subtype_name">
+                                                <span class="text-[10px] text-slate-400 font-medium" x-text="'(' + (item.SubtypeName || item.subtype_name) + ')'"></span>
+                                            </template>
                                             <template x-if="item.is_container">
                                                 <span class="px-1.5 py-0.2 bg-amber-100 text-amber-900 border border-amber-300 rounded text-[10px] font-bold">🎒 Container</span>
                                             </template>
                                             <template x-if="item.container_id && getContainerName(item.container_id)">
                                                 <span class="px-1.5 py-0.2 bg-indigo-50 text-indigo-800 border border-indigo-200 rounded text-[10px] font-mono" x-text="'(In ' + getContainerName(item.container_id) + ')'"></span>
                                             </template>
+                                            <button type="button" @click="selectedEquipmentPreviewItem = (selectedEquipmentPreviewItem?.uid === item.uid ? null : item)" class="text-[10px] text-indigo-600 hover:text-indigo-800 font-bold ml-1 cursor-pointer">ℹ️ Details</button>
                                         </div>
+
+                                        <!-- Parsed Traits Badges Inline -->
+                                        <template x-if="getItemTraitsBadges(item).length > 0">
+                                            <div class="flex flex-wrap gap-1 mt-1">
+                                                <template x-for="(tr, trIdx) in getItemTraitsBadges(item)" :key="trIdx">
+                                                    <span class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[9px] font-bold border"
+                                                          :class="{
+                                                              'bg-emerald-100 text-emerald-900 border-emerald-300': tr.color === 'emerald',
+                                                              'bg-amber-100 text-amber-900 border-amber-300': tr.color === 'amber',
+                                                              'bg-indigo-100 text-indigo-900 border-indigo-300': tr.color === 'indigo',
+                                                              'bg-rose-100 text-rose-900 border-rose-300': tr.color === 'rose',
+                                                              'bg-blue-100 text-blue-900 border-blue-300': tr.color === 'blue',
+                                                              'bg-teal-100 text-teal-900 border-teal-300': tr.color === 'teal',
+                                                              'bg-purple-100 text-purple-900 border-purple-300': tr.color === 'purple',
+                                                              'bg-slate-100 text-slate-800 border-slate-300': tr.color === 'slate'
+                                                          }"
+                                                          :title="tr.label + ': ' + tr.value"
+                                                          x-text="tr.badge">
+                                                    </span>
+                                                </template>
+                                            </div>
+                                        </template>
                                     </td>
 
                                     <!-- Quantity Adjustment -->
@@ -200,6 +228,75 @@
                     </table>
                 </div>
             </div>
+
+            <!-- Selected Inventory Item Details Card -->
+            <template x-if="selectedEquipmentPreviewItem">
+                <div class="p-3.5 bg-gradient-to-br from-amber-50/90 to-indigo-50/80 border border-indigo-200 rounded-xl space-y-2 shadow-xs">
+                    <div class="flex items-start justify-between gap-2 border-b border-indigo-200/60 pb-1.5">
+                        <div>
+                            <div class="font-bold text-xs sm:text-sm text-slate-900 flex items-center gap-1.5 flex-wrap">
+                                <span x-text="selectedEquipmentPreviewItem.name || selectedEquipmentPreviewItem.Name"></span>
+                                <template x-if="selectedEquipmentPreviewItem.SubtypeName || selectedEquipmentPreviewItem.subtype_name">
+                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 font-semibold" x-text="selectedEquipmentPreviewItem.SubtypeName || selectedEquipmentPreviewItem.subtype_name"></span>
+                                </template>
+                                <template x-if="selectedEquipmentPreviewItem.is_container">
+                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold border border-amber-300">🎒 Container</span>
+                                </template>
+                            </div>
+                            <div class="text-[11px] text-slate-600 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
+                                <span>Value: <strong class="text-indigo-900" x-text="((selectedEquipmentPreviewItem.unit_price || selectedEquipmentPreviewItem.BaseValue || 0) * (selectedEquipmentPreviewItem.qty || 1)) + ' sp (' + (selectedEquipmentPreviewItem.unit_price || selectedEquipmentPreviewItem.BaseValue || 0) + ' sp each)'"></strong></span>
+                                <span>&bull;</span>
+                                <span>Weight: <strong class="text-slate-800" x-text="((selectedEquipmentPreviewItem.unit_weight || selectedEquipmentPreviewItem.BaseWeight || 0) * (selectedEquipmentPreviewItem.qty || 1)).toFixed(1) + ' kg (' + (selectedEquipmentPreviewItem.unit_weight || selectedEquipmentPreviewItem.BaseWeight || 0) + ' kg each)'"></strong></span>
+                                <template x-if="selectedEquipmentPreviewItem.BaseMaterial || selectedEquipmentPreviewItem.material">
+                                    <span>&bull; Mat: <span x-text="selectedEquipmentPreviewItem.BaseMaterial || selectedEquipmentPreviewItem.material"></span></span>
+                                </template>
+                            </div>
+                        </div>
+                        <button type="button" @click="selectedEquipmentPreviewItem = null" class="w-5 h-5 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold flex items-center justify-center cursor-pointer text-xs">&times;</button>
+                    </div>
+
+                    <!-- Parsed Traits Badges -->
+                    <template x-if="getItemTraitsBadges(selectedEquipmentPreviewItem).length > 0">
+                        <div class="flex flex-wrap gap-1 pt-0.5">
+                            <template x-for="(tr, trIdx) in getItemTraitsBadges(selectedEquipmentPreviewItem)" :key="trIdx">
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border"
+                                      :class="{
+                                          'bg-emerald-100 text-emerald-900 border-emerald-300': tr.color === 'emerald',
+                                          'bg-amber-100 text-amber-900 border-amber-300': tr.color === 'amber',
+                                          'bg-indigo-100 text-indigo-900 border-indigo-300': tr.color === 'indigo',
+                                          'bg-rose-100 text-rose-900 border-rose-300': tr.color === 'rose',
+                                          'bg-blue-100 text-blue-900 border-blue-300': tr.color === 'blue',
+                                          'bg-teal-100 text-teal-900 border-teal-300': tr.color === 'teal',
+                                          'bg-purple-100 text-purple-900 border-purple-300': tr.color === 'purple',
+                                          'bg-slate-100 text-slate-800 border-slate-300': tr.color === 'slate'
+                                      }"
+                                      :title="tr.label + ': ' + tr.value"
+                                      x-text="tr.badge">
+                                </span>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Custom Mods / Enhancements (if any) -->
+                    <template x-if="selectedEquipmentPreviewItem.mods">
+                        <div class="text-[11px] text-indigo-900 bg-indigo-50/60 p-1.5 rounded border border-indigo-100 font-mono">
+                            <strong>Mods:</strong> <span x-text="selectedEquipmentPreviewItem.mods"></span>
+                        </div>
+                    </template>
+
+                    <!-- Config String (if any) -->
+                    <template x-if="selectedEquipmentPreviewItem.config && selectedEquipmentPreviewItem.config !== selectedEquipmentPreviewItem.name">
+                        <div class="text-[11px] text-amber-900 bg-amber-50/60 p-1.5 rounded border border-amber-200 font-mono">
+                            <strong>Config:</strong> <span x-text="selectedEquipmentPreviewItem.config"></span>
+                        </div>
+                    </template>
+
+                    <!-- Full Description -->
+                    <div class="text-xs text-slate-700 bg-white/80 p-2 rounded-lg border border-slate-200 whitespace-pre-line leading-relaxed"
+                         x-text="selectedEquipmentPreviewItem.description || selectedEquipmentPreviewItem.Description || (selectedEquipmentPreviewItem.mods ? 'Custom crafted and enchanted item in inventory.' : 'Standard adventuring equipment item.')">
+                    </div>
+                </div>
+            </template>
 
             <!-- Footer & Coin Purse / Wealth Adjustment -->
             <div class="space-y-3 pt-3 border-t border-slate-200">

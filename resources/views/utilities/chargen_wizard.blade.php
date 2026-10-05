@@ -585,12 +585,47 @@
             </div>
         </div>
 
+        <!-- Live Ability Scores Overview Bar -->
+        <div class="bg-indigo-50/70 border border-indigo-200 rounded-xl p-3 space-y-1.5">
+            <div class="flex items-center justify-between text-xs text-indigo-950 font-bold border-b border-indigo-200/60 pb-1">
+                <span class="flex items-center gap-1.5">
+                    <span>⚡</span> Current Ability Scores &amp; Modifiers (Live Preview)
+                </span>
+                <span class="text-[10px] text-indigo-700 font-normal hidden sm:inline">Includes Base, Race, Culture, Templates, Age &amp; Allocated IP</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                <template x-for="attr in [
+                    { name: 'Strength', short: 'STR', id: 1 },
+                    { name: 'Dexterity', short: 'DEX', id: 3 },
+                    { name: 'Constitution', short: 'CON', id: 2 },
+                    { name: 'Intelligence', short: 'INT', id: 4 },
+                    { name: 'Wisdom', short: 'WIS', id: 5 },
+                    { name: 'Charisma', short: 'CHA', id: 6 }
+                ]" :key="attr.name">
+                    <div class="bg-white border border-indigo-100 rounded-lg p-2 text-center shadow-2xs">
+                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider" x-text="attr.short"></div>
+                        <div class="text-base font-black text-slate-900 font-mono mt-0.5" x-text="getFinalAbility(attr.name)"></div>
+                        <div class="text-[11px] font-bold font-mono"
+                             :class="getAbilityModifier(attr.name) >= 0 ? 'text-indigo-700' : 'text-rose-600'"
+                             x-text="(getAbilityModifier(attr.name) >= 0 ? '+' : '') + getAbilityModifier(attr.name)"></div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
         <!-- Compact Two-Column Improvement Traits Grid with Uniform Buttons -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
             <template x-for="trait in improvements" :key="trait.ID">
                 <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-3">
                     <div class="min-w-0 flex-1">
-                        <span class="font-bold text-xs text-slate-800 truncate block" x-text="trait.Description"></span>
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="font-bold text-xs text-slate-800 truncate" x-text="trait.Description"></span>
+                            <template x-if="[1, 2, 3, 4, 5, 6].includes(trait.ID)">
+                                <span class="px-1.5 py-0.2 bg-indigo-100 text-indigo-900 border border-indigo-200 rounded font-mono text-[10px] font-bold"
+                                      x-text="'Score: ' + getFinalAbility(trait.Description) + ' (' + (getAbilityModifier(trait.Description) >= 0 ? '+' : '') + getAbilityModifier(trait.Description) + ')'">
+                                </span>
+                            </template>
+                        </div>
                         <div class="text-[10px] text-slate-500 font-mono mt-0.5">
                             Cost: <span class="font-bold text-indigo-700" x-text="trait.IPCost"></span> IP
                             &bull; Max: +<span x-text="trait.MaxBonus"></span>
@@ -1091,25 +1126,87 @@
 
                         <div class="max-h-80 overflow-y-auto pr-1 border border-slate-200 rounded-xl divide-y divide-slate-200 bg-white">
                             <template x-for="item in filteredShopItems" :key="item.ID">
-                                <div class="p-2.5 flex items-center justify-between gap-2 hover:bg-slate-50 text-xs">
+                                <div class="p-2.5 flex items-center justify-between gap-2 hover:bg-slate-50 text-xs transition cursor-pointer"
+                                     :class="selectedPreviewItem?.ID === item.ID ? 'bg-indigo-50/80 border-l-4 border-indigo-600' : ''"
+                                     @click="selectedPreviewItem = (selectedPreviewItem?.ID === item.ID ? null : item)">
                                     <div class="min-w-0 flex-1">
                                         <div class="flex items-center gap-1.5 flex-wrap">
                                             <span class="font-bold text-slate-900 truncate" x-text="item.Name"></span>
                                             <template x-if="item.SubtypeName">
                                                 <span class="text-[10px] text-slate-400 font-medium" x-text="'(' + item.SubtypeName + ')'"></span>
                                             </template>
+                                            <span class="text-[10px] text-indigo-600 hover:text-indigo-800 font-bold ml-1">ℹ️ Details</span>
                                         </div>
                                         <span class="text-[10px] text-slate-500 font-mono" x-text="'Cost: ' + (item.BaseValue || 0) + ' sp | Wt: ' + (item.BaseWeight || 0) + ' kg'"></span>
                                     </div>
-                                    <button type="button" @click="addItemToInventory(item)"
+                                    <button type="button" @click.stop="addItemToInventory(item)"
                                             :disabled="remainingWealth < (item.BaseValue || 0)"
                                             :class="remainingWealth >= (item.BaseValue || 0) ? 'bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer' : 'bg-slate-100 text-slate-400 cursor-not-allowed'"
-                                            class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1">
+                                            class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shrink-0">
                                         <span>+ Buy</span>
                                     </button>
                                 </div>
                             </template>
                         </div>
+
+                        <!-- Selected Item Details Card -->
+                        <template x-if="selectedPreviewItem">
+                            <div class="p-3.5 bg-gradient-to-br from-amber-50/90 to-indigo-50/80 border border-indigo-200 rounded-xl space-y-2 shadow-xs">
+                                <div class="flex items-start justify-between gap-2 border-b border-indigo-200/60 pb-2">
+                                    <div>
+                                        <div class="font-bold text-sm text-slate-900 flex items-center gap-1.5 flex-wrap">
+                                            <span x-text="selectedPreviewItem.Name || selectedPreviewItem.name"></span>
+                                            <template x-if="selectedPreviewItem.SubtypeName">
+                                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 font-semibold" x-text="selectedPreviewItem.SubtypeName"></span>
+                                            </template>
+                                        </div>
+                                        <div class="text-[11px] text-slate-600 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
+                                            <span>Cost: <strong class="text-indigo-900" x-text="(selectedPreviewItem.BaseValue || selectedPreviewItem.unit_price || 0) + ' sp'"></strong></span>
+                                            <span>&bull;</span>
+                                            <span>Weight: <strong class="text-slate-800" x-text="(selectedPreviewItem.BaseWeight || selectedPreviewItem.unit_weight || 0) + ' kg'"></strong></span>
+                                            <template x-if="selectedPreviewItem.BaseMaterial">
+                                                <span>&bull; Mat: <span x-text="selectedPreviewItem.BaseMaterial"></span></span>
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-1 shrink-0">
+                                        <button type="button" @click="addItemToInventory(selectedPreviewItem)"
+                                                :disabled="remainingWealth < (selectedPreviewItem.BaseValue || selectedPreviewItem.unit_price || 0)"
+                                                class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white font-bold rounded text-xs transition cursor-pointer">
+                                            + Buy
+                                        </button>
+                                        <button type="button" @click="selectedPreviewItem = null" class="w-6 h-6 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold flex items-center justify-center cursor-pointer text-xs">&times;</button>
+                                    </div>
+                                </div>
+
+                                <!-- Parsed Traits Badges -->
+                                <template x-if="getItemTraitsBadges(selectedPreviewItem).length > 0">
+                                    <div class="flex flex-wrap gap-1.5 pt-0.5">
+                                        <template x-for="(tr, trIdx) in getItemTraitsBadges(selectedPreviewItem)" :key="trIdx">
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border"
+                                                  :class="{
+                                                      'bg-emerald-100 text-emerald-900 border-emerald-300': tr.color === 'emerald',
+                                                      'bg-amber-100 text-amber-900 border-amber-300': tr.color === 'amber',
+                                                      'bg-indigo-100 text-indigo-900 border-indigo-300': tr.color === 'indigo',
+                                                      'bg-rose-100 text-rose-900 border-rose-300': tr.color === 'rose',
+                                                      'bg-blue-100 text-blue-900 border-blue-300': tr.color === 'blue',
+                                                      'bg-teal-100 text-teal-900 border-teal-300': tr.color === 'teal',
+                                                      'bg-purple-100 text-purple-900 border-purple-300': tr.color === 'purple',
+                                                      'bg-slate-100 text-slate-800 border-slate-300': tr.color === 'slate'
+                                                  }"
+                                                  :title="tr.label + ': ' + tr.value"
+                                                  x-text="tr.badge">
+                                            </span>
+                                        </template>
+                                    </div>
+                                </template>
+
+                                <!-- Full Description -->
+                                <div class="text-xs text-slate-700 bg-white/80 p-2.5 rounded-lg border border-slate-200 whitespace-pre-line leading-relaxed"
+                                     x-text="selectedPreviewItem.Description || selectedPreviewItem.description || 'Standard adventuring equipment item.'">
+                                </div>
+                            </div>
+                        </template>
                     </div>
 
                     <!-- Current Inventory Cart with Placement & Container Controls (1 Col) -->
@@ -1128,9 +1225,9 @@
                             <template x-for="(cartItem, idx) in character.Inventory" :key="cartItem.uid || idx">
                                 <div class="pt-2 space-y-1.5 text-xs">
                                     <div class="flex items-center justify-between gap-1">
-                                        <div class="min-w-0 flex-1">
+                                        <div class="min-w-0 flex-1 cursor-pointer" @click="selectedPreviewItem = cartItem">
                                             <div class="flex items-center gap-1.5 flex-wrap">
-                                                <span class="font-bold text-slate-900 truncate" x-text="cartItem.Name"></span>
+                                                <span class="font-bold text-slate-900 truncate hover:text-indigo-700" x-text="cartItem.Name"></span>
                                                 <template x-if="cartItem.IsContainer">
                                                     <span class="px-1.5 py-0.2 bg-amber-100 text-amber-800 text-[10px] rounded font-semibold border border-amber-300">Container</span>
                                                 </template>
@@ -1380,20 +1477,30 @@
                         <div>
                             <div class="flex items-center justify-between mb-1">
                                 <label class="block text-xs font-semibold text-slate-700 uppercase">Background Lore &amp; History</label>
-                                <button type="button" @click="rollRandomLore()" class="text-[10px] text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
-                                    <span>🎲</span> Roll Background &amp; Contacts
+                                <button type="button" @click="rollRandomHistory()" class="text-[10px] text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                                    <span>🎲</span> Roll History
                                 </button>
                             </div>
                             <textarea x-model="character.History" rows="2" placeholder="Origin, upbringing, major life events, deeds..."
                                       class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Family &amp; Relatives</label>
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="block text-xs font-semibold text-slate-700 uppercase">Family &amp; Relatives</label>
+                                <button type="button" @click="rollRandomFamily()" class="text-[10px] text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                                    <span>🎲</span> Roll Family
+                                </button>
+                            </div>
                             <textarea x-model="character.Family" rows="2" placeholder="Parents, siblings, clan heritage, spouse, children..."
                                       class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Connections &amp; Contacts</label>
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="block text-xs font-semibold text-slate-700 uppercase">Connections &amp; Contacts</label>
+                                <button type="button" @click="rollRandomContacts()" class="text-[10px] text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1 cursor-pointer">
+                                    <span>🎲</span> Roll Contacts
+                                </button>
+                            </div>
                             <textarea x-model="character.Contacts" rows="2" placeholder="Allies, patrons, underworld contacts, informants, rivals..."
                                       class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
                         </div>
@@ -1909,6 +2016,7 @@ function characterWizard() {
         // Shop State
         itemSearchQuery: '',
         selectedItemTypeFilter: '0',
+        selectedPreviewItem: null,
 
         // Canonical Server-Side Entity Engine State
         calculatedState: null,
@@ -2600,6 +2708,47 @@ function characterWizard() {
             return results;
         },
 
+        getItemTraitsBadges(item) {
+            if (!item) return [];
+            const results = [];
+            const rawTraits = item.Traits || item.traits_raw || item.traits || '';
+            if (rawTraits && typeof rawTraits === 'string') {
+                const matches = rawTraits.matchAll(/(\w+)\s*\{([^}]+)\}/gi);
+                for (const m of matches) {
+                    const type = m[1];
+                    const body = m[2];
+                    const params = {};
+                    body.split(';').forEach(p => {
+                        const eq = p.indexOf('=');
+                        if (eq !== -1) {
+                            params[p.substring(0, eq).trim()] = p.substring(eq + 1).trim();
+                        }
+                    });
+
+                    if (type === 'Armor') {
+                        if (params.DR) results.push({ label: 'Armor DR', value: '+' + params.DR, badge: 'DR ' + params.DR, color: 'emerald' });
+                        if (params.Qual) results.push({ label: 'Armor Type', value: params.Qual, badge: params.Qual + ' Armor', color: 'slate' });
+                        if (params.DonTime) results.push({ label: 'Don Time', value: params.DonTime + ' AP', badge: 'Don: ' + params.DonTime + ' AP', color: 'slate' });
+                    } else if (type === 'Shield') {
+                        if (params.DR) results.push({ label: 'Shield DR', value: '+' + params.DR, badge: 'DR ' + params.DR, color: 'emerald' });
+                        if (params.DeC) results.push({ label: 'DeC Bonus', value: '+' + params.DeC, badge: 'DeC +' + params.DeC, color: 'indigo' });
+                    } else if (type === 'WpnStats' || type === 'Weapon') {
+                        if (params.Dmg) results.push({ label: 'Damage', value: params.Dmg, badge: 'Dmg ' + params.Dmg, color: 'amber' });
+                        if (params.Crit) results.push({ label: 'Critical', value: params.Crit, badge: 'Crit ' + params.Crit, color: 'rose' });
+                        if (params.Type) results.push({ label: 'Dmg Type', value: params.Type, badge: params.Type, color: 'slate' });
+                        if (params.Rng) results.push({ label: 'Range', value: params.Rng + ' sq', badge: 'Rng ' + params.Rng, color: 'blue' });
+                    } else if (type === 'Container') {
+                        if (params.CapWeight) results.push({ label: 'Capacity', value: params.CapWeight + ' kg', badge: 'Holds ' + params.CapWeight + ' kg', color: 'teal' });
+                    } else if (type === 'SpdSpcl') {
+                        if (params.Qual === 'ECRed') results.push({ label: 'EC Reduction', value: '-' + params.Value, badge: 'EC -' + params.Value, color: 'purple' });
+                    } else if (type === 'AttMod') {
+                        results.push({ label: params.Qual || 'Attack', value: params.Value || '+1', badge: (params.Qual || 'Att') + ' ' + (params.Value || '+1'), color: 'indigo' });
+                    }
+                }
+            }
+            return results;
+        },
+
         parseGenBonus(traitsStr, qualRegex) {
             if (!traitsStr || typeof traitsStr !== 'string') return 0;
             let sum = 0;
@@ -2657,6 +2806,18 @@ function characterWizard() {
 
         get ipRemaining() {
             return this.totalIP - this.ipSpent;
+        },
+
+        get remainingIP() {
+            return this.ipRemaining;
+        },
+
+        get improvementsById() {
+            const map = {};
+            (this.improvements || []).forEach(t => {
+                map[t.ID] = t;
+            });
+            return map;
         },
 
         getIPBonus(traitId) {
@@ -4024,13 +4185,112 @@ function characterWizard() {
             }
         },
 
-        async rollRandomLore() {
+        async rollRandomHistory() {
             try {
                 const raceObj = this.getSelectedRace();
-                const res = await fetch('/api/generator/background', {
+                const res = await fetch('{{ route('utilities.generator.background', [], false) }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify({
+                        race: raceObj ? raceObj.Name : '',
+                        social_class: this.character.SocialClass
+                    })
+                });
+                const data = await res.json();
+                if (data.success && data.data && data.data.history) {
+                    this.character.History = data.data.history;
+                    return;
+                }
+            } catch (e) {
+                console.error('Error rolling history:', e);
+            }
+            const origins = ['a windswept coastal harbor town', 'a secluded mountain cloister', 'a bustling trade hub', 'a quiet frontier settlement', 'the undercity districts of an imperial metropolis', 'a noble river valley estate', 'a nomadic desert caravan', 'subterranean crystal caverns'];
+            const events = ['survived a devastating siege, saving several neighbors from the blaze', 'discovered a hidden cache of ancient glyphs, awakening curiosity', 'served as a loyal scout during a regional border war', 'was wrongfully accused by a corrupt official and forced to take to the road', 'was mentored by a reclusive hermit who taught survival discipline', 'escaped from captivity after being ambushed on the high roads'];
+            const secrets = ['Knows the identity of a masked informant in the capital.', 'Possesses a map fragment leading to a forgotten ruin.', 'Secretly owes a favor to a shadowy guildmaster.', 'Carries a minor ancestral blessing that wards off nightmares.'];
+            const o = origins[Math.floor(Math.random() * origins.length)];
+            const ev = events[Math.floor(Math.random() * events.length)];
+            const s = secrets[Math.floor(Math.random() * secrets.length)];
+            this.character.History = `Born in ${o}. Early in life, ${ev}. Driven by these experiences, set forth on the road to seek greater fortune.\n\nSecret: ${s}`;
+        },
+
+        async rollRandomFamily() {
+            try {
+                const raceObj = this.getSelectedRace();
+                const res = await fetch('{{ route('utilities.generator.background', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify({
+                        race: raceObj ? raceObj.Name : '',
+                        social_class: this.character.SocialClass
+                    })
+                });
+                const data = await res.json();
+                if (data.success && data.data && data.data.family) {
+                    this.character.Family = data.data.family;
+                    return;
+                }
+            } catch (e) {
+                console.error('Error rolling family:', e);
+            }
+            const families = [
+                'Raised by an extended clan of crafters and traders who still send occasional letters.',
+                'Youngest of four siblings; elder brother serves in the regional town guard.',
+                'Orphaned at a young age and raised by a strict but caring local guild master.',
+                'Hails from an ancient lineage of rangers whose ancestral crest is proudly worn on belt buckle.',
+                'Estranged from family following a bitter inheritance dispute with a cousin.'
+            ];
+            this.character.Family = families[Math.floor(Math.random() * families.length)];
+        },
+
+        async rollRandomContacts() {
+            try {
+                const raceObj = this.getSelectedRace();
+                const res = await fetch('{{ route('utilities.generator.background', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify({
+                        race: raceObj ? raceObj.Name : '',
+                        social_class: this.character.SocialClass
+                    })
+                });
+                const data = await res.json();
+                if (data.success && data.data && data.data.contacts) {
+                    this.character.Contacts = data.data.contacts;
+                    return;
+                }
+            } catch (e) {
+                console.error('Error rolling contacts:', e);
+            }
+            const contactsList = [
+                'Maintains correspondence with an eccentric alchemist who supplies rare reagents.',
+                'Friendly with several tavern keepers and teamsters along the main trade road.',
+                'Owes a favor to a retired sergeant who taught the fundamentals of combat.',
+                'Known and trusted by a network of wilderness scouts and couriers.',
+                'Has a discreet informant inside the city harbor customs office.'
+            ];
+            this.character.Contacts = contactsList[Math.floor(Math.random() * contactsList.length)];
+        },
+
+        async rollRandomLore() {
+            try {
+                const raceObj = this.getSelectedRace();
+                const res = await fetch('{{ route('utilities.generator.background', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
                     },
                     body: JSON.stringify({
@@ -4043,10 +4303,14 @@ function characterWizard() {
                     this.character.History = data.data.history || '';
                     this.character.Family = data.data.family || '';
                     this.character.Contacts = data.data.contacts || '';
+                    return;
                 }
             } catch (e) {
                 console.error('Error rolling lore:', e);
             }
+            await this.rollRandomHistory();
+            await this.rollRandomFamily();
+            await this.rollRandomContacts();
         },
 
         async rollRandomAllLore() {
