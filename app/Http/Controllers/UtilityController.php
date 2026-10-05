@@ -2703,6 +2703,154 @@ class UtilityController extends Controller
     }
 
     /**
+     * Sell / liquidate items from a Campaign Vault to settlement merchant.
+     */
+    public function sellVaultItems(Request $request, int $id): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    {
+        $campaign = DB::table('campaigns')->where('ID', $id)->first();
+        if (!$campaign) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Campaign not found.'], 404);
+            }
+            return back()->with('error', 'Campaign not found.');
+        }
+
+        if (!$this->isAuthorizedForCampaign($campaign)) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Unauthorized: Only a GM can sell vault items.'], 403);
+            }
+            return back()->with('error', 'Unauthorized.');
+        }
+
+        $partyLocation = $campaign->PartyLocation ?? 'Small town';
+        $locationLimitSp = \App\Services\ItemGeneration\ProceduralItemFactory::getSettlementGPLimitSP($partyLocation);
+        $isNoShop = in_array(strtolower(trim($partyLocation)), ['dungeon', 'wilderness', 'none', 'uninhabited', 'ruin', 'ruins', 'wild', 'road', 'camp', 'cave', 'caves']);
+
+        if ($isNoShop) {
+            $msg = "Cannot sell items: The party is currently situated in '{$partyLocation}' where no merchants or market outposts exist.";
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $msg], 422);
+            }
+            return back()->with('error', $msg);
+        }
+
+        $validated = $request->validate([
+            'item_indices' => 'nullable|array',
+            'item_indices.*' => 'integer',
+            'item_uids' => 'nullable|array',
+            'item_uids.*' => 'string',
+            'shop_type' => 'nullable|string|in:general,jeweler,fence',
+            'shop_name' => 'nullable|string|max:100',
+        ]);
+
+        $shopType = $validated['shop_type'] ?? 'general';
+        $indicesToSell = $validated['item_indices'] ?? [];
+        $uidsToSell = $validated['item_uids'] ?? [];
+
+        $rawVault = $campaign->Vault;
+        $currentFunds = 0;
+        $currentItems = [];
+
+        if (!empty($rawVault)) {
+            if (str_starts_with($rawVault, '{')) {
+                $parsed = json_decode($rawVault, true) ?? [];
+                $currentFunds = (int)($parsed['funds'] ?? 0);
+                $currentItems = $parsed['items'] ?? [];
+            } elseif (str_starts_with($rawVault, '[')) {
+                $currentItems = json_decode($rawVault, true) ?? [];
+            }
+        }
+
+        $totalPayoutSp = 0.0;
+        $remainingItems = [];
+        $soldItems = [];
+
+        foreach ($currentItems as $idx => $it) {
+            $uid = (string)($it['uid'] ?? $it['id'] ?? '');
+            $shouldSell = in_array($idx, $indicesToSell, true) || (!empty($uid) && in_array($uid, $uidsToSell, true));
+
+            if ($shouldSell) {
+                $qty = max(1, (int)($it['qty'] ?? $it['Qty'] ?? 1));
+                $unitVal = (float)($it['unit_price'] ?? $it['BaseValue'] ?? $it['value'] ?? 0);
+                if ($unitVal <= 0 && isset($it['value'])) {
+                    $unitVal = (float)$it['value'] / $qty;
+                }
+
+                // Check location GP limit
+                if ($locationLimitSp > 0 && $unitVal > $locationLimitSp) {
+                    $itemName = $it['name'] ?? $it['Name'] ?? 'Item';
+                    $msg = "Cannot sell '{$itemName}': Its value of " . number_format($unitVal) . " sp exceeds the maximum purchase limit (" . number_format($locationLimitSp) . " sp) of {$partyLocation}.";
+                    if ($request->expectsJson()) {
+                        return response()->json(['success' => false, 'message' => $msg], 422);
+                    }
+                    return back()->with('error', $msg);
+                }
+
+                // Calculate multiplier based on item type and merchant
+                $typeId = (int)($it['item_type_id'] ?? $it['ItemTypeID'] ?? 0);
+                $isVal = !empty($it['is_valuable']) || !empty($it['IsValuable']) || $typeId === 9;
+                $name = (string)($it['name'] ?? $it['Name'] ?? '');
+                if (!$isVal && preg_match('/gem:|art:|trade bar|ingot|ruby|sapphire|emerald|diamond|agate|chalice|ewer|comb with|statuette/i', $name)) {
+                    $isVal = true;
+                }
+
+                if ($shopType === 'fence') {
+                    $mult = 0.25;
+                } elseif ($isVal) {
+                    $mult = 1.0;
+                } else {
+                    $mult = 0.5;
+                }
+
+                $itemTotalSp = $unitVal * $qty * $mult;
+                $totalPayoutSp += $itemTotalSp;
+                $soldItems[] = [
+                    'name' => $name,
+                    'qty' => $qty,
+                    'payout_sp' => $itemTotalSp,
+                ];
+            } else {
+                $remainingItems[] = $it;
+            }
+        }
+
+        if (empty($soldItems)) {
+            $msg = "No matching vault items selected to sell.";
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $msg], 422);
+            }
+            return back()->with('error', $msg);
+        }
+
+        $newFunds = (int)round($currentFunds + $totalPayoutSp);
+        $newVaultJson = json_encode([
+            'funds' => $newFunds,
+            'items' => array_values($remainingItems),
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        DB::table('campaigns')->where('ID', $id)->update([
+            'Vault' => $newVaultJson,
+        ]);
+
+        $soldCount = count($soldItems);
+        $formattedPayout = number_format($totalPayoutSp, 1);
+        $shopStr = !empty($validated['shop_name']) ? " to {$validated['shop_name']}" : "";
+        $successMsg = "Successfully sold {$soldCount} vault item(s){$shopStr} for {$formattedPayout} sp into the Campaign Vault treasury!";
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => $successMsg,
+                'payout_sp' => $totalPayoutSp,
+                'new_funds' => $newFunds,
+                'remaining_items' => array_values($remainingItems),
+            ]);
+        }
+
+        return back()->with('status', $successMsg);
+    }
+
+    /**
      * Random Treasure Generator
      */
     public function treasureGenerator(Request $request): View

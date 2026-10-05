@@ -166,6 +166,7 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/campaign/{id}/add-character', [UtilityController::class, 'addCharacterToCampaign'])->name('campaign.add-character');
     Route::post('/campaign/{id}/remove-character', [UtilityController::class, 'removeCharacterFromCampaign'])->name('campaign.remove-character');
     Route::post('/campaign/{id}/vault/remove', [UtilityController::class, 'removeVaultItemFromCampaign'])->name('campaign.vault.remove');
+    Route::post('/campaign/{id}/vault/sell', [UtilityController::class, 'sellVaultItems'])->name('campaign.vault.sell');
     Route::post('/campaign/{id}/award', [UtilityController::class, 'awardCampaign'])->name('campaign.award');
 
     // Campaign Hierarchy CRUD endpoints

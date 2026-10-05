@@ -653,6 +653,7 @@ function characterViewerApp() {
     const rawImprovements = @json($improvements ?? []);
     const rawEquipment = @json($equipment ?? []);
     const rawItemTypes = @json($itemTypes ?? []);
+    const rawRefMaterials = @json($refMaterials ?? []);
     const rawItemModsMundane = @json($refItemModsMundane ?? []);
     const rawSpells = @json($spells ?? []);
     const rawSpellOptions = @json($spellOptions ?? []);
@@ -1919,6 +1920,7 @@ function characterViewerApp() {
 
         // Custom Commission Builder State (Free Selection by Player)
         itemTypes: rawItemTypes || [],
+        refMaterials: rawRefMaterials || [],
         refItemModsMundane: rawItemModsMundane || [],
         commissionCategory: '',
         commissionBaseItem: '',
@@ -1927,6 +1929,33 @@ function characterViewerApp() {
         commissionCustomPreview: null,
         commissionPreviewLoading: false,
         commissionError: '',
+
+        getMaterialOptionLabel(mat) {
+            const item = this.selectedCommissionBaseItemObj;
+            const matVal = parseFloat(mat.BaseValue || 0);
+            if (!item || !item.BaseWeight) {
+                return mat.Name + ' (' + Number(matVal).toLocaleString() + ' sp/kg)';
+            }
+            const baseMatId = parseInt(item.BaseMaterial || 0);
+            const baseMat = (this.refMaterials || []).find(m => m.ID == baseMatId);
+            const baseMatVal = baseMat ? parseFloat(baseMat.BaseValue || 0) : 0;
+            const baseMatDensity = (baseMat && parseFloat(baseMat.Density) > 0) ? parseFloat(baseMat.Density) : 1.0;
+            
+            const currMatDensity = (mat && parseFloat(mat.Density) > 0) ? parseFloat(mat.Density) : baseMatDensity;
+            
+            const baseWeight = parseFloat(item.BaseWeight || 0);
+            const matmul = currMatDensity / baseMatDensity;
+            const newWeight = Math.round(baseWeight * matmul * 10) / 10;
+            
+            const diff = Math.round((newWeight * matVal) - (baseWeight * baseMatVal));
+            if (diff === 0) {
+                return mat.Name + ' (+0 sp)';
+            } else if (diff > 0) {
+                return mat.Name + ' (+' + diff.toLocaleString() + ' sp)';
+            } else {
+                return mat.Name + ' (' + diff.toLocaleString() + ' sp)';
+            }
+        },
 
         get commissionFilteredBaseItems() {
             if (!this.commissionCategory) {

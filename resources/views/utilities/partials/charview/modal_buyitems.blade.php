@@ -377,9 +377,9 @@
                                     <label class="block text-[10px] font-bold text-slate-700 uppercase mb-0.5">3. Material Override</label>
                                     <select x-model="commissionMaterial" @change="updateCustomCommissionPreview()" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg text-xs bg-white text-slate-900 focus:ring-1 focus:ring-indigo-500">
                                         <option value="">Standard / Default Material</option>
-                                        @foreach($refMaterials as $mat)
-                                            <option value="{{ $mat->Name }}">{{ $mat->Name }} (+{{ number_format($mat->BasePriceMod ?? 0) }} sp)</option>
-                                        @endforeach
+                                        <template x-for="mat in refMaterials" :key="mat.ID">
+                                            <option :value="mat.Name" x-text="getMaterialOptionLabel(mat)"></option>
+                                        </template>
                                     </select>
                                 </div>
                             </div>

@@ -89,7 +89,7 @@
         @if($activeCampaign)
             @php
                 $camp = $activeCampaign;
-                $isMyCamp = auth()->check() && ($camp->GameMaster === auth()->id() || auth()->user()->isGM());
+                $isMyCamp = !auth()->check() || ($camp->GameMaster === auth()->id() || auth()->user()->isGM());
                 $campChars = $characters->where('Campaign', $camp->ID)->values();
                 if ($campChars->isEmpty()) {
                     $campChars = $characters->where('CampaignID', $camp->ID)->values();
@@ -132,8 +132,8 @@
 
                     @if($isMyCamp)
                         <div class="flex items-center gap-2 shrink-0">
-                            <button type="button" @click="openEditModal({{ json_encode($camp) }})" 
-                                    class="btn-rol-secondary text-xs py-1.5 px-3">
+                            <button type="button" @click="openEditModal()" 
+                                    class="btn-rol-secondary text-xs py-1.5 px-3 cursor-pointer">
                                 <span>✏️</span> Edit Campaign
                             </button>
                             <form action="{{ route('utilities.campaign.delete', ['id' => $camp->ID], false) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete campaign \'{{ addslashes($camp->Name) }}\'?');" class="inline">
@@ -657,7 +657,7 @@
                             </div>
                             @if($isMyCamp)
                                 <div class="flex items-center gap-2 flex-wrap">
-                                    <button type="button" @click="openAddPcModal({{ json_encode($camp) }})" class="btn-rol-secondary text-xs py-1 px-3">
+                                    <button type="button" @click="openAddPcModal()" class="btn-rol-secondary text-xs py-1 px-3 cursor-pointer">
                                         <span>📥</span> Add Existing PC
                                     </button>
                                     <a href="{{ route('utilities.chargen', [], false) }}?campaign={{ $camp->ID }}" class="btn-rol-primary text-xs py-1 px-3">
@@ -722,7 +722,7 @@
                                 <div class="col-span-full p-6 bg-amber-50/40 rounded-xl text-xs text-stone-500 italic text-center border border-dashed border-amber-900/20 space-y-2">
                                     <p>No party members currently assigned to this campaign.</p>
                                     @if($isMyCamp)
-                                        <button type="button" @click="openAddPcModal({{ json_encode($camp) }})" class="btn-rol-primary text-xs py-1 px-3 mx-auto">
+                                        <button type="button" @click="openAddPcModal()" class="btn-rol-primary text-xs py-1 px-3 mx-auto cursor-pointer">
                                             <span>📥</span> Add Existing PC
                                         </button>
                                     @endif
@@ -744,7 +744,12 @@
                             </div>
                             @if($isMyCamp)
                                 <div class="flex items-center gap-2">
-                                    <button type="button" @click="openAwardModal({{ json_encode($camp) }}, {{ json_encode($campChars->values()) }})" class="btn-rol-primary text-xs py-1.5 px-3.5 shadow-sm">
+                                    <button type="button" @click="openSellVaultModal()"
+                                            @if(count($vaultItems) === 0) disabled @endif
+                                            class="btn-rol-secondary text-xs py-1.5 px-3.5 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
+                                        <span>💰</span> Sell Items
+                                    </button>
+                                    <button type="button" @click="openAwardModal()" class="btn-rol-primary text-xs py-1.5 px-3.5 shadow-sm cursor-pointer">
                                         <span>🎁</span> Grant XP &amp; Treasure
                                     </button>
                                 </div>
@@ -760,11 +765,23 @@
                                     <div class="text-xl font-bold font-mono text-amber-950">{{ number_format($vaultFunds) }} Silver Pieces (sp)</div>
                                 </div>
                             </div>
+                            <div class="text-right">
+                                <span class="text-xs uppercase font-bold text-amber-800">In Gold Pieces</span>
+                                <div class="text-lg font-bold font-mono text-amber-950">{{ number_format($vaultFunds / 10, 1) }} gp</div>
+                            </div>
                         </div>
 
                         <!-- Vault Items Table -->
                         <div class="space-y-2">
-                            <h4 class="text-xs font-bold uppercase text-stone-700 tracking-wider">Vault Inventory ({{ count($vaultItems) }} items):</h4>
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-xs font-bold uppercase text-stone-700 tracking-wider">Vault Inventory ({{ count($vaultItems) }} items):</h4>
+                                @if($isMyCamp && count($vaultItems) > 0)
+                                    <button type="button" @click="openSellVaultModal()"
+                                            class="text-xs font-bold text-emerald-700 hover:text-emerald-900 underline flex items-center gap-1 cursor-pointer">
+                                        <span>💰</span> Liquidate / Sell Vault Items
+                                    </button>
+                                @endif
+                            </div>
                             <div class="space-y-1.5">
                                 @forelse($vaultItems as $vIdx => $vItem)
                                     <div class="p-2.5 bg-white border border-stone-200 rounded-lg flex items-center justify-between gap-2 text-xs">
@@ -1694,6 +1711,120 @@
     </div>
 </div>
 
+<!-- ============================================================= -->
+<!-- SELL VAULT ITEMS MODAL (LIQUIDATION TO VAULT TREASURY)        -->
+<!-- ============================================================= -->
+<div x-show="showSellVaultModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4" style="display: none;">
+    <div class="bg-white rounded-2xl max-w-2xl w-full border border-slate-200 shadow-2xl p-6 space-y-4" @click.away="showSellVaultModal = false">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div class="flex items-center gap-2.5">
+                <span class="text-2xl">💰</span>
+                <div>
+                    <h3 class="font-bold text-slate-900 text-base">Liquidate &amp; Sell Campaign Vault Items</h3>
+                    <p class="text-xs text-slate-500">Sell shared loot and recovered items to settlement merchants in <strong x-text="sellVaultPartyLocation"></strong>.</p>
+                </div>
+            </div>
+            <button type="button" @click="showSellVaultModal = false" class="text-slate-400 hover:text-slate-600 font-bold text-lg cursor-pointer">&times;</button>
+        </div>
+
+        <!-- Merchant Settings & Rules -->
+        <div class="bg-amber-50/80 p-3.5 rounded-xl border border-amber-300 space-y-2.5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-200/80 pb-2">
+                <div>
+                    <span class="font-bold text-amber-950 text-xs flex items-center gap-1">
+                        <span>🏪</span> Settlement Merchant Economics
+                    </span>
+                    <p class="text-[11px] text-stone-600">
+                        Manufactured gear (50%), gems &amp; bullion (100%), or black market fence (25%).
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <label class="text-[10px] font-bold text-slate-700 uppercase">Merchant:</label>
+                    <select x-model="sellVaultShopType" class="px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-xs text-black font-medium">
+                        <option value="general">🏪 Standard Merchant (50% gear, 100% gems)</option>
+                        <option value="jeweler">💎 Jeweler &amp; Reliquary (100% gems, 50% gear)</option>
+                        <option value="fence">🕶️ Black Market / Fence (25% all goods)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Filters & Search -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                <div class="flex items-center gap-2 flex-1">
+                    <input type="text" x-model="sellVaultSearchQuery" placeholder="Search vault items..." class="px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-xs text-black flex-1">
+                    <select x-model="sellVaultFilterType" class="px-2 py-1 bg-white border border-slate-300 rounded-lg text-xs text-black">
+                        <option value="all">All Vault Items (<span x-text="sellVaultItems.length"></span>)</option>
+                        <option value="valuables">💎 Valuables &amp; Bullion Only (<span x-text="sellVaultItems.filter(it => isVaultValuable(it)).length"></span>)</option>
+                        <option value="gear">⚔️ Weapons, Armor &amp; Gear Only (<span x-text="sellVaultItems.filter(it => !isVaultValuable(it)).length"></span>)</option>
+                    </select>
+                </div>
+                <button type="button" @click="toggleAllVaultSelection()" class="text-indigo-700 hover:text-indigo-900 font-bold underline cursor-pointer shrink-0">
+                    <span x-text="selectedVaultItemsToSell.length === filteredVaultToSell.length ? 'Deselect All' : 'Select All Filtered'"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Toast / Message -->
+        <div x-show="sellVaultToastMessage" x-text="sellVaultToastMessage" class="p-2.5 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-lg text-xs font-bold shadow-xs"></div>
+        <div x-show="sellVaultError" x-text="sellVaultError" class="p-2.5 bg-rose-100 text-rose-900 border border-rose-300 rounded-lg text-xs font-bold shadow-xs"></div>
+
+        <template x-if="filteredVaultToSell.length === 0">
+            <div class="p-8 text-center text-slate-400 italic bg-slate-50 rounded-xl border border-slate-200">
+                No items in the Campaign Vault match your search or filter.
+            </div>
+        </template>
+
+        <!-- Items to Sell List -->
+        <div class="space-y-1.5 max-h-72 overflow-y-auto pr-1" x-show="filteredVaultToSell.length > 0">
+            <template x-for="(item, vIdx) in filteredVaultToSell" :key="item.uid || item.id || vIdx">
+                <label class="bg-white border hover:border-emerald-400 p-2.5 rounded-lg flex items-center justify-between gap-3 shadow-2xs transition cursor-pointer"
+                       :class="selectedVaultItemsToSell.includes(item.uid || item.id || vIdx) ? 'border-emerald-500 bg-emerald-50/40 ring-1 ring-emerald-400' : 'border-slate-200'">
+                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                        <input type="checkbox" :value="item.uid || item.id || vIdx" x-model="selectedVaultItemsToSell" class="rounded text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer">
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="font-bold text-slate-900 truncate" x-text="item.name || item.Name || 'Item'"></span>
+                                <template x-if="isVaultValuable(item)">
+                                    <span class="text-[9px] px-1.5 py-0.2 bg-emerald-100 text-emerald-800 rounded font-bold">💎 Valuable (100%)</span>
+                                </template>
+                                <template x-if="!isVaultValuable(item)">
+                                    <span class="text-[9px] px-1.5 py-0.2 bg-slate-100 text-slate-700 rounded font-bold">⚔️ Gear (50%)</span>
+                                </template>
+                            </div>
+                            <div class="text-[10px] text-slate-500 font-mono">
+                                <span>Base Value: <strong x-text="(item.value || item.BaseValue || 0) + ' sp'"></strong></span>
+                                <span> &bull; Qty: <strong x-text="item.qty || item.Qty || 1"></strong></span>
+                                <span x-show="item.weight || item.BaseWeight"> &bull; Weight: <strong x-text="(item.weight || item.BaseWeight) + ' kg'"></strong></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right shrink-0 font-mono">
+                        <div class="text-xs font-bold text-emerald-700" x-text="(calculateVaultResaleValue(item) * (item.qty || item.Qty || 1)).toFixed(1) + ' sp'"></div>
+                        <div class="text-[10px] text-slate-400 font-sans" x-text="'(' + calculateVaultResaleValue(item) + ' sp each)'"></div>
+                    </div>
+                </label>
+            </template>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+                <span class="text-xs text-slate-600">Selected Sale Proceeds:</span>
+                <strong class="text-emerald-800 font-mono text-base ml-1" x-text="totalVaultPayoutSp + ' sp (' + (totalVaultPayoutSp / 10).toFixed(1) + ' gp)'"></strong>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" @click="showSellVaultModal = false" class="btn-rol-secondary text-xs py-2 px-4 cursor-pointer">Cancel</button>
+                <button type="button" @click="submitSellVaultItems()"
+                        :disabled="selectedVaultItemsToSell.length === 0 || sellingVault"
+                        class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold text-xs sm:text-sm rounded-lg shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
+                    <span x-show="!sellingVault">💰 Liquidate Selected (<span x-text="selectedVaultItemsToSell.length"></span>) to Vault</span>
+                    <span x-show="sellingVault">Liquidating items...</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Datalist for Monster/Creature Autocomplete -->
 <datalist id="creature_datalist">
     @foreach($creatureCatalog as $cr)
@@ -1709,11 +1840,29 @@ function campaignAdmin() {
         showAddPcModal: false,
         showNpcModal: false,
         showAwardModal: false,
+        showSellVaultModal: false,
         showAdventureModal: false,
         showEncounterModal: false,
         showLocationModal: false,
         isRollingFoes: false,
         isRollingTreasure: false,
+
+        sellVaultCamp: null,
+        sellVaultItems: [],
+        sellVaultFunds: 0,
+        sellVaultPartyLocation: 'Small town',
+        sellVaultShopType: 'general',
+        sellVaultSearchQuery: '',
+        sellVaultFilterType: 'all',
+        selectedVaultItemsToSell: [],
+        sellingVault: false,
+        sellVaultToastMessage: '',
+        sellVaultError: '',
+
+        activeCampaign: @json($activeCampaign),
+        activeVaultItems: @json($vaultItems),
+        activeVaultFunds: {{ (int)$vaultFunds }},
+        activeCampChars: @json($campChars->values()),
 
         creaturesList: @json($creatureCatalog),
         foeMinEl: 1,
@@ -1859,34 +2008,37 @@ function campaignAdmin() {
             }
         },
 
-        openEditModal(camp) {
+        openEditModal(camp = null) {
+            const c = camp || this.activeCampaign;
+            if (!c) return;
             this.editCamp = {
-                ID: camp.ID,
-                Name: camp.Name,
-                Description: camp.Description || '',
-                AbilityGenMethod: camp.AbilityGenMethod || 2,
-                StartingXP: camp.StartingXP || 0,
-                SuitabilityLevel: camp.SuitabilityLevel !== undefined ? camp.SuitabilityLevel : 3,
-                OptionalRules: camp.OptionalRules || '',
-                Notes: camp.Notes || ''
+                ID: c.ID,
+                Name: c.Name,
+                Description: c.Description || '',
+                AbilityGenMethod: c.AbilityGenMethod || 2,
+                StartingXP: c.StartingXP || 0,
+                SuitabilityLevel: c.SuitabilityLevel !== undefined ? c.SuitabilityLevel : 3,
+                OptionalRules: c.OptionalRules || '',
+                Notes: c.Notes || ''
             };
             this.showEditModal = true;
         },
 
-        openAddPcModal(camp) {
-            this.addPcCamp = camp;
+        openAddPcModal(camp = null) {
+            this.addPcCamp = camp || this.activeCampaign;
             this.selectedCharId = '';
             this.showAddPcModal = true;
         },
 
-        openAwardModal(camp, party, prefill = {}) {
-            this.awardCamp = camp || { ID: 0, Name: '' };
-            if (!party) {
+        openAwardModal(camp = null, party = null, prefill = {}) {
+            this.awardCamp = camp || this.activeCampaign || { ID: 0, Name: '' };
+            const rawParty = party !== null ? party : this.activeCampChars;
+            if (!rawParty) {
                 this.awardParty = [];
-            } else if (Array.isArray(party)) {
-                this.awardParty = party;
-            } else if (typeof party === 'object') {
-                this.awardParty = Object.values(party);
+            } else if (Array.isArray(rawParty)) {
+                this.awardParty = rawParty;
+            } else if (typeof rawParty === 'object') {
+                this.awardParty = Object.values(rawParty);
             } else {
                 this.awardParty = [];
             }
@@ -1955,6 +2107,129 @@ function campaignAdmin() {
                 return Number(this.awardData.char_silver[charId]) || 0;
             }
             return 0;
+        },
+
+        // --- Sell Vault Items Methods ---
+        openSellVaultModal(camp = null, items = null, funds = null) {
+            this.sellVaultCamp = camp || this.activeCampaign;
+            const rawItems = items !== null ? items : this.activeVaultItems;
+            this.sellVaultItems = Array.isArray(rawItems) ? JSON.parse(JSON.stringify(rawItems)) : [];
+            this.sellVaultFunds = funds !== null ? funds : this.activeVaultFunds;
+            this.sellVaultPartyLocation = (this.sellVaultCamp && this.sellVaultCamp.PartyLocation) ? this.sellVaultCamp.PartyLocation : 'Small town';
+            this.selectedVaultItemsToSell = [];
+            this.sellVaultSearchQuery = '';
+            this.sellVaultFilterType = 'all';
+            this.sellVaultToastMessage = '';
+            this.sellVaultError = '';
+            this.showSellVaultModal = true;
+        },
+
+        isVaultValuable(item) {
+            const typeId = parseInt(item.item_type_id || item.ItemTypeID || item.Type || 0);
+            const isVal = Boolean(item.is_valuable || item.IsValuable);
+            const name = (item.name || item.Name || '').toLowerCase();
+            return isVal || typeId === 9 || /gem:|art:|trade bar|ingot|ruby|sapphire|emerald|diamond|agate|chalice|ewer|comb with|statuette/i.test(name);
+        },
+
+        calculateVaultResaleValue(item) {
+            const isVal = this.isVaultValuable(item);
+            const unitVal = parseFloat(item.unit_price || item.BaseValue || item.value || 0);
+            let mult = 0.5;
+            if (this.sellVaultShopType === 'fence') {
+                mult = 0.25;
+            } else if (isVal) {
+                mult = 1.0;
+            } else {
+                mult = 0.5;
+            }
+            return Math.round(unitVal * mult * 10) / 10;
+        },
+
+        get filteredVaultToSell() {
+            let list = this.sellVaultItems || [];
+            if (this.sellVaultFilterType === 'valuables') {
+                list = list.filter(it => this.isVaultValuable(it));
+            } else if (this.sellVaultFilterType === 'gear') {
+                list = list.filter(it => !this.isVaultValuable(it));
+            }
+            if (this.sellVaultSearchQuery.trim()) {
+                const q = this.sellVaultSearchQuery.toLowerCase();
+                list = list.filter(it => (it.name || it.Name || '').toLowerCase().includes(q));
+            }
+            return list;
+        },
+
+        toggleAllVaultSelection() {
+            const list = this.filteredVaultToSell;
+            if (this.selectedVaultItemsToSell.length === list.length) {
+                this.selectedVaultItemsToSell = [];
+            } else {
+                this.selectedVaultItemsToSell = list.map((it, idx) => it.uid || it.id || idx);
+            }
+        },
+
+        get totalVaultPayoutSp() {
+            const selectedSet = new Set(this.selectedVaultItemsToSell);
+            let sum = 0;
+            (this.sellVaultItems || []).forEach((it, idx) => {
+                const key = it.uid || it.id || idx;
+                if (selectedSet.has(key)) {
+                    const unitResale = this.calculateVaultResaleValue(it);
+                    const qty = Math.max(1, parseInt(it.qty || it.Qty || 1, 10));
+                    sum += unitResale * qty;
+                }
+            });
+            return Math.round(sum * 10) / 10;
+        },
+
+        async submitSellVaultItems() {
+            if (this.selectedVaultItemsToSell.length === 0 || !this.sellVaultCamp) return;
+            this.sellingVault = true;
+            this.sellVaultError = '';
+            this.sellVaultToastMessage = '';
+            try {
+                const uids = [];
+                const indices = [];
+                (this.sellVaultItems || []).forEach((it, idx) => {
+                    const key = it.uid || it.id || idx;
+                    if (this.selectedVaultItemsToSell.includes(key)) {
+                        if (it.uid || it.id) {
+                            uids.push(it.uid || it.id);
+                        } else {
+                            indices.push(idx);
+                        }
+                    }
+                });
+
+                const sellUrl = '{{ route('utilities.campaign.vault.sell', ['id' => ':id'], false) }}'.replace(':id', this.sellVaultCamp.ID);
+                const res = await fetch(sellUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        _token: '{{ csrf_token() }}',
+                        item_uids: uids,
+                        item_indices: indices,
+                        shop_type: this.sellVaultShopType
+                    })
+                });
+                const data = await res.json();
+                if (data && data.success) {
+                    this.sellVaultToastMessage = data.message;
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1200);
+                } else {
+                    this.sellVaultError = data?.message || 'Error selling vault items.';
+                }
+            } catch (e) {
+                console.error('Error selling vault items:', e);
+                this.sellVaultError = 'Failed to communicate with server.';
+            }
+            this.sellingVault = false;
         },
 
         // --- Adventure CRUD ---

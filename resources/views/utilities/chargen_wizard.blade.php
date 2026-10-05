@@ -585,29 +585,27 @@
             </div>
         </div>
 
-        <!-- Live Ability Scores Overview Bar -->
-        <div class="bg-indigo-50/70 border border-indigo-200 rounded-xl p-3 space-y-1.5">
-            <div class="flex items-center justify-between text-xs text-indigo-950 font-bold border-b border-indigo-200/60 pb-1">
-                <span class="flex items-center gap-1.5">
-                    <span>⚡</span> Current Ability Scores &amp; Modifiers (Live Preview)
-                </span>
-                <span class="text-[10px] text-indigo-700 font-normal hidden sm:inline">Includes Base, Race, Culture, Templates, Age &amp; Allocated IP</span>
+        <!-- Compact Live Ability Scores Bar (Single Line Side-by-Side) -->
+        <div class="bg-indigo-50/90 border border-indigo-200 rounded-xl px-3 py-2 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 shadow-2xs">
+            <div class="flex items-center gap-1.5 text-xs font-bold text-indigo-950 shrink-0">
+                <span>⚡</span>
+                <span class="text-[11px] uppercase tracking-wide">Current Scores:</span>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+            <div class="grid grid-cols-6 gap-1.5 flex-1">
                 <template x-for="attr in [
-                    { name: 'Strength', short: 'STR', id: 1 },
-                    { name: 'Dexterity', short: 'DEX', id: 3 },
-                    { name: 'Constitution', short: 'CON', id: 2 },
-                    { name: 'Intelligence', short: 'INT', id: 4 },
-                    { name: 'Wisdom', short: 'WIS', id: 5 },
-                    { name: 'Charisma', short: 'CHA', id: 6 }
+                    { name: 'Strength', short: 'STR' },
+                    { name: 'Dexterity', short: 'DEX' },
+                    { name: 'Constitution', short: 'CON' },
+                    { name: 'Intelligence', short: 'INT' },
+                    { name: 'Wisdom', short: 'WIS' },
+                    { name: 'Charisma', short: 'CHA' }
                 ]" :key="attr.name">
-                    <div class="bg-white border border-indigo-100 rounded-lg p-2 text-center shadow-2xs">
-                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider" x-text="attr.short"></div>
-                        <div class="text-base font-black text-slate-900 font-mono mt-0.5" x-text="getFinalAbility(attr.name)"></div>
-                        <div class="text-[11px] font-bold font-mono"
-                             :class="getAbilityModifier(attr.name) >= 0 ? 'text-indigo-700' : 'text-rose-600'"
-                             x-text="(getAbilityModifier(attr.name) >= 0 ? '+' : '') + getAbilityModifier(attr.name)"></div>
+                    <div class="bg-white border border-indigo-200/80 rounded-lg px-2 py-1 flex items-center justify-center gap-1 text-center shadow-2xs">
+                        <span class="text-[10px] font-bold text-slate-500 font-mono" x-text="attr.short"></span>
+                        <span class="text-xs font-black text-slate-900 font-mono" x-text="getFinalAbility(attr.name)"></span>
+                        <span class="text-[10px] font-bold font-mono"
+                              :class="getAbilityModifier(attr.name) >= 0 ? 'text-indigo-700' : 'text-rose-600'"
+                              x-text="'(' + (getAbilityModifier(attr.name) >= 0 ? '+' : '') + getAbilityModifier(attr.name) + ')'"></span>
                     </div>
                 </template>
             </div>

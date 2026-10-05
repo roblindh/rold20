@@ -597,4 +597,68 @@ class CampaignAwardAndCharviewActionsTest extends TestCase
         $finalEquip = json_decode($finalChar->Equipment, true);
         $this->assertEquals([2, 1, 1, 0, 2], $finalEquip[0]['locations']);
     }
+
+    public function testSellVaultItemsToSettlementMerchant(): void
+    {
+        $gm = Player::create([
+            'Name' => 'VaultGM_' . uniqid(),
+            'Password' => Hash::make('secret'),
+            'Type' => Player::TYPE_GM,
+        ]);
+        Auth::login($gm);
+
+        $initialVault = [
+            'funds' => 500,
+            'items' => [
+                [
+                    'uid' => 'vault_gem_1',
+                    'name' => 'Gem: Large Ruby',
+                    'value' => 200,
+                    'is_valuable' => true,
+                    'qty' => 1,
+                ],
+                [
+                    'uid' => 'vault_sword_1',
+                    'name' => 'Steel Broadsword',
+                    'value' => 50,
+                    'qty' => 1,
+                ],
+                [
+                    'uid' => 'vault_potion_1',
+                    'name' => 'Potion of Healing',
+                    'value' => 100,
+                    'qty' => 1,
+                ],
+            ],
+        ];
+
+        $campId = DB::table('campaigns')->insertGetId([
+            'Name' => 'Vault Sale Campaign ' . uniqid(),
+            'GameMaster' => $gm->ID,
+            'PartyLocation' => 'Small town',
+            'Vault' => json_encode($initialVault),
+        ]);
+
+        // 1. Sell the Ruby (valuable @ 100% = 200 sp) and Broadsword (gear @ 50% = 25 sp)
+        $request = Request::create("/campaign/{$campId}/vault/sell", 'POST', [
+            'item_uids' => ['vault_gem_1', 'vault_sword_1'],
+            'shop_type' => 'general',
+        ]);
+        $request->headers->set('Accept', 'application/json');
+
+        $response = $this->controller->sellVaultItems($request, (int)$campId);
+        $this->assertEquals(200, $response->getStatusCode());
+        $data = json_decode($response->getContent(), true);
+
+        $this->assertTrue($data['success']);
+        $this->assertEquals(225.0, (float)$data['payout_sp']);
+        $this->assertEquals(725, (int)$data['new_funds']);
+
+        // Check DB state
+        $updatedCamp = DB::table('campaigns')->where('ID', $campId)->first();
+        $vaultData = json_decode($updatedCamp->Vault, true);
+        $this->assertEquals(725, (int)$vaultData['funds']);
+        $this->assertCount(1, $vaultData['items']);
+        $this->assertEquals('vault_potion_1', $vaultData['items'][0]['uid']);
+    }
 }
