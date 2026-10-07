@@ -300,5 +300,19 @@ class RolcalcTest extends TestCase
         $data = json_decode($resp->getContent(), true);
         $this->assertArrayHasKey('result', $data);
         $this->assertIsNumeric($data['result']);
+
+        // 6. Quick dice: d20
+        $req = new \Illuminate\Http\Request(['expression' => 'd20']);
+        $resp = $controller->evaluateExpression($req);
+        $data = json_decode($resp->getContent(), true);
+        $this->assertArrayHasKey('result', $data);
+        $this->assertMatchesRegularExpression('/^-?\d+ \(.*\)$/', $data['result']);
+
+        // 7. Quick dice: d100
+        $req = new \Illuminate\Http\Request(['expression' => 'd100']);
+        $resp = $controller->evaluateExpression($req);
+        $data = json_decode($resp->getContent(), true);
+        $this->assertArrayHasKey('result', $data);
+        $this->assertMatchesRegularExpression('/^-?\d+ \(.*\)$/', $data['result']);
     }
 }

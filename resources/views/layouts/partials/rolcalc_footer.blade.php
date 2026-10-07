@@ -45,16 +45,26 @@
             </button>
         </form>
 
-        <!-- Quick dice buttons -->
-        <div class="hidden lg:flex items-center gap-1 text-xs">
-            <button @click="quickRoll('1d4')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d4</button>
-            <button @click="quickRoll('1d6')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d6</button>
-            <button @click="quickRoll('1d8')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d8</button>
-            <button @click="quickRoll('1d10')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d10</button>
-            <button @click="quickRoll('1d12')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d12</button>
-            <button @click="quickRoll('1d20')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d20</button>
-            <button @click="quickRoll('1d20!')" class="btn-rol-primary py-0.5 px-2.5 rounded font-bold tracking-wide" title="Open-Ended d20! (Exploding/Fumbling)">d20!</button>
-            <button @click="quickRoll('1d100')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium">d100</button>
+        <!-- Primary quick dice buttons: d20, d20!, d100 -->
+        <div class="flex items-center gap-1 sm:gap-1.5 text-xs">
+            <button type="button" @click="quickRoll('d20')" 
+                    class="bg-slate-800 hover:bg-slate-700 active:bg-slate-600 px-2 sm:px-2.5 py-1 rounded text-amber-200 border border-amber-900/40 font-mono font-bold cursor-pointer transition shadow-2xs" 
+                    title="Roll Standard 1d20">d20</button>
+            <button type="button" @click="quickRoll('d20!')" 
+                    class="btn-rol-primary py-0.5 sm:py-1 px-2.5 sm:px-3 rounded font-mono font-black tracking-wide border border-amber-400 shadow-sm cursor-pointer transition" 
+                    title="Open-Ended d20! (Exploding on 20 / Imploding on 1)">d20!</button>
+            <button type="button" @click="quickRoll('d100')" 
+                    class="bg-slate-800 hover:bg-slate-700 active:bg-slate-600 px-2 sm:px-2.5 py-1 rounded text-amber-200 border border-amber-900/40 font-mono font-bold cursor-pointer transition shadow-2xs" 
+                    title="Roll 1d100 (Percentile)">d100</button>
+        </div>
+
+        <!-- Additional polyhedral dice on wide screens -->
+        <div class="hidden xl:flex items-center gap-1 text-xs border-l border-slate-700/60 pl-2">
+            <button type="button" @click="quickRoll('1d4')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium cursor-pointer transition">d4</button>
+            <button type="button" @click="quickRoll('1d6')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium cursor-pointer transition">d6</button>
+            <button type="button" @click="quickRoll('1d8')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium cursor-pointer transition">d8</button>
+            <button type="button" @click="quickRoll('1d10')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium cursor-pointer transition">d10</button>
+            <button type="button" @click="quickRoll('1d12')" class="bg-slate-800 hover:bg-slate-700 px-2 py-1 rounded text-amber-200/90 border border-amber-900/30 font-medium cursor-pointer transition">d12</button>
         </div>
     </div>
 
@@ -62,10 +72,10 @@
     <div class="flex items-center gap-2 shrink-0">
         <template x-if="result">
             <div class="flex items-center gap-1 sm:gap-2">
-                <span class="text-slate-400 text-xs hidden md:inline" x-text="'[' + previous + '] ='"></span>
+                <span class="text-slate-400 text-xs hidden md:inline font-mono" x-text="'[' + previous + '] ='"></span>
                 <span class="text-amber-400 font-bold font-mono text-sm sm:text-base bg-slate-950 px-2 py-0.5 rounded border border-amber-900/50" x-text="result"></span>
             </div>
         </template>
-        <button @click="expression = ''; result = '';" class="text-slate-400 hover:text-amber-200 text-xs px-1 underline transition">Clear</button>
+        <button type="button" @click="expression = ''; result = '';" class="text-slate-400 hover:text-amber-200 text-xs px-1 underline transition cursor-pointer">Clear</button>
     </div>
 </div>
