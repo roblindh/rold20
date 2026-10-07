@@ -5,7 +5,7 @@
   - [ ] Check spelling and capitalization conventions. Capitalize names of planes? Capitalize magic items?
   - [ ] Check punctuation conventions (for abbreviations).
   - [ ] Check layout and style conventions.
-  - [ ] Check new naming conventions. Defenses instead of saves. MR instead of SR. SP instead of FP. DR instead of hardness. Natural DR instead of Base DR or Racial DR. DR versus... rather than DR/... Persistent/insidious damage instead of ability drain. DM and not GM. Change skill check to action check?
+  - [ ] Check new naming conventions. Defenses instead of saves. MR instead of SR. SP instead of FP. DR instead of hardness. Natural DR instead of Base DR or Racial DR. DR versus... rather than DR/... Persistent/insidious damage instead of ability drain. DM or GM? Change skill check to action check?
   - [ ] Check conversion of saves to attacks vs. defenses. Old DC x should be an attack of +(x-10). Increase to +(2*(x-10))?
   - [ ] Check that all open-ended rolls use the “d20!” notation.
   - [ ] Specify both skill and action when referring to skill actions and action checks? Syntax? Action (Skill)?
@@ -29,7 +29,7 @@
   - [ ] Clean up database (null allowed, descriptions, unused fields/tables, remove string padding).
   - [ ] Clean up forms and layout (visually). Add filters and tree lists to reduce the clutter in large lists (creature types, skills, etc).
   - [ ] Check layout of all tables. Add more columns or make them 2-up?
-  - [ ] Document source code thoroughly.
+  - [x] Document source code thoroughly.
   - [ ] Check for dead source code.
 - [ ] Error checking and protection
   - [ ] Add appropriate validators to forms.
