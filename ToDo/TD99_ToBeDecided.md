@@ -12,12 +12,16 @@
     - [ ] Change MR to be more similar to DR?
     - [ ] Change MR to be more like a defense bonus (DeC and saves) against magic?
     - [ ] Change MR to not protect against supernatural energy damage?
+- [ ] Body Type and Natural Attacks
+  - [ ] Separate names for body location and attack?; arm/fist or punch, leg/foot or kick, leg/claw, head/headbutt, head/bite, etc.; multiple attack options per body location, such as fist and elbow for arm, gore and bite for head, etc?
+  - [ ] Should body locations without attacks be specified somewhere? A tertiary level in addition to primary and secondary (never to be used for attacks)? Only count primary attack forms when grappling?
 - [ ] Alignment
   - [ ] What about classes, spells, items, etc. limited to certain alignments? Variable chance? Diplomacy type check?
   - [ ] New way of determining alignment auras? What about entities having both Divine - Life and Divine - Death, for example? Having some characters/creatures with conflicting auras could actually be a good thing (maybe with a rephrasing of detect evil to detect profane or a more generic detect aura, for example).
 - [ ] Fate points
   - [ ] Separate into fate and fortune points, fate points for life-or-death situations, and fortune points for gaining a one-time bonus to action checks or defenses? Fortune points should then be renewed regularly and automatically. Suitable as an optional rule?
   - [ ] Let fate points be used for exceptional actions, such as bestowing a dying curse on someone? Or maybe letting a blacksmith or warrior forge a magical weapon? Fate Point worth x XP/PP (multiplied by TL)?
+- [ ] Add "level check" to the list of possible d20 checks? If so, replace with skill level rather than character level?
 - [ ] Actions
   - [ ] Simplify the rules for concentration and breaking of concentration?
   - [ ] Multiple levels of concentration? For example, you can maintain a touch spell to touch/attack multiple targets. Basically, an attack requires concentration but an unopposed touch does not. Or does a held touch spell really require concentration?
