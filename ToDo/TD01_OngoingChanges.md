@@ -10,7 +10,7 @@
   - [x] Ensure skill prerequisites are handled correctly.
   - [ ] Also show skills with access bought with IP (but only starting after x levels) (house rule)
   - [ ] For skill access bought with IP, calculate max increment based on earliest sec/prim access (calculate IP bonus from race/culture)
-- [ ] Social page
+- [x] Social page
   - [x] Validation: age within racial limits
   - [x] Allocate influence points?
 
@@ -33,8 +33,6 @@
   - [x] Money and other treasure
   - [ ] Multiple equipment configurations? Show per body part?
   - [x] Encumbrance, weight limits
-- [ ] Social page
-  - [ ] Companions, followers
 
 ## Modify PC Utility
 
@@ -67,16 +65,16 @@
   - [x] Award and split XP
   - [x] Split treasure
   - [x] Manage jointly owned money and equipment
-- [ ] Campaign administration
-  - [ ] Create quest/adventure
-  - [ ] Create encounter
+- [x] Campaign administration
+  - [x] Create quest/adventure
+  - [x] Create encounter
 
 ## Equipment Configs
 
 - [ ] Option 1: Location -> item
   - [ ] Use body config and natural attacks to determine available body locations
   - [ ] Set up a struct/class for a set of body locations, each pointing to a possession. Note that for two-handed weapons and some clothes, multiple locations point to the same item. Also note weapons that can be used both one- and two-handed.
-  - [ ] For each entity, maintain one default body location struct and several “offsets”.
+  - [ ] For each entity, maintain one default body location struct and several “deltas”.
   - [ ] For PC admin, keep a list of carried items, and show a table with body locations as rows and item drop-downs as columns for multiple configs.
 - [ ] Option 2: Item -> location
   - [ ] Keep list of items and choose carried/equipped for each. Maintain multiple configs for each item?
@@ -119,7 +117,7 @@
 - [ ] Update item modification table with more associated spells/skills.
 - [ ] Improve the descriptions of item modifications and complex items.
 - [ ] Some modifications have different effects on different item types - store as separate modifications with different "prereqs"?
-- [ ] Don’t forget to implement the mutual-exclusion-characteristic of modifications.
+- [x] Don’t forget to implement the mutual-exclusion-characteristic of modifications.
 - [ ] **Should size be a modification or more generic? Note that it can change due to magic with limited duration. Should probably be both - a base size as a modification (or even a basic instance attribute), while spells are offsets from the base size.**
 - [ ] **Should material be a modification or more generic? Materials can typically only change within the same type. It can change, sometimes maybe with a limited duration.**
   - [ ] **The current weight calculation is not realistic for material changes with a big density difference.**
@@ -128,14 +126,14 @@
 - [ ] **How to handle traits that improve weapons (natural as well as non-natural)? Additional attack/damage bonus to existing attack type (such as a natural attack)? Increased damage die? Fixed damage die (but adjusted for size)? Altered damage type (HP/SP/PP, B/P/S)? Additional damage type (+1d6 HP fire)?**
 - [ ] **For items, separate traits into Item Traits, Owner Traits, Equipped Traits, and Used Traits? Alternative is to use predefined targets.**
 - [ ] **Can a single item have different prerequisites? For example, one for equipping it and another for using it?**
-- [x] Creatures
-- [ ] Replace current terrain data with bitmasks for terrain(s), plane(s), and climate(s). Or a large amount of Bool properties?
-- [ ] Special: add “wear horseshoe trait” specifically to horses, unicorns, griffons, and other hoofed creatures. Or maybe add a more generic “wear (x) trait” with variable equipment type?
-- [ ] Add frequency (common/uncommon/rare/very rare) selection to more tables. Better granularity (maybe 0 to 10 or 0 to 9)? Linear or exponential?
-  - [ ] Common=8-10, uncommon=5-7, rare=3-4, very rare=1-2, unique=0
-  - [ ] Also required for item modifications in order to generate magic items randomly.
-  - [x] Create a generic method for randomly selecting item from array with rarity specified for each item?
-    - [x] Implementation: traverse list and add to sum based on each item’s rarity, generate random number up to sum, traverse again to find selected item (or use index created on first traversal). Add 2^rarity (from 1 for 0 to 1024 for 10)?
+- [ ] Creatures
+  - [ ] Replace current terrain data with bitmasks for terrain(s), plane(s), and climate(s). Or a large amount of Bool properties?
+  - [ ] Special: add “wear horseshoe trait” specifically to horses, unicorns, griffons, and other hoofed creatures. Or maybe add a more generic “wear (x) trait” with variable equipment type?
+  - [ ] Add frequency (common/uncommon/rare/very rare) selection to more tables. Better granularity (maybe 0 to 10 or 0 to 9)? Linear or exponential?
+    - [ ] Common=8-10, uncommon=5-7, rare=3-4, very rare=1-2, unique=0
+    - [ ] Also required for item modifications in order to generate magic items randomly.
+    - [x] Create a generic method for randomly selecting item from array with rarity specified for each item?
+      - [x] Implementation: traverse list and add to sum based on each item’s rarity, generate random number up to sum, traverse again to find selected item (or use index created on first traversal). Add 2^rarity (from 1 for 0 to 1024 for 10)?
 
 ## Entity Calculations
 
@@ -150,12 +148,12 @@
   - [x] Struct should contain one bonus and one penalty for each modifier type – stackable modifiers can be lists? Or they can just accumulate the total without storing the components.
   - [ ] Some traits can also grant a base value - use only the highest one (before applying modifiers).
   - [x] Calculate modifiers with two passes, one to determine modifiers (and check requirements) and one to apply them? Follow the order in the characteristics dependency diagram? Or just define an order in which traits are resolved?
-  - [ ] Parse all active effects
+  - [x] Parse all active effects
     - [x] For modifiers to key characteristics, update struct
-    - [ ] For modifiers to non-key characteristics, allocate a new struct and update – keep these structs in a separate list/dictionary for each collection of non-key characteristics
+    - [x] For modifiers to non-key characteristics, allocate a new struct and update – keep these structs in a separate list/dictionary for each collection of non-key characteristics
   - [x] Do not save modifier structs – recalculate instead?
   - [x] For key characteristics, add modifiers and penalties.
-  - [ ] For non-key characteristics, search list for modifier struct to apply.
+  - [x] For non-key characteristics, search list for modifier struct to apply.
   - [x] Should some modifiers (such as ability modifiers to defenses) simply be hard-coded?
   - [ ] Requirements
     - [x] **Note that many traits can have conditions and requirements, meaning that they should be described and listed but not always included in modifier calculations.**
