@@ -306,12 +306,39 @@
                 $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($it);
                 $locs = $it['Locations'] ?? $it['locations'] ?? [];
                 if (!is_array($locs)) $locs = [];
+                $rawSingleLoc = $it['Location'] ?? $it['location'] ?? null;
+                if ($rawSingleLoc !== null) {
+                    if (is_numeric($rawSingleLoc)) {
+                        $singleLoc = (int)$rawSingleLoc;
+                    } elseif (is_string($rawSingleLoc)) {
+                        $strLoc = strtolower(trim($rawSingleLoc));
+                        if (in_array($strLoc, ['equipped', 'worn', 'wielded', '2'])) {
+                            $singleLoc = 2;
+                        } elseif (in_array($strLoc, ['stowed', 'stored', '0'])) {
+                            $singleLoc = 0;
+                        } else {
+                            $singleLoc = 1;
+                        }
+                    } else {
+                        $singleLoc = (int)$rawSingleLoc;
+                    }
+                } elseif (!empty($it['is_equipped']) || !empty($it['equipped']) || !empty($it['worn'])) {
+                    $singleLoc = 2;
+                } else {
+                    $singleLoc = $defaultLoc;
+                }
+
                 $locations = [];
                 for ($c = 0; $c < 5; $c++) {
-                    $locations[$c] = isset($locs[$c]) ? (int)$locs[$c] : ((int)($it['Location'] ?? $it['location'] ?? $defaultLoc));
+                    $locations[$c] = isset($locs[$c]) ? (int)$locs[$c] : (isset($locs[(string)$c]) ? (int)$locs[(string)$c] : $singleLoc);
                 }
                 $containerId = $it['ContainerID'] ?? $it['container_id'] ?? null;
                 if ($containerId === '' || $containerId === 'none') $containerId = null;
+
+                $rawSlot = $it['Slot'] ?? $it['slot'] ?? null;
+                if ($rawSlot === 'carried' || $rawSlot === 'none' || $rawSlot === 'stowed' || $rawSlot === '') {
+                    $rawSlot = null;
+                }
 
                 $equipmentList[] = [
                     'uid' => $uid,
@@ -1679,11 +1706,7 @@ function characterViewerApp() {
             if ([16, 43].includes(subtype) || traits.includes('wearglove') || /\b(gloves|gauntlets|mittens|handwraps)\b/i.test(name)) return 'gloves';
 
             // 8. Rings
-            if ([35, 50].includes(subtype) || traits.includes('wearring') || /\b(ring|band|signet)\b/i.test(name)) {
-                const occupied1 = this.getEquippedItemForSlot('ring_1', this.modalActivePreset);
-                if (occupied1 && (occupied1.uid || occupied1.id) !== (item.uid || item.id)) return 'ring_2';
-                return 'ring_1';
-            }
+            if ([35, 50].includes(subtype) || traits.includes('wearring') || /\b(ring|band|signet)\b/i.test(name)) return 'ring_1';
 
             // 9. Feet / Boots (Checked BEFORE weapons as footwear replaces leg attacks and has weapon traits)
             if ([17, 44].includes(subtype) || traits.includes('wearshoe') || /\b(boots|shoes|sandals|slippers|greaves|moccasins|sabaton|sabators|footwraps)\b/i.test(name)) return 'boots';
@@ -1697,16 +1720,39 @@ function characterViewerApp() {
             // 12. Torso / Armor (Excluding clothing subtype 14)
             if (([11, 12, 13, 41].includes(subtype) || traits.includes('weararmor') || (traits.includes('armor {') && !traits.includes('qual=lt; dr=0')) || /\b(armor|mail|plate|cuirass|hauberk|brigandine|gambeson|breastplate|chain shirt|half plate|full plate|barding)\b/i.test(name)) && subtype !== 14) return 'armor';
 
-            // 13. Weapons -> Main Hand / Off Hand
-            if (([6, 7, 40, 48, 49, 59, 61, 62, 63, 65].includes(subtype) || type === 2 || (traits.includes('weapon {') && !traits.includes('nat;')) || traits.includes('usetool') || /\b(sword|blade|dagger|axe|bow|crossbow|mace|hammer|spear|staff|wand|rod|dorje|longsword|shortsword|greatsword|scimitar|rapier|halberd|glaive|flail|morningstar)\b/i.test(name)) && ![17, 44, 14, 15, 42].includes(subtype)) {
-                const occupiedMain = this.getEquippedItemForSlot('main_hand', this.modalActivePreset);
-                if (occupiedMain && (occupiedMain.uid || occupiedMain.id) !== (item.uid || item.id)) return 'off_hand';
-                return 'main_hand';
-            }
+            // 13. Weapons -> Main Hand
+            if (([6, 7, 40, 48, 49, 59, 61, 62, 63, 65].includes(subtype) || type === 2 || (traits.includes('weapon {') && !traits.includes('nat;')) || traits.includes('usetool') || /\b(sword|blade|dagger|axe|bow|crossbow|mace|hammer|spear|staff|wand|rod|dorje|longsword|shortsword|greatsword|scimitar|rapier|halberd|glaive|flail|morningstar)\b/i.test(name)) && ![17, 44, 14, 15, 42].includes(subtype)) return 'main_hand';
 
             // 14. Saddle / Mount Gear
             if (subtype === 28 || traits.includes('wearsaddle') || /\b(saddle|harness|barding|pack saddle|riding saddle)\b/i.test(name)) return 'saddle';
 
+            return null;
+        },
+
+        normalizeSlotKey(rawSlot) {
+            if (!rawSlot || typeof rawSlot !== 'string') return null;
+            const s = rawSlot.toLowerCase().trim();
+            if (s === 'carried' || s === 'none' || s === 'stowed' || s === 'inventory' || s === '') return null;
+            if (s === 'head' || s === 'helmet' || s === 'head_under') return 'head';
+            if (s === 'eyes' || s === 'face' || s === 'lenses' || s === 'goggles') return 'eyes';
+            if (s === 'neck' || s === 'necklace' || s === 'amulet') return 'necklace';
+            if (s === 'shoulders' || s === 'cloak' || s === 'cape' || s === 'mantle') return 'cloak';
+            if (s === 'arms' || s === 'bracers' || s === 'bracer' || s === 'vambraces') return 'bracers';
+            if (s === 'hands' || s === 'gloves' || s === 'glove' || s === 'gauntlets') return 'gloves';
+            if (s === 'ring_1' || s === 'ring_left' || s === 'ring1' || s === 'left_ring') return 'ring_1';
+            if (s === 'ring_2' || s === 'ring_right' || s === 'ring2' || s === 'right_ring') return 'ring_2';
+            if (s === 'ring_3' || s === 'ring3') return 'ring_3';
+            if (s === 'ring_4' || s === 'ring4') return 'ring_4';
+            if (s === 'clothing' || s === 'body' || s === 'torso_over' || s === 'torso_under' || s === 'undergarment' || s === 'overgarment' || s === 'robe' || s === 'clothes') return 'clothing';
+            if (s === 'armor' || s === 'torso' || s === 'chest' || s === 'body_armor' || s === 'barding') return 'armor';
+            if (s === 'main_hand' || s === 'mainhand' || s === 'weapon' || s === 'primary_hand' || s === 'right_hand') return 'main_hand';
+            if (s === 'off_hand' || s === 'offhand' || s === 'shield' || s === 'secondary_hand' || s === 'left_hand') return 'off_hand';
+            if (s === 'waist' || s === 'belt' || s === 'girdle') return 'belt';
+            if (s === 'feet' || s === 'boots' || s === 'shoes' || s === 'footwear' || s === 'legs' || s === 'legs_under' || s === 'legs_over') return 'boots';
+            if (s === 'saddle' || s === 'mount' || s === 'back') return 'saddle';
+
+            const validSlots = ['head', 'eyes', 'necklace', 'cloak', 'bracers', 'gloves', 'ring_1', 'ring_2', 'ring_3', 'ring_4', 'clothing', 'armor', 'main_hand', 'off_hand', 'belt', 'boots', 'saddle'];
+            if (validSlots.includes(s)) return s;
             return null;
         },
 
@@ -1718,10 +1764,12 @@ function characterViewerApp() {
                 return null;
             }
             if (item.slots && item.slots[p]) {
-                return item.slots[p];
+                const norm = this.normalizeSlotKey(item.slots[p]);
+                if (norm) return norm;
             }
             if (item.slot) {
-                return item.slot;
+                const norm = this.normalizeSlotKey(item.slot);
+                if (norm) return norm;
             }
             return this.autoDetectItemSlot(item);
         },
@@ -1735,8 +1783,18 @@ function characterViewerApp() {
             }) || null;
         },
 
+        isSlotEquipped(slotKey) {
+            return Boolean(this.getEquippedItemForSlot(slotKey, this.modalActivePreset));
+        },
+
         getEligibleItemsForSlot(slotKey) {
             return (this.equipmentItems || []).filter(item => {
+                // If this item is currently assigned or auto-detected for this slot in the active preset, always include it
+                const currentSlot = this.getItemSlotInPreset(item, this.modalActivePreset);
+                if (currentSlot === slotKey) {
+                    return true;
+                }
+
                 const type = parseInt(item.item_type_id || item.ItemTypeID || item.Type || 0);
                 const subtype = parseInt(item.subtype || item.Subtype || 0);
                 const name = (item.name || item.Name || '').toLowerCase();
