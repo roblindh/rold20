@@ -349,6 +349,8 @@
                     'mods' => $it['Mods'] ?? $it['mods'] ?? '',
                     'Mods' => $it['Mods'] ?? $it['mods'] ?? '',
                     'config' => $it['Config'] ?? $it['config'] ?? $it['config_string'] ?? '',
+                    'slot' => $it['Slot'] ?? $it['slot'] ?? null,
+                    'slots' => $it['Slots'] ?? $it['slots'] ?? null,
                 ];
             }
             $rawCoins = $character->Coins ?? null;
@@ -1284,7 +1286,13 @@ function characterViewerApp() {
         },
 
         // Equipment Management State
+        equipmentViewMode: 'slots',
         modalActivePreset: {{ (int)$activeConfig }},
+        characterBodyType: {{ (int)($characterBodyType ?? 1) }},
+        characterNaturalAttacks: @json($characterNaturalAttacks ?? '2 Arm { } 2 Leg { } Head { }'),
+        characterRaceName: @json($characterRaceName ?? 'Human'),
+        refBodyTypes: @json($refBodyTypes ?? []),
+        refNaturalAttacks: @json($refNaturalAttacks ?? []),
         showAddCustomItem: false,
         selectedEquipmentPreviewItem: null,
         customItem: {
@@ -1511,6 +1519,248 @@ function characterViewerApp() {
             }
             item.locations[presetIndex] = newLoc;
             item.location = item.locations[0];
+            if (newLoc === 2 && !item.slot) {
+                item.slot = this.autoDetectItemSlot(item);
+                if (!item.slots) item.slots = {};
+                item.slots[presetIndex] = item.slot;
+            }
+        },
+
+        getAvailableSlotsForCharacter() {
+            const bodyTypeId = parseInt(this.characterBodyType) || 1;
+            const bodyRow = (this.refBodyTypes || []).find(b => parseInt(b.ID) === bodyTypeId);
+            const bodyTraits = (bodyRow?.Traits || '').toLowerCase();
+            const natAttacksStr = (this.characterNaturalAttacks || '').toLowerCase();
+
+            const slots = [];
+
+            const isGenericOrBiped = (bodyTypeId === 0 || bodyTypeId === 1 || bodyTypeId === 2 || bodyTypeId === 8 || bodyTypeId === 9);
+            const hasHead = natAttacksStr.includes('head') || isGenericOrBiped;
+            const hasArm = natAttacksStr.includes('arm') || isGenericOrBiped;
+            const hasLeg = natAttacksStr.includes('leg') || isGenericOrBiped;
+
+            // Head / Helmet & Eyes (From Head natural attack)
+            if (hasHead) {
+                slots.push({ key: 'head', name: 'Head / Helmet', icon: '🪖', side: 'left', category: 'head' });
+                slots.push({ key: 'eyes', name: 'Eyes / Lenses', icon: '🥽', side: 'left', category: 'head' });
+            }
+
+            // Neck / Necklace (From WearNecklace on BodyType)
+            if (bodyTraits.includes('wearnecklace') || [0, 1, 2, 3, 4, 5, 6, 8, 9, 11].includes(bodyTypeId)) {
+                slots.push({ key: 'necklace', name: 'Neck / Necklace', icon: '📿', side: 'left', category: 'neck' });
+            }
+
+            // Cloak / Shoulders (From WearCloak on BodyType)
+            if (bodyTraits.includes('wearcloak') || [0, 1, 8].includes(bodyTypeId)) {
+                slots.push({ key: 'cloak', name: 'Shoulders / Cloak', icon: '🧥', side: 'left', category: 'shoulders' });
+            }
+
+            // Arms & Hands (From Arm natural attack)
+            if (hasArm) {
+                slots.push({ key: 'bracers', name: 'Arms / Bracers', icon: '🛡️', side: 'left', category: 'arms' });
+                slots.push({ key: 'gloves', name: 'Hands / Gloves', icon: '🧤', side: 'left', category: 'hands' });
+                slots.push({ key: 'ring_1', name: 'Ring 1 (Left)', icon: '💍', side: 'left', category: 'rings' });
+            }
+
+            // Armor (From WearArmor on BodyType)
+            if (bodyTraits.includes('weararmor') || [0, 1, 2, 3, 4, 5, 6, 8, 9].includes(bodyTypeId)) {
+                slots.push({ key: 'armor', name: 'Torso / Armor', icon: '🛡️', side: 'right', category: 'torso' });
+            }
+
+            // Clothing (From WearClothing on BodyType)
+            if (bodyTraits.includes('wearclothing') || [0, 1, 2, 8, 9].includes(bodyTypeId)) {
+                slots.push({ key: 'clothing', name: 'Body / Clothing', icon: '👔', side: 'right', category: 'torso' });
+            }
+
+            // Weapons / Held Tools (From Arm natural attack)
+            if (hasArm) {
+                slots.push({ key: 'main_hand', name: 'Main Hand (Weapon)', icon: '⚔️', side: 'right', category: 'held' });
+                slots.push({ key: 'off_hand', name: 'Off Hand (Shield/Weapon)', icon: '🛡️', side: 'right', category: 'held' });
+                slots.push({ key: 'ring_2', name: 'Ring 2 (Right)', icon: '💍', side: 'right', category: 'rings' });
+            }
+
+            // Belt (From WearBelt on BodyType)
+            if (bodyTraits.includes('wearbelt') || [0, 1, 2, 8, 9].includes(bodyTypeId)) {
+                slots.push({ key: 'belt', name: 'Waist / Belt', icon: '🥋', side: 'right', category: 'waist' });
+            }
+
+            // Boots / Shoes (From Leg natural attack)
+            if (hasLeg) {
+                slots.push({ key: 'boots', name: 'Feet / Boots', icon: '👢', side: 'right', category: 'feet' });
+            }
+
+            // Saddle / Mount Gear (From WearSaddle on BodyType)
+            if (bodyTraits.includes('wearsaddle') || [3, 4, 5, 6, 8, 9, 10].includes(bodyTypeId)) {
+                slots.push({ key: 'saddle', name: 'Back / Saddle', icon: '🐎', side: 'right', category: 'mount' });
+            }
+
+            return slots;
+        },
+
+        getAvailableSlotsLeft() {
+            return this.getAvailableSlotsForCharacter().filter(s => s.side === 'left');
+        },
+
+        getAvailableSlotsRight() {
+            return this.getAvailableSlotsForCharacter().filter(s => s.side === 'right');
+        },
+
+        getBodyTypeInfo() {
+            const bId = parseInt(this.characterBodyType) || 1;
+            const bRow = (this.refBodyTypes || []).find(b => parseInt(b.ID) === bId);
+            return {
+                id: bId,
+                name: bRow?.Description || 'Biped',
+                traits: bRow?.Traits || '',
+                race: this.characterRaceName || 'Human'
+            };
+        },
+
+        autoDetectItemSlot(item) {
+            if (!item) return null;
+            const type = parseInt(item.item_type_id || item.ItemTypeID || item.Type || 0);
+            const subtype = parseInt(item.subtype || item.Subtype || 0);
+            const name = (item.name || item.Name || '').toLowerCase();
+            const traits = (item.traits || item.Traits || item.custom_traits || '').toLowerCase();
+
+            if ([15, 42, 64].includes(subtype) || traits.includes('wearhelmet') || /\b(helm|helmet|coif|hat|cap|circlet|crown|tiara|hood|mask|headband)\b/i.test(name)) return 'head';
+            if ([47, 66].includes(subtype) || traits.includes('wearlens') || /\b(goggles|lenses|lens|spectacles|monocle|glasses|eyepatch|visor)\b/i.test(name)) return 'eyes';
+            if ([37, 51, 60].includes(subtype) || traits.includes('wearnecklace') || /\b(necklace|amulet|pendant|collar|torc|choker|periapt|medallion|brooch|talisman|holy symbol)\b/i.test(name)) return 'necklace';
+            if ([19, 46].includes(subtype) || traits.includes('wearcloak') || /\b(cloak|cape|mantle|shawl|poncho)\b/i.test(name)) return 'cloak';
+            if ([11, 12, 13, 41].includes(subtype) || traits.includes('weararmor') || traits.includes('armor {') || traits.includes('armor{') || /\b(armor|mail|plate|cuirass|hauberk|brigandine|gambeson|breastplate|chain shirt|half plate|full plate|barding)\b/i.test(name)) return 'armor';
+            if ([14].includes(subtype) || traits.includes('wearclothing') || /\b(robe|tunic|vest|doublet|tabard|shirt|dress|garb|outfit|clothes|cassock|breeches|trousers|pants|skirt|kilt|jerkin|surcoat)\b/i.test(name)) return 'clothing';
+            if ([36, 52].includes(subtype) || traits.includes('wearbracer') || /\b(bracers|bracer|vambraces|armbands|cuffs)\b/i.test(name)) return 'bracers';
+            if ([16, 43].includes(subtype) || traits.includes('wearglove') || /\b(gloves|gauntlets|mittens|handwraps)\b/i.test(name)) return 'gloves';
+            if ([35, 50].includes(subtype) || traits.includes('wearring') || /\b(ring|band|signet)\b/i.test(name)) {
+                const occupied1 = this.getEquippedItemForSlot('ring_1', this.modalActivePreset);
+                if (occupied1 && (occupied1.uid || occupied1.id) !== (item.uid || item.id)) return 'ring_2';
+                return 'ring_1';
+            }
+            if (subtype === 9 || /\b(shield|buckler|pavise|targe)\b/i.test(name)) return 'off_hand';
+            if ([6, 7, 40, 48, 49, 59, 61, 62, 63, 65].includes(subtype) || type === 2 || traits.includes('weapon {') || traits.includes('weapon{') || traits.includes('usetool') || /\b(sword|blade|dagger|axe|bow|crossbow|mace|hammer|spear|staff|wand|rod|dorje)\b/i.test(name)) {
+                const occupiedMain = this.getEquippedItemForSlot('main_hand', this.modalActivePreset);
+                if (occupiedMain && (occupiedMain.uid || occupiedMain.id) !== (item.uid || item.id)) return 'off_hand';
+                return 'main_hand';
+            }
+            if ([18, 45].includes(subtype) || traits.includes('wearbelt') || /\b(belt|girdle|sash|baldric)\b/i.test(name)) return 'belt';
+            if ([17, 44].includes(subtype) || traits.includes('wearshoe') || /\b(boots|shoes|sandals|slippers|greaves|moccasins)\b/i.test(name)) return 'boots';
+            if (subtype === 28 || traits.includes('wearsaddle') || /\b(saddle|harness|barding|pack saddle|riding saddle)\b/i.test(name)) return 'saddle';
+
+            return null;
+        },
+
+        getItemSlotInPreset(item, presetIdx) {
+            if (!item) return null;
+            const p = presetIdx !== undefined ? presetIdx : this.modalActivePreset;
+            const locs = item.locations || [1, 1, 1, 1, 1];
+            if (parseInt(locs[p] ?? item.location ?? 1) !== 2) {
+                return null;
+            }
+            if (item.slots && item.slots[p]) {
+                return item.slots[p];
+            }
+            if (item.slot) {
+                return item.slot;
+            }
+            return this.autoDetectItemSlot(item);
+        },
+
+        getEquippedItemForSlot(slotKey, presetIdx) {
+            const p = presetIdx !== undefined ? presetIdx : this.modalActivePreset;
+            return (this.equipmentItems || []).find(it => {
+                const locs = it.locations || [1, 1, 1, 1, 1];
+                if (parseInt(locs[p] ?? it.location ?? 1) !== 2) return false;
+                return this.getItemSlotInPreset(it, p) === slotKey;
+            }) || null;
+        },
+
+        getEligibleItemsForSlot(slotKey) {
+            return (this.equipmentItems || []).filter(item => {
+                const type = parseInt(item.item_type_id || item.ItemTypeID || item.Type || 0);
+                const subtype = parseInt(item.subtype || item.Subtype || 0);
+                const name = (item.name || item.Name || '').toLowerCase();
+                const traits = (item.traits || item.Traits || item.custom_traits || '').toLowerCase();
+
+                if (slotKey === 'head') {
+                    return [15, 42, 64].includes(subtype) || traits.includes('wearhelmet') || /\b(helm|helmet|coif|hat|cap|circlet|crown|tiara|hood|mask|headband|morion|bascinet|sallet|armet|kettle hat)\b/i.test(name);
+                }
+                if (slotKey === 'eyes') {
+                    return [47, 66].includes(subtype) || traits.includes('wearlens') || /\b(goggles|lenses|lens|spectacles|monocle|glasses|eyepatch|visor)\b/i.test(name);
+                }
+                if (slotKey === 'necklace') {
+                    return [37, 51, 60].includes(subtype) || traits.includes('wearnecklace') || /\b(necklace|amulet|pendant|collar|torc|choker|periapt|medallion|brooch|talisman|holy symbol)\b/i.test(name);
+                }
+                if (slotKey === 'cloak') {
+                    return [19, 46].includes(subtype) || traits.includes('wearcloak') || /\b(cloak|cape|mantle|shawl|poncho|shroud)\b/i.test(name);
+                }
+                if (slotKey === 'armor') {
+                    return [11, 12, 13, 41].includes(subtype) || traits.includes('weararmor') || traits.includes('armor {') || traits.includes('armor{') || /\b(armor|mail|plate|cuirass|hauberk|brigandine|gambeson|breastplate|chain shirt|half plate|full plate|barding)\b/i.test(name);
+                }
+                if (slotKey === 'clothing') {
+                    return [14, 18].includes(subtype) || traits.includes('wearclothing') || /\b(robe|tunic|vest|doublet|tabard|shirt|dress|garb|outfit|clothes|cassock|breeches|trousers|pants|skirt|kilt|jerkin|surcoat)\b/i.test(name);
+                }
+                if (slotKey === 'bracers') {
+                    return [36, 52].includes(subtype) || traits.includes('wearbracer') || /\b(bracers|bracer|vambraces|armbands|cuffs|wristguards)\b/i.test(name);
+                }
+                if (slotKey === 'gloves') {
+                    return [16, 43].includes(subtype) || traits.includes('wearglove') || /\b(gloves|gauntlets|mittens|handwraps|claws)\b/i.test(name);
+                }
+                if (slotKey === 'ring_1' || slotKey === 'ring_2') {
+                    return [35, 50].includes(subtype) || traits.includes('wearring') || /\b(ring|band|signet)\b/i.test(name);
+                }
+                if (slotKey === 'main_hand') {
+                    return [6, 7, 9, 10, 40, 48, 49, 59, 61, 62, 63, 65].includes(subtype) || type === 2 || traits.includes('weapon {') || traits.includes('weapon{') || traits.includes('shield {') || traits.includes('shield{') || traits.includes('usetool') || /\b(sword|blade|dagger|axe|bow|crossbow|mace|hammer|spear|halberd|glaive|flail|morningstar|scimitar|rapier|greatsword|shortsword|longsword|quarterstaff|javelin|dart|sling|whip|trident|lance|scythe|club|staff|shield|buckler|rod|wand|dorje|torch|lantern|tool)\b/i.test(name);
+                }
+                if (slotKey === 'off_hand') {
+                    return [6, 7, 8, 9, 10, 40, 48, 49, 59, 61, 62, 63, 65].includes(subtype) || type === 2 || traits.includes('weapon {') || traits.includes('weapon{') || traits.includes('shield {') || traits.includes('shield{') || traits.includes('usetool') || /\b(shield|buckler|targe|pavise|sword|blade|dagger|axe|mace|hammer|spear|quarterstaff|quiver|torch|lantern|implement|rod|wand)\b/i.test(name);
+                }
+                if (slotKey === 'belt') {
+                    return [18, 45].includes(subtype) || traits.includes('wearbelt') || /\b(belt|girdle|sash|baldric|cincture|cord)\b/i.test(name);
+                }
+                if (slotKey === 'boots') {
+                    return [17, 44].includes(subtype) || traits.includes('wearshoe') || /\b(boots|shoes|sandals|slippers|moccasins|greaves|sabators|footwraps)\b/i.test(name);
+                }
+                if (slotKey === 'saddle') {
+                    return subtype === 28 || traits.includes('wearsaddle') || /\b(saddle|harness|barding|pack saddle|riding saddle|military saddle|exotic saddle|bridle|bit and bridle)\b/i.test(name);
+                }
+
+                return false;
+            });
+        },
+
+        assignItemToSlot(slotKey, itemUid) {
+            const p = this.modalActivePreset;
+            if (!itemUid) {
+                (this.equipmentItems || []).forEach(it => {
+                    const locs = it.locations || [1, 1, 1, 1, 1];
+                    if (parseInt(locs[p] ?? it.location ?? 1) === 2 && this.getItemSlotInPreset(it, p) === slotKey) {
+                        if (!it.locations) it.locations = [1, 1, 1, 1, 1];
+                        it.locations[p] = 1;
+                        if (it.slots && it.slots[p]) delete it.slots[p];
+                    }
+                });
+                return;
+            }
+
+            const targetItem = (this.equipmentItems || []).find(it => (it.uid || it.id) === itemUid);
+            if (!targetItem) return;
+
+            (this.equipmentItems || []).forEach(it => {
+                if ((it.uid || it.id) !== itemUid) {
+                    const locs = it.locations || [1, 1, 1, 1, 1];
+                    if (parseInt(locs[p] ?? it.location ?? 1) === 2 && this.getItemSlotInPreset(it, p) === slotKey) {
+                        if (!it.locations) it.locations = [1, 1, 1, 1, 1];
+                        it.locations[p] = 1;
+                        if (it.slots && it.slots[p]) delete it.slots[p];
+                    }
+                }
+            });
+
+            if (!targetItem.locations) targetItem.locations = [1, 1, 1, 1, 1];
+            targetItem.locations[p] = 2;
+            targetItem.slot = slotKey;
+            if (!targetItem.slots) targetItem.slots = {};
+            targetItem.slots[p] = slotKey;
         },
 
         removeItem(index) {

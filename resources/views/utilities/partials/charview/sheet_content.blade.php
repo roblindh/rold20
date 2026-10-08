@@ -532,7 +532,7 @@
                                                 <button type="button" 
                                                         @click="twoHandedMode['{{ $wId }}'] = !twoHandedMode['{{ $wId }}']"
                                                         class="text-[10px] px-1.5 py-0.2 rounded border transition cursor-pointer"
-                                                        :class="twoHandedMode['{{ $wId }}'] ? 'bg-amber-800 text-white border-amber-900 font-bold' : 'bg-stone-100 text-stone-700 border-stone-300'">
+                                                        :class="twoHandedMode['{{ $wId }}'] ? 'two-handed-btn-active bg-amber-900 text-white border-amber-950 font-bold shadow-xs' : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border-stone-300'">
                                                     <span x-text="twoHandedMode['{{ $wId }}'] ? '2-Handed (+2 Str)' : '1-Handed'"></span>
                                                 </button>
                                             @endif
@@ -623,7 +623,7 @@
                                                 <button type="button" 
                                                         @click="twoHandedMode['{{ $wId }}'] = !twoHandedMode['{{ $wId }}']"
                                                         class="text-[10px] px-1.5 py-0.2 rounded border transition cursor-pointer"
-                                                        :class="twoHandedMode['{{ $wId }}'] ? 'bg-amber-800 text-white border-amber-900 font-bold' : 'bg-stone-100 text-stone-700 border-stone-300'">
+                                                        :class="twoHandedMode['{{ $wId }}'] ? 'two-handed-btn-active bg-amber-900 text-white border-amber-950 font-bold shadow-xs' : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border-stone-300'">
                                                     <span x-text="twoHandedMode['{{ $wId }}'] ? '2-Handed (+2 Str)' : '1-Handed'"></span>
                                                 </button>
                                             @endif
@@ -664,6 +664,11 @@
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <span>🐾 {{ $nat['name'] ?? 'Natural Attack' }}</span>
                                         <span class="text-[9px] px-1 py-0.2 rounded bg-emerald-50 text-emerald-900 border border-emerald-300 font-sans font-semibold">Primary</span>
+                                        @if(!empty($nat['badges']))
+                                            @foreach($nat['badges'] as $b)
+                                                <span class="text-[9px] px-1 py-0.2 rounded bg-amber-100/70 text-amber-900 border border-amber-300 font-sans font-normal">{{ $b }}</span>
+                                            @endforeach
+                                        @endif
                                     </div>
                                 </td>
                                 <td class="cvlist cvcenter font-mono text-xs">{{ $nat['size_abbr'] ?? ($sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M') }}</td>
@@ -694,6 +699,11 @@
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <span>🐾 {{ $nat['name'] ?? 'Natural Attack' }}</span>
                                         <span class="text-[9px] px-1 py-0.2 rounded bg-amber-50 text-amber-900 border border-amber-300 font-sans font-semibold">Secondary (-4)</span>
+                                        @if(!empty($nat['badges']))
+                                            @foreach($nat['badges'] as $b)
+                                                <span class="text-[9px] px-1 py-0.2 rounded bg-amber-100/70 text-amber-900 border border-amber-300 font-sans font-normal">{{ $b }}</span>
+                                            @endforeach
+                                        @endif
                                     </div>
                                 </td>
                                 <td class="cvlist cvcenter font-mono text-xs">{{ $nat['size_abbr'] ?? ($sizesMap[$calc['heritage']['size_id']]->Abbreviation ?? 'M') }}</td>
@@ -978,12 +988,15 @@
                                 <div class="flex items-center justify-between gap-2">
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <span x-text="(wpn.name.includes('Shield') ? '🛡️ ' : (wpn.is_ranged ? '🏹 ' : '🗡️ ')) + wpn.name"></span>
+                                        <template x-for="b in (wpn.badges || [])">
+                                            <span class="text-[9px] px-1 py-0.2 rounded bg-amber-100/70 text-amber-900 border border-amber-300 font-sans font-normal" x-text="b"></span>
+                                        </template>
                                     </div>
                                     <template x-if="!wpn.is_ranged && !wpn.name.includes('Shield')">
                                         <button type="button" 
                                                 @click="twoHandedMode[wId] = !twoHandedMode[wId]"
                                                 class="text-[10px] px-1.5 py-0.2 rounded border transition cursor-pointer"
-                                                :class="twoHandedMode[wId] ? 'bg-amber-800 text-white border-amber-900 font-bold' : 'bg-stone-100 text-stone-700 border-stone-300'">
+                                                :class="twoHandedMode[wId] ? 'two-handed-btn-active bg-amber-900 text-white border-amber-950 font-bold shadow-xs' : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border-stone-300'">
                                             <span x-text="twoHandedMode[wId] ? '2-Handed (+2 Str)' : '1-Handed'"></span>
                                         </button>
                                     </template>
@@ -1014,6 +1027,9 @@
                                 <div class="flex items-center gap-1.5 flex-wrap">
                                     <span x-text="'🐾 ' + (nat.name || 'Natural Attack')"></span>
                                     <span class="text-[9px] px-1 py-0.2 rounded bg-emerald-50 text-emerald-900 border border-emerald-300 font-sans font-semibold">Primary</span>
+                                    <template x-for="b in (nat.badges || [])">
+                                        <span class="text-[9px] px-1 py-0.2 rounded bg-amber-100/70 text-amber-900 border border-amber-300 font-sans font-normal" x-text="b"></span>
+                                    </template>
                                 </div>
                             </td>
                             <td class="cvlist cvcenter font-mono text-xs" x-text="nat.size_abbr || calculatedState?.heritage?.size_abbr || 'M'"></td>
@@ -1038,6 +1054,9 @@
                                 <div class="flex items-center gap-1.5 flex-wrap">
                                     <span x-text="'🐾 ' + (nat.name || 'Natural Attack')"></span>
                                     <span class="text-[9px] px-1 py-0.2 rounded bg-amber-50 text-amber-900 border border-amber-300 font-sans font-semibold">Secondary (-4)</span>
+                                    <template x-for="b in (nat.badges || [])">
+                                        <span class="text-[9px] px-1 py-0.2 rounded bg-amber-100/70 text-amber-900 border border-amber-300 font-sans font-normal" x-text="b"></span>
+                                    </template>
                                 </div>
                             </td>
                             <td class="cvlist cvcenter font-mono text-xs" x-text="nat.size_abbr || calculatedState?.heritage?.size_abbr || 'M'"></td>

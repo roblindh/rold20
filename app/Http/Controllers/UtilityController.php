@@ -456,6 +456,11 @@ class UtilityController extends Controller
         $deitiesMap = DB::table('ref_deities')->get()->keyBy('ID');
         $sizesMap = DB::table('ref_sizes')->get()->keyBy('ID');
         $bodyTypesMap = DB::table('ref_bodytypes')->get()->keyBy('ID');
+        $refBodyTypes = DB::table('ref_bodytypes')->orderBy('ID')->get();
+        $refNaturalAttacks = DB::table('ref_naturalattacks')->orderBy('ID')->get();
+        $characterBodyType = (int)($race->BodyType ?? 1);
+        $characterNaturalAttacks = (string)($race->NaturalAttacks ?? '2 Arm { } 2 Leg { } Head { }');
+        $characterRaceName = (string)($race->Name ?? $character->Race ?? 'Human');
         $creatureSubtypes = DB::table('ref_creaturesubtypes')->get()->keyBy('ID');
         $ages = DB::table('ref_ages')->get()->keyBy('ID');
         $campaign = ($character && $character->Campaign) ? DB::table('campaigns')->where('ID', $character->Campaign)->first() : null;
@@ -582,7 +587,8 @@ class UtilityController extends Controller
             'companionSummary', 'hasCompanionSkills', 'eligibleCompanionCreatures',
             'organizations', 'organizationsMap', 'characterOrganizations',
             'refTownTypes', 'refMaterials', 'refItemModsMundane',
-            'partyLocation', 'partyLocationId', 'partyLocationGpLimitSp', 'isNoShopLocation'
+            'partyLocation', 'partyLocationId', 'partyLocationGpLimitSp', 'isNoShopLocation',
+            'refBodyTypes', 'refNaturalAttacks', 'characterBodyType', 'characterNaturalAttacks', 'characterRaceName'
         ));
     }
 
@@ -1504,6 +1510,8 @@ class UtilityController extends Controller
             'items.*.unit_price' => 'nullable|numeric|min:0',
             'items.*.unit_weight' => 'nullable|numeric|min:0',
             'items.*.locations' => 'nullable|array',
+            'items.*.slot' => 'nullable|string',
+            'items.*.slots' => 'nullable|array',
             'items.*.container_id' => 'nullable|string',
             'items.*.is_container' => 'nullable',
             'items.*.item_type_id' => 'nullable|integer',
@@ -1575,6 +1583,8 @@ class UtilityController extends Controller
                         'Location' => $locations[0],
                         'locations' => $locations,
                         'Locations' => $locations,
+                        'slot' => !empty($it['slot']) ? (string)$it['slot'] : null,
+                        'slots' => !empty($it['slots']) && is_array($it['slots']) ? $it['slots'] : null,
                         'container_id' => $cId,
                         'ContainerID' => $cId,
                         'is_container' => $isContainer,

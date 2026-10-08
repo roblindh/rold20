@@ -1224,9 +1224,16 @@ class EquipmentManager
                 continue;
             }
 
-            // 2. Armor and Clothing (Type 3 / Subtypes 11-19, 41-46) are excluded
-            // unless the item explicitly has weapon spikes or an explicit attack weapon trait with damage
-            $isArmorOrClothing = ($type === 3) || in_array($subtype, [11, 12, 13, 14, 15, 16, 17, 18, 19, 41, 42, 43, 44, 45, 46]);
+            // 2. Armor and Clothing (Type 3 / Subtypes 11-19, 41-46)
+            // Helmets (15), Handwear (16), and Footwear (17) replace natural attacks (head, arms, legs)
+            // and are calculated under natural attacks, so they are excluded from standalone manufactured weapons.
+            $isNaturalAttackReplacement = in_array($subtype, [15, 16, 17])
+                || preg_match('/replaces?\s+(natural\s+)?(head|arm|leg|foot|hand)/i', (string)($item['ref_data']['Description'] ?? ''));
+            if ($isNaturalAttackReplacement) {
+                continue;
+            }
+
+            $isArmorOrClothing = ($type === 3) || in_array($subtype, [11, 12, 13, 14, 18, 19, 41, 42, 43, 44, 45, 46]);
             if ($isArmorOrClothing) {
                 $hasSpikesOrAttack = preg_match('/spike|blade|punch|claws|fist/i', $name)
                     || preg_match('/Weapon\s*\{[^}]*Dmg\s*=/i', $traits)

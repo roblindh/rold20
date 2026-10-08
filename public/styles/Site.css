@@ -2604,6 +2604,20 @@ td.cvsml, td.cvmdm, td.cvlrg, td.cvlist {
     color: #fef08a !important;
 }
 
+/* ==========================================================================
+   Character Viewer: Weapons & Attacks Two-Handed Toggle Button Styling
+   ========================================================================== */
+.two-handed-btn-active,
+button.two-handed-btn-active,
+.bg-amber-800,
+.bg-amber-900 {
+    background-color: #78350f !important;
+    color: #ffffff !important;
+    border-color: #451a03 !important;
+    font-weight: 700 !important;
+}
+
+
 
 
 

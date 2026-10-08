@@ -14,14 +14,61 @@
         </div>
 
         <!-- Modal Form -->
-        <form action="{{ route('utilities.charview.manage-equipment', ['id' => $character->ID], false) }}" method="POST" class="p-6 overflow-y-auto space-y-5 flex-1 text-xs">
+        <form action="{{ route('utilities.charview.manage-equipment', ['id' => $character->ID], false) }}" method="POST" class="p-6 overflow-y-auto space-y-4 flex-1 text-xs">
             @csrf
 
-            <!-- Preset Selector Tabs & Live Stats Banner -->
+            <!-- Global Hidden Form Inputs for Reliable Submission -->
+            <div class="hidden" aria-hidden="true">
+                <template x-for="(item, idx) in equipmentItems" :key="item.uid || idx">
+                    <div>
+                        <input type="hidden" :name="'items[' + idx + '][uid]'" :value="item.uid">
+                        <input type="hidden" :name="'items[' + idx + '][item_id]'" :value="item.item_id">
+                        <input type="hidden" :name="'items[' + idx + '][name]'" :value="item.name">
+                        <input type="hidden" :name="'items[' + idx + '][qty]'" :value="item.qty">
+                        <input type="hidden" :name="'items[' + idx + '][unit_price]'" :value="item.unit_price">
+                        <input type="hidden" :name="'items[' + idx + '][unit_weight]'" :value="item.unit_weight">
+                        <input type="hidden" :name="'items[' + idx + '][is_container]'" :value="item.is_container ? '1' : '0'">
+                        <input type="hidden" :name="'items[' + idx + '][item_type_id]'" :value="item.item_type_id">
+                        <input type="hidden" :name="'items[' + idx + '][subtype]'" :value="item.subtype">
+                        <input type="hidden" :name="'items[' + idx + '][traits]'" :value="item.traits || item.Traits || ''">
+                        <input type="hidden" :name="'items[' + idx + '][mods]'" :value="item.mods || item.Mods || ''">
+                        <input type="hidden" :name="'items[' + idx + '][config]'" :value="item.config || item.Config || item.config_string || ''">
+                        <input type="hidden" :name="'items[' + idx + '][container_id]'" :value="item.container_id || ''">
+                        <input type="hidden" :name="'items[' + idx + '][slot]'" :value="item.slot || ''">
+                        <template x-for="(locVal, cIdx) in (item.locations || [1,1,1,1,1])" :key="cIdx">
+                            <input type="hidden" :name="'items[' + idx + '][locations][' + cIdx + ']'" :value="locVal">
+                        </template>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Top Control Bar: View Tabs & Preset Selector -->
             <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-2">
+                    <!-- View Mode Switcher -->
                     <div class="flex items-center gap-1.5 flex-wrap">
-                        <span class="font-bold text-slate-800 font-serif">Preset View:</span>
+                        <span class="font-bold text-slate-800 font-serif mr-1">View:</span>
+                        <div class="inline-flex p-0.5 bg-slate-200/80 rounded-lg border border-slate-300">
+                            <button type="button" 
+                                    @click="equipmentViewMode = 'slots'"
+                                    :class="equipmentViewMode === 'slots' ? 'bg-indigo-700 text-white font-bold shadow-xs' : 'text-slate-700 hover:text-slate-950 font-semibold'"
+                                    class="px-3 py-1 rounded-md text-xs transition flex items-center gap-1.5 cursor-pointer">
+                                <span>👤</span>
+                                <span>Character Outline &amp; Slots</span>
+                            </button>
+                            <button type="button" 
+                                    @click="equipmentViewMode = 'list'"
+                                    :class="equipmentViewMode === 'list' ? 'bg-indigo-700 text-white font-bold shadow-xs' : 'text-slate-700 hover:text-slate-950 font-semibold'"
+                                    class="px-3 py-1 rounded-md text-xs transition flex items-center gap-1.5 cursor-pointer">
+                                <span>📋</span>
+                                <span>All Items List (<span x-text="equipmentItems.length"></span>)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Preset Selector Tabs -->
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <span class="font-bold text-slate-800 font-serif">Preset:</span>
                         <div class="flex items-center gap-1">
                             <template x-for="(pName, pIdx) in ['Combat', 'Travel', 'Rest', 'Sleep', 'Formal']" :key="pIdx">
                                 <button type="button" 
@@ -33,21 +80,26 @@
                             </template>
                         </div>
                     </div>
-
-                    <div class="flex items-center gap-3 text-slate-700 font-mono text-xs">
-                        <span>Preset Weight: <strong class="text-indigo-900" x-text="calcPresetWeight(modalActivePreset).toFixed(1) + ' kg'"></strong></span>
-                        <span>Items: <strong class="text-slate-900" x-text="equipmentItems.length"></strong></span>
-                    </div>
                 </div>
 
-                <div class="text-[11px] text-slate-600 flex items-center justify-between flex-wrap gap-2">
-                    <span class="flex items-center gap-1">
-                        <span>ℹ️</span>
-                        <span><strong>Equipped (Worn/Wielded):</strong> 50% weight &bull; <strong>Carried:</strong> 100% weight &bull; <strong>Stowed/Stored:</strong> 0% weight. Items in a worn container count 100% inside container.</span>
-                    </span>
-                    <button type="button" @click="showAddCustomItem = !showAddCustomItem" class="text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-1">
-                        <span x-text="showAddCustomItem ? '▲ Hide Custom Item Form' : '+ Add Custom Gear'"></span>
-                    </button>
+                <!-- Weight & Stats Row -->
+                <div class="flex items-center justify-between flex-wrap gap-2 text-[11px] text-slate-600">
+                    <div class="flex items-center gap-3 font-mono">
+                        <span>Preset Weight: <strong class="text-indigo-900" x-text="calcPresetWeight(modalActivePreset).toFixed(1) + ' kg'"></strong></span>
+                        <span>&bull;</span>
+                        <span>Equipped: <strong class="text-emerald-700" x-text="equipmentItems.filter(it => (it.locations ? it.locations[modalActivePreset] : 1) == 2).length"></strong></span>
+                        <span>&bull;</span>
+                        <span>Carried: <strong class="text-slate-800" x-text="equipmentItems.filter(it => (it.locations ? it.locations[modalActivePreset] : 1) == 1).length"></strong></span>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <span class="hidden sm:inline text-slate-500">
+                            <strong>Equipped:</strong> 50% wt &bull; <strong>Carried:</strong> 100% wt &bull; <strong>Stowed:</strong> 0% wt
+                        </span>
+                        <button type="button" @click="showAddCustomItem = !showAddCustomItem" class="text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-1 cursor-pointer">
+                            <span x-text="showAddCustomItem ? '▲ Hide Custom Form' : '+ Add Custom Gear'"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -85,8 +137,191 @@
                 </div>
             </div>
 
-            <!-- Inventory Items Table -->
-            <div class="border border-slate-200 rounded-xl overflow-hidden shadow-2xs bg-white">
+            <!-- ========================================================= -->
+            <!-- VIEW MODE 1: CHARACTER OUTLINE & EQUIPMENT SLOTS (PAPERDOLL) -->
+            <!-- ========================================================= -->
+            <div x-show="equipmentViewMode === 'slots'" class="space-y-4">
+                <!-- Body Type & Race Header Banner -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-indigo-950 text-white p-3 rounded-xl border border-indigo-800 shadow-xs">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl">🧬</span>
+                        <div>
+                            <div class="font-bold text-xs sm:text-sm text-indigo-100 flex items-center gap-2">
+                                <span x-text="characterRaceName"></span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-800/90 text-indigo-200 border border-indigo-700 font-mono" x-text="'Body Type: ' + getBodyTypeInfo().name"></span>
+                            </div>
+                            <div class="text-[10px] text-indigo-300 mt-0.5">
+                                <span x-text="getAvailableSlotsForCharacter().length + ' dedicated item slot(s) available for this race and body anatomy.'"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 text-xs font-mono">
+                        <span class="text-indigo-200">Active Preset: <strong class="text-amber-300" x-text="['Combat', 'Travel', 'Rest', 'Sleep', 'Formal'][modalActivePreset]"></strong></span>
+                    </div>
+                </div>
+
+                <!-- Empty State (e.g. Blob or No Slots) -->
+                <template x-if="getAvailableSlotsForCharacter().length === 0">
+                    <div class="p-8 text-center bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <div class="text-3xl">🫧</div>
+                        <div class="font-bold text-slate-800 text-sm" x-text="getBodyTypeInfo().name + ' Anatomy'"></div>
+                        <p class="text-slate-600 max-w-md mx-auto text-xs">
+                            This body type has no dedicated equipment slots. All inventory items are carried or stowed in the inventory list.
+                        </p>
+                    </div>
+                </template>
+
+                <!-- Paperdoll 3-Column Grid: Left Slots | Center Outline SVG | Right Slots -->
+                <template x-if="getAvailableSlotsForCharacter().length > 0">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-start">
+                        <!-- Left Slots Column -->
+                        <div class="lg:col-span-4 space-y-2.5">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-600 px-1 flex items-center justify-between">
+                                <span>Upper Body &amp; Accessories</span>
+                                <span class="font-mono text-slate-500" x-text="getAvailableSlotsLeft().length + ' slots'"></span>
+                            </div>
+                            <template x-for="slot in getAvailableSlotsLeft()" :key="slot.key">
+                                <!-- Slot Card -->
+                                <div class="bg-white rounded-xl border p-2.5 shadow-2xs transition hover:border-indigo-400"
+                                     :class="getEquippedItemForSlot(slot.key, modalActivePreset) ? 'border-indigo-300 bg-indigo-50/25' : 'border-dashed border-slate-300 bg-slate-50/50'">
+                                    <div class="flex items-center justify-between gap-1 mb-1.5">
+                                        <span class="font-bold text-[11px] text-slate-800 flex items-center gap-1.5">
+                                            <span x-text="slot.icon"></span>
+                                            <span x-text="slot.name"></span>
+                                        </span>
+                                        <template x-if="getEquippedItemForSlot(slot.key, modalActivePreset)">
+                                            <button type="button" 
+                                                    @click="assignItemToSlot(slot.key, '')" 
+                                                    class="text-[10px] text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5 rounded hover:bg-rose-50 cursor-pointer"
+                                                    title="Unequip this slot">
+                                                ✕ Unequip
+                                            </button>
+                                        </template>
+                                    </div>
+
+                                    <!-- Dropdown Selector -->
+                                    <select :value="getEquippedItemForSlot(slot.key, modalActivePreset)?.uid || ''"
+                                            @change="assignItemToSlot(slot.key, $event.target.value)"
+                                            class="w-full px-2 py-1.5 border rounded text-[11px] font-medium truncate"
+                                            :class="getEquippedItemForSlot(slot.key, modalActivePreset) ? 'bg-amber-50 border-amber-300 text-amber-950 font-bold' : 'bg-white border-slate-300 text-slate-700'">
+                                        <option value="">(Empty / None)</option>
+                                        <template x-for="optItem in getEligibleItemsForSlot(slot.key)" :key="optItem.uid || optItem.id">
+                                            <option :value="optItem.uid || optItem.id"
+                                                    :selected="(optItem.uid || optItem.id) === (getEquippedItemForSlot(slot.key, modalActivePreset)?.uid || '')"
+                                                    x-text="(optItem.name || optItem.Name) + (optItem.qty > 1 ? ' (x' + optItem.qty + ')' : '') + (getEquippedItemForSlot(slot.key, modalActivePreset)?.uid === (optItem.uid || optItem.id) ? ' ✓' : '')">
+                                            </option>
+                                        </template>
+                                    </select>
+
+                                    <!-- Equipped Item Badges & Info -->
+                                    <template x-if="getEquippedItemForSlot(slot.key, modalActivePreset)">
+                                        <div class="mt-1.5 pt-1.5 border-t border-slate-200/80 flex items-center justify-between text-[10px] text-slate-600">
+                                            <div class="flex items-center gap-1 flex-wrap">
+                                                <template x-for="(tr, trIdx) in getItemTraitsBadges(getEquippedItemForSlot(slot.key, modalActivePreset)).slice(0, 2)" :key="trIdx">
+                                                    <span class="px-1.5 py-0.2 rounded font-bold text-[9px] border bg-indigo-50 text-indigo-900 border-indigo-200" x-text="tr.badge"></span>
+                                                </template>
+                                            </div>
+                                            <div class="flex items-center gap-1.5">
+                                                <span class="font-mono text-slate-500" x-text="((getEquippedItemForSlot(slot.key, modalActivePreset).unit_weight || 0) * 0.5).toFixed(1) + ' kg'"></span>
+                                                <button type="button" 
+                                                        @click="selectedEquipmentPreviewItem = getEquippedItemForSlot(slot.key, modalActivePreset)"
+                                                        class="text-indigo-600 hover:text-indigo-800 font-bold cursor-pointer">
+                                                    ℹ️
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Center Outline SVG Panel -->
+                        <div class="lg:col-span-4 flex flex-col items-center justify-center p-3.5 bg-gradient-to-b from-slate-900 via-slate-800 to-indigo-950 rounded-2xl border border-slate-700 shadow-inner relative overflow-hidden min-h-[380px]">
+                            <!-- Blueprint Grid Background -->
+                            <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:16px_16px]"></div>
+
+                            <div class="relative z-10 w-full flex flex-col items-center">
+                                <!-- SVG Container -->
+                                <div class="w-full max-w-[260px] h-[310px] flex items-center justify-center relative">
+                                    @include('utilities.partials.charview.body_outlines_svg')
+                                </div>
+
+                                <!-- Center Badge -->
+                                <div class="mt-2 text-center">
+                                    <span class="text-[11px] font-bold text-slate-300 bg-slate-800/90 px-3 py-1 rounded-full border border-slate-600 shadow-2xs" x-text="getBodyTypeInfo().name + ' Silhouette'"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Slots Column -->
+                        <div class="lg:col-span-4 space-y-2.5">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-600 px-1 flex items-center justify-between">
+                                <span>Torso, Weapons &amp; Lower Body</span>
+                                <span class="font-mono text-slate-500" x-text="getAvailableSlotsRight().length + ' slots'"></span>
+                            </div>
+                            <template x-for="slot in getAvailableSlotsRight()" :key="slot.key">
+                                <!-- Slot Card -->
+                                <div class="bg-white rounded-xl border p-2.5 shadow-2xs transition hover:border-indigo-400"
+                                     :class="getEquippedItemForSlot(slot.key, modalActivePreset) ? 'border-indigo-300 bg-indigo-50/25' : 'border-dashed border-slate-300 bg-slate-50/50'">
+                                    <div class="flex items-center justify-between gap-1 mb-1.5">
+                                        <span class="font-bold text-[11px] text-slate-800 flex items-center gap-1.5">
+                                            <span x-text="slot.icon"></span>
+                                            <span x-text="slot.name"></span>
+                                        </span>
+                                        <template x-if="getEquippedItemForSlot(slot.key, modalActivePreset)">
+                                            <button type="button" 
+                                                    @click="assignItemToSlot(slot.key, '')" 
+                                                    class="text-[10px] text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5 rounded hover:bg-rose-50 cursor-pointer"
+                                                    title="Unequip this slot">
+                                                ✕ Unequip
+                                            </button>
+                                        </template>
+                                    </div>
+
+                                    <!-- Dropdown Selector -->
+                                    <select :value="getEquippedItemForSlot(slot.key, modalActivePreset)?.uid || ''"
+                                            @change="assignItemToSlot(slot.key, $event.target.value)"
+                                            class="w-full px-2 py-1.5 border rounded text-[11px] font-medium truncate"
+                                            :class="getEquippedItemForSlot(slot.key, modalActivePreset) ? 'bg-amber-50 border-amber-300 text-amber-950 font-bold' : 'bg-white border-slate-300 text-slate-700'">
+                                        <option value="">(Empty / None)</option>
+                                        <template x-for="optItem in getEligibleItemsForSlot(slot.key)" :key="optItem.uid || optItem.id">
+                                            <option :value="optItem.uid || optItem.id"
+                                                    :selected="(optItem.uid || optItem.id) === (getEquippedItemForSlot(slot.key, modalActivePreset)?.uid || '')"
+                                                    x-text="(optItem.name || optItem.Name) + (optItem.qty > 1 ? ' (x' + optItem.qty + ')' : '') + (getEquippedItemForSlot(slot.key, modalActivePreset)?.uid === (optItem.uid || optItem.id) ? ' ✓' : '')">
+                                            </option>
+                                        </template>
+                                    </select>
+
+                                    <!-- Equipped Item Badges & Info -->
+                                    <template x-if="getEquippedItemForSlot(slot.key, modalActivePreset)">
+                                        <div class="mt-1.5 pt-1.5 border-t border-slate-200/80 flex items-center justify-between text-[10px] text-slate-600">
+                                            <div class="flex items-center gap-1 flex-wrap">
+                                                <template x-for="(tr, trIdx) in getItemTraitsBadges(getEquippedItemForSlot(slot.key, modalActivePreset)).slice(0, 2)" :key="trIdx">
+                                                    <span class="px-1.5 py-0.2 rounded font-bold text-[9px] border bg-indigo-50 text-indigo-900 border-indigo-200" x-text="tr.badge"></span>
+                                                </template>
+                                            </div>
+                                            <div class="flex items-center gap-1.5">
+                                                <span class="font-mono text-slate-500" x-text="((getEquippedItemForSlot(slot.key, modalActivePreset).unit_weight || 0) * 0.5).toFixed(1) + ' kg'"></span>
+                                                <button type="button" 
+                                                        @click="selectedEquipmentPreviewItem = getEquippedItemForSlot(slot.key, modalActivePreset)"
+                                                        class="text-indigo-600 hover:text-indigo-800 font-bold cursor-pointer">
+                                                    ℹ️
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- VIEW MODE 2: INVENTORY ITEMS TABLE (ALL ITEMS LIST) -->
+            <!-- ========================================================= -->
+            <div x-show="equipmentViewMode === 'list'" class="border border-slate-200 rounded-xl overflow-hidden shadow-2xs bg-white">
                 <div class="max-h-[50vh] overflow-y-auto">
                     <table class="w-full text-left border-collapse">
                         <thead class="bg-slate-100 text-slate-700 text-[11px] uppercase tracking-wider font-bold border-b border-slate-200 sticky top-0 z-10">
@@ -112,25 +347,7 @@
 
                             <template x-for="(item, idx) in equipmentItems" :key="item.uid || idx">
                                 <tr class="hover:bg-slate-50/80 transition">
-                                    <!-- Hidden Form Inputs for Submission -->
                                     <td class="p-3">
-                                        <input type="hidden" :name="'items[' + idx + '][uid]'" :value="item.uid">
-                                        <input type="hidden" :name="'items[' + idx + '][item_id]'" :value="item.item_id">
-                                        <input type="hidden" :name="'items[' + idx + '][name]'" :value="item.name">
-                                        <input type="hidden" :name="'items[' + idx + '][qty]'" :value="item.qty">
-                                        <input type="hidden" :name="'items[' + idx + '][unit_price]'" :value="item.unit_price">
-                                        <input type="hidden" :name="'items[' + idx + '][unit_weight]'" :value="item.unit_weight">
-                                        <input type="hidden" :name="'items[' + idx + '][is_container]'" :value="item.is_container ? '1' : '0'">
-                                        <input type="hidden" :name="'items[' + idx + '][item_type_id]'" :value="item.item_type_id">
-                                        <input type="hidden" :name="'items[' + idx + '][subtype]'" :value="item.subtype">
-                                        <input type="hidden" :name="'items[' + idx + '][traits]'" :value="item.traits || item.Traits || ''">
-                                        <input type="hidden" :name="'items[' + idx + '][mods]'" :value="item.mods || item.Mods || ''">
-                                        <input type="hidden" :name="'items[' + idx + '][config]'" :value="item.config || item.Config || item.config_string || ''">
-                                        <input type="hidden" :name="'items[' + idx + '][container_id]'" :value="item.container_id || ''">
-                                        <template x-for="(locVal, cIdx) in (item.locations || [1,1,1,1,1])" :key="cIdx">
-                                            <input type="hidden" :name="'items[' + idx + '][locations][' + cIdx + ']'" :value="locVal">
-                                        </template>
-
                                         <div class="flex items-center gap-1.5 flex-wrap">
                                             <span class="font-bold text-slate-900 hover:text-indigo-700 cursor-pointer"
                                                   @click="selectedEquipmentPreviewItem = (selectedEquipmentPreviewItem?.uid === item.uid ? null : item)"

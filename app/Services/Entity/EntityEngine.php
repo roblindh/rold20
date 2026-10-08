@@ -1633,8 +1633,16 @@ class EntityEngine
             $itemAttSpdBonus = 0;
             $itemCritRngBonus = 0;
 
+            $isBastard = false;
+            $isCharge = false;
+            $isSetCharge = false;
+            $isTripDrop = false;
+            $disarmMod = 0;
+            $noDisarm = false;
+            $prepTime = '';
+
             foreach ($traits as $tr) {
-                if ($tr['type'] === 'Weapon') {
+                if ($tr['type'] === 'Weapon' || $tr['type'] === 'Attack') {
                     $dmgTraitStr = $tr['params']['Dmg'] ?? $tr['params']['Damage'] ?? $dmgTraitStr;
                     $dblWeapDmgStr = $tr['params']['DblWeapDmg'] ?? $tr['params']['DblDmg'] ?? $dblWeapDmgStr;
                     $critRng = (int)($tr['params']['CritRng'] ?? 0);
@@ -1649,6 +1657,13 @@ class EntityEngine
                     if (!empty($tr['params']['Qual'])) {
                         $weapQual = $tr['params']['Qual'];
                     }
+                    if (!empty($tr['params']['Bastard'])) $isBastard = true;
+                    if (!empty($tr['params']['Charge'])) $isCharge = true;
+                    if (!empty($tr['params']['SetCharge'])) $isSetCharge = true;
+                    if (!empty($tr['params']['TripDrop']) || !empty($tr['params']['Trip'])) $isTripDrop = true;
+                    if (isset($tr['params']['DisarmMod'])) $disarmMod = (int)$tr['params']['DisarmMod'];
+                    if (!empty($tr['params']['NoDisarm'])) $noDisarm = true;
+                    if (!empty($tr['params']['PrepTime'])) $prepTime = (string)$tr['params']['PrepTime'];
                 } elseif ($tr['type'] === 'AttMod') {
                     $q = strtoupper($tr['params']['Qual'] ?? '');
                     if ($q === 'DMGDICE') {
@@ -1711,12 +1726,15 @@ class EntityEngine
             $isCarriedLoc = (($wItem['location'] ?? 0) === EquipmentManager::LOCATION_CARRIED);
 
             $weaponBadges = [];
-            if (!empty($wRef['Bastard']) || str_contains($dmgTraitStr, 'Bastard')) $weaponBadges[] = 'Hand-and-a-Half';
-            if (!empty($wRef['Charge'])) $weaponBadges[] = 'Charge';
-            if (!empty($wRef['SetCharge'])) $weaponBadges[] = 'Set vs Charge';
-            if (!empty($wRef['TripDrop'])) $weaponBadges[] = 'Trip';
-            if (!empty($wRef['DisarmMod'])) $weaponBadges[] = 'Disarm ' . ($wRef['DisarmMod'] >= 0 ? '+' : '') . $wRef['DisarmMod'];
-            if (!empty($wRef['NoDisarm'])) $weaponBadges[] = "Can't Disarm";
+            if ($isBastard || str_contains($dmgTraitStr, 'Bastard')) $weaponBadges[] = 'Hand-and-a-Half';
+            if ($isCharge) $weaponBadges[] = 'Charge';
+            if ($isSetCharge) $weaponBadges[] = 'Set vs Charge';
+            if ($isTripDrop) $weaponBadges[] = 'Trip';
+            if ($disarmMod !== 0) $weaponBadges[] = 'Disarm ' . ($disarmMod >= 0 ? '+' : '') . $disarmMod;
+            if ($noDisarm) $weaponBadges[] = "Can't Disarm";
+            if (!empty($dblWeapDmgStr)) $weaponBadges[] = 'Double';
+            if ($range > 0 && !$onlyRanged) $weaponBadges[] = 'Thrown (' . $range . ' m)';
+            if (!empty($prepTime)) $weaponBadges[] = 'Reload ' . $prepTime;
 
             // Evaluate AttMod trait if specified, else default to DexMod for ranged / StrMod for melee
             $defaultStat = $onlyRanged ? $dexMod : $strMod;
@@ -1994,6 +2012,36 @@ class EntityEngine
         $rawNat = (string)($e->NaturalAttacks ?? $race['NaturalAttacks'] ?? '');
 
         if (!empty($rawNat)) {
+            // Identify equipped clothing/armor items that replace natural attacks (Footwear -> Leg, Handwear -> Arm, Helmets -> Head)
+            $equippedFootwear = null;
+            $equippedHandwear = null;
+            $equippedHelmet = null;
+
+            foreach ($charPossessions as $posItem) {
+                $posLoc = $posItem['locations'][$config] ?? $posItem['location'] ?? EquipmentManager::LOCATION_STOWED;
+                if ($posLoc !== EquipmentManager::LOCATION_EQUIPPED) {
+                    continue;
+                }
+                $refData = $posItem['ref_data'] ?? [];
+                $sub = (int)($refData['Subtype'] ?? $posItem['Subtype'] ?? $posItem['subtype'] ?? 0);
+                $desc = (string)($refData['Description'] ?? '');
+                $traitsStr = EquipmentManager::resolveItemTraits($posItem);
+
+                if ($sub === 17 || preg_match('/replaces?\s+(natural\s+)?(leg|foot)/i', $desc)) {
+                    if ($equippedFootwear === null && (str_contains($traitsStr, 'Weapon {') || str_contains($traitsStr, 'Weapon{') || !empty($refData['Traits']))) {
+                        $equippedFootwear = $posItem;
+                    }
+                } elseif ($sub === 16 || preg_match('/replaces?\s+(natural\s+)?(arm|hand)/i', $desc)) {
+                    if ($equippedHandwear === null && (str_contains($traitsStr, 'Weapon {') || str_contains($traitsStr, 'Weapon{') || !empty($refData['Traits']))) {
+                        $equippedHandwear = $posItem;
+                    }
+                } elseif ($sub === 15 || preg_match('/replaces?\s+(natural\s+)?head/i', $desc)) {
+                    if ($equippedHelmet === null && (str_contains($traitsStr, 'Weapon {') || str_contains($traitsStr, 'Weapon{'))) {
+                        $equippedHelmet = $posItem;
+                    }
+                }
+            }
+
             $natBlocks = explode('}', $rawNat);
             $natSkills = self::evaluateWeaponSkillsForQual('Nat || Gen || Brl', $effectiveSkillRanks, $context);
             $catAttBonus = max((int)$modifierEngine->getTotal('WeapAtt_Nat'), (int)$modifierEngine->getTotal('WeapAtt_Gen'), (int)$modifierEngine->getTotal('WeapAtt_Brl'), (int)$modifierEngine->getTotal('WeapAtt_Mnk'));
@@ -2053,6 +2101,8 @@ class EntityEngine
                 $natOnlyRanged = false;
                 $hasExplicitDmg = false;
                 $natAttModTrait = '';
+                $natItemParMod = 0;
+                $natBadges = [];
 
                 foreach ($defTraits as $dt) {
                     if ($dt['type'] === 'Weapon' || $dt['type'] === 'Attack') {
@@ -2089,6 +2139,51 @@ class EntityEngine
                         if (isset($ct['params']['Range'])) $natRange = (int)$ct['params']['Range'];
                         if (!empty($ct['params']['OnlyRanged'])) $natOnlyRanged = true;
                         if (!empty($ct['params']['AttMod'])) $natAttModTrait = $ct['params']['AttMod'];
+                    }
+                }
+
+                // Check if this natural attack is replaced by equipped body gear
+                $replItem = null;
+                if ((strcasecmp($attackName, 'Leg') === 0 || strcasecmp($attackName, 'Foot') === 0 || strcasecmp($attackName, 'Hoof') === 0) && $equippedFootwear !== null) {
+                    $replItem = $equippedFootwear;
+                } elseif ((strcasecmp($attackName, 'Arm') === 0 || strcasecmp($attackName, 'Fist') === 0 || strcasecmp($attackName, 'Hand') === 0) && $equippedHandwear !== null) {
+                    $replItem = $equippedHandwear;
+                } elseif ((strcasecmp($attackName, 'Head') === 0 || strcasecmp($attackName, 'Headbutt') === 0) && $equippedHelmet !== null) {
+                    $replItem = $equippedHelmet;
+                }
+
+                if ($replItem !== null) {
+                    $replTraits = TraitEvaluator::parse(EquipmentManager::resolveItemTraits($replItem));
+                    $replWeaponTrait = null;
+                    foreach ($replTraits as $rt) {
+                        if ($rt['type'] === 'Weapon' || $rt['type'] === 'Attack') {
+                            $replWeaponTrait = $rt;
+                            break;
+                        }
+                    }
+
+                    if ($replWeaponTrait !== null) {
+                        $attackName = (string)($replItem['name'] ?? $replItem['Name'] ?? $attackName);
+                        if (isset($replWeaponTrait['params']['Dmg'])) {
+                            $natDmgStr = $replWeaponTrait['params']['Dmg'];
+                            $hasExplicitDmg = true;
+                        } elseif (isset($replWeaponTrait['params']['Damage'])) {
+                            $natDmgStr = $replWeaponTrait['params']['Damage'];
+                            $hasExplicitDmg = true;
+                        }
+                        if (isset($replWeaponTrait['params']['AttMod'])) $natAttModTrait = $replWeaponTrait['params']['AttMod'];
+                        if (isset($replWeaponTrait['params']['CritRng'])) $natCritRng = (int)$replWeaponTrait['params']['CritRng'];
+                        if (isset($replWeaponTrait['params']['CritMul'])) $natCritMul = (int)$replWeaponTrait['params']['CritMul'];
+                        if (isset($replWeaponTrait['params']['MinReach'])) $natMinReach = (int)$replWeaponTrait['params']['MinReach'];
+                        if (isset($replWeaponTrait['params']['MaxReach'])) $natMaxReach = (int)$replWeaponTrait['params']['MaxReach'];
+                        if (isset($replWeaponTrait['params']['Range'])) $natRange = (int)$replWeaponTrait['params']['Range'];
+                        if (!empty($replWeaponTrait['params']['OnlyRanged'])) $natOnlyRanged = true;
+                        if (isset($replWeaponTrait['params']['ParMod'])) $natItemParMod = (int)$replWeaponTrait['params']['ParMod'];
+
+                        if (!empty($replWeaponTrait['params']['TripDrop']) || !empty($replWeaponTrait['params']['Trip'])) $natBadges[] = 'Trip';
+                        if (!empty($replWeaponTrait['params']['DisarmMod'])) $natBadges[] = 'Disarm ' . (((int)$replWeaponTrait['params']['DisarmMod']) >= 0 ? '+' : '') . (int)$replWeaponTrait['params']['DisarmMod'];
+                        if (!empty($replWeaponTrait['params']['NoDisarm'])) $natBadges[] = "Can't Disarm";
+                        if (!empty($replWeaponTrait['params']['Charge'])) $natBadges[] = 'Charge';
                     }
                 }
 
@@ -2152,7 +2247,7 @@ class EntityEngine
                     (int)$modifierEngine->getTotal('WeapPar_Mnk'),
                     (int)$modifierEngine->getTotal('WeapPar_Gen'),
                     (int)$modifierEngine->getTotal('WeapPar_Brl')
-                );
+                ) + $natItemParMod;
 
                 $dispName = ($qty > 1 ? "{$qty} " : '') . $attackName;
 
@@ -2175,6 +2270,7 @@ class EntityEngine
                     'crit_multiplier' => $netNatCritMul,
                     'crit' => ($netNatCritRng < 20 ? "{$netNatCritRng}-20" : "20") . " (x{$netNatCritMul})",
                     'parry_bonus' => $natParryBonus,
+                    'badges' => $natBadges,
                     'maneuvers' => $natSkills['maneuvers'] ?? [],
                 ];
 
