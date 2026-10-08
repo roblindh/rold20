@@ -142,22 +142,22 @@
             <!-- ========================================================= -->
             <div x-show="equipmentViewMode === 'slots'" class="space-y-4">
                 <!-- Body Type & Race Header Banner -->
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-indigo-950 text-white p-3 rounded-xl border border-indigo-800 shadow-xs">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl border shadow-xs" style="background-color: #1e293b; border-color: #334155; color: #ffffff;">
                     <div class="flex items-center gap-2.5">
                         <span class="text-xl">🧬</span>
                         <div>
-                            <div class="font-bold text-xs sm:text-sm text-indigo-100 flex items-center gap-2">
+                            <div class="font-bold text-xs sm:text-sm flex items-center gap-2" style="color: #ffffff;">
                                 <span x-text="characterRaceName"></span>
-                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-800/90 text-indigo-200 border border-indigo-700 font-mono" x-text="'Body Type: ' + getBodyTypeInfo().name"></span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full font-mono font-semibold" style="background-color: #334155; color: #f1f5f9; border: 1px solid #475569;" x-text="'Body Type: ' + getBodyTypeInfo().name"></span>
                             </div>
-                            <div class="text-[10px] text-indigo-300 mt-0.5">
+                            <div class="text-[10px] mt-0.5" style="color: #94a3b8;">
                                 <span x-text="getAvailableSlotsForCharacter().length + ' dedicated item slot(s) available for this race and body anatomy.'"></span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-2 text-xs font-mono">
-                        <span class="text-indigo-200">Active Preset: <strong class="text-amber-300" x-text="['Combat', 'Travel', 'Rest', 'Sleep', 'Formal'][modalActivePreset]"></strong></span>
+                    <div class="flex items-center gap-2 text-xs font-mono" style="color: #cbd5e1;">
+                        <span>Active Preset: <strong class="text-amber-300" x-text="['Combat', 'Travel', 'Rest', 'Sleep', 'Formal'][modalActivePreset]"></strong></span>
                     </div>
                 </div>
 
@@ -174,18 +174,18 @@
 
                 <!-- Paperdoll 3-Column Grid: Left Slots | Center Outline SVG | Right Slots -->
                 <template x-if="getAvailableSlotsForCharacter().length > 0">
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-start">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5 items-start">
                         <!-- Left Slots Column -->
-                        <div class="lg:col-span-4 space-y-2.5">
+                        <div class="md:col-span-4 space-y-2">
                             <div class="text-[10px] font-bold uppercase tracking-wider text-slate-600 px-1 flex items-center justify-between">
                                 <span>Upper Body &amp; Accessories</span>
                                 <span class="font-mono text-slate-500" x-text="getAvailableSlotsLeft().length + ' slots'"></span>
                             </div>
                             <template x-for="slot in getAvailableSlotsLeft()" :key="slot.key">
                                 <!-- Slot Card -->
-                                <div class="bg-white rounded-xl border p-2.5 shadow-2xs transition hover:border-indigo-400"
+                                <div class="bg-white rounded-lg border p-2 shadow-2xs transition hover:border-indigo-400"
                                      :class="getEquippedItemForSlot(slot.key, modalActivePreset) ? 'border-indigo-300 bg-indigo-50/25' : 'border-dashed border-slate-300 bg-slate-50/50'">
-                                    <div class="flex items-center justify-between gap-1 mb-1.5">
+                                    <div class="flex items-center justify-between gap-1 mb-1">
                                         <span class="font-bold text-[11px] text-slate-800 flex items-center gap-1.5">
                                             <span x-text="slot.icon"></span>
                                             <span x-text="slot.name"></span>
@@ -193,7 +193,7 @@
                                         <template x-if="getEquippedItemForSlot(slot.key, modalActivePreset)">
                                             <button type="button" 
                                                     @click="assignItemToSlot(slot.key, '')" 
-                                                    class="text-[10px] text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5 rounded hover:bg-rose-50 cursor-pointer"
+                                                    class="text-[9px] text-rose-500 hover:text-rose-700 font-bold px-1 py-0.2 rounded hover:bg-rose-50 cursor-pointer"
                                                     title="Unequip this slot">
                                                 ✕ Unequip
                                             </button>
@@ -203,7 +203,7 @@
                                     <!-- Dropdown Selector -->
                                     <select :value="getEquippedItemForSlot(slot.key, modalActivePreset)?.uid || ''"
                                             @change="assignItemToSlot(slot.key, $event.target.value)"
-                                            class="w-full px-2 py-1.5 border rounded text-[11px] font-medium truncate"
+                                            class="w-full px-2 py-1 border rounded text-[11px] font-medium truncate"
                                             :class="getEquippedItemForSlot(slot.key, modalActivePreset) ? 'bg-amber-50 border-amber-300 text-amber-950 font-bold' : 'bg-white border-slate-300 text-slate-700'">
                                         <option value="">(Empty / None)</option>
                                         <template x-for="optItem in getEligibleItemsForSlot(slot.key)" :key="optItem.uid || optItem.id">
@@ -216,17 +216,17 @@
 
                                     <!-- Equipped Item Badges & Info -->
                                     <template x-if="getEquippedItemForSlot(slot.key, modalActivePreset)">
-                                        <div class="mt-1.5 pt-1.5 border-t border-slate-200/80 flex items-center justify-between text-[10px] text-slate-600">
+                                        <div class="mt-1 pt-1 border-t border-slate-200/80 flex items-center justify-between text-[10px] text-slate-600">
                                             <div class="flex items-center gap-1 flex-wrap">
                                                 <template x-for="(tr, trIdx) in getItemTraitsBadges(getEquippedItemForSlot(slot.key, modalActivePreset)).slice(0, 2)" :key="trIdx">
-                                                    <span class="px-1.5 py-0.2 rounded font-bold text-[9px] border bg-indigo-50 text-indigo-900 border-indigo-200" x-text="tr.badge"></span>
+                                                    <span class="px-1 py-0.2 rounded font-bold text-[9px] border bg-indigo-50 text-indigo-900 border-indigo-200" x-text="tr.badge"></span>
                                                 </template>
                                             </div>
                                             <div class="flex items-center gap-1.5">
                                                 <span class="font-mono text-slate-500" x-text="((getEquippedItemForSlot(slot.key, modalActivePreset).unit_weight || 0) * 0.5).toFixed(1) + ' kg'"></span>
                                                 <button type="button" 
                                                         @click="selectedEquipmentPreviewItem = getEquippedItemForSlot(slot.key, modalActivePreset)"
-                                                        class="text-indigo-600 hover:text-indigo-800 font-bold cursor-pointer">
+                                                        class="text-indigo-600 hover:text-indigo-800 font-bold cursor-pointer text-xs">
                                                     ℹ️
                                                 </button>
                                             </div>
@@ -237,34 +237,34 @@
                         </div>
 
                         <!-- Center Outline SVG Panel -->
-                        <div class="lg:col-span-4 flex flex-col items-center justify-center p-3.5 bg-gradient-to-b from-slate-900 via-slate-800 to-indigo-950 rounded-2xl border border-slate-700 shadow-inner relative overflow-hidden min-h-[380px]">
+                        <div class="md:col-span-4 flex flex-col items-center justify-center p-2.5 bg-gradient-to-b from-slate-900 via-slate-800 to-indigo-950 rounded-xl border border-slate-700 shadow-inner relative overflow-hidden min-h-[300px]">
                             <!-- Blueprint Grid Background -->
                             <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:16px_16px]"></div>
 
                             <div class="relative z-10 w-full flex flex-col items-center">
                                 <!-- SVG Container -->
-                                <div class="w-full max-w-[260px] h-[310px] flex items-center justify-center relative">
+                                <div class="w-full max-w-[180px] h-[260px] flex items-center justify-center relative">
                                     @include('utilities.partials.charview.body_outlines_svg')
                                 </div>
 
                                 <!-- Center Badge -->
-                                <div class="mt-2 text-center">
-                                    <span class="text-[11px] font-bold text-slate-300 bg-slate-800/90 px-3 py-1 rounded-full border border-slate-600 shadow-2xs" x-text="getBodyTypeInfo().name + ' Silhouette'"></span>
+                                <div class="mt-1.5 text-center">
+                                    <span class="text-[10px] font-bold text-slate-300 bg-slate-800/90 px-2.5 py-0.5 rounded-full border border-slate-600 shadow-2xs" x-text="getBodyTypeInfo().name + ' Silhouette'"></span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Right Slots Column -->
-                        <div class="lg:col-span-4 space-y-2.5">
+                        <div class="md:col-span-4 space-y-2">
                             <div class="text-[10px] font-bold uppercase tracking-wider text-slate-600 px-1 flex items-center justify-between">
                                 <span>Torso, Weapons &amp; Lower Body</span>
                                 <span class="font-mono text-slate-500" x-text="getAvailableSlotsRight().length + ' slots'"></span>
                             </div>
                             <template x-for="slot in getAvailableSlotsRight()" :key="slot.key">
                                 <!-- Slot Card -->
-                                <div class="bg-white rounded-xl border p-2.5 shadow-2xs transition hover:border-indigo-400"
+                                <div class="bg-white rounded-lg border p-2 shadow-2xs transition hover:border-indigo-400"
                                      :class="getEquippedItemForSlot(slot.key, modalActivePreset) ? 'border-indigo-300 bg-indigo-50/25' : 'border-dashed border-slate-300 bg-slate-50/50'">
-                                    <div class="flex items-center justify-between gap-1 mb-1.5">
+                                    <div class="flex items-center justify-between gap-1 mb-1">
                                         <span class="font-bold text-[11px] text-slate-800 flex items-center gap-1.5">
                                             <span x-text="slot.icon"></span>
                                             <span x-text="slot.name"></span>
@@ -272,7 +272,7 @@
                                         <template x-if="getEquippedItemForSlot(slot.key, modalActivePreset)">
                                             <button type="button" 
                                                     @click="assignItemToSlot(slot.key, '')" 
-                                                    class="text-[10px] text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5 rounded hover:bg-rose-50 cursor-pointer"
+                                                    class="text-[9px] text-rose-500 hover:text-rose-700 font-bold px-1 py-0.2 rounded hover:bg-rose-50 cursor-pointer"
                                                     title="Unequip this slot">
                                                 ✕ Unequip
                                             </button>
@@ -282,7 +282,7 @@
                                     <!-- Dropdown Selector -->
                                     <select :value="getEquippedItemForSlot(slot.key, modalActivePreset)?.uid || ''"
                                             @change="assignItemToSlot(slot.key, $event.target.value)"
-                                            class="w-full px-2 py-1.5 border rounded text-[11px] font-medium truncate"
+                                            class="w-full px-2 py-1 border rounded text-[11px] font-medium truncate"
                                             :class="getEquippedItemForSlot(slot.key, modalActivePreset) ? 'bg-amber-50 border-amber-300 text-amber-950 font-bold' : 'bg-white border-slate-300 text-slate-700'">
                                         <option value="">(Empty / None)</option>
                                         <template x-for="optItem in getEligibleItemsForSlot(slot.key)" :key="optItem.uid || optItem.id">
@@ -295,17 +295,17 @@
 
                                     <!-- Equipped Item Badges & Info -->
                                     <template x-if="getEquippedItemForSlot(slot.key, modalActivePreset)">
-                                        <div class="mt-1.5 pt-1.5 border-t border-slate-200/80 flex items-center justify-between text-[10px] text-slate-600">
+                                        <div class="mt-1 pt-1 border-t border-slate-200/80 flex items-center justify-between text-[10px] text-slate-600">
                                             <div class="flex items-center gap-1 flex-wrap">
                                                 <template x-for="(tr, trIdx) in getItemTraitsBadges(getEquippedItemForSlot(slot.key, modalActivePreset)).slice(0, 2)" :key="trIdx">
-                                                    <span class="px-1.5 py-0.2 rounded font-bold text-[9px] border bg-indigo-50 text-indigo-900 border-indigo-200" x-text="tr.badge"></span>
+                                                    <span class="px-1 py-0.2 rounded font-bold text-[9px] border bg-indigo-50 text-indigo-900 border-indigo-200" x-text="tr.badge"></span>
                                                 </template>
                                             </div>
                                             <div class="flex items-center gap-1.5">
                                                 <span class="font-mono text-slate-500" x-text="((getEquippedItemForSlot(slot.key, modalActivePreset).unit_weight || 0) * 0.5).toFixed(1) + ' kg'"></span>
                                                 <button type="button" 
                                                         @click="selectedEquipmentPreviewItem = getEquippedItemForSlot(slot.key, modalActivePreset)"
-                                                        class="text-indigo-600 hover:text-indigo-800 font-bold cursor-pointer">
+                                                        class="text-indigo-600 hover:text-indigo-800 font-bold cursor-pointer text-xs">
                                                     ℹ️
                                                 </button>
                                             </div>
@@ -399,7 +399,12 @@
                                     <!-- Value & Weight -->
                                     <td class="p-3 text-center font-mono text-[11px] text-slate-600">
                                         <div><span class="font-bold text-slate-800" x-text="(item.unit_price * item.qty) + ' sp'"></span></div>
-                                        <div class="text-[10px] text-slate-400" x-text="(item.unit_weight * item.qty).toFixed(1) + ' kg'"></div>
+                                        <div class="text-[10px] text-slate-400">
+                                            <span x-text="(item.unit_weight * item.qty).toFixed(1) + ' kg'"></span>
+                                            <template x-if="getItemECMod(item) !== null && getItemECMod(item) !== undefined && getItemECMod(item) !== 0">
+                                                <span class="font-semibold text-indigo-700" x-text="' (' + (getItemECMod(item) > 0 ? '+' : '') + getItemECMod(item) + ' EC)'"></span>
+                                            </template>
+                                        </div>
                                     </td>
 
                                     <!-- Container Assignment Dropdown -->

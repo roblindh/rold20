@@ -130,4 +130,66 @@ class EquipmentSlotsAndBodyOutlinesTest extends TestCase
         $this->assertNotNull($sword);
         $this->assertEquals('main_hand', $sword['slot']);
     }
+
+    public function test_equipment_slot_auto_detection_and_precedence(): void
+    {
+        // 1. Clothing (Subtype 14) with Armor traits must map to clothing (Body/Clothing) not armor
+        $clothingItem = [
+            'name' => 'Clothing (basic)',
+            'subtype' => 14,
+            'traits' => 'Armor { Qual=Lt; DR=0; DonTime=10/6/10; }',
+            'locations' => [2, 2, 2, 2, 2],
+        ];
+
+        // 2. Boots (Subtype 44 or 17) with natural attack traits must map to boots (Feet/Boots) not weapon
+        $bootsItem = [
+            'name' => 'Boots of Elvenkind',
+            'subtype' => 44,
+            'traits' => 'Weapon { Qual=Gen || Nat; AttMod=DexMod-1; Dmg=d4+StrMod B SP; NoDisarm=1; } WearShoe { }',
+            'locations' => [2, 2, 2, 2, 2],
+        ];
+
+        // 3. Outstanding Longsword must map to main_hand
+        $swordItem = [
+            'name' => 'Outstanding longsword',
+            'subtype' => 6,
+            'item_type_id' => 2,
+            'traits' => 'Weapon { Dmg=d8; Type=Slashing; }',
+            'locations' => [2, 2, 2, 2, 2],
+        ];
+
+        // 4. Heavy shield must map to off_hand
+        $shieldItem = [
+            'name' => 'Heavy shield',
+            'subtype' => 9,
+            'traits' => 'Shield { DR=+2; DeC=+2; }',
+            'locations' => [2, 2, 2, 2, 2],
+        ];
+
+        $char = DB::table('characters')->first();
+        $controller = new UtilityController();
+
+        $equipPayload = [
+            'items' => [
+                array_merge(['uid' => 'item_c_1', 'qty' => 1, 'unit_price' => 5, 'unit_weight' => 1.0, 'slot' => 'clothing'], $clothingItem),
+                array_merge(['uid' => 'item_b_1', 'qty' => 1, 'unit_price' => 250, 'unit_weight' => 0.5, 'slot' => 'boots'], $bootsItem),
+                array_merge(['uid' => 'item_s_1', 'qty' => 1, 'unit_price' => 100, 'unit_weight' => 1.5, 'slot' => 'main_hand'], $swordItem),
+                array_merge(['uid' => 'item_sh_1', 'qty' => 1, 'unit_price' => 20, 'unit_weight' => 4.0, 'slot' => 'off_hand'], $shieldItem),
+            ],
+            'wealth' => 100,
+            'coins' => ['pp' => 0, 'gp' => 0, 'sp' => 100, 'cp' => 0, 'locations' => [1,1,1,1,1]]
+        ];
+
+        $req = Request::create("/charview/{$char->ID}/manage-equipment", 'POST', $equipPayload);
+        $response = $controller->manageCharacterEquipment($req, $char->ID);
+        $this->assertEquals(302, $response->getStatusCode());
+
+        $updatedChar = DB::table('characters')->where('ID', $char->ID)->first();
+        $decoded = json_decode($updatedChar->Equipment, true);
+
+        $this->assertEquals('clothing', collect($decoded)->firstWhere('uid', 'item_c_1')['slot']);
+        $this->assertEquals('boots', collect($decoded)->firstWhere('uid', 'item_b_1')['slot']);
+        $this->assertEquals('main_hand', collect($decoded)->firstWhere('uid', 'item_s_1')['slot']);
+        $this->assertEquals('off_hand', collect($decoded)->firstWhere('uid', 'item_sh_1')['slot']);
+    }
 }

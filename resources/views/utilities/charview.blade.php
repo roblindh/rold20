@@ -351,6 +351,8 @@
                     'config' => $it['Config'] ?? $it['config'] ?? $it['config_string'] ?? '',
                     'slot' => $it['Slot'] ?? $it['slot'] ?? null,
                     'slots' => $it['Slots'] ?? $it['slots'] ?? null,
+                    'ec_mod' => $it['ECMod'] ?? $it['ec_mod'] ?? null,
+                    'ECMod' => $it['ECMod'] ?? $it['ec_mod'] ?? null,
                 ];
             }
             $rawCoins = $character->Coins ?? null;
@@ -1286,7 +1288,7 @@ function characterViewerApp() {
         },
 
         // Equipment Management State
-        equipmentViewMode: 'slots',
+        equipmentViewMode: 'list',
         modalActivePreset: {{ (int)$activeConfig }},
         characterBodyType: {{ (int)($characterBodyType ?? 1) }},
         characterNaturalAttacks: @json($characterNaturalAttacks ?? '2 Arm { } 2 Leg { } Head { }'),
@@ -1303,6 +1305,28 @@ function characterViewerApp() {
             is_container: false
         },
         equipmentItems: @json($equipmentList ?? []),
+
+        getItemECMod(item) {
+            if (!item) return null;
+            if (item.ec_mod !== undefined && item.ec_mod !== null && item.ec_mod !== '') {
+                const val = parseInt(item.ec_mod);
+                if (!isNaN(val)) return val;
+            }
+            if (item.ECMod !== undefined && item.ECMod !== null && item.ECMod !== '') {
+                const val = parseInt(item.ECMod);
+                if (!isNaN(val)) return val;
+            }
+            const rawTraits = item.Traits || item.traits_raw || item.traits || item.custom_traits || '';
+            if (rawTraits && typeof rawTraits === 'string') {
+                const ecModMatch = rawTraits.match(/\bECMod=([+-]?\d+)/i);
+                if (ecModMatch) return parseInt(ecModMatch[1]);
+                const ecRedMatch = rawTraits.match(/\bQual=ECRed;\s*Value=([+-]?\d+)/i) || rawTraits.match(/\bECRed=([+-]?\d+)/i);
+                if (ecRedMatch) return -Math.abs(parseInt(ecRedMatch[1]));
+                const ecMatch = rawTraits.match(/\bEC=([+-]?\d+)/i);
+                if (ecMatch) return parseInt(ecMatch[1]);
+            }
+            return null;
+        },
 
         getItemTraitsBadges(item) {
             if (!item) return [];
@@ -1532,69 +1556,79 @@ function characterViewerApp() {
             const bodyTraits = (bodyRow?.Traits || '').toLowerCase();
             const natAttacksStr = (this.characterNaturalAttacks || '').toLowerCase();
 
-            const slots = [];
-
             const isGenericOrBiped = (bodyTypeId === 0 || bodyTypeId === 1 || bodyTypeId === 2 || bodyTypeId === 8 || bodyTypeId === 9);
             const hasHead = natAttacksStr.includes('head') || isGenericOrBiped;
             const hasArm = natAttacksStr.includes('arm') || isGenericOrBiped;
             const hasLeg = natAttacksStr.includes('leg') || isGenericOrBiped;
 
-            // Head / Helmet & Eyes (From Head natural attack)
+            const leftSlots = [];
+            const rightSlots = [];
+
+            // --- LEFT OF OUTLINE ---
+            // 1. Head/Helmet (From Head natural attack)
             if (hasHead) {
-                slots.push({ key: 'head', name: 'Head / Helmet', icon: '🪖', side: 'left', category: 'head' });
-                slots.push({ key: 'eyes', name: 'Eyes / Lenses', icon: '🥽', side: 'left', category: 'head' });
+                leftSlots.push({ key: 'head', name: 'Head/Helmet', icon: '🪖', side: 'left', category: 'head' });
             }
-
-            // Neck / Necklace (From WearNecklace on BodyType)
+            // 2. Eyes/Lenses (From Head natural attack)
+            if (hasHead) {
+                leftSlots.push({ key: 'eyes', name: 'Eyes/Lenses', icon: '🥽', side: 'left', category: 'head' });
+            }
+            // 3. Neck/Necklace (From WearNecklace on BodyType)
             if (bodyTraits.includes('wearnecklace') || [0, 1, 2, 3, 4, 5, 6, 8, 9, 11].includes(bodyTypeId)) {
-                slots.push({ key: 'necklace', name: 'Neck / Necklace', icon: '📿', side: 'left', category: 'neck' });
+                leftSlots.push({ key: 'necklace', name: 'Neck/Necklace', icon: '📿', side: 'left', category: 'neck' });
             }
-
-            // Cloak / Shoulders (From WearCloak on BodyType)
+            // 4. Shoulders/Cloak (From WearCloak on BodyType)
             if (bodyTraits.includes('wearcloak') || [0, 1, 8].includes(bodyTypeId)) {
-                slots.push({ key: 'cloak', name: 'Shoulders / Cloak', icon: '🧥', side: 'left', category: 'shoulders' });
+                leftSlots.push({ key: 'cloak', name: 'Shoulders/Cloak', icon: '🧥', side: 'left', category: 'shoulders' });
             }
-
-            // Arms & Hands (From Arm natural attack)
+            // 5. Arms/Bracers (From Arm natural attack)
             if (hasArm) {
-                slots.push({ key: 'bracers', name: 'Arms / Bracers', icon: '🛡️', side: 'left', category: 'arms' });
-                slots.push({ key: 'gloves', name: 'Hands / Gloves', icon: '🧤', side: 'left', category: 'hands' });
-                slots.push({ key: 'ring_1', name: 'Ring 1 (Left)', icon: '💍', side: 'left', category: 'rings' });
+                leftSlots.push({ key: 'bracers', name: 'Arms/Bracers', icon: '🛡️', side: 'left', category: 'arms' });
+            }
+            // 6. Hands/Gloves (From Arm natural attack)
+            if (hasArm) {
+                leftSlots.push({ key: 'gloves', name: 'Hands/Gloves', icon: '🧤', side: 'left', category: 'hands' });
+            }
+            // 7. Odd-numbered ring(s)
+            if (hasArm) {
+                leftSlots.push({ key: 'ring_1', name: 'Ring 1 (Left)', icon: '💍', side: 'left', category: 'rings' });
             }
 
-            // Armor (From WearArmor on BodyType)
-            if (bodyTraits.includes('weararmor') || [0, 1, 2, 3, 4, 5, 6, 8, 9].includes(bodyTypeId)) {
-                slots.push({ key: 'armor', name: 'Torso / Armor', icon: '🛡️', side: 'right', category: 'torso' });
-            }
-
-            // Clothing (From WearClothing on BodyType)
+            // --- RIGHT OF OUTLINE ---
+            // 1. Body/Clothing (From WearClothing on BodyType)
             if (bodyTraits.includes('wearclothing') || [0, 1, 2, 8, 9].includes(bodyTypeId)) {
-                slots.push({ key: 'clothing', name: 'Body / Clothing', icon: '👔', side: 'right', category: 'torso' });
+                rightSlots.push({ key: 'clothing', name: 'Body/Clothing', icon: '👔', side: 'right', category: 'clothing' });
             }
-
-            // Weapons / Held Tools (From Arm natural attack)
+            // 2. Torso/Armor (From WearArmor on BodyType)
+            if (bodyTraits.includes('weararmor') || [0, 1, 2, 3, 4, 5, 6, 8, 9].includes(bodyTypeId)) {
+                rightSlots.push({ key: 'armor', name: 'Torso/Armor', icon: '🛡️', side: 'right', category: 'armor' });
+            }
+            // 3. Main Hand (From Arm natural attack)
             if (hasArm) {
-                slots.push({ key: 'main_hand', name: 'Main Hand (Weapon)', icon: '⚔️', side: 'right', category: 'held' });
-                slots.push({ key: 'off_hand', name: 'Off Hand (Shield/Weapon)', icon: '🛡️', side: 'right', category: 'held' });
-                slots.push({ key: 'ring_2', name: 'Ring 2 (Right)', icon: '💍', side: 'right', category: 'rings' });
+                rightSlots.push({ key: 'main_hand', name: 'Main Hand', icon: '⚔️', side: 'right', category: 'held' });
             }
-
-            // Belt (From WearBelt on BodyType)
+            // 4. Off Hand (From Arm natural attack)
+            if (hasArm) {
+                rightSlots.push({ key: 'off_hand', name: 'Off Hand', icon: '🛡️', side: 'right', category: 'held' });
+            }
+            // 5. Even-numbered ring(s)
+            if (hasArm) {
+                rightSlots.push({ key: 'ring_2', name: 'Ring 2 (Right)', icon: '💍', side: 'right', category: 'rings' });
+            }
+            // 6. Waist/Belt (From WearBelt on BodyType)
             if (bodyTraits.includes('wearbelt') || [0, 1, 2, 8, 9].includes(bodyTypeId)) {
-                slots.push({ key: 'belt', name: 'Waist / Belt', icon: '🥋', side: 'right', category: 'waist' });
+                rightSlots.push({ key: 'belt', name: 'Waist/Belt', icon: '🥋', side: 'right', category: 'waist' });
             }
-
-            // Boots / Shoes (From Leg natural attack)
+            // 7. Feet/Boots (From Leg natural attack)
             if (hasLeg) {
-                slots.push({ key: 'boots', name: 'Feet / Boots', icon: '👢', side: 'right', category: 'feet' });
+                rightSlots.push({ key: 'boots', name: 'Feet/Boots', icon: '👢', side: 'right', category: 'feet' });
             }
-
             // Saddle / Mount Gear (From WearSaddle on BodyType)
             if (bodyTraits.includes('wearsaddle') || [3, 4, 5, 6, 8, 9, 10].includes(bodyTypeId)) {
-                slots.push({ key: 'saddle', name: 'Back / Saddle', icon: '🐎', side: 'right', category: 'mount' });
+                rightSlots.push({ key: 'saddle', name: 'Back/Saddle', icon: '🐎', side: 'right', category: 'mount' });
             }
 
-            return slots;
+            return [...leftSlots, ...rightSlots];
         },
 
         getAvailableSlotsLeft() {
@@ -1623,27 +1657,54 @@ function characterViewerApp() {
             const name = (item.name || item.Name || '').toLowerCase();
             const traits = (item.traits || item.Traits || item.custom_traits || '').toLowerCase();
 
+            // 1. Head / Helmet
             if ([15, 42, 64].includes(subtype) || traits.includes('wearhelmet') || /\b(helm|helmet|coif|hat|cap|circlet|crown|tiara|hood|mask|headband)\b/i.test(name)) return 'head';
+
+            // 2. Eyes / Lenses
             if ([47, 66].includes(subtype) || traits.includes('wearlens') || /\b(goggles|lenses|lens|spectacles|monocle|glasses|eyepatch|visor)\b/i.test(name)) return 'eyes';
+
+            // 3. Neck / Necklace
             if ([37, 51, 60].includes(subtype) || traits.includes('wearnecklace') || /\b(necklace|amulet|pendant|collar|torc|choker|periapt|medallion|brooch|talisman|holy symbol)\b/i.test(name)) return 'necklace';
+
+            // 4. Shoulders / Cloak
             if ([19, 46].includes(subtype) || traits.includes('wearcloak') || /\b(cloak|cape|mantle|shawl|poncho)\b/i.test(name)) return 'cloak';
-            if ([11, 12, 13, 41].includes(subtype) || traits.includes('weararmor') || traits.includes('armor {') || traits.includes('armor{') || /\b(armor|mail|plate|cuirass|hauberk|brigandine|gambeson|breastplate|chain shirt|half plate|full plate|barding)\b/i.test(name)) return 'armor';
-            if ([14].includes(subtype) || traits.includes('wearclothing') || /\b(robe|tunic|vest|doublet|tabard|shirt|dress|garb|outfit|clothes|cassock|breeches|trousers|pants|skirt|kilt|jerkin|surcoat)\b/i.test(name)) return 'clothing';
+
+            // 5. Body / Clothing (Checked BEFORE armor to avoid Subtype 14 matching armor traits)
+            if ([14].includes(subtype) || traits.includes('wearclothing') || /\b(robe|tunic|vest|doublet|tabard|shirt|dress|garb|outfit|clothes|cassock|breeches|trousers|pants|skirt|kilt|jerkin|surcoat|clothing)\b/i.test(name)) return 'clothing';
+
+            // 6. Arms / Bracers
             if ([36, 52].includes(subtype) || traits.includes('wearbracer') || /\b(bracers|bracer|vambraces|armbands|cuffs)\b/i.test(name)) return 'bracers';
+
+            // 7. Hands / Gloves
             if ([16, 43].includes(subtype) || traits.includes('wearglove') || /\b(gloves|gauntlets|mittens|handwraps)\b/i.test(name)) return 'gloves';
+
+            // 8. Rings
             if ([35, 50].includes(subtype) || traits.includes('wearring') || /\b(ring|band|signet)\b/i.test(name)) {
                 const occupied1 = this.getEquippedItemForSlot('ring_1', this.modalActivePreset);
                 if (occupied1 && (occupied1.uid || occupied1.id) !== (item.uid || item.id)) return 'ring_2';
                 return 'ring_1';
             }
-            if (subtype === 9 || /\b(shield|buckler|pavise|targe)\b/i.test(name)) return 'off_hand';
-            if ([6, 7, 40, 48, 49, 59, 61, 62, 63, 65].includes(subtype) || type === 2 || traits.includes('weapon {') || traits.includes('weapon{') || traits.includes('usetool') || /\b(sword|blade|dagger|axe|bow|crossbow|mace|hammer|spear|staff|wand|rod|dorje)\b/i.test(name)) {
+
+            // 9. Feet / Boots (Checked BEFORE weapons as footwear replaces leg attacks and has weapon traits)
+            if ([17, 44].includes(subtype) || traits.includes('wearshoe') || /\b(boots|shoes|sandals|slippers|greaves|moccasins|sabaton|sabators|footwraps)\b/i.test(name)) return 'boots';
+
+            // 10. Waist / Belt
+            if ([18, 45].includes(subtype) || traits.includes('wearbelt') || /\b(belt|girdle|sash|baldric)\b/i.test(name)) return 'belt';
+
+            // 11. Shields -> Off Hand
+            if (subtype === 9 || traits.includes('shield {') || traits.includes('shield{') || /\b(shield|buckler|pavise|targe)\b/i.test(name)) return 'off_hand';
+
+            // 12. Torso / Armor (Excluding clothing subtype 14)
+            if (([11, 12, 13, 41].includes(subtype) || traits.includes('weararmor') || (traits.includes('armor {') && !traits.includes('qual=lt; dr=0')) || /\b(armor|mail|plate|cuirass|hauberk|brigandine|gambeson|breastplate|chain shirt|half plate|full plate|barding)\b/i.test(name)) && subtype !== 14) return 'armor';
+
+            // 13. Weapons -> Main Hand / Off Hand
+            if (([6, 7, 40, 48, 49, 59, 61, 62, 63, 65].includes(subtype) || type === 2 || (traits.includes('weapon {') && !traits.includes('nat;')) || traits.includes('usetool') || /\b(sword|blade|dagger|axe|bow|crossbow|mace|hammer|spear|staff|wand|rod|dorje|longsword|shortsword|greatsword|scimitar|rapier|halberd|glaive|flail|morningstar)\b/i.test(name)) && ![17, 44, 14, 15, 42].includes(subtype)) {
                 const occupiedMain = this.getEquippedItemForSlot('main_hand', this.modalActivePreset);
                 if (occupiedMain && (occupiedMain.uid || occupiedMain.id) !== (item.uid || item.id)) return 'off_hand';
                 return 'main_hand';
             }
-            if ([18, 45].includes(subtype) || traits.includes('wearbelt') || /\b(belt|girdle|sash|baldric)\b/i.test(name)) return 'belt';
-            if ([17, 44].includes(subtype) || traits.includes('wearshoe') || /\b(boots|shoes|sandals|slippers|greaves|moccasins)\b/i.test(name)) return 'boots';
+
+            // 14. Saddle / Mount Gear
             if (subtype === 28 || traits.includes('wearsaddle') || /\b(saddle|harness|barding|pack saddle|riding saddle)\b/i.test(name)) return 'saddle';
 
             return null;
@@ -1693,11 +1754,11 @@ function characterViewerApp() {
                 if (slotKey === 'cloak') {
                     return [19, 46].includes(subtype) || traits.includes('wearcloak') || /\b(cloak|cape|mantle|shawl|poncho|shroud)\b/i.test(name);
                 }
-                if (slotKey === 'armor') {
-                    return [11, 12, 13, 41].includes(subtype) || traits.includes('weararmor') || traits.includes('armor {') || traits.includes('armor{') || /\b(armor|mail|plate|cuirass|hauberk|brigandine|gambeson|breastplate|chain shirt|half plate|full plate|barding)\b/i.test(name);
-                }
                 if (slotKey === 'clothing') {
-                    return [14, 18].includes(subtype) || traits.includes('wearclothing') || /\b(robe|tunic|vest|doublet|tabard|shirt|dress|garb|outfit|clothes|cassock|breeches|trousers|pants|skirt|kilt|jerkin|surcoat)\b/i.test(name);
+                    return [14].includes(subtype) || traits.includes('wearclothing') || (/\b(robe|tunic|vest|doublet|tabard|shirt|dress|garb|outfit|clothes|cassock|breeches|trousers|pants|skirt|kilt|jerkin|surcoat|clothing)\b/i.test(name) && ![11, 12, 13, 41].includes(subtype));
+                }
+                if (slotKey === 'armor') {
+                    return ([11, 12, 13, 41].includes(subtype) || traits.includes('weararmor') || (traits.includes('armor {') && !traits.includes('qual=lt; dr=0') && subtype !== 14) || /\b(armor|mail|plate|cuirass|hauberk|brigandine|gambeson|breastplate|chain shirt|half plate|full plate|barding)\b/i.test(name)) && subtype !== 14;
                 }
                 if (slotKey === 'bracers') {
                     return [36, 52].includes(subtype) || traits.includes('wearbracer') || /\b(bracers|bracer|vambraces|armbands|cuffs|wristguards)\b/i.test(name);
@@ -1705,20 +1766,20 @@ function characterViewerApp() {
                 if (slotKey === 'gloves') {
                     return [16, 43].includes(subtype) || traits.includes('wearglove') || /\b(gloves|gauntlets|mittens|handwraps|claws)\b/i.test(name);
                 }
-                if (slotKey === 'ring_1' || slotKey === 'ring_2') {
+                if (slotKey === 'ring_1' || slotKey === 'ring_2' || slotKey === 'ring_3' || slotKey === 'ring_4') {
                     return [35, 50].includes(subtype) || traits.includes('wearring') || /\b(ring|band|signet)\b/i.test(name);
                 }
                 if (slotKey === 'main_hand') {
-                    return [6, 7, 9, 10, 40, 48, 49, 59, 61, 62, 63, 65].includes(subtype) || type === 2 || traits.includes('weapon {') || traits.includes('weapon{') || traits.includes('shield {') || traits.includes('shield{') || traits.includes('usetool') || /\b(sword|blade|dagger|axe|bow|crossbow|mace|hammer|spear|halberd|glaive|flail|morningstar|scimitar|rapier|greatsword|shortsword|longsword|quarterstaff|javelin|dart|sling|whip|trident|lance|scythe|club|staff|shield|buckler|rod|wand|dorje|torch|lantern|tool)\b/i.test(name);
+                    return ([6, 7, 9, 10, 40, 48, 49, 59, 61, 62, 63, 65].includes(subtype) || type === 2 || (traits.includes('weapon {') && !traits.includes('nat;') && ![17, 44, 15, 42, 16, 43].includes(subtype)) || traits.includes('shield {') || traits.includes('usetool') || /\b(sword|blade|dagger|axe|bow|crossbow|mace|hammer|spear|halberd|glaive|flail|morningstar|scimitar|rapier|greatsword|shortsword|longsword|quarterstaff|javelin|dart|sling|whip|trident|lance|scythe|club|staff|shield|buckler|rod|wand|dorje|torch|lantern|tool)\b/i.test(name)) && ![17, 44, 14, 15, 42].includes(subtype);
                 }
                 if (slotKey === 'off_hand') {
-                    return [6, 7, 8, 9, 10, 40, 48, 49, 59, 61, 62, 63, 65].includes(subtype) || type === 2 || traits.includes('weapon {') || traits.includes('weapon{') || traits.includes('shield {') || traits.includes('shield{') || traits.includes('usetool') || /\b(shield|buckler|targe|pavise|sword|blade|dagger|axe|mace|hammer|spear|quarterstaff|quiver|torch|lantern|implement|rod|wand)\b/i.test(name);
+                    return ([6, 7, 8, 9, 10, 40, 48, 49, 59, 61, 62, 63, 65].includes(subtype) || type === 2 || (traits.includes('weapon {') && !traits.includes('nat;') && ![17, 44, 15, 42, 16, 43].includes(subtype)) || traits.includes('shield {') || traits.includes('usetool') || /\b(shield|buckler|targe|pavise|sword|blade|dagger|axe|mace|hammer|spear|quarterstaff|quiver|torch|lantern|implement|rod|wand)\b/i.test(name)) && ![17, 44, 14, 15, 42].includes(subtype);
                 }
                 if (slotKey === 'belt') {
                     return [18, 45].includes(subtype) || traits.includes('wearbelt') || /\b(belt|girdle|sash|baldric|cincture|cord)\b/i.test(name);
                 }
                 if (slotKey === 'boots') {
-                    return [17, 44].includes(subtype) || traits.includes('wearshoe') || /\b(boots|shoes|sandals|slippers|moccasins|greaves|sabators|footwraps)\b/i.test(name);
+                    return [17, 44].includes(subtype) || traits.includes('wearshoe') || /\b(boots|shoes|sandals|slippers|moccasins|greaves|sabaton|sabators|footwraps)\b/i.test(name);
                 }
                 if (slotKey === 'saddle') {
                     return subtype === 28 || traits.includes('wearsaddle') || /\b(saddle|harness|barding|pack saddle|riding saddle|military saddle|exotic saddle|bridle|bit and bridle)\b/i.test(name);
