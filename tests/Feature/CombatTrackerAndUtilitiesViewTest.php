@@ -122,7 +122,7 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
         ]);
 
         $charId1 = DB::table('characters')->insertGetId([
-            'Name' => 'Hero A',
+            'Name' => 'Hero A ' . uniqid(),
             'Campaign' => $campId,
             'ExperiencePts' => 1000,
             'Wealth' => 100,
@@ -130,7 +130,7 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
         ]);
 
         $charId2 = DB::table('characters')->insertGetId([
-            'Name' => 'Hero B',
+            'Name' => 'Hero B ' . uniqid(),
             'Campaign' => $campId,
             'ExperiencePts' => 500,
             'Wealth' => 50,

@@ -192,9 +192,13 @@ class EquipmentManager
 
     public function addItem(array $itemData): string
     {
-        $id = $itemData['uid'] ?? $itemData['id'] ?? uniqid('item_');
-        $itemData['id'] = (string)$id;
-        $itemData['uid'] = (string)$id;
+        $rawId = $itemData['uid'] ?? $itemData['id'] ?? $itemData['ID'] ?? uniqid('item_');
+        $id = (string)$rawId;
+        if (isset($this->items[$id])) {
+            $id = $id . '_' . uniqid();
+        }
+        $itemData['id'] = $id;
+        $itemData['uid'] = $id;
         $itemData['quantity'] = max(1, (int)($itemData['quantity'] ?? $itemData['qty'] ?? $itemData['Qty'] ?? 1));
         $itemData['unit_weight'] = (float)($itemData['unit_weight'] ?? $itemData['BaseWeight'] ?? $itemData['Weight'] ?? 0.0);
         $itemData['unit_value'] = (float)($itemData['unit_value'] ?? $itemData['Value'] ?? 0.0);
@@ -851,9 +855,14 @@ class EquipmentManager
         } else {
             $isValuable = ($typeId === 9) || in_array($subtypeId, [51, 52, 53, 54, 55, 56]);
         }
-        $valType = $overrides['valuable_type'] ?? $mergedInput['valuable_type'] ?? ($isValuable ? 'gem' : null);
+        $valType = $overrides['valuable_type'] ?? $mergedInput['valuable_type'] ?? ($isValuable ? ($subtypeId === 51 ? 'gem' : ($subtypeId === 52 ? 'art' : (in_array($subtypeId, [53, 54, 55, 56]) ? 'bullion' : 'valuable'))) : null);
 
-        $uid = (string)($overrides['uid'] ?? $mergedInput['uid'] ?? $mergedInput['id'] ?? uniqid('item_'));
+        $rawUid = trim((string)($overrides['uid'] ?? $mergedInput['uid'] ?? ''));
+        if (!empty($rawUid) && !is_numeric($rawUid)) {
+            $uid = $rawUid;
+        } else {
+            $uid = uniqid('item_');
+        }
 
         return [
             'uid' => $uid,

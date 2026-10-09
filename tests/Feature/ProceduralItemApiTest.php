@@ -77,7 +77,7 @@ class ProceduralItemApiTest extends TestCase
     {
         // Create test character with starting wealth
         $charId = DB::table('characters')->insertGetId([
-            'Name' => 'Market Buyer Test',
+            'Name' => 'Market Buyer Test ' . uniqid(),
             'Wealth' => 5000,
             'Equipment' => '[]',
             'IsNPC' => 0,

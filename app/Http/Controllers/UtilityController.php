@@ -1154,10 +1154,12 @@ class UtilityController extends Controller
                 $ref = $catalog[(int)$it['id']];
                 $record = \App\Services\Entity\EquipmentManager::createInventoryRecord($ref, [
                     'qty' => $qty,
+                    'uid' => uniqid('item_'),
                 ]);
             } else {
                 $record = \App\Services\Entity\EquipmentManager::createInventoryRecord($it, [
                     'qty' => $qty,
+                    'uid' => uniqid('item_'),
                 ]);
             }
 
@@ -1532,9 +1534,16 @@ class UtilityController extends Controller
 
         try {
             $updatedEquip = [];
+            $seenUids = [];
             if (!empty($validated['items'])) {
                 foreach ($validated['items'] as $it) {
-                    $uid = $it['uid'] ?? $it['id'] ?? uniqid('item_');
+                    $rawUid = (string)($it['uid'] ?? $it['id'] ?? '');
+                    if (!empty($rawUid) && !is_numeric($rawUid) && !isset($seenUids[$rawUid])) {
+                        $uid = $rawUid;
+                    } else {
+                        $uid = uniqid('item_');
+                    }
+                    $seenUids[$uid] = true;
                     $name = trim($it['name']);
                     $qty = max(1, (int)($it['qty'] ?? 1));
                     $unitPrice = isset($it['unit_price']) ? (float)$it['unit_price'] : 0.0;

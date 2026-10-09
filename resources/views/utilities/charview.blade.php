@@ -290,11 +290,19 @@
             // --- 9. Parse Equipment & Wealth ---
             $rawEquipmentList = \App\Services\Entity\EquipmentManager::decodeEquipment($character->Equipment ?? []);
 
+            $seenUids = [];
             $equipmentList = [];
             foreach ($rawEquipmentList as $idx => $it) {
                 if (!is_array($it)) continue;
                 $it = \App\Services\Entity\EquipmentManager::enrichItemWithRefData($it);
-                $uid = (string)($it['uid'] ?? $it['id'] ?? ('item_' . $idx . '_' . ($it['item_id'] ?? $it['ID'] ?? '0')));
+                $rawUid = (string)($it['uid'] ?? $it['id'] ?? '');
+                if (!empty($rawUid) && !is_numeric($rawUid) && !isset($seenUids[$rawUid])) {
+                    $uid = $rawUid;
+                } else {
+                    $baseItemId = $it['item_id'] ?? $it['ID'] ?? '0';
+                    $uid = 'item_' . $idx . '_' . $baseItemId . '_' . substr(md5((string)$idx . '_' . microtime()), 0, 6);
+                }
+                $seenUids[$uid] = true;
                 $name = (string)($it['Name'] ?? $it['name'] ?? 'Item');
                 $qty = max(1, (int)($it['Qty'] ?? $it['qty'] ?? 1));
                 $unitPrice = (float)($it['BaseValue'] ?? $it['unit_price'] ?? $it['value'] ?? 0.0);
@@ -1856,6 +1864,7 @@ function characterViewerApp() {
                         if (!it.locations) it.locations = [1, 1, 1, 1, 1];
                         it.locations[p] = 1;
                         if (it.slots && it.slots[p]) delete it.slots[p];
+                        if (it.slot === slotKey) it.slot = null;
                     }
                 });
                 return;
@@ -1871,6 +1880,7 @@ function characterViewerApp() {
                         if (!it.locations) it.locations = [1, 1, 1, 1, 1];
                         it.locations[p] = 1;
                         if (it.slots && it.slots[p]) delete it.slots[p];
+                        if (it.slot === slotKey) it.slot = null;
                     }
                 }
             });

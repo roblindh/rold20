@@ -19,7 +19,7 @@
 
             <!-- Global Hidden Form Inputs for Reliable Submission -->
             <div class="hidden" aria-hidden="true">
-                <template x-for="(item, idx) in equipmentItems" :key="item.uid || idx">
+                <template x-for="(item, idx) in equipmentItems" :key="(item.uid || 'item') + '_' + idx">
                     <div>
                         <input type="hidden" :name="'items[' + idx + '][uid]'" :value="item.uid">
                         <input type="hidden" :name="'items[' + idx + '][item_id]'" :value="item.item_id">
@@ -206,7 +206,7 @@
                                             class="w-full px-2 py-1 border rounded text-[11px] font-semibold truncate text-slate-900"
                                             :style="getEquippedItemForSlot(slot.key, modalActivePreset) ? 'color: #451a03 !important; background-color: #fef3c7 !important; border-color: #fcd34d !important;' : 'color: #0f172a !important; background-color: #ffffff !important; border-color: #cbd5e1 !important;'">
                                         <option value="" class="text-slate-900 bg-white font-medium" style="color: #0f172a !important; background-color: #ffffff !important;">(Empty / None)</option>
-                                        <template x-for="optItem in getEligibleItemsForSlot(slot.key)" :key="optItem.uid || optItem.id">
+                                        <template x-for="(optItem, optIdx) in getEligibleItemsForSlot(slot.key)" :key="(optItem.uid || optItem.id || 'opt') + '_' + slot.key + '_' + optIdx">
                                             <option :value="optItem.uid || optItem.id"
                                                     :selected="(optItem.uid || optItem.id) === (getEquippedItemForSlot(slot.key, modalActivePreset)?.uid || '')"
                                                     class="text-slate-900 bg-white font-medium"
@@ -268,7 +268,7 @@
                                             class="w-full px-2 py-1 border rounded text-[11px] font-semibold truncate text-slate-900"
                                             :style="getEquippedItemForSlot(slot.key, modalActivePreset) ? 'color: #451a03 !important; background-color: #fef3c7 !important; border-color: #fcd34d !important;' : 'color: #0f172a !important; background-color: #ffffff !important; border-color: #cbd5e1 !important;'">
                                         <option value="" class="text-slate-900 bg-white font-medium" style="color: #0f172a !important; background-color: #ffffff !important;">(Empty / None)</option>
-                                        <template x-for="optItem in getEligibleItemsForSlot(slot.key)" :key="optItem.uid || optItem.id">
+                                        <template x-for="(optItem, optIdx) in getEligibleItemsForSlot(slot.key)" :key="(optItem.uid || optItem.id || 'opt') + '_' + slot.key + '_' + optIdx">
                                             <option :value="optItem.uid || optItem.id"
                                                     :selected="(optItem.uid || optItem.id) === (getEquippedItemForSlot(slot.key, modalActivePreset)?.uid || '')"
                                                     class="text-slate-900 bg-white font-medium"
@@ -311,7 +311,7 @@
                                 </tr>
                             </template>
 
-                            <template x-for="(item, idx) in equipmentItems" :key="item.uid || idx">
+                            <template x-for="(item, idx) in equipmentItems" :key="(item.uid || 'item') + '_' + idx">
                                 <tr class="hover:bg-slate-50/80 transition">
                                     <td class="p-3">
                                         <div class="flex items-center gap-1.5 flex-wrap">
@@ -378,7 +378,7 @@
                                         <template x-if="!item.is_container && getAvailableContainers(item).length > 0">
                                             <select x-model="item.container_id" class="px-2 py-1 border border-slate-300 rounded text-[11px] bg-slate-50 font-medium text-slate-800 w-full">
                                                 <option value="">None (On Person)</option>
-                                                <template x-for="c in getAvailableContainers(item)" :key="c.uid">
+                                                <template x-for="(c, cIdx) in getAvailableContainers(item)" :key="(c.uid || 'cnt') + '_' + cIdx">
                                                     <option :value="c.uid" x-text="'In ' + c.name"></option>
                                                 </template>
                                             </select>
@@ -528,7 +528,7 @@
                             <label class="block text-[10px] font-bold text-slate-700 uppercase mb-0.5">Coin Purse Container</label>
                             <select x-model="wallet.container_id" class="px-2.5 py-1.5 border border-slate-300 rounded text-xs bg-white font-medium text-slate-800 w-full">
                                 <option value="">None (On Person / Belt)</option>
-                                <template x-for="c in getAvailableContainers({uid: 'wallet'})" :key="c.uid">
+                                <template x-for="(c, cIdx) in getAvailableContainers({uid: 'wallet'})" :key="(c.uid || 'wcnt') + '_' + cIdx">
                                     <option :value="c.uid" x-text="'In ' + (c.name || c.Name)"></option>
                                 </template>
                             </select>

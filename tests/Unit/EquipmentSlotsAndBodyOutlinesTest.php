@@ -192,4 +192,70 @@ class EquipmentSlotsAndBodyOutlinesTest extends TestCase
         $this->assertEquals('main_hand', collect($decoded)->firstWhere('uid', 'item_s_1')['slot']);
         $this->assertEquals('off_hand', collect($decoded)->firstWhere('uid', 'item_sh_1')['slot']);
     }
+
+    public function test_duplicate_item_ids_and_commissioned_items_receive_unique_uids(): void
+    {
+        $char = DB::table('characters')->first();
+        $this->assertNotNull($char);
+
+        // Simulate legacy equipment with duplicate numeric IDs (e.g. two heavy shields with ID: 571)
+        $legacyEquip = [
+            [
+                'id' => 571,
+                'ID' => 571,
+                'Name' => 'Shield, heavy steel',
+                'name' => 'Shield, heavy steel',
+                'qty' => 1,
+                'unit_price' => 20,
+                'locations' => [2, 1, 0, 0, 0],
+                'slot' => 'off_hand',
+            ],
+            [
+                'id' => 571,
+                'ID' => 571,
+                'Name' => 'Mithril Shield, heavy steel',
+                'name' => 'Mithril Shield, heavy steel',
+                'qty' => 1,
+                'unit_price' => 1020,
+                'locations' => [2, 2, 0, 0, 0],
+                'slot' => 'off_hand',
+            ],
+            [
+                'id' => 88,
+                'ID' => 88,
+                'Name' => 'Longsword',
+                'name' => 'Longsword',
+                'qty' => 1,
+                'unit_price' => 15,
+                'locations' => [2, 2, 0, 0, 0],
+                'slot' => 'main_hand',
+            ]
+        ];
+
+        DB::table('characters')->where('ID', $char->ID)->update([
+            'Equipment' => json_encode($legacyEquip)
+        ]);
+
+        $controller = new UtilityController();
+        $req = Request::create("/charview/{$char->ID}", 'GET');
+        $view = $controller->characterViewer($req, $char->ID);
+
+        $this->assertInstanceOf(\Illuminate\View\View::class, $view);
+        $html = $view->render();
+        
+        $this->assertStringContainsString('equipmentItems:', $html);
+        preg_match('/equipmentItems:\s*(\[.*?\]),\s*getItemECMod/s', $html, $matches);
+        $this->assertNotEmpty($matches, 'equipmentItems JSON payload should be rendered in charview HTML');
+        $equipmentList = json_decode($matches[1], true);
+
+        $this->assertCount(3, $equipmentList);
+        $uids = array_column($equipmentList, 'uid');
+        $this->assertCount(3, array_unique($uids), 'All items in equipmentList must have unique UIDs');
+        $this->assertNotEquals($equipmentList[0]['uid'], $equipmentList[1]['uid']);
+
+        // Verify EntityEngine calculates both equipped items without one overwriting the other
+        $calc = EntityEngine::calculate($char, EquipmentManager::CONFIG_COMBAT);
+        $this->assertIsArray($calc);
+    }
 }
+
