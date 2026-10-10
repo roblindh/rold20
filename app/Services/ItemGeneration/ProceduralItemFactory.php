@@ -1171,6 +1171,10 @@ class ProceduralItemFactory
                 }
             }
 
+            if ($baseItemId === 0 && !str_contains($effectiveConfig, '(')) {
+                return null;
+            }
+
             $baseItemRef = ($baseItemId > 0 && isset($_APP['items'][$baseItemId])) ? $_APP['items'][$baseItemId] : null;
             $subtypeId = $baseItemRef ? (int)($baseItemRef['Subtype'] ?? 0) : 0;
             $subtypeRef = ($subtypeId > 0 && isset($_APP['itemsubtypes'][$subtypeId])) ? $_APP['itemsubtypes'][$subtypeId] : null;

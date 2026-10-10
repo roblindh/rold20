@@ -1342,7 +1342,67 @@ p, .rule-content p {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     text-shadow: none !important;
-    color: #17212d;
+    color: inherit;
+}
+
+/* Ensure headings with white/light text classes or on dark modal header banners remain clearly readable */
+.fixed h2.text-white,
+.fixed h3.text-white,
+.fixed h4.text-white,
+.fixed h5.text-white,
+.fixed .text-white,
+.fixed [style*="color: #ffffff"] h2,
+.fixed [style*="color: #ffffff"] h3,
+.fixed [style*="color: #ffffff"] h4,
+.fixed [style*="color:#ffffff"] h2,
+.fixed [style*="color:#ffffff"] h3,
+.fixed [style*="color:#ffffff"] h4,
+.fixed [style*="background-color: #2b3d52"] h2,
+.fixed [style*="background-color: #2b3d52"] h3,
+.fixed [style*="background-color: #2b3d52"] h4,
+.fixed [style*="background-color: #3a4f63"] h2,
+.fixed [style*="background-color: #3a4f63"] h3,
+.fixed [style*="background-color: #3a4f63"] h4,
+.fixed [style*="background-color: #1e293b"] h2,
+.fixed [style*="background-color: #1e293b"] h3,
+.fixed [style*="background-color: #1e293b"] h4,
+.fixed [style*="linear-gradient"] h2,
+.fixed [style*="linear-gradient"] h3,
+.fixed [style*="linear-gradient"] h4,
+.fixed .bg-slate-800 h2,
+.fixed .bg-slate-800 h3,
+.fixed .bg-slate-800 h4,
+.fixed .bg-slate-900 h2,
+.fixed .bg-slate-900 h3,
+.fixed .bg-slate-900 h4,
+.modal [style*="color: #ffffff"] h2,
+.modal [style*="color: #ffffff"] h3,
+.modal [style*="color: #ffffff"] h4,
+.modal [style*="color:#ffffff"] h2,
+.modal [style*="color:#ffffff"] h3,
+.modal [style*="color:#ffffff"] h4,
+.modal [style*="background-color: #2b3d52"] h2,
+.modal [style*="background-color: #2b3d52"] h3,
+.modal [style*="background-color: #2b3d52"] h4,
+.modal [style*="background-color: #3a4f63"] h2,
+.modal [style*="background-color: #3a4f63"] h3,
+.modal [style*="background-color: #3a4f63"] h4,
+.modal .text-white {
+    color: #ffffff !important;
+}
+
+.fixed .text-amber-200,
+.modal .text-amber-200,
+.fixed h2.text-amber-200,
+.fixed h3.text-amber-200 {
+    color: #fde68a !important;
+}
+
+.fixed .text-amber-300,
+.modal .text-amber-300,
+.fixed h2.text-amber-300,
+.fixed h3.text-amber-300 {
+    color: #fcd34d !important;
 }
 
 .parchment-inset, .bg-slate-50, .bg-gray-50 {

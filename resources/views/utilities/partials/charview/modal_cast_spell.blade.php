@@ -7,7 +7,7 @@
             <div class="flex items-center gap-3">
                 <span class="text-2xl">🪄</span>
                 <div>
-                    <h2 class="font-bold text-base sm:text-lg flex items-center gap-2 font-serif text-amber-200">
+                    <h2 class="font-bold text-base sm:text-lg flex items-center gap-2 font-serif text-amber-200" style="color: #fde68a !important;">
                         <span>Cast Spell Assistant</span>
                         @if(isset($character) && $character)
                             <span class="text-xs bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-full font-sans shadow-xs">

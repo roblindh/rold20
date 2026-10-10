@@ -790,17 +790,27 @@ class EquipmentManager
         $subtypeType = ($subtypeId > 0 && isset(self::$refItemSubtypesCache[$subtypeId])) ? (int)(self::$refItemSubtypesCache[$subtypeId]['Type'] ?? 0) : 0;
         $typeId = (int)($mergedInput['item_type_id'] ?? $mergedInput['ItemTypeID'] ?? $mergedInput['item_type'] ?? ($inst['item_type_id'] ?? ($baseItem['ItemTypeID'] ?? ($baseItem['Type'] ?? ($subtypeType > 0 ? $subtypeType : 0)))));
 
-        $unitPrice = isset($overrides['unit_price']) ? (float)$overrides['unit_price']
-            : (isset($mergedInput['unit_price']) ? (float)$mergedInput['unit_price']
-            : (isset($inst['value_sp']) ? (float)$inst['value_sp']
-            : (isset($mergedInput['value']) ? (float)$mergedInput['value']
-            : (float)($baseItem['BaseValue'] ?? 0))));
+        $explicitPrice = $overrides['unit_price'] ?? $overrides['value'] ?? $mergedInput['unit_price'] ?? $mergedInput['value'] ?? $mergedInput['Value'] ?? null;
+        if ($explicitPrice !== null && is_numeric($explicitPrice) && (float)$explicitPrice > 0) {
+            $unitPrice = (float)$explicitPrice;
+        } elseif (isset($inst['value_sp']) && (float)$inst['value_sp'] > 0) {
+            $unitPrice = (float)$inst['value_sp'];
+        } elseif ($explicitPrice !== null && is_numeric($explicitPrice)) {
+            $unitPrice = (float)$explicitPrice;
+        } else {
+            $unitPrice = (float)($inst['value_sp'] ?? $baseItem['BaseValue'] ?? 0);
+        }
 
-        $unitWeight = isset($overrides['unit_weight']) ? (float)$overrides['unit_weight']
-            : (isset($mergedInput['unit_weight']) ? (float)$mergedInput['unit_weight']
-            : (isset($inst['weight_kg']) ? (float)$inst['weight_kg']
-            : (isset($mergedInput['weight']) ? (float)$mergedInput['weight']
-            : (float)($baseItem['BaseWeight'] ?? $baseItem['Weight'] ?? 0))));
+        $explicitWeight = $overrides['unit_weight'] ?? $overrides['weight'] ?? $mergedInput['unit_weight'] ?? $mergedInput['weight'] ?? $mergedInput['Weight'] ?? null;
+        if ($explicitWeight !== null && is_numeric($explicitWeight) && (float)$explicitWeight > 0) {
+            $unitWeight = (float)$explicitWeight;
+        } elseif (isset($inst['weight_kg']) && (float)$inst['weight_kg'] > 0) {
+            $unitWeight = (float)$inst['weight_kg'];
+        } elseif ($explicitWeight !== null && is_numeric($explicitWeight)) {
+            $unitWeight = (float)$explicitWeight;
+        } else {
+            $unitWeight = (float)($inst['weight_kg'] ?? $baseItem['BaseWeight'] ?? $baseItem['Weight'] ?? 0);
+        }
 
         $qty = max(1, (int)($overrides['qty'] ?? $mergedInput['qty'] ?? $mergedInput['Qty'] ?? 1));
 
@@ -853,9 +863,14 @@ class EquipmentManager
         } elseif (isset($mergedInput['is_valuable'])) {
             $isValuable = (bool)$mergedInput['is_valuable'];
         } else {
-            $isValuable = ($typeId === 9) || in_array($subtypeId, [51, 52, 53, 54, 55, 56]);
+            $isValuable = ($typeId === 9)
+                || in_array($subtypeId, [51, 52, 53, 54, 55, 56])
+                || ($mergedInput['type'] ?? '') === 'gem'
+                || ($mergedInput['category'] ?? '') === 'gems'
+                || str_starts_with($configStr, 'gem:')
+                || preg_match('/\b(gem|ruby|emerald|sapphire|diamond|opal|amethyst|garnet|topaz|turquoise|agate|spinel|peridot|jade|pearl|onyx|zircon|quartz|tourmaline)\b/i', $name);
         }
-        $valType = $overrides['valuable_type'] ?? $mergedInput['valuable_type'] ?? ($isValuable ? ($subtypeId === 51 ? 'gem' : ($subtypeId === 52 ? 'art' : (in_array($subtypeId, [53, 54, 55, 56]) ? 'bullion' : 'valuable'))) : null);
+        $valType = $overrides['valuable_type'] ?? $mergedInput['valuable_type'] ?? ($isValuable ? ($subtypeId === 51 ? 'gem' : ($subtypeId === 52 ? 'art' : (in_array($subtypeId, [53, 54, 55, 56]) ? 'bullion' : (preg_match('/\b(gem|ruby|emerald|sapphire|diamond|opal|amethyst|garnet|topaz|turquoise|agate|spinel|peridot|jade|pearl|onyx|zircon|quartz|tourmaline)\b/i', $name) ? 'gem' : 'valuable')))) : null);
 
         $rawUid = trim((string)($overrides['uid'] ?? $mergedInput['uid'] ?? ''));
         if (!empty($rawUid) && !is_numeric($rawUid)) {
@@ -871,6 +886,8 @@ class EquipmentManager
             'qty' => $qty,
             'unit_price' => $unitPrice,
             'unit_weight' => $unitWeight,
+            'value' => $unitPrice,
+            'weight' => $unitWeight,
             'location' => $location,
             'locations' => $locations,
             'container_id' => $containerId,

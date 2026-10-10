@@ -42,7 +42,7 @@
     </div>
 
     <!-- Add Combatant Action Bar -->
-    <div class="parchment-card p-2 sm:p-2.5 flex flex-wrap items-center justify-between gap-2 shadow-sm border border-amber-900/20 bg-amber-50/95 rounded-xl">
+    <div class="parchment-card p-2 sm:p-2.5 flex flex-wrap items-center justify-between gap-2 shadow-sm border border-amber-900/20 bg-amber-50/95 rounded-xl relative z-50">
         <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
             <!-- Import Party Button -->
             <button type="button" @click="loadCampaignParty()" 
@@ -52,13 +52,13 @@
             </button>
 
             <!-- Quick Add PC Dropdown -->
-            <div class="relative" x-data="{ open: false }">
+            <div class="relative z-50" x-data="{ open: false }">
                 <button type="button" @click="open = !open" 
                         class="btn-rol-secondary text-xs py-1.5 px-2.5">
                     <span>🧙‍♂️</span> Add PC <span class="text-[9px]">▼</span>
                 </button>
                 <div x-show="open" @click.outside="open = false" x-cloak
-                     class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-30 max-h-60 overflow-y-auto border border-amber-900/30">
+                     class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-[60] max-h-60 overflow-y-auto border border-amber-900/30">
                     <template x-for="pc in availablePCs" :key="pc.id">
                         <button type="button" @click="addCombatant(pc); open = false"
                                 class="w-full text-left px-3 py-1.5 hover:bg-amber-100 text-xs font-medium text-stone-900 flex items-center justify-between border-b border-amber-900/10 last:border-0 cursor-pointer">
@@ -74,13 +74,13 @@
             </div>
 
             <!-- Quick Add NPC Dropdown -->
-            <div class="relative" x-data="{ open: false }">
+            <div class="relative z-50" x-data="{ open: false }">
                 <button type="button" @click="open = !open" 
                         class="btn-rol-secondary text-xs py-1.5 px-2.5">
                     <span>👤</span> Add NPC <span class="text-[9px]">▼</span>
                 </button>
                 <div x-show="open" @click.outside="open = false" x-cloak
-                     class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-30 max-h-60 overflow-y-auto border border-amber-900/30">
+                     class="absolute left-0 mt-1 w-64 parchment-card shadow-lg py-1 z-[60] max-h-60 overflow-y-auto border border-amber-900/30">
                     <template x-for="npc in availableNPCs" :key="npc.id">
                         <button type="button" @click="addCombatant(npc); open = false"
                                 class="w-full text-left px-3 py-1.5 hover:bg-amber-100 text-xs font-medium text-stone-900 flex items-center justify-between border-b border-amber-900/10 last:border-0 cursor-pointer">
@@ -134,7 +134,17 @@
                     <template x-if="activeCombatant">
                         <div class="flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-sm"></span>
-                            <span class="font-bold text-sm sm:text-base text-amber-200 font-serif" x-text="activeCombatant.name"></span>
+                            <template x-if="getCombatantUrl(activeCombatant)">
+                                <a :href="getCombatantUrl(activeCombatant)" target="_blank" rel="noopener noreferrer"
+                                   class="font-bold text-sm sm:text-base text-amber-200 hover:text-amber-100 hover:underline font-serif inline-flex items-center gap-1"
+                                   title="Open character sheet / bestiary in new tab">
+                                    <span x-text="activeCombatant.name"></span>
+                                    <span class="text-[10px] text-amber-300/70 font-sans no-underline">↗</span>
+                                </a>
+                            </template>
+                            <template x-if="!getCombatantUrl(activeCombatant)">
+                                <span class="font-bold text-sm sm:text-base text-amber-200 font-serif" x-text="activeCombatant.name"></span>
+                            </template>
                             <span class="text-[10px] px-2 py-0.5 rounded-full font-bold"
                                   :class="{
                                       'bg-sky-900 text-sky-200 border border-sky-400/60': activeCombatant.type === 'pc',
@@ -239,7 +249,17 @@
                                               'bg-rose-100 text-rose-900 border border-rose-300': c.type !== 'pc' && c.type !== 'npc'
                                           }"
                                           x-text="(c.type || 'monster').toUpperCase()"></span>
-                                    <span class="font-bold text-slate-900 text-sm font-serif" x-text="c.name"></span>
+                                    <template x-if="getCombatantUrl(c)">
+                                        <a :href="getCombatantUrl(c)" target="_blank" rel="noopener noreferrer"
+                                           class="font-bold text-slate-900 hover:text-indigo-700 hover:underline text-sm font-serif inline-flex items-center gap-1"
+                                           title="Open character sheet / bestiary in new tab">
+                                            <span x-text="c.name"></span>
+                                            <span class="text-[10px] text-slate-400 font-sans no-underline">↗</span>
+                                        </a>
+                                    </template>
+                                    <template x-if="!getCombatantUrl(c)">
+                                        <span class="font-bold text-slate-900 text-sm font-serif" x-text="c.name"></span>
+                                    </template>
                                     <span class="text-[11px] text-slate-500 font-mono" x-text="'Lvl ' + c.level + (c.race_name ? ' • ' + c.race_name : '')"></span>
                                 </div>
                             </div>
@@ -297,6 +317,11 @@
                                     <div class="w-full bg-slate-200 h-1 rounded-full overflow-hidden">
                                         <div class="bg-amber-500 h-full rounded-full transition-all duration-300"
                                              :style="'width: ' + Math.min(100, Math.max(0, (c.ap_curr / (c.ap_max || 1)) * 100)) + '%'"></div>
+                                    </div>
+                                    <!-- Reactions per Round -->
+                                    <div class="flex items-center justify-between text-[10px] text-slate-500 font-mono mt-1 pt-0.5 border-t border-slate-100">
+                                        <span>Reactions:</span>
+                                        <span class="text-amber-800 bg-amber-100/80 px-1 rounded font-bold" title="Reactions available per round (1 per 10 AP + Ref bonus)" x-text="(c.reactions || Math.max(1, Math.floor((c.ap_max || 10) / 10))) + ' / rnd'"></span>
                                     </div>
                                 </div>
 
@@ -391,21 +416,48 @@
                                 </div>
                             </div>
 
-                            <!-- Defenses & Saves Strip -->
-                            <div class="flex flex-wrap items-center gap-1.5 text-xs bg-slate-100/90 p-1.5 rounded-lg border border-slate-200/80 font-mono">
-                                <span class="font-bold text-slate-600 font-sans text-[10px] uppercase tracking-wider mr-1">Defenses:</span>
-                                <span class="bg-white px-1.5 py-0.2 rounded border border-slate-300 shadow-2xs">DeCa: <strong class="text-slate-900" x-text="c.deca"></strong></span>
-                                <span class="bg-white px-1.5 py-0.2 rounded border border-slate-300 shadow-2xs">DeCp: <strong class="text-slate-900" x-text="c.decp"></strong></span>
-                                <template x-if="c.dr > 0">
-                                    <span class="bg-white px-1.5 py-0.2 rounded border border-slate-300 shadow-2xs">DR: <strong class="text-amber-900" x-text="c.dr"></strong></span>
-                                </template>
-                                <template x-if="c.mr > 0">
-                                    <span class="bg-white px-1.5 py-0.2 rounded border border-slate-300 shadow-2xs">MR: <strong class="text-indigo-900" x-text="c.mr"></strong></span>
-                                </template>
-                                <span class="bg-white px-1.5 py-0.2 rounded border border-slate-300 shadow-2xs">Fort: <strong class="text-slate-900" x-text="c.fort"></strong></span>
-                                <span class="bg-white px-1.5 py-0.2 rounded border border-slate-300 shadow-2xs">Ref: <strong class="text-slate-900" x-text="c.ref"></strong></span>
-                                <span class="bg-white px-1.5 py-0.2 rounded border border-slate-300 shadow-2xs">Will: <strong class="text-slate-900" x-text="c.will"></strong></span>
-                                <span class="bg-white px-1.5 py-0.2 rounded border border-slate-300 shadow-2xs" x-show="c.speed">Speed: <strong class="text-slate-900" x-text="c.speed"></strong></span>
+                            <!-- Defenses & Saves Card -->
+                            <div class="bg-gradient-to-r from-slate-50 via-slate-100/90 to-amber-50/60 p-2.5 rounded-xl border border-slate-300 shadow-2xs space-y-1.5">
+                                <div class="flex items-center justify-between text-[11px] border-b border-slate-200/80 pb-1">
+                                    <div class="font-bold text-slate-800 flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
+                                        <span>🛡️</span> Defenses &amp; Saving Throws
+                                    </div>
+                                    <div x-show="c.speed" class="text-[10px] font-mono font-bold text-slate-600 flex items-center gap-1">
+                                        <span>🏃</span> Speed: <span class="text-slate-900" x-text="c.speed"></span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-1.5 text-xs font-mono">
+                                    <!-- Primary Defenses: DeCa & DeCp -->
+                                    <span class="bg-sky-50 text-sky-950 px-2 py-0.5 rounded-md border border-sky-300 shadow-2xs font-semibold" title="Active Defense Category (DeCa)">
+                                        DeCa: <strong class="text-sm font-bold text-sky-900" x-text="c.deca"></strong>
+                                    </span>
+                                    <span class="bg-slate-50 text-slate-900 px-2 py-0.5 rounded-md border border-slate-300 shadow-2xs font-semibold" title="Passive Defense Category (DeCp)">
+                                        DeCp: <strong class="text-sm font-bold text-slate-900" x-text="c.decp"></strong>
+                                    </span>
+
+                                    <!-- Damage / Magic Resistance -->
+                                    <template x-if="c.dr > 0">
+                                        <span class="bg-amber-100 text-amber-950 px-2 py-0.5 rounded-md border border-amber-300 shadow-2xs font-semibold" title="Damage Reduction (DR)">
+                                            DR: <strong class="text-sm font-bold text-amber-900" x-text="c.dr"></strong>
+                                        </span>
+                                    </template>
+                                    <template x-if="c.mr > 0">
+                                        <span class="bg-purple-100 text-purple-950 px-2 py-0.5 rounded-md border border-purple-300 shadow-2xs font-semibold" title="Magic Resistance (MR)">
+                                            MR: <strong class="text-sm font-bold text-purple-900" x-text="c.mr"></strong>
+                                        </span>
+                                    </template>
+
+                                    <!-- Saving Throws -->
+                                    <span class="bg-emerald-50 text-emerald-950 px-2 py-0.5 rounded-md border border-emerald-300 shadow-2xs font-semibold" title="Fortitude Save">
+                                        Fort: <strong class="text-sm font-bold text-emerald-900" x-text="c.fort"></strong>
+                                    </span>
+                                    <span class="bg-blue-50 text-blue-950 px-2 py-0.5 rounded-md border border-blue-300 shadow-2xs font-semibold" title="Reflex Save">
+                                        Ref: <strong class="text-sm font-bold text-blue-900" x-text="c.ref"></strong>
+                                    </span>
+                                    <span class="bg-indigo-50 text-indigo-950 px-2 py-0.5 rounded-md border border-indigo-300 shadow-2xs font-semibold" title="Will Save">
+                                        Will: <strong class="text-sm font-bold text-indigo-900" x-text="c.will"></strong>
+                                    </span>
+                                </div>
                             </div>
 
                             <!-- Active Attack Strip with Dropdown Selector -->
@@ -623,7 +675,7 @@
                 <div class="flex items-center gap-2.5">
                     <span class="text-xl">👹</span>
                     <div>
-                        <h3 class="font-bold text-base sm:text-lg text-white font-serif leading-tight">
+                        <h3 class="font-bold text-base sm:text-lg text-white font-serif leading-tight" style="color: #ffffff !important;">
                             Add Monster Reference from Bestiary
                         </h3>
                         <p class="text-[11px] text-slate-300">
@@ -941,7 +993,7 @@
                 <div class="flex items-center gap-2.5">
                     <span class="text-2xl">🏆</span>
                     <div>
-                        <h3 class="font-bold text-base sm:text-lg text-white font-serif leading-tight">
+                        <h3 class="font-bold text-base sm:text-lg text-white font-serif leading-tight" style="color: #ffffff !important;">
                             Encounter Summary &amp; Resolution
                         </h3>
                         <p class="text-[11px] text-emerald-200">
@@ -1324,8 +1376,11 @@ function combatTrackerApp() {
                             } else {
                                 clone.name = displayName;
                             }
+                            clone.creature_name = cr.name;
+                            clone.db_id = cr.id || cr.ID || null;
                             clone.ap_max = clone.ap_max || (10 + (parseInt(clone.level) || 1));
                             clone.ap_curr = clone.ap_curr !== undefined && clone.ap_curr !== null ? clone.ap_curr : clone.ap_max;
+                            clone.reactions = clone.reactions !== undefined ? clone.reactions : Math.max(1, Math.floor(clone.ap_max / 10));
                             this.addCombatant(clone);
                         } else if (entry.name) {
                             const lvl = parseInt(entry.level) || 1;
@@ -1342,6 +1397,7 @@ function combatTrackerApp() {
                             this.addCombatant({
                                 id: 'custom_' + Date.now() + '_' + i,
                                 name: (count > 1 ? `${entry.name} #${i + 1}` : entry.name),
+                                creature_name: entry.name,
                                 type: 'monster',
                                 level: lvl,
                                 hp_max: parseInt(entry.hp) || 20,
@@ -1349,6 +1405,7 @@ function combatTrackerApp() {
                                 pp_max: 0,
                                 ap_max: 10 + lvl,
                                 ap_curr: 10 + lvl,
+                                reactions: Math.max(1, Math.floor((10 + lvl) / 10)),
                                 init_mod: 0,
                                 deca: 11,
                                 decp: 11,
@@ -1547,6 +1604,9 @@ function combatTrackerApp() {
             copy.pp_curr = copy.pp_curr ?? copy.pp_max;
             copy.ap_max = copy.ap_max || (10 + (parseInt(copy.level) || 1));
             copy.ap_curr = copy.ap_curr !== undefined && copy.ap_curr !== null ? copy.ap_curr : copy.ap_max;
+            copy.reactions = copy.reactions !== undefined ? copy.reactions : Math.max(1, Math.floor((copy.ap_max || 10) / 10));
+            copy.creature_name = copy.creature_name || source.creature_name || (copy.type === 'monster' ? source.name : null);
+            copy.db_id = copy.db_id || source.db_id || null;
             copy.conditions = copy.conditions ?? [];
 
             // Match active attack from Character Viewer's localStorage if available
@@ -1599,6 +1659,8 @@ function combatTrackerApp() {
                 const comb = {
                     id: 'comb_' + Date.now() + '_' + Math.floor(Math.random() * 10000) + '_' + i,
                     name: name,
+                    creature_name: m.name,
+                    db_id: m.id || null,
                     type: 'monster',
                     level: m.level,
                     race_name: (m.size_abbr ? m.size_abbr + ' ' : '') + (m.subtype_name || m.type_name || 'Monster'),
@@ -1610,6 +1672,7 @@ function combatTrackerApp() {
                     pp_curr: m.pp_max,
                     ap_max: m.ap_max || (10 + m.level),
                     ap_curr: m.ap_max || (10 + m.level),
+                    reactions: m.reactions !== undefined ? m.reactions : Math.max(1, Math.floor((m.ap_max || (10 + m.level)) / 10)),
                     init_mod: m.init_mod || 0,
                     init_roll: roll,
                     init_total: roll + (m.init_mod || 0),
@@ -1659,6 +1722,7 @@ function combatTrackerApp() {
                 pp_curr: this.customForm.pp_max,
                 ap_max: 10 + this.customForm.level,
                 ap_curr: 10 + this.customForm.level,
+                reactions: Math.max(1, Math.floor((10 + this.customForm.level) / 10)),
                 init_mod: this.customForm.init_mod,
                 init_roll: roll,
                 init_total: roll + this.customForm.init_mod,
@@ -1968,26 +2032,36 @@ function combatTrackerApp() {
                 hitTag = ` <span class="font-mono text-slate-500 text-[10px]">(d20: ${d20Total})</span>`;
             }
 
-            // 3. Roll damage expression
-            let dmgFormula = attack.damage || '1d6';
-            const diceMatch = dmgFormula.match(/(\d+d\d+(?:\s*[+-]\s*\d+)?)/i);
-            const formulaToRoll = diceMatch ? diceMatch[1].replace(/\s+/g, '') : '1d6';
+            // 3. Roll damage expression (supports "d6+4 P HP", "1d8+3", "2d6-1", "d4", "5", etc.)
+            let dmgFormula = (attack.damage || '1d6').trim();
+            const exprMatch = dmgFormula.match(/^\s*([+-]?\s*\d*(?:d\d+|\d+)(?:\s*[+-]\s*\d*(?:d\d+|\d+))*)/i);
+            const formulaToRoll = exprMatch ? exprMatch[1] : dmgFormula;
 
-            const match = formulaToRoll.match(/^(\d+)d(\d+)(?:([+-])(\d+))?$/i);
             let totalDmg = 0;
-            if (match) {
-                const count = parseInt(match[1]);
-                const sides = parseInt(match[2]);
-                const op = match[3];
-                const mod = parseInt(match[4] || 0);
-                for (let i = 0; i < count; i++) {
-                    totalDmg += Math.floor(Math.random() * sides) + 1;
+            let matched = false;
+            const termRegex = /([+-]?)\s*(?:(\d*)d(\d+)|(\d+))/gi;
+            let term;
+            while ((term = termRegex.exec(formulaToRoll)) !== null) {
+                matched = true;
+                const sign = term[1] === '-' ? -1 : 1;
+                if (term[3] !== undefined) {
+                    // Dice roll term (e.g. d6, 2d8)
+                    const count = term[2] ? parseInt(term[2], 10) : 1;
+                    const sides = parseInt(term[3], 10);
+                    let sum = 0;
+                    for (let i = 0; i < count; i++) {
+                        sum += Math.floor(Math.random() * sides) + 1;
+                    }
+                    totalDmg += sign * sum;
+                } else if (term[4] !== undefined) {
+                    // Constant modifier (e.g. +4, -1)
+                    totalDmg += sign * parseInt(term[4], 10);
                 }
-                if (op === '+') totalDmg += mod;
-                if (op === '-') totalDmg -= mod;
-            } else {
+            }
+            if (!matched) {
                 totalDmg = Math.floor(Math.random() * 6) + 1;
             }
+            totalDmg = Math.max(1, totalDmg);
 
             // 4. Deduct AP
             const apCost = parseInt(attack.ap) || 0;
@@ -2064,6 +2138,23 @@ function combatTrackerApp() {
                     this.logEvent(`Dice Roll [${formula}]: <strong>${sum}</strong>`);
                 }
             });
+        },
+
+        getCombatantUrl(c) {
+            if (!c) return null;
+            if (c.type === 'pc' || c.type === 'npc') {
+                if (c.db_id) {
+                    return `/utilities/charview/${c.db_id}`;
+                }
+                return null;
+            }
+            // Monster
+            const rawName = c.creature_name || c.base_name || c.name || '';
+            const cleanName = rawName.replace(/\s+#?\d+$/, '').trim();
+            if (cleanName) {
+                return `/reference/creatures/${encodeURIComponent(cleanName)}`;
+            }
+            return null;
         },
 
         logEvent(msg) {
