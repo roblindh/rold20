@@ -1393,7 +1393,7 @@
                                            class="w-full px-1 py-0.5 border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
                                 </div>
                                 <div class="col-span-2">
-                                    <input type="number" x-model.number="it.weight" min="0" step="0.1" placeholder="1"
+                                    <input type="number" x-model.number="it.weight" min="0" step="any" placeholder="0.01"
                                            class="w-full px-1 py-0.5 border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
                                 </div>
                                 <div class="col-span-1 flex items-center justify-center">
@@ -1705,8 +1705,8 @@
                                         </div>
                                         <div class="flex items-center gap-1 font-mono text-xs">
                                             <span class="text-[10px] text-slate-500">Wt:</span>
-                                            <input type="number" :name="'items[' + iIdx + '][weight]'" x-model.number="it.weight" step="0.1" placeholder="1" min="0"
-                                                   class="w-14 px-1 py-1 border border-slate-300 rounded text-center text-xs">
+                                            <input type="number" :name="'items[' + iIdx + '][weight]'" x-model.number="it.weight" step="any" placeholder="0.01" min="0"
+                                                   class="w-16 sm:w-20 px-1 py-1 border border-slate-300 rounded text-center text-xs">
                                             <span class="text-[10px] text-slate-500">lbs</span>
                                         </div>
                                         <div class="flex items-center gap-1">
@@ -1944,6 +1944,8 @@ function campaignAdmin() {
                         }
                         if (tr && Array.isArray(tr.items)) {
                             encItems = tr.items;
+                        } else if (Array.isArray(tr)) {
+                            encItems = tr;
                         }
                     }
                 }

@@ -3267,6 +3267,7 @@ class UtilityController extends Controller
             ->map(function ($enc) {
                 $enc->monsters_and_npcs = !empty($enc->monsters_and_npcs) ? (is_array($enc->monsters_and_npcs) ? $enc->monsters_and_npcs : json_decode($enc->monsters_and_npcs, true)) : [];
                 $enc->traps_and_hazards = !empty($enc->traps_and_hazards) ? (is_array($enc->traps_and_hazards) ? $enc->traps_and_hazards : json_decode($enc->traps_and_hazards, true)) : [];
+                $enc->treasure_rewards = !empty($enc->treasure_rewards) ? (is_array($enc->treasure_rewards) ? $enc->treasure_rewards : json_decode($enc->treasure_rewards, true)) : [];
                 return $enc;
             });
 

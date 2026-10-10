@@ -1331,6 +1331,13 @@
                             <div class="text-[9px] text-slate-500 uppercase font-sans font-bold">Rounds Fought</div>
                             <div class="text-xs font-black text-amber-700" x-text="round"></div>
                         </div>
+                        <div class="bg-white px-2.5 py-1 rounded-lg border shadow-2xs text-center font-mono"
+                             :class="endSummary.items && endSummary.items.length > 0 ? 'border-amber-400 bg-amber-50/60' : 'border-slate-200'">
+                            <div class="text-[9px] text-slate-500 uppercase font-sans font-bold">Additional Loot</div>
+                            <div class="text-xs font-black"
+                                 :class="endSummary.items && endSummary.items.length > 0 ? 'text-amber-800' : 'text-slate-500'"
+                                 x-text="endSummary.items && endSummary.items.length > 0 ? (endSummary.items.length + (endSummary.items.length === 1 ? ' Item' : ' Items')) : 'None'"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -1395,8 +1402,12 @@
 
                 <!-- XP & Spoils Calculations -->
                 <div class="bg-amber-50/60 border border-amber-900/20 rounded-xl p-3.5 space-y-3">
-                    <div class="font-bold text-xs text-amber-950 uppercase tracking-wider flex items-center gap-1.5 border-b border-amber-900/15 pb-1">
-                        <span>✨</span> Calculated Encounter Rewards
+                    <div class="font-bold text-xs text-amber-950 uppercase tracking-wider flex items-center justify-between border-b border-amber-900/15 pb-1">
+                        <span class="flex items-center gap-1.5"><span>✨</span> Calculated Encounter Rewards</span>
+                        <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full"
+                              :class="endSummary.items && endSummary.items.length > 0 ? 'bg-amber-200 text-amber-900' : 'bg-slate-200 text-slate-700'"
+                              x-text="endSummary.items && endSummary.items.length > 0 ? ('💎 ' + endSummary.items.length + ' Extra Loot Item' + (endSummary.items.length > 1 ? 's' : '')) : '📦 XP & Coins Only'">
+                        </span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1428,6 +1439,53 @@
                             <p class="text-[10px] text-slate-500 mt-0.5">Coins and valuables recovered from enemies or dungeon cache.</p>
                         </div>
                     </div>
+
+                    <!-- Additional Loot Indication & Item List -->
+                    <div class="pt-2 border-t border-amber-900/15 space-y-2">
+                        <div class="flex items-center justify-between text-[11px] font-bold uppercase text-slate-700">
+                            <span class="flex items-center gap-1.5">
+                                <span>🎁</span> Additional Loot &amp; Equipment
+                            </span>
+                            <span class="font-mono text-[10px] font-bold"
+                                  :class="endSummary.items && endSummary.items.length > 0 ? 'text-amber-800' : 'text-slate-500'"
+                                  x-text="endSummary.items && endSummary.items.length > 0 ? (endSummary.items.length + (endSummary.items.length === 1 ? ' item recorded' : ' items recorded')) : 'No extra items'">
+                            </span>
+                        </div>
+
+                        <!-- If Loot Exists -->
+                        <div x-show="endSummary.items && endSummary.items.length > 0" class="space-y-1.5">
+                            <div class="bg-amber-100/80 border border-amber-300 rounded-lg px-2.5 py-1.5 flex items-center justify-between gap-2 text-xs">
+                                <span class="text-amber-950 font-medium flex items-center gap-1.5">
+                                    <span class="text-amber-600 font-bold">✓</span>
+                                    <span>This encounter includes <strong class="font-bold text-amber-900" x-text="endSummary.items ? endSummary.items.length : 0"></strong> additional item(s) beyond coins:</span>
+                                </span>
+                                <span class="text-[10px] text-amber-800 font-mono italic shrink-0">Ready to transfer &amp; grant</span>
+                            </div>
+                            <div class="max-h-32 overflow-y-auto space-y-1 pr-1 border border-amber-200/90 rounded-lg p-1.5 bg-white/80">
+                                <template x-for="(item, itemIdx) in endSummary.items" :key="itemIdx">
+                                    <div class="flex items-center justify-between gap-2 px-2.5 py-1 bg-white rounded border border-slate-200 text-xs shadow-2xs">
+                                        <div class="font-bold text-slate-900 truncate flex items-center gap-1.5">
+                                            <span class="text-amber-600 text-[10px]">◆</span>
+                                            <span x-text="item.name"></span>
+                                        </div>
+                                        <div class="flex items-center gap-2 font-mono text-[11px] text-slate-600 shrink-0">
+                                            <span x-show="item.value !== undefined && item.value !== null && item.value !== ''" class="text-amber-700 font-bold" x-text="item.value + ' sp'"></span>
+                                            <span x-show="item.weight !== undefined && item.weight !== null && item.weight !== ''" class="text-slate-500" x-text="item.weight + ' lbs'"></span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- If No Additional Loot Exists -->
+                        <div x-show="!endSummary.items || endSummary.items.length === 0" class="bg-white/90 border border-dashed border-slate-300 rounded-lg p-2.5 flex items-center gap-2.5 text-slate-500 text-xs">
+                            <span class="text-base">📦</span>
+                            <div>
+                                <span class="font-bold text-slate-700">No additional loot items</span>
+                                <span class="text-slate-500 text-[11px] block">This encounter rewards only Experience Points (XP) and money (Silver). There are no specific items, gems, or equipment recorded.</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- GM Resolution Notes -->
@@ -1454,7 +1512,8 @@
                     <button type="button" @click="completeEncounterAndGrant()" :disabled="isEndingEncounter"
                             class="btn-rol-primary text-xs py-1.5 px-4 font-bold shadow-md cursor-pointer flex items-center gap-1"
                             style="background: linear-gradient(135deg, #10b981, #059669); border-color: #047857;">
-                        <span>🎁</span> Complete &amp; Grant XP / Loot
+                        <span>🎁</span>
+                        <span x-text="endSummary.items && endSummary.items.length > 0 ? ('Complete & Grant XP & Loot (' + endSummary.items.length + ')') : 'Complete & Grant XP / Coins'">Complete &amp; Grant XP / Loot</span>
                     </button>
                 </div>
             </div>
@@ -1486,7 +1545,8 @@ function combatTrackerApp() {
         endSummary: {
             xp_award: 300,
             silver_award: 100,
-            resolution_notes: ''
+            resolution_notes: '',
+            items: []
         },
         monsterSearch: '',
         monsterTypeFilter: '',
@@ -2187,6 +2247,7 @@ function combatTrackerApp() {
             let xp = 300;
             let silver = 100;
             let resolutionNotes = '';
+            let rawItems = [];
 
             if (this.selectedEncounterId) {
                 const enc = this.allEncounters.find(e => e.id == this.selectedEncounterId);
@@ -2201,8 +2262,15 @@ function combatTrackerApp() {
                         if (typeof tr === 'string') {
                             try { tr = JSON.parse(tr); } catch(e) {}
                         }
-                        if (typeof tr === 'object' && tr && !Array.isArray(tr) && tr.coins_sp !== undefined) {
-                            silver = parseInt(tr.coins_sp) || silver;
+                        if (typeof tr === 'object' && tr && !Array.isArray(tr)) {
+                            if (tr.coins_sp !== undefined && tr.coins_sp !== null && tr.coins_sp !== '') {
+                                silver = parseInt(tr.coins_sp, 10) || 0;
+                            }
+                            if (Array.isArray(tr.items)) {
+                                rawItems = tr.items;
+                            }
+                        } else if (Array.isArray(tr)) {
+                            rawItems = tr;
                         }
                     }
                     if (enc.resolution_notes) {
@@ -2221,10 +2289,28 @@ function combatTrackerApp() {
                 silver = Math.max(50, Math.round(xp / 3));
             }
 
+            const cleanedItems = (rawItems || []).filter(it => {
+                if (!it) return false;
+                if (typeof it === 'string') return it.trim().length > 0;
+                const name = (it.name || it.Item || '').toString().trim();
+                const val = it.value !== undefined ? it.value : (it.unit_price || 0);
+                return name.length > 0 || val > 0;
+            }).map(it => {
+                if (typeof it === 'string') {
+                    return { name: it, value: 0, weight: 1 };
+                }
+                return {
+                    name: (it.name || it.Item || 'Unnamed Item').toString(),
+                    value: it.value !== undefined ? it.value : (it.unit_price || 0),
+                    weight: it.weight !== undefined ? it.weight : (it.unit_weight !== undefined ? it.unit_weight : 1)
+                };
+            });
+
             this.endSummary = {
                 xp_award: xp,
                 silver_award: silver,
-                resolution_notes: resolutionNotes
+                resolution_notes: resolutionNotes,
+                items: cleanedItems
             };
 
             this.showEndEncounterModal = true;

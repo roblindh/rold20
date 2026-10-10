@@ -512,6 +512,91 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
 
         DB::table('campaigns')->where('ID', $campId)->delete();
     }
+
+    public function testAwardCampaignSupportsDecimalWeights(): void
+    {
+        $campId = DB::table('campaigns')->insertGetId([
+            'Name' => 'Test Decimal Weight Camp ' . uniqid(),
+            'Vault' => json_encode(['funds' => 0, 'items' => []]),
+        ]);
+
+        $charId = DB::table('characters')->insertGetId([
+            'Name' => 'Gem Collector ' . uniqid(),
+            'Campaign' => $campId,
+            'ExperiencePts' => 0,
+            'Wealth' => 0,
+            'Equipment' => json_encode([]),
+        ]);
+
+        $request = Request::create("/utilities/campaign/{$campId}/award", 'POST', [
+            'total_xp' => 100,
+            'divide_xp_equally' => '1',
+            'total_silver' => 0,
+            'treasure_mode' => 'equal',
+            'vault_silver' => 0,
+            'items' => [
+                [
+                    'name' => 'Gem: Small Emerald',
+                    'value' => 500,
+                    'weight' => 0.01,
+                    'assign_to' => (string)$charId,
+                ],
+                [
+                    'name' => 'Gem: Tiny Diamond',
+                    'value' => 1000,
+                    'weight' => 0.02,
+                    'assign_to' => 'vault',
+                ],
+            ],
+        ]);
+
+        $response = $this->utilityController->awardCampaign($request, (int)$campId);
+        $this->assertEquals(302, $response->getStatusCode());
+
+        $char = DB::table('characters')->where('ID', $charId)->first();
+        $equip = json_decode($char->Equipment, true);
+        $this->assertCount(1, $equip);
+        $this->assertEquals('Gem: Small Emerald', $equip[0]['name']);
+        $this->assertEquals(0.01, (float)$equip[0]['unit_weight']);
+
+        $campaign = DB::table('campaigns')->where('ID', $campId)->first();
+        $vault = json_decode($campaign->Vault, true);
+        $this->assertCount(1, $vault['items']);
+        $this->assertEquals('Gem: Tiny Diamond', $vault['items'][0]['name']);
+        $this->assertEquals(0.02, (float)$vault['items'][0]['unit_weight']);
+
+        // Cleanup
+        DB::table('characters')->where('ID', $charId)->delete();
+        DB::table('campaigns')->where('ID', $campId)->delete();
+    }
+
+    public function testEncounterSummaryHasAdditionalLootIndicators(): void
+    {
+        $request = Request::create('/utilities/encounter-tracker', 'GET');
+        $view = $this->utilityController->combatTracker($request);
+        $html = $view->render();
+
+        // 1. Top banner stat strip indicator
+        $this->assertStringContainsString('Additional Loot', $html);
+
+        // 2. Calculated Encounter Rewards additional loot section
+        $this->assertStringContainsString('Additional Loot &amp; Equipment', $html);
+
+        // 3. Clear absence indicator
+        $this->assertStringContainsString('No additional loot items', $html);
+
+        // 4. Presence transfer text
+        $this->assertStringContainsString('Ready to transfer &amp; grant', $html);
+
+        // 5. Dynamic footer grant button label
+        $this->assertStringContainsString('Complete & Grant XP & Loot', $html);
+
+        // Verify campaign.blade.php uses step="any" for item weights
+        $campRequest = Request::create('/utilities/campaign', 'GET');
+        $campView = $this->utilityController->campaign($campRequest);
+        $campHtml = $campView->render();
+        $this->assertStringContainsString('step="any"', $campHtml);
+    }
 }
 
 
