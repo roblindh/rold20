@@ -34,7 +34,7 @@
             <div class="text-2xl animate-spin">🎲</div>
             <span class="text-amber-900 font-bold animate-pulse text-sm">Rolling treasure hoard...</span>
         </div>
-        <div x-html="resultHtml"></div>
+        <div id="treasureResultContainer"></div>
     </div>
 
     <!-- Floating Toast Notification -->
@@ -49,13 +49,12 @@ function treasureGeneratorApp() {
     return {
         el: 1,
         loading: false,
-        resultHtml: '',
         savingItemIdx: null,
         toastMsg: null,
         async rollTreasure() {
             this.loading = true;
             try {
-                const res = await fetch('{{ route('utilities.treasuregen.roll') }}', {
+                const res = await fetch('{{ route('utilities.treasuregen.roll', [], false) }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -64,7 +63,16 @@ function treasureGeneratorApp() {
                     body: JSON.stringify({ el: parseInt(this.el) || 1 })
                 });
                 const data = await res.json();
-                this.resultHtml = data.html;
+                const container = document.getElementById('treasureResultContainer');
+                if (container) {
+                    if (window.Alpine && typeof window.Alpine.destroyTree === 'function') {
+                        window.Alpine.destroyTree(container);
+                    }
+                    container.innerHTML = data.html;
+                    if (window.Alpine && typeof window.Alpine.initTree === 'function') {
+                        window.Alpine.initTree(container);
+                    }
+                }
             } catch (e) {
                 console.error('Treasure error', e);
             }
@@ -154,6 +162,7 @@ function hoardDistributor(config) {
         campaigns: config.campaigns || [],
         selectedCampaign: '',
         selectedCharIds: [],
+        showAllCharsOverride: false,
         mode: 'quick_split',
         assignedMagic: {},
         assignedGoods: {},
@@ -162,12 +171,12 @@ function hoardDistributor(config) {
         distributionMessage: '',
 
         init() {
-            if (this.campaigns.length > 0) {
-                this.selectedCampaign = this.campaigns[0].ID;
-                this.syncCampaignParty();
+            if (config.initialCampaignId && this.campaigns.some(c => c.ID == config.initialCampaignId)) {
+                this.selectedCampaign = String(config.initialCampaignId);
             } else {
-                this.selectedCharIds = this.allCharacters.slice(0, 6).map(c => c.ID);
+                this.selectedCampaign = '';
             }
+            this.syncCampaignParty();
 
             (this.hoard.magic_items || []).forEach((item, idx) => {
                 this.assignedMagic[idx] = (this.selectedCharIds.length > 0) ? this.selectedCharIds[idx % this.selectedCharIds.length] : 'vault';
@@ -179,17 +188,13 @@ function hoardDistributor(config) {
         },
 
         syncCampaignParty() {
-            if (!this.selectedCampaign) {
+            if (!this.selectedCampaign || this.showAllCharsOverride) {
                 this.selectedCharIds = this.allCharacters.map(c => c.ID);
                 return;
             }
             const campId = parseInt(this.selectedCampaign);
             const campChars = this.allCharacters.filter(c => c.Campaign === campId || c.Campaign == campId);
-            if (campChars.length > 0) {
-                this.selectedCharIds = campChars.map(c => c.ID);
-            } else {
-                this.selectedCharIds = this.allCharacters.map(c => c.ID);
-            }
+            this.selectedCharIds = campChars.map(c => c.ID);
         },
 
         toggleChar(id) {
@@ -210,10 +215,9 @@ function hoardDistributor(config) {
         },
 
         get displayCharacters() {
-            if (!this.selectedCampaign) return this.allCharacters;
+            if (!this.selectedCampaign || this.showAllCharsOverride) return this.allCharacters;
             const campId = parseInt(this.selectedCampaign);
-            const filtered = this.allCharacters.filter(c => c.Campaign === campId || c.Campaign == campId);
-            return filtered.length > 0 ? filtered : this.allCharacters;
+            return this.allCharacters.filter(c => c.Campaign === campId || c.Campaign == campId);
         },
 
         get partyCount() {
@@ -241,7 +245,7 @@ function hoardDistributor(config) {
         },
 
         get quickSplitRemainderSp() {
-            if (this.partyCount === 0) return 0;
+            if (this.partyCount === 0) return this.totalLiquidSp;
             return Math.round(this.totalLiquidSp - (this.quickSplitPerCharSp * this.partyCount));
         },
 
@@ -257,7 +261,7 @@ function hoardDistributor(config) {
         },
 
         get realisticSplitRemainderSp() {
-            if (this.partyCount === 0) return 0;
+            if (this.partyCount === 0) return this.coinsSp;
             const c = this.hoard.coins || {};
             const remPp = (c.pp || 0) % this.partyCount;
             const remGp = (c.gp || 0) % this.partyCount;
@@ -267,8 +271,8 @@ function hoardDistributor(config) {
         },
 
         async executeDistribution() {
-            if (this.partyCount === 0) {
-                alert('Please select at least one party member to receive loot.');
+            if (this.partyCount === 0 && !this.selectedCampaign) {
+                alert('Please select at least one party member or a campaign vault to receive loot.');
                 return;
             }
             this.distributing = true;

@@ -3010,6 +3010,7 @@ class UtilityController extends Controller
             $characters = DB::table('characters')->where(function($q) {
                 $q->whereNull('IsNPC')->orWhere('IsNPC', 0);
             })->orderBy('Name')->get();
+            $selectedCampaignId = $request->input('campaign_id') ?? session('last_viewed_campaign_id') ?? '';
 
             return response()->json([
                 'success' => true,
@@ -3022,7 +3023,7 @@ class UtilityController extends Controller
                 'foe_breakdown' => $encTreasure['foe_breakdown'],
                 'mundane' => $mundane,
                 'magic' => $magicItems,
-                'html' => view('utilities.partials.treasure_result', compact('el', 'gold', 'silver', 'platinum', 'copper', 'hoard', 'mundane', 'magicItems', 'campaigns', 'characters'))->render(),
+                'html' => view('utilities.partials.treasure_result', compact('el', 'gold', 'silver', 'platinum', 'copper', 'hoard', 'mundane', 'magicItems', 'campaigns', 'characters', 'selectedCampaignId'))->render(),
             ]);
         }
 
@@ -3059,6 +3060,7 @@ class UtilityController extends Controller
         $characters = DB::table('characters')->where(function($q) {
             $q->whereNull('IsNPC')->orWhere('IsNPC', 0);
         })->orderBy('Name')->get();
+        $selectedCampaignId = $request->input('campaign_id') ?? session('last_viewed_campaign_id') ?? '';
 
         return response()->json([
             'success' => true,
@@ -3068,7 +3070,7 @@ class UtilityController extends Controller
             'items' => $items,
             'mundane' => $mundane,
             'magic' => $magicItems,
-            'html' => view('utilities.partials.treasure_result', compact('el', 'gold', 'silver', 'platinum', 'copper', 'hoard', 'mundane', 'magicItems', 'campaigns', 'characters'))->render(),
+            'html' => view('utilities.partials.treasure_result', compact('el', 'gold', 'silver', 'platinum', 'copper', 'hoard', 'mundane', 'magicItems', 'campaigns', 'characters', 'selectedCampaignId'))->render(),
         ]);
     }
 
@@ -3079,8 +3081,8 @@ class UtilityController extends Controller
     {
         $validated = $request->validate([
             'mode' => 'required|string|in:quick_split,realistic_split',
-            'character_ids' => 'required|array|min:1',
-            'character_ids.*' => 'required|integer|exists:characters,ID',
+            'character_ids' => 'nullable|array',
+            'character_ids.*' => 'integer|exists:characters,ID',
             'campaign_id' => 'nullable|integer|exists:campaigns,ID',
             'coins' => 'nullable|array',
             'goods' => 'nullable|array',
@@ -3088,15 +3090,22 @@ class UtilityController extends Controller
         ]);
 
         $mode = $validated['mode'];
-        $charIds = $validated['character_ids'];
+        $charIds = $validated['character_ids'] ?? [];
         $charCount = count($charIds);
         $campaignId = !empty($validated['campaign_id']) ? (int)$validated['campaign_id'] : null;
+
+        if ($charCount === 0 && empty($campaignId)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please select at least one party member or a campaign vault to receive loot.',
+            ], 422);
+        }
 
         $coins = \App\Services\ItemGeneration\CurrencyService::parseWallet($validated['coins'] ?? []);
         $goods = $validated['goods'] ?? [];
         $magic = $validated['magic'] ?? [];
 
-        $characters = DB::table('characters')->whereIn('ID', $charIds)->get()->keyBy('ID');
+        $characters = $charCount > 0 ? DB::table('characters')->whereIn('ID', $charIds)->get()->keyBy('ID') : collect();
         $campaign = $campaignId ? DB::table('campaigns')->where('ID', $campaignId)->first() : null;
 
         $totalCoinsSp = \App\Services\ItemGeneration\CurrencyService::coinsToSp($coins);
@@ -3110,8 +3119,8 @@ class UtilityController extends Controller
                 }
 
                 $grandTotalSp = $totalCoinsSp + $totalGoodsSp;
-                $spPerChar = (int)floor($grandTotalSp / $charCount);
-                $remSp = (int)round($grandTotalSp - ($spPerChar * $charCount));
+                $spPerChar = $charCount > 0 ? (int)floor($grandTotalSp / $charCount) : 0;
+                $remSp = $charCount > 0 ? (int)round($grandTotalSp - ($spPerChar * $charCount)) : (int)round($grandTotalSp);
 
                 // Award SP to each character
                 foreach ($charIds as $idx => $cId) {
@@ -3169,17 +3178,17 @@ class UtilityController extends Controller
 
             } else {
                 // Realistic Split: physical coins split + discrete goods & magic assigned
-                $ppPerChar = (int)intdiv($coins['pp'], $charCount);
-                $gpPerChar = (int)intdiv($coins['gp'], $charCount);
-                $spPerChar = (int)intdiv($coins['sp'], $charCount);
-                $cpPerChar = (int)intdiv($coins['cp'], $charCount);
+                $ppPerChar = $charCount > 0 ? (int)intdiv($coins['pp'], $charCount) : 0;
+                $gpPerChar = $charCount > 0 ? (int)intdiv($coins['gp'], $charCount) : 0;
+                $spPerChar = $charCount > 0 ? (int)intdiv($coins['sp'], $charCount) : 0;
+                $cpPerChar = $charCount > 0 ? (int)intdiv($coins['cp'], $charCount) : 0;
 
-                $remCoins = [
+                $remCoins = $charCount > 0 ? [
                     'pp' => $coins['pp'] % $charCount,
                     'gp' => $coins['gp'] % $charCount,
                     'sp' => $coins['sp'] % $charCount,
                     'cp' => $coins['cp'] % $charCount,
-                ];
+                ] : $coins;
 
                 $eachCoins = ['cp' => $cpPerChar, 'sp' => $spPerChar, 'gp' => $gpPerChar, 'pp' => $ppPerChar];
 

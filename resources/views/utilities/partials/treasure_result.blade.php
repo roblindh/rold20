@@ -11,7 +11,11 @@
     $gems = array_map($normalizeItem, $hoard['gems'] ?? []);
     $art = array_map($normalizeItem, $hoard['art'] ?? []);
     $bullion = array_map($normalizeItem, $hoard['bullion'] ?? []);
-    $goods = array_map($normalizeItem, $hoard['goods'] ?? []);
+    $goods = array_merge($gems, $art, $bullion);
+    if (empty($goods)) {
+        $goods = array_map($normalizeItem, $hoard['goods'] ?? []);
+    }
+    $hoard['goods'] = $goods;
     $magicItems = array_map($normalizeItem, $magicItems ?? ($hoard['magic_items'] ?? []));
 
     $totalGemsSp = array_sum(array_map(fn($g) => (float)($g['value'] ?? $g['Value'] ?? 0), $gems));
@@ -26,7 +30,8 @@
      x-data="hoardDistributor({
         hoard: {{ json_encode($hoard) }},
         characters: {{ json_encode($characters) }},
-        campaigns: {{ json_encode($campaigns) }}
+        campaigns: {{ json_encode($campaigns) }},
+        initialCampaignId: '{{ $selectedCampaignId ?? '' }}'
      })">
 
     <!-- Header -->
@@ -107,57 +112,71 @@
                 </span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-1.5">
                 <!-- Gems -->
                 @foreach($gems as $g)
-                    <div class="p-3 bg-emerald-50/50 rounded-xl border border-emerald-200 text-xs flex flex-col justify-between gap-1 shadow-2xs">
-                        <div class="flex items-start justify-between gap-2">
-                            <span class="font-bold text-emerald-950 flex items-center gap-1.5">
-                                <span>💎</span> {{ $g['description'] ?? $g['Item'] ?? 'Gemstone' }}
-                            </span>
-                            <span class="font-mono text-emerald-900 font-bold bg-white px-2 py-0.5 rounded border border-emerald-200 shrink-0">
-                                {{ number_format($g['value'] ?? $g['Value'] ?? 0) }} sp
-                            </span>
+                    @php
+                        $rawDesc = $g['description'] ?? $g['Item'] ?? 'Gemstone';
+                        $cleanDesc = preg_replace('/^Gem:\s*/i', '', $rawDesc);
+                        $val = (float)($g['value'] ?? $g['Value'] ?? 0);
+                        $wt = (float)($g['weight'] ?? 0.02);
+                    @endphp
+                    <div class="py-1 px-2.5 bg-emerald-50/70 hover:bg-emerald-100/60 rounded-lg border border-emerald-200/90 text-xs flex items-center justify-between gap-2 shadow-2xs transition-colors">
+                        <div class="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                            <span class="shrink-0 text-xs select-none">💎</span>
+                            <span class="font-bold text-emerald-950 truncate" title="{{ $cleanDesc }}">{{ $cleanDesc }}</span>
+                            <span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded text-[9px] uppercase font-bold tracking-wider shrink-0 border border-emerald-200">Gem</span>
                         </div>
-                        <div class="text-[10px] text-emerald-700 font-medium flex items-center justify-between mt-1">
-                            <span>Weight: {{ $g['weight'] ?? 0.02 }} kg</span>
-                            <span class="bg-emerald-100/80 px-1.5 py-0.2 rounded text-[9px] uppercase font-bold">Trade Gem</span>
+                        <div class="flex items-center gap-2 shrink-0 text-right">
+                            <span class="text-[11px] text-emerald-800 font-medium whitespace-nowrap">Weight: <strong>{{ number_format($wt, 2) }} kg</strong></span>
+                            <span class="font-mono text-emerald-950 font-bold bg-white px-2 py-0.5 rounded border border-emerald-300 text-xs shadow-2xs shrink-0 whitespace-nowrap">
+                                {{ number_format($val) }} sp <span class="font-sans font-normal text-stone-500 text-[10px]">({{ number_format($val / 10, 1) }} gp)</span>
+                            </span>
                         </div>
                     </div>
                 @endforeach
 
                 <!-- Art Objects -->
                 @foreach($art as $a)
-                    <div class="p-3 bg-purple-50/50 rounded-xl border border-purple-200 text-xs flex flex-col justify-between gap-1 shadow-2xs">
-                        <div class="flex items-start justify-between gap-2">
-                            <span class="font-bold text-purple-950 flex items-center gap-1.5">
-                                <span>🎨</span> {{ $a['description'] ?? $a['Item'] ?? 'Art Object' }}
-                            </span>
-                            <span class="font-mono text-purple-900 font-bold bg-white px-2 py-0.5 rounded border border-purple-200 shrink-0">
-                                {{ number_format($a['value'] ?? $a['Value'] ?? 0) }} sp
-                            </span>
+                    @php
+                        $rawDesc = $a['description'] ?? $a['Item'] ?? 'Art Object';
+                        $cleanDesc = preg_replace('/^Art:\s*/i', '', $rawDesc);
+                        $val = (float)($a['value'] ?? $a['Value'] ?? 0);
+                        $wt = (float)($a['weight'] ?? 1.0);
+                    @endphp
+                    <div class="py-1 px-2.5 bg-purple-50/70 hover:bg-purple-100/60 rounded-lg border border-purple-200/90 text-xs flex items-center justify-between gap-2 shadow-2xs transition-colors">
+                        <div class="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                            <span class="shrink-0 text-xs select-none">🎨</span>
+                            <span class="font-bold text-purple-950 truncate" title="{{ $cleanDesc }}">{{ $cleanDesc }}</span>
+                            <span class="bg-purple-100 text-purple-800 px-1.5 py-0.2 rounded text-[9px] uppercase font-bold tracking-wider shrink-0 border border-purple-200">Art</span>
                         </div>
-                        <div class="text-[10px] text-purple-700 font-medium flex items-center justify-between mt-1">
-                            <span>Weight: {{ $a['weight'] ?? 1.0 }} kg</span>
-                            <span class="bg-purple-100/80 px-1.5 py-0.2 rounded text-[9px] uppercase font-bold">Art Piece</span>
+                        <div class="flex items-center gap-2 shrink-0 text-right">
+                            <span class="text-[11px] text-purple-800 font-medium whitespace-nowrap">Weight: <strong>{{ number_format($wt, 2) }} kg</strong></span>
+                            <span class="font-mono text-purple-950 font-bold bg-white px-2 py-0.5 rounded border border-purple-300 text-xs shadow-2xs shrink-0 whitespace-nowrap">
+                                {{ number_format($val) }} sp <span class="font-sans font-normal text-stone-500 text-[10px]">({{ number_format($val / 10, 1) }} gp)</span>
+                            </span>
                         </div>
                     </div>
                 @endforeach
 
                 <!-- Bullion Bars -->
                 @foreach($bullion as $b)
-                    <div class="p-3 bg-amber-50/50 rounded-xl border border-amber-200 text-xs flex flex-col justify-between gap-1 shadow-2xs">
-                        <div class="flex items-start justify-between gap-2">
-                            <span class="font-bold text-amber-950 flex items-center gap-1.5">
-                                <span>🪙</span> {{ $b['description'] ?? $b['Item'] ?? 'Trade Bullion' }}
-                            </span>
-                            <span class="font-mono text-amber-900 font-bold bg-white px-2 py-0.5 rounded border border-amber-200 shrink-0">
-                                {{ number_format($b['value'] ?? $b['Value'] ?? 0) }} sp
-                            </span>
+                    @php
+                        $cleanDesc = $b['description'] ?? $b['Item'] ?? 'Trade Bullion';
+                        $val = (float)($b['value'] ?? $b['Value'] ?? 0);
+                        $wt = (float)($b['weight'] ?? 1.0);
+                    @endphp
+                    <div class="py-1 px-2.5 bg-amber-50/70 hover:bg-amber-100/60 rounded-lg border border-amber-200/90 text-xs flex items-center justify-between gap-2 shadow-2xs transition-colors">
+                        <div class="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                            <span class="shrink-0 text-xs select-none">🪙</span>
+                            <span class="font-bold text-amber-950 truncate" title="{{ $cleanDesc }}">{{ $cleanDesc }}</span>
+                            <span class="bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded text-[9px] uppercase font-bold tracking-wider shrink-0 border border-amber-200">Bullion</span>
                         </div>
-                        <div class="text-[10px] text-amber-700 font-medium flex items-center justify-between mt-1">
-                            <span>Weight: {{ $b['weight'] ?? 1.0 }} kg</span>
-                            <span class="bg-amber-100/80 px-1.5 py-0.2 rounded text-[9px] uppercase font-bold">1 kg Trade Bar</span>
+                        <div class="flex items-center gap-2 shrink-0 text-right">
+                            <span class="text-[11px] text-amber-800 font-medium whitespace-nowrap">Weight: <strong>{{ number_format($wt, 2) }} kg</strong></span>
+                            <span class="font-mono text-amber-950 font-bold bg-white px-2 py-0.5 rounded border border-amber-300 text-xs shadow-2xs shrink-0 whitespace-nowrap">
+                                {{ number_format($val) }} sp <span class="font-sans font-normal text-stone-500 text-[10px]">({{ number_format($val / 10, 1) }} gp)</span>
+                            </span>
                         </div>
                     </div>
                 @endforeach
@@ -165,9 +184,24 @@
                 <!-- Fallback Mundane Items if any -->
                 @if(empty($gems) && empty($art) && empty($bullion) && count($mundane ?? []) > 0)
                     @foreach($mundane as $m)
-                        <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-800 flex items-center justify-between">
-                            <span class="font-medium">{{ $m->Item ?? $m->Description ?? 'Trade goods' }}</span>
-                            <span class="font-mono text-slate-600 font-bold bg-white px-2 py-0.5 rounded border border-slate-200">{{ $m->Value ?? '—' }} sp</span>
+                        @php
+                            $m = (array)$m;
+                            $cleanDesc = $m['Item'] ?? $m['Description'] ?? 'Trade goods';
+                            $val = (float)($m['Value'] ?? $m['value'] ?? 0);
+                            $wt = (float)($m['weight'] ?? 0.5);
+                        @endphp
+                        <div class="py-1 px-2.5 bg-slate-50/70 hover:bg-slate-100/60 rounded-lg border border-slate-200/90 text-xs flex items-center justify-between gap-2 shadow-2xs transition-colors">
+                            <div class="flex items-center gap-1.5 min-w-0 flex-1 truncate">
+                                <span class="shrink-0 text-xs select-none">📦</span>
+                                <span class="font-bold text-slate-900 truncate" title="{{ $cleanDesc }}">{{ $cleanDesc }}</span>
+                                <span class="bg-slate-100 text-slate-700 px-1.5 py-0.2 rounded text-[9px] uppercase font-bold tracking-wider shrink-0 border border-slate-200">Gear</span>
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0 text-right">
+                                <span class="text-[11px] text-slate-600 font-medium whitespace-nowrap">Weight: <strong>{{ number_format($wt, 2) }} kg</strong></span>
+                                <span class="font-mono text-slate-800 font-bold bg-white px-2 py-0.5 rounded border border-slate-200 text-xs shadow-2xs shrink-0 whitespace-nowrap">
+                                    {{ number_format($val) }} sp <span class="font-sans font-normal text-stone-500 text-[10px]">({{ number_format($val / 10, 1) }} gp)</span>
+                                </span>
+                            </div>
                         </div>
                     @endforeach
                 @endif
@@ -330,27 +364,33 @@
                     <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider">Campaign Vault</label>
                     <select x-model="selectedCampaign" @change="syncCampaignParty()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs">
                         <option value="">No Campaign (Direct to Characters)</option>
-                        <template x-for="camp in campaigns" :key="camp.ID">
-                            <option :value="camp.ID" x-text="camp.Name"></option>
-                        </template>
+                        @foreach($campaigns as $camp)
+                            <option value="{{ $camp->ID }}">{{ $camp->Name }}</option>
+                        @endforeach
                     </select>
                     <span class="text-[11px] text-stone-500 block">Remainder coins and unassigned items deposit into campaign vault.</span>
                 </div>
 
                 <!-- Select Party Members Checkboxes -->
                 <div class="md:col-span-2 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                        <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider">
+                    <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+                        <label class="text-xs font-bold text-amber-950 uppercase tracking-wider shrink-0">
                             Party Members (<span x-text="partyCount" class="text-amber-900 font-black"></span> Selected)
                         </label>
-                        <div class="flex items-center gap-2 text-xs font-semibold">
+                        <div class="flex items-center gap-2 text-xs font-semibold shrink-0">
                             <button type="button" @click="selectAll()" class="text-amber-800 hover:text-amber-950 underline cursor-pointer">Select All</button>
                             <span class="text-stone-300">•</span>
                             <button type="button" @click="deselectAll()" class="text-stone-600 hover:text-stone-900 underline cursor-pointer">Deselect All</button>
+                            <template x-if="selectedCampaign">
+                                <span class="inline-flex items-center gap-2">
+                                    <span class="text-stone-300">•</span>
+                                    <button type="button" @click="showAllCharsOverride = !showAllCharsOverride; syncCampaignParty();" class="text-amber-800 hover:text-amber-950 underline cursor-pointer" x-text="showAllCharsOverride ? 'Show Campaign Only' : 'Show All Characters'"></button>
+                                </span>
+                            </template>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-44 overflow-y-auto pr-1">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-44 overflow-y-auto pr-1" x-show="displayCharacters.length > 0">
                         <template x-for="char in displayCharacters" :key="char.ID">
                             <label class="flex items-center gap-2 p-2 rounded-lg border transition cursor-pointer text-xs select-none"
                                    :class="selectedCharIds.includes(char.ID) ? 'border-amber-400 bg-amber-100/70 text-amber-950 font-bold ring-1 ring-amber-300 shadow-2xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'">
@@ -358,6 +398,10 @@
                                 <span class="truncate" x-text="char.Name"></span>
                             </label>
                         </template>
+                    </div>
+
+                    <div x-show="displayCharacters.length === 0" class="text-xs text-stone-500 italic p-3 bg-white rounded-lg border border-slate-200 text-center">
+                        No characters currently assigned to this campaign. Loot &amp; coins will deposit directly into the Campaign Vault.
                     </div>
                 </div>
             </div>
@@ -422,10 +466,11 @@
                 <div class="flex justify-end pt-1">
                     <button type="button"
                             @click="executeDistribution()"
-                            :disabled="distributing || partyCount === 0"
+                            :disabled="distributing || (partyCount === 0 && !selectedCampaign)"
                             class="btn-rol-primary text-sm py-2.5 px-6 font-bold shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-50">
-                        <span x-show="!distributing">⚡ Liquidate Valuables &amp; Distribute Funds (<span x-text="totalLiquidSp.toLocaleString()"></span> sp)</span>
-                        <span x-show="distributing" class="animate-pulse">Distributing to Party...</span>
+                        <span x-show="!distributing && partyCount > 0">⚡ Liquidate Valuables &amp; Distribute Funds (<span x-text="totalLiquidSp.toLocaleString()"></span> sp)</span>
+                        <span x-show="!distributing && partyCount === 0">🏛️ Deposit Entire Liquidated Hoard to Vault (<span x-text="totalLiquidSp.toLocaleString()"></span> sp)</span>
+                        <span x-show="distributing" class="animate-pulse">Distributing Hoard...</span>
                     </button>
                 </div>
             </div>
@@ -494,10 +539,11 @@
                 <div class="flex justify-end pt-1">
                     <button type="button"
                             @click="executeDistribution()"
-                            :disabled="distributing || partyCount === 0"
+                            :disabled="distributing || (partyCount === 0 && !selectedCampaign)"
                             class="btn-rol-secondary text-sm py-2.5 px-6 font-bold shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-50">
-                        <span x-show="!distributing">🎒 Distribute Physical Coins &amp; Assign Items</span>
-                        <span x-show="distributing" class="animate-pulse">Distributing to Party...</span>
+                        <span x-show="!distributing && partyCount > 0">🎒 Distribute Physical Coins &amp; Assign Items</span>
+                        <span x-show="!distributing && partyCount === 0">🏛️ Deposit Entire Hoard to Campaign Vault</span>
+                        <span x-show="distributing" class="animate-pulse">Distributing Hoard...</span>
                     </button>
                 </div>
             </div>
