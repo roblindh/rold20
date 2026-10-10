@@ -478,6 +478,119 @@ class EquipmentPlacementAndContainersTest extends TestCase
         $this->assertEquals(EquipmentManager::LOCATION_STOWED, $manor['location']);
         $this->assertEquals([0, 0, 0, 0, 0], $manor['locations']);
     }
+
+    public function test_is_stackable_distinguishes_discrete_vs_stackable_items(): void
+    {
+        // Discrete: Weapons, Armor, Shields, Mounts, Containers
+        $this->assertFalse(EquipmentManager::isStackable(['name' => 'Sword, long-', 'ItemTypeID' => 2, 'Subtype' => 6]));
+        $this->assertFalse(EquipmentManager::isStackable(['name' => 'Dagger', 'ItemTypeID' => 2, 'Subtype' => 6]));
+        $this->assertFalse(EquipmentManager::isStackable(['name' => 'Full plate', 'ItemTypeID' => 3, 'Subtype' => 13]));
+        $this->assertFalse(EquipmentManager::isStackable(['name' => 'Shield, heavy', 'Subtype' => 9]));
+        $this->assertFalse(EquipmentManager::isStackable(['name' => 'Backpack', 'is_container' => true]));
+        $this->assertFalse(EquipmentManager::isStackable(['name' => 'Belt Pouch', 'Subtype' => 24]));
+        $this->assertFalse(EquipmentManager::isStackable(['name' => 'Heavy Warhorse', 'ItemTypeID' => 6, 'Subtype' => 25]));
+        $this->assertFalse(EquipmentManager::isStackable(['name' => 'Crowbar', 'ItemTypeID' => 5]));
+
+        // Stackable: Ammunition, Consumables, Food, Gems, Bullion, Trade Goods
+        $this->assertTrue(EquipmentManager::isStackable(['name' => 'Arrow, sheaf', 'Subtype' => 8]));
+        $this->assertTrue(EquipmentManager::isStackable(['name' => 'Bolt, light', 'Subtype' => 8]));
+        $this->assertTrue(EquipmentManager::isStackable(['name' => 'Potion of Healing', 'Subtype' => 22]));
+        $this->assertTrue(EquipmentManager::isStackable(['name' => 'Trail Rations (1 day)', 'Subtype' => 29]));
+        $this->assertTrue(EquipmentManager::isStackable(['name' => 'Torch']));
+        $this->assertTrue(EquipmentManager::isStackable(['name' => 'Chalk']));
+        $this->assertTrue(EquipmentManager::isStackable(['name' => 'Ruby', 'is_valuable' => true, 'ItemTypeID' => 9]));
+        $this->assertTrue(EquipmentManager::isStackable(['name' => 'Silver Bar', 'Subtype' => 54, 'ItemTypeID' => 9]));
+    }
+
+    public function test_parse_bundle_info_and_unbundling_in_create_inventory_record(): void
+    {
+        // 1. parseBundleInfo regex matching
+        $bundle1 = EquipmentManager::parseBundleInfo('Arrow, sheaf (20)');
+        $this->assertNotNull($bundle1);
+        $this->assertEquals('Arrow, sheaf', $bundle1['base_name']);
+        $this->assertEquals(20, $bundle1['bundle_size']);
+
+        $bundle2 = EquipmentManager::parseBundleInfo('Bolt, heavy (10)');
+        $this->assertNotNull($bundle2);
+        $this->assertEquals('Bolt, heavy', $bundle2['base_name']);
+        $this->assertEquals(10, $bundle2['bundle_size']);
+
+        $bundle3 = EquipmentManager::parseBundleInfo('Herring, salted (6)');
+        $this->assertNotNull($bundle3);
+        $this->assertEquals('Herring, salted', $bundle3['base_name']);
+        $this->assertEquals(6, $bundle3['bundle_size']);
+
+        // Non-bundle names
+        $this->assertNull(EquipmentManager::parseBundleInfo('Longsword'));
+        $this->assertNull(EquipmentManager::parseBundleInfo('Trail Rations (1 day)'));
+
+        // 2. createInventoryRecord unbundles package of 20 arrows
+        // Base item 112: Arrow, sheaf (20), BaseValue: 0.5 sp, BaseWeight: 1.5 lbs
+        $arrows = EquipmentManager::createInventoryRecord(['item_id' => 112, 'qty' => 1]);
+        $this->assertEquals('Arrow, sheaf', $arrows['name']);
+        $this->assertEquals(20, $arrows['qty']);
+        $this->assertEquals(0.025, $arrows['unit_price']); // 0.5 / 20
+        $this->assertEquals(0.075, $arrows['unit_weight']); // 1.5 / 20
+        $this->assertTrue($arrows['is_stackable']);
+
+        // 3. Buying 2 packages unbundles to 40 arrows with same unit price/weight
+        $arrows2 = EquipmentManager::createInventoryRecord(['item_id' => 112, 'qty' => 2]);
+        $this->assertEquals('Arrow, sheaf', $arrows2['name']);
+        $this->assertEquals(40, $arrows2['qty']);
+        $this->assertEquals(0.025, $arrows2['unit_price']);
+        $this->assertEquals(0.075, $arrows2['unit_weight']);
+    }
+
+    public function test_add_or_merge_item_splits_discrete_and_merges_stackable(): void
+    {
+        $inventory = [];
+
+        // 1. Add discrete weapon with qty = 2 (should be split into two records with qty: 1)
+        $swordRecord = EquipmentManager::createInventoryRecord(['name' => 'Sword, long-', 'ItemTypeID' => 2, 'Subtype' => 6, 'unit_price' => 15, 'qty' => 2]);
+        $addedSwords = EquipmentManager::addOrMergeItem($inventory, $swordRecord);
+
+        $this->assertCount(2, $addedSwords);
+        $this->assertCount(2, $inventory);
+        $this->assertEquals(1, $inventory[0]['qty']);
+        $this->assertEquals(1, $inventory[1]['qty']);
+        $this->assertNotEquals($inventory[0]['uid'], $inventory[1]['uid']);
+        $this->assertFalse($inventory[0]['is_stackable']);
+        $this->assertFalse($inventory[1]['is_stackable']);
+
+        // 2. Add stackable arrows (20 qty)
+        $arrows1 = EquipmentManager::createInventoryRecord(['name' => 'Arrow, sheaf', 'Subtype' => 8, 'unit_price' => 0.025, 'qty' => 20]);
+        EquipmentManager::addOrMergeItem($inventory, $arrows1);
+
+        $this->assertCount(3, $inventory);
+        $this->assertEquals(20, $inventory[2]['qty']);
+        $this->assertTrue($inventory[2]['is_stackable']);
+
+        // 3. Add more matching stackable arrows (10 qty, same container / on person)
+        $arrows2 = EquipmentManager::createInventoryRecord(['name' => 'Arrow, sheaf', 'Subtype' => 8, 'unit_price' => 0.025, 'qty' => 10]);
+        EquipmentManager::addOrMergeItem($inventory, $arrows2);
+
+        // Inventory count should NOT increase; existing stack should now be 30
+        $this->assertCount(3, $inventory);
+        $this->assertEquals(30, $inventory[2]['qty']);
+
+        // 4. Add stackable arrows inside a specific container (e.g. Quiver)
+        $arrowsQuiver = EquipmentManager::createInventoryRecord([
+            'name' => 'Arrow, sheaf',
+            'Subtype' => 8,
+            'unit_price' => 0.025,
+            'qty' => 15,
+            'container_id' => 'cnt_quiver_1'
+        ]);
+        EquipmentManager::addOrMergeItem($inventory, $arrowsQuiver);
+
+        // Different container should NOT merge with the on-person stack
+        $this->assertCount(4, $inventory);
+        $this->assertEquals(30, $inventory[2]['qty']);
+        $this->assertNull($inventory[2]['container_id']);
+        $this->assertEquals(15, $inventory[3]['qty']);
+        $this->assertEquals('cnt_quiver_1', $inventory[3]['container_id']);
+    }
 }
+
 
 

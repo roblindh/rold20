@@ -271,6 +271,216 @@ class EquipmentManager
         return (bool)preg_match('/backpack|pouch|sack|chest|barrel|quiver|scabbard|saddlebag|haversack|bag of/i', $name);
     }
 
+    /**
+     * Check if an item is stackable (ammunition, trade goods, coins/valuables, food/potions/supplies)
+     * vs discrete (weapons, armor, shields, containers, mounts, vehicles).
+     */
+    public static function isStackable(mixed $item): bool
+    {
+        if (empty($item)) {
+            return false;
+        }
+        if (is_string($item)) {
+            $item = ['name' => $item];
+        }
+        $arr = self::enrichItemWithRefData($item);
+
+        if (isset($arr['is_stackable'])) {
+            return (bool)$arr['is_stackable'];
+        }
+
+        // Containers are always discrete tracked items
+        if (self::isContainer($arr)) {
+            return false;
+        }
+
+        $name = strtolower((string)($arr['name'] ?? $arr['Name'] ?? ''));
+        $typeId = (int)($arr['ItemTypeID'] ?? $arr['item_type_id'] ?? $arr['item_type'] ?? $arr['ItemType'] ?? 0);
+        $subtypeId = (int)($arr['Subtype'] ?? $arr['subtype'] ?? 0);
+        $traits = strtolower((string)($arr['traits'] ?? $arr['Traits'] ?? ''));
+
+        // Ammunition is always stackable (Subtype 8, Ammo trait, or ammo naming)
+        if ($subtypeId === 8 || str_contains($traits, 'ammo') || preg_match('/\b(arrow|bolt|bullet|blowgun needle|sling stone|sling bullet)\b/i', $name)) {
+            return true;
+        }
+
+        // Weapons (Type 2, or Subtypes 6, 7, 9, 10, 40) are non-stackable
+        if ($typeId === 2 || in_array($subtypeId, [6, 7, 9, 10, 40])) {
+            return false;
+        }
+
+        // Armor and clothing (Type 3, or Subtypes 11-19, 41-46) are non-stackable
+        if ($typeId === 3 || in_array($subtypeId, [11, 12, 13, 14, 15, 16, 17, 18, 19, 41, 42, 43, 44, 45, 46])) {
+            return false;
+        }
+
+        // Mounts & Vehicles (Type 6, Subtypes 25-27, 71) are non-stackable
+        if ($typeId === 6 || in_array($subtypeId, [25, 26, 27, 71])) {
+            return false;
+        }
+
+        // Buildings & Real Estate (Type 7, Subtypes 57-58) are non-stackable
+        if ($typeId === 7 || in_array($subtypeId, [57, 58])) {
+            return false;
+        }
+
+        // Services (Type 8) are non-stackable
+        if ($typeId === 8) {
+            return false;
+        }
+
+        // Foci & Implements (Type 4, Subtypes 59-65) are non-stackable
+        if ($typeId === 4 || in_array($subtypeId, [59, 60, 61, 62, 63, 64, 65])) {
+            return false;
+        }
+
+        // Tools & Camping Gear (Subtypes 20 Camping, 21 Crafting & Tools) are non-stackable
+        if (in_array($subtypeId, [20, 21])) {
+            return false;
+        }
+
+        // Trade Goods (Type 1, Subtypes 1-4: Raw materials, cloth, spices, food commodities) are stackable
+        if ($typeId === 1 || in_array($subtypeId, [1, 2, 3, 4])) {
+            return true;
+        }
+
+        // Valuables (Type 9, Subtypes 51-56: Gems, art objects, bullion/bars, coins) are stackable
+        if ($typeId === 9 || in_array($subtypeId, [51, 52, 53, 54, 55, 56]) || !empty($arr['is_valuable'])) {
+            return true;
+        }
+
+        // Consumables: Alchemy, Food & Drink, Potions & Oils, Other Consumables (Subtypes 22, 29, 39, 72)
+        if (in_array($subtypeId, [22, 29, 39, 72])) {
+            return true;
+        }
+
+        // Common consumable supplies regex
+        if (preg_match('/\b(ration|rations|torch|candle|chalk|iron spike|piton|bandage|potion|elixir|oil|phial|vial|flask|grain|herb|spice|cloth|flour|meal|salt|food|feed|water|wine|ale|beer|cider|mead|cheese|bread|meat|fish|herring|apple|berry|fruit)\b/i', $name)) {
+            return true;
+        }
+
+        // Durable physical gear / tools / instruments default to discrete
+        return false;
+    }
+
+    /**
+     * Parse bundle quantity from item name, e.g. "Arrow, sheaf (20)" -> ['base_name' => 'Arrow, sheaf', 'bundle_size' => 20]
+     */
+    public static function parseBundleInfo(string $name): ?array
+    {
+        if (preg_match('/^(.*?)\s*\((\d+)\)$/', trim($name), $m)) {
+            $bundleSize = (int)$m[2];
+            if ($bundleSize > 1) {
+                return [
+                    'base_name' => trim($m[1]),
+                    'bundle_size' => $bundleSize,
+                ];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Add or merge an item into an inventory list.
+     * Discrete items (weapons, armor, mounts, containers) are added as individual records with qty: 1 and unique uids.
+     * Stackable items are merged into an existing matching stack (same name/item_id, container, and mods) if found,
+     * or appended as a new record.
+     *
+     * @param array &$equipmentList
+     * @param array $itemRecord
+     * @return array Added or updated records
+     */
+    public static function addOrMergeItem(array &$equipmentList, array $itemRecord): array
+    {
+        self::loadItemReferenceTables();
+        $isStackable = self::isStackable($itemRecord);
+        $itemRecord['is_stackable'] = $isStackable;
+
+        if (!$isStackable) {
+            $qty = max(1, (int)($itemRecord['qty'] ?? $itemRecord['Qty'] ?? 1));
+            $added = [];
+            for ($i = 0; $i < $qty; $i++) {
+                $clone = $itemRecord;
+                $clone['qty'] = 1;
+                $clone['Qty'] = 1;
+                $cloneUid = uniqid('item_');
+                $clone['uid'] = $cloneUid;
+                $clone['id'] = $cloneUid;
+                $clone['is_stackable'] = false;
+                if (isset($clone['unit_price'])) {
+                    $clone['value'] = (float)$clone['unit_price'];
+                }
+                if (isset($clone['unit_weight'])) {
+                    $clone['weight'] = (float)$clone['unit_weight'];
+                }
+                $equipmentList[] = $clone;
+                $added[] = $clone;
+            }
+            return $added;
+        }
+
+        // Stackable: Search for existing matching stack
+        $targetName = strtolower(trim((string)($itemRecord['name'] ?? $itemRecord['Name'] ?? '')));
+        $targetItemId = (int)($itemRecord['item_id'] ?? $itemRecord['ID'] ?? 0);
+        $targetContainer = $itemRecord['container_id'] ?? $itemRecord['ContainerID'] ?? null;
+        if ($targetContainer === '' || $targetContainer === 'none') {
+            $targetContainer = null;
+        }
+        $targetConfig = (string)($itemRecord['config'] ?? $itemRecord['config_string'] ?? '');
+        $targetMods = (string)($itemRecord['mods'] ?? $itemRecord['Mods'] ?? '');
+        $qtyToAdd = max(1, (int)($itemRecord['qty'] ?? $itemRecord['Qty'] ?? 1));
+
+        foreach ($equipmentList as &$existing) {
+            if (!is_array($existing)) {
+                continue;
+            }
+            $existingContainer = $existing['container_id'] ?? $existing['ContainerID'] ?? null;
+            if ($existingContainer === '' || $existingContainer === 'none') {
+                $existingContainer = null;
+            }
+            if ($existingContainer !== $targetContainer) {
+                continue;
+            }
+
+            $existingConfig = (string)($existing['config'] ?? $existing['config_string'] ?? '');
+            $existingMods = (string)($existing['mods'] ?? $existing['Mods'] ?? '');
+            if ($existingConfig !== $targetConfig || $existingMods !== $targetMods) {
+                continue;
+            }
+
+            $existingName = strtolower(trim((string)($existing['name'] ?? $existing['Name'] ?? '')));
+            $existingItemId = (int)($existing['item_id'] ?? $existing['ID'] ?? 0);
+
+            $nameMatch = ($existingName === $targetName);
+            $idMatch = ($targetItemId > 0 && $existingItemId > 0 && $targetItemId === $existingItemId);
+
+            if ($nameMatch || $idMatch) {
+                $currentQty = max(1, (int)($existing['qty'] ?? $existing['Qty'] ?? 1));
+                $newQty = $currentQty + $qtyToAdd;
+                $existing['qty'] = $newQty;
+                $existing['Qty'] = $newQty;
+                $existing['is_stackable'] = true;
+                if (isset($existing['unit_price'])) {
+                    $existing['value'] = (float)$existing['unit_price'] * $newQty;
+                }
+                if (isset($existing['unit_weight'])) {
+                    $existing['weight'] = (float)$existing['unit_weight'] * $newQty;
+                }
+                return [$existing];
+            }
+        }
+        unset($existing);
+
+        // No existing match found: append as new stack
+        if (empty($itemRecord['uid']) || is_numeric($itemRecord['uid'])) {
+            $itemRecord['uid'] = uniqid('item_');
+        }
+        $itemRecord['id'] = $itemRecord['uid'];
+        $itemRecord['is_stackable'] = true;
+        $equipmentList[] = $itemRecord;
+        return [$itemRecord];
+    }
+
     protected static ?array $refItemsCache = null;
     protected static ?array $refItemSubtypesCache = null;
     protected static ?array $refItemModsMundaneCache = null;
@@ -798,7 +1008,7 @@ class EquipmentManager
         } elseif ($explicitPrice !== null && is_numeric($explicitPrice)) {
             $unitPrice = (float)$explicitPrice;
         } else {
-            $unitPrice = (float)($inst['value_sp'] ?? $baseItem['BaseValue'] ?? 0);
+            $unitPrice = !empty($inst['value_sp']) ? (float)$inst['value_sp'] : (float)($baseItem['BaseValue'] ?? 0);
         }
 
         $explicitWeight = $overrides['unit_weight'] ?? $overrides['weight'] ?? $mergedInput['unit_weight'] ?? $mergedInput['weight'] ?? $mergedInput['Weight'] ?? null;
@@ -809,7 +1019,7 @@ class EquipmentManager
         } elseif ($explicitWeight !== null && is_numeric($explicitWeight)) {
             $unitWeight = (float)$explicitWeight;
         } else {
-            $unitWeight = (float)($inst['weight_kg'] ?? $baseItem['BaseWeight'] ?? $baseItem['Weight'] ?? 0);
+            $unitWeight = !empty($inst['weight_kg']) ? (float)$inst['weight_kg'] : (float)($baseItem['BaseWeight'] ?? $baseItem['Weight'] ?? 0);
         }
 
         $qty = max(1, (int)($overrides['qty'] ?? $mergedInput['qty'] ?? $mergedInput['Qty'] ?? 1));
@@ -872,6 +1082,22 @@ class EquipmentManager
         }
         $valType = $overrides['valuable_type'] ?? $mergedInput['valuable_type'] ?? ($isValuable ? ($subtypeId === 51 ? 'gem' : ($subtypeId === 52 ? 'art' : (in_array($subtypeId, [53, 54, 55, 56]) ? 'bullion' : (preg_match('/\b(gem|ruby|emerald|sapphire|diamond|opal|amethyst|garnet|topaz|turquoise|agate|spinel|peridot|jade|pearl|onyx|zircon|quartz|tourmaline)\b/i', $name) ? 'gem' : 'valuable')))) : null);
 
+        $isStackable = self::isStackable(array_merge($itemStub, [
+            'traits' => $resolvedTraits,
+            'is_container' => $isContainer,
+            'is_valuable' => $isValuable,
+        ]));
+
+        $bundle = self::parseBundleInfo($name);
+        $skipUnbundle = !empty($overrides['skip_unbundle']) || !empty($mergedInput['skip_unbundle']);
+        if ($bundle && $isStackable && !$skipUnbundle) {
+            $name = $bundle['base_name'];
+            $bCount = $bundle['bundle_size'];
+            $qty = $qty * $bCount;
+            $unitPrice = round($unitPrice / $bCount, 4);
+            $unitWeight = round($unitWeight / $bCount, 4);
+        }
+
         $rawUid = trim((string)($overrides['uid'] ?? $mergedInput['uid'] ?? ''));
         if (!empty($rawUid) && !is_numeric($rawUid)) {
             $uid = $rawUid;
@@ -892,6 +1118,7 @@ class EquipmentManager
             'locations' => $locations,
             'container_id' => $containerId,
             'is_container' => (bool)$isContainer,
+            'is_stackable' => (bool)$isStackable,
             'is_valuable' => (bool)$isValuable,
             'valuable_type' => $valType,
             'ItemTypeID' => $typeId > 0 ? $typeId : null,

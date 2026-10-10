@@ -1060,7 +1060,7 @@ class UtilityController extends Controller
                         $targetEquip = [['name' => $raw, 'config' => $raw]];
                     }
                 }
-                $targetEquip[] = $itemToTransfer;
+                \App\Services\Entity\EquipmentManager::addOrMergeItem($targetEquip, $itemToTransfer);
 
                 DB::table('characters')->where('ID', $id)->update(['Equipment' => json_encode($charEquip)]);
                 DB::table('characters')->where('ID', $targetId)->update(['Equipment' => json_encode($targetEquip)]);
@@ -1077,7 +1077,7 @@ class UtilityController extends Controller
                 unset($charEquip[$itemIdx]);
                 $charEquip = array_values($charEquip);
 
-                $vaultItems[] = $itemToTransfer;
+                \App\Services\Entity\EquipmentManager::addOrMergeItem($vaultItems, $itemToTransfer);
 
                 DB::table('characters')->where('ID', $id)->update(['Equipment' => json_encode($charEquip)]);
                 DB::table('campaigns')->where('ID', $campaignId)->update([
@@ -1096,7 +1096,7 @@ class UtilityController extends Controller
                 unset($vaultItems[$itemIdx]);
                 $vaultItems = array_values($vaultItems);
 
-                $charEquip[] = $itemToTake;
+                \App\Services\Entity\EquipmentManager::addOrMergeItem($charEquip, $itemToTake);
 
                 DB::table('characters')->where('ID', $id)->update(['Equipment' => json_encode($charEquip)]);
                 DB::table('campaigns')->where('ID', $campaignId)->update([
@@ -1187,7 +1187,8 @@ class UtilityController extends Controller
                 ]);
             }
 
-            $totalCost += (int)round($record['unit_price'] * $qty);
+            $itemCost = (float)$record['unit_price'] * (int)$record['qty'];
+            $totalCost += $itemCost;
             $itemsToAdd[] = $record;
         }
 
@@ -1204,7 +1205,7 @@ class UtilityController extends Controller
 
         $charEquip = \App\Services\Entity\EquipmentManager::decodeEquipment($character->Equipment ?? []);
         foreach ($itemsToAdd as $item) {
-            $charEquip[] = $item;
+            \App\Services\Entity\EquipmentManager::addOrMergeItem($charEquip, $item);
         }
 
 
@@ -1588,6 +1589,7 @@ class UtilityController extends Controller
                     $allowed = \App\Services\Entity\EquipmentManager::getAllowedLocations($itemRef);
                     $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($itemRef);
                     $isContainer = !empty($it['is_container']) || \App\Services\Entity\EquipmentManager::isContainer($itemRef);
+                    $isStackable = \App\Services\Entity\EquipmentManager::isStackable($itemRef);
 
                     $locations = [];
                     for ($c = 0; $c < 5; $c++) {
@@ -1597,39 +1599,81 @@ class UtilityController extends Controller
 
                     $cId = !empty($it['container_id']) && $it['container_id'] !== 'none' && $it['container_id'] !== $uid ? (string)$it['container_id'] : null;
 
-                    $updatedEquip[] = [
-                        'uid' => $uid,
-                        'id' => $uid,
-                        'item_id' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
-                        'ID' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
-                        'Name' => $name,
-                        'name' => $name,
-                        'Qty' => $qty,
-                        'qty' => $qty,
-                        'BaseValue' => $unitPrice,
-                        'unit_price' => $unitPrice,
-                        'value' => $unitPrice * $qty,
-                        'BaseWeight' => $unitWeight,
-                        'unit_weight' => $unitWeight,
-                        'weight' => $unitWeight * $qty,
-                        'location' => $locations[0],
-                        'Location' => $locations[0],
-                        'locations' => $locations,
-                        'Locations' => $locations,
-                        'slot' => !empty($it['slot']) ? (string)$it['slot'] : null,
-                        'slots' => !empty($it['slots']) && is_array($it['slots']) ? $it['slots'] : null,
-                        'container_id' => $cId,
-                        'ContainerID' => $cId,
-                        'is_container' => $isContainer,
-                        'IsContainer' => $isContainer,
-                        'ItemTypeID' => $it['item_type_id'] ?? null,
-                        'Subtype' => $it['subtype'] ?? null,
-                        'traits' => $traits,
-                        'mods' => $mods,
-                        'config' => $configStr,
-                        'config_string' => $configStr,
-                        'added_at' => $it['added_at'] ?? date('Y-m-d H:i:s'),
-                    ];
+                    if (!$isStackable && $qty > 1) {
+                        for ($i = 0; $i < $qty; $i++) {
+                            $splitUid = ($i === 0) ? $uid : uniqid('item_');
+                            $seenUids[$splitUid] = true;
+                            $updatedEquip[] = [
+                                'uid' => $splitUid,
+                                'id' => $splitUid,
+                                'item_id' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
+                                'ID' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
+                                'Name' => $name,
+                                'name' => $name,
+                                'Qty' => 1,
+                                'qty' => 1,
+                                'BaseValue' => $unitPrice,
+                                'unit_price' => $unitPrice,
+                                'value' => $unitPrice,
+                                'BaseWeight' => $unitWeight,
+                                'unit_weight' => $unitWeight,
+                                'weight' => $unitWeight,
+                                'location' => $locations[0],
+                                'Location' => $locations[0],
+                                'locations' => $locations,
+                                'Locations' => $locations,
+                                'slot' => ($i === 0 && !empty($it['slot'])) ? (string)$it['slot'] : null,
+                                'slots' => ($i === 0 && !empty($it['slots']) && is_array($it['slots'])) ? $it['slots'] : null,
+                                'container_id' => $cId,
+                                'ContainerID' => $cId,
+                                'is_container' => $isContainer,
+                                'IsContainer' => $isContainer,
+                                'is_stackable' => false,
+                                'ItemTypeID' => $it['item_type_id'] ?? null,
+                                'Subtype' => $it['subtype'] ?? null,
+                                'traits' => $traits,
+                                'mods' => $mods,
+                                'config' => $configStr,
+                                'config_string' => $configStr,
+                                'added_at' => $it['added_at'] ?? date('Y-m-d H:i:s'),
+                            ];
+                        }
+                    } else {
+                        $updatedEquip[] = [
+                            'uid' => $uid,
+                            'id' => $uid,
+                            'item_id' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
+                            'ID' => !empty($it['item_id']) ? (int)$it['item_id'] : null,
+                            'Name' => $name,
+                            'name' => $name,
+                            'Qty' => $qty,
+                            'qty' => $qty,
+                            'BaseValue' => $unitPrice,
+                            'unit_price' => $unitPrice,
+                            'value' => $unitPrice * $qty,
+                            'BaseWeight' => $unitWeight,
+                            'unit_weight' => $unitWeight,
+                            'weight' => $unitWeight * $qty,
+                            'location' => $locations[0],
+                            'Location' => $locations[0],
+                            'locations' => $locations,
+                            'Locations' => $locations,
+                            'slot' => !empty($it['slot']) ? (string)$it['slot'] : null,
+                            'slots' => !empty($it['slots']) && is_array($it['slots']) ? $it['slots'] : null,
+                            'container_id' => $cId,
+                            'ContainerID' => $cId,
+                            'is_container' => $isContainer,
+                            'IsContainer' => $isContainer,
+                            'is_stackable' => $isStackable,
+                            'ItemTypeID' => $it['item_type_id'] ?? null,
+                            'Subtype' => $it['subtype'] ?? null,
+                            'traits' => $traits,
+                            'mods' => $mods,
+                            'config' => $configStr,
+                            'config_string' => $configStr,
+                            'added_at' => $it['added_at'] ?? date('Y-m-d H:i:s'),
+                        ];
+                    }
                 }
             }
 
@@ -2652,7 +2696,7 @@ class UtilityController extends Controller
         $itemData = \App\Services\Entity\EquipmentManager::createInventoryRecord($request->all());
 
         $currentEquip = \App\Services\Entity\EquipmentManager::decodeEquipment($character->Equipment ?? []);
-        $currentEquip[] = $itemData;
+        \App\Services\Entity\EquipmentManager::addOrMergeItem($currentEquip, $itemData);
 
         DB::table('characters')->where('ID', $charId)->update([
             'Equipment' => json_encode($currentEquip, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
@@ -2693,7 +2737,7 @@ class UtilityController extends Controller
                 $currentItems = json_decode($raw, true) ?? [];
             }
         }
-        $currentItems[] = $itemData;
+        \App\Services\Entity\EquipmentManager::addOrMergeItem($currentItems, $itemData);
 
         DB::table('campaigns')->where('ID', $campaignId)->update([
             'Vault' => json_encode(['funds' => $currentFunds, 'items' => $currentItems], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
@@ -3082,17 +3126,19 @@ class UtilityController extends Controller
                         $cId = (int)$assignTo;
                         $char = $characters[$cId];
                         $equip = \App\Services\Entity\EquipmentManager::decodeEquipment($char->Equipment ?? []);
-                        $equip[] = \App\Services\Entity\EquipmentManager::createInventoryRecord($m, ['uid' => uniqid('magic_')]);
+                        $magicRec = \App\Services\Entity\EquipmentManager::createInventoryRecord($m, ['uid' => uniqid('magic_')]);
+                        \App\Services\Entity\EquipmentManager::addOrMergeItem($equip, $magicRec);
                         DB::table('characters')->where('ID', $cId)->update(['Equipment' => json_encode($equip, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)]);
                     } elseif (($assignTo === 'vault' || empty($assignTo)) && $campaign) {
                         $vault = json_decode($campaign->Vault ?? '[]', true) ?? [];
                         $vaultFunds = (int)($vault['funds'] ?? 0);
                         $vaultItems = $vault['items'] ?? (is_array($vault) && !isset($vault['funds']) ? $vault : []);
-                        $vaultItems[] = \App\Services\Entity\EquipmentManager::createInventoryRecord($m, [
+                        $vaultMagicRec = \App\Services\Entity\EquipmentManager::createInventoryRecord($m, [
                             'uid' => uniqid('vault_magic_'),
                             'location' => \App\Services\Entity\EquipmentManager::LOCATION_STOWED,
                             'locations' => [0, 0, 0, 0, 0],
                         ]);
+                        \App\Services\Entity\EquipmentManager::addOrMergeItem($vaultItems, $vaultMagicRec);
                         DB::table('campaigns')->where('ID', $campaign->ID)->update([
                             'Vault' => json_encode(['funds' => $vaultFunds, 'items' => $vaultItems], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
                         ]);
@@ -3161,7 +3207,7 @@ class UtilityController extends Controller
                         $cId = (int)$assignTo;
                         $char = $characters[$cId];
                         $equip = \App\Services\Entity\EquipmentManager::decodeEquipment($char->Equipment ?? []);
-                        $equip[] = $itemEntry;
+                        \App\Services\Entity\EquipmentManager::addOrMergeItem($equip, $itemEntry);
                         DB::table('characters')->where('ID', $cId)->update(['Equipment' => json_encode($equip, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)]);
                     } elseif (($assignTo === 'vault' || empty($assignTo)) && $campaign) {
                         $vault = json_decode($campaign->Vault ?? '[]', true) ?? [];
@@ -3169,7 +3215,7 @@ class UtilityController extends Controller
                         $vaultItems = $vault['items'] ?? (is_array($vault) && !isset($vault['funds']) ? $vault : []);
                         $itemEntry['location'] = \App\Services\Entity\EquipmentManager::LOCATION_STOWED;
                         $itemEntry['locations'] = [0, 0, 0, 0, 0];
-                        $vaultItems[] = $itemEntry;
+                        \App\Services\Entity\EquipmentManager::addOrMergeItem($vaultItems, $itemEntry);
                         DB::table('campaigns')->where('ID', $campaign->ID)->update([
                             'Vault' => json_encode(['funds' => $vaultFunds, 'items' => $vaultItems], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
                         ]);

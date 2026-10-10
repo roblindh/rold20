@@ -310,6 +310,18 @@
                 if ($unitWeight > 0 && isset($it['weight']) && !isset($it['BaseWeight']) && $qty > 1) {
                     $unitWeight = round($unitWeight / $qty, 2);
                 }
+                $isStackable = \App\Services\Entity\EquipmentManager::isStackable($it);
+
+                // Unbundle legacy packaged items (e.g. "Arrow, sheaf (20)" -> "Arrow, sheaf" with 20 qty)
+                $bundle = \App\Services\Entity\EquipmentManager::parseBundleInfo($name);
+                if ($bundle && $isStackable) {
+                    $name = $bundle['base_name'];
+                    $bCount = $bundle['bundle_size'];
+                    $qty = $qty * $bCount;
+                    $unitPrice = round($unitPrice / $bCount, 4);
+                    $unitWeight = round($unitWeight / $bCount, 4);
+                }
+
                 $isContainer = !empty($it['IsContainer']) || !empty($it['is_container']) || \App\Services\Entity\EquipmentManager::isContainer($it);
                 $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($it);
                 $locs = $it['Locations'] ?? $it['locations'] ?? [];
@@ -370,6 +382,7 @@
                     'ContainerID' => $containerId,
                     'is_container' => $isContainer,
                     'IsContainer' => $isContainer,
+                    'is_stackable' => $isStackable,
                     'item_type_id' => $it['ItemTypeID'] ?? $it['item_type_id'] ?? $it['Type'] ?? null,
                     'subtype' => $it['Subtype'] ?? $it['subtype'] ?? null,
                     'traits' => $it['Traits'] ?? $it['traits'] ?? '',
@@ -1899,28 +1912,140 @@ function characterViewerApp() {
             this.equipmentItems.splice(index, 1);
         },
 
+        decrementItemQty(idx) {
+            const item = this.equipmentItems[idx];
+            if (!item) return;
+            if (item.qty > 1) {
+                item.qty--;
+            } else {
+                this.removeItem(idx);
+            }
+        },
+
+        isItemStackable(item) {
+            if (!item) return false;
+            if (item.is_stackable !== undefined && item.is_stackable !== null) {
+                return Boolean(item.is_stackable);
+            }
+            if (item.is_container || Boolean(item.IsContainer)) {
+                return false;
+            }
+
+            const name = (item.name || item.Name || '').toLowerCase();
+            const typeId = parseInt(item.item_type_id || item.ItemTypeID || item.Type || 0);
+            const subtypeId = parseInt(item.subtype || item.Subtype || 0);
+            const traits = (item.traits || item.Traits || '').toLowerCase();
+
+            // Ammunition is always stackable
+            if (subtypeId === 8 || traits.includes('ammo') || /\b(arrow|bolt|bullet|blowgun needle|sling stone|sling bullet)\b/i.test(name)) {
+                return true;
+            }
+
+            // Weapons, armor, mounts/vehicles, buildings, services, foci, tools are non-stackable
+            if (typeId === 2 || [6, 7, 9, 10, 40].includes(subtypeId)) return false;
+            if (typeId === 3 || (subtypeId >= 11 && subtypeId <= 19) || (subtypeId >= 41 && subtypeId <= 46)) return false;
+            if (typeId === 4 || (subtypeId >= 59 && subtypeId <= 65)) return false;
+            if (typeId === 6 || [25, 26, 27, 71].includes(subtypeId)) return false;
+            if (typeId === 7 || [57, 58].includes(subtypeId)) return false;
+            if (typeId === 8) return false;
+            if ([20, 21].includes(subtypeId)) return false;
+
+            // Trade goods, valuables (gems/bullion/coins), consumables
+            if (typeId === 1 || [1, 2, 3, 4].includes(subtypeId)) return true;
+            if (typeId === 9 || (subtypeId >= 51 && subtypeId <= 56) || Boolean(item.is_valuable)) return true;
+            if ([22, 29, 39, 72].includes(subtypeId)) return true;
+
+            // Common expendable consumables & supplies
+            if (/\b(ration|rations|torch|candle|chalk|iron spike|piton|bandage|potion|elixir|oil|phial|vial|flask|grain|herb|spice|cloth|flour|meal|salt|food|feed|water|wine|ale|beer|cider|mead|cheese|bread|meat|fish|herring|apple|berry|fruit)\b/i.test(name)) {
+                return true;
+            }
+
+            return false;
+        },
+
+        splitNonStackableItem(idx) {
+            const item = this.equipmentItems[idx];
+            if (!item || item.qty <= 1) return;
+            const totalQty = parseInt(item.qty);
+            item.qty = 1;
+            item.is_stackable = false;
+            for (let i = 1; i < totalQty; i++) {
+                const clone = JSON.parse(JSON.stringify(item));
+                clone.uid = 'item_split_' + Date.now() + '_' + i + '_' + Math.random().toString(36).substr(2, 4);
+                clone.id = clone.uid;
+                clone.qty = 1;
+                clone.is_stackable = false;
+                this.equipmentItems.splice(idx + i, 0, clone);
+            }
+        },
+
+        splitStackableItem(idx) {
+            const item = this.equipmentItems[idx];
+            if (!item || item.qty <= 1) return;
+            const promptVal = prompt('How many units would you like to split into a new stack?', '1');
+            if (promptVal === null) return;
+            const splitQty = parseInt(promptVal);
+            if (isNaN(splitQty) || splitQty <= 0 || splitQty >= item.qty) {
+                alert('Please enter a valid amount between 1 and ' + (item.qty - 1));
+                return;
+            }
+            item.qty -= splitQty;
+            const clone = JSON.parse(JSON.stringify(item));
+            clone.uid = 'item_stack_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+            clone.id = clone.uid;
+            clone.qty = splitQty;
+            clone.is_stackable = true;
+            this.equipmentItems.splice(idx + 1, 0, clone);
+        },
+
         addCustomItemToInventory() {
             if (!this.customItem.name.trim()) return;
-            const uid = 'item_custom_' + Date.now();
             const isCont = Boolean(this.customItem.is_container);
             const tempItem = { name: this.customItem.name.trim(), is_container: isCont };
             const allowed = this.getAllowedLocations(tempItem);
             const defaultLoc = isCont ? 2 : (allowed.some(l => l.value === 2) ? 2 : 1);
-            this.equipmentItems.push({
-                uid: uid,
-                id: uid,
-                item_id: null,
-                name: this.customItem.name.trim(),
-                qty: parseInt(this.customItem.qty) || 1,
-                unit_price: parseFloat(this.customItem.unit_price) || 0,
-                unit_weight: parseFloat(this.customItem.unit_weight) || 0,
-                is_container: isCont,
-                container_id: null,
-                locations: [defaultLoc, defaultLoc, defaultLoc, defaultLoc, defaultLoc],
-                location: defaultLoc,
-                item_type_id: null,
-                subtype: null
-            });
+            const qty = parseInt(this.customItem.qty) || 1;
+            const isStackable = this.isItemStackable(tempItem);
+
+            if (!isStackable && qty > 1) {
+                for (let i = 0; i < qty; i++) {
+                    const uid = 'item_custom_' + Date.now() + '_' + i;
+                    this.equipmentItems.push({
+                        uid: uid,
+                        id: uid,
+                        item_id: null,
+                        name: this.customItem.name.trim(),
+                        qty: 1,
+                        unit_price: parseFloat(this.customItem.unit_price) || 0,
+                        unit_weight: parseFloat(this.customItem.unit_weight) || 0,
+                        is_container: isCont,
+                        is_stackable: false,
+                        container_id: null,
+                        locations: [defaultLoc, defaultLoc, defaultLoc, defaultLoc, defaultLoc],
+                        location: defaultLoc,
+                        item_type_id: null,
+                        subtype: null
+                    });
+                }
+            } else {
+                const uid = 'item_custom_' + Date.now();
+                this.equipmentItems.push({
+                    uid: uid,
+                    id: uid,
+                    item_id: null,
+                    name: this.customItem.name.trim(),
+                    qty: qty,
+                    unit_price: parseFloat(this.customItem.unit_price) || 0,
+                    unit_weight: parseFloat(this.customItem.unit_weight) || 0,
+                    is_container: isCont,
+                    is_stackable: isStackable,
+                    container_id: null,
+                    locations: [defaultLoc, defaultLoc, defaultLoc, defaultLoc, defaultLoc],
+                    location: defaultLoc,
+                    item_type_id: null,
+                    subtype: null
+                });
+            }
             this.customItem = {
                 name: '',
                 qty: 1,

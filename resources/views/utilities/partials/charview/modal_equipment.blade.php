@@ -355,11 +355,31 @@
 
                                     <!-- Quantity Adjustment -->
                                     <td class="p-3 text-center">
-                                        <div class="flex items-center justify-center gap-1">
-                                            <button type="button" @click="if(item.qty > 1) item.qty--; else removeItem(idx);" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded flex items-center justify-center cursor-pointer text-xs">-</button>
-                                            <span class="w-6 text-center font-mono font-bold" x-text="item.qty"></span>
-                                            <button type="button" @click="item.qty++" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded flex items-center justify-center cursor-pointer text-xs">+</button>
-                                        </div>
+                                        <template x-if="isItemStackable(item)">
+                                            <div class="flex flex-col items-center gap-1">
+                                                <div class="flex items-center justify-center gap-1">
+                                                    <button type="button" @click="decrementItemQty(idx)" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded flex items-center justify-center cursor-pointer text-xs" title="Decrease quantity">-</button>
+                                                    <span class="w-7 text-center font-mono font-bold text-xs" x-text="item.qty"></span>
+                                                    <button type="button" @click="item.qty++" class="w-5 h-5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded flex items-center justify-center cursor-pointer text-xs" title="Increase quantity">+</button>
+                                                </div>
+                                                <template x-if="item.qty > 1">
+                                                    <button type="button" @click="splitStackableItem(idx)" class="text-[10px] text-indigo-600 hover:text-indigo-800 underline font-medium cursor-pointer" title="Divide stack into separate container/pouch">Split stack</button>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <template x-if="!isItemStackable(item)">
+                                            <div>
+                                                <template x-if="item.qty > 1">
+                                                    <div class="flex flex-col items-center gap-1">
+                                                        <span class="text-xs font-bold text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200" x-text="item.qty + 'x'"></span>
+                                                        <button type="button" @click="splitNonStackableItem(idx)" class="px-1.5 py-0.5 text-[10px] font-semibold bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 rounded shadow-2xs cursor-pointer" title="Separate into individual tracked items">Split</button>
+                                                    </div>
+                                                </template>
+                                                <template x-if="item.qty <= 1">
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">1</span>
+                                                </template>
+                                            </div>
+                                        </template>
                                     </td>
 
                                     <!-- Value & Weight -->
