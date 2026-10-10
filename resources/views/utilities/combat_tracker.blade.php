@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Combat & Initiative Tracker', 'containerClass' => 'max-w-[1400px] w-full', 'hideFooter' => true])
+@extends('layouts.app', ['title' => 'Encounter & Initiative Tracker', 'containerClass' => 'max-w-[1400px] w-full', 'hideFooter' => true])
 
 @section('content')
 <div class="space-y-4" x-data="combatTrackerApp()" x-init="initApp()">
@@ -6,9 +6,9 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-amber-900/15 pb-2 gap-2">
         <div>
             <h1 class="text-xl sm:text-2xl font-bold font-serif text-slate-900 flex items-center gap-2">
-                <span>⚔️</span> Combat &amp; Initiative Tracker
+                <span>⚔️</span> Encounter &amp; Initiative Tracker
             </h1>
-            <p class="text-stone-600 text-xs mt-0.5">Real-time encounter management, initiative order, Action Points (AP), dual defenses, health dials (HP/SP/PP), and active attack actions.</p>
+            <p class="text-stone-600 text-xs mt-0.5">Real-time encounter management, initiative order, traps &amp; hazards, environment, tactical complications, AP, dual defenses, health dials &amp; actions.</p>
         </div>
 
         <!-- Quick Campaign & Encounter Selector -->
@@ -32,7 +32,7 @@
                 <label class="text-xs font-bold text-amber-950 uppercase tracking-wider font-serif">Encounter:</label>
                 <select x-model="selectedEncounterId" @change="onEncounterChange()"
                         class="select-rol text-xs py-1 max-w-xs">
-                    <option value="">-- Choose Encounter / Free Combat --</option>
+                    <option value="">-- Choose Encounter / Free Encounter --</option>
                     <template x-for="enc in availableEncounters" :key="enc.id">
                         <option :value="enc.id" x-text="(enc.adventure_name ? '[' + enc.adventure_name + '] ' : '') + enc.name + ' (EL ' + (enc.encounter_level || 1) + ')'"></option>
                     </template>
@@ -190,6 +190,266 @@
     <div class="combat-tracker-workspace">
         <!-- Initiative Ladder & Combatant Cards -->
         <div class="combat-tracker-main space-y-3.5">
+            <!-- Encounter Intel & Scene Briefing Drawer (Collapsible) -->
+            <div x-show="currentEncounter" x-cloak
+                 class="parchment-card border border-amber-900/30 rounded-xl shadow-xs overflow-hidden transition-all duration-200">
+                <!-- Header Banner / Toggle Strip -->
+                <div class="px-3.5 py-2 bg-gradient-to-r from-amber-100/90 via-amber-50 to-stone-100 border-b border-amber-900/15 flex flex-wrap items-center justify-between gap-2 cursor-pointer select-none"
+                     @click="intelExpanded = !intelExpanded">
+                    <div class="flex items-center gap-2 flex-wrap min-w-0">
+                        <!-- Type Badge with distinct colors & icons -->
+                        <span class="text-[10px] uppercase font-black px-2 py-0.5 rounded shadow-2xs border flex items-center gap-1 shrink-0"
+                              :class="{
+                                  'bg-rose-100 text-rose-900 border-rose-300': currentEncounter?.type === 'combat',
+                                  'bg-amber-100 text-amber-950 border-amber-400': currentEncounter?.type === 'trap_hazard',
+                                  'bg-sky-100 text-sky-950 border-sky-300': currentEncounter?.type === 'social',
+                                  'bg-purple-100 text-purple-950 border-purple-300': currentEncounter?.type === 'puzzle',
+                                  'bg-emerald-100 text-emerald-950 border-emerald-300': currentEncounter?.type === 'exploration'
+                              }">
+                            <span x-text="currentEncounter?.type === 'combat' ? '⚔️ Combat' : (currentEncounter?.type === 'trap_hazard' ? '⚠️ Trap / Hazard' : (currentEncounter?.type === 'social' ? '🗣️ Social Parley' : (currentEncounter?.type === 'puzzle' ? '🧩 Puzzle' : (currentEncounter?.type === 'exploration' ? '🗺️ Exploration' : 'Encounter'))))"></span>
+                        </span>
+
+                        <!-- Title & Level -->
+                        <div class="font-serif font-bold text-slate-900 text-xs sm:text-sm truncate">
+                            <span x-show="currentEncounter?.adventure_name" class="text-amber-900/70 font-normal text-[11px]" x-text="'[' + currentEncounter?.adventure_name + '] '"></span>
+                            <span x-text="currentEncounter?.name"></span>
+                            <span class="text-amber-800 font-mono text-[11px] font-bold ml-1" x-text="'(EL ' + (currentEncounter?.encounter_level || 1) + ')'"></span>
+                        </div>
+
+                        <!-- Quick Glance Context Chips (visible even when collapsed) -->
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <!-- Environment Chip -->
+                            <template x-if="currentEncounter?.environment">
+                                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-stone-200/70 text-stone-800 text-[10px] font-medium border border-stone-300 max-w-[200px] truncate"
+                                      :title="'Environment: ' + currentEncounter.environment">
+                                    <span>🌲</span> <span class="truncate" x-text="currentEncounter.environment"></span>
+                                </span>
+                            </template>
+
+                            <!-- Traps Count Chip -->
+                            <template x-if="currentEncounter?.traps_and_hazards && currentEncounter.traps_and_hazards.length > 0">
+                                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-rose-100 text-rose-900 text-[10px] font-bold border border-rose-300 shadow-2xs">
+                                    <span>⚠️</span> <span x-text="currentEncounter.traps_and_hazards.length + ' Trap' + (currentEncounter.traps_and_hazards.length > 1 ? 's' : '')"></span>
+                                </span>
+                            </template>
+
+                            <!-- Tactical Complications Indicator -->
+                            <template x-if="currentEncounter?.tactics_and_features">
+                                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-200/60 text-amber-950 text-[10px] font-bold border border-amber-300"
+                                      title="Has tactical complications & features">
+                                    <span>🛡️</span> Tactics
+                                </span>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Toggle Button -->
+                    <button type="button" @click.stop="intelExpanded = !intelExpanded"
+                            class="btn-rol-secondary text-[10px] py-1 px-2.5 flex items-center gap-1 font-bold shrink-0">
+                        <span x-text="intelExpanded ? '▲ Collapse Intel' : '▼ Expand Intel & Traps'"></span>
+                    </button>
+                </div>
+
+                <!-- Expanded Intel Body with Tab Navigation -->
+                <div x-show="intelExpanded" class="p-3 bg-amber-50/40 space-y-2.5 border-t border-amber-900/10">
+                    <!-- Sub-Tabs Bar -->
+                    <div class="flex items-center gap-1 border-b border-amber-900/15 pb-1.5 overflow-x-auto text-xs">
+                        <!-- Scene & Narrative Tab Button -->
+                        <button type="button" @click="activeIntelTab = 'scene'"
+                                class="px-2.5 py-1 rounded-md font-serif font-bold text-xs flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer"
+                                :class="activeIntelTab === 'scene' ? 'bg-amber-200 text-amber-950 border border-amber-400/80 shadow-2xs' : 'text-stone-600 hover:text-amber-900 hover:bg-amber-100/60'">
+                            <span>📜</span> Scene Setup
+                            <span x-show="currentEncounter?.description" class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                        </button>
+
+                        <!-- Environment Tab Button -->
+                        <button type="button" @click="activeIntelTab = 'environment'"
+                                class="px-2.5 py-1 rounded-md font-serif font-bold text-xs flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer"
+                                :class="activeIntelTab === 'environment' ? 'bg-amber-200 text-amber-950 border border-amber-400/80 shadow-2xs' : 'text-stone-600 hover:text-amber-900 hover:bg-amber-100/60'">
+                            <span>🌲</span> Environment / Terrain
+                            <span x-show="currentEncounter?.environment" class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                        </button>
+
+                        <!-- Tactical Features Tab Button -->
+                        <button type="button" @click="activeIntelTab = 'tactics'"
+                                class="px-2.5 py-1 rounded-md font-serif font-bold text-xs flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer"
+                                :class="activeIntelTab === 'tactics' ? 'bg-amber-200 text-amber-950 border border-amber-400/80 shadow-2xs' : 'text-stone-600 hover:text-amber-900 hover:bg-amber-100/60'">
+                            <span>🛡️</span> Tactics &amp; Features
+                            <span x-show="currentEncounter?.tactics_and_features" class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                        </button>
+
+                        <!-- Traps & Hazards Tab Button -->
+                        <button type="button" @click="activeIntelTab = 'traps'"
+                                class="px-2.5 py-1 rounded-md font-serif font-bold text-xs flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer"
+                                :class="activeIntelTab === 'traps' ? 'bg-amber-200 text-amber-950 border border-amber-400/80 shadow-2xs' : 'text-stone-600 hover:text-amber-900 hover:bg-amber-100/60'">
+                            <span>⚠️</span> Traps &amp; Hazards
+                            <span x-show="currentEncounter?.traps_and_hazards && currentEncounter.traps_and_hazards.length > 0"
+                                  class="px-1.5 py-0.2 rounded-full text-[9px] font-black"
+                                  :class="activeIntelTab === 'traps' ? 'bg-rose-700 text-white' : 'bg-rose-200 text-rose-900'"
+                                  x-text="currentEncounter?.traps_and_hazards?.length || 0"></span>
+                        </button>
+
+                        <!-- GM Notes Tab Button -->
+                        <button type="button" @click="activeIntelTab = 'gm'"
+                                class="px-2.5 py-1 rounded-md font-serif font-bold text-xs flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer"
+                                :class="activeIntelTab === 'gm' ? 'bg-amber-200 text-amber-950 border border-amber-400/80 shadow-2xs' : 'text-stone-600 hover:text-amber-900 hover:bg-amber-100/60'">
+                            <span>🔒</span> GM Secrets
+                            <span x-show="currentEncounter?.gm_notes" class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+                        </button>
+                    </div>
+
+                    <!-- Scrollable Tab Content Area (Max Height 280px to protect combatants ladder space) -->
+                    <div class="max-h-72 overflow-y-auto pr-1">
+                        <!-- Tab 1: Scene Setup & Narrative Read-Aloud -->
+                        <div x-show="activeIntelTab === 'scene'" class="space-y-2">
+                            <template x-if="currentEncounter?.description">
+                                <div class="bg-amber-100/60 border-l-4 border-amber-600 p-3 rounded-r-lg shadow-2xs">
+                                    <div class="text-[10px] uppercase font-bold text-amber-900/80 tracking-wider font-sans mb-1 flex items-center gap-1">
+                                        <span>📜</span> Read-Aloud / Scene Description
+                                    </div>
+                                    <div class="font-serif italic text-slate-800 text-xs sm:text-sm leading-relaxed whitespace-pre-line"
+                                         x-text="currentEncounter.description"></div>
+                                </div>
+                            </template>
+                            <template x-if="!currentEncounter?.description">
+                                <div class="text-xs text-stone-500 italic py-4 text-center bg-white/50 rounded-lg border border-dashed border-stone-200">
+                                    No scene setup or read-aloud description specified for this encounter.
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Tab 2: Environment / Terrain -->
+                        <div x-show="activeIntelTab === 'environment'" class="space-y-2">
+                            <template x-if="currentEncounter?.environment">
+                                <div class="bg-white/80 border border-stone-300 p-3 rounded-lg shadow-2xs space-y-1.5">
+                                    <div class="text-[10px] uppercase font-bold text-stone-700 tracking-wider font-sans flex items-center gap-1">
+                                        <span>🌲</span> Environment, Terrain &amp; Atmosphere
+                                    </div>
+                                    <div class="text-xs text-slate-900 leading-relaxed whitespace-pre-line font-medium"
+                                         x-text="currentEncounter.environment"></div>
+                                </div>
+                            </template>
+                            <template x-if="!currentEncounter?.environment">
+                                <div class="text-xs text-stone-500 italic py-4 text-center bg-white/50 rounded-lg border border-dashed border-stone-200">
+                                    Standard environment / no special terrain hazards or lighting conditions specified.
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Tab 3: Tactical Complications & Features -->
+                        <div x-show="activeIntelTab === 'tactics'" class="space-y-2">
+                            <template x-if="currentEncounter?.tactics_and_features">
+                                <div class="bg-white/80 border border-stone-300 p-3 rounded-lg shadow-2xs space-y-1.5">
+                                    <div class="text-[10px] uppercase font-bold text-indigo-900 tracking-wider font-sans flex items-center gap-1">
+                                        <span>🛡️</span> Tactical Complications, Hazards &amp; Battle Features
+                                    </div>
+                                    <div class="text-xs text-slate-900 leading-relaxed whitespace-pre-line"
+                                         x-text="currentEncounter.tactics_and_features"></div>
+                                </div>
+                            </template>
+                            <template x-if="!currentEncounter?.tactics_and_features">
+                                <div class="text-xs text-stone-500 italic py-4 text-center bg-white/50 rounded-lg border border-dashed border-stone-200">
+                                    Standard encounter space / no tactical complications or terrain features specified.
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Tab 4: Traps & Hazards (Interactive Cards) -->
+                        <div x-show="activeIntelTab === 'traps'" class="space-y-2">
+                            <template x-if="currentEncounter?.traps_and_hazards && currentEncounter.traps_and_hazards.length > 0">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                                    <template x-for="(trap, tIdx) in currentEncounter.traps_and_hazards" :key="tIdx">
+                                        <div class="p-2.5 rounded-xl border shadow-xs transition duration-150 space-y-2"
+                                             :class="trap.is_disabled ? 'bg-stone-100 border-stone-300 opacity-75' : (trap.is_triggered ? 'bg-rose-50/70 border-rose-300 ring-1 ring-rose-400' : 'bg-white border-amber-900/25')">
+                                            <!-- Trap Header -->
+                                            <div class="flex items-center justify-between gap-1.5 border-b border-stone-200 pb-1">
+                                                <div class="flex items-center gap-1.5 min-w-0">
+                                                    <span class="text-sm">⚠️</span>
+                                                    <strong class="text-xs text-slate-900 truncate" x-text="trap.name || ('Trap #' + (tIdx + 1))"></strong>
+                                                    <span class="text-[9px] px-1.5 py-0.2 rounded font-bold uppercase bg-stone-100 text-stone-700 border border-stone-300"
+                                                          x-text="trap.type || 'Mechanical'"></span>
+                                                </div>
+                                                <span class="text-[9px] font-black px-1.5 py-0.2 rounded shrink-0"
+                                                      :class="trap.is_disabled ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : (trap.is_triggered ? 'bg-rose-600 text-white' : 'bg-amber-100 text-amber-900 border border-amber-300')"
+                                                      x-text="trap.is_disabled ? '✓ Disabled' : (trap.is_triggered ? '💥 Triggered' : '⚡ Armed')"></span>
+                                            </div>
+
+                                            <!-- Trap DCs & Stats Pills -->
+                                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-[11px]">
+                                                <div class="bg-stone-50 border border-stone-200 rounded p-1">
+                                                    <span class="text-[9px] uppercase font-bold text-slate-500 block">Search / Percep</span>
+                                                    <span class="font-bold text-slate-900" x-text="trap.search_dc ? 'DC ' + trap.search_dc : (trap.perception_dc ? 'DC ' + trap.perception_dc : '—')"></span>
+                                                </div>
+                                                <div class="bg-stone-50 border border-stone-200 rounded p-1">
+                                                    <span class="text-[9px] uppercase font-bold text-slate-500 block">Disable Device</span>
+                                                    <span class="font-bold text-slate-900" x-text="trap.disable_dc ? 'DC ' + trap.disable_dc : '—'"></span>
+                                                </div>
+                                                <div class="bg-indigo-50/70 border border-indigo-200 rounded p-1 col-span-2 sm:col-span-1">
+                                                    <span class="text-[9px] uppercase font-bold text-indigo-700 block">Attack / Save</span>
+                                                    <span class="font-bold text-indigo-950 truncate block" x-text="trap.attack_or_save || '—'"></span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Damage / Effect -->
+                                            <div class="p-1.5 bg-rose-50/50 border border-rose-200 rounded text-xs flex items-center justify-between gap-2">
+                                                <span class="text-[10px] uppercase font-bold text-rose-800 shrink-0">Effect:</span>
+                                                <span class="font-mono font-bold text-rose-950 truncate text-[11px]" x-text="trap.damage_effect || 'None'"></span>
+                                            </div>
+
+                                            <!-- Reset & Trigger Info if available -->
+                                            <div class="text-[10px] text-slate-500 flex items-center justify-between">
+                                                <span x-show="trap.trigger" x-text="'Trigger: ' + trap.trigger"></span>
+                                                <span x-show="trap.reset" x-text="'Reset: ' + trap.reset"></span>
+                                            </div>
+
+                                            <!-- Action Buttons -->
+                                            <div class="flex items-center gap-1.5 pt-1 border-t border-stone-200">
+                                                <button type="button" @click="triggerTrap(trap, tIdx)" :disabled="trap.is_disabled"
+                                                        class="btn-rol-danger text-xs py-1 px-2.5 font-bold cursor-pointer disabled:opacity-40 flex items-center gap-1 shadow-2xs">
+                                                    <span>⚡</span> Trigger Trap
+                                                </button>
+                                                <button type="button" @click="rollTrapDamage(trap)" :disabled="!trap.damage_effect"
+                                                        class="btn-rol-secondary text-xs py-1 px-2 font-semibold cursor-pointer disabled:opacity-40"
+                                                        title="Roll trap damage only">
+                                                    <span>🎲</span> Dmg
+                                                </button>
+                                                <button type="button" @click="toggleTrapDisarm(trap)"
+                                                        class="btn-rol-secondary text-xs py-1 px-2 cursor-pointer ml-auto"
+                                                        x-text="trap.is_disabled ? '⚙️ Re-arm' : '🛡️ Disarm'">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                            <template x-if="!currentEncounter?.traps_and_hazards || currentEncounter.traps_and_hazards.length === 0">
+                                <div class="text-xs text-stone-500 italic py-4 text-center bg-white/50 rounded-lg border border-dashed border-stone-200">
+                                    No traps or environmental hazards recorded for this encounter.
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Tab 5: GM Secrets & Hidden Details -->
+                        <div x-show="activeIntelTab === 'gm'" class="space-y-2">
+                            <template x-if="currentEncounter?.gm_notes">
+                                <div class="bg-purple-50/70 border-l-4 border-purple-600 p-3 rounded-r-lg shadow-2xs space-y-1">
+                                    <div class="text-[10px] uppercase font-bold text-purple-900 tracking-wider font-sans flex items-center gap-1">
+                                        <span>🔒</span> GM Confidential Notes (Secrets, Morale &amp; Clues)
+                                    </div>
+                                    <div class="text-xs text-purple-950 leading-relaxed whitespace-pre-line"
+                                         x-text="currentEncounter.gm_notes"></div>
+                                </div>
+                            </template>
+                            <template x-if="!currentEncounter?.gm_notes">
+                                <div class="text-xs text-stone-500 italic py-4 text-center bg-white/50 rounded-lg border border-dashed border-stone-200">
+                                    No confidential GM notes specified for this encounter.
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Empty State -->
             <div x-show="combatants.length === 0" class="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center space-y-3">
                 <span class="text-4xl">⚔️</span>
@@ -571,6 +831,56 @@
 
         <!-- Fixed Sticky GM Toolkit Sidebar (300px on desktop) -->
         <div class="combat-tracker-sidebar space-y-3">
+            <!-- Quick Encounter Traps & Hazards in Sidebar (Shown when encounter has traps) -->
+            <div x-show="currentEncounter && currentEncounter.traps_and_hazards && currentEncounter.traps_and_hazards.length > 0" x-cloak
+                 class="parchment-card p-2.5 space-y-2 shadow-sm border border-amber-900/25"
+                 x-data="{ trapsSidebarOpen: true }">
+                <div class="flex items-center justify-between border-b border-amber-900/15 pb-1 cursor-pointer"
+                     @click="trapsSidebarOpen = !trapsSidebarOpen">
+                    <div class="font-bold text-xs text-slate-900 flex items-center gap-1.5 font-display uppercase tracking-wider">
+                        <span>⚠️</span> Active Traps
+                        <span class="text-[10px] text-amber-950 bg-amber-200/90 border border-amber-400 px-1.5 py-0.2 rounded-full font-mono font-bold"
+                              x-text="currentEncounter?.traps_and_hazards?.length || 0"></span>
+                    </div>
+                    <button type="button" class="text-[10px] text-amber-900/60 font-bold"
+                            x-text="trapsSidebarOpen ? '▲ Hide' : '▼ Show'"></button>
+                </div>
+
+                <div x-show="trapsSidebarOpen" class="space-y-2 max-h-56 overflow-y-auto pr-1">
+                    <template x-for="(trap, tIdx) in currentEncounter?.traps_and_hazards || []" :key="tIdx">
+                        <div class="p-2 rounded-lg border text-xs space-y-1 transition"
+                             :class="trap.is_disabled ? 'bg-stone-100 border-stone-300 opacity-70' : (trap.is_triggered ? 'bg-rose-50 border-rose-300' : 'bg-white border-amber-900/20')">
+                            <div class="flex items-center justify-between gap-1">
+                                <strong class="text-slate-900 truncate text-[11px]" x-text="trap.name || ('Trap #' + (tIdx + 1))"></strong>
+                                <span class="text-[8px] font-black px-1.5 py-0.2 rounded uppercase shrink-0"
+                                      :class="trap.is_disabled ? 'bg-emerald-100 text-emerald-800' : (trap.is_triggered ? 'bg-rose-600 text-white' : 'bg-amber-100 text-amber-900')"
+                                      x-text="trap.is_disabled ? 'Disabled' : (trap.is_triggered ? 'Triggered' : 'Armed')"></span>
+                            </div>
+                            <div class="text-[10px] text-slate-600 flex flex-wrap gap-x-2 gap-y-0.5">
+                                <span x-show="trap.search_dc" x-text="'Percep DC ' + trap.search_dc"></span>
+                                <span x-show="trap.disable_dc" x-text="'Disarm DC ' + trap.disable_dc"></span>
+                                <span x-show="trap.attack_or_save" class="font-bold text-indigo-900" x-text="trap.attack_or_save"></span>
+                            </div>
+                            <div x-show="trap.damage_effect" class="text-[10px] text-rose-800 font-mono font-bold truncate" x-text="trap.damage_effect"></div>
+                            <div class="flex items-center gap-1 pt-1">
+                                <button type="button" @click="triggerTrap(trap, tIdx)" :disabled="trap.is_disabled"
+                                        class="btn-rol-danger text-[10px] py-0.5 px-2 font-bold cursor-pointer disabled:opacity-40 flex items-center gap-1">
+                                    <span>⚡</span> Trigger
+                                </button>
+                                <button type="button" @click="rollTrapDamage(trap)" :disabled="!trap.damage_effect"
+                                        class="btn-rol-secondary text-[10px] py-0.5 px-1.5 cursor-pointer disabled:opacity-40">
+                                    🎲 Dmg
+                                </button>
+                                <button type="button" @click="toggleTrapDisarm(trap)"
+                                        class="btn-rol-secondary text-[10px] py-0.5 px-1.5 cursor-pointer ml-auto"
+                                        x-text="trap.is_disabled ? 'Re-arm' : 'Disarm'">
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
             <!-- Compact GM Dice Roller -->
             <div class="parchment-card p-2.5 space-y-2 shadow-sm border border-amber-900/25">
                 <div class="flex items-center justify-between border-b border-amber-900/15 pb-1">
@@ -1134,7 +1444,7 @@
             <!-- Modal Footer Actions -->
             <div class="px-5 py-3 bg-slate-100 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2" style="flex-shrink: 0;">
                 <button type="button" @click="showEndEncounterModal = false" class="btn-rol-secondary text-xs py-1.5 px-3.5 cursor-pointer">
-                    Cancel &amp; Continue Combat
+                    Cancel &amp; Continue Encounter
                 </button>
                 <div class="flex items-center gap-2 flex-wrap">
                     <button type="button" @click="completeEncounterAndReturn()" :disabled="isEndingEncounter"
@@ -1165,6 +1475,9 @@ function combatTrackerApp() {
         allCreatures: @json($creatures),
         allEncounters: @json($encounters ?? []),
         conditionsList: @json($conditionsList),
+        
+        intelExpanded: true,
+        activeIntelTab: 'scene',
         
         showMonsterModal: false,
         showCustomModal: false,
@@ -1207,8 +1520,21 @@ function combatTrackerApp() {
             }
             if (this.selectedEncounterId) {
                 this.loadEncounterEntities();
+                const enc = this.currentEncounter;
+                if (enc) {
+                    if (enc.type === 'trap_hazard' || (!enc.description && enc.traps_and_hazards && enc.traps_and_hazards.length > 0)) {
+                        this.activeIntelTab = 'traps';
+                    } else if (enc.type === 'exploration' && !enc.description && enc.environment) {
+                        this.activeIntelTab = 'environment';
+                    }
+                }
             }
-            this.logEvent('Combat Tracker initialized');
+            this.logEvent('Encounter Tracker initialized');
+        },
+
+        get currentEncounter() {
+            if (!this.selectedEncounterId) return null;
+            return this.allEncounters.find(e => e.id == this.selectedEncounterId) || null;
         },
 
         get availableEncounters() {
@@ -1232,6 +1558,15 @@ function combatTrackerApp() {
                 this.combatants = this.combatants.filter(c => c.type === 'pc');
                 this.loadCampaignParty();
                 this.loadEncounterEntitiesFromObject(enc);
+
+                if (enc.type === 'trap_hazard' || (!enc.description && enc.traps_and_hazards && enc.traps_and_hazards.length > 0)) {
+                    this.activeIntelTab = 'traps';
+                } else if (enc.type === 'exploration' && !enc.description && enc.environment) {
+                    this.activeIntelTab = 'environment';
+                } else {
+                    this.activeIntelTab = 'scene';
+                }
+                this.intelExpanded = true;
             }
         },
 
@@ -2155,6 +2490,105 @@ function combatTrackerApp() {
                 return `/reference/creatures/${encodeURIComponent(cleanName)}`;
             }
             return null;
+        },
+
+        evaluateDiceFormula(formula) {
+            if (!formula) return Math.floor(Math.random() * 6) + 1;
+            const exprMatch = String(formula).match(/^\s*([+-]?\s*\d*(?:d\d+|\d+)(?:\s*[+-]\s*\d*(?:d\d+|\d+))*)/i);
+            const formulaToRoll = exprMatch ? exprMatch[1] : formula;
+            let total = 0;
+            let matched = false;
+            const termRegex = /([+-]?)\s*(?:(\d*)d(\d+)|(\d+))/gi;
+            let term;
+            while ((term = termRegex.exec(formulaToRoll)) !== null) {
+                matched = true;
+                const sign = term[1] === '-' ? -1 : 1;
+                if (term[3] !== undefined) {
+                    const count = term[2] ? parseInt(term[2], 10) : 1;
+                    const sides = parseInt(term[3], 10);
+                    let sum = 0;
+                    for (let i = 0; i < count; i++) {
+                        sum += Math.floor(Math.random() * sides) + 1;
+                    }
+                    total += sign * sum;
+                } else if (term[4] !== undefined) {
+                    total += sign * parseInt(term[4], 10);
+                }
+            }
+            return matched ? Math.max(1, total) : (Math.floor(Math.random() * 6) + 1);
+        },
+
+        triggerTrap(trap, trapIdx) {
+            if (!trap) return;
+            const name = trap.name || ('Trap #' + ((trapIdx || 0) + 1));
+            trap.is_triggered = true;
+
+            const atkOrSave = trap.attack_or_save || '';
+            const attackMatch = atkOrSave.match(/(?:attack\s*)?([+-]\d+)/i);
+            const saveMatch = atkOrSave.match(/(reflex|fortitude|fort|will)\s*(?:save)?\s*(?:dc)?\s*(\d+)/i);
+
+            let eventDetail = '';
+            if (attackMatch) {
+                const bonus = parseInt(attackMatch[1], 10);
+                const r = Math.floor(Math.random() * 20) + 1;
+                const total = r + bonus;
+                eventDetail = `Attack: [d20: ${r}] + ${bonus} = <strong>${total} vs DeCa</strong>`;
+                this.latestRollResult = {
+                    expr: `${name} Attack`,
+                    result: `${total} (d20: ${r} + ${bonus})`
+                };
+            } else if (saveMatch) {
+                const saveType = saveMatch[1].toUpperCase();
+                const dc = saveMatch[2];
+                eventDetail = `Requires <strong>${saveType} Save DC ${dc}</strong>`;
+                this.latestRollResult = {
+                    expr: `${name} Save`,
+                    result: `${saveType} DC ${dc}`
+                };
+            } else if (atkOrSave) {
+                eventDetail = `Check / Save: <strong>${atkOrSave}</strong>`;
+                this.latestRollResult = {
+                    expr: `${name}`,
+                    result: `${atkOrSave}`
+                };
+            }
+
+            let dmgText = '';
+            if (trap.damage_effect) {
+                const dmg = this.evaluateDiceFormula(trap.damage_effect);
+                dmgText = ` &bull; Damage: <strong>${dmg}</strong> (${trap.damage_effect})`;
+                if (this.latestRollResult && attackMatch) {
+                    this.latestRollResult.result += ` | Dmg: ${dmg}`;
+                } else if (!attackMatch && !saveMatch) {
+                    this.latestRollResult = {
+                        expr: `${name} Damage`,
+                        result: `${dmg} (${trap.damage_effect})`
+                    };
+                }
+            }
+
+            this.logEvent(`⚠️ <strong>TRAP TRIGGERED: ${name}</strong>! ${eventDetail}${dmgText}`);
+        },
+
+        rollTrapDamage(trap) {
+            if (!trap || !trap.damage_effect) return;
+            const name = trap.name || 'Trap';
+            const dmg = this.evaluateDiceFormula(trap.damage_effect);
+            this.latestRollResult = {
+                expr: `${name} Damage`,
+                result: `${dmg} (${trap.damage_effect})`
+            };
+            this.logEvent(`💥 <strong>${name}</strong> rolled damage: <strong>${dmg}</strong> (${trap.damage_effect})`);
+        },
+
+        toggleTrapDisarm(trap) {
+            trap.is_disabled = !trap.is_disabled;
+            if (trap.is_disabled) {
+                trap.is_triggered = false;
+                this.logEvent(`🛡️ <strong>${trap.name || 'Trap'}</strong> was disabled/disarmed (DC ${trap.disable_dc || trap.search_dc || 15})`);
+            } else {
+                this.logEvent(`⚙️ <strong>${trap.name || 'Trap'}</strong> was re-armed/activated`);
+            }
         },
 
         logEvent(msg) {

@@ -57,7 +57,9 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
 
         $html = $view->render();
         $this->assertIsString($html);
-        $this->assertStringContainsString('Combat &amp; Initiative Tracker', $html);
+        $this->assertStringContainsString('Encounter &amp; Initiative Tracker', $html);
+        $this->assertStringContainsString('Scene Setup', $html);
+        $this->assertStringContainsString('Traps &amp; Hazards', $html);
         $this->assertStringContainsString('Import Party', $html);
         $this->assertStringContainsString('Add Monster Reference', $html);
         $this->assertStringContainsString('Active Attack', $html);

@@ -3250,7 +3250,7 @@ class UtilityController extends Controller
     }
 
     /**
-     * Interactive Combat & Initiative Tracker Utility
+     * Interactive Encounter & Initiative Tracker Utility
      */
     public function combatTracker(Request $request): View
     {

@@ -159,6 +159,9 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::get('/combat-tracker', [UtilityController::class, 'combatTracker'])->name('combattracker');
     Route::get('/combattracker', [UtilityController::class, 'combatTracker']);
     Route::get('/combat', [UtilityController::class, 'combatTracker']);
+    Route::get('/encounter-tracker', [UtilityController::class, 'combatTracker'])->name('encountertracker');
+    Route::get('/encountertracker', [UtilityController::class, 'combatTracker']);
+    Route::get('/encounter', [UtilityController::class, 'combatTracker']);
 
     Route::get('/campaign', [UtilityController::class, 'campaign'])->name('campaign');
     Route::post('/campaign/create', [UtilityController::class, 'createCampaign'])->name('campaign.create');
@@ -215,6 +218,7 @@ Route::prefix('api/generator')->name('api.generator.')->group(function () {
 });
 
 Route::get('/combat-tracker', [UtilityController::class, 'combatTracker']);
+Route::get('/encounter-tracker', [UtilityController::class, 'combatTracker']);
 Route::post('/treasure-generator/roll', [UtilityController::class, 'rollTreasure']);
 Route::post('/treasuregen/roll', [UtilityController::class, 'rollTreasure']);
 Route::post('/treasure-generator/distribute', [UtilityController::class, 'distributeHoardLoot']);

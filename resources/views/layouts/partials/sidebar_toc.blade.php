@@ -342,8 +342,8 @@
                     </a>
                 </li>
                 <li class="list-none p-0 m-0">
-                    <a href="{{ route('utilities.combattracker', [], false) }}" class="sidebar-nav-item {{ request()->routeIs('*combattracker*') || request()->is('utilities/combat*') ? 'active' : '' }}">
-                        <span>⚔️ Combat Tracker</span>
+                    <a href="{{ route('utilities.combattracker', [], false) }}" class="sidebar-nav-item {{ request()->routeIs('*combattracker*') || request()->routeIs('*encountertracker*') || request()->is('utilities/combat*') || request()->is('utilities/encounter*') ? 'active' : '' }}">
+                        <span>⚔️ Encounter Tracker</span>
                     </a>
                 </li>
                 <li class="list-none p-0 m-0">

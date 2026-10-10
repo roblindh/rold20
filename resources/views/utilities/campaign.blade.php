@@ -324,9 +324,10 @@
                                                             {{ ($enc->status ?? 'planned') === 'bypassed' ? 'bg-stone-200 text-stone-700 border-stone-400' : '' }}">
                                                             {{ ($enc->status ?? 'planned') === 'completed' ? '✓ Completed' : (($enc->status ?? 'planned') === 'in_progress' ? '⚔️ In Progress' : ucfirst(str_replace('_', ' ', $enc->status ?? 'planned'))) }}
                                                         </span>
-                                                        <!-- Direct Launch to Combat Tracker -->
+                                                        <!-- Direct Launch to Encounter Tracker -->
                                                         <a href="{{ route('utilities.combattracker', ['campaign' => $camp->ID, 'encounter' => $enc->id], false) }}"
-                                                           class="btn-rol-primary text-xs py-1 px-2.5 flex items-center gap-1 font-bold shadow-xs">
+                                                           class="btn-rol-primary text-xs py-1 px-2.5 flex items-center gap-1 font-bold shadow-xs"
+                                                           title="Launch in Encounter Tracker">
                                                             <span>⚔️</span> Run Encounter
                                                         </a>
                                                         @if($isMyCamp)
@@ -423,7 +424,8 @@
                                                         {{ ($enc->status ?? 'planned') === 'completed' ? '✓ Completed' : (($enc->status ?? 'planned') === 'in_progress' ? '⚔️ In Progress' : ucfirst(str_replace('_', ' ', $enc->status ?? 'planned'))) }}
                                                     </span>
                                                     <a href="{{ route('utilities.combattracker', ['campaign' => $camp->ID, 'encounter' => $enc->id], false) }}"
-                                                       class="btn-rol-primary text-xs py-1 px-2.5 flex items-center gap-1 font-bold shadow-xs">
+                                                       class="btn-rol-primary text-xs py-1 px-2.5 flex items-center gap-1 font-bold shadow-xs"
+                                                       title="Launch in Encounter Tracker">
                                                         <span>⚔️</span> Run Encounter
                                                     </a>
                                                     @if($isMyCamp)
