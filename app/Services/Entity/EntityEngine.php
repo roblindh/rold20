@@ -1845,7 +1845,7 @@ class EntityEngine
                         'range_meters' => $range > 0 ? $range : 16,
                         'crit_range' => 20 - ($critRng + $itemCritRngBonus),
                         'crit_multiplier' => 2 + $critMul,
-                        'crit_display' => '20 (x2)',
+                        'crit_display' => ((20 - ($critRng + $itemCritRngBonus)) < 20 ? (20 - ($critRng + $itemCritRngBonus)) . "-20" : "20") . " (x" . (2 + $critMul) . ")",
                         'attack_bonus' => $statAtt + $sizeCombatMod + $skillAttBonus + $charAttMod + $itemAttBonus,
                         'parry_bonus' => $totalWeaponParry,
                     ];

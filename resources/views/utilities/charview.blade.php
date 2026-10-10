@@ -1122,7 +1122,10 @@ function characterViewerApp() {
 
         getActiveAmmoCrit(wId) {
             const ammo = this.getActiveAmmo(wId);
-            return ammo ? ammo.crit_display : '';
+            if (!ammo) return '';
+            if (ammo.crit_display) return ammo.crit_display;
+            const cr = parseInt(ammo.crit_range) || 20;
+            return (cr < 20 ? cr + '-20' : '20') + ' (x' + (ammo.crit_multiplier || 2) + ')';
         },
 
         getActiveAmmoAttack(wId) {

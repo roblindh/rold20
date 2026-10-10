@@ -325,4 +325,87 @@ class CharacterViewerAndEnginePolishTest extends TestCase
         // Outstanding Heavy Steel Shield: Parry 12 (7 base + 1 mod + 4 skill)
         $this->assertEquals(12, $calc['defenses']['parry_bonus'] ?? null);
     }
+
+    public function testWeaponsCriticalColumnFormatting(): void
+    {
+        // Test entity with:
+        // 1. Greataxe / Club (crit range 20, multiplier 3)
+        // 2. Longsword (crit range 19, multiplier 2)
+        // 3. Scimitar (crit range 18, multiplier 2)
+        $entity = [
+            'ID' => 9999,
+            'Name' => 'CritTestWarrior',
+            'Strength' => 14,
+            'Dexterity' => 14,
+            'Level' => 1,
+            'Equipment' => [
+                [
+                    'uid' => 'axe_1',
+                    'item_id' => 31,
+                    'Name' => 'Axe, great-',
+                    'location' => EquipmentManager::LOCATION_EQUIPPED,
+                    'locations' => [2, 2, 2, 2, 2],
+                ],
+                [
+                    'uid' => 'sword_1',
+                    'item_id' => 88,
+                    'Name' => 'Sword, long-',
+                    'location' => EquipmentManager::LOCATION_EQUIPPED,
+                    'locations' => [2, 2, 2, 2, 2],
+                ],
+                [
+                    'uid' => 'scimitar_1',
+                    'item_id' => 77,
+                    'Name' => 'Scimitar',
+                    'location' => EquipmentManager::LOCATION_EQUIPPED,
+                    'locations' => [2, 2, 2, 2, 2],
+                ],
+            ],
+        ];
+
+        $calc = EntityEngine::calculate($entity);
+        $weapons = $calc['attacks']['weapons'] ?? [];
+
+        // Verify crit_range calculation in engine
+        $this->assertEquals(20, $weapons['axe_1']['crit_range']);
+        $this->assertEquals(3, $weapons['axe_1']['crit_multiplier']);
+        $this->assertEquals(19, $weapons['sword_1']['crit_range']);
+        $this->assertEquals(18, $weapons['scimitar_1']['crit_range']);
+
+        // Insert test character in transaction to test full characterViewer render
+        \Illuminate\Support\Facades\DB::beginTransaction();
+        try {
+            $charId = \Illuminate\Support\Facades\DB::table('characters')->insertGetId([
+                'Name' => 'CritTestWarrior_' . uniqid(),
+                'BaseRace' => 1,
+                'Classes' => '4',
+                'BaseStr' => 14,
+                'BaseDex' => 14,
+                'BaseCon' => 14,
+                'BaseInt' => 10,
+                'BaseWis' => 10,
+                'BaseCha' => 10,
+                'Equipment' => json_encode($entity['Equipment']),
+            ]);
+
+            $controller = new \App\Http\Controllers\UtilityController();
+            $request = \Illuminate\Http\Request::create("/charview/{$charId}", 'GET');
+            $view = $controller->characterViewer($request, (int)$charId);
+            $html = $view->render();
+
+            // 1. Must NOT contain "20-20"
+            $this->assertStringNotContainsString('20-20', $html);
+
+            // 2. Must contain "20 (&times;3)" for Greataxe
+            $this->assertStringContainsString('20 (&times;3)', $html);
+
+            // 3. Must contain "19-20 (&times;2)" for Longsword
+            $this->assertStringContainsString('19-20 (&times;2)', $html);
+
+            // 4. Must contain "18-20 (&times;2)" for Scimitar
+            $this->assertStringContainsString('18-20 (&times;2)', $html);
+        } finally {
+            \Illuminate\Support\Facades\DB::rollBack();
+        }
+    }
 }

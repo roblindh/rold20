@@ -32,7 +32,7 @@
                     @else
                         <tr><td class="cvlrg">{{ $character->Name }}</td></tr>
                         <tr><td class="cvlabel">Player</td></tr>
-                        <tr><td class="cvsml">{{ $player->Name ?? ($character->Player ?: '–') }}</td></tr>
+                        <tr><td class="cvsml">{{ $player->Name ?? ($character->Player ?? '–') }}</td></tr>
                         <tr><td class="cvlabel">Campaign</td></tr>
                         <tr><td class="cvmdm">{{ $campaign->Name ?? 'Standalone Character' }}</td></tr>
                         <tr><td class="cvlabel">Dungeon Master</td></tr>
@@ -584,10 +584,15 @@
                                     @endif
                                 </td>
                                 <td class="cvlist cvcenter font-mono text-xs">
+                                    @php
+                                        $wpnCritRng = (int)($wpn['crit_range'] ?? 20);
+                                        $wpnCritMul = $wpn['crit_multiplier'] ?? 2;
+                                        $wpnCritStr = ($wpnCritRng < 20 ? "{$wpnCritRng}-20" : "20") . " (&times;{$wpnCritMul})";
+                                    @endphp
                                     @if(!empty($wpn['is_projectile']))
-                                        <span x-html="getActiveAmmoCrit('{{ $wId }}') || '{{ $wpn['crit_range'] }}-20 (&times;{{ $wpn['crit_multiplier'] }})'">{{ $wpn['crit_range'] }}-20 (&times;{{ $wpn['crit_multiplier'] }})</span>
+                                        <span x-html="getActiveAmmoCrit('{{ $wId }}') || '{!! $wpnCritStr !!}'">{!! $wpnCritStr !!}</span>
                                     @else
-                                        {{ $wpn['crit_range'] }}-20 (&times;{{ $wpn['crit_multiplier'] }})
+                                        {!! $wpnCritStr !!}
                                     @endif
                                 </td>
                             </tr>
@@ -642,7 +647,12 @@
                                         {{ $wpn['two_handed']['damage'] }} <span class="text-xs text-amber-700 font-normal">({{ $wpn['two_handed']['avg_damage'] }})</span>
                                     </span>
                                 </td>
-                                <td class="cvlist cvcenter font-mono text-xs">{{ $wpn['crit_range'] }}-20 (&times;{{ $wpn['crit_multiplier'] }})</td>
+                                @php
+                                    $carriedCritRng = (int)($wpn['crit_range'] ?? 20);
+                                    $carriedCritMul = $wpn['crit_multiplier'] ?? 2;
+                                    $carriedCritStr = ($carriedCritRng < 20 ? "{$carriedCritRng}-20" : "20") . " (&times;{$carriedCritMul})";
+                                @endphp
+                                <td class="cvlist cvcenter font-mono text-xs">{!! $carriedCritStr !!}</td>
                             </tr>
                             @endif
                         @endforeach
@@ -1010,7 +1020,7 @@
                                 <span x-show="!twoHandedMode[wId]" x-text="wpn.one_handed.damage + ' (' + wpn.one_handed.avg_damage + ')'"></span>
                                 <span x-show="twoHandedMode[wId]" class="text-amber-900 font-extrabold" x-text="wpn.two_handed.damage + ' (' + wpn.two_handed.avg_damage + ')'"></span>
                             </td>
-                            <td class="cvlist cvcenter font-mono text-xs" x-text="wpn.crit_range + '-20 (×' + wpn.crit_multiplier + ')'"></td>
+                            <td class="cvlist cvcenter font-mono text-xs" x-text="((parseInt(wpn.crit_range) || 20) < 20 ? wpn.crit_range + '-20' : '20') + ' (×' + (wpn.crit_multiplier || 2) + ')'"></td>
                         </tr>
                     </template>
 
