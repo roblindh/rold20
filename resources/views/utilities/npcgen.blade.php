@@ -443,81 +443,21 @@
                     </div>
                 </div>
 
-                <!-- Quick Archetype Blueprint Buttons -->
-                <div class="flex flex-wrap items-center gap-1">
-                    <button type="button" @click="applyBlueprintLoadout('sword_fighter')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        ⚔️ Swordsman
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('axe_fighter')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        🪓 Axeman
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('mace_fighter')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        🔨 Hammerman
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('duelist')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        🗡️ Duelist
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('archery_ranger')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        🏹 Archer
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('cavalry_knight')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        🛡️ Knight
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('barbarian')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        🩸 Barbarian
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('arcane_caster')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        🧙‍♂️ Mage
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('battlemage')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        ⚡ Battlemage
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('cleric_life')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        🕊️ Cleric (Life)
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('cleric_war')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        ⛪ Cleric (War)
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('druid')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        🌿 Druid
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('witch_doctor')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        💀 Witch Doctor
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('unarmed_monk')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        🥋 Monk
-                    </button>
-                    <button type="button" @click="applyBlueprintLoadout('psionic_manifester')"
-                            class="btn-action-pill text-[11px] font-semibold">
-                        🔮 Psion
-                    </button>
-                </div>
-
-                <!-- Dropdown for All Blueprints -->
-                <div class="flex items-center gap-2 pt-1 border-t border-amber-900/10">
-                    <select x-model="selectedBlueprintSlug" class="select-rol flex-1 text-xs font-medium">
+                <!-- Archetype Blueprint Selection Dropdown & Auto-Outfit Action -->
+                <div class="flex items-center gap-2">
+                    <select x-model="selectedBlueprintSlug"
+                            @change="if (selectedBlueprintSlug) applyBlueprintLoadout(selectedBlueprintSlug)"
+                            class="select-rol flex-1 text-xs font-medium">
                         <option value="">-- Select Archetype Blueprint to Auto-Outfit --</option>
                         @foreach($archetypeBlueprints as $ab)
                             <option value="{{ $ab->Slug }}">{{ $ab->Name }}</option>
                         @endforeach
                     </select>
-                    <button type="button" @click="applyBlueprintLoadout(selectedBlueprintSlug)" :disabled="!selectedBlueprintSlug || generatingEquipment"
-                            class="btn-rol-primary text-xs py-1.5 px-3 font-bold cursor-pointer shrink-0 disabled:opacity-50">
-                        Auto-Outfit Gear
+                    <button type="button" @click="applyBlueprintLoadout(selectedBlueprintSlug)"
+                            :disabled="!selectedBlueprintSlug || generatingEquipment"
+                            class="btn-rol-primary text-xs py-1.5 px-3.5 font-bold cursor-pointer shrink-0 disabled:opacity-50"
+                            title="Generate or re-roll procedural loadout for selected archetype">
+                        🎲 Auto-Outfit
                     </button>
                 </div>
 
