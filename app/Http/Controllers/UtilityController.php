@@ -2815,8 +2815,14 @@ class UtilityController extends Controller
             if ($shouldSell) {
                 $qty = max(1, (int)($it['qty'] ?? $it['Qty'] ?? 1));
                 $unitVal = (float)($it['unit_price'] ?? $it['BaseValue'] ?? $it['value'] ?? 0);
-                if ($unitVal <= 0 && isset($it['value'])) {
+                if ($unitVal <= 0 && isset($it['value']) && (float)$it['value'] > 0) {
                     $unitVal = (float)$it['value'] / $qty;
+                }
+                if ($unitVal <= 0 && !empty($it['name']) && class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
+                    $lookup = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem($it['config'] ?? $it['name']);
+                    if ($lookup && !empty($lookup['value_sp'])) {
+                        $unitVal = (float)$lookup['value_sp'];
+                    }
                 }
 
                 // Check location GP limit

@@ -1405,6 +1405,48 @@ p, .rule-content p {
     color: #fcd34d !important;
 }
 
+/* Universal high-contrast readability for modal header subheaders and dark containers */
+.fixed [style*="background-color: #2b3d52"] p,
+.fixed [style*="background-color: #3a4f63"] p,
+.fixed [style*="background-color: #1e293b"] p,
+.fixed [style*="background-color: #1c1917"] p,
+.fixed [style*="background: linear-gradient"] p,
+.fixed [style*="color: #ffffff"] p,
+.fixed [style*="color:#ffffff"] p,
+.modal [style*="background-color: #2b3d52"] p,
+.modal [style*="background-color: #3a4f63"] p,
+.modal [style*="background-color: #1e293b"] p,
+.modal [style*="background: linear-gradient"] p,
+.modal [style*="color: #ffffff"] p,
+.modal [style*="color:#ffffff"] p,
+[style*="background-color: #2b3d52"] p,
+[style*="background-color: #3a4f63"] p,
+[style*="background-color: #1e293b"] p {
+    color: #cbd5e1 !important;
+    line-height: 1.4 !important;
+    margin-bottom: 0 !important;
+}
+
+.fixed [style*="1e3a2f"] p,
+.modal [style*="1e3a2f"] p,
+[style*="1e3a2f"] p {
+    color: #a7f3d0 !important;
+    line-height: 1.4 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Ensure text utility classes on p tags inside dark modal headers override global p { color: #1c1917 !important; } */
+.fixed p.text-slate-200, .modal p.text-slate-200, [style*="background-color: #2b3d52"] p.text-slate-200 { color: #e2e8f0 !important; }
+.fixed p.text-slate-300, .modal p.text-slate-300, [style*="background-color: #2b3d52"] p.text-slate-300 { color: #cbd5e1 !important; }
+.fixed p.text-slate-400, .modal p.text-slate-400, [style*="background-color: #2b3d52"] p.text-slate-400 { color: #94a3b8 !important; }
+.fixed p.text-emerald-200, .modal p.text-emerald-200, [style*="background: linear-gradient"] p.text-emerald-200 { color: #a7f3d0 !important; }
+.fixed p.text-emerald-300, .modal p.text-emerald-300 { color: #6ee7b7 !important; }
+.fixed p.text-amber-200, .modal p.text-amber-200 { color: #fde68a !important; }
+.fixed p.text-amber-300, .modal p.text-amber-300 { color: #fcd34d !important; }
+.fixed p.text-indigo-200, .modal p.text-indigo-200 { color: #c7d2fe !important; }
+.fixed p.text-indigo-300, .modal p.text-indigo-300 { color: #a5b4fc !important; }
+.fixed p.text-white, .modal p.text-white { color: #ffffff !important; }
+
 .parchment-inset, .bg-slate-50, .bg-gray-50 {
     background-color: var(--rol-bg-parchment-alt) !important;
     border: 1px solid var(--rol-border-parchment) !important;

@@ -1151,9 +1151,62 @@ class ProceduralItemFactory
             if (str_contains($effectiveConfig, '(')) {
                 $parsedName = trim(substr($effectiveConfig, 0, strpos($effectiveConfig, '(')));
             } else {
-                $matchedItem = self::resolveBaseItem($effectiveConfig);
-                if ($matchedItem) {
-                    $effectiveConfig = "{$effectiveConfig} (Item={$matchedItem['Name']})";
+                $spellItemMatched = false;
+                if (preg_match('/^(Scroll|Power Stone)\s+of\s+(.+)$/i', $effectiveConfig, $sm)) {
+                    $isPsi = (strcasecmp($sm[1], 'Power Stone') === 0);
+                    $baseItemName = $isPsi ? 'Power stone' : 'Scroll';
+                    $targetSpell = trim($sm[2]);
+                    $foundSpell = null;
+                    foreach ($_APP['spells'] ?? [] as $s) {
+                        if (strcasecmp($s['Name'], $targetSpell) === 0) {
+                            $foundSpell = $s;
+                            break;
+                        }
+                    }
+                    if ($foundSpell) {
+                        $cl = max(1, self::extractPowerCost($foundSpell['Cost'] ?? '1 PP'));
+                        $effectiveConfig = "{$sm[1]} of {$foundSpell['Name']} (Item={$baseItemName}: Mod=SkillSpell&x={$cl}&y={$foundSpell['Name']})";
+                        $spellItemMatched = true;
+                    }
+                } elseif (preg_match('/^(Potion|Oil|Tattoo)\s+of\s+(.+)$/i', $effectiveConfig, $pm)) {
+                    $isTattoo = (strcasecmp($pm[1], 'Tattoo') === 0);
+                    $baseItemName = $isTattoo ? 'Psionic tattoo' : 'Potion';
+                    $targetSpell = trim($pm[2]);
+                    $foundSpell = null;
+                    foreach ($_APP['spells'] ?? [] as $s) {
+                        if (strcasecmp($s['Name'], $targetSpell) === 0) {
+                            $foundSpell = $s;
+                            break;
+                        }
+                    }
+                    if ($foundSpell) {
+                        $cl = max(1, self::extractPowerCost($foundSpell['Cost'] ?? '1 PP'));
+                        $effectiveConfig = "{$pm[1]} of {$foundSpell['Name']} (Item={$baseItemName}: Mod=UseSpellLtd&x={$cl}&y={$foundSpell['Name']})";
+                        $spellItemMatched = true;
+                    }
+                } elseif (preg_match('/^(Wand|Dorje)\s+of\s+(.+)$/i', $effectiveConfig, $wm)) {
+                    $isPsi = (strcasecmp($wm[1], 'Dorje') === 0);
+                    $baseItemName = $isPsi ? 'Dorje' : 'Wand';
+                    $targetSpell = trim($wm[2]);
+                    $foundSpell = null;
+                    foreach ($_APP['spells'] ?? [] as $s) {
+                        if (strcasecmp($s['Name'], $targetSpell) === 0) {
+                            $foundSpell = $s;
+                            break;
+                        }
+                    }
+                    if ($foundSpell) {
+                        $cl = max(1, self::extractPowerCost($foundSpell['Cost'] ?? '1 PP'));
+                        $effectiveConfig = "{$wm[1]} of {$foundSpell['Name']} (Item={$baseItemName}: Mod=SkillSpell&x={$cl}&y={$foundSpell['Name']})";
+                        $spellItemMatched = true;
+                    }
+                }
+
+                if (!$spellItemMatched) {
+                    $matchedItem = self::resolveBaseItem($effectiveConfig);
+                    if ($matchedItem) {
+                        $effectiveConfig = "{$effectiveConfig} (Item={$matchedItem['Name']})";
+                    }
                 }
             }
 
@@ -1932,10 +1985,12 @@ class ProceduralItemFactory
         // 4. Magic Items
         if (!empty($hoard['magic_items']) && is_array($hoard['magic_items'])) {
             foreach ($hoard['magic_items'] as $m) {
+                $cfg = is_object($m) ? ($m->config ?? $m->config_string ?? null) : ($m['config'] ?? $m['config_string'] ?? null);
                 $items[] = [
                     'name' => is_object($m) ? ($m->name ?? $m->Item ?? $m->description ?? 'Magic Item') : ($m['name'] ?? $m['Item'] ?? $m['description'] ?? 'Magic Item'),
                     'value' => (int)round(is_object($m) ? ($m->value ?? $m->Value ?? $m->price ?? 0) : ($m['value'] ?? $m['Value'] ?? $m['price'] ?? 0)),
                     'weight' => (float)(is_object($m) ? ($m->weight ?? 1.0) : ($m['weight'] ?? 1.0)),
+                    'config' => $cfg,
                 ];
             }
         }
@@ -1964,7 +2019,7 @@ class ProceduralItemFactory
     /**
      * Extract integer PP from cost string (e.g. "3 PP", "0 PP", "7+TPC AP")
      */
-    protected static function extractPowerCost(string $costStr): int
+    public static function extractPowerCost(string $costStr): int
     {
         if (preg_match('/(\d+)\s*PP/i', $costStr, $m)) {
             return (int)$m[1];

@@ -1,34 +1,29 @@
 <!-- Cast Spell Assistant Modal (Rules of Magic hb05 compliant) -->
-<div x-show="showCastSpellModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/80 backdrop-blur-xs min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showCastSpellModal = false">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full border border-amber-900/30 overflow-hidden relative z-[10000] my-auto flex flex-col font-sans max-h-[92vh] text-left" @click.outside="showCastSpellModal = false">
+<div x-show="showCastSpellModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showCastSpellModal = false">
+    <div class="bg-white rounded-xl shadow-2xl max-w-5xl w-full border border-slate-200 overflow-hidden relative z-[10000] my-auto flex flex-col font-sans max-h-[92vh] text-left" @click.outside="showCastSpellModal = false">
         
         <!-- Modal Header -->
-        <div class="px-5 py-3.5 flex items-center justify-between border-b border-amber-900/20 shrink-0 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white">
-            <div class="flex items-center gap-3">
-                <span class="text-2xl">🪄</span>
+        <div class="px-6 py-3.5 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
+            <div class="flex items-center gap-2.5">
+                <span class="text-xl">🪄</span>
                 <div>
-                    <h2 class="font-bold text-base sm:text-lg flex items-center gap-2 font-serif text-amber-200" style="color: #fde68a !important;">
-                        <span>Cast Spell Assistant</span>
-                        @if(isset($character) && $character)
-                            <span class="text-xs bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-full font-sans shadow-xs">
-                                {{ $character->Name }}
-                            </span>
-                        @endif
-                    </h2>
-                    <p class="text-[11px] text-slate-300">Rules of Magic casting cost, power level, supernatural check &amp; environmental resistance calculator</p>
+                    <div class="font-bold text-lg flex items-center gap-2 leading-tight" style="color: #ffffff;">
+                        <span>Cast Spell Assistant — {{ $character->Name }}</span>
+                    </div>
+                    <p class="text-xs" style="color: #cbd5e1 !important; margin: 0 !important;">Rules of Magic casting cost, power level, supernatural check &amp; environmental resistance calculator</p>
                 </div>
             </div>
             
             <div class="flex items-center gap-3">
                 <!-- Current Resources Badge -->
-                <div class="hidden sm:flex items-center gap-2 text-xs bg-slate-800/80 border border-slate-700/80 rounded-lg px-3 py-1 font-mono">
-                    <span class="text-indigo-300 font-bold">PP: <span x-text="castCurrentPP + ' / ' + castMaxPP"></span></span>
-                    <span class="text-slate-500">|</span>
+                <div class="hidden sm:flex items-center gap-2 text-xs bg-slate-800/80 border border-slate-600/80 rounded-lg px-3 py-1 font-mono">
+                    <span class="text-indigo-200 font-bold">PP: <span x-text="castCurrentPP + ' / ' + castMaxPP"></span></span>
+                    <span class="text-slate-400">|</span>
                     <span class="text-emerald-300 font-bold">AP: <span x-text="castCurrentAP"></span></span>
-                    <span class="text-slate-500">|</span>
+                    <span class="text-slate-400">|</span>
                     <span class="text-amber-300 font-bold">MAM: <span x-text="(castMamBonus >= 0 ? '+' : '') + castMamBonus"></span></span>
                 </div>
-                <button type="button" @click="showCastSpellModal = false" class="text-slate-400 hover:text-white font-bold text-2xl cursor-pointer transition">&times;</button>
+                <button type="button" @click="showCastSpellModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-xl cursor-pointer">&times;</button>
             </div>
         </div>
 

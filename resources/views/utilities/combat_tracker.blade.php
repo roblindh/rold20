@@ -678,7 +678,7 @@
                         <h3 class="font-bold text-base sm:text-lg text-white font-serif leading-tight" style="color: #ffffff !important;">
                             Add Monster Reference from Bestiary
                         </h3>
-                        <p class="text-[11px] text-slate-300">
+                        <p class="text-[11px] text-slate-300" style="color: #cbd5e1 !important; margin: 0 !important;">
                             Browse {{ count($creatures) }} official creatures, filter by type, size, and level, and batch-add foes with accurate calculated statistics.
                         </p>
                     </div>
@@ -996,7 +996,7 @@
                         <h3 class="font-bold text-base sm:text-lg text-white font-serif leading-tight" style="color: #ffffff !important;">
                             Encounter Summary &amp; Resolution
                         </h3>
-                        <p class="text-[11px] text-emerald-200">
+                        <p class="text-[11px] text-emerald-200" style="color: #a7f3d0 !important; margin: 0 !important;">
                             Review combat outcomes, tally experience points, recover spoils of victory, and record GM notes.
                         </p>
                     </div>

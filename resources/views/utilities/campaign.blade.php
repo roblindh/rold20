@@ -245,8 +245,8 @@
 
                                         @if($isMyCamp)
                                             <div class="flex items-center gap-1.5 shrink-0 self-end sm:self-center">
-                                                <button type="button" @click="openCreateEncounterModal({{ $camp->ID }}, {{ $adv->id }})" class="text-[11px] text-indigo-700 hover:text-indigo-900 font-bold px-2 py-1 rounded hover:bg-indigo-50">
-                                                    + Add Encounter
+                                                <button type="button" @click="openCreateEncounterModal({{ $camp->ID }}, {{ $adv->id }})" class="btn-rol-secondary text-xs py-1 px-3">
+                                                    <span>⚔️</span> Add Encounter
                                                 </button>
                                                 <button type="button" @click="openEditAdventureModal({{ json_encode($adv) }})" class="p-1 text-slate-500 hover:text-slate-800 rounded">
                                                     ✏️
@@ -788,10 +788,16 @@
                                         <div>
                                             <strong class="text-stone-900">{{ $vItem['name'] ?? 'Item' }}</strong>
                                             @php
-                                                $vVal = $vItem['value'] ?? $vItem['Value'] ?? $vItem['unit_price'] ?? 0;
+                                                $vVal = (float)($vItem['value'] ?? $vItem['Value'] ?? $vItem['unit_price'] ?? 0);
+                                                if ($vVal <= 0 && !empty($vItem['name']) && class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
+                                                    $lookupInst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem($vItem['config'] ?? $vItem['name']);
+                                                    if ($lookupInst && !empty($lookupInst['value_sp'])) {
+                                                        $vVal = (float)$lookupInst['value_sp'];
+                                                    }
+                                                }
                                                 $vWt = $vItem['weight'] ?? $vItem['Weight'] ?? $vItem['unit_weight'] ?? null;
                                             @endphp
-                                            @if(!empty($vVal)) <span class="text-stone-500">({{ number_format((float)$vVal) }} sp)</span>@endif
+                                            @if($vVal > 0) <span class="text-stone-500">({{ number_format($vVal) }} sp)</span>@endif
                                             @if(!empty($vWt)) <span class="text-stone-400">&bull; {{ $vWt }} lbs</span>@endif
                                         </div>
                                         @if($isMyCamp)
@@ -1551,7 +1557,7 @@
                         <h3 class="font-bold text-lg text-white font-serif leading-tight" style="color: #ffffff !important;">
                             Grant XP &amp; Treasure — <span x-text="awardCamp.Name"></span>
                         </h3>
-                        <p class="text-xs text-slate-300">Distribute experience points, monetary wealth, and magic loot directly to active party members or the shared vault.</p>
+                        <p class="text-xs text-slate-300" style="color: #cbd5e1 !important; margin: 0 !important;">Distribute experience points, monetary wealth, and magic loot directly to active party members or the shared vault.</p>
                     </div>
                 </div>
                 <button @click="showAwardModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-2xl leading-none cursor-pointer">&times;</button>
@@ -2160,7 +2166,13 @@ function campaignAdmin() {
         calculateVaultResaleValue(item) {
             if (!item) return 0;
             const isVal = this.isVaultValuable(item);
-            const unitVal = parseFloat(item.unit_price || item.BaseValue || item.value || item.Value || 0);
+            let unitVal = parseFloat(item.unit_price || item.BaseValue || item.value || item.Value || 0);
+            if (unitVal <= 0) {
+                const iName = (item.name || item.Name || '').toLowerCase();
+                if (iName.includes('scroll of') || iName.includes('power stone of')) unitVal = 20;
+                else if (iName.includes('potion of') || iName.includes('oil of')) unitVal = 50;
+                else if (iName.includes('wand of') || iName.includes('dorje of')) unitVal = 750;
+            }
             let mult = 0.5;
             if (this.sellVaultShopType === 'fence') {
                 mult = 0.25;

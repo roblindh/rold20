@@ -210,7 +210,7 @@
                                     <span class="font-bold text-amber-400 group-hover:text-amber-300" x-text="item.title"></span>
                                     <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700" x-text="item.category"></span>
                                 </div>
-                                <p class="text-xs text-slate-400 mt-1 line-clamp-2" x-text="item.snippet"></p>
+                                <p class="text-xs text-slate-400 mt-1 line-clamp-2" style="color: #94a3b8 !important;" x-text="item.snippet"></p>
                             </a>
                         </template>
                     </div>
