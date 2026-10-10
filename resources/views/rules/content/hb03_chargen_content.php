@@ -5,22 +5,37 @@
 
 <ol class="space-y-1.5 my-3">
     <li><strong>Character Concept:</strong> Envision a core archetype, theme, and potential class. Consider fitting ancestral backgrounds, gender, and personal origins.</li>
-    <li><strong>Roll Ability Scores:</strong> Generate six base ability scores (ranging 3–18) using your campaign's approved generation method.</li>
-    <li><strong>Select Race and Gender:</strong> Choose your character's species and heritage.</li>
-    <li><strong>Select Background Culture:</strong> Choose your upbringing and cultural origin (if differing from the racial default), along with a corresponding cultural background class.</li>
-    <li><strong>Determine Age:</strong> Select or randomly roll your starting age and note any age-based ability modifiers.</li>
-    <li><strong>Assign &amp; Adjust Ability Scores:</strong> Allocate base scores to your abilities, applying racial, cultural, and age adjustments. (Adjusted Intelligence cannot drop below 3 for a player character; any other adjusted ability score that falls below 1 becomes 1.) Calculate all final ability modifiers.</li>
-    <li><strong>Select Starting Class:</strong> Choose your initial character class.</li>
-    <li><strong>Record Traits:</strong> Note all innate racial traits, cultural traits, and class features.</li>
+    <li><strong>Roll Ability Scores:</strong> Generate and assign six base ability scores (ranging 3–18) using your campaign's approved generation method.</li>
+    <li><strong>Select Race, Gender, and Culture:</strong>
+        <ul class="list-disc ml-5 mt-1 space-y-0.5 text-xs text-stone-700">
+            <li>Choose your character's species/race and heritage/template.</li>
+            <li>Choose your upbringing and cultural origin (if differing from the racial default), along with a corresponding cultural background class.</li>
+            <li>Note all innate racial traits and cultural traits.</li>
+        </ul>
+    </li>
     <li><strong>Allocate Improvement Points (IP):</strong> Spend initial Improvement Points (5 IP at 1st level) on starting improvements or bank them for future levels.</li>
-    <li><strong>Distribute Background Skill Points:</strong> Allocate background skill points derived from (RL + 1) levels in your chosen background class. (Skill points cannot be saved for later.)</li>
-    <li><strong>Distribute Class Skill Points:</strong> Allocate starting class skill points across primary and secondary skills. (Skill points must be spent immediately.)</li>
-    <li><strong>Define Appearance:</strong> Determine height, weight, coloration, and distinctive physical marks.</li>
-    <li><strong>Define Personality:</strong> Choose core values, personal motivations, mannerisms, and behavioral quirks.</li>
-    <li><strong>Starting Wealth &amp; Equipment:</strong> Roll starting coin and outfit your hero with weapons, armor, and adventuring gear.</li>
+    <li><strong>Select Class and Buy Skills:</strong>
+        <ul class="list-disc ml-5 mt-1 space-y-0.5 text-xs text-stone-700">
+            <li>Background Skill Points: Allocate background skill points derived from (RL + 1) levels in your chosen background class. (Skill points cannot be saved for later.)</li>
+            <li>Character Class: Choose your initial character class.</li>
+            <li>Class Skill Points: Allocate initial class skill points across primary and secondary skills. (Skill points cannot be saved for later.)</li>
+        </ul>
+    </li>
     <li><strong>Select Spells &amp; Variations:</strong> If playing a spellcasting or manifesting class, select known spells and spell variations.</li>
+    <li><strong>Starting Wealth &amp; Equipment:</strong> Roll starting coin and outfit your hero with weapons, armor, and adventuring gear.</li>
+    <li><strong>Personal Details &amp; Background:</strong>
+        <ul class="list-disc ml-5 mt-1 space-y-0.5 text-xs text-stone-700">
+            <li>Select a character name suited to your character's heritage and culture.</li>
+            <li>Select or randomly roll your starting age and note any age-based ability modifiers.</li>
+            <li>Determine height, weight, coloration, and distinctive physical marks.</li>
+            <li>Choose core values, personal motivations, mannerisms, and behavioral quirks.</li>
+            <li>Determine WC, SC, Influence, and Reputation.</li>
+        </ul>
+    </li>
     <li><strong>Calculate Derived Combat Statistics:</strong>
         <ul class="list-disc ml-5 mt-1 space-y-0.5 text-xs text-stone-700">
+            <li>Adjusted Ability Scores: Apply racial, cultural, and age adjustments. (Adjusted Intelligence cannot drop below 3 for a player character; any other adjusted ability score that falls below 1 becomes 1.)</li>
+            <li>Ability Score Modifiers: Calculate all final ability modifiers.</li>
             <li>Health pools: Hit Points (HP), Stamina Points (SP), and Power Points (PP).</li>
             <li>Initiative modifier (Init).</li>
             <li>Defense Class: passive (<em>DeCp</em>) and active (<em>DeCa</em>).</li>
@@ -30,7 +45,6 @@
             <li>Starting Fate Points (3 FP).</li>
         </ul>
     </li>
-    <li><strong>Name Your Character:</strong> Select a name suited to your character's heritage and culture.</li>
 </ol>
 
 <?php if (empty($isPrintableRuleset)): ?>
