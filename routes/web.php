@@ -83,6 +83,8 @@ Route::prefix('reference')->name('reference.')->group(function () {
 Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::get('/character-generator', [UtilityController::class, 'characterGenerator'])->name('chargen');
     Route::get('/chargen', [UtilityController::class, 'characterGenerator']);
+    Route::get('/character-generator/check-name', [UtilityController::class, 'checkCharacterName'])->name('chargen.check-name');
+    Route::get('/chargen/check-name', [UtilityController::class, 'checkCharacterName']);
     Route::post('/character-generator/save', [UtilityController::class, 'saveCharacter'])->name('chargen.save');
     Route::post('/chargen/save', [UtilityController::class, 'saveCharacter']);
     Route::post('/character-generator/calculate-preview', [UtilityController::class, 'calculatePreview'])->name('chargen.preview');

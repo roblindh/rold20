@@ -40,7 +40,7 @@ class CharacterGeneratorSpellLearningTest extends TestCase
         $view = $this->controller->characterGenerator($request);
         $html = $view->render();
 
-        $this->assertStringContainsString('Step 7: Learned Spells &amp; Variations', $html);
+        $this->assertStringContainsString('Step 6: Learned Spells &amp; Variations', $html);
         $this->assertStringContainsString('parseSpellPrereqRules', $html);
         $this->assertStringContainsString('learnedSpellCounts', $html);
         $this->assertStringContainsString('canLearnSpell', $html);

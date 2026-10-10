@@ -63,6 +63,30 @@ class UtilityController extends Controller
         ));
     }
 
+    public function checkCharacterName(Request $request): JsonResponse
+    {
+        $name = trim((string)$request->query('name', ''));
+        if ($name === '') {
+            return response()->json([
+                'valid' => false,
+                'message' => 'Character name cannot be blank.'
+            ]);
+        }
+
+        $existing = DB::table('characters')->where('Name', $name)->first();
+        if ($existing) {
+            return response()->json([
+                'valid' => false,
+                'message' => 'A character with the name "' . $name . '" already exists. Please choose a different name.'
+            ]);
+        }
+
+        return response()->json([
+            'valid' => true,
+            'message' => 'Character name is available.'
+        ]);
+    }
+
     public function saveCharacter(Request $request): JsonResponse
     {
         $validated = $request->validate([

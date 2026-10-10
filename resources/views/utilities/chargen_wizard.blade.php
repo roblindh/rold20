@@ -4,16 +4,15 @@
 @php
     $initialCampId = request()->query('campaign', '');
     $wizardSteps = [
-        1 => 'Identity & Campaign',
+        1 => 'Campaign',
         2 => 'Ability Scores',
         3 => 'Race & Culture',
         4 => 'Improvements',
-        5 => 'Bg Skills',
-        6 => 'Class & Class Skills',
-        7 => 'Spells',
-        8 => 'Equipment & Wealth',
-        9 => 'Personal Details',
-        10 => 'Review & Save',
+        5 => 'Skills',
+        6 => 'Spells',
+        7 => 'Equipment & Wealth',
+        8 => 'Personal Details',
+        9 => 'Review & Save',
     ];
 @endphp
 
@@ -36,12 +35,12 @@
                 <span>Initializing Wizard...</span>
             </div>
             <span class="text-xs bg-amber-100/80 border border-amber-900/25 text-amber-950 px-3 py-1.5 rounded-lg font-bold">
-                Step <span x-text="step">1</span> of 10: <span x-text="stepNames[step]">{{ $wizardSteps[1] }}</span>
+                Step <span x-text="step">1</span> of 9: <span x-text="stepNames[step]">{{ $wizardSteps[1] }}</span>
             </span>
         </div>
     </div>
 
-    <!-- Step Progress Ribbon (10 Steps) -->
+    <!-- Step Progress Ribbon (9 Steps) -->
     <div class="parchment-card p-3 sm:p-4 shadow-sm">
         <div class="wizard-ribbon">
             @foreach($wizardSteps as $num => $name)
@@ -51,7 +50,7 @@
                          'completed': step > {{ $num }},
                          'opacity-60': step < {{ $num }}
                      }"
-                     @click="step = {{ $num }}; if (step === 10) fetchPreviewState();">
+                     @click="goToStep({{ $num }})">
                     <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold {{ $num === 1 ? 'bg-amber-400 text-slate-900' : 'bg-slate-300 text-slate-700' }}"
                           :class="step == {{ $num }} ? 'bg-amber-400 text-slate-900' : (step > {{ $num }} ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-700')"
                           x-text="step > {{ $num }} ? '✓' : '{{ $num }}'">{{ $num }}</span>
@@ -60,64 +59,28 @@
             @endforeach
         </div>
         <div class="w-full bg-amber-950/20 h-2 rounded-full mt-3 overflow-hidden border border-amber-900/20">
-            <div class="bg-amber-600 h-full transition-all duration-300 shadow-xs" style="width: 10%;" :style="'width: ' + (step * 10) + '%'"></div>
+            <div class="bg-amber-600 h-full transition-all duration-300 shadow-xs" style="width: 11.11%;" :style="'width: ' + ((step / 9) * 100) + '%'"></div>
         </div>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- STEP 1: IDENTITY & CAMPAIGN                                              -->
+    <!-- STEP 1: CAMPAIGN SELECTION                                            -->
     <!-- ========================================================================= -->
     <div x-show="step === 1" class="parchment-card p-6 shadow-md space-y-5">
         <div>
-            <h2 class="text-lg font-bold text-slate-900 font-serif">Step 1: Character Identity &amp; Campaign Selection</h2>
+            <h2 class="text-lg font-bold text-slate-900 font-serif">Step 1: Campaign Selection</h2>
             <p class="text-xs text-slate-600 mt-0.5">Select a campaign to inherit its starting XP, suitability tier, ability generation method, and optional rules.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <div class="flex items-center justify-between mb-1">
-                    <label class="block text-xs font-bold text-slate-700 uppercase">Character Name <span class="text-red-600">*</span></label>
-                    <button type="button" @click="rollRandomName()" class="btn-action-pill btn-action-pill-gold text-[11px] py-0.5 px-2">
-                        <span>🎲</span> Randomize Name
-                    </button>
-                </div>
-                <div class="flex gap-2">
-                    <input type="text" x-model="character.Name" placeholder="e.g. Valerie Swiftblade"
-                           class="input-rol w-full px-3 py-2 text-sm">
-                    <button type="button" @click="rollRandomName()" title="Roll Random Name"
-                            class="btn-action-pill btn-action-pill-gold px-3 py-2 text-xs font-bold transition flex items-center justify-center shrink-0 cursor-pointer">
-                        🎲
-                    </button>
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Campaign</label>
-                <select x-model="character.CampaignID" @change="onCampaignChanged()" 
-                        class="select-rol w-full px-3 py-2 text-sm">
-                    <option value="">Standalone / No Campaign (Default: 0 XP, Suitability 3)</option>
-                    @foreach($campaigns as $camp)
-                        <option value="{{ $camp->ID }}">{{ $camp->Name }} ({{ number_format((int)($camp->StartingXP ?? 0)) }} XP)</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Gender</label>
-                <select x-model="character.Gender" @change="rollRandomPhysicalAttributes()" class="select-rol w-full px-3 py-2 text-sm">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Alignment</label>
-                <select x-model="character.Alignment" class="select-rol w-full px-3 py-2 text-sm">
-                    @foreach($alignments as $al)
-                        <option value="{{ $al->Name }}">{{ $al->Name }}</option>
-                    @endforeach
-                </select>
-            </div>
+        <div class="max-w-xl">
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Campaign</label>
+            <select x-model="character.CampaignID" @change="onCampaignChanged()" 
+                    class="select-rol w-full px-3 py-2.5 text-sm">
+                <option value="">Standalone / No Campaign (Default: 0 XP, Suitability 3)</option>
+                @foreach($campaigns as $camp)
+                    <option value="{{ $camp->ID }}">{{ $camp->Name }} ({{ number_format((int)($camp->StartingXP ?? 0)) }} XP)</option>
+                @endforeach
+            </select>
         </div>
 
         <!-- Campaign Rules & Parameters Banner (with increased top spacing) -->
@@ -310,70 +273,112 @@
         </div>
     </div>
 
-    <!-- ========================================================================= -->
-    <!-- STEP 3: RACE, TEMPLATES & CULTURE (Multiple Templates & Size Category)     -->
+    <!-- STEP 3: RACE, TEMPLATES & CULTURE (With Gender & Enhanced Visuals)     -->
     <!-- ========================================================================= -->
     <div x-show="step === 3" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-amber-900/15 pb-3">
             <div>
-                <h2 class="text-lg font-bold text-slate-900">Step 3: Race, Templates &amp; Culture</h2>
-                <p class="text-xs text-slate-600">Races and templates are limited by campaign suitability tier and total level limit (<span class="font-bold text-indigo-700">Lvl <span x-text="character.Level"></span></span>).</p>
+                <h2 class="text-lg font-bold text-slate-900 font-serif flex items-center gap-2">
+                    <span>🧝</span> Step 3: Race &amp; Culture
+                </h2>
+                <p class="text-xs text-slate-600 mt-0.5">Races and templates are limited by campaign suitability tier and total level limit (<span class="font-bold text-indigo-700">Lvl <span x-text="character.Level"></span></span>).</p>
             </div>
-            <div class="flex flex-wrap items-center gap-2 text-xs">
-                <span class="bg-indigo-100 text-indigo-900 border border-indigo-300 px-2.5 py-1 rounded-md font-semibold">
-                    Tier <span x-text="character.SuitabilityLevel"></span>+ &bull; Max RL+CL &le; <span x-text="character.Level"></span>
-                </span>
-                <span class="bg-emerald-100 text-emerald-900 border border-emerald-300 px-2.5 py-1 rounded-md font-semibold">
-                    <span x-text="eligibleRaces.length"></span> Races Available
-                </span>
+            
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Gender Selector -->
+                <div class="flex items-center gap-1.5 bg-amber-50/80 border border-amber-900/20 px-2.5 py-1 rounded-xl shadow-2xs">
+                    <span class="text-[11px] font-bold text-amber-950 uppercase tracking-wide mr-1">Gender:</span>
+                    <div class="inline-flex rounded-lg border border-amber-900/20 p-0.5 bg-white shadow-2xs">
+                        <button type="button" @click="character.Gender = 'Male'; rollRandomPhysicalAttributes();"
+                                :class="character.Gender === 'Male' ? 'bg-amber-600 text-white font-bold shadow-xs' : 'text-slate-700 hover:text-slate-900 hover:bg-amber-50'"
+                                class="px-3 py-0.5 text-xs rounded-md transition flex items-center gap-1 cursor-pointer">
+                            <span>♂</span> <span>Male</span>
+                        </button>
+                        <button type="button" @click="character.Gender = 'Female'; rollRandomPhysicalAttributes();"
+                                :class="character.Gender === 'Female' ? 'bg-amber-600 text-white font-bold shadow-xs' : 'text-slate-700 hover:text-slate-900 hover:bg-amber-50'"
+                                class="px-3 py-0.5 text-xs rounded-md transition flex items-center gap-1 cursor-pointer">
+                            <span>♀</span> <span>Female</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-1.5 text-xs">
+                    <span class="bg-indigo-100 text-indigo-900 border border-indigo-300 px-2.5 py-1 rounded-lg font-semibold">
+                        Tier <span x-text="character.SuitabilityLevel"></span>+ &bull; Max RL+CL &le; <span x-text="character.Level"></span>
+                    </span>
+                    <span class="bg-emerald-100 text-emerald-900 border border-emerald-300 px-2.5 py-1 rounded-lg font-semibold">
+                        <span x-text="eligibleRaces.length"></span> Races Available
+                    </span>
+                </div>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <!-- Race Selection & Selected Race Info Box -->
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Character Race</label>
-                    <select x-model="character.RaceID" @change="onRaceChanged()"
-                            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            <div class="space-y-4">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Character Race</label>
+                    <select x-model.number="character.RaceID" @change="onRaceChanged()"
+                            class="select-rol w-full px-3 py-2 text-sm">
                         <template x-for="r in eligibleRaces" :key="r.ID">
-                            <option :value="r.ID" x-text="r.Name + (r.NameInformal ? ' (' + r.NameInformal + ')' : '') + ' [RL ' + (parseInt(r.BaseRL) || 0) + (r.CLModifier ? ' CL' + ((parseInt(r.CLModifier) || 0) >= 0 ? '+' : '') + (parseInt(r.CLModifier) || 0) : '') + ']'"></option>
+                            <option :value="r.ID" :selected="character.RaceID == r.ID" x-text="r.Name + (r.NameInformal ? ' (' + r.NameInformal + ')' : '') + ' [RL ' + (parseInt(r.BaseRL) || 0) + (r.CLModifier ? ' CL' + ((parseInt(r.CLModifier) || 0) >= 0 ? '+' : '') + (parseInt(r.CLModifier) || 0) : '') + ']'"></option>
                         </template>
                     </select>
                 </div>
 
                 <!-- Selected Race Info Box with Size Category & Traits -->
-                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-2.5" x-data="{ r: {} }" x-effect="r = getSelectedRace()">
-                    <div class="font-bold text-slate-900 text-sm flex items-center justify-between">
-                        <span x-text="r.Name || 'Race'"></span>
+                <div class="p-4 bg-white border border-amber-900/15 rounded-xl shadow-xs space-y-3" x-data="{ r: {} }" x-effect="r = getSelectedRace()">
+                    <div class="font-bold text-slate-900 text-sm flex items-center justify-between border-b border-slate-100 pb-2">
+                        <span class="font-serif text-base" x-text="r.Name || 'Race'"></span>
                         <div class="flex items-center gap-1.5 text-[11px] font-mono">
-                            <span class="bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded font-bold">RL: <span x-text="r.BaseRL || 0"></span></span>
-                            <span class="bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded font-bold">Size: <span x-text="getRaceSizeCategory(r.SizeClass)"></span></span>
-                            <span class="bg-slate-200 text-slate-700 px-2 py-0.5 rounded">Speed: <span x-text="r.GroundSpeed || 30"></span>'</span>
+                            <span class="bg-indigo-50 text-indigo-800 border border-indigo-200 px-2 py-0.5 rounded-md font-bold">RL: <span x-text="r.BaseRL || 0"></span></span>
+                            <span class="bg-amber-50 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-md font-bold">Size: <span x-text="getRaceSizeCategory(r.SizeClass)"></span></span>
+                            <span class="bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded-md">Speed: <span x-text="r.GroundSpeed || 30"></span>'</span>
                         </div>
                     </div>
-                    <div class="grid grid-cols-6 gap-1 text-[11px] font-mono text-center pt-1 border-t border-slate-200">
-                        <div class="bg-white p-1 rounded border border-slate-200">STR <span class="font-bold block" x-text="r.StrAdj === null ? '–' : ((r.StrAdj >= 0 ? '+' : '') + (r.StrAdj || 0))"></span></div>
-                        <div class="bg-white p-1 rounded border border-slate-200">CON <span class="font-bold block" x-text="r.ConAdj === null ? '–' : ((r.ConAdj >= 0 ? '+' : '') + (r.ConAdj || 0))"></span></div>
-                        <div class="bg-white p-1 rounded border border-slate-200">DEX <span class="font-bold block" x-text="r.DexAdj === null ? '–' : ((r.DexAdj >= 0 ? '+' : '') + (r.DexAdj || 0))"></span></div>
-                        <div class="bg-white p-1 rounded border border-slate-200">INT <span class="font-bold block" x-text="r.IntAdj === null ? '–' : ((r.IntAdj >= 0 ? '+' : '') + (r.IntAdj || 0))"></span></div>
-                        <div class="bg-white p-1 rounded border border-slate-200">WIS <span class="font-bold block" x-text="r.WisAdj === null ? '–' : ((r.WisAdj >= 0 ? '+' : '') + (r.WisAdj || 0))"></span></div>
-                        <div class="bg-white p-1 rounded border border-slate-200">CHA <span class="font-bold block" x-text="r.ChaAdj === null ? '–' : ((r.ChaAdj >= 0 ? '+' : '') + (r.ChaAdj || 0))"></span></div>
+
+                    <!-- Stat Modifiers -->
+                    <div class="gap-1.5 text-center font-mono" style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));">
+                        <div class="bg-slate-50 p-1.5 rounded-lg border border-slate-200">
+                            <span class="text-[9px] text-slate-500 uppercase block font-sans font-bold">STR</span>
+                            <span class="font-bold text-xs" :class="(r.StrAdj || 0) > 0 ? 'text-emerald-700' : ((r.StrAdj || 0) < 0 ? 'text-red-600' : 'text-slate-700')" x-text="r.StrAdj === null ? '–' : ((r.StrAdj >= 0 ? '+' : '') + (r.StrAdj || 0))"></span>
+                        </div>
+                        <div class="bg-slate-50 p-1.5 rounded-lg border border-slate-200">
+                            <span class="text-[9px] text-slate-500 uppercase block font-sans font-bold">CON</span>
+                            <span class="font-bold text-xs" :class="(r.ConAdj || 0) > 0 ? 'text-emerald-700' : ((r.ConAdj || 0) < 0 ? 'text-red-600' : 'text-slate-700')" x-text="r.ConAdj === null ? '–' : ((r.ConAdj >= 0 ? '+' : '') + (r.ConAdj || 0))"></span>
+                        </div>
+                        <div class="bg-slate-50 p-1.5 rounded-lg border border-slate-200">
+                            <span class="text-[9px] text-slate-500 uppercase block font-sans font-bold">DEX</span>
+                            <span class="font-bold text-xs" :class="(r.DexAdj || 0) > 0 ? 'text-emerald-700' : ((r.DexAdj || 0) < 0 ? 'text-red-600' : 'text-slate-700')" x-text="r.DexAdj === null ? '–' : ((r.DexAdj >= 0 ? '+' : '') + (r.DexAdj || 0))"></span>
+                        </div>
+                        <div class="bg-slate-50 p-1.5 rounded-lg border border-slate-200">
+                            <span class="text-[9px] text-slate-500 uppercase block font-sans font-bold">INT</span>
+                            <span class="font-bold text-xs" :class="(r.IntAdj || 0) > 0 ? 'text-emerald-700' : ((r.IntAdj || 0) < 0 ? 'text-red-600' : 'text-slate-700')" x-text="r.IntAdj === null ? '–' : ((r.IntAdj >= 0 ? '+' : '') + (r.IntAdj || 0))"></span>
+                        </div>
+                        <div class="bg-slate-50 p-1.5 rounded-lg border border-slate-200">
+                            <span class="text-[9px] text-slate-500 uppercase block font-sans font-bold">WIS</span>
+                            <span class="font-bold text-xs" :class="(r.WisAdj || 0) > 0 ? 'text-emerald-700' : ((r.WisAdj || 0) < 0 ? 'text-red-600' : 'text-slate-700')" x-text="r.WisAdj === null ? '–' : ((r.WisAdj >= 0 ? '+' : '') + (r.WisAdj || 0))"></span>
+                        </div>
+                        <div class="bg-slate-50 p-1.5 rounded-lg border border-slate-200">
+                            <span class="text-[9px] text-slate-500 uppercase block font-sans font-bold">CHA</span>
+                            <span class="font-bold text-xs" :class="(r.ChaAdj || 0) > 0 ? 'text-emerald-700' : ((r.ChaAdj || 0) < 0 ? 'text-red-600' : 'text-slate-700')" x-text="r.ChaAdj === null ? '–' : ((r.ChaAdj >= 0 ? '+' : '') + (r.ChaAdj || 0))"></span>
+                        </div>
                     </div>
+
                     <!-- Racial Traits Badges -->
                     <template x-if="formatTraitsSummary(r.RacialTraits || r.Traits).length > 0">
-                        <div class="pt-1.5 border-t border-slate-200 space-y-1">
+                        <div class="pt-2 border-t border-slate-100 space-y-1.5">
                             <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Racial Traits &amp; Bonuses</span>
                             <div class="flex flex-wrap gap-1.5">
                                 <template x-for="(tr, idx) in formatTraitsSummary(r.RacialTraits || r.Traits)" :key="idx">
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold border"
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border shadow-2xs"
                                           :class="{
-                                              'bg-amber-100 text-amber-900 border-amber-300': tr.color === 'amber',
-                                              'bg-indigo-100 text-indigo-900 border-indigo-300': tr.color === 'indigo',
-                                              'bg-emerald-100 text-emerald-900 border-emerald-300': tr.color === 'emerald',
-                                              'bg-blue-100 text-blue-900 border-blue-300': tr.color === 'blue',
-                                              'bg-teal-100 text-teal-900 border-teal-300': tr.color === 'teal',
-                                              'bg-purple-100 text-purple-900 border-purple-300': tr.color === 'purple',
+                                              'bg-amber-50 text-amber-900 border-amber-300': tr.color === 'amber',
+                                              'bg-indigo-50 text-indigo-900 border-indigo-300': tr.color === 'indigo',
+                                              'bg-emerald-50 text-emerald-900 border-emerald-300': tr.color === 'emerald',
+                                              'bg-blue-50 text-blue-900 border-blue-300': tr.color === 'blue',
+                                              'bg-teal-50 text-teal-900 border-teal-300': tr.color === 'teal',
+                                              'bg-purple-50 text-purple-900 border-purple-300': tr.color === 'purple',
                                               'bg-slate-100 text-slate-800 border-slate-300': tr.color === 'slate'
                                           }"
                                           :title="tr.desc">
@@ -386,14 +391,14 @@
                 </div>
 
                 <!-- Multiple Templates Picker & Info Boxes -->
-                <div class="pt-2 space-y-3">
+                <div class="pt-1 space-y-3">
                     <div class="flex items-center justify-between">
-                        <label class="block text-xs font-semibold text-slate-700 uppercase">Optional Templates (Heritages)</label>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Optional Templates (Heritages)</label>
                         <span class="text-[11px] text-slate-500 font-mono" x-text="character.TemplateIDs.length + ' chosen'"></span>
                     </div>
 
                     <div class="flex gap-2">
-                        <select x-model="templateToAdd" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs text-black bg-white focus:ring-2 focus:ring-indigo-500">
+                        <select x-model="templateToAdd" class="select-rol w-full px-3 py-2 text-xs bg-white">
                             <option value="">+ Add a Template...</option>
                             <template x-for="t in availableTemplatesToAdd" :key="t.ID">
                                 <option :value="t.ID" x-text="t.Name + ' [RL ' + ((parseInt(t.RLModifier) || 0) >= 0 ? '+' : '') + (parseInt(t.RLModifier) || 0) + (t.CLModifier ? ', CL ' + ((parseInt(t.CLModifier) || 0) >= 0 ? '+' : '') + (parseInt(t.CLModifier) || 0) : '') + ']'"></option>
@@ -401,14 +406,14 @@
                         </select>
                         <button type="button" @click="if(templateToAdd) { addTemplate(templateToAdd); templateToAdd = ''; }"
                                 :disabled="!templateToAdd"
-                                class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold text-xs rounded-lg transition cursor-pointer shrink-0">
+                                class="btn-rol-primary text-xs py-2 px-4 shrink-0 disabled:opacity-50">
                             Add
                         </button>
                     </div>
 
                     <!-- Selected Templates List with Individual Info Boxes -->
                     <template x-if="character.TemplateIDs.length === 0">
-                        <div class="p-3 bg-slate-50 border border-dashed border-slate-200 rounded-lg text-xs text-slate-500 text-center">
+                        <div class="p-3 bg-slate-50 border border-dashed border-slate-300 rounded-xl text-xs text-slate-500 text-center">
                             Pure bloodline (no templates selected). Choose a template above if desired.
                         </div>
                     </template>
@@ -417,7 +422,7 @@
                         <template x-for="t in getSelectedTemplates()" :key="t.ID">
                             <div class="p-3 bg-purple-50/70 border border-purple-200 rounded-xl space-y-2 text-xs">
                                 <div class="flex items-center justify-between font-bold text-purple-950">
-                                    <span class="flex items-center gap-1.5">
+                                    <span class="flex items-center gap-1.5 font-serif text-sm">
                                         <span>🧬</span>
                                         <span x-text="t.Name"></span>
                                     </span>
@@ -455,84 +460,82 @@
 
             <!-- Culture, Background Class & Level Breakdown -->
             <div class="space-y-4">
-                <div class="space-y-2">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Culture</label>
-                        <select x-model="character.CultureID" @change="onCultureChanged()"
-                                class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                            <template x-for="c in eligibleCultures" :key="c.ID">
-                                <option :value="c.ID" x-text="c.Name"></option>
-                            </template>
-                        </select>
-                        <p class="text-[11px] text-slate-500 mt-1">Default culture is automatically set from the selected race.</p>
-                    </div>
-
-                    <!-- Selected Culture Info Box -->
-                    <div class="p-3.5 bg-amber-50/70 border border-amber-200 rounded-xl text-xs space-y-2" x-data="{ c: {} }" x-effect="c = getSelectedCulture()">
-                        <div class="font-bold text-amber-950 text-sm flex items-center justify-between">
-                            <span class="flex items-center gap-1.5">
-                                <span>🏛️</span>
-                                <span x-text="c.Name || 'Culture'"></span>
-                            </span>
-                        </div>
-                        <template x-if="c.Description">
-                            <p class="text-[11px] text-stone-600 line-clamp-2" x-text="c.Description"></p>
-                        </template>
-                        <!-- Cultural Traits Badges -->
-                        <template x-if="formatTraitsSummary(c.Traits || c.RacialTraits).length > 0">
-                            <div class="pt-1.5 border-t border-amber-200/60 space-y-1">
-                                <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">Cultural Traits &amp; Bonuses</span>
-                                <div class="flex flex-wrap gap-1.5">
-                                    <template x-for="(tr, idx) in formatTraitsSummary(c.Traits || c.RacialTraits)" :key="idx">
-                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold border"
-                                              :class="{
-                                                  'bg-amber-100 text-amber-900 border-amber-300': tr.color === 'amber',
-                                                  'bg-indigo-100 text-indigo-900 border-indigo-300': tr.color === 'indigo',
-                                                  'bg-emerald-100 text-emerald-900 border-emerald-300': tr.color === 'emerald',
-                                                  'bg-blue-100 text-blue-900 border-blue-300': tr.color === 'blue',
-                                                  'bg-teal-100 text-teal-900 border-teal-300': tr.color === 'teal',
-                                                  'bg-purple-100 text-purple-900 border-purple-300': tr.color === 'purple',
-                                                  'bg-slate-100 text-slate-800 border-slate-300': tr.color === 'slate'
-                                              }"
-                                              :title="tr.desc">
-                                            <span x-text="tr.badge"></span>
-                                        </span>
-                                    </template>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Background Class</label>
-                    <select x-model="character.BackgroundClassID" @change="onBackgroundClassChanged()"
-                            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                        <template x-for="bc in availableBackgroundClasses" :key="bc.ID">
-                            <option :value="bc.ID" x-text="bc.Name + ' (' + ((parseInt(bc.SkillPtsPerLevel) || 12) + traitBonusSkillPtsPerLevel) + ' SP/lvl' + (traitBonusSkillPtsPerLevel > 0 ? ' [incl +' + traitBonusSkillPtsPerLevel + ' trait]' : '') + ')'"></option>
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Culture</label>
+                    <select x-model.number="character.CultureID" @change="onCultureChanged()"
+                            class="select-rol w-full px-3 py-2 text-sm">
+                        <template x-for="c in eligibleCultures" :key="c.ID">
+                            <option :value="c.ID" :selected="character.CultureID == c.ID" x-text="c.Name"></option>
                         </template>
                     </select>
-                    <p class="text-[11px] text-slate-500 mt-1">Background class options are strictly determined by your chosen culture.</p>
+                    <p class="text-[11px] text-slate-500">Default culture is automatically set from the selected race.</p>
+                </div>
+
+                <!-- Selected Culture Info Box -->
+                <div class="p-4 bg-white border border-amber-900/15 rounded-xl shadow-xs space-y-2.5" x-data="{ c: {} }" x-effect="c = getSelectedCulture()">
+                    <div class="font-bold text-amber-950 text-sm flex items-center justify-between border-b border-amber-900/10 pb-2">
+                        <span class="flex items-center gap-1.5 font-serif text-base">
+                            <span>🏛️</span>
+                            <span x-text="c.Name || 'Culture'"></span>
+                        </span>
+                    </div>
+                    <template x-if="c.Description">
+                        <p class="text-xs text-stone-600 line-clamp-3 italic" x-text="c.Description"></p>
+                    </template>
+                    <!-- Cultural Traits Badges -->
+                    <template x-if="formatTraitsSummary(c.Traits || c.RacialTraits).length > 0">
+                        <div class="pt-2 border-t border-slate-100 space-y-1.5">
+                            <span class="text-[10px] font-bold text-amber-900 uppercase tracking-wider block">Cultural Traits &amp; Bonuses</span>
+                            <div class="flex flex-wrap gap-1.5">
+                                <template x-for="(tr, idx) in formatTraitsSummary(c.Traits || c.RacialTraits)" :key="idx">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border shadow-2xs"
+                                          :class="{
+                                              'bg-amber-50 text-amber-900 border-amber-300': tr.color === 'amber',
+                                              'bg-indigo-50 text-indigo-900 border-indigo-300': tr.color === 'indigo',
+                                              'bg-emerald-50 text-emerald-900 border-emerald-300': tr.color === 'emerald',
+                                              'bg-blue-50 text-blue-900 border-blue-300': tr.color === 'blue',
+                                              'bg-teal-50 text-teal-900 border-teal-300': tr.color === 'teal',
+                                              'bg-purple-50 text-purple-900 border-purple-300': tr.color === 'purple',
+                                              'bg-slate-100 text-slate-800 border-slate-300': tr.color === 'slate'
+                                          }"
+                                          :title="tr.desc">
+                                        <span x-text="tr.badge"></span>
+                                    </span>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Background Class (Culture Default)</label>
+                    <select x-model.number="character.BackgroundClassID" @change="onBackgroundClassChanged()"
+                            class="select-rol w-full px-3 py-2 text-sm">
+                        <template x-for="bc in availableBackgroundClasses" :key="bc.ID">
+                            <option :value="bc.ID" :selected="character.BackgroundClassID == bc.ID" x-text="bc.Name + ' (' + ((parseInt(bc.SkillPtsPerLevel) || 12) + traitBonusSkillPtsPerLevel) + ' SP/lvl' + (traitBonusSkillPtsPerLevel > 0 ? ' [incl +' + traitBonusSkillPtsPerLevel + ' trait]' : '') + ')'"></option>
+                        </template>
+                    </select>
+                    <p class="text-[11px] text-slate-500">Culture background classes determine skills available for cultural background training.</p>
                 </div>
 
                 <!-- Level Allocation Breakdown Card -->
-                <div class="p-3.5 bg-indigo-50/80 border border-indigo-200 rounded-xl text-xs space-y-2">
+                <div class="p-4 bg-indigo-50/70 border border-indigo-200/80 rounded-xl text-xs space-y-2.5 shadow-2xs">
                     <div class="font-bold text-indigo-950 flex items-center justify-between">
-                        <span>📊 Character Level Allocation</span>
-                        <span class="font-mono text-indigo-700">Total Level: <span x-text="character.Level"></span></span>
+                        <span class="font-serif text-sm">📊 Character Level Allocation</span>
+                        <span class="font-mono text-xs bg-indigo-200/80 text-indigo-900 px-2 py-0.5 rounded font-bold">Total Level: <span x-text="character.Level"></span></span>
                     </div>
-                    <div class="grid grid-cols-3 gap-2 text-center font-mono text-[11px] pt-1 border-t border-indigo-200/60">
-                        <div class="bg-white p-2 rounded-lg border border-indigo-100 shadow-2xs">
-                            <span class="text-[10px] text-slate-500 block">Racial (RL)</span>
-                            <span class="font-bold text-slate-900 text-sm" x-text="totalRL"></span>
+                    <div class="gap-2.5 text-center font-mono text-[11px] pt-1 border-t border-indigo-200/60" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));">
+                        <div class="bg-white p-2.5 rounded-lg border border-indigo-100 shadow-2xs">
+                            <span class="text-[10px] text-slate-500 uppercase font-sans font-bold block">Racial (RL)</span>
+                            <span class="font-bold text-slate-900 text-base" x-text="totalRL"></span>
                         </div>
-                        <div class="bg-white p-2 rounded-lg border border-indigo-100 shadow-2xs">
-                            <span class="text-[10px] text-slate-500 block">Effective (EL)</span>
-                            <span class="font-bold text-slate-900 text-sm" x-text="totalEL"></span>
+                        <div class="bg-white p-2.5 rounded-lg border border-indigo-100 shadow-2xs">
+                            <span class="text-[10px] text-slate-500 uppercase font-sans font-bold block">Effective (EL)</span>
+                            <span class="font-bold text-slate-900 text-base" x-text="totalEL"></span>
                         </div>
-                        <div class="bg-white p-2 rounded-lg border border-indigo-100 shadow-2xs">
-                            <span class="text-[10px] text-slate-500 block">Class Levels</span>
-                            <span class="font-bold text-emerald-700 text-sm" x-text="remainingClassLevels"></span>
+                        <div class="bg-white p-2.5 rounded-lg border border-indigo-100 shadow-2xs">
+                            <span class="text-[10px] text-slate-500 uppercase font-sans font-bold block">Class Levels</span>
+                            <span class="font-bold text-emerald-700 text-base" x-text="remainingClassLevels"></span>
                         </div>
                     </div>
                 </div>
@@ -647,232 +650,133 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- STEP 5: BACKGROUND SKILLS & SPECIALIZATIONS (Cumulative Rank Display)     -->
     <!-- ========================================================================= -->
-    <div x-show="step === 5" class="parchment-card p-6 shadow-md space-y-4" style="display: none;">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
-            <div>
-                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <span>📚</span> Step 5: Background Skills
-                </h2>
-                <p class="text-xs text-slate-600 mt-0.5">
-                    Allocate skill points for <strong class="text-indigo-900"><span x-text="totalRL + 1"></span> level(s)</strong> of your background class (<span class="font-bold text-slate-800" x-text="getSelectedBackgroundClass().Name"></span> at <span class="font-mono font-bold text-indigo-700" x-text="(parseInt(getSelectedBackgroundClass().SkillPtsPerLevel) || 12) + traitBonusSkillPtsPerLevel"></span> SP/lvl<template x-if="traitBonusSkillPtsPerLevel > 0"><span> [incl. +<span x-text="traitBonusSkillPtsPerLevel"></span> trait bonus]</span></template>).
-                </p>
-                <p class="text-[11px] text-slate-500 mt-0.5">
-                    Only skills available to your background class are listed. Specializations can be learned for 1 SP each.
-                </p>
-            </div>
-            
-            <!-- Skill Points Pool Counter -->
-            <div class="flex items-center gap-2 shrink-0">
-                <div class="text-xs px-3.5 py-2 rounded-lg font-bold border flex items-center gap-2"
-                     :class="bgSkillPointsRemaining >= 0 ? 'bg-indigo-50 text-indigo-950 border-indigo-300' : 'bg-red-50 text-red-900 border-red-300'">
-                    <span>Background SP Pool:</span>
-                    <span class="font-mono text-sm" x-text="bgSkillPointsRemaining"></span>
-                    <span class="text-slate-500 text-[11px]">/ <span x-text="totalBgSkillPoints"></span></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Search / Filter bar -->
-        <div class="flex items-center gap-3">
-            <input type="text" x-model="skillSearchQuery" placeholder="Filter skills by name..."
-                   class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs w-full sm:w-72 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-        </div>
-
-        <!-- Scrollable Skills List with Cumulative Rank & Uniform Buttons -->
-        <div class="max-h-96 overflow-y-auto pr-1 border border-slate-200 rounded-xl divide-y divide-slate-200 bg-slate-50">
-            <template x-for="st in skillTypes" :key="st.ID">
-                <div class="p-3" x-show="getBgAccessibleSkillsForType(st.ID).length > 0">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center justify-between" x-text="st.Name"></h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        <template x-for="s in getBgAccessibleSkillsForType(st.ID)" :key="s.ID">
-                            <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-2xs space-y-2"
-                                 :class="!isBgSkillPrereqMet(s.ID) ? 'opacity-75 bg-slate-50/90 border-dashed' : ''">
-                                <div class="flex items-center justify-between gap-2">
-                                    <div class="min-w-0 flex-1">
-                                        <div class="flex items-center gap-1.5 flex-wrap">
-                                            <span class="text-xs font-semibold text-slate-900 truncate" x-text="s.Name"></span>
-                                            <template x-if="Number(s.Type) === 10">
-                                                <span class="text-[8px] bg-purple-100 text-purple-800 px-1 py-0.2 rounded font-bold">PRESTIGE</span>
-                                            </template>
-                                            <span class="text-[9px] px-1 py-0.2 rounded font-bold"
-                                                  :class="isBgSkillPrimary(s.ID) ? 'bg-indigo-100 text-indigo-800' : 'bg-slate-100 text-slate-600'"
-                                                  x-text="isBgSkillPrimary(s.ID) ? 'PRIMARY' : 'SEC'">
-                                            </span>
-                                        </div>
-                                        <div class="text-[10px] text-slate-500 font-mono mt-0.5 flex items-center gap-2">
-                                            <span>Bg: <strong class="text-slate-800" x-text="getBgSkillRank(s.ID)"></strong> / <span x-text="getBgSkillMax(s.ID)"></span></span>
-                                            <span class="text-indigo-700 font-bold bg-indigo-50 px-1 py-0.2 rounded">Total Rank: <span x-text="getConsolidatedSkillRank(s.ID)"></span></span>
-                                        </div>
-                                        <template x-if="s.Prereqs && !isBgSkillPrereqMet(s.ID)">
-                                            <div class="mt-1 text-[10px] text-amber-800 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 font-sans leading-tight">
-                                                <span class="font-bold">🔒 Prereq:</span> <span x-text="getSkillPrereqEvaluation(s, 'bg').unmet.join(', ') || getSkillPrereqEvaluation(s, 'bg').formatted"></span>
-                                            </div>
-                                        </template>
-                                    </div>
-
-                                    <!-- Uniform Rank Allocation Buttons -->
-                                    <div class="flex items-center gap-1 shrink-0">
-                                        <button type="button" @click="setBgSkillRate(s.ID, 0)"
-                                                :class="getBgSkillRate(s.ID) === 0 ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300'"
-                                                class="min-w-[32px] w-8 h-8 rounded text-xs font-mono transition cursor-pointer flex items-center justify-center">0</button>
-                                        
-                                        <button type="button" @click="setBgSkillRate(s.ID, 0.5)"
-                                                :disabled="!canSetBgSkillRate(s.ID, 0.5)"
-                                                :class="getBgSkillRate(s.ID) === 0.5 ? 'bg-indigo-600 text-white font-bold' : (canSetBgSkillRate(s.ID, 0.5) ? 'bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer border border-slate-300' : 'bg-slate-50 text-slate-400 cursor-not-allowed opacity-50 border border-slate-200')"
-                                                class="min-w-[32px] w-8 h-8 rounded text-xs font-mono transition flex items-center justify-center">&frac12;</button>
-
-                                        <template x-if="isBgSkillPrimary(s.ID)">
-                                            <button type="button" @click="setBgSkillRate(s.ID, 1.0)"
-                                                    :disabled="!canSetBgSkillRate(s.ID, 1.0)"
-                                                    :class="getBgSkillRate(s.ID) === 1.0 ? 'bg-indigo-600 text-white font-bold' : (canSetBgSkillRate(s.ID, 1.0) ? 'bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer border border-slate-300' : 'bg-slate-50 text-slate-400 cursor-not-allowed opacity-50 border border-slate-200')"
-                                                    class="min-w-[32px] w-8 h-8 rounded text-xs font-mono transition flex items-center justify-center">1</button>
-                                        </template>
-                                    </div>
-                                </div>
-
-                                <!-- Specializations for this Skill -->
-                                <template x-if="getSpecializationsForSkill(s.ID).length > 0">
-                                    <div class="pt-1.5 border-t border-slate-100 space-y-1">
-                                        <span class="text-[10px] font-bold text-slate-500 uppercase block" x-text="isMultiRankSkill(s.ID) ? 'Languages (1, 2, or 3 SP per language):' : 'Specializations (1 SP each):'"></span>
-                                        <div class="flex flex-wrap gap-1.5">
-                                            <template x-for="spec in getSpecializationsForSkill(s.ID)" :key="spec.ID">
-                                                <div>
-                                                    <template x-if="isMultiRankSkill(s.ID)">
-                                                        <div class="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded border border-slate-200 text-[10px]">
-                                                            <span class="font-medium text-slate-800" x-text="spec.Name"></span>
-                                                            <div class="flex items-center gap-1 ml-1">
-                                                                <button type="button" @click="decSpecialization(spec.ID)" :disabled="getSpecializationRank(spec.ID) <= 0"
-                                                                        class="min-w-[24px] w-6 h-6 rounded bg-white border border-slate-300 font-bold flex items-center justify-center cursor-pointer disabled:opacity-30 text-xs">-</button>
-                                                                <span class="font-mono font-bold w-4 text-center text-indigo-700 text-xs" x-text="getSpecializationRank(spec.ID)"></span>
-                                                                <button type="button" @click="incSpecialization(spec.ID, s.ID)" :disabled="!canIncSpecialization(spec.ID, s.ID)"
-                                                                        class="min-w-[24px] w-6 h-6 rounded bg-white border border-slate-300 font-bold flex items-center justify-center cursor-pointer disabled:opacity-30 text-xs">+</button>
-                                                            </div>
-                                                            <span class="text-[9px] text-slate-500 font-mono ml-0.5" x-text="getSpecializationRank(spec.ID) === 1 ? '(Basics)' : (getSpecializationRank(spec.ID) === 2 ? '(Fluent)' : (getSpecializationRank(spec.ID) === 3 ? '(Native)' : ''))"></span>
-                                                        </div>
-                                                    </template>
-                                                    <template x-if="!isMultiRankSkill(s.ID)">
-                                                        <button type="button" @click="toggleSpecialization(spec.ID, s.ID)"
-                                                                :class="getSpecializationRank(spec.ID) > 0 ? 'bg-amber-100 text-amber-900 border-amber-300 font-bold' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'"
-                                                                class="px-2.5 py-1 rounded text-[11px] border transition cursor-pointer flex items-center gap-1">
-                                                            <span x-text="getSpecializationRank(spec.ID) > 0 ? '✓' : '+'"></span>
-                                                            <span x-text="spec.Name"></span>
-                                                        </button>
-                                                    </template>
-                                                </div>
-                                            </template>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                        </template>
+    <!-- STEP 5: SKILLS PROGRESSION (Combined Background & Class Levels)           -->
+    <!-- ========================================================================= -->
+    <div x-show="step === 5" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
+        <template x-if="step === 5">
+            <div class="space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-amber-900/15 pb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 font-serif flex items-center gap-2">
+                            <span>📚</span> Step 5: Skills Progression
+                        </h2>
+                        <p class="text-xs text-slate-600 mt-0.5">
+                            Allocate skill points across your background levels (<span class="font-bold text-amber-900"><span x-text="totalRL + 1"></span> Bg level(s)</span>) and class levels. Background levels represent upbringing within your culture; class levels represent professional training.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0 flex-wrap text-xs font-semibold">
+                        <span class="bg-amber-100 text-amber-950 border border-amber-300 px-2.5 py-1 rounded-lg">
+                            Background: <strong x-text="totalRL + 1"></strong> Lvl(s)
+                        </span>
+                        <span class="bg-indigo-100 text-indigo-950 border border-indigo-300 px-2.5 py-1 rounded-lg">
+                            Class: <strong x-text="remainingClassLevels"></strong> Lvl(s)
+                        </span>
+                        <span class="bg-slate-200 text-slate-800 px-2.5 py-1 rounded-lg">
+                            Total: <strong x-text="character.Level"></strong>
+                        </span>
                     </div>
                 </div>
-            </template>
-        </div>
-    </div>
 
-    <!-- ========================================================================= -->
-    <!-- STEP 6: CLASS & CLASS SKILLS (Copy Level Allocation & Cumulative Ranks)   -->
-    <!-- ========================================================================= -->
-    <div x-show="step === 6" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
-            <div>
-                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <span>⚔️</span> Step 6: Class &amp; Class Skills Progression
-                </h2>
-                <p class="text-xs text-slate-600 mt-0.5">Select a class for each level and assign that class's primary and secondary skill points (1 SP = 1 rank; 0.5 SP = 0.5 rank).</p>
-            </div>
-            <div class="text-xs bg-indigo-50 border border-indigo-200 text-indigo-900 px-3 py-1.5 rounded-lg font-bold">
-                Class Levels: <span x-text="remainingClassLevels"></span> / <span x-text="character.Level"></span> Total
-            </div>
-        </div>
-
-        <!-- If No Class Levels Needed -->
-        <template x-if="remainingClassLevels === 0">
-            <div class="p-6 bg-indigo-50/70 border border-indigo-200 rounded-xl text-center space-y-2">
-                <span class="text-3xl">🛡️</span>
-                <h3 class="text-sm font-bold text-indigo-950">No Additional Class Levels Required</h3>
-                <p class="text-xs text-slate-600 max-w-md mx-auto">
-                    Your starting level (<span x-text="character.Level"></span>) is fully provided by your racial levels and templates (RL <span x-text="totalRL"></span> + CL <span x-text="totalCL"></span>). You can proceed directly to Spells &amp; Equipment!
-                </p>
-            </div>
-        </template>
-
-        <!-- If Class Levels Available -->
-        <template x-if="remainingClassLevels > 0">
-            <div class="space-y-4">
-                <!-- Level Tabs Selector -->
-                <div class="flex items-center gap-1.5 overflow-x-auto pb-1">
-                    <template x-for="lvl in remainingClassLevels" :key="lvl">
-                        <button type="button" @click="activeClassLevelTab = lvl"
-                                :class="activeClassLevelTab === lvl ? 'bg-indigo-600 text-white font-bold shadow-sm' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
+                <!-- Level Tabs Selector (Background Levels first, then Class Levels) -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-1">
+                    <template x-for="lvl in allSkillLevels" :key="lvl.key">
+                        <button type="button" @click="activeSkillLevelTabKey = lvl.key"
+                                :class="activeSkillLevelTabKey === lvl.key 
+                                    ? (lvl.type === 'bg' ? 'bg-amber-600 text-white font-bold shadow-sm ring-2 ring-amber-400' : 'bg-indigo-600 text-white font-bold shadow-sm ring-2 ring-indigo-400')
+                                    : (lvl.type === 'bg' ? 'bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200')"
                                 class="px-3 py-1.5 rounded-lg text-xs transition cursor-pointer flex items-center gap-1.5 shrink-0">
-                            <span>Level <span x-text="lvl"></span>:</span>
-                            <span class="text-[11px] opacity-90" x-text="getClassForLevel(lvl).Name"></span>
+                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded"
+                                  :class="lvl.type === 'bg' ? (activeSkillLevelTabKey === lvl.key ? 'bg-amber-700 text-amber-100' : 'bg-amber-200 text-amber-900') : (activeSkillLevelTabKey === lvl.key ? 'bg-indigo-700 text-indigo-100' : 'bg-indigo-100 text-indigo-900')"
+                                  x-text="lvl.label"></span>
+                            <span class="text-[11px] font-medium" x-text="lvl.className"></span>
                         </button>
                     </template>
                 </div>
 
                 <!-- Active Level Configuration Card -->
                 <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-slate-200 pb-3">
                         <div class="flex flex-wrap items-center gap-3">
-                            <span class="text-sm font-bold text-slate-900">Class for Level <span x-text="activeClassLevelTab"></span>:</span>
-                            <select :value="character.ClassLevels[activeClassLevelTab - 1] || 1"
-                                    @change="setClassForLevel(activeClassLevelTab, $event.target.value)"
-                                    class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 bg-white focus:ring-2 focus:ring-indigo-500">
-                                <template x-for="cls in classes" :key="cls.ID">
-                                    <option :value="cls.ID"
-                                            :selected="(character.ClassLevels[activeClassLevelTab - 1] || 1) == cls.ID"
-                                            x-text="cls.Name + ' (' + ((parseInt(cls.SkillPtsPerLevel) || 2) + traitBonusSkillPtsPerLevel) + ' SP/lvl' + (traitBonusSkillPtsPerLevel > 0 ? ' [incl +' + traitBonusSkillPtsPerLevel + ' trait]' : '') + ')'"></option>
-                                </template>
-                            </select>
+                            <!-- Label indicating Level & Class -->
+                            <span class="text-sm font-bold text-slate-900" x-text="getActiveLevelObj().type === 'bg' ? 'Class for Background Level ' + getActiveLevelObj().index + ':' : 'Class for Level ' + getActiveLevelObj().index + ':'"></span>
 
-                            <!-- Copy from another level button/dropdown -->
-                            <template x-if="remainingClassLevels > 1">
-                                <div class="flex items-center gap-1">
-                                    <select x-model="copyFromLevel" class="text-xs px-2 py-1 border border-slate-300 rounded-lg bg-white text-slate-700">
+                            <!-- Dropdown for Background Level: LIMITED TO CULTURE'S CLASSES -->
+                            <template x-if="getActiveLevelObj().type === 'bg'">
+                                <select :value="getBgClassForLevel(getActiveLevelObj().index).ID"
+                                        @change="setBgClassForLevel(getActiveLevelObj().index, $event.target.value)"
+                                        class="select-rol px-3 py-1.5 text-xs font-bold text-slate-900 bg-white">
+                                    <template x-for="cls in availableBackgroundClasses" :key="cls.ID">
+                                        <option :value="cls.ID"
+                                                :selected="getBgClassForLevel(getActiveLevelObj().index).ID == cls.ID"
+                                                x-text="cls.Name + ' (' + ((parseInt(cls.SkillPtsPerLevel) || 12) + traitBonusSkillPtsPerLevel) + ' SP/lvl' + (traitBonusSkillPtsPerLevel > 0 ? ' [incl +' + traitBonusSkillPtsPerLevel + ' trait]' : '') + ')'"></option>
+                                    </template>
+                                </select>
+                            </template>
+
+                            <!-- Dropdown for Class Level: ALL CLASSES -->
+                            <template x-if="getActiveLevelObj().type === 'cl'">
+                                <select :value="getClassForLevel(getActiveLevelObj().index).ID"
+                                        @change="setClassForLevel(getActiveLevelObj().index, $event.target.value)"
+                                        class="select-rol px-3 py-1.5 text-xs font-bold text-slate-900 bg-white">
+                                    <template x-for="cls in classes" :key="cls.ID">
+                                        <option :value="cls.ID"
+                                                :selected="getClassForLevel(getActiveLevelObj().index).ID == cls.ID"
+                                                x-text="cls.Name + ' (' + ((parseInt(cls.SkillPtsPerLevel) || 18) + traitBonusSkillPtsPerLevel) + ' SP/lvl' + (traitBonusSkillPtsPerLevel > 0 ? ' [incl +' + traitBonusSkillPtsPerLevel + ' trait]' : '') + ')'"></option>
+                                    </template>
+                                </select>
+                            </template>
+
+                            <!-- Copy from another level (Bg levels or Class levels) -->
+                            <template x-if="allSkillLevels.length > 1">
+                                <div class="flex items-center gap-1.5">
+                                    <select x-model="copyFromLevelKey" class="text-xs px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white text-slate-700">
                                         <option value="">📋 Copy from Level...</option>
-                                        <template x-for="otherLvl in remainingClassLevels" :key="otherLvl">
-                                            <option :value="otherLvl" x-show="otherLvl !== activeClassLevelTab" x-text="'Level ' + otherLvl + ' (' + getClassForLevel(otherLvl).Name + ')'"></option>
+                                        <template x-for="otherLvl in allSkillLevels" :key="otherLvl.key">
+                                            <option :value="otherLvl.key" x-show="otherLvl.key !== activeSkillLevelTabKey"
+                                                    x-text="otherLvl.fullLabel + ' (' + otherLvl.className + ')'"></option>
                                         </template>
                                     </select>
-                                    <button type="button" @click="if(copyFromLevel) { copyLevelAllocations(copyFromLevel, activeClassLevelTab); copyFromLevel = ''; }"
-                                            :disabled="!copyFromLevel"
-                                            class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 disabled:opacity-40 text-slate-800 font-bold text-xs rounded-lg transition cursor-pointer">
+                                    <button type="button" @click="if(copyFromLevelKey) { copyLevelAllocations(copyFromLevelKey, activeSkillLevelTabKey); copyFromLevelKey = ''; }"
+                                            :disabled="!copyFromLevelKey"
+                                            class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 disabled:opacity-40 text-slate-800 font-bold text-xs rounded-lg transition cursor-pointer">
                                         Copy
                                     </button>
                                 </div>
                             </template>
                         </div>
 
-                        <!-- SP for this level -->
+                        <!-- SP for this active level -->
                         <div class="flex items-center gap-2">
-                            <template x-if="getLevelPrestigeSkillPointsSpent(activeClassLevelTab) > 0">
+                            <template x-if="getLevelPrestigeSkillPointsSpent(activeSkillLevelTabKey) > 0">
                                 <span class="text-[11px] text-purple-900 bg-purple-100 border border-purple-300 px-2 py-1 rounded font-mono font-semibold">
-                                    Prestige: <strong x-text="getLevelPrestigeSkillPointsSpent(activeClassLevelTab)"></strong> / 1.0 SP
+                                    Prestige: <strong x-text="getLevelPrestigeSkillPointsSpent(activeSkillLevelTabKey)"></strong> / 1.0 SP
                                 </span>
                             </template>
                             <div class="text-xs px-3 py-1.5 rounded-lg font-bold border flex items-center gap-2"
-                                 :class="getLevelSkillPointsRemaining(activeClassLevelTab) >= 0 ? 'bg-indigo-50 text-indigo-950 border-indigo-300' : 'bg-red-50 text-red-900 border-red-300'">
-                                <span>Level <span x-text="activeClassLevelTab"></span> SP:</span>
-                                <span class="font-mono text-sm" x-text="getLevelSkillPointsRemaining(activeClassLevelTab)"></span>
-                                <span class="text-slate-500 text-[11px]">/ <span x-text="getLevelSkillPointsTotal(activeClassLevelTab)"></span></span>
+                                 :class="getLevelSkillPointsRemaining(activeSkillLevelTabKey) >= 0 ? 'bg-indigo-50 text-indigo-950 border-indigo-300' : 'bg-red-50 text-red-900 border-red-300'">
+                                <span><span x-text="getActiveLevelObj().label"></span> SP:</span>
+                                <span class="font-mono text-sm" x-text="getLevelSkillPointsRemaining(activeSkillLevelTabKey)"></span>
+                                <span class="text-slate-500 text-[11px]">/ <span x-text="getLevelSkillPointsTotal(activeSkillLevelTabKey)"></span></span>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Search Filter Bar -->
+                    <div class="flex items-center gap-3">
+                        <input type="text" x-model="skillSearchQuery" placeholder="Filter skills by name..."
+                               class="input-rol w-full sm:w-72 px-3 py-1.5 text-xs">
+                    </div>
+
                     <!-- Level Skill Allocation List with Cumulative Rank & Uniform Buttons -->
-                    <div class="max-h-80 overflow-y-auto pr-1 border border-slate-200 rounded-xl divide-y divide-slate-200 bg-white">
+                    <div class="max-h-96 overflow-y-auto pr-1 border border-slate-200 rounded-xl divide-y divide-slate-200 bg-white">
                         <template x-for="st in skillTypes" :key="st.ID">
-                            <div class="p-3" x-show="getLevelAccessibleSkillsForType(activeClassLevelTab, st.ID).length > 0">
-                                <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-2" x-text="st.Name"></h4>
+                            <div class="p-3" x-show="getLevelAccessibleSkillsForType(activeSkillLevelTabKey, st.ID).length > 0">
+                                <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center justify-between" x-text="st.Name"></h4>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                                    <template x-for="s in getLevelAccessibleSkillsForType(activeClassLevelTab, st.ID)" :key="s.ID">
-                                        <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200 space-y-1.5 text-xs"
-                                             :class="!isLevelSkillPrereqMet(activeClassLevelTab, s.ID) ? 'opacity-75 border-dashed bg-slate-100/70' : ''">
+                                    <template x-for="s in getLevelAccessibleSkillsForType(activeSkillLevelTabKey, st.ID)" :key="s.ID">
+                                        <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200 space-y-2 text-xs"
+                                             :class="!isLevelSkillPrereqMet(activeSkillLevelTabKey, s.ID) ? 'opacity-75 border-dashed bg-slate-100/70' : ''">
                                             <div class="flex items-center justify-between gap-2">
                                                 <div class="min-w-0 flex-1">
                                                     <div class="flex items-center gap-1.5 flex-wrap">
@@ -882,41 +786,75 @@
                                                         </template>
                                                         <template x-if="Number(s.Type) !== 10">
                                                             <span class="text-[8px] px-1 py-0.2 rounded font-bold"
-                                                                  :class="isLevelSkillPrimary(activeClassLevelTab, s.ID) ? 'bg-indigo-100 text-indigo-800' : 'bg-slate-200 text-slate-600'"
-                                                                  x-text="isLevelSkillPrimary(activeClassLevelTab, s.ID) ? 'PRIM' : 'SEC'"></span>
+                                                                  :class="isLevelSkillPrimary(activeSkillLevelTabKey, s.ID) ? 'bg-indigo-100 text-indigo-800' : 'bg-slate-200 text-slate-600'"
+                                                                  x-text="isLevelSkillPrimary(activeSkillLevelTabKey, s.ID) ? 'PRIM' : 'SEC'"></span>
                                                         </template>
                                                     </div>
                                                     <div class="text-[10px] text-slate-500 font-mono mt-0.5 flex items-center gap-2">
-                                                        <span>Lvl Rank: <strong class="text-slate-800" x-text="getLevelSkillRank(activeClassLevelTab, s.ID)"></strong> / <span x-text="isLevelSkillPrimary(activeClassLevelTab, s.ID) ? '1.0' : '0.5'"></span></span>
+                                                        <span>Lvl Rank: <strong class="text-slate-800" x-text="getLevelSkillRank(activeSkillLevelTabKey, s.ID)"></strong> / <span x-text="isLevelSkillPrimary(activeSkillLevelTabKey, s.ID) ? '1.0' : '0.5'"></span></span>
                                                         <span class="text-indigo-700 font-bold bg-indigo-50 px-1 py-0.2 rounded">Total Rank: <span x-text="getConsolidatedSkillRank(s.ID)"></span></span>
                                                     </div>
-                                                    <template x-if="s.Prereqs && !isLevelSkillPrereqMet(activeClassLevelTab, s.ID)">
+                                                    <template x-if="s.Prereqs && !isLevelSkillPrereqMet(activeSkillLevelTabKey, s.ID)">
                                                         <div class="mt-1 text-[10px] text-amber-800 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 font-sans leading-tight">
-                                                            <span class="font-bold">🔒 Prereq:</span> <span x-text="getSkillPrereqEvaluation(s, 'lvl', activeClassLevelTab).unmet.join(', ') || getSkillPrereqEvaluation(s, 'lvl', activeClassLevelTab).formatted"></span>
+                                                            <span class="font-bold">🔒 Prereq:</span> <span x-text="getSkillPrereqEvaluation(s, 'lvl', activeSkillLevelTabKey).unmet.join(', ') || getSkillPrereqEvaluation(s, 'lvl', activeSkillLevelTabKey).formatted"></span>
                                                         </div>
                                                     </template>
                                                 </div>
 
                                                 <!-- Action Buttons with Single-Click +1 for Primary Skills -->
                                                 <div class="flex items-center gap-1 shrink-0">
-                                                    <button type="button" @click="decLevelSkill(activeClassLevelTab, s.ID)"
-                                                            :disabled="getLevelSkillRank(activeClassLevelTab, s.ID) <= 0"
-                                                            :class="getLevelSkillRank(activeClassLevelTab, s.ID) > 0 ? 'bg-white hover:bg-slate-100 text-slate-800 cursor-pointer border border-slate-300 shadow-2xs' : 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-40 border border-slate-200'"
+                                                    <button type="button" @click="decLevelSkill(activeSkillLevelTabKey, s.ID)"
+                                                            :disabled="getLevelSkillRank(activeSkillLevelTabKey, s.ID) <= 0"
+                                                            :class="getLevelSkillRank(activeSkillLevelTabKey, s.ID) > 0 ? 'bg-white hover:bg-slate-100 text-slate-800 cursor-pointer border border-slate-300 shadow-2xs' : 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-40 border border-slate-200'"
                                                             class="min-w-[32px] w-8 h-8 rounded text-sm font-bold flex items-center justify-center">-</button>
                                                     
-                                                    <button type="button" @click="incLevelSkill(activeClassLevelTab, s.ID)"
-                                                            :disabled="!canIncLevelSkill(activeClassLevelTab, s.ID)"
-                                                            :class="canIncLevelSkill(activeClassLevelTab, s.ID) ? 'bg-white hover:bg-slate-100 text-slate-800 cursor-pointer border border-slate-300 shadow-2xs' : 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-40 border border-slate-200'"
+                                                    <button type="button" @click="incLevelSkill(activeSkillLevelTabKey, s.ID)"
+                                                            :disabled="!canIncLevelSkill(activeSkillLevelTabKey, s.ID)"
+                                                            :class="canIncLevelSkill(activeSkillLevelTabKey, s.ID) ? 'bg-white hover:bg-slate-100 text-slate-800 cursor-pointer border border-slate-300 shadow-2xs' : 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-40 border border-slate-200'"
                                                             class="min-w-[32px] w-8 h-8 rounded text-xs font-mono font-bold flex items-center justify-center">+&frac12;</button>
 
-                                                    <template x-if="isLevelSkillPrimary(activeClassLevelTab, s.ID)">
-                                                        <button type="button" @click="incLevelSkillBy(activeClassLevelTab, s.ID, 1.0)"
-                                                                :disabled="!canIncLevelSkillBy(activeClassLevelTab, s.ID, 1.0)"
-                                                                :class="canIncLevelSkillBy(activeClassLevelTab, s.ID, 1.0) ? 'bg-indigo-50 hover:bg-indigo-100 text-indigo-900 cursor-pointer border border-indigo-300 shadow-2xs font-bold' : 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-40 border border-slate-200 font-bold'"
+                                                    <template x-if="isLevelSkillPrimary(activeSkillLevelTabKey, s.ID)">
+                                                        <button type="button" @click="incLevelSkillBy(activeSkillLevelTabKey, s.ID, 1.0)"
+                                                                :disabled="!canIncLevelSkillBy(activeSkillLevelTabKey, s.ID, 1.0)"
+                                                                :class="canIncLevelSkillBy(activeSkillLevelTabKey, s.ID, 1.0) ? 'bg-indigo-50 hover:bg-indigo-100 text-indigo-900 cursor-pointer border border-indigo-300 shadow-2xs font-bold' : 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-40 border border-slate-200 font-bold'"
                                                                 class="min-w-[32px] w-8 h-8 rounded text-xs font-mono flex items-center justify-center" title="Allocate 1 full point">+1</button>
                                                     </template>
                                                 </div>
                                             </div>
+
+                                            <!-- Specializations for this Skill (1 SP each from level SP pool) -->
+                                            <template x-if="getSpecializationsForSkill(s.ID).length > 0">
+                                                <div class="pt-1.5 border-t border-slate-100 space-y-1">
+                                                    <span class="text-[10px] font-bold text-slate-500 uppercase block" x-text="isMultiRankSkill(s.ID) ? 'Languages (1, 2, or 3 SP per language):' : 'Specializations (1 SP each):'"></span>
+                                                    <div class="flex flex-wrap gap-1.5">
+                                                        <template x-for="spec in getSpecializationsForSkill(s.ID)" :key="spec.ID">
+                                                            <div>
+                                                                <template x-if="isMultiRankSkill(s.ID)">
+                                                                    <div class="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded border border-slate-200 text-[10px]">
+                                                                        <span class="font-medium text-slate-800" x-text="spec.Name"></span>
+                                                                        <div class="flex items-center gap-1 ml-1">
+                                                                            <button type="button" @click="decSpecialization(spec.ID, activeSkillLevelTabKey)" :disabled="getSpecializationRankOnLevel(spec.ID, activeSkillLevelTabKey) <= 0"
+                                                                                    class="min-w-[24px] w-6 h-6 rounded bg-white border border-slate-300 font-bold flex items-center justify-center cursor-pointer disabled:opacity-30 text-xs">-</button>
+                                                                            <span class="font-mono font-bold w-4 text-center text-indigo-700 text-xs" x-text="getSpecializationRank(spec.ID)"></span>
+                                                                            <button type="button" @click="incSpecialization(spec.ID, s.ID, activeSkillLevelTabKey)" :disabled="!canIncSpecialization(spec.ID, s.ID, activeSkillLevelTabKey)"
+                                                                                    class="min-w-[24px] w-6 h-6 rounded bg-white border border-slate-300 font-bold flex items-center justify-center cursor-pointer disabled:opacity-30 text-xs">+</button>
+                                                                        </div>
+                                                                        <span class="text-[9px] text-slate-500 font-mono ml-0.5" x-text="getSpecializationRank(spec.ID) === 1 ? '(Basics)' : (getSpecializationRank(spec.ID) === 2 ? '(Fluent)' : (getSpecializationRank(spec.ID) === 3 ? '(Native)' : ''))"></span>
+                                                                    </div>
+                                                                </template>
+                                                                <template x-if="!isMultiRankSkill(s.ID)">
+                                                                    <button type="button" @click="toggleSpecialization(spec.ID, s.ID, activeSkillLevelTabKey)"
+                                                                            :class="getSpecializationRank(spec.ID) > 0 ? 'bg-amber-100 text-amber-900 border-amber-300 font-bold' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'"
+                                                                            class="px-2.5 py-1 rounded text-[11px] border transition cursor-pointer flex items-center gap-1">
+                                                                        <span x-text="getSpecializationRank(spec.ID) > 0 ? '✓' : '+'"></span>
+                                                                        <span x-text="spec.Name"></span>
+                                                                    </button>
+                                                                </template>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </template>
                                         </div>
                                     </template>
                                 </div>
@@ -929,15 +867,15 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- STEP 7: SPELLS & PSI POWERS                                               -->
+    <!-- STEP 6: SPELLS & PSI POWERS                                               -->
     <!-- ========================================================================= -->
-    <div x-show="step === 7" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
-        <template x-if="step === 7">
+    <div x-show="step === 6" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
+        <template x-if="step === 6">
             <div class="space-y-5">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
                     <div>
                         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                            <span>✨</span> Step 7: Learned Spells &amp; Variations
+                            <span>✨</span> Step 6: Learned Spells &amp; Variations
                         </h2>
                         <p class="text-xs text-slate-600 mt-0.5">Spells available for automatic learning based on trained spellcraft skills and minimum PP cost.</p>
                     </div>
@@ -1040,15 +978,15 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- STEP 8: EQUIPMENT & STARTING WEALTH (Uniform Buttons)                      -->
+    <!-- STEP 7: EQUIPMENT & STARTING WEALTH (Uniform Buttons)                      -->
     <!-- ========================================================================= -->
-    <div x-show="step === 8" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
-        <template x-if="step === 8">
+    <div x-show="step === 7" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
+        <template x-if="step === 7">
             <div class="space-y-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4">
                     <div>
                         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                            <span>🛡️</span> Step 8: Equipment &amp; Starting Wealth
+                            <span>🛡️</span> Step 7: Equipment &amp; Starting Wealth
                         </h2>
                         <p class="text-xs text-slate-600 mt-0.5">Purchase starting weapons, armor, implements, adventuring gear, and tools.</p>
                     </div>
@@ -1277,17 +1215,17 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- STEP 9: PERSONAL & SOCIAL DETAILS (Religion, Deity, Reputation, etc.)    -->
+    <!-- STEP 8: PERSONAL DETAILS & BACKGROUND                                     -->
     <!-- ========================================================================= -->
-    <div x-show="step === 9" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
-        <template x-if="step === 9">
+    <div x-show="step === 8" class="parchment-card p-6 shadow-md space-y-5" style="display: none;">
+        <template x-if="step === 8">
             <div class="space-y-5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
                     <div>
                         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                            <span>🎭</span> Step 9: Physical, Personality &amp; Social Details
+                            <span>🎭</span> Step 8: Personal Details &amp; Background
                         </h2>
-                        <p class="text-xs text-slate-600 mt-0.5">Customize physical traits, religion, reputation, influence, family, and background lore.</p>
+                        <p class="text-xs text-slate-600 mt-0.5">Define name, alignment, physical traits, religion, social standing, and background lore.</p>
                     </div>
                     <div class="flex items-center gap-2 flex-wrap">
                         <button type="button" @click="rollRandomAllLore()"
@@ -1298,6 +1236,58 @@
                                 class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
                             <span>🎲</span> Roll Physical Stats
                         </button>
+                    </div>
+                </div>
+
+                <!-- Primary Identity: Character Name (with Uniqueness Check) & Alignment -->
+                <div class="p-4 bg-amber-50/70 border border-amber-900/15 rounded-xl grid grid-cols-1 md:grid-cols-2 gap-4 shadow-2xs">
+                    <!-- Character Name Field -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="block text-xs font-bold text-slate-700 uppercase">Character Name <span class="text-red-500">*</span></label>
+                            <button type="button" @click="rollRandomName()" class="btn-action-pill btn-action-pill-gold text-[11px] py-0.5 px-2">
+                                <span>🎲</span> Randomize Name
+                            </button>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" x-model="character.Name" @input="checkNameAvailabilityLive()" @change="checkNameAvailabilityLive()"
+                                   placeholder="e.g. Valerie Swiftblade"
+                                   :class="{
+                                       'border-red-500 ring-1 ring-red-500 bg-red-50/50': nameCheckStatus === 'invalid',
+                                       'border-emerald-500 ring-1 ring-emerald-500 bg-emerald-50/30': nameCheckStatus === 'valid'
+                                   }"
+                                   class="input-rol w-full px-3 py-2 text-sm bg-white">
+                            <button type="button" @click="rollRandomName()" title="Roll Random Name"
+                                    class="btn-action-pill btn-action-pill-gold px-3 py-2 text-xs font-bold transition flex items-center justify-center shrink-0 cursor-pointer">
+                                🎲
+                            </button>
+                        </div>
+                        <div class="mt-1 text-xs min-h-[18px]">
+                            <template x-if="nameCheckStatus === 'checking'">
+                                <span class="text-slate-500 flex items-center gap-1">
+                                    <span class="animate-spin inline-block">⏳</span> Checking name uniqueness...
+                                </span>
+                            </template>
+                            <template x-if="nameCheckStatus === 'valid'">
+                                <span class="text-emerald-700 font-semibold flex items-center gap-1" x-text="nameCheckMessage"></span>
+                            </template>
+                            <template x-if="nameCheckStatus === 'invalid'">
+                                <span class="text-red-600 font-semibold flex items-center gap-1">
+                                    <span>⚠️</span> <span x-text="nameCheckMessage"></span>
+                                </span>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Alignment Field -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Alignment</label>
+                        <select x-model="character.Alignment" class="select-rol w-full px-3 py-2 text-sm bg-white">
+                            @foreach($alignments as $al)
+                                <option value="{{ $al->Name }}">{{ $al->Name }}</option>
+                            @endforeach
+                        </select>
+                        <p class="text-[11px] text-slate-500 mt-1">Moral and ethical perspective guiding the character's philosophy and actions.</p>
                     </div>
                 </div>
 
@@ -1428,7 +1418,7 @@
                                     <input type="text" x-model="character.ReputationDesc" placeholder="e.g. Local Hero, Feared Bounty Hunter"
                                            class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-black focus:ring-2 focus:ring-indigo-500">
                                     <p class="text-[10px] text-slate-500 font-mono">
-                                        Formula: TL (<span x-text="(calculatedTotalRL || 0) + (character.ClassLevels || []).length"></span>) + SC (<span x-text="character.SocialClass || 0"></span>) + WC (<span x-text="character.WealthClass || 0"></span>) = <strong class="text-indigo-900" x-text="calcTotalReputation()"></strong>
+                                        Formula: TL (<span x-text="(totalRL || 0) + (character.ClassLevels || []).length"></span>) + SC (<span x-text="character.SocialClass || 0"></span>) + WC (<span x-text="character.WealthClass || 0"></span>) = <strong class="text-indigo-900" x-text="calcTotalReputation()"></strong>
                                     </p>
                                 </div>
                             </div>
@@ -1508,15 +1498,15 @@
         </template>
     </div>
     <!-- ========================================================================= -->
-    <!-- STEP 10: REVIEW & SAVE (Classic D&D Character Sheet Style)                -->
+    <!-- STEP 9: REVIEW & SAVE (Classic D&D Character Sheet Style)                 -->
     <!-- ========================================================================= -->
-    <div x-show="step === 10" class="parchment-card p-6 shadow-md space-y-6" style="display: none;">
-        <template x-if="step === 10">
+    <div x-show="step === 9" class="parchment-card p-6 shadow-md space-y-6" style="display: none;">
+        <template x-if="step === 9">
             <div class="space-y-4">
                 <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
                     <div>
                         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                            <span>📜</span> Step 10: Final Review &amp; Character Sheet
+                            <span>📜</span> Step 9: Final Review &amp; Character Sheet
                         </h2>
                         <p class="text-xs text-slate-600 mt-0.5">Review your complete hero sheet, derived statistics, dual-ability defenses, and lore before saving.</p>
                     </div>
@@ -1535,11 +1525,11 @@
             &larr; Previous Step
         </button>
         <div class="ml-auto flex items-center gap-3">
-            <button type="button" x-show="step < 10" x-cloak @click="nextStep()"
+            <button type="button" x-show="step < 9" x-cloak @click="nextStep()"
                     class="btn-rol-primary">
                 <span>Next Step</span> <span>&rarr;</span>
             </button>
-            <button type="button" x-show="step === 10" x-cloak @click="saveCharacter()"
+            <button type="button" x-show="step === 9" x-cloak @click="saveCharacter()"
                     class="btn-rol-success">
                 <span>💾</span> <span>Save Character to Database</span>
             </button>
@@ -1930,16 +1920,15 @@ function characterWizard() {
         isReady: false,
         step: 1,
         stepNames: {
-            1: 'Identity & Campaign',
+            1: 'Campaign',
             2: 'Ability Scores',
             3: 'Race & Culture',
             4: 'Improvements',
-            5: 'Bg Skills',
-            6: 'Class & Class Skills',
-            7: 'Spells',
-            8: 'Equipment & Wealth',
-            9: 'Personal Details',
-            10: 'Review & Save'
+            5: 'Skills',
+            6: 'Spells',
+            7: 'Equipment & Wealth',
+            8: 'Personal Details & Background',
+            9: 'Review & Save'
         },
 
         campaigns: rawCampaigns,
@@ -2006,10 +1995,17 @@ function characterWizard() {
         // Templates & Level Copy State
         templateToAdd: '',
         copyFromLevel: '',
+        copyFromLevelKey: '',
 
-        // Skills State
+        // Skills State (Combined Background & Class Levels)
         skillSearchQuery: '',
         activeClassLevelTab: 1,
+        activeSkillLevelTabKey: 'bg_1',
+
+        // Name Uniqueness & Validation State (Step 8)
+        nameCheckStatus: 'idle',
+        nameCheckMessage: '',
+        nameCheckTimeout: null,
 
         // Shop State
         itemSearchQuery: '',
@@ -2019,6 +2015,48 @@ function characterWizard() {
         // Canonical Server-Side Entity Engine State
         calculatedState: null,
         isCalculatingPreview: false,
+
+        // Combat Matrix State (for Sheet Content Preview in Step 9)
+        combatMatrixState: {
+            showEquippedWeapons: true,
+            showCarriedWeapons: false,
+            showWeapons: true,
+            showAkimbo: true,
+            showPrimaryNatural: true,
+            showSecondaryNatural: true,
+            showNatural: true,
+            showBrawling: true,
+            showGrapple: true,
+            showSpells: true,
+            availableElements: [],
+            wieldedParries: [],
+            weapons: {},
+            primaryNatural: [],
+            secondaryNatural: [],
+            brawlingActions: {},
+            customCombos: [],
+            activeAttackId: null,
+            decPassive: 10,
+            dexMod: 0,
+            dodgeMod: 0
+        },
+
+        formatOrganizationsSummary(orgs) {
+            if (!orgs) return 'None';
+            let list = [];
+            if (typeof orgs === 'string') {
+                try { list = JSON.parse(orgs); } catch(e) { return orgs; }
+            } else if (Array.isArray(orgs)) {
+                list = orgs;
+            }
+            if (!list || list.length === 0) return 'None';
+            return list.map(o => {
+                const parts = [];
+                if (o.RankName) parts.push(o.RankName);
+                if (o.Name) parts.push(o.Name);
+                return parts.join(' of ') || 'Member';
+            }).join(', ');
+        },
 
         // Memoization & Caching State
         _traitSkillBonuses: null,
@@ -2044,6 +2082,7 @@ function characterWizard() {
             TemplateIDs: [],
             CultureID: 1,
             BackgroundClassID: 15,
+            BgClassLevels: [15],
             StartingXP: 0,
             Level: 1,
             SuitabilityLevel: 3,
@@ -2060,6 +2099,7 @@ function characterWizard() {
             IPAllocations: {},
             ClassLevels: [1],
             LevelSkills: {},
+            LevelSpecializations: {},
             Specializations: {},
             LearnedSpells: {},
 
@@ -2274,13 +2314,30 @@ function characterWizard() {
                     this.character.BackgroundClassID = availBg[0].ID;
                 }
             }
-            this.invalidateSkillsAndSpellCache(true);
+            this.syncBgLevels();
             this.syncClassLevels();
+            this.invalidateSkillsAndSpellCache(true);
         },
 
         onBackgroundClassChanged() {
-            this.character.BgSkillRates = {};
+            if (!this.character.BgClassLevels) this.character.BgClassLevels = [];
+            this.character.BgClassLevels[0] = parseInt(this.character.BackgroundClassID);
+            if (this.character.LevelSkills['bg_1']) {
+                delete this.character.LevelSkills['bg_1'];
+            }
             this.invalidateSkillsAndSpellCache(false);
+        },
+
+        syncBgLevels() {
+            const count = (this.totalRL || 0) + 1;
+            if (!this.character.BgClassLevels) this.character.BgClassLevels = [];
+            const defaultBgClassId = this.character.BackgroundClassID || (this.availableBackgroundClasses[0]?.ID || 15);
+            while (this.character.BgClassLevels.length < count) {
+                this.character.BgClassLevels.push(defaultBgClassId);
+            }
+            if (this.character.BgClassLevels.length > count) {
+                this.character.BgClassLevels = this.character.BgClassLevels.slice(0, count);
+            }
         },
 
         syncClassLevels() {
@@ -2871,54 +2928,189 @@ function characterWizard() {
             return this.raceBonusSkillPtsPerLevel + this.cultureBonusSkillPtsPerLevel + this.templateBonusSkillPtsPerLevel;
         },
 
-        // --- Background Skills Logic (Step 5) ---
-        get totalBgSkillPoints() {
-            const bgClass = this.getSelectedBackgroundClass();
-            const levels = this.totalRL + 1;
-            const basePerLevel = parseInt(bgClass.SkillPtsPerLevel) || 12;
-            return levels * (basePerLevel + this.traitBonusSkillPtsPerLevel);
+        // --- Skills Progression Logic (Step 5: Combined Background & Class Levels) ---
+        get allSkillLevels() {
+            const list = [];
+            const numBg = (this.totalRL || 0) + 1;
+            for (let i = 1; i <= numBg; i++) {
+                const bgCls = this.getBgClassForLevel(i);
+                list.push({
+                    key: 'bg_' + i,
+                    type: 'bg',
+                    index: i,
+                    label: numBg > 1 ? `Bg Lvl ${i}` : 'Bg Level',
+                    fullLabel: `Background Level ${i}`,
+                    className: bgCls.Name || 'Background'
+                });
+            }
+            const numCl = this.remainingClassLevels || 0;
+            for (let i = 1; i <= numCl; i++) {
+                const cls = this.getClassForLevel(i);
+                list.push({
+                    key: String(i),
+                    type: 'cl',
+                    index: i,
+                    label: `Lvl ${i}`,
+                    fullLabel: `Class Level ${i}`,
+                    className: cls.Name || 'Class'
+                });
+            }
+            return list;
         },
 
-        get totalSpecializationPoints() {
-            if (!this.character.Specializations) return 0;
-            if (Array.isArray(this.character.Specializations)) {
-                return this.character.Specializations.length;
+        getActiveLevelObj() {
+            const levels = this.allSkillLevels;
+            let found = levels.find(l => l.key === this.activeSkillLevelTabKey);
+            if (!found && levels.length > 0) {
+                this.activeSkillLevelTabKey = levels[0].key;
+                found = levels[0];
             }
-            let sum = 0;
-            for (const k in this.character.Specializations) {
-                sum += parseInt(this.character.Specializations[k]) || 0;
-            }
-            return sum;
+            return found || { key: 'bg_1', type: 'bg', index: 1, label: 'Bg Level', fullLabel: 'Background Level 1', className: '' };
         },
 
-        get bgSkillPointsSpent() {
+        getBgClassForLevel(idx) {
+            const cId = (this.character.BgClassLevels && this.character.BgClassLevels[idx - 1])
+                || this.character.BackgroundClassID
+                || (this.availableBackgroundClasses[0]?.ID || 15);
+            return this.classesById[cId] || this.classes[0] || {};
+        },
+
+        setBgClassForLevel(idx, classId) {
+            if (!this.character.BgClassLevels) this.character.BgClassLevels = [];
+            this.character.BgClassLevels[idx - 1] = parseInt(classId);
+            if (idx === 1) {
+                this.character.BackgroundClassID = parseInt(classId);
+            }
+            if (this.character.LevelSkills['bg_' + idx]) {
+                delete this.character.LevelSkills['bg_' + idx];
+            }
+            if (this.character.LevelSpecializations && this.character.LevelSpecializations['bg_' + idx]) {
+                delete this.character.LevelSpecializations['bg_' + idx];
+                this.syncSpecializationsFlat();
+            }
+            this.invalidateSkillsAndSpellCache(false);
+        },
+
+        getClassForLevel(lvl) {
+            const classId = this.character.ClassLevels[lvl - 1] || 1;
+            return this.classesById[classId] || this.classes[0] || {};
+        },
+
+        setClassForLevel(lvl, classId) {
+            this.character.ClassLevels[lvl - 1] = parseInt(classId);
+            if (this.character.LevelSkills[lvl]) {
+                delete this.character.LevelSkills[lvl];
+            }
+            if (this.character.LevelSpecializations && this.character.LevelSpecializations[lvl]) {
+                delete this.character.LevelSpecializations[lvl];
+                this.syncSpecializationsFlat();
+            }
+            this.invalidateSkillsAndSpellCache(false);
+        },
+
+        copyLevelAllocations(fromKey, toKey) {
+            if (!fromKey || !toKey || fromKey === toKey) return;
+
+            const fromLvlObj = this.allSkillLevels.find(l => l.key === String(fromKey));
+            const toLvlObj = this.allSkillLevels.find(l => l.key === String(toKey));
+            if (!fromLvlObj || !toLvlObj) return;
+
+            // Class synchronization
+            if (toLvlObj.type === 'cl') {
+                const fromClassId = fromLvlObj.type === 'bg'
+                    ? this.getBgClassForLevel(fromLvlObj.index).ID
+                    : this.getClassForLevel(fromLvlObj.index).ID;
+                this.character.ClassLevels[toLvlObj.index - 1] = fromClassId;
+            } else if (toLvlObj.type === 'bg') {
+                const fromClassId = fromLvlObj.type === 'bg'
+                    ? this.getBgClassForLevel(fromLvlObj.index).ID
+                    : this.getClassForLevel(fromLvlObj.index).ID;
+                const isEligible = this.availableBackgroundClasses.some(bc => bc.ID == fromClassId);
+                if (isEligible) {
+                    this.setBgClassForLevel(toLvlObj.index, fromClassId);
+                }
+            }
+
+            // Copy skill allocations
+            const fromAlloc = this.character.LevelSkills[fromKey] || {};
+            this.character.LevelSkills[toKey] = JSON.parse(JSON.stringify(fromAlloc));
+
+            // Copy specializations if any
+            if (this.character.LevelSpecializations && this.character.LevelSpecializations[fromKey]) {
+                if (!this.character.LevelSpecializations) this.character.LevelSpecializations = {};
+                this.character.LevelSpecializations[toKey] = JSON.parse(JSON.stringify(this.character.LevelSpecializations[fromKey]));
+            } else if (this.character.LevelSpecializations && this.character.LevelSpecializations[toKey]) {
+                delete this.character.LevelSpecializations[toKey];
+            }
+            this.syncSpecializationsFlat();
+            this.invalidateSkillsAndSpellCache(false);
+        },
+
+        getLevelClass(lvlKey) {
+            if (typeof lvlKey === 'string' && lvlKey.startsWith('bg_')) {
+                const idx = parseInt(lvlKey.replace('bg_', '')) || 1;
+                return this.getBgClassForLevel(idx);
+            }
+            const lvlNum = parseInt(lvlKey) || 1;
+            return this.getClassForLevel(lvlNum);
+        },
+
+        getLevelSkillPointsTotal(lvlKey) {
+            if (typeof lvlKey === 'string' && lvlKey.startsWith('bg_')) {
+                const idx = parseInt(lvlKey.replace('bg_', '')) || 1;
+                const cls = this.getBgClassForLevel(idx);
+                const basePerLevel = parseInt(cls.SkillPtsPerLevel) || 12;
+                return basePerLevel + this.traitBonusSkillPtsPerLevel;
+            }
+            const lvlNum = parseInt(lvlKey) || 1;
+            const cls = this.getClassForLevel(lvlNum);
+            const basePerLevel = parseInt(cls.SkillPtsPerLevel) || 18;
+            return basePerLevel + this.traitBonusSkillPtsPerLevel;
+        },
+
+        getLevelPrestigeSkillPointsSpent(lvlKey) {
+            const allocations = this.character.LevelSkills[lvlKey] || {};
             let spent = 0;
-            const levels = this.totalRL + 1;
-            for (const skillId in this.character.BgSkillRates) {
-                const rate = parseFloat(this.character.BgSkillRates[skillId]) || 0;
-                spent += rate * levels;
+            for (const skillId in allocations) {
+                const sk = this.skillsById[skillId];
+                if (sk && Number(sk.Type) === 10) {
+                    spent += parseFloat(allocations[skillId]) || 0;
+                }
             }
-            spent += this.totalSpecializationPoints;
             return spent;
         },
 
-        get bgSkillPointsRemaining() {
-            return this.totalBgSkillPoints - this.bgSkillPointsSpent;
+        getLevelSkillPointsSpent(lvlKey) {
+            const allocations = this.character.LevelSkills[lvlKey] || {};
+            let spent = 0;
+            for (const skillId in allocations) {
+                spent += parseFloat(allocations[skillId]) || 0;
+            }
+            if (this.character.LevelSpecializations && this.character.LevelSpecializations[lvlKey]) {
+                for (const specId in this.character.LevelSpecializations[lvlKey]) {
+                    spent += parseInt(this.character.LevelSpecializations[lvlKey][specId]) || 0;
+                }
+            }
+            return spent;
         },
 
-        isBgSkillPrimary(skillId) {
-            const bgClass = this.getSelectedBackgroundClass();
-            return this.skillAccessMap[skillId + '_' + bgClass.ID] === 1;
+        getLevelSkillPointsRemaining(lvlKey) {
+            return this.getLevelSkillPointsTotal(lvlKey) - this.getLevelSkillPointsSpent(lvlKey);
         },
 
-        isBgSkillAccessible(skillId) {
-            const bgClass = this.getSelectedBackgroundClass();
-            return this.skillAccessMap[skillId + '_' + bgClass.ID] !== undefined;
+        isLevelSkillPrimary(lvlKey, skillId) {
+            const cls = this.getLevelClass(lvlKey);
+            return this.skillAccessMap[skillId + '_' + cls.ID] === 1;
         },
 
-        getBgAccessibleSkillsForType(typeId) {
-            const bgClass = this.getSelectedBackgroundClass();
-            const classIndexed = this.accessibleSkillsByClass[bgClass.ID]?.[typeId] || [];
+        isLevelSkillAccessible(lvlKey, skillId) {
+            const cls = this.getLevelClass(lvlKey);
+            return this.skillAccessMap[skillId + '_' + cls.ID] !== undefined;
+        },
+
+        getLevelAccessibleSkillsForType(lvlKey, typeId) {
+            const cls = this.getLevelClass(lvlKey);
+            const classIndexed = this.accessibleSkillsByClass[cls.ID]?.[typeId] || [];
             if (this.skillSearchQuery.trim()) {
                 const q = this.skillSearchQuery.toLowerCase();
                 return classIndexed.filter(s => s.Name.toLowerCase().includes(q));
@@ -2926,76 +3118,33 @@ function characterWizard() {
             return classIndexed;
         },
 
-        getBgSkillRate(skillId) {
-            return this.character.BgSkillRates[skillId] !== undefined ? this.character.BgSkillRates[skillId] : 0;
+        getLevelSkillRank(lvlKey, skillId) {
+            const allocations = this.character.LevelSkills[lvlKey] || {};
+            return allocations[skillId] || 0;
         },
 
-        getBgSkillRank(skillId) {
-            const rate = this.getBgSkillRate(skillId);
-            return (rate * (this.totalRL + 1)).toFixed(1).replace(/\.0$/, '');
-        },
-
-        getBgSkillMax(skillId) {
-            const maxRate = this.isBgSkillPrimary(skillId) ? 1.0 : 0.5;
-            return (maxRate * (this.totalRL + 1)).toFixed(1).replace(/\.0$/, '');
-        },
-
-        getBgPrereqContext() {
-            if (this._cachedBgPrereqContext) {
-                return this._cachedBgPrereqContext;
+        getLevelPrereqContext(lvlKey) {
+            if (this._cachedLevelPrereqContext && this._cachedLevelPrereqContext[lvlKey]) {
+                return this._cachedLevelPrereqContext[lvlKey];
             }
             const race = this.getSelectedRace();
             const templates = this.getSelectedTemplates();
             const skillsMap = {};
-            if (!this._traitSkillBonuses) {
-                this.computeAllTraitSkillBonuses();
-            }
-            for (const key in this._traitSkillBonuses) {
-                const tb = this._traitSkillBonuses[key];
-                if (tb > 0) {
-                    skillsMap[key] = tb;
-                    const sk = this.skillsById[key];
-                    if (sk && sk.Abbreviation) {
-                        skillsMap[sk.Abbreviation] = tb;
-                        skillsMap[sk.Abbreviation.toLowerCase()] = tb;
-                    }
-                }
-            }
-            const subts = [];
-            if (race && race.CreatureSubtype) {
-                const subtObj = this.creatureSubtypesById[race.CreatureSubtype];
-                if (subtObj && subtObj.Name) subts.push(subtObj.Name);
-                else subts.push(String(race.CreatureSubtype));
-            }
-            this._cachedBgPrereqContext = {
-                skills: skillsMap,
-                race: race ? (race.Name || '') : '',
-                templates: templates.map(t => t.Name || ''),
-                creatureType: race ? (race.CreatureType || '') : '',
-                creatureSubtypes: subts,
-            };
-            return this._cachedBgPrereqContext;
-        },
 
-        getLevelPrereqContext(lvl) {
-            if (this._cachedLevelPrereqContext && this._cachedLevelPrereqContext[lvl]) {
-                return this._cachedLevelPrereqContext[lvl];
-            }
-            const race = this.getSelectedRace();
-            const templates = this.getSelectedTemplates();
-            const skillsMap = {};
+            const levels = this.allSkillLevels;
+            const targetIdx = levels.findIndex(l => l.key === String(lvlKey));
+            const priorLevels = targetIdx > 0 ? levels.slice(0, targetIdx) : [];
 
             const activeSkillIds = new Set();
-            for (const sId in this.character.BgSkillRates) {
-                if (this.character.BgSkillRates[sId] > 0) activeSkillIds.add(sId);
-            }
-            for (let l = 1; l < lvl; l++) {
-                if (this.character.LevelSkills[l]) {
-                    for (const sId in this.character.LevelSkills[l]) {
-                        if (this.character.LevelSkills[l][sId] > 0) activeSkillIds.add(sId);
+            priorLevels.forEach(pl => {
+                const alloc = this.character.LevelSkills[pl.key];
+                if (alloc) {
+                    for (const sId in alloc) {
+                        if (alloc[sId] > 0) activeSkillIds.add(String(sId));
                     }
                 }
-            }
+            });
+
             if (!this._traitSkillBonuses) {
                 this.computeAllTraitSkillBonuses();
             }
@@ -3005,15 +3154,14 @@ function characterWizard() {
                 }
             }
 
-            const rlMult = this.totalRL + 1;
             activeSkillIds.forEach(sId => {
-                const bgRate = parseFloat(this.character.BgSkillRates[sId]) || 0;
-                let rank = bgRate * rlMult;
-                for (let l = 1; l < lvl; l++) {
-                    if (this.character.LevelSkills[l] && this.character.LevelSkills[l][sId]) {
-                        rank += parseFloat(this.character.LevelSkills[l][sId]) || 0;
+                let rank = 0;
+                priorLevels.forEach(pl => {
+                    const alloc = this.character.LevelSkills[pl.key];
+                    if (alloc && alloc[sId]) {
+                        rank += parseFloat(alloc[sId]) || 0;
                     }
-                }
+                });
                 rank += this.getTraitSkillBonus(sId);
 
                 if (rank > 0) {
@@ -3041,40 +3189,63 @@ function characterWizard() {
                 creatureSubtypes: subts,
             };
             if (!this._cachedLevelPrereqContext) this._cachedLevelPrereqContext = {};
-            this._cachedLevelPrereqContext[lvl] = ctx;
+            this._cachedLevelPrereqContext[lvlKey] = ctx;
             return ctx;
         },
 
-        getSkillPrereqEvaluation(skill, contextType = 'bg', lvl = 1) {
+        getSkillPrereqEvaluation(skill, contextType = 'lvl', lvlKey = 'bg_1') {
             if (!skill || !skill.Prereqs || !skill.Prereqs.trim()) {
                 return { passed: true, unmet: [], formatted: '', raw: null };
             }
-            const ctx = (contextType === 'bg') ? this.getBgPrereqContext() : this.getLevelPrereqContext(lvl);
+            const ctx = this.getLevelPrereqContext(lvlKey);
             return evaluatePrerequisiteExpression(skill.Prereqs, ctx, this.skillsByAbbr, this.skillsById);
         },
 
-        isBgSkillPrereqMet(skillId) {
+        isLevelSkillPrereqMet(lvlKey, skillId) {
             const sk = this.skillsById[skillId];
             if (!sk || !sk.Prereqs) return true;
-            return this.getSkillPrereqEvaluation(sk, 'bg').passed;
+            return this.getSkillPrereqEvaluation(sk, 'lvl', lvlKey).passed;
         },
 
-        isLevelSkillPrereqMet(lvl, skillId) {
+        canIncLevelSkill(lvlKey, skillId) {
+            return this.canIncLevelSkillBy(lvlKey, skillId, 0.5);
+        },
+
+        canIncLevelSkillBy(lvlKey, skillId, amount) {
+            if (!this.isLevelSkillPrereqMet(lvlKey, skillId)) return false;
+
+            const current = this.getLevelSkillRank(lvlKey, skillId);
+            const isPrim = this.isLevelSkillPrimary(lvlKey, skillId);
+            const maxRankForLevel = isPrim ? 1.0 : 0.5;
+            if (current + amount > maxRankForLevel) return false;
+
             const sk = this.skillsById[skillId];
-            if (!sk || !sk.Prereqs) return true;
-            return this.getSkillPrereqEvaluation(sk, 'lvl', lvl).passed;
+            if (sk && Number(sk.Type) === 10) {
+                const prestigeSpent = this.getLevelPrestigeSkillPointsSpent(lvlKey);
+                if (prestigeSpent + amount > 1.0) return false;
+            }
+
+            return this.getLevelSkillPointsRemaining(lvlKey) >= amount;
         },
 
-        canSetBgSkillRate(skillId, newRate) {
-            if (newRate > 0 && !this.isBgSkillPrereqMet(skillId)) return false;
-            const currentRate = this.getBgSkillRate(skillId);
-            const delta = (newRate - currentRate) * (this.totalRL + 1);
-            return this.bgSkillPointsRemaining >= delta;
+        incLevelSkill(lvlKey, skillId) {
+            this.incLevelSkillBy(lvlKey, skillId, 0.5);
         },
 
-        setBgSkillRate(skillId, rate) {
-            if (this.canSetBgSkillRate(skillId, rate)) {
-                this.character.BgSkillRates[skillId] = rate;
+        incLevelSkillBy(lvlKey, skillId, amount) {
+            if (this.canIncLevelSkillBy(lvlKey, skillId, amount)) {
+                if (!this.character.LevelSkills[lvlKey]) this.character.LevelSkills[lvlKey] = {};
+                this.character.LevelSkills[lvlKey][skillId] = (this.character.LevelSkills[lvlKey][skillId] || 0) + amount;
+                this.invalidateSkillsAndSpellCache(false);
+            }
+        },
+
+        decLevelSkill(lvlKey, skillId) {
+            if (this.character.LevelSkills[lvlKey] && this.character.LevelSkills[lvlKey][skillId] > 0) {
+                this.character.LevelSkills[lvlKey][skillId] -= 0.5;
+                if (this.character.LevelSkills[lvlKey][skillId] <= 0) {
+                    delete this.character.LevelSkills[lvlKey][skillId];
+                }
                 this.invalidateSkillsAndSpellCache(false);
             }
         },
@@ -3089,182 +3260,114 @@ function characterWizard() {
             return sk && (sk.Name.toLowerCase() === 'linguistics' || parseInt(skillId) === 7);
         },
 
-        getSpecializationRank(specId) {
-            if (!this.character.Specializations) return 0;
-            if (Array.isArray(this.character.Specializations)) {
-                return this.character.Specializations.includes(specId) ? 1 : 0;
-            }
-            return parseInt(this.character.Specializations[specId]) || 0;
+        getSpecializationRankOnLevel(specId, lvlKey) {
+            if (!this.character.LevelSpecializations || !this.character.LevelSpecializations[lvlKey]) return 0;
+            return parseInt(this.character.LevelSpecializations[lvlKey][specId]) || 0;
         },
 
-        canIncSpecialization(specId, skillId) {
+        getSpecializationRank(specId) {
+            if (!this.character.LevelSpecializations) return 0;
+            let total = 0;
+            for (const lvl in this.character.LevelSpecializations) {
+                if (this.character.LevelSpecializations[lvl][specId]) {
+                    total += parseInt(this.character.LevelSpecializations[lvl][specId]) || 0;
+                }
+            }
+            return total;
+        },
+
+        canIncSpecialization(specId, skillId, lvlKey) {
             const cur = this.getSpecializationRank(specId);
             const maxRank = this.isMultiRankSkill(skillId) ? 3 : 1;
             if (cur >= maxRank) return false;
-            return this.bgSkillPointsRemaining >= 1;
+            return this.getLevelSkillPointsRemaining(lvlKey) >= 1;
         },
 
-        incSpecialization(specId, skillId) {
-            if (this.canIncSpecialization(specId, skillId)) {
-                if (Array.isArray(this.character.Specializations)) {
-                    const map = {};
-                    this.character.Specializations.forEach(id => { map[id] = 1; });
-                    this.character.Specializations = map;
+        incSpecialization(specId, skillId, lvlKey) {
+            if (this.canIncSpecialization(specId, skillId, lvlKey)) {
+                if (!this.character.LevelSpecializations) this.character.LevelSpecializations = {};
+                if (!this.character.LevelSpecializations[lvlKey]) this.character.LevelSpecializations[lvlKey] = {};
+                const cur = this.character.LevelSpecializations[lvlKey][specId] || 0;
+                this.character.LevelSpecializations[lvlKey][specId] = cur + 1;
+                this.syncSpecializationsFlat();
+                this.invalidateSkillsAndSpellCache(false);
+            }
+        },
+
+        decSpecialization(specId, lvlKey) {
+            if (this.character.LevelSpecializations && this.character.LevelSpecializations[lvlKey]) {
+                const cur = this.character.LevelSpecializations[lvlKey][specId] || 0;
+                if (cur > 1) {
+                    this.character.LevelSpecializations[lvlKey][specId] = cur - 1;
+                } else if (cur === 1) {
+                    delete this.character.LevelSpecializations[lvlKey][specId];
                 }
-                const cur = this.getSpecializationRank(specId);
-                this.character.Specializations[specId] = cur + 1;
+                this.syncSpecializationsFlat();
+                this.invalidateSkillsAndSpellCache(false);
             }
         },
 
-        decSpecialization(specId) {
-            const cur = this.getSpecializationRank(specId);
-            if (cur > 1) {
-                this.character.Specializations[specId] = cur - 1;
-            } else if (cur === 1) {
-                delete this.character.Specializations[specId];
-            }
-        },
-
-        toggleSpecialization(specId, skillId) {
-            const cur = this.getSpecializationRank(specId);
-            if (cur > 0) {
-                this.decSpecialization(specId);
+        toggleSpecialization(specId, skillId, lvlKey) {
+            const curOnLevel = this.getSpecializationRankOnLevel(specId, lvlKey);
+            if (curOnLevel > 0) {
+                this.decSpecialization(specId, lvlKey);
             } else {
-                if (this.canIncSpecialization(specId, skillId)) {
-                    this.incSpecialization(specId, skillId);
+                if (this.canIncSpecialization(specId, skillId, lvlKey)) {
+                    this.incSpecialization(specId, skillId, lvlKey);
                 } else {
-                    alert('Not enough background skill points remaining to purchase this specialization.');
+                    alert('Not enough skill points remaining on this level to purchase this specialization.');
                 }
             }
         },
 
-        // --- Level-by-Level Class & Class Skills Progression (Step 6) ---
-        getClassForLevel(lvl) {
-            const classId = this.character.ClassLevels[lvl - 1] || 1;
-            return this.classesById[classId] || this.classes[0] || {};
-        },
-
-        setClassForLevel(lvl, classId) {
-            this.character.ClassLevels[lvl - 1] = parseInt(classId);
-            if (this.character.LevelSkills[lvl]) {
-                delete this.character.LevelSkills[lvl];
-            }
-            this.invalidateSkillsAndSpellCache(false);
-        },
-
-        copyLevelAllocations(fromLvl, toLvl) {
-            fromLvl = parseInt(fromLvl);
-            toLvl = parseInt(toLvl);
-            if (!fromLvl || !toLvl || fromLvl === toLvl) return;
-
-            const fromClassId = this.character.ClassLevels[fromLvl - 1] || 1;
-            this.character.ClassLevels[toLvl - 1] = fromClassId;
-
-            const fromAlloc = this.character.LevelSkills[fromLvl] || {};
-            this.character.LevelSkills[toLvl] = JSON.parse(JSON.stringify(fromAlloc));
-            this.invalidateSkillsAndSpellCache(false);
-        },
-
-        getLevelSkillPointsTotal(lvl) {
-            const cls = this.getClassForLevel(lvl);
-            const basePerLevel = parseInt(cls.SkillPtsPerLevel) || 18;
-            return basePerLevel + this.traitBonusSkillPtsPerLevel;
-        },
-
-        getLevelPrestigeSkillPointsSpent(lvl) {
-            const allocations = this.character.LevelSkills[lvl] || {};
-            let spent = 0;
-            for (const skillId in allocations) {
-                const sk = this.skillsById[skillId];
-                if (sk && Number(sk.Type) === 10) {
-                    spent += parseFloat(allocations[skillId]) || 0;
+        syncSpecializationsFlat() {
+            const flat = {};
+            if (this.character.LevelSpecializations) {
+                for (const lvl in this.character.LevelSpecializations) {
+                    for (const sId in this.character.LevelSpecializations[lvl]) {
+                        const r = this.character.LevelSpecializations[lvl][sId] || 0;
+                        if (r > 0) {
+                            flat[sId] = (flat[sId] || 0) + r;
+                        }
+                    }
                 }
             }
-            return spent;
+            this.character.Specializations = flat;
         },
 
-        getLevelSkillPointsSpent(lvl) {
-            const allocations = this.character.LevelSkills[lvl] || {};
-            let spent = 0;
-            for (const skillId in allocations) {
-                spent += parseFloat(allocations[skillId]) || 0;
-            }
-            return spent;
+        // Legacy background skill getters (fallback compatibility)
+        get totalBgSkillPoints() {
+            return this.getLevelSkillPointsTotal('bg_1');
+        },
+        get bgSkillPointsSpent() {
+            return this.getLevelSkillPointsSpent('bg_1');
+        },
+        get bgSkillPointsRemaining() {
+            return this.getLevelSkillPointsRemaining('bg_1');
+        },
+        isBgSkillPrimary(skillId) {
+            return this.isLevelSkillPrimary('bg_1', skillId);
+        },
+        isBgSkillAccessible(skillId) {
+            return this.isLevelSkillAccessible('bg_1', skillId);
+        },
+        getBgAccessibleSkillsForType(typeId) {
+            return this.getLevelAccessibleSkillsForType('bg_1', typeId);
+        },
+        getBgSkillRate(skillId) {
+            return this.getLevelSkillRank('bg_1', skillId);
+        },
+        getBgSkillRank(skillId) {
+            return this.getLevelSkillRank('bg_1', skillId);
+        },
+        getBgSkillMax(skillId) {
+            return this.isLevelSkillPrimary('bg_1', skillId) ? '1.0' : '0.5';
+        },
+        isBgSkillPrereqMet(skillId) {
+            return this.isLevelSkillPrereqMet('bg_1', skillId);
         },
 
-        getLevelSkillPointsRemaining(lvl) {
-            return this.getLevelSkillPointsTotal(lvl) - this.getLevelSkillPointsSpent(lvl);
-        },
-
-        isLevelSkillPrimary(lvl, skillId) {
-            const cls = this.getClassForLevel(lvl);
-            return this.skillAccessMap[skillId + '_' + cls.ID] === 1;
-        },
-
-        isLevelSkillAccessible(lvl, skillId) {
-            const cls = this.getClassForLevel(lvl);
-            return this.skillAccessMap[skillId + '_' + cls.ID] !== undefined;
-        },
-
-        getLevelAccessibleSkillsForType(lvl, typeId) {
-            const cls = this.getClassForLevel(lvl);
-            const classIndexed = this.accessibleSkillsByClass[cls.ID]?.[typeId] || [];
-            if (this.skillSearchQuery.trim()) {
-                const q = this.skillSearchQuery.toLowerCase();
-                return classIndexed.filter(s => s.Name.toLowerCase().includes(q));
-            }
-            return classIndexed;
-        },
-
-        getLevelSkillRank(lvl, skillId) {
-            const allocations = this.character.LevelSkills[lvl] || {};
-            return allocations[skillId] || 0;
-        },
-
-        canIncLevelSkill(lvl, skillId) {
-            return this.canIncLevelSkillBy(lvl, skillId, 0.5);
-        },
-
-        canIncLevelSkillBy(lvl, skillId, amount) {
-            if (!this.isLevelSkillPrereqMet(lvl, skillId)) return false;
-
-            const current = this.getLevelSkillRank(lvl, skillId);
-            const isPrim = this.isLevelSkillPrimary(lvl, skillId);
-            const maxRankForLevel = isPrim ? 1.0 : 0.5;
-            if (current + amount > maxRankForLevel) return false;
-
-            const sk = this.skillsById[skillId];
-            if (sk && Number(sk.Type) === 10) {
-                const prestigeSpent = this.getLevelPrestigeSkillPointsSpent(lvl);
-                if (prestigeSpent + amount > 1.0) return false;
-            }
-
-            return this.getLevelSkillPointsRemaining(lvl) >= amount;
-        },
-
-        incLevelSkill(lvl, skillId) {
-            this.incLevelSkillBy(lvl, skillId, 0.5);
-        },
-
-        incLevelSkillBy(lvl, skillId, amount) {
-            if (this.canIncLevelSkillBy(lvl, skillId, amount)) {
-                if (!this.character.LevelSkills[lvl]) this.character.LevelSkills[lvl] = {};
-                this.character.LevelSkills[lvl][skillId] = (this.character.LevelSkills[lvl][skillId] || 0) + amount;
-                this.invalidateSkillsAndSpellCache(false);
-            }
-        },
-
-        decLevelSkill(lvl, skillId) {
-            if (this.character.LevelSkills[lvl] && this.character.LevelSkills[lvl][skillId] > 0) {
-                this.character.LevelSkills[lvl][skillId] -= 0.5;
-                if (this.character.LevelSkills[lvl][skillId] <= 0) {
-                    delete this.character.LevelSkills[lvl][skillId];
-                }
-                this.invalidateSkillsAndSpellCache(false);
-            }
-        },
-
-        // --- Consolidated Skills & Spells (Step 7) ---
+        // --- Spells & Psi Powers (Step 6) ---
         getTraitSkillBonus(skillId) {
             if (!this._traitSkillBonuses) {
                 this.computeAllTraitSkillBonuses();
@@ -3631,7 +3734,7 @@ function characterWizard() {
             }
         },
 
-        // --- Starting Wealth & Equipment Shopping (Step 8) ---
+        // --- Starting Wealth & Equipment Shopping (Step 7) ---
         initStartingWealth() {
             const lvl = parseInt(this.character.Level) || 1;
             if (lvl <= 1) {
@@ -3908,7 +4011,7 @@ function characterWizard() {
             });
         },
 
-        // --- Encumbrance & Mobility Calculations (Step 8) ---
+        // --- Encumbrance & Mobility Calculations (Step 7) ---
         calcBaseWeightCapacity() {
             let str = this.getFinalAbility('Strength');
             if (str === null || str === undefined || isNaN(str)) {
@@ -3991,7 +4094,7 @@ function characterWizard() {
             return enc ? (parseFloat(enc.SpeedMultLand) || 1.0) : 1.0;
         },
 
-        // --- Social Details & Standing (Step 9) ---
+        // --- Social Details & Standing (Step 8) ---
         calcLvlInfluence() {
             const bgClass = this.getSelectedBackgroundClass() || (this.classesById[15] || { InflPerLevel: 4 });
             const racialLvl = this.totalRL || 0;
@@ -4037,7 +4140,7 @@ function characterWizard() {
             this.character.Reputation = this.calcTotalReputation();
         },
 
-        // --- Personal Details (Step 9) ---
+        // --- Personal Details (Step 8) ---
         get filteredDeities() {
             if (this.character.Religion) {
                 return this.deities.filter(d => d.Pantheon == this.character.Religion);
@@ -4130,9 +4233,67 @@ function characterWizard() {
                 const data = await res.json();
                 if (data.success && data.data && data.data.full_name) {
                     this.character.Name = data.data.full_name;
+                    this.checkNameAvailabilityLive();
                 }
             } catch (e) {
                 console.error('Error rolling name:', e);
+            }
+        },
+
+        async checkNameAvailabilityLive() {
+            const name = (this.character.Name || '').trim();
+            if (!name) {
+                this.nameCheckStatus = 'invalid';
+                this.nameCheckMessage = 'Character name is required.';
+                return;
+            }
+            this.nameCheckStatus = 'checking';
+            this.nameCheckMessage = 'Checking availability...';
+
+            if (this.nameCheckTimeout) clearTimeout(this.nameCheckTimeout);
+            this.nameCheckTimeout = setTimeout(async () => {
+                try {
+                    const url = '{{ route('utilities.chargen.check-name', [], false) }}?name=' + encodeURIComponent(name);
+                    const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+                    const data = await res.json().catch(() => null);
+                    if (data && data.valid === true) {
+                        this.nameCheckStatus = 'valid';
+                        this.nameCheckMessage = '✓ Name is available';
+                    } else {
+                        this.nameCheckStatus = 'invalid';
+                        this.nameCheckMessage = data?.message || `Name "${name}" is already taken.`;
+                    }
+                } catch (e) {
+                    this.nameCheckStatus = 'idle';
+                    this.nameCheckMessage = '';
+                }
+            }, 300);
+        },
+
+        async validateCharacterNameAsync() {
+            const name = (this.character.Name || '').trim();
+            if (!name) {
+                this.nameCheckStatus = 'invalid';
+                this.nameCheckMessage = 'Character name is required.';
+                alert('Please enter a character name to proceed.');
+                return false;
+            }
+            try {
+                const url = '{{ route('utilities.chargen.check-name', [], false) }}?name=' + encodeURIComponent(name);
+                const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+                const data = await res.json().catch(() => null);
+                if (data && data.valid === true) {
+                    this.nameCheckStatus = 'valid';
+                    this.nameCheckMessage = '✓ Name is available';
+                    return true;
+                } else {
+                    this.nameCheckStatus = 'invalid';
+                    this.nameCheckMessage = data?.message || `Name "${name}" is already taken. Please choose another name.`;
+                    alert(this.nameCheckMessage);
+                    return false;
+                }
+            } catch (e) {
+                return true;
             }
         },
 
@@ -4353,7 +4514,7 @@ function characterWizard() {
             return this.calculatedState?.heritage?.creature_subtype_name || 'Humanoid';
         },
 
-        // --- Derived Stats & Review Summaries (Step 10) ---
+        // --- Derived Stats & Review Summaries (Step 9) ---
         get classesSummaryStr() {
             if (this.remainingClassLevels === 0) return 'Racial Paragon (' + this.selectedRaceInformal + ')';
             const counts = {};
@@ -4967,37 +5128,29 @@ function characterWizard() {
         },
 
         // --- Wizard Flow & Next Step Verification ---
-        nextStep() {
-            if (this.step === 1 && !this.character.Name) {
-                alert('Please enter a character name to proceed.');
-                return;
-            }
-
+        async nextStep() {
             // Warning for unspent Point Buy points (Step 2)
             if (this.step === 2 && this.methodType === 'B' && this.pointsRemaining > 0) {
                 const proceed = confirm(`You have ${this.pointsRemaining} unspent Point Buy points! Are you sure you want to proceed to the next step without spending them?`);
                 if (!proceed) return;
             }
 
-            // Warning for unspent Background SP (Step 5)
-            if (this.step === 5 && this.bgSkillPointsRemaining > 0) {
-                const proceed = confirm(`You have ${this.bgSkillPointsRemaining} unspent Background Skill Points! Skill points cannot be saved for future use and will be lost. Are you sure you want to proceed?`);
-                if (!proceed) return;
-            }
-
-            // Warning for unspent Class SP (Step 6)
-            if (this.step === 6 && this.remainingClassLevels > 0) {
-                for (let lvl = 1; lvl <= this.remainingClassLevels; lvl++) {
-                    const rem = this.getLevelSkillPointsRemaining(lvl);
+            // Warning for unspent SP (Step 5: Combined Skills)
+            if (this.step === 5) {
+                for (const lvl of this.allSkillLevels) {
+                    const rem = this.getLevelSkillPointsRemaining(lvl.key);
                     if (rem > 0) {
-                        const proceed = confirm(`You have ${rem} unspent Skill Points on Level ${lvl}! Skill points cannot be saved for future use and will be lost. Are you sure you want to proceed?`);
+                        const proceed = confirm(`You have ${rem} unspent Skill Points on ${lvl.fullLabel}! Skill points cannot be saved for future use and will be lost. Are you sure you want to proceed?`);
                         if (!proceed) return;
                     }
                 }
             }
 
-            // Validation for Physical & Mental Attributes (Step 9)
-            if (this.step === 9) {
+            // Validation for Name, Alignment, Physical & Mental Attributes (Step 8)
+            if (this.step === 8) {
+                const isNameValid = await this.validateCharacterNameAsync();
+                if (!isNameValid) return;
+
                 if (this.isPhysicalAgeInvalid()) {
                     alert(`Physical Age (${this.character.PhysicalAge}) must be between lowest adult age (${this.getMinPhysicalAge()}) and 150% of venerable age (${this.getMaxPhysicalAge()}).`);
                     return;
@@ -5017,7 +5170,32 @@ function characterWizard() {
             }
 
             this.step++;
-            if (this.step === 10) {
+            if (this.step === 9) {
+                this.fetchPreviewState();
+            }
+        },
+
+        async goToStep(targetStep) {
+            targetStep = parseInt(targetStep);
+            if (!targetStep || targetStep === this.step) return;
+            if (targetStep < this.step) {
+                this.step = targetStep;
+                return;
+            }
+            if (targetStep >= 9) {
+                const isNameValid = await this.validateCharacterNameAsync();
+                if (!isNameValid) {
+                    this.step = 8;
+                    return;
+                }
+                if (this.isPhysicalAgeInvalid() || this.isMentalAgeInvalid() || this.isHeightFactorInvalid() || this.isWeightFactorInvalid()) {
+                    alert('Please ensure Physical Age, Mental Age, Height Factor, and Weight Factor are valid on Step 8.');
+                    this.step = 8;
+                    return;
+                }
+            }
+            this.step = targetStep;
+            if (this.step === 9) {
                 this.fetchPreviewState();
             }
         },
@@ -5090,9 +5268,14 @@ function characterWizard() {
         },
 
         async saveCharacter() {
+            const isNameValid = await this.validateCharacterNameAsync();
+            if (!isNameValid) {
+                this.step = 8;
+                return;
+            }
             if (this.isPhysicalAgeInvalid() || this.isMentalAgeInvalid() || this.isHeightFactorInvalid() || this.isWeightFactorInvalid()) {
                 alert('Please ensure Physical Age, Mental Age, Height Factor, and Weight Factor are within their valid ranges before saving.');
-                this.step = 9;
+                this.step = 8;
                 return;
             }
             try {
