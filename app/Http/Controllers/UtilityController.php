@@ -441,10 +441,11 @@ class UtilityController extends Controller
     public function characterViewer(Request $request, ?int $id = null): View|\Illuminate\Http\RedirectResponse
     {
         $character = null;
-        if ($id !== null) {
-            $character = DB::table('characters')->where('ID', $id)->first();
+        $targetId = $id ?? ($request->filled('id') ? (int)$request->input('id') : null);
+        if ($targetId !== null) {
+            $character = DB::table('characters')->where('ID', $targetId)->first();
             if (!$character) {
-                return redirect()->route('utilities.charview')->with('warning', "Character #{$id} was not found.");
+                return redirect()->route('utilities.charview')->with('warning', "Character #{$targetId} was not found.");
             }
         } else {
             $character = DB::table('characters')->orderBy('ID', 'desc')->first();
@@ -2387,17 +2388,35 @@ class UtilityController extends Controller
         $items = collect($_APP['items'] ?? [])
             ->filter(fn($item) => is_array($item) && !empty($item['Name']))
             ->map(function ($item) {
+                global $_APP;
+                $subtypeId = (int)($item['Subtype'] ?? 0);
+                $categoryId = (int)($item['ItemTypeID'] ?? $item['Type'] ?? ($_APP['itemsubtypes'][$subtypeId]['Type'] ?? 0));
                 return [
                     'id' => (int)$item['ID'],
                     'name' => (string)$item['Name'],
+                    'category_id' => $categoryId,
                     'base_material' => (int)($item['BaseMaterial'] ?? 0),
                     'base_value' => (float)($item['BaseValue'] ?? 0),
                     'base_weight' => (float)($item['BaseWeight'] ?? 0),
                     'base_size' => (int)($item['BaseSize'] ?? 0),
-                    'subtype' => (int)($item['Subtype'] ?? 0),
+                    'subtype' => $subtypeId,
                 ];
             })
             ->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE)
+            ->values()
+            ->all();
+
+        // Prepare sorted Item Categories
+        $categories = collect($_APP['itemtypes'] ?? [])
+            ->filter(fn($cat) => is_array($cat) && !empty($cat['Name']))
+            ->map(function ($cat) {
+                return [
+                    'id' => (int)$cat['ID'],
+                    'name' => (string)$cat['Name'],
+                    'sort_order' => (int)($cat['SortOrder'] ?? 99),
+                ];
+            })
+            ->sortBy('sort_order')
             ->values()
             ->all();
 
@@ -2460,6 +2479,7 @@ class UtilityController extends Controller
             $defaultItemId = !empty($items) ? $items[0]['id'] : 1;
         }
         $defaultItem = $_APP['items'][$defaultItemId] ?? ['Name' => 'Sword, long-'];
+        $defaultCategoryId = (int)($defaultItem['ItemTypeID'] ?? $defaultItem['Type'] ?? ($_APP['itemsubtypes'][$defaultItem['Subtype'] ?? 0]['Type'] ?? 2));
 
         // Initial preview generation for default item
         $initialConfig = ($defaultItem['Name'] ?? 'Sword, long-') . " (Item=" . ($defaultItem['Name'] ?? 'Sword, long-') . ": )";
@@ -2512,6 +2532,8 @@ class UtilityController extends Controller
 
         return view('utilities.itemgen', compact(
             'items',
+            'categories',
+            'defaultCategoryId',
             'materials',
             'mundaneMods',
             'magicMods',

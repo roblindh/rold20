@@ -1205,7 +1205,8 @@ class ProceduralItemFactory
                 if (!$spellItemMatched) {
                     $matchedItem = self::resolveBaseItem($effectiveConfig);
                     if ($matchedItem) {
-                        $effectiveConfig = "{$effectiveConfig} (Item={$matchedItem['Name']})";
+                        $parsedCfg = self::parseNaturalLanguageItemConfig($effectiveConfig, $matchedItem);
+                        $effectiveConfig = $parsedCfg ?: "{$effectiveConfig} (Item={$matchedItem['Name']})";
                     }
                 }
             }
@@ -1229,6 +1230,26 @@ class ProceduralItemFactory
             }
 
             $baseItemRef = ($baseItemId > 0 && isset($_APP['items'][$baseItemId])) ? $_APP['items'][$baseItemId] : null;
+
+            // If name is empty, generic, or equals plain base name while entity has modifications, synthesize descriptive name
+            $baseName = $baseItemRef['Name'] ?? '';
+            $isGenericOrBase = empty($name)
+                || strcasecmp($name, $baseName) === 0
+                || strcasecmp($name, 'Item') === 0
+                || str_starts_with($name, '(')
+                || str_starts_with($name, 'Equipped=')
+                || str_contains($name, 'Item=')
+                || !empty($parsedCfg);
+
+            if ($isGenericOrBase && $entity) {
+                $synth = self::synthesizeModifiedItemName($entity, $effectiveConfig, !empty($parsedCfg) ? null : $name);
+                if (!empty($synth)) {
+                    $name = $synth;
+                } elseif (!empty($baseName)) {
+                    $name = $baseName;
+                }
+            }
+
             $subtypeId = $baseItemRef ? (int)($baseItemRef['Subtype'] ?? 0) : 0;
             $subtypeRef = ($subtypeId > 0 && isset($_APP['itemsubtypes'][$subtypeId])) ? $_APP['itemsubtypes'][$subtypeId] : null;
             $typeId = $baseItemRef ? (int)($baseItemRef['ItemTypeID'] ?? $baseItemRef['Type'] ?? ($subtypeRef['Type'] ?? 0)) : 0;
@@ -1291,6 +1312,10 @@ class ProceduralItemFactory
                 'weight_kg' => $weightKg,
                 'size' => $sizeAbbr,
                 'ec' => (int)$entity->GetECMod(),
+                'ec_mod' => (int)$entity->GetECMod(),
+                'ECMod' => (int)$entity->GetECMod(),
+                'material' => method_exists($entity, 'GetMaterial') && $entity->GetMaterial() && isset($_APP['materials'][$entity->GetMaterial()]) ? $_APP['materials'][$entity->GetMaterial()]['Name'] : null,
+                'BaseMaterial' => method_exists($entity, 'GetMaterial') && $entity->GetMaterial() && isset($_APP['materials'][$entity->GetMaterial()]) ? $_APP['materials'][$entity->GetMaterial()]['Name'] : null,
                 'pl' => (int)$entity->GetPowerLevel(),
                 'dr' => (int)$entity->GetDR(),
                 'hp' => (int)$entity->GetHPTotal(),
@@ -2186,7 +2211,7 @@ class ProceduralItemFactory
 
         if (!empty($mundaneMods)) {
             foreach ($mundaneMods as $mod) {
-                $mod = trim($mod);
+                $mod = trim((string)$mod);
                 if (empty($mod) || strcasecmp($mod, 'Standard') === 0 || strcasecmp($mod, $qualityMod ?? '') === 0) continue;
                 $params[] = "Mod={$mod}";
             }
@@ -2198,4 +2223,228 @@ class ProceduralItemFactory
 
         return self::instantiateItem($configString);
     }
+
+    /**
+     * Synthesize an accurate, descriptive name for a modified or procedural item.
+     * Combines material, craftsmanship quality, clean base item name, and magic enhancements/properties.
+     */
+    public static function synthesizeModifiedItemName(\cPossession $p, ?string $configStr = null, ?string $explicitName = null): string
+    {
+        global $_APP;
+        self::ensureAppLoaded();
+
+        $baseItem = ($p->Item && isset($_APP['items'][$p->Item])) ? $_APP['items'][$p->Item] : null;
+        $baseName = $baseItem['Name'] ?? 'Item';
+
+        // If explicit name is provided and is NOT just the base item name, generic, or raw config, preserve it
+        if (!empty($explicitName)) {
+            $trimmed = trim($explicitName);
+            if (strcasecmp($trimmed, trim($baseName)) !== 0
+                && strcasecmp($trimmed, 'Item') !== 0
+                && !str_starts_with($trimmed, '(')
+                && !str_starts_with($trimmed, 'Equipped=')
+                && !str_contains($trimmed, 'Item=')) {
+                return $trimmed;
+            }
+        }
+
+        // 1. Check ref_itemsmodified table for exact or normalized config match
+        if (!empty($_APP['itemsmodified']) && !empty($configStr)) {
+            $cleanCfg = $configStr;
+            if (str_contains($cleanCfg, '(')) {
+                $cleanCfg = substr($cleanCfg, strpos($cleanCfg, '('));
+            }
+            foreach ($_APP['itemsmodified'] as $im) {
+                if (!empty($im['Config']) && !empty($im['Name'])) {
+                    if (strcasecmp(trim($im['Config']), trim($cleanCfg)) === 0) {
+                        return $im['Name'];
+                    }
+                }
+            }
+        }
+
+        $prefixes = [];
+        $suffixes = [];
+
+        // 2. Material override
+        $matId = $p->OverrideMaterial ?? $p->GetMaterial();
+        $baseMatId = $baseItem['BaseMaterial'] ?? null;
+        if ($matId && $matId != $baseMatId && isset($_APP['materials'][$matId])) {
+            $matName = $_APP['materials'][$matId]['Name'];
+            if (strcasecmp($matName, 'Steel') !== 0 && strcasecmp($matName, 'Wood') !== 0 && strcasecmp($matName, 'Leather or hide') !== 0) {
+                $prefixes[] = $matName;
+            }
+        }
+
+        // 3. Mundane Quality Mods
+        if (!empty($p->lMods)) {
+            foreach ($p->lMods as $mId) {
+                $mod = $_APP['itemmodsmundane'][$mId] ?? null;
+                if (!$mod) continue;
+                $abbr = $mod['Abbreviation'] ?? '';
+                $desc = $mod['Description'] ?? '';
+                if (str_starts_with($abbr, 'Mw') || str_starts_with($desc, 'Masterwork')) {
+                    $prefixes[] = 'Masterwork';
+                } elseif (str_starts_with($abbr, 'Outst') || str_starts_with($desc, 'Outstanding')) {
+                    $prefixes[] = 'Outstanding';
+                } elseif (str_starts_with($abbr, 'Excep') || str_starts_with($desc, 'Exceptional')) {
+                    $prefixes[] = 'Exceptional';
+                } elseif (in_array($abbr, ['Hardened', 'SpikedArmor', 'Silvered', 'Gilded', 'Luxury'])) {
+                    $prefixes[] = $abbr === 'SpikedArmor' ? 'Spiked' : $abbr;
+                }
+            }
+        }
+
+        // 4. Magic Mods (Enhancements like +1, +2, or properties like Flaming, Speed)
+        if (!empty($p->lModsMagic)) {
+            foreach ($p->lModsMagic as $idx => $mId) {
+                $mmod = $_APP['itemmodsmagic'][$mId] ?? null;
+                if (!$mmod) continue;
+                $abbr = $mmod['Abbreviation'] ?? '';
+                $desc = $mmod['Description'] ?? '';
+                $x = $p->lModsParX[$idx] ?? '';
+                $y = $p->lModsParY[$idx] ?? '';
+
+                if (in_array($abbr, ['ArmorEnh', 'WeaponEnh', 'ParryEnh', 'NatArmEnh', 'DeCDefl'])) {
+                    if ($x !== '' && is_numeric($x)) {
+                        $suffixes[] = "+{$x}";
+                    }
+                } elseif (in_array($abbr, ['StrEnh', 'DexEnh', 'ConEnh', 'IntEnh', 'WisEnh', 'ChaEnh'])) {
+                    $stat = substr($abbr, 0, 3);
+                    $suffixes[] = "+{$x} {$stat}";
+                } elseif ($abbr === 'APEnh') {
+                    $suffixes[] = 'of Speed';
+                } else {
+                    $cleanDesc = preg_replace('/\s*\(.*?\)/', '', $desc);
+                    if (!empty($cleanDesc)) {
+                        $prefixes[] = trim($cleanDesc);
+                    }
+                }
+            }
+        }
+
+        // Clean base name formatting: "Sword, long-" -> "Longsword", "Plate, full" -> "Full Plate"
+        $cleanBase = $baseName;
+        if (str_contains($cleanBase, ',')) {
+            $parts = array_map('trim', explode(',', $cleanBase));
+            if (count($parts) === 2) {
+                $p2 = rtrim($parts[1], '-');
+                $cleanBase = ucfirst($p2) . ' ' . strtolower($parts[0]);
+            }
+        }
+        $cleanBase = ucwords(strtolower($cleanBase));
+
+        $prefixes = array_unique($prefixes);
+        $suffixes = array_unique($suffixes);
+
+        $parts = [];
+        if (!empty($prefixes)) {
+            $parts[] = implode(' ', $prefixes);
+        }
+        $parts[] = $cleanBase;
+        if (!empty($suffixes)) {
+            $parts[] = implode(' ', $suffixes);
+        }
+
+        return implode(' ', $parts);
+    }
+
+    /**
+     * Parse a natural language item description (e.g. "mithril masterwork full plate +1", "silver dagger")
+     * into a canonical cPossession config string (e.g. "(Item=Full plate: Material=Mithril: Mod=MwArmor: Mod=ArmorEnh&x=1:)").
+     */
+    public static function parseNaturalLanguageItemConfig(string $text, ?array $baseItem = null): ?string
+    {
+        global $_APP;
+        self::ensureAppLoaded();
+
+        $cleanText = $text;
+        $foundMat = null;
+
+        // 1. Material
+        if (!empty($_APP['materials'])) {
+            foreach ($_APP['materials'] as $m) {
+                $matName = $m['Name'] ?? '';
+                if (empty($matName) || strcasecmp($matName, 'Standard') === 0 || strcasecmp($matName, 'Default') === 0) continue;
+                if (preg_match('/\b' . preg_quote($matName, '/') . '\b/i', $text)) {
+                    $foundMat = $matName;
+                    $cleanText = trim(preg_replace('/\b' . preg_quote($matName, '/') . '\b/i', '', $cleanText));
+                    break;
+                }
+            }
+        }
+
+        // Strip quality terms from cleanText to help base item resolution
+        $cleanText = trim(preg_replace('/\b(masterwork|mw|exceptional|excep|outstanding|outst)\b/i', '', $cleanText));
+        // Strip enhancement bonus (+1, +2, etc.)
+        $cleanText = trim(preg_replace('/\+([1-5])\b/', '', $cleanText));
+
+        if (!$baseItem && !empty($cleanText)) {
+            $baseItem = self::resolveBaseItem($cleanText);
+        }
+        if (!$baseItem) {
+            $baseItem = self::resolveBaseItem($text);
+        }
+        if (!$baseItem) return null;
+
+        $baseName = $baseItem['Name'] ?? '';
+        if (empty($baseName)) return null;
+
+        $typeId = (int)($baseItem['ItemTypeID'] ?? $baseItem['Type'] ?? 0);
+        $subtypeId = (int)($baseItem['Subtype'] ?? 0);
+        $isArmor = ($typeId === 3) || in_array($subtypeId, [11, 12, 13, 14, 15, 16, 17, 18, 19, 41, 42, 43, 44, 45, 46]);
+        $isShield = ($subtypeId === 9);
+        $isProjectile = ($subtypeId === 7) || in_array($subtypeId, [5, 6, 7]);
+        $isWeapon = ($typeId === 2);
+
+        $params = ["Item={$baseName}"];
+        $hasMod = false;
+
+        if ($foundMat) {
+            $params[] = "Material={$foundMat}";
+            $hasMod = true;
+        }
+
+        // 2. Craftsmanship / Masterwork / Outstanding / Exceptional
+        if (preg_match('/\b(masterwork|mw)\b/i', $text)) {
+            $hasMod = true;
+            if ($isArmor) $params[] = "Mod=MwArmor";
+            elseif ($isShield) $params[] = "Mod=MwShield";
+            elseif ($isProjectile) $params[] = "Mod=MwProjWp";
+            elseif ($isWeapon) $params[] = "Mod=MwMeleeWp";
+            else $params[] = "Mod=MwItem";
+        } elseif (preg_match('/\b(exceptional|excep)\b/i', $text)) {
+            $hasMod = true;
+            if ($isArmor) $params[] = "Mod=ExcepArmor";
+            elseif ($isShield) $params[] = "Mod=ExcepShield";
+            elseif ($isProjectile) $params[] = "Mod=ExcepProjWp";
+            elseif ($isWeapon) $params[] = "Mod=ExcepMeleeWp";
+            else $params[] = "Mod=ExcepItem";
+        } elseif (preg_match('/\b(outstanding|outst)\b/i', $text)) {
+            $hasMod = true;
+            if ($isArmor) $params[] = "Mod=OutstArmor";
+            elseif ($isShield) $params[] = "Mod=OutstShield";
+            elseif ($isProjectile) $params[] = "Mod=OutstProjWp";
+            elseif ($isWeapon) $params[] = "Mod=OutstMeleeWp";
+            else $params[] = "Mod=OutstItem";
+        }
+
+        // 3. Magic Enhancement bonus (+1 to +5)
+        if (preg_match('/\+([1-5])\b/', $text, $m)) {
+            $hasMod = true;
+            $bonus = $m[1];
+            if ($isArmor || $isShield) {
+                $params[] = "Mod=ArmorEnh&x={$bonus}";
+            } elseif ($isWeapon) {
+                $params[] = "Mod=WeaponEnh&x={$bonus}";
+            }
+        }
+
+        if (!$hasMod) {
+            return null;
+        }
+
+        return "(" . implode(': ', $params) . ":)";
+    }
 }
+

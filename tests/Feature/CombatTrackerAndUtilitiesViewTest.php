@@ -597,6 +597,82 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
         $campHtml = $campView->render();
         $this->assertStringContainsString('step="any"', $campHtml);
     }
+
+    public function testItemGeneratorHasCategoryDropdownAndFilteredItems(): void
+    {
+        $request = Request::create('/utilities/itemgen', 'GET');
+        $view = $this->utilityController->itemGenerator($request);
+        $data = $view->getData();
+
+        $this->assertArrayHasKey('categories', $data);
+        $this->assertArrayHasKey('defaultCategoryId', $data);
+        $this->assertArrayHasKey('items', $data);
+        $this->assertCount(10, $data['categories']);
+
+        $categoryNames = array_column($data['categories'], 'name');
+        $this->assertContains('Trade Goods', $categoryNames);
+        $this->assertContains('Weapons', $categoryNames);
+        $this->assertContains('Armor & Clothing', $categoryNames);
+        $this->assertContains('Misc. Gear', $categoryNames);
+
+        $firstItem = $data['items'][0];
+        $this->assertArrayHasKey('category_id', $firstItem);
+        $this->assertGreaterThan(0, $firstItem['category_id']);
+
+        $html = $view->render();
+        $this->assertStringContainsString('Item Category', $html);
+        $this->assertStringContainsString('x-model.number="selectedCategoryId"', $html);
+        $this->assertStringContainsString('filteredItems', $html);
+    }
+
+    public function testModifiedItemsDisplayNameValueAndWeightInCharview(): void
+    {
+        // 1. Procedural Item Instantiation from config
+        $config = '(Item=Full plate: Material=Mithril: Mod=MwArmor: Mod=ArmorEnh&x=1:)';
+        $inst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem($config);
+        $this->assertNotNull($inst);
+        $this->assertEquals('Mithril Masterwork Full Plate +1', $inst['name']);
+        $this->assertEquals(50300.0, (float)$inst['value_sp']);
+        $this->assertEquals(13.5, (float)$inst['weight_kg']);
+        $this->assertEquals(16, (int)$inst['dr']);
+        $this->assertEquals(6, (int)$inst['ec_mod']);
+        $this->assertEquals('Mithril', $inst['material']);
+
+        // 2. Natural language string parsing
+        $natInst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem('mithril masterwork full plate +1');
+        $this->assertNotNull($natInst);
+        $this->assertEquals('Mithril Masterwork Full Plate +1', $natInst['name']);
+        $this->assertEquals(50300.0, (float)$natInst['value_sp']);
+        $this->assertEquals(13.5, (float)$natInst['weight_kg']);
+        $this->assertEquals(16, (int)$natInst['dr']);
+        $this->assertEquals(6, (int)$natInst['ec_mod']);
+
+        // 3. EquipmentManager enrichment
+        $itemStub = [
+            'name' => 'Full plate',
+            'item_id' => 170,
+            'config' => $config,
+        ];
+        $enriched = \App\Services\Entity\EquipmentManager::enrichItemWithRefData($itemStub);
+        $this->assertEquals('Mithril Masterwork Full Plate +1', $enriched['name']);
+        $this->assertEquals(50300.0, (float)$enriched['unit_price']);
+        $this->assertEquals(50300.0, (float)$enriched['BaseValue']);
+        $this->assertEquals(13.5, (float)$enriched['unit_weight']);
+        $this->assertEquals(13.5, (float)$enriched['BaseWeight']);
+        $this->assertEquals(16, (int)$enriched['dr']);
+        $this->assertEquals(6, (int)$enriched['ec_mod']);
+
+        // 4. Character 8 (Obarion Griffin)
+        $char = DB::table('characters')->where('ID', 8)->first();
+        $this->assertNotNull($char);
+        $this->assertEquals('Obarion Griffin', $char->Name);
+
+        $charView = $this->utilityController->characterViewer(Request::create('/utilities/charview?id=8', 'GET'), 8);
+        $charHtml = $charView->render();
+        $this->assertStringContainsString('Obarion Griffin', $charHtml);
+        $this->assertStringContainsString('Mithril Masterwork Full Plate +1', $charHtml);
+        $this->assertStringContainsString('50,300', $charHtml);
+    }
 }
 
 

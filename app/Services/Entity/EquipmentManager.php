@@ -890,7 +890,12 @@ class EquipmentManager
         $base = null;
 
         if ($refId > 0 && isset(self::$refItemsCache[$refId])) {
-            $base = self::$refItemsCache[$refId];
+            $candidate = self::$refItemsCache[$refId];
+            $candName = strtolower((string)($candidate['Name'] ?? ''));
+            $itemName = strtolower($origName);
+            if (empty($itemName) || str_contains($candName, $itemName) || str_contains($itemName, $candName)) {
+                $base = $candidate;
+            }
         } elseif (isset($arr['ID']) && is_numeric($arr['ID']) && isset(self::$refItemsCache[(int)$arr['ID']])) {
             $candidate = self::$refItemsCache[(int)$arr['ID']];
             $candName = strtolower((string)($candidate['Name'] ?? ''));
@@ -935,6 +940,84 @@ class EquipmentManager
         } else {
             $arr['item_type'] = (int)($arr['ItemTypeID'] ?? $arr['item_type_id'] ?? $arr['item_type'] ?? $arr['ItemType'] ?? 0);
             $arr['subtype'] = (int)($arr['Subtype'] ?? $arr['subtype'] ?? 0);
+        }
+
+        // Resolve procedural modifications if config, mods, or modified name present
+        $config = (string)($arr['config'] ?? $arr['config_string'] ?? $arr['Config'] ?? '');
+        $mods = (string)($arr['mods'] ?? $arr['Mods'] ?? '');
+        $customMaterial = (string)($arr['material'] ?? '');
+        if (is_numeric($customMaterial)) {
+            $customMaterial = '';
+        }
+        $inst = null;
+
+        if (class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
+            $lookupConfig = !empty($config) ? $config : '';
+            if (empty($lookupConfig) && !empty($origName) && (str_contains($origName, '+') || str_contains($origName, '(') || preg_match('/\b(mithril|adamantine|masterwork|exceptional|outstanding|silver|cold iron)\b/i', $origName))) {
+                $lookupConfig = $origName;
+            }
+            if (!empty($lookupConfig)) {
+                $inst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem($lookupConfig);
+            } elseif (!empty($mods) || !empty($customMaterial)) {
+                $baseItemName = $base['Name'] ?? $origName;
+                $inst = \App\Services\ItemGeneration\ProceduralItemFactory::buildCustomCommissionItem(
+                    $baseItemName,
+                    $customMaterial ?: null,
+                    null,
+                    $mods ? explode(',', $mods) : []
+                );
+            }
+        }
+
+        if ($inst) {
+            if (empty($origName) || strcasecmp($origName, (string)($base['Name'] ?? '')) === 0 || !empty($inst['name'])) {
+                $arr['name'] = $inst['name'];
+                $arr['Name'] = $inst['name'];
+            }
+            if (isset($inst['value_sp']) && (float)$inst['value_sp'] > 0) {
+                if (!isset($arr['unit_price']) || (float)$arr['unit_price'] <= 0 || (isset($base['BaseValue']) && (float)$arr['unit_price'] == (float)$base['BaseValue'])) {
+                    $arr['unit_price'] = (float)$inst['value_sp'];
+                }
+                $arr['value'] = (float)($arr['unit_price'] ?? $inst['value_sp']) * ($arr['qty'] ?? 1);
+                $arr['BaseValue'] = (float)($arr['unit_price'] ?? $inst['value_sp']);
+            }
+            if (isset($inst['weight_kg']) && (float)$inst['weight_kg'] > 0) {
+                if (!isset($arr['unit_weight']) || (float)$arr['unit_weight'] <= 0 || (isset($base['BaseWeight']) && (float)$arr['unit_weight'] == (float)$base['BaseWeight'])) {
+                    $arr['unit_weight'] = (float)$inst['weight_kg'];
+                }
+                $arr['weight'] = (float)($arr['unit_weight'] ?? $inst['weight_kg']) * ($arr['qty'] ?? 1);
+                $arr['BaseWeight'] = (float)($arr['unit_weight'] ?? $inst['weight_kg']);
+            }
+            if (isset($inst['dr']) && $inst['dr'] !== '') {
+                $arr['dr'] = $inst['dr'];
+                $arr['DR'] = $inst['dr'];
+            }
+            if (isset($inst['ec_mod']) && $inst['ec_mod'] !== '') {
+                $arr['ec_mod'] = $inst['ec_mod'];
+                $arr['ECMod'] = $inst['ec_mod'];
+            }
+            if (!empty($inst['material'])) {
+                $arr['material'] = $inst['material'];
+                $arr['BaseMaterial'] = $inst['material'];
+            }
+            if (!empty($inst['traits'])) {
+                $arr['traits'] = $inst['traits'];
+                $arr['Traits'] = $inst['traits'];
+                $arr['resolved_traits'] = $inst['traits'];
+            }
+            if (!empty($inst['config']) && empty($arr['config'])) {
+                $arr['config'] = $inst['config'];
+                $arr['Config'] = $inst['config'];
+            }
+        } else {
+            if (isset($arr['unit_price']) && (float)$arr['unit_price'] > 0) {
+                $arr['BaseValue'] = (float)$arr['unit_price'];
+                $arr['value'] = (float)$arr['unit_price'] * ($arr['qty'] ?? 1);
+            }
+            if (isset($arr['unit_weight']) && (float)$arr['unit_weight'] > 0) {
+                $arr['BaseWeight'] = (float)$arr['unit_weight'];
+                $arr['weight'] = (float)$arr['unit_weight'] * ($arr['qty'] ?? 1);
+            }
         }
 
         // Attach resolved composite traits to Traits and resolved_traits
@@ -992,7 +1075,7 @@ class EquipmentManager
             }
         }
 
-        if (empty($name)) {
+        if (empty($name) || (!empty($inst['name']) && (empty($mergedInput['name']) || strcasecmp($name, (string)($baseItem['Name'] ?? '')) === 0))) {
             $name = (string)($inst['name'] ?? ($baseItem['Name'] ?? 'Custom Item'));
         }
 
@@ -1107,29 +1190,50 @@ class EquipmentManager
 
         return [
             'uid' => $uid,
+            'id' => $uid,
             'item_id' => $baseId > 0 ? $baseId : null,
+            'ID' => $baseId > 0 ? $baseId : null,
             'name' => $name,
+            'Name' => $name,
             'qty' => $qty,
+            'Qty' => $qty,
             'unit_price' => $unitPrice,
+            'BaseValue' => $unitPrice,
             'unit_weight' => $unitWeight,
-            'value' => $unitPrice,
-            'weight' => $unitWeight,
+            'BaseWeight' => $unitWeight,
+            'value' => $unitPrice * $qty,
+            'weight' => $unitWeight * $qty,
             'location' => $location,
+            'Location' => $location,
             'locations' => $locations,
+            'Locations' => $locations,
+            'slot' => $overrides['slot'] ?? $mergedInput['slot'] ?? null,
             'container_id' => $containerId,
+            'ContainerID' => $containerId,
             'is_container' => (bool)$isContainer,
+            'IsContainer' => (bool)$isContainer,
             'is_stackable' => (bool)$isStackable,
             'is_valuable' => (bool)$isValuable,
             'valuable_type' => $valType,
             'ItemTypeID' => $typeId > 0 ? $typeId : null,
+            'item_type_id' => $typeId > 0 ? $typeId : null,
             'Subtype' => $subtypeId > 0 ? $subtypeId : null,
+            'subtype' => $subtypeId > 0 ? $subtypeId : null,
             'traits' => $resolvedTraits,
+            'Traits' => $resolvedTraits,
             'mods' => $mods,
+            'Mods' => $mods,
             'config' => !empty($configStr) ? $configStr : ($inst['config_string'] ?? $name),
+            'config_string' => !empty($configStr) ? $configStr : ($inst['config_string'] ?? $name),
             'size' => $size,
             'dr' => $dr,
+            'DR' => $dr,
             'hp' => $hp,
             'ec' => $ec,
+            'ec_mod' => $inst['ec_mod'] ?? ($mergedInput['ec_mod'] ?? $ec),
+            'ECMod' => $inst['ec_mod'] ?? ($mergedInput['ec_mod'] ?? $ec),
+            'material' => $inst['material'] ?? ($mergedInput['material'] ?? ($baseItem['BaseMaterial'] ?? null)),
+            'BaseMaterial' => $inst['material'] ?? ($mergedInput['material'] ?? ($baseItem['BaseMaterial'] ?? null)),
             'pl' => $pl,
             'added_at' => $mergedInput['added_at'] ?? date('Y-m-d H:i:s'),
         ];

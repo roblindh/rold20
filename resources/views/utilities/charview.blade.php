@@ -305,8 +305,8 @@
                 $seenUids[$uid] = true;
                 $name = (string)($it['Name'] ?? $it['name'] ?? 'Item');
                 $qty = max(1, (int)($it['Qty'] ?? $it['qty'] ?? 1));
-                $unitPrice = (float)($it['BaseValue'] ?? $it['unit_price'] ?? $it['value'] ?? 0.0);
-                $unitWeight = (float)($it['BaseWeight'] ?? $it['unit_weight'] ?? $it['weight'] ?? 0.0);
+                $unitPrice = (float)($it['unit_price'] ?? $it['value'] ?? $it['BaseValue'] ?? 0.0);
+                $unitWeight = (float)($it['unit_weight'] ?? $it['weight'] ?? $it['BaseWeight'] ?? 0.0);
                 if ($unitWeight > 0 && isset($it['weight']) && !isset($it['BaseWeight']) && $qty > 1) {
                     $unitWeight = round($unitWeight / $qty, 2);
                 }

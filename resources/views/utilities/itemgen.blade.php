@@ -85,28 +85,43 @@
 
                     <div class="itemgen-grid-2">
                         <div>
-                            <label class="block text-xs font-semibold text-stone-800 mb-1">Base Item</label>
-                            <select x-model.number="itemId" @change="onItemChange()"
+                            <label class="block text-xs font-semibold text-stone-800 mb-1">Item Category</label>
+                            <select x-model.number="selectedCategoryId" @change="onCategoryChange()"
                                     class="select-rol w-full text-xs sm:text-sm font-medium">
-                                @foreach($items as $it)
-                                    <option value="{{ $it['id'] }}">{{ $it['name'] }}</option>
+                                <option value="0">All Categories ({{ count($items) }})</option>
+                                @foreach($categories as $cat)
+                                    @php $cCount = count(array_filter($items, fn($it) => $it['category_id'] === $cat['id'])); @endphp
+                                    <option value="{{ $cat['id'] }}">{{ $cat['name'] }} ({{ $cCount }})</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div>
                             <label class="block text-xs font-semibold text-stone-800 mb-1">
-                                Material Override
-                                <span class="text-[10px] text-stone-500 font-normal" x-text="'(Base: ' + getBaseMaterialName() + ')'"></span>
+                                Base Item
+                                <span class="text-[10px] text-stone-500 font-normal" x-text="'(' + filteredItems.length + ' items)'"></span>
                             </label>
-                            <select x-model.number="materialId" @change="generateItem()"
+                            <select x-model.number="itemId" @change="onItemChange()"
                                     class="select-rol w-full text-xs sm:text-sm font-medium">
-                                <option value="0">Default (from Base Item)</option>
-                                @foreach($materials as $mat)
-                                    <option value="{{ $mat['id'] }}">{{ $mat['name'] }}</option>
-                                @endforeach
+                                <template x-for="it in filteredItems" :key="it.id">
+                                    <option :value="it.id" x-text="it.name" :selected="it.id === itemId"></option>
+                                </template>
                             </select>
                         </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-800 mb-1">
+                            Material Override
+                            <span class="text-[10px] text-stone-500 font-normal" x-text="'(Base: ' + getBaseMaterialName() + ')'"></span>
+                        </label>
+                        <select x-model.number="materialId" @change="generateItem()"
+                                class="select-rol w-full text-xs sm:text-sm font-medium">
+                            <option value="0">Default (from Base Item)</option>
+                            @foreach($materials as $mat)
+                                <option value="{{ $mat['id'] }}">{{ $mat['name'] }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
@@ -353,6 +368,8 @@ function itemGeneratorWizard() {
         error: null,
 
         // Data arrays passed from controller
+        selectedCategoryId: {{ $defaultCategoryId ?? 0 }},
+        categories: @json($categories),
         items: @json($items),
         materials: @json($materials),
         mundaneModsList: @json($mundaneMods),
@@ -381,6 +398,24 @@ function itemGeneratorWizard() {
                 if (mat) return mat.name;
             }
             return 'Steel';
+        },
+
+        get filteredItems() {
+            if (!this.selectedCategoryId || this.selectedCategoryId === 0) {
+                return this.items;
+            }
+            return this.items.filter(i => i.category_id === this.selectedCategoryId);
+        },
+
+        onCategoryChange() {
+            const list = this.filteredItems;
+            if (list.length > 0) {
+                const stillInList = list.some(i => i.id === this.itemId);
+                if (!stillInList) {
+                    this.itemId = list[0].id;
+                    this.onItemChange();
+                }
+            }
         },
 
         onItemChange() {
@@ -444,6 +479,7 @@ function itemGeneratorWizard() {
 
         resetForm() {
             this.itemId = {{ $defaultItemId ?? 88 }};
+            this.selectedCategoryId = {{ $defaultCategoryId ?? 0 }};
             const currentItem = this.items.find(i => i.id === this.itemId);
             this.description = currentItem ? currentItem.name : 'Sword, long-';
             this.materialId = 0;
