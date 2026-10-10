@@ -46,7 +46,7 @@
   - [ ] Choose starting spells/variants (a separate table for spell variants would be a really good idea)
     - [ ] Parent spell, Name, Skill prereqs, PP cost, Description, Parameter restrictions
 - [x] Add companions/followers
-- [ ] Modify name, personality, appearance, weight
+- [x] Modify name, personality, appearance, weight
 - [ ] Modify WC, SC, influence, reputation
 - [x] Adjust age
 

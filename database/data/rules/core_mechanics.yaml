@@ -3056,6 +3056,408 @@ stagedconditions:
     Stage5: null
     Stage6: null
     Modifiers: null
+  -
+    ID: 83
+    Name: Aether
+    Type: 6
+    Descriptors: '[Drug, Inhaled, Addiction]'
+    Description: 'Aether is a volatile, iridescent liquid distilled from planar essence that evaporates instantly when exposed to air. Inhaling its vapors sharpens arcane sensibilities and provides immediate clarity for spell manipulation, though it severely clouds mundane concentration and strains physical vitality.'
+    Trigger: 'You inhale a dose of aerosolized or evaporated Aether.'
+    InitialEffect: 'Gain a +1 spellcasting bonus for 1 h, but you cannot take 10 on any skill checks for the duration. Suffer 1d2 Con damage. Addiction Check: d20! + 6 (+2 per additional dose within 24 h) vs. Fort (S - Contract Stage 1 Addiction or advance 1 stage; F - Resist addiction).'
+    MaxDuration: '1 h (Benefit) / Variable (Addiction)'
+    Stage1: 'Mild Addiction: Mental cravings. If deprived of Aether for 7 days, suffer a -1 penalty on Will defense and concentration checks. Consuming a dose suppresses this penalty for 1 h. Recovery: 1 successful Fort check (d20! vs. Fort) after 3 days of total abstinence.'
+    Stage2: 'Moderate Addiction: Compulsive dependency. Must consume a dose every 3 days. If deprived, suffer a -2 penalty on spellcasting checks, Will defense, and concentration checks. Recovery: 2 consecutive daily Fort checks after 3 days of abstinence to step down to Stage 1.'
+    Stage3: 'Severe Addiction: Severe arcane dependency. Must consume a dose every 24 h. If deprived, suffer a -4 penalty on spellcasting checks, Will defense, and concentration checks, become Fatigued, and lose 1 SP per day deprived. Recovery: 3 consecutive daily Fort checks after 3 days of abstinence to step down to Stage 2.'
+    Stage4: 'Overdose / Arcane Burnout: Taking multiple doses within 1 h or acute withdrawal crisis inflicts 1d4 Con damage, 2d6 SP drain, and mental delirium (Confused for 1d4 hours).'
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 84
+    Name: 'Dwarven Fire Ale'
+    Type: 6
+    Descriptors: '[Drug, Ingested, Addiction]'
+    Description: 'Brewed deep in mountain strongholds using subterranean fungi, magma-heated distillation, and dwarven spices. Fire Ale ignites a berserk battle fervor and hardens the body against freezing temperatures, but its potent burn extracts a steep toll from internal organs.'
+    Trigger: 'You drink a draught of Dwarven Fire Ale.'
+    InitialEffect: 'Gain a Berserking bonus (+2 Str, +2 morale bonus on saves vs. Fear) and Cold Resistance 5 for 1 h. Suffer 1d2 Con damage. Addiction Check: d20! + 10 (+2 per additional dose within 24 h) vs. Fort (S - Contract Stage 1 Addiction or advance 1 stage; F - Resist addiction).'
+    MaxDuration: '1 h (Benefit) / Variable (Addiction)'
+    Stage1: 'Mild Addiction: Craving for the fiery draught. If deprived for 7 days, suffer a -1 penalty on Morale checks and Str checks. Consuming a dose suppresses penalties for 1 h. Recovery: 1 successful Fort check after 3 days of abstinence.'
+    Stage2: 'Moderate Addiction: Habitual combat craving. If deprived for 3 days, suffer a -2 penalty on Str, Con checks, and Morale saves, plus hand tremors (-1 on weapon attack rolls). Recovery: 2 consecutive daily Fort checks to step down to Stage 1.'
+    Stage3: 'Severe Addiction: Chronic dependence. If deprived for 24 h, suffer a -4 penalty on Str and Dex checks, become Shaken in combat situations, and suffer 1 Con damage per day deprived. Recovery: 3 consecutive daily Fort checks to step down to Stage 2.'
+    Stage4: 'Overdose / Fiery Toxicity: Consuming excessive doses within 1 h causes fiery gastric convulsions, the Sickened condition for 24 h, and 1d6 Con damage.'
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 85
+    Name: 'Elven Absinthe'
+    Type: 6
+    Descriptors: '[Drug, Ingested, Addiction]'
+    Description: "An ethereal emerald liquor distilled from rare fey herbs, starlight-blooming wormwood, and enchanted honey. It induces a transcendent state of poetic inspiration, magnetic charisma, and aesthetic euphoria, but dangerously taxes the drinker's physical constitution."
+    Trigger: 'You drink a glass of Elven Absinthe.'
+    InitialEffect: 'Gain a +1d4 bonus to Charisma for 1 h. Suffer 1d4 Con damage. Addiction Check: d20! + 6 (+2 per additional dose within 24 h) vs. Fort (S - Contract Stage 1 Addiction or advance 1 stage; F - Resist addiction).'
+    MaxDuration: '1 h (Benefit) / Variable (Addiction)'
+    Stage1: 'Mild Addiction: Aesthetic craving. If deprived for 7 days, suffer a -1 penalty on Charisma checks and social interaction skills. Consuming a dose suppresses penalties for 1 h. Recovery: 1 successful Fort check after 3 days of abstinence.'
+    Stage2: 'Moderate Addiction: Compulsive melancholy. If deprived for 3 days, suffer a -2 penalty on Cha and Wis checks, becoming distracted and listless. Recovery: 2 consecutive daily Fort checks to step down to Stage 1.'
+    Stage3: 'Severe Addiction: Sensory fixation. If deprived for 24 h, suffer a -4 penalty on Cha, Wis, and Will defense, and experience sensory overload and vivid hallucinations. Recovery: 3 consecutive daily Fort checks to step down to Stage 2.'
+    Stage4: 'Overdose / Fey Stupor: Overdose induces severe sensory blindness/deafness for 1d4 hours and 1d6 Con damage.'
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 86
+    Name: Flayleaf
+    Type: 6
+    Descriptors: '[Drug, Inhaled, Ingested, Addiction]'
+    Description: 'Dried wild leaves of the flay plant, commonly smoked in long pipes or brewed into a bitter herbal tea. It numbs the nervous system against stress and mental invasion, providing mental tranquility at the cost of sluggish cognition and psychic fatigue.'
+    Trigger: 'You smoke or drink an infusion of Flayleaf.'
+    InitialEffect: 'Gain a +2 bonus on Will defense and saves against mind attacks for 1 h. Suffer 1 Wis damage and 2d6 SP damage. Addiction Check: d20! + 2 (+2 per additional dose within 24 h) vs. Fort (S - Contract Stage 1 Addiction or advance 1 stage; F - Resist addiction).'
+    MaxDuration: '1 h (Benefit) / Variable (Addiction)'
+    Stage1: 'Mild Addiction: Lethargy and mild craving. If deprived for 7 days, suffer a -1 penalty on Initiative and Perception checks. Consuming a dose suppresses penalties for 1 h. Recovery: 1 successful Fort check after 2 days of abstinence.'
+    Stage2: 'Moderate Addiction: Chronic apathy. If deprived for 3 days, suffer a -2 penalty on Wis and Will defense, becoming easily irritated and distracted. Recovery: 1 successful Fort check after 2 days of abstinence to step down to Stage 1.'
+    Stage3: 'Severe Addiction: Severe mental clouding. If deprived for 24 h, suffer a -3 penalty on Wis, Will defense, and Reflex defense (-2 due to sluggish reaction times). Recovery: 2 consecutive daily Fort checks to step down to Stage 2.'
+    Stage4: 'Overdose / Torpor: Overdose induces a heavy stupor (Stunned for 1d4 rounds) and 1d4 Wis damage.'
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 87
+    Name: Opium
+    Type: 6
+    Descriptors: '[Drug, Inhaled, Ingested, Injury, Addiction]'
+    Description: 'The concentrated, sticky brown resin extracted from sleep-poppy pods. Consumed via pipe vapor, dissolved tinctures (laudanum), or direct injection. It delivers euphoric pain suppression, numbing physical trauma and fortifying the body against injury, while degrading vitality and willpower.'
+    Trigger: 'You smoke, swallow, or inject a dose of Opium.'
+    InitialEffect: 'Gain +1d8 temporary Hit Points and a +2 bonus to Fortitude defense for 1 h. Suffer 1d4 Con damage, 1d4 Wis damage, and 2d6 SP damage. Addiction Check: d20! + 10 (+2 per additional dose within 24 h) vs. Fort (S - Contract Stage 1 Addiction or advance 1 stage; F - Resist addiction).'
+    MaxDuration: '1 h (Benefit) / Variable (Addiction)'
+    Stage1: 'Mild Addiction: Restlessness and insomnia. If deprived for 3 days, suffer a -1 penalty on all physical ability checks and Fortitude defense. Consuming a dose suppresses penalties for 1 h. Recovery: 2 consecutive daily Fort checks after 3 days of abstinence.'
+    Stage2: 'Moderate Addiction: Painful physical withdrawal. If deprived for 24 h, suffer a -2 penalty on Str, Dex, and Con checks, intense joint aches, and the Sickened condition. Recovery: 3 consecutive daily Fort checks to step down to Stage 1.'
+    Stage3: 'Severe Addiction: Debilitating withdrawal agony. If deprived for 24 h, suffer a -4 penalty on all ability checks and defenses, violent nausea (Nauseated for 1d4 hours each morning), and 1 Con damage per day deprived. Recovery: 3 consecutive daily Fort checks to step down to Stage 2.'
+    Stage4: 'Overdose / Respiratory Collapse: Overdose triggers acute respiratory depression: make an attack d20! + 10 vs. Fort (S - Unconscious and suffocating, losing 1d6 Con per hour until resuscitated or dead; F - Sickened and helpless for 2d4 hours).'
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 88
+    Name: Pesh
+    Type: 6
+    Descriptors: '[Drug, Inhaled, Ingested, Addiction]'
+    Description: 'A thick, dark resin harvested from desert cactus milk, either rolled into sticky sweetmeats or smoked in water pipes. Pesh induces feelings of euphoria and surges of physical might, but leaves the consumer vulnerable to mental manipulation and gradually wastes the body.'
+    Trigger: 'You eat or smoke a dose of Pesh.'
+    InitialEffect: 'Gain a +1d2 bonus to Strength for 1 h, but suffer a -2 penalty against mind attacks. Suffer 1d2 Con damage, 1d2 Wis damage, and 1d6 SP damage. Addiction Check: d20! + 10 (+2 per additional dose within 24 h) vs. Fort (S - Contract Stage 1 Addiction or advance 1 stage; F - Resist addiction).'
+    MaxDuration: '1 h (Benefit) / Variable (Addiction)'
+    Stage1: 'Mild Addiction: Restless craving. If deprived for 7 days, suffer a -1 penalty on Str checks and Will defense. Consuming a dose suppresses penalties for 1 h. Recovery: 1 successful Fort check after 3 days of abstinence.'
+    Stage2: 'Moderate Addiction: Compulsive craving and erratic moods. If deprived for 3 days, suffer a -2 penalty on Str, Wis, and Will defense, accompanied by chronic fatigue. Recovery: 2 consecutive daily Fort checks to step down to Stage 1.'
+    Stage3: 'Severe Addiction: Chronic dependence. If deprived for 24 h, suffer a -4 penalty on Str and Wis checks, the Shaken condition, and paranoia. Recovery: 3 consecutive daily Fort checks to step down to Stage 2.'
+    Stage4: 'Overdose / Pesh Fever: Overdose induces manic agitation, confusion for 1d4 hours, and 1d4 Con damage.'
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 89
+    Name: Scour
+    Type: 6
+    Descriptors: '[Drug, Inhaled, Ingested, Addiction]'
+    Description: 'A refined white crystalline powder synthesized from subterranean mineral salts and venomous flora. Snorted or dissolved in wine, Scour produces explosive reflexes, lightning-fast agility, and hyper-accelerated perception at the expense of sound judgment, rational caution, and heart stamina.'
+    Trigger: 'You snort or ingest a dose of Scour powder.'
+    InitialEffect: 'Gain a +1d4 bonus to Dexterity for 3 h, but suffer a -1d4 penalty to Wisdom for the duration. Suffer 1d6 Con damage. Addiction Check: d20! + 14 (+2 per additional dose within 24 h) vs. Fort (S - Contract Stage 1 Addiction or advance 1 stage; F - Resist addiction).'
+    MaxDuration: '3 h (Benefit) / Variable (Addiction)'
+    Stage1: 'Mild Addiction: Heightened jitters and irritability. If deprived for 3 days, suffer a -1 penalty on Dex checks and Reflex defense. Consuming a dose suppresses penalties for 3 h. Recovery: 2 consecutive daily Fort checks after 3 days of abstinence.'
+    Stage2: 'Moderate Addiction: Muscle tremors and anxiety. If deprived for 24 h, suffer a -2 penalty on Dex checks, Ref defense, and weapon attack rolls. Recovery: 3 consecutive daily Fort checks to step down to Stage 1.'
+    Stage3: 'Severe Addiction: Violent tremors and seizures. If deprived for 24 h, suffer a -4 penalty on Dex and Ref defense, loss of fine motor coordination, and 1d2 Dex damage per day deprived. Recovery: 3 consecutive daily Fort checks to step down to Stage 2.'
+    Stage4: 'Overdose / Cardiac Shock: Overdose triggers acute cardiac arrest or violent convulsions: suffer 2d6 Con damage and the Stunned condition for 1d6 rounds.'
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 90
+    Name: Shiver
+    Type: 6
+    Descriptors: '[Drug, Ingested, Injury, Addiction]'
+    Description: 'A clear, chilled liquid concocted from the distilled venom of dream spiders. Ingested or injected, Shiver numbs fear and pain completely, plunging the user into vivid, waking dreams and prophetic trances, though high doses plunge the user into an immovable slumber.'
+    Trigger: 'You drink or inject a dose of Shiver.'
+    InitialEffect: 'Gain complete immunity to Fear effects for 1d4 min. Must immediately roll d20! + 8 vs. Fort (S - Fall into deep, lucid slumber for 1d4 hours; F - Remain awake in euphoric trance). Suffer 1d2 Con damage. Addiction Check: d20! + 8 (+2 per additional dose within 24 h) vs. Fort (S - Contract Stage 1 Addiction or advance 1 stage; F - Resist addiction).'
+    MaxDuration: '1d4 min (Fear Immunity) / Variable (Addiction)'
+    Stage1: 'Mild Addiction: Shivering chills and vivid daydreaming. If deprived for 3 days, suffer a -1 penalty on Will and Fortitude defense. Consuming a dose suppresses penalties for 1 h. Recovery: 2 consecutive daily Fort checks after 3 days of abstinence.'
+    Stage2: 'Moderate Addiction: Severe chills and cold sweats. If deprived for 24 h, suffer a -2 penalty on all defenses, vulnerability to Cold (+50% cold damage taken), and the Sickened condition. Recovery: 3 consecutive daily Fort checks to step down to Stage 1.'
+    Stage3: 'Severe Addiction: Hypothermic convulsions. If deprived for 24 h, suffer a -4 penalty on all checks and defenses, extreme temperature sensitivity, and 1d2 Con damage per day deprived. Recovery: 3 consecutive daily Fort checks to step down to Stage 2.'
+    Stage4: 'Overdose / Spider Slumber: Overdose plunges the user into a catatonic coma for 24 hours (cannot be awakened by mundane means) and inflicts 1d6 Con damage.'
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 91
+    Name: Zerk
+    Type: 6
+    Descriptors: '[Drug, Injury, Addiction]'
+    Description: 'A thick, rust-red combat stimulant favored by gladiators, shock troopers, and pit fighters. Injected directly into muscle tissue or veins via auto-plungers, Zerk surges adrenaline through the bloodstream, accelerating reaction speed and brute force.'
+    Trigger: 'You inject a dose of Zerk into muscle or bloodstream.'
+    InitialEffect: 'Gain a +1 bonus on Initiative checks and a +1d2 bonus to Strength for 1 h. Suffer 1d2 Con damage. Addiction Check: d20! + 8 (+2 per additional dose within 24 h) vs. Fort (S - Contract Stage 1 Addiction or advance 1 stage; F - Resist addiction).'
+    MaxDuration: '1 h (Benefit) / Variable (Addiction)'
+    Stage1: 'Mild Addiction: Restless aggression and irritability. If deprived for 7 days, suffer a -1 penalty on Initiative checks and Will defense. Consuming a dose suppresses penalties for 1 h. Recovery: 1 successful Fort check after 2 days of abstinence.'
+    Stage2: 'Moderate Addiction: Muscle fatigue and sudden temper flares. If deprived for 3 days, suffer a -2 penalty on Initiative, Str checks, and Morale saves. Recovery: 2 consecutive daily Fort checks to step down to Stage 1.'
+    Stage3: 'Severe Addiction: Physical exhaustion and erratic aggression. If deprived for 24 h, suffer a -3 penalty on Str, Initiative, and AC/DeCa, becoming Fatigued. Recovery: 2 consecutive daily Fort checks to step down to Stage 2.'
+    Stage4: 'Overdose / Berserk Rage: Overdose forces uncontrollable berserk frenzy (attacking nearest creature indiscriminately for 1d4 rounds), followed by the Exhausted condition and 1d4 Con damage.'
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 92
+    Name: Alcohol
+    Type: 6
+    Descriptors: '[Drug, Ingested, Addiction]'
+    Description: 'Fermented spirits, strong wines, and distilled liquors consumed across all civilized and barbaric societies. In moderation, alcohol eases fear, social inhibitions, and anxiety; in excess, it impairs reflexes, clouding judgment and causing acute poisoning.'
+    Trigger: 'You drink a dose or bottle of strong alcoholic spirits.'
+    InitialEffect: 'Gain a +1 morale bonus on saves vs. Fear, but suffer a -1 penalty to Dexterity and -1 penalty to Wisdom for 1 h. Suffer 1 Con damage. Consuming more than 2 doses within 1 hour inflicts the Sickened condition for 1 hour per excess dose. Addiction Check: d20! + 4 (+2 per additional dose within 24 h) vs. Fort (S - Contract Stage 1 Addiction or advance 1 stage; F - Resist addiction).'
+    MaxDuration: '1 h (Benefit) / Variable (Addiction)'
+    Stage1: 'Mild Addiction: Habitual social drinking. If deprived for 7 days, suffer a -1 penalty on concentration and Will defense. Consuming a drink suppresses penalties for 1 h. Recovery: 1 successful Fort check after 3 days of abstinence.'
+    Stage2: 'Moderate Addiction: Daily dependency. If deprived for 3 days, suffer a -2 penalty on Dex checks (hand tremors) and Wis checks. Recovery: 2 consecutive daily Fort checks to step down to Stage 1.'
+    Stage3: 'Severe Addiction: Chronic alcoholism (delirium tremens). If deprived for 24 h, suffer a -4 penalty on Dex and Wis checks, the Sickened condition, and 1 Con damage per day deprived. Recovery: 3 consecutive daily Fort checks to step down to Stage 2.'
+    Stage4: 'Overdose / Acute Alcohol Poisoning: Consuming 5+ doses in rapid succession triggers acute poisoning: d20! + 6 vs. Fort (S - Unconscious for 2d4 hours; F - Sickened and Staggered for 1d4 hours).'
+    Stage5: null
+    Stage6: null
+    Modifiers: null
+  -
+    ID: 93
+    Name: Dysentery
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from dysentery, an acute intestinal infection marked by severe abdominal cramps, violent diarrhea with blood and mucus, and rapid dehydration.'
+    Trigger: 'You have been exposed to dysentery through contaminated food or drinking water.'
+    InitialEffect: 'After d3 days, make d20! + 8 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: |-
+      Primary Stage (3 days): Suffer severe abdominal pain and diarrhea (Sickened condition, lose d3 Con and d6 SP per day).
+      After 3 days, make d20! + 10 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Go to stage 4).
+    Stage2: |-
+      Advanced Stage (7 days): Violent dehydrating diarrhea, intense tenesmus, and intestinal bleeding (Nauseated condition, lose d4 Con and 2d6 SP per day).
+      After 7 days, make d20! + 10 attack vs. Fort (S - Go to stage 3; F - Go to stage 4; OF - Go to stage 4).
+    Stage3: 'Dehydration Shock Crisis: Acute fluid loss and circulatory failure. Roll d20: on a 1–2, make an immediate d20! + 10 attack vs. Fort (S - Fatal circulatory collapse / Death; F - Survive crisis, proceed to stage 4). On a roll of 3+, or if the Fort check succeeds, proceed to stage 4.'
+    Stage4: 'Convalescence (7 days): Post-infection debility. Suffer double Fatigued penalties (-4 Str, -4 Dex, cannot run). Penalties reduce to normal Fatigued after 4 days and resolve completely after 7 days.'
+    Stage5: null
+    Stage6: null
+    Modifiers: |-
+      Diagnosis: Healing check DC 20 (Misdiagnosis: Cholera or Flu on failure).
+      Treatment: Administration of soothing fluids, electrolytes, or pain relievers grants a +2 circumstance bonus on Fortitude checks against the disease. Dedicated physician care with a successful DC 20 Healing check grants an additional +2 circumstance bonus.
+  -
+    ID: 94
+    Name: Cholera
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from cholera, an acute, life-threatening diarrheal disease causing rapid, catastrophic fluid depletion, painful muscle cramps, and burning fever.'
+    Trigger: 'You have been exposed to cholera through contaminated food or water.'
+    InitialEffect: 'After 1 day, make d20! + 10 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: |-
+      Primary Stage (3 days): Copious watery rice-water diarrhea, fever, and severe abdominal cramping (Sickened condition, lose d4 Con, d3 Str, and 2d6 SP per day).
+      After 3 days, make d20! + 15 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Go to stage 4).
+    Stage2: |-
+      Advanced Stage (3 days): Extreme sunken-eye dehydration, severe muscular cramps, cold skin, and weak pulse (Nauseated and Exhausted conditions, lose d6 Con, d4 Str, and 3d6 SP per day).
+      After 3 days, make d20! + 15 attack vs. Fort (S - Go to stage 3; F - Go to stage 4; OF - Go to stage 4).
+    Stage3: 'Hypovolemic Shock Crisis: Severe hypovolemic shock and kidney shutdown. Roll d20: on a 1–4, make an immediate d20! + 15 attack vs. Fort (S - Fatal dehydration shock / Death; F - Survive crisis, proceed to stage 4). On a roll of 5+, or if the Fort check succeeds, proceed to stage 4.'
+    Stage4: 'Severe Convalescence (28 days): Profound systemic exhaustion and muscle wasting. Suffer triple Fatigued penalties (-6 Str, -6 Dex, base speed halved, cannot run). Penalties reduce to double Fatigued after 10 days, normal Fatigued after 20 days, and clear after 28 days.'
+    Stage5: null
+    Stage6: null
+    Modifiers: |-
+      Diagnosis: Healing check DC 20 (Misdiagnosis: Dysentery on failure).
+      Treatment: Continuous fluid/electrolyte rehydration and pain-relieving tonics provide a +2 circumstance bonus on Fortitude checks against the disease. A dedicated physician succeeding on a DC 25 Healing check grants an additional +4 circumstance bonus to stabilize fluid balance.
+  -
+    ID: 95
+    Name: Hepatitis
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from hepatitis, an insidious viral infection of the liver characterized by deep fatigue, jaundice, dark urine, persistent fever, and acute hepatic pain.'
+    Trigger: 'You have been exposed to hepatitis through direct contact, tainted food, or infected water.'
+    InitialEffect: 'After 30 days (1 month), make d20! + 9 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: |-
+      Primary Stage (3 days): Creeping malaise, flu-like aches, low-grade fever, and dull upper abdominal pain (Sickened condition, lose d3 Con and d3 Str per day).
+      After 3 days, make d20! + 15 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Go to stage 4).
+    Stage2: |-
+      Advanced Stage (5 days): Severe jaundice (yellowing of eyes and skin), intense liver tenderness, vomiting, and high fever (Nauseated condition, lose d6 Con, d4 Str, and 1 Con drain).
+      After 5 days, make d20! + 15 attack vs. Fort (S - Go to stage 3; F - Go to stage 4; OF - Go to stage 4).
+    Stage3: 'Hepatic Crisis: Acute liver failure, bile toxicity, and comatose encephalopathy. Roll d20: on a 1–10, make an immediate d20! + 15 attack vs. Fort (S - Hepatic coma / Death; F - Suffer permanent 1 Con drain, proceed to stage 4). On a roll of 11+, or if the Fort check succeeds, proceed to stage 4.'
+    Stage4: 'Convalescence (14 days): Post-hepatic debility. Suffer double Fatigued penalties (-4 Str, -4 Dex, cannot run). Penalties reduce to normal Fatigued after 7 days and resolve completely after 14 days.'
+    Stage5: null
+    Stage6: null
+    Modifiers: |-
+      Diagnosis: Healing check DC 25 (Misdiagnosis: Flu on failure due to nonspecific early symptoms).
+      Treatment: Strict bed rest and soothing pain relievers provide a +2 circumstance bonus on Fortitude checks against the disease. A physician with a DC 25 Healing check administering purifying liver tonics grants an additional +2 circumstance bonus.
+  -
+    ID: 96
+    Name: 'Food Poisoning'
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from acute food poisoning caused by bacterial enterotoxins, resulting in sudden violent abdominal cramps, severe nausea, vomiting, and toxic exhaustion.'
+    Trigger: 'You have consumed spoiled, contaminated, or improperly prepared food.'
+    InitialEffect: 'After 1 day, make d20! + 9 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: |-
+      Primary Stage (1 day): Sudden violent stomach cramps, cold sweats, and nausea (Sickened condition, lose d4 Con and d6 SP).
+      After 1 day, make d20! + 15 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Go to stage 4).
+    Stage2: |-
+      Advanced Stage (2 days): Uncontrollable vomiting, severe gastrointestinal spasms, diarrhea, and fever (Nauseated condition, lose d6 Con, d4 Dex, and 2d6 SP per day).
+      After 2 days, make d20! + 15 attack vs. Fort (S - Go to stage 3; F - Go to stage 4; OF - Go to stage 4).
+    Stage3: 'Toxic Shock Crisis: Enterotoxemic shock, severe neuromuscular paralysis, or electrolyte collapse. Roll d20: on a 1–10, make an immediate d20! + 15 attack vs. Fort (S - Fatal toxic shock / Death; F - Survive crisis, proceed to stage 4). On a roll of 11+, or if the Fort check succeeds, proceed to stage 4.'
+    Stage4: 'Convalescence (14 days): Lingering gastrointestinal tenderness and systemic fatigue. Suffer double Fatigued penalties (-4 Str, -4 Dex, cannot run). Penalties reduce to normal Fatigued after 7 days and clear after 14 days.'
+    Stage5: null
+    Stage6: null
+    Modifiers: |-
+      Diagnosis: Healing check DC 20 (Misdiagnosis: Cholera on failure due to sudden gastrointestinal onset).
+      Treatment: Pain relievers and anti-spasmodics grant a +2 circumstance bonus on recovery rolls; herbal/alchemical antimicrobials grant an additional +2 circumstance bonus (stacking to +4). Inducing vomiting early (DC 15 Healing check within 6 hours of ingestion) grants an immediate recovery check.
+  -
+    ID: 97
+    Name: Pneumonia
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from pneumonia, an acute inflammatory infection of the lungs where air sacs fill with fluid and pus, causing persistent cough, fever, and severe shortness of breath.'
+    Trigger: 'You have been exposed to pneumonia through airborne respiratory droplets or physical contact with an infected host.'
+    InitialEffect: 'After 3 days, make d20! + 5 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: |-
+      Primary Stage (5 days): Racking bronchial cough, chest tightness, shallow breath, and persistent fever (Sickened condition, lose d3 Con and d3 Str per day; all movement actions cost +1 SP).
+      After 5 days, make d20! + 15 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Go to stage 4).
+    Stage2: |-
+      Advanced Stage (9 days): Fluid-filled lungs, coughing blood, severe hypoxia, and burning chest pain (Fatigued and Sickened conditions, lose d6 Con, d4 Str, and 2d6 SP per day; holding breath duration halved).
+      After 9 days, make d20! + 15 attack vs. Fort (S - Go to stage 3; F - Go to stage 4; OF - Go to stage 4).
+    Stage3: 'Respiratory Crisis: Acute respiratory distress syndrome and pulmonary edema. Roll d20: on a 1–2, make an immediate d20! + 15 attack vs. Fort (S - Asphyxiation and heart failure / Death; F - Survive crisis, proceed to stage 4). On a roll of 3+, or if the Fort check succeeds, proceed to stage 4.'
+    Stage4: 'Convalescence (7 days): Residual lung stiffness and shortness of breath. Suffer the Fatigued condition (-2 Str, -2 Dex, cannot run). Clears completely after 7 days.'
+    Stage5: null
+    Stage6: null
+    Modifiers: |-
+      Diagnosis: Healing check DC 15 (Misdiagnosis: Plague or Flu on failure).
+      Treatment: Warm dry shelter, steam inhalation, and pain/fever-relieving herbs grant a +2 circumstance bonus on Fortitude checks against the disease. A physician with a DC 20 Healing check can cup or drain the lungs for an additional +2 circumstance bonus.
+  -
+    ID: 98
+    Name: Typhoid
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from typhoid fever (enteric fever), a prolonged systemic bacterial infection causing unrelenting high step-ladder fever, delirium, rose-colored chest spots, and intestinal ulceration.'
+    Trigger: 'You have been exposed to typhoid bacteria through contaminated water, tainted food, or direct contact with an infected carrier.'
+    InitialEffect: 'After 6 days, make d20! + 9 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: |-
+      Primary Stage (7 days): Escalating step-ladder fever, dry hacking cough, severe headache, and abdominal distension (Sickened condition, lose d3 Con, d3 Str, and d3 Int per week).
+      After 7 days, make d20! + 10 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Go to stage 4).
+    Stage2: |-
+      Advanced Stage (6 weeks): Sustained high fever (40°C / 104°F), intestinal ulceration, severe lethargy, and muttering delirium (Exhausted and Dazed in alternating bouts, lose d4 Con, d4 Str, and d4 Int per week).
+      Every 7 days, make d20! + 10 attack vs. Fort (S - Remain in stage 2; F - Progress toward recovery; OF - Go to stage 4). After 6 weeks, proceed to stage 3.
+    Stage3: 'Intestinal Crisis: Bowel perforation or overwhelming septicemia. Roll d20: on a 1–2, make an immediate d20! + 10 attack vs. Fort (S - Fatal intestinal hemorrhage / Death; F - Survive crisis, proceed to stage 4). On a roll of 3+, or if the Fort check succeeds, proceed to stage 4.'
+    Stage4: 'Prolonged Convalescence (6 weeks): Protracted bodily depletion, emaciation, and muscle atrophy. Suffer triple Fatigued penalties (-6 Str, -6 Dex, base speed halved, cannot run). Penalties reduce to double Fatigued after 2 weeks, normal Fatigued after 4 weeks, and fully clear after 6 weeks.'
+    Stage5: null
+    Stage6: null
+    Modifiers: |-
+      Diagnosis: Healing check DC 25 (Misdiagnosis: Pneumonia or Plague on failure due to high fever, rash, and respiratory symptoms).
+      Treatment: Standard analgesics provide no mechanical bonus against the enteric bacillus (treatment modifiers: None). High-level restorative magic (e.g. Remove Disease) or advanced alchemical antimicrobials bypass normal recovery.
+  -
+    ID: 99
+    Name: Typhus
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from epidemic typhus, a rickettsial infection transmitted by vector lice and fleas that causes agonizing headache, high fever, widespread petechial rash, and stuporous mental confusion.'
+    Trigger: 'You have been exposed to typhus through contact with infected lice, vector vermin, or contaminated garments.'
+    InitialEffect: 'After 1 day, make d20! + 9 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: |-
+      Primary Stage (5 days): Splitting headache, backache, shaking chills, and skyrocketing fever (Sickened condition, lose d3 Con, d3 Dex, and d3 Int).
+      After 5 days, make d20! + 10 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Go to stage 4).
+    Stage2: |-
+      Advanced Stage (10 days): Dark spotted rash spreading from trunk to limbs, severe hypotension, delirium, and sensory numbness (Exhausted and Confused conditions, lose d6 Con, d4 Dex, and d4 Int per 5 days).
+      After 10 days, make d20! + 10 attack vs. Fort (S - Go to stage 3; F - Go to stage 4; OF - Go to stage 4).
+    Stage3: 'Vascular Crisis: Vascular collapse, gangrene of extremities, or central nervous failure. Roll d20: on a 1–4, make an immediate d20! + 10 attack vs. Fort (S - Fatal circulatory collapse / Death; F - Survive crisis, proceed to stage 4). On a roll of 5+, or if the Fort check succeeds, proceed to stage 4.'
+    Stage4: 'Convalescence (7 days): Post-infectious physical exhaustion and neuromuscular weakness. Suffer double Fatigued penalties (-4 Str, -4 Dex, cannot run). Penalties reduce to normal Fatigued after 4 days and resolve completely after 7 days.'
+    Stage5: null
+    Stage6: null
+    Modifiers: |-
+      Diagnosis: Healing check DC 15 (Misdiagnosis: Flu on failure before rash emerges).
+      Treatment: General pain relievers provide no mechanical benefit against typhus rickettsiae. Delousing clothing and bedding with lye or cedar oil prevents reinfection and gives a +2 circumstance bonus to nursing care.
+  -
+    ID: 100
+    Name: Rabies
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from rabies (hydrophobia), a terrifying neurotropic viral disease transmitted through bites from rabid animals, causing progressive encephalopathy, violent hydrophobia, aggressive paranoia, and near-invariable fatality once neurological symptoms appear.'
+    Trigger: 'You have been bitten by an infected animal or had open wounds exposed to rabid saliva or nervous tissue.'
+    InitialEffect: 'After 21 days (3 weeks), make d20! + 8 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: |-
+      Prodromal Stage (14 days): Tingling and burning neuropathic pain at the bite site, sore throat, fluctuating fever, hyper-reactivity, and profound restlessness (Sickened and Shaken conditions, lose d4 Wis, d4 Cha, and d4 Con per week).
+      After 14 days, make d20! + 20 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Go to stage 4).
+    Stage2: |-
+      Furious Encephalitic Stage (7 days): Violent spasms upon attempting to swallow fluids (Hydrophobia), copious foaming salivation, terror-fueled aggression, and delirium (Confused condition and Berserk fury, lose d6 Wis, d6 Cha, and d6 Con; cannot drink potions or liquids without suffocating).
+      After 7 days, proceed to stage 3.
+    Stage3: 'Terminal Neurological Crisis: Complete central nervous paralysis. Roll d20: on a 1–19 (95% fatality), make an immediate d20! + 10 attack vs. Fort (S - Respiratory and cardiac paralysis / Death; F - Miraculous survival against all odds, proceed to stage 4). Only a natural 20 or an outstanding success on the Fortitude check permits survival.'
+    Stage4: 'Prolonged Convalescence (120 days / 4 months): Extensive central nervous system rehabilitation. Suffer double Fatigued penalties (-4 Str, -4 Dex, cannot run) and a permanent -2 penalty on Will defense. Penalties slowly recede over 4 months (reducing to standard Fatigued after 60 days).'
+    Stage5: null
+    Stage6: null
+    Modifiers: |-
+      Diagnosis: Healing check DC 20 (Misdiagnosis: Flu or hysteria on failure before hydrophobia sets in).
+      Treatment: No mundane remedies exist once symptoms manifest (treatment modifiers: None). Cauterizing the wound with holy water, pure alcohol, or acid within 1 hour of the bite grants an immediate new initial Fortitude check with a +4 circumstance bonus to neutralize the virus before incubation begins.
+  -
+    ID: 101
+    Name: Plague
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from the Great Plague (Black Death / Bubonic Plague), a catastrophic pestilence causing blackened, agonizingly swollen lymphatic buboes, high fever, coughing of necrotic blood, and systemic septicaemia.'
+    Trigger: 'You have been bitten by infected rat fleas or inhaled aerosolized droplets from a pneumonic plague victim.'
+    InitialEffect: 'After 4 days, make d20! + 10 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: |-
+      Primary Bubo Stage (4 days): Sudden violent chills, high fever, and agonizing swelling of lymph nodes into blackened fist-sized buboes (Exhausted and Sickened conditions, lose d6 Con, d4 Str, and 2d6 SP per day).
+      After 4 days, make d20! + 15 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Go to stage 4).
+    Stage2: |-
+      Septicemic / Pneumonic Stage (8 days): Widespread internal hemorrhaging, blackened necrotic extremities, coughing dark blood, and delirium (Nauseated condition, lose d8 Con, d6 Str, and 1 Con drain per day).
+      After 8 days, proceed to stage 3.
+    Stage3: 'Black Death Crisis: Overwhelming septic shock and multiple organ failure. Roll d20: on a 1–19 (95% fatality), make an immediate d20! + 10 attack vs. Fort (S - Terminal septicemic shock / Death; F - Miraculous survival, proceed to stage 4). Only a natural 20 or an outstanding success on the Fort check preserves life.'
+    Stage4: 'Protracted Convalescence (15 weeks): Devastating bodily ruin and tissue scarring. Suffer double Fatigued penalties (-4 Str, -4 Dex, cannot run) and lose 2 maximum HP permanently (or until restored by high divine magic). Penalties reduce to standard Fatigued after 8 weeks and clear after 15 weeks.'
+    Stage5: null
+    Stage6: null
+    Modifiers: |-
+      Diagnosis: Healing check DC 20 (Misdiagnosis: Pneumonia or Flu on failure if buboes are hidden).
+      Treatment: Specialized antipyretic tinctures and pain relievers provide a +2 circumstance bonus on Fortitude checks against the disease. Lancing buboes without sanitary precautions (DC 20 Heal check) inflicts an immediate 1d6 damage and provokes a new attack check. Quarantine and protective masks halve exposure risk.
+  -
+    ID: 102
+    Name: Smallpox
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from smallpox (the Red Plague), a highly contagious orthopoxvirus infection resulting in raging high fevers, severe muscle aches, and hundreds of pustular umbilicated blisters across the body that leave disfiguring pockmarks.'
+    Trigger: 'You have inhaled infectious airborne droplets or had physical contact with infected bodily fluids, scabs, or contaminated blankets.'
+    InitialEffect: 'After 3 days, make d20! + 10 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: |-
+      Pre-Eruptive Stage (3 days): Intense backache, muscle prostration, splitting headache, and spiking fevers above 40°C / 104°F (Exhausted condition, lose d4 Con, d3 Str, and d3 Cha per day).
+      After 3 days, make d20! + 15 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Go to stage 4).
+    Stage2: |-
+      Pustular Stage (14 days): Dense rash of firm, deep-seated fluid-filled pustules covering the face, limbs, and mouth, followed by painful rupturing, severe skin sloughing, and corneal ulcerations (Nauseated condition, lose d6 Con, d4 Str, and d4 Cha per week; 25% chance of permanent partial vision impairment).
+      After 14 days, make d20! + 15 attack vs. Fort (S - Go to stage 3; F - Go to stage 4; OF - Go to stage 4).
+    Stage3: 'Pox Crisis: Confluent purpura hemorrhagica or secondary toxemia. Roll d20: on a 1–15 (75% fatality), make an immediate d20! + 15 attack vs. Fort (S - Fatal toxemia and pulmonary edema / Death; F - Survive crisis, proceed to stage 4). On a roll of 16+, or if the Fort check succeeds, proceed to stage 4.'
+    Stage4: 'Convalescence & Pockmark Scarring (7 days): Desquamation of scabs. Suffer double Fatigued penalties (-4 Str, -4 Dex, cannot run) for 7 days. Even after full recovery, the survivor acquires permanent deep facial and bodily pitting (-1 Cha penalty unless restored by restorative magic, but gains lifetime immunity to Smallpox).'
+    Stage5: null
+    Stage6: null
+    Modifiers: |-
+      Diagnosis: Healing check DC 15 (Misdiagnosis: Chickenpox or severe Flu on failure before pustules solidify).
+      Treatment: Fever-reducing decoctions or analgesics provide a non-cumulative +2 circumstance bonus on Fortitude checks against the disease. Quarantine and isolating clothing remain critical to prevent widespread contagion.
+  -
+    ID: 103
+    Name: Flu
+    Type: 4
+    Descriptors: null
+    Description: 'You are suffering from influenza (the Flu), an acute viral respiratory illness of variable strain virulence that strikes suddenly with body chills, high fever, head congestion, body aches, and fatigue.'
+    Trigger: 'You have been exposed to influenza through airborne cough droplets or contaminated surfaces.'
+    InitialEffect: 'After 3 days, make d20! + d20 vs. Fort (S - Go to stage 1; F - No effect).'
+    MaxDuration: Varies
+    Stage1: |-
+      Primary Stage (1 day): Sudden fever, chills, sore throat, sneezing, and generalized muscle aches (Sickened condition, lose d2 Con, d2 Str, and d4 SP).
+      After 1 day, make d20! + d20 attack vs. Fort (S - Go to stage 2; F - Stay at stage 1; OF - Go to stage 4).
+    Stage2: |-
+      Advanced Stage (2 days): Heavy chest congestion, persistent fever, burning eyes, and lethargy (Fatigued and Sickened conditions, lose d3 Con, d3 Str, and d6 SP per day).
+      After 2 days, make d20! + d20 attack vs. Fort (S - Go to stage 3; F - Go to stage 4; OF - Go to stage 4).
+    Stage3: 'Strain Complication Crisis: Secondary bacterial infection or severe systemic strain. Roll d20: on a 1 (5% fatality), make an immediate d20! + d20 attack vs. Fort (S - Fatal pulmonary complications / Death; F - Survive crisis, proceed to stage 4). On a roll of 2+, or if the Fort check succeeds, proceed to stage 4.'
+    Stage4: 'Convalescence (3 days): Residual lethargy and mild cough. Suffer the Fatigued condition (-2 Str, -2 Dex, cannot run). Clears completely after 3 days of rest.'
+    Stage5: null
+    Stage6: null
+    Modifiers: |-
+      Diagnosis: Healing check DC (10 + d20) (Misdiagnosis: Another viral strain, common cold, or early stage of a deadlier disease on failure).
+      Treatment: Bed rest and warm broths provide a +2 circumstance bonus on recovery rolls. Variable strain antigenicity makes mundane herbal cures unreliable without proper rest.
 hpeffects:
   -
     ID: 1
@@ -3644,7 +4046,7 @@ techlevelsm:
   -
     TL: 23
     Year: '2060'
-    Technologies: 'True transmutation, permanent resource replication, transmutation engines, fonts of sustenance, philosopher''s stone, prima materia'
+    Technologies: "True transmutation, permanent resource replication, transmutation engines, fonts of sustenance, philosopher's stone, prima materia"
   -
     TL: 24
     Year: '2070'

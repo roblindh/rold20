@@ -668,6 +668,7 @@
 </p>
 <ul class="list-disc pl-6 space-y-1">
     <li><strong>Avert Failure (1 FP):</strong> Converts any failed check into a basic success.</li>
+    <li><strong>Mighty Effort (1 FP):</strong> Converts any successful check into a critical success.</li>
     <li><strong>Thwart Adversary (1 FP):</strong> Converts an opponent's successful check or attack into a failure.</li>
     <li><strong>Defy Death (1 FP):</strong> Converts lethal Hit Point loss into unconsciousness at &minus;1 HP.</li>
     <li><strong>Overcome Affliction (1 FP):</strong> Immediately ends any single ongoing condition (such as <em>compelled</em>, <em>paralyzed</em>, or <em>stunned</em>).</li>
