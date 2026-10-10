@@ -139,174 +139,212 @@ function show_creatureinfo($id, $fullinfo) {
 
     $row = $_APP['creatures'][$id];
 
-    echo '<table width="100%">';
-    echo '<thead><tr id="creature' . $row['ID'] . '">';
-    echo '<th colspan=2>' . $row['Name'] . ' (' . $row['NameInformal'] . ')' .
-    ($row['Descriptors'] ? (' - ' . $row['Descriptors']) : '') . '</th>';
-    echo '</tr></thead><tbody>';
-    {
-        echo '<tr>';
-        echo '<td>Type and Subtype:</td>';
-        echo '<td>' . $_APP['creaturesubtypes'][$row['CreatureType']]['Name'] . '</td>';
-        echo '</tr>';
-    } {
-        echo '<tr>';
-        echo '<td>Ability Adjustments:</td>';
-        echo '<td>' . cCreature::GetAbilAdjStr($id) . '</td>';
-        echo '</tr>';
-    } {
-        echo '<tr>';
-        echo '<td>RL / CL Mod:</td>';
-        echo '<td>' . $row['BaseRL'] . ' / ' . signedstr($row['CLModifier']) . '</td>';
-        echo '</tr>';
-    } {
-        echo '<tr>';
-        echo '<td>Size Class:</td>';
-        echo '<td>' . $_APP['sizecats'][$row['SizeClass']]['Description'] . '</td>';
-        echo '</tr>';
-    } {
-        echo '<tr>';
-        echo '<td>Average Size (M/F):</td>';
-        echo '<td>' . $row['AvgLengthM'] . (isset($row['AvgLengthF']) ? (' / ' . $row['AvgLengthF']) : '') . '</td>';
-        echo '</tr>';
-    } {
-        echo '<tr>';
-        echo '<td>Average Weight (M/F):</td>';
-        echo '<td>' . $row['AvgMassM'] . (isset($row['AvgMassF']) ? (' / ' . $row['AvgMassF']) : '') . '</td>';
-        echo '</tr>';
-    }
-    if ($row['AdultAge'] || $row['MatureAge'] || $row['OldAge'] || $row['VenerableAge']) {
-        echo '<tr>';
-        echo '<td>Age Categories (A/M/O/V):</td>';
-        echo '<td>' . $row['AdultAge'] . ' / ' . $row['MatureAge'] . ' / ' . $row['OldAge'] . ' / ' . $row['VenerableAge'] . '</td>';
-        echo '</tr>';
-    }
-    if ($row['GroundSpeed'] || $row['SwimSpeed'] || $row['FlySpeed']) {
-        echo '<tr>';
-        echo '<td>Base Speed (G/S/F):</td>';
-        echo '<td>' . ($row['GroundSpeed'] ? $row['GroundSpeed'] : '-') . ' / ' .
-        ($row['SwimSpeed'] ? $row['SwimSpeed'] : '-') . ' / ' .
-        ($row['FlySpeed'] ? $row['FlySpeed'] : '-') . '</td>';
-        echo '</tr>';
-    }
-    if ($row['DR'] || $row['MR']) {
-        echo '<tr>';
-        echo '<td>DR/MR:</td>';
-        echo '<td>' . ($row['DR'] ? $row['DR'] : '-') . ' / ' .
-        ($row['MR'] ? $row['MR'] : '-') . '</td>';
-        echo '</tr>';
-    } {
-        echo '<tr>';
-        echo '<td>Body Type:</td>';
-        echo '<td>' . $_APP['bodycats'][$row['BodyType']]['Description'] . '</td>';
-        echo '</tr>';
-    }
     render_creature_image_script();
 
-    if ($row['NaturalAttacks']) {
+    echo '<table class="charviewsection creature-grid-table" width="100%">';
+    echo '<thead><tr id="creature' . $row['ID'] . '">';
+    echo '<th class="cvheader" colspan="12">' . $row['Name'] . ' (' . $row['NameInformal'] . ')' .
+    ($row['Descriptors'] ? (' - ' . $row['Descriptors']) : '') . '</th>';
+    echo '</tr></thead><tbody>';
+
+    // Row 1: Type & Subtype, RL / CL Mod, Size Class
+    echo '<tr>';
+    echo '<td class="cvlabel" colspan="5">Type &amp; Subtype</td>';
+    echo '<td class="cvlabel cvcenter" colspan="3">RL / CL Mod</td>';
+    echo '<td class="cvlabel cvcenter" colspan="4">Size Class</td>';
+    echo '</tr>';
+    echo '<tr>';
+    echo '<td class="cvsml" colspan="5">' . ($_APP['creaturesubtypes'][$row['CreatureType']]['Name'] ?? '–') . '</td>';
+    echo '<td class="cvsml cvcenter font-semibold" colspan="3">' . $row['BaseRL'] . ' / ' . signedstr($row['CLModifier']) . '</td>';
+    echo '<td class="cvsml cvcenter" colspan="4">' . ($_APP['sizecats'][$row['SizeClass']]['Description'] ?? '–') . '</td>';
+    echo '</tr>';
+
+    // Row 2: Ability Adjustments
+    $abilAdj = cCreature::GetAbilAdjStr($id);
+    echo '<tr>';
+    echo '<td class="cvlabel" colspan="12">Ability Adjustments</td>';
+    echo '</tr>';
+    echo '<tr>';
+    echo '<td class="cvsml font-semibold" colspan="12">' . (!empty($abilAdj) ? $abilAdj : 'None') . '</td>';
+    echo '</tr>';
+
+    // Row 3: Base Speed, DR / MR, Body Type
+    $speedStr = ($row['GroundSpeed'] ? $row['GroundSpeed'] : '-') . ' / ' .
+                ($row['SwimSpeed'] ? $row['SwimSpeed'] : '-') . ' / ' .
+                ($row['FlySpeed'] ? $row['FlySpeed'] : '-');
+    $drMrStr = ($row['DR'] ? $row['DR'] : '-') . ' / ' . ($row['MR'] ? $row['MR'] : '-');
+    $bodyTypeStr = $_APP['bodycats'][$row['BodyType']]['Description'] ?? '–';
+
+    echo '<tr>';
+    echo '<td class="cvlabel cvcenter" colspan="4">Base Speed (G/S/F)</td>';
+    echo '<td class="cvlabel cvcenter" colspan="4">DR / MR</td>';
+    echo '<td class="cvlabel cvcenter" colspan="4">Body Type</td>';
+    echo '</tr>';
+    echo '<tr>';
+    echo '<td class="cvsml cvcenter font-mono" colspan="4">' . $speedStr . '</td>';
+    echo '<td class="cvsml cvcenter font-mono" colspan="4">' . $drMrStr . '</td>';
+    echo '<td class="cvsml cvcenter" colspan="4">' . $bodyTypeStr . '</td>';
+    echo '</tr>';
+
+    // Row 4: Natural Attacks
+    echo '<tr>';
+    echo '<td class="cvlabel" colspan="12">Natural Attacks</td>';
+    echo '</tr>';
+    echo '<tr>';
+    echo '<td class="cvsml" colspan="12">' . ($row['NaturalAttacks'] ? format_text(cCreature::GetNaturalAttacksDescription($row['NaturalAttacks'], $row['SizeClass'] ?? 0)) : 'None') . '</td>';
+    echo '</tr>';
+
+    // Row 5: Avg Size (M/F), Avg Weight (M/F), Age Categories (A/M/O/V)
+    $sizeStr = ($row['AvgLengthM'] ? ($row['AvgLengthM'] . (isset($row['AvgLengthF']) && $row['AvgLengthF'] !== '' ? (' / ' . $row['AvgLengthF']) : '') . ' cm') : '–');
+    $weightStr = ($row['AvgMassM'] ? ($row['AvgMassM'] . (isset($row['AvgMassF']) && $row['AvgMassF'] !== '' ? (' / ' . $row['AvgMassF']) : '') . ' kg') : '–');
+    $ageStr = ($row['AdultAge'] || $row['MatureAge'] || $row['OldAge'] || $row['VenerableAge']) ?
+              ($row['AdultAge'] . ' / ' . $row['MatureAge'] . ' / ' . $row['OldAge'] . ' / ' . $row['VenerableAge'] . ' yrs') : '–';
+
+    echo '<tr>';
+    echo '<td class="cvlabel cvcenter" colspan="4">Avg Size (M/F)</td>';
+    echo '<td class="cvlabel cvcenter" colspan="4">Avg Weight (M/F)</td>';
+    echo '<td class="cvlabel cvcenter" colspan="4">Age Categories (A/M/O/V)</td>';
+    echo '</tr>';
+    echo '<tr>';
+    echo '<td class="cvsml cvcenter" colspan="4">' . $sizeStr . '</td>';
+    echo '<td class="cvsml cvcenter" colspan="4">' . $weightStr . '</td>';
+    echo '<td class="cvsml cvcenter" colspan="4">' . $ageStr . '</td>';
+    echo '</tr>';
+
+    // Row 6: Appearance
+    if (!empty($row['Appearance'])) {
         echo '<tr>';
-        echo '<td>Natural Attacks:</td>';
-        echo '<td>' . format_text(cCreature::GetNaturalAttacksDescription($row['NaturalAttacks'], $row['SizeClass'] ?? 0)) . '</td>';
+        echo '<td class="cvlabel" colspan="12">Appearance</td>';
+        echo '</tr>';
+        echo '<tr>';
+        echo '<td class="cvsml text-stone-700" colspan="12">' . format_text($row['Appearance']) . '</td>';
         echo '</tr>';
     }
-    if ($row['Appearance']) {
-        echo '<tr>';
-        echo '<td>Appearance:</td>';
-        echo '<td>' . format_text($row['Appearance']) . '</td>';
-        echo '</tr>';
-    }
+
+    // Row 7: Image
     $rawUrl = $row['ExternalImageURL'] ?? null;
     $resolvedUrl = cCreature::GetResolvedImageUrl($rawUrl, (int)$row['ID'], $row['Name'] ?? '');
     $localImage = cCreature::GetLocalImagePath((int)$row['ID'], $row['Name'] ?? '');
     $isLocal = ($localImage !== null);
 
     if (!empty($resolvedUrl)) {
-    ?>
-        <tr><td>Image:</td>
-        <td>
-            <span id="crimg<?php echo $row['ID']; ?>">
-                <button type="button" onclick="showCreatureImage(<?php echo $row['ID']; ?>, '<?php echo addslashes(htmlspecialchars($resolvedUrl, ENT_QUOTES)); ?>', <?php echo $isLocal ? 'true' : 'false'; ?>)">Show</button>
-            </span>
-        </td></tr>
-    <?php
-    }
-    if ($row['Personality']) {
         echo '<tr>';
-        echo '<td>Personality:</td>';
-        echo '<td>' . format_text($row['Personality']) . '</td>';
+        echo '<td class="cvlabel" colspan="12">Image</td>';
+        echo '</tr>';
+        echo '<tr>';
+        echo '<td class="cvsml" colspan="12">';
+        echo '<span id="crimg' . $row['ID'] . '">';
+        echo '<button type="button" class="btn-rol-secondary text-xs py-1 px-3 cursor-pointer" onclick="showCreatureImage(' . $row['ID'] . ', \'' . addslashes(htmlspecialchars($resolvedUrl, ENT_QUOTES)) . '\', ' . ($isLocal ? 'true' : 'false') . ')">Show Image</button>';
+        echo '</span>';
+        echo '</td>';
         echo '</tr>';
     }
-    if ($row['Alignment']) {
-        echo '<tr>';
-        echo '<td>Alignment:</td>';
-        echo '<td>' . $row['Alignment'] . '</td>';
-        echo '</tr>';
-    }
-    if ($row['RacialTraits']) {
-        echo '<tr>';
-        echo '<td>Racial Traits:</td>';
-        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['RacialTraits'], FALSE)) . '</td>';
-        echo '</tr>';
-    }
-    if ($row['DefaultCulture'] && isset($_APP['cultures'][$row['DefaultCulture']])) {
-        echo '<tr>';
-        echo '<td>Default Culture:</td>';
-        echo '<td>' . $_APP['cultures'][$row['DefaultCulture']]['Name'] . ' (';
-        if (isset($_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfig']]['ClassID'])) {
-            echo $_APP['classes'][$_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfig']]['ClassID']]['Name'];
+
+    // Row 8: Racial Traits
+    echo '<tr>';
+    echo '<td class="cvlabel" colspan="12">Racial Traits</td>';
+    echo '</tr>';
+    echo '<tr>';
+    echo '<td class="cvsml" colspan="12">' . ($row['RacialTraits'] ? format_text(cTraitEffects::StatGetTraitsDescription($row['RacialTraits'], FALSE)) : 'None') . '</td>';
+    echo '</tr>';
+
+    // Row 9: Default Culture / Background Classes
+    // Row 10: Cultural Traits
+    if (!empty($row['DefaultCulture']) && isset($_APP['cultures'][$row['DefaultCulture']])) {
+        $cult = $_APP['cultures'][$row['DefaultCulture']];
+        $cultClasses = [];
+        if (isset($_APP['classconfigs'][$cult['ClassConfig']]['ClassID'])) {
+            $cultClasses[] = $_APP['classes'][$_APP['classconfigs'][$cult['ClassConfig']]['ClassID']]['Name'];
         }
-        if (!empty($_APP['cultures'][$row['DefaultCulture']]['ClassConfigSec']) && isset($_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfigSec']]['ClassID']))
-            echo ', ' . $_APP['classes'][$_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfigSec']]['ClassID']]['Name'];
-        if (!empty($_APP['cultures'][$row['DefaultCulture']]['ClassConfigTert']) && isset($_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfigTert']]['ClassID']))
-            echo ', ' . $_APP['classes'][$_APP['classconfigs'][$_APP['cultures'][$row['DefaultCulture']]['ClassConfigTert']]['ClassID']]['Name'];
-        echo ')</td>';
-        echo '</tr>';
+        if (!empty($cult['ClassConfigSec']) && isset($_APP['classconfigs'][$cult['ClassConfigSec']]['ClassID'])) {
+            $cultClasses[] = $_APP['classes'][$_APP['classconfigs'][$cult['ClassConfigSec']]['ClassID']]['Name'];
+        }
+        if (!empty($cult['ClassConfigTert']) && isset($_APP['classconfigs'][$cult['ClassConfigTert']]['ClassID'])) {
+            $cultClasses[] = $_APP['classes'][$_APP['classconfigs'][$cult['ClassConfigTert']]['ClassID']]['Name'];
+        }
+        $cultClassStr = !empty($cultClasses) ? ' (' . implode(', ', $cultClasses) . ')' : '';
 
         echo '<tr>';
-        echo '<td>Cultural Traits:</td>';
-        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($_APP['cultures'][$row['DefaultCulture']]['Traits'] ?? '', FALSE)) . '</td>';
+        echo '<td class="cvlabel" colspan="12">Default Culture / Background Classes</td>';
         echo '</tr>';
-    }
-    if ($row['Environment']) {
         echo '<tr>';
-        echo '<td>Environment:</td>';
-        echo '<td>' . $row['Environment'] . '</td>';
+        echo '<td class="cvsml font-medium" colspan="12">' . $cult['Name'] . $cultClassStr . '</td>';
         echo '</tr>';
-    }
-    if ($row['Feeding']) {
+
+        $cultTraitsStr = !empty($cult['Traits']) ? format_text(cTraitEffects::StatGetTraitsDescription($cult['Traits'], FALSE)) : 'None';
         echo '<tr>';
-        echo '<td>Feeding:</td>';
-        echo '<td>' . $row['Feeding'] . '</td>';
+        echo '<td class="cvlabel" colspan="12">Cultural Traits</td>';
         echo '</tr>';
-    }
-    if ($fullinfo && $row['Organization']) {
         echo '<tr>';
-        echo '<td>Organization:</td>';
-        echo '<td>' . $row['Organization'] . '</td>';
+        echo '<td class="cvsml" colspan="12">' . $cultTraitsStr . '</td>';
         echo '</tr>';
     }
-    if ($fullinfo && $row['Frequency']) {
+
+    // Row 11: Personality, Alignment
+    if (!empty($row['Personality']) || !empty($row['Alignment'])) {
         echo '<tr>';
-        echo '<td>Frequency:</td>';
-        echo '<td>' . $row['Frequency'] . '</td>';
+        echo '<td class="cvlabel" colspan="8">Personality</td>';
+        echo '<td class="cvlabel cvcenter" colspan="4">Alignment</td>';
         echo '</tr>';
-    }
-    if ($fullinfo && $row['Treasure']) {
         echo '<tr>';
-        echo '<td>Treasure:</td>';
-        echo '<td>' . $row['Treasure'] . '</td>';
+        echo '<td class="cvsml text-stone-700" colspan="8">' . (!empty($row['Personality']) ? format_text($row['Personality']) : '–') . '</td>';
+        echo '<td class="cvsml cvcenter font-bold" colspan="4">' . (!empty($row['Alignment']) ? $row['Alignment'] : '–') . '</td>';
         echo '</tr>';
     }
-    if ($fullinfo && $row['StatBlockConfigs']) {
-    ?>
-        <tr><td>Stat Block(s):</td>
-        <td><span id="crsb<?php echo $row['ID']; ?>">
-            <button type="button" class="btn-action-view text-xs cursor-pointer px-2.5 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold rounded border border-amber-300 transition inline-flex items-center gap-1" onclick="showStatBlocks(<?php echo $row['ID']; ?>)">
-                <span>📜</span> <span>Show Stat Block</span>
-            </button>
-        </span></td></tr>
-    <?php
+
+    // Row 12: Environment, Feeding
+    if (!empty($row['Environment']) || !empty($row['Feeding'])) {
+        echo '<tr>';
+        echo '<td class="cvlabel" colspan="7">Environment</td>';
+        echo '<td class="cvlabel cvcenter" colspan="5">Feeding</td>';
+        echo '</tr>';
+        echo '<tr>';
+        echo '<td class="cvsml" colspan="7">' . (!empty($row['Environment']) ? $row['Environment'] : '–') . '</td>';
+        echo '<td class="cvsml cvcenter" colspan="5">' . (!empty($row['Feeding']) ? $row['Feeding'] : '–') . '</td>';
+        echo '</tr>';
     }
+
+    // Rows 13, 14, 15: Not shown on Character Generation list ($fullinfo only)
+    if ($fullinfo) {
+        // Row 13: Organization, Frequency
+        if (!empty($row['Organization']) || !empty($row['Frequency'])) {
+            echo '<tr>';
+            echo '<td class="cvlabel" colspan="8">Organization</td>';
+            echo '<td class="cvlabel cvcenter" colspan="4">Frequency</td>';
+            echo '</tr>';
+            echo '<tr>';
+            echo '<td class="cvsml" colspan="8">' . (!empty($row['Organization']) ? $row['Organization'] : '–') . '</td>';
+            echo '<td class="cvsml cvcenter font-medium" colspan="4">' . (!empty($row['Frequency']) ? $row['Frequency'] : '–') . '</td>';
+            echo '</tr>';
+        }
+
+        // Row 14: Treasure
+        if (!empty($row['Treasure'])) {
+            echo '<tr>';
+            echo '<td class="cvlabel" colspan="12">Treasure</td>';
+            echo '</tr>';
+            echo '<tr>';
+            echo '<td class="cvsml" colspan="12">' . $row['Treasure'] . '</td>';
+            echo '</tr>';
+        }
+
+        // Row 15: Stat Block(s)
+        if (!empty($row['StatBlockConfigs'])) {
+            echo '<tr>';
+            echo '<td class="cvlabel" colspan="12">Stat Block(s)</td>';
+            echo '</tr>';
+            echo '<tr>';
+            echo '<td class="cvsml" colspan="12">';
+            echo '<span id="crsb' . $row['ID'] . '">';
+            echo '<button type="button" class="btn-action-view text-xs cursor-pointer px-2.5 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold rounded border border-amber-300 transition inline-flex items-center gap-1" onclick="showStatBlocks(' . $row['ID'] . ')">';
+            echo '<span>📜</span> <span>Show Stat Block</span>';
+            echo '</button>';
+            echo '</span>';
+            echo '</td>';
+            echo '</tr>';
+        }
+    }
+
     echo '</tbody></table>';
 }
 
@@ -499,86 +537,86 @@ function show_templateinfo($id, $fullinfo) {
 
     $row = $_APP['templates'][$id];
 
-    echo '<table width="100%">';
-    echo '<thead><tr>';
-    echo '<th colspan=2>' . $row['Name'] . ' (' . $row['NameInformal'] . ')' .
+    echo '<table class="charviewsection creature-grid-table" width="100%">';
+    echo '<thead><tr id="template' . $row['ID'] . '">';
+    echo '<th class="cvheader" colspan="12">' . $row['Name'] . ' (' . $row['NameInformal'] . ')' .
     ($row['Descriptors'] ? (' - ' . $row['Descriptors']) : '') . '</th>';
     echo '</tr></thead><tbody>';
-    {
-        echo '<tr>';
-        echo '<td>Old Type &rarr; New Type:</td>';
-        echo '<td>';
-        if (isset($row['RequiredType']))
-            echo $_APP['creaturesubtypes'][$row['RequiredType']]['Name'];
-        else if (isset($row['RequiredGroup']))
-            echo $_APP['creaturetypes'][$row['RequiredGroup']]['Name'];
-        else
-            echo 'Any';
-        echo ' &rarr; ';
-        if (isset($row['AdjustedType']))
-            echo $_APP['creaturesubtypes'][$row['AdjustedType']]['Name'];
-        else if (isset($row['AdjustedGroup']))
-            echo $_APP['creaturetypes'][$row['AdjustedGroup']]['Name'];
-        else
-            echo 'Same as base race';
-        echo '</td>';
-        echo '</tr>';
-    } {
-        echo '<tr>';
-        echo '<td>Ability Adjustments:</td>';
-        echo '<td>' . cTemplate::GetAbilAdjStr($id) . '</td>';
-        echo '</tr>';
-    } {
-        echo '<tr>';
-        echo '<td>RL / CL:</td>';
-        echo '<td>' . signedstr($row['RLModifier'] ? $row['RLModifier'] : 0) . ' / ' . signedstr($row['CLModifier']) . '</td>';
-        echo '</tr>';
+
+    // Row 1: Old Type -> New Type, RL / CL
+    if (isset($row['RequiredType']))
+        $oldType = $_APP['creaturesubtypes'][$row['RequiredType']]['Name'];
+    else if (isset($row['RequiredGroup']))
+        $oldType = $_APP['creaturetypes'][$row['RequiredGroup']]['Name'];
+    else
+        $oldType = 'Any';
+
+    if (isset($row['AdjustedType']))
+        $newType = $_APP['creaturesubtypes'][$row['AdjustedType']]['Name'];
+    else if (isset($row['AdjustedGroup']))
+        $newType = $_APP['creaturetypes'][$row['AdjustedGroup']]['Name'];
+    else
+        $newType = 'Same as base race';
+
+    $rlClStr = signedstr($row['RLModifier'] ? $row['RLModifier'] : 0) . ' / ' . signedstr($row['CLModifier']);
+    if (!empty($row['SizeAdj'])) {
+        $rlClStr .= ' (Size: ' . signedstr($row['SizeAdj']) . ')';
     }
-    if ($row['SizeAdj']) {
-        echo '<tr>';
-        echo '<td>Size Adjustment:</td>';
-        echo '<td>' . signedstr($row['SizeAdj']) . '</td>';
-        echo '</tr>';
-    }
+
+    echo '<tr>';
+    echo '<td class="cvlabel" colspan="8">Old Type &rarr; New Type</td>';
+    echo '<td class="cvlabel cvcenter" colspan="4">RL / CL</td>';
+    echo '</tr>';
+    echo '<tr>';
+    echo '<td class="cvsml font-semibold" colspan="8">' . $oldType . ' &rarr; ' . $newType . '</td>';
+    echo '<td class="cvsml cvcenter font-bold" colspan="4">' . $rlClStr . '</td>';
+    echo '</tr>';
+
+    // Row 2: Ability Adjustments, DR / MR
+    $drMrStr = ($row['DR'] ? signedstr($row['DR']) : '-') . ' / ' . ($row['MR'] ? signedstr($row['MR']) : '-');
     if ($row['GroundSpeed'] || $row['SwimSpeed'] || $row['FlySpeed']) {
+        $drMrStr .= ' (Spd: ' . ($row['GroundSpeed'] ? $row['GroundSpeed'] : '-') . '/' . ($row['SwimSpeed'] ? $row['SwimSpeed'] : '-') . '/' . ($row['FlySpeed'] ? $row['FlySpeed'] : '-') . ')';
+    }
+
+    echo '<tr>';
+    echo '<td class="cvlabel" colspan="8">Ability Adjustments</td>';
+    echo '<td class="cvlabel cvcenter" colspan="4">DR / MR</td>';
+    echo '</tr>';
+    echo '<tr>';
+    echo '<td class="cvsml font-semibold" colspan="8">' . (cTemplate::GetAbilAdjStr($id) ?: 'None') . '</td>';
+    echo '<td class="cvsml cvcenter font-mono" colspan="4">' . $drMrStr . '</td>';
+    echo '</tr>';
+
+    // Row 3: Appearance
+    if (!empty($row['Appearance'])) {
         echo '<tr>';
-        echo '<td>Base Speed (G/S/F):</td>';
-        echo '<td>' . ($row['GroundSpeed'] ? $row['GroundSpeed'] : '-') . ' / ' .
-        ($row['SwimSpeed'] ? $row['SwimSpeed'] : '-') . ' / ' .
-        ($row['FlySpeed'] ? $row['FlySpeed'] : '-') . '</td>';
+        echo '<td class="cvlabel" colspan="12">Appearance</td>';
+        echo '</tr>';
+        echo '<tr>';
+        echo '<td class="cvsml text-stone-700" colspan="12">' . format_text($row['Appearance']) . '</td>';
         echo '</tr>';
     }
-    if ($row['DR'] || $row['MR']) {
+
+    // Row 4: Personality, Alignment
+    if (!empty($row['Personality']) || !empty($row['Alignment'])) {
         echo '<tr>';
-        echo '<td>DR/MR:</td>';
-        echo '<td>' . ($row['DR'] ? signedstr($row['DR']) : '-') . ' / ' .
-        ($row['MR'] ? signedstr($row['MR']) : '-') . '</td>';
+        echo '<td class="cvlabel" colspan="8">Personality</td>';
+        echo '<td class="cvlabel cvcenter" colspan="4">Alignment</td>';
+        echo '</tr>';
+        echo '<tr>';
+        echo '<td class="cvsml text-stone-700" colspan="8">' . (!empty($row['Personality']) ? format_text($row['Personality']) : '–') . '</td>';
+        echo '<td class="cvsml cvcenter font-bold" colspan="4">' . (!empty($row['Alignment']) ? $row['Alignment'] : '–') . '</td>';
         echo '</tr>';
     }
-    if ($row['Appearance']) {
-        echo '<tr>';
-        echo '<td>Appearance:</td>';
-        echo '<td>' . format_text($row['Appearance']) . '</td>';
-        echo '</tr>';
-    }
-    if ($row['Personality']) {
-        echo '<tr>';
-        echo '<td>Personality:</td>';
-        echo '<td>' . format_text($row['Personality']) . '</td>';
-        echo '</tr>';
-    }
-    if ($row['Alignment']) {
-        echo '<tr>';
-        echo '<td>Alignment:</td>';
-        echo '<td>' . $row['Alignment'] . '</td>';
-        echo '</tr>';
-    }
-    if ($row['RacialTraits']) {
-        echo '<tr>';
-        echo '<td>Racial Traits:</td>';
-        echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['RacialTraits'], FALSE)) . '</td>';
-        echo '</tr>';
-    }
+
+    // Row 5: Racial Traits
+    echo '<tr>';
+    echo '<td class="cvlabel" colspan="12">Racial Traits</td>';
+    echo '</tr>';
+    echo '<tr>';
+    echo '<td class="cvsml" colspan="12">' . ($row['RacialTraits'] ? format_text(cTraitEffects::StatGetTraitsDescription($row['RacialTraits'], FALSE)) : 'None') . '</td>';
+    echo '</tr>';
+
     echo '</tbody></table>';
 }
 

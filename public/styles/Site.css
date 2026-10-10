@@ -596,6 +596,68 @@ td.cvcenter {
     text-align: center;
 }
 
+.rule-content table.charviewsection,
+.rule-content table.creature-grid-table,
+table.creature-grid-table {
+    display: table !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    border: 1px solid var(--color-black, #1e293b) !important;
+    background-color: var(--color-parchment, #fdfbf7) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+    margin-top: 1rem !important;
+    margin-bottom: 1.75rem !important;
+}
+
+.rule-content table.charviewsection th.cvheader,
+.rule-content table.creature-grid-table th.cvheader,
+table.creature-grid-table th.cvheader {
+    background: #000000 !important;
+    color: #ffffff !important;
+    font-family: "Cinzel", "Trajan Pro", Georgia, serif !important;
+    font-variant: small-caps !important;
+    font-size: 1.05em !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.03em !important;
+    padding: 6px 10px !important;
+    border: 1px solid #000000 !important;
+    text-align: left !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6) !important;
+}
+
+.rule-content table.charviewsection td.cvlabel,
+.rule-content table.creature-grid-table td.cvlabel,
+table.creature-grid-table td.cvlabel {
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    font-variant: small-caps !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+    padding: 2.5px 6px !important;
+    border: 1px solid #000000 !important;
+    line-height: 1.25 !important;
+}
+
+.rule-content table.charviewsection td.cvsml,
+.rule-content table.creature-grid-table td.cvsml,
+table.creature-grid-table td.cvsml {
+    background-color: var(--color-parchment, #fdfbf7) !important;
+    color: #0f172a !important;
+    font-size: 0.875rem !important;
+    padding: 4px 8px !important;
+    border: 1px solid #000000 !important;
+    line-height: 1.35 !important;
+}
+
+.rule-content table.charviewsection td.cvcenter,
+.rule-content table.creature-grid-table td.cvcenter,
+table.creature-grid-table td.cvcenter {
+    text-align: center !important;
+}
+
 input[type=text].rolcalc {
     width: 99%;
     padding: 2px;

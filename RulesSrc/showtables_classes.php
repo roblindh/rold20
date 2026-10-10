@@ -52,74 +52,91 @@ function show_classes() {
         }
         ?>
         <br/>
-        <table width="100%">
-            <thead><tr>
-                <th colspan="2"><?php echo $row['Name'] . " (" . $row['Abbreviation'] . ")"; ?></th>
+        <table class="charviewsection creature-grid-table" width="100%">
+            <thead><tr id="class<?php echo $row['ID']; ?>">
+                <th class="cvheader" colspan="12"><?php echo $row['Name'] . " (" . $row['Abbreviation'] . ")"; ?></th>
             </tr></thead>
             <tbody>
             <?php if ($imgRel) { ?>
+            <!-- Row 1: Image -->
             <tr>
-                <td colspan="2" style="text-align: center; padding: 12px; background: rgba(0,0,0,0.02);">
+                <td colspan="12" style="text-align: center; padding: 12px; background: rgba(0,0,0,0.02);">
                     <img src="/<?php echo $imgRel; ?>" alt="<?php echo htmlspecialchars($row['Name'], ENT_QUOTES); ?> Class Illustration" class="rounded-lg shadow-md border border-amber-900/20" style="max-height: 440px; width: auto; max-width: 100%; object-fit: contain; margin: 0 auto; display: block;" loading="lazy" />
                 </td>
             </tr>
             <?php } ?>
+            <!-- Row 2: HP/Level, SP/Level, PP/Level, Infl/Level -->
             <tr>
-                <td>HP/Level:</td>
-                <td><?php echo $row['HPPerLevel']; ?></td>
+                <td class="cvlabel cvcenter" colspan="3">HP / Level</td>
+                <td class="cvlabel cvcenter" colspan="3">SP / Level</td>
+                <td class="cvlabel cvcenter" colspan="3">PP / Level</td>
+                <td class="cvlabel cvcenter" colspan="3">Infl / Level</td>
             </tr>
             <tr>
-                <td>SP/Level:</td>
-                <td><?php echo $row['SPPerLevel']; ?></td>
+                <td class="cvsml cvcenter font-bold" colspan="3"><?php echo $row['HPPerLevel']; ?></td>
+                <td class="cvsml cvcenter font-bold" colspan="3"><?php echo $row['SPPerLevel']; ?></td>
+                <td class="cvsml cvcenter font-bold" colspan="3"><?php echo $row['PPPerLevel']; ?></td>
+                <td class="cvsml cvcenter font-bold" colspan="3"><?php echo $row['InflPerLevel']; ?></td>
+            </tr>
+            <!-- Row 3: Skill Pts/Level, Key Ability Scores, Favored Alignment -->
+            <tr>
+                <td class="cvlabel cvcenter" colspan="4">Skill Pts / Level</td>
+                <td class="cvlabel cvcenter" colspan="4">Key Ability Scores</td>
+                <td class="cvlabel cvcenter" colspan="4">Favored Alignment</td>
             </tr>
             <tr>
-                <td>PP/Level:</td>
-                <td><?php echo $row['PPPerLevel']; ?></td>
+                <td class="cvsml cvcenter font-semibold" colspan="4"><?php echo $row['SkillPtsPerLevel']; ?></td>
+                <td class="cvsml cvcenter font-semibold" colspan="4"><?php echo $row['KeyAbilities']; ?></td>
+                <td class="cvsml cvcenter font-semibold" colspan="4"><?php echo $row['Alignment']; ?></td>
+            </tr>
+            <!-- Row 4: Available Primary Skills -->
+            <tr>
+                <td class="cvlabel" colspan="12">Available Primary Skills</td>
             </tr>
             <tr>
-                <td>Infl/Level:</td>
-                <td><?php echo $row['InflPerLevel']; ?></td>
+                <td class="cvsml" colspan="12"><?php echo $primSkillsStr; ?></td>
+            </tr>
+            <!-- Row 5: Available Secondary Skills -->
+            <tr>
+                <td class="cvlabel" colspan="12">Available Secondary Skills</td>
             </tr>
             <tr>
-                <td>Skill Pts/Level:</td>
-                <td><?php echo $row['SkillPtsPerLevel']; ?></td>
+                <td class="cvsml" colspan="12"><?php echo $secSkillsStr; ?></td>
+            </tr>
+            <?php if (!empty($row['SpellKnowledge'])) { ?>
+            <!-- Row 6: Spell Knowledge -->
+            <tr>
+                <td class="cvlabel" colspan="12">Spell Knowledge</td>
             </tr>
             <tr>
-                <td>Key Ability Scores:</td>
-                <td><?php echo $row['KeyAbilities']; ?></td>
+                <td class="cvsml" colspan="12"><?php echo format_text($row['SpellKnowledge']); ?></td>
             </tr>
-            <tr>
-                <td>Favored Alignment:</td>
-                <td><?php echo $row['Alignment']; ?></td>
-            </tr>
-            <tr>
-                <td>Available Primary Skills:</td>
-                <td><?php echo $primSkillsStr; ?></td>
-            </tr>
-            <tr>
-                <td>Available Secondary Skills:</td>
-                <td><?php echo $secSkillsStr; ?></td>
-            </tr>
-            <?php if ($row['SpellKnowledge']) { ?>
-                <tr>
-                    <td>Spell Knowledge:</td>
-                    <td><?php echo format_text($row['SpellKnowledge']); ?></td>
-                </tr>
             <?php } ?>
-            <?php if ($row['Notes']) { ?>
+            <?php if (!empty($row['Notes'])) { ?>
+            <!-- Row 7: Role-Playing Notes -->
             <tr>
-                <td>Role-Playing Notes:</td>
-                <td><?php echo format_text($row['Notes']); ?></td>
+                <td class="cvlabel" colspan="12">Role-Playing Notes</td>
+            </tr>
+            <tr>
+                <td class="cvsml" colspan="12"><?php echo format_text($row['Notes']); ?></td>
             </tr>
             <?php } ?>
+            <?php if (!empty($row['Roles'])) { ?>
+            <!-- Row 8: Party Roles -->
             <tr>
-                <td>Roles:</td>
-                <td><?php echo format_text($row['Roles']); ?></td>
+                <td class="cvlabel" colspan="12">Party Roles</td>
             </tr>
-            <?php if ($row['OldRanks']) { ?>
             <tr>
-                <td>Ranks:</td>
-                <td><?php echo format_text($row['OldRanks']); ?></td>
+                <td class="cvsml" colspan="12"><?php echo format_text($row['Roles']); ?></td>
+            </tr>
+            <?php } ?>
+            <?php if (!empty($row['OldRanks'])) { ?>
+            <!-- Row 9: Ranks -->
+            <tr>
+                <td class="cvlabel" colspan="12">Ranks</td>
+            </tr>
+            <tr>
+                <td class="cvsml" colspan="12"><?php echo format_text($row['OldRanks']); ?></td>
             </tr>
             <?php } ?>
         </tbody></table>
@@ -129,19 +146,22 @@ function show_classes() {
 
         while ($row2 = $result2->fetch()) {
             ?>
-            <table width="100%">
+            <table class="charviewsection creature-grid-table" width="100%">
                 <thead><tr>
-                        <th><?php echo $row['Name'] . " "; ?>Configuration:</th>
-                        <th><?php echo $row2['Name']; ?></th>
-                    </tr></thead>
-                    <tbody>
+                    <th class="cvheader" colspan="12"><?php echo $row['Name'] . " "; ?>Configuration: <?php echo $row2['Name']; ?></th>
+                </tr></thead>
+                <tbody>
                 <tr>
-                    <td>Full Skill Progression:</td>
-                    <td><?php echo format_text($row2['PrimSkills']); ?></td>
+                    <td class="cvlabel" colspan="12">Full Skill Progression</td>
                 </tr>
                 <tr>
-                    <td>Half Skill Progression:</td>
-                    <td><?php echo format_text($row2['SecSkills']); ?></td>
+                    <td class="cvsml" colspan="12"><?php echo format_text($row2['PrimSkills']); ?></td>
+                </tr>
+                <tr>
+                    <td class="cvlabel" colspan="12">Half Skill Progression</td>
+                </tr>
+                <tr>
+                    <td class="cvsml" colspan="12"><?php echo format_text($row2['SecSkills']); ?></td>
                 </tr>
             </tbody></table>
             <?php
