@@ -1887,7 +1887,7 @@ actions:
     Description: "You try to escape bonds or manacles."
     Results: 'S - You manage to escape your bonds.\nF - You fail to escape the bonds and cannot retry those bonds until your chances improve.'
     Difficulties: 'Typical rope: 20 (or opposed Use Rope check)\nManacles: 30\nMasterwork manacles: 35'
-    Modifiers: "Fast escape (half time): -10"
+    Modifiers: "Fast escape (half time): -10\nEscape discreetly (Stealth vs . Perception): -4"
     APBoost: null
     ShowPCGen: null
   - ID: 104
@@ -1923,7 +1923,7 @@ actions:
     Description: "You try to unlock (or lock) a lock."
     Results: 'S - You successfully unlock (or lock) the lock.\nF - You fail to open the lock but can try again.\nOF - You accidentally jam the lock. Further attempts suffer a -4 penalty.'
     Difficulties: 'Very simple lock: 20\nAverage lock: 25\nGood lock: 30\nAmazing lock: 40'
-    Modifiers: 'Improvised tool: -2\nMasterwork tool: +2\nFast open lock (5 AP): -20\nCrafting synergy: +1 syn per 5 lvls'
+    Modifiers: 'Improvised tool: -2\nMasterwork tool: +2\nFast open lock (5 AP): -20\nUnlock discreetly (Stealth vs . Perception): -4\nCrafting synergy: +1 syn per 5 lvls'
     APBoost: null
     ShowPCGen: 1
   - ID: 106
@@ -1941,7 +1941,7 @@ actions:
     Description: "You try to disarm a trap, jam a lock, rig a wheel, or sabotage some other device."
     Results: 'S - Your sabotage works as intended. You avoid a trap but do not actually sabotage it.\nOS - A trap can either be avoided or disabled (it can still be reset normally).\nES - A trap can either be avoided or disabled permanently (it has to be repaired). You can also choose to insert a bypass element that henceforth lets you and your allies avoid triggering the trap.\nCS - You can bypass a trap without disabling it.\nF - You fail to sabotage the device but can try again.\nOF - You accidentally trigger the trap or mistakenly believe that the device has been sabotaged.'
     Difficulties: 'Simple device: 10 (1 round)\nTricky device: 15 (1d4 rounds)\nDifficult device: 20 (2d4 rounds)\nWicked device: 25 (3d4 rounds)\nAttempt to leave no trace: +5'
-    Modifiers: 'Improvised tools: -2 circ\nMasterwork tools: +2 circ\nFast sabotage (1 r): -20\nCrafting synergy: +1 syn per 5 lvls\nDanger Sense synergy against traps: +1 syn per 3 lvls'
+    Modifiers: 'Improvised tools: -2 circ\nMasterwork tools: +2 circ\nFast sabotage (1 r): -20\nSabotage discreetly (Stealth vs . Perception): -4\nCrafting synergy: +1 syn per 5 lvls\nDanger Sense synergy against traps: +1 syn per 3 lvls'
     APBoost: null
     ShowPCGen: null
   - ID: 107
@@ -5507,6 +5507,42 @@ actions:
     Difficulties: null
     Modifiers: "As per attack"
     APBoost: "As per attack"
+    ShowPCGen: null
+  - ID: 308
+    Name: "Catch Object"
+    Category: 1
+    Descriptors: "[Untrained]"
+    ActionCheck: "d20! + (Weapons - Generic skill mod) or (Weapons - Small Thrown skill mod) + Dex mod + PAM vs. object's DeC"
+    ActionTime: Reaction
+    Trigger: "An unattended object passes within your reach"
+    Implements: "C, Hand(s)"
+    Cost: null
+    Range: Reach
+    Duration: Instantaneous
+    Target: "One object smaller than your size category"
+    Description: "You attempt to catch a small object that passes within your reach. If it is thrown or shot as a weapon, use the Deflect Projectile reaction instead. If you want to hit the object with a weapon, resolve it as a reaction attack instead."
+    Results: 'S - You successfully catch the object.\nF - You fail to catch the object but interrupt its flight.\nEF - You miss the object completely.'
+    Difficulties: null
+    Modifiers: "Using 2 free hands: +4 circ"
+    APBoost: "+1 skill check bonus per AP"
+    ShowPCGen: 2
+  - ID: 309
+    Name: "Juggle Object"
+    Category: 1
+    Descriptors: "[Untrained]"
+    ActionCheck: "d20! + (Weapons - Generic skill mod) or (Weapons - Small Thrown skill mod) + Dex mod + PAM vs. object's DeC"
+    ActionTime: "2 AP"
+    Trigger: null
+    Implements: "C, Hand(s)"
+    Cost: null
+    Range: Personal
+    Duration: "Up to 1 r"
+    Target: "One object smaller than your size category"
+    Description: "You throw a small handheld object into the air, then spend AP on other actions, and finally try to catch the object again."
+    Results: 'S - You successfully juggle the object.\nES - You can choose to keep the object airborn until your next round without paying additional AP.\nF - You fail to catch the object and it falls to the ground.'
+    Difficulties: null
+    Modifiers: "Using 2 free hands: +4 circ"
+    APBoost: "+1 skill check bonus per AP"
     ShowPCGen: null
 hazards:
   - ID: 1

@@ -1,7 +1,5 @@
 # To Do - Equipment
 
-- [ ] Weapons
-  - [ ] Advanced siege engines (pf435+)
 - [x] Poisons and drugs
   - [x] The Fort DC could be modified by dosage and time elapsed.
   - [x] Add rules for addiction, tolerance, and withdrawal (tolerance applies to poisons as well as drugs).
@@ -23,16 +21,17 @@
   - [x] Zerk: injury, minor addiction, +8 vs Fort, 50 sp/dose, +1 bonus to initiative and +d2 Str for 1 h, d2 Con damage
   - [x] Alcohol: ingested, minor or moderate addiction?, sickened?
 - [ ] More equipment and services
-  - [ ] Skis, skates, crampons, snowshoes.
+  - [x] Skis, skates, crampons, snowshoes.
   - [ ] Also add appropriate actions to Survival or Athletics skill (specializations?).
-  - [ ] Tattoos, castration, prosthesis (hooks, peg legs), maps, bank loans (based on WC).
-  - [ ] Add more typical taxes, tolls, and fees.
+  - [x] Tattoos, castration, prosthesis (hooks, peg legs), maps, bank loans (based on WC).
+  - [x] Add more typical taxes, tolls, and fees.
   - [ ] Should teleportation circles be common enough to be available as a service in cities and some organizations?
   - [ ] What about other magical as well as mundane message and transportation services?
   - [ ] See my old house rules for more items, materials, and poisons.
-- [ ] Other ships and boats: barque, bireme, brig, clipper, curragh, cutter, dhow, dinghy, dory, fireboat, galleon, gondola, hooker, houseboat, jolly boat, junk, koch, knaar, lifeboat, longboat, lugger, narrow-boat, pinnace, pontoon, punt, sampan, schooner, scow, sloop, tall ship, trawler, windjammer, yacht, yawl.
-  - [ ] Ship prices: 10 sp/ton for civilian vessels, 20 sp/ton for warships, 30+ sp/ton for exceptional/royal ships
-  - [ ] [Ship Prices Link](https://www.realmshelps.net/stores/ships.shtml)
+- [x] Other ships and boats: barque, bireme, brig, clipper, curragh, cutter, dhow, dinghy, dory, fireboat, galleon, gondola, hooker, houseboat, jolly boat, junk, koch, knaar, lifeboat, longboat, lugger, narrow-boat, pinnace, pontoon, punt, sampan, schooner, scow, sloop, tall ship, trawler, windjammer, yacht, yawl.
+  - [x] Ship prices: 10 sp/ton for civilian vessels, 20 sp/ton for warships, 30+ sp/ton for exceptional/royal ships
+  - [x] [Ship Prices Link](https://www.realmshelps.net/stores/ships.shtml)
+- [x] Ancient and medieval siege engines and shipboard weapons: trebuchet (traction and counterweight), scorpio, repeating ballista, springald, mantlet, covered gallery, cauldron (swiveling), corvus, swivel gun, harpoon ballista, carronade, Greek fire siphon, and siege ammunition.
 - [ ] Buildings and businesses
   - [ ] See 5E DMG p127-128 for expenses/income, typical hirelings/guards, etc.
 - [ ] List current magic items as “Modified Items”.

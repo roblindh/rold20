@@ -32,6 +32,6 @@
 - [ ] Update action descriptions
   - [ ] Identify and add more results for outstanding, exceptional, and critical.
   - [ ] Identify and add more synergy combinations.
-- [ ] New action (Juggling?): throw held item up in the air, then perform other actions up to some AP, and finally catch the thrown item again.
-- [ ] New action: catching a thrown or falling item. Projectiles? Replace Deflect Projectile action from Danger Sense skill?
-- [ ] New modifier for thievery-type actions: performing action (such as Search, Disable Device, Open Lock) discretely while being observed.
+- [x] New action (Juggling?): throw held item up in the air, then perform other actions up to some AP, and finally catch the thrown item again.
+- [x] New action: catching a thrown or falling item. Projectiles? Replace Deflect Projectile action from Danger Sense skill?
+- [x] New modifier for thievery-type actions: performing action (such as Search, Disable Device, Open Lock) discretely while being observed.
