@@ -178,7 +178,7 @@ class cEntity {
     }
 
     public function GetCritRes() {
-        return ($this->GetDR() + $this->TraitEffects->CritRes);
+        return (int)floor($this->GetDR() / 2) + $this->TraitEffects->CritRes;
     }
 
     public function GetMR() {

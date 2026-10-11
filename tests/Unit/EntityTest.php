@@ -283,7 +283,7 @@ class EntityTest extends TestCase
     }
 
     /**
-     * Test Critical Resistance calculation (DR + CritRes)
+     * Test Critical Resistance calculation (floor(DR / 2) + CritRes)
      */
     public function test_critical_resistance(): void
     {

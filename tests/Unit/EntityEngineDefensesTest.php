@@ -89,13 +89,13 @@ class EntityEngineDefensesTest extends TestCase
                     'Subtype' => 10,
                     'location' => 2,
                     'slot' => 'body',
-                    'custom_traits' => 'Armor { Qual=Hv; DR=12; }',
+                    'custom_traits' => 'Armor { Qual=Hv; DR=20; }',
                 ],
             ],
         ];
 
         $humanCalc = EntityEngine::calculate($humanWithArmor, 0);
-        // Total CritRes includes DR (12), but racial CritRes is 0 -> No piercing resistance
+        // Total CritRes includes DR/2 (floor(20 / 2) = 10), but racial CritRes is 0 -> No piercing resistance
         $this->assertGreaterThanOrEqual(10, $humanCalc['defenses']['crit_res']);
         $this->assertEquals(0, $humanCalc['defenses']['racial_crit_res']);
         $this->assertFalse($humanCalc['defenses']['piercing_resistance']);
@@ -229,6 +229,33 @@ class EntityEngineDefensesTest extends TestCase
 
         $this->assertEquals(8, $calc['defenses']['dr'], "Expected DR 8, got " . $calc['defenses']['dr'] . ". Traits was: " . var_export($boughtItem['traits'], true) . " and item: " . json_encode($boughtItem));
     }
+
+    public function testCritResCalculatesHalfDrContribution(): void
+    {
+        // Human with DR 9 armor (floor(9 / 2) = 4) and no extra CritRes
+        $char = [
+            'ID' => 1,
+            'Name' => 'Armored Fighter',
+            'BaseRace' => 1,
+            'Classes' => '1',
+            'Equipment' => [
+                [
+                    'ID' => 120,
+                    'Name' => 'Custom Armor',
+                    'Subtype' => 10,
+                    'location' => 2,
+                    'slot' => 'body',
+                    'custom_traits' => 'Armor { Qual=Hv; DR=9; }',
+                ],
+            ],
+        ];
+
+        $calc = EntityEngine::calculate($char, 0);
+        $this->assertEquals(9, $calc['defenses']['dr']);
+        $this->assertEquals(4, $calc['defenses']['crit_res']);
+        $this->assertEquals(24, $calc['defenses']['crit_score']);
+    }
 }
+
 
 

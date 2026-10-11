@@ -234,7 +234,7 @@
     A weapon's reach is measured in 5-foot grid squares. A weapon with <code>0–1</code> reach threatens adjacent squares and your own square. A reach of <code>2–2</code> (such as a long pike) threatens only squares exactly two squares away, leaving adjacent combatants out of reach.
 </p>
 <p>
-    <strong>Weapon Size Provocation:</strong> When executing a melee attack, compare the object size of the attacking weapon to the object size of the defender's ready weapons. If the defender holds a ready weapon that is <strong>larger than the attacking weapon</strong>, the attack action immediately <strong>provokes an attack of opportunity</strong> from the defender.
+    <strong>Weapon Size Provocation:</strong> Each round, for the first melee attack action you execute against a specific defender, compare the object size category of the attacking weapon to the object size category of the defender's ready weapons. If the defender holds a ready weapon of a <strong>larger size category than all attacking weapons in that action</strong>, the attack action immediately <strong>provokes an attack of opportunity</strong> from the defender. Subsequent melee attack actions in the same round against that defender do not provoke reactions due to weapon size.
 </p>
 <p>
     Combatants wielding smaller weapons can bypass this opportunity attack through tactical maneuvers:

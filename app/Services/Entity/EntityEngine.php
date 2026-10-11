@@ -1403,7 +1403,7 @@ class EntityEngine
         $isInanimate = ($groupId === 4 || in_array($subtypeId, [29, 30]));
         $hasPiercingResistance = ($isInanimate || $racialCritRes >= 10);
 
-        $critRes = $dr + $critResMod;
+        $critRes = (int)floor($dr / 2) + $critResMod;
         $critScore = 20 + $critRes;
 
         // Energy Resistances

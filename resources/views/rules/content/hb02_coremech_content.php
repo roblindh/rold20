@@ -28,6 +28,9 @@
     Conversely, if a die rolls a natural 1, subtract the die size plus one (e.g., &minus;21 for a d20) from the total, roll again, and subtract the new roll.
 </p>
 <p>
+    <strong>Nota Bene (No Automatic Hits or Misses):</strong> RoL d20 does not inherit automatic hits and misses from regular d20 systems. Success or failure is determined entirely by comparing the final calculated check total against the target Difficulty Class (DC) or Defense score. Consequently, it is possible to miss even with an exploding natural 20 if the total does not meet or exceed the target defense, or to hit even with an imploding natural 1 if your attack modifiers are sufficiently high relative to the target's defense.
+</p>
+<p>
     <em id="DamageDice">Dice Scaling Progression:</em> Effects that step damage dice up or down follow this standard progression:
 </p>
 <div class="formula-box">
@@ -312,7 +315,7 @@
     DR provided by armor and cover applies separately and takes effect alongside innate or natural DR. Natural DR is determined by race and can be further augmented by templates, special abilities, or magic.
 </p>
 <p>
-    <em>Critical Protection:</em> In addition to mitigating damage, DR directly reinforces protection against critical hits targeting DeC by adding directly to Critical Hit Resistance (see below).
+    <em>Critical Protection:</em> In addition to mitigating damage, DR reinforces protection against critical hits targeting DeC by contributing half of its value (&lfloor;DR / 2&rfloor;) to Critical Hit Resistance (see below).
 </p>
 <p>
     <em>Negating Secondary Effects:</em> When DR reduces all physical damage from an attack to zero, most rider effects dependent on physical penetration are also negated. This includes injury-delivered poisons, diseases, blood drain, and many physical monster abilities (though touch attacks and energy riders are unaffected). Additionally, a defender taking zero damage is not required to make concentration checks to maintain active spells or tasks.
@@ -337,10 +340,10 @@
     <em>Critical Hit Resistance (CritRes):</em> Represents anatomy with average vital pressure points or exceptionally reinforced structures that diffuse lethal blows. While an attack roll beating DeC by 20 or more normally scores a critical hit, Critical Hit Resistance increases this threshold. CritRes applies to all attacks against DeC capable of scoring critical hits, but does not apply to attacks targeting Fort, Ref, or Will.
 </p>
 <div class="formula-box">
-    <strong>CritRes</strong> = DR + racial mod + other modifiers
+    <strong>CritRes</strong> = &lfloor;DR / 2&rfloor; + racial mod + other modifiers
 </div>
 <p>
-    <em>Example:</em> A creature with DeC 15, DR 5, and a racial CritRes modifier of +10 requires an attack roll of 15 to hit normally, but requires a total result of 50 (<code>15 DeC + 20 base crit threshold + 5 DR + 10 racial = 50</code>) to suffer a critical hit.
+    <em>Example:</em> A creature with DeC 15, DR 5, and a racial CritRes modifier of +10 requires an attack roll of 15 to hit normally, but requires a total result of 47 (<code>15 DeC + 20 base crit threshold + 2 [&lfloor;5 DR / 2&rfloor;] + 10 racial = 47</code>) to suffer a critical hit.
 </p>
 <p>
     <em>Piercing Resistance:</em> Inanimate objects and creatures with a racial Critical Hit Resistance of 10 or higher take only half damage from piercing attacks (calculated after DR reduction), as piercing damage relies heavily on penetrating distinct vital organs.

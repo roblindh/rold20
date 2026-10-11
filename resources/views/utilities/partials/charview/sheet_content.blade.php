@@ -315,7 +315,7 @@
                                 </template>
                             </td>
                             <td class="cvmdm cvcenter" colspan="2" x-text="calculatedState?.defenses?.dec_passive ?? calcDeCPassive()"></td>
-                            <td class="cvmdm cvcenter" colspan="2" x-text="'+' + (calculatedState?.defenses?.crit_score ?? (20 + (calculatedState?.defenses?.dr ?? 0) + (calculatedState?.defenses?.crit_res ?? 0)))"></td>
+                            <td class="cvmdm cvcenter" colspan="2" x-text="'+' + (calculatedState?.defenses?.crit_score ?? (20 + (calculatedState?.defenses?.crit_res ?? 0)))"></td>
                         </tr>
                         <tr>
                             <td class="cvlabel cvcenter" colspan="2">Fort</td>

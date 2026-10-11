@@ -5014,7 +5014,7 @@ function characterWizard() {
         },
 
         calcCritRes() {
-            return 20 + this.calcDR() + (this.getIPBonus(17) || 0);
+            return 20 + Math.floor(this.calcDR() / 2) + (this.getIPBonus(17) || 0);
         },
 
         calcFort() {

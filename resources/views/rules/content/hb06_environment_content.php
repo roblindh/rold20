@@ -169,7 +169,7 @@
     Falling or jumping from a height inflicts kinetic impact damage based on the total distance fallen:
 </p>
 <ul>
-    <li><strong>Base Falling Damage:</strong> <strong>1d6 HP</strong> of blunt damage per 2 squares (3 m) fallen, up to a maximum of <strong>30d6 HP</strong>. The falling creature lands <strong>Prone</strong>.</li>
+    <li><strong>Base Falling Damage:</strong> <strong>1d6 HP</strong> and <strong>1d6 SP</strong> of blunt damage per 2 squares (3 m) fallen, up to a maximum of <strong>30d6 HP</strong> and <strong>30d6 SP</strong>. The falling creature lands <strong>Prone</strong>.</li>
     <li><strong>Acrobatics (Land Softly):</strong> A successful <em>Acrobatics</em> check reduces falling damage and prevents the creature from falling prone.</li>
     <li><strong>Yielding Surface:</strong> Landing on a yielding surface (such as soft mud, loose snow, or a canopy) converts 1d6 of damage from HP into SP (stacks with <em>Land Softly</em>).</li>
     <li><strong>Deep Water or Highly Yielding Surface:</strong> Landing in deep water (3+ meters of depth) or a very yielding surface (such as a haystack or safety net) reduces the effective fall height by <strong>4 squares (6 m)</strong> for damage calculations, and converts the next <strong>2d6</strong> of damage from HP to SP.</li>
