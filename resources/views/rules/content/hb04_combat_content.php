@@ -378,6 +378,15 @@
     </div>
 </div>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/combat_akimbo_monk.jpg" alt="A high-level monk knocking out three gnolls with an acrobatic flying multi-strike" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        A master monk delivers a flurry of flying kicks and punches, felling three gnolls simultaneously in a seamless akimbo assault.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h4 id="MountedCombat">Mounted Combat</h4>
 <p>
     War-trained mounts and natural predators navigate battlefields instinctively under their rider's guidance. Untrained mounts require active <em>Ride</em> checks for all tactical maneuvers and combat actions.
@@ -429,6 +438,15 @@
         <a href="/reference/actions/Drive/Pilot%20Vehicle" class="related-ref-link">⚡ Drive/Pilot Vehicle</a>
     </div>
 </div>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/combat_vehicle_wagon.jpg" alt="A party of adventurers fighting from a galloping horse-drawn wagon while pursued by raiders" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Adventurers clash at full gallop, returning arrow fire and spells from a speeding supply wagon while evading pursuing raiders.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h3 id="Morale">Morale</h3>
 <p>

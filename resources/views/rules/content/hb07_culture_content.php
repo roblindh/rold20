@@ -767,6 +767,16 @@
 <p>
     In most civilized lands, trade is regulated by municipal authorities, merchant syndicates, and craft guilds. Standardized coinage and precious metal bullion possess fixed, legally enforced exchange values. Gemstones, art objects, and bulk trade commodities (grain, timber, iron) also have established market values, leaving little room for price fluctuation in peaceful times.
 </p>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/culture_underground_market.jpg" alt="A bustling subterranean market in a fantasy underground city" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Merchants, artisans, and wanderers of diverse races barter goods, masterwork weapons, and rare reagents in a bustling subterranean marketplace.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <p>
     Manufactured goods, weapons, and armor vary significantly in craftsmanship, durability, and availability:
 </p>
@@ -868,6 +878,15 @@
 <p>
     Technological and magical development across civilizations dictates the availability of materials, armaments, transportation, medical treatments, and civil infrastructure. In RoL d20, societal progression is divided into two distinct dimensions: <strong>Physical Technology Levels (TL)</strong> and <strong>Metaphysical Technology Levels (MTL)</strong>.
 </p>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/culture_artificer_tinkerer.jpg" alt="A master artificer and tinkerer calibrating clockwork and arcane devices" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        In a cluttered workshop, an ingenious artificer merges intricate clockwork gears with glowing arcane crystals and plasma coils.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h4>Physical Technology Levels (TL)</h4>
 <p>

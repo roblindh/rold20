@@ -703,6 +703,15 @@
     In order to create a magic item, a number of requirements must be fulfilled. Multiple individuals can cooperate in providing these requirements:
 </p>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/magic_dwarven_smith.jpg" alt="A master dwarven weaponsmith forging an enchanted warhammer" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        A dwarven master smith channels ancient rune-lore and radiant arcane energy into the forging of a heavily enchanted warhammer.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h4>Creation Process</h4>
 <ol>
     <li><strong>Procure Base Item:</strong> Obtain a mundane item of suitable craftsmanship (typically Masterwork quality).</li>

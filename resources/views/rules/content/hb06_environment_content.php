@@ -247,6 +247,15 @@
     <li><strong>Cloud Cover:</strong> Dense clouds provide <em>Concealment</em>, <em>Good Concealment</em>, or <em>Total Concealment</em> depending on thickness.</li>
 </ul>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/env_dragon_rider.jpg" alt="A barbarian queen soaring high above mountain peaks astride a silver dragon" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        A barbarian queen soars through boundless skies and towering clouds astride a majestic silver dragon.
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h4>Underwater</h4>
 <p>
     Submerged combat and wading in chest-deep water impose distinct physical restrictions:
