@@ -1,4 +1,3 @@
-<h2 id="OtherLists">Other Lists</h2>
 <p>
     This chapter catalogues specialized reference lists—including lethal poisons, virulent diseases, psychic insanities, existential conditions, world organizations, and divine pantheons and deities.
 </p>

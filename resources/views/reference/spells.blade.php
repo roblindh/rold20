@@ -66,7 +66,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
             <div class="parchment-inset p-3 rounded-lg shadow-xs">
                 <span class="font-bold text-amber-950 block mb-1">Spell Learning</span>
-                <span class="text-stone-700 leading-relaxed"><strong>Arcane:</strong> 1 new spell/rank (max 2/rank). <strong>Divine:</strong> 2 new spells/rank (unlimited library). <strong>Psionic:</strong> 1 power per 2 skill ranks.</span>
+                <span class="text-stone-700 leading-relaxed"><strong>Arcane:</strong> 1 new spell/rank (max 2/rank). <strong>Divine:</strong> 2 new spells/rank (unlimited library). <strong>Psionic:</strong> 1 power per 2 skill ranks (max 1/rank).</span>
             </div>
             <div class="parchment-inset p-3 rounded-lg shadow-xs">
                 <span class="font-bold text-amber-950 block mb-1">Power Points (PP)</span>
@@ -74,7 +74,7 @@
             </div>
             <div class="parchment-inset p-3 rounded-lg shadow-xs">
                 <span class="font-bold text-amber-950 block mb-1">Casting Checks</span>
-                <span class="text-stone-700 leading-relaxed">Casting requires a skill check (d20 + Skill + Ability Mod). Outstanding failures cause fizzles, while wild magic zones risk magical surges.</span>
+                <span class="text-stone-700 leading-relaxed">Casting requires a skill check ((d20! or "take 10") + Skill + Ability Mod). Outstanding failures cause fizzles, while wild magic zones risk magical surges.</span>
             </div>
         </div>
     </div>

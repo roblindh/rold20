@@ -364,7 +364,7 @@
             <a href="/rules/magic#MagicItems">Power pools</a><br/>
             <a href="/rules/magic#MagicItems">Power stones</a><br/>
             <a href="/rules/core#Prerequisites">Prerequisites</a><br/>
-            <a href="/reference/skills#PrestigeSkills">Prestige Skills</a><br/>
+            <a href="/rules/core#PrestigeSkills">Prestige Skills</a><br/>
             <a href="/rules/environment#Multiverse">Prime material plane</a><br/>
             <a href="/rules/core#Prone">Prone position</a><br/>
             <a href="/rules/magic#MagicItems">Psicrowns</a><br/>
@@ -407,13 +407,13 @@
             <a href="/rules/core#SizeAlteration">Size alteration</a><br/>
             <a href="/rules/core#RaceChars">Size categories (Sz)</a><br/>
             <a href="/reference/skills#SkillList">Skill access</a><br/>
-            <a href="/reference/skills#SkillActions">Skill actions</a><br/>
-            <a href="/reference/skills#SkillBenefits">Skill benefits</a><br/>
+            <a href="/rules/core#SkillActions">Skill actions</a><br/>
+            <a href="/rules/core#SkillBenefits">Skill benefits</a><br/>
             <a href="/rules/core#Actions">Skill checks</a><br/>
             <a href="/rules/chargen#CharSkills">Skill learning</a><br/>
-            <a href="/reference/skills#SkillLevel">Skill level</a><br/>
+            <a href="/rules/core#SkillLevel">Skill level</a><br/>
             <a href="/rules/core#SkillPts">Skill points</a><br/>
-            <a href="/reference/skills#Skills">Skills</a><br/>
+            <a href="/rules/core#Skills">Skills</a><br/>
             <a href="/rules/environment#Sleep">Sleep</a><br/>
             <a href="/rules/core#RaceChars">Small size (S)</a><br/>
             <a href="/rules/culture#SocialClass">Social class</a><br/>

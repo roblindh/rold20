@@ -692,6 +692,57 @@
     <em>Note:</em> Supernatural powers, spells, and magical items can directly modify almost any characteristic, bypassing the standard derivation paths shown above.
 </p>
 
+<h3 id="Skills">Skills</h3>
+<p>
+    Skills represent the broad spectrum of learned capabilities, practical proficiencies, and specialized techniques that a creature can acquire and refine over time. They encompass physical athletics (such as climbing sheer cliffs or leaping chasms), martial combat disciplines (wielding specific weapons or parrying strikes), academic and esoteric lore, artisanal crafts, social acumen, and supernatural spellcasting traditions.
+</p>
+<p>
+    Each time a character advances in level, they receive a pool of <a href="/rules/core#SkillPts">skill points</a> determined by their class. These points are invested to train in new skills or improve existing ranks, reflecting ongoing dedication, practical experience, and personal growth.
+</p>
+
+<h4 id="SkillLevel">Skill Level</h4>
+<p>
+    A character's <strong>skill level</strong> (or skill rank) represents their total competence in a given discipline. It equals the total number of <a href="/rules/core#SkillPts">skill points</a> invested into the skill, combined with any applicable bonuses from race, culture, class traits, and magic items:
+</p>
+
+<div class="formula-box">
+    <strong>Skill Level</strong> = Invested Skill Points + Racial / Cultural / Class / Item Modifiers
+</div>
+
+<p>
+    Ability modifiers (such as Strength or Dexterity) apply directly to action checks when performing tasks with a skill, but they are never added to the underlying skill level itself.
+</p>
+
+<h4 id="SkillBenefits">Skill Benefits</h4>
+<p>
+    Many skills confer specialized passive benefits, new capabilities, or mechanical enhancements upon reaching designated skill level thresholds (such as unlocking advanced maneuvers, reducing penalties, or granting persistent bonuses).
+</p>
+<p>
+    If a character's skill level is temporarily or permanently reduced, any benefits associated with the lost ranks become dormant until the skill level is restored.
+</p>
+<p>
+    When a character possesses multiple skills that grant an identical benefit, the effects do not stack or multiply; only the single most advantageous benefit applies.
+</p>
+
+<h4 id="SkillActions">Skill Actions</h4>
+<p>
+    Most skills are linked to one or more specific <a href="/reference/actions">actions</a> that govern how the skill is applied in practice. As a character's skill level rises, their proficiency and likelihood of success when executing those actions improve. Higher skill levels may also unlock specialized options, tactical enhancements, or expanded parameters detailed within the action's description.
+</p>
+<p>
+    When an action lists multiple associated skills, use the <strong>highest</strong> skill level when rolling the action check, but use the <strong>lowest</strong> skill level among them to determine access to advanced traits or special options.
+</p>
+<p>
+    Certain actions feature unique interactions with their associated skills. For instance, one skill may be required to gain access to an action, while a separate skill is rolled for the action check itself. Similarly, some specialized actions incorporate only designated fractions or specific modifiers from a skill rather than adding the full skill level.
+</p>
+
+<h4 id="PrestigeSkills">Prestige Skills</h4>
+<p>
+    Prestige skills represent rare, esoteric, or demanding disciplines—such as elite martial techniques, clandestine guild arts, or advanced planar lore—that require extensive prerequisites, dedicated roleplaying, or in-world mentorship before they can be mastered. Because these disciplines often reflect specific faction traditions or distinctive campaign themes, the Dungeon Master has final authority over which prestige skills are available in a campaign.
+</p>
+<p>
+    Due to their rigorous and specialized nature, characters may allocate at most <strong>one skill point per level</strong> toward prestige skills.
+</p>
+
 <h3 id="Actions">Actions and Action Checks</h3>
 <p>
     <a href="/reference/actions">Actions</a> encompass every activity a character or creature can undertake. 

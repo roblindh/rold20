@@ -1,5 +1,3 @@
-<h2 id="Spells">Spells and Powers</h2>
-
 <h3 id="SpellList">Spell and Power List (by Type)</h3>
 <?php show_spellsummary(); ?> 
 

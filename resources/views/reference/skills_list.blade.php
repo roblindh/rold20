@@ -33,11 +33,11 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
                 <span class="font-bold text-slate-900 block mb-0.5">Primary & Secondary</span>
-                <span class="text-slate-600"><strong>Primary (<span class="text-indigo-600 font-bold">X</span>)</strong> skills cost standard skill points. <strong>Secondary (<span class="text-slate-700 font-bold">/</span>)</strong> skills represent cross-training for the class.</span>
+                <span class="text-slate-600"><strong>Primary (<span class="text-indigo-600 font-bold">X</span>)</strong> skills can be assigned 0, 0.5, or 1 skill point per level. <strong>Secondary (<span class="text-slate-700 font-bold">/</span>)</strong> skills represent cross-training for the class and can be assigned 0 or 0.5 skill point per level.</span>
             </div>
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
                 <span class="font-bold text-slate-900 block mb-0.5">Specializations (<span class="text-amber-600 font-bold">*</span>)</span>
-                <span class="text-slate-600">Skills marked with an asterisk allow specialized sub-disciplines (e.g. Weapon Styles, Knowledge fields) granting dedicated mastery.</span>
+                <span class="text-slate-600">Skills marked with an asterisk allow specialized sub-disciplines (e.g. Crafting, Knowledge fields) granting dedicated mastery.</span>
             </div>
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">
                 <span class="font-bold text-slate-900 block mb-0.5">Prerequisites</span>

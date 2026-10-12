@@ -1,5 +1,3 @@
-<h2 id="Actions">Actions</h2>
-
 <h3 id="CommonActions">List of Common Actions</h3>
 <?php show_actionsummary(); ?> 
 

@@ -1,5 +1,3 @@
-<h2 id="Equipment">Equipment</h2>
-
 <h3 id="MundaneItems">Mundane Items</h3>
 <?php show_items(); ?> 
 

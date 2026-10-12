@@ -1,5 +1,3 @@
-<h2 id="Creatures">Creatures</h2>
-
 <h3 id="CreatureTypes">Creature Types</h3>
 <?php show_creaturetypes(); ?> 
 
