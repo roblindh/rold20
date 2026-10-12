@@ -371,6 +371,11 @@
                         <span>📊 Analysis & Balance</span>
                     </a>
                 </li>
+                <li class="list-none p-0 m-0">
+                    <a href="{{ route('utilities.combat_simulator', [], false) }}" class="sidebar-nav-item {{ request()->routeIs('utilities.combat_simulator*') ? 'active' : '' }}">
+                        <span>⚔️ Combat Simulator</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

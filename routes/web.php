@@ -6,6 +6,7 @@ use App\Http\Controllers\ReferenceController;
 use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AnalysisController;
+use App\Http\Controllers\CombatSimulatorController;
 use App\Http\Controllers\AuthController;
 
 // Authentication Routes
@@ -236,6 +237,12 @@ Route::post('/api/calculator/evaluate', [UtilityController::class, 'evaluateExpr
 // Balance Analysis utility
 Route::get('/analysis', [AnalysisController::class, 'index'])->name('analysis');
 Route::get('/analysis/graph-data', [AnalysisController::class, 'getGraphDataAjax'])->name('analysis.graph-data');
+
+// Combat Simulator utility
+Route::get('/utilities/combat-simulator', [CombatSimulatorController::class, 'index'])->name('utilities.combat_simulator');
+Route::get('/combat-simulator', [CombatSimulatorController::class, 'index']);
+Route::post('/utilities/combat-simulator/entity-info', [CombatSimulatorController::class, 'getEntityInfo'])->name('utilities.combat_simulator.entity_info');
+Route::post('/utilities/combat-simulator/simulate', [CombatSimulatorController::class, 'simulate'])->name('utilities.combat_simulator.simulate');
 
 // Legacy AJAX script endpoints
 Route::get('/scripts/getstatblock.php', [ReferenceController::class, 'creatureStatBlockLegacy']);
