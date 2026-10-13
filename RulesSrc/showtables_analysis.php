@@ -998,7 +998,7 @@ function show_spellanalysis_dr() {
         new cEffect("Enchant Armor", "PP", 3, "lvl/3>5 ? 5 : lvl/3", "Armor enh bonus"),
         new cEffect("Force Armor", "PP", 1, "MIN(10,2+(lvl-1)/3)", "Armor bonus"),
         new cEffect("Toughen Skin", "PP", 3, "MIN(5,2+(lvl-3)/4)", "Natural enh bonus"),
-        new cEffect("Damage Reduction (skill)", "-", 7, "(lvl-4)/3", "Skill bonus"),
+        new cEffect("Damage Reduction (skill)", "-", 4, "lvl/4", "Skill bonus"),
         new cEffect("Div Pro: Divine Shroud", "PP", 12, "5", "Divine bonus"),
         new cEffect("Ki - Meditation", "-", 1, "(lvl+4)/5", "Skill bonus"),
         new cEffect("Pyrokin: Nimbus", "5 PP/r", 14, "5", "Vs non-magical")

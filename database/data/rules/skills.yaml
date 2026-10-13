@@ -2241,8 +2241,8 @@ skillbenefits:
     Traits: "Sns { Qual=BlindFight; }"
   - ID: 160
     Skill: 45
-    SkillLevel: 7
-    Traits: "DefMod { Qual=DR; Type=skill; Value=+(lvl-4)/3; }"
+    SkillLevel: 4
+    Traits: "DefMod { Qual=DR; Type=skill; Value=+lvl/4; }"
   - ID: 161
     Skill: 45
     SkillLevel: 5
@@ -2762,7 +2762,7 @@ skillbenefits:
   - ID: 344
     Skill: 191
     SkillLevel: 9
-    Traits: "ActAcc { Qual=Power Attack; }"
+    Traits: "ActAcc { Qual=Psionic Power Attack; }"
   - ID: 345
     Skill: 191
     SkillLevel: 12
@@ -4195,6 +4195,26 @@ skillbenefits:
     Skill: 200
     SkillLevel: 8
     Traits: "ActAcc { Qual=Wild Shape; }"
+  - ID: 714
+    Skill: 45
+    SkillLevel: 1
+    Traits: "Defense { Qual=CritRes; Type=Skill; Value=+(lvl+2)/4; } Special { Qual=Concentration; Value=lvl; }"
+  - ID: 715
+    Skill: 190
+    SkillLevel: 1
+    Traits: "SpdMod { Qual=Speed; Type=class; Value=+lvl/4; Req=EC<=5; }"
+  - ID: 716
+    Skill: 191
+    SkillLevel: 1
+    Traits: "ActAcc { Qual=Psionic Strike; }"
+  - ID: 717
+    Skill: 193
+    SkillLevel: 1
+    Traits: "SpdSpcl { Qual=Stealthy; Value=greater; Req=Env(Darkness); }"
+  - ID: 718
+    Skill: 197
+    SkillLevel: 1
+    Traits: "Sns { Qual=Scent; Value=4; }"
 skillaccess:
   - SkillID: 1
     ClassID: 1
