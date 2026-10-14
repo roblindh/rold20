@@ -53,7 +53,7 @@
         $subtitle .= ' • ' . $classStr;
     }
     
-    // Counts for accordion badges
+    // Counts for drawer badges
     $saCount = count($tr['attacks'] ?? []);
     $sdCount = count($tr['defenses'] ?? []);
     $smCount = count($tr['movement'] ?? []);
@@ -65,10 +65,30 @@
     $itemsCount = count($eq['items'] ?? []);
     $spellsList = $calc['spells'] ?? [];
     $spellsCount = count($spellsList);
+
+    // Energy resistances list
+    $resList = [];
+    $resMap = [
+        'Acid' => 'Acid',
+        'Cold' => 'Cold',
+        'Electric' => 'Elec',
+        'Fire' => 'Fire',
+        'Necrotic' => 'Necro',
+        'Radiant' => 'Radiant',
+        'Sonic' => 'Sonic',
+    ];
+    foreach ($resMap as $k => $prefix) {
+        $val = $d['resistances'][$k] ?? 0;
+        if ($val >= 999) {
+            $resList[] = "{$prefix} imm";
+        } elseif ($val > 0) {
+            $resList[] = "{$prefix} res {$val}";
+        }
+    }
 @endphp
 
 <div id="{{ $componentId }}" 
-     class="statblock-container bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden text-slate-800"
+     class="statblock-container bg-white border border-slate-300 rounded-xl shadow-xs overflow-hidden text-slate-800 text-xs font-sans leading-normal"
      x-data="{
          viewMode: '{{ $initialMode }}',
          showSA: false,
@@ -86,46 +106,38 @@
          }
      }">
 
-    <!-- Top Action & Navigation Header -->
-    <div class="bg-slate-900 border-b border-amber-500/40 text-white px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-2.5 min-w-0">
-            <span class="text-xl">📜</span>
-            <div class="truncate">
-                <span class="font-bold text-sm sm:text-base text-amber-300 font-serif block truncate">
+    <!-- Top Action & Navigation Header (Slim) -->
+    <div class="bg-slate-900 border-b border-amber-500/40 text-white px-3 py-1.5 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2 min-w-0">
+            <span class="text-sm">📜</span>
+            <div class="truncate flex items-baseline gap-1.5">
+                <span class="font-bold text-xs sm:text-sm text-amber-300 font-serif truncate">
                     {{ $name }}
                 </span>
-                <span class="text-[11px] text-slate-400 block truncate">
-                    {{ $subtitle }}
+                <span class="text-[11px] text-slate-400 truncate hidden sm:inline">
+                    ({{ $subtitle }})
                 </span>
             </div>
         </div>
 
-        <div class="flex items-center flex-wrap gap-2">
+        <div class="flex items-center flex-wrap gap-1.5 text-[11px]">
             @if($canToggleMode)
                 <!-- View Mode Segmented Switch -->
-                <div class="inline-flex rounded-lg bg-slate-800 p-0.5 border border-slate-700 text-xs">
+                <div class="inline-flex rounded bg-slate-800 p-0.5 border border-slate-700">
                     <button type="button" 
                             @click="viewMode = 'interactive'"
-                            :class="viewMode === 'interactive' ? 'bg-amber-500 text-slate-950 font-bold shadow-xs' : 'text-slate-300 hover:text-white'"
-                            class="px-2.5 py-1 rounded-md transition flex items-center gap-1">
-                        <span>✨</span> Grid
+                            :class="viewMode === 'interactive' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:text-white'"
+                            class="px-2 py-0.5 rounded transition">
+                        ✨ Grid
                     </button>
                     <button type="button" 
                             @click="viewMode = 'classic'"
-                            :class="viewMode === 'classic' ? 'bg-amber-500 text-slate-950 font-bold shadow-xs' : 'text-slate-300 hover:text-white'"
-                            class="px-2.5 py-1 rounded-md transition flex items-center gap-1">
-                        <span>📜</span> Classic
+                            :class="viewMode === 'classic' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:text-white'"
+                            class="px-2 py-0.5 rounded transition">
+                        📜 Classic
                     </button>
                 </div>
             @endif
-
-            <!-- Expand / Collapse All Toggle (in Interactive Mode) -->
-            <button type="button"
-                    x-show="viewMode === 'interactive'"
-                    @click="showSA || showSkills || showEquip || showSpells ? toggleAll(false) : toggleAll(true)"
-                    class="btn-action-pill text-xs py-1 px-2.5 bg-slate-800 text-slate-300 hover:text-white border border-slate-700 rounded-lg">
-                <span x-text="showSA || showSkills || showEquip || showSpells ? '▲ Collapse All' : '▼ Expand All'"></span>
-            </button>
 
             <!-- Quick Copy Actions -->
             <button type="button" 
@@ -138,10 +150,10 @@
                             setTimeout(() => copiedMd = false, 2000);
                         }
                     "
-                    class="btn-action-pill text-xs py-1 px-2.5"
-                    :class="copiedMd ? 'btn-action-pill-active' : ''">
-                <span x-show="!copiedMd">📝 Markdown</span>
-                <span x-show="copiedMd" class="text-emerald-400 font-bold">✓ Copied!</span>
+                    class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded border border-slate-700 transition"
+                    :class="copiedMd ? 'text-emerald-400 font-bold border-emerald-500' : ''">
+                <span x-show="!copiedMd">📝 MD</span>
+                <span x-show="copiedMd" class="text-emerald-400">✓ Copied</span>
             </button>
             <button type="button" 
                     @click="
@@ -153,10 +165,10 @@
                             setTimeout(() => copiedSb = false, 2000);
                         }
                     "
-                    class="btn-action-pill text-xs py-1 px-2.5"
-                    :class="copiedSb ? 'btn-action-pill-active' : ''">
-                <span x-show="!copiedSb">📋 Plaintext</span>
-                <span x-show="copiedSb" class="text-emerald-400 font-bold">✓ Copied!</span>
+                    class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded border border-slate-700 transition"
+                    :class="copiedSb ? 'text-emerald-400 font-bold border-emerald-500' : ''">
+                <span x-show="!copiedSb">📋 Text</span>
+                <span x-show="copiedSb" class="text-emerald-400">✓ Copied</span>
             </button>
             @if($configString)
                 <button type="button" 
@@ -167,230 +179,169 @@
                                 setTimeout(() => copiedCfg = false, 2000);
                             }
                         "
-                        class="btn-action-pill btn-action-pill-gold text-xs py-1 px-2.5"
-                        :class="copiedCfg ? 'btn-action-pill-active' : ''">
-                    <span x-show="!copiedCfg">⚙️ Config</span>
-                    <span x-show="copiedCfg" class="text-emerald-400 font-bold">✓ Copied!</span>
+                        class="px-2 py-0.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded border border-amber-500/40 transition"
+                        :class="copiedCfg ? 'text-emerald-400 font-bold border-emerald-500' : ''">
+                    <span x-show="!copiedCfg">⚙️ Cfg</span>
+                    <span x-show="copiedCfg" class="text-emerald-400">✓ Copied</span>
                 </button>
             @endif
         </div>
     </div>
 
     <!-- 1. CLASSIC / BESTIARY VIEW MODE -->
-    <div x-show="viewMode === 'classic'" class="p-5 space-y-4">
-        <div class="p-4 bg-amber-50/70 border border-amber-300 rounded-xl shadow-2xs font-mono text-xs sm:text-sm text-slate-900 leading-relaxed space-y-2 select-text" x-ref="classicBlock">
+    <div x-show="viewMode === 'classic'" class="p-3">
+        <div class="p-3 bg-amber-50/70 border border-amber-300 rounded-lg font-mono text-xs sm:text-sm text-slate-900 leading-relaxed select-text" x-ref="classicBlock">
             {!! $classicHtml !!}
         </div>
     </div>
 
-    <!-- 2. INTERACTIVE / GRID VIEW MODE -->
-    <div x-show="viewMode === 'interactive'" class="p-4 sm:p-5 space-y-4">
-        <!-- Identity & Heritage Badges Bar -->
-        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
-            <span class="px-2.5 py-1 bg-amber-100 text-amber-900 font-bold rounded-lg border border-amber-300 shadow-2xs font-mono">
-                CL {{ $h['challenge_level'] ?? 0 }}
-            </span>
-            <span class="px-2.5 py-1 bg-slate-100 text-slate-800 font-semibold rounded-lg border border-slate-300 font-mono">
-                XP {{ number_format(\App\Services\Entity\EntityEngine::getXPValue((int)($h['challenge_level'] ?? 0))) }}
-            </span>
-            <span class="px-2 py-1 bg-slate-100 text-slate-700 rounded-lg border border-slate-300 font-mono">
-                RL {{ $h['racial_level'] ?? 0 }} / TL {{ $h['total_level'] ?? 0 }}
-            </span>
-            <span class="px-2 py-1 bg-indigo-50 text-indigo-700 font-medium rounded-lg border border-indigo-200">
-                {{ $h['size_name'] ?? 'Medium' }} ({{ $h['size_abbr'] ?? 'M' }}) • {{ $h['space'] ?? '1x1 sq' }} (Rch {{ $h['reach'] ?? 1.5 }}m)
-            </span>
-            <span class="px-2 py-1 bg-teal-50 text-teal-800 rounded-lg border border-teal-200">
-                {{ $h['creature_subtype_name'] ?? 'Humanoid' }} ({{ $h['body_type_name'] ?? 'Biped' }})
-            </span>
-            <span class="px-2 py-1 bg-amber-50 text-amber-800 rounded-lg border border-amber-200">
-                AL: {{ $rawEntity['Alignment'] ?? $h['alignment'] ?? 'Any' }}
-            </span>
+    <!-- 2. COMPACT INTERACTIVE VIEW MODE -->
+    <div x-show="viewMode === 'interactive'">
+        <!-- Line 1: Identity & Heritage Strip -->
+        <div class="px-3 py-1 bg-amber-50/60 border-b border-amber-200/60 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-xs font-mono text-slate-700">
+            <div><span class="font-bold text-amber-950">CL</span> {{ $h['challenge_level'] ?? 0 }} <span class="text-slate-500 font-normal">({{ number_format(\App\Services\Entity\EntityEngine::getXPValue((int)($h['challenge_level'] ?? 0))) }} XP)</span></div>
+            <span class="text-slate-300">•</span>
+            <div><span class="font-bold text-slate-900">RL/TL:</span> {{ $h['racial_level'] ?? 0 }}/{{ $h['total_level'] ?? 0 }}</div>
+            <span class="text-slate-300">•</span>
+            <div><span class="font-bold text-slate-900">Sz:</span> {{ $h['size_name'] ?? 'Medium' }} ({{ $h['size_abbr'] ?? 'M' }}) <span class="text-slate-500 font-normal">[{{ $h['space'] ?? '1x1 sq' }}, Rch {{ $h['reach'] ?? 1.5 }}m]</span></div>
+            <span class="text-slate-300">•</span>
+            <div><span class="font-bold text-slate-900">Type:</span> {{ $h['creature_subtype_name'] ?? 'Humanoid' }} ({{ $h['body_type_name'] ?? 'Biped' }})</div>
+            <span class="text-slate-300">•</span>
+            <div><span class="font-bold text-slate-900">AL:</span> {{ $rawEntity['Alignment'] ?? $h['alignment'] ?? 'Any' }}</div>
         </div>
 
-        <!-- Vitals & Action Economy Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2.5 text-center text-xs">
-            <!-- HP -->
-            <div class="p-2.5 bg-emerald-50/80 border border-emerald-300 rounded-xl shadow-2xs">
-                <div class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Health (HP)</div>
-                <div class="text-base sm:text-lg font-black text-emerald-950 font-mono mt-0.5">
-                    {{ $hl['hp']['total'] ?? '–' }}
+        <!-- Line 2: Vitals & Core Combat Row (Concatenated Groups) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1 px-3 py-1.5 text-xs font-mono">
+            <!-- 1. HP / SP / PP / AP -->
+            <div class="px-2 py-1 bg-slate-50 border border-slate-200 rounded">
+                <span class="text-[10px] font-bold text-slate-500 uppercase block">HP / SP / PP / AP</span>
+                <div class="font-bold text-slate-900 truncate">
+                    <span class="text-emerald-700">{{ $hl['hp']['total'] ?? '–' }}</span> /
+                    <span class="text-sky-700">{{ ($hl['sp']['total'] ?? null) !== null ? $hl['sp']['total'] : '–' }}</span> /
+                    <span class="text-purple-700">{{ ($hl['pp']['total'] ?? null) !== null ? $hl['pp']['total'] : '–' }}</span> /
+                    <span class="text-amber-700">{{ $act['ap'] ?? 20 }}</span>
                 </div>
             </div>
-            <!-- SP -->
-            <div class="p-2.5 bg-sky-50/80 border border-sky-300 rounded-xl shadow-2xs">
-                <div class="text-[10px] font-bold text-sky-800 uppercase tracking-wider">Stamina (SP)</div>
-                <div class="text-base sm:text-lg font-black text-sky-950 font-mono mt-0.5">
-                    {{ $hl['sp']['total'] ?? '–' }}
+
+            <!-- 2. Init / Spd -->
+            <div class="px-2 py-1 bg-slate-50 border border-slate-200 rounded">
+                <span class="text-[10px] font-bold text-slate-500 uppercase block">Init / Spd</span>
+                <div class="font-bold text-slate-900 truncate">
+                    {{ ($d['init_mod'] ?? 0) >= 0 ? '+' : '' }}{{ $d['init_mod'] ?? 0 }} / {{ $sp['ground'] ?? 6 }} sq
+                    @if(!empty($sp['fly'])) <span class="text-[10px] text-slate-500 font-normal">Fly {{ $sp['fly'] }}</span>@endif
+                    @if(!empty($sp['swim'])) <span class="text-[10px] text-slate-500 font-normal">Sw {{ $sp['swim'] }}</span>@endif
                 </div>
             </div>
-            <!-- PP -->
-            <div class="p-2.5 bg-purple-50/80 border border-purple-300 rounded-xl shadow-2xs">
-                <div class="text-[10px] font-bold text-purple-800 uppercase tracking-wider">Psionics (PP)</div>
-                <div class="text-base sm:text-lg font-black text-purple-950 font-mono mt-0.5">
-                    {{ $hl['pp']['total'] ?? '–' }}
+
+            <!-- 3. DeCa/p -->
+            <div class="px-2 py-1 bg-slate-50 border border-slate-200 rounded">
+                <span class="text-[10px] font-bold text-slate-500 uppercase block">DeCa/p</span>
+                <div class="font-bold text-slate-900 truncate">
+                    {{ $d['dec_active'] ?? 10 }}/{{ $d['dec_passive'] ?? 10 }}
+                    <span class="text-[10px] text-slate-500 font-normal">(crit +{{ $d['crit_score'] ?? (20 + ($d['crit_res'] ?? 0)) }})</span>
                 </div>
             </div>
-            <!-- AP -->
-            <div class="p-2.5 bg-amber-50/80 border border-amber-300 rounded-xl shadow-2xs">
-                <div class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Action Pts (AP)</div>
-                <div class="text-base sm:text-lg font-black text-amber-950 font-mono mt-0.5">
-                    {{ $act['ap'] ?? 20 }}
+
+            <!-- 4. DR / MR -->
+            <div class="px-2 py-1 bg-slate-50 border border-slate-200 rounded">
+                <span class="text-[10px] font-bold text-slate-500 uppercase block">DR / MR</span>
+                <div class="font-bold text-slate-900">
+                    {{ $d['dr'] ?? 0 }} / {{ $d['mr'] ?? 0 }}
                 </div>
             </div>
-            <!-- Initiative -->
-            <div class="p-2.5 bg-slate-50 border border-slate-300 rounded-xl shadow-2xs">
-                <div class="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Initiative</div>
-                <div class="text-base sm:text-lg font-bold text-slate-900 font-mono mt-0.5">
-                    {{ ($d['init_mod'] ?? 0) >= 0 ? '+' : '' }}{{ $d['init_mod'] ?? 0 }}
+
+            <!-- 5. Fort / Ref / Will -->
+            <div class="px-2 py-1 bg-slate-50 border border-slate-200 rounded">
+                <span class="text-[10px] font-bold text-slate-500 uppercase block">Fort / Ref / Will</span>
+                <div class="font-bold text-slate-900">
+                    <span class="text-emerald-700">{{ $d['fort'] ?? 10 }}</span> /
+                    <span class="text-sky-700">{{ $d['ref'] ?? 10 }}</span> /
+                    <span class="text-purple-700">{{ $d['will'] ?? 10 }}</span>
                 </div>
             </div>
-            <!-- Ground Speed -->
-            <div class="p-2.5 bg-slate-50 border border-slate-300 rounded-xl shadow-2xs">
-                <div class="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Ground Speed</div>
-                <div class="text-base sm:text-lg font-bold text-slate-900 font-mono mt-0.5">
-                    {{ $sp['ground'] ?? 6 }} <span class="text-xs font-normal text-slate-500">sq</span>
-                </div>
-            </div>
-            <!-- Other Speeds -->
-            <div class="p-2.5 bg-slate-50 border border-slate-300 rounded-xl shadow-2xs">
-                <div class="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Special Speeds</div>
-                <div class="text-xs font-semibold text-slate-800 font-mono mt-1.5 space-y-0.5">
-                    @if(!empty($sp['swim'])) <div>🏊 Swim: {{ $sp['swim'] }} sq</div> @endif
-                    @if(!empty($sp['fly'])) <div>🦅 Fly: {{ $sp['fly'] }} sq</div> @endif
-                    @if(empty($sp['swim']) && empty($sp['fly'])) <div class="text-slate-400">None</div> @endif
+
+            <!-- 6. Par / EC -->
+            <div class="px-2 py-1 bg-slate-50 border border-slate-200 rounded">
+                <span class="text-[10px] font-bold text-slate-500 uppercase block">Par / EC</span>
+                <div class="font-bold text-slate-900">
+                    +{{ $d['parry_bonus'] ?? 0 }} / EC {{ $eq['effective_ec'] ?? 0 }}
                 </div>
             </div>
         </div>
 
-        <!-- Defenses & Saving Throws Row -->
-        <div class="p-3 bg-stone-50 border border-stone-200 rounded-xl space-y-2 text-xs">
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-center">
-                <div class="p-2 bg-white rounded-lg border border-stone-200">
-                    <span class="text-[10px] font-bold text-stone-500 uppercase block">DeC Active / Pass</span>
-                    <span class="font-black text-sm text-stone-900 font-mono">{{ $d['dec_active'] ?? 10 }} / {{ $d['dec_passive'] ?? 10 }}</span>
-                    @if(!empty($d['crit_res']))
-                        <span class="text-[10px] text-amber-700 block font-semibold">(crit +{{ $d['crit_res'] }})</span>
-                    @endif
-                </div>
-                <div class="p-2 bg-white rounded-lg border border-stone-200">
-                    <span class="text-[10px] font-bold text-stone-500 uppercase block">DR / MR</span>
-                    <span class="font-black text-sm text-stone-900 font-mono">{{ $d['dr'] ?? 0 }} / {{ $d['mr'] ?? 0 }}</span>
-                </div>
-                <div class="p-2 bg-white rounded-lg border border-stone-200">
-                    <span class="text-[10px] font-bold text-emerald-700 uppercase block">Fortitude</span>
-                    <span class="font-black text-sm text-emerald-900 font-mono">+{{ $d['fort'] ?? 0 }}</span>
-                </div>
-                <div class="p-2 bg-white rounded-lg border border-stone-200">
-                    <span class="text-[10px] font-bold text-sky-700 uppercase block">Reflex</span>
-                    <span class="font-black text-sm text-sky-900 font-mono">+{{ $d['ref'] ?? 0 }}</span>
-                </div>
-                <div class="p-2 bg-white rounded-lg border border-stone-200">
-                    <span class="text-[10px] font-bold text-purple-700 uppercase block">Will</span>
-                    <span class="font-black text-sm text-purple-900 font-mono">+{{ $d['will'] ?? 0 }}</span>
-                </div>
-                <div class="p-2 bg-white rounded-lg border border-stone-200">
-                    <span class="text-[10px] font-bold text-amber-700 uppercase block">Parry / Armor</span>
-                    <span class="font-black text-sm text-amber-950 font-mono">+{{ $d['parry_bonus'] ?? 0 }} / EC {{ $eq['effective_ec'] ?? 0 }}</span>
-                </div>
+        <!-- Resistances strip (if any) -->
+        @if(!empty($resList))
+            <div class="px-3 py-0.5 bg-amber-50/50 border-t border-b border-amber-200/50 flex flex-wrap items-center gap-1.5 text-[11px] font-mono text-amber-950">
+                <span class="font-bold uppercase text-[10px] text-amber-800">Res:</span>
+                <span>{{ implode(', ', $resList) }}</span>
             </div>
+        @endif
 
-            <!-- Elemental & Damage Resistances Badge Strip -->
-            @php
-                $resList = [];
-                foreach ($d['resistances'] ?? [] as $rType => $rVal) {
-                    if ($rVal > 0) {
-                        $resList[] = ucfirst(str_replace('res', '', strtolower($rType))) . " res {$rVal}";
-                    }
-                }
-            @endphp
-            @if(!empty($resList))
-                <div class="flex flex-wrap items-center gap-1.5 pt-1 border-t border-stone-200/80">
-                    <span class="text-[11px] font-bold text-stone-600 uppercase">Resistances:</span>
-                    @foreach($resList as $rItem)
-                        <span class="px-2 py-0.5 bg-amber-100 text-amber-900 font-semibold rounded text-[11px] border border-amber-300 font-mono">
-                            🛡️ {{ $rItem }}
-                        </span>
-                    @endforeach
-                </div>
-            @endif
-        </div>
-
-        <!-- 6-Column Ability Scores Grid -->
-        <div class="grid grid-cols-6 gap-2 text-center">
+        <!-- Line 3: Ability Scores Ribbon -->
+        <div class="px-3 py-1 bg-slate-100 border-t border-b border-slate-200 grid grid-cols-6 gap-1 text-center font-mono text-xs text-slate-800">
             @foreach(['Str' => 'STR', 'Con' => 'CON', 'Dex' => 'DEX', 'Int' => 'INT', 'Wis' => 'WIS', 'Cha' => 'CHA'] as $key => $label)
                 @php
-                    $val = $fa[$key] ?? null;
-                    $mod = $am[$key] ?? null;
+                    $val = $fa[$key] ?? '–';
+                    $mod = $am[$key] ?? 0;
+                    $modStr = $mod >= 0 ? "+{$mod}" : (string)$mod;
                 @endphp
-                <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl shadow-2xs">
-                    <div class="text-[11px] font-bold text-slate-500 uppercase">{{ $label }}</div>
-                    <div class="text-base sm:text-lg font-black text-slate-900 font-mono mt-0.5">
-                        {{ $val !== null ? $val : '–' }}
-                    </div>
-                    <div class="text-[11px] font-semibold text-slate-600 font-mono">
-                        {{ $mod !== null ? (($mod >= 0 ? '+' : '') . $mod) : '–' }}
-                    </div>
+                <div class="truncate">
+                    <span class="text-[10px] font-bold text-slate-500">{{ $label }}</span>
+                    <span class="font-bold text-slate-900 ml-0.5">{{ $val }}</span>
+                    <span class="text-[10px] text-slate-600 font-normal">({{ $modStr }})</span>
                 </div>
             @endforeach
         </div>
 
-        <!-- Attacks & Offense Section -->
+        <!-- Line 4: Attacks & Combat Actions (Dense Table) -->
         @php
             $availAttacks = $atks['available_elements'] ?? [];
         @endphp
         @if(!empty($availAttacks) || !empty($atks['weapons']) || !empty($atks['natural']))
-            <div class="space-y-2">
-                <div class="flex items-center justify-between">
-                    <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                        <span>⚔️</span> Attacks &amp; Combat Actions
-                    </h4>
-                    <span class="text-[11px] text-slate-500 font-mono">{{ count($availAttacks) }} option(s)</span>
-                </div>
-                <div class="overflow-x-auto border border-slate-200 rounded-xl shadow-2xs bg-white">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200">
+            <div class="px-3 py-1.5">
+                <div class="overflow-x-auto border border-slate-200 rounded bg-white">
+                    <table class="w-full text-left text-xs font-mono">
+                        <thead class="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200 text-[11px]">
                             <tr>
-                                <th class="p-2 sm:px-3">Attack / Action</th>
-                                <th class="p-2 text-center">AP</th>
-                                <th class="p-2 text-center">Reach / Range</th>
-                                <th class="p-2 text-center">Attack Bonus</th>
-                                <th class="p-2 sm:px-3">Damage &amp; Type</th>
-                                <th class="p-2 text-center">Critical</th>
+                                <th class="py-1 px-2.5 font-sans">Atk / Action</th>
+                                <th class="py-1 px-1.5 text-center">AP</th>
+                                <th class="py-1 px-1.5 text-center">Rch/Rng</th>
+                                <th class="py-1 px-1.5 text-center">Atk</th>
+                                <th class="py-1 px-2.5">Dmg &amp; Type</th>
+                                <th class="py-1 px-1.5 text-center">Crit</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 font-mono">
+                        <tbody class="divide-y divide-slate-100">
                             @foreach($availAttacks as $atk)
-                                <tr class="hover:bg-amber-50/40 transition">
-                                    <td class="p-2 sm:px-3 font-sans font-medium text-slate-900 flex items-center gap-1.5">
-                                        @if(($atk['type'] ?? '') === 'weapon') <span>🗡️</span>
-                                        @elseif(($atk['type'] ?? '') === 'natural') <span>🐾</span>
-                                        @elseif(($atk['type'] ?? '') === 'unarmed') <span>👊</span>
-                                        @else <span>✨</span> @endif
-                                        <span>{{ $atk['name'] ?? 'Attack' }}</span>
+                                <tr class="hover:bg-amber-50/30">
+                                    <td class="py-1 px-2.5 font-sans font-medium text-slate-900 truncate">
+                                        @if(($atk['type'] ?? '') === 'weapon') 🗡️
+                                        @elseif(($atk['type'] ?? '') === 'natural') 🐾
+                                        @elseif(($atk['type'] ?? '') === 'unarmed') 👊
+                                        @else ✨ @endif
+                                        {{ $atk['name'] ?? 'Attack' }}
                                     </td>
-                                    <td class="p-2 text-center font-bold text-amber-900">{{ $atk['ap'] ?? '–' }}</td>
-                                    <td class="p-2 text-center text-slate-600">{{ $atk['reach'] ?? $atk['range'] ?? '0-1 sq' }}</td>
-                                    <td class="p-2 text-center font-bold text-indigo-700">
+                                    <td class="py-1 px-1.5 text-center font-bold text-amber-900">{{ $atk['ap'] ?? '–' }}</td>
+                                    <td class="py-1 px-1.5 text-center text-slate-600">{{ $atk['reach'] ?? $atk['range'] ?? '0-1 sq' }}</td>
+                                    <td class="py-1 px-1.5 text-center font-bold text-indigo-700">
                                         {{ ($atk['attack_bonus'] ?? 0) >= 0 ? '+' : '' }}{{ $atk['attack_bonus'] ?? 0 }}
                                     </td>
-                                    <td class="p-2 sm:px-3 font-bold text-slate-900">{{ $atk['damage'] ?? '–' }}</td>
-                                    <td class="p-2 text-center text-slate-600">{{ $atk['crit'] ?? '20 (x2)' }}</td>
+                                    <td class="py-1 px-2.5 font-bold text-slate-900">{{ $atk['damage'] ?? '–' }}</td>
+                                    <td class="py-1 px-1.5 text-center text-slate-600">{{ $atk['crit'] ?? '20 (x2)' }}</td>
                                 </tr>
                             @endforeach
                             <!-- Grapple Action -->
                             @if(!empty($atks['grapple']))
                                 @php $grp = $atks['grapple']; @endphp
-                                <tr class="hover:bg-amber-50/40 transition bg-slate-50/50">
-                                    <td class="p-2 sm:px-3 font-sans font-medium text-slate-800 flex items-center gap-1.5">
-                                        <span>🤼</span> Grapple
+                                <tr class="hover:bg-amber-50/30 bg-slate-50/50">
+                                    <td class="py-1 px-2.5 font-sans font-medium text-slate-800 truncate">🤼 Grapple</td>
+                                    <td class="py-1 px-1.5 text-center font-bold text-amber-900">{{ $grp['ap'] ?? 10 }}</td>
+                                    <td class="py-1 px-1.5 text-center text-slate-600">{{ str_ends_with($grp['reach'] ?? '', 'sq') ? $grp['reach'] : (($grp['reach'] ?? '0-1') . ' sq') }}</td>
+                                    <td class="py-1 px-1.5 text-center font-bold text-indigo-700">
+                                        +{{ $grp['touch_bonus'] ?? 0 }}/+{{ $grp['bonus'] ?? 0 }}
                                     </td>
-                                    <td class="p-2 text-center font-bold text-amber-900">{{ $grp['ap'] ?? 10 }}</td>
-                                    <td class="p-2 text-center text-slate-600">{{ $grp['reach'] ?? '0-1' }} sq</td>
-                                    <td class="p-2 text-center font-bold text-indigo-700">
-                                        +{{ $grp['touch_bonus'] ?? 0 }} / +{{ $grp['bonus'] ?? 0 }}
-                                    </td>
-                                    <td class="p-2 sm:px-3 text-slate-600 italic">Touch / Control Grapple</td>
-                                    <td class="p-2 text-center text-slate-400">–</td>
+                                    <td class="py-1 px-2.5 text-slate-600 italic">Touch / Control</td>
+                                    <td class="py-1 px-1.5 text-center text-slate-400">–</td>
                                 </tr>
                             @endif
                         </tbody>
@@ -399,214 +350,145 @@
             </div>
         @endif
 
-        <!-- ========================================================================= -->
-        <!-- COLLAPSIBLE ACCORDION DRAWERS (Special Abilities, Skills, Equipment, etc.) -->
-        <!-- ========================================================================= -->
-        <div class="space-y-2.5 pt-2 border-t border-slate-200">
-
-            <!-- 1. SPECIAL ABILITIES & TRAITS DRAWER -->
-            <div class="border border-indigo-200 rounded-xl overflow-hidden bg-white shadow-2xs">
+        <!-- Line 5: Drawers Button Bar (Compact) -->
+        <div class="px-3 py-1.5 border-t border-slate-200 flex flex-wrap items-center justify-between gap-1.5 text-xs">
+            <div class="flex flex-wrap items-center gap-1.5">
                 <button type="button" 
                         @click="showSA = !showSA"
-                        class="w-full px-4 py-2.5 bg-indigo-50/70 hover:bg-indigo-100/70 transition flex items-center justify-between text-left">
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm">🌟</span>
-                        <span class="font-bold text-xs sm:text-sm text-indigo-950 font-serif">Special Abilities &amp; Traits</span>
-                        <span class="px-2 py-0.5 bg-indigo-200/80 text-indigo-900 rounded-full text-[10px] font-bold font-mono">
-                            {{ $totalTraitsCount }}
-                        </span>
-                    </div>
-                    <div class="flex items-center gap-2 text-xs text-indigo-700 font-medium">
-                        <span x-text="showSA ? 'Hide' : 'Show'"></span>
-                        <span class="text-xs transition-transform duration-200" :class="showSA ? 'rotate-180' : ''">▼</span>
-                    </div>
+                        :class="showSA ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'"
+                        class="px-2 py-0.5 rounded border border-slate-300 transition flex items-center gap-1">
+                    <span>🌟 Traits ({{ $totalTraitsCount }})</span>
+                    <span class="text-[9px]" x-text="showSA ? '▲' : '▼'"></span>
                 </button>
-                <div x-show="showSA" x-cloak class="p-4 space-y-3 border-t border-indigo-100 text-xs text-slate-800 bg-white">
-                    @if(!empty($tr['senses_str']) && $tr['senses_str'] !== 'None')
-                        <div>
-                            <span class="font-bold text-slate-900 block mb-0.5">👁️ Senses (SS):</span>
-                            <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 leading-relaxed font-mono">
-                                {{ $tr['senses_str'] }}
-                            </div>
-                        </div>
-                    @endif
-                    @if(!empty($tr['attacks_str']) && $tr['attacks_str'] !== 'None')
-                        <div>
-                            <span class="font-bold text-slate-900 block mb-0.5">⚔️ Special Attacks (SA):</span>
-                            <div class="p-2 bg-amber-50/60 rounded-lg border border-amber-200 leading-relaxed font-mono text-amber-950">
-                                {{ $tr['attacks_str'] }}
-                            </div>
-                        </div>
-                    @endif
-                    @if(!empty($tr['defenses_str']) && $tr['defenses_str'] !== 'None')
-                        <div>
-                            <span class="font-bold text-slate-900 block mb-0.5">🛡️ Special Defenses (SD):</span>
-                            <div class="p-2 bg-emerald-50/60 rounded-lg border border-emerald-200 leading-relaxed font-mono text-emerald-950">
-                                {{ $tr['defenses_str'] }}
-                            </div>
-                        </div>
-                    @endif
-                    @if(!empty($tr['movement_str']) && $tr['movement_str'] !== 'None')
-                        <div>
-                            <span class="font-bold text-slate-900 block mb-0.5">🏃 Special Movement (SM):</span>
-                            <div class="p-2 bg-sky-50/60 rounded-lg border border-sky-200 leading-relaxed font-mono text-sky-950">
-                                {{ $tr['movement_str'] }}
-                            </div>
-                        </div>
-                    @endif
-                    @if(!empty($tr['qualities_str']) && $tr['qualities_str'] !== 'None')
-                        <div>
-                            <span class="font-bold text-slate-900 block mb-0.5">✨ Special Qualities (SQ):</span>
-                            <div class="p-2 bg-purple-50/60 rounded-lg border border-purple-200 leading-relaxed font-mono text-purple-950">
-                                {{ $tr['qualities_str'] }}
-                            </div>
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            <!-- 2. SKILLS BREAKDOWN DRAWER -->
-            @if($skillsCount > 0)
-                <div class="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-2xs">
+                @if($skillsCount > 0)
                     <button type="button" 
                             @click="showSkills = !showSkills"
-                            class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 transition flex items-center justify-between text-left">
-                        <div class="flex items-center gap-2">
-                            <span class="text-sm">🎯</span>
-                            <span class="font-bold text-xs sm:text-sm text-slate-900 font-serif">Trained Skills Breakdown</span>
-                            <span class="px-2 py-0.5 bg-slate-200 text-slate-800 rounded-full text-[10px] font-bold font-mono">
-                                {{ $skillsCount }}
-                            </span>
-                        </div>
-                        <div class="flex items-center gap-2 text-xs text-slate-600 font-medium">
-                            <span x-text="showSkills ? 'Hide' : 'Show'"></span>
-                            <span class="text-xs transition-transform duration-200" :class="showSkills ? 'rotate-180' : ''">▼</span>
-                        </div>
+                            :class="showSkills ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'"
+                            class="px-2 py-0.5 rounded border border-slate-300 transition flex items-center gap-1">
+                        <span>🎯 Skills ({{ $skillsCount }})</span>
+                        <span class="text-[9px]" x-text="showSkills ? '▲' : '▼'"></span>
                     </button>
-                    <div x-show="showSkills" x-cloak class="p-4 border-t border-slate-200 bg-white">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs">
-                            @foreach($trainedSkills as $sk)
-                                <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
-                                    <div class="truncate pr-2">
-                                        <span class="font-medium text-slate-900 block truncate">{{ $sk['name'] }}</span>
-                                        <span class="text-[10px] text-slate-500 font-mono">
-                                            Rank {{ $sk['rank'] }} + {{ $sk['ability_key'] }} ({{ $sk['ability_mod'] >= 0 ? '+' : '' }}{{ $sk['ability_mod'] }})
-                                        </span>
-                                    </div>
-                                    <span class="px-2 py-0.5 bg-indigo-100 text-indigo-900 font-bold rounded font-mono text-xs shrink-0">
-                                        {{ $sk['total_bonus'] >= 0 ? '+' : '' }}{{ $sk['total_bonus'] }}
-                                    </span>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            <!-- 3. EQUIPMENT & ENCUMBRANCE DRAWER -->
-            @if($itemsCount > 0 || !empty($rawEntity['Possessions']))
-                <div class="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-2xs">
+                @endif
+                @if($itemsCount > 0 || !empty($rawEntity['Possessions']))
                     <button type="button" 
                             @click="showEquip = !showEquip"
-                            class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 transition flex items-center justify-between text-left">
-                        <div class="flex items-center gap-2">
-                            <span class="text-sm">🎒</span>
-                            <span class="font-bold text-xs sm:text-sm text-slate-900 font-serif">Possessions &amp; Encumbrance</span>
-                            <span class="px-2 py-0.5 bg-slate-200 text-slate-800 rounded-full text-[10px] font-bold font-mono">
-                                {{ $itemsCount ?: count($rawEntity['Possessions'] ?? []) }}
-                            </span>
-                            <span class="text-[11px] text-slate-500 font-mono hidden sm:inline">
-                                • Wt: {{ number_format((float)($eq['total_weight'] ?? 0), 1) }} kg | EC {{ $eq['effective_ec'] ?? 0 }} | EP {{ $eq['encumbrance_penalty'] ?? 0 }}
-                            </span>
-                        </div>
-                        <div class="flex items-center gap-2 text-xs text-slate-600 font-medium">
-                            <span x-text="showEquip ? 'Hide' : 'Show'"></span>
-                            <span class="text-xs transition-transform duration-200" :class="showEquip ? 'rotate-180' : ''">▼</span>
-                        </div>
+                            :class="showEquip ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'"
+                            class="px-2 py-0.5 rounded border border-slate-300 transition flex items-center gap-1">
+                        <span>🎒 Gear ({{ $itemsCount ?: count($rawEntity['Possessions'] ?? []) }})</span>
+                        <span class="text-[9px]" x-text="showEquip ? '▲' : '▼'"></span>
                     </button>
-                    <div x-show="showEquip" x-cloak class="p-4 space-y-3 border-t border-slate-200 bg-white text-xs">
-                        <!-- Items Grid -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-                            @if(!empty($eq['items']))
-                                @foreach($eq['items'] as $it)
-                                    <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between gap-2">
-                                        <div class="truncate">
-                                            <span class="font-medium text-slate-900 block truncate">{{ $it['name'] ?? 'Item' }}</span>
-                                            <span class="text-[10px] text-slate-500 font-mono">
-                                                Qty: {{ $it['quantity'] ?? 1 }} • {{ number_format((float)($it['weight'] ?? 0), 1) }} kg
-                                            </span>
-                                        </div>
-                                        <span class="px-2 py-0.5 bg-slate-200 text-slate-700 font-mono text-[10px] rounded uppercase shrink-0">
-                                            {{ $it['location'] ?? 'Equipped' }}
-                                        </span>
-                                    </div>
-                                @endforeach
-                            @elseif(!empty($rawEntity['Possessions']))
-                                @foreach($rawEntity['Possessions'] as $p)
-                                    <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
-                                        <span class="font-medium text-slate-900 block">{{ $p['name'] ?? 'Item' }}</span>
-                                    </div>
-                                @endforeach
-                            @endif
-                        </div>
-
-                        <!-- Encumbrance Summary Footprint -->
-                        <div class="p-2.5 bg-stone-50 rounded-lg border border-stone-200 flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] text-stone-700">
-                            <div>Total Wt: <span class="font-bold text-stone-900">{{ number_format((float)($eq['total_weight'] ?? 0), 1) }} kg</span></div>
-                            <div>Weight EC: <span class="font-bold text-stone-900">{{ $eq['weight_ec'] ?? 0 }}</span></div>
-                            <div>Effective EC: <span class="font-bold text-stone-900">{{ $eq['effective_ec'] ?? 0 }}</span></div>
-                            <div>Encumbrance Penalty: <span class="font-bold text-stone-900">{{ $eq['encumbrance_penalty'] ?? 0 }}</span></div>
-                            <div>Max Dex Bonus: <span class="font-bold text-stone-900">{{ ($eq['max_dex_bonus'] ?? 99) < 90 ? '+' . $eq['max_dex_bonus'] : 'Unlimited' }}</span></div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            <!-- 4. SPELLS & POWERS DRAWER (if present) -->
-            @if($spellsCount > 0)
-                <div class="border border-purple-200 rounded-xl overflow-hidden bg-white shadow-2xs">
+                @endif
+                @if($spellsCount > 0)
                     <button type="button" 
                             @click="showSpells = !showSpells"
-                            class="w-full px-4 py-2.5 bg-purple-50/70 hover:bg-purple-100/70 transition flex items-center justify-between text-left">
-                        <div class="flex items-center gap-2">
-                            <span class="text-sm">🔮</span>
-                            <span class="font-bold text-xs sm:text-sm text-purple-950 font-serif">Known Spells &amp; Supernatural Powers</span>
-                            <span class="px-2 py-0.5 bg-purple-200 text-purple-900 rounded-full text-[10px] font-bold font-mono">
-                                {{ $spellsCount }}
-                            </span>
-                        </div>
-                        <div class="flex items-center gap-2 text-xs text-purple-700 font-medium">
-                            <span x-text="showSpells ? 'Hide' : 'Show'"></span>
-                            <span class="text-xs transition-transform duration-200" :class="showSpells ? 'rotate-180' : ''">▼</span>
-                        </div>
+                            :class="showSpells ? 'bg-purple-600 text-white font-bold' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'"
+                            class="px-2 py-0.5 rounded border border-slate-300 transition flex items-center gap-1">
+                        <span>🔮 Spells ({{ $spellsCount }})</span>
+                        <span class="text-[9px]" x-text="showSpells ? '▲' : '▼'"></span>
                     </button>
-                    <div x-show="showSpells" x-cloak class="p-4 border-t border-purple-100 bg-white text-xs">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-                            @foreach($spellsList as $spItem)
-                                <div class="p-2.5 bg-purple-50/50 rounded-lg border border-purple-200">
-                                    <div class="font-medium text-purple-950">{{ $spItem['name'] ?? 'Spell' }}</div>
-                                    @if(!empty($spItem['cost']))
-                                        <div class="text-[10px] text-purple-700 font-mono mt-0.5">Cost: {{ $spItem['cost'] }}</div>
-                                    @endif
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            @endif
+                @endif
+            </div>
 
+            <!-- Collapse / Expand All Mini Switch -->
+            <button type="button"
+                    @click="showSA || showSkills || showEquip || showSpells ? toggleAll(false) : toggleAll(true)"
+                    class="text-[11px] text-slate-500 hover:text-slate-800 underline">
+                <span x-text="showSA || showSkills || showEquip || showSpells ? 'Collapse All' : 'Expand All'"></span>
+            </button>
         </div>
+
+        <!-- Drawers Expandable Contents -->
+        <!-- 1. Special Abilities & Traits -->
+        <div x-show="showSA" x-cloak class="mx-3 mb-2 p-2 bg-indigo-50/40 rounded border border-indigo-200 text-xs font-mono text-slate-800 space-y-1">
+            @if(!empty($tr['senses_str']) && $tr['senses_str'] !== 'None')
+                <div><span class="font-bold text-indigo-950 font-sans">SS:</span> {{ $tr['senses_str'] }}</div>
+            @endif
+            @if(!empty($tr['attacks_str']) && $tr['attacks_str'] !== 'None')
+                <div><span class="font-bold text-amber-950 font-sans">SA:</span> {{ $tr['attacks_str'] }}</div>
+            @endif
+            @if(!empty($tr['defenses_str']) && $tr['defenses_str'] !== 'None')
+                <div><span class="font-bold text-emerald-950 font-sans">SD:</span> {{ $tr['defenses_str'] }}</div>
+            @endif
+            @if(!empty($tr['movement_str']) && $tr['movement_str'] !== 'None')
+                <div><span class="font-bold text-sky-950 font-sans">SM:</span> {{ $tr['movement_str'] }}</div>
+            @endif
+            @if(!empty($tr['qualities_str']) && $tr['qualities_str'] !== 'None')
+                <div><span class="font-bold text-purple-950 font-sans">SQ:</span> {{ $tr['qualities_str'] }}</div>
+            @endif
+        </div>
+
+        <!-- 2. Skills -->
+        @if($skillsCount > 0)
+            <div x-show="showSkills" x-cloak class="mx-3 mb-2 p-2 bg-slate-50 rounded border border-slate-200 text-xs font-mono text-slate-800">
+                <div class="flex flex-wrap gap-1.5">
+                    @foreach($trainedSkills as $sk)
+                        <span class="px-1.5 py-0.5 bg-white rounded border border-slate-200 text-slate-900 inline-flex items-center gap-1">
+                            <span class="font-sans font-medium">{{ $sk['name'] }}</span>
+                            <span class="font-bold text-indigo-700">{{ $sk['total_bonus'] >= 0 ? '+' : '' }}{{ $sk['total_bonus'] }}</span>
+                            <span class="text-[10px] text-slate-400">({{ $sk['ability_key'] }} Rk {{ $sk['rank'] }})</span>
+                        </span>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        <!-- 3. Gear & Encumbrance -->
+        @if($itemsCount > 0 || !empty($rawEntity['Possessions']))
+            <div x-show="showEquip" x-cloak class="mx-3 mb-2 p-2 bg-slate-50 rounded border border-slate-200 text-xs font-mono text-slate-800 space-y-1.5">
+                <div class="flex flex-wrap gap-1.5">
+                    @if(!empty($eq['items']))
+                        @foreach($eq['items'] as $it)
+                            <span class="px-1.5 py-0.5 bg-white rounded border border-slate-200 text-slate-900 inline-flex items-center gap-1">
+                                <span class="font-sans font-medium">{{ $it['name'] ?? 'Item' }}</span>
+                                <span class="text-[10px] text-slate-500 font-mono">({{ $it['quantity'] ?? 1 }} • {{ number_format((float)($it['weight'] ?? 0), 1) }}kg)</span>
+                            </span>
+                        @endforeach
+                    @elseif(!empty($rawEntity['Possessions']))
+                        @foreach($rawEntity['Possessions'] as $p)
+                            <span class="px-1.5 py-0.5 bg-white rounded border border-slate-200 text-slate-900 font-sans font-medium">
+                                {{ $p['name'] ?? 'Item' }}
+                            </span>
+                        @endforeach
+                    @endif
+                </div>
+                <!-- Footprint -->
+                <div class="text-[11px] text-stone-600 border-t border-slate-200/60 pt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                    <span><b>Wt:</b> {{ number_format((float)($eq['total_weight'] ?? 0), 1) }} kg</span>
+                    <span>•</span>
+                    <span><b>Wt EC:</b> {{ $eq['weight_ec'] ?? 0 }}</span>
+                    <span>•</span>
+                    <span><b>Eff EC:</b> {{ $eq['effective_ec'] ?? 0 }}</span>
+                    <span>•</span>
+                    <span><b>EP:</b> {{ $eq['encumbrance_penalty'] ?? 0 }}</span>
+                    <span>•</span>
+                    <span><b>Max Dex:</b> {{ ($eq['max_dex_bonus'] ?? 99) < 90 ? '+' . $eq['max_dex_bonus'] : 'Unlim' }}</span>
+                </div>
+            </div>
+        @endif
+
+        <!-- 4. Spells -->
+        @if($spellsCount > 0)
+            <div x-show="showSpells" x-cloak class="mx-3 mb-2 p-2 bg-purple-50/40 rounded border border-purple-200 text-xs font-mono text-slate-800">
+                <div class="flex flex-wrap gap-1.5">
+                    @foreach($spellsList as $spItem)
+                        <span class="px-1.5 py-0.5 bg-white rounded border border-purple-200 text-purple-950 inline-flex items-center gap-1">
+                            <span class="font-sans font-medium">{{ $spItem['name'] ?? 'Spell' }}</span>
+                            @if(!empty($spItem['cost']))
+                                <span class="text-[10px] text-purple-700 font-mono font-bold">({{ $spItem['cost'] }})</span>
+                            @endif
+                        </span>
+                    @endforeach
+                </div>
+            </div>
+        @endif
     </div>
 
-    <!-- Configuration String Box (Common Footer) -->
+    <!-- Configuration String Box (Slim Footer) -->
     @if($showConfig && $configString)
-        <div class="px-5 pb-5 space-y-1.5 border-t border-slate-100 pt-3">
-            <div class="flex items-center justify-between">
-                <label class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">RoL d20 Configuration String</label>
-                <span class="text-[10px] text-slate-400 font-normal">Use in Encounters, Bestiary configs, or NPC Generator</span>
-            </div>
-            <textarea x-ref="configInput" rows="2" readonly
-                      class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg font-mono text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 select-all">{{ $configString }}</textarea>
+        <div class="px-3 py-1.5 border-t border-slate-100 flex items-center gap-2 bg-slate-50/50">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider shrink-0 font-mono">Cfg:</label>
+            <input type="text" x-ref="configInput" readonly value="{{ $configString }}"
+                   class="w-full px-2 py-0.5 bg-white border border-slate-200 rounded font-mono text-[11px] text-slate-700 focus:outline-none focus:ring-1 focus:ring-amber-500 select-all" />
         </div>
     @endif
 </div>
