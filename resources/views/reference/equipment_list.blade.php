@@ -28,7 +28,7 @@
             <span>🛡️</span> Equipment Economy & Item Rules
         </div>
         <p class="leading-relaxed text-slate-700">
-            Rules of Legend standardizes currency, weapon traits, and gear encumbrance:
+            RoL d20 standardizes currency, weapon traits, and gear encumbrance:
         </p>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-1">
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">

@@ -36,7 +36,7 @@
             </a>
         </div>
         <p class="leading-relaxed text-slate-700">
-            Spellcasting in Rules of Legend is skill-based and point-driven (Power Points / PP):
+            Spellcasting in RoL d20 is skill-based and point-driven (Power Points / PP):
         </p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
             <div class="bg-white p-3 rounded-lg border border-indigo-100 shadow-2xs">

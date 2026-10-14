@@ -208,7 +208,7 @@
                 <h2 class="text-lg font-bold text-amber-950 flex items-center gap-2">
                     <span>📜</span> Full Creature / NPC Stat Block(s)
                 </h2>
-                <span class="text-xs text-amber-800 font-medium">Rules of Legend d20 Format</span>
+                <span class="text-xs text-amber-800 font-medium">RoL d20 Format</span>
             </div>
             <div class="space-y-4 text-xs leading-relaxed font-mono text-slate-900">
                 @foreach(explode("\n", trim($statBlocksHtml)) as $block)

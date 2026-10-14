@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Spells Available by Skill - Rules of Legend d20'])
+@extends('layouts.app', ['title' => 'Spells Available by Skill - RoL d20'])
 
 @section('content')
 <div class="space-y-6">
