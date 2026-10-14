@@ -39,6 +39,8 @@ class EntityEngineNpcGeneratorParityTest extends TestCase
         $cleaned = str_ireplace('(1d6+3)', '(d10+3 P)', $cleaned);
         // Normalize known legacy multi-weapon/shield parry stacking (legacy stacked ParMod across all wielded weapons/shields due to Stackable=999, whereas EntityEngine applies best wielded item parry)
         $cleaned = str_ireplace(['DeCa/p 22/14', 'DeCa/p 18/10'], ['DeCa/p 21/14', 'DeCa/p 17/10'], $cleaned);
+        // Strip Spells: block for legacy parity comparison (legacy cIndividual never implemented spell selection)
+        $cleaned = preg_replace('/Spells:\s*.*?(?=(?:Possessions:|$))/si', '', $cleaned);
 
         return preg_replace('/\s+/', ' ', trim($cleaned));
     }

@@ -2813,6 +2813,65 @@ class EntityEngine
             }
         }
 
+        // Resolve Known Spells
+        $resolvedSpells = [];
+        $rawSpells = is_object($e) ? ($e->Spells ?? $e->KnownSpells ?? null) : ($e['Spells'] ?? $e['KnownSpells'] ?? null);
+        if (!empty($rawSpells)) {
+            if (is_array($rawSpells)) {
+                if (isset($rawSpells[0]) && is_array($rawSpells[0])) {
+                    $resolvedSpells = $rawSpells;
+                } else {
+                    foreach ($rawSpells as $k => $v) {
+                        $sId = is_numeric($k) && !is_numeric($v) ? (int)$k : (int)$v;
+                        if ($sId > 0) {
+                            $spRow = DB::table('ref_spells')->where('ID', $sId)->first();
+                            if ($spRow) {
+                                $resolvedSpells[] = [
+                                    'id' => (int)$spRow->ID,
+                                    'name' => $spRow->Name,
+                                    'cost' => $spRow->Cost,
+                                    'skills' => $spRow->Skills,
+                                    'descriptors' => $spRow->Descriptors,
+                                    'range' => $spRow->Range,
+                                    'duration' => $spRow->Duration,
+                                    'frequency' => (int)($spRow->Frequency ?? 5),
+                                ];
+                            }
+                        }
+                    }
+                }
+            } elseif (is_string($rawSpells)) {
+                $decoded = json_decode($rawSpells, true);
+                if (is_array($decoded)) {
+                    foreach ($decoded as $k => $v) {
+                        $sId = is_numeric($k) && !is_numeric($v) ? (int)$k : (int)$v;
+                        if ($sId > 0) {
+                            $spRow = DB::table('ref_spells')->where('ID', $sId)->first();
+                            if ($spRow) {
+                                $resolvedSpells[] = [
+                                    'id' => (int)$spRow->ID,
+                                    'name' => $spRow->Name,
+                                    'cost' => $spRow->Cost,
+                                    'skills' => $spRow->Skills,
+                                    'descriptors' => $spRow->Descriptors,
+                                    'range' => $spRow->Range,
+                                    'duration' => $spRow->Duration,
+                                    'frequency' => (int)($spRow->Frequency ?? 5),
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // If no spells are stored yet, but entity has skills that grant free spells, generate them
+        if (empty($resolvedSpells)) {
+            $resolvedSpells = SpellSelectionService::selectKnownSpellsForEntity([
+                'Skills' => $skillRanks,
+            ]);
+        }
+
         return [
             'heritage' => [
                 'race_id' => $currentRaceId,
@@ -2935,6 +2994,7 @@ class EntityEngine
             'skills' => $effectiveSkillRanks,
             'skill_ranks' => $skillRanks,
             'trained_skills' => $trainedSkillsSummary,
+            'spells' => $resolvedSpells,
             'social' => [
                 'sc' => $sc,
                 'wc' => $wc,
@@ -5002,6 +5062,12 @@ class EntityEngine
             }
         }
 
+        // Spells: generate known spells if creature has levels in skills that grant free spells
+        $spells = SpellSelectionService::selectKnownSpellsForEntity(
+            ['Skills' => $skillRanks],
+            crc32("creature_{$creatureId}_{$configStr}")
+        );
+
         return [
             'Name' => $name,
             'RaceID' => $creatureId,
@@ -5027,6 +5093,7 @@ class EntityEngine
             'WealthClass' => $wc,
             'Gender' => $genderId,
             'Possessions' => $possessions,
+            'Spells' => $spells,
         ];
     }
 
@@ -5488,6 +5555,20 @@ class EntityEngine
             }
             if (!empty($skParts)) {
                 $str .= "<i>Skills:</i> " . implode(', ', $skParts) . ".<br/>";
+            }
+        }
+
+        // Spells
+        $spellsList = $calc['spells'] ?? $rawEntity['Spells'] ?? [];
+        if (!empty($spellsList)) {
+            $sNames = [];
+            if (is_array($spellsList)) {
+                foreach ($spellsList as $spItem) {
+                    $sNames[] = is_array($spItem) ? ($spItem['name'] ?? $spItem['Name'] ?? 'Spell') : (string)$spItem;
+                }
+            }
+            if (!empty($sNames)) {
+                $str .= "<i>Spells:</i> " . implode(', ', $sNames) . ".<br/>";
             }
         }
 

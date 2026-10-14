@@ -194,11 +194,12 @@
     $spellsStr = '';
     if (!empty($spellsList)) {
         if (is_array($spellsList)) {
-            $sNames = [];
+            $sLinks = [];
             foreach ($spellsList as $spItem) {
-                $sNames[] = is_array($spItem) ? ($spItem['name'] ?? $spItem['Name'] ?? 'Spell') : (string)$spItem;
+                $sName = is_array($spItem) ? ($spItem['name'] ?? $spItem['Name'] ?? 'Spell') : (string)$spItem;
+                $sLinks[] = '<a href="/reference/spells/' . rawurlencode($sName) . '" class="text-indigo-900 hover:text-indigo-600 hover:underline">' . e($sName) . '</a>';
             }
-            $spellsStr = implode(', ', $sNames);
+            $spellsStr = implode(', ', $sLinks);
         } else {
             $spellsStr = (string)$spellsList;
         }
@@ -487,7 +488,7 @@
             <div class="px-3 py-1 bg-white border-b border-slate-300 text-[11.5px] leading-relaxed flex items-start justify-between gap-2">
                 <div class="flex-1">
                     <strong class="text-slate-950 font-sans font-semibold">Spells:</strong>
-                    <span x-show="showSpells">{{ $spellsStr }}</span>
+                    <span x-show="showSpells">{!! $spellsStr !!}</span>
                     <span x-show="!showSpells" x-cloak class="text-slate-400 italic font-sans text-[11px]">({{ count($spellsList) }} spells hidden)</span>
                 </div>
                 <button type="button" 
