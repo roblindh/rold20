@@ -48,6 +48,37 @@ class ReferenceShowAndCompendiumEnhancementsTest extends TestCase
         $this->assertStringContainsString('Adult Commoner', $content);
     }
 
+    public function testCreaturesHavePersonalityAndExternalUrlWhereApplicable(): void
+    {
+        // 1. Check database completeness
+        $total = \Illuminate\Support\Facades\DB::table('ref_creatures')->count();
+        $missingPersonality = \Illuminate\Support\Facades\DB::table('ref_creatures')
+            ->whereNull('Personality')
+            ->orWhere('Personality', '')
+            ->count();
+        $this->assertEquals(0, $missingPersonality, 'All creatures should have a Personality defined');
+
+        $srdUrlCount = \Illuminate\Support\Facades\DB::table('ref_creatures')
+            ->whereNotNull('ExternalURL')
+            ->where('ExternalURL', 'like', 'https://www.d20srd.org%')
+            ->count();
+        $this->assertGreaterThan(350, $srdUrlCount, 'At least 350 SRD creatures should have an ExternalURL');
+
+        // 2. Check UI page for an SRD creature renders both personality and the SRD button
+        $response = $this->app->handle(\Illuminate\Http\Request::create('/reference/creatures/Human', 'GET'));
+        $this->assertEquals(200, $response->getStatusCode());
+        $content = $response->getContent();
+        $this->assertStringContainsString('Personality &amp; Behavior:', $content);
+        $this->assertStringContainsString('SRD Entry', $content);
+        $this->assertStringContainsString('https://www.d20srd.org/srd/races.htm#humans', $content);
+
+        // 3. Check UI page for a monster (e.g. Achaierai)
+        $responseAchaierai = $this->app->handle(\Illuminate\Http\Request::create('/reference/creatures/Achaierai', 'GET'));
+        $this->assertEquals(200, $responseAchaierai->getStatusCode());
+        $this->assertStringContainsString('SRD Entry', $responseAchaierai->getContent());
+        $this->assertStringContainsString('https://www.d20srd.org/srd/monsters/achaierai.htm', $responseAchaierai->getContent());
+    }
+
     public function testSpellsBySkillPageRendersGroupings(): void
     {
         $response = $this->app->handle(\Illuminate\Http\Request::create('/reference/spells/by-skill', 'GET'));

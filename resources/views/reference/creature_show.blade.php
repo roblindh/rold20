@@ -33,9 +33,16 @@
                 Environment: <span class="font-medium text-slate-800">{{ $creature->Environment ?? 'Any' }}</span>
             </p>
         </div>
-        <a href="{{ route('reference.creatures') }}" class="text-xs sm:text-sm text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1 shrink-0 self-start sm:self-auto">
-            &larr; Back to Bestiary
-        </a>
+        <div class="flex items-center gap-2 shrink-0 self-start sm:self-auto">
+            @if(!empty($creature->ExternalURL))
+                <a href="{{ $creature->ExternalURL }}" target="_blank" rel="noopener noreferrer" class="text-xs sm:text-sm text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-300 px-3 py-1 rounded-lg font-semibold flex items-center gap-1 transition-colors" title="View official 3.5E SRD entry for this creature">
+                    <span>📖 SRD Entry</span> <span class="text-amber-700 text-xs">↗</span>
+                </a>
+            @endif
+            <a href="{{ route('reference.creatures') }}" class="text-xs sm:text-sm text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1">
+                &larr; Back to Bestiary
+            </a>
+        </div>
     </div>
 
     @if($resolvedImg)
