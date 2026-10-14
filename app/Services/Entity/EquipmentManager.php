@@ -1461,8 +1461,11 @@ class EquipmentManager
         ?array $sizeCatsTable = null,
         ?array $bodyCatsTable = null
     ): int {
+        if ($weight <= 0) {
+            return 0; // Carrying nothing cannot be encumbered
+        }
         if ($strScore <= 0) {
-            return 10; // Max encumbrance if Str <= 0
+            return 10; // Overencumbered if carrying weight with Str <= 0
         }
 
         $curStr = $strScore;

@@ -397,10 +397,7 @@ class SpecialCompanionService
         }
         $config .= "}";
 
-        $entity = new \cIndividual();
-        $entity->GenerateNPC($baseCreatureId, $config);
-
-        // Apply companion improvement traits (e.g. Evasion, Will bonus, Speed bonus, Deliver Touch, MR)
+        EntityEngine::loadReferenceTables();
         $traitsToApply = [];
         if (!empty($improvement['traits'])) {
             $traitsToApply[] = $improvement['traits'];
@@ -414,14 +411,14 @@ class SpecialCompanionService
             }
         }
 
+        $rawEntity = EntityEngine::buildEntityFromConfigString($baseCreatureId, $config);
         if (!empty($traitsToApply)) {
-            $combinedTraits = implode(' ', $traitsToApply);
-            $entity->CharTraits = $combinedTraits;
-            $entity->UpdateState();
+            $rawEntity['CharTraits'] = ($rawEntity['CharTraits'] ?? '') . ' ' . implode(' ', $traitsToApply);
         }
+        $calc = EntityEngine::calculate($rawEntity);
+        $statblockHtml = EntityEngine::renderClassicStatBlock($calc, $rawEntity);
 
-        $statblockHtml = $entity->GetStatBlockStr();
-
+        $cl = (int)($calc['heritage']['challenge_level'] ?? 0);
         return [
             'success' => true,
             'name' => $companionName,
@@ -431,24 +428,26 @@ class SpecialCompanionService
             'skill_id' => $skillId,
             'master_skill_level' => $masterSkillLevel,
             'cl_mod' => $clMod,
-            'final_cl' => $entity->GetChallengeLevel(),
-            'xp' => \cCreature::GetXPValue($entity->GetChallengeLevel()),
-            'hp' => $entity->GetHPTotal(),
-            'sp' => $entity->GetSPTotal(),
-            'pp' => $entity->GetPPTotal(),
-            'dec_active' => $entity->GetDeCActive(),
-            'dec_passive' => $entity->GetDeCPassive(),
-            'dr' => $entity->GetDR(),
-            'mr' => $entity->GetMR(),
-            'fort' => $entity->GetFort(),
-            'ref' => $entity->GetRef(),
-            'will' => $entity->GetWill(),
-            'ap' => $entity->GetActionPts(),
-            'ground_speed' => $entity->GetGroundSpeed(),
+            'final_cl' => $cl,
+            'xp' => EntityEngine::getXPValue($cl),
+            'hp' => $calc['health']['hp']['total'] ?? 0,
+            'sp' => $calc['health']['sp']['total'] ?? 0,
+            'pp' => $calc['health']['pp']['total'] ?? 0,
+            'dec_active' => $calc['defenses']['dec_active'] ?? 10,
+            'dec_passive' => $calc['defenses']['dec_passive'] ?? 10,
+            'dr' => $calc['defenses']['dr'] ?? 0,
+            'mr' => $calc['defenses']['mr'] ?? 0,
+            'fort' => $calc['defenses']['fort'] ?? 0,
+            'ref' => $calc['defenses']['ref'] ?? 0,
+            'will' => $calc['defenses']['will'] ?? 0,
+            'ap' => $calc['actions']['ap'] ?? 20,
+            'ground_speed' => $calc['speeds']['ground'] ?? 6,
             'statblock_html' => $statblockHtml,
             'config_string' => $config,
             'improvement_details' => $improvement,
             'personality_fragment' => $options['personality_fragment'] ?? null,
+            'calc_state' => $calc,
+            'entity_data' => $rawEntity,
         ];
     }
 

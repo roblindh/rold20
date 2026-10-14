@@ -181,7 +181,28 @@
     </div>
 
     <!-- Generated Stat Block(s) -->
-    @if(!empty($statBlocksHtml))
+    @if(!empty($statBlocks))
+        <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span>📜</span> Full Creature / NPC Stat Block{{ count($statBlocks) > 1 ? 's' : '' }}
+                </h2>
+                <span class="text-xs text-slate-500 font-mono">{{ count($statBlocks) }} Configuration{{ count($statBlocks) > 1 ? 's' : '' }}</span>
+            </div>
+            <div class="space-y-4">
+                @foreach($statBlocks as $sb)
+                    <x-statblock-interactive 
+                        :calc="$sb['calc_state']" 
+                        :rawEntity="$sb['entity_data']" 
+                        :configString="$sb['config_string']" 
+                        :classicHtml="$sb['classic_html']"
+                        :initialMode="'interactive'"
+                        :canToggleMode="true"
+                    />
+                @endforeach
+            </div>
+        </div>
+    @elseif(!empty($statBlocksHtml))
         <div class="bg-amber-50/40 border-2 border-amber-300/80 rounded-xl p-6 shadow-sm space-y-4">
             <div class="flex items-center justify-between border-b border-amber-200 pb-3">
                 <h2 class="text-lg font-bold text-amber-950 flex items-center gap-2">

@@ -520,7 +520,7 @@
                     </div>
                 </div>
 
-                <div x-html="statblockHtml"></div>
+                <div id="npcStatblockContainer" x-html="statblockHtml"></div>
 
                 <template x-if="!statblockHtml && !loading">
                     <div class="bg-white border-2 border-dashed border-slate-300 rounded-xl p-6 text-center space-y-2">
@@ -830,6 +830,12 @@ function npcGeneratorWizard() {
                 if (data && data.success && data.html) {
                     this.statblockHtml = data.html;
                     this.configString = data.config_string;
+                    this.$nextTick(() => {
+                        const container = document.getElementById('npcStatblockContainer');
+                        if (container && window.Alpine) {
+                            window.Alpine.initTree(container);
+                        }
+                    });
                 } else {
                     const err = (data && (data.error || data.message)) ? (data.error || data.message) : 'Unknown error generating stat block.';
                     this.statblockHtml = '<div class="p-4 bg-rose-50 border border-rose-300 rounded-xl text-xs text-rose-800 font-semibold space-y-1"><div>⚠️ <strong>Stat Block Generation Failed:</strong></div><div class="font-mono text-[11px]">' + err + '</div></div>';

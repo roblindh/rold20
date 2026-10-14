@@ -277,7 +277,9 @@ class TraitEvaluator
             };
         }
 
-        return true;
+        // Terms without comparison operators (e.g. 'vsEvil', 'non-magic', 'non-silver', 'darkness')
+        // are situational combat conditions, not met static prerequisites.
+        return false;
     }
 
     /**
@@ -375,7 +377,7 @@ class TraitEvaluator
     public static function extractWeaponCat(string $req): string
     {
         $cats = [
-            "Nat", "Mnk", "Axe", "Clb", "Fnc", "Fll", "HvB", "LtB", "PlA", "Spr", "Stv",
+            "Nat", "Axe", "Clb", "Fnc", "Fll", "HvB", "LtB", "PlA", "Spr", "Stv",
             "Exo", "Bow", "Crs", "Fir", "Sln", "SmT", "Are", "BaM", "Ray", "Sie",
             "Brl", "Shd", "Gen"
         ];
@@ -383,6 +385,9 @@ class TraitEvaluator
             if (stripos($req, $cat) !== false) {
                 return $cat;
             }
+        }
+        if (stripos($req, 'Mnk') !== false) {
+            return 'Nat';
         }
         return 'Gen';
     }

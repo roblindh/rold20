@@ -303,18 +303,18 @@ class ReferenceController extends Controller
             }
         }
 
+        $statBlocks = [];
         $statBlocksHtml = '';
         try {
-            $entity = new \cIndividual();
-            $rawSb = $entity->GetStatBlocksStr($creature->ID);
-            if ($rawSb) {
-                $statBlocksHtml = str_replace("\\n", "\n", $rawSb);
-            }
+            \App\Services\Entity\EntityEngine::loadReferenceTables();
+            $statBlocks = \App\Services\Entity\EntityEngine::parseCreatureStatBlockConfigs($creature->ID);
+            $statBlocksHtml = \App\Services\Entity\EntityEngine::renderCreatureStatBlocksClassic($creature->ID);
         } catch (\Throwable $e) {
+            $statBlocks = [];
             $statBlocksHtml = '';
         }
 
-        return view('reference.creature_show', compact('creature', 'statBlocksHtml', 'sizeDesc', 'sizeAbbr', 'bodyDesc', 'culture', 'cultureClasses'));
+        return view('reference.creature_show', compact('creature', 'statBlocks', 'statBlocksHtml', 'sizeDesc', 'sizeAbbr', 'bodyDesc', 'culture', 'cultureClasses'));
     }
 
     /**
@@ -324,17 +324,34 @@ class ReferenceController extends Controller
     {
         $this->ensureRulesLoaded();
         $creatureId = (int)$id;
+        $mode = $request->query('mode', 'interactive');
         try {
-            $entity = new \cIndividual();
-            $rawSb = $entity->GetStatBlocksStr($creatureId);
-            if (!$rawSb) {
+            \App\Services\Entity\EntityEngine::loadReferenceTables();
+            $statBlocks = \App\Services\Entity\EntityEngine::parseCreatureStatBlockConfigs($creatureId);
+            if (empty($statBlocks)) {
                 return response('<span class="text-xs text-slate-500 italic">No stat blocks configured for this creature.</span>');
             }
-            $blocks = explode("\\n", trim($rawSb));
+
+            if ($mode === 'interactive') {
+                $html = '<div class="space-y-4 my-2">';
+                foreach ($statBlocks as $sb) {
+                    $html .= view('components.statblock-interactive', [
+                        'calc' => $sb['calc_state'],
+                        'rawEntity' => $sb['entity_data'],
+                        'configString' => $sb['config_string'],
+                        'classicHtml' => $sb['classic_html'],
+                        'initialMode' => 'interactive',
+                        'canToggleMode' => true,
+                    ])->render();
+                }
+                $html .= '</div>';
+                return response($html);
+            }
+
             $html = '<div class="space-y-3 my-2 text-xs font-mono text-slate-900">';
-            foreach ($blocks as $b) {
-                if (trim($b) !== '') {
-                    $html .= '<div class="p-3 bg-amber-50/70 border border-amber-300 rounded-lg shadow-2xs leading-relaxed">' . $b . '</div>';
+            foreach ($statBlocks as $sb) {
+                if (!empty($sb['classic_html'])) {
+                    $html .= '<div class="p-3 bg-amber-50/70 border border-amber-300 rounded-lg shadow-2xs leading-relaxed">' . $sb['classic_html'] . '</div>';
                 }
             }
             $html .= '</div>';
