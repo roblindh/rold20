@@ -100,7 +100,9 @@ class StatBlockInteractiveCompactTest extends TestCase
         $this->assertStringContainsString('+1 Vorpal Sword', $plain);
         $this->assertStringContainsString('EC 2', $plain);
 
-        // Collapsible controls & buttons
+        // Mode buttons & controls
+        $this->assertStringContainsString('Interactive', $html);
+        $this->assertStringContainsString('Classic', $html);
         $this->assertStringContainsString('showMob', $html);
         $this->assertStringContainsString('showDef', $html);
         $this->assertStringContainsString('showAttacks', $html);

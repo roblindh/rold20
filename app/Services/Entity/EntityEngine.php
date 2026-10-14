@@ -4934,8 +4934,8 @@ class EntityEngine
         // Possessions & Loadout
         $possessions = [];
 
-        if ($equipMode === 'level' && $classConfigId > 0) {
-            $loadout = \App\Services\ItemGeneration\EquipmentBlueprintService::generateLoadout($lvl, $classConfigId, true);
+        if ($equipMode === 'level' && $primaryClassConfigId > 0) {
+            $loadout = \App\Services\ItemGeneration\EquipmentBlueprintService::generateLoadout($lvl, $primaryClassConfigId, true);
             foreach ($loadout['items'] ?? [] as $it) {
                 $refId = (int)($it['item_id'] ?? $it['ref_id'] ?? 0);
                 if ($refId === 0 && isset($it['entity']) && is_object($it['entity'])) {

@@ -271,13 +271,15 @@
                 <div class="inline-flex rounded bg-slate-800 p-0.5 border border-slate-700">
                     <button type="button" 
                             @click="viewMode = 'interactive'"
-                            :class="viewMode === 'interactive' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:text-white'"
+                            :class="viewMode === 'interactive' ? 'bg-indigo-600 text-white font-bold shadow-xs' : 'text-slate-300 hover:text-white'"
+                            :style="viewMode === 'interactive' ? 'background-color: #4f46e5; color: #ffffff;' : 'color: #cbd5e1;'"
                             class="px-2 py-0.5 rounded transition text-[10px]">
-                        Compact
+                        Interactive
                     </button>
                     <button type="button" 
                             @click="viewMode = 'classic'"
-                            :class="viewMode === 'classic' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:text-white'"
+                            :class="viewMode === 'classic' ? 'bg-indigo-600 text-white font-bold shadow-xs' : 'text-slate-300 hover:text-white'"
+                            :style="viewMode === 'classic' ? 'background-color: #4f46e5; color: #ffffff;' : 'color: #cbd5e1;'"
                             class="px-2 py-0.5 rounded transition text-[10px]">
                         Classic
                     </button>
@@ -516,8 +518,10 @@
     </div>
 
     <!-- VIEW 2: Raw Classic Monospace Block -->
-    <div x-show="viewMode === 'classic'" x-cloak class="p-3 bg-slate-900 text-amber-200 font-mono text-[11px] leading-relaxed select-all overflow-x-auto whitespace-pre-wrap">
-        <div x-ref="classicBlock">{!! $classicHtml !!}</div>
+    <div x-show="viewMode === 'classic'" x-cloak 
+         class="p-3 bg-white text-slate-900 font-mono text-[11.5px] leading-relaxed select-all overflow-x-auto whitespace-pre-wrap border-t border-slate-200"
+         style="background-color: #ffffff; color: #0f172a;">
+        <div x-ref="classicBlock" style="color: #0f172a;">{!! $classicHtml !!}</div>
     </div>
 
     <!-- Configuration String Bar -->
