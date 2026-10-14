@@ -32,7 +32,15 @@ class ReindexSearchCommand extends Command
             'hb16_legal_content.php' => ['route' => 'rules.legal', 'chapter' => 'Legal & Licensing'],
         ];
 
-        $this->info("Indexing rules content files...");
+        // Ensure legacy global rules tables and helper functions are initialized
+        if (!function_exists('show_agecategories') && file_exists(base_path('RulesSrc/global.php'))) {
+            require_once base_path('RulesSrc/global.php');
+            if (function_exists('application_start')) {
+                application_start();
+            }
+        }
+
+        $this->info("Indexing rules content files and rules tables...");
         foreach ($rulesFiles as $file => $meta) {
             $path = resource_path('views/rules/content/' . $file);
             if (!file_exists($path)) {
@@ -42,7 +50,17 @@ class ReindexSearchCommand extends Command
                 }
             }
 
-            $content = file_get_contents($path);
+            // Render PHP content so that all dynamic rules tables (show_*()) and HTML are fully evaluated
+            ob_start();
+            try {
+                include $path;
+                $content = ob_get_clean();
+            } catch (\Throwable $e) {
+                ob_end_clean();
+                $this->warn("Failed to render $file: " . $e->getMessage());
+                continue;
+            }
+
             if (!$content) continue;
 
             // Split into sections by headings
@@ -52,7 +70,7 @@ class ReindexSearchCommand extends Command
                 $headingLevel = $sec[1];
                 $anchor = $sec[2] ?? '';
                 $title = trim(strip_tags($sec[3]));
-                $body = trim(strip_tags($sec[4]));
+                $rawBody = $sec[4];
 
                 if (empty($title)) continue;
 
@@ -61,16 +79,72 @@ class ReindexSearchCommand extends Command
                     $url .= "#$anchor";
                 }
 
-                $snippet = mb_substr($body, 0, 200) . (mb_strlen($body) > 200 ? '...' : '');
+                $cleanBody = $this->htmlToSearchText($rawBody);
+                $snippet = mb_substr($cleanBody, 0, 200) . (mb_strlen($cleanBody) > 200 ? '...' : '');
 
                 DB::table('search_index')->insert([
                     'title' => $title,
                     'category' => "Rule: {$meta['chapter']}",
                     'url' => $url,
                     'snippet' => $snippet,
-                    'content' => "$title $body",
+                    'content' => "$title $cleanBody",
                 ]);
                 $indexedCount++;
+
+                // 1b. Index all data tables found in this section
+                preg_match_all('/<table(?:\s+id="([^"]+)")?[^>]*>(.*?)<\/table>(\s*<p[^>]*>\s*<sup.*?<\/p>)?/si', $rawBody, $tables, PREG_SET_ORDER);
+                foreach ($tables as $tbl) {
+                    $tableId = $tbl[1] ?? '';
+                    $tableInnerHtml = $tbl[2];
+                    $trailingFootnotes = $tbl[3] ?? '';
+
+                    // Extract caption or main table header
+                    $captionText = '';
+                    if (preg_match('/<caption[^>]*>(.*?)<\/caption>/si', $tableInnerHtml, $capMatch)) {
+                        $captionText = trim(strip_tags($capMatch[1]));
+                    } elseif (preg_match('/<thead[^>]*>.*?<th[^>]*colspan[^>]*>(.*?)<\/th>.*?<\/thead>/si', $tableInnerHtml, $thMatch)) {
+                        $captionText = trim(strip_tags($thMatch[1]));
+                    } elseif (preg_match('/<th[^>]*colspan[^>]*>(.*?)<\/th>/si', $tableInnerHtml, $thMatch2)) {
+                        $captionText = trim(strip_tags($thMatch2[1]));
+                    }
+
+                    $captionText = html_entity_decode($captionText, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                    $captionText = trim(preg_replace('/\s+/', ' ', $captionText));
+
+                    // Skip layout tables without headers/captions
+                    if (empty($captionText)) {
+                        continue;
+                    }
+
+                    // Format title: e.g. "Table: Size Categories"
+                    $tableTitle = preg_match('/^Table:\s*/i', $captionText)
+                        ? preg_replace('/^Table:\s*/i', 'Table: ', $captionText)
+                        : "Table: {$captionText}";
+
+                    // Determine target URL for table
+                    $tableUrl = route($meta['route'], [], false);
+                    if (!empty($tableId)) {
+                        $tableUrl .= "#{$tableId}";
+                    } elseif (!empty($anchor)) {
+                        $tableUrl .= "#{$anchor}";
+                    }
+
+                    $tableText = $this->htmlToSearchText($tableInnerHtml . ' ' . $trailingFootnotes);
+                    if (mb_strlen($tableText) < 10) {
+                        continue; // Skip trivial/empty tables
+                    }
+
+                    $tableSnippet = mb_substr($tableText, 0, 200) . (mb_strlen($tableText) > 200 ? '...' : '');
+
+                    DB::table('search_index')->insert([
+                        'title' => $tableTitle,
+                        'category' => "Rule: {$meta['chapter']} (Table)",
+                        'url' => $tableUrl,
+                        'snippet' => $tableSnippet,
+                        'content' => "{$tableTitle} {$title} {$meta['chapter']} {$tableText}",
+                    ]);
+                    $indexedCount++;
+                }
             }
         }
 
@@ -205,5 +279,23 @@ class ReindexSearchCommand extends Command
 
         $this->info("<info>Search index built successfully!</info> Total {$indexedCount} entries indexed.");
         return 0;
+    }
+
+    /**
+     * Convert HTML content to clean, space-separated plain text for indexing
+     */
+    private function htmlToSearchText(string $html): string
+    {
+        // Replace superscripts with parenthesis to preserve references like Att/DeC Mod (1)
+        $text = preg_replace('/<sup[^>]*>(.*?)<\/sup>/i', ' ($1) ', $html);
+        // Replace block and table cell boundaries with spaces to prevent text from conjoining
+        $text = preg_replace('/<\/(th|td|tr|p|div|li|dt|dd|caption|h[1-6])>/i', ' ', $text);
+        $text = preg_replace('/<br\s*\/?>/i', ' ', $text);
+        $text = strip_tags($text);
+        // Decode HTML entities (e.g. &times;, &amp;, &nbsp;, &#39;, &quot;)
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        // Normalize all whitespace
+        $text = preg_replace('/\s+/', ' ', $text);
+        return trim($text);
     }
 }

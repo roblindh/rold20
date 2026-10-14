@@ -25,6 +25,15 @@ class SearchController extends Controller
                 $queryBuilder->where('title', 'like', "%{$q}%")
                              ->orWhere('content', 'like', "%{$q}%");
             });
+
+            // Order by relevance: exact match > Table: match > prefix match > title substring > content
+            $query->orderByRaw("CASE 
+                WHEN LOWER(title) = LOWER(?) THEN 1
+                WHEN LOWER(title) = LOWER(?) THEN 2
+                WHEN LOWER(title) LIKE LOWER(?) THEN 3
+                WHEN LOWER(title) LIKE LOWER(?) THEN 4
+                ELSE 5 
+            END", [$q, "Table: {$q}", "{$q}%", "%{$q}%"]);
         }
 
         if (!empty($category)) {
@@ -52,11 +61,22 @@ class SearchController extends Controller
             return response()->json([]);
         }
 
-        $results = DB::table('search_index')
-            ->where('title', 'like', "%{$q}%")
-            ->orWhere('content', 'like', "%{$q}%")
-            ->limit(10)
-            ->get(['title', 'category', 'url', 'snippet']);
+        $query = DB::table('search_index')
+            ->where(function ($queryBuilder) use ($q) {
+                $queryBuilder->where('title', 'like', "%{$q}%")
+                             ->orWhere('content', 'like', "%{$q}%");
+            });
+
+        // Relevance ordering: exact title > Table: title > prefix match > title substring > content
+        $query->orderByRaw("CASE 
+            WHEN LOWER(title) = LOWER(?) THEN 1
+            WHEN LOWER(title) = LOWER(?) THEN 2
+            WHEN LOWER(title) LIKE LOWER(?) THEN 3
+            WHEN LOWER(title) LIKE LOWER(?) THEN 4
+            ELSE 5 
+        END", [$q, "Table: {$q}", "{$q}%", "%{$q}%"]);
+
+        $results = $query->limit(10)->get(['title', 'category', 'url', 'snippet']);
 
         $results->transform(function ($item) {
             $item->url = $this->formatUrl($item->url);
