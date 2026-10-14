@@ -2843,6 +2843,7 @@ class EntityEngine
                 'mental_age_cat' => $mentalAgeCat,
                 'space' => !empty($sizeRow['Space']) ? (string)$sizeRow['Space'] : '1x1 sq',
                 'reach' => (float)$creatureReach,
+                'alignment' => (string)(is_object($e) ? ($e->Alignment ?? self::$creaturesCache[$baseRaceId]['Alignment'] ?? 'Any') : ($e['Alignment'] ?? self::$creaturesCache[$baseRaceId]['Alignment'] ?? 'Any')),
             ],
 
             'base_abilities' => [
@@ -5122,6 +5123,214 @@ class EntityEngine
         return ($cl < 0 ? 25 : ($cl == 0 ? 75 : ($cl == 1 ? 150 : ($cl == 2 ? 225 : (($cl - 2) * 300)))));
     }
 
+    public static function getSkillsCache(): ?array
+    {
+        self::loadReferenceTables();
+        return self::$skillsCache;
+    }
+
+    public static function getClassesCache(): ?array
+    {
+        self::loadReferenceTables();
+        return self::$classesCache;
+    }
+
+    public static function getCreaturesCache(): ?array
+    {
+        self::loadReferenceTables();
+        return self::$creaturesCache;
+    }
+
+    /**
+     * Build attack lines for a creature/NPC stat block.
+     * Returns an array of strings, each representing an attack row (weapons, combos, naturals, grapple, spells).
+     */
+    public static function buildStatBlockAttackLines(array $calc, array $rawEntity = []): array
+    {
+        self::loadReferenceTables();
+        $h = $calc['heritage'] ?? [];
+        $weaponsMatrix = $calc['attacks']['weapons'] ?? [];
+        $naturalAttacks = $calc['attacks']['natural'] ?? [];
+        $grapple = $calc['attacks']['grapple'] ?? null;
+
+        $skillLevels = $calc['skills'] ?? $calc['skill_ranks'] ?? [];
+        $cmbInRank = (int)($skillLevels[49] ?? 0); // Combat Instincts
+        $wpNatRank = (int)($skillLevels[17] ?? 0); // Weapons - Natural
+        $wpBrlRank = (int)($skillLevels[18] ?? 0); // Weapons - Brawling
+        $rayRank = (int)($skillLevels[38] ?? 0);   // Magic - Rays
+        $areaRank = (int)($skillLevels[36] ?? 0);  // Magic - Area
+        $bamRank = (int)($skillLevels[37] ?? 0);   // Magic - Body & Mind
+        $penRed = (int)($calc['modifiers']['MultiAttackPenRed'] ?? 0);
+        $dexMod = (int)($calc['ability_modifiers']['Dex'] ?? $calc['ability_modifiers']['dex'] ?? $calc['final_abilities']['dex']['mod'] ?? 0);
+        $conMod = (int)($calc['ability_modifiers']['Con'] ?? $calc['ability_modifiers']['con'] ?? $calc['final_abilities']['con']['mod'] ?? 0);
+
+        $cleanDice = function(string $dmg) {
+            return preg_replace('/^1(d\d+)/', '$1', $dmg);
+        };
+        $formatSigned = function(int $val): string {
+            return ($val > 0 ? "+{$val}" : (string)$val);
+        };
+
+        $lines = [];
+
+        $weapList = array_values($weaponsMatrix);
+        $numWeaps = count($weapList);
+        if ($numWeaps > 0) {
+            $w0 = $weapList[0];
+            $isRanged = !empty($w0['is_ranged']);
+            $w0DmgBase = $cleanDice($w0['one_handed']['damage'] ?? $w0['two_handed']['damage'] ?? '');
+            $w0Dmg = $w0DmgBase;
+            $w0Bonus = (int)($w0['one_handed']['attack_bonus'] ?? $w0['two_handed']['attack_bonus'] ?? 0);
+            $w0Sz = $w0['size'] ?? ($h['size_id'] - 1);
+            $w0SizeDiff = $w0Sz - (int)$h['size_id'];
+            if ($numWeaps === 1 && !$isRanged && $w0SizeDiff >= 0) {
+                $w0Dmg .= '+2';
+            }
+            $bStr = $formatSigned($w0Bonus);
+            $w0Rch = str_replace(' sq', '', $w0['reach'] ?? '0-1');
+            $lines[] = "Atk {$w0['name']} Sz {$w0Sz}, AP {$w0['ap']}" . ($isRanged ? '' : ", Rch {$w0Rch}") . ", {$bStr} ({$w0Dmg})";
+
+            // Multi / Akimbo
+            if ($cmbInRank > 2) {
+                if (!empty($w0['badges']) && in_array('Double', $w0['badges'])) {
+                    $multiAP = max(5, 2 * max(5, 8 + (int)$h['size_id'] + $w0SizeDiff) - 2);
+                    $pen0 = max(0, 4 + ($w0SizeDiff >= 0 ? 4 : ($w0SizeDiff < -2 ? -4 : ($w0SizeDiff < -1 ? -2 : 0))));
+                    $actPen0 = max(0, $pen0 - $penRed);
+                    $b0 = $formatSigned($w0Bonus - $actPen0);
+                    $lines[] = "Multi {$w0['name']}/{$w0['name']} Sz {$w0Sz}, AP {$multiAP}, Rch {$w0Rch}/{$w0Rch}, {$b0}/{$b0} ({$w0DmgBase}/{$w0DmgBase})";
+                } elseif ($numWeaps > 1) {
+                    $w1 = $weapList[1];
+                    $w1Dmg = $cleanDice($w1['one_handed']['damage'] ?? '');
+                    $w1Bonus = (int)($w1['one_handed']['attack_bonus'] ?? 0);
+                    $w1Sz = $w1['size'] ?? ($h['size_id'] - 1);
+                    $w1SizeDiff = $w1Sz - (int)$h['size_id'];
+                    $pen0 = max(0, 6 + ($w0SizeDiff >= 0 ? 4 : ($w0SizeDiff < -2 ? -4 : ($w0SizeDiff < -1 ? -2 : 0))));
+                    $pen1 = max(0, 6 + ($w1SizeDiff >= 0 ? 4 : ($w1SizeDiff < -2 ? -4 : ($w1SizeDiff < -1 ? -2 : 0))));
+                    $b0Str = $formatSigned($w0Bonus - max(0, $pen0 - $penRed));
+                    $b1Str = $formatSigned($w1Bonus - max(0, $pen1 - $penRed));
+                    $w1Rch = str_replace(' sq', '', $w1['reach'] ?? '0-1');
+                    $multiAP = max(5, $w0['ap'] + $w1['ap'] - 2);
+                    $maxSz = max($w0Sz, $w1Sz);
+                    $lines[] = "Multi {$w0['name']}/{$w1['name']} Sz {$maxSz}, AP {$multiAP}, Rch {$w0Rch}/{$w1Rch}, {$b0Str}/{$b1Str} ({$w0Dmg}/{$w1Dmg})";
+                }
+            }
+        }
+
+        // Natural attacks
+        $hasMeleeWeapons = false;
+        foreach ($weaponsMatrix as $w) {
+            if (empty($w['is_ranged'])) {
+                $hasMeleeWeapons = true;
+                break;
+            }
+        }
+        $allNats = [];
+        foreach ($naturalAttacks as $na) {
+            $qty = (int)($na['quantity'] ?? $na['qty'] ?? 1);
+            for ($q = 0; $q < $qty; $q++) {
+                $allNats[] = $na;
+            }
+        }
+        $numNats = count($allNats);
+        if ($numNats > 0 && (!$hasMeleeWeapons || ($wpNatRank > ((int)($h['total_level'] ?? 1) / 2)))) {
+            foreach ($naturalAttacks as $na) {
+                if (!empty($na['primary'])) {
+                    $rawName = $na['raw_name'] ?? $na['name'];
+                    $naDmg = $cleanDice($na['damage']);
+                    $b = (int)($na['attack_bonus'] ?? $na['bonus'] ?? 0);
+                    $bStr = $formatSigned($b);
+                    $naSz = (int)$h['size_id'] + (int)($na['size'] ?? -2);
+                    $naRch = str_replace(' sq', '', $na['reach'] ?? '0-1');
+                    $lines[] = "Atk {$rawName} Sz {$naSz}, AP {$na['ap']}, Rch {$naRch}, {$bStr} ({$naDmg})";
+                }
+            }
+            if ($cmbInRank > 2 && $numNats > 1) {
+                for ($cnt = 2; $cnt <= min(7, $numNats); $cnt++) {
+                    if ($cnt === 3 && !($wpNatRank >= 4)) break;
+                    if ($cnt === 4 && !($wpNatRank >= 8)) break;
+                    if ($cnt === 5 && !($wpNatRank >= 12)) break;
+                    if ($cnt === 6 && !($wpNatRank >= 16)) break;
+                    if ($cnt === 7 && !($wpNatRank >= 20)) break;
+
+                    $multiAtts = array_slice($allNats, 0, $cnt);
+                    $multiPen = 2 + 2 * $cnt;
+                    $effMultiPen = max(0, $multiPen - 4);
+                    $actualMultiPen = max(0, $effMultiPen - $penRed);
+
+                    $names = [];
+                    $attBons = [];
+                    $dmgs = [];
+                    $rchs = [];
+                    $maxSz = -5;
+                    $combAP = 0;
+
+                    foreach ($multiAtts as $na) {
+                        $rawName = $na['raw_name'] ?? $na['name'];
+                        $names[] = $rawName;
+                        $b = (int)($na['attack_bonus'] ?? 0) - $actualMultiPen;
+                        $attBons[] = $formatSigned($b);
+                        $dmgs[] = $cleanDice($na['damage'] ?? '');
+                        $rch = str_replace(' sq', '', $na['reach'] ?? '0-1');
+                        if ($rch !== '') {
+                            $rchs[] = $rch;
+                        }
+                        $sz = (int)$h['size_id'] + (int)($na['size'] ?? -2);
+                        $maxSz = max($maxSz, $sz);
+                        $combAP += max(5, 8 + (int)$h['size_id'] + (int)($na['size'] ?? -2)) - (int)($calc['modifiers']['AttSpd'] ?? 0);
+                    }
+
+                    $apPenalty = match($cnt) {
+                        2 => -2,
+                        3 => -4,
+                        4 => -6,
+                        5 => -9,
+                        6 => -12,
+                        7 => -16,
+                        default => 0,
+                    };
+                    $combAP = max(5, $combAP + $apPenalty);
+                    $strName = implode('/', $names);
+                    $strRch = !empty($rchs) ? (', Rch ' . implode('/', $rchs)) : '';
+                    $strB = implode('/', $attBons);
+                    $strD = implode('/', $dmgs);
+                    $lines[] = "Multi {$strName} Sz {$maxSz}, AP {$combAP}{$strRch}, {$strB} ({$strD})";
+                }
+            }
+        }
+
+        // Grapple
+        if ($wpBrlRank > 1 && $grapple) {
+            $reachVal = str_replace([' sq', '0-'], '', $grapple['reach'] ?? '1');
+            $bDex = $formatSigned((int)$grapple['dex_attack']);
+            $bStr = $formatSigned((int)$grapple['str_attack']);
+            $lines[] = "Grp AP {$grapple['ap']}, Rch 0-{$reachVal}, {$bDex}/{$bStr}";
+        }
+
+        // Magic / Area / Body / Mind
+        $magParts = [];
+        if ($rayRank >= 1) {
+            $rayBonus = (int)($calc['attacks']['spells']['ray']['attack_bonus'] ?? 0);
+            $magParts[] = "Rays " . $formatSigned($rayBonus);
+        }
+        if ($areaRank >= 1) {
+            $areSkillAtt = (int)($calc['attacks']['spells']['area']['skill_attack_bonus'] ?? 0);
+            $areaBonus = (int)$dexMod + $areSkillAtt;
+            $magParts[] = "AreaAtt " . $formatSigned($areaBonus);
+        }
+        if ($bamRank >= 1) {
+            $bamSkillAtt = (int)($calc['attacks']['spells']['body']['skill_attack_bonus'] ?? 0);
+            $bodyBonus = (int)$conMod + $bamSkillAtt;
+            $mindBonus = (int)$conMod + $bamSkillAtt;
+            $magParts[] = "BodyAtt " . $formatSigned($bodyBonus);
+            $magParts[] = "MindAtt " . $formatSigned($mindBonus);
+        }
+        if (!empty($magParts)) {
+            $lines[] = implode('; ', $magParts);
+        }
+
+        return $lines;
+    }
+
     /**
      * Render a classic compact semi-colon delimited bestiary stat block string matching legacy RoL d20 output.
      */
@@ -5233,177 +5442,9 @@ class EntityEngine
         $str .= "; AP {$ap}";
 
         // Attacks
-        $weaponsMatrix = $calc['attacks']['weapons'] ?? [];
-        $naturalAttacks = $calc['attacks']['natural'] ?? [];
-        $grapple = $calc['attacks']['grapple'] ?? null;
-
-        $skillLevels = $calc['skills'] ?? $calc['skill_ranks'] ?? [];
-        $cmbInRank = (int)($skillLevels[49] ?? 0); // Combat Instincts
-        $wpNatRank = (int)($skillLevels[17] ?? 0); // Weapons - Natural
-        $wpBrlRank = (int)($skillLevels[18] ?? 0); // Weapons - Brawling
-        $rayRank = (int)($skillLevels[38] ?? 0);   // Magic - Rays
-        $areaRank = (int)($skillLevels[36] ?? 0);  // Magic - Area
-        $bamRank = (int)($skillLevels[37] ?? 0);   // Magic - Body & Mind
-        $penRed = (int)($calc['modifiers']['MultiAttackPenRed'] ?? 0);
-        $dexMod = (int)($calc['ability_modifiers']['Dex'] ?? $calc['ability_modifiers']['dex'] ?? $calc['final_abilities']['dex']['mod'] ?? 0);
-        $conMod = (int)($calc['ability_modifiers']['Con'] ?? $calc['ability_modifiers']['con'] ?? $calc['final_abilities']['con']['mod'] ?? 0);
-
-        $cleanDice = function(string $dmg) {
-            return preg_replace('/^1(d\d+)/', '$1', $dmg);
-        };
-        $formatSigned = function(int $val): string {
-            return ($val > 0 ? "+{$val}" : (string)$val);
-        };
-
-        $weapList = array_values($weaponsMatrix);
-        $numWeaps = count($weapList);
-        if ($numWeaps > 0) {
-            $w0 = $weapList[0];
-            $isRanged = !empty($w0['is_ranged']);
-            $w0DmgBase = $cleanDice($w0['one_handed']['damage'] ?? $w0['two_handed']['damage'] ?? '');
-            $w0Dmg = $w0DmgBase;
-            $w0Bonus = (int)($w0['one_handed']['attack_bonus'] ?? $w0['two_handed']['attack_bonus'] ?? 0);
-            $w0Sz = $w0['size'] ?? ($h['size_id'] - 1);
-            $w0SizeDiff = $w0Sz - (int)$h['size_id'];
-            if ($numWeaps === 1 && !$isRanged && $w0SizeDiff >= 0) {
-                $w0Dmg .= '+2';
-            }
-            $bStr = $formatSigned($w0Bonus);
-            $w0Rch = str_replace(' sq', '', $w0['reach'] ?? '0-1');
-            $str .= "; Atk {$w0['name']} Sz {$w0Sz}, AP {$w0['ap']}" . ($isRanged ? '' : ", Rch {$w0Rch}") . ", {$bStr} ({$w0Dmg})";
-
-            // Multi / Akimbo
-            if ($cmbInRank > 2) {
-                if (!empty($w0['badges']) && in_array('Double', $w0['badges'])) {
-                    $multiAP = max(5, 2 * max(5, 8 + (int)$h['size_id'] + $w0SizeDiff) - 2);
-                    $pen0 = max(0, 4 + ($w0SizeDiff >= 0 ? 4 : ($w0SizeDiff < -2 ? -4 : ($w0SizeDiff < -1 ? -2 : 0))));
-                    $actPen0 = max(0, $pen0 - $penRed);
-                    $b0 = $formatSigned($w0Bonus - $actPen0);
-                    $str .= "; Multi {$w0['name']}/{$w0['name']} Sz {$w0Sz}, AP {$multiAP}, Rch {$w0Rch}/{$w0Rch}, {$b0}/{$b0} ({$w0DmgBase}/{$w0DmgBase})";
-                } elseif ($numWeaps > 1) {
-                    $w1 = $weapList[1];
-                    $w1Dmg = $cleanDice($w1['one_handed']['damage'] ?? '');
-                    $w1Bonus = (int)($w1['one_handed']['attack_bonus'] ?? 0);
-                    $w1Sz = $w1['size'] ?? ($h['size_id'] - 1);
-                    $w1SizeDiff = $w1Sz - (int)$h['size_id'];
-                    $pen0 = max(0, 6 + ($w0SizeDiff >= 0 ? 4 : ($w0SizeDiff < -2 ? -4 : ($w0SizeDiff < -1 ? -2 : 0))));
-                    $pen1 = max(0, 6 + ($w1SizeDiff >= 0 ? 4 : ($w1SizeDiff < -2 ? -4 : ($w1SizeDiff < -1 ? -2 : 0))));
-                    $b0Str = $formatSigned($w0Bonus - max(0, $pen0 - $penRed));
-                    $b1Str = $formatSigned($w1Bonus - max(0, $pen1 - $penRed));
-                    $w1Rch = str_replace(' sq', '', $w1['reach'] ?? '0-1');
-                    $multiAP = max(5, $w0['ap'] + $w1['ap'] - 2);
-                    $maxSz = max($w0Sz, $w1Sz);
-                    $str .= "; Multi {$w0['name']}/{$w1['name']} Sz {$maxSz}, AP {$multiAP}, Rch {$w0Rch}/{$w1Rch}, {$b0Str}/{$b1Str} ({$w0Dmg}/{$w1Dmg})";
-                }
-            }
-        }
-
-        // Natural attacks
-        $hasMeleeWeapons = false;
-        foreach ($weaponsMatrix as $w) {
-            if (empty($w['is_ranged'])) {
-                $hasMeleeWeapons = true;
-                break;
-            }
-        }
-        $allNats = [];
-        foreach ($naturalAttacks as $na) {
-            $qty = (int)($na['quantity'] ?? $na['qty'] ?? 1);
-            for ($q = 0; $q < $qty; $q++) {
-                $allNats[] = $na;
-            }
-        }
-        $numNats = count($allNats);
-        if ($numNats > 0 && (!$hasMeleeWeapons || ($wpNatRank > ((int)($h['total_level'] ?? 1) / 2)))) {
-            foreach ($naturalAttacks as $na) {
-                if (!empty($na['primary'])) {
-                    $rawName = $na['raw_name'] ?? $na['name'];
-                    $naDmg = $cleanDice($na['damage']);
-                    $b = (int)($na['attack_bonus'] ?? $na['bonus'] ?? 0);
-                    $bStr = $formatSigned($b);
-                    $naSz = (int)$h['size_id'] + (int)($na['size'] ?? -2);
-                    $naRch = str_replace(' sq', '', $na['reach'] ?? '0-1');
-                    $str .= "; Atk {$rawName} Sz {$naSz}, AP {$na['ap']}, Rch {$naRch}, {$bStr} ({$naDmg})";
-                }
-            }
-            if ($cmbInRank > 2 && $numNats > 1) {
-                for ($cnt = 2; $cnt <= min(7, $numNats); $cnt++) {
-                    if ($cnt === 3 && !($wpNatRank >= 4)) break;
-                    if ($cnt === 4 && !($wpNatRank >= 8)) break;
-                    if ($cnt === 5 && !($wpNatRank >= 12)) break;
-                    if ($cnt === 6 && !($wpNatRank >= 16)) break;
-                    if ($cnt === 7 && !($wpNatRank >= 20)) break;
-
-                    $multiAtts = array_slice($allNats, 0, $cnt);
-                    $multiPen = 2 + 2 * $cnt;
-                    $effMultiPen = max(0, $multiPen - 4);
-                    $actualMultiPen = max(0, $effMultiPen - $penRed);
-
-                    $names = [];
-                    $attBons = [];
-                    $dmgs = [];
-                    $rchs = [];
-                    $maxSz = -5;
-                    $combAP = 0;
-
-                    foreach ($multiAtts as $na) {
-                        $rawName = $na['raw_name'] ?? $na['name'];
-                        $names[] = $rawName;
-                        $b = (int)($na['attack_bonus'] ?? 0) - $actualMultiPen;
-                        $attBons[] = $formatSigned($b);
-                        $dmgs[] = $cleanDice($na['damage'] ?? '');
-                        $rch = str_replace(' sq', '', $na['reach'] ?? '0-1');
-                        if ($rch !== '') {
-                            $rchs[] = $rch;
-                        }
-                        $sz = (int)$h['size_id'] + (int)($na['size'] ?? -2);
-                        $maxSz = max($maxSz, $sz);
-                        $combAP += max(5, 8 + (int)$h['size_id'] + (int)($na['size'] ?? -2)) - (int)($calc['modifiers']['AttSpd'] ?? 0);
-                    }
-
-                    $apPenalty = match($cnt) {
-                        2 => -2,
-                        3 => -4,
-                        4 => -6,
-                        5 => -9,
-                        6 => -12,
-                        7 => -16,
-                        default => 0,
-                    };
-                    $combAP = max(5, $combAP + $apPenalty);
-                    $strName = implode('/', $names);
-                    $strRch = !empty($rchs) ? (', Rch ' . implode('/', $rchs)) : '';
-                    $strB = implode('/', $attBons);
-                    $strD = implode('/', $dmgs);
-                    $str .= "; Multi {$strName} Sz {$maxSz}, AP {$combAP}{$strRch}, {$strB} ({$strD})";
-                }
-            }
-        }
-
-
-        // Grapple
-        if ($wpBrlRank > 1 && $grapple) {
-            $reachVal = str_replace([' sq', '0-'], '', $grapple['reach'] ?? '1');
-            $bDex = $formatSigned((int)$grapple['dex_attack']);
-            $bStr = $formatSigned((int)$grapple['str_attack']);
-            $str .= "; Grp AP {$grapple['ap']}, Rch 0-{$reachVal}, {$bDex}/{$bStr}";
-        }
-
-        // Rays, Area, Body/Mind
-        if ($rayRank >= 1) {
-            $rayBonus = (int)($calc['attacks']['spells']['ray']['attack_bonus'] ?? 0);
-            $str .= "; Rays " . $formatSigned($rayBonus);
-        }
-        if ($areaRank >= 1) {
-            $areSkillAtt = (int)($calc['attacks']['spells']['area']['skill_attack_bonus'] ?? 0);
-            $areaBonus = (int)$dexMod + $areSkillAtt;
-            $str .= "; AreaAtt " . $formatSigned($areaBonus);
-        }
-        if ($bamRank >= 1) {
-            $bamSkillAtt = (int)($calc['attacks']['spells']['body']['skill_attack_bonus'] ?? 0);
-            $bodyBonus = (int)$conMod + $bamSkillAtt;
-            $mindBonus = (int)$conMod + $bamSkillAtt;
-            $str .= "; BodyAtt " . $formatSigned($bodyBonus) . "; MindAtt " . $formatSigned($mindBonus);
+        $attackLines = self::buildStatBlockAttackLines($calc, $rawEntity);
+        foreach ($attackLines as $atkLine) {
+            $str .= "; {$atkLine}";
         }
 
         // Spc, SS, SA, SD, SM, SQ
@@ -5436,6 +5477,7 @@ class EntityEngine
         $str .= "; AL {$al}; Str {$strAbil}, Con {$conAbil}, Dex {$dexAbil}, Int {$intAbil}, Wis {$wisAbil}, Cha {$chaAbil}.<br/>";
 
         // Skills
+        $skillLevels = $calc['skills'] ?? $calc['skill_ranks'] ?? [];
         if (!empty($skillLevels)) {
             $skParts = [];
             foreach (self::$skillsCache ?? [] as $sId => $sRow) {
