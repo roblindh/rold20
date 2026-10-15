@@ -47,9 +47,9 @@ class StatBlockInteractiveCompactTest extends TestCase
 
         // Row 2: Vitals & Senses
         $plain = strip_tags($html);
-        $this->assertStringContainsString('Init +13;', $plain);
+        $this->assertStringContainsString('Init +14;', $plain);
         $this->assertStringContainsString('AP 30;', $plain);
-        $this->assertStringContainsString('Spd 9, Fly 15;', $plain);
+        $this->assertStringContainsString('Spd 9, Fly 17;', $plain);
         $this->assertStringContainsString('Perc 29;', $plain);
         $this->assertStringContainsString('Senses Darkvision 12', $plain);
         $this->assertStringContainsString('Lang Abyssal, Celestial, Draconic', $plain);
@@ -57,7 +57,7 @@ class StatBlockInteractiveCompactTest extends TestCase
         // Row 3: Ability Scores
         $this->assertStringContainsString('Str 34 (+12)', $plain);
         $this->assertStringContainsString('Con 30 (+10)', $plain);
-        $this->assertStringContainsString('Dex 24 (+6)', $plain);
+        $this->assertStringContainsString('Dex 24 (+7)', $plain);
         $this->assertStringContainsString('Int 24 (+7)', $plain);
         $this->assertStringContainsString('Wis 24 (+7)', $plain);
         $this->assertStringContainsString('Cha 26 (+8)', $plain);
@@ -67,10 +67,10 @@ class StatBlockInteractiveCompactTest extends TestCase
         $this->assertStringContainsString('Balanced', $plain);
 
         // Row 5: Defenses
-        $this->assertStringContainsString('DeCa/p 43/29 (Crit +29);', $plain);
+        $this->assertStringContainsString('DeCa/p 44/29 (Crit +29);', $plain);
         $this->assertStringContainsString('DR 19;', $plain);
         $this->assertStringContainsString('MR 18;', $plain);
-        $this->assertStringContainsString('Fort/Ref/Will 52/43/45', $plain);
+        $this->assertStringContainsString('Fort/Ref/Will 52/44/45', $plain);
 
         // Row 6: Health Pools
         $this->assertStringContainsString('HP 330;', $plain);
@@ -98,7 +98,7 @@ class StatBlockInteractiveCompactTest extends TestCase
         // Row 13: Possessions
         $this->assertStringContainsString('Possessions:', $plain);
         $this->assertStringContainsString('+1 Vorpal Sword', $plain);
-        $this->assertStringContainsString('EC 2', $plain);
+        $this->assertStringContainsString('EC 1', $plain);
 
         // Mode buttons & controls
         $this->assertStringContainsString('Interactive', $html);

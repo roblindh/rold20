@@ -812,7 +812,7 @@ items:
     BaseValue: 8.0
     BaseWeight: 5.0
     BaseSize: 0
-    ECMod: 2
+    ECMod: 1
     BaseMaterial: 23
     BasePL: null
     Traits: "Weapon { Qual=Exo; AttMod=DexMod; ParMod=+1; Dmg=d10+StrMod P; MaxReach=2; TripDrop=1; DisarmMod=+2; }"
@@ -1610,7 +1610,7 @@ items:
     BaseValue: 0.3
     BaseWeight: 1.0
     BaseSize: -1
-    ECMod: 1
+    ECMod: 0
     BaseMaterial: 15
     BasePL: null
     Traits: "Weapon { Qual=Exo; AttMod=DexMod; Dmg=d4 S SP; MaxReach=3; TripDrop=1; }"
@@ -2534,7 +2534,7 @@ items:
     BaseValue: 5.0
     BaseWeight: 5.0
     BaseSize: -2
-    ECMod: 1
+    ECMod: 0
     BaseMaterial: 5
     BasePL: null
     Traits: "Armor { Qual=Lt; DR=1; DonTime=100/60/100; }"
@@ -2548,7 +2548,7 @@ items:
     BaseValue: 10.0
     BaseWeight: 7.5
     BaseSize: -2
-    ECMod: 2
+    ECMod: 0
     BaseMaterial: 15
     BasePL: null
     Traits: "Armor { Qual=Lt; DR=2; DonTime=100/60/100; }"
@@ -2562,7 +2562,7 @@ items:
     BaseValue: 25.0
     BaseWeight: 10.0
     BaseSize: -2
-    ECMod: 3
+    ECMod: 1
     BaseMaterial: 15
     BasePL: null
     Traits: "Armor { Qual=Lt; DR=3; DonTime=100/60/100; }"
@@ -2576,7 +2576,7 @@ items:
     BaseValue: 100.0
     BaseWeight: 12.5
     BaseSize: -1
-    ECMod: 4
+    ECMod: 2
     BaseMaterial: 23
     BasePL: null
     Traits: "Armor { Qual=Lt || Md; DR=4; DonTime=100/60/100; }"
@@ -2590,7 +2590,7 @@ items:
     BaseValue: 15.0
     BaseWeight: 12.5
     BaseSize: -1
-    ECMod: 5
+    ECMod: 3
     BaseMaterial: 15
     BasePL: null
     Traits: "Armor { Qual=Lt || Md; DR=3; DonTime=100/60/100; }"
@@ -2604,7 +2604,7 @@ items:
     BaseValue: 50.0
     BaseWeight: 15.0
     BaseSize: -1
-    ECMod: 6
+    ECMod: 4
     BaseMaterial: 23
     BasePL: null
     Traits: "Armor { Qual=Md; DR=4; DonTime=400/100/100; }"
@@ -2618,7 +2618,7 @@ items:
     BaseValue: 150.0
     BaseWeight: 20.0
     BaseSize: -1
-    ECMod: 7
+    ECMod: 5
     BaseMaterial: 23
     BasePL: null
     Traits: "Armor { Qual=Md; DR=5; DonTime=400/100/100; }"
@@ -2632,7 +2632,7 @@ items:
     BaseValue: 200.0
     BaseWeight: 15.0
     BaseSize: -1
-    ECMod: 6
+    ECMod: 4
     BaseMaterial: 23
     BasePL: null
     Traits: "Armor { Qual=Md || Hv; DR=5; DonTime=400/100/100; }"
@@ -2646,7 +2646,7 @@ items:
     BaseValue: 200.0
     BaseWeight: 22.5
     BaseSize: 0
-    ECMod: 9
+    ECMod: 7
     BaseMaterial: 23
     BasePL: null
     Traits: "Armor { Qual=Md || Hv; DR=6; DonTime=400/100/100; }"
@@ -2660,7 +2660,7 @@ items:
     BaseValue: 250.0
     BaseWeight: 17.5
     BaseSize: 0
-    ECMod: 8
+    ECMod: 6
     BaseMaterial: 23
     BasePL: null
     Traits: "Armor { Qual=Hv; DR=6; DonTime=400/100/100; }"
@@ -2674,7 +2674,7 @@ items:
     BaseValue: 440.0
     BaseWeight: 25.0
     BaseSize: 0
-    ECMod: 9
+    ECMod: 7
     BaseMaterial: 23
     BasePL: null
     Traits: "Armor { Qual=Hv; DR=7; DonTime=400/400/(1d4+1)x100; }"
@@ -2688,7 +2688,7 @@ items:
     BaseValue: 600.0
     BaseWeight: 25.0
     BaseSize: 0
-    ECMod: 8
+    ECMod: 6
     BaseMaterial: 23
     BasePL: null
     Traits: "Armor { Qual=Hv; DR=8; DonTime=400/400/(1d4+1)x100; }"

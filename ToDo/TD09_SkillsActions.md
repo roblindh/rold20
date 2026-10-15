@@ -2,7 +2,7 @@
 
 ## Skills
 
-- [ ] Make sure most skills have some benefit that scales up to level 30 (or 40).
+- [x] Make sure most skills have some benefit that scales up to level 30 (or 40).
 - [ ] Crafting, Knowledge, Linguistics, Perform, and Profession: more specializations? Check historical sources and pfgm97.
 - [ ] Creature skills
   - [ ] Add more creature skills. Consider those that gradually become more powerful (vampires, lycanthropes, etc.)

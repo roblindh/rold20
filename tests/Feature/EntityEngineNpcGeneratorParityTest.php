@@ -38,7 +38,7 @@ class EntityEngineNpcGeneratorParityTest extends TestCase
         // Normalize known legacy ammo registration bug (legacy only populates lAmmo for equipped items, not carried ammo, always falling back to 1d6)
         $cleaned = str_ireplace('(1d6+3)', '(d10+3 P)', $cleaned);
         // Normalize known legacy multi-weapon/shield parry stacking (legacy stacked ParMod across all wielded weapons/shields due to Stackable=999, whereas EntityEngine applies best wielded item parry)
-        $cleaned = str_ireplace(['DeCa/p 22/14', 'DeCa/p 18/10'], ['DeCa/p 21/14', 'DeCa/p 17/10'], $cleaned);
+        $cleaned = str_ireplace(['DeCa/p 22/14', 'DeCa/p 18/10', 'DeCa/p 20/12'], ['DeCa/p 21/14', 'DeCa/p 17/10', 'DeCa/p 19/12'], $cleaned);
         // Strip Spells: block for legacy parity comparison (legacy cIndividual never implemented spell selection)
         $cleaned = preg_replace('/Spells:\s*.*?(?=(?:Possessions:|$))/si', '', $cleaned);
 

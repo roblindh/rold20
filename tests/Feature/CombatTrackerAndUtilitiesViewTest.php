@@ -635,7 +635,7 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
         $this->assertEquals(50300.0, (float)$inst['value_sp']);
         $this->assertEquals(13.5, (float)$inst['weight_kg']);
         $this->assertEquals(16, (int)$inst['dr']);
-        $this->assertEquals(6, (int)$inst['ec_mod']);
+        $this->assertEquals(4, (int)$inst['ec_mod']);
         $this->assertEquals('Mithril', $inst['material']);
 
         // 2. Natural language string parsing
@@ -645,7 +645,7 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
         $this->assertEquals(50300.0, (float)$natInst['value_sp']);
         $this->assertEquals(13.5, (float)$natInst['weight_kg']);
         $this->assertEquals(16, (int)$natInst['dr']);
-        $this->assertEquals(6, (int)$natInst['ec_mod']);
+        $this->assertEquals(4, (int)$natInst['ec_mod']);
 
         // 3. EquipmentManager enrichment
         $itemStub = [
@@ -660,7 +660,7 @@ class CombatTrackerAndUtilitiesViewTest extends TestCase
         $this->assertEquals(13.5, (float)$enriched['unit_weight']);
         $this->assertEquals(13.5, (float)$enriched['BaseWeight']);
         $this->assertEquals(16, (int)$enriched['dr']);
-        $this->assertEquals(6, (int)$enriched['ec_mod']);
+        $this->assertEquals(4, (int)$enriched['ec_mod']);
 
         // 4. Character 8 (Obarion Griffin)
         $char = DB::table('characters')->where('ID', 8)->first();

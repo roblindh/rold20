@@ -130,7 +130,7 @@ class EntityEngineDefensesTest extends TestCase
         ];
         $calculatedBare = EntityEngine::calculate($payloadBareObject, 0);
         $this->assertEquals(8, $calculatedBare['defenses']['dr']);
-        $this->assertEquals(7, $calculatedBare['equipment']['equipment_ec']); // EC reduced by 1 via MwArmor (8 -> 7)
+        $this->assertEquals(5, $calculatedBare['equipment']['equipment_ec']); // EC reduced by 1 via MwArmor (6 -> 5)
 
         // 2. Test when Equipment is passed as a JSON array string
         $payloadArray = [
@@ -143,7 +143,7 @@ class EntityEngineDefensesTest extends TestCase
         ];
         $calculatedArray = EntityEngine::calculate($payloadArray, 0);
         $this->assertEquals(8, $calculatedArray['defenses']['dr']);
-        $this->assertEquals(7, $calculatedArray['equipment']['equipment_ec']);
+        $this->assertEquals(5, $calculatedArray['equipment']['equipment_ec']);
     }
 
     public function testCommissionedMasterworkFullPlateFromForge(): void

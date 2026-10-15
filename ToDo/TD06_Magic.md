@@ -2,7 +2,7 @@
 
 - [ ] Spellcasting
   - [ ] See UA incantations for typical modifiers.
-- [ ] Add more parameter choices for existing spells. Make the steps smaller by adding more intermediate choices (e.g. +2 per step instead of +4).
+- [x] Add more parameter choices for existing spells. Make the steps smaller by adding more intermediate choices (e.g. +2 per step instead of +4).
 - [ ] Some spells with a range of touch can be given an action time of "reaction" (useful for attacks of opportunity). The cost should be at least +6 (and probably require a spellcasting check without “take 10”).
 - [ ] Use more descriptors to classify specific spell/power/action types (including and instead of the old subschools).
 - [ ] Check the existence of and accuracy of current descriptors. Add descriptors to specific options as well.
