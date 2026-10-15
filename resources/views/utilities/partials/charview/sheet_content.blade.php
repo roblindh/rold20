@@ -1326,6 +1326,47 @@
     <div class="mt-2" x-data="{ 
         actionSearch: '', 
         actionCatFilter: 'all',
+        actionSortCol: 'Name',
+        actionSortAsc: true,
+        actionsList: {{ json_encode($commonActions ?? []) }},
+        sortActions(col) {
+            if (this.actionSortCol === col) {
+                this.actionSortAsc = !this.actionSortAsc;
+            } else {
+                this.actionSortCol = col;
+                this.actionSortAsc = true;
+            }
+        },
+        get sortedActions() {
+            let list = (this.allAccessibleActions && this.allAccessibleActions.length > 0)
+                ? [...this.allAccessibleActions]
+                : ((this.actionsList && this.actionsList.length > 0)
+                    ? [...this.actionsList]
+                    : (typeof commonActions !== 'undefined' ? [...commonActions] : []));
+            const col = this.actionSortCol;
+            const asc = this.actionSortAsc ? 1 : -1;
+            return list.sort((a, b) => {
+                let valA = '';
+                let valB = '';
+                if (col === 'Name') {
+                    valA = (a.Name || '').toLowerCase();
+                    valB = (b.Name || '').toLowerCase();
+                } else if (col === 'ActionTime') {
+                    valA = (a.ActionTimeParsed || (typeof parseActionTime === 'function' ? parseActionTime(a.ActionTime) : a.ActionTime) || '').toLowerCase();
+                    valB = (b.ActionTimeParsed || (typeof parseActionTime === 'function' ? parseActionTime(b.ActionTime) : b.ActionTime) || '').toLowerCase();
+                } else if (col === 'Range') {
+                    valA = (a.Range || '').toLowerCase();
+                    valB = (b.Range || '').toLowerCase();
+                } else if (col === 'Duration') {
+                    valA = (a.Duration || '').toLowerCase();
+                    valB = (b.Duration || '').toLowerCase();
+                } else if (col === 'Target') {
+                    valA = (a.Target || '').toLowerCase();
+                    valB = (b.Target || '').toLowerCase();
+                }
+                return valA.localeCompare(valB) * asc;
+            });
+        },
         matchesFilter(act) {
             if (typeof isActionVisible === 'function' && !isActionVisible(act.ID ?? act.id)) {
                 return false;
@@ -1448,81 +1489,78 @@
                 </tr>
 
                 <!-- Column Headers -->
-                <tr class="bg-amber-100/80">
-                    <td class="cvlabel" style="width: 22%;">Action</td>
-                    <td class="cvlabel cvcenter" style="width: 12%;">Action Time</td>
-                    <td class="cvlabel cvcenter" style="width: 10%;">Range</td>
-                    <td class="cvlabel cvcenter" style="width: 12%;">Duration</td>
-                    <td class="cvlabel" style="width: 16%;">Target</td>
+                <tr class="bg-amber-100/80 select-none">
+                    <td class="cvlabel cursor-pointer hover:bg-amber-200/80 transition" style="width: 22%;" @click="sortActions('Name')">
+                        <div class="flex items-center justify-between">
+                            <span>Action</span>
+                            <span class="text-amber-800 font-bold" x-show="actionSortCol === 'Name'" x-text="actionSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
+                    <td class="cvlabel cvcenter cursor-pointer hover:bg-amber-200/80 transition" style="width: 12%;" @click="sortActions('ActionTime')">
+                        <div class="flex items-center justify-center gap-1">
+                            <span>Action Time</span>
+                            <span class="text-amber-800 font-bold" x-show="actionSortCol === 'ActionTime'" x-text="actionSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
+                    <td class="cvlabel cvcenter cursor-pointer hover:bg-amber-200/80 transition" style="width: 10%;" @click="sortActions('Range')">
+                        <div class="flex items-center justify-center gap-1">
+                            <span>Range</span>
+                            <span class="text-amber-800 font-bold" x-show="actionSortCol === 'Range'" x-text="actionSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
+                    <td class="cvlabel cvcenter cursor-pointer hover:bg-amber-200/80 transition" style="width: 12%;" @click="sortActions('Duration')">
+                        <div class="flex items-center justify-center gap-1">
+                            <span>Duration</span>
+                            <span class="text-amber-800 font-bold" x-show="actionSortCol === 'Duration'" x-text="actionSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
+                    <td class="cvlabel cursor-pointer hover:bg-amber-200/80 transition" style="width: 16%;" @click="sortActions('Target')">
+                        <div class="flex items-center justify-between">
+                            <span>Target</span>
+                            <span class="text-amber-800 font-bold" x-show="actionSortCol === 'Target'" x-text="actionSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
                     <td class="cvlabel" style="width: 28%;">Action Check</td>
                 </tr>
 
-                @if($isWizard)
-                    <!-- Dynamic Alpine Render for Generator Step 10 -->
-                    <template x-for="act in commonActions" :key="act.ID">
-                        <tr x-show="matchesFilter(act)" class="hover:bg-amber-50/60 transition-colors">
-                            <td class="cvlist font-medium text-amber-950">
-                                <div class="flex flex-col">
-                                    <span class="font-bold font-serif" x-text="act.Name"></span>
-                                    <template x-if="act.Descriptors">
-                                        <span class="text-[10px] text-amber-800/80 font-mono tracking-tight mt-0.5" x-text="act.Descriptors"></span>
-                                    </template>
-                                </div>
-                            </td>
-                            <td class="cvlist cvcenter font-mono text-xs font-semibold text-stone-700" x-text="parseActionTime(act.ActionTime) || '–'"></td>
-                            <td class="cvlist cvcenter font-mono text-xs text-stone-600" x-text="act.Range || '–'"></td>
-                            <td class="cvlist cvcenter font-mono text-xs text-stone-600" x-text="act.Duration || '–'"></td>
-                            <td class="cvlist text-xs text-stone-700" x-text="act.Target || '–'"></td>
-                            <td class="cvlist text-xs font-mono text-emerald-900 bg-amber-50/40">
-                                <span x-text="parseActionCheck(act.ActionCheck) || '–'"></span>
-                            </td>
-                        </tr>
-                    </template>
-                @else
-                    <!-- Static Blade Render for Character Viewer -->
-                    @php
-                        $actionsToRender = $commonActions ?? [];
-                    @endphp
-                    @forelse($actionsToRender as $act)
-                        @php
-                            $actObj = (object)$act;
-                        @endphp
-                        <tr x-show="matchesFilter({{ json_encode($actObj) }})" class="hover:bg-amber-50/60 transition-colors">
-                            <td class="cvlist font-medium text-amber-950">
-                                <div class="flex flex-col">
-                                    <span class="font-bold font-serif">{{ $actObj->Name }}</span>
-                                    @if(!empty($actObj->Descriptors))
-                                        <span class="text-[10px] text-amber-800/80 font-mono tracking-tight mt-0.5">{{ $actObj->Descriptors }}</span>
-                                    @endif
-                                </div>
-                            </td>
-                            <td class="cvlist cvcenter font-mono text-xs font-semibold text-stone-700">{{ $actObj->ActionTimeParsed ?? $actObj->ActionTime ?: '–' }}</td>
-                            <td class="cvlist cvcenter font-mono text-xs text-stone-600">{{ $actObj->Range ?: '–' }}</td>
-                            <td class="cvlist cvcenter font-mono text-xs text-stone-600">{{ $actObj->Duration ?: '–' }}</td>
-                            <td class="cvlist text-xs text-stone-700">{{ $actObj->Target ?: '–' }}</td>
-                            <td class="cvlist text-xs font-mono text-emerald-900 bg-amber-50/40">
-                                {{ $actObj->ActionCheckParsed ?? $actObj->ActionCheck ?: '–' }}
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td class="cvlist cvcenter text-stone-500 italic py-3" colspan="6">
-                                No actions available.
-                            </td>
-                        </tr>
-                    @endforelse
+                <template x-for="act in sortedActions" :key="act.ID || act.id">
+                    <tr x-show="matchesFilter(act)" class="hover:bg-amber-50/60 transition-colors">
+                        <td class="cvlist font-medium text-amber-950">
+                            <div class="flex flex-col">
+                                <span class="font-bold font-serif" x-text="act.Name"></span>
+                                <template x-if="act.Descriptors">
+                                    <span class="text-[10px] text-amber-800/80 font-mono tracking-tight mt-0.5" x-text="act.Descriptors"></span>
+                                </template>
+                            </div>
+                        </td>
+                        <td class="cvlist cvcenter font-mono text-xs font-semibold text-stone-700" x-text="act.ActionTimeParsed || (typeof parseActionTime === 'function' ? parseActionTime(act.ActionTime) : act.ActionTime) || '–'"></td>
+                        <td class="cvlist cvcenter font-mono text-xs text-stone-600" x-text="act.Range || '–'"></td>
+                        <td class="cvlist cvcenter font-mono text-xs text-stone-600" x-text="act.Duration || '–'"></td>
+                        <td class="cvlist text-xs text-stone-700" x-text="act.Target || '–'"></td>
+                        <td class="cvlist text-xs font-mono text-emerald-900 bg-amber-50/40">
+                            <span x-text="act.ActionCheckParsed || (typeof parseActionCheck === 'function' ? parseActionCheck(act.ActionCheck) : act.ActionCheck) || '–'"></span>
+                        </td>
+                    </tr>
+                </template>
 
-                    @if(!$isWizard && !empty($actionsToRender))
-                        <tr x-show="allAccessibleActions && allAccessibleActions.length > 0 && !allAccessibleActions.some(a => matchesFilter(a))" style="display: none;">
-                            <td class="cvlist cvcenter text-stone-500 italic py-4" colspan="6">
-                                No actions match your current search, filter, or visibility configuration.
-                                <button type="button" @click="showConfigureActionsModal = true" class="text-amber-800 underline font-semibold ml-1 hover:text-amber-950 cursor-pointer">
-                                    Configure Actions
-                                </button>
-                            </td>
-                        </tr>
-                    @endif
-                @endif
+                <template x-if="sortedActions.length === 0">
+                    <tr>
+                        <td class="cvlist cvcenter text-stone-500 italic py-3" colspan="6">
+                            No actions available.
+                        </td>
+                    </tr>
+                </template>
+
+                <tr x-show="sortedActions.length > 0 && !sortedActions.some(a => matchesFilter(a))" style="display: none;">
+                    <td class="cvlist cvcenter text-stone-500 italic py-4" colspan="6">
+                        No actions match your current search, filter, or visibility configuration.
+                        @if(!$isWizard)
+                            <button type="button" @click="showConfigureActionsModal = true" class="text-amber-800 underline font-semibold ml-1 hover:text-amber-950 cursor-pointer">
+                                Configure Actions
+                            </button>
+                        @endif
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -1661,6 +1699,7 @@
                                         }
                                     }
                                 }
+                                usort($allTrainedSkills, fn($a, $b) => strcasecmp($a['name'] ?? '', $b['name'] ?? ''));
                                 $skillsCount = count($allTrainedSkills);
                                 $half = (int)ceil($skillsCount / 2);
                                 $skillsCol1 = array_slice($allTrainedSkills, 0, $half);
@@ -1799,21 +1838,189 @@
     <!-- ========================================================================= -->
     <!-- ROW 8: LEARNED SPELLS & VARIATIONS (FULL WIDTH BOX - 5 COLUMNS)          -->
     <!-- ========================================================================= -->
-    <div class="mt-2">
+    @php
+        $preparedLearnedSpells = [];
+        if (!$isWizard && !empty($spellsList)) {
+            foreach ($spellsList as $spellId => $optIds) {
+                if (!isset($spellsMap[$spellId])) continue;
+                $spObj = $spellsMap[$spellId];
+                $skillLines = preg_split('/\\\\r\\\\n|\\\\n|\\r\\n|\\n|\\r/', (string)$spObj->Skills);
+                $trainedSkillLines = [];
+                $allSkillLines = [];
+                foreach ($skillLines as $skLine) {
+                    $skLine = trim($skLine);
+                    if (empty($skLine)) continue;
+                    $displayLine = \App\Services\Entity\EntityEngine::formatSpellSkillLine($skLine, $skillsList ?? [], $skillsMap ?? [], $calc['affinity_discounts'] ?? []);
+                    $allSkillLines[] = $displayLine;
+
+                    $cleanSkill = preg_replace('/\s*\([^)]*\)/', '', $skLine);
+                    $cleanSkill = trim($cleanSkill);
+                    $parts = preg_split('/\s+and\s+|\s+or\s+|,\s*/i', $cleanSkill);
+                    $lineQualified = true;
+                    $matchedAny = false;
+                    foreach ($parts as $p) {
+                        $p = trim($p);
+                        if (empty($p)) continue;
+                        $foundRank = 0;
+                        foreach ($skillsList as $sId => $rank) {
+                            $name = $skillsMap[$sId]->Name ?? '';
+                            if (strcasecmp($name, $p) === 0 || str_ends_with(strtolower($name), ' - ' . strtolower($p)) || strcasecmp($name, "Arcane - {$p}") === 0 || strcasecmp($name, "Divine - {$p}") === 0 || strcasecmp($name, "Psi - {$p}") === 0) {
+                                if ($rank > 0) {
+                                    $foundRank = $rank;
+                                    break;
+                                }
+                            }
+                        }
+                        if ($foundRank > 0) {
+                            $matchedAny = true;
+                        } else {
+                            $lineQualified = false;
+                        }
+                    }
+                    if ($lineQualified && $matchedAny) {
+                        $trainedSkillLines[] = $displayLine;
+                    }
+                }
+                $finalLines = !empty($trainedSkillLines) ? $trainedSkillLines : $allSkillLines;
+                $skillsDisplayStr = !empty($finalLines) ? implode('<br/>', $finalLines) : '–';
+                $parsedAttackCheck = \App\Services\Entity\EntityEngine::parseActionCheck((string)($spObj->AttackCheck ?: '–'), $calc['ability_modifiers'] ?? [], $skillsList ?? [], $calc['heritage']['size_combat_mod'] ?? 0);
+                $attackCheckDisplay = str_replace(["\\r\\n", "\\n", "\\r", "\r\n", "\n", "\r"], '<br/>', $parsedAttackCheck);
+                
+                $actionTimeTruncated = \App\Services\Entity\EntityEngine::truncateLines((string)($spObj->ActionTime ?: '–'), 2);
+                $actionTimeFull = str_replace(["\\r\\n", "\\n", "\\r"], "\n", (string)($spObj->ActionTime ?: '–'));
+                $costTruncated = \App\Services\Entity\EntityEngine::truncateLines((string)$spObj->Cost, 2);
+                $costFull = str_replace(["\\r\\n", "\\n", "\\r"], "\n", (string)$spObj->Cost);
+
+                $optionsList = [];
+                if (is_array($optIds)) {
+                    foreach ($optIds as $optId) {
+                        if (isset($spellOptionsMap[$optId])) {
+                            $optionsList[] = [
+                                'id' => $optId,
+                                'name' => $spellOptionsMap[$optId]->Name,
+                                'cost' => $spellOptionsMap[$optId]->Cost,
+                            ];
+                        }
+                    }
+                }
+
+                $numericCost = 0;
+                if (preg_match('/(\d+)\s*PP/i', (string)$spObj->Cost, $m)) {
+                    $numericCost = (int)$m[1];
+                }
+
+                $preparedLearnedSpells[] = [
+                    'id' => $spObj->ID,
+                    'name' => $spObj->Name,
+                    'skills_plain' => strip_tags(str_replace('<br/>', ' ', $skillsDisplayStr)),
+                    'skills_html' => $skillsDisplayStr,
+                    'attack_check_html' => $attackCheckDisplay,
+                    'action_time_raw' => (string)($spObj->ActionTime ?: '–'),
+                    'action_time_truncated' => $actionTimeTruncated,
+                    'action_time_full' => $actionTimeFull,
+                    'cost_raw' => (string)$spObj->Cost,
+                    'cost_truncated' => $costTruncated,
+                    'cost_full' => $costFull,
+                    'numeric_cost' => $numericCost,
+                    'options' => $optionsList,
+                ];
+            }
+        }
+    @endphp
+    <div class="mt-2" x-data="{
+        spellSortCol: '',
+        spellSortAsc: true,
+        initialSpells: {{ json_encode($preparedLearnedSpells ?? [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) }},
+        sortSpells(col) {
+            if (this.spellSortCol === col) {
+                this.spellSortAsc = !this.spellSortAsc;
+            } else {
+                this.spellSortCol = col;
+                this.spellSortAsc = true;
+            }
+        },
+        get sortedSpells() {
+            @if($isWizard)
+                let list = [...(this.learnedSpellsSummary || [])];
+                const col = this.spellSortCol || 'name';
+                const asc = this.spellSortAsc ? 1 : -1;
+                return list.sort((a, b) => {
+                    let valA = '';
+                    let valB = '';
+                    const spA = this.spellsById ? (this.spellsById[a.ID] || {}) : {};
+                    const spB = this.spellsById ? (this.spellsById[b.ID] || {}) : {};
+                    if (col === 'name') {
+                        valA = (a.Name || '').toLowerCase();
+                        valB = (b.Name || '').toLowerCase();
+                        return valA.localeCompare(valB) * asc;
+                    } else if (col === 'skill') {
+                        valA = (spA.Skills || '').toLowerCase();
+                        valB = (spB.Skills || '').toLowerCase();
+                        return valA.localeCompare(valB) * asc;
+                    } else if (col === 'action_time') {
+                        valA = (spA.ActionTime || '').toLowerCase();
+                        valB = (spB.ActionTime || '').toLowerCase();
+                        return valA.localeCompare(valB) * asc;
+                    } else if (col === 'cost') {
+                        const costA = parseInt(String(a.Cost || '').match(/\d+/)?.[0] || 0);
+                        const costB = parseInt(String(b.Cost || '').match(/\d+/)?.[0] || 0);
+                        return (costA - costB) * asc;
+                    }
+                    return 0;
+                });
+            @else
+                let list = [...(this.initialSpells || [])];
+                const col = this.spellSortCol || 'name';
+                const asc = this.spellSortAsc ? 1 : -1;
+                return list.sort((a, b) => {
+                    if (col === 'name') {
+                        return (a.name || '').localeCompare(b.name || '') * asc;
+                    } else if (col === 'skill') {
+                        return (a.skills_plain || '').localeCompare(b.skills_plain || '') * asc;
+                    } else if (col === 'action_time') {
+                        return (a.action_time_raw || '').localeCompare(b.action_time_raw || '') * asc;
+                    } else if (col === 'cost') {
+                        return (a.numeric_cost - b.numeric_cost) * asc;
+                    }
+                    return 0;
+                });
+            @endif
+        }
+    }">
         <table class="charviewsection border-collapse w-full">
             <tbody>
                 <tr>
                     <td class="cvheader cvcenter" colspan="5">Learned Spells &amp; Variations</td>
                 </tr>
-                <tr class="bg-amber-100/70">
-                    <td class="cvlabel" style="width: 32%;">Spell Name</td>
-                    <td class="cvlabel" style="width: 22%;">Skill and PP Discount</td>
+                <tr class="bg-amber-100/70 select-none">
+                    <td class="cvlabel cursor-pointer hover:bg-amber-200/80 transition" style="width: 32%;" @click="sortSpells('name')">
+                        <div class="flex items-center justify-between">
+                            <span>Spell Name</span>
+                            <span class="text-amber-800 font-bold" x-show="spellSortCol === 'name'" x-text="spellSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
+                    <td class="cvlabel cursor-pointer hover:bg-amber-200/80 transition" style="width: 22%;" @click="sortSpells('skill')">
+                        <div class="flex items-center justify-between">
+                            <span>Skill and PP Discount</span>
+                            <span class="text-amber-800 font-bold" x-show="spellSortCol === 'skill'" x-text="spellSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
                     <td class="cvlabel" style="width: 24%;">Action Check(s)</td>
-                    <td class="cvlabel cvcenter" style="width: 12%;">Action Time</td>
-                    <td class="cvlabel cvcenter" style="width: 10%;">Base Cost</td>
+                    <td class="cvlabel cvcenter cursor-pointer hover:bg-amber-200/80 transition" style="width: 12%;" @click="sortSpells('action_time')">
+                        <div class="flex items-center justify-center gap-1">
+                            <span>Action Time</span>
+                            <span class="text-amber-800 font-bold" x-show="spellSortCol === 'action_time'" x-text="spellSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
+                    <td class="cvlabel cvcenter cursor-pointer hover:bg-amber-200/80 transition" style="width: 10%;" @click="sortSpells('cost')">
+                        <div class="flex items-center justify-center gap-1">
+                            <span>Base Cost</span>
+                            <span class="text-amber-800 font-bold" x-show="spellSortCol === 'cost'" x-text="spellSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
                 </tr>
                 @if($isWizard)
-                    <template x-for="sp in learnedSpellsSummary" :key="sp.ID">
+                    <template x-for="sp in sortedSpells" :key="sp.ID">
                         <tr>
                             <td class="cvlist">
                                 <div class="flex flex-col">
@@ -1837,109 +2044,236 @@
                             </td>
                         </tr>
                     </template>
-                    <template x-if="learnedSpellsSummary.length === 0">
+                    <template x-if="sortedSpells.length === 0">
                         <tr><td class="cvlist text-stone-500 italic py-2" colspan="5">No spells learned.</td></tr>
                     </template>
                 @else
-                    @forelse($spellsList as $spellId => $optIds)
-                        @if(isset($spellsMap[$spellId]))
-                            @php
-                                $spObj = $spellsMap[$spellId];
-                                $skillLines = preg_split('/\\\\r\\\\n|\\\\n|\\r\\n|\\n|\\r/', (string)$spObj->Skills);
-                                $trainedSkillLines = [];
-                                $allSkillLines = [];
-                                foreach ($skillLines as $skLine) {
-                                    $skLine = trim($skLine);
-                                    if (empty($skLine)) continue;
-                                    $displayLine = \App\Services\Entity\EntityEngine::formatSpellSkillLine($skLine, $skillsList ?? [], $skillsMap ?? [], $calc['affinity_discounts'] ?? []);
-                                    $allSkillLines[] = $displayLine;
-
-                                    $cleanSkill = preg_replace('/\s*\([^)]*\)/', '', $skLine);
-                                    $cleanSkill = trim($cleanSkill);
-                                    $parts = preg_split('/\s+and\s+|\s+or\s+|,\s*/i', $cleanSkill);
-                                    $lineQualified = true;
-                                    $matchedAny = false;
-                                    foreach ($parts as $p) {
-                                        $p = trim($p);
-                                        if (empty($p)) continue;
-                                        $foundRank = 0;
-                                        foreach ($skillsList as $sId => $rank) {
-                                            $name = $skillsMap[$sId]->Name ?? '';
-                                            if (strcasecmp($name, $p) === 0 || str_ends_with(strtolower($name), ' - ' . strtolower($p)) || strcasecmp($name, "Arcane - {$p}") === 0 || strcasecmp($name, "Divine - {$p}") === 0 || strcasecmp($name, "Psi - {$p}") === 0) {
-                                                if ($rank > 0) {
-                                                    $foundRank = $rank;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        if ($foundRank > 0) {
-                                            $matchedAny = true;
-                                        } else {
-                                            $lineQualified = false;
-                                        }
-                                    }
-                                    if ($lineQualified && $matchedAny) {
-                                        $trainedSkillLines[] = $displayLine;
-                                    }
-                                }
-                                $finalLines = !empty($trainedSkillLines) ? $trainedSkillLines : $allSkillLines;
-                                $skillsDisplayStr = !empty($finalLines) ? implode('<br/>', $finalLines) : '–';
-                                $parsedAttackCheck = \App\Services\Entity\EntityEngine::parseActionCheck((string)($spObj->AttackCheck ?: '–'), $calc['ability_modifiers'] ?? [], $skillsList ?? [], $calc['heritage']['size_combat_mod'] ?? 0);
-                                $attackCheckDisplay = str_replace(["\\r\\n", "\\n", "\\r", "\r\n", "\n", "\r"], '<br/>', $parsedAttackCheck);
-                                
-                                $actionTimeTruncated = \App\Services\Entity\EntityEngine::truncateLines((string)($spObj->ActionTime ?: '–'), 2);
-                                $actionTimeFull = str_replace(["\\r\\n", "\\n", "\\r"], "\n", (string)($spObj->ActionTime ?: '–'));
-                                $costTruncated = \App\Services\Entity\EntityEngine::truncateLines((string)$spObj->Cost, 2);
-                                $costFull = str_replace(["\\r\\n", "\\n", "\\r"], "\n", (string)$spObj->Cost);
-                            @endphp
-                            <tr>
-                                <td class="cvlist">
-                                    <div class="flex items-center justify-between gap-2">
-                                        <div class="flex flex-col">
-                                            <span class="font-bold text-amber-950 font-serif">{{ $spObj->Name }}</span>
-                                            @if(is_array($optIds) && !empty($optIds))
-                                                <div class="text-[11px] text-stone-600 pl-2 space-y-0.5 mt-0.5">
-                                                    @foreach($optIds as $optId)
-                                                        @if(isset($spellOptionsMap[$optId]))
-                                                            <div>&bull; <span class="font-semibold text-stone-800">{{ $spellOptionsMap[$optId]->Name }}</span> <span class="text-indigo-800">({{ $spellOptionsMap[$optId]->Cost }})</span></div>
-                                                        @endif
-                                                    @endforeach
-                                                </div>
-                                            @endif
-                                        </div>
-                                        @if(!$isWizard && $canManageCharacter)
-                                            <button type="button" @click="showCastSpellModal = true; openCastSpellModal({{ $spObj->ID }})" class="no-print text-[11px] bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-800/30 px-2 py-0.5 rounded font-bold shadow-2xs cursor-pointer transition flex items-center gap-1 shrink-0" title="Open Cast Spell Assistant for {{ $spObj->Name }}">
-                                                <span>🪄 Cast</span>
-                                            </button>
+                    @forelse($preparedLearnedSpells as $sp)
+                        <tr x-show="!spellSortCol">
+                            <td class="cvlist">
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex flex-col">
+                                        <span class="font-bold text-amber-950 font-serif">{{ $sp['name'] }}</span>
+                                        @if(!empty($sp['options']))
+                                            <div class="text-[11px] text-stone-600 pl-2 space-y-0.5 mt-0.5">
+                                                @foreach($sp['options'] as $opt)
+                                                    <div>&bull; <span class="font-semibold text-stone-800">{{ $opt['name'] }}</span> <span class="text-indigo-800">({{ $opt['cost'] }})</span></div>
+                                                @endforeach
+                                            </div>
                                         @endif
                                     </div>
-                                </td>
-                                <td class="cvlist text-xs text-stone-700">{!! $skillsDisplayStr !!}</td>
-                                <td class="cvlist text-xs font-mono text-emerald-900 bg-amber-50/30">{!! $attackCheckDisplay !!}</td>
-                                <td class="cvlist cvcenter font-mono text-xs font-bold text-stone-800" title="{{ $actionTimeFull }}">
-                                    <div class="cv-line-clamp-2 mx-auto">{!! $actionTimeTruncated !!}</div>
-                                </td>
-                                <td class="cvlist cvcenter font-mono font-bold text-indigo-950" title="{{ $costFull }}">
-                                    <div class="cv-line-clamp-2 mx-auto">{!! $costTruncated !!}</div>
-                                </td>
-                            </tr>
-                        @endif
+                                    @if(!$isWizard && $canManageCharacter)
+                                        <button type="button" @click="showCastSpellModal = true; openCastSpellModal({{ $sp['id'] }})" class="no-print text-[11px] bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-800/30 px-2 py-0.5 rounded font-bold shadow-2xs cursor-pointer transition flex items-center gap-1 shrink-0" title="Open Cast Spell Assistant for {{ $sp['name'] }}">
+                                            <span>🪄 Cast</span>
+                                        </button>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="cvlist text-xs text-stone-700">{!! $sp['skills_html'] !!}</td>
+                            <td class="cvlist text-xs font-mono text-emerald-900 bg-amber-50/30">{!! $sp['attack_check_html'] !!}</td>
+                            <td class="cvlist cvcenter font-mono text-xs font-bold text-stone-800" title="{{ $sp['action_time_full'] }}">
+                                <div class="cv-line-clamp-2 mx-auto">{!! $sp['action_time_truncated'] !!}</div>
+                            </td>
+                            <td class="cvlist cvcenter font-mono font-bold text-indigo-950" title="{{ $sp['cost_full'] }}">
+                                <div class="cv-line-clamp-2 mx-auto">{!! $sp['cost_truncated'] !!}</div>
+                            </td>
+                        </tr>
                     @empty
-                        <tr><td class="cvlist text-stone-500 italic py-2" colspan="5">No spells learned.</td></tr>
+                        <tr x-show="!spellSortCol"><td class="cvlist text-stone-500 italic py-2" colspan="5">No spells learned.</td></tr>
                     @endforelse
+
+                    <template x-for="sp in sortedSpells" :key="sp.id">
+                        <tr x-show="spellSortCol" style="display: none;">
+                            <td class="cvlist">
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex flex-col">
+                                        <span class="font-bold text-amber-950 font-serif" x-text="sp.name"></span>
+                                        <template x-if="sp.options && sp.options.length > 0">
+                                            <div class="text-[11px] text-stone-600 pl-2 space-y-0.5 mt-0.5">
+                                                <template x-for="opt in sp.options" :key="opt.id">
+                                                    <div>&bull; <span class="font-semibold text-stone-800" x-text="opt.name"></span> <span class="text-indigo-800" x-text="'(' + opt.cost + ')'"></span></div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    @if(!$isWizard && $canManageCharacter)
+                                        <button type="button" @click="showCastSpellModal = true; openCastSpellModal(sp.id)" class="no-print text-[11px] bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-800/30 px-2 py-0.5 rounded font-bold shadow-2xs cursor-pointer transition flex items-center gap-1 shrink-0" :title="'Open Cast Spell Assistant for ' + sp.name">
+                                            <span>🪄 Cast</span>
+                                        </button>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="cvlist text-xs text-stone-700" x-html="sp.skills_html"></td>
+                            <td class="cvlist text-xs font-mono text-emerald-900 bg-amber-50/30" x-html="sp.attack_check_html"></td>
+                            <td class="cvlist cvcenter font-mono text-xs font-bold text-stone-800" :title="sp.action_time_full">
+                                <div class="cv-line-clamp-2 mx-auto" x-html="sp.action_time_truncated"></div>
+                            </td>
+                            <td class="cvlist cvcenter font-mono font-bold text-indigo-950" :title="sp.cost_full">
+                                <div class="cv-line-clamp-2 mx-auto" x-html="sp.cost_truncated"></div>
+                            </td>
+                        </tr>
+                    </template>
+                    <tr x-show="spellSortCol && sortedSpells.length === 0" style="display: none;">
+                        <td class="cvlist text-stone-500 italic py-2" colspan="5">No spells learned.</td>
+                    </tr>
                 @endif
             </tbody>
         </table>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- ROW 9: EQUIPMENT (FULL WIDTH BOX - 7 COLUMNS)                            -->
+    <!-- ROW 9: EQUIPMENT (FULL WIDTH BOX - 8 COLUMNS)                            -->
     <!-- ========================================================================= -->
-    <div class="mt-2">
+    @php
+        $preparedSheetEquipment = [];
+        if (!$isWizard && !empty($equipmentList)) {
+            foreach ($equipmentList as $idx => $it) {
+                $locs = $it['locations'] ?? $it['Locations'] ?? [];
+                $loc = (int)($locs[$activeConfig] ?? $it['location'] ?? $it['Location'] ?? \App\Services\Entity\EquipmentManager::getDefaultLocation($it));
+                $allowedLocs = \App\Services\Entity\EquipmentManager::getAllowedLocations($it);
+                $parentContainerId = $it['container_id'] ?? $it['ContainerID'] ?? null;
+                $parentContainerName = '';
+                if ($parentContainerId) {
+                    foreach ($equipmentList as $candidate) {
+                        if (($candidate['uid'] ?? $candidate['id'] ?? null) === $parentContainerId) {
+                            $parentContainerName = $candidate['Name'] ?? $candidate['name'] ?? 'Container';
+                            break;
+                        }
+                    }
+                }
+                $itemRefObj = (!empty($it['item_id']) && isset($itemsMap[$it['item_id']])) ? $itemsMap[$it['item_id']] : null;
+                $categoryName = \App\Services\Entity\EquipmentManager::getItemCategoryName($it);
+                $itemSizeVal = $itemRefObj ? (int)($itemRefObj->BaseSize ?? 0) : 0;
+                $itemSizeAbbr = match($itemSizeVal) {
+                    -4 => 'F', -3 => 'D', -2 => 'T', -1 => 'S', 0 => 'M', 1 => 'L', 2 => 'H', 3 => 'G', 4 => 'C', default => 'M'
+                };
+                $itemTraitsRaw = $itemRefObj ? ($itemRefObj->Traits ?: '') : '';
+                $itemTraitsDesc = \App\Services\Entity\EntityEngine::formatItemTraitsDescription($itemTraitsRaw, true);
+                $itemTraitsStr = !empty($itemTraitsDesc) ? $itemTraitsDesc : ($itemTraitsRaw ?: '–');
+
+                $iName = strtolower($it['Name'] ?? $it['name'] ?? '');
+                $isGem = (!empty($it['is_valuable']) && ($it['valuable_type'] ?? '') === 'gem') || str_starts_with($iName, 'gem:');
+                $isArt = (!empty($it['is_valuable']) && ($it['valuable_type'] ?? '') === 'art') || str_starts_with($iName, 'art:');
+                $isBullion = (!empty($it['is_valuable']) && ($it['valuable_type'] ?? '') === 'bullion') || str_contains($iName, 'trade bar');
+                $isContainer = !empty($it['is_container']) || !empty($it['IsContainer']);
+
+                $optionsHtml = '';
+                foreach ($allowedLocs as $aloc) {
+                    $sel = ($loc === (int)$aloc) ? 'selected' : '';
+                    $optText = match($aloc) { 2 => '🛡️ Equipped', 1 => '🎒 Carried', default => '📦 Stowed' };
+                    $optionsHtml .= "<option value=\"{$aloc}\" {$sel}>{$optText}</option>";
+                }
+
+                $preparedSheetEquipment[] = [
+                    'orig_index' => $idx,
+                    'uid' => $it['uid'] ?? $it['id'] ?? '',
+                    'name' => $it['Name'] ?? $it['name'] ?? 'Item',
+                    'category_name' => $categoryName,
+                    'location' => $loc,
+                    'allowed_locations' => $allowedLocs,
+                    'select_options_html' => $optionsHtml,
+                    'parent_container_name' => $parentContainerName,
+                    'is_gem' => $isGem,
+                    'is_art' => $isArt,
+                    'is_bullion' => $isBullion,
+                    'is_container' => $isContainer,
+                    'qty' => $it['Qty'] ?? $it['qty'] ?? 1,
+                    'weight' => (float)($it['weight'] ?? (($it['unit_weight'] ?? 0) * ($it['Qty'] ?? 1))),
+                    'size_val' => $itemSizeVal,
+                    'size_abbr' => $itemSizeAbbr,
+                    'value' => (float)(((int)($it['BaseValue'] ?? $it['value'] ?? $it['unit_price'] ?? 0)) * ((int)($it['Qty'] ?? $it['qty'] ?? 1))),
+                    'traits_str' => $itemTraitsStr,
+                    'traits_raw' => $itemTraitsRaw,
+                ];
+            }
+        }
+    @endphp
+    <div class="mt-2" x-data="{
+        equipSortCol: '',
+        equipSortAsc: true,
+        sheetItems: {{ json_encode($preparedSheetEquipment ?? [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) }},
+        sortSheetEquip(col) {
+            if (this.equipSortCol === col) {
+                this.equipSortAsc = !this.equipSortAsc;
+            } else {
+                this.equipSortCol = col;
+                this.equipSortAsc = true;
+            }
+        },
+        get sortedSheetEquipment() {
+            @if($isWizard)
+                let list = [...(this.character.Inventory || [])];
+                const col = this.equipSortCol || 'name';
+                const asc = this.equipSortAsc ? 1 : -1;
+                return list.sort((a, b) => {
+                    let valA, valB;
+                    if (col === 'name') {
+                        valA = (a.Name || '').toLowerCase();
+                        valB = (b.Name || '').toLowerCase();
+                        return valA.localeCompare(valB) * asc;
+                    } else if (col === 'category') {
+                        valA = (this.getItemCategoryName(a) || '').toLowerCase();
+                        valB = (this.getItemCategoryName(b) || '').toLowerCase();
+                        return valA.localeCompare(valB) * asc;
+                    } else if (col === 'placement') {
+                        valA = parseInt(a.Location) || 0;
+                        valB = parseInt(b.Location) || 0;
+                        return (valA - valB) * asc;
+                    } else if (col === 'weight') {
+                        valA = (parseFloat(a.BaseWeight) || 0) * (parseInt(a.Qty) || 1);
+                        valB = (parseFloat(b.BaseWeight) || 0) * (parseInt(b.Qty) || 1);
+                        return (valA - valB) * asc;
+                    } else if (col === 'size') {
+                        valA = this.itemsById[a.ID] ? parseInt(this.itemsById[a.ID].BaseSize) || 0 : 0;
+                        valB = this.itemsById[b.ID] ? parseInt(this.itemsById[b.ID].BaseSize) || 0 : 0;
+                        return (valA - valB) * asc;
+                    } else if (col === 'value') {
+                        valA = (parseFloat(a.BaseValue) || 0) * (parseInt(a.Qty) || 1);
+                        valB = (parseFloat(b.BaseValue) || 0) * (parseInt(b.Qty) || 1);
+                        return (valA - valB) * asc;
+                    }
+                    return 0;
+                });
+            @else
+                let list = [...(this.sheetItems || [])];
+                const col = this.equipSortCol || 'name';
+                const asc = this.equipSortAsc ? 1 : -1;
+                return list.sort((a, b) => {
+                    let valA, valB;
+                    if (col === 'name') {
+                        valA = (a.name || '').toLowerCase();
+                        valB = (b.name || '').toLowerCase();
+                        return valA.localeCompare(valB) * asc;
+                    } else if (col === 'category') {
+                        valA = (a.category_name || '').toLowerCase();
+                        valB = (b.category_name || '').toLowerCase();
+                        return valA.localeCompare(valB) * asc;
+                    } else if (col === 'placement') {
+                        valA = parseInt(a.location) || 0;
+                        valB = parseInt(b.location) || 0;
+                        return (valA - valB) * asc;
+                    } else if (col === 'weight') {
+                        valA = parseFloat(a.weight) || 0;
+                        valB = parseFloat(b.weight) || 0;
+                        return (valA - valB) * asc;
+                    } else if (col === 'size') {
+                        valA = parseInt(a.size_val) || 0;
+                        valB = parseInt(b.size_val) || 0;
+                        return (valA - valB) * asc;
+                    } else if (col === 'value') {
+                        valA = parseFloat(a.value) || 0;
+                        valB = parseFloat(b.value) || 0;
+                        return (valA - valB) * asc;
+                    }
+                    return 0;
+                });
+            @endif
+        }
+    }">
         <table class="charviewsection border-collapse w-full">
             <tbody>
                 <tr>
-                    <td class="cvheader cvcenter" colspan="7">
+                    <td class="cvheader cvcenter" colspan="8">
                         @if($isWizard)
                             Equipment &amp; Possessions (Wealth: <span x-text="remainingWealth + ' sp'"></span>)
                         @else
@@ -1949,7 +2283,7 @@
                 </tr>
                 @if(!$isWizard)
                     <tr class="bg-stone-200/60">
-                        <td class="cvsml" colspan="7">
+                        <td class="cvsml" colspan="8">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs px-1 text-stone-700 gap-1.5 py-0.5">
                                 <div>
                                     <span><strong>Carried Weight:</strong> {{ $calc['equipment']['total_weight'] }} kg</span>
@@ -1989,97 +2323,154 @@
                         </td>
                     </tr>
                 @endif
-                <tr class="bg-amber-100/70">
-                    <td class="cvlabel" style="width: 26%;">Item Name</td>
-                    <td class="cvlabel cvcenter" style="width: 18%;">Placement</td>
-                    <td class="cvlabel cvcenter" style="width: 8%;">Qty</td>
-                    <td class="cvlabel cvcenter" style="width: 10%;">Weight</td>
-                    <td class="cvlabel cvcenter" style="width: 8%;">Size</td>
-                    <td class="cvlabel cvcenter" style="width: 12%;">Value</td>
-                    <td class="cvlabel" style="width: 18%;">Traits</td>
+                <tr class="bg-amber-100/70 select-none">
+                    <td class="cvlabel cursor-pointer hover:bg-amber-200/80 transition" style="width: 22%;" @click="sortSheetEquip('name')">
+                        <div class="flex items-center justify-between">
+                            <span>Item Name</span>
+                            <span class="text-amber-800 font-bold" x-show="equipSortCol === 'name'" x-text="equipSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
+                    <td class="cvlabel cvcenter cursor-pointer hover:bg-amber-200/80 transition" style="width: 14%;" @click="sortSheetEquip('category')">
+                        <div class="flex items-center justify-center gap-1">
+                            <span>Item Category</span>
+                            <span class="text-amber-800 font-bold" x-show="equipSortCol === 'category'" x-text="equipSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
+                    <td class="cvlabel cvcenter cursor-pointer hover:bg-amber-200/80 transition" style="width: 14%;" @click="sortSheetEquip('placement')">
+                        <div class="flex items-center justify-center gap-1">
+                            <span>Placement</span>
+                            <span class="text-amber-800 font-bold" x-show="equipSortCol === 'placement'" x-text="equipSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
+                    <td class="cvlabel cvcenter" style="width: 6%;">Qty</td>
+                    <td class="cvlabel cvcenter cursor-pointer hover:bg-amber-200/80 transition" style="width: 10%;" @click="sortSheetEquip('weight')">
+                        <div class="flex items-center justify-center gap-1">
+                            <span>Weight</span>
+                            <span class="text-amber-800 font-bold" x-show="equipSortCol === 'weight'" x-text="equipSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
+                    <td class="cvlabel cvcenter cursor-pointer hover:bg-amber-200/80 transition" style="width: 7%;" @click="sortSheetEquip('size')">
+                        <div class="flex items-center justify-center gap-1">
+                            <span>Size</span>
+                            <span class="text-amber-800 font-bold" x-show="equipSortCol === 'size'" x-text="equipSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
+                    <td class="cvlabel cvcenter cursor-pointer hover:bg-amber-200/80 transition" style="width: 11%;" @click="sortSheetEquip('value')">
+                        <div class="flex items-center justify-center gap-1">
+                            <span>Value</span>
+                            <span class="text-amber-800 font-bold" x-show="equipSortCol === 'value'" x-text="equipSortAsc ? '▲' : '▼'"></span>
+                        </div>
+                    </td>
+                    <td class="cvlabel" style="width: 16%;">Traits</td>
                 </tr>
                 @if(!$isWizard)
-                    @forelse($equipmentList as $idx => $it)
-                        @php
-                            $locs = $it['locations'] ?? $it['Locations'] ?? [];
-                            $loc = (int)($locs[$activeConfig] ?? $it['location'] ?? $it['Location'] ?? \App\Services\Entity\EquipmentManager::getDefaultLocation($it));
-                            $allowedLocs = \App\Services\Entity\EquipmentManager::getAllowedLocations($it);
-                            $parentContainerId = $it['container_id'] ?? $it['ContainerID'] ?? null;
-                            $parentContainerName = '';
-                            if ($parentContainerId) {
-                                foreach ($equipmentList as $candidate) {
-                                    if (($candidate['uid'] ?? $candidate['id'] ?? null) === $parentContainerId) {
-                                        $parentContainerName = $candidate['Name'] ?? $candidate['name'] ?? 'Container';
-                                        break;
-                                    }
-                                }
-                            }
-                            $itemRefObj = (!empty($it['item_id']) && isset($itemsMap[$it['item_id']])) ? $itemsMap[$it['item_id']] : null;
-                            $itemSizeVal = $itemRefObj ? (int)($itemRefObj->BaseSize ?? 0) : 0;
-                            $itemSizeAbbr = match($itemSizeVal) {
-                                -4 => 'F', -3 => 'D', -2 => 'T', -1 => 'S', 0 => 'M', 1 => 'L', 2 => 'H', 3 => 'G', 4 => 'C', default => 'M'
-                            };
-                            $itemTraitsRaw = $itemRefObj ? ($itemRefObj->Traits ?: '') : '';
-                            $itemTraitsDesc = \App\Services\Entity\EntityEngine::formatItemTraitsDescription($itemTraitsRaw, true);
-                            $itemTraitsStr = !empty($itemTraitsDesc) ? $itemTraitsDesc : ($itemTraitsRaw ?: '–');
-
-                            $iName = strtolower($it['Name'] ?? $it['name'] ?? '');
-                            $isGem = (!empty($it['is_valuable']) && ($it['valuable_type'] ?? '') === 'gem') || str_starts_with($iName, 'gem:');
-                            $isArt = (!empty($it['is_valuable']) && ($it['valuable_type'] ?? '') === 'art') || str_starts_with($iName, 'art:');
-                            $isBullion = (!empty($it['is_valuable']) && ($it['valuable_type'] ?? '') === 'bullion') || str_contains($iName, 'trade bar');
-                        @endphp
-                        <tr>
+                    @forelse($preparedSheetEquipment as $it)
+                        <tr x-show="!equipSortCol">
                             <td class="cvlist">
                                 <div class="flex items-center gap-1.5 flex-wrap">
-                                    <span class="font-bold text-stone-900">{{ $it['Name'] ?? $it['name'] ?? 'Item' }}</span>
-                                    @if($isGem)
+                                    <span class="font-bold text-stone-900">{{ $it['name'] }}</span>
+                                    @if($it['is_gem'])
                                         <span class="text-[9px] px-1 py-0.2 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded font-bold">💎 Gem</span>
-                                    @elseif($isArt)
+                                    @elseif($it['is_art'])
                                         <span class="text-[9px] px-1 py-0.2 bg-purple-100 text-purple-900 border border-purple-300 rounded font-bold">🎨 Art</span>
-                                    @elseif($isBullion)
+                                    @elseif($it['is_bullion'])
                                         <span class="text-[9px] px-1 py-0.2 bg-yellow-100 text-yellow-900 border border-yellow-300 rounded font-bold">🪙 Bullion</span>
                                     @endif
-                                    @if(!empty($it['is_container']) || !empty($it['IsContainer']))
+                                    @if(!empty($it['is_container']))
                                         <span class="text-[9px] px-1 py-0.2 bg-amber-100 text-amber-900 border border-amber-300 rounded font-bold">🎒 Container</span>
                                     @endif
-                                    @if($parentContainerName)
-                                        <span class="text-[9px] px-1 py-0.2 bg-indigo-50 text-indigo-800 border border-indigo-200 rounded font-mono">(In {{ $parentContainerName }})</span>
+                                    @if($it['parent_container_name'])
+                                        <span class="text-[9px] px-1 py-0.2 bg-indigo-50 text-indigo-800 border border-indigo-200 rounded font-mono">(In {{ $it['parent_container_name'] }})</span>
                                     @endif
                                 </div>
                             </td>
-                            <td class="cvlist cvcenter">
-                                <form method="POST" action="{{ route('utilities.charview.equipment.placement', ['id' => $character->ID], false) }}" class="inline-block m-0">
-                                    @csrf
-                                    <input type="hidden" name="item_index" value="{{ $idx }}">
-                                    <input type="hidden" name="item_uid" value="{{ $it['uid'] ?? $it['id'] ?? '' }}">
-                                    <input type="hidden" name="config" value="{{ $activeConfig }}">
-                                    <select name="location" onchange="this.form.submit()"
-                                            class="text-[11px] font-mono font-bold px-1.5 py-0.5 rounded border border-amber-900/30 bg-amber-50/80 text-stone-900 shadow-2xs focus:outline-none cursor-pointer">
-                                        @foreach($allowedLocs as $aloc)
-                                            <option value="{{ $aloc }}" {{ (int)$loc === (int)$aloc ? 'selected' : '' }}>
-                                                {{ match($aloc) { 2 => '🛡️ Equipped', 1 => '🎒 Carried', default => '📦 Stowed' } }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </form>
+                            <td class="cvlist cvcenter text-[11px] font-medium text-slate-700">
+                                <span class="bg-amber-50/80 px-1.5 py-0.5 rounded border border-amber-200 text-stone-800">{{ $it['category_name'] }}</span>
                             </td>
-                            <td class="cvlist cvcenter font-mono">{{ $it['Qty'] ?? $it['qty'] ?? 1 }}</td>
-                            <td class="cvlist cvcenter font-mono">{{ $it['weight'] ?? (($it['unit_weight'] ?? 0) * ($it['Qty'] ?? 1)) }} kg</td>
-                            <td class="cvlist cvcenter font-mono text-xs">{{ $itemSizeAbbr }}</td>
-                            <td class="cvlist cvcenter font-mono">{{ ((int)($it['BaseValue'] ?? $it['value'] ?? $it['unit_price'] ?? 0) * (int)($it['Qty'] ?? $it['qty'] ?? 1)) }} sp</td>
-                            <td class="cvlist text-xs font-mono text-stone-600" title="{{ $itemTraitsRaw }}">{{ $itemTraitsStr }}</td>
+                            <td class="cvlist cvcenter">
+                                @if(isset($character))
+                                    <form method="POST" action="{{ route('utilities.charview.equipment.placement', ['id' => $character->ID], false) }}" class="inline-block m-0">
+                                        @csrf
+                                        <input type="hidden" name="item_index" value="{{ $it['orig_index'] }}">
+                                        <input type="hidden" name="item_uid" value="{{ $it['uid'] }}">
+                                        <input type="hidden" name="config" value="{{ $activeConfig }}">
+                                        <select name="location" onchange="this.form.submit()"
+                                                class="text-[11px] font-mono font-bold px-1.5 py-0.5 rounded border border-amber-900/30 bg-amber-50/80 text-stone-900 shadow-2xs focus:outline-none cursor-pointer">
+                                            {!! $it['select_options_html'] !!}
+                                        </select>
+                                    </form>
+                                @endif
+                            </td>
+                            <td class="cvlist cvcenter font-mono">{{ $it['qty'] }}</td>
+                            <td class="cvlist cvcenter font-mono">{{ $it['weight'] }} kg</td>
+                            <td class="cvlist cvcenter font-mono text-xs">{{ $it['size_abbr'] }}</td>
+                            <td class="cvlist cvcenter font-mono">{{ $it['value'] }} sp</td>
+                            <td class="cvlist text-xs font-mono text-stone-600" title="{{ $it['traits_raw'] }}">{{ $it['traits_str'] }}</td>
                         </tr>
                     @empty
-                        <tr><td class="cvlist text-stone-500 italic py-2" colspan="7">No equipment purchased.</td></tr>
+                        <tr x-show="!equipSortCol"><td class="cvlist text-stone-500 italic py-2" colspan="8">No equipment purchased.</td></tr>
                     @endforelse
+
+                    <template x-for="it in sortedSheetEquipment" :key="it.uid || it.orig_index">
+                        <tr x-show="equipSortCol" style="display: none;">
+                            <td class="cvlist">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="font-bold text-stone-900" x-text="it.name"></span>
+                                    <template x-if="it.is_gem">
+                                        <span class="text-[9px] px-1 py-0.2 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded font-bold">💎 Gem</span>
+                                    </template>
+                                    <template x-if="it.is_art">
+                                        <span class="text-[9px] px-1 py-0.2 bg-purple-100 text-purple-900 border border-purple-300 rounded font-bold">🎨 Art</span>
+                                    </template>
+                                    <template x-if="it.is_bullion">
+                                        <span class="text-[9px] px-1 py-0.2 bg-yellow-100 text-yellow-900 border border-yellow-300 rounded font-bold">🪙 Bullion</span>
+                                    </template>
+                                    <template x-if="it.is_container">
+                                        <span class="text-[9px] px-1 py-0.2 bg-amber-100 text-amber-900 border border-amber-300 rounded font-bold">🎒 Container</span>
+                                    </template>
+                                    <template x-if="it.parent_container_name">
+                                        <span class="text-[9px] px-1 py-0.2 bg-indigo-50 text-indigo-800 border border-indigo-200 rounded font-mono" x-text="'(In ' + it.parent_container_name + ')'"></span>
+                                    </template>
+                                </div>
+                            </td>
+                            <td class="cvlist cvcenter text-[11px] font-medium text-slate-700">
+                                <span class="bg-amber-50/80 px-1.5 py-0.5 rounded border border-amber-200 text-stone-800" x-text="it.category_name"></span>
+                            </td>
+                            <td class="cvlist cvcenter">
+                                @if(isset($character))
+                                    <form method="POST" action="{{ route('utilities.charview.equipment.placement', ['id' => $character->ID], false) }}" class="inline-block m-0">
+                                        @csrf
+                                        <input type="hidden" name="item_index" :value="it.orig_index">
+                                        <input type="hidden" name="item_uid" :value="it.uid">
+                                        <input type="hidden" name="config" value="{{ $activeConfig }}">
+                                        <select name="location" onchange="this.form.submit()"
+                                                class="text-[11px] font-mono font-bold px-1.5 py-0.5 rounded border border-amber-900/30 bg-amber-50/80 text-stone-900 shadow-2xs focus:outline-none cursor-pointer"
+                                                x-html="it.select_options_html">
+                                        </select>
+                                    </form>
+                                @endif
+                            </td>
+                            <td class="cvlist cvcenter font-mono" x-text="it.qty"></td>
+                            <td class="cvlist cvcenter font-mono" x-text="it.weight + ' kg'"></td>
+                            <td class="cvlist cvcenter font-mono text-xs" x-text="it.size_abbr"></td>
+                            <td class="cvlist cvcenter font-mono" x-text="it.value + ' sp'"></td>
+                            <td class="cvlist text-xs font-mono text-stone-600" :title="it.traits_raw" x-text="it.traits_str"></td>
+                        </tr>
+                    </template>
+                    <tr x-show="equipSortCol && sortedSheetEquipment.length === 0" style="display: none;">
+                        <td class="cvlist text-stone-500 italic py-2" colspan="8">No equipment purchased.</td>
+                    </tr>
                 @else
-                    <template x-for="it in character.Inventory" :key="it.uid || it.ID">
+                    <template x-for="it in sortedSheetEquipment" :key="it.uid || it.ID">
                         <tr>
                             <td class="cvlist">
                                 <span class="font-bold text-stone-900" x-text="it.Name"></span>
                                 <template x-if="it.ContainerID && getContainerName(it.ContainerID)">
                                     <span class="text-[10px] text-indigo-700 block" x-text="'(In ' + getContainerName(it.ContainerID) + ')'"></span>
                                 </template>
+                            </td>
+                            <td class="cvlist cvcenter text-[11px] font-medium text-slate-700">
+                                <span class="bg-amber-50/80 px-1.5 py-0.5 rounded border border-amber-200 text-stone-800" x-text="getItemCategoryName(it)"></span>
                             </td>
                             <td class="cvlist cvcenter text-xs font-mono">
                                 <span :class="it.Location === 2 ? 'text-amber-900 font-bold' : (it.Location === 0 ? 'text-stone-400' : 'text-stone-700')"
@@ -2092,8 +2483,8 @@
                             <td class="cvlist text-xs font-mono text-stone-600" x-text="itemsById[it.ID] ? formatItemTraitsDescription(itemsById[it.ID].Traits) : '–'"></td>
                         </tr>
                     </template>
-                    <template x-if="character.Inventory.length === 0">
-                        <tr><td class="cvlist text-stone-500 italic py-2" colspan="7">No equipment purchased.</td></tr>
+                    <template x-if="sortedSheetEquipment.length === 0">
+                        <tr><td class="cvlist text-stone-500 italic py-2" colspan="8">No equipment purchased.</td></tr>
                     </template>
                 @endif
             </tbody>
@@ -2217,10 +2608,15 @@
                                 @if(!empty($orgsList) && count($orgsList) > 0)
                                     <div class="space-y-0.5">
                                         @foreach($orgsList as $org)
+                                            @php
+                                                $orgName = $org['name'] ?? ('Organization #' . ($org['id'] ?? ''));
+                                                $isMember = !empty($org['is_member']);
+                                                $inflPts = isset($org['influence_pts']) ? (int)$org['influence_pts'] : 0;
+                                            @endphp
                                             <div>
-                                                <span class="font-semibold">{{ $org['name'] ?? ('Organization #' . ($org['id'] ?? '')) }}</span>
+                                                <span class="font-semibold">{{ $orgName }}</span>
                                                 <span class="text-stone-600 text-[10px]">
-                                                    (@if(!empty($org['is_member']))<span class="text-indigo-800 font-semibold">Member</span>@else<span class="text-stone-500">Associate</span>@endif@if(isset($org['influence_pts']) && (int)$org['influence_pts'] > 0), {{ (int)$org['influence_pts'] }} Infl Pts@endif)
+                                                    (<span class="{{ $isMember ? 'text-indigo-800 font-semibold' : 'text-stone-500' }}">{{ $isMember ? 'Member' : 'Associate' }}</span>{{ $inflPts > 0 ? ", {$inflPts} Infl Pts" : '' }})
                                                 </span>
                                             </div>
                                         @endforeach

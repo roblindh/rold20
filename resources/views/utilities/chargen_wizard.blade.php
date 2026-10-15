@@ -4574,6 +4574,7 @@ function characterWizard() {
                     result.push({ ID: s.ID, Name: s.Name, rank: trainedById[id] });
                 }
             }
+            result.sort((a, b) => (a.Name || '').localeCompare(b.Name || ''));
             return result;
         },
 
@@ -4844,6 +4845,18 @@ function characterWizard() {
                 return this.formatActionModifier(attSpdMod, sign ? sign.trim() : '');
             });
             return parsed.replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, '<br/>');
+        },
+
+        getItemCategoryName(item) {
+            if (!item) return 'Misc. Gear';
+            if (item.CategoryName || item.category_name) return item.CategoryName || item.category_name;
+            const ref = this.itemsById ? this.itemsById[item.ID || item.item_id] : null;
+            if (ref && (ref.CategoryName || ref.category_name)) return ref.CategoryName || ref.category_name;
+            const typeId = item.ItemTypeID || item.item_type_id || (ref ? (ref.ItemTypeID || ref.item_type_id) : 0);
+            const itemTypes = this.itemTypes || [];
+            const t = itemTypes.find(type => parseInt(type.ID) === parseInt(typeId));
+            if (t && t.Name) return t.Name;
+            return 'Misc. Gear';
         },
 
         formatItemTraitsDescription(traitsStr) {

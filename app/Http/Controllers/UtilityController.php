@@ -485,7 +485,12 @@ class UtilityController extends Controller
         $improvementsMap = DB::table('ref_improvementtraits')->get()->keyBy('ID');
         $spellsMap = DB::table('ref_spells')->get()->keyBy('ID');
         $spellOptionsMap = DB::table('ref_spelloptions')->get()->keyBy('ID');
-        $itemsMap = DB::table('ref_items')->get()->keyBy('ID');
+        $itemsMap = DB::table('ref_items')
+            ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
+            ->leftJoin('ref_itemtypes', 'ref_itemsubtypes.Type', '=', 'ref_itemtypes.ID')
+            ->select('ref_items.*', 'ref_itemsubtypes.Type as ItemTypeID', 'ref_itemsubtypes.Name as SubtypeName', 'ref_itemtypes.Name as CategoryName')
+            ->get()
+            ->keyBy('ID');
         $pantheonsMap = DB::table('ref_pantheons')->get()->keyBy('ID');
         $deitiesMap = DB::table('ref_deities')->get()->keyBy('ID');
         $sizesMap = DB::table('ref_sizes')->get()->keyBy('ID');
@@ -2362,7 +2367,7 @@ class UtilityController extends Controller
             \App\Services\Entity\EntityEngine::loadReferenceTables();
             $rawEntity = \App\Services\Entity\EntityEngine::buildEntityFromConfigString($raceId, $config);
             $calc = \App\Services\Entity\EntityEngine::calculate($rawEntity);
-            $statblockHtml = \App\Services\Entity\EntityEngine::renderClassicStatBlock($calc, $rawEntity);
+            $statblockHtml = \App\Services\Entity\EntityEngine::renderInteractiveStatBlock($calc, $rawEntity, $config);
 
             $cl = (int)($calc['heritage']['challenge_level'] ?? 0);
             return response()->json([

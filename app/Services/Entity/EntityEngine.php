@@ -2837,6 +2837,9 @@ class EntityEngine
             }
         }
 
+        uasort($trainedSkillsSummary, function($a, $b) {
+            return strcasecmp($a['name'] ?? '', $b['name'] ?? '');
+        });
         // Resolve Known Spells
         $resolvedSpells = [];
         $rawSpells = is_object($e) ? ($e->Spells ?? $e->KnownSpells ?? null) : ($e['Spells'] ?? $e['KnownSpells'] ?? null);
@@ -5829,5 +5832,20 @@ class EntityEngine
     {
         $blocks = self::parseCreatureStatBlockConfigs($creatureId);
         return implode("\n", array_column($blocks, 'classic_html'));
+    }
+
+    /**
+     * Render creature stat block in the modern interactive component format.
+     */
+    public static function renderInteractiveStatBlock(array $calc, array $rawEntity = [], string $configString = '', ?string $classicHtml = null): string
+    {
+        return view('components.statblock-interactive', [
+            'calc' => $calc,
+            'rawEntity' => $rawEntity,
+            'configString' => $configString,
+            'classicHtml' => $classicHtml ?? self::renderClassicStatBlock($calc, $rawEntity),
+            'initialMode' => 'interactive',
+            'canToggleMode' => true,
+        ])->render();
     }
 }

@@ -1355,7 +1355,82 @@ function characterViewerApp() {
             unit_weight: 0,
             is_container: false
         },
+        modalEquipmentSortCol: '',
+        modalEquipmentSortAsc: true,
         equipmentItems: @json($equipmentList ?? []),
+
+        getItemECMod(item) {
+            if (!item) return null;
+            if (item.ec_mod !== undefined && item.ec_mod !== null && item.ec_mod !== '') {
+                const val = parseInt(item.ec_mod);
+                if (!isNaN(val)) return val;
+            }
+            if (item.ECMod !== undefined && item.ECMod !== null && item.ECMod !== '') {
+                const val = parseInt(item.ECMod);
+                if (!isNaN(val)) return val;
+            }
+            const rawTraits = item.Traits || item.traits_raw || item.traits || item.custom_traits || '';
+            if (rawTraits && typeof rawTraits === 'string') {
+                const ecMatch = rawTraits.match(/EC\s*([+-]?\d+)/i);
+                if (ecMatch) {
+                    const parsed = parseInt(ecMatch[1]);
+                    if (!isNaN(parsed)) return parsed;
+                }
+            }
+            return null;
+        },
+
+        getItemCategoryName(item) {
+            if (!item) return 'Misc. Gear';
+            if (item.category_name) return item.category_name;
+            if (item.CategoryName) return item.CategoryName;
+            if (this.isValuableItem && this.isValuableItem(item)) return 'Valuables';
+            const typeId = parseInt(item.item_type_id || item.ItemTypeID || 0);
+            if (typeId && this.itemTypes) {
+                const found = this.itemTypes.find(t => parseInt(t.ID) === typeId);
+                if (found) return found.Name;
+            }
+            const ref = (this.equipmentCatalog || []).find(r => parseInt(r.ID) === parseInt(item.item_id || item.ID));
+            if (ref) {
+                const refTypeId = parseInt(ref.ItemTypeID || ref.Type || 0);
+                const found = (this.itemTypes || []).find(t => parseInt(t.ID) === refTypeId);
+                if (found) return found.Name;
+            }
+            return 'Misc. Gear';
+        },
+
+        sortModalEquipment(col) {
+            if (this.modalEquipmentSortCol === col) {
+                this.modalEquipmentSortAsc = !this.modalEquipmentSortAsc;
+            } else {
+                this.modalEquipmentSortCol = col;
+                this.modalEquipmentSortAsc = true;
+            }
+            const asc = this.modalEquipmentSortAsc;
+            const preset = this.modalActivePreset;
+            this.equipmentItems.sort((a, b) => {
+                let valA, valB;
+                if (col === 'name') {
+                    valA = (a.name || a.Name || '').toLowerCase();
+                    valB = (b.name || b.Name || '').toLowerCase();
+                } else if (col === 'category') {
+                    valA = (this.getItemCategoryName(a) || '').toLowerCase();
+                    valB = (this.getItemCategoryName(b) || '').toLowerCase();
+                } else if (col === 'value') {
+                    valA = (parseFloat(a.unit_price || a.BaseValue || 0) || 0) * (parseInt(a.qty || a.Qty || 1) || 1);
+                    valB = (parseFloat(b.unit_price || b.BaseValue || 0) || 0) * (parseInt(b.qty || b.Qty || 1) || 1);
+                } else if (col === 'weight') {
+                    valA = (parseFloat(a.unit_weight || a.BaseWeight || 0) || 0) * (parseInt(a.qty || a.Qty || 1) || 1);
+                    valB = (parseFloat(b.unit_weight || b.BaseWeight || 0) || 0) * (parseInt(b.qty || b.Qty || 1) || 1);
+                } else if (col === 'placement') {
+                    valA = parseInt(a.locations ? a.locations[preset] : (a.location ?? 1)) || 0;
+                    valB = parseInt(b.locations ? b.locations[preset] : (b.location ?? 1)) || 0;
+                }
+                if (valA < valB) return asc ? -1 : 1;
+                if (valA > valB) return asc ? 1 : -1;
+                return 0;
+            });
+        },
 
         getItemECMod(item) {
             if (!item) return null;
@@ -3037,7 +3112,20 @@ function characterViewerApp() {
         get activeCastSpellOptions() {
             const id = this.castSpellState.selectedSpellId;
             if (!id) return [];
-            return (rawSpellOptions || []).filter(o => String(o.SpellID) === String(id));
+            const allOpts = (rawSpellOptions || []).filter(o => String(o.SpellID) === String(id));
+            if (!this.castSpellState.showAllSpells) {
+                const knownOpts = (this.knownSpellsData && this.knownSpellsData[id]) ? this.knownSpellsData[id] : [];
+                const knownSet = new Set((knownOpts || []).map(Number));
+                return allOpts.filter(o => knownSet.has(Number(o.ID)));
+            }
+            return allOpts;
+        },
+
+        isVariationLearned(optId) {
+            const id = this.castSpellState.selectedSpellId;
+            if (!id) return false;
+            const knownOpts = (this.knownSpellsData && this.knownSpellsData[id]) ? this.knownSpellsData[id] : [];
+            return (knownOpts || []).map(Number).includes(Number(optId));
         },
 
         openCastSpellModal(spellId = null) {

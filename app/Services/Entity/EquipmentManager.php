@@ -512,7 +512,8 @@ class EquipmentManager
             try {
                 self::$refItemsCache = DB::table('ref_items')
                     ->leftJoin('ref_itemsubtypes', 'ref_items.Subtype', '=', 'ref_itemsubtypes.ID')
-                    ->select('ref_items.*', 'ref_itemsubtypes.Type as ItemTypeID', 'ref_itemsubtypes.Name as SubtypeName')
+                    ->leftJoin('ref_itemtypes', 'ref_itemsubtypes.Type', '=', 'ref_itemtypes.ID')
+                    ->select('ref_items.*', 'ref_itemsubtypes.Type as ItemTypeID', 'ref_itemsubtypes.Name as SubtypeName', 'ref_itemtypes.Name as CategoryName')
                     ->get()
                     ->keyBy('ID')
                     ->map(fn($r) => (array)$r)
@@ -1027,7 +1028,38 @@ class EquipmentManager
             $arr['resolved_traits'] = $resolvedTraits;
         }
 
+        if (empty($arr['CategoryName']) && empty($arr['category_name'])) {
+            $catName = self::getItemCategoryName($arr);
+            $arr['CategoryName'] = $catName;
+            $arr['category_name'] = $catName;
+        }
+
         return $arr;
+    }
+
+    /**
+     * Resolve the Item Category Name for an item record.
+     */
+    public static function getItemCategoryName(array|object $item): string
+    {
+        $arr = (array)$item;
+        if (!empty($arr['CategoryName'])) return (string)$arr['CategoryName'];
+        if (!empty($arr['category_name'])) return (string)$arr['category_name'];
+        $iName = strtolower((string)($arr['Name'] ?? $arr['name'] ?? ''));
+        if ((!empty($arr['is_valuable']) && in_array($arr['valuable_type'] ?? '', ['gem', 'art', 'bullion'])) ||
+            str_starts_with($iName, 'gem:') || str_starts_with($iName, 'art:') || str_contains($iName, 'trade bar')) {
+            return 'Valuables';
+        }
+        self::loadItemReferenceTables();
+        $refId = (int)($arr['item_id'] ?? $arr['ref_id'] ?? $arr['ID'] ?? 0);
+        if ($refId > 0 && isset(self::$refItemsCache[$refId]['CategoryName'])) {
+            return (string)self::$refItemsCache[$refId]['CategoryName'];
+        }
+        $typeId = (int)($arr['ItemTypeID'] ?? $arr['item_type_id'] ?? 0);
+        if ($typeId > 0 && isset(self::$refItemTypesCache[$typeId]['Name'])) {
+            return (string)self::$refItemTypesCache[$typeId]['Name'];
+        }
+        return 'Misc. Gear';
     }
 
     /**

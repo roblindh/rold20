@@ -290,14 +290,39 @@
             <div x-show="equipmentViewMode === 'list'" class="border border-slate-200 rounded-xl overflow-hidden shadow-2xs bg-white">
                 <div class="max-h-[50vh] overflow-y-auto">
                     <table class="w-full text-left border-collapse">
-                        <thead class="bg-slate-100 text-slate-700 text-[11px] uppercase tracking-wider font-bold border-b border-slate-200 sticky top-0 z-10">
+                        <thead class="bg-slate-100 text-slate-700 text-[11px] uppercase tracking-wider font-bold border-b border-slate-200 sticky top-0 z-10 select-none">
                             <tr>
-                                <th class="p-3">Item Name &amp; Properties</th>
-                                <th class="p-3 text-center" style="width: 100px;">Qty</th>
-                                <th class="p-3 text-center" style="width: 130px;">Value / Weight</th>
-                                <th class="p-3 text-center" style="width: 180px;">Container</th>
-                                <th class="p-3 text-center" style="width: 190px;">
-                                    Placement (<span x-text="['Combat', 'Travel', 'Rest', 'Sleep', 'Formal'][modalActivePreset]"></span>)
+                                <th class="p-3 cursor-pointer hover:bg-slate-200 transition" @click="sortModalEquipment('name')">
+                                    <div class="flex items-center gap-1">
+                                        <span>Item Name &amp; Properties</span>
+                                        <span class="text-indigo-600" x-show="modalEquipmentSortCol === 'name'" x-text="modalEquipmentSortAsc ? '▲' : '▼'"></span>
+                                    </div>
+                                </th>
+                                <th class="p-3 text-center cursor-pointer hover:bg-slate-200 transition" style="width: 130px;" @click="sortModalEquipment('category')">
+                                    <div class="flex items-center justify-center gap-1">
+                                        <span>Category</span>
+                                        <span class="text-indigo-600" x-show="modalEquipmentSortCol === 'category'" x-text="modalEquipmentSortAsc ? '▲' : '▼'"></span>
+                                    </div>
+                                </th>
+                                <th class="p-3 text-center" style="width: 80px;">Qty</th>
+                                <th class="p-3 text-center cursor-pointer hover:bg-slate-200 transition" style="width: 90px;" @click="sortModalEquipment('value')">
+                                    <div class="flex items-center justify-center gap-1">
+                                        <span>Value</span>
+                                        <span class="text-indigo-600" x-show="modalEquipmentSortCol === 'value'" x-text="modalEquipmentSortAsc ? '▲' : '▼'"></span>
+                                    </div>
+                                </th>
+                                <th class="p-3 text-center cursor-pointer hover:bg-slate-200 transition" style="width: 90px;" @click="sortModalEquipment('weight')">
+                                    <div class="flex items-center justify-center gap-1">
+                                        <span>Weight</span>
+                                        <span class="text-indigo-600" x-show="modalEquipmentSortCol === 'weight'" x-text="modalEquipmentSortAsc ? '▲' : '▼'"></span>
+                                    </div>
+                                </th>
+                                <th class="p-3 text-center" style="width: 160px;">Container</th>
+                                <th class="p-3 text-center cursor-pointer hover:bg-slate-200 transition" style="width: 170px;" @click="sortModalEquipment('placement')">
+                                    <div class="flex items-center justify-center gap-1">
+                                        <span>Placement (<span x-text="['Combat', 'Travel', 'Rest', 'Sleep', 'Formal'][modalActivePreset]"></span>)</span>
+                                        <span class="text-indigo-600" x-show="modalEquipmentSortCol === 'placement'" x-text="modalEquipmentSortAsc ? '▲' : '▼'"></span>
+                                    </div>
                                 </th>
                                 <th class="p-3 text-center" style="width: 40px;"></th>
                             </tr>
@@ -305,7 +330,7 @@
                         <tbody class="divide-y divide-slate-200 text-xs">
                             <template x-if="equipmentItems.length === 0">
                                 <tr>
-                                    <td colspan="6" class="p-8 text-center text-slate-400 italic">
+                                    <td colspan="8" class="p-8 text-center text-slate-400 italic">
                                         No items in inventory. Use "Buy Items" or "+ Add Custom Gear" above to equip your character.
                                     </td>
                                 </tr>
@@ -353,6 +378,11 @@
                                         </template>
                                     </td>
 
+                                    <!-- Item Category Column -->
+                                    <td class="p-3 text-center">
+                                        <span class="text-[11px] font-medium text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200" x-text="getItemCategoryName(item)"></span>
+                                    </td>
+
                                     <!-- Quantity Adjustment -->
                                     <td class="p-3 text-center">
                                         <template x-if="isItemStackable(item)">
@@ -382,15 +412,17 @@
                                         </template>
                                     </td>
 
-                                    <!-- Value & Weight -->
+                                    <!-- Value -->
+                                    <td class="p-3 text-center font-mono text-xs font-bold text-slate-800">
+                                        <span x-text="((item.unit_price || item.BaseValue || 0) * (item.qty || 1)) + ' sp'"></span>
+                                    </td>
+
+                                    <!-- Weight -->
                                     <td class="p-3 text-center font-mono text-[11px] text-slate-600">
-                                        <div><span class="font-bold text-slate-800" x-text="(item.unit_price * item.qty) + ' sp'"></span></div>
-                                        <div class="text-[10px] text-slate-400">
-                                            <span x-text="(item.unit_weight * item.qty).toFixed(1) + ' kg'"></span>
-                                            <template x-if="getItemECMod(item) !== null && getItemECMod(item) !== undefined && getItemECMod(item) !== 0">
-                                                <span class="font-semibold text-indigo-700" x-text="' (' + (getItemECMod(item) > 0 ? '+' : '') + getItemECMod(item) + ' EC)'"></span>
-                                            </template>
-                                        </div>
+                                        <span x-text="((item.unit_weight || item.BaseWeight || 0) * (item.qty || 1)).toFixed(1) + ' kg'"></span>
+                                        <template x-if="getItemECMod(item) !== null && getItemECMod(item) !== undefined && getItemECMod(item) !== 0">
+                                            <span class="font-semibold text-indigo-700 block text-[10px]" x-text="' (' + (getItemECMod(item) > 0 ? '+' : '') + getItemECMod(item) + ' EC)'"></span>
+                                        </template>
                                     </td>
 
                                     <!-- Container Assignment Dropdown -->

@@ -183,9 +183,18 @@
                             </label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-40 overflow-y-auto pr-1">
                                 <template x-for="opt in activeCastSpellOptions" :key="opt.ID">
-                                    <label class="border p-2 rounded-lg flex items-start gap-2 cursor-pointer transition select-none"
-                                           :class="castSpellState.selectedVariations[opt.ID] ? 'bg-indigo-50/70 border-indigo-400 ring-1 ring-indigo-300' : 'bg-stone-50/60 border-stone-200 hover:border-stone-300'">
-                                        <input type="checkbox" x-model="castSpellState.selectedVariations[opt.ID]" class="rounded border-stone-300 text-indigo-600 focus:ring-indigo-500 mt-0.5">
+                                    <label class="border p-2 rounded-lg flex items-start gap-2 transition select-none"
+                                           :class="{
+                                               'opacity-50 cursor-not-allowed bg-slate-100': !isVariationLearned(opt.ID),
+                                               'cursor-pointer': isVariationLearned(opt.ID),
+                                               'bg-indigo-50/70 border-indigo-400 ring-1 ring-indigo-300': isVariationLearned(opt.ID) && castSpellState.selectedVariations[opt.ID],
+                                               'bg-stone-50/60 border-stone-200 hover:border-stone-300': isVariationLearned(opt.ID) && !castSpellState.selectedVariations[opt.ID]
+                                           }"
+                                           :title="!isVariationLearned(opt.ID) ? 'Variation not learned by this character' : ''">
+                                        <input type="checkbox" 
+                                               :disabled="!isVariationLearned(opt.ID)"
+                                               x-model="castSpellState.selectedVariations[opt.ID]" 
+                                               class="rounded border-stone-300 text-indigo-600 focus:ring-indigo-500 mt-0.5">
                                         <div class="min-w-0 flex-1">
                                             <div class="flex items-center justify-between gap-1">
                                                 <span class="font-semibold text-stone-900 text-[11px] truncate" x-text="opt.Name"></span>
@@ -198,6 +207,11 @@
                                     </label>
                                 </template>
                             </div>
+                        </div>
+                    </template>
+                    <template x-if="activeCastSpell && activeCastSpellOptions.length === 0">
+                        <div class="text-[11px] text-stone-500 italic p-2 bg-stone-50 rounded border border-dashed border-stone-200">
+                            No variations learned for this spell.
                         </div>
                     </template>
 

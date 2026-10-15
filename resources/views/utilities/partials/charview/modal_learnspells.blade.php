@@ -1,6 +1,6 @@
 <!-- Learn Spells Modal -->
 <div x-show="showLearnSpellsModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showLearnSpellsModal = false">
-    <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showLearnSpellsModal = false">
+    <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full border border-slate-200 overflow-hidden relative z-[10000] max-h-[95vh] h-[90vh] flex flex-col my-auto" @click.outside="showLearnSpellsModal = false">
         <!-- Header -->
         <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
             <div class="font-bold text-lg flex items-center gap-2" style="color: #ffffff;">
@@ -20,7 +20,7 @@
                         <span class="text-base">🔮</span>
                         <div>
                             <div class="font-bold text-indigo-950 text-xs leading-tight">Arcane</div>
-                            <div class="text-[9px] text-indigo-800 font-mono font-semibold" x-text="'Rank ' + spellSummary.arcane.ranks"></div>
+                            <div class="text-[9px] text-indigo-800 font-mono font-semibold" x-text="'Sum of Ranks: ' + spellSummary.arcane.ranks"></div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 font-mono text-[11px] shrink-0 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
@@ -39,7 +39,7 @@
                         <span class="text-base">✝️</span>
                         <div>
                             <div class="font-bold text-amber-950 text-xs leading-tight">Divine</div>
-                            <div class="text-[9px] text-amber-800 font-mono font-semibold" x-text="'Rank ' + spellSummary.divine.ranks"></div>
+                            <div class="text-[9px] text-amber-800 font-mono font-semibold" x-text="'Sum of Ranks: ' + spellSummary.divine.ranks"></div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 font-mono text-[11px] shrink-0 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
@@ -58,7 +58,7 @@
                         <span class="text-base">🧠</span>
                         <div>
                             <div class="font-bold text-teal-950 text-xs leading-tight">Psionic</div>
-                            <div class="text-[9px] text-teal-800 font-mono font-semibold" x-text="'Rank ' + spellSummary.psionic.ranks"></div>
+                            <div class="text-[9px] text-teal-800 font-mono font-semibold" x-text="'Sum of Ranks: ' + spellSummary.psionic.ranks"></div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 font-mono text-[11px] shrink-0 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
@@ -72,11 +72,11 @@
             </div>
         </div>
 
-        <form action="{{ route('utilities.charview.learn-spells', ['id' => $character->ID], false) }}" method="POST" class="p-6 overflow-y-auto space-y-5 flex-1 text-xs">
+        <form action="{{ route('utilities.charview.learn-spells', ['id' => $character->ID], false) }}" method="POST" class="p-6 overflow-hidden space-y-4 flex-1 flex flex-col min-h-0 text-xs">
             @csrf
 
             <!-- Search & Filters -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 shrink-0">
                 <div class="flex-1">
                     <input type="text" x-model="spellSearchQuery" placeholder="Search spells, powers, disciplines, descriptors..."
                            class="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-black focus:ring-1 focus:ring-indigo-500">
@@ -92,7 +92,7 @@
             </div>
 
             <!-- Spells List with Variations Expansion -->
-            <div class="space-y-3 max-h-96 overflow-y-auto pr-1 sm:pr-2">
+            <div class="space-y-3 flex-1 overflow-y-auto pr-1 sm:pr-2 min-h-0">
                 <template x-for="sp in filteredSpellCatalog" :key="sp.ID">
                     <div class="bg-white border p-3 rounded-xl shadow-2xs space-y-2 transition"
                          :class="spellsToLearn[sp.ID] ? 'border-indigo-500 bg-indigo-50/40 ring-1 ring-indigo-400' : (sp.isKnown ? 'border-slate-300 bg-slate-50/80' : 'border-slate-200 hover:border-slate-300')">

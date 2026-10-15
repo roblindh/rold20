@@ -136,6 +136,18 @@ class SpecialCompanionService
             }
 
             $activeOfType = array_values(array_filter($allActiveCompanions, fn($c) => ($c['companion_type'] ?? '') === $typeKey && !empty($c['active'])));
+            foreach ($activeOfType as &$comp) {
+                if (empty($comp['statblock_html']) || (!str_contains($comp['statblock_html'], 'statblock-interactive') && !str_contains($comp['statblock_html'], 'Interactive'))) {
+                    if (!empty($comp['calc_state']) && !empty($comp['entity_data'])) {
+                        $comp['statblock_html'] = EntityEngine::renderInteractiveStatBlock($comp['calc_state'], $comp['entity_data'], $comp['config_string'] ?? '');
+                    } elseif (!empty($comp['base_creature_id']) && !empty($comp['config_string'])) {
+                        $rawEntity = EntityEngine::buildEntityFromConfigString((int)$comp['base_creature_id'], $comp['config_string']);
+                        $calc = EntityEngine::calculate($rawEntity);
+                        $comp['statblock_html'] = EntityEngine::renderInteractiveStatBlock($calc, $rawEntity, $comp['config_string']);
+                    }
+                }
+            }
+            unset($comp);
             $usedCL = array_reduce($activeOfType, fn($sum, $c) => $sum + (int)($c['final_cl'] ?? 0), 0);
             $remainingCL = max(0, $maxCL - $usedCL);
 
@@ -416,7 +428,7 @@ class SpecialCompanionService
             $rawEntity['CharTraits'] = ($rawEntity['CharTraits'] ?? '') . ' ' . implode(' ', $traitsToApply);
         }
         $calc = EntityEngine::calculate($rawEntity);
-        $statblockHtml = EntityEngine::renderClassicStatBlock($calc, $rawEntity);
+        $statblockHtml = EntityEngine::renderInteractiveStatBlock($calc, $rawEntity, $config);
 
         $cl = (int)($calc['heritage']['challenge_level'] ?? 0);
         return [

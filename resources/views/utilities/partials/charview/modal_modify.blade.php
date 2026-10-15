@@ -134,7 +134,7 @@
                         <span>🎖️ Reputation Details</span>
                         <div class="flex items-center gap-1">
                             <span class="text-[10px] text-slate-500">Rep Score:</span>
-                            <input type="number" name="Reputation" value="{{ $character->Reputation ?? 0 }}"
+                            <input type="number" name="Reputation" value="{{ $calc['social']['reputation_total'] ?? ($character->Reputation ?? 0) }}"
                                    class="w-16 px-1.5 py-0.5 border border-slate-300 rounded text-xs text-right font-mono font-bold">
                         </div>
                     </div>

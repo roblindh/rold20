@@ -154,16 +154,16 @@
                     @else
                         <div class="space-y-2 max-h-72 overflow-y-auto pr-1">
                             @foreach($equipmentList as $eIdx => $item)
-                                <div class="bg-white border border-slate-200 p-3 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-2xs">
-                                    <div>
-                                        <span class="font-bold text-slate-900 block">✨ {{ $item['name'] ?? $item['Name'] ?? 'Item' }}</span>
+                                <div class="bg-white border border-slate-200 p-3 rounded-lg flex items-center justify-between gap-2 shadow-2xs">
+                                    <div class="min-w-0 flex-1">
+                                        <span class="font-bold text-slate-900 block truncate">✨ {{ $item['name'] ?? $item['Name'] ?? 'Item' }}</span>
                                         <span class="text-[10px] text-slate-500">
                                              Value: {{ number_format((int)($item['value'] ?? $item['BaseValue'] ?? 0)) }} sp
                                             @if(isset($item['weight'])) &bull; {{ $item['weight'] }} kg @endif
                                         </span>
                                     </div>
 
-                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                    <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap justify-end ml-auto shrink-0">
                                         <!-- Give to Member form -->
                                         @if($partyMembers->isNotEmpty())
                                             <form action="{{ route('utilities.charview.trade', ['id' => $character->ID], false) }}" method="POST" class="inline-flex items-center gap-1">
@@ -177,20 +177,20 @@
                                                 </select>
                                                 <button type="submit"
                                                         style="background-color: #047857; color: #ffffff;"
-                                                        class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] rounded shadow-xs transition cursor-pointer">
+                                                        class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] rounded shadow-xs transition cursor-pointer shrink-0">
                                                     Give &rarr;
                                                 </button>
                                             </form>
                                         @endif
 
                                         <!-- Deposit to Vault form -->
-                                        <form action="{{ route('utilities.charview.trade', ['id' => $character->ID], false) }}" method="POST" class="inline">
+                                        <form action="{{ route('utilities.charview.trade', ['id' => $character->ID], false) }}" method="POST" class="inline shrink-0">
                                             @csrf
                                             <input type="hidden" name="trade_type" value="give_item_vault">
                                             <input type="hidden" name="item_index" value="{{ $eIdx }}">
                                             <button type="submit"
                                                     style="background-color: #4338ca; color: #ffffff;"
-                                                    class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] rounded shadow-xs transition cursor-pointer" title="Deposit into Campaign Vault">
+                                                    class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] rounded shadow-xs transition cursor-pointer shrink-0" title="Deposit into Campaign Vault">
                                                 💎 To Vault
                                             </button>
                                         </form>
