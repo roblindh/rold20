@@ -328,7 +328,7 @@ class UtilityController extends Controller
 
             $cid = $request->input('CampaignID') ?? $request->input('Campaign');
             $campaignVal = ((int)$cid > 0) ? (int)$cid : null;
-            $cultureVal = ((int)$request->input('CultureID') > 0) ? (int)$request->input('CultureID') : null;
+            $cultureVal = ((int)$request->input('CultureID') > 0) ? (int)$request->input('CultureID') : (isset($raceRow->DefaultCulture) ? (int)$raceRow->DefaultCulture : 1);
             $bgClassVal = ((int)$request->input('BackgroundClassID') > 0) ? (int)$request->input('BackgroundClassID') : null;
             
             // Multiple templates formatting
@@ -468,7 +468,16 @@ class UtilityController extends Controller
         }
         $template = $templates->first(); // For backwards compatibility
         
-        $culture = ($character && $character->Culture) ? DB::table('ref_cultures')->where('ID', $character->Culture)->first() : null;
+        $cultureId = ($character && $character->Culture) ? $character->Culture : ($race->DefaultCulture ?? 1);
+        $culture = is_numeric($cultureId)
+            ? DB::table('ref_cultures')->where('ID', (int)$cultureId)->first()
+            : DB::table('ref_cultures')->where('Name', (string)$cultureId)->first();
+        if (!$culture && $race && !empty($race->DefaultCulture)) {
+            $culture = DB::table('ref_cultures')->where('ID', (int)$race->DefaultCulture)->first();
+        }
+        if (!$culture) {
+            $culture = DB::table('ref_cultures')->where('ID', 1)->first();
+        }
         $bgClass = ($character && $character->BackgndClass) ? DB::table('ref_classes')->where('ID', $character->BackgndClass)->first() : null;
         $classesMap = DB::table('ref_classes')->get()->keyBy('ID');
         $skillsMap = DB::table('ref_skills')->get()->keyBy('ID');
@@ -2146,6 +2155,11 @@ class UtilityController extends Controller
 
         $gender = (int)$request->input('gender', 1);
         $cultureId = (int)$request->input('culture_id', 0);
+        if ($cultureId <= 0 && $creatureId > 0) {
+            $cRow = DB::table('ref_creatures')->where('ID', $creatureId)->first();
+            $cultureId = (int)($cRow->DefaultCulture ?? 1);
+        }
+        if ($cultureId <= 0) $cultureId = 1;
         $bgClassId = (int)$request->input('background_class_id', 0);
 
         $classes = $request->input('classes', []);

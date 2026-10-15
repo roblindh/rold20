@@ -182,7 +182,16 @@
                                 <td class="cvlabel cvcenter">{{ $abbr }}</td>
                                 <td class="cvsml cvcenter" x-text="character['{{ $attr }}'] ?? '–'"></td>
                                 <td class="cvmdm cvcenter" x-text="calculatedState?.final_abilities?.['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] !== undefined ? (calculatedState.final_abilities['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] ?? '–') : (getFinalAbility('{{ $attr }}') !== null ? getFinalAbility('{{ $attr }}') : '–')"></td>
-                                <td class="cvmdm cvcenter" x-text="(calculatedState?.ability_modifiers?.['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] !== undefined && calculatedState?.ability_modifiers?.['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] !== null) ? ((calculatedState.ability_modifiers['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] >= 0 ? '+' : '') + calculatedState.ability_modifiers['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}']) : (getAbilityModifier('{{ $attr }}') !== null ? ((getAbilityModifier('{{ $attr }}') >= 0 ? '+' : '') + getAbilityModifier('{{ $attr }}')) : '–')"></td>
+                                <td class="cvmdm cvcenter">
+                                    <template x-if="'{{ $abbr }}' === 'DEX' && calculatedState?.ability_modifiers?.DexCapped">
+                                        <span class="text-amber-700 font-bold"
+                                              :title="'Dex Mod capped at +' + (calculatedState?.equipment?.max_dex_bonus ?? 0) + ' by Encumbrance Class (EC ' + (calculatedState?.equipment?.effective_ec ?? 0) + '). Uncapped Dex Mod: ' + ((calculatedState?.ability_modifiers?.DexRaw >= 0 ? '+' : '') + calculatedState?.ability_modifiers?.DexRaw)"
+                                              x-text="((calculatedState?.ability_modifiers?.Dex >= 0 ? '+' : '') + calculatedState.ability_modifiers.Dex) + '*'"></span>
+                                    </template>
+                                    <template x-if="'{{ $abbr }}' !== 'DEX' || !calculatedState?.ability_modifiers?.DexCapped">
+                                        <span x-text="(calculatedState?.ability_modifiers?.['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] !== undefined && calculatedState?.ability_modifiers?.['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] !== null) ? ((calculatedState.ability_modifiers['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}'] >= 0 ? '+' : '') + calculatedState.ability_modifiers['{{ ucfirst(strtolower(substr($abbr, 0, 3))) }}']) : (getAbilityModifier('{{ $attr }}') !== null ? ((getAbilityModifier('{{ $attr }}') >= 0 ? '+' : '') + getAbilityModifier('{{ $attr }}')) : '–')"></span>
+                                    </template>
+                                </td>
                                 <td class="cvsml cvcenter text-stone-400">–</td>
                             </tr>
                         @endforeach
@@ -205,7 +214,13 @@
                             <td class="cvlabel cvcenter">DEX</td>
                             <td class="cvsml cvcenter">{{ $baseDex ?? '–' }}</td>
                             <td class="cvmdm cvcenter">{{ $dex ?? '–' }}</td>
-                            <td class="cvmdm cvcenter">{{ $dexMod !== null ? ($dexMod >= 0 ? '+' : '') . $dexMod : '–' }}</td>
+                            <td class="cvmdm cvcenter">
+                                @if(!empty($calc['ability_modifiers']['DexCapped']))
+                                    <span class="text-amber-700 font-bold" title="Dex Mod capped at +{{ $calc['equipment']['max_dex_bonus'] ?? 0 }} by Encumbrance Class (EC {{ $calc['equipment']['effective_ec'] ?? 0 }}). Uncapped Dex Mod: {{ ($calc['ability_modifiers']['DexRaw'] ?? 0) >= 0 ? '+' : '' }}{{ $calc['ability_modifiers']['DexRaw'] ?? 0 }}">{{ $dexMod !== null ? ($dexMod >= 0 ? '+' : '') . $dexMod : '–' }}*</span>
+                                @else
+                                    {{ $dexMod !== null ? ($dexMod >= 0 ? '+' : '') . $dexMod : '–' }}
+                                @endif
+                            </td>
                             <td class="cvsml cvcenter text-stone-400">–</td>
                         </tr>
                         <tr>
@@ -497,7 +512,7 @@
                     <td class="cvlabel cvcenter" style="width: 6%;">Size</td>
                     <td class="cvlabel cvcenter" style="width: 8%;">AP</td>
                     <td class="cvlabel cvcenter" style="width: 12%;">Reach / Range</td>
-                    <td class="cvlabel cvcenter" style="width: 14%;">Attack Check</td>
+                    <td class="cvlabel cvcenter" style="width: 14%;">Att / Par</td>
                     <td class="cvlabel cvcenter" style="width: 18%;">Damage (Avg)</td>
                     <td class="cvlabel cvcenter" style="width: 10%;">Critical</td>
                 </tr>
@@ -564,9 +579,11 @@
                                 </td>
                                 <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
                                     @if(!empty($wpn['is_projectile']))
-                                        <span x-text="getActiveAmmoAttack('{{ $wId }}') || '{{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }}'">{{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }}</span>
+                                        <span x-text="(getActiveAmmoAttack('{{ $wId }}') || '{{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }}') + ' / –'">{{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }} / –</span>
+                                    @elseif(!empty($wpn['is_ranged']))
+                                        {{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }} / –
                                     @else
-                                        {{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }}
+                                        {{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }} / {{ ($wpn['parry_bonus'] !== null ? (($wpn['parry_bonus'] >= 0 ? '+' : '') . $wpn['parry_bonus']) : '–') }}
                                     @endif
                                 </td>
                                 <td class="cvlist cvcenter font-mono font-bold">
@@ -633,26 +650,66 @@
                                                 </button>
                                             @endif
                                         </div>
+                                        @if(!empty($wpn['is_projectile']) && !empty($wpn['compatible_ammo']))
+                                            <div class="flex items-center gap-1.5 pt-0.5">
+                                                <span class="text-[10px] text-amber-900/80 font-normal">Ammo:</span>
+                                                <select x-model="selectedAmmo['{{ $wId }}']" 
+                                                        @change="saveCombatMatrixConfig()"
+                                                        class="text-[11px] py-0.5 px-1.5 bg-amber-50/90 text-amber-950 rounded border border-amber-600/40 focus:ring-1 focus:ring-amber-500 font-sans cursor-pointer font-normal max-w-[210px]">
+                                                    @foreach($wpn['compatible_ammo'] as $ammo)
+                                                        <option value="{{ $ammo['id'] }}">
+                                                            {{ $ammo['name'] }} {{ $ammo['in_inventory'] ? ' [Qty: '.$ammo['inventory_qty'].']' : '' }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
                                     </div>
                                 </td>
                                 <td class="cvlist cvcenter font-mono text-xs">{{ $wpn['size_abbr'] ?? 'M' }}</td>
                                 <td class="cvlist cvcenter font-mono font-bold">{{ $wpn['ap'] }} AP</td>
-                                <td class="cvlist cvcenter text-xs font-mono">{{ $wpn['reach'] ?? ($wpn['is_ranged'] ? $wpn['range'] . ' m' : $reachStr . ' sq') }}</td>
-                                <td class="cvlist cvcenter font-mono font-bold text-emerald-800">{{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }}</td>
+                                <td class="cvlist cvcenter text-xs font-mono">
+                                    @if(!empty($wpn['is_projectile']))
+                                        <span x-text="getActiveAmmoRange('{{ $wId }}') || '{{ $wpn['reach'] }}'">{{ $wpn['reach'] }}</span>
+                                    @else
+                                        {{ $wpn['reach'] ?? ($wpn['is_ranged'] ? $wpn['range'] . ' m' : $reachStr . ' sq') }}
+                                    @endif
+                                </td>
+                                <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
+                                    @if(!empty($wpn['is_projectile']))
+                                        <span x-text="(getActiveAmmoAttack('{{ $wId }}') || '{{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }}') + ' / –'">{{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }} / –</span>
+                                    @elseif(!empty($wpn['is_ranged']))
+                                        {{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }} / –
+                                    @else
+                                        {{ ($wpn['one_handed']['attack_bonus'] >= 0 ? '+' : '') . $wpn['one_handed']['attack_bonus'] }} / {{ ($wpn['parry_bonus'] !== null ? (($wpn['parry_bonus'] >= 0 ? '+' : '') . $wpn['parry_bonus']) : '–') }}
+                                    @endif
+                                </td>
                                 <td class="cvlist cvcenter font-mono font-bold">
-                                    <span x-show="!twoHandedMode['{{ $wId }}']">
-                                        {{ $wpn['one_handed']['damage'] }} <span class="text-xs text-stone-500 font-normal">({{ $wpn['one_handed']['avg_damage'] }})</span>
-                                    </span>
-                                    <span x-show="twoHandedMode['{{ $wId }}']" class="text-amber-900 font-extrabold">
-                                        {{ $wpn['two_handed']['damage'] }} <span class="text-xs text-amber-700 font-normal">({{ $wpn['two_handed']['avg_damage'] }})</span>
-                                    </span>
+                                    @if(!empty($wpn['is_projectile']))
+                                        <span x-text="getActiveAmmoDamage('{{ $wId }}') || '{{ $wpn['one_handed']['damage'] }} ({{ $wpn['one_handed']['avg_damage'] }})'">
+                                            {{ $wpn['one_handed']['damage'] }} <span class="text-xs text-stone-500 font-normal">({{ $wpn['one_handed']['avg_damage'] }})</span>
+                                        </span>
+                                    @else
+                                        <span x-show="!twoHandedMode['{{ $wId }}']">
+                                            {{ $wpn['one_handed']['damage'] }} <span class="text-xs text-stone-500 font-normal">({{ $wpn['one_handed']['avg_damage'] }})</span>
+                                        </span>
+                                        <span x-show="twoHandedMode['{{ $wId }}']" class="text-amber-900 font-extrabold">
+                                            {{ $wpn['two_handed']['damage'] }} <span class="text-xs text-amber-700 font-normal">({{ $wpn['two_handed']['avg_damage'] }})</span>
+                                        </span>
+                                    @endif
                                 </td>
                                 @php
                                     $carriedCritRng = (int)($wpn['crit_range'] ?? 20);
                                     $carriedCritMul = $wpn['crit_multiplier'] ?? 2;
                                     $carriedCritStr = ($carriedCritRng < 20 ? "{$carriedCritRng}-20" : "20") . " (&times;{$carriedCritMul})";
                                 @endphp
-                                <td class="cvlist cvcenter font-mono text-xs">{!! $carriedCritStr !!}</td>
+                                <td class="cvlist cvcenter font-mono text-xs">
+                                    @if(!empty($wpn['is_projectile']))
+                                        <span x-html="getActiveAmmoCrit('{{ $wId }}') || '{!! $carriedCritStr !!}'">{!! $carriedCritStr !!}</span>
+                                    @else
+                                        {!! $carriedCritStr !!}
+                                    @endif
+                                </td>
                             </tr>
                             @endif
                         @endforeach
@@ -685,7 +742,7 @@
                                 <td class="cvlist cvcenter font-mono font-bold">{{ $nat['ap'] }} AP</td>
                                 <td class="cvlist cvcenter text-xs font-mono">{{ $nat['reach'] ?? ($reachStr . ' sq') }}</td>
                                 <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                                    {{ ($nat['attack_bonus'] >= 0 ? '+' : '') . $nat['attack_bonus'] }}
+                                    {{ ($nat['attack_bonus'] >= 0 ? '+' : '') . $nat['attack_bonus'] }} / {{ ($nat['parry_bonus'] !== null ? (($nat['parry_bonus'] >= 0 ? '+' : '') . $nat['parry_bonus']) : '–') }}
                                 </td>
                                 <td class="cvlist cvcenter font-mono font-bold">{{ $nat['damage'] }} <span class="text-xs text-stone-500 font-normal">({{ $nat['avg_damage'] }})</span></td>
                                 <td class="cvlist cvcenter font-mono text-xs">{{ $nat['crit'] ?? '20 (x2)' }}</td>
@@ -720,7 +777,7 @@
                                 <td class="cvlist cvcenter font-mono font-bold">{{ $nat['ap'] }} AP</td>
                                 <td class="cvlist cvcenter text-xs font-mono">{{ $nat['reach'] ?? ($reachStr . ' sq') }}</td>
                                 <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                                    {{ ($nat['attack_bonus'] >= 0 ? '+' : '') . $nat['attack_bonus'] }}
+                                    {{ ($nat['attack_bonus'] >= 0 ? '+' : '') . $nat['attack_bonus'] }} / {{ ($nat['parry_bonus'] !== null ? (($nat['parry_bonus'] >= 0 ? '+' : '') . $nat['parry_bonus']) : '–') }}
                                 </td>
                                 <td class="cvlist cvcenter font-mono font-bold">{{ $nat['damage'] }} <span class="text-xs text-stone-500 font-normal">({{ $nat['avg_damage'] }})</span></td>
                                 <td class="cvlist cvcenter font-mono text-xs">{{ $nat['crit'] ?? '20 (x2)' }}</td>
@@ -779,7 +836,7 @@
                                 <td class="cvlist cvcenter font-mono font-bold">{{ $bActions['initiate_grapple']['ap'] }} AP</td>
                                 <td class="cvlist cvcenter text-xs font-mono">{{ $bActions['initiate_grapple']['reach'] }}</td>
                                 <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                                    {{ ($bActions['initiate_grapple']['attack_bonus'] >= 0 ? '+' : '') . $bActions['initiate_grapple']['attack_bonus'] }}
+                                    {{ ($bActions['initiate_grapple']['attack_bonus'] >= 0 ? '+' : '') . $bActions['initiate_grapple']['attack_bonus'] }} / {{ ($bActions['initiate_grapple']['parry_bonus'] !== null ? (($bActions['initiate_grapple']['parry_bonus'] >= 0 ? '+' : '') . $bActions['initiate_grapple']['parry_bonus']) : '–') }}
                                 </td>
                                 <td class="cvlist cvcenter font-mono text-stone-500">–</td>
                                 <td class="cvlist cvcenter font-mono text-xs text-stone-500">–</td>
@@ -806,7 +863,7 @@
                                 <td class="cvlist cvcenter font-mono font-bold">{{ $bActions['grapple_attack']['ap'] }} AP</td>
                                 <td class="cvlist cvcenter text-xs font-mono">{{ $bActions['grapple_attack']['reach'] }}</td>
                                 <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                                    {{ ($bActions['grapple_attack']['attack_bonus'] >= 0 ? '+' : '') . $bActions['grapple_attack']['attack_bonus'] }}
+                                    {{ ($bActions['grapple_attack']['attack_bonus'] >= 0 ? '+' : '') . $bActions['grapple_attack']['attack_bonus'] }} / {{ ($bActions['grapple_attack']['parry_bonus'] !== null ? (($bActions['grapple_attack']['parry_bonus'] >= 0 ? '+' : '') . $bActions['grapple_attack']['parry_bonus']) : '–') }}
                                 </td>
                                 <td class="cvlist cvcenter font-mono font-bold">{{ $bActions['grapple_attack']['damage'] }} <span class="text-xs text-stone-500 font-normal">({{ $bActions['grapple_attack']['avg_damage'] }})</span></td>
                                 <td class="cvlist cvcenter font-mono text-xs">{{ $bActions['grapple_attack']['crit'] }}</td>
@@ -833,7 +890,7 @@
                                 <td class="cvlist cvcenter font-mono font-bold">{{ $bActions['bull_rush']['ap'] }} AP</td>
                                 <td class="cvlist cvcenter text-xs font-mono">{{ $bActions['bull_rush']['reach'] }}</td>
                                 <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                                    {{ ($bActions['bull_rush']['attack_bonus'] >= 0 ? '+' : '') . $bActions['bull_rush']['attack_bonus'] }}
+                                    {{ ($bActions['bull_rush']['attack_bonus'] >= 0 ? '+' : '') . $bActions['bull_rush']['attack_bonus'] }} / {{ ($bActions['bull_rush']['parry_bonus'] !== null ? (($bActions['bull_rush']['parry_bonus'] >= 0 ? '+' : '') . $bActions['bull_rush']['parry_bonus']) : '–') }}
                                 </td>
                                 <td class="cvlist cvcenter font-mono text-stone-500">–</td>
                                 <td class="cvlist cvcenter font-mono text-xs text-stone-500">–</td>
@@ -860,7 +917,7 @@
                                 <td class="cvlist cvcenter font-mono font-bold">{{ $bActions['overrun']['ap'] }} AP</td>
                                 <td class="cvlist cvcenter text-xs font-mono">{{ $bActions['overrun']['reach'] }}</td>
                                 <td class="cvlist cvcenter font-mono font-bold text-emerald-800">
-                                    {{ ($bActions['overrun']['attack_bonus'] >= 0 ? '+' : '') . $bActions['overrun']['attack_bonus'] }}
+                                    {{ ($bActions['overrun']['attack_bonus'] >= 0 ? '+' : '') . $bActions['overrun']['attack_bonus'] }} / {{ ($bActions['overrun']['parry_bonus'] !== null ? (($bActions['overrun']['parry_bonus'] >= 0 ? '+' : '') . $bActions['overrun']['parry_bonus']) : '–') }}
                                 </td>
                                 <td class="cvlist cvcenter font-mono text-stone-500">–</td>
                                 <td class="cvlist cvcenter font-mono text-xs text-stone-500">–</td>
@@ -893,7 +950,7 @@
                             <td class="cvlist cvcenter font-mono font-bold">{{ $sp['ray']['ap'] ?? 'Var' }}</td>
                             <td class="cvlist cvcenter font-mono text-xs">{{ $sp['ray']['range'] ?? 'Var' }}</td>
                             <td class="cvlist cvcenter font-mono font-bold text-indigo-900">
-                                {{ (($sp['ray']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($sp['ray']['attack_bonus'] ?? 0) }}
+                                {{ (($sp['ray']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($sp['ray']['attack_bonus'] ?? 0) }} / –
                             </td>
                             <td class="cvlist cvcenter font-mono text-xs">{{ $sp['ray']['damage'] ?? 'Var' }}</td>
                             <td class="cvlist cvcenter font-mono text-xs">{{ $sp['ray']['crit'] ?? '20 (x2)' }}</td>
@@ -921,7 +978,7 @@
                             <td class="cvlist cvcenter font-mono font-bold">{{ $sp['area']['ap'] ?? 'Var' }}</td>
                             <td class="cvlist cvcenter font-mono text-xs">{{ $sp['area']['range'] ?? 'Var' }}</td>
                             <td class="cvlist cvcenter font-mono font-bold text-indigo-900">
-                                {{ (($sp['area']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($sp['area']['attack_bonus'] ?? 0) }}
+                                {{ (($sp['area']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($sp['area']['attack_bonus'] ?? 0) }} / –
                             </td>
                             <td class="cvlist cvcenter font-mono text-xs">{{ $sp['area']['damage'] ?? 'Var' }}</td>
                             <td class="cvlist cvcenter font-mono text-xs">{{ $sp['area']['crit'] ?? 'Var' }}</td>
@@ -949,7 +1006,7 @@
                             <td class="cvlist cvcenter font-mono font-bold">{{ $sp['body']['ap'] ?? 'Var' }}</td>
                             <td class="cvlist cvcenter font-mono text-xs">{{ $sp['body']['range'] ?? 'Var' }}</td>
                             <td class="cvlist cvcenter font-mono font-bold text-indigo-900">
-                                {{ (($sp['body']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($sp['body']['attack_bonus'] ?? 0) }}
+                                {{ (($sp['body']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($sp['body']['attack_bonus'] ?? 0) }} / –
                             </td>
                             <td class="cvlist cvcenter font-mono text-xs">{{ $sp['body']['damage'] ?? 'Var' }}</td>
                             <td class="cvlist cvcenter font-mono text-xs">{{ $sp['body']['crit'] ?? 'Var' }}</td>
@@ -977,7 +1034,7 @@
                             <td class="cvlist cvcenter font-mono font-bold">{{ $sp['mind']['ap'] ?? 'Var' }}</td>
                             <td class="cvlist cvcenter font-mono text-xs">{{ $sp['mind']['range'] ?? 'Var' }}</td>
                             <td class="cvlist cvcenter font-mono font-bold text-indigo-900">
-                                {{ (($sp['mind']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($sp['mind']['attack_bonus'] ?? 0) }}
+                                {{ (($sp['mind']['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($sp['mind']['attack_bonus'] ?? 0) }} / –
                             </td>
                             <td class="cvlist cvcenter font-mono text-xs">{{ $sp['mind']['damage'] ?? 'Var' }}</td>
                             <td class="cvlist cvcenter font-mono text-xs">{{ $sp['mind']['crit'] ?? 'Var' }}</td>
@@ -986,7 +1043,7 @@
                 @else
                     <!-- Wizard Alpine Rendering for Weapons & Attacks -->
                     <template x-for="(wpn, wId) in (calculatedState?.attacks?.weapons || {})" :key="wId">
-                        <tr x-init="twoHandedMode[wId] = false"
+                        <tr x-init="twoHandedMode[wId] = false; if (!selectedAmmo[wId] && wpn.default_ammo_id) selectedAmmo[wId] = wpn.default_ammo_id"
                             x-show="!combatMatrixState || combatMatrixState.showEquippedWeapons !== false"
                             :class="combatMatrixState.activeAttackId === ('weapon_' + wId) ? 'bg-amber-100/60 font-semibold' : ''">
                             <td class="cvlist cvcenter">
@@ -995,32 +1052,52 @@
                                        class="text-amber-800 focus:ring-amber-700 cursor-pointer">
                             </td>
                             <td class="cvlist font-bold text-amber-950">
-                                <div class="flex items-center justify-between gap-2">
-                                    <div class="flex items-center gap-1.5 flex-wrap">
-                                        <span x-text="(wpn.name.includes('Shield') ? '🛡️ ' : (wpn.is_ranged ? '🏹 ' : '🗡️ ')) + wpn.name"></span>
-                                        <template x-for="b in (wpn.badges || [])">
-                                            <span class="text-[9px] px-1 py-0.2 rounded bg-amber-100/70 text-amber-900 border border-amber-300 font-sans font-normal" x-text="b"></span>
+                                <div class="flex flex-col gap-1">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <div class="flex items-center gap-1.5 flex-wrap">
+                                            <span x-text="(wpn.name.includes('Shield') ? '🛡️ ' : (wpn.is_ranged ? '🏹 ' : '🗡️ ')) + wpn.name"></span>
+                                            <template x-for="b in (wpn.badges || [])">
+                                                <span class="text-[9px] px-1 py-0.2 rounded bg-amber-100/70 text-amber-900 border border-amber-300 font-sans font-normal" x-text="b"></span>
+                                            </template>
+                                        </div>
+                                        <template x-if="!wpn.is_ranged && !wpn.name.includes('Shield')">
+                                            <button type="button" 
+                                                    @click="twoHandedMode[wId] = !twoHandedMode[wId]"
+                                                    class="text-[10px] px-1.5 py-0.2 rounded border transition cursor-pointer"
+                                                    :class="twoHandedMode[wId] ? 'two-handed-btn-active bg-amber-900 text-white border-amber-950 font-bold shadow-xs' : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border-stone-300'">
+                                                <span x-text="twoHandedMode[wId] ? '2-Handed (+2 Str)' : '1-Handed'"></span>
+                                            </button>
                                         </template>
                                     </div>
-                                    <template x-if="!wpn.is_ranged && !wpn.name.includes('Shield')">
-                                        <button type="button" 
-                                                @click="twoHandedMode[wId] = !twoHandedMode[wId]"
-                                                class="text-[10px] px-1.5 py-0.2 rounded border transition cursor-pointer"
-                                                :class="twoHandedMode[wId] ? 'two-handed-btn-active bg-amber-900 text-white border-amber-950 font-bold shadow-xs' : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border-stone-300'">
-                                            <span x-text="twoHandedMode[wId] ? '2-Handed (+2 Str)' : '1-Handed'"></span>
-                                        </button>
+                                    <template x-if="wpn.is_projectile && wpn.compatible_ammo && wpn.compatible_ammo.length > 0">
+                                        <div class="flex items-center gap-1.5 pt-0.5">
+                                            <span class="text-[10px] text-amber-900/80 font-normal">Ammo:</span>
+                                            <select x-model="selectedAmmo[wId]" 
+                                                    class="text-[11px] py-0.5 px-1.5 bg-amber-50/90 text-amber-950 rounded border border-amber-600/40 focus:ring-1 focus:ring-amber-500 font-sans cursor-pointer font-normal max-w-[210px]">
+                                                <template x-for="ammo in wpn.compatible_ammo" :key="ammo.id">
+                                                    <option :value="ammo.id" x-text="ammo.name + (ammo.in_inventory ? ' [Qty: ' + ammo.inventory_qty + ']' : '')"></option>
+                                                </template>
+                                            </select>
+                                        </div>
                                     </template>
                                 </div>
                             </td>
                             <td class="cvlist cvcenter font-mono text-xs" x-text="wpn.size_abbr || 'M'"></td>
                             <td class="cvlist cvcenter font-mono font-bold" x-text="wpn.ap + ' AP'"></td>
-                            <td class="cvlist cvcenter text-xs font-mono" x-text="wpn.reach"></td>
-                            <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="(wpn.one_handed.attack_bonus >= 0 ? '+' : '') + wpn.one_handed.attack_bonus"></td>
+                            <td class="cvlist cvcenter text-xs font-mono" x-text="wpn.is_projectile ? (getActiveAmmoRange(wId) || wpn.reach) : wpn.reach"></td>
+                            <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="wpn.is_projectile ? ((getActiveAmmoAttack(wId) || ((wpn.one_handed.attack_bonus >= 0 ? '+' : '') + wpn.one_handed.attack_bonus)) + ' / –') : (wpn.is_ranged ? (((wpn.one_handed.attack_bonus >= 0 ? '+' : '') + wpn.one_handed.attack_bonus) + ' / –') : (((wpn.one_handed.attack_bonus >= 0 ? '+' : '') + wpn.one_handed.attack_bonus) + ' / ' + (wpn.parry_bonus !== null && wpn.parry_bonus !== undefined ? ((wpn.parry_bonus >= 0 ? '+' : '') + wpn.parry_bonus) : '–')))"></td>
                             <td class="cvlist cvcenter font-mono font-bold">
-                                <span x-show="!twoHandedMode[wId]" x-text="wpn.one_handed.damage + ' (' + wpn.one_handed.avg_damage + ')'"></span>
-                                <span x-show="twoHandedMode[wId]" class="text-amber-900 font-extrabold" x-text="wpn.two_handed.damage + ' (' + wpn.two_handed.avg_damage + ')'"></span>
+                                <template x-if="wpn.is_projectile">
+                                    <span x-text="getActiveAmmoDamage(wId) || (wpn.one_handed.damage + ' (' + wpn.one_handed.avg_damage + ')')"></span>
+                                </template>
+                                <template x-if="!wpn.is_projectile">
+                                    <span>
+                                        <span x-show="!twoHandedMode[wId]" x-text="wpn.one_handed.damage + ' (' + wpn.one_handed.avg_damage + ')'"></span>
+                                        <span x-show="twoHandedMode[wId]" class="text-amber-900 font-extrabold" x-text="wpn.two_handed.damage + ' (' + wpn.two_handed.avg_damage + ')'"></span>
+                                    </span>
+                                </template>
                             </td>
-                            <td class="cvlist cvcenter font-mono text-xs" x-text="((parseInt(wpn.crit_range) || 20) < 20 ? wpn.crit_range + '-20' : '20') + ' (×' + (wpn.crit_multiplier || 2) + ')'"></td>
+                            <td class="cvlist cvcenter font-mono text-xs" x-html="wpn.is_projectile ? (getActiveAmmoCrit(wId) || (((parseInt(wpn.crit_range) || 20) < 20 ? wpn.crit_range + '-20' : '20') + ' (×' + (wpn.crit_multiplier || 2) + ')')) : (((parseInt(wpn.crit_range) || 20) < 20 ? wpn.crit_range + '-20' : '20') + ' (×' + (wpn.crit_multiplier || 2) + ')')"></td>
                         </tr>
                     </template>
 
@@ -1045,7 +1122,7 @@
                             <td class="cvlist cvcenter font-mono text-xs" x-text="nat.size_abbr || calculatedState?.heritage?.size_abbr || 'M'"></td>
                             <td class="cvlist cvcenter font-mono font-bold" x-text="nat.ap + ' AP'"></td>
                             <td class="cvlist cvcenter text-xs font-mono" x-text="nat.reach || (calcReach() + ' sq')"></td>
-                            <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="(nat.attack_bonus >= 0 ? '+' : '') + nat.attack_bonus"></td>
+                            <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="((nat.attack_bonus >= 0 ? '+' : '') + nat.attack_bonus) + ' / ' + (nat.parry_bonus !== null && nat.parry_bonus !== undefined ? ((nat.parry_bonus >= 0 ? '+' : '') + nat.parry_bonus) : '–')"></td>
                             <td class="cvlist cvcenter font-mono font-bold" x-text="nat.damage + ' (' + nat.avg_damage + ')'"></td>
                             <td class="cvlist cvcenter font-mono text-xs" x-text="nat.crit || '20 (x2)'"></td>
                         </tr>
@@ -1072,7 +1149,7 @@
                             <td class="cvlist cvcenter font-mono text-xs" x-text="nat.size_abbr || calculatedState?.heritage?.size_abbr || 'M'"></td>
                             <td class="cvlist cvcenter font-mono font-bold" x-text="nat.ap + ' AP'"></td>
                             <td class="cvlist cvcenter text-xs font-mono" x-text="nat.reach || (calcReach() + ' sq')"></td>
-                            <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="(nat.attack_bonus >= 0 ? '+' : '') + nat.attack_bonus"></td>
+                            <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="((nat.attack_bonus >= 0 ? '+' : '') + nat.attack_bonus) + ' / ' + (nat.parry_bonus !== null && nat.parry_bonus !== undefined ? ((nat.parry_bonus >= 0 ? '+' : '') + nat.parry_bonus) : '–')"></td>
                             <td class="cvlist cvcenter font-mono font-bold" x-text="nat.damage + ' (' + nat.avg_damage + ')'"></td>
                             <td class="cvlist cvcenter font-mono text-xs" x-text="nat.crit || '20 (x2)'"></td>
                         </tr>
@@ -1122,7 +1199,7 @@
                                 <td class="cvlist cvcenter font-mono text-xs" x-text="ba.size_class || calculatedState?.heritage?.size_abbr || 'M'"></td>
                                 <td class="cvlist cvcenter font-mono font-bold" x-text="ba.ap + ' AP'"></td>
                                 <td class="cvlist cvcenter text-xs font-mono" x-text="ba.reach || (calcReach() + ' sq')"></td>
-                                <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="(ba.attack_bonus >= 0 ? '+' : '') + ba.attack_bonus"></td>
+                                <td class="cvlist cvcenter font-mono font-bold text-emerald-800" x-text="((ba.attack_bonus >= 0 ? '+' : '') + ba.attack_bonus) + ' / ' + (ba.parry_bonus !== null && ba.parry_bonus !== undefined ? ((ba.parry_bonus >= 0 ? '+' : '') + ba.parry_bonus) : '–')"></td>
                                 <td class="cvlist cvcenter font-mono font-bold" x-text="ba.damage !== '–' ? (ba.damage + ' (' + ba.avg_damage + ')') : '–'"></td>
                                 <td class="cvlist cvcenter font-mono text-xs" x-text="ba.crit"></td>
                             </tr>
@@ -1148,7 +1225,7 @@
                         <td class="cvlist cvcenter font-mono text-xs">–</td>
                         <td class="cvlist cvcenter font-mono font-bold">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
-                        <td class="cvlist cvcenter font-mono font-bold text-indigo-900" x-text="(calculatedState?.attacks?.spells?.ray?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.spells?.ray?.attack_bonus || 0)"></td>
+                        <td class="cvlist cvcenter font-mono font-bold text-indigo-900" x-text="((calculatedState?.attacks?.spells?.ray?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.spells?.ray?.attack_bonus || 0)) + ' / –'"></td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs" x-text="calculatedState?.attacks?.spells?.ray?.crit || '20 (x2)'"></td>
                     </tr>
@@ -1170,7 +1247,7 @@
                         <td class="cvlist cvcenter font-mono text-xs">–</td>
                         <td class="cvlist cvcenter font-mono font-bold">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
-                        <td class="cvlist cvcenter font-mono font-bold text-indigo-900" x-text="(calculatedState?.attacks?.spells?.area?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.spells?.area?.attack_bonus || 0)"></td>
+                        <td class="cvlist cvcenter font-mono font-bold text-indigo-900" x-text="((calculatedState?.attacks?.spells?.area?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.spells?.area?.attack_bonus || 0)) + ' / –'"></td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                     </tr>
@@ -1192,7 +1269,7 @@
                         <td class="cvlist cvcenter font-mono text-xs">–</td>
                         <td class="cvlist cvcenter font-mono font-bold">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
-                        <td class="cvlist cvcenter font-mono font-bold text-indigo-900" x-text="(calculatedState?.attacks?.spells?.body?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.spells?.body?.attack_bonus || 0)"></td>
+                        <td class="cvlist cvcenter font-mono font-bold text-indigo-900" x-text="((calculatedState?.attacks?.spells?.body?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.spells?.body?.attack_bonus || 0)) + ' / –'"></td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                     </tr>
@@ -1214,7 +1291,7 @@
                         <td class="cvlist cvcenter font-mono text-xs">–</td>
                         <td class="cvlist cvcenter font-mono font-bold">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
-                        <td class="cvlist cvcenter font-mono font-bold text-indigo-900" x-text="(calculatedState?.attacks?.spells?.mind?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.spells?.mind?.attack_bonus || 0)"></td>
+                        <td class="cvlist cvcenter font-mono font-bold text-indigo-900" x-text="((calculatedState?.attacks?.spells?.mind?.attack_bonus >= 0 ? '+' : '') + (calculatedState?.attacks?.spells?.mind?.attack_bonus || 0)) + ' / –'"></td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                         <td class="cvlist cvcenter font-mono text-xs">Var</td>
                     </tr>
@@ -1774,8 +1851,7 @@
                                 foreach ($skillLines as $skLine) {
                                     $skLine = trim($skLine);
                                     if (empty($skLine)) continue;
-                                    $discount = \App\Services\Entity\EntityEngine::getSpellSkillDiscount($skLine, $calc['affinity_discounts'] ?? []);
-                                    $displayLine = ($discount > 0) ? "{$skLine} (-{$discount} PP)" : $skLine;
+                                    $displayLine = \App\Services\Entity\EntityEngine::formatSpellSkillLine($skLine, $skillsList ?? [], $skillsMap ?? [], $calc['affinity_discounts'] ?? []);
                                     $allSkillLines[] = $displayLine;
 
                                     $cleanSkill = preg_replace('/\s*\([^)]*\)/', '', $skLine);

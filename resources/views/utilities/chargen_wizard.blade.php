@@ -2119,6 +2119,41 @@ function characterWizard() {
 
         // Navigation Guard & Persistence State
         isSaved: false,
+        twoHandedMode: {},
+        selectedAmmo: {},
+
+        getActiveAmmo(wId) {
+            const weaps = this.calculatedState?.attacks?.weapons || {};
+            const w = weaps[wId];
+            if (!w || !w.compatible_ammo || !w.compatible_ammo.length) return null;
+            const selId = this.selectedAmmo[wId] || w.default_ammo_id;
+            return w.compatible_ammo.find(a => String(a.id) === String(selId)) || w.compatible_ammo[0] || null;
+        },
+
+        getActiveAmmoDamage(wId) {
+            const ammo = this.getActiveAmmo(wId);
+            return ammo ? `${ammo.damage} (${ammo.avg_damage})` : '';
+        },
+
+        getActiveAmmoRange(wId) {
+            const ammo = this.getActiveAmmo(wId);
+            return ammo ? ammo.range : '';
+        },
+
+        getActiveAmmoCrit(wId) {
+            const ammo = this.getActiveAmmo(wId);
+            if (!ammo) return '';
+            if (ammo.crit_display) return ammo.crit_display;
+            const cr = parseInt(ammo.crit_range) || 20;
+            return (cr < 20 ? cr + '-20' : '20') + ' (x' + (ammo.crit_multiplier || 2) + ')';
+        },
+
+        getActiveAmmoAttack(wId) {
+            const ammo = this.getActiveAmmo(wId);
+            if (!ammo) return '';
+            return (ammo.attack_bonus >= 0 ? '+' : '') + ammo.attack_bonus;
+        },
+
         // Cache Invalidation & Trait Bonuses Memoization
         invalidateSkillsAndSpellCache(invalidateTraits = false) {
             if (invalidateTraits || !this._traitSkillBonuses) {
@@ -4702,38 +4737,78 @@ function characterWizard() {
             lines.forEach(line => {
                 const clean = line.trim();
                 if (!clean) return;
+
+                // Extract discount
                 let disc = discounts[clean] || 0;
+                if (!disc) {
+                    for (const dKey in discounts) {
+                        if (clean.toLowerCase().includes(dKey.toLowerCase())) {
+                            disc = Math.max(disc, discounts[dKey]);
+                        }
+                    }
+                }
                 if (!disc) {
                     const rank = trainedMap[clean.toLowerCase()] || 0;
                     if (clean.toLowerCase().includes('affinity') && rank > 0) {
                         disc = Math.floor(rank / 4);
                     }
                 }
-                const lineWithDisc = disc > 0 ? `${clean} (-${disc} PP)` : clean;
-                allLines.push(lineWithDisc);
 
-                const cleanName = clean.replace(/\([^)]*\)/g, '').trim();
-                const parts = cleanName.split(/\s+and\s+|\s+or\s+|,\s*/i);
+                let costNote = '';
+                const cm = clean.match(/\s*\(\+?(\d+)\s*PP\s*cost\)/i);
+                if (cm) {
+                    costNote = `+${cm[1]} PP cost`;
+                }
+                const cleanLineWithoutParens = clean.replace(/\s*\([^)]*\)/g, '').trim();
+
+                const parts = cleanLineWithoutParens.split(/(\s+and\s+|\s+or\s+|,\s*)/i);
                 let lineQualified = true;
                 let matchedAny = false;
-                for (let p of parts) {
-                    p = p.trim().toLowerCase();
-                    if (!p) continue;
+                const replacedParts = [];
+
+                parts.forEach(part => {
+                    const pTrim = part.trim();
+                    if (!pTrim || /^(and|or|,)$/i.test(pTrim)) {
+                        replacedParts.push(part);
+                        return;
+                    }
+
+                    const pLower = pTrim.toLowerCase();
                     let rank = 0;
                     for (const sName in trainedMap) {
-                        if (sName === p || sName.endsWith(' - ' + p) || sName === 'arcane - ' + p || sName === 'divine - ' + p || sName === 'psi - ' + p) {
+                        if (sName === pLower || sName.endsWith(' - ' + pLower) || sName === 'arcane - ' + pLower || sName === 'divine - ' + pLower || sName === 'psi - ' + pLower) {
                             rank = trainedMap[sName];
                             break;
                         }
                     }
+
                     if (rank > 0) {
                         matchedAny = true;
+                        const lvlStr = (Math.floor(rank) === rank) ? String(rank) : String(rank);
+                        replacedParts.push(`${pTrim} (Lvl ${lvlStr})`);
                     } else {
                         lineQualified = false;
+                        replacedParts.push(pTrim);
+                    }
+                });
+
+                const assembled = replacedParts.join('');
+                const decorations = [];
+                if (costNote) decorations.push(costNote);
+                if (disc > 0) decorations.push(`-${disc} PP`);
+
+                let finalLine = assembled;
+                if (decorations.length > 0) {
+                    if (!/\b(and|or|,)\b/i.test(cleanLineWithoutParens) && /^(.*?)\s*\(Lvl\s+([^)]+)\)$/.test(assembled) && decorations.length === 1 && disc > 0) {
+                        finalLine = assembled.replace(/\(Lvl\s+([^)]+)\)$/, `(Lvl $1, -${disc} PP)`);
+                    } else {
+                        finalLine = `${assembled} (${decorations.join(', ')})`;
                     }
                 }
+
+                allLines.push(finalLine);
                 if (lineQualified && matchedAny) {
-                    trainedLines.push(lineWithDisc);
+                    trainedLines.push(finalLine);
                 }
             });
 
@@ -4874,7 +4949,47 @@ function characterWizard() {
                 return this.formatActionModifier(modVal, sign ? sign.trim() : '');
             });
 
-            // 3. Replace parenthesized skills: "(Weapons - Area Attacks skill)"
+            // 3b. Helper for weapon skill attack bonus
+            const getWeaponSkillAttBonus = (term) => {
+                if (!term) return 0;
+                const t = term.trim().toLowerCase();
+                if (t.includes('generic') || t === 'wpgen') {
+                    const r = trainedMap['weapons - generic'] || trainedMap['generic'] || 0;
+                    return r > 0 ? Math.floor((r + 1) / 2) : 0;
+                }
+                if (t.includes('small thrown') || t === 'wpsmt') {
+                    const r = trainedMap['weapons - small thrown'] || trainedMap['small thrown'] || 0;
+                    return r > 0 ? Math.floor((2 * r + 2) / 3) : 0;
+                }
+                if (t.includes('body & mind') || t === 'wpbm' || t === 'wpbam') {
+                    const r = trainedMap['weapons - body & mind attacks'] || trainedMap['body & mind attacks'] || trainedMap['weapons - body & mind'] || trainedMap['body & mind'] || 0;
+                    return r > 0 ? Math.floor((2 * r + 2) / 3) : 0;
+                }
+                const r = trainedMap[t] || trainedMap['weapons - ' + t] || 0;
+                return r > 0 ? Math.floor((2 * r + 2) / 3) : 0;
+            };
+
+            // 3c. Replace "or" alternatives of skill mods: e.g. "(Weapons - Generic skill mod) or (Weapons - Small Thrown skill mod)"
+            result = result.replace(/(?:\(([^)]+?)\s+skill(?:\s+mod)?\)|\b([A-Za-z0-9\-\s\(\)\/\&]+?)\s+skill\s+mod)\s+or\s+(?:\(([^)]+?)\s+skill(?:\s+mod)?\)|\b([A-Za-z0-9\-\s\(\)\/\&]+?)\s+skill\s+mod)/gi, (match, p1, p2, p3, p4) => {
+                const sk1 = p1 || p2;
+                const sk2 = p3 || p4;
+                const b1 = getWeaponSkillAttBonus(sk1);
+                const b2 = getWeaponSkillAttBonus(sk2);
+                return Math.max(b1, b2);
+            });
+
+            // 3d. Replace single weapon skill mod: e.g. "(Weapons - Generic skill mod)" or "Weapons - Generic skill mod"
+            result = result.replace(/(?:\(([^)]+?)\s+skill\s+mod\)|\b([A-Za-z0-9\-\s\(\)\/\&]+?)\s+skill\s+mod)\b/gi, (match, p1, p2) => {
+                const sk = p1 || p2;
+                return getWeaponSkillAttBonus(sk);
+            });
+
+            // 3e. Replace "Body & Mind skill" specifically
+            result = result.replace(/\bBody\s+&\s+Mind\s+skill\b/gi, () => {
+                return getWeaponSkillAttBonus('Body & Mind');
+            });
+
+            // 4. Replace parenthesized skills: "(Weapons - Area Attacks skill)"
             result = result.replace(/([+-]?\s*)\(([^)]+?)\s+skill\)/gi, (match, sign, skillName) => {
                 const cleanSkill = skillName.trim();
                 const baseSkill = cleanSkill.replace(/\s*\([^)]*\)/, '');
@@ -4884,7 +4999,7 @@ function characterWizard() {
                 return this.formatActionModifier(rank, sign ? sign.trim() : '');
             });
 
-            // 4. Replace normal skills: "Acrobatics skill", "Fighting Style - Mobility skill", "Psychology (Influence) skill", etc.
+            // 5. Replace normal skills: "Acrobatics skill", "Fighting Style - Mobility skill", "Psychology (Influence) skill", etc.
             result = result.replace(/([+-]?\s*)([A-Za-z0-9\-\s\(\)\&\/]+?)\s+skill\b/gi, (match, sign, skillName) => {
                 const raw = skillName.trim().replace(/^\((.*)\)$/, '$1');
                 const baseSkill = raw.replace(/\s*\([^)]*\)/, '');
@@ -4894,7 +5009,7 @@ function characterWizard() {
                 return this.formatActionModifier(rank, sign ? sign.trim() : '');
             });
 
-            // 5. Replace standalone "influence" in "d20! + influence + Cha mod"
+            // 6. Replace standalone "influence" in "d20! + influence + Cha mod"
             result = result.replace(/([+-]?\s*)\binfluence\b/gi, (match, sign) => {
                 const rank = trainedMap['influence'] ?? trainedMap['psychology (influence)'] ?? trainedMap['psychology'] ?? 0;
                 return this.formatActionModifier(rank, sign ? sign.trim() : '');

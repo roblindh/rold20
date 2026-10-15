@@ -1696,7 +1696,7 @@ actions:
     Name: Hide
     Category: 1
     Descriptors: "[Untrained, Secret]"
-    ActionCheck: "d20! + Stealth skill + Dex mod - 2 x size-based Att/DeC mod + PAM vs. opposing Perception (Spot or Search)"
+    ActionCheck: "d20! + Stealth skill + Dex mod + 2 x size-based Att/DeC mod + PAM vs. opposing Perception (Spot or Search)"
     ActionTime: "0 AP"
     Trigger: null
     Implements: null
@@ -1714,7 +1714,7 @@ actions:
     Name: "Move Silently"
     Category: 1
     Descriptors: "[Untrained, Secret]"
-    ActionCheck: "d20! + Stealth skill + Dex mod - 2 x size-based Att/DeC mod + PAM + EP vs. opposing Perception (Listen)"
+    ActionCheck: "d20! + Stealth skill + Dex mod + 2 x size-based Att/DeC mod + PAM + EP vs. opposing Perception (Listen)"
     ActionTime: "0 AP"
     Trigger: null
     Implements: null

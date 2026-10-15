@@ -223,4 +223,107 @@ class CommonActionsTest extends TestCase
         $this->assertEquals('1 MP per sq', $jump['ActionTimeParsed']);
         $this->assertEquals('d20! + 2 + 3 + PAM + EP', $jump['ActionCheckParsed']);
     }
+
+    public function test_catch_object_action_check_uses_highest_weapon_skill_attack_bonus(): void
+    {
+        $catchObjectCheck = "d20! + (Weapons - Generic skill mod) or (Weapons - Small Thrown skill mod) + Dex mod + PAM vs. object's DeC";
+
+        // Case 1: Untrained in both
+        $resUntrained = EntityEngine::parseActionCheck($catchObjectCheck, ['dex' => 2], []);
+        $this->assertEquals("d20! + 0 + 2 + PAM vs. object's DeC", $resUntrained);
+
+        // Case 2: Generic rank 4 (attack bonus = +2), Small Thrown untrained
+        $resGen4 = EntityEngine::parseActionCheck($catchObjectCheck, ['dex' => 2], [19 => 4]);
+        $this->assertEquals("d20! + 2 + 2 + PAM vs. object's DeC", $resGen4);
+
+        // Case 3: Generic rank 4 (attack bonus = +2), Small Thrown rank 4 (attack bonus = +3)
+        $resBoth4 = EntityEngine::parseActionCheck($catchObjectCheck, ['dex' => 2], [19 => 4, 35 => 4]);
+        $this->assertEquals("d20! + 3 + 2 + PAM vs. object's DeC", $resBoth4);
+
+        // Case 4: Named keys
+        $resNamed = EntityEngine::parseActionCheck($catchObjectCheck, ['dex' => 1], [
+            'weapons - generic' => 2, // rank 2 -> att bonus 1
+            'weapons - small thrown' => 4, // rank 4 -> att bonus 3
+        ]);
+        $this->assertEquals("d20! + 3 + 1 + PAM vs. object's DeC", $resNamed);
+    }
+
+    public function test_body_and_mind_skill_replacement_leaves_no_leftover_text(): void
+    {
+        $spellCheck = 'd20! + Body & Mind skill + Cha mod vs Will';
+
+        // Case 1: Untrained -> should cleanly replace "Body & Mind skill" with 0
+        $resUntrained = EntityEngine::parseActionCheck($spellCheck, ['cha' => 3], []);
+        $this->assertEquals('d20! + 0 + 3 vs Will', $resUntrained);
+        $this->assertStringNotContainsString('Body &', $resUntrained);
+
+        // Case 2: Trained in Body & Mind (Skill 37, rank 4 -> att bonus 3)
+        $resTrained = EntityEngine::parseActionCheck($spellCheck, ['cha' => 3], [37 => 4]);
+        $this->assertEquals('d20! + 3 + 3 vs Will', $resTrained);
+        $this->assertStringNotContainsString('Body &', $resTrained);
+    }
+
+    public function test_format_spell_skill_line_shows_level_and_affinity_discount(): void
+    {
+        $skillsMap = [
+            100 => (object)['ID' => 100, 'Name' => 'Arcane - Pyromancy'],
+            101 => (object)['ID' => 101, 'Name' => 'Arcane - Divination'],
+            102 => (object)['ID' => 102, 'Name' => 'Ouranomancy'],
+        ];
+
+        // 1. Single skill with level and discount
+        $res1 = EntityEngine::formatSpellSkillLine(
+            'Arcane - Pyromancy',
+            [100 => 4],
+            $skillsMap,
+            ['Arcane - Pyromancy' => 1]
+        );
+        $this->assertEquals('Arcane - Pyromancy (Lvl 4, -1 PP)', $res1);
+
+        // 2. Single skill without discount
+        $res2 = EntityEngine::formatSpellSkillLine(
+            'Arcane - Pyromancy',
+            [100 => 4],
+            $skillsMap,
+            []
+        );
+        $this->assertEquals('Arcane - Pyromancy (Lvl 4)', $res2);
+
+        // 3. Multi-skill requirement with discount
+        $res3 = EntityEngine::formatSpellSkillLine(
+            'Arcane - Divination and Ouranomancy',
+            [101 => 3, 102 => 2],
+            $skillsMap,
+            ['Ouranomancy' => 1]
+        );
+        $this->assertEquals('Arcane - Divination (Lvl 3) and Ouranomancy (Lvl 2) (-1 PP)', $res3);
+    }
+
+    public function test_dex_mod_ec_capping_indicator(): void
+    {
+        // Character with 18 DEX (+4 Dex mod) and heavy armor (EC 7 -> Max Dex Bonus +3)
+        $character = [
+            'BaseRace' => 1,
+            'Classes' => [1],
+            'Dex' => 18,
+            'Str' => 10,
+            'Equipment' => [
+                [
+                    'id' => 1,
+                    'name' => 'Full Plate',
+                    'slot' => 'torso',
+                    'location' => 2,
+                    'locations' => [0 => 2],
+                    'traits' => 'Armor { DR=8; Dec=-4; EC=7; }',
+                ]
+            ],
+        ];
+
+        $calc = EntityEngine::calculate($character);
+        $this->assertArrayHasKey('ability_modifiers', $calc);
+        $this->assertTrue($calc['ability_modifiers']['DexCapped']);
+        $this->assertEquals(4, $calc['ability_modifiers']['DexRaw']);
+        $this->assertEquals(3, $calc['ability_modifiers']['Dex']);
+        $this->assertLessThanOrEqual($calc['equipment']['max_dex_bonus'], $calc['ability_modifiers']['Dex']);
+    }
 }

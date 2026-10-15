@@ -1172,6 +1172,7 @@ class EntityEngine
         $speedMultAir = (float)($encRow['SpeedMultAir'] ?? 1.0);
 
         // Apply Max Dex Bonus cap to Dex modifier
+        $isDexCapped = ($finalDex !== null && $maxDexBonus < 90 && $dexModRaw > $maxDexBonus);
         $dexMod = ($finalDex !== null) ? min($dexModRaw, $maxDexBonus) : 0;
         $context['DEXMOD'] = $dexMod;
 
@@ -1830,6 +1831,28 @@ class EntityEngine
                 $compatibleAmmo = [];
                 $defaultAmmo = null;
 
+                // If ammoRequired is empty, try to deduce from weapon name/qual
+                if (empty($ammoRequired)) {
+                    $wNameLower = strtolower($wItem['name'] ?? '');
+                    if (str_contains($wNameLower, 'crossbow')) {
+                        if (str_contains($wNameLower, 'heavy')) {
+                            $ammoRequired = 'BoltHeavy';
+                        } elseif (str_contains($wNameLower, 'hand')) {
+                            $ammoRequired = 'BoltHand';
+                        } else {
+                            $ammoRequired = 'BoltLight';
+                        }
+                    } elseif (str_contains($wNameLower, 'bow')) {
+                        $ammoRequired = 'Arrow';
+                    } elseif (str_contains($wNameLower, 'sling')) {
+                        $ammoRequired = 'SlingStone';
+                    } elseif (str_contains($wNameLower, 'blowgun')) {
+                        $ammoRequired = 'Needle';
+                    } elseif (str_contains($wNameLower, 'pistol') || str_contains($wNameLower, 'musket') || str_contains($wNameLower, 'carbine')) {
+                        $ammoRequired = 'Bullet';
+                    }
+                }
+
                 // Parse weapon flat dmg mod if any
                 $weaponFlatDmg = 0;
                 if (preg_match('/^([+-]?\d+)$/', trim($dmgTraitStr), $fm)) {
@@ -1897,10 +1920,10 @@ class EntityEngine
                     }
                 }
 
-                if ($defaultAmmo === null) {
+                if ($defaultAmmo === null || empty($compatibleAmmo)) {
                     $defaultAmmo = [
                         'id' => 'standard',
-                        'name' => 'Standard Ammo',
+                        'name' => 'Standard Ammo' . (!empty($ammoRequired) ? " ({$ammoRequired})" : ''),
                         'in_inventory' => false,
                         'inventory_qty' => 0,
                         'damage' => '1d8',
@@ -1911,8 +1934,9 @@ class EntityEngine
                         'crit_multiplier' => 2 + $critMul,
                         'crit_display' => ((20 - ($critRng + $itemCritRngBonus)) < 20 ? (20 - ($critRng + $itemCritRngBonus)) . "-20" : "20") . " (x" . (2 + $critMul) . ")",
                         'attack_bonus' => $statAtt + $sizeCombatMod + $skillAttBonus + $charAttMod + $itemAttBonus,
-                        'parry_bonus' => $totalWeaponParry,
+                        'parry_bonus' => null,
                     ];
+                    $compatibleAmmo[] = $defaultAmmo;
                 }
 
                 $weaponsMatrix[$wId] = [
@@ -1935,8 +1959,8 @@ class EntityEngine
                     'crit_range' => $defaultAmmo['crit_range'],
                     'crit_multiplier' => $defaultAmmo['crit_multiplier'],
                     'crit_display' => ($defaultAmmo['crit_range'] < 20 ? "{$defaultAmmo['crit_range']}-20" : "20") . " (x{$defaultAmmo['crit_multiplier']})",
-                    'parry_mod' => $totalWeaponParry,
-                    'parry_bonus' => $totalWeaponParry,
+                    'parry_mod' => null,
+                    'parry_bonus' => null,
                     'maneuvers' => $maneuvers,
                     'maneuvers_str' => !empty($maneuvers) ? implode(', ', array_column($maneuvers, 'description')) : '',
                     'matched_skills' => $wSkills['matched_skills'] ?? [],
@@ -2920,6 +2944,8 @@ class EntityEngine
                 'Int' => ($finalInt !== null) ? $intMod : null,
                 'Wis' => ($finalWis !== null) ? $wisMod : null,
                 'Cha' => ($finalCha !== null) ? $chaMod : null,
+                'DexRaw' => ($finalDex !== null) ? $dexModRaw : null,
+                'DexCapped' => $isDexCapped,
             ],
             'modifiers_engine' => $modifierEngine,
             'defenses' => [
@@ -2977,6 +3003,8 @@ class EntityEngine
                 'effective_ec' => $effectiveEC,
                 'encumbrance_penalty' => $encPenalty,
                 'max_dex_bonus' => $maxDexBonus,
+                'is_dex_capped' => $isDexCapped,
+                'raw_dex_mod' => $dexModRaw,
                 'items' => $equipmentManager->getItems(),
             ],
             'attacks' => [
@@ -4093,18 +4121,94 @@ class EntityEngine
      */
     public static function parseActionCheck(string $checkStr, array|object $abilityMods = [], array $trainedSkills = [], int $sizeCombatMod = 0, int $sizeGrappleMod = 0): string
     {
+        self::loadReferenceTables();
+
         $mods = [];
         foreach ((array)$abilityMods as $k => $v) {
             $mods[strtolower((string)$k)] = (int)$v;
         }
 
         $skills = [];
+        $trainedSkillsById = [];
         foreach ($trainedSkills as $k => $v) {
-            $skills[strtolower(trim((string)$k))] = (float)$v;
+            if (is_numeric($k)) {
+                $sId = (int)$k;
+                $trainedSkillsById[$sId] = (float)$v;
+                if (isset(self::$skillsCache[$sId])) {
+                    $skRec = self::$skillsCache[$sId];
+                    $skills[strtolower(trim($skRec['Name']))] = (float)$v;
+                    if (!empty($skRec['Abbreviation'])) {
+                        $skills[strtolower(trim($skRec['Abbreviation']))] = (float)$v;
+                    }
+                }
+            } else {
+                $kStr = strtolower(trim((string)$k));
+                $skills[$kStr] = (float)$v;
+                if (isset(self::$skillsCache)) {
+                    foreach (self::$skillsCache as $sId => $skRec) {
+                        if (strcasecmp($skRec['Name'], $k) === 0 || strcasecmp($skRec['Abbreviation'] ?? '', $k) === 0) {
+                            $trainedSkillsById[$sId] = (float)$v;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Add alias for Body & Mind -> Skill 37
+        $bmRank = $trainedSkillsById[37] ?? $skills['weapons - body & mind attacks'] ?? $skills['body & mind attacks'] ?? $skills['body & mind'] ?? 0;
+        if ($bmRank > 0) {
+            $skills['body & mind'] = $bmRank;
+            $skills['body & mind attacks'] = $bmRank;
+            $skills['weapons - body & mind attacks'] = $bmRank;
         }
 
         $formatNum = function(float|int $n): string {
             return (floor($n) == $n) ? (string)(int)$n : (string)$n;
+        };
+
+        // Helper to get attack bonus for a weapon skill name or ID
+        $getWeaponSkillAttBonus = function(string $term) use ($skills, $trainedSkillsById): int {
+            $term = trim($term);
+            $termLower = strtolower($term);
+
+            // Handle Body & Mind specifically
+            if ($termLower === 'body & mind' || $termLower === 'body & mind attacks' || $termLower === 'weapons - body & mind attacks') {
+                $rank = $trainedSkillsById[37] ?? $skills['body & mind'] ?? $skills['body & mind attacks'] ?? $skills['weapons - body & mind attacks'] ?? 0;
+                return ($rank > 0) ? (int)floor((2 * $rank + 2) / 3) : 0;
+            }
+
+            // Find matching weapon skill in WEAPON_SKILL_MAP
+            $matchedCode = null;
+            $matchedId = null;
+            foreach (self::WEAPON_SKILL_MAP as $mapToken => $info) {
+                if (strcasecmp($info['name'], $term) === 0 || strcasecmp($info['code'], $term) === 0 || strcasecmp($mapToken, $term) === 0) {
+                    $matchedCode = $info['code'];
+                    $matchedId = $info['skill_id'];
+                    break;
+                }
+                if (str_starts_with($termLower, 'weapons - ') && strcasecmp(substr($term, 10), $info['name']) === 0) {
+                    $matchedCode = $info['code'];
+                    $matchedId = $info['skill_id'];
+                    break;
+                }
+                if (str_starts_with(strtolower($info['name']), 'weapons - ') && strcasecmp(substr($info['name'], 10), $term) === 0) {
+                    $matchedCode = $info['code'];
+                    $matchedId = $info['skill_id'];
+                    break;
+                }
+            }
+
+            if ($matchedCode && $matchedId) {
+                $rank = $trainedSkillsById[$matchedId] ?? $skills[$termLower] ?? 0;
+                if ($rank <= 0) return 0;
+                $res = self::evaluateWeaponSkillsForQual($matchedCode, [$matchedId => $rank]);
+                return (int)($res['attack_bonus'] ?? 0);
+            }
+
+            // Fallback: if trained skill rank exists
+            $rank = $skills[$termLower] ?? 0;
+            return ($rank > 0) ? (int)floor($rank) : 0;
         };
 
         $str = $checkStr;
@@ -4121,7 +4225,27 @@ class EntityEngine
             return ($sizeGrappleMod < 0) ? "({$sizeGrappleMod})" : (string)$sizeGrappleMod;
         }, $str);
 
-        // 2. Replace skill mentions (sorted by length descending)
+        // 2a. Replace "or" alternatives of skill mods: e.g. "(Weapons - Generic skill mod) or (Weapons - Small Thrown skill mod)"
+        $str = preg_replace_callback('/(?:\(([^)]+?)\s+skill(?:\s+mod)?\)|\b([A-Za-z0-9\-\s\(\)\/\&]+?)\s+skill\s+mod)\s+or\s+(?:\(([^)]+?)\s+skill(?:\s+mod)?\)|\b([A-Za-z0-9\-\s\(\)\/\&]+?)\s+skill\s+mod)/i', function($m) use ($getWeaponSkillAttBonus) {
+            $sk1 = !empty($m[1]) ? $m[1] : $m[2];
+            $sk2 = !empty($m[3]) ? $m[3] : $m[4];
+            $b1 = $getWeaponSkillAttBonus($sk1);
+            $b2 = $getWeaponSkillAttBonus($sk2);
+            return (string)max($b1, $b2);
+        }, $str);
+
+        // 2b. Replace single weapon skill mod: e.g. "(Weapons - Generic skill mod)" or "Weapons - Generic skill mod"
+        $str = preg_replace_callback('/(?:\(([^)]+?)\s+skill\s+mod\)|\b([A-Za-z0-9\-\s\(\)\/\&]+?)\s+skill\s+mod)\b/i', function($m) use ($getWeaponSkillAttBonus) {
+            $sk = !empty($m[1]) ? $m[1] : $m[2];
+            return (string)$getWeaponSkillAttBonus($sk);
+        }, $str);
+
+        // 2c. Replace "Body & Mind skill" specifically
+        $str = preg_replace_callback('/\bBody\s+&\s+Mind\s+skill\b/i', function() use ($getWeaponSkillAttBonus) {
+            return (string)$getWeaponSkillAttBonus('Body & Mind');
+        }, $str);
+
+        // 2d. Replace known skill mentions (sorted by length descending)
         uksort($skills, fn($a, $b) => strlen((string)$b) <=> strlen((string)$a));
         foreach ($skills as $skName => $skVal) {
             if (!empty($skName) && !is_numeric($skName)) {
@@ -4131,8 +4255,8 @@ class EntityEngine
             }
         }
 
-        // Generic fallback for any remaining "<unknown> skill" -> replace with 0
-        $str = preg_replace('/\b[a-zA-Z0-9\-\(\)\/][a-zA-Z0-9\s\-\(\)\/]*\s+skill\b/i', '0', $str);
+        // Generic fallback for any remaining "<unknown> skill" -> replace with 0 (including & in pattern)
+        $str = preg_replace('/\b[a-zA-Z0-9\-\(\)\/\&][a-zA-Z0-9\s\-\(\)\/\&]*\s+skill\b/i', '0', $str);
 
         // 3. Replace ability mods e.g. "+ Str mod", "+ Dex mod"
         foreach (['Str', 'Dex', 'Con', 'Int', 'Wis', 'Cha'] as $ab) {
@@ -4154,6 +4278,84 @@ class EntityEngine
         }
 
         return $str;
+    }
+
+    /**
+     * Format a spell skill requirement line with the character's skill level and affinity discount.
+     * E.g. "Arcane - Pyromancy" -> "Arcane - Pyromancy (Lvl 4, -1 PP)"
+     */
+    public static function formatSpellSkillLine(string $skLine, mixed $skillsList = [], mixed $skillsMap = [], array $affinityDiscounts = []): string
+    {
+        $skLine = trim($skLine);
+        if (empty($skLine)) return '–';
+
+        $discount = self::getSpellSkillDiscount($skLine, $affinityDiscounts);
+
+        // Separate any existing parenthetical notes like "(+2 PP cost)"
+        $costNote = '';
+        if (preg_match('/\s*\(\+?(\d+)\s*PP\s*cost\)/i', $skLine, $cm)) {
+            $costNote = "+{$cm[1]} PP cost";
+        }
+        $cleanLine = trim(preg_replace('/\s*\([^)]*\)/', '', $skLine));
+
+        // Find skills mentioned in the line
+        // Words can be separated by " and ", " or ", ", "
+        $parts = preg_split('/(\s+and\s+|\s+or\s+|,\s*)/i', $cleanLine, -1, PREG_SPLIT_DELIM_CAPTURE);
+        
+        $replacedParts = [];
+        foreach ($parts as $part) {
+            $pTrim = trim($part);
+            if (empty($pTrim) || preg_match('/^(and|or|,)$/i', $pTrim)) {
+                $replacedParts[] = $part;
+                continue;
+            }
+
+            // Try to match $pTrim to character's skills
+            $foundRank = 0;
+            foreach ($skillsList as $sId => $rank) {
+                $rec = $skillsMap[$sId] ?? (self::$skillsCache[$sId] ?? null);
+                $name = is_array($rec) ? ($rec['Name'] ?? '') : ($rec->Name ?? '');
+                if (strcasecmp($name, $pTrim) === 0 
+                    || str_ends_with(strtolower($name), ' - ' . strtolower($pTrim)) 
+                    || strcasecmp($name, "Arcane - {$pTrim}") === 0 
+                    || strcasecmp($name, "Divine - {$pTrim}") === 0 
+                    || strcasecmp($name, "Psi - {$pTrim}") === 0) {
+                    if ((float)$rank > 0) {
+                        $foundRank = (float)$rank;
+                        break;
+                    }
+                }
+            }
+
+            if ($foundRank > 0) {
+                $lvlStr = (floor($foundRank) == $foundRank) ? (string)(int)$foundRank : (string)$foundRank;
+                $replacedParts[] = "{$pTrim} (Lvl {$lvlStr})";
+            } else {
+                $replacedParts[] = $pTrim;
+            }
+        }
+
+        $assembled = implode('', $replacedParts);
+
+        // Now handle discount and cost note
+        $decorations = [];
+        if (!empty($costNote)) {
+            $decorations[] = $costNote;
+        }
+        if ($discount > 0) {
+            $decorations[] = "-{$discount} PP";
+        }
+
+        if (!empty($decorations)) {
+            // If the assembled line is a single skill without 'and'/'or'/',' like "Arcane - Pyromancy (Lvl 4)",
+            // combine it to "Arcane - Pyromancy (Lvl 4, -1 PP)"
+            if (!preg_match('/\b(and|or|,)\b/i', $cleanLine) && preg_match('/^(.*?)\s*\(Lvl\s+([^)]+)\)$/', $assembled, $m) && count($decorations) === 1 && $discount > 0) {
+                return $m[1] . " (Lvl {$m[2]}, -{$discount} PP)";
+            }
+            return $assembled . ' (' . implode(', ', $decorations) . ')';
+        }
+
+        return $assembled;
     }
 
     /**
