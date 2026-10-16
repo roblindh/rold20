@@ -49,6 +49,10 @@
             <p class="text-stone-700 text-xs mt-0.5">Generate customized mundane, masterwork, and magical items with calculated Value, Weight, Power Level (PL), Encumbrance Class (EC), DR, and HP.</p>
         </div>
         <div class="flex items-center gap-2 shrink-0">
+            <button type="button" @click="openImportModal()"
+                    class="btn-rol-secondary flex items-center gap-1.5 cursor-pointer">
+                <span>📥</span> Import Item
+            </button>
             <button type="button" @click="generateItem()" :disabled="loading"
                     class="btn-rol-primary">
                 <span x-show="!loading">⚡ Generate Item</span>
@@ -61,6 +65,20 @@
         </div>
     </div>
 
+    <!-- Catalog Import Notification Banner -->
+    <template x-if="importNotification">
+        <div class="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-900 flex items-center justify-between shadow-xs transition">
+            <div class="flex items-center gap-2">
+                <span class="text-base leading-none">✓</span>
+                <div>
+                    <strong class="font-bold">Catalog Item Loaded:</strong>
+                    <span x-text="importNotification"></span>
+                </div>
+            </div>
+            <button type="button" @click="importNotification = null" class="text-emerald-700 hover:text-emerald-900 font-bold text-sm cursor-pointer">✕</button>
+        </div>
+    </template>
+
     <!-- Main 2-Column Grid -->
     <div class="itemgen-main-grid">
         <!-- LEFT COLUMN: Generator Controls (7 cols on lg) -->
@@ -72,7 +90,13 @@
                     <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
                         1. Item Identity &amp; Material
                     </label>
-                    <span class="text-[11px] text-stone-600">Choose base equipment &amp; description</span>
+                    <div class="flex items-center gap-2">
+                        <button type="button" @click="openImportModal()"
+                                class="btn-action-pill btn-action-pill-gold text-xs flex items-center gap-1 cursor-pointer">
+                            <span>📥</span> Import Catalog Item
+                        </button>
+                        <span class="text-[11px] text-stone-600 hidden sm:inline">Choose base equipment &amp; description</span>
+                    </div>
                 </div>
 
                 <div class="space-y-2.5">
@@ -225,6 +249,9 @@
                                         <option value="0.5">×0.5 (50%)</option>
                                         <option value="0.1">×0.1 (10%)</option>
                                         <option value="0">×0 (0%)</option>
+                                        <option value="2">×2 (200%)</option>
+                                        <option value="4">×4 (400%)</option>
+                                        <option value="8">×8 (800%)</option>
                                     </select>
                                 </div>
 
@@ -351,6 +378,9 @@
 
         </div>
     </div>
+
+    <!-- Import Item Modal (from ref_itemsmodified) -->
+    @include('utilities.partials.itemgen.modal_import_item')
 </div>
 
 <script>
@@ -374,6 +404,15 @@ function itemGeneratorWizard() {
         materials: @json($materials),
         mundaneModsList: @json($mundaneMods),
         magicModsList: @json($magicMods),
+
+        // Catalog Import State (from ref_itemsmodified)
+        showImportModal: false,
+        importSearch: '',
+        importSubtypeFilter: '',
+        importLimit: 50,
+        importNotification: null,
+        importableItems: @json($importableItems ?? []),
+        importSubtypes: @json($importSubtypes ?? []),
 
         // Save to Character / Campaign State
         saveTab: 'character',
@@ -477,6 +516,57 @@ function itemGeneratorWizard() {
             return info;
         },
 
+        // Catalog Import Getters & Methods
+        get filteredImportItems() {
+            const q = (this.importSearch || '').toLowerCase().trim();
+            const sub = this.importSubtypeFilter || '';
+            return this.importableItems.filter(item => {
+                if (sub && item.subtype_name !== sub) return false;
+                if (q && !item.search_text.includes(q)) return false;
+                return true;
+            });
+        },
+
+        get visibleImportItems() {
+            return this.filteredImportItems.slice(0, this.importLimit);
+        },
+
+        openImportModal() {
+            this.showImportModal = true;
+            this.importLimit = 50;
+            this.$nextTick(() => {
+                if (this.$refs.importSearchInput) {
+                    this.$refs.importSearchInput.focus();
+                    this.$refs.importSearchInput.select();
+                }
+            });
+        },
+
+        importItem(item) {
+            if (!item) return;
+            this.selectedCategoryId = item.category_id;
+            this.itemId = item.item_id;
+            this.description = item.name;
+            this.materialId = item.material_id || 0;
+            this.mundaneMods = (item.mundane_mods || []).map(id => ({ id: Number(id) }));
+            this.magicMods = (item.magic_mods || []).map(m => ({
+                mod_id: Number(m.mod_id),
+                x: String(m.x || ''),
+                y: String(m.y || ''),
+                mul: String(m.mul !== undefined && m.mul !== null ? m.mul : '1')
+            }));
+            this.showImportModal = false;
+            this.importNotification = 'Imported "' + item.name + '" from catalog.';
+            setTimeout(() => { this.importNotification = null; }, 5000);
+
+            // Re-apply on nextTick to prevent any select re-rendering from resetting inputs
+            this.$nextTick(() => {
+                this.itemId = item.item_id;
+                this.description = item.name;
+                this.generateItem();
+            });
+        },
+
         resetForm() {
             this.itemId = {{ $defaultItemId ?? 88 }};
             this.selectedCategoryId = {{ $defaultCategoryId ?? 0 }};
@@ -486,6 +576,7 @@ function itemGeneratorWizard() {
             this.mundaneMods = [];
             this.magicMods = [];
             this.error = null;
+            this.importNotification = null;
             this.generateItem();
         },
 

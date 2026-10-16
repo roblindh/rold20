@@ -2567,6 +2567,15 @@ class UtilityController extends Controller
             $q->whereNull('IsNPC')->orWhere('IsNPC', 0);
         })->orderBy('Name')->get();
 
+        $importableItems = $this->getImportableModifiedItems();
+        $importSubtypes = collect($importableItems)
+            ->pluck('subtype_name')
+            ->filter()
+            ->unique()
+            ->sort(SORT_NATURAL | SORT_FLAG_CASE)
+            ->values()
+            ->all();
+
         return view('utilities.itemgen', compact(
             'items',
             'categories',
@@ -2577,8 +2586,166 @@ class UtilityController extends Controller
             'defaultItemId',
             'initialResult',
             'campaigns',
-            'characters'
+            'characters',
+            'importableItems',
+            'importSubtypes'
         ));
+    }
+
+    /**
+     * Prepare pre-configured items from ref_itemsmodified for Item Generator import.
+     *
+     * @return array
+     */
+    public function getImportableModifiedItems(): array
+    {
+        global $_APP;
+        if (!isset($_APP) || empty($_APP)) {
+            require_once base_path('page_start.php');
+        }
+
+        $modified = $_APP['itemsmodified'] ?? DB::table('ref_itemsmodified')->orderBy('Name')->get();
+        $importable = [];
+
+        foreach ($modified as $it) {
+            $it = (object)$it;
+            $rawConfig = $it->Config ?? '';
+            $trimmed = trim($rawConfig, "() \t\n\r\0\x0B");
+            $parts = explode(':', $trimmed);
+
+            $baseItemId = 0;
+            $baseItemName = '';
+            $materialId = 0;
+            $materialName = '';
+            $mundaneModIds = [];
+            $magicMods = [];
+            $modSummaries = [];
+
+            foreach ($parts as $part) {
+                $part = trim($part);
+                if (empty($part)) continue;
+
+                $eqPos = strpos($part, '=');
+                if ($eqPos === false) continue;
+
+                $key = trim(substr($part, 0, $eqPos));
+                $val = trim(substr($part, $eqPos + 1));
+
+                if (strcasecmp($key, 'Item') === 0) {
+                    foreach ($_APP['items'] ?? [] as $id => $item) {
+                        if (strcasecmp($item['Name'] ?? '', $val) === 0) {
+                            $baseItemId = (int)$id;
+                            $baseItemName = $item['Name'];
+                            break;
+                        }
+                    }
+                } elseif (strcasecmp($key, 'Mat') === 0 || strcasecmp($key, 'Material') === 0) {
+                    foreach ($_APP['materials'] ?? [] as $id => $mat) {
+                        if (strcasecmp($mat['Name'] ?? '', $val) === 0) {
+                            $materialId = (int)$id;
+                            $materialName = $mat['Name'];
+                            break;
+                        }
+                    }
+                } elseif (strcasecmp($key, 'Mod') === 0) {
+                    $subParts = explode('&', $val);
+                    $modName = trim($subParts[0]);
+                    $x = '';
+                    $y = '';
+                    $mul = '1';
+
+                    for ($i = 1; $i < count($subParts); $i++) {
+                        $sub = trim($subParts[$i]);
+                        if (str_starts_with($sub, 'x=')) {
+                            $x = urldecode(substr($sub, 2));
+                        } elseif (str_starts_with($sub, 'y=')) {
+                            $y = urldecode(substr($sub, 2));
+                        } elseif (str_starts_with($sub, 'mul=')) {
+                            $mul = urldecode(substr($sub, 4));
+                        }
+                    }
+
+                    // Check mundane
+                    $foundMundane = false;
+                    foreach ($_APP['itemmodsmundane'] ?? [] as $id => $m) {
+                        if (strcasecmp($m['Abbreviation'] ?? '', $modName) === 0 || strcasecmp($m['Description'] ?? '', $modName) === 0) {
+                            $mundaneModIds[] = (int)$id;
+                            $modSummaries[] = $m['Description'];
+                            $foundMundane = true;
+                            break;
+                        }
+                    }
+
+                    if (!$foundMundane) {
+                        // Check magic
+                        foreach ($_APP['itemmodsmagic'] ?? [] as $id => $m) {
+                            if (strcasecmp($m['Abbreviation'] ?? '', $modName) === 0 || strcasecmp($m['Description'] ?? '', $modName) === 0) {
+                                $magicMods[] = [
+                                    'mod_id' => (int)$id,
+                                    'x' => $x,
+                                    'y' => $y,
+                                    'mul' => $mul,
+                                ];
+                                $desc = $m['Description'];
+                                $params = [];
+                                if ($x !== '') $params[] = "x: {$x}";
+                                if ($y !== '') $params[] = "y: {$y}";
+                                if ($mul !== '1' && $mul !== '') $params[] = "×{$mul}";
+                                if (!empty($params)) $desc .= ' (' . implode(', ', $params) . ')';
+                                $modSummaries[] = $desc;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            $baseItem = $_APP['items'][$baseItemId] ?? null;
+            $categoryId = $baseItem ? (int)($baseItem['ItemTypeID'] ?? $baseItem['Type'] ?? ($_APP['itemsubtypes'][$baseItem['Subtype'] ?? 0]['Type'] ?? 0)) : 0;
+            $subtypeName = (string)($_APP['itemsubtypes'][$it->Subtype ?? 0]['Name'] ?? '');
+
+            $searchParts = [
+                $it->Name ?? '',
+                $baseItemName,
+                $materialName,
+                $subtypeName,
+                $it->Description ?? '',
+                implode(' ', $modSummaries),
+            ];
+            $searchText = mb_strtolower(implode(' ', array_filter($searchParts)));
+
+            $importable[] = [
+                'id' => (int)$it->ID,
+                'name' => (string)$it->Name,
+                'subtype_id' => (int)($it->Subtype ?? 0),
+                'subtype_name' => $subtypeName,
+                'description' => (string)($it->Description ?? ''),
+                'category_id' => $categoryId,
+                'item_id' => $baseItemId,
+                'base_item_name' => $baseItemName,
+                'material_id' => $materialId,
+                'material_name' => $materialName,
+                'mundane_mods' => $mundaneModIds,
+                'magic_mods' => $magicMods,
+                'mod_summaries' => $modSummaries,
+                'search_text' => $searchText,
+            ];
+        }
+
+        usort($importable, fn($a, $b) => strcasecmp($a['name'], $b['name']));
+
+        return $importable;
+    }
+
+    /**
+     * AJAX endpoint to return JSON catalog of modified items for Item Generator.
+     */
+    public function itemCatalog(Request $request): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'items' => $this->getImportableModifiedItems(),
+        ]);
     }
 
     /**

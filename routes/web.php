@@ -139,6 +139,8 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
 
     Route::get('/item-generator', [UtilityController::class, 'itemGenerator'])->name('itemgen');
     Route::get('/itemgen', [UtilityController::class, 'itemGenerator']);
+    Route::get('/item-generator/catalog', [UtilityController::class, 'itemCatalog'])->name('itemgen.catalog');
+    Route::get('/itemgen/catalog', [UtilityController::class, 'itemCatalog']);
     Route::post('/item-generator/generate', [UtilityController::class, 'generateItem'])->name('itemgen.generate');
     Route::post('/itemgen/generate', [UtilityController::class, 'generateItem']);
     Route::post('/item-generator/procedural', [UtilityController::class, 'generateProceduralItem'])->name('itemgen.procedural');
