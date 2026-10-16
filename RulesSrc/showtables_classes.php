@@ -151,6 +151,19 @@ function show_classes() {
                     <th class="cvheader" colspan="12"><?php echo $row['Name'] . " "; ?>Configuration: <?php echo $row2['Name']; ?></th>
                 </tr></thead>
                 <tbody>
+                <?php if (!empty($row2['Description'])) { ?>
+                <tr>
+                    <td class="cvsml" colspan="12" style="font-style: italic; color: #555;"><?php echo htmlspecialchars($row2['Description']); ?></td>
+                </tr>
+                <?php } ?>
+                <?php if (!empty($row2['AbilityPrio'])) { ?>
+                <tr>
+                    <td class="cvlabel" colspan="12">Key Ability Priorities</td>
+                </tr>
+                <tr>
+                    <td class="cvsml" colspan="12"><?php echo htmlspecialchars($row2['AbilityPrio']); ?></td>
+                </tr>
+                <?php } ?>
                 <tr>
                     <td class="cvlabel" colspan="12">Full Skill Progression</td>
                 </tr>
@@ -163,6 +176,20 @@ function show_classes() {
                 <tr>
                     <td class="cvsml" colspan="12"><?php echo format_text($row2['SecSkills']); ?></td>
                 </tr>
+                <?php
+                $gear = [];
+                if (!empty($row2['PreferredArmor']) && strtolower($row2['ArmorCategory'] ?? '') !== 'none') $gear[] = "<strong>Armor:</strong> " . htmlspecialchars($row2['PreferredArmor']);
+                if (!empty($row2['PreferredShield']) && strtolower($row2['ShieldCategory'] ?? '') !== 'none') $gear[] = "<strong>Shield:</strong> " . htmlspecialchars($row2['PreferredShield']);
+                if (!empty($row2['PreferredPrimaryWeapon'])) $gear[] = "<strong>Primary Weapon:</strong> " . htmlspecialchars($row2['PreferredPrimaryWeapon']);
+                if (!empty($row2['PreferredRangedWeapon'])) $gear[] = "<strong>Ranged:</strong> " . htmlspecialchars($row2['PreferredRangedWeapon']);
+                if (!empty($gear)) { ?>
+                <tr>
+                    <td class="cvlabel" colspan="12">Typical Equipment</td>
+                </tr>
+                <tr>
+                    <td class="cvsml" colspan="12"><?php echo implode(' &nbsp;&bull;&nbsp; ', $gear); ?></td>
+                </tr>
+                <?php } ?>
             </tbody></table>
             <?php
         }

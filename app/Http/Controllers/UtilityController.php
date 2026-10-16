@@ -1975,7 +1975,20 @@ class UtilityController extends Controller
         $classes = DB::table('ref_classes')->orderBy('Name')->get();
         $socialClasses = DB::table('ref_socialclasses')->orderBy('ID')->get();
         $wealthClasses = DB::table('ref_wealthclasses')->orderBy('ID')->get();
-        $archetypeBlueprints = DB::table('ref_archetypeblueprints')->orderBy('Name')->get();
+        $equipmentConfigs = DB::table('ref_classconfigs')
+            ->leftJoin('ref_classes', 'ref_classconfigs.ClassID', '=', 'ref_classes.ID')
+            ->select(
+                'ref_classconfigs.ID',
+                'ref_classconfigs.Name',
+                'ref_classconfigs.Slug',
+                'ref_classconfigs.Description',
+                'ref_classes.Name as ClassName'
+            )
+            ->whereNotNull('ref_classconfigs.Slug')
+            ->whereNotNull('ref_classconfigs.ShowPCGen')
+            ->orderBy('ref_classes.Name')
+            ->orderBy('ref_classconfigs.Name')
+            ->get();
 
         // Pre-render initial Human stat block in PHP for instant rendering
         $initialConfig = "Human { }";
@@ -2017,7 +2030,7 @@ class UtilityController extends Controller
             'classes',
             'socialClasses',
             'wealthClasses',
-            'archetypeBlueprints',
+            'equipmentConfigs',
             'initialStatblockHtml',
             'initialConfig',
             'myCampaigns',
@@ -2026,12 +2039,12 @@ class UtilityController extends Controller
     }
 
     /**
-     * AJAX endpoint to generate equipment loadout from an archetype blueprint
+     * AJAX endpoint to generate equipment loadout from a class configuration
      */
     public function generateBlueprintLoadout(Request $request): JsonResponse
     {
         try {
-            $blueprintKey = $request->input('blueprint');
+            $blueprintKey = $request->input('blueprint') ?? $request->input('slug') ?? $request->input('class_config_id');
             $level = max(1, min(40, (int)$request->input('level', 1)));
             $classConfigId = $request->input('class_config_id') ? (int)$request->input('class_config_id') : null;
             $isNpc = $request->input('is_npc', true);
@@ -2052,7 +2065,7 @@ class UtilityController extends Controller
 
             return response()->json([
                 'success' => true,
-                'blueprint' => $loadout['blueprint_name'] ?? 'Archetype',
+                'blueprint' => $loadout['blueprint_name'] ?? 'Class Configuration',
                 'archetype' => $loadout['archetype'] ?? 'custom',
                 'formatted_string' => $formattedString,
                 'loadout' => $loadout,

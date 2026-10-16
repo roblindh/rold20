@@ -430,7 +430,7 @@
             <div class="parchment-card p-4 space-y-2.5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                     <label class="block text-xs font-bold text-amber-950 uppercase tracking-wider font-display">
-                        13. Equipment &amp; Archetype Blueprint
+                        13. Equipment &amp; Class Configuration Loadout
                     </label>
                     <div class="flex items-center gap-1.5">
                         <span x-show="generatingEquipment" class="text-[10px] text-amber-800 font-semibold flex items-center gap-1 animate-pulse">
@@ -443,20 +443,20 @@
                     </div>
                 </div>
 
-                <!-- Archetype Blueprint Selection Dropdown & Auto-Outfit Action -->
+                <!-- Class Configuration Selection Dropdown & Auto-Outfit Action -->
                 <div class="flex items-center gap-2">
                     <select x-model="selectedBlueprintSlug"
                             @change="if (selectedBlueprintSlug) applyBlueprintLoadout(selectedBlueprintSlug)"
                             class="select-rol flex-1 text-xs font-medium">
-                        <option value="">-- Select Archetype Blueprint to Auto-Outfit --</option>
-                        @foreach($archetypeBlueprints as $ab)
-                            <option value="{{ $ab->Slug }}">{{ $ab->Name }}</option>
+                        <option value="">-- Select Class Configuration to Auto-Outfit --</option>
+                        @foreach($equipmentConfigs as $ec)
+                            <option value="{{ $ec->Slug }}">{{ $ec->ClassName ? $ec->ClassName . ' - ' : '' }}{{ $ec->Name }}</option>
                         @endforeach
                     </select>
                     <button type="button" @click="applyBlueprintLoadout(selectedBlueprintSlug)"
                             :disabled="!selectedBlueprintSlug || generatingEquipment"
                             class="btn-rol-primary text-xs py-1.5 px-3.5 font-bold cursor-pointer shrink-0 disabled:opacity-50"
-                            title="Generate or re-roll procedural loadout for selected archetype">
+                            title="Generate or re-roll procedural loadout for selected class configuration">
                         🎲 Auto-Outfit
                     </button>
                 </div>

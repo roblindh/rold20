@@ -44,17 +44,27 @@ class CombatSimulatorService
      */
     public static function getAvailableCombatants(): array
     {
-        $archetypes = DB::table('ref_archetypeblueprints')
-            ->select('ID', 'Name', 'Slug', 'Description', 'ClassConfigIDs')
-            ->orderBy('Name')
+        $archetypes = DB::table('ref_classconfigs')
+            ->leftJoin('ref_classes', 'ref_classconfigs.ClassID', '=', 'ref_classes.ID')
+            ->select(
+                'ref_classconfigs.ID as ID',
+                'ref_classconfigs.Name as Name',
+                'ref_classconfigs.Slug as Slug',
+                'ref_classconfigs.Description as Description',
+                'ref_classconfigs.ClassID as ClassID',
+                'ref_classes.Name as ClassName'
+            )
+            ->whereNotNull('ref_classconfigs.ShowPCGen')
+            ->orderBy('ref_classes.Name')
+            ->orderBy('ref_classconfigs.Name')
             ->get()
             ->map(function ($row) {
                 return [
                     'id' => (int)$row->ID,
-                    'name' => $row->Name,
+                    'name' => ($row->ClassName ? "{$row->ClassName} - " : "") . $row->Name,
                     'slug' => $row->Slug,
                     'description' => $row->Description,
-                    'class_config_ids' => $row->ClassConfigIDs,
+                    'class_config_ids' => (string)$row->ID,
                 ];
             })
             ->toArray();
@@ -98,36 +108,43 @@ class CombatSimulatorService
     }
 
     /**
-     * Build an NPC combatant from archetype blueprint and level.
+     * Build an NPC combatant from class configuration and level.
      */
-    protected static function buildNpcCombatant(int $blueprintId, int $level, string $equipMode = 'basic'): array
+    protected static function buildNpcCombatant(int $classConfigId, int $level, string $equipMode = 'basic'): array
     {
-        $bpRow = DB::table('ref_archetypeblueprints')->where('ID', $blueprintId)->first();
-        if (!$bpRow) {
-            $bpRow = DB::table('ref_archetypeblueprints')->orderBy('ID')->first();
-            $blueprintId = (int)($bpRow->ID ?? 1);
+        $classCfg = DB::table('ref_classconfigs')->where('ID', $classConfigId)->first();
+        if (!$classCfg) {
+            $classCfg = DB::table('ref_classconfigs')->where('ID', 9)->first()
+                ?? DB::table('ref_classconfigs')->orderBy('ID')->first();
+            $classConfigId = (int)($classCfg->ID ?? 9);
         }
 
-        $bpArray = (array)$bpRow;
-        $slug = $bpArray['Slug'] ?? 'swordsman';
-        $name = $bpArray['Name'] ?? 'Fighter';
+        $cfgArray = (array)$classCfg;
+        $slug = $cfgArray['Slug'] ?? 'fighter';
+        $name = $cfgArray['Name'] ?? 'Fighter';
+        $classId = (int)($cfgArray['ClassID'] ?? 4);
 
-        // Parse Primary Class Config
-        $classConfigIds = array_filter(array_map('trim', explode(',', (string)($bpArray['ClassConfigIDs'] ?? ''))));
-        $primaryClassConfigId = !empty($classConfigIds) ? (int)$classConfigIds[0] : 7; // default 7 = Fighter
-
-        // Fetch Class Config Name
-        $classCfg = DB::table('ref_classconfigs')->where('ID', $primaryClassConfigId)->first();
-        $className = $classCfg->Name ?? 'Fighter';
+        $clsRow = DB::table('ref_classes')->where('ID', $classId)->first();
+        $className = $clsRow->Name ?? 'Fighter';
 
         // Determine Abilities
         $abKey = strtolower($slug);
         $abil = self::$archetypeAbilityPrios[$abKey] ?? null;
         if (!$abil) {
             foreach (self::$archetypeAbilityPrios as $k => $v) {
-                if (str_contains($abKey, $k) || str_contains(strtolower($className), $k)) {
+                if (str_contains($abKey, $k) || str_contains(strtolower($name), $k) || str_contains(strtolower($className), $k)) {
                     $abil = $v;
                     break;
+                }
+            }
+        }
+        if (!$abil && !empty($cfgArray['AbilityPrio'])) {
+            $prios = array_map('trim', explode(',', $cfgArray['AbilityPrio']));
+            $standardArray = [16, 14, 13, 12, 10, 8];
+            $abil = [];
+            foreach ($prios as $idx => $stat) {
+                if ($stat && isset($standardArray[$idx])) {
+                    $abil[$stat] = $standardArray[$idx];
                 }
             }
         }
@@ -135,8 +152,8 @@ class CombatSimulatorService
             $abil = ['Str' => 14, 'Con' => 12, 'Dex' => 12, 'Int' => 10, 'Wis' => 10, 'Cha' => 10];
         }
 
-        // Generate sensical gear based on archetype and level
-        $loadout = EquipmentBlueprintService::generateLoadout($level, $primaryClassConfigId, true);
+        // Generate sensical gear based on class config and level
+        $loadout = EquipmentBlueprintService::generateLoadout($level, $classConfigId, true);
         $gearParts = [];
         foreach ($loadout['items'] ?? [] as $it) {
             if (!empty($it['config_string'])) {
@@ -154,7 +171,7 @@ class CombatSimulatorService
         $charData = EntityEngine::buildEntityFromConfigString(1, $config, $equipMode);
         $calcState = EntityEngine::calculate($charData);
 
-        return self::formatCombatantState($calcState, 'npc', $blueprintId, $name, $level);
+        return self::formatCombatantState($calcState, 'npc', $classConfigId, $name, $level);
     }
 
     /**

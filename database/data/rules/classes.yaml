@@ -265,6 +265,20 @@ classconfigs:
     Equipment: 'LtArmor, MdWeapon, Crossbow, Instrument, AdventurerKit'
     AbilityPrio: 'Cha, Dex, Int, Wis, Str, Con'
     ShowPCGen: 1
+    Slug: bard
+    Description: 'Versatile performer and Jack-of-all-trades blending swordplay, music, and charming arcane spells.'
+    ArmorCategory: light
+    PreferredArmor: 'Studded leather'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: finesse
+    PreferredPrimaryWeapon: Rapier
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: instrument
+    ConsumableTypes: 'healing_potion,scroll_arcane,buff_potion'
+    AccessorySlots: 'neck,ring,shoulders,waist'
   -
     ID: 2
     Name: 'Diplomat Bard'
@@ -274,6 +288,20 @@ classconfigs:
     Equipment: 'LtArmor, LtWeapon, Instrument, AdventurerKit'
     AbilityPrio: 'Cha, Dex, Int, Wis, Str, Con'
     ShowPCGen: 1
+    Slug: diplomat_bard
+    Description: 'Silver-tongued negotiator and courtier who disarms foes with poise, charm, and subtle enchantment.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: finesse
+    PreferredPrimaryWeapon: Rapier
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, hand'
+    Ammunition: 'Bolt, hand (10)'
+    ImplementCategory: instrument
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'ring,neck,shoulders,waist'
   -
     ID: 3
     Name: 'Spy Bard'
@@ -283,6 +311,20 @@ classconfigs:
     Equipment: 'LtArmor, MdWeapon, Crossbow, Instrument, AdventurerKit'
     AbilityPrio: 'Cha, Dex, Int, Str, Con, Wis'
     ShowPCGen: 1
+    Slug: spy_bard
+    Description: 'Undercover operative specializing in infiltration, eavesdropping, disguise, and concealed weapons.'
+    ArmorCategory: light
+    PreferredArmor: 'Leather armor'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: finesse
+    PreferredPrimaryWeapon: 'Sword, short'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, hand'
+    Ammunition: 'Bolt, hand (10)'
+    ImplementCategory: instrument
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'feet,ring,waist,hands'
   -
     ID: 4
     Name: 'Cleric of Life'
@@ -292,6 +334,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, ClericWeapon, Crossbow, ClericFocus, AdventurerKit'
     AbilityPrio: 'Wis, Cha, Con, Str, Dex, Int'
     ShowPCGen: 1
+    Slug: cleric_of_life
+    Description: 'Devout divine healer clothed in protective breastplate with holy symbol and restoring mace.'
+    ArmorCategory: medium
+    PreferredArmor: Breastplate
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy wooden'
+    PrimaryWeaponCategory: mace_hammer
+    PreferredPrimaryWeapon: 'Mace, heavy'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: holy_symbol
+    ConsumableTypes: 'healing_potion,scroll_divine,buff_potion'
+    AccessorySlots: 'neck,shoulders,ring,waist'
   -
     ID: 5
     Name: 'Cleric of Destruction'
@@ -301,6 +357,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, ClericWeapon, Crossbow, ClericFocus, AdventurerKit'
     AbilityPrio: 'Wis, Con, Str, Cha, Dex, Int'
     ShowPCGen: 1
+    Slug: cleric_of_destruction
+    Description: 'Militant cleric channeling divine wrath and shatter storms through heavy armor, morningstar, and heavy shield.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: mace_hammer
+    PreferredPrimaryWeapon: 'Hammer, war-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, heavy'
+    Ammunition: 'Bolt, heavy (10)'
+    ImplementCategory: holy_symbol
+    ConsumableTypes: 'healing_potion,buff_potion,scroll_divine'
+    AccessorySlots: 'neck,shoulders,ring,waist'
   -
     ID: 6
     Name: 'Cleric of Knowledge'
@@ -310,6 +380,20 @@ classconfigs:
     Equipment: 'MdArmor, Shield, ClericWeapon, Crossbow, ClericFocus, AdventurerKit'
     AbilityPrio: 'Wis, Cha, Int, Con, Str, Dex'
     ShowPCGen: 1
+    Slug: cleric_of_knowledge
+    Description: 'Scholarly divine investigator and inquisitor seeking hidden truth and lore with mace and scrolls.'
+    ArmorCategory: medium
+    PreferredArmor: 'Scale mail'
+    ShieldCategory: light
+    PreferredShield: 'Shield, light wooden'
+    PrimaryWeaponCategory: mace_hammer
+    PreferredPrimaryWeapon: 'Mace, light'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: holy_symbol
+    ConsumableTypes: 'healing_potion,scroll_divine'
+    AccessorySlots: 'head,neck,ring,shoulders'
   -
     ID: 7
     Name: 'Cleric of War'
@@ -319,6 +403,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, ClericWeapon, Crossbow, ClericFocus, AdventurerKit'
     AbilityPrio: 'Wis, Str, Cha, Con, Dex, Int'
     ShowPCGen: 1
+    Slug: cleric_of_war
+    Description: 'Battlefield priest leading ranks in full plate armor with steel shield, warhammer, and war blessings.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: mace_hammer
+    PreferredPrimaryWeapon: 'Hammer, war-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, heavy'
+    Ammunition: 'Bolt, heavy (10)'
+    ImplementCategory: holy_symbol
+    ConsumableTypes: 'healing_potion,buff_potion,scroll_divine'
+    AccessorySlots: 'neck,shoulders,ring,waist'
   -
     ID: 8
     Name: Druid
@@ -328,6 +426,20 @@ classconfigs:
     Equipment: 'LtArmor, Shield, DruidWeapon, Sling, DruidFocus, AdventurerKit'
     AbilityPrio: 'Wis, Dex, Cha, Str, Con, Int'
     ShowPCGen: 1
+    Slug: druid
+    Description: 'Protector of the wild wearing non-metallic hide armor with wooden shield, curved scimitar, and mistletoe.'
+    ArmorCategory: light
+    PreferredArmor: 'Hide armor'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy wooden'
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: Scimitar
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: druidic_focus
+    ConsumableTypes: 'healing_potion,scroll_divine,buff_potion'
+    AccessorySlots: 'neck,shoulders,ring,waist'
   -
     ID: 9
     Name: Fighter
@@ -337,6 +449,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, HvWeapon, MdWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: 1
+    Slug: fighter
+    Description: 'Disciplined frontline martial master wielding longswords, heavy shields, and formidable armor.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, long-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,shoulders,ring,neck'
   -
     ID: 10
     Name: 'Barbarian Fighter'
@@ -346,6 +472,20 @@ classconfigs:
     Equipment: 'MdArmor, HvWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: 1
+    Slug: barbarian_fighter
+    Description: 'Ferocious powerhouse warrior wielding massive greataxes in breastplate or hides with primal fury.'
+    ArmorCategory: medium
+    PreferredArmor: Breastplate
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: axe
+    PreferredPrimaryWeapon: 'Axe, great-'
+    SecondaryWeapon: 'Axe, hand-'
+    PreferredRangedWeapon: 'Bow, composite short- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,shoulders,neck,feet'
   -
     ID: 11
     Name: 'Duelist Fighter'
@@ -355,6 +495,20 @@ classconfigs:
     Equipment: 'LtArmor, MdWeapon, Crossbow, AdventurerKit'
     AbilityPrio: 'Dex, Str, Con, Cha, Int, Wis'
     ShowPCGen: 1
+    Slug: duelist_fighter
+    Description: 'Agile, stylish combatant fighting in light armor with fast rapiers, bucklers, and parrying daggers.'
+    ArmorCategory: light
+    PreferredArmor: 'Studded leather'
+    ShieldCategory: buckler
+    PreferredShield: Buckler
+    PrimaryWeaponCategory: finesse
+    PreferredPrimaryWeapon: Rapier
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, hand'
+    Ammunition: 'Bolt, hand (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'feet,ring,shoulders,hands'
   -
     ID: 12
     Name: Monk
@@ -364,6 +518,20 @@ classconfigs:
     Equipment: 'Clothing, MonkWeapon, Sling, AdventurerKit'
     AbilityPrio: 'Wis, Dex, Str, Con, Int, Cha'
     ShowPCGen: 1
+    Slug: monk
+    Description: 'Disciplined martial artist fighting unarmored with deadly bare hands, quarterstaves, and inner ki.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: monk_weapon
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'arms,feet,ring,waist'
   -
     ID: 13
     Name: Seer
@@ -373,6 +541,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
     AbilityPrio: 'Wis, Int, Dex, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: seer
+    Description: 'Clairsentient psion anticipating the flow of fate and uncovering secrets with staff and power stones.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: dorje
+    ConsumableTypes: 'healing_potion,power_stone'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 14
     Name: Shaper
@@ -382,6 +564,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: shaper
+    Description: 'Metacreative psion weaving ectoplasm and solid astral constructs into physical reality.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: dorje
+    ConsumableTypes: 'healing_potion,power_stone'
+    AccessorySlots: 'head,ring,shoulders,waist'
   -
     ID: 15
     Name: Savant
@@ -391,6 +587,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
     AbilityPrio: 'Int, Str, Wis, Dex, Con, Cha'
     ShowPCGen: 1
+    Slug: savant
+    Description: 'Generalist psionic intellectual commanding versatile psychic energies and telekinetic constructs.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: dorje
+    ConsumableTypes: 'healing_potion,power_stone'
+    AccessorySlots: 'head,ring,shoulders,waist'
   -
     ID: 16
     Name: Egoist
@@ -400,6 +610,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
     AbilityPrio: 'Con, Int, Wis, Str, Dex, Cha'
     ShowPCGen: 1
+    Slug: egoist
+    Description: 'Psychometabolic psion shaping their own biological matrix to endure lethal punishment and heal wounds.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: dorje
+    ConsumableTypes: 'healing_potion,power_stone'
+    AccessorySlots: 'waist,neck,ring,shoulders'
   -
     ID: 17
     Name: Nomad
@@ -409,6 +633,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
     AbilityPrio: 'Dex, Int, Wis, Con, Str, Cha'
     ShowPCGen: 1
+    Slug: nomad
+    Description: 'Psychoportive traveler manipulating space, distance, and movement to slip across the battlefield.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: dorje
+    ConsumableTypes: 'healing_potion,power_stone'
+    AccessorySlots: 'feet,ring,waist,shoulders'
   -
     ID: 18
     Name: Telepath
@@ -418,6 +656,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
     AbilityPrio: 'Cha, Int, Wis, Dex, Con, Str'
     ShowPCGen: 1
+    Slug: telepath
+    Description: 'Telepathic master dominating minds, projecting mental anguish, and commanding mental communications.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: dorje
+    ConsumableTypes: 'healing_potion,power_stone'
+    AccessorySlots: 'head,neck,ring,shoulders'
   -
     ID: 19
     Name: Psiwarrior
@@ -427,6 +679,20 @@ classconfigs:
     Equipment: 'HvWeapon, MdWeapon, Bow, PsiFocus, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Int, Cha'
     ShowPCGen: 1
+    Slug: psiwarrior
+    Description: 'Psionic martial powerhouse clad in heavy armor with greatsword, composite bow, and power stones.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, great-'
+    SecondaryWeapon: 'Sword, short'
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: dorje
+    ConsumableTypes: 'healing_potion,power_stone,buff_potion'
+    AccessorySlots: 'waist,shoulders,ring,neck'
   -
     ID: 20
     Name: Ranger
@@ -436,6 +702,20 @@ classconfigs:
     Equipment: 'LtArmor, MdWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Dex, Str, Wis, Con, Int, Cha'
     ShowPCGen: 1
+    Slug: ranger
+    Description: 'Deadeye wilderness scout and tracker wielding composite bows and twin hunting blades in light armor.'
+    ArmorCategory: light
+    PreferredArmor: 'Studded leather'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: ranged
+    PreferredPrimaryWeapon: 'Bow, composite long- (Str 14)'
+    SecondaryWeapon: 'Sword, short'
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'feet,shoulders,hands,ring'
   -
     ID: 21
     Name: 'Arcane Archer'
@@ -445,6 +725,20 @@ classconfigs:
     Equipment: 'LtArmor, MdWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Dex, Str, Wis, Con, Int, Cha'
     ShowPCGen: 1
+    Slug: arcane_archer
+    Description: 'Mystic elven marksman infusing deadly composite longbow shafts with arcane energy and elemental fury.'
+    ArmorCategory: light
+    PreferredArmor: 'Studded leather'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: ranged
+    PreferredPrimaryWeapon: 'Bow, composite long- (Str 14)'
+    SecondaryWeapon: 'Sword, short'
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion,scroll_arcane'
+    AccessorySlots: 'hands,feet,shoulders,ring'
   -
     ID: 22
     Name: Rogue
@@ -454,6 +748,20 @@ classconfigs:
     Equipment: 'LtArmor, Buckler, MdWeapon, Bow, Tools, AdventurerKit'
     AbilityPrio: 'Dex, Int, Wis, Str, Cha, Con'
     ShowPCGen: 1
+    Slug: rogue
+    Description: 'Stealthy rogue, thief, and skirmisher using shortswords, light bows, and thieves tools to exploit weaknesses.'
+    ArmorCategory: light
+    PreferredArmor: 'Leather armor'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: finesse
+    PreferredPrimaryWeapon: 'Sword, short'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'feet,hands,ring,waist'
   -
     ID: 23
     Name: Sorcerer
@@ -463,6 +771,20 @@ classconfigs:
     Equipment: 'Clothing, SimpleWeapon, Crossbow, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Cha, Wis, Dex, Con, Int, Str'
     ShowPCGen: 1
+    Slug: sorcerer
+    Description: 'Intuitive arcane spellcaster commanding raw bloodline magic with staff, dagger, and metamagic.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 24
     Name: 'Templar of Honor'
@@ -472,6 +794,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, MdWeapon, Bow, AdventurerKit, Mount'
     AbilityPrio: 'Cha, Str, Wis, Con, Dex, Int'
     ShowPCGen: 1
+    Slug: templar_of_honor
+    Description: 'Lawful holy crusader in full plate with heavy shield, longsword, and righteous smiting auras.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, long-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: holy_symbol
+    ConsumableTypes: 'healing_potion,buff_potion,scroll_divine'
+    AccessorySlots: 'neck,shoulders,ring,waist'
   -
     ID: 25
     Name: 'Templar of Freedom'
@@ -481,6 +817,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, MdWeapon, Bow, AdventurerKit, Mount'
     AbilityPrio: 'Cha, Str, Wis, Con, Dex, Int'
     ShowPCGen: 1
+    Slug: templar_of_freedom
+    Description: 'Liberating holy knight championing free will in plate armor with flashing blade and divine protection.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, long-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: holy_symbol
+    ConsumableTypes: 'healing_potion,buff_potion,scroll_divine'
+    AccessorySlots: 'neck,shoulders,ring,waist'
   -
     ID: 26
     Name: 'Templar of Tyranny'
@@ -490,6 +840,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, MdWeapon, Bow, AdventurerKit, Mount'
     AbilityPrio: 'Cha, Str, Wis, Con, Dex, Int'
     ShowPCGen: 1
+    Slug: templar_of_tyranny
+    Description: 'Oppressive authoritarian crusader imposing divine dominance with iron gauntlet, heavy plate, and cruel steel.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, long-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: holy_symbol
+    ConsumableTypes: 'healing_potion,buff_potion,scroll_divine'
+    AccessorySlots: 'neck,shoulders,ring,waist'
   -
     ID: 27
     Name: 'Templar of Slaughter'
@@ -499,6 +863,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, MdWeapon, Bow, AdventurerKit, Mount'
     AbilityPrio: 'Cha, Str, Wis, Con, Dex, Int'
     ShowPCGen: 1
+    Slug: templar_of_slaughter
+    Description: 'Bloody champion of chaos and carnage carving through enemies with heavy weapons and unholy fury.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, long-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: holy_symbol
+    ConsumableTypes: 'healing_potion,buff_potion,scroll_divine'
+    AccessorySlots: 'neck,shoulders,ring,waist'
   -
     ID: 28
     Name: Wizard
@@ -508,6 +886,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: wizard
+    Description: 'Scholarly arcane spellcaster wielding vast spell knowledge, quarterstaff, wand, and spellbook.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 29
     Name: Abjurer
@@ -517,6 +909,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: abjurer
+    Description: 'Specialist wizard mastering defensive wards, shields, dispelling, and magical counter-measures.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 30
     Name: Aeromancer
@@ -526,6 +932,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: aeromancer
+    Description: 'Elemental wind wizard manipulating gales, lightning, flight, and atmospheric pressure.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 31
     Name: Diviner
@@ -535,6 +955,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: diviner
+    Description: 'Divination wizard piercing illusions, predicting future outcomes, and seeking remote visions.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 32
     Name: Hydromancer
@@ -544,6 +978,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: hydromancer
+    Description: 'Elemental water wizard commanding tidal waves, ice, freezing mists, and aqueous shields.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 33
     Name: Illuminist
@@ -553,6 +1001,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: illuminist
+    Description: 'Specialist wizard commanding radiance, blinding flashes, solar brilliance, and prismatic light.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 34
     Name: Illusionist
@@ -562,6 +1024,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: illusionist
+    Description: 'Deceptive illusionist weaving phantom imagery, sensory misdirection, and impenetrable mirages.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 35
     Name: Kineticist
@@ -571,6 +1047,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: kineticist
+    Description: 'Force-wielding wizard unleashing telekinetic blasts, shields of force, and gravitational bursts.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 36
     Name: Lithomancer
@@ -580,6 +1070,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: lithomancer
+    Description: 'Earth and stone wizard summoning tremors, petrifying barriers, and crushing crystalline missiles.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 37
     Name: Ouranomancer
@@ -589,6 +1093,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: ouranomancer
+    Description: 'Astrological and celestial wizard drawing power from constellations, planar gravity, and cosmic rifts.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 38
     Name: Pyromancer
@@ -598,6 +1116,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: pyromancer
+    Description: 'Destructive fire wizard engulfing battlefields in blazing fireballs, burning rays, and explosive heat.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 39
     Name: Transmuter
@@ -607,6 +1139,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: transmuter
+    Description: 'Transmutation specialist altering physical properties of matter, granting flight, strength, and form shifts.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 40
     Name: Conjurer
@@ -616,6 +1162,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: conjurer
+    Description: 'Conjuration specialist summoning extraplanar allies, teleporting across hazards, and creating acidic clouds.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 41
     Name: Enchanter
@@ -625,6 +1185,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: enchanter
+    Description: 'Enchantment wizard controlling enemies with irresistible suggestions, magical slumber, and emotional charms.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 42
     Name: Necromancer
@@ -634,6 +1208,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: 1
+    Slug: necromancer
+    Description: 'Grim necromancer wielding negative energy, necrotic curses, and raising legions of the undead.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders,neck'
   -
     ID: 43
     Name: Adept
@@ -643,6 +1231,20 @@ classconfigs:
     Equipment: 'Clothing, SimpleWeapon, DivineFocus, AdventurerKit'
     AbilityPrio: 'Wis, Con, Dex, Int, Cha, Str'
     ShowPCGen: 1
+    Slug: adept
+    Description: 'Village healer and mystic practitioner utilizing simple robes, staff, herbal remedies, and divine rites.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: holy_symbol
+    ConsumableTypes: 'healing_potion,scroll_divine'
+    AccessorySlots: 'neck,ring,waist'
   -
     ID: 44
     Name: Shaman
@@ -652,6 +1254,20 @@ classconfigs:
     Equipment: 'LtArmor, SimpleWeapon, DivineFocus, AdventurerKit'
     AbilityPrio: 'Wis, Con, Dex, Int, Cha, Str'
     ShowPCGen: 1
+    Slug: shaman
+    Description: 'Spiritual conduit clothed in hide armor with tribal staff, bone totems, and natural blessings.'
+    ArmorCategory: light
+    PreferredArmor: 'Hide armor'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: druidic_focus
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'neck,head,ring'
   -
     ID: 45
     Name: 'Witch Doctor'
@@ -661,6 +1277,20 @@ classconfigs:
     Equipment: 'LtArmor, SimpleWeapon, DivineFocus, AdventurerKit'
     AbilityPrio: 'Wis, Int, Dex, Cha, Con, Str'
     ShowPCGen: 1
+    Slug: witch_doctor
+    Description: 'Tribal mystic in hides wielding ritual staves, fetishes, herbal curatives, and potent hexes.'
+    ArmorCategory: light
+    PreferredArmor: 'Leather armor'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: druidic_focus
+    ConsumableTypes: 'healing_potion,buff_potion,scroll_divine'
+    AccessorySlots: 'neck,head,ring,hands'
   -
     ID: 46
     Name: Soldier
@@ -670,6 +1300,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, HvWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: 1
+    Slug: soldier
+    Description: 'Disciplined infantryman trained for formation combat in heavy armor with longsword and shield.'
+    ArmorCategory: heavy
+    PreferredArmor: Chainmail
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, long-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: 'waist,shoulders'
   -
     ID: 47
     Name: Scout
@@ -679,6 +1323,20 @@ classconfigs:
     Equipment: 'LtArmor, MdWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Dex, Con, Str, Wis, Int, Cha'
     ShowPCGen: 1
+    Slug: scout
+    Description: 'Swift reconnaissance pathfinder wearing light leather armor with hunting bow and shortsword.'
+    ArmorCategory: light
+    PreferredArmor: 'Leather armor'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: ranged
+    PreferredPrimaryWeapon: 'Bow, long-'
+    SecondaryWeapon: 'Sword, short'
+    PreferredRangedWeapon: 'Bow, long-'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: 'feet,shoulders'
   -
     ID: 48
     Name: Smuggler
@@ -688,6 +1346,20 @@ classconfigs:
     Equipment: 'LtArmor, LtWeapon, Crossbow, AdventurerKit'
     AbilityPrio: 'Int, Dex, Cha, Wis, Str, Con'
     ShowPCGen: 1
+    Slug: smuggler
+    Description: 'Shrewd black-market transporter relying on padded leather, concealable daggers, and light crossbows.'
+    ArmorCategory: light
+    PreferredArmor: 'Leather armor'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: finesse
+    PreferredPrimaryWeapon: 'Sword, short'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: 'waist,feet'
   -
     ID: 49
     Name: Spy
@@ -697,6 +1369,20 @@ classconfigs:
     Equipment: 'LtArmor, LtWeapon, Crossbow, AdventurerKit'
     AbilityPrio: 'Dex, Wis, Int, Cha, Str, Con'
     ShowPCGen: 1
+    Slug: spy
+    Description: 'Covert intelligence gatherer blending into crowds with concealed blades and light crossbows.'
+    ArmorCategory: light
+    PreferredArmor: 'Leather armor'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: finesse
+    PreferredPrimaryWeapon: Dagger
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, hand'
+    Ammunition: 'Bolt, hand (10)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: 'ring,feet'
   -
     ID: 50
     Name: Thug
@@ -706,6 +1392,20 @@ classconfigs:
     Equipment: 'MdArmor, MdWeapon, AdventurerKit'
     AbilityPrio: 'Str, Dex, Con, Cha, Wis, Int'
     ShowPCGen: 1
+    Slug: thug
+    Description: 'Brutal enforcer and street brawler wearing medium chain shirt with heavy clubs and daggers.'
+    ArmorCategory: medium
+    PreferredArmor: 'Chain shirt'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Club
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: 'waist,hands'
   -
     ID: 51
     Name: Battlemage
@@ -715,6 +1415,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Cha, Wis, Dex, Str, Con, Int'
     ShowPCGen: 1
+    Slug: battlemage
+    Description: 'Martial spellcaster clad in chain shirt with longsword, wand, and combat offensive spells.'
+    ArmorCategory: light
+    PreferredArmor: 'Chain shirt'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, long-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane,buff_potion'
+    AccessorySlots: 'arms,ring,shoulders,head'
   -
     ID: 52
     Name: 'War Wizard'
@@ -724,6 +1438,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Str, Cha'
     ShowPCGen: 1
+    Slug: war_wizard
+    Description: 'Elite military mage combining protective chain armor, longsword, wand, and devastating area magic.'
+    ArmorCategory: light
+    PreferredArmor: 'Chain shirt'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, long-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane,buff_potion'
+    AccessorySlots: 'head,arms,ring,shoulders'
   -
     ID: 53
     Name: Aristocrat
@@ -733,6 +1461,20 @@ classconfigs:
     Equipment: 'Clothing, LtWeapon, AdventurerKit'
     AbilityPrio: 'Cha, Int, Dex, Str, Con, Wis'
     ShowPCGen: 1
+    Slug: aristocrat
+    Description: 'Highborn noble or diplomat in padded silk attire with fine rapier and buckler.'
+    ArmorCategory: light
+    PreferredArmor: 'Padded armor'
+    ShieldCategory: buckler
+    PreferredShield: Buckler
+    PrimaryWeaponCategory: finesse
+    PreferredPrimaryWeapon: Rapier
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, hand'
+    Ammunition: 'Bolt, hand (10)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: 'ring,neck,shoulders'
   -
     ID: 54
     Name: Politician
@@ -742,6 +1484,20 @@ classconfigs:
     Equipment: 'Clothing, LtWeapon, AdventurerKit'
     AbilityPrio: 'Cha, Int, Wis, Con, Dex, Str'
     ShowPCGen: 1
+    Slug: politician
+    Description: 'Courtier and statesman dressed in fine clothing with ornamental rapier or dagger.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: finesse
+    PreferredPrimaryWeapon: Dagger
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, hand'
+    Ammunition: 'Bolt, hand (10)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: 'ring,neck'
   -
     ID: 55
     Name: Laborer
@@ -751,6 +1507,20 @@ classconfigs:
     Equipment: 'Clothing, SimpleWeapon, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Cha, Wis, Int'
     ShowPCGen: 1
+    Slug: laborer
+    Description: 'Hardworking laborer, quarry worker, or farm hand armed with heavy work club and knife.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: simple
+    PreferredPrimaryWeapon: Club
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: waist
   -
     ID: 56
     Name: Servant
@@ -760,6 +1530,20 @@ classconfigs:
     Equipment: 'Clothing, AdventurerKit'
     AbilityPrio: 'Wis, Int, Cha, Con, Dex, Str'
     ShowPCGen: 1
+    Slug: servant
+    Description: 'Domestic attendant, butler, or porter in simple livery with utility knife.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: simple
+    PreferredPrimaryWeapon: Dagger
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: waist
   -
     ID: 57
     Name: Merchant
@@ -769,6 +1553,20 @@ classconfigs:
     Equipment: 'Clothing, LtWeapon, AdventurerKit'
     AbilityPrio: 'Wis, Cha, Int, Con, Dex, Str'
     ShowPCGen: 1
+    Slug: merchant
+    Description: 'Traveling merchant or shopkeeper in tailored clothing with coin pouch, dagger, and guard club.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: finesse
+    PreferredPrimaryWeapon: Dagger
+    SecondaryWeapon: Club
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: 'waist,ring'
   -
     ID: 58
     Name: Craftsman
@@ -778,6 +1576,20 @@ classconfigs:
     Equipment: 'Clothing, Tools, AdventurerKit'
     AbilityPrio: 'Str, Dex, Int, Wis, Cha, Con'
     ShowPCGen: 1
+    Slug: craftsman
+    Description: 'Skilled artisan, smith, or carpenter working in leather apron with hammer and tools.'
+    ArmorCategory: light
+    PreferredArmor: 'Leather armor'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: mace_hammer
+    PreferredPrimaryWeapon: 'Hammer, war-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: 'waist,hands'
   -
     ID: 59
     Name: Sage
@@ -787,6 +1599,20 @@ classconfigs:
     Equipment: 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Wis, Cha, Dex, Con, Str'
     ShowPCGen: 1
+    Slug: sage
+    Description: 'Elder scholar, librarian, or lorekeeper in academic robes carrying walking staff and scrolls.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: 'head,neck'
   -
     ID: 60
     Name: Guard
@@ -796,6 +1622,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, MdWeapon, Crossbow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: 1
+    Slug: guard
+    Description: 'City watchman or outpost sentry clad in chain shirt with longsword, light shield, and crossbow.'
+    ArmorCategory: medium
+    PreferredArmor: 'Chain shirt'
+    ShieldCategory: light
+    PreferredShield: 'Shield, light steel'
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, long-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: 'waist,shoulders'
   -
     ID: 61
     Name: Savage
@@ -805,6 +1645,20 @@ classconfigs:
     Equipment: 'LtArmor, HvWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Str, Dex, Con, Wis, Cha, Int'
     ShowPCGen: 1
+    Slug: savage
+    Description: 'Primitive tribal hunter fighting in hides with greataxes, heavy clubs, and shortbows.'
+    ArmorCategory: medium
+    PreferredArmor: 'Hide armor'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: axe
+    PreferredPrimaryWeapon: 'Axe, great-'
+    SecondaryWeapon: Club
+    PreferredRangedWeapon: 'Bow, composite short- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: healing_potion
+    AccessorySlots: 'waist,neck'
   -
     ID: 62
     Name: 'Aggressive Beast'
@@ -814,6 +1668,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: null
+    Slug: aggressive_beast
+    Description: 'Predatory or territorial beast relying on natural claws, fangs, and feral instincts.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 63
     Name: 'Peaceful Beast'
@@ -823,6 +1691,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Dex, Con, Wis, Str, Cha, Int'
     ShowPCGen: null
+    Slug: peaceful_beast
+    Description: 'Docile or herbivorous creature relying on natural endurance, herd instincts, and trampling attacks.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 64
     Name: Assassin
@@ -832,6 +1714,20 @@ classconfigs:
     Equipment: 'LtArmor, LtWeapon, Crossbow, Tools, AdventurerKit'
     AbilityPrio: 'Dex, Str, Int, Con, Wis, Cha'
     ShowPCGen: 1
+    Slug: assassin
+    Description: 'Lethal contract killer utilizing poisoned daggers, light crossbows, disguise, and silent stalker leather.'
+    ArmorCategory: light
+    PreferredArmor: 'Leather armor'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: finesse
+    PreferredPrimaryWeapon: Dagger
+    SecondaryWeapon: 'Sword, short'
+    PreferredRangedWeapon: 'Crossbow, hand'
+    Ammunition: 'Bolt, hand (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'feet,hands,ring,waist'
   -
     ID: 65
     Name: Gladiator
@@ -841,6 +1737,20 @@ classconfigs:
     Equipment: 'MdArmor, Shield, HvWeapon, AdventurerKit'
     AbilityPrio: 'Str, Dex, Con, Cha, Int, Wis'
     ShowPCGen: 1
+    Slug: gladiator
+    Description: 'Arena fighter brandishing tridents, nets, heavy shields, and medium chainmail for spectacle and slaughter.'
+    ArmorCategory: medium
+    PreferredArmor: Chainmail
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: spear_polearm
+    PreferredPrimaryWeapon: Trident
+    SecondaryWeapon: 'Sword, short'
+    PreferredRangedWeapon: Javelin
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'arms,waist,shoulders'
   -
     ID: 66
     Name: Construct
@@ -850,6 +1760,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Str, Con, Wis, Cha, Dex, Int'
     ShowPCGen: null
+    Slug: construct
+    Description: 'Inanimate artificial entity forged of stone, metal, or clay with crushing fists and magical DR.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 67
     Name: Dragon
@@ -859,6 +1783,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Cha, Str, Con, Int, Dex, Wis'
     ShowPCGen: null
+    Slug: dragon
+    Description: 'Apex draconic creature with armored scales, devastating breath weapon, and lethal natural claws.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 68
     Name: Archer
@@ -868,6 +1806,20 @@ classconfigs:
     Equipment: 'LtArmor, Bow, MdWeapon, AdventurerKit'
     AbilityPrio: 'Dex, Str, Wis, Con, Int, Cha'
     ShowPCGen: 1
+    Slug: archer
+    Description: 'Dedicated marksman and sniper in studded leather armor wielding composite longbows and sidearm swords.'
+    ArmorCategory: light
+    PreferredArmor: 'Studded leather'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: ranged
+    PreferredPrimaryWeapon: 'Bow, composite long- (Str 14)'
+    SecondaryWeapon: 'Sword, short'
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'feet,shoulders,hands,ring'
   -
     ID: 69
     Name: 'Trained Beast'
@@ -877,6 +1829,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Str, Con, Int, Dex, Wis, Cha'
     ShowPCGen: null
+    Slug: trained_beast
+    Description: 'War dog, hunting falcon, or trained combat animal disciplined to follow handler commands.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 70
     Name: Aboleth
@@ -886,6 +1852,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Cha, Wis, Con, Int, Str, Dex'
     ShowPCGen: null
+    Slug: aboleth
+    Description: 'Ancient primordial aquatic telepath wielding slime tentacles and psionic mental dominance.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 71
     Name: 'Mindless Undead'
@@ -895,6 +1875,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Str, Con, Wis, Dex, Cha, Int'
     ShowPCGen: null
+    Slug: mindless_undead
+    Description: 'Shambling skeleton or rotting zombie driven by dark necromantic impulse with relentless vigor.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 72
     Name: Undead
@@ -904,6 +1898,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Str, Cha, Con, Wis, Dex, Int'
     ShowPCGen: null
+    Slug: undead
+    Description: 'Intelligent undead wraith, ghoul, or vampire stalking prey with necrotic touch and deathly resilience.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 73
     Name: 'Spellcaster Undead'
@@ -913,6 +1921,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Int, Wis, Cha, Dex, Str, Con'
     ShowPCGen: null
+    Slug: spellcaster_undead
+    Description: 'Lich, mummy lord, or undead necromancer weaving deadly dark spells and energy drain.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 74
     Name: Angel
@@ -922,6 +1944,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Wis, Cha, Str, Int, Con, Dex'
     ShowPCGen: null
+    Slug: angel
+    Description: 'Celestial guardian of radiant goodness clad in divine splendor with holy aura.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 75
     Name: Archon
@@ -931,6 +1967,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Wis, Cha, Str, Int, Con, Dex'
     ShowPCGen: null
+    Slug: archon
+    Description: 'Lawful celestial entity dedicated to fighting fiendish corruption with righteous purity.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 76
     Name: 'Smart Beast'
@@ -940,6 +1990,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Str, Con, Int, Dex, Wis, Cha'
     ShowPCGen: null
+    Slug: smart_beast
+    Description: 'Magical beast or cunning predator endowed with human-like intelligence and supernatural senses.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 77
     Name: Demon
@@ -949,6 +2013,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Str, Con, Cha, Int, Dex, Wis'
     ShowPCGen: null
+    Slug: demon
+    Description: 'Chaotic evil fiend of the Abyss driven by destruction, carnage, and violent bloodlust.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 78
     Name: Devil
@@ -958,6 +2036,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Cha, Str, Int, Wis, Con, Dex'
     ShowPCGen: null
+    Slug: devil
+    Description: 'Lawful evil fiend of the Nine Hells enforcing tyrannical contracts with hellfire and dark magic.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 79
     Name: 'Air Elemental'
@@ -967,6 +2059,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Dex, Int, Wis, Str, Con, Cha'
     ShowPCGen: null
+    Slug: air_elemental
+    Description: 'Living vortex of swirling wind and lightning striking targets with gale-force gusts.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 80
     Name: 'Earth Elemental'
@@ -976,6 +2082,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Str, Con, Wis, Int, Cha, Dex'
     ShowPCGen: null
+    Slug: earth_elemental
+    Description: 'Towering juggernaut of solid rock and granite crushing opponents under immense weight.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 81
     Name: 'Fire Elemental'
@@ -985,6 +2105,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Dex, Int, Str, Cha, Con, Wis'
     ShowPCGen: null
+    Slug: fire_elemental
+    Description: 'Blazing manifestation of pure elemental flame consuming all combustive matter in its path.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 82
     Name: 'Water Elemental'
@@ -994,6 +2128,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Wis, Str, Cha, Con, Dex, Int'
     ShowPCGen: null
+    Slug: water_elemental
+    Description: 'Crest of surging sea water drowning combatants and extinguishing flames with tidal force.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 83
     Name: Hag
@@ -1003,6 +2151,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Cha, Wis, Con, Dex, Str, Int'
     ShowPCGen: null
+    Slug: hag
+    Description: 'Wicked crone manipulating dark witchcraft, illusions, and curses from remote swamps and caverns.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 84
     Name: Yugoloth
@@ -1012,6 +2174,20 @@ classconfigs:
     Equipment: null
     AbilityPrio: 'Cha, Str, Int, Wis, Con, Dex'
     ShowPCGen: null
+    Slug: yugoloth
+    Description: 'Mercenary fiend of the Lower Planes serving the highest bidder with scheming malevolence.'
+    ArmorCategory: none
+    PreferredArmor: null
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: null
+    PreferredPrimaryWeapon: null
+    SecondaryWeapon: null
+    PreferredRangedWeapon: null
+    Ammunition: null
+    ImplementCategory: null
+    ConsumableTypes: null
+    AccessorySlots: null
   -
     ID: 85
     Name: 'Axe Fighter'
@@ -1021,6 +2197,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, Axe, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Cha, Wis, Int'
     ShowPCGen: 1
+    Slug: axe_fighter
+    Description: 'Vigorous warrior wielding brutal battleaxes and greataxes in heavy plate or mail.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: axe
+    PreferredPrimaryWeapon: 'Axe, battle-'
+    SecondaryWeapon: 'Axe, hand-'
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,shoulders,ring,neck'
   -
     ID: 86
     Name: 'Mace Fighter'
@@ -1030,6 +2220,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, Mace, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Cha, Wis, Int'
     ShowPCGen: 1
+    Slug: mace_fighter
+    Description: 'Heavy crushing specialist brandishing warhammers, heavy maces, and morningstars against armored foes.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: mace_hammer
+    PreferredPrimaryWeapon: 'Hammer, war-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, heavy'
+    Ammunition: 'Bolt, heavy (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,shoulders,ring,neck'
   -
     ID: 87
     Name: 'Spear Fighter'
@@ -1039,6 +2243,20 @@ classconfigs:
     Equipment: 'HvArmor, Spear, Bow, AdventurerKit'
     AbilityPrio: 'Dex, Str, Con, Cha, Wis, Int'
     ShowPCGen: 1
+    Slug: spear_fighter
+    Description: 'Formation warrior and skirmisher wielding reach spears, polearms, and halberds in heavy armor.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: light
+    PreferredShield: 'Shield, light steel'
+    PrimaryWeaponCategory: spear_polearm
+    PreferredPrimaryWeapon: Spear
+    SecondaryWeapon: 'Sword, short'
+    PreferredRangedWeapon: 'Crossbow, heavy'
+    Ammunition: 'Bolt, heavy (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,shoulders,ring,neck'
   -
     ID: 88
     Name: Axeman
@@ -1048,6 +2266,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, Axe, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: 1
+    Slug: axeman
+    Description: 'Frontline infantryman wielding versatile battleaxes and shields in heavy banded mail.'
+    ArmorCategory: heavy
+    PreferredArmor: Chainmail
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: axe
+    PreferredPrimaryWeapon: 'Axe, battle-'
+    SecondaryWeapon: 'Axe, hand-'
+    PreferredRangedWeapon: 'Bow, composite short- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,shoulders'
   -
     ID: 89
     Name: Maceman
@@ -1057,6 +2289,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, Mace, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: 1
+    Slug: maceman
+    Description: 'Infantryman equipped with heavy steel mace and shield to shatter enemy lines.'
+    ArmorCategory: heavy
+    PreferredArmor: Chainmail
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: mace_hammer
+    PreferredPrimaryWeapon: 'Mace, heavy'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,shoulders'
   -
     ID: 90
     Name: Spearman
@@ -1066,6 +2312,20 @@ classconfigs:
     Equipment: 'HvArmor, Spear, Bow, AdventurerKit'
     AbilityPrio: 'Dex, Str, Con, Wis, Cha, Int'
     ShowPCGen: 1
+    Slug: spearman
+    Description: 'Line infantryman holding the vanguard with sturdy thrusting spears and shields.'
+    ArmorCategory: heavy
+    PreferredArmor: Chainmail
+    ShieldCategory: light
+    PreferredShield: 'Shield, light steel'
+    PrimaryWeaponCategory: spear_polearm
+    PreferredPrimaryWeapon: Spear
+    SecondaryWeapon: 'Sword, short'
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,shoulders'
   -
     ID: 91
     Name: Swordsman
@@ -1075,6 +2335,20 @@ classconfigs:
     Equipment: 'HvArmor, Shield, Longsword, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: 1
+    Slug: swordsman
+    Description: 'Professional warrior trained in the classic sword-and-shield discipline in plated armor.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, long-'
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,shoulders,ring,neck'
   -
     ID: 92
     Name: 'Student of Elements'
@@ -1084,6 +2358,20 @@ classconfigs:
     Equipment: 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Wis, Dex, Str, Con, Int, Cha'
     ShowPCGen: 1
+    Slug: student_of_elements
+    Description: 'Initiate monk channeling natural elemental harmonies through barehanded martial katas.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: monk_weapon
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'arms,feet,ring,waist'
   -
     ID: 93
     Name: 'Student of Air'
@@ -1093,6 +2381,20 @@ classconfigs:
     Equipment: 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Dex, Wis, Str, Con, Int, Cha'
     ShowPCGen: 1
+    Slug: student_of_air
+    Description: 'Monk of the whistling winds fighting with elusive footwork, leaps, and whirlwind strikes.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: monk_weapon
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'feet,arms,ring'
   -
     ID: 94
     Name: 'Student of Earth'
@@ -1102,6 +2404,20 @@ classconfigs:
     Equipment: 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Str, Wis, Con, Dex, Int, Cha'
     ShowPCGen: 1
+    Slug: student_of_earth
+    Description: 'Monk of immovable granite possessing unyielding stances and bone-crushing unarmed strikes.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: monk_weapon
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'arms,feet,waist'
   -
     ID: 95
     Name: 'Student of Fire'
@@ -1111,6 +2427,20 @@ classconfigs:
     Equipment: 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Dex, Wis, Str, Con, Int, Cha'
     ShowPCGen: 1
+    Slug: student_of_fire
+    Description: 'Monk of blazing combustion executing explosive kicking strikes and searing ki bursts.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: monk_weapon
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'arms,feet,ring'
   -
     ID: 96
     Name: 'Student of Water'
@@ -1120,6 +2450,20 @@ classconfigs:
     Equipment: 'Clothing, SimpleWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Wis, Dex, Str, Con, Int, Cha'
     ShowPCGen: 1
+    Slug: student_of_water
+    Description: 'Monk of fluid currents deflecting enemy blows and flowing around defenses with wave-like strikes.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: monk_weapon
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: Sling
+    Ammunition: 'Bullet, sling (10)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'arms,feet,ring'
   -
     ID: 97
     Name: 'Giant Fighter'
@@ -1129,6 +2473,20 @@ classconfigs:
     Equipment: 'HvArmor, HvWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: null
+    Slug: giant_fighter
+    Description: 'Colossal giant warrior wielding enormous tree-trunk clubs or greataxes in heavy mail.'
+    ArmorCategory: heavy
+    PreferredArmor: Chainmail
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: axe
+    PreferredPrimaryWeapon: 'Axe, great-'
+    SecondaryWeapon: Club
+    PreferredRangedWeapon: 'Bow, composite long- (Str 18)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,neck,shoulders'
   -
     ID: 98
     Name: 'Giant Warrior'
@@ -1138,6 +2496,20 @@ classconfigs:
     Equipment: 'HvArmor, HvWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: null
+    Slug: giant_warrior
+    Description: 'Giant champion crushing ranks of smaller foes with colossal greataxes and hurled boulders.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Banded mail'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: axe
+    PreferredPrimaryWeapon: 'Axe, great-'
+    SecondaryWeapon: Club
+    PreferredRangedWeapon: 'Bow, composite long- (Str 18)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,neck,shoulders'
   -
     ID: 99
     Name: 'Mindspy Psion'
@@ -1147,6 +2519,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, Crossbow, PsiFocus, AdventurerKit'
     AbilityPrio: 'Cha, Int, Wis, Dex, Con, Str'
     ShowPCGen: null
+    Slug: mindspy_psion
+    Description: 'Inquisitive psionic spy specializing in mental surveillance, psychic eavesdropping, and mind control.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: dorje
+    ConsumableTypes: 'healing_potion,power_stone'
+    AccessorySlots: 'head,ring,neck'
   -
     ID: 100
     Name: 'Mindspy Psiwarrior'
@@ -1156,6 +2542,20 @@ classconfigs:
     Equipment: 'HvArmor, HvWeapon, Bow, PsiFocus, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Int, Cha'
     ShowPCGen: null
+    Slug: mindspy_psiwarrior
+    Description: 'Psionic operative blending martial heavy weapons, mind-shielding, and psionic infiltration.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, great-'
+    SecondaryWeapon: 'Sword, short'
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: dorje
+    ConsumableTypes: 'healing_potion,power_stone,buff_potion'
+    AccessorySlots: 'waist,shoulders,ring'
   -
     ID: 101
     Name: 'Mindspy Wizard'
@@ -1165,6 +2565,20 @@ classconfigs:
     Equipment: 'Clothing, WizardWeapon, ArcaneFocus, AdventurerKit'
     AbilityPrio: 'Int, Dex, Wis, Con, Cha, Str'
     ShowPCGen: null
+    Slug: mindspy_wizard
+    Description: 'Arcane espionage specialist combining scrying, mind-reading, and undetectable teleportation.'
+    ArmorCategory: none
+    PreferredArmor: Robe
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: staff_club
+    PreferredPrimaryWeapon: Quarterstaff
+    SecondaryWeapon: Dagger
+    PreferredRangedWeapon: 'Crossbow, light'
+    Ammunition: 'Bolt, light (10)'
+    ImplementCategory: wand
+    ConsumableTypes: 'healing_potion,scroll_arcane'
+    AccessorySlots: 'head,ring,shoulders'
   -
     ID: 102
     Name: 'Occult Slayer'
@@ -1174,6 +2588,43 @@ classconfigs:
     Equipment: 'HvArmor, HvWeapon, Bow, AdventurerKit'
     AbilityPrio: 'Str, Con, Dex, Wis, Cha, Int'
     ShowPCGen: null
+    Slug: occult_slayer
+    Description: 'Mage-hunting specialist equipped with greatsword, heavy plate, and supernatural spell-disrupting techniques.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: none
+    PreferredShield: null
+    PrimaryWeaponCategory: sword
+    PreferredPrimaryWeapon: 'Sword, great-'
+    SecondaryWeapon: 'Sword, short'
+    PreferredRangedWeapon: 'Bow, composite long- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,shoulders,ring,neck'
+  -
+    ID: 103
+    Name: Knight
+    ClassID: 4
+    PrimSkills: 'Athle, Ride, WpPla, WpHvB, WpShd, ArmHv, Warfr, CmbIn, FSPow'
+    SecSkills: 'Craft, Percp, Surv, DaSns, FSPre, FSTri, WpBow'
+    Equipment: 'HvArmor, Shield, Lance, Longsword, Bow, AdventurerKit, Mount'
+    AbilityPrio: 'Str, Con, Cha, Dex, Wis, Int'
+    ShowPCGen: 1
+    Slug: cavalry_knight
+    Description: 'Mounted martial champion equipped with full plate, heavy lance, longsword, and heavy shield.'
+    ArmorCategory: heavy
+    PreferredArmor: 'Full plate'
+    ShieldCategory: heavy
+    PreferredShield: 'Shield, heavy steel'
+    PrimaryWeaponCategory: spear_polearm
+    PreferredPrimaryWeapon: Lance
+    SecondaryWeapon: 'Sword, long-'
+    PreferredRangedWeapon: 'Bow, composite short- (Str 14)'
+    Ammunition: 'Arrow, sheaf (20)'
+    ImplementCategory: null
+    ConsumableTypes: 'healing_potion,buff_potion'
+    AccessorySlots: 'waist,shoulders,ring,neck'
 companionimprovements:
   -
     ID: 1
@@ -1565,436 +3016,3 @@ companionimprovements:
     DefMod: 0
     APMod: 20
     Traits: null
-archetypeblueprints:
-  -
-    ID: 1
-    Name: 'Sword Fighter / Swordsman'
-    Slug: sword_fighter
-    Description: 'Heavy martial frontline fighter specializing in longswords, heavy shields, and plated armor.'
-    ArmorCategory: heavy
-    PreferredArmor: 'Full plate'
-    ShieldCategory: heavy
-    PreferredShield: 'Shield, heavy steel'
-    PrimaryWeaponCategory: sword
-    PreferredPrimaryWeapon: 'Sword, long-'
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: 'Bow, composite long-'
-    Ammunition: 'Arrow, sheaf (20)'
-    ImplementCategory: null
-    ConsumableTypes: 'healing_potion,buff_potion'
-    AccessorySlots: 'waist,shoulders,ring,neck'
-    ClassConfigIDs: '9,46,60,91,102'
-  -
-    ID: 2
-    Name: 'Axe Fighter / Axeman'
-    Slug: axe_fighter
-    Description: 'Vigorous warrior wielding brutal battleaxes and greataxes in heavy mail or plate.'
-    ArmorCategory: heavy
-    PreferredArmor: 'Full plate'
-    ShieldCategory: heavy
-    PreferredShield: 'Shield, heavy steel'
-    PrimaryWeaponCategory: axe
-    PreferredPrimaryWeapon: 'Axe, battle-'
-    SecondaryWeapon: Handaxe
-    PreferredRangedWeapon: 'Bow, composite long-'
-    Ammunition: 'Arrow, sheaf (20)'
-    ImplementCategory: null
-    ConsumableTypes: 'healing_potion,buff_potion'
-    AccessorySlots: 'waist,shoulders,ring,neck'
-    ClassConfigIDs: '85,88'
-  -
-    ID: 3
-    Name: 'Mace Fighter / Hammerman'
-    Slug: mace_fighter
-    Description: 'Heavy crushing specialist brandishing warhammers, heavy maces, and morningstars.'
-    ArmorCategory: heavy
-    PreferredArmor: 'Full plate'
-    ShieldCategory: heavy
-    PreferredShield: 'Shield, heavy steel'
-    PrimaryWeaponCategory: mace_hammer
-    PreferredPrimaryWeapon: 'Hammer, war-'
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: 'Crossbow, heavy'
-    Ammunition: 'Bolt, heavy (10)'
-    ImplementCategory: null
-    ConsumableTypes: 'healing_potion,buff_potion'
-    AccessorySlots: 'waist,shoulders,ring,neck'
-    ClassConfigIDs: '86,89'
-  -
-    ID: 4
-    Name: 'Spear Fighter / Spearman'
-    Slug: spear_fighter
-    Description: 'Formation warrior and skirmisher wielding spears, polearms, and halberds.'
-    ArmorCategory: heavy
-    PreferredArmor: 'Banded mail'
-    ShieldCategory: light
-    PreferredShield: 'Shield, light steel'
-    PrimaryWeaponCategory: spear_polearm
-    PreferredPrimaryWeapon: Spear
-    SecondaryWeapon: 'Sword, short-'
-    PreferredRangedWeapon: 'Crossbow, heavy'
-    Ammunition: 'Bolt, heavy (10)'
-    ImplementCategory: null
-    ConsumableTypes: 'healing_potion,buff_potion'
-    AccessorySlots: 'waist,shoulders,ring,neck'
-    ClassConfigIDs: '87,90'
-  -
-    ID: 5
-    Name: 'Cavalryman / Knight'
-    Slug: cavalry_knight
-    Description: 'Mounted champion equipped with full plate, heavy lance, longsword, and heavy shield.'
-    ArmorCategory: heavy
-    PreferredArmor: 'Full plate'
-    ShieldCategory: heavy
-    PreferredShield: 'Shield, heavy steel'
-    PrimaryWeaponCategory: spear_polearm
-    PreferredPrimaryWeapon: 'Lance, heavy'
-    SecondaryWeapon: 'Sword, long-'
-    PreferredRangedWeapon: 'Bow, composite short-'
-    Ammunition: 'Arrow, sheaf (20)'
-    ImplementCategory: null
-    ConsumableTypes: 'healing_potion,buff_potion'
-    AccessorySlots: 'waist,shoulders,ring,neck'
-    ClassConfigIDs: ''
-  -
-    ID: 6
-    Name: 'Barbarian / Berserker'
-    Slug: barbarian
-    Description: 'Ferocious tribal warrior wielding a massive greataxe or greatsword in medium armor.'
-    ArmorCategory: medium
-    PreferredArmor: Breastplate
-    ShieldCategory: none
-    PreferredShield: null
-    PrimaryWeaponCategory: axe
-    PreferredPrimaryWeapon: Greataxe
-    SecondaryWeapon: Handaxe
-    PreferredRangedWeapon: 'Bow, composite short-'
-    Ammunition: 'Arrow, sheaf (20)'
-    ImplementCategory: null
-    ConsumableTypes: 'healing_potion,buff_potion'
-    AccessorySlots: 'waist,shoulders,neck,feet'
-    ClassConfigIDs: '10'
-  -
-    ID: 7
-    Name: 'Duelist / Swashbuckler'
-    Slug: duelist
-    Description: 'Agile, stylish combatant fighting with rapiers, bucklers, and main-gauche daggers.'
-    ArmorCategory: light
-    PreferredArmor: 'Studded leather'
-    ShieldCategory: buckler
-    PreferredShield: Buckler
-    PrimaryWeaponCategory: finesse
-    PreferredPrimaryWeapon: Rapier
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: 'Crossbow, light'
-    Ammunition: 'Bolt, light (10)'
-    ImplementCategory: null
-    ConsumableTypes: 'healing_potion,buff_potion'
-    AccessorySlots: 'feet,ring,shoulders,hands'
-    ClassConfigIDs: '11'
-  -
-    ID: 8
-    Name: 'Archer / Ranger'
-    Slug: archery_ranger
-    Description: 'Deadeye wilderness scout and sniper with composite bows and light armor.'
-    ArmorCategory: light
-    PreferredArmor: 'Studded leather'
-    ShieldCategory: none
-    PreferredShield: null
-    PrimaryWeaponCategory: ranged
-    PreferredPrimaryWeapon: 'Bow, composite long-'
-    SecondaryWeapon: 'Sword, short-'
-    PreferredRangedWeapon: 'Bow, composite long-'
-    Ammunition: 'Arrow, sheaf (20)'
-    ImplementCategory: null
-    ConsumableTypes: 'healing_potion,buff_potion'
-    AccessorySlots: 'feet,shoulders,hands,ring'
-    ClassConfigIDs: '20,21,47,68'
-  -
-    ID: 9
-    Name: 'Rogue / Scout / Assassin'
-    Slug: rogue_scout
-    Description: 'Stealthy infiltrator using daggers, shortswords, light crossbows, and thieves tools.'
-    ArmorCategory: light
-    PreferredArmor: 'Leather armor'
-    ShieldCategory: none
-    PreferredShield: null
-    PrimaryWeaponCategory: finesse
-    PreferredPrimaryWeapon: 'Sword, short-'
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: 'Crossbow, light'
-    Ammunition: 'Bolt, light (10)'
-    ImplementCategory: null
-    ConsumableTypes: 'healing_potion,buff_potion'
-    AccessorySlots: 'feet,hands,ring,waist'
-    ClassConfigIDs: '22,48,49,50,64'
-  -
-    ID: 10
-    Name: 'Cleric of Life / Healer'
-    Slug: cleric_life
-    Description: 'Devout priest clothed in medium armor with wooden shield, heavy mace, and silver holy symbol.'
-    ArmorCategory: medium
-    PreferredArmor: Breastplate
-    ShieldCategory: heavy
-    PreferredShield: 'Shield, heavy wooden'
-    PrimaryWeaponCategory: mace_hammer
-    PreferredPrimaryWeapon: 'Mace, heavy'
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: 'Crossbow, light'
-    Ammunition: 'Bolt, light (10)'
-    ImplementCategory: holy_symbol
-    ConsumableTypes: 'healing_potion,scroll_divine,buff_potion'
-    AccessorySlots: 'neck,shoulders,ring,waist'
-    ClassConfigIDs: '4'
-  -
-    ID: 11
-    Name: 'Cleric of War / Crusader'
-    Slug: cleric_war
-    Description: 'Battle priest in full plate armor with steel shield, warhammer or flail, and war holy symbol.'
-    ArmorCategory: heavy
-    PreferredArmor: 'Full plate'
-    ShieldCategory: heavy
-    PreferredShield: 'Shield, heavy steel'
-    PrimaryWeaponCategory: mace_hammer
-    PreferredPrimaryWeapon: 'Hammer, war-'
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: 'Crossbow, heavy'
-    Ammunition: 'Bolt, heavy (10)'
-    ImplementCategory: holy_symbol
-    ConsumableTypes: 'healing_potion,buff_potion,scroll_divine'
-    AccessorySlots: 'neck,shoulders,ring,waist'
-    ClassConfigIDs: '5,7'
-  -
-    ID: 12
-    Name: 'Cleric of Knowledge / Scholar Priest'
-    Slug: cleric_knowledge
-    Description: 'Scholarly divine investigator in medium armor with light shield, mace, and spell scrolls.'
-    ArmorCategory: medium
-    PreferredArmor: 'Scale mail'
-    ShieldCategory: light
-    PreferredShield: 'Shield, light wooden'
-    PrimaryWeaponCategory: mace_hammer
-    PreferredPrimaryWeapon: 'Mace, light'
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: 'Crossbow, light'
-    Ammunition: 'Bolt, light (10)'
-    ImplementCategory: holy_symbol
-    ConsumableTypes: 'healing_potion,scroll_divine'
-    AccessorySlots: 'head,neck,ring,shoulders'
-    ClassConfigIDs: '6'
-  -
-    ID: 13
-    Name: 'Druid / Nature Warden'
-    Slug: druid
-    Description: 'Protector of the wild wearing non-metallic hide armor with wooden shield, scimitar, and mistletoe.'
-    ArmorCategory: light
-    PreferredArmor: 'Hide armor'
-    ShieldCategory: heavy
-    PreferredShield: 'Shield, heavy wooden'
-    PrimaryWeaponCategory: sword
-    PreferredPrimaryWeapon: Scimitar
-    SecondaryWeapon: Sickle
-    PreferredRangedWeapon: Sling
-    Ammunition: 'Bullet, sling (10)'
-    ImplementCategory: druidic_focus
-    ConsumableTypes: 'healing_potion,scroll_divine,buff_potion'
-    AccessorySlots: 'neck,shoulders,ring,waist'
-    ClassConfigIDs: '8'
-  -
-    ID: 14
-    Name: 'Witch Doctor / Shaman / Adept'
-    Slug: witch_doctor
-    Description: 'Mystic tribal practitioner in hide/leather with ritual staff, fetish focus, and brews.'
-    ArmorCategory: light
-    PreferredArmor: 'Leather armor'
-    ShieldCategory: none
-    PreferredShield: null
-    PrimaryWeaponCategory: staff_club
-    PreferredPrimaryWeapon: Quarterstaff
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: Sling
-    Ammunition: 'Bullet, sling (10)'
-    ImplementCategory: druidic_focus
-    ConsumableTypes: 'healing_potion,buff_potion,scroll_divine'
-    AccessorySlots: 'neck,head,ring,hands'
-    ClassConfigIDs: '43,44,45'
-  -
-    ID: 15
-    Name: 'Battlemage / War Wizard'
-    Slug: battlemage
-    Description: 'Martial spellcaster in chain shirt or enchanted bracers with longsword, wand, and combat spells.'
-    ArmorCategory: light
-    PreferredArmor: 'Chain shirt'
-    ShieldCategory: none
-    PreferredShield: null
-    PrimaryWeaponCategory: sword
-    PreferredPrimaryWeapon: 'Sword, long-'
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: 'Crossbow, light'
-    Ammunition: 'Bolt, light (10)'
-    ImplementCategory: wand
-    ConsumableTypes: 'healing_potion,scroll_arcane,buff_potion'
-    AccessorySlots: 'arms,ring,shoulders,head'
-    ClassConfigIDs: '51,52'
-  -
-    ID: 16
-    Name: 'Arcane Caster (Wizard / Sorcerer)'
-    Slug: arcane_caster
-    Description: 'Scholarly or intuitive arcane caster in wizard robes with quarterstaff, wand, and spell scrolls.'
-    ArmorCategory: none
-    PreferredArmor: "Monk's Robes"
-    ShieldCategory: none
-    PreferredShield: null
-    PrimaryWeaponCategory: staff_club
-    PreferredPrimaryWeapon: Quarterstaff
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: 'Crossbow, light'
-    Ammunition: 'Bolt, light (10)'
-    ImplementCategory: wand
-    ConsumableTypes: 'healing_potion,scroll_arcane'
-    AccessorySlots: 'head,ring,shoulders,neck'
-    ClassConfigIDs: '23,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,101'
-  -
-    ID: 17
-    Name: 'Psionic Manifester (Psion)'
-    Slug: psionic_manifester
-    Description: 'Disciplined mind manifesting psychic powers in comfortable attire with staff, dorje, and power stones.'
-    ArmorCategory: none
-    PreferredArmor: "Monk's Robes"
-    ShieldCategory: none
-    PreferredShield: null
-    PrimaryWeaponCategory: staff_club
-    PreferredPrimaryWeapon: Quarterstaff
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: 'Crossbow, light'
-    Ammunition: 'Bolt, light (10)'
-    ImplementCategory: dorje
-    ConsumableTypes: 'healing_potion,power_stone'
-    AccessorySlots: 'head,ring,shoulders,waist'
-    ClassConfigIDs: '13,14,15,16,17,18,99'
-  -
-    ID: 18
-    Name: 'Psychic Warrior / Mind Blade'
-    Slug: psiwarrior
-    Description: 'Psionic martial powerhouse clad in heavy armor with greatsword, composite bow, and power stones.'
-    ArmorCategory: heavy
-    PreferredArmor: 'Full plate'
-    ShieldCategory: heavy
-    PreferredShield: 'Shield, heavy steel'
-    PrimaryWeaponCategory: sword
-    PreferredPrimaryWeapon: 'Sword, great-'
-    SecondaryWeapon: 'Sword, short-'
-    PreferredRangedWeapon: 'Bow, composite long-'
-    Ammunition: 'Arrow, sheaf (20)'
-    ImplementCategory: dorje
-    ConsumableTypes: 'healing_potion,power_stone,buff_potion'
-    AccessorySlots: 'waist,shoulders,ring,neck'
-    ClassConfigIDs: '19,100'
-  -
-    ID: 19
-    Name: 'Monk / Martial Artist'
-    Slug: unarmed_monk
-    Description: 'Ascetic martial artist fighting unarmored with monk weapons, sling, and defensive bracers.'
-    ArmorCategory: none
-    PreferredArmor: "Monk's Robes"
-    ShieldCategory: none
-    PreferredShield: null
-    PrimaryWeaponCategory: monk_weapon
-    PreferredPrimaryWeapon: Quarterstaff
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: Sling
-    Ammunition: 'Bullet, sling (10)'
-    ImplementCategory: null
-    ConsumableTypes: 'healing_potion,buff_potion'
-    AccessorySlots: 'arms,feet,ring,waist'
-    ClassConfigIDs: '12,92,93,94,95,96'
-  -
-    ID: 20
-    Name: 'Templar / Holy Knight'
-    Slug: templar
-    Description: 'Righteous holy knight in full plate with heavy shield, longsword, holy symbol, and war mount gear.'
-    ArmorCategory: heavy
-    PreferredArmor: 'Full plate'
-    ShieldCategory: heavy
-    PreferredShield: 'Shield, heavy steel'
-    PrimaryWeaponCategory: sword
-    PreferredPrimaryWeapon: 'Sword, long-'
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: 'Bow, composite long-'
-    Ammunition: 'Arrow, sheaf (20)'
-    ImplementCategory: holy_symbol
-    ConsumableTypes: 'healing_potion,buff_potion,scroll_divine'
-    AccessorySlots: 'neck,shoulders,ring,waist'
-    ClassConfigIDs: '24,25,26,27'
-  -
-    ID: 21
-    Name: 'Savage / Giant Berserker'
-    Slug: savage_berserker
-    Description: 'Raw barbarian fighter in hides wielding enormous greataxes and heavy clubs.'
-    ArmorCategory: medium
-    PreferredArmor: 'Hide armor'
-    ShieldCategory: none
-    PreferredShield: null
-    PrimaryWeaponCategory: axe
-    PreferredPrimaryWeapon: Greataxe
-    SecondaryWeapon: Club
-    PreferredRangedWeapon: 'Bow, composite short-'
-    Ammunition: 'Arrow, sheaf (20)'
-    ImplementCategory: null
-    ConsumableTypes: 'healing_potion,buff_potion'
-    AccessorySlots: 'waist,neck,shoulders'
-    ClassConfigIDs: '61,97,98'
-  -
-    ID: 22
-    Name: Gladiator
-    Slug: gladiator
-    Description: 'Arena fighter wielding tridents, nets, exotic blades, and medium chainmail.'
-    ArmorCategory: medium
-    PreferredArmor: Chainmail
-    ShieldCategory: heavy
-    PreferredShield: 'Shield, heavy steel'
-    PrimaryWeaponCategory: spear_polearm
-    PreferredPrimaryWeapon: Trident
-    SecondaryWeapon: 'Sword, short-'
-    PreferredRangedWeapon: Javelin
-    Ammunition: null
-    ImplementCategory: null
-    ConsumableTypes: 'healing_potion,buff_potion'
-    AccessorySlots: 'arms,waist,shoulders'
-    ClassConfigIDs: '65'
-  -
-    ID: 23
-    Name: 'Aristocrat / Diplomat'
-    Slug: aristocrat
-    Description: 'Highborn noble or diplomat in padded silk attire with fine rapier and buckler.'
-    ArmorCategory: light
-    PreferredArmor: 'Padded armor'
-    ShieldCategory: buckler
-    PreferredShield: Buckler
-    PrimaryWeaponCategory: finesse
-    PreferredPrimaryWeapon: Rapier
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: 'Crossbow, hand'
-    Ammunition: 'Bolt, hand (10)'
-    ImplementCategory: null
-    ConsumableTypes: healing_potion
-    AccessorySlots: 'ring,neck,shoulders'
-    ClassConfigIDs: '1,2,3,53,54'
-  -
-    ID: 24
-    Name: 'Commoner / Laborer / Craftsman'
-    Slug: commoner
-    Description: 'Townsfolk, artisan, or farmer wearing everyday clothing with work club, dagger, and sling.'
-    ArmorCategory: none
-    PreferredArmor: 'Fine clothing'
-    ShieldCategory: none
-    PreferredShield: null
-    PrimaryWeaponCategory: simple
-    PreferredPrimaryWeapon: Club
-    SecondaryWeapon: Dagger
-    PreferredRangedWeapon: Sling
-    Ammunition: 'Bullet, sling (10)'
-    ImplementCategory: null
-    ConsumableTypes: healing_potion
-    AccessorySlots: 'waist,feet'
-    ClassConfigIDs: '55,56,57,58,59'

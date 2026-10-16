@@ -17,8 +17,9 @@ class CombatSimulatorController extends Controller
     {
         $combatants = CombatSimulatorService::getAvailableCombatants();
 
-        // Defaults: Side A = Sword Fighter (Archetype 1) Lvl 5, Side B = Bugbear (Creature 54) Lvl 5
-        $defaultA = CombatSimulatorService::buildCombatant('npc', 1, 5);
+        // Defaults: Side A = First available Class Config / Archetype Lvl 5, Side B = Bugbear (Creature 54) Lvl 5
+        $firstArchId = !empty($combatants['archetypes']) ? (int)$combatants['archetypes'][0]['id'] : 9;
+        $defaultA = CombatSimulatorService::buildCombatant('npc', $firstArchId, 5);
         $defaultB = CombatSimulatorService::buildCombatant('monster', 54, 5);
 
         return view('utilities.combat_simulator', [

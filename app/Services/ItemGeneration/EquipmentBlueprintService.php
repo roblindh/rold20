@@ -18,6 +18,30 @@ class EquipmentBlueprintService
     public const ARCHETYPE_PSIONIC_MANIFESTER = 'psionic_manifester';
 
     /**
+     * Map of legacy archetype slugs to modern class config slugs
+     */
+    public const LEGACY_SLUG_MAP = [
+        'heavy_martial' => 'fighter',
+        'sword_fighter' => 'fighter',
+        'swordsman' => 'swordsman',
+        'agile_skirmisher' => 'rogue',
+        'rogue_scout' => 'rogue',
+        'archery_ranger' => 'ranger',
+        'arcane_caster' => 'wizard',
+        'divine_caster' => 'cleric_of_life',
+        'cleric_life' => 'cleric_of_life',
+        'cleric_war' => 'cleric_of_war',
+        'cleric_knowledge' => 'cleric_of_knowledge',
+        'unarmed_monk' => 'monk',
+        'psionic_manifester' => 'seer',
+        'psiwarrior' => 'psiwarrior',
+        'barbarian' => 'barbarian_fighter',
+        'duelist' => 'duelist_fighter',
+        'knight' => 'cavalry_knight',
+        'cavalry' => 'cavalry_knight',
+    ];
+
+    /**
      * Ensure application rules data is loaded
      */
     public static function ensureAppLoaded(): void
@@ -26,38 +50,48 @@ class EquipmentBlueprintService
     }
 
     /**
-     * Get all archetype blueprints from cache or database
+     * Get all class configuration blueprints from cache or database
      */
     public static function getAllBlueprints(): array
     {
         self::ensureAppLoaded();
         global $_APP;
 
-        if (!empty($_APP['archetypeblueprints'])) {
-            return array_values($_APP['archetypeblueprints']);
+        if (!empty($_APP['classconfigs'])) {
+            return array_values($_APP['classconfigs']);
         }
 
         try {
-            return DB::table('ref_archetypeblueprints')->orderBy('ID')->get()->map(fn($r) => (array)$r)->toArray();
+            return DB::table('ref_classconfigs')->orderBy('ID')->get()->map(fn($r) => (array)$r)->toArray();
         } catch (\Throwable $e) {
             return [];
         }
     }
 
     /**
-     * Get a single blueprint by ID, Slug, or Name
+     * Get a single blueprint/class configuration by ID, Slug, or Name
      */
     public static function getBlueprint(string|int $key): ?array
     {
         self::ensureAppLoaded();
         global $_APP;
 
-        if (is_numeric($key) && isset($_APP['archetypeblueprints'][(int)$key])) {
-            return $_APP['archetypeblueprints'][(int)$key];
+        if (is_numeric($key) && isset($_APP['classconfigs'][(int)$key])) {
+            return $_APP['classconfigs'][(int)$key];
         }
 
         $all = self::getAllBlueprints();
         $strKey = strtolower(trim((string)$key));
+
+        // Check legacy slug aliases
+        if (isset(self::LEGACY_SLUG_MAP[$strKey])) {
+            $mappedSlug = self::LEGACY_SLUG_MAP[$strKey];
+            foreach ($all as $bp) {
+                if (strtolower($bp['Slug'] ?? '') === $mappedSlug) {
+                    return $bp;
+                }
+            }
+        }
 
         foreach ($all as $bp) {
             if ((string)($bp['ID'] ?? '') === (string)$key) {
@@ -71,9 +105,14 @@ class EquipmentBlueprintService
             }
         }
 
-        // Search by partial match on Slug
+        // Search by partial match on Slug or Name
         foreach ($all as $bp) {
-            if (str_contains(strtolower($bp['Slug'] ?? ''), $strKey) || str_contains($strKey, strtolower($bp['Slug'] ?? ''))) {
+            $bpSlug = strtolower($bp['Slug'] ?? '');
+            $bpName = strtolower($bp['Name'] ?? '');
+            if ($bpSlug && (str_contains($bpSlug, $strKey) || str_contains($strKey, $bpSlug))) {
+                return $bp;
+            }
+            if ($bpName && (str_contains($bpName, $strKey) || str_contains($strKey, $bpName))) {
                 return $bp;
             }
         }
@@ -82,7 +121,7 @@ class EquipmentBlueprintService
     }
 
     /**
-     * Resolve the archetype blueprint for a given class configuration, class name, or skills.
+     * Resolve the class configuration blueprint for a given class configuration, class name, or skills.
      */
     public static function resolveBlueprint(?int $classConfigId, ?string $className = null, ?string $skills = null): array
     {
@@ -91,11 +130,11 @@ class EquipmentBlueprintService
 
         $all = self::getAllBlueprints();
         if (empty($all)) {
-            // Fallback default structure if table empty
+            // Fallback default structure
             return [
-                'ID' => 1,
-                'Name' => 'Sword Fighter / Swordsman',
-                'Slug' => 'sword_fighter',
+                'ID' => 9,
+                'Name' => 'Fighter',
+                'Slug' => 'fighter',
                 'ArmorCategory' => 'heavy',
                 'PreferredArmor' => 'Full plate',
                 'ShieldCategory' => 'heavy',
@@ -103,7 +142,7 @@ class EquipmentBlueprintService
                 'PrimaryWeaponCategory' => 'sword',
                 'PreferredPrimaryWeapon' => 'Sword, long-',
                 'SecondaryWeapon' => 'Dagger',
-                'PreferredRangedWeapon' => 'Bow, composite long-',
+                'PreferredRangedWeapon' => 'Bow, composite long- (Str 14)',
                 'Ammunition' => 'Arrow, sheaf (20)',
                 'ImplementCategory' => null,
                 'ConsumableTypes' => 'healing_potion,buff_potion',
@@ -111,30 +150,19 @@ class EquipmentBlueprintService
             ];
         }
 
-        // 1. Check direct ClassConfigIDs matching
+        // 1. Direct Class Config ID matching
         if ($classConfigId) {
-            foreach ($all as $bp) {
-                $rawIds = $bp['ClassConfigIDs'] ?? '';
-                if (!empty($rawIds)) {
-                    $ids = array_map('intval', array_filter(array_map('trim', explode(',', (string)$rawIds))));
-                    if (in_array((int)$classConfigId, $ids, true)) {
-                        return $bp;
-                    }
-                }
+            if (isset($_APP['classconfigs'][(int)$classConfigId])) {
+                return $_APP['classconfigs'][(int)$classConfigId];
             }
-
-            // Check config name keywords
-            if (isset($_APP['classconfigs'][$classConfigId])) {
-                $conf = $_APP['classconfigs'][$classConfigId];
-                $name = strtolower($conf['Name'] ?? '');
-                $bp = self::matchBlueprintByNameKeywords($name, $all);
-                if ($bp) {
+            foreach ($all as $bp) {
+                if ((int)($bp['ID'] ?? 0) === (int)$classConfigId) {
                     return $bp;
                 }
             }
         }
 
-        // 2. Check class name keywords
+        // 2. Check class name or config name keywords
         if ($className) {
             $bp = self::matchBlueprintByNameKeywords(strtolower($className), $all);
             if ($bp) {
@@ -146,23 +174,36 @@ class EquipmentBlueprintService
         if ($skills) {
             $sk = strtolower($skills);
             if (str_contains($sk, 'arcm') || str_contains($sk, 'arcil') || str_contains($sk, 'arcev')) {
-                return self::getBlueprint('arcane_caster') ?? $all[0];
+                return self::getBlueprint('wizard') ?? $all[0];
             }
             if (str_contains($sk, 'divli') || str_contains($sk, 'divpr') || str_contains($sk, 'divch')) {
-                return self::getBlueprint('cleric_life') ?? $all[0];
+                return self::getBlueprint('cleric_of_life') ?? $all[0];
             }
-            if (str_contains($sk, 'psic') || str_contains($sk, 'psit')) {
-                return self::getBlueprint('psionic_manifester') ?? $all[0];
+            if (str_contains($sk, 'psic') || str_contains($sk, 'psit') || str_contains($sk, 'psics')) {
+                return self::getBlueprint('seer') ?? $all[0];
+            }
+            if (str_contains($sk, 'wpbow') || str_contains($sk, 'wpcrs')) {
+                return self::getBlueprint('archer') ?? self::getBlueprint('ranger') ?? $all[0];
+            }
+            if (str_contains($sk, 'wpaxe')) {
+                return self::getBlueprint('axe_fighter') ?? $all[0];
+            }
+            if (str_contains($sk, 'wpspr') || str_contains($sk, 'wppla')) {
+                return self::getBlueprint('spear_fighter') ?? $all[0];
+            }
+            if (str_contains($sk, 'wpclb') || str_contains($sk, 'wpfll')) {
+                return self::getBlueprint('mace_fighter') ?? $all[0];
             }
             if (str_contains($sk, 'armhv') || str_contains($sk, 'wphvb')) {
-                return self::getBlueprint('sword_fighter') ?? $all[0];
+                return self::getBlueprint('fighter') ?? $all[0];
             }
             if (str_contains($sk, 'armlt') || str_contains($sk, 'wpfnc') || str_contains($sk, 'thiev')) {
-                return self::getBlueprint('rogue_scout') ?? $all[0];
+                return self::getBlueprint('rogue') ?? $all[0];
             }
         }
 
-        return $all[0];
+        // Default to Fighter (ID 9) or first config
+        return self::getBlueprint(9) ?? $all[0];
     }
 
     /**
@@ -170,71 +211,96 @@ class EquipmentBlueprintService
      */
     protected static function matchBlueprintByNameKeywords(string $name, array $all): ?array
     {
-        if (str_contains($name, 'cleric of life') || str_contains($name, 'healer')) {
-            return self::getBlueprint('cleric_life');
+        $n = strtolower($name);
+        if (str_contains($n, 'cleric of life') || str_contains($n, 'healer')) {
+            return self::getBlueprint('cleric_of_life');
         }
-        if (str_contains($name, 'cleric of war') || str_contains($name, 'cleric of destruction') || str_contains($name, 'crusader')) {
-            return self::getBlueprint('cleric_war');
+        if (str_contains($n, 'cleric of war') || str_contains($n, 'crusader')) {
+            return self::getBlueprint('cleric_of_war');
         }
-        if (str_contains($name, 'cleric of knowledge')) {
-            return self::getBlueprint('cleric_knowledge');
+        if (str_contains($n, 'cleric of destruction')) {
+            return self::getBlueprint('cleric_of_destruction');
         }
-        if (str_contains($name, 'druid')) {
+        if (str_contains($n, 'cleric of knowledge')) {
+            return self::getBlueprint('cleric_of_knowledge');
+        }
+        if (str_contains($n, 'cleric')) {
+            return self::getBlueprint('cleric_of_life');
+        }
+        if (str_contains($n, 'druid')) {
             return self::getBlueprint('druid');
         }
-        if (str_contains($name, 'witch doctor') || str_contains($name, 'shaman') || str_contains($name, 'adept')) {
+        if (str_contains($n, 'witch doctor')) {
             return self::getBlueprint('witch_doctor');
         }
-        if (str_contains($name, 'battlemage') || str_contains($name, 'war wizard')) {
+        if (str_contains($n, 'shaman')) {
+            return self::getBlueprint('shaman');
+        }
+        if (str_contains($n, 'battlemage') || str_contains($n, 'war wizard')) {
             return self::getBlueprint('battlemage');
         }
-        if (str_contains($name, 'barbarian') || str_contains($name, 'berserker')) {
-            return self::getBlueprint('barbarian');
+        if (str_contains($n, 'barbarian') || str_contains($n, 'berserker')) {
+            return self::getBlueprint('barbarian_fighter');
         }
-        if (str_contains($name, 'duelist') || str_contains($name, 'fencer') || str_contains($name, 'swashbuckler')) {
-            return self::getBlueprint('duelist');
+        if (str_contains($n, 'duelist') || str_contains($n, 'fencer') || str_contains($n, 'swashbuckler')) {
+            return self::getBlueprint('duelist_fighter');
         }
-        if (str_contains($name, 'ranger') || str_contains($name, 'archer') || str_contains($name, 'arcane archer')) {
-            return self::getBlueprint('archery_ranger');
+        if (str_contains($n, 'archer')) {
+            return self::getBlueprint('archer');
         }
-        if (str_contains($name, 'axe fighter') || str_contains($name, 'axeman')) {
+        if (str_contains($n, 'ranger')) {
+            return self::getBlueprint('ranger');
+        }
+        if (str_contains($n, 'axe fighter') || str_contains($n, 'axeman')) {
             return self::getBlueprint('axe_fighter');
         }
-        if (str_contains($name, 'mace fighter') || str_contains($name, 'maceman')) {
+        if (str_contains($n, 'mace fighter') || str_contains($n, 'maceman')) {
             return self::getBlueprint('mace_fighter');
         }
-        if (str_contains($name, 'spear fighter') || str_contains($name, 'spearman')) {
+        if (str_contains($n, 'spear fighter') || str_contains($n, 'spearman')) {
             return self::getBlueprint('spear_fighter');
         }
-        if (str_contains($name, 'monk') || str_contains($name, 'student of')) {
-            return self::getBlueprint('unarmed_monk');
+        if (str_contains($n, 'monk') || str_contains($n, 'student of')) {
+            return self::getBlueprint('monk');
         }
-        if (str_contains($name, 'psiwarrior') || str_contains($name, 'mind blade')) {
+        if (str_contains($n, 'psiwarrior') || str_contains($n, 'psychic warrior') || str_contains($n, 'mind blade')) {
             return self::getBlueprint('psiwarrior');
         }
-        if (str_contains($name, 'psion') || str_contains($name, 'seer') || str_contains($name, 'shaper') || str_contains($name, 'savant') || str_contains($name, 'egoist') || str_contains($name, 'nomad') || str_contains($name, 'telepath')) {
-            return self::getBlueprint('psionic_manifester');
+        if (str_contains($n, 'psion') || str_contains($n, 'seer') || str_contains($n, 'shaper') || str_contains($n, 'savant') || str_contains($n, 'egoist') || str_contains($n, 'nomad') || str_contains($n, 'telepath')) {
+            return self::getBlueprint('seer');
         }
-        if (str_contains($name, 'templar') || str_contains($name, 'paladin')) {
-            return self::getBlueprint('templar');
+        if (str_contains($n, 'templar') || str_contains($n, 'paladin')) {
+            return self::getBlueprint('templar_of_honor');
         }
-        if (str_contains($name, 'knight') || str_contains($name, 'cavalry')) {
+        if (str_contains($n, 'knight') || str_contains($n, 'cavalry')) {
             return self::getBlueprint('cavalry_knight');
         }
-        if (str_contains($name, 'gladiator')) {
+        if (str_contains($n, 'gladiator')) {
             return self::getBlueprint('gladiator');
         }
-        if (str_contains($name, 'rogue') || str_contains($name, 'assassin') || str_contains($name, 'scout') || str_contains($name, 'spy') || str_contains($name, 'smuggler') || str_contains($name, 'thug')) {
-            return self::getBlueprint('rogue_scout');
+        if (str_contains($n, 'assassin')) {
+            return self::getBlueprint('assassin');
         }
-        if (str_contains($name, 'wizard') || str_contains($name, 'sorcerer') || str_contains($name, 'mage') || str_contains($name, 'mancer') || str_contains($name, 'conjurer') || str_contains($name, 'enchanter') || str_contains($name, 'necromancer') || str_contains($name, 'abjurer') || str_contains($name, 'illuminist') || str_contains($name, 'illusionist')) {
-            return self::getBlueprint('arcane_caster');
+        if (str_contains($n, 'rogue') || str_contains($n, 'scout') || str_contains($n, 'spy') || str_contains($n, 'smuggler') || str_contains($n, 'thug')) {
+            return self::getBlueprint('rogue');
         }
-        if (str_contains($name, 'aristocrat') || str_contains($name, 'politician') || str_contains($name, 'bard')) {
+        if (str_contains($n, 'sorcerer')) {
+            return self::getBlueprint('sorcerer');
+        }
+        if (str_contains($n, 'wizard') || str_contains($n, 'mage') || str_contains($n, 'mancer') || str_contains($n, 'conjurer') || str_contains($n, 'enchanter') || str_contains($n, 'necromancer') || str_contains($n, 'abjurer') || str_contains($n, 'illuminist') || str_contains($n, 'illusionist')) {
+            return self::getBlueprint('wizard');
+        }
+        if (str_contains($n, 'aristocrat') || str_contains($n, 'politician') || str_contains($n, 'noble')) {
             return self::getBlueprint('aristocrat');
         }
-        if (str_contains($name, 'commoner') || str_contains($name, 'laborer') || str_contains($name, 'servant') || str_contains($name, 'craftsman') || str_contains($name, 'sage') || str_contains($name, 'merchant')) {
-            return self::getBlueprint('commoner');
+        if (str_contains($n, 'bard')) {
+            return self::getBlueprint('bard');
+        }
+        if (str_contains($n, 'commoner') || str_contains($n, 'laborer') || str_contains($n, 'servant') || str_contains($n, 'craftsman') || str_contains($n, 'sage') || str_contains($n, 'merchant') || str_contains($n, 'peasant')) {
+            return self::getBlueprint('laborer');
+        }
+        if (str_contains($n, 'fighter') || str_contains($n, 'swordsman') || str_contains($n, 'soldier') || str_contains($n, 'guard')) {
+            return self::getBlueprint('fighter');
         }
 
         return null;
@@ -383,12 +449,14 @@ class EquipmentBlueprintService
         $preferred = $options['armor_base'] ?? $blueprint['PreferredArmor'] ?? null;
 
         if ($category === 'none') {
-            if ($level >= 8 && ($blueprint['Slug'] === 'unarmed_monk' || $blueprint['Slug'] === 'arcane_caster' || $blueprint['Slug'] === 'psionic_manifester')) {
+            if ($level >= 8 && in_array($blueprint['Slug'] ?? '', ['monk', 'wizard', 'sorcerer', 'seer', 'shaper', 'savant', 'egoist', 'nomad', 'telepath', 'unarmed_monk', 'arcane_caster', 'psionic_manifester'])) {
                 // Bracers of Armor
                 return ProceduralItemFactory::generateWondrousItem($level, ['slot' => 'arms', 'max_budget_sp' => $maxBudgetSp]);
             }
-            return ProceduralItemFactory::instantiateItem("Monk's Robes (Item=Robe)")
-                ?? ProceduralItemFactory::instantiateItem("Fine Clothing (Item=Robe)");
+            if (!empty($preferred)) {
+                return ProceduralItemFactory::instantiateItem("{$preferred} (Item={$preferred})");
+            }
+            return null;
         }
 
         return ProceduralItemFactory::generateArmor($level, [
@@ -423,18 +491,24 @@ class EquipmentBlueprintService
     protected static function generateLoadoutPrimaryWeapon(array $blueprint, int $level, float $maxBudgetSp, array $options): ?array
     {
         $preferred = $options['weapon_base'] ?? $blueprint['PreferredPrimaryWeapon'] ?? null;
-        $category = $blueprint['PrimaryWeaponCategory'] ?? 'sword';
+        $category = $blueprint['PrimaryWeaponCategory'] ?? null;
+
+        if (empty($preferred) && (empty($category) || $category === 'none' || $category === 'natural')) {
+            return null;
+        }
+
+        $cat = $category ?: 'sword';
 
         if ($preferred) {
             return ProceduralItemFactory::generateWeapon($level, [
                 'base_item' => $preferred,
-                'category' => $category,
+                'category' => $cat,
                 'max_budget_sp' => $maxBudgetSp,
             ]);
         }
 
         return ProceduralItemFactory::generateWeapon($level, [
-            'category' => $category,
+            'category' => $cat,
             'max_budget_sp' => $maxBudgetSp,
         ]);
     }
@@ -548,6 +622,10 @@ class EquipmentBlueprintService
                 return ProceduralItemFactory::generateWand($level, ['type' => 'dorje', 'max_power_cost' => 2]);
             }
             return ProceduralItemFactory::instantiateItem("Psionic Focus (Item=Rod)");
+        }
+
+        if ($category === 'instrument') {
+            return ProceduralItemFactory::instantiateItem("Lute (Item=Lute)");
         }
 
         return null;

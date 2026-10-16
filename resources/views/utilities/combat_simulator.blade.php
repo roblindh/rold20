@@ -81,9 +81,9 @@
 
                     <div class="sm:col-span-7">
                         <label class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
-                            <span x-text="sideA.type === 'npc' ? 'NPC Archetype' : 'Monster / Creature'"></span>
+                            <span x-text="sideA.type === 'npc' ? 'Class Configuration' : 'Monster / Creature'"></span>
                         </label>
-                        <!-- NPC Archetype Select -->
+                        <!-- NPC Class Configuration Select -->
                         <select x-show="sideA.type === 'npc'" x-model="sideA.id" @change="onCombatantChange('sideA')" class="w-full text-xs font-medium rounded-lg border border-stone-300 bg-white py-1.5 px-2.5 shadow-xs focus:ring-2 focus:ring-blue-500">
                             @foreach($archetypes as $arch)
                                 <option value="{{ $arch['id'] }}">{{ $arch['name'] }}</option>
@@ -231,9 +231,9 @@
 
                     <div class="sm:col-span-7">
                         <label class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
-                            <span x-text="sideB.type === 'npc' ? 'NPC Archetype' : 'Monster / Creature'"></span>
+                            <span x-text="sideB.type === 'npc' ? 'Class Configuration' : 'Monster / Creature'"></span>
                         </label>
-                        <!-- NPC Archetype Select -->
+                        <!-- NPC Class Configuration Select -->
                         <select x-show="sideB.type === 'npc'" x-model="sideB.id" @change="onCombatantChange('sideB')" class="w-full text-xs font-medium rounded-lg border border-stone-300 bg-white py-1.5 px-2.5 shadow-xs focus:ring-2 focus:ring-rose-500">
                             @foreach($archetypes as $arch)
                                 <option value="{{ $arch['id'] }}">{{ $arch['name'] }}</option>
