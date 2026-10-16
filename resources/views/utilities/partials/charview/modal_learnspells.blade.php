@@ -153,7 +153,7 @@
                                                 <div class="min-w-0 flex-1">
                                                     <span class="text-[11px] font-semibold text-slate-800 block truncate" x-text="opt.Name"></span>
                                                     <template x-if="opt.Cost">
-                                                        <span class="text-[10px] text-indigo-900 font-mono" x-text="opt.Cost"></span>
+                                                        <span class="text-[10px] text-indigo-900 font-mono" x-text="String(opt.Cost || '').replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, ', ').replace(/\s*,\s*/g, ', ')"></span>
                                                     </template>
                                                 </div>
                                             </div>

@@ -198,7 +198,7 @@
                                         <div class="min-w-0 flex-1">
                                             <div class="flex items-center justify-between gap-1">
                                                 <span class="font-semibold text-stone-900 text-[11px] truncate" x-text="opt.Name"></span>
-                                                <span class="text-[10px] font-mono font-bold text-indigo-900 bg-indigo-100/70 px-1 rounded shrink-0" x-text="opt.Cost || '+0 PP'"></span>
+                                                <span class="text-[10px] font-mono font-bold text-indigo-900 bg-indigo-100/70 px-1 rounded shrink-0" x-text="String(opt.Cost || '+0 PP').replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, ', ').replace(/\s*,\s*/g, ', ')"></span>
                                             </div>
                                             <template x-if="opt.Description">
                                                 <p class="text-[10px] text-stone-600 line-clamp-1 mt-0.5" x-text="opt.Description"></p>

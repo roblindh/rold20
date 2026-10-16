@@ -962,7 +962,7 @@
                                                             :class="isSpellOptionSelected(sp.ID, opt.ID) ? 'bg-indigo-100 text-indigo-900 border-indigo-400 font-bold' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'"
                                                             class="px-2.5 py-1 rounded text-[11px] border transition cursor-pointer flex items-center gap-1">
                                                         <span x-text="isSpellOptionSelected(sp.ID, opt.ID) ? '✓' : '+'"></span>
-                                                        <span x-text="opt.Name + ' (' + opt.Cost + ')'"></span>
+                                                        <span x-text="opt.Name + ' (' + String(opt.Cost || '').replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, ', ').replace(/\s*,\s*/g, ', ') + ')'"></span>
                                                     </button>
                                                 </template>
                                             </div>

@@ -328,7 +328,7 @@
                                                     <span class="truncate" x-text="opt.Name"></span>
                                                 </div>
                                                 <div class="shrink-0 flex items-center gap-1">
-                                                    <span class="text-[10px] font-mono text-slate-500" x-text="opt.Cost || '+0 PP'"></span>
+                                                    <span class="text-[10px] font-mono text-slate-500" x-text="String(opt.Cost || '+0 PP').replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, ', ').replace(/\s*,\s*/g, ', ')"></span>
                                                     <template x-if="isOptionKnown(sp.ID, opt.ID)">
                                                         <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1 rounded">Known</span>
                                                     </template>

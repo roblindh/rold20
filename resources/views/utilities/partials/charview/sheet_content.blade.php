@@ -1895,10 +1895,12 @@
                 if (is_array($optIds)) {
                     foreach ($optIds as $optId) {
                         if (isset($spellOptionsMap[$optId])) {
+                            $rawCost = (string)$spellOptionsMap[$optId]->Cost;
+                            $formattedCost = preg_replace('/\s*,\s*/', ', ', trim(str_replace(["\\r\\n", "\\n", "\\r", "\r\n", "\n", "\r"], ', ', $rawCost), " ,\t\n\r\0\x0B"));
                             $optionsList[] = [
                                 'id' => $optId,
                                 'name' => $spellOptionsMap[$optId]->Name,
-                                'cost' => $spellOptionsMap[$optId]->Cost,
+                                'cost' => $formattedCost,
                             ];
                         }
                     }
@@ -2028,7 +2030,7 @@
                                     <template x-if="sp.options && sp.options.length > 0">
                                         <div class="text-[11px] text-stone-600 pl-2 space-y-0.5 mt-0.5">
                                             <template x-for="opt in sp.options" :key="opt.ID">
-                                                <div>&bull; <span class="font-semibold text-stone-800" x-text="opt.Name"></span> <span class="text-indigo-800" x-text="'(' + opt.Cost + ')'"></span></div>
+                                                <div>&bull; <span class="font-semibold text-stone-800" x-text="opt.Name"></span> <span class="text-indigo-800" x-text="'(' + String(opt.Cost || '').replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, ', ').replace(/\s*,\s*/g, ', ') + ')'"></span></div>
                                             </template>
                                         </div>
                                     </template>
@@ -2091,7 +2093,7 @@
                                         <template x-if="sp.options && sp.options.length > 0">
                                             <div class="text-[11px] text-stone-600 pl-2 space-y-0.5 mt-0.5">
                                                 <template x-for="opt in sp.options" :key="opt.id">
-                                                    <div>&bull; <span class="font-semibold text-stone-800" x-text="opt.name"></span> <span class="text-indigo-800" x-text="'(' + opt.cost + ')'"></span></div>
+                                                    <div>&bull; <span class="font-semibold text-stone-800" x-text="opt.name"></span> <span class="text-indigo-800" x-text="'(' + String(opt.cost || '').replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, ', ').replace(/\s*,\s*/g, ', ') + ')'"></span></div>
                                                 </template>
                                             </div>
                                         </template>
