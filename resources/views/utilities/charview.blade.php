@@ -3090,16 +3090,32 @@ function characterViewerApp() {
             return list.length > 0 ? list : spellsWithKnown;
         },
 
+        formatSpellDescription(desc) {
+            if (!desc) return '';
+            return String(desc)
+                .replace(/\\r\\n|\\n|\\r/g, '\n')
+                .replace(/\r\n|\r/g, '\n');
+        },
+
         get castSpellDisplayList() {
+            const formatCost = (cost) => {
+                if (!cost) return '0 PP';
+                return String(cost)
+                    .replace(/\\r\\n|\\n|\\r|\r\n|\n|\r/g, ', ')
+                    .replace(/\s*,\s*/g, ', ')
+                    .replace(/^,\s*|,\s*$/g, '')
+                    .trim();
+            };
+
             if (!this.castSpellState.showAllSpells) {
                 return (this.knownSpellsCatalog || []).map(sp => ({
                     id: String(sp.ID),
-                    label: sp.Name + ' (' + (sp.Cost || '0 PP') + ')'
+                    label: sp.Name + '  —  ' + formatCost(sp.Cost)
                 }));
             }
             return (this.allSpellsCatalog || []).map(sp => ({
                 id: String(sp.ID),
-                label: sp.Name + (sp.isKnown ? ' ⭐ (Known)' : '') + ' (' + (sp.Cost || '0 PP') + ')'
+                label: (sp.isKnown ? '⭐ ' : '') + sp.Name + '  —  ' + formatCost(sp.Cost)
             }));
         },
 
