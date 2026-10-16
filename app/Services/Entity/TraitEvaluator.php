@@ -103,6 +103,11 @@ class TraitEvaluator
             }
         }
 
+        // If expression still contains letters or dice notation (e.g. "1d6 fire", "lesser"), return raw string
+        if (preg_match('/\b\d*d\d+\b/i', $cleanExpr) || preg_match('/[a-zA-Z]/', $cleanExpr)) {
+            return $expr;
+        }
+
         // Safe mathematical evaluation
         try {
             $sanitized = preg_replace('/[^0-9\+\-\*\/\(\)\.\s]/', '', $cleanExpr);
@@ -612,6 +617,12 @@ class TraitEvaluator
                             $engine->addModifier('ActAcc_' . strtolower($q), 1, $modType, $sourceName);
                         }
                     }
+                }
+                break;
+
+            case 'ActMod':
+                if (!empty($qual)) {
+                    $engine->addModifier('Act_' . strtolower(trim($qual)), $numVal, $modType, $sourceName);
                 }
                 break;
 

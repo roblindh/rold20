@@ -1115,6 +1115,28 @@ class EntityEngine
             }
         }
 
+        // Recalculate Final Abilities and Modifiers including equipment/trait modifiers
+        $finalStr = $adjStr !== null ? max(0, $adjStr + (int)$modifierEngine->getTotal('Str')) : null;
+        $finalCon = $adjCon !== null ? max(0, $adjCon + (int)$modifierEngine->getTotal('Con')) : null;
+        $finalDex = $adjDex !== null ? max(0, $adjDex + (int)$modifierEngine->getTotal('Dex')) : null;
+        $finalInt = $adjInt !== null ? max(0, $adjInt + (int)$modifierEngine->getTotal('Int')) : null;
+        $finalWis = $adjWis !== null ? max(0, $adjWis + (int)$modifierEngine->getTotal('Wis')) : null;
+        $finalCha = $adjCha !== null ? max(0, $adjCha + (int)$modifierEngine->getTotal('Cha')) : null;
+
+        $strMod = $finalStr !== null ? (int)floor(($finalStr - 10) / 2) : 0;
+        $conMod = $finalCon !== null ? (int)floor(($finalCon - 10) / 2) : 0;
+        $dexModRaw = $finalDex !== null ? (int)floor(($finalDex - 10) / 2) : 0;
+        $intMod = $finalInt !== null ? (int)floor(($finalInt - 10) / 2) : 0;
+        $wisMod = $finalWis !== null ? (int)floor(($finalWis - 10) / 2) : 0;
+        $chaMod = $finalCha !== null ? (int)floor(($finalCha - 10) / 2) : 0;
+
+        $context['STRMOD'] = $strMod;
+        $context['CONMOD'] = $conMod;
+        $context['DEXMOD'] = $dexModRaw;
+        $context['INTMOD'] = $intMod;
+        $context['WISMOD'] = $wisMod;
+        $context['CHAMOD'] = $chaMod;
+
         // Calculate Weights & Encumbrance (with armor skill EC reductions)
         $totalWeight = $equipmentManager->calculateTotalWeight($config);
         $weightEC = ($finalStr === null || $totalWeight <= 0)
@@ -1697,6 +1719,7 @@ class EntityEngine
             $itemParryBonus = 0;
             $itemAttSpdBonus = 0;
             $itemCritRngBonus = 0;
+            $extraDmgRiders = [];
 
             $isBastard = false;
             $isCharge = false;
@@ -1736,7 +1759,12 @@ class EntityEngine
                     } elseif ($q === 'ATTACK' || $q === 'ATT') {
                         $itemAttBonus += (int)floor((float)TraitEvaluator::evaluateExpression((string)($tr['params']['Value'] ?? '0'), $context));
                     } elseif ($q === 'DAMAGE' || $q === 'DMG') {
-                        $itemDmgBonus += (int)floor((float)TraitEvaluator::evaluateExpression((string)($tr['params']['Value'] ?? '0'), $context));
+                        $valRaw = trim((string)($tr['params']['Value'] ?? '0'));
+                        if (preg_match('/\b\d*d\d+\b/i', $valRaw) || preg_match('/(acid|cold|elec|fire|necro|radiant|sonic|divine|magic)/i', $valRaw)) {
+                            $extraDmgRiders[] = $valRaw;
+                        } else {
+                            $itemDmgBonus += (int)floor((float)TraitEvaluator::evaluateExpression($valRaw, $context));
+                        }
                     } elseif ($q === 'PARRY' || $q === 'PAR') {
                         $itemParryBonus += (int)floor((float)TraitEvaluator::evaluateExpression((string)($tr['params']['Value'] ?? '0'), $context));
                     } elseif ($q === 'ATTSPD' || $q === 'SPEED') {
@@ -1751,6 +1779,12 @@ class EntityEngine
 
             if ($dmgDiceMod !== 0) {
                 $dmgTraitStr = self::scaleDamageDie($dmgTraitStr, $dmgDiceMod);
+            }
+
+            if (!empty($extraDmgRiders)) {
+                foreach ($extraDmgRiders as $rider) {
+                    $dmgTraitStr .= (str_starts_with($rider, '+') ? ' ' : ' + ') . $rider;
+                }
             }
 
             // Weapon's own size category
@@ -4050,7 +4084,7 @@ class EntityEngine
 
             if ($unlocked) {
                 $actArr['ActionTimeParsed'] = self::parseActionTime($actArr['ActionTime'] ?? '', $attSpdMod);
-                $actArr['ActionCheckParsed'] = self::parseActionCheck($actArr['ActionCheck'] ?? '', $abilityMods, $trainedSkills, $sizeCombatMod, $sizeGrappleMod);
+                $actArr['ActionCheckParsed'] = self::parseActionCheck($actArr['ActionCheck'] ?? '', $abilityMods, $trainedSkills, $sizeCombatMod, $sizeGrappleMod, $modEngine, $name);
                 $results[] = $actArr;
             }
         }
@@ -4122,7 +4156,7 @@ class EntityEngine
     /**
      * Parse action check string e.g. "d20! + Athletics skill + Str mod + PAM + EP"
      */
-    public static function parseActionCheck(string $checkStr, array|object $abilityMods = [], array $trainedSkills = [], int $sizeCombatMod = 0, int $sizeGrappleMod = 0): string
+    public static function parseActionCheck(string $checkStr, array|object $abilityMods = [], array $trainedSkills = [], int $sizeCombatMod = 0, int $sizeGrappleMod = 0, mixed $modEngine = null, string $actionName = ''): string
     {
         self::loadReferenceTables();
 
@@ -4278,6 +4312,21 @@ class EntityEngine
                 $sign = $val >= 0 ? "+{$val}" : (string)$val;
                 return "({$ab} {$sign})";
             }, $str);
+        }
+
+        if ($modEngine instanceof ModifierStackingEngine && !empty($actionName)) {
+            $actBonus = (int)$modEngine->getTotal('Act_' . strtolower(trim($actionName)));
+            if ($actBonus === 0) {
+                $actBonus = (int)$modEngine->getTotal('Act_' . str_replace(' ', '', strtolower($actionName)));
+            }
+            if ($actBonus !== 0) {
+                $sign = $actBonus > 0 ? "+{$actBonus}" : (string)$actBonus;
+                if (stripos($str, ' vs.') !== false) {
+                    $str = preg_replace('/(\s+vs\.)/i', " {$sign} circ$1", $str, 1);
+                } else {
+                    $str .= " {$sign} circ";
+                }
+            }
         }
 
         return $str;

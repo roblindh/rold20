@@ -486,6 +486,7 @@ class EquipmentManager
     protected static ?array $refItemModsMundaneCache = null;
     protected static ?array $refItemModsMagicCache = null;
     protected static ?array $refMaterialsCache = null;
+    protected static ?array $refItemsModifiedCache = null;
 
     /**
      * Load item reference tables into static caches.
@@ -574,6 +575,22 @@ class EquipmentManager
                 }
             }
         }
+
+        if (self::$refItemsModifiedCache === null) {
+            try {
+                self::$refItemsModifiedCache = DB::table('ref_itemsmodified')
+                    ->get()
+                    ->keyBy('ID')
+                    ->map(fn($r) => (array)$r)
+                    ->toArray();
+            } catch (\Throwable $e) {
+                $cacheFile = dirname(__DIR__, 3) . '/storage/framework/cache/app_data.php';
+                if (file_exists($cacheFile)) {
+                    $appData = require $cacheFile;
+                    self::$refItemsModifiedCache = $appData['itemsmodified'] ?? [];
+                }
+            }
+        }
     }
 
     /**
@@ -642,6 +659,18 @@ class EquipmentManager
 
         $configStr = (string)($arr['config'] ?? $arr['config_string'] ?? $arr['ConfigString'] ?? '');
         $name = (string)($arr['name'] ?? $arr['Name'] ?? '');
+
+        // If config is missing or doesn't have Mod=, check ref_itemsmodified by item name
+        if ((empty($configStr) || !str_contains($configStr, 'Mod=')) && !empty($name) && !empty(self::$refItemsModifiedCache)) {
+            foreach (self::$refItemsModifiedCache as $imod) {
+                if (strcasecmp((string)($imod['Name'] ?? ''), $name) === 0) {
+                    if (!empty($imod['Config'])) {
+                        $configStr = $imod['Config'];
+                        break;
+                    }
+                }
+            }
+        }
 
         $parsedMods = [];
         $parsedMagicMods = [];

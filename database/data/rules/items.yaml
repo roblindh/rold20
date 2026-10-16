@@ -11822,7 +11822,7 @@ itemmodsmundane:
     WeightAdd: 0.0
     WeightMul: 1.0
     SizeMod: 0
-    Traits: 'ActMod { Qual=var; Type=crc; Type=+2; }'
+    Traits: 'ActMod { Qual=var; Type=crc; Value=+2; }'
     SpecialInfo: '+2 circumstance bonus (if applicable)'
     MutualExclusion: 4
     Frequency: 6
@@ -11838,7 +11838,7 @@ itemmodsmundane:
     WeightAdd: 0.0
     WeightMul: 1.0
     SizeMod: 0
-    Traits: 'ActMod { Qual=var; Type=crc; Type=+4; }'
+    Traits: 'ActMod { Qual=var; Type=crc; Value=+4; }'
     SpecialInfo: '+4 circumstance bonus (if applicable)'
     MutualExclusion: 4
     Frequency: 5
@@ -11854,7 +11854,7 @@ itemmodsmundane:
     WeightAdd: 0.0
     WeightMul: 1.0
     SizeMod: 0
-    Traits: 'ActMod { Qual=var; Type=crc; Type=+6; }'
+    Traits: 'ActMod { Qual=var; Type=crc; Value=+6; }'
     SpecialInfo: '+6 circumstance bonus (if applicable)'
     MutualExclusion: 4
     Frequency: 3
@@ -11915,7 +11915,7 @@ itemmodsmagic:
     Subtype: 18
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'AbilMod { Qual=Str; Type=enh; Value=+(x); }'
     SpecialInfo: "+(x) enhancement bonus to wearer's Strength"
     AssociatedSpells: 'Enhance Physical Ability'
     AssociatedSpecial: null
@@ -11930,7 +11930,7 @@ itemmodsmagic:
     Subtype: 18
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'AbilMod { Qual=Con; Type=enh; Value=+(x); }'
     SpecialInfo: "+(x) enhancement bonus to wearer's Constitution"
     AssociatedSpells: 'Enhance Physical Ability'
     AssociatedSpecial: null
@@ -11945,7 +11945,7 @@ itemmodsmagic:
     Subtype: 18
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'AbilMod { Qual=Dex; Type=enh; Value=+(x); }'
     SpecialInfo: "+(x) enhancement bonus to wearer's Dexterity"
     AssociatedSpells: 'Enhance Physical Ability'
     AssociatedSpecial: null
@@ -11960,7 +11960,7 @@ itemmodsmagic:
     Subtype: 15
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'AbilMod { Qual=Int; Type=enh; Value=+(x); }'
     SpecialInfo: "+(x) enhancement bonus to wearer's Intelligence"
     AssociatedSpells: 'Enhance Mental Ability'
     AssociatedSpecial: null
@@ -11975,7 +11975,7 @@ itemmodsmagic:
     Subtype: 15
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'AbilMod { Qual=Wis; Type=enh; Value=+(x); }'
     SpecialInfo: "+(x) enhancement bonus to wearer's Wisdom"
     AssociatedSpells: 'Enhance Mental Ability'
     AssociatedSpecial: null
@@ -11990,7 +11990,7 @@ itemmodsmagic:
     Subtype: 15
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'AbilMod { Qual=Cha; Type=enh; Value=+(x); }'
     SpecialInfo: "+(x) enhancement bonus to wearer's Charisma"
     AssociatedSpells: 'Enhance Mental Ability'
     AssociatedSpecial: null
@@ -12005,7 +12005,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'HeaMod { Qual=HP; Type=enh; Value=+(x); }'
     SpecialInfo: "+(x) enhancement bonus to wearer's HP"
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12020,7 +12020,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'HeaMod { Qual=SP; Type=enh; Value=+(x); }'
     SpecialInfo: "+(x) enhancement bonus to wearer's SP"
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12035,7 +12035,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'HeaMod { Qual=PP; Type=enh; Value=+(x); }'
     SpecialInfo: "+(x) enhancement bonus to wearer's PP"
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12050,7 +12050,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'DefMod { Qual=DeC; Type=dfl; Value=+(x); }'
     SpecialInfo: "+(x) deflection bonus to wearer's DeC"
     AssociatedSpells: 'Deflective Shield'
     AssociatedSpecial: null
@@ -12065,7 +12065,7 @@ itemmodsmagic:
     Subtype: 19
     Descriptors: null
     PLAdd: '8'
-    Traits: null
+    Traits: 'DefMod { Qual=Concealment; Type=enh; Value=20; }'
     SpecialInfo: 'Concealment for wearer'
     AssociatedSpells: Displacement
     AssociatedSpecial: null
@@ -12080,7 +12080,7 @@ itemmodsmagic:
     Subtype: 19
     Descriptors: null
     PLAdd: '13'
-    Traits: null
+    Traits: 'DefMod { Qual=Concealment; Type=enh; Value=50; }'
     SpecialInfo: 'Good concealment for wearer'
     AssociatedSpells: Displacement
     AssociatedSpecial: null
@@ -12095,7 +12095,7 @@ itemmodsmagic:
     Subtype: 19
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'DefMod { Qual=NDD; Type=res; Value=+(x); }'
     SpecialInfo: "+(x) resistance bonus to wearer's NDD"
     AssociatedSpells: 'Antimagic\nDivine Aura'
     AssociatedSpecial: null
@@ -12125,7 +12125,7 @@ itemmodsmagic:
     Subtype: 36
     Descriptors: '[Force]'
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'DefMod { Qual=DR; Type=arm; Value=+(x); }'
     SpecialInfo: "+(x) armor bonus to wearer's DR"
     AssociatedSpells: 'Force Armor'
     AssociatedSpecial: null
@@ -12140,7 +12140,7 @@ itemmodsmagic:
     Subtype: 37
     Descriptors: null
     PLAdd: '(x)*4'
-    Traits: null
+    Traits: 'DefMod { Qual=DR; Type=enh; Value=+(x); }'
     SpecialInfo: "+(x) enhancement bonus to wearer's base DR"
     AssociatedSpells: 'Toughen Skin'
     AssociatedSpecial: null
@@ -12155,7 +12155,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'DefMod { Qual=AcidRes; Type=enh; Value=(x); }'
     SpecialInfo: 'Acid resistance (x) for wearer'
     AssociatedSpells: 'Energy Resistance'
     AssociatedSpecial: null
@@ -12170,7 +12170,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'DefMod { Qual=ColdRes; Type=enh; Value=(x); }'
     SpecialInfo: 'Cold resistance (x) for wearer'
     AssociatedSpells: 'Energy Resistance'
     AssociatedSpecial: null
@@ -12185,7 +12185,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'DefMod { Qual=ElectricRes; Type=enh; Value=(x); }'
     SpecialInfo: 'Electricity resistance (x) for wearer'
     AssociatedSpells: 'Energy Resistance'
     AssociatedSpecial: null
@@ -12200,7 +12200,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'DefMod { Qual=FireRes; Type=enh; Value=(x); }'
     SpecialInfo: 'Fire resistance (x) for wearer'
     AssociatedSpells: 'Energy Resistance'
     AssociatedSpecial: null
@@ -12215,7 +12215,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'DefMod { Qual=NecroticRes; Type=enh; Value=(x); }'
     SpecialInfo: 'Necrotic resistance (x) for wearer'
     AssociatedSpells: 'Energy Resistance'
     AssociatedSpecial: null
@@ -12230,7 +12230,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'DefMod { Qual=RadiantRes; Type=enh; Value=(x); }'
     SpecialInfo: 'Radiant resistance (x) for wearer'
     AssociatedSpells: 'Energy Resistance'
     AssociatedSpecial: null
@@ -12245,7 +12245,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'DefMod { Qual=SonicRes; Type=enh; Value=(x); }'
     SpecialInfo: 'Sonic resistance (x) for wearer'
     AssociatedSpells: 'Energy Resistance'
     AssociatedSpecial: null
@@ -12290,7 +12290,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'DefMod { Qual=MR; Type=res; Value=+(x); }'
     SpecialInfo: '+(x) resistance bonus to MR'
     AssociatedSpells: Antimagic
     AssociatedSpecial: null
@@ -12305,7 +12305,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*2+6'
-    Traits: null
+    Traits: 'DefMod { Qual=MR; Type=res; Value=+(x); } Special { Qual=MReflect; Type=enh; Value=+(x); }'
     SpecialInfo: '+(x) resistance bonus to MR and reflect failed targeted effects'
     AssociatedSpells: Antimagic
     AssociatedSpecial: null
@@ -12320,7 +12320,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)
-    Traits: null
+    Traits: 'DefMod { Qual=CritRes; Type=enh; Value=+(x); }'
     SpecialInfo: 'Critical hit resistance +(x)'
     AssociatedSpells: null
     AssociatedSpecial: 'Armor and Shields'
@@ -12335,7 +12335,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Acid]'
     PLAdd: '4'
-    Traits: null
+    Traits: 'AttMod { Qual=Damage; Value=+1d6 acid; }'
     SpecialInfo: 'Successful attack also deals 1d6 HP of acid damage'
     AssociatedSpells: 'Touch of Acid'
     AssociatedSpecial: null
@@ -12350,7 +12350,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Cold]'
     PLAdd: '4'
-    Traits: null
+    Traits: 'AttMod { Qual=Damage; Value=+1d6 cold; }'
     SpecialInfo: 'Successful attack also deals 1d6 HP of cold damage'
     AssociatedSpells: 'Touch of Ice'
     AssociatedSpecial: null
@@ -12365,7 +12365,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Electric]'
     PLAdd: '4'
-    Traits: null
+    Traits: 'AttMod { Qual=Damage; Value=+1d6 electricity; }'
     SpecialInfo: 'Successful attack also deals 1d6 HP of electricity damage'
     AssociatedSpells: 'Touch of Lightning'
     AssociatedSpecial: null
@@ -12380,7 +12380,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Fire]'
     PLAdd: '4'
-    Traits: null
+    Traits: 'AttMod { Qual=Damage; Value=+1d6 fire; }'
     SpecialInfo: 'Successful attack also deals 1d6 HP of fire damage'
     AssociatedSpells: 'Touch of Fire'
     AssociatedSpecial: null
@@ -12395,7 +12395,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Necrotic]'
     PLAdd: '4'
-    Traits: null
+    Traits: 'AttMod { Qual=Damage; Value=+1d6 necrotic; }'
     SpecialInfo: 'Successful attack also deals 1d6 HP of necrotic damage'
     AssociatedSpells: 'Touch of Death'
     AssociatedSpecial: null
@@ -12410,7 +12410,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Radiant]'
     PLAdd: '4'
-    Traits: null
+    Traits: 'AttMod { Qual=Damage; Value=+1d6 radiant; }'
     SpecialInfo: 'Successful attack also deals 1d6 HP of radiant damage'
     AssociatedSpells: 'Touch of Radiance'
     AssociatedSpecial: null
@@ -12425,7 +12425,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Sonic]'
     PLAdd: '4'
-    Traits: null
+    Traits: 'AttMod { Qual=Damage; Value=+1d6 sonic; }'
     SpecialInfo: 'Successful attack also deals 1d6 HP of sonic damage'
     AssociatedSpells: 'Touch of Sound'
     AssociatedSpecial: null
@@ -12440,7 +12440,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Good]'
     PLAdd: '8'
-    Traits: null
+    Traits: 'AttMod { Qual=Damage; Req=vsEvil; Value=+2d6 divine; }'
     SpecialInfo: 'If the target is evil, a successful attack also deals 2d6 HP divine damage.'
     AssociatedSpells: 'Holy Smite'
     AssociatedSpecial: null
@@ -12455,7 +12455,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Evil]'
     PLAdd: '8'
-    Traits: null
+    Traits: 'AttMod { Qual=Damage; Req=vsGood; Value=+2d6 divine; }'
     SpecialInfo: 'If the target is good, a successful attack also deals 2d6 HP divine damage.'
     AssociatedSpells: 'Holy Smite'
     AssociatedSpecial: null
@@ -12470,7 +12470,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Lawful]'
     PLAdd: '8'
-    Traits: null
+    Traits: 'AttMod { Qual=Damage; Req=vsChaotic; Value=+2d6 divine; }'
     SpecialInfo: 'If the target is chaotic, a successful attack also deals 2d6 HP divine damage.'
     AssociatedSpells: 'Holy Smite'
     AssociatedSpecial: null
@@ -12485,7 +12485,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Chaotic]'
     PLAdd: '8'
-    Traits: null
+    Traits: 'AttMod { Qual=Damage; Req=vsLawful; Value=+2d6 divine; }'
     SpecialInfo: 'If the target is lawful, a successful attack also deals 2d6 HP divine damage.'
     AssociatedSpells: 'Holy Smite'
     AssociatedSpecial: null
@@ -12500,7 +12500,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '4'
-    Traits: null
+    Traits: 'AttMod { Qual=Attack; Req=vs(y); Type=enh; Value=+2; } AttMod { Qual=Damage; Req=vs(y); Type=enh; Value=+2d6; }'
     SpecialInfo: 'Against (y), the weapon provides a +2 attack bonus and deals 2d6 HP extra damage'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12515,7 +12515,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'Attack { Qual=CritRng; Type=enh; Value=+(x); }'
     SpecialInfo: 'Increase open-ended range by (x) steps. Max (x) is 2.'
     AssociatedSpells: null
     AssociatedSpecial: Weapons
@@ -12530,7 +12530,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '15'
-    Traits: null
+    Traits: 'Attack { Qual=CritRng; Type=enh; Value=+1; } Attack { Qual=CritMul; Type=enh; Value=+2; }'
     SpecialInfo: 'Increase open-ended range by one step and crit multiplier by two steps'
     AssociatedSpells: null
     AssociatedSpecial: Weapons
@@ -12545,7 +12545,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '9'
-    Traits: null
+    Traits: 'AttMod { Qual=AttSpd; Type=enh; Value=+1; }'
     SpecialInfo: 'Reduce AP cost for attacks with this weapon by 1'
     AssociatedSpells: null
     AssociatedSpecial: Weapons
@@ -12560,7 +12560,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*4'
-    Traits: null
+    Traits: 'AttMod { Qual=Attack; Req=Focus; Type=enh; Value=+(x); }'
     SpecialInfo: '+(x) enhancement bonus to attack rolls using this focus'
     AssociatedSpells: null
     AssociatedSpecial: Foci
@@ -12575,7 +12575,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'AttMod { Qual=Attack; Req=Ray; Type=enh; Value=+(x); } AttMod { Qual=Damage; Req=Ray; Type=enh; Value=+(x); }'
     SpecialInfo: '+(x) enhancement bonus to attack and damage rolls with ray attacks using this focus'
     AssociatedSpells: null
     AssociatedSpecial: Foci
@@ -12590,7 +12590,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'AttMod { Qual=Attack; Req=Area; Type=enh; Value=+(x); }'
     SpecialInfo: '+(x) enhancement bonus to attack rolls with area attacks using this focus'
     AssociatedSpells: null
     AssociatedSpecial: Foci
@@ -12605,7 +12605,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'AttMod { Qual=Attack; Req=BaM; Type=enh; Value=+(x); }'
     SpecialInfo: '+(x) enhancement bonus to attack rolls with body and mind attacks using this focus'
     AssociatedSpells: null
     AssociatedSpecial: Foci
@@ -12620,7 +12620,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*4'
-    Traits: null
+    Traits: 'SplAcc { Qual=All; Type=enh; Value=+(x); }'
     SpecialInfo: '+(x) enhancement bonus to supernatural activation checks using this focus'
     AssociatedSpells: null
     AssociatedSpecial: Foci
@@ -12635,7 +12635,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'SplAcc { Qual=(y); Type=enh; Value=+(x); }'
     SpecialInfo: '+(x) enhancement bonus to supernatural activation checks using skill (y)'
     AssociatedSpells: null
     AssociatedSpecial: Foci
@@ -12650,7 +12650,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)+1
-    Traits: null
+    Traits: 'Special { Qual=UseSpell; Spell=(y); CL=(x); }'
     SpecialInfo: "Spell or power activated by use (such as a potion or psionic tattoo) or by command. Creator chooses maximum PP, while user chooses parameters and variations within the PP limit. Except for single-use items, the PP must be supplied either by the user or a PP pool in the item. Unless otherwise specified, attack rolls (if any) are made with the user's skills and other modifiers."
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12665,7 +12665,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)
-    Traits: null
+    Traits: 'Special { Qual=UseSpellLtd; Spell=(y); CL=(x); }'
     SpecialInfo: "Spell or power activated by use (such as a potion or psionic tattoo) or by command. Creator chooses variations and all parameters except final target. Except for single-use items, the PP must be supplied either by the user or a PP pool in the item. Unless otherwise specified, attack rolls (if any) are made with the user's skills and other modifiers."
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12680,7 +12680,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)
-    Traits: null
+    Traits: 'Special { Qual=SkillSpell; Spell=(y); CL=(x); }'
     SpecialInfo: "Spell or power activated by skill check (such as a scroll or power stone). Creator chooses maximum PP and supplies those PP, while user chooses parameters and variations within the PP limit. Unless otherwise specified, attack rolls (if any) are made with the user's skills and other modifiers."
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12695,7 +12695,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)/20
-    Traits: null
+    Traits: 'Special { Qual=PPool; Value=(x); }'
     SpecialInfo: 'Power pool of (x) PP'
     AssociatedSpells: null
     AssociatedSpecial: Empower
@@ -12710,7 +12710,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)/10
-    Traits: null
+    Traits: 'Special { Qual=PPoolRech; Value=(x); }'
     SpecialInfo: 'Rechargeable power pool of (x) PP'
     AssociatedSpells: null
     AssociatedSpecial: Empower
@@ -12725,7 +12725,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)/5
-    Traits: null
+    Traits: 'Special { Qual=PoolAttun; Value=(x); }'
     SpecialInfo: 'Attunable power pool of (x) PP'
     AssociatedSpells: null
     AssociatedSpecial: Empower
@@ -12740,7 +12740,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)/5
-    Traits: null
+    Traits: 'Special { Qual=PoolRegen; Value=(x); }'
     SpecialInfo: 'Regenerating power pool of (x) PP. Regenerates PL PP/h.'
     AssociatedSpells: null
     AssociatedSpecial: Empower
@@ -12755,7 +12755,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '3'
-    Traits: null
+    Traits: 'SpdSpcl { Qual=ECRed; Type=enh; Value=1; }'
     SpecialInfo: 'Item weighs half as much as normal. Reduce EC by 1, if applicable.'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12770,7 +12770,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '6'
-    Traits: null
+    Traits: 'SpdSpcl { Qual=ECRed; Type=enh; Value=2; }'
     SpecialInfo: 'Item is practically weightless. Reduce EC by up to 2, if applicable.'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12785,7 +12785,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'DefMod { Qual=DetectRes; Type=res; Value=+(x); }'
     SpecialInfo: '+(x) resistance to detection and scrying'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12800,7 +12800,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)/3
-    Traits: null
+    Traits: 'DefMod { Qual=DiseaseRes; Type=res; Value=+(x); }'
     SpecialInfo: '+(x) resistance to disease'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12815,7 +12815,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'DefMod { Qual=FearRes; Type=res; Value=+(x); }'
     SpecialInfo: '+(x) resistance to fear'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12830,7 +12830,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'DefMod { Qual=MentalRes; Type=res; Value=+(x); }'
     SpecialInfo: '+(x) resistance to mental effects'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12845,7 +12845,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)/3
-    Traits: null
+    Traits: 'DefMod { Qual=PoisonRes; Type=res; Value=+(x); }'
     SpecialInfo: '+(x) resistance to poison'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12860,7 +12860,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Light]'
     PLAdd: '1'
-    Traits: null
+    Traits: 'Special { Qual=Light; Type=enh; Value=dim 4 sq; }'
     SpecialInfo: 'Item glows on command (dim light up to 4 squares)'
     AssociatedSpells: Light
     AssociatedSpecial: null
@@ -12875,7 +12875,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Light]'
     PLAdd: '2'
-    Traits: null
+    Traits: 'Special { Qual=Light; Type=enh; Value=normal 4 sq; }'
     SpecialInfo: 'Item glows on command (normal light up to 4 squares)'
     AssociatedSpells: Light
     AssociatedSpecial: null
@@ -12890,7 +12890,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Light]'
     PLAdd: '4'
-    Traits: null
+    Traits: 'Special { Qual=Light; Type=enh; Value=bright 8 sq; }'
     SpecialInfo: 'Item glows on command (bright light up to 8 squares)'
     AssociatedSpells: Light
     AssociatedSpecial: null
@@ -12905,7 +12905,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Light]'
     PLAdd: '3'
-    Traits: null
+    Traits: 'Special { Qual=LightCond; Type=enh; Value=dim 4 sq vs 10 sq; }'
     SpecialInfo: 'Item glows (dim light within 4 squares) when the specified type of item or creature is within 10 squares'
     AssociatedSpells: Light
     AssociatedSpecial: null
@@ -12920,7 +12920,7 @@ itemmodsmagic:
     Subtype: 17
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'InitMod { Qual=Init; Type=enh; Value=+(x); }'
     SpecialInfo: '+(x) enhancement bonus to initiative rolls'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12935,7 +12935,7 @@ itemmodsmagic:
     Subtype: 17
     Descriptors: null
     PLAdd: '(x)*6'
-    Traits: null
+    Traits: 'Special { Qual=Haste; Type=enh; Value=+(x); } SpdMod { Qual=Speed; Type=enh; Value=+(x); }'
     SpecialInfo: '+(x) enhancement bonus to AP and base speed'
     AssociatedSpells: 'Manipulate Time'
     AssociatedSpecial: null
@@ -12950,7 +12950,7 @@ itemmodsmagic:
     Subtype: 17
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'SpdMod { Qual=Speed; Type=enh; Value=+(x); }'
     SpecialInfo: '+(x) enhancement bonus to base ground speed'
     AssociatedSpells: 'Enhance Mobility'
     AssociatedSpecial: null
@@ -12965,7 +12965,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '3'
-    Traits: null
+    Traits: 'SpdSpcl { Qual=SwimSpeed; Type=enh; Value=6; }'
     SpecialInfo: 'Grants wearer base swimming speed of 6 (but not the ability to breathe water)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -12980,7 +12980,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '3'
-    Traits: null
+    Traits: 'Special { Qual=FeatherFall; Type=enh; Value=12 sq/r; }'
     SpecialInfo: 'Wearer falls 12 squares per round'
     AssociatedSpells: Levitate
     AssociatedSpecial: null
@@ -12995,7 +12995,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '5'
-    Traits: null
+    Traits: 'Special { Qual=Levitate; Type=enh; Value=4 sq/r; }'
     SpecialInfo: 'Wearer can levitate and move up or down up to 4 squares per round'
     AssociatedSpells: Levitate
     AssociatedSpecial: null
@@ -13010,7 +13010,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '7'
-    Traits: null
+    Traits: 'SpdSpcl { Qual=FlySpeed; Type=enh; Value=6; } Special { Qual=Maneuverability; Value=Good; }'
     SpecialInfo: 'Grants wearer base flying speed of 6 and good maneuverability'
     AssociatedSpells: Levitate
     AssociatedSpecial: null
@@ -13025,7 +13025,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '7'
-    Traits: null
+    Traits: 'SpdSpcl { Qual=FlySpeed; Type=enh; Value=8; } Special { Qual=Maneuverability; Value=Average; }'
     SpecialInfo: 'Grants wearer base flying speed of 8 and average maneuverability'
     AssociatedSpells: Levitate
     AssociatedSpecial: null
@@ -13040,7 +13040,7 @@ itemmodsmagic:
     Subtype: 15
     Descriptors: null
     PLAdd: '5'
-    Traits: null
+    Traits: 'Special { Qual=Darkvision; Type=enh; Value=12; }'
     SpecialInfo: 'Grants wearer darkvision with 12 square range'
     AssociatedSpells: 'Enhance Senses'
     AssociatedSpecial: null
@@ -13055,7 +13055,7 @@ itemmodsmagic:
     Subtype: 15
     Descriptors: null
     PLAdd: '5'
-    Traits: null
+    Traits: 'Special { Qual=SeeInvis; Type=enh; Value=1; }'
     SpecialInfo: 'Grants wearer the ability to see invisible creatures and items'
     AssociatedSpells: 'Enhance Senses'
     AssociatedSpecial: null
@@ -13070,7 +13070,7 @@ itemmodsmagic:
     Subtype: 15
     Descriptors: null
     PLAdd: '7'
-    Traits: null
+    Traits: 'Special { Qual=AllAroundVis; Type=enh; Value=1; }'
     SpecialInfo: 'Grants wearer all-around vision'
     AssociatedSpells: 'Enhance Senses'
     AssociatedSpecial: null
@@ -13085,7 +13085,7 @@ itemmodsmagic:
     Subtype: 15
     Descriptors: null
     PLAdd: '14'
-    Traits: null
+    Traits: 'Special { Qual=Truesight; Type=enh; Value=24; }'
     SpecialInfo: 'Grants wearer truesight within 24 squares range'
     AssociatedSpells: 'Enhance Senses'
     AssociatedSpecial: null
@@ -13100,7 +13100,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)
-    Traits: null
+    Traits: 'Special { Qual=Sentience; Type=enh; Value=(x); }'
     SpecialInfo: 'Item has Int, Wis, and Cha of (x). 1 is minimum for following simple commands.'
     AssociatedSpells: null
     AssociatedSpecial: Sentience
@@ -13115,7 +13115,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)
-    Traits: null
+    Traits: 'Special { Qual=AffinitySpell; Spell=(y); CL=(x); }'
     SpecialInfo: "Spell or power activated by affinity trigger (such as a typical wand or staff). Creator chooses maximum PP, while user chooses parameters and variations within the PP limit. The PP must be supplied by a PP pool in the item. Unless otherwise specified, attack rolls (if any) are made with the user's skills and other modifiers."
     AssociatedSpells: null
     AssociatedSpecial: Foci
@@ -13130,7 +13130,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)+4
-    Traits: null
+    Traits: 'Special { Qual=AffinitySpellBoost; Spell=(y); CL=(x); }'
     SpecialInfo: "Spell or power activated by affinity trigger (such as a typical wand or staff). The user can boost the spell above the PP limit chosen by the creator, if his spell skills are high enough. Regardless of the resulting PP limit, the user chooses parameters and variations within that limit. The PP must be supplied by a PP pool in the item. Unless otherwise specified, attack rolls (if any) are made with the user's skills and other modifiers."
     AssociatedSpells: null
     AssociatedSpecial: Foci
@@ -13145,7 +13145,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*5'
-    Traits: null
+    Traits: 'DefMod { Qual=DeC; Type=lck; Value=+(x); }'
     SpecialInfo: "+(x) luck bonus to wearer's DeC"
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13160,7 +13160,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*5'
-    Traits: null
+    Traits: 'DefMod { Qual=NDD; Type=lck; Value=+(x); }'
     SpecialInfo: "+(x) luck bonus to wearer's NDD"
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13175,7 +13175,7 @@ itemmodsmagic:
     Subtype: 70
     Descriptors: null
     PLAdd: (x)
-    Traits: null
+    Traits: 'Special { Qual=Construct; Creature=(y); CL=(x); }'
     SpecialInfo: 'Item is a (y) of CL (x)'
     AssociatedSpells: null
     AssociatedSpecial: Constructs
@@ -13190,7 +13190,7 @@ itemmodsmagic:
     Subtype: 70
     Descriptors: null
     PLAdd: (x)+2
-    Traits: null
+    Traits: 'Special { Qual=ConstructTransform; Creature=(y); CL=(x); }'
     SpecialInfo: 'Item can transform into a (y) of CL (x)'
     AssociatedSpells: null
     AssociatedSpecial: Constructs
@@ -13205,7 +13205,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '2'
-    Traits: null
+    Traits: 'Special { Qual=ItemTransform; Item=(y); }'
     SpecialInfo: 'Item can transform into a (y)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13220,7 +13220,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'Special { Qual=Animated; Value=(x) r; }'
     SpecialInfo: "Once per encounter, the item can be released (0 AP). It will remain within the owner's square and can be used as if still within the owner's hand(s). After (x) rounds, the item falls to the ground (unless grasped by the owner again)."
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13235,7 +13235,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'DefMod { Qual=DeC; Req=vsRanged; Type=dfl; Value=+(x); }'
     SpecialInfo: "+(x) deflection bonus to wearer's DeC vs ranged attacks"
     AssociatedSpells: 'Deflective Shield'
     AssociatedSpecial: null
@@ -13250,7 +13250,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Light]'
     PLAdd: '5'
-    Traits: null
+    Traits: 'Special { Qual=LightBlind; Cost=6 PP; }'
     SpecialInfo: 'Command-activated blinding flash in 4 sq radius (area attack vs Ref; instantaneous; 6 PP cost)'
     AssociatedSpells: 'Bolt of Radiance'
     AssociatedSpecial: null
@@ -13265,7 +13265,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Dimension]'
     PLAdd: '12'
-    Traits: null
+    Traits: 'Special { Qual=Ethereal; Cost=5 PP/r; }'
     SpecialInfo: 'On command, turn ethereal (cost 5 PP per round)'
     AssociatedSpells: 'Planar Travel'
     AssociatedSpecial: null
@@ -13280,7 +13280,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '9'
-    Traits: null
+    Traits: 'Special { Qual=Ghostly; Type=enh; Value=1; }'
     SpecialInfo: 'Item and its powers have full effect against incorporeal creatures. It can also be used by incorporeal creatures.'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13295,7 +13295,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'DefMod { Qual=DR; Req=vsNonMagical; Type=div; Value=+(x); }'
     SpecialInfo: "+(x) divine bonus to wearer's base DR against non-magical weapons/attacks"
     AssociatedSpells: 'Divine Aura'
     AssociatedSpecial: null
@@ -13310,7 +13310,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Illusion]'
     PLAdd: '1'
-    Traits: null
+    Traits: 'Special { Qual=Glamer; Type=enh; Value=1; }'
     SpecialInfo: 'Item can be commanded to look like some other item of the same size and general type'
     AssociatedSpells: 'Illusory Disguise'
     AssociatedSpecial: null
@@ -13325,7 +13325,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)/2
-    Traits: null
+    Traits: 'ActMod { Qual=(y); Type=crc; Value=+(x); }'
     SpecialInfo: '+(x) circumstance bonus to basic action (y)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13340,7 +13340,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '9'
-    Traits: null
+    Traits: 'Special { Qual=Wild; Type=enh; Value=1; }'
     SpecialInfo: 'Item has its full effect and powers even when melded with owner due to shapechanging'
     AssociatedSpells: Shapechange
     AssociatedSpecial: null
@@ -13355,7 +13355,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*5'
-    Traits: null
+    Traits: 'AttMod { Qual=ChargeDmgMul; Type=enh; Value=(x); }'
     SpecialInfo: 'Multiply base damage by (x) when charging'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13370,7 +13370,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)
-    Traits: null
+    Traits: 'SklMod { Qual=(y); Type=enh; Value=+(x); }'
     SpecialInfo: '+(x) enhancement bonus to level of basic skill (y)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13385,7 +13385,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'SklMod { Qual=(y); Type=enh; Value=+(x); }'
     SpecialInfo: '+(x) enhancement bonus to level of advanced skill (y)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13400,7 +13400,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '5'
-    Traits: null
+    Traits: 'Special { Qual=CauseDeaf; Req=Critical; }'
     SpecialInfo: 'Cause deafness (d20! + PL vs Fort)'
     AssociatedSpells: Affliction
     AssociatedSpecial: null
@@ -13415,7 +13415,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '6'
-    Traits: null
+    Traits: 'Special { Qual=CauseBlind; Req=Critical; }'
     SpecialInfo: 'Cause blindness (d20! + PL vs Fort)'
     AssociatedSpells: Affliction
     AssociatedSpecial: null
@@ -13430,7 +13430,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '7'
-    Traits: null
+    Traits: 'Special { Qual=CauseDisease; Req=Critical; }'
     SpecialInfo: 'Cause disease (as Affliction; d20! + PL vs Fort)'
     AssociatedSpells: Affliction
     AssociatedSpecial: null
@@ -13445,7 +13445,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '7'
-    Traits: null
+    Traits: 'Special { Qual=CausePoison; Req=Critical; }'
     SpecialInfo: 'Poison (as Affliction; d20! + PL vs Fort)'
     AssociatedSpells: Affliction
     AssociatedSpecial: null
@@ -13460,7 +13460,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '3'
-    Traits: null
+    Traits: 'Special { Qual=Speech; Target=(y); }'
     SpecialInfo: 'Speak with (y)'
     AssociatedSpells: 'Comprehend Languages'
     AssociatedSpecial: null
@@ -13475,7 +13475,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '3'
-    Traits: null
+    Traits: 'Special { Qual=BreatheWater; Type=enh; Value=1; }'
     SpecialInfo: 'Ability to breathe in both air and water'
     AssociatedSpells: Shapechange
     AssociatedSpecial: null
@@ -13490,7 +13490,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '7'
-    Traits: null
+    Traits: 'Special { Qual=BreatheNothing; Type=enh; Value=1; }'
     SpecialInfo: 'Removes the need to breathe and gives immunity to gases'
     AssociatedSpells: Shapechange
     AssociatedSpecial: null
@@ -13505,7 +13505,7 @@ itemmodsmagic:
     Subtype: 15
     Descriptors: null
     PLAdd: '6'
-    Traits: null
+    Traits: 'Special { Qual=Telepathy; Target=(y); Value=12 sq; }'
     SpecialInfo: 'Telepathy with (y) within 12 sq'
     AssociatedSpells: Telepathy
     AssociatedSpecial: null
@@ -13520,7 +13520,7 @@ itemmodsmagic:
     Subtype: 15
     Descriptors: null
     PLAdd: '4'
-    Traits: null
+    Traits: 'Special { Qual=Empathy; Target=(y); Value=12 sq; }'
     SpecialInfo: 'Empathy with (y) within 12 sq'
     AssociatedSpells: Telepathy
     AssociatedSpecial: null
@@ -13535,7 +13535,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'AttMod { Qual=AP; Type=enh; Value=(x); }'
     SpecialInfo: "Weapon ignores (x) points of target's DR"
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13550,7 +13550,7 @@ itemmodsmagic:
     Subtype: 7
     Descriptors: null
     PLAdd: '3'
-    Traits: null
+    Traits: 'AttMod { Qual=RangeMul; Type=enh; Value=2; }'
     SpecialInfo: 'Weapon has double its normal range increment'
     AssociatedSpells: null
     AssociatedSpecial: Weapons
@@ -13565,7 +13565,7 @@ itemmodsmagic:
     Subtype: 6
     Descriptors: null
     PLAdd: '3'
-    Traits: null
+    Traits: 'Special { Qual=WeaponKi; Type=enh; Value=1; }'
     SpecialInfo: 'Weapon can be used for ki-based attacks as if it was a natural weapon'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13580,7 +13580,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '3'
-    Traits: null
+    Traits: 'AttMod { Qual=MercyDamage; Type=enh; Value=+1d6 SP; }'
     SpecialInfo: 'When used to cause SP instead of HP damage, the weapon deals 1d6 extra SP'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13595,7 +13595,7 @@ itemmodsmagic:
     Subtype: 6
     Descriptors: null
     PLAdd: '3'
-    Traits: null
+    Traits: 'Special { Qual=WeaponReturn; Type=enh; Value=1; }'
     SpecialInfo: "When thrown, the weapon returns to the wielder's hand (or the wielder's square) just before his next turn"
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13610,7 +13610,7 @@ itemmodsmagic:
     Subtype: 7
     Descriptors: null
     PLAdd: '3'
-    Traits: null
+    Traits: 'Special { Qual=WeaponSeek; Type=enh; Value=1; }'
     SpecialInfo: 'Weapon ignores bonuses to DeC and DR based on cover and concealment'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13625,7 +13625,7 @@ itemmodsmagic:
     Subtype: 6
     Descriptors: null
     PLAdd: '3'
-    Traits: null
+    Traits: 'AttMod { Qual=RangeAdd; Type=enh; Value=+2; }'
     SpecialInfo: "Weapon's range increment increases by 2 sq (or gains that range increment)"
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13640,7 +13640,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*5'
-    Traits: null
+    Traits: 'Special { Qual=Bleed; Value=(x) HP/r; }'
     SpecialInfo: 'Weapon causes bleeding wounds ((x) HP of continuous damage per round)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13655,7 +13655,7 @@ itemmodsmagic:
     Subtype: 6
     Descriptors: null
     PLAdd: '9'
-    Traits: null
+    Traits: 'Special { Qual=Vampiric; Req=Critical; }'
     SpecialInfo: 'On a successful critical hit, the wielder gains temporary HP equal to the damage dealt (after reductions for DR)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13670,7 +13670,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '6'
-    Traits: null
+    Traits: 'AttMod { Qual=DamageSP; Type=enh; Value=HP; }'
     SpecialInfo: 'Weapon also deals SP damage equal to base HP damage dealt (before DR reductions)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13685,7 +13685,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: '[Psych]'
     PLAdd: '6'
-    Traits: null
+    Traits: 'AttMod { Qual=DamagePP; Type=enh; Value=HP; }'
     SpecialInfo: 'Weapon also deals psychic PP damage equal to base HP damage dealt (before DR reductions)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13700,7 +13700,7 @@ itemmodsmagic:
     Subtype: 6
     Descriptors: null
     PLAdd: '9'
-    Traits: null
+    Traits: 'Special { Qual=Mindfeeder; Req=Critical; }'
     SpecialInfo: 'On a successful critical hit, the wielder gains temporary PP equal to the damage dealt (after reductions for DR)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13715,7 +13715,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: '15'
-    Traits: null
+    Traits: 'DefMod { Qual=Freedom; Type=enh; Value=+10; } Special { Qual=Freedom; Type=enh; Value=1; }'
     SpecialInfo: 'Move freely through water, mud, etc. and gain +10 enhancement bonus to defenses against slowing, entangling, paralyzing, and grappling attacks'
     AssociatedSpells: Freedom
     AssociatedSpecial: null
@@ -13730,7 +13730,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: '(x)*3+15'
-    Traits: null
+    Traits: 'HeaMod { Qual=Regenerate; Type=enh; Value=(x); }'
     SpecialInfo: 'Wearer regenerates (x) HP per hour and can even regrow limbs and organs'
     AssociatedSpells: Regeneration
     AssociatedSpecial: null
@@ -13745,7 +13745,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: (x)
-    Traits: null
+    Traits: 'HeaMod { Qual=RegenSP; Type=enh; Value=(x); }'
     SpecialInfo: 'Wearer regenerates (x) SP extra per hour'
     AssociatedSpells: Regeneration
     AssociatedSpecial: null
@@ -13760,7 +13760,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'HeaMod { Qual=RegenPP; Type=enh; Value=(x); }'
     SpecialInfo: 'Wearer regenerates (x) PP extra per hour'
     AssociatedSpells: Regeneration
     AssociatedSpecial: null
@@ -13775,7 +13775,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'Special { Qual=SpellStore; Value=(x) PL; }'
     SpecialInfo: 'Wearer can store spells and/or powers up to a total of (x) PL in the item. Wearer can "cast" stored spells as if they were use-activated (activation time equal to casting time).'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13790,7 +13790,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: '2'
-    Traits: null
+    Traits: 'Special { Qual=Sustenance; Type=enh; Value=1; }'
     SpecialInfo: 'Sustains wearer (removes the need for food and drink and reduces the need for sleep to 25% normal)'
     AssociatedSpells: 'Metabolic Trance'
     AssociatedSpecial: null
@@ -13805,7 +13805,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: '12'
-    Traits: null
+    Traits: 'Special { Qual=XRayVision; Type=enh; Value=1; }'
     SpecialInfo: 'Wearer gains X-ray vision'
     AssociatedSpells: 'Enhance Senses'
     AssociatedSpecial: null
@@ -13820,7 +13820,7 @@ itemmodsmagic:
     Subtype: 6
     Descriptors: null
     PLAdd: '(x)*2+6'
-    Traits: null
+    Traits: 'DefMod { Qual=MR; Type=res; Value=+(x); } Special { Qual=MAbsorb; Type=enh; Value=+(x); }'
     SpecialInfo: "+(x) resistance bonus to MR, and PP from failed targeted effects recharge item's power pool"
     AssociatedSpells: Antimagic
     AssociatedSpecial: null
@@ -13835,7 +13835,7 @@ itemmodsmagic:
     Subtype: 24
     Descriptors: null
     PLAdd: (x)
-    Traits: null
+    Traits: 'Special { Qual=ExtraSpace; Value=(x) m3; }'
     SpecialInfo: 'Extradimensional space of (x) cubic meters. Can hold up to 120 kg per cubic meter.'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13850,7 +13850,7 @@ itemmodsmagic:
     Subtype: 7
     Descriptors: null
     PLAdd: '3'
-    Traits: null
+    Traits: 'Special { Qual=InfiniteAmmo; Type=enh; Value=1; }'
     SpecialInfo: 'Weapon can create non-magical ammunition when drawn/loaded'
     AssociatedSpells: 'Create Object'
     AssociatedSpecial: null
@@ -13865,7 +13865,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '4'
-    Traits: null
+    Traits: 'Special { Qual=UserImproved; Type=enh; Value=1; }'
     SpecialInfo: "Item can be modified or improved even by those without the Enchant Item skill. Instead, treat the user's TL as their equivalent level in Enchant Item. All other requirements and costs still apply in full."
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13880,7 +13880,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '0'
-    Traits: null
+    Traits: 'Special { Qual=SkillRestrict; Skill=(y); Level=(x); }'
     SpecialInfo: 'Use of item requires (x) levels in skill (y)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13895,7 +13895,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '0'
-    Traits: null
+    Traits: 'Special { Qual=RaceRestrict; Race=(y); }'
     SpecialInfo: "Only members of (y) can use item's powers"
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13910,7 +13910,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '0'
-    Traits: null
+    Traits: 'Special { Qual=ClassRestrict; Class=(y); }'
     SpecialInfo: "Only those with levels in class (y) can use item's powers"
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13925,7 +13925,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '0'
-    Traits: null
+    Traits: 'Special { Qual=LevelRestrict; Type=enh; Value=1; }'
     SpecialInfo: "Only powers of a PL at or below user's TL can be used"
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13940,7 +13940,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '0'
-    Traits: null
+    Traits: 'Special { Qual=Bonded; Type=enh; Value=1; }'
     SpecialInfo: 'Use of the item requires completion of an attunement ritual or quest'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13955,7 +13955,7 @@ itemmodsmagic:
     Subtype: 35
     Descriptors: null
     PLAdd: '(x)*2'
-    Traits: null
+    Traits: 'DefMod { Qual=EnergyRes; Type=enh; Value=(x); }'
     SpecialInfo: 'Generic energy resistance (x) for wearer'
     AssociatedSpells: 'Energy Resistance'
     AssociatedSpecial: null
@@ -13970,7 +13970,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '6'
-    Traits: null
+    Traits: 'Special { Qual=Stun; Req=Critical; }'
     SpecialInfo: 'On critical hit, stun target for 1 round (d20! + PL vs Fort)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -13985,7 +13985,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '9'
-    Traits: null
+    Traits: 'Special { Qual=Paralyze; Req=Critical; }'
     SpecialInfo: 'On critical hit, paralyze target for 1 round (d20! + PL vs Fort)'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -14000,7 +14000,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '(x)*3'
-    Traits: null
+    Traits: 'Special { Qual=WeaponLuck; Value=(x)/day; }'
     SpecialInfo: 'Up to (x) times per day, make two attack rolls and use the highest'
     AssociatedSpells: null
     AssociatedSpecial: null
@@ -14015,7 +14015,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: (x)
-    Traits: null
+    Traits: 'SplAcc { Qual=All; Type=pen; Value=-(x); }'
     SpecialInfo: '-(x) penalty to all supernatural activation checks'
     AssociatedSpells: Antimagic
     AssociatedSpecial: null
@@ -14030,7 +14030,7 @@ itemmodsmagic:
     Subtype: 0
     Descriptors: null
     PLAdd: '4'
-    Traits: null
+    Traits: 'AttMod { Qual=Attack; Req=vsFlatFooted; Type=enh; Value=+2; } AttMod { Qual=Damage; Req=vsFlatFooted; Type=enh; Value=+2; }'
     SpecialInfo: 'Enhancement bonus to attack and damage increases by 2 against flat-footed creatures'
     AssociatedSpells: null
     AssociatedSpecial: null
