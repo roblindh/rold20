@@ -2568,6 +2568,14 @@ class UtilityController extends Controller
         })->orderBy('Name')->get();
 
         $importableItems = $this->getImportableModifiedItems();
+        $importTypes = collect($importableItems)
+            ->pluck('type_name')
+            ->filter()
+            ->unique()
+            ->sort(SORT_NATURAL | SORT_FLAG_CASE)
+            ->values()
+            ->all();
+
         $importSubtypes = collect($importableItems)
             ->pluck('subtype_name')
             ->filter()
@@ -2588,6 +2596,7 @@ class UtilityController extends Controller
             'campaigns',
             'characters',
             'importableItems',
+            'importTypes',
             'importSubtypes'
         ));
     }
@@ -2702,13 +2711,18 @@ class UtilityController extends Controller
 
             $baseItem = $_APP['items'][$baseItemId] ?? null;
             $categoryId = $baseItem ? (int)($baseItem['ItemTypeID'] ?? $baseItem['Type'] ?? ($_APP['itemsubtypes'][$baseItem['Subtype'] ?? 0]['Type'] ?? 0)) : 0;
-            $subtypeName = (string)($_APP['itemsubtypes'][$it->Subtype ?? 0]['Name'] ?? '');
+            $subtypeId = (int)($it->Subtype ?? 0);
+            $subtypeData = $_APP['itemsubtypes'][$subtypeId] ?? null;
+            $typeId = (int)($subtypeData['Type'] ?? 0);
+            $typeName = (string)($_APP['itemtypes'][$typeId]['Name'] ?? '');
+            $subtypeName = (string)($subtypeData['Name'] ?? '');
 
             $searchParts = [
                 $it->Name ?? '',
+                $typeName,
+                $subtypeName,
                 $baseItemName,
                 $materialName,
-                $subtypeName,
                 $it->Description ?? '',
                 implode(' ', $modSummaries),
             ];
@@ -2717,7 +2731,9 @@ class UtilityController extends Controller
             $importable[] = [
                 'id' => (int)$it->ID,
                 'name' => (string)$it->Name,
-                'subtype_id' => (int)($it->Subtype ?? 0),
+                'type_id' => $typeId,
+                'type_name' => $typeName,
+                'subtype_id' => $subtypeId,
                 'subtype_name' => $subtypeName,
                 'description' => (string)($it->Description ?? ''),
                 'category_id' => $categoryId,

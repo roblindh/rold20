@@ -24,14 +24,20 @@ class ItemGeneratorCatalogImportTest extends TestCase
         $data = $view->getData();
 
         $this->assertArrayHasKey('importableItems', $data);
+        $this->assertArrayHasKey('importTypes', $data);
         $this->assertArrayHasKey('importSubtypes', $data);
         $this->assertGreaterThanOrEqual(390, count($data['importableItems']));
+        $this->assertGreaterThanOrEqual(7, count($data['importTypes']));
         $this->assertGreaterThanOrEqual(25, count($data['importSubtypes']));
 
         // Check structure of first item
         $item = $data['importableItems'][0];
         $this->assertArrayHasKey('id', $item);
         $this->assertArrayHasKey('name', $item);
+        $this->assertArrayHasKey('type_id', $item);
+        $this->assertArrayHasKey('type_name', $item);
+        $this->assertArrayHasKey('subtype_id', $item);
+        $this->assertArrayHasKey('subtype_name', $item);
         $this->assertArrayHasKey('category_id', $item);
         $this->assertArrayHasKey('item_id', $item);
         $this->assertArrayHasKey('base_item_name', $item);
@@ -47,6 +53,11 @@ class ItemGeneratorCatalogImportTest extends TestCase
         $this->assertStringContainsString('importItem(item)', $html);
         $this->assertStringContainsString('importModalTitle', $html);
         $this->assertStringContainsString('ref_itemsmodified', $html);
+        $this->assertStringContainsString('importTypeFilter', $html);
+        $this->assertStringContainsString('importSubtypeFilter', $html);
+        $this->assertStringContainsString('importTypesList', $html);
+        $this->assertStringContainsString('availableImportSubtypes', $html);
+        $this->assertStringContainsString('ml-auto', $html);
     }
 
     public function testItemCatalogJsonEndpoint(): void

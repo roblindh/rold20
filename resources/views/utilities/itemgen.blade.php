@@ -408,6 +408,7 @@ function itemGeneratorWizard() {
         // Catalog Import State (from ref_itemsmodified)
         showImportModal: false,
         importSearch: '',
+        importTypeFilter: '',
         importSubtypeFilter: '',
         importLimit: 50,
         importNotification: null,
@@ -517,10 +518,54 @@ function itemGeneratorWizard() {
         },
 
         // Catalog Import Getters & Methods
+        get importTypesList() {
+            const counts = {};
+            for (const item of this.importableItems) {
+                const t = item.type_name || 'Other';
+                counts[t] = (counts[t] || 0) + 1;
+            }
+            return Object.keys(counts).sort().map(name => ({
+                name: name,
+                count: counts[name]
+            }));
+        },
+
+        get availableImportSubtypes() {
+            const counts = {};
+            for (const item of this.importableItems) {
+                if (this.importTypeFilter && item.type_name !== this.importTypeFilter) {
+                    continue;
+                }
+                const st = item.subtype_name || 'Other';
+                counts[st] = (counts[st] || 0) + 1;
+            }
+            return Object.keys(counts).sort().map(name => ({
+                name: name,
+                count: counts[name]
+            }));
+        },
+
+        onImportTypeChange() {
+            if (this.importSubtypeFilter) {
+                const isValid = this.availableImportSubtypes.some(st => st.name === this.importSubtypeFilter);
+                if (!isValid) {
+                    this.importSubtypeFilter = '';
+                }
+            }
+        },
+
+        resetImportFilters() {
+            this.importSearch = '';
+            this.importTypeFilter = '';
+            this.importSubtypeFilter = '';
+        },
+
         get filteredImportItems() {
             const q = (this.importSearch || '').toLowerCase().trim();
+            const type = this.importTypeFilter || '';
             const sub = this.importSubtypeFilter || '';
             return this.importableItems.filter(item => {
+                if (type && item.type_name !== type) return false;
                 if (sub && item.subtype_name !== sub) return false;
                 if (q && !item.search_text.includes(q)) return false;
                 return true;
