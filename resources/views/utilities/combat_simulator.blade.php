@@ -105,41 +105,21 @@
                     </div>
                 </div>
 
-                <!-- Combatant A Stats Card -->
-                <div class="bg-blue-50/60 border border-blue-200 rounded-lg p-2 space-y-1.5 text-center">
-                    <div class="grid grid-cols-3 gap-1.5 text-xs">
-                        <div class="bg-white border border-red-200 rounded px-1 py-0.5 shadow-2xs">
-                            <span class="block text-[9px] uppercase font-bold text-red-600 leading-tight">HP</span>
-                            <span class="text-xs font-black text-red-900" x-text="sideA.combatant ? sideA.combatant.hp_max : '–'"></span>
-                        </div>
-                        <div class="bg-white border border-amber-200 rounded px-1 py-0.5 shadow-2xs">
-                            <span class="block text-[9px] uppercase font-bold text-amber-600 leading-tight">SP</span>
-                            <span class="text-xs font-black text-amber-900" x-text="sideA.combatant ? sideA.combatant.sp_max : '–'"></span>
-                        </div>
-                        <div class="bg-white border border-indigo-200 rounded px-1 py-0.5 shadow-2xs">
-                            <span class="block text-[9px] uppercase font-bold text-indigo-600 leading-tight">PP</span>
-                            <span class="text-xs font-black text-indigo-900" x-text="sideA.combatant ? sideA.combatant.pp_max : '–'"></span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-4 gap-1 text-[11px] pt-1 border-t border-blue-200/60">
-                        <div>
-                            <span class="block text-[9px] text-stone-500 font-medium leading-none">DeC</span>
-                            <span class="font-bold text-stone-800" x-text="sideA.combatant ? sideA.combatant.dec_active : '–'"></span>
-                        </div>
-                        <div>
-                            <span class="block text-[9px] text-stone-500 font-medium leading-none">DR</span>
-                            <span class="font-bold text-stone-800" x-text="sideA.combatant ? sideA.combatant.dr : '–'"></span>
-                        </div>
-                        <div>
-                            <span class="block text-[9px] text-stone-500 font-medium leading-none">MR</span>
-                            <span class="font-bold text-stone-800" x-text="sideA.combatant ? sideA.combatant.mr : '–'"></span>
-                        </div>
-                        <div>
-                            <span class="block text-[9px] text-stone-500 font-medium leading-none">Init</span>
-                            <span class="font-bold text-stone-800" x-text="sideA.combatant ? ((sideA.combatant.init_mod >= 0 ? '+' : '') + sideA.combatant.init_mod) : '–'"></span>
-                        </div>
-                    </div>
+                <!-- Combatant A Stats (Single Compact Line) -->
+                <div class="flex items-center justify-between text-[11px] sm:text-xs bg-blue-50/70 border border-blue-200/80 rounded-md px-2 sm:px-2.5 py-1 text-stone-800">
+                    <span title="Hit Points"><strong class="text-red-600 font-bold">HP</strong> <span class="font-extrabold text-red-950" x-text="sideA.combatant ? sideA.combatant.hp_max : '–'"></span></span>
+                    <span class="text-blue-300 select-none">|</span>
+                    <span title="Stamina Points"><strong class="text-amber-600 font-bold">SP</strong> <span class="font-extrabold text-amber-950" x-text="sideA.combatant ? sideA.combatant.sp_max : '–'"></span></span>
+                    <span class="text-blue-300 select-none">|</span>
+                    <span title="Power Points"><strong class="text-indigo-600 font-bold">PP</strong> <span class="font-extrabold text-indigo-950" x-text="sideA.combatant ? sideA.combatant.pp_max : '–'"></span></span>
+                    <span class="text-blue-300 select-none">|</span>
+                    <span title="Active Defense Class"><strong class="text-stone-500 font-semibold">DeC</strong> <span class="font-bold text-stone-900" x-text="sideA.combatant ? sideA.combatant.dec_active : '–'"></span></span>
+                    <span class="text-blue-300 select-none">|</span>
+                    <span title="Damage Reduction (Armor)"><strong class="text-stone-500 font-semibold">DR</strong> <span class="font-bold text-stone-900" x-text="sideA.combatant ? sideA.combatant.dr : '–'"></span></span>
+                    <span class="text-blue-300 select-none">|</span>
+                    <span title="Magic Resistance"><strong class="text-stone-500 font-semibold">MR</strong> <span class="font-bold text-stone-900" x-text="sideA.combatant ? sideA.combatant.mr : '–'"></span></span>
+                    <span class="text-blue-300 select-none">|</span>
+                    <span title="Initiative Modifier"><strong class="text-stone-500 font-semibold">Init</strong> <span class="font-bold text-stone-900" x-text="sideA.combatant ? ((sideA.combatant.init_mod >= 0 ? '+' : '') + sideA.combatant.init_mod) : '–'"></span></span>
                 </div>
 
                 <!-- Attack Routine Selection -->
@@ -246,41 +226,21 @@
                     </div>
                 </div>
 
-                <!-- Combatant B Stats Card -->
-                <div class="bg-rose-50/60 border border-rose-200 rounded-lg p-2 space-y-1.5 text-center">
-                    <div class="grid grid-cols-3 gap-1.5 text-xs">
-                        <div class="bg-white border border-red-200 rounded px-1 py-0.5 shadow-2xs">
-                            <span class="block text-[9px] uppercase font-bold text-red-600 leading-tight">HP</span>
-                            <span class="text-xs font-black text-red-900" x-text="sideB.combatant ? sideB.combatant.hp_max : '–'"></span>
-                        </div>
-                        <div class="bg-white border border-amber-200 rounded px-1 py-0.5 shadow-2xs">
-                            <span class="block text-[9px] uppercase font-bold text-amber-600 leading-tight">SP</span>
-                            <span class="text-xs font-black text-amber-900" x-text="sideB.combatant ? sideB.combatant.sp_max : '–'"></span>
-                        </div>
-                        <div class="bg-white border border-indigo-200 rounded px-1 py-0.5 shadow-2xs">
-                            <span class="block text-[9px] uppercase font-bold text-indigo-600 leading-tight">PP</span>
-                            <span class="text-xs font-black text-indigo-900" x-text="sideB.combatant ? sideB.combatant.pp_max : '–'"></span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-4 gap-1 text-[11px] pt-1 border-t border-rose-200/60">
-                        <div>
-                            <span class="block text-[9px] text-stone-500 font-medium leading-none">DeC</span>
-                            <span class="font-bold text-stone-800" x-text="sideB.combatant ? sideB.combatant.dec_active : '–'"></span>
-                        </div>
-                        <div>
-                            <span class="block text-[9px] text-stone-500 font-medium leading-none">DR</span>
-                            <span class="font-bold text-stone-800" x-text="sideB.combatant ? sideB.combatant.dr : '–'"></span>
-                        </div>
-                        <div>
-                            <span class="block text-[9px] text-stone-500 font-medium leading-none">MR</span>
-                            <span class="font-bold text-stone-800" x-text="sideB.combatant ? sideB.combatant.mr : '–'"></span>
-                        </div>
-                        <div>
-                            <span class="block text-[9px] text-stone-500 font-medium leading-none">Init</span>
-                            <span class="font-bold text-stone-800" x-text="sideB.combatant ? ((sideB.combatant.init_mod >= 0 ? '+' : '') + sideB.combatant.init_mod) : '–'"></span>
-                        </div>
-                    </div>
+                <!-- Combatant B Stats (Single Compact Line) -->
+                <div class="flex items-center justify-between text-[11px] sm:text-xs bg-rose-50/70 border border-rose-200/80 rounded-md px-2 sm:px-2.5 py-1 text-stone-800">
+                    <span title="Hit Points"><strong class="text-red-600 font-bold">HP</strong> <span class="font-extrabold text-red-950" x-text="sideB.combatant ? sideB.combatant.hp_max : '–'"></span></span>
+                    <span class="text-rose-300 select-none">|</span>
+                    <span title="Stamina Points"><strong class="text-amber-600 font-bold">SP</strong> <span class="font-extrabold text-amber-950" x-text="sideB.combatant ? sideB.combatant.sp_max : '–'"></span></span>
+                    <span class="text-rose-300 select-none">|</span>
+                    <span title="Power Points"><strong class="text-indigo-600 font-bold">PP</strong> <span class="font-extrabold text-indigo-950" x-text="sideB.combatant ? sideB.combatant.pp_max : '–'"></span></span>
+                    <span class="text-rose-300 select-none">|</span>
+                    <span title="Active Defense Class"><strong class="text-stone-500 font-semibold">DeC</strong> <span class="font-bold text-stone-900" x-text="sideB.combatant ? sideB.combatant.dec_active : '–'"></span></span>
+                    <span class="text-rose-300 select-none">|</span>
+                    <span title="Damage Reduction (Armor)"><strong class="text-stone-500 font-semibold">DR</strong> <span class="font-bold text-stone-900" x-text="sideB.combatant ? sideB.combatant.dr : '–'"></span></span>
+                    <span class="text-rose-300 select-none">|</span>
+                    <span title="Magic Resistance"><strong class="text-stone-500 font-semibold">MR</strong> <span class="font-bold text-stone-900" x-text="sideB.combatant ? sideB.combatant.mr : '–'"></span></span>
+                    <span class="text-rose-300 select-none">|</span>
+                    <span title="Initiative Modifier"><strong class="text-stone-500 font-semibold">Init</strong> <span class="font-bold text-stone-900" x-text="sideB.combatant ? ((sideB.combatant.init_mod >= 0 ? '+' : '') + sideB.combatant.init_mod) : '–'"></span></span>
                 </div>
 
                 <!-- Attack Routine Selection -->
@@ -406,37 +366,29 @@
                         </span>
                     </div>
 
-                    <div class="space-y-3">
+                    <div class="space-y-2">
                         <span class="text-xs font-bold text-stone-700 uppercase tracking-wider block">Winner Status on Victory:</span>
                         
-                        <!-- Remaining HP -->
-                        <div>
-                            <div class="flex items-center justify-between text-xs mb-1">
-                                <span class="text-stone-600">Remaining Hit Points (HP):</span>
-                                <span class="font-extrabold text-red-700">
-                                    <span x-text="results ? results.winner_a_status.hp_avg : 0"></span> / <span x-text="results ? results.winner_a_status.hp_max : 0"></span>
-                                    (<span x-text="results ? results.winner_a_status.hp_percent + '%' : '0%'"></span>)
-                                </span>
-                            </div>
-                            <div class="h-2.5 w-full bg-stone-200 rounded-full overflow-hidden">
-                                <div :style="'width: ' + (results ? results.winner_a_status.hp_percent : 0) + '%'" class="h-full bg-red-600 rounded-full"></div>
-                            </div>
-                        </div>
-
-                        <!-- Remaining SP -->
-                        <div class="flex items-center justify-between text-xs pt-1 border-t border-blue-200/60">
-                            <span class="text-stone-600">Remaining Stamina (SP):</span>
-                            <span class="font-bold text-amber-800">
-                                <span x-text="results ? results.winner_a_status.sp_avg : 0"></span> / <span x-text="results ? results.winner_a_status.sp_max : 0"></span>
+                        <!-- Remaining Stats on Single Line -->
+                        <div class="flex items-center justify-between text-xs bg-white/90 border border-blue-200 rounded-md px-2.5 py-1 shadow-2xs">
+                            <span title="Remaining Hit Points">
+                                <strong class="text-red-700">HP:</strong>
+                                <span class="font-black text-red-950" x-text="(results ? results.winner_a_status.hp_avg : 0) + ' / ' + (results ? results.winner_a_status.hp_max : 0)"></span>
+                                <span class="text-[10px] font-semibold text-red-600" x-text="'(' + (results ? results.winner_a_status.hp_percent : 0) + '%)'"></span>
+                            </span>
+                            <span class="text-blue-300 select-none">|</span>
+                            <span title="Remaining Stamina Points">
+                                <strong class="text-amber-700">SP:</strong>
+                                <span class="font-bold text-amber-950" x-text="(results ? results.winner_a_status.sp_avg : 0) + ' / ' + (results ? results.winner_a_status.sp_max : 0)"></span>
+                            </span>
+                            <span class="text-blue-300 select-none" x-show="results && results.winner_a_status.pp_max > 0">|</span>
+                            <span title="Remaining Power Points" x-show="results && results.winner_a_status.pp_max > 0">
+                                <strong class="text-indigo-700">PP:</strong>
+                                <span class="font-bold text-indigo-950" x-text="(results ? results.winner_a_status.pp_avg : 0) + ' / ' + (results ? results.winner_a_status.pp_max : 0)"></span>
                             </span>
                         </div>
-
-                        <!-- Remaining PP -->
-                        <div class="flex items-center justify-between text-xs pt-1 border-t border-blue-200/60" x-show="results && results.winner_a_status.pp_max > 0">
-                            <span class="text-stone-600">Remaining Power (PP):</span>
-                            <span class="font-bold text-indigo-800">
-                                <span x-text="results ? results.winner_a_status.pp_avg : 0"></span> / <span x-text="results ? results.winner_a_status.pp_max : 0"></span>
-                            </span>
+                        <div class="h-2 w-full bg-stone-200 rounded-full overflow-hidden">
+                            <div :style="'width: ' + (results ? results.winner_a_status.hp_percent : 0) + '%'" class="h-full bg-red-600 rounded-full"></div>
                         </div>
                     </div>
                 </div>
@@ -453,37 +405,29 @@
                         </span>
                     </div>
 
-                    <div class="space-y-3">
+                    <div class="space-y-2">
                         <span class="text-xs font-bold text-stone-700 uppercase tracking-wider block">Winner Status on Victory:</span>
                         
-                        <!-- Remaining HP -->
-                        <div>
-                            <div class="flex items-center justify-between text-xs mb-1">
-                                <span class="text-stone-600">Remaining Hit Points (HP):</span>
-                                <span class="font-extrabold text-red-700">
-                                    <span x-text="results ? results.winner_b_status.hp_avg : 0"></span> / <span x-text="results ? results.winner_b_status.hp_max : 0"></span>
-                                    (<span x-text="results ? results.winner_b_status.hp_percent + '%' : '0%'"></span>)
-                                </span>
-                            </div>
-                            <div class="h-2.5 w-full bg-stone-200 rounded-full overflow-hidden">
-                                <div :style="'width: ' + (results ? results.winner_b_status.hp_percent : 0) + '%'" class="h-full bg-red-600 rounded-full"></div>
-                            </div>
-                        </div>
-
-                        <!-- Remaining SP -->
-                        <div class="flex items-center justify-between text-xs pt-1 border-t border-rose-200/60">
-                            <span class="text-stone-600">Remaining Stamina (SP):</span>
-                            <span class="font-bold text-amber-800">
-                                <span x-text="results ? results.winner_b_status.sp_avg : 0"></span> / <span x-text="results ? results.winner_b_status.sp_max : 0"></span>
+                        <!-- Remaining Stats on Single Line -->
+                        <div class="flex items-center justify-between text-xs bg-white/90 border border-rose-200 rounded-md px-2.5 py-1 shadow-2xs">
+                            <span title="Remaining Hit Points">
+                                <strong class="text-red-700">HP:</strong>
+                                <span class="font-black text-red-950" x-text="(results ? results.winner_b_status.hp_avg : 0) + ' / ' + (results ? results.winner_b_status.hp_max : 0)"></span>
+                                <span class="text-[10px] font-semibold text-red-600" x-text="'(' + (results ? results.winner_b_status.hp_percent : 0) + '%)'"></span>
+                            </span>
+                            <span class="text-rose-300 select-none">|</span>
+                            <span title="Remaining Stamina Points">
+                                <strong class="text-amber-700">SP:</strong>
+                                <span class="font-bold text-amber-950" x-text="(results ? results.winner_b_status.sp_avg : 0) + ' / ' + (results ? results.winner_b_status.sp_max : 0)"></span>
+                            </span>
+                            <span class="text-rose-300 select-none" x-show="results && results.winner_b_status.pp_max > 0">|</span>
+                            <span title="Remaining Power Points" x-show="results && results.winner_b_status.pp_max > 0">
+                                <strong class="text-indigo-700">PP:</strong>
+                                <span class="font-bold text-indigo-950" x-text="(results ? results.winner_b_status.pp_avg : 0) + ' / ' + (results ? results.winner_b_status.pp_max : 0)"></span>
                             </span>
                         </div>
-
-                        <!-- Remaining PP -->
-                        <div class="flex items-center justify-between text-xs pt-1 border-t border-rose-200/60" x-show="results && results.winner_b_status.pp_max > 0">
-                            <span class="text-stone-600">Remaining Power (PP):</span>
-                            <span class="font-bold text-indigo-800">
-                                <span x-text="results ? results.winner_b_status.pp_avg : 0"></span> / <span x-text="results ? results.winner_b_status.pp_max : 0"></span>
-                            </span>
+                        <div class="h-2 w-full bg-stone-200 rounded-full overflow-hidden">
+                            <div :style="'width: ' + (results ? results.winner_b_status.hp_percent : 0) + '%'" class="h-full bg-red-600 rounded-full"></div>
                         </div>
                     </div>
                 </div>
