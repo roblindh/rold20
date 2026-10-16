@@ -14,7 +14,7 @@
             </div>
             <p class="text-slate-500 text-xs sm:text-sm mt-1">
                 @if(!empty($cultureClasses))
-                    Typical Classes: <span class="font-medium text-slate-800">{{ implode(', ', array_filter($cultureClasses)) }}</span> | 
+                    Class Configurations: <span class="font-medium text-slate-800">{{ implode(', ', array_filter($cultureClasses)) }}</span> | 
                 @endif
                 Languages: <span class="font-medium text-slate-800">{{ $culture->Languages ?? 'Common' }}</span>
             </p>
@@ -32,7 +32,7 @@
         </div>
         @if(!empty($cultureClasses))
             <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                <div class="text-[11px] font-semibold text-slate-500 uppercase">Class Equivalences</div>
+                <div class="text-[11px] font-semibold text-slate-500 uppercase">Class Configurations</div>
                 <div class="text-sm font-bold text-slate-900 mt-1">{{ implode(', ', array_filter($cultureClasses)) }}</div>
             </div>
         @endif

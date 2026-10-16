@@ -253,14 +253,13 @@ function show_creatureinfo($id, $fullinfo) {
     if (!empty($row['DefaultCulture']) && isset($_APP['cultures'][$row['DefaultCulture']])) {
         $cult = $_APP['cultures'][$row['DefaultCulture']];
         $cultClasses = [];
-        if (isset($_APP['classconfigs'][$cult['ClassConfig']]['ClassID'])) {
-            $cultClasses[] = $_APP['classes'][$_APP['classconfigs'][$cult['ClassConfig']]['ClassID']]['Name'];
-        }
-        if (!empty($cult['ClassConfigSec']) && isset($_APP['classconfigs'][$cult['ClassConfigSec']]['ClassID'])) {
-            $cultClasses[] = $_APP['classes'][$_APP['classconfigs'][$cult['ClassConfigSec']]['ClassID']]['Name'];
-        }
-        if (!empty($cult['ClassConfigTert']) && isset($_APP['classconfigs'][$cult['ClassConfigTert']]['ClassID'])) {
-            $cultClasses[] = $_APP['classes'][$_APP['classconfigs'][$cult['ClassConfigTert']]['ClassID']]['Name'];
+        foreach (['ClassConfig', 'ClassConfigSec', 'ClassConfigTert'] as $cfgField) {
+            $cfgId = $cult[$cfgField] ?? 0;
+            if ($cfgId && isset($_APP['classconfigs'][$cfgId])) {
+                $cfg = $_APP['classconfigs'][$cfgId];
+                $className = $_APP['classes'][$cfg['ClassID']]['Name'] ?? '';
+                $cultClasses[] = $cfg['Name'] . ($className ? ' - ' . $className : '');
+            }
         }
         $cultClassStr = !empty($cultClasses) ? ' (' . implode(', ', $cultClasses) . ')' : '';
 
@@ -464,15 +463,19 @@ function show_cultureinfo($id) {
         echo '<td>' . format_text(cTraitEffects::StatGetTraitsDescription($row['Traits'], FALSE)) . '</td>';
         echo '</tr>';
     }
-    if ($row['ClassConfig']) {
+    if (!empty($row['ClassConfig'])) {
+        $cultClasses = [];
+        foreach (['ClassConfig', 'ClassConfigSec', 'ClassConfigTert'] as $cfgField) {
+            $cfgId = $row[$cfgField] ?? 0;
+            if ($cfgId && isset($_APP['classconfigs'][$cfgId])) {
+                $cfg = $_APP['classconfigs'][$cfgId];
+                $className = $_APP['classes'][$cfg['ClassID']]['Name'] ?? '';
+                $cultClasses[] = $cfg['Name'] . ($className ? ' - ' . $className : '');
+            }
+        }
         echo '<tr>';
-        echo '<td>Class(es):</td>';
-        echo '<td>' . $_APP['classes'][$_APP['classconfigs'][$row['ClassConfig']]['ClassID']]['Name'];
-        if ($row['ClassConfigSec'])
-            echo ', ' . $_APP['classes'][$_APP['classconfigs'][$row['ClassConfigSec']]['ClassID']]['Name'];
-        if ($row['ClassConfigTert'])
-            echo ', ' . $_APP['classes'][$_APP['classconfigs'][$row['ClassConfigTert']]['ClassID']]['Name'];
-        echo '</td></tr>';
+        echo '<td>Class Configuration(s):</td>';
+        echo '<td>' . implode(', ', $cultClasses) . '</td></tr>';
     }
     if ($row['Description']) {
         echo '<tr>';
@@ -495,19 +498,23 @@ function show_culturelist() {
         <caption>List of Cultures (by Name)</caption>
         <thead><tr>
             <th>Culture</th>
-            <th>Class(es)</th>
+            <th>Class Configuration(s) - Class</th>
         </tr></thead>
         <tbody>
     <?php
     while ($row = $result->fetch()) {
+        $cultClasses = [];
+        foreach (['ClassConfig', 'ClassConfigSec', 'ClassConfigTert'] as $cfgField) {
+            $cfgId = $row[$cfgField] ?? 0;
+            if ($cfgId && isset($_APP['classconfigs'][$cfgId])) {
+                $cfg = $_APP['classconfigs'][$cfgId];
+                $className = $_APP['classes'][$cfg['ClassID']]['Name'] ?? '';
+                $cultClasses[] = $cfg['Name'] . ($className ? ' - ' . $className : '');
+            }
+        }
         echo '<tr>';
         echo '<td><a href="#culture' . $row['ID'] . '">' . $row['Name'] . '</a></td>';
-        echo '<td>' . $_APP['classes'][$_APP['classconfigs'][$row['ClassConfig']]['ClassID']]['Name'];
-        if ($row['ClassConfigSec'])
-            echo ', ' . $_APP['classes'][$_APP['classconfigs'][$row['ClassConfigSec']]['ClassID']]['Name'];
-        if ($row['ClassConfigTert'])
-            echo ', ' . $_APP['classes'][$_APP['classconfigs'][$row['ClassConfigTert']]['ClassID']]['Name'];
-        echo '</td></tr>';
+        echo '<td>' . implode(', ', $cultClasses) . '</td></tr>';
     }
     ?>
     </tbody></table>
@@ -523,7 +530,7 @@ function show_cultures($suitability) {
     ?>
     <p>
         <em>Traits:</em> Special traits and bonuses due to culture.<br/>
-        <em>Class:</em> Class equivalences for creatures brought up in this culture.<br/>
+        <em>Class Configuration(s) - Class:</em> Class configurations and associated classes for creatures brought up in this culture.<br/>
     </p>
     <?php
     while ($row = $result->fetch()) {

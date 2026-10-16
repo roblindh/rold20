@@ -292,14 +292,13 @@ class ReferenceController extends Controller
         $cultureClasses = [];
         if (!empty($creature->DefaultCulture) && isset($_APP['cultures'][$creature->DefaultCulture])) {
             $culture = (object)$_APP['cultures'][$creature->DefaultCulture];
-            if (isset($_APP['classconfigs'][$culture->ClassConfig]['ClassID'])) {
-                $cultureClasses[] = $_APP['classes'][$_APP['classconfigs'][$culture->ClassConfig]['ClassID']]['Name'] ?? '';
-            }
-            if (!empty($culture->ClassConfigSec) && isset($_APP['classconfigs'][$culture->ClassConfigSec]['ClassID'])) {
-                $cultureClasses[] = $_APP['classes'][$_APP['classconfigs'][$culture->ClassConfigSec]['ClassID']]['Name'] ?? '';
-            }
-            if (!empty($culture->ClassConfigTert) && isset($_APP['classconfigs'][$culture->ClassConfigTert]['ClassID'])) {
-                $cultureClasses[] = $_APP['classes'][$_APP['classconfigs'][$culture->ClassConfigTert]['ClassID']]['Name'] ?? '';
+            foreach (['ClassConfig', 'ClassConfigSec', 'ClassConfigTert'] as $cfgField) {
+                $cfgId = $culture->$cfgField ?? 0;
+                if ($cfgId && isset($_APP['classconfigs'][$cfgId])) {
+                    $cfg = $_APP['classconfigs'][$cfgId];
+                    $className = $_APP['classes'][$cfg['ClassID']]['Name'] ?? '';
+                    $cultureClasses[] = $cfg['Name'] . ($className ? ' - ' . $className : '');
+                }
             }
         }
 
@@ -548,14 +547,13 @@ class ReferenceController extends Controller
 
         global $_APP;
         $cultureClasses = [];
-        if (!empty($culture->ClassConfig) && isset($_APP['classconfigs'][$culture->ClassConfig]['ClassID'])) {
-            $cultureClasses[] = $_APP['classes'][$_APP['classconfigs'][$culture->ClassConfig]['ClassID']]['Name'] ?? '';
-        }
-        if (!empty($culture->ClassConfigSec) && isset($_APP['classconfigs'][$culture->ClassConfigSec]['ClassID'])) {
-            $cultureClasses[] = $_APP['classes'][$_APP['classconfigs'][$culture->ClassConfigSec]['ClassID']]['Name'] ?? '';
-        }
-        if (!empty($culture->ClassConfigTert) && isset($_APP['classconfigs'][$culture->ClassConfigTert]['ClassID'])) {
-            $cultureClasses[] = $_APP['classes'][$_APP['classconfigs'][$culture->ClassConfigTert]['ClassID']]['Name'] ?? '';
+        foreach (['ClassConfig', 'ClassConfigSec', 'ClassConfigTert'] as $cfgField) {
+            $cfgId = $culture->$cfgField ?? 0;
+            if ($cfgId && isset($_APP['classconfigs'][$cfgId])) {
+                $cfg = $_APP['classconfigs'][$cfgId];
+                $className = $_APP['classes'][$cfg['ClassID']]['Name'] ?? '';
+                $cultureClasses[] = $cfg['Name'] . ($className ? ' - ' . $className : '');
+            }
         }
 
         return view('reference.culture_show', compact('culture', 'cultureClasses'));

@@ -33,7 +33,10 @@ class ReferenceShowAndCompendiumEnhancementsTest extends TestCase
     {
         $response = $this->app->handle(\Illuminate\Http\Request::create('/reference/cultures/' . urlencode('Human, Occidental'), 'GET'));
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertStringContainsString('Human, Occidental', $response->getContent());
+        $content = $response->getContent();
+        $this->assertStringContainsString('Human, Occidental', $content);
+        $this->assertStringContainsString('Class Configurations:', $content);
+        $this->assertMatchesRegularExpression('/Class Configurations:\s*<span[^>]*>[^<]+ - [^<]+<\/span>/', $content);
 
         $response2 = $this->app->handle(\Illuminate\Http\Request::create('/reference/cultures/Dwarven', 'GET'));
         $this->assertEquals(200, $response2->getStatusCode());
@@ -46,6 +49,8 @@ class ReferenceShowAndCompendiumEnhancementsTest extends TestCase
         $content = $response->getContent();
         $this->assertStringContainsString('Full Creature / NPC Stat Block', $content);
         $this->assertStringContainsString('Adult Commoner', $content);
+        $this->assertStringContainsString('Class Configurations:', $content);
+        $this->assertMatchesRegularExpression('/Class Configurations:\s*[^<]+ - [^<]+/', $content);
     }
 
     public function testCreaturesHavePersonalityAndExternalUrlWhereApplicable(): void

@@ -151,7 +151,7 @@
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <span class="font-bold text-slate-900">Default Culture: {{ $culture->Name }}</span>
                     @if(!empty($cultureClasses))
-                        <span class="text-xs text-slate-600 font-medium">Associated Classes: {{ implode(', ', array_filter($cultureClasses)) }}</span>
+                        <span class="text-xs text-slate-600 font-medium">Class Configurations: {{ implode(', ', array_filter($cultureClasses)) }}</span>
                     @endif
                 </div>
                 @if(!empty($culture->Traits))
