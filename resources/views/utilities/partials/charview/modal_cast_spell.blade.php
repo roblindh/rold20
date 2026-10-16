@@ -96,15 +96,15 @@
                         </label>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-center">
-                        <div class="sm:col-span-8">
-                            <select x-model="castSpellState.selectedSpellId" @change="onCastSpellChanged()" class="w-full bg-white border-2 border-indigo-600 hover:border-indigo-700 rounded-lg px-3 py-2 text-sm sm:text-base font-bold text-stone-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                    <div class="grid grid-cols-12 gap-2 items-center">
+                        <div class="col-span-8 sm:col-span-9 min-w-0">
+                            <select x-model="castSpellState.selectedSpellId" @change="onCastSpellChanged()" class="w-full bg-white border-2 border-indigo-600 hover:border-indigo-700 rounded-lg px-3 py-2 text-sm sm:text-base font-bold text-stone-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer truncate">
                                 <template x-for="sp in castSpellDisplayList" :key="sp.id">
                                     <option :value="sp.id" class="font-bold text-stone-900 py-1" x-text="sp.label"></option>
                                 </template>
                             </select>
                         </div>
-                        <div class="sm:col-span-4 flex items-center justify-end text-xs font-mono font-bold text-indigo-950 bg-indigo-50/80 border border-indigo-200/80 rounded-lg px-3 py-2 shadow-2xs">
+                        <div class="col-span-4 sm:col-span-3 flex items-center justify-end text-xs font-mono font-bold text-indigo-950 bg-indigo-50/80 border border-indigo-200/80 rounded-lg px-2.5 py-2 shadow-2xs shrink-0">
                             <span>Base: <span class="text-sm font-extrabold text-indigo-700" x-text="castSpellBPC + ' PP'"></span></span>
                         </div>
                     </div>
@@ -216,15 +216,15 @@
                     </template>
 
                     <!-- Spell Parameters Dropdowns (Range, Duration, Target, Implements) -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+                    <div class="grid grid-cols-4 gap-1.5 pt-1">
                         
                         <!-- Range Parameter -->
-                        <div class="space-y-1">
-                            <label class="font-bold text-[11px] text-stone-700 flex items-center justify-between">
+                        <div class="space-y-0.5 min-w-0">
+                            <label class="font-bold text-[10px] text-stone-700 flex items-center justify-between gap-0.5">
                                 <span class="truncate">🎯 Range</span>
-                                <span class="text-[10px] font-mono text-indigo-900 font-bold shrink-0" x-text="'+' + (castRangeOptions[castSpellState.selectedRangeIndex]?.ppMod || 0) + ' PP'"></span>
+                                <span class="text-[9px] font-mono text-indigo-900 font-bold shrink-0" x-text="'+' + (castRangeOptions[castSpellState.selectedRangeIndex]?.ppMod || 0) + ' PP'"></span>
                             </label>
-                            <select x-model="castSpellState.selectedRangeIndex" class="w-full bg-stone-50 border border-stone-300 rounded-lg px-2 py-1.5 text-xs text-stone-900 focus:outline-none focus:border-indigo-600 truncate">
+                            <select x-model="castSpellState.selectedRangeIndex" class="w-full min-w-0 bg-stone-50 border border-stone-300 rounded-md px-1.5 py-1 text-[11px] text-stone-900 focus:outline-none focus:border-indigo-600 truncate">
                                 <template x-for="(rOpt, idx) in castRangeOptions" :key="idx">
                                     <option :value="idx" x-text="rOpt.text"></option>
                                 </template>
@@ -232,12 +232,12 @@
                         </div>
 
                         <!-- Duration Parameter -->
-                        <div class="space-y-1">
-                            <label class="font-bold text-[11px] text-stone-700 flex items-center justify-between">
+                        <div class="space-y-0.5 min-w-0">
+                            <label class="font-bold text-[10px] text-stone-700 flex items-center justify-between gap-0.5">
                                 <span class="truncate">⏳ Duration</span>
-                                <span class="text-[10px] font-mono text-indigo-900 font-bold shrink-0" x-text="'+' + (castDurationOptions[castSpellState.selectedDurationIndex]?.ppMod || 0) + ' PP'"></span>
+                                <span class="text-[9px] font-mono text-indigo-900 font-bold shrink-0" x-text="'+' + (castDurationOptions[castSpellState.selectedDurationIndex]?.ppMod || 0) + ' PP'"></span>
                             </label>
-                            <select x-model="castSpellState.selectedDurationIndex" class="w-full bg-stone-50 border border-stone-300 rounded-lg px-2 py-1.5 text-xs text-stone-900 focus:outline-none focus:border-indigo-600 truncate">
+                            <select x-model="castSpellState.selectedDurationIndex" class="w-full min-w-0 bg-stone-50 border border-stone-300 rounded-md px-1.5 py-1 text-[11px] text-stone-900 focus:outline-none focus:border-indigo-600 truncate">
                                 <template x-for="(dOpt, idx) in castDurationOptions" :key="idx">
                                     <option :value="idx" x-text="dOpt.text"></option>
                                 </template>
@@ -245,12 +245,12 @@
                         </div>
 
                         <!-- Target / Area Parameter -->
-                        <div class="space-y-1">
-                            <label class="font-bold text-[11px] text-stone-700 flex items-center justify-between">
+                        <div class="space-y-0.5 min-w-0">
+                            <label class="font-bold text-[10px] text-stone-700 flex items-center justify-between gap-0.5">
                                 <span class="truncate">👥 Target/Area</span>
-                                <span class="text-[10px] font-mono text-indigo-900 font-bold shrink-0" x-text="'+' + (castTargetOptions[castSpellState.selectedTargetIndex]?.ppMod || 0) + ' PP'"></span>
+                                <span class="text-[9px] font-mono text-indigo-900 font-bold shrink-0" x-text="'+' + (castTargetOptions[castSpellState.selectedTargetIndex]?.ppMod || 0) + ' PP'"></span>
                             </label>
-                            <select x-model="castSpellState.selectedTargetIndex" class="w-full bg-stone-50 border border-stone-300 rounded-lg px-2 py-1.5 text-xs text-stone-900 focus:outline-none focus:border-indigo-600 truncate">
+                            <select x-model="castSpellState.selectedTargetIndex" class="w-full min-w-0 bg-stone-50 border border-stone-300 rounded-md px-1.5 py-1 text-[11px] text-stone-900 focus:outline-none focus:border-indigo-600 truncate">
                                 <template x-for="(tOpt, idx) in castTargetOptions" :key="idx">
                                     <option :value="idx" x-text="tOpt.text"></option>
                                 </template>
@@ -258,12 +258,12 @@
                         </div>
 
                         <!-- Implements / Special Options -->
-                        <div class="space-y-1">
-                            <label class="font-bold text-[11px] text-stone-700 flex items-center justify-between">
+                        <div class="space-y-0.5 min-w-0">
+                            <label class="font-bold text-[10px] text-stone-700 flex items-center justify-between gap-0.5">
                                 <span class="truncate">🔮 Implements</span>
-                                <span class="text-[10px] font-mono text-indigo-900 font-bold shrink-0" x-text="'+' + (castImplementsOptions[castSpellState.selectedImplementsIndex]?.ppMod || 0) + ' PP'"></span>
+                                <span class="text-[9px] font-mono text-indigo-900 font-bold shrink-0" x-text="'+' + (castImplementsOptions[castSpellState.selectedImplementsIndex]?.ppMod || 0) + ' PP'"></span>
                             </label>
-                            <select x-model="castSpellState.selectedImplementsIndex" class="w-full bg-stone-50 border border-stone-300 rounded-lg px-2 py-1.5 text-xs text-stone-900 focus:outline-none focus:border-indigo-600 truncate">
+                            <select x-model="castSpellState.selectedImplementsIndex" class="w-full min-w-0 bg-stone-50 border border-stone-300 rounded-md px-1.5 py-1 text-[11px] text-stone-900 focus:outline-none focus:border-indigo-600 truncate">
                                 <template x-for="(iOpt, idx) in castImplementsOptions" :key="idx">
                                     <option :value="idx" x-text="iOpt.text"></option>
                                 </template>
@@ -272,7 +272,7 @@
                     </div>
 
                     <!-- Voluntary & Custom Extra PP -->
-                    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-stone-200 bg-stone-50/60 p-2 rounded-lg">
+                    <div class="flex items-center justify-between gap-2 pt-2 border-t border-stone-200 bg-stone-50/60 p-2 rounded-lg">
                         <div class="flex items-center gap-2">
                             <span class="font-bold text-stone-700">Voluntary Extra PP:</span>
                             <span class="text-[10px] text-stone-500">(Increases PL &amp; DC)</span>
@@ -306,42 +306,42 @@
                         </span>
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 items-center">
-                        <label class="border p-2 rounded-lg flex items-center gap-1.5 cursor-pointer transition select-none text-[11px] h-full"
+                    <div class="grid grid-cols-4 gap-1.5 items-stretch">
+                        <label class="min-w-0 border p-1.5 rounded-lg flex items-center gap-1 cursor-pointer transition select-none text-[10px] sm:text-[11px] h-full"
                                :class="castSpellState.apMode === 'none' ? 'bg-indigo-50/70 border-indigo-400 ring-1 ring-indigo-300 font-bold text-indigo-950' : 'bg-stone-50 border-stone-200 text-stone-700 hover:bg-stone-100/70'">
-                            <input type="radio" name="apMode" value="none" x-model="castSpellState.apMode" class="text-indigo-600 focus:ring-indigo-500">
+                            <input type="radio" name="apMode" value="none" x-model="castSpellState.apMode" class="text-indigo-600 focus:ring-indigo-500 shrink-0 h-3.5 w-3.5">
                             <span class="truncate">Standard</span>
                         </label>
-                        <label class="border p-2 rounded-lg flex items-center gap-1.5 cursor-pointer transition select-none text-[11px] h-full"
+                        <label class="min-w-0 border p-1.5 rounded-lg flex items-center gap-1 cursor-pointer transition select-none text-[10px] sm:text-[11px] h-full"
                                :class="castSpellState.apMode === 'boost' ? 'bg-blue-50/90 border-blue-400 ring-1 ring-blue-300 font-bold text-blue-950' : 'bg-stone-50 border-stone-200 text-stone-700 hover:bg-stone-100/70'">
-                            <input type="radio" name="apMode" value="boost" x-model="castSpellState.apMode" class="text-blue-600 focus:ring-blue-500">
-                            <span class="truncate">⚡ AP Boost</span>
+                            <input type="radio" name="apMode" value="boost" x-model="castSpellState.apMode" class="text-blue-600 focus:ring-blue-500 shrink-0 h-3.5 w-3.5">
+                            <span class="truncate">⚡ Boost</span>
                         </label>
-                        <label class="border p-2 rounded-lg flex items-center gap-1.5 cursor-pointer transition select-none text-[11px] h-full"
+                        <label class="min-w-0 border p-1.5 rounded-lg flex items-center gap-1 cursor-pointer transition select-none text-[10px] sm:text-[11px] h-full"
                                :class="castSpellState.apMode === 'dampen' ? 'bg-purple-50/90 border-purple-400 ring-1 ring-purple-300 font-bold text-purple-950' : 'bg-stone-50 border-stone-200 text-stone-700 hover:bg-stone-100/70'">
-                            <input type="radio" name="apMode" value="dampen" x-model="castSpellState.apMode" class="text-purple-600 focus:ring-purple-500">
-                            <span class="truncate">🌫️ AP Dampen</span>
+                            <input type="radio" name="apMode" value="dampen" x-model="castSpellState.apMode" class="text-purple-600 focus:ring-purple-500 shrink-0 h-3.5 w-3.5">
+                            <span class="truncate">🌫️ Dampen</span>
                         </label>
 
                         <!-- Extra AP Stepper (4th quarter-width element on same horizontal line) -->
-                        <div class="border p-1.5 rounded-lg flex items-center justify-between gap-1 transition text-[11px] h-full"
+                        <div class="min-w-0 border px-1.5 py-1 rounded-lg flex items-center justify-between gap-1 transition text-[10px] sm:text-[11px] h-full"
                              :class="castSpellState.apMode === 'none' ? 'bg-stone-50/50 border-stone-200 opacity-50' : (castSpellState.apMode === 'boost' ? 'bg-blue-50/60 border-blue-300' : 'bg-purple-50/60 border-purple-300')">
-                            <span class="font-bold text-[10px] uppercase truncate"
-                                  :class="castSpellState.apMode === 'boost' ? 'text-blue-900' : (castSpellState.apMode === 'dampen' ? 'text-purple-900' : 'text-stone-500')">Extra AP:</span>
-                            <div class="flex items-center gap-1 shrink-0">
+                            <span class="font-bold text-[9px] sm:text-[10px] uppercase truncate shrink-0"
+                                  :class="castSpellState.apMode === 'boost' ? 'text-blue-900' : (castSpellState.apMode === 'dampen' ? 'text-purple-900' : 'text-stone-500')">Extra:</span>
+                            <div class="flex items-center gap-0.5 shrink-0">
                                 <button type="button" 
                                         :disabled="castSpellState.apMode === 'none'"
                                         @click="if (castSpellState.apAmount > 1) castSpellState.apAmount--" 
-                                        class="w-5 h-5 rounded bg-stone-200 hover:bg-stone-300 disabled:opacity-40 disabled:cursor-not-allowed font-bold text-xs flex items-center justify-center cursor-pointer">-</button>
+                                        class="w-4 h-4 rounded bg-stone-200 hover:bg-stone-300 disabled:opacity-40 disabled:cursor-not-allowed font-bold text-[10px] flex items-center justify-center cursor-pointer leading-none">-</button>
                                 <input type="number" min="1" max="25" 
                                        :disabled="castSpellState.apMode === 'none'"
                                        x-model.number="castSpellState.apAmount" 
-                                       class="w-8 text-center py-0.5 border border-stone-300 rounded font-mono font-bold text-[11px] bg-white text-stone-900 disabled:bg-stone-100 disabled:text-stone-400">
+                                       class="w-6.5 text-center py-0 px-0 border border-stone-300 rounded font-mono font-bold text-[10px] bg-white text-stone-900 disabled:bg-stone-100 disabled:text-stone-400">
                                 <button type="button" 
                                         :disabled="castSpellState.apMode === 'none'"
                                         @click="castSpellState.apAmount++" 
-                                        class="w-5 h-5 rounded bg-stone-200 hover:bg-stone-300 disabled:opacity-40 disabled:cursor-not-allowed font-bold text-xs flex items-center justify-center cursor-pointer">+</button>
-                                <span class="font-mono text-[10px] font-bold shrink-0" 
+                                        class="w-4 h-4 rounded bg-stone-200 hover:bg-stone-300 disabled:opacity-40 disabled:cursor-not-allowed font-bold text-[10px] flex items-center justify-center cursor-pointer leading-none">+</button>
+                                <span class="font-mono text-[9px] sm:text-[10px] font-bold shrink-0 ml-0.5" 
                                       :class="castSpellState.apMode === 'boost' ? 'text-blue-700' : (castSpellState.apMode === 'dampen' ? 'text-purple-700' : 'text-stone-400')" 
                                       x-text="castSpellState.apMode === 'none' ? '+0' : ((castSpellState.apMode === 'boost' ? '+' : '-') + castSpellState.apAmount)"></span>
                             </div>
