@@ -31,14 +31,33 @@ class CombatSimulatorTest extends TestCase
     {
         $view = $this->controller->index();
         $this->assertEquals('utilities.combat_simulator', $view->name());
+        $this->assertArrayHasKey('races', $view->getData());
+        $this->assertArrayHasKey('classConfigs', $view->getData());
         $this->assertArrayHasKey('archetypes', $view->getData());
         $this->assertArrayHasKey('creatures', $view->getData());
         $this->assertArrayHasKey('defaultA', $view->getData());
         $this->assertArrayHasKey('defaultB', $view->getData());
 
+        // Check defaults: Human (1, RL 0), None (0, CL 0)
+        $data = $view->getData();
+        $this->assertEquals(1, $data['defaultA']['race_id']);
+        $this->assertEquals(0, $data['defaultA']['race_level']);
+        $this->assertEquals(0, $data['defaultA']['class_config_id']);
+        $this->assertEquals(0, $data['defaultA']['class_level']);
+
+        $this->assertEquals(1, $data['defaultB']['race_id']);
+        $this->assertEquals(0, $data['defaultB']['race_level']);
+        $this->assertEquals(0, $data['defaultB']['class_config_id']);
+        $this->assertEquals(0, $data['defaultB']['class_level']);
+
+        // Check first option of classConfigs is None (0)
+        $this->assertEquals('None', $data['classConfigs'][0]['name']);
+        $this->assertEquals(0, $data['classConfigs'][0]['id']);
+
         $rendered = $view->render();
         $this->assertStringContainsString('Combat Simulator', $rendered);
         $this->assertStringContainsString('Run Simulation', $rendered);
+        $this->assertStringContainsString('grid grid-cols-2', $rendered);
     }
 
     /**
@@ -167,5 +186,87 @@ class CombatSimulatorTest extends TestCase
         $this->assertContains($battle['winner'], ['A', 'B', 'draw']);
         $this->assertGreaterThanOrEqual(1, $battle['rounds']);
         $this->assertNotEmpty($battle['log']);
+    }
+
+    /**
+     * Test getEntityInfo endpoint with unified race and class config parameters.
+     */
+    public function test_unified_entity_info_for_pure_race_and_with_class(): void
+    {
+        // 1. Pure Human (RL 0, CL 0, None)
+        $req1 = Request::create('/utilities/combat-simulator/entity-info', 'POST', [
+            'race_id' => 1,
+            'race_level' => 0,
+            'class_config_id' => 0,
+            'class_level' => 0,
+        ]);
+        $res1 = $this->controller->getEntityInfo($req1);
+        $this->assertEquals(200, $res1->getStatusCode());
+        $data1 = json_decode($res1->getContent(), true);
+        $this->assertEquals('success', $data1['status']);
+        $this->assertEquals(1, $data1['combatant']['race_id']);
+        $this->assertEquals(0, $data1['combatant']['race_level']);
+        $this->assertEquals(0, $data1['combatant']['class_config_id']);
+        $this->assertEquals(0, $data1['combatant']['class_level']);
+        $this->assertGreaterThan(0, $data1['combatant']['hp_max']);
+
+        // 2. Human with Class Config (e.g. Swordsman, CL 5)
+        $req2 = Request::create('/utilities/combat-simulator/entity-info', 'POST', [
+            'race_id' => 1,
+            'race_level' => 0,
+            'class_config_id' => 1,
+            'class_level' => 5,
+        ]);
+        $res2 = $this->controller->getEntityInfo($req2);
+        $this->assertEquals(200, $res2->getStatusCode());
+        $data2 = json_decode($res2->getContent(), true);
+        $this->assertEquals('success', $data2['status']);
+        $this->assertEquals(5, $data2['combatant']['level']);
+        $this->assertNotEmpty($data2['combatant']['attack_routines']);
+
+        // 3. Bugbear with Class Config (RL 3, Swordsman CL 3 -> Total Level 6)
+        $req3 = Request::create('/utilities/combat-simulator/entity-info', 'POST', [
+            'race_id' => 54,
+            'race_level' => 3,
+            'class_config_id' => 1,
+            'class_level' => 3,
+        ]);
+        $res3 = $this->controller->getEntityInfo($req3);
+        $this->assertEquals(200, $res3->getStatusCode());
+        $data3 = json_decode($res3->getContent(), true);
+        $this->assertEquals('success', $data3['status']);
+        $this->assertEquals(6, $data3['combatant']['level']);
+        $this->assertNotEmpty($data3['combatant']['attack_routines']);
+    }
+
+    /**
+     * Test simulation with unified race and class config payload.
+     */
+    public function test_unified_simulation(): void
+    {
+        $request = Request::create('/utilities/combat-simulator/simulate', 'POST', [
+            'side_a' => [
+                'race_id' => 1,
+                'race_level' => 0,
+                'class_config_id' => 1,
+                'class_level' => 4,
+            ],
+            'side_b' => [
+                'race_id' => 54, // Bugbear
+                'race_level' => 3,
+                'class_config_id' => 0, // None
+                'class_level' => 0,
+            ],
+            'iterations' => 100,
+        ]);
+
+        $response = $this->controller->simulate($request);
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $data = json_decode($response->getContent(), true);
+        $this->assertEquals('success', $data['status']);
+        $this->assertEquals(100, $data['data']['iterations']);
+        $this->assertEquals(100, $data['data']['wins_a'] + $data['data']['wins_b'] + $data['data']['draws']);
+        $this->assertNotEmpty($data['data']['sample_battle_log']);
     }
 }

@@ -2781,6 +2781,100 @@ button.two-handed-btn-active,
     font-weight: 700 !important;
 }
 
+/* ==========================================================================
+   Combat Simulator: Combatant Box Headers & Stepper Controls
+   ========================================================================== */
+.cs-header-side-a {
+    background: #1e3a8a !important;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
+    color: #ffffff !important;
+    border-bottom: 2px solid #1d4ed8 !important;
+}
+.cs-header-side-b {
+    background: #881337 !important;
+    background: linear-gradient(135deg, #881337 0%, #9f1239 100%) !important;
+    color: #ffffff !important;
+    border-bottom: 2px solid #be123c !important;
+}
+.cs-header-side-a .cs-side-label {
+    color: #93c5fd !important;
+}
+.cs-header-side-b .cs-side-label {
+    color: #fca5a5 !important;
+}
+.cs-header-side-a .cs-subtext {
+    color: #dbeafe !important;
+}
+.cs-header-side-b .cs-subtext {
+    color: #ffe4e6 !important;
+}
+.cs-header-side-a .cs-lvl-badge {
+    background: #0f172a !important;
+    border: 1px solid #60a5fa !important;
+    color: #93c5fd !important;
+}
+.cs-header-side-b .cs-lvl-badge {
+    background: #0f172a !important;
+    border: 1px solid #f87171 !important;
+    color: #fca5a5 !important;
+}
+.cs-lvl-badge .cs-lvl-val {
+    color: #fbbf24 !important;
+}
+.cs-stepper-btn {
+    width: 2rem !important; /* 32px */
+    height: 1.5rem !important; /* 24px */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 0.25rem !important;
+    border: 1px solid #cbd5e1 !important;
+    background-color: #f8fafc !important;
+    color: #1e293b !important;
+    font-weight: 700 !important;
+    font-size: 0.875rem !important;
+    line-height: 1 !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+    user-select: none !important;
+    cursor: pointer !important;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out !important;
+}
+.cs-stepper-btn:hover {
+    background-color: #e2e8f0 !important;
+    border-color: #94a3b8 !important;
+}
+.cs-stepper-btn:active {
+    background-color: #cbd5e1 !important;
+}
+
+/* Simulation Results & Progress Bar Colors */
+.bg-blue-600 {
+    background-color: #2563eb !important;
+}
+.bg-blue-700 {
+    background-color: #1d4ed8 !important;
+}
+.bg-rose-600 {
+    background-color: #e11d48 !important;
+}
+.bg-rose-700 {
+    background-color: #be123c !important;
+}
+.bg-stone-400 {
+    background-color: #a8a29e !important;
+}
+.bg-red-600 {
+    background-color: #dc2626 !important;
+}
+.text-blue-700 {
+    color: #1d4ed8 !important;
+}
+.text-rose-700 {
+    color: #be123c !important;
+}
+
+
+
 
 
 

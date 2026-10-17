@@ -35,73 +35,78 @@
     </div>
 
     <!-- Main Combatants Setup Grid (Side-by-Side) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4 items-stretch">
+    <div class="grid grid-cols-2 gap-3 lg:gap-4 items-stretch">
 
         <!-- =================== SIDE A (BLUE) =================== -->
         <div class="bg-white border-2 border-blue-400/80 rounded-xl shadow-sm overflow-hidden flex flex-col">
             <!-- Side A Header -->
-            <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white px-3.5 py-2 flex items-center justify-between">
+            <div class="cs-header-side-a px-3.5 py-2.5 flex items-center justify-between"
+                 style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: #ffffff; border-bottom: 2px solid #1d4ed8;">
                 <div class="flex items-center gap-2 min-w-0">
                     <span class="text-base shrink-0">🛡️</span>
                     <div class="min-w-0 leading-tight">
-                        <h2 class="font-bold text-xs sm:text-sm tracking-wide flex items-center gap-1.5 truncate">
-                            <span class="text-blue-200 shrink-0">Side A:</span>
-                            <span class="truncate" x-text="sideA.combatant ? sideA.combatant.name : 'Combatant A'"></span>
+                        <h2 class="font-bold text-xs sm:text-sm tracking-wide flex items-center gap-1.5 truncate text-white" style="text-shadow: 0 1px 2px rgba(0,0,0,0.5);">
+                            <span class="cs-side-label font-extrabold shrink-0" style="color: #93c5fd;">Side A:</span>
+                            <span class="truncate font-bold text-white" x-text="sideA.combatant ? sideA.combatant.name : 'Combatant A'"></span>
                         </h2>
-                        <div class="text-blue-200 text-[10px] sm:text-[11px] truncate" x-text="sideA.combatant ? (sideA.combatant.race_name + ' • Level ' + sideA.level) : 'Loading...'"></div>
+                        <div class="cs-subtext text-[10px] sm:text-[11px] truncate font-medium" style="color: #dbeafe;" x-text="sideA.combatant ? (sideA.combatant.race_name + ' • Level ' + sideA.combatant.level) : 'Loading...'"></div>
                     </div>
                 </div>
-                <div class="flex items-center gap-1 bg-blue-900/70 border border-blue-300/40 rounded px-2 py-0.5 text-xs font-semibold shrink-0 ml-1.5">
-                    <span class="text-[10px] text-blue-200">Lvl</span>
-                    <span class="text-amber-300 font-bold" x-text="sideA.level"></span>
+                <div class="cs-lvl-badge flex items-center gap-1 rounded px-2.5 py-0.5 text-xs font-semibold shrink-0 ml-1.5 shadow-sm"
+                     style="background: #0f172a; border: 1px solid #60a5fa; color: #93c5fd;">
+                    <span class="text-[10px] uppercase font-bold" style="color: #93c5fd;">Lvl</span>
+                    <span class="cs-lvl-val font-extrabold text-sm" style="color: #fbbf24;" x-text="sideA.combatant ? sideA.combatant.level : (sideA.race_level + sideA.class_level)"></span>
                 </div>
             </div>
 
             <!-- Side A Controls -->
             <div class="p-2.5 sm:p-3 space-y-2 flex-1 flex flex-col justify-between">
-                <!-- Type Selection & Entity Picker -->
-                <div class="space-y-1">
-                    <div class="flex items-center justify-between gap-2">
-                        <!-- Type toggle -->
-                        <div class="inline-flex rounded p-0.5 bg-stone-100 border border-stone-300 text-xs shrink-0">
-                            <button type="button" 
-                                    @click="setSideType('sideA', 'npc')"
-                                    :class="sideA.type === 'npc' ? 'bg-blue-600 text-white font-bold shadow-xs' : 'text-stone-600 hover:text-stone-900'"
-                                    class="py-0.5 px-2 rounded transition text-[11px]">
-                                🛡️ NPC
-                            </button>
-                            <button type="button" 
-                                    @click="setSideType('sideA', 'monster')"
-                                    :class="sideA.type === 'monster' ? 'bg-blue-600 text-white font-bold shadow-xs' : 'text-stone-600 hover:text-stone-900'"
-                                    class="py-0.5 px-2 rounded transition text-[11px]">
-                                👹 Monster
-                            </button>
+                <div class="space-y-2">
+                    <!-- Race Selection & Race Level Slider -->
+                    <div class="space-y-1">
+                        <div class="flex items-center justify-between text-xs">
+                            <label class="block text-[11px] font-bold text-stone-700 uppercase tracking-wider">Race</label>
+                            <span class="text-[10px] text-stone-500 font-medium">Base RL: <strong x-text="getSelectedRaceBaseRL('sideA')"></strong></span>
                         </div>
-                        <span class="text-[10px] text-stone-500 font-medium truncate" x-text="sideA.type === 'npc' ? 'Class Configuration' : 'Creature'"></span>
+                        <select x-model.number="sideA.race_id" @change="onRaceChange('sideA')" class="w-full text-xs font-medium rounded-md border border-stone-300 bg-white py-1 px-2 shadow-xs focus:ring-2 focus:ring-blue-500 truncate">
+                            @foreach($races as $r)
+                                <option value="{{ $r['id'] }}" {{ ($defaultA['race_id'] ?? 1) == $r['id'] ? 'selected' : '' }}>
+                                    {{ $r['name'] }} (RL {{ $r['base_rl'] }})
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="flex items-center gap-2 bg-stone-50 border border-stone-200/80 rounded-md px-2 py-1">
+                            <span class="text-[10px] font-bold text-stone-500 uppercase tracking-wider shrink-0">Race Lvl (RL)</span>
+                            <input type="range" min="0" max="30" x-model.number="sideA.race_level" @change="onCombatantChange('sideA')" class="w-full accent-blue-600 h-1.5 bg-stone-200 rounded cursor-pointer">
+                            <div class="flex items-center gap-0.5 shrink-0">
+                                <button type="button" @click="stepLevel('sideA', 'race_level', -1)" class="cs-stepper-btn" title="Decrease Race Level">-</button>
+                                <span class="w-7 text-center text-xs font-black text-blue-700" x-text="sideA.race_level"></span>
+                                <button type="button" @click="stepLevel('sideA', 'race_level', 1)" class="cs-stepper-btn" title="Increase Race Level">+</button>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- NPC Class Configuration Select -->
-                    <select x-show="sideA.type === 'npc'" x-model="sideA.id" @change="onCombatantChange('sideA')" class="w-full text-xs font-medium rounded-md border border-stone-300 bg-white py-1 px-2 shadow-xs focus:ring-2 focus:ring-blue-500">
-                        @foreach($archetypes as $arch)
-                            <option value="{{ $arch['id'] }}">{{ $arch['name'] }}</option>
-                        @endforeach
-                    </select>
-                    <!-- Monster Select -->
-                    <select x-show="sideA.type === 'monster'" x-model="sideA.id" @change="onCombatantChange('sideA')" class="w-full text-xs font-medium rounded-md border border-stone-300 bg-white py-1 px-2 shadow-xs focus:ring-2 focus:ring-blue-500">
-                        @foreach($creatures as $creature)
-                            <option value="{{ $creature['id'] }}">{{ $creature['name'] }} (CL {{ $creature['cl'] }})</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Level Slider & Stepper Row -->
-                <div class="flex items-center gap-2 bg-stone-50 border border-stone-200/80 rounded-md px-2 py-1">
-                    <span class="text-[11px] font-bold text-stone-600 uppercase tracking-wider shrink-0">Level</span>
-                    <input type="range" min="1" max="30" x-model.number="sideA.level" @change="onCombatantChange('sideA')" class="w-full accent-blue-600 h-1.5 bg-stone-200 rounded cursor-pointer">
-                    <div class="flex items-center gap-0.5 shrink-0">
-                        <button type="button" @click="stepLevel('sideA', -1)" class="w-5 h-5 flex items-center justify-center rounded border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs leading-none shadow-2xs">-</button>
-                        <span class="w-6 text-center text-xs font-black text-blue-700" x-text="sideA.level"></span>
-                        <button type="button" @click="stepLevel('sideA', 1)" class="w-5 h-5 flex items-center justify-center rounded border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs leading-none shadow-2xs">+</button>
+                    <!-- Class Configuration Selection & Class Level Slider -->
+                    <div class="space-y-1">
+                        <div class="flex items-center justify-between text-xs">
+                            <label class="block text-[11px] font-bold text-stone-700 uppercase tracking-wider">Class Configuration</label>
+                        </div>
+                        <select x-model.number="sideA.class_config_id" @change="onClassConfigChange('sideA')" class="w-full text-xs font-medium rounded-md border border-stone-300 bg-white py-1 px-2 shadow-xs focus:ring-2 focus:ring-blue-500 truncate">
+                            @foreach($classConfigs as $cc)
+                                <option value="{{ $cc['id'] }}" {{ ($defaultA['class_config_id'] ?? 0) == $cc['id'] ? 'selected' : '' }}>
+                                    {{ $cc['name'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="flex items-center gap-2 bg-stone-50 border border-stone-200/80 rounded-md px-2 py-1">
+                            <span class="text-[10px] font-bold text-stone-500 uppercase tracking-wider shrink-0">Class Lvl (CL)</span>
+                            <input type="range" min="0" max="30" x-model.number="sideA.class_level" @change="onCombatantChange('sideA')" class="w-full accent-blue-600 h-1.5 bg-stone-200 rounded cursor-pointer">
+                            <div class="flex items-center gap-0.5 shrink-0">
+                                <button type="button" @click="stepLevel('sideA', 'class_level', -1)" class="cs-stepper-btn" title="Decrease Class Level">-</button>
+                                <span class="w-7 text-center text-xs font-black text-blue-700" x-text="sideA.class_level"></span>
+                                <button type="button" @click="stepLevel('sideA', 'class_level', 1)" class="cs-stepper-btn" title="Increase Class Level">+</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -127,7 +132,7 @@
                     <div class="flex items-center justify-between text-xs">
                         <label class="block text-[11px] font-bold text-stone-700 uppercase tracking-wider">Routine</label>
                         <span class="text-[10px] text-blue-700 font-semibold bg-blue-100/70 border border-blue-200 px-1.5 py-0.2 rounded">
-                            AP: <span class="font-bold" x-text="sideA.combatant ? sideA.combatant.total_ap : (10 + sideA.level)"></span>
+                            AP: <span class="font-bold" x-text="sideA.combatant ? sideA.combatant.total_ap : (10 + (sideA.race_level + sideA.class_level))"></span>
                         </span>
                     </div>
                     <select x-model="sideA.attack_id" class="w-full text-xs font-medium rounded-md border border-stone-300 bg-white py-1 px-2 shadow-xs focus:ring-2 focus:ring-blue-500 truncate">
@@ -144,7 +149,7 @@
                             <span class="font-bold text-stone-800 truncate" x-text="getSelectedRoutine('sideA').name"></span>
                             <span class="font-bold text-blue-700 text-[11px] shrink-0" x-text="getSelectedRoutine('sideA').ap + ' AP' + (getSelectedRoutine('sideA').pp_cost > 0 ? ' • ' + getSelectedRoutine('sideA').pp_cost + ' PP' : '')"></span>
                         </div>
-                        <div class="text-[11px] text-stone-600 flex flex-wrap gap-x-3 gap-y-0.5">
+                        <div class="text-[11px] text-stone-600 flex flex-wrap gap-3">
                             <span><strong>Dmg:</strong> <span x-text="getSelectedRoutine('sideA').strikes[0].damage"></span></span>
                             <span><strong>Atk:</strong> <span x-text="(getSelectedRoutine('sideA').strikes[0].attack_bonus >= 0 ? '+' : '') + getSelectedRoutine('sideA').strikes[0].attack_bonus"></span></span>
                             <span><strong>Crit:</strong> <span x-text="(getSelectedRoutine('sideA').strikes[0].crit_range < 20 ? getSelectedRoutine('sideA').strikes[0].crit_range + '-20' : '20') + ' (x' + getSelectedRoutine('sideA').strikes[0].crit_multiplier + ')'"></span></span>
@@ -161,68 +166,73 @@
         <!-- =================== SIDE B (RED/ROSE) =================== -->
         <div class="bg-white border-2 border-rose-400/80 rounded-xl shadow-sm overflow-hidden flex flex-col">
             <!-- Side B Header -->
-            <div class="bg-gradient-to-r from-rose-700 to-red-800 text-white px-3.5 py-2 flex items-center justify-between">
+            <div class="cs-header-side-b px-3.5 py-2.5 flex items-center justify-between"
+                 style="background: linear-gradient(135deg, #881337 0%, #9f1239 100%); color: #ffffff; border-bottom: 2px solid #be123c;">
                 <div class="flex items-center gap-2 min-w-0">
                     <span class="text-base shrink-0">👹</span>
                     <div class="min-w-0 leading-tight">
-                        <h2 class="font-bold text-xs sm:text-sm tracking-wide flex items-center gap-1.5 truncate">
-                            <span class="text-rose-200 shrink-0">Side B:</span>
-                            <span class="truncate" x-text="sideB.combatant ? sideB.combatant.name : 'Combatant B'"></span>
+                        <h2 class="font-bold text-xs sm:text-sm tracking-wide flex items-center gap-1.5 truncate text-white" style="text-shadow: 0 1px 2px rgba(0,0,0,0.5);">
+                            <span class="cs-side-label font-extrabold shrink-0" style="color: #fca5a5;">Side B:</span>
+                            <span class="truncate font-bold text-white" x-text="sideB.combatant ? sideB.combatant.name : 'Combatant B'"></span>
                         </h2>
-                        <div class="text-rose-200 text-[10px] sm:text-[11px] truncate" x-text="sideB.combatant ? (sideB.combatant.race_name + ' • Level ' + sideB.level) : 'Loading...'"></div>
+                        <div class="cs-subtext text-[10px] sm:text-[11px] truncate font-medium" style="color: #ffe4e6;" x-text="sideB.combatant ? (sideB.combatant.race_name + ' • Level ' + sideB.combatant.level) : 'Loading...'"></div>
                     </div>
                 </div>
-                <div class="flex items-center gap-1 bg-rose-900/70 border border-rose-300/40 rounded px-2 py-0.5 text-xs font-semibold shrink-0 ml-1.5">
-                    <span class="text-[10px] text-rose-200">Lvl</span>
-                    <span class="text-amber-300 font-bold" x-text="sideB.level"></span>
+                <div class="cs-lvl-badge flex items-center gap-1 rounded px-2.5 py-0.5 text-xs font-semibold shrink-0 ml-1.5 shadow-sm"
+                     style="background: #0f172a; border: 1px solid #f87171; color: #fca5a5;">
+                    <span class="text-[10px] uppercase font-bold" style="color: #fca5a5;">Lvl</span>
+                    <span class="cs-lvl-val font-extrabold text-sm" style="color: #fbbf24;" x-text="sideB.combatant ? sideB.combatant.level : (sideB.race_level + sideB.class_level)"></span>
                 </div>
             </div>
 
             <!-- Side B Controls -->
             <div class="p-2.5 sm:p-3 space-y-2 flex-1 flex flex-col justify-between">
-                <!-- Type Selection & Entity Picker -->
-                <div class="space-y-1">
-                    <div class="flex items-center justify-between gap-2">
-                        <!-- Type toggle -->
-                        <div class="inline-flex rounded p-0.5 bg-stone-100 border border-stone-300 text-xs shrink-0">
-                            <button type="button" 
-                                    @click="setSideType('sideB', 'npc')"
-                                    :class="sideB.type === 'npc' ? 'bg-rose-600 text-white font-bold shadow-xs' : 'text-stone-600 hover:text-stone-900'"
-                                    class="py-0.5 px-2 rounded transition text-[11px]">
-                                🛡️ NPC
-                            </button>
-                            <button type="button" 
-                                    @click="setSideType('sideB', 'monster')"
-                                    :class="sideB.type === 'monster' ? 'bg-rose-600 text-white font-bold shadow-xs' : 'text-stone-600 hover:text-stone-900'"
-                                    class="py-0.5 px-2 rounded transition text-[11px]">
-                                👹 Monster
-                            </button>
+                <div class="space-y-2">
+                    <!-- Race Selection & Race Level Slider -->
+                    <div class="space-y-1">
+                        <div class="flex items-center justify-between text-xs">
+                            <label class="block text-[11px] font-bold text-stone-700 uppercase tracking-wider">Race</label>
+                            <span class="text-[10px] text-stone-500 font-medium">Base RL: <strong x-text="getSelectedRaceBaseRL('sideB')"></strong></span>
                         </div>
-                        <span class="text-[10px] text-stone-500 font-medium truncate" x-text="sideB.type === 'npc' ? 'Class Configuration' : 'Creature'"></span>
+                        <select x-model.number="sideB.race_id" @change="onRaceChange('sideB')" class="w-full text-xs font-medium rounded-md border border-stone-300 bg-white py-1 px-2 shadow-xs focus:ring-2 focus:ring-rose-500 truncate">
+                            @foreach($races as $r)
+                                <option value="{{ $r['id'] }}" {{ ($defaultB['race_id'] ?? 1) == $r['id'] ? 'selected' : '' }}>
+                                    {{ $r['name'] }} (RL {{ $r['base_rl'] }})
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="flex items-center gap-2 bg-stone-50 border border-stone-200/80 rounded-md px-2 py-1">
+                            <span class="text-[10px] font-bold text-stone-500 uppercase tracking-wider shrink-0">Race Lvl (RL)</span>
+                            <input type="range" min="0" max="30" x-model.number="sideB.race_level" @change="onCombatantChange('sideB')" class="w-full accent-rose-600 h-1.5 bg-stone-200 rounded cursor-pointer">
+                            <div class="flex items-center gap-0.5 shrink-0">
+                                <button type="button" @click="stepLevel('sideB', 'race_level', -1)" class="cs-stepper-btn" title="Decrease Race Level">-</button>
+                                <span class="w-7 text-center text-xs font-black text-rose-700" x-text="sideB.race_level"></span>
+                                <button type="button" @click="stepLevel('sideB', 'race_level', 1)" class="cs-stepper-btn" title="Increase Race Level">+</button>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- NPC Class Configuration Select -->
-                    <select x-show="sideB.type === 'npc'" x-model="sideB.id" @change="onCombatantChange('sideB')" class="w-full text-xs font-medium rounded-md border border-stone-300 bg-white py-1 px-2 shadow-xs focus:ring-2 focus:ring-rose-500">
-                        @foreach($archetypes as $arch)
-                            <option value="{{ $arch['id'] }}">{{ $arch['name'] }}</option>
-                        @endforeach
-                    </select>
-                    <!-- Monster Select -->
-                    <select x-show="sideB.type === 'monster'" x-model="sideB.id" @change="onCombatantChange('sideB')" class="w-full text-xs font-medium rounded-md border border-stone-300 bg-white py-1 px-2 shadow-xs focus:ring-2 focus:ring-rose-500">
-                        @foreach($creatures as $creature)
-                            <option value="{{ $creature['id'] }}">{{ $creature['name'] }} (CL {{ $creature['cl'] }})</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Level Slider & Stepper Row -->
-                <div class="flex items-center gap-2 bg-stone-50 border border-stone-200/80 rounded-md px-2 py-1">
-                    <span class="text-[11px] font-bold text-stone-600 uppercase tracking-wider shrink-0">Level</span>
-                    <input type="range" min="1" max="30" x-model.number="sideB.level" @change="onCombatantChange('sideB')" class="w-full accent-rose-600 h-1.5 bg-stone-200 rounded cursor-pointer">
-                    <div class="flex items-center gap-0.5 shrink-0">
-                        <button type="button" @click="stepLevel('sideB', -1)" class="w-5 h-5 flex items-center justify-center rounded border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs leading-none shadow-2xs">-</button>
-                        <span class="w-6 text-center text-xs font-black text-rose-700" x-text="sideB.level"></span>
-                        <button type="button" @click="stepLevel('sideB', 1)" class="w-5 h-5 flex items-center justify-center rounded border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs leading-none shadow-2xs">+</button>
+                    <!-- Class Configuration Selection & Class Level Slider -->
+                    <div class="space-y-1">
+                        <div class="flex items-center justify-between text-xs">
+                            <label class="block text-[11px] font-bold text-stone-700 uppercase tracking-wider">Class Configuration</label>
+                        </div>
+                        <select x-model.number="sideB.class_config_id" @change="onClassConfigChange('sideB')" class="w-full text-xs font-medium rounded-md border border-stone-300 bg-white py-1 px-2 shadow-xs focus:ring-2 focus:ring-rose-500 truncate">
+                            @foreach($classConfigs as $cc)
+                                <option value="{{ $cc['id'] }}" {{ ($defaultB['class_config_id'] ?? 0) == $cc['id'] ? 'selected' : '' }}>
+                                    {{ $cc['name'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="flex items-center gap-2 bg-stone-50 border border-stone-200/80 rounded-md px-2 py-1">
+                            <span class="text-[10px] font-bold text-stone-500 uppercase tracking-wider shrink-0">Class Lvl (CL)</span>
+                            <input type="range" min="0" max="30" x-model.number="sideB.class_level" @change="onCombatantChange('sideB')" class="w-full accent-rose-600 h-1.5 bg-stone-200 rounded cursor-pointer">
+                            <div class="flex items-center gap-0.5 shrink-0">
+                                <button type="button" @click="stepLevel('sideB', 'class_level', -1)" class="cs-stepper-btn" title="Decrease Class Level">-</button>
+                                <span class="w-7 text-center text-xs font-black text-rose-700" x-text="sideB.class_level"></span>
+                                <button type="button" @click="stepLevel('sideB', 'class_level', 1)" class="cs-stepper-btn" title="Increase Class Level">+</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -248,7 +258,7 @@
                     <div class="flex items-center justify-between text-xs">
                         <label class="block text-[11px] font-bold text-stone-700 uppercase tracking-wider">Routine</label>
                         <span class="text-[10px] text-rose-700 font-semibold bg-rose-100/70 border border-rose-200 px-1.5 py-0.2 rounded">
-                            AP: <span class="font-bold" x-text="sideB.combatant ? sideB.combatant.total_ap : (10 + sideB.level)"></span>
+                            AP: <span class="font-bold" x-text="sideB.combatant ? sideB.combatant.total_ap : (10 + (sideB.race_level + sideB.class_level))"></span>
                         </span>
                     </div>
                     <select x-model="sideB.attack_id" class="w-full text-xs font-medium rounded-md border border-stone-300 bg-white py-1 px-2 shadow-xs focus:ring-2 focus:ring-rose-500 truncate">
@@ -265,7 +275,7 @@
                             <span class="font-bold text-stone-800 truncate" x-text="getSelectedRoutine('sideB').name"></span>
                             <span class="font-bold text-rose-700 text-[11px] shrink-0" x-text="getSelectedRoutine('sideB').ap + ' AP' + (getSelectedRoutine('sideB').pp_cost > 0 ? ' • ' + getSelectedRoutine('sideB').pp_cost + ' PP' : '')"></span>
                         </div>
-                        <div class="text-[11px] text-stone-600 flex flex-wrap gap-x-3 gap-y-0.5">
+                        <div class="text-[11px] text-stone-600 flex flex-wrap gap-3">
                             <span><strong>Dmg:</strong> <span x-text="getSelectedRoutine('sideB').strikes[0].damage"></span></span>
                             <span><strong>Atk:</strong> <span x-text="(getSelectedRoutine('sideB').strikes[0].attack_bonus >= 0 ? '+' : '') + getSelectedRoutine('sideB').strikes[0].attack_bonus"></span></span>
                             <span><strong>Crit:</strong> <span x-text="(getSelectedRoutine('sideB').strikes[0].crit_range < 20 ? getSelectedRoutine('sideB').strikes[0].crit_range + '-20' : '20') + ' (x' + getSelectedRoutine('sideB').strikes[0].crit_multiplier + ')'"></span></span>
@@ -317,32 +327,32 @@
             <!-- Visual Win-Rate Progress Meter -->
             <div class="bg-white border border-stone-300 rounded-2xl p-5 shadow-md space-y-3">
                 <div class="flex items-center justify-between text-xs font-bold">
-                    <span class="text-blue-700 flex items-center gap-1.5">
-                        <span class="inline-block w-3 h-3 rounded-full bg-blue-600"></span>
+                    <span class="text-blue-700 flex items-center gap-1.5" style="color: #1d4ed8;">
+                        <span class="inline-block w-3 h-3 rounded-full bg-blue-600" style="background-color: #2563eb;"></span>
                         <span x-text="results ? results.combatant_a.name : 'Side A'"></span>:
-                        <span class="text-sm" x-text="results ? results.win_rate_a + '%' : '0%'"></span>
+                        <span class="text-sm font-extrabold" x-text="results ? results.win_rate_a + '%' : '0%'"></span>
                         (<span x-text="results ? results.wins_a : 0"></span> wins)
                     </span>
                     <span class="text-stone-500" x-show="results && results.draws > 0">
                         Draws: <span x-text="results ? results.draw_rate + '%' : '0%'"></span> (<span x-text="results ? results.draws : 0"></span>)
                     </span>
-                    <span class="text-rose-700 flex items-center gap-1.5">
-                        <span class="text-sm" x-text="results ? results.win_rate_b + '%' : '0%'"></span>
+                    <span class="text-rose-700 flex items-center gap-1.5" style="color: #be123c;">
+                        <span class="text-sm font-extrabold" x-text="results ? results.win_rate_b + '%' : '0%'"></span>
                         (<span x-text="results ? results.wins_b : 0"></span> wins)
                         <span x-text="results ? results.combatant_b.name : 'Side B'"></span>
-                        <span class="inline-block w-3 h-3 rounded-full bg-rose-600"></span>
+                        <span class="inline-block w-3 h-3 rounded-full bg-rose-600" style="background-color: #e11d48;"></span>
                     </span>
                 </div>
 
                 <!-- Progress Bar -->
                 <div class="h-6 w-full bg-stone-200 rounded-xl overflow-hidden flex shadow-inner">
-                    <div :style="'width: ' + (results ? results.win_rate_a : 50) + '%'" class="bg-blue-600 h-full transition-all duration-500 relative flex items-center justify-center text-white text-[11px] font-bold">
-                        <span x-show="results && results.win_rate_a >= 10" x-text="results.win_rate_a + '%'"></span>
+                    <div :style="'width: ' + (results ? results.win_rate_a : 50) + '%'" class="bg-blue-600 h-full transition-all duration-500 relative flex items-center justify-center text-white text-[11px] font-bold" style="background-color: #2563eb;">
+                        <span x-show="results && results.win_rate_a >= 10" x-text="results ? results.win_rate_a + '%' : ''"></span>
                     </div>
-                    <div x-show="results && results.draw_rate > 0" :style="'width: ' + (results ? results.draw_rate : 0) + '%'" class="bg-stone-400 h-full transition-all duration-500 relative flex items-center justify-center text-white text-[10px]">
+                    <div x-show="results && results.draw_rate > 0" :style="'width: ' + (results ? results.draw_rate : 0) + '%'" class="bg-stone-400 h-full transition-all duration-500 relative flex items-center justify-center text-white text-[10px]" style="background-color: #a8a29e;">
                     </div>
-                    <div :style="'width: ' + (results ? results.win_rate_b : 50) + '%'" class="bg-rose-600 h-full transition-all duration-500 relative flex items-center justify-center text-white text-[11px] font-bold">
-                        <span x-show="results && results.win_rate_b >= 10" x-text="results.win_rate_b + '%'"></span>
+                    <div :style="'width: ' + (results ? results.win_rate_b : 50) + '%'" class="bg-rose-600 h-full transition-all duration-500 relative flex items-center justify-center text-white text-[11px] font-bold" style="background-color: #e11d48;">
+                        <span x-show="results && results.win_rate_b >= 10" x-text="results ? results.win_rate_b + '%' : ''"></span>
                     </div>
                 </div>
 
@@ -361,7 +371,7 @@
                             <span>🛡️</span>
                             <span x-text="results ? results.combatant_a.name : 'Side A'"></span>
                         </div>
-                        <span class="bg-blue-600 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow-2xs">
+                        <span class="bg-blue-600 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow-2xs" style="background-color: #1d4ed8; color: #ffffff;">
                             <span x-text="results ? results.win_rate_a + '% Win Rate' : ''"></span>
                         </span>
                     </div>
@@ -388,7 +398,7 @@
                             </span>
                         </div>
                         <div class="h-2 w-full bg-stone-200 rounded-full overflow-hidden">
-                            <div :style="'width: ' + (results ? results.winner_a_status.hp_percent : 0) + '%'" class="h-full bg-red-600 rounded-full"></div>
+                            <div :style="'width: ' + (results ? results.winner_a_status.hp_percent : 0) + '%'" class="h-full bg-red-600 rounded-full" style="background-color: #dc2626;"></div>
                         </div>
                     </div>
                 </div>
@@ -400,7 +410,7 @@
                             <span>👹</span>
                             <span x-text="results ? results.combatant_b.name : 'Side B'"></span>
                         </div>
-                        <span class="bg-rose-600 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow-2xs">
+                        <span class="bg-rose-600 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow-2xs" style="background-color: #be123c; color: #ffffff;">
                             <span x-text="results ? results.win_rate_b + '% Win Rate' : ''"></span>
                         </span>
                     </div>
@@ -427,7 +437,7 @@
                             </span>
                         </div>
                         <div class="h-2 w-full bg-stone-200 rounded-full overflow-hidden">
-                            <div :style="'width: ' + (results ? results.winner_b_status.hp_percent : 0) + '%'" class="h-full bg-red-600 rounded-full"></div>
+                            <div :style="'width: ' + (results ? results.winner_b_status.hp_percent : 0) + '%'" class="h-full bg-red-600 rounded-full" style="background-color: #dc2626;"></div>
                         </div>
                     </div>
                 </div>
@@ -463,18 +473,22 @@
 <script>
 function combatSimulator() {
     return {
+        races: @json($races),
+        classConfigs: @json($classConfigs),
         sideA: {
-            type: 'npc',
-            id: {{ $defaultA['id'] ?? 1 }},
-            level: {{ $defaultA['level'] ?? 5 }},
+            race_id: {{ $defaultA['race_id'] ?? 1 }},
+            race_level: {{ $defaultA['race_level'] ?? 0 }},
+            class_config_id: {{ $defaultA['class_config_id'] ?? 0 }},
+            class_level: {{ $defaultA['class_level'] ?? 0 }},
             attack_id: '{{ $defaultA['default_attack_id'] ?? '' }}',
             combatant: @json($defaultA),
             loading: false,
         },
         sideB: {
-            type: 'monster',
-            id: {{ $defaultB['id'] ?? 54 }},
-            level: {{ $defaultB['level'] ?? 5 }},
+            race_id: {{ $defaultB['race_id'] ?? 1 }},
+            race_level: {{ $defaultB['race_level'] ?? 0 }},
+            class_config_id: {{ $defaultB['class_config_id'] ?? 0 }},
+            class_level: {{ $defaultB['class_level'] ?? 0 }},
             attack_id: '{{ $defaultB['default_attack_id'] ?? '' }}',
             combatant: @json($defaultB),
             loading: false,
@@ -486,31 +500,41 @@ function combatSimulator() {
         errorMessage: '',
 
         init() {
+            if (!this.sideA.race_id) this.sideA.race_id = 1;
+            if (!this.sideB.race_id) this.sideB.race_id = 1;
+
             // Ensure initial attack selections
-            if (!this.sideA.attack_id && this.sideA.combatant && this.sideA.combatant.attack_routines.length > 0) {
+            if (!this.sideA.attack_id && this.sideA.combatant && this.sideA.combatant.attack_routines && this.sideA.combatant.attack_routines.length > 0) {
                 this.sideA.attack_id = this.sideA.combatant.attack_routines[0].id;
             }
-            if (!this.sideB.attack_id && this.sideB.combatant && this.sideB.combatant.attack_routines.length > 0) {
+            if (!this.sideB.attack_id && this.sideB.combatant && this.sideB.combatant.attack_routines && this.sideB.combatant.attack_routines.length > 0) {
                 this.sideB.attack_id = this.sideB.combatant.attack_routines[0].id;
             }
         },
 
-        setSideType(sideKey, newType) {
-            if (this[sideKey].type === newType) return;
-            this[sideKey].type = newType;
-            // Set sensible default ID for new type
-            if (newType === 'npc') {
-                this[sideKey].id = 1; // Swordsman
-            } else {
-                this[sideKey].id = 54; // Bugbear
+        getSelectedRaceBaseRL(sideKey) {
+            const raceId = parseInt(this[sideKey].race_id);
+            const found = this.races.find(r => r.id === raceId);
+            return found ? found.base_rl : 0;
+        },
+
+        onRaceChange(sideKey) {
+            const raceId = parseInt(this[sideKey].race_id);
+            const found = this.races.find(r => r.id === raceId);
+            if (found) {
+                this[sideKey].race_level = found.base_rl;
             }
             this.fetchCombatant(sideKey);
         },
 
-        stepLevel(sideKey, delta) {
-            let next = this[sideKey].level + delta;
-            if (next >= 1 && next <= 30) {
-                this[sideKey].level = next;
+        onClassConfigChange(sideKey) {
+            this.fetchCombatant(sideKey);
+        },
+
+        stepLevel(sideKey, field, delta) {
+            let next = (parseInt(this[sideKey][field]) || 0) + delta;
+            if (next >= 0 && next <= 30) {
+                this[sideKey][field] = next;
                 this.fetchCombatant(sideKey);
             }
         },
@@ -531,9 +555,10 @@ function combatSimulator() {
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        type: this[sideKey].type,
-                        id: parseInt(this[sideKey].id),
-                        level: parseInt(this[sideKey].level),
+                        race_id: parseInt(this[sideKey].race_id),
+                        race_level: parseInt(this[sideKey].race_level),
+                        class_config_id: parseInt(this[sideKey].class_config_id),
+                        class_level: parseInt(this[sideKey].class_level),
                     })
                 });
 
@@ -541,7 +566,10 @@ function combatSimulator() {
                 if (json.status === 'success' && json.combatant) {
                     this[sideKey].combatant = json.combatant;
                     if (json.combatant.attack_routines && json.combatant.attack_routines.length > 0) {
-                        this[sideKey].attack_id = json.combatant.attack_routines[0].id;
+                        const exists = json.combatant.attack_routines.some(r => r.id === this[sideKey].attack_id);
+                        if (!exists) {
+                            this[sideKey].attack_id = json.combatant.attack_routines[0].id;
+                        }
                     }
                 } else {
                     this.errorMessage = json.message || 'Error updating combatant';
@@ -564,7 +592,7 @@ function combatSimulator() {
 
         getSelectedRoutine(sideKey) {
             if (!this[sideKey].combatant || !this[sideKey].combatant.attack_routines) return null;
-            const chosen = this[sideKey].attack_routines ? this[sideKey].attack_routines.find(r => r.id === this[sideKey].attack_id) : null;
+            const chosen = this[sideKey].combatant.attack_routines.find(r => r.id === this[sideKey].attack_id);
             return chosen || (this[sideKey].combatant.attack_routines.length > 0 ? this[sideKey].combatant.attack_routines[0] : null);
         },
 
@@ -577,7 +605,8 @@ function combatSimulator() {
             const rAP = routine.ap || 6;
             const maxAttacks = Math.max(1, Math.floor(totAP / rAP));
             const leftover = totAP - (maxAttacks * rAP);
-            const boost = Math.floor(leftover / (2 * routine.strikes.length));
+            const strikesCount = (routine.strikes && routine.strikes.length) ? routine.strikes.length : 1;
+            const boost = Math.floor(leftover / (2 * strikesCount));
 
             if (boost > 0) {
                 return `${maxAttacks}x attacks per round with +${boost} Attack & +${boost} Damage from banked AP (${leftover} leftover AP).`;
@@ -591,15 +620,17 @@ function combatSimulator() {
             try {
                 const payload = {
                     side_a: {
-                        type: this.sideA.type,
-                        id: parseInt(this.sideA.id),
-                        level: parseInt(this.sideA.level),
+                        race_id: parseInt(this.sideA.race_id),
+                        race_level: parseInt(this.sideA.race_level),
+                        class_config_id: parseInt(this.sideA.class_config_id),
+                        class_level: parseInt(this.sideA.class_level),
                         attack_id: this.sideA.attack_id
                     },
                     side_b: {
-                        type: this.sideB.type,
-                        id: parseInt(this.sideB.id),
-                        level: parseInt(this.sideB.level),
+                        race_id: parseInt(this.sideB.race_id),
+                        race_level: parseInt(this.sideB.race_level),
+                        class_config_id: parseInt(this.sideB.class_config_id),
+                        class_level: parseInt(this.sideB.class_level),
                         attack_id: this.sideB.attack_id
                     },
                     iterations: parseInt(this.iterations)

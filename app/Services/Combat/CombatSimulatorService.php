@@ -44,7 +44,7 @@ class CombatSimulatorService
      */
     public static function getAvailableCombatants(): array
     {
-        $archetypes = DB::table('ref_classconfigs')
+        $classConfigs = DB::table('ref_classconfigs')
             ->leftJoin('ref_classes', 'ref_classconfigs.ClassID', '=', 'ref_classes.ID')
             ->select(
                 'ref_classconfigs.ID as ID',
@@ -69,7 +69,16 @@ class CombatSimulatorService
             })
             ->toArray();
 
-        $creatures = DB::table('ref_creatures')
+        // Default 'None' class option prepended
+        array_unshift($classConfigs, [
+            'id' => 0,
+            'name' => 'None',
+            'slug' => 'none',
+            'description' => 'No class configuration (pure racial)',
+            'class_config_ids' => '0',
+        ]);
+
+        $races = DB::table('ref_creatures')
             ->select('ID', 'Name', 'NameInformal', 'CreatureType', 'SizeClass', 'BaseRL', 'CLModifier', 'StatBlockConfigs')
             ->orderBy('Name')
             ->get()
@@ -88,108 +97,141 @@ class CombatSimulatorService
             ->toArray();
 
         return [
-            'archetypes' => $archetypes,
-            'creatures' => $creatures,
+            'races' => $races,
+            'class_configs' => $classConfigs,
+            // Backwards compatibility aliases
+            'archetypes' => $classConfigs,
+            'creatures' => $races,
         ];
     }
 
     /**
-     * Build combatant state including health pools, defenses, and extracted attack routines.
+     * Build combatant state supporting unified race and class config, with legacy fallback.
      */
-    public static function buildCombatant(string $type, int $id, int $level = 1, string $equipMode = 'basic'): array
-    {
-        $level = max(1, min(30, $level));
-
-        if ($type === 'monster') {
-            return self::buildMonsterCombatant($id, $level);
+    public static function buildCombatant(
+        int|string $raceIdOrType = 1,
+        int $raceLevelOrId = 0,
+        int $classConfigIdOrLevel = 0,
+        int $classLevel = 0,
+        string $equipMode = 'basic'
+    ): array {
+        if (is_string($raceIdOrType)) {
+            // Legacy signature: buildCombatant(string $type, int $id, int $level = 1, string $equipMode = 'basic')
+            if ($raceIdOrType === 'monster') {
+                $combatant = self::buildUnifiedCombatant($raceLevelOrId, $classConfigIdOrLevel, 0, 0, $equipMode);
+                $combatant['type'] = 'monster';
+                return $combatant;
+            }
+            $combatant = self::buildUnifiedCombatant(1, 0, $raceLevelOrId, $classConfigIdOrLevel, $equipMode);
+            $combatant['type'] = 'npc';
+            return $combatant;
         }
 
-        return self::buildNpcCombatant($id, $level, $equipMode);
+        return self::buildUnifiedCombatant(
+            (int)$raceIdOrType,
+            (int)$raceLevelOrId,
+            (int)$classConfigIdOrLevel,
+            (int)$classLevel,
+            $equipMode
+        );
     }
 
     /**
-     * Build an NPC combatant from class configuration and level.
+     * Build unified combatant from race, race level, class config, and class level.
      */
-    protected static function buildNpcCombatant(int $classConfigId, int $level, string $equipMode = 'basic'): array
-    {
-        $classCfg = DB::table('ref_classconfigs')->where('ID', $classConfigId)->first();
-        if (!$classCfg) {
-            $classCfg = DB::table('ref_classconfigs')->where('ID', 9)->first()
-                ?? DB::table('ref_classconfigs')->orderBy('ID')->first();
-            $classConfigId = (int)($classCfg->ID ?? 9);
-        }
+    public static function buildUnifiedCombatant(
+        int $raceId = 1,
+        int $raceLevel = 0,
+        int $classConfigId = 0,
+        int $classLevel = 0,
+        string $equipMode = 'basic'
+    ): array {
+        $raceLevel = max(0, min(30, $raceLevel));
+        $classLevel = max(0, min(30, $classLevel));
 
-        $cfgArray = (array)$classCfg;
-        $slug = $cfgArray['Slug'] ?? 'fighter';
-        $name = $cfgArray['Name'] ?? 'Fighter';
-        $classId = (int)($cfgArray['ClassID'] ?? 4);
-
-        $clsRow = DB::table('ref_classes')->where('ID', $classId)->first();
-        $className = $clsRow->Name ?? 'Fighter';
-
-        // Determine Abilities
-        $abKey = strtolower($slug);
-        $abil = self::$archetypeAbilityPrios[$abKey] ?? null;
-        if (!$abil) {
-            foreach (self::$archetypeAbilityPrios as $k => $v) {
-                if (str_contains($abKey, $k) || str_contains(strtolower($name), $k) || str_contains(strtolower($className), $k)) {
-                    $abil = $v;
-                    break;
-                }
-            }
-        }
-        if (!$abil && !empty($cfgArray['AbilityPrio'])) {
-            $prios = array_map('trim', explode(',', $cfgArray['AbilityPrio']));
-            $standardArray = [16, 14, 13, 12, 10, 8];
-            $abil = [];
-            foreach ($prios as $idx => $stat) {
-                if ($stat && isset($standardArray[$idx])) {
-                    $abil[$stat] = $standardArray[$idx];
-                }
-            }
-        }
-        if (!$abil) {
-            $abil = ['Str' => 14, 'Con' => 12, 'Dex' => 12, 'Int' => 10, 'Wis' => 10, 'Cha' => 10];
-        }
-
-        // Generate sensical gear based on class config and level
-        $loadout = EquipmentBlueprintService::generateLoadout($level, $classConfigId, true);
-        $gearParts = [];
-        foreach ($loadout['items'] ?? [] as $it) {
-            if (!empty($it['config_string'])) {
-                $gearParts[] = "Item=" . $it['config_string'];
-            }
-        }
-
-        // Build config string
-        $config = "{$name} { " .
-            "Str={$abil['Str']}; Con={$abil['Con']}; Dex={$abil['Dex']}; Int={$abil['Int']}; Wis={$abil['Wis']}; Cha={$abil['Cha']}; " .
-            "Class={$className}; Lvl={$level}; " .
-            (!empty($gearParts) ? implode('; ', $gearParts) . '; ' : '') .
-            "}";
-
-        $charData = EntityEngine::buildEntityFromConfigString(1, $config, $equipMode);
-        $calcState = EntityEngine::calculate($charData);
-
-        return self::formatCombatantState($calcState, 'npc', $classConfigId, $name, $level);
-    }
-
-    /**
-     * Build a Monster combatant from creature ID and level.
-     */
-    protected static function buildMonsterCombatant(int $creatureId, int $level): array
-    {
-        $creature = DB::table('ref_creatures')->where('ID', $creatureId)->first();
+        $creature = DB::table('ref_creatures')->where('ID', $raceId)->first();
         if (!$creature) {
-            $creature = DB::table('ref_creatures')->where('ID', 23)->first(); // Fallback Goblin/Orc
-            $creatureId = (int)($creature->ID ?? 23);
+            $creature = DB::table('ref_creatures')->where('ID', 1)->first();
+            $raceId = (int)($creature->ID ?? 1);
         }
 
         $baseRL = (int)($creature->BaseRL ?? 0);
-        $monsterName = $creature->NameInformal ?: $creature->Name;
+        $rlMod = $raceLevel - $baseRL;
+        $raceName = $creature->NameInformal ?: $creature->Name;
+        $totalLevel = $raceLevel + $classLevel;
 
-        // Check if creature has StatBlockConfigs
-        $configStr = "Creature { }";
+        // If a Class Configuration is selected with level > 0
+        if ($classConfigId > 0 && $classLevel > 0) {
+            $classCfg = DB::table('ref_classconfigs')->where('ID', $classConfigId)->first();
+            if ($classCfg) {
+                $classId = (int)($classCfg->ClassID ?? 4);
+                $clsRow = DB::table('ref_classes')->where('ID', $classId)->first();
+                $className = $clsRow->Name ?? 'Fighter';
+                $slug = $classCfg->Slug ?? 'fighter';
+                $cfgName = $classCfg->Name ?? 'Fighter';
+
+                // Determine Abilities
+                $abKey = strtolower($slug);
+                $abil = self::$archetypeAbilityPrios[$abKey] ?? null;
+                if (!$abil) {
+                    foreach (self::$archetypeAbilityPrios as $k => $v) {
+                        if (str_contains($abKey, $k) || str_contains(strtolower($cfgName), $k) || str_contains(strtolower($className), $k)) {
+                            $abil = $v;
+                            break;
+                        }
+                    }
+                }
+                if (!$abil && !empty($classCfg->AbilityPrio)) {
+                    $prios = array_map('trim', explode(',', $classCfg->AbilityPrio));
+                    $standardArray = [16, 14, 13, 12, 10, 8];
+                    $abil = [];
+                    foreach ($prios as $idx => $stat) {
+                        if ($stat && isset($standardArray[$idx])) {
+                            $abil[$stat] = $standardArray[$idx];
+                        }
+                    }
+                }
+                if (!$abil) {
+                    $abil = ['Str' => 14, 'Con' => 12, 'Dex' => 12, 'Int' => 10, 'Wis' => 10, 'Cha' => 10];
+                }
+
+                // Generate sensical gear based on class config and level
+                $loadout = EquipmentBlueprintService::generateLoadout($classLevel, $classConfigId, true);
+                $gearParts = [];
+                foreach ($loadout['items'] ?? [] as $it) {
+                    if (!empty($it['config_string'])) {
+                        $gearParts[] = "Item=" . $it['config_string'];
+                    }
+                }
+
+                $gearStr = !empty($gearParts) ? implode('; ', $gearParts) . '; ' : '';
+                $configStr = "{$raceName} {$cfgName} { " .
+                    "Str={$abil['Str']}; Con={$abil['Con']}; Dex={$abil['Dex']}; Int={$abil['Int']}; Wis={$abil['Wis']}; Cha={$abil['Cha']}; " .
+                    "Class={$className}; Lvl={$classLevel}; RLMod={$rlMod}; " .
+                    $gearStr .
+                    "}";
+
+                $displayName = "{$raceName} ({$cfgName})";
+                $charData = EntityEngine::buildEntityFromConfigString($raceId, $configStr, $equipMode);
+                $calcState = EntityEngine::calculate($charData);
+
+                return self::formatCombatantState(
+                    $calcState,
+                    'combatant',
+                    $raceId,
+                    $displayName,
+                    $totalLevel,
+                    $raceId,
+                    $raceLevel,
+                    $classConfigId,
+                    $classLevel
+                );
+            }
+        }
+
+        // Pure Racial combatant (Class Config is None or Class Level is 0)
+        $displayName = $raceName;
+        $configStr = "{$raceName} { RLMod={$rlMod}; }";
         if (!empty($creature->StatBlockConfigs)) {
             $configs = explode('}', (string)$creature->StatBlockConfigs);
             foreach ($configs as $cfg) {
@@ -198,38 +240,47 @@ class CombatSimulatorService
                     break;
                 }
             }
-        }
-
-        // Scale monster to requested level
-        $classLvl = max(0, $level - $baseRL);
-        if ($classLvl > 0) {
-            if (preg_match('/Class\s*=/i', $configStr)) {
-                $configStr = preg_replace('/(Lvl|Level)\s*=\s*\d+/i', "Lvl={$classLvl}", $configStr);
-            } else {
-                $bracePos = strpos($configStr, '{');
-                if ($bracePos !== false) {
-                    $configStr = substr($configStr, 0, $bracePos + 1) . " Class=Savage; Lvl={$classLvl}; " . substr($configStr, $bracePos + 1);
-                } else {
-                    $configStr = "{$monsterName} { Class=Savage; Lvl={$classLvl}; }";
-                }
-            }
-        } else {
-            // Strip class and level so monster stays at base racial level
+            // Strip any existing Class= and Lvl= from the monster sample config
             $configStr = preg_replace('/Class\s*=\s*[^;]+;/i', '', $configStr);
             $configStr = preg_replace('/(Lvl|Level)\s*=\s*\d+;/i', '', $configStr);
+            if ($rlMod !== 0) {
+                $bracePos = strpos($configStr, '{');
+                if ($bracePos !== false) {
+                    $configStr = substr($configStr, 0, $bracePos + 1) . " RLMod={$rlMod}; " . substr($configStr, $bracePos + 1);
+                }
+            }
         }
 
-        $charData = EntityEngine::buildEntityFromConfigString($creatureId, $configStr);
+        $charData = EntityEngine::buildEntityFromConfigString($raceId, $configStr, $equipMode);
         $calcState = EntityEngine::calculate($charData);
 
-        return self::formatCombatantState($calcState, 'monster', $creatureId, $monsterName, $level);
+        return self::formatCombatantState(
+            $calcState,
+            'combatant',
+            $raceId,
+            $displayName,
+            $totalLevel,
+            $raceId,
+            $raceLevel,
+            $classConfigId,
+            $classLevel
+        );
     }
 
     /**
      * Format calculated entity state into combatant simulation structure.
      */
-    protected static function formatCombatantState(array $calcState, string $type, int $id, string $displayName, int $level): array
-    {
+    protected static function formatCombatantState(
+        array $calcState,
+        string $type,
+        int $id,
+        string $displayName,
+        int $level,
+        int $raceId = 1,
+        int $raceLevel = 0,
+        int $classConfigId = 0,
+        int $classLevel = 0
+    ): array {
         $heritage = $calcState['heritage'] ?? [];
         $health = $calcState['health'] ?? [];
         $defenses = $calcState['defenses'] ?? [];
@@ -253,6 +304,10 @@ class CombatSimulatorService
         return [
             'id' => $id,
             'type' => $type,
+            'race_id' => $raceId,
+            'race_level' => $raceLevel,
+            'class_config_id' => $classConfigId,
+            'class_level' => $classLevel,
             'name' => $displayName,
             'race_name' => $heritage['race_name_informal'] ?? $heritage['race_name'] ?? 'Creature',
             'size_abbr' => $heritage['size_abbr'] ?? 'M',
@@ -966,6 +1021,27 @@ class CombatSimulatorService
     }
 
     /**
+     * Build combatant array from config payload.
+     */
+    public static function buildCombatantFromConfig(array $cfg): array
+    {
+        if (isset($cfg['race_id'])) {
+            return self::buildCombatant(
+                (int)$cfg['race_id'],
+                (int)($cfg['race_level'] ?? 0),
+                (int)($cfg['class_config_id'] ?? 0),
+                (int)($cfg['class_level'] ?? 0)
+            );
+        }
+
+        return self::buildCombatant(
+            $cfg['type'] ?? 'npc',
+            (int)($cfg['id'] ?? 1),
+            (int)($cfg['level'] ?? 1)
+        );
+    }
+
+    /**
      * Run Monte Carlo simulation across N iterations.
      */
     public static function runSimulation(array $configA, array $configB, int $iterations = 1000): array
@@ -973,8 +1049,8 @@ class CombatSimulatorService
         $iterations = max(10, min(10000, $iterations));
 
         // Build combatants
-        $combatantA = self::buildCombatant($configA['type'] ?? 'npc', (int)($configA['id'] ?? 1), (int)($configA['level'] ?? 1));
-        $combatantB = self::buildCombatant($configB['type'] ?? 'monster', (int)($configB['id'] ?? 23), (int)($configB['level'] ?? 1));
+        $combatantA = self::buildCombatantFromConfig($configA);
+        $combatantB = self::buildCombatantFromConfig($configB);
 
         $attackIdA = $configA['attack_id'] ?? $combatantA['default_attack_id'];
         $attackIdB = $configB['attack_id'] ?? $combatantB['default_attack_id'];

@@ -17,36 +17,50 @@ class CombatSimulatorController extends Controller
     {
         $combatants = CombatSimulatorService::getAvailableCombatants();
 
-        // Defaults: Side A = First available Class Config / Archetype Lvl 5, Side B = Bugbear (Creature 54) Lvl 5
-        $firstArchId = !empty($combatants['archetypes']) ? (int)$combatants['archetypes'][0]['id'] : 9;
-        $defaultA = CombatSimulatorService::buildCombatant('npc', $firstArchId, 5);
-        $defaultB = CombatSimulatorService::buildCombatant('monster', 54, 5);
+        // Defaults: Both Side A and Side B default to Human (Race ID 1, RL 0) and Class Config None (ID 0, CL 0)
+        $defaultA = CombatSimulatorService::buildCombatant(1, 0, 0, 0);
+        $defaultB = CombatSimulatorService::buildCombatant(1, 0, 0, 0);
 
         return view('utilities.combat_simulator', [
-            'archetypes' => $combatants['archetypes'],
-            'creatures' => $combatants['creatures'],
+            'races' => $combatants['races'],
+            'classConfigs' => $combatants['class_configs'],
+            // Aliases for backward compatibility
+            'archetypes' => $combatants['class_configs'],
+            'creatures' => $combatants['races'],
             'defaultA' => $defaultA,
             'defaultB' => $defaultB,
         ]);
     }
 
     /**
-     * AJAX endpoint to fetch combatant stats and attack routines when type, id, or level changes.
+     * AJAX endpoint to fetch combatant stats and attack routines when race, class, or level changes.
      */
     public function getEntityInfo(Request $request): JsonResponse
     {
         $request->validate([
-            'type' => 'required|in:npc,monster',
-            'id' => 'required|integer',
-            'level' => 'required|integer|min:1|max:30',
+            'race_id' => 'sometimes|integer',
+            'race_level' => 'sometimes|integer|min:0|max:30',
+            'class_config_id' => 'sometimes|integer',
+            'class_level' => 'sometimes|integer|min:0|max:30',
+            'type' => 'sometimes|in:npc,monster',
+            'id' => 'sometimes|integer',
+            'level' => 'sometimes|integer|min:0|max:30',
         ]);
 
-        $type = (string)$request->input('type');
-        $id = (int)$request->input('id');
-        $level = (int)$request->input('level', 1);
-
         try {
-            $combatant = CombatSimulatorService::buildCombatant($type, $id, $level);
+            if ($request->has('race_id')) {
+                $raceId = (int)$request->input('race_id', 1);
+                $raceLevel = (int)$request->input('race_level', 0);
+                $classConfigId = (int)$request->input('class_config_id', 0);
+                $classLevel = (int)$request->input('class_level', 0);
+                $combatant = CombatSimulatorService::buildCombatant($raceId, $raceLevel, $classConfigId, $classLevel);
+            } else {
+                $type = (string)$request->input('type', 'npc');
+                $id = (int)$request->input('id', 1);
+                $level = (int)$request->input('level', 1);
+                $combatant = CombatSimulatorService::buildCombatant($type, $id, $level);
+            }
+
             return response()->json([
                 'status' => 'success',
                 'combatant' => $combatant,
@@ -66,15 +80,23 @@ class CombatSimulatorController extends Controller
     {
         $request->validate([
             'side_a' => 'required|array',
-            'side_a.type' => 'required|in:npc,monster',
-            'side_a.id' => 'required|integer',
-            'side_a.level' => 'required|integer|min:1|max:30',
+            'side_a.race_id' => 'sometimes|integer',
+            'side_a.race_level' => 'sometimes|integer|min:0|max:30',
+            'side_a.class_config_id' => 'sometimes|integer',
+            'side_a.class_level' => 'sometimes|integer|min:0|max:30',
+            'side_a.type' => 'sometimes|in:npc,monster',
+            'side_a.id' => 'sometimes|integer',
+            'side_a.level' => 'sometimes|integer|min:0|max:30',
             'side_a.attack_id' => 'nullable|string',
 
             'side_b' => 'required|array',
-            'side_b.type' => 'required|in:npc,monster',
-            'side_b.id' => 'required|integer',
-            'side_b.level' => 'required|integer|min:1|max:30',
+            'side_b.race_id' => 'sometimes|integer',
+            'side_b.race_level' => 'sometimes|integer|min:0|max:30',
+            'side_b.class_config_id' => 'sometimes|integer',
+            'side_b.class_level' => 'sometimes|integer|min:0|max:30',
+            'side_b.type' => 'sometimes|in:npc,monster',
+            'side_b.id' => 'sometimes|integer',
+            'side_b.level' => 'sometimes|integer|min:0|max:30',
             'side_b.attack_id' => 'nullable|string',
 
             'iterations' => 'nullable|integer|min:10|max:10000',
