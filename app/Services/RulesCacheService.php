@@ -107,6 +107,201 @@ class RulesCacheService
             $GLOBALS['_APP'] = $appData;
         }
 
+        // Also warm combat tracker creatures cache
+        self::warmCombatTrackerCreatures();
+
         return $cacheFile;
+    }
+
+    /**
+     * Build and write storage/framework/cache/combat_tracker_creatures.php
+     * containing pre-calculated stat blocks for all reference creatures.
+     *
+     * @return array The calculated creature list
+     */
+    public static function warmCombatTrackerCreatures(): array
+    {
+        if (!function_exists('show_agecategories') && file_exists(base_path('RulesSrc/global.php'))) {
+            require_once base_path('RulesSrc/global.php');
+            if (function_exists('application_start')) {
+                application_start();
+            }
+        }
+
+        $rawCreatureTypes = DB::table('ref_creaturetypes')->orderBy('Name')->get();
+        $creatureTypesMap = $rawCreatureTypes->keyBy('ID');
+        $creatureSubtypesMap = DB::table('ref_creaturesubtypes')->get()->keyBy('ID');
+        $rawSizes = DB::table('ref_sizes')->orderBy('ID')->get();
+        $sizesMap = $rawSizes->keyBy('ID');
+
+        $formatMonster = function ($entity) use ($creatureTypesMap, $creatureSubtypesMap, $sizesMap) {
+            $subtypeId = (int)($entity->CreatureType ?? 0);
+            $subtypeObj = $creatureSubtypesMap[$subtypeId] ?? null;
+            $mainTypeId = $subtypeObj ? (int)$subtypeObj->GroupID : 0;
+            $mainTypeObj = $creatureTypesMap[$mainTypeId] ?? null;
+            $mainTypeName = $mainTypeObj ? $mainTypeObj->Name : 'Creature';
+            $subtypeName = $subtypeObj ? $subtypeObj->Name : '';
+            $sizeObj = $sizesMap[$entity->SizeClass ?? 0] ?? null;
+
+            \App\Services\Entity\EntityEngine::loadReferenceTables();
+            $parsedConfigs = \App\Services\Entity\EntityEngine::parseCreatureStatBlockConfigs($entity->ID);
+            if (!empty($parsedConfigs)) {
+                $calc = $parsedConfigs[0]['calc_state'];
+                $rawEntity = $parsedConfigs[0]['entity_data'];
+            } else {
+                $rawEntity = \App\Services\Entity\EntityEngine::buildEntityFromConfigString($entity->ID, 'Adult { }');
+                $calc = \App\Services\Entity\EntityEngine::calculate($rawEntity);
+            }
+
+            $attacks = [];
+            $hasWeapons = false;
+            $hasDistinctNats = false;
+            foreach ($calc['attacks']['available_elements'] ?? [] as $atk) {
+                if (($atk['type'] ?? '') === 'weapon') {
+                    $hasWeapons = true;
+                }
+                if (($atk['type'] ?? '') === 'natural') {
+                    $nName = strtolower($atk['name'] ?? '');
+                    if (!preg_match('/\b(arm|leg|head)\b/i', $nName)) {
+                        $hasDistinctNats = true;
+                    }
+                }
+            }
+
+            foreach ($calc['attacks']['available_elements'] ?? [] as $atk) {
+                // 1. Skip generic brawling combo attacks (punches, kicks, headbutt) for monsters
+                if (str_starts_with($atk['id'] ?? '', 'unarmed_')) {
+                    continue;
+                }
+                // 2. If creature has weapons or distinct natural attacks, skip humanoid limb strikes (Arm, Leg, Head)
+                if ($hasWeapons || $hasDistinctNats) {
+                    $nName = strtolower($atk['name'] ?? '');
+                    if (preg_match('/\b(arm|leg|head)\b/i', $nName)) {
+                        continue;
+                    }
+                } else {
+                    // If creature has no weapons and no distinct natural attacks, skip secondary limbs (Leg, Head)
+                    $nName = strtolower($atk['name'] ?? '');
+                    if (preg_match('/\b(leg|head)\b/i', $nName)) {
+                        continue;
+                    }
+                }
+
+                $attacks[] = [
+                    'id' => $atk['id'],
+                    'name' => $atk['name'],
+                    'bonus' => (int)($atk['attack_bonus'] ?? 0),
+                    'damage' => (string)($atk['damage'] ?? '1d3'),
+                    'ap' => (int)($atk['ap'] ?? 5),
+                    'crit' => (string)($atk['crit'] ?? '20/x2'),
+                    'reach' => (string)($atk['reach'] ?? '0-1 sq'),
+                    'range' => $atk['range'] ?? null,
+                    'type' => $atk['type'] ?? 'melee',
+                    'is_equipped' => true,
+                    'slot' => $atk['type'] ?? 'main_hand',
+                    'summary' => ($atk['name'] ?? 'Attack') . ' ' . (($atk['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($atk['attack_bonus'] ?? 0) . ' (' . ($atk['damage'] ?? '–') . ', ' . ($atk['ap'] ?? 5) . ' AP)',
+                ];
+            }
+
+            if (empty($attacks)) {
+                $attacks[] = [
+                    'id' => 'unarmed',
+                    'name' => 'Unarmed Strike',
+                    'bonus' => (int)($calc['ability_modifiers']['Str'] ?? 0),
+                    'damage' => '1d3 B SP',
+                    'ap' => 5,
+                    'crit' => '20/x2',
+                    'reach' => '0-1 sq',
+                    'range' => null,
+                    'type' => 'unarmed',
+                    'is_equipped' => true,
+                    'slot' => 'unarmed',
+                    'summary' => 'Unarmed Strike +0 (1d3 B SP, 5 AP)',
+                ];
+            }
+
+            $mainAttack = $attacks[0];
+            $h = $calc['heritage'] ?? [];
+            $d = $calc['defenses'] ?? [];
+            $hl = $calc['health'] ?? [];
+            $act = $calc['actions'] ?? [];
+            $sp = $calc['speeds'] ?? [];
+
+            $speedDisplay = (string)($sp['ground'] ?? 6) . ' sq';
+            if (!empty($sp['swim'])) $speedDisplay .= ', Swim ' . $sp['swim'] . ' sq';
+            if (!empty($sp['fly'])) $speedDisplay .= ', Fly ' . $sp['fly'] . ' sq';
+
+            return [
+                'id' => $entity->ID,
+                'name' => $entity->Name,
+                'type' => 'monster',
+                'level' => max(1, (int)($h['total_level'] ?? 1)),
+                'cl' => (int)($h['challenge_level'] ?? 0),
+                'type_id' => $mainTypeId,
+                'type_name' => $mainTypeName,
+                'subtype_id' => $subtypeId,
+                'subtype_name' => $subtypeName,
+                'size_id' => (int)($entity->SizeClass ?? 0),
+                'size_name' => $sizeObj ? ($sizeObj->Description ?? 'Medium') : 'Medium',
+                'size_abbr' => $sizeObj ? ($sizeObj->Abbreviation ?? 'M') : 'M',
+                'descriptors' => $entity->Descriptors ?? '',
+                'hp_max' => (int)($hl['hp']['total'] ?? 20),
+                'hp_curr' => (int)($hl['hp']['total'] ?? 20),
+                'sp_max' => (int)($hl['sp']['total'] ?? 0),
+                'sp_curr' => (int)($hl['sp']['total'] ?? 0),
+                'pp_max' => (int)($hl['pp']['total'] ?? 0),
+                'pp_curr' => (int)($hl['pp']['total'] ?? 0),
+                'ap_max' => (int)($act['ap'] ?? 20),
+                'ap_curr' => (int)($act['ap'] ?? 20),
+                'reactions' => (int)($act['reactions'] ?? max(1, (int)floor(($act['ap'] ?? 20) / 10))),
+                'init_mod' => (int)($d['init_mod'] ?? 0),
+                'deca' => (int)($d['dec_active'] ?? 10),
+                'decp' => (int)($d['dec_passive'] ?? 10),
+                'dr' => (int)($d['dr'] ?? 0),
+                'mr' => (int)($d['mr'] ?? 0),
+                'fort' => (int)($d['fort'] ?? 0),
+                'ref' => (int)($d['ref'] ?? 0),
+                'will' => (int)($d['will'] ?? 0),
+                'speed' => $speedDisplay,
+                'conditions' => [],
+                'notes' => !empty($entity->Descriptors) ? "Descriptors: {$entity->Descriptors}" : '',
+                'attacks' => $attacks,
+                'main_attack' => $mainAttack,
+                'statblock' => \App\Services\Entity\EntityEngine::extractStatBlockData($calc, $rawEntity),
+            ];
+        };
+
+        $rawCreatures = DB::table('ref_creatures')
+            ->select('ID', 'Name', 'StatBlockConfigs', 'BaseRL', 'CLModifier', 'CreatureType', 'SizeClass', 'GroundSpeed', 'FlySpeed', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj', 'DR', 'MR', 'Descriptors')
+            ->orderBy('Name')
+            ->get();
+
+        $creatures = $rawCreatures->map(fn($cr) => $formatMonster($cr))->values()->all();
+
+        $cacheDir = storage_path('framework/cache');
+        if (!is_dir($cacheDir)) {
+            @mkdir($cacheDir, 0777, true);
+        }
+        $cacheFile = $cacheDir . '/combat_tracker_creatures.php';
+        $content = "<?php\n// Auto-generated combat tracker creatures cache\nreturn " . var_export($creatures, true) . ";\n";
+        file_put_contents($cacheFile, $content);
+
+        return $creatures;
+    }
+
+    /**
+     * Get pre-calculated combat tracker creatures from cache, generating if missing.
+     */
+    public static function getCombatTrackerCreatures(bool $forceRefresh = false): array
+    {
+        $cacheFile = storage_path('framework/cache/combat_tracker_creatures.php');
+        if (!$forceRefresh && file_exists($cacheFile)) {
+            $cached = require $cacheFile;
+            if (is_array($cached) && !empty($cached)) {
+                return $cached;
+            }
+        }
+
+        return self::warmCombatTrackerCreatures();
     }
 }

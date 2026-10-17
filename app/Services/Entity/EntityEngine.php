@@ -5884,6 +5884,248 @@ class EntityEngine
     }
 
     /**
+     * Extract structured stat block data from calc state and raw entity for use in UI components.
+     */
+    public static function extractStatBlockData(array $calc, array $rawEntity = []): array
+    {
+        self::loadReferenceTables();
+        $h = $calc['heritage'] ?? [];
+        $d = $calc['defenses'] ?? [];
+        $hl = $calc['health'] ?? [];
+        $sp = $calc['speeds'] ?? [];
+        $act = $calc['actions'] ?? [];
+        $fa = $calc['final_abilities'] ?? [];
+        $am = $calc['ability_modifiers'] ?? [];
+        $tr = $calc['traits'] ?? [];
+        $eq = $calc['equipment'] ?? [];
+
+        // Name & Race
+        $name = $rawEntity['Name'] ?? 'Creature';
+        $informalRace = $h['race_name_informal'] ?? $h['race_name'] ?? 'Creature';
+        if ($name === 'Average' || empty($name)) {
+            $name = $informalRace;
+        }
+
+        // Gender
+        $genderId = (int)($rawEntity['Gender'] ?? 0);
+        $genderStr = '';
+        if ($genderId === 1) {
+            $genderStr = 'M';
+        } elseif ($genderId === 2) {
+            $genderStr = 'F';
+        } elseif (!empty($rawEntity['Gender']) && is_string($rawEntity['Gender'])) {
+            $gLower = strtolower(trim($rawEntity['Gender']));
+            if ($gLower === 'f' || $gLower === 'female') $genderStr = 'F';
+            elseif ($gLower === 'm' || $gLower === 'male') $genderStr = 'M';
+        }
+
+        // Race & Templates
+        $raceStr = $informalRace;
+        if (!empty($h['template_names_informal']) && $h['template_names_informal'] !== 'None') {
+            $raceStr .= ' (' . $h['template_names_informal'] . ')';
+        }
+
+        // Classes
+        $classStr = '';
+        $rawClasses = $rawEntity['Classes'] ?? [];
+        if (is_string($rawClasses)) {
+            $decoded = json_decode($rawClasses, true);
+            $rawClasses = is_array($decoded) ? $decoded : (!empty($rawClasses) ? array_map('trim', explode(',', $rawClasses)) : []);
+        }
+        if (!empty($rawClasses) && is_array($rawClasses)) {
+            $classCounts = array_count_values($rawClasses);
+            $cParts = [];
+            foreach (self::getClassesCache() ?? [] as $clsId => $clsRow) {
+                if (isset($classCounts[$clsId])) {
+                    $cParts[] = ($clsRow['Abbreviation'] ?? 'Cls') . $classCounts[$clsId];
+                }
+            }
+            if (!empty($cParts)) {
+                $classStr = implode('/', $cParts);
+            }
+        }
+
+        // Alignment
+        $rawAl = $rawEntity['Alignment'] ?? ($h['alignment'] ?? 'Any');
+        $alAbbr = 'Any';
+        if (preg_match('/\b(LG|LN|LE|NG|TN|NE|CG|CN|CE|N)\b/i', (string)$rawAl, $alMatch)) {
+            $alAbbr = strtoupper($alMatch[1]);
+            if ($alAbbr === 'N') $alAbbr = 'TN';
+        }
+
+        // Size
+        $sizeAbbr = $h['size_abbr'] ?? 'M';
+        $sizeName = $h['size_name'] ?? 'Medium';
+
+        // Type / Subtype
+        $subtypeName = $h['creature_subtype_name'] ?? 'Creature';
+        $typeSubtype = str_replace([' (', ')'], ['/', ''], $subtypeName);
+
+        $cl = (int)($h['challenge_level'] ?? 0);
+        $xp = self::getXPValue($cl);
+
+        $headerParts = [];
+        if ($name !== $raceStr && !empty($name)) {
+            $headerParts[] = $name . ' - ' . ($genderStr ? $genderStr . ' ' : '') . $raceStr;
+        } else {
+            $headerParts[] = ($genderStr ? $genderStr . ' ' : '') . $raceStr;
+        }
+        if (!empty($classStr)) {
+            $headerParts[] = $classStr;
+        }
+        $headerParts[] = "{$alAbbr} {$sizeAbbr} {$typeSubtype} (CL: {$cl}; XP: {$xp})";
+        $headerLine = implode(' - ', $headerParts);
+
+        // Vitals
+        $initMod = (int)($d['init_mod'] ?? 0);
+        $initStr = ($initMod >= 0 ? "+{$initMod}" : (string)$initMod);
+        $ap = (int)($act['ap'] ?? (10 + (int)($h['total_level'] ?? 1)));
+        $react = (int)($act['reactions'] ?? max(1, (int)floor($ap / 10)));
+
+        $spdParts = [];
+        $spdParts[] = (string)($sp['ground'] ?? 0);
+        if (($sp['fly'] ?? 0) > 0) $spdParts[] = "Fly " . $sp['fly'];
+        if (($sp['swim'] ?? 0) > 0) $spdParts[] = "Swim " . $sp['swim'];
+        if (($sp['burrow'] ?? 0) > 0) $spdParts[] = "Burrow " . $sp['burrow'];
+        if (($sp['climb'] ?? 0) > 0) $spdParts[] = "Climb " . $sp['climb'];
+        $spdStr = implode(', ', $spdParts);
+
+        $skillLevels = $calc['skills'] ?? $calc['skill_ranks'] ?? [];
+        $percLvl = (int)($skillLevels[8] ?? ($calc['trained_skills'][8]['total_bonus'] ?? ($calc['ability_modifiers']['Wis'] ?? 0)));
+        $sensesStr = (!empty($tr['senses_str']) && $tr['senses_str'] !== 'None' && $tr['senses_str'] !== 'Standard Vision') ? $tr['senses_str'] : '';
+        $langStr = !empty($calc['languages']) ? implode(', ', array_column($calc['languages'], 'name')) : '';
+
+        // Abilities
+        $abilities = [];
+        foreach (['Str', 'Con', 'Dex', 'Int', 'Wis', 'Cha'] as $ab) {
+            $score = (int)($fa[$ab] ?? 10);
+            $mod = (int)($am[$ab] ?? 0);
+            $abilities[$ab] = [
+                'score' => $score,
+                'mod' => $mod,
+                'mod_str' => ($mod >= 0 ? "+{$mod}" : (string)$mod),
+            ];
+        }
+
+        // Spec Mob
+        $mobStr = (!empty($tr['movement_str']) && $tr['movement_str'] !== 'None') ? $tr['movement_str'] : '';
+        $critScore = '+' . ($d['crit_score'] ?? (20 + ($d['crit_res'] ?? 0)));
+
+        // Health
+        $hp = (int)($hl['hp']['total'] ?? 10);
+        $spVal = ($hl['sp']['total'] ?? null) !== null ? (int)$hl['sp']['total'] : 0;
+        $ppVal = ($hl['pp']['total'] ?? null) !== null ? (int)$hl['pp']['total'] : 0;
+
+        // Spec Def
+        $resists = [];
+        $resMap = [
+            'Acid' => 'Acid', 'Cold' => 'Cold', 'Electric' => 'Elec', 'Fire' => 'Fire',
+            'Necrotic' => 'Necro', 'Radiant' => 'Radiant', 'Sonic' => 'Sonic',
+        ];
+        foreach ($resMap as $k => $prefix) {
+            $val = $d['resistances'][$k] ?? 0;
+            if ($val >= 999) $resists[] = "{$prefix} imm";
+            elseif ($val > 0) $resists[] = "{$prefix} res {$val}";
+        }
+        $defTraitsStr = (!empty($tr['defenses_str']) && $tr['defenses_str'] !== 'None') ? $tr['defenses_str'] : '';
+        $defParts = array_merge($resists, array_filter(array_map('trim', explode(',', $defTraitsStr))));
+        $specDefStr = implode(', ', $defParts);
+
+        // Spec Att
+        $specAttStr = (!empty($tr['attacks_str']) && $tr['attacks_str'] !== 'None') ? $tr['attacks_str'] : '';
+
+        // Spec Abil
+        $specAbilStr = (!empty($tr['special_str']) && $tr['special_str'] !== 'None') ? $tr['special_str'] : '';
+
+        // Skills
+        $skParts = [];
+        foreach (self::getSkillsCache() ?? [] as $sId => $sRow) {
+            if (!empty($skillLevels[$sId]) && (int)$skillLevels[$sId] > 0) {
+                $lvl = (int)$skillLevels[$sId];
+                $skParts[] = [
+                    'id' => $sId,
+                    'name' => $sRow['Name'],
+                    'level' => $lvl,
+                    'str' => $sRow['Name'] . ' ' . $lvl,
+                ];
+            }
+        }
+
+        // Spells
+        $spellsList = $calc['spells'] ?? [];
+        $spellsClean = [];
+        if (!empty($spellsList) && is_array($spellsList)) {
+            foreach ($spellsList as $spItem) {
+                $sName = is_array($spItem) ? ($spItem['name'] ?? $spItem['Name'] ?? 'Spell') : (string)$spItem;
+                $spellsClean[] = $sName;
+            }
+        }
+
+        // Possessions
+        $pNames = [];
+        if (!empty($rawEntity['Possessions'])) {
+            foreach ($rawEntity['Possessions'] as $p) {
+                $pNames[] = $p['name'] ?? 'Item';
+            }
+        } elseif (!empty($eq['items'])) {
+            foreach ($eq['items'] as $item) {
+                $pNames[] = $item['name'] ?? 'Item';
+            }
+        }
+        $ec = (int)($eq['effective_ec'] ?? 0);
+        $ep = (int)($eq['encumbrance_penalty'] ?? 0);
+
+        $attackLines = self::buildStatBlockAttackLines($calc, $rawEntity);
+
+        return [
+            'header_line' => $headerLine,
+            'name' => $name,
+            'gender_str' => $genderStr,
+            'race_str' => $raceStr,
+            'class_str' => $classStr,
+            'alignment' => $alAbbr,
+            'size_abbr' => $sizeAbbr,
+            'size_name' => $sizeName,
+            'type_subtype' => $typeSubtype,
+            'cl' => $cl,
+            'xp' => $xp,
+            'init_str' => $initStr,
+            'init_mod' => $initMod,
+            'ap' => $ap,
+            'reactions' => $react,
+            'spd_str' => $spdStr,
+            'perc' => $percLvl,
+            'senses_str' => $sensesStr,
+            'lang_str' => $langStr,
+            'abilities' => $abilities,
+            'mob_str' => $mobStr,
+            'crit_score' => $critScore,
+            'deca' => (int)($d['dec_active'] ?? 10),
+            'decp' => (int)($d['dec_passive'] ?? 10),
+            'dr' => (int)($d['dr'] ?? 0),
+            'mr' => (int)($d['mr'] ?? 0),
+            'fort' => (int)($d['fort'] ?? 10),
+            'ref' => (int)($d['ref'] ?? 10),
+            'will' => (int)($d['will'] ?? 10),
+            'hp' => $hp,
+            'sp' => $spVal,
+            'pp' => $ppVal,
+            'spec_def_str' => $specDefStr,
+            'spec_att_str' => $specAttStr,
+            'spec_abil_str' => $specAbilStr,
+            'skills' => $skParts,
+            'skills_str' => implode(', ', array_column($skParts, 'str')),
+            'spells' => $spellsClean,
+            'spells_str' => implode(', ', $spellsClean),
+            'possessions_str' => implode(', ', $pNames),
+            'possessions_count' => count($pNames),
+            'ec' => $ec,
+            'ep' => $ep,
+            'attack_lines' => $attackLines,
+        ];
+    }
+
+    /**
      * Render creature stat block in the modern interactive component format.
      */
     public static function renderInteractiveStatBlock(array $calc, array $rawEntity = [], string $configString = '', ?string $classicHtml = null): string

@@ -145,6 +145,19 @@ if (Test-Path $SrcAppData) {
     } catch {}
 }
 
+# Deploy pre-warmed combat tracker creatures cache (storage/framework/cache/combat_tracker_creatures.php)
+$SrcCreatures = Join-Path $Source "storage\framework\cache\combat_tracker_creatures.php"
+$DstCreatures = Join-Path $DstCacheDir "combat_tracker_creatures.php"
+if (Test-Path $SrcCreatures) {
+    try {
+        if (!(Test-Path $DstCacheDir)) {
+            New-Item -ItemType Directory -Path $DstCacheDir -Force | Out-Null
+        }
+        Copy-Item -Path $SrcCreatures -Destination $DstCreatures -Force -ErrorAction SilentlyContinue
+        Write-Host "Deployed pre-warmed combat tracker creatures cache (combat_tracker_creatures.php) to destination." -ForegroundColor Cyan
+    } catch {}
+}
+
 # Automatically trigger OPcache, migrations, in-container cache purge, and rules sync via HTTP if server is up
 try {
     $ResetUri = "http://ROL-NAS-MINI:8090/opcache_reset.php?migrate=1&sync=1"

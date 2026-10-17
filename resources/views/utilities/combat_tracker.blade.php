@@ -129,7 +129,7 @@
 
             <!-- Active Turn Display -->
             <div class="space-y-0.5">
-                <div class="text-[10px] text-amber-200/70 uppercase tracking-wider font-semibold">Active Turn</div>
+                <div class="text-[10px] uppercase tracking-wider font-bold text-amber-300" style="color: #fcd34d !important;">Active Turn</div>
                 <div class="flex items-center gap-2">
                     <template x-if="activeCombatant">
                         <div class="flex items-center gap-2">
@@ -461,326 +461,412 @@
             <div class="space-y-3 pr-1 sm:pr-2">
                 <template x-for="(c, idx) in sortedCombatants" :key="c.id">
                     <div :id="'combatant-card-' + c.id"
-                         x-data="{ condOpen: false, condSearch: '' }"
-                         class="bg-white border rounded-2xl shadow-sm transition duration-150 relative"
+                         x-data="{
+                             condOpen: false,
+                             condSearch: '',
+                             showMob: false,
+                             showDef: false,
+                             showAttacks: true,
+                             showSpecAtt: false,
+                             showSpecAbil: false,
+                             showSkills: false,
+                             showSpells: false,
+                             showPossessions: false,
+                             showNotes: false,
+                             toggleAll(expand) {
+                                 this.showMob = expand;
+                                 this.showDef = expand;
+                                 this.showAttacks = true;
+                                 this.showSpecAtt = expand;
+                                 this.showSpecAbil = expand;
+                                 this.showSkills = expand;
+                                 this.showSpells = expand;
+                                 this.showPossessions = expand;
+                                 this.showNotes = expand;
+                             },
+                             isAllExpanded() {
+                                 return this.showDef && this.showSpecAtt && this.showSpecAbil && this.showSkills && this.showSpells && this.showPossessions;
+                             }
+                         }"
+                         class="bg-white border rounded-xl shadow-xs transition duration-150 relative overflow-hidden"
                          :class="{
                              'ring-2 ring-red-600 border-red-500 bg-red-50/50 shadow-lg': (c.hp_curr <= -10 || (c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))),
                              'ring-2 ring-rose-500 border-rose-400 bg-rose-50/30 shadow-md animate-pulse': (c.hp_curr <= 0 && c.hp_curr > -10 && !(c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))),
                              'ring-2 ring-amber-400 border-amber-300 bg-amber-50/15 shadow-md': (activeIndex === idx && c.hp_curr > 0),
-                             'border-slate-200': (activeIndex !== idx && c.hp_curr > 0),
+                             'border-slate-300': (activeIndex !== idx && c.hp_curr > 0),
                              'z-30': condOpen
                          }">
                         
                         <!-- Severe Status Banner -->
                         <template x-if="c.hp_curr <= -10 || (c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))">
-                            <div class="bg-red-700 text-white font-black text-xs px-3 py-1 text-center tracking-widest uppercase flex items-center justify-center gap-2 shadow-inner rounded-t-2xl">
+                            <div class="bg-red-700 text-white font-black text-xs px-3 py-1 text-center tracking-widest uppercase flex items-center justify-center gap-2 shadow-inner">
                                 <span>💀</span> COMBATANT IS DEAD <span>💀</span>
                             </div>
                         </template>
                         <template x-if="c.hp_curr <= 0 && c.hp_curr > -10 && !(c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))">
-                            <div class="bg-rose-600 text-white font-black text-xs px-3 py-1 text-center tracking-widest uppercase flex items-center justify-center gap-2 shadow-inner animate-pulse rounded-t-2xl">
+                            <div class="bg-rose-600 text-white font-black text-xs px-3 py-1 text-center tracking-widest uppercase flex items-center justify-center gap-2 shadow-inner animate-pulse">
                                 <span>⚠️</span> COMBATANT IS DYING (UNCONSCIOUS &amp; BLEEDING) <span>⚠️</span>
                             </div>
                         </template>
 
-                        <!-- Card Header & Core Identity Strip -->
-                        <div class="px-3.5 py-2 bg-slate-50/90 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2.5"
-                             :class="{ 'rounded-t-2xl': !(c.hp_curr <= 0 || (c.conditions && (c.conditions.includes('Dead') || c.conditions.includes('DEAD')))) }">
-                            <div class="flex items-center gap-2">
+                        <!-- 1. Top Encounter Control Header Bar -->
+                        <div class="bg-slate-950 text-white px-3.5 py-1.5 flex flex-wrap items-center justify-between gap-2 border-b border-slate-900">
+                            <div class="flex items-center gap-2 flex-wrap">
                                 <!-- Reorder Buttons -->
                                 <div class="flex flex-col gap-0.5">
-                                    <button type="button" @click="moveCombatant(idx, -1)" class="text-slate-400 hover:text-slate-700 text-[10px] leading-none cursor-pointer">▲</button>
-                                    <button type="button" @click="moveCombatant(idx, 1)" class="text-slate-400 hover:text-slate-700 text-[10px] leading-none cursor-pointer">▼</button>
+                                    <button type="button" @click="moveCombatant(idx, -1)" class="text-slate-400 hover:text-white text-[10px] leading-none cursor-pointer p-0.5" title="Move earlier in initiative order">▲</button>
+                                    <button type="button" @click="moveCombatant(idx, 1)" class="text-slate-400 hover:text-white text-[10px] leading-none cursor-pointer p-0.5" title="Move later in initiative order">▼</button>
                                 </div>
 
-                                <!-- Active Turn Badge -->
+                                <!-- Active Turn Status Indicator -->
                                 <template x-if="activeIndex === idx">
-                                    <span class="bg-amber-400 text-slate-950 font-black text-[9px] uppercase px-1.5 py-0.5 rounded tracking-wider animate-pulse">
-                                        Active
+                                    <span class="font-black text-[10px] uppercase px-2 py-0.5 rounded tracking-wider shadow-xs animate-pulse flex items-center gap-1 font-sans"
+                                          style="background: linear-gradient(135deg, #f59e0b, #d97706) !important; color: #ffffff !important; text-shadow: 0 1px 1px rgba(0,0,0,0.5);">
+                                        <span>⚡</span> Active Turn
                                     </span>
                                 </template>
+                                <template x-if="activeIndex !== idx">
+                                    <button type="button" @click="setActiveCombatant(idx)" 
+                                            class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-[10px] font-bold px-2 py-0.5 rounded border border-slate-700 transition cursor-pointer font-sans"
+                                            title="Click to make this combatant active">
+                                        Turn #<span x-text="idx + 1"></span>
+                                    </button>
+                                </template>
 
-                                <!-- Type Badge & Name -->
-                                <div class="flex items-center gap-1.5 flex-wrap">
-                                    <span class="text-[10px] font-black px-1.5 py-0.2 rounded"
-                                          :class="{
-                                              'bg-indigo-100 text-indigo-800 border border-indigo-200': c.type === 'pc',
-                                              'bg-amber-100 text-amber-900 border border-amber-300': c.type === 'npc',
-                                              'bg-rose-100 text-rose-900 border border-rose-300': c.type !== 'pc' && c.type !== 'npc'
-                                          }"
-                                          x-text="(c.type || 'monster').toUpperCase()"></span>
-                                    <template x-if="getCombatantUrl(c)">
-                                        <a :href="getCombatantUrl(c)" target="_blank" rel="noopener noreferrer"
-                                           class="font-bold text-slate-900 hover:text-indigo-700 hover:underline text-sm font-serif inline-flex items-center gap-1"
-                                           title="Open character sheet / bestiary in new tab">
-                                            <span x-text="c.name"></span>
-                                            <span class="text-[10px] text-slate-400 font-sans no-underline">↗</span>
-                                        </a>
-                                    </template>
-                                    <template x-if="!getCombatantUrl(c)">
-                                        <span class="font-bold text-slate-900 text-sm font-serif" x-text="c.name"></span>
-                                    </template>
-                                    <span class="text-[11px] text-slate-500 font-mono" x-text="'Lvl ' + c.level + (c.race_name ? ' • ' + c.race_name : '')"></span>
-                                </div>
+                                <!-- Reactions Tracker per Round -->
+                                <label class="inline-flex items-center gap-1.5 text-[11px] font-mono text-slate-300 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded cursor-pointer select-none"
+                                       title="Check off reaction used this round (auto-resets each round)">
+                                    <input type="checkbox" x-model="c.reaction_used" class="rounded text-amber-500 focus:ring-0 cursor-pointer h-3.5 w-3.5" />
+                                    <span :class="c.reaction_used ? 'line-through text-slate-500' : 'text-amber-400 font-bold'">React:</span>
+                                    <span x-text="(c.reactions || 1) + '/rnd'" :class="c.reaction_used ? 'line-through text-slate-500' : 'text-slate-200'"></span>
+                                </label>
                             </div>
 
-                            <!-- Initiative Controls & Actions -->
-                            <div class="flex items-center gap-1.5">
-                                <!-- Initiative Input & Roll -->
-                                <div class="flex items-center gap-1 bg-white border border-slate-300 rounded px-1.5 py-0.5 shadow-2xs">
-                                    <span class="text-[10px] font-bold text-slate-500 uppercase">Init:</span>
+                            <!-- Right Controls: Initiative, Expand/Collapse, Duplicate, Remove -->
+                            <div class="flex items-center gap-1.5 flex-wrap text-xs font-sans">
+                                <!-- Rolled Initiative Box with input and reroll -->
+                                <div class="inline-flex items-center gap-1 bg-slate-900 border border-slate-800 rounded px-2 py-0.5 text-[11px] font-mono">
+                                    <span class="text-slate-400 font-bold uppercase text-[10px]">Init:</span>
                                     <input type="number" x-model.number="c.init_total" 
-                                           class="w-9 text-center font-mono font-bold text-xs text-slate-900 focus:outline-none"
+                                           class="w-10 text-center font-mono font-bold text-xs bg-slate-950 border border-slate-800 rounded text-amber-400 focus:outline-hidden focus:border-amber-500 py-0.5"
                                            placeholder="0" />
-                                    <button type="button" @click="rollInitiative(c)" title="Roll 1d20 + Mod"
-                                            class="text-xs text-indigo-600 hover:text-indigo-800 font-bold px-0.5 rounded hover:bg-indigo-50 transition cursor-pointer">
+                                    <button type="button" @click="rollInitiative(c)" title="Reroll Initiative (1d20 + Mod)"
+                                            class="text-xs text-amber-400 hover:text-amber-200 font-bold px-1 rounded hover:bg-slate-800 transition cursor-pointer">
                                         🎲
                                     </button>
-                                    <span class="text-[10px] text-slate-400 font-mono" x-text="'(' + (c.init_mod >= 0 ? '+' : '') + c.init_mod + ')'"></span>
+                                    <span class="text-slate-500 text-[10px]" x-text="'(' + (((c.init_mod || 0) >= 0 ? '+' : '') + (c.init_mod || 0)) + ')'"></span>
                                 </div>
 
-                                <!-- Duplicate & Remove -->
+                                <!-- Section Expand / Collapse All Toggle -->
+                                <button type="button" 
+                                        @click="isAllExpanded() ? toggleAll(false) : toggleAll(true)"
+                                        class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded border border-slate-700 transition text-[10px] cursor-pointer"
+                                        :title="isAllExpanded() ? 'Collapse all secondary sections' : 'Expand all sections'">
+                                    <span x-text="isAllExpanded() ? 'Collapse All [−]' : 'Expand All [+]'"></span>
+                                </button>
+
+                                <!-- Duplicate & Remove Buttons -->
                                 <button type="button" @click="duplicateCombatant(c)" title="Duplicate Combatant"
-                                        class="p-1 text-slate-400 hover:text-slate-600 rounded hover:bg-slate-200 transition cursor-pointer text-xs">
+                                        class="p-1 text-slate-400 hover:text-slate-200 rounded hover:bg-slate-800 transition cursor-pointer text-xs">
                                     📑
                                 </button>
                                 <button type="button" @click="removeCombatant(c.id)" title="Remove from Encounter"
-                                        class="p-1 text-slate-400 hover:text-rose-600 rounded hover:bg-rose-50 transition cursor-pointer text-xs">
+                                        class="p-1 text-slate-400 hover:text-rose-400 rounded hover:bg-rose-950/60 transition cursor-pointer text-xs">
                                     ✕
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Card Body: Dials, AP, Health Pools, Defenses, Active Attack & Conditions -->
-                        <div class="p-3 sm:p-3.5 space-y-2.5">
-                            <!-- Top Row: AP, HP, SP, PP Grid (Fits on a single row) -->
-                            <div class="combat-resources-grid">
+                        <!-- 2. Prominent Distinct Stat Block Header -->
+                        <div class="px-3.5 py-2.5 bg-gradient-to-r from-stone-100 via-amber-50/40 to-stone-50 border-b border-amber-900/20">
+                            <div class="flex items-center justify-between gap-2 flex-wrap">
+                                <div class="flex items-center gap-2 flex-wrap min-w-0">
+                                    <!-- Type Badge (PC / NPC / Monster) -->
+                                    <span class="text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wider shadow-2xs font-sans"
+                                          :class="{
+                                              'bg-indigo-100 text-indigo-900 border border-indigo-300': c.type === 'pc',
+                                              'bg-amber-100 text-amber-950 border border-amber-300': c.type === 'npc',
+                                              'bg-rose-100 text-rose-950 border border-rose-300': c.type !== 'pc' && c.type !== 'npc'
+                                          }"
+                                          x-text="(c.type || 'monster').toUpperCase()"></span>
+
+                                    <!-- Combatant Name (Larger & Distinct Font) -->
+                                    <template x-if="getCombatantUrl(c)">
+                                        <a :href="getCombatantUrl(c)" target="_blank" rel="noopener noreferrer"
+                                           class="font-serif font-bold text-slate-950 hover:text-indigo-800 hover:underline text-base sm:text-lg leading-tight inline-flex items-center gap-1"
+                                           title="Open character sheet / bestiary in new tab">
+                                            <span x-text="c.name"></span>
+                                            <span class="text-xs text-slate-400 font-sans no-underline">↗</span>
+                                        </a>
+                                    </template>
+                                    <template x-if="!getCombatantUrl(c)">
+                                        <span class="font-serif font-bold text-slate-950 text-base sm:text-lg leading-tight" x-text="c.name"></span>
+                                    </template>
+                                </div>
+
+                                <!-- Level / CL & XP Badge -->
+                                <div class="flex items-center gap-1.5 font-mono text-xs shrink-0">
+                                    <span class="bg-slate-900 text-white font-bold px-2 py-0.5 rounded shadow-2xs text-[11px]"
+                                          x-text="c.type === 'pc' ? 'Lvl ' + c.level : 'CL ' + (c.statblock?.cl ?? c.level)"></span>
+                                    <template x-if="c.statblock?.xp || c.xp">
+                                        <span class="text-slate-600 font-semibold text-[11px]" x-text="'(' + (c.statblock?.xp || c.xp) + ' XP)'"></span>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Identity Sub-Line (Gender, Race, Classes, Alignment, Size, Type/Subtype) -->
+                            <div class="mt-1 text-xs text-slate-700 font-mono flex flex-wrap items-center gap-x-2 gap-y-0.5 leading-relaxed">
+                                <template x-if="c.statblock?.race_str || c.race_name">
+                                    <span class="font-semibold text-slate-900" x-text="(c.statblock?.gender_str ? c.statblock.gender_str + ' ' : '') + (c.statblock?.race_str || c.race_name)"></span>
+                                </template>
+                                <template x-if="c.statblock?.class_str">
+                                    <span class="text-indigo-950 font-bold" x-text="'• ' + c.statblock.class_str"></span>
+                                </template>
+                                <span class="text-slate-600" x-text="'• ' + (c.statblock?.alignment || 'TN') + ' ' + (c.statblock?.size_abbr || 'M') + ' ' + (c.statblock?.type_subtype || (c.type === 'pc' ? 'Humanoid' : 'Creature'))"></span>
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Vitals & Senses -->
+                        <div class="px-3.5 py-1 bg-white border-b border-slate-300 text-xs font-mono leading-relaxed flex flex-wrap items-center gap-x-3 gap-y-1">
+                            <div>
+                                <strong class="text-slate-950 font-sans font-semibold">Init</strong> 
+                                <span x-text="c.statblock?.init_str || (((c.init_mod || 0) >= 0 ? '+' : '') + (c.init_mod || 0))"></span>;
+                            </div>
+                            <div>
+                                <strong class="text-slate-950 font-sans font-semibold">AP</strong> 
+                                <span x-text="c.ap_max"></span>;
+                            </div>
+                            <div>
+                                <strong class="text-slate-950 font-sans font-semibold">React</strong> 
+                                <span x-text="c.reactions || 1"></span>;
+                            </div>
+                            <div>
+                                <strong class="text-slate-950 font-sans font-semibold">Spd</strong> 
+                                <span x-text="c.statblock?.spd_str || c.speed || '30''"></span>;
+                            </div>
+                            <div>
+                                <strong class="text-slate-950 font-sans font-semibold">Perc</strong> 
+                                <button type="button" @click="rollPerception(c)" 
+                                        class="hover:bg-indigo-50 text-indigo-900 font-bold px-1 py-0.2 rounded hover:underline inline-flex items-center gap-0.5 cursor-pointer"
+                                        title="Roll Perception check (1d20! + bonus)">
+                                    <span x-text="c.statblock?.perc ?? 10"></span>
+                                    <span class="text-[10px] text-indigo-600">🎲</span>
+                                </button>;
+                            </div>
+                            <template x-if="c.statblock?.senses_str">
+                                <div>
+                                    <strong class="text-slate-950 font-sans font-semibold">Senses</strong> 
+                                    <span x-text="c.statblock.senses_str"></span>;
+                                </div>
+                            </template>
+                            <template x-if="c.statblock?.lang_str">
+                                <div>
+                                    <strong class="text-slate-950 font-sans font-semibold">Lang</strong> 
+                                    <span x-text="c.statblock.lang_str"></span>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Row 3: Ability Scores (with Clickable Checks) -->
+                        <div class="px-3.5 py-1 bg-slate-50/70 border-b border-slate-300 text-xs font-mono leading-relaxed flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                            <template x-for="ab in ['Str', 'Con', 'Dex', 'Int', 'Wis', 'Cha']" :key="ab">
+                                <button type="button" 
+                                        @click="rollAbilityCheck(c, ab, c.statblock?.abilities?.[ab]?.mod ?? 0)"
+                                        class="hover:bg-amber-100 hover:text-amber-950 px-1 py-0.5 rounded transition cursor-pointer text-left inline-flex items-center gap-0.5"
+                                        :title="'Roll ' + ab + ' Check (1d20! + Mod)'">
+                                    <strong class="text-slate-950 font-sans font-semibold" x-text="ab"></strong>
+                                    <span x-text="c.statblock?.abilities?.[ab]?.score ?? 10"></span>
+                                    <span class="text-slate-500 font-bold" x-text="'(' + (c.statblock?.abilities?.[ab]?.mod_str ?? '+0') + ')'"></span>
+                                    <span class="text-[9px] text-amber-600">🎲</span>
+                                </button>
+                            </template>
+                        </div>
+
+                        <!-- Row 4: Spec Mob (collapsible) -->
+                        <template x-if="c.statblock?.mob_str && c.statblock.mob_str !== 'None'">
+                            <div class="px-3.5 py-1 bg-white border-b border-slate-300 text-xs font-mono leading-relaxed flex items-start justify-between gap-2">
+                                <div class="flex-1 min-w-0">
+                                    <strong class="text-slate-950 font-sans font-semibold">Spec Mob:</strong>
+                                    <span x-show="showMob" x-text="c.statblock.mob_str"></span>
+                                    <span x-show="!showMob" x-cloak class="text-slate-400 italic font-sans text-[11px]">(movement traits hidden)</span>
+                                </div>
+                                <button type="button" @click="showMob = !showMob"
+                                        class="shrink-0 text-[10px] px-1.5 py-0.5 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition font-mono cursor-pointer"
+                                        :title="showMob ? 'Collapse section' : 'Expand section'">
+                                    <span x-text="showMob ? '[−]' : '[+]'"></span>
+                                </button>
+                            </div>
+                        </template>
+
+                        <!-- Row 5: Defenses & Saves (with Clickable Saving Throws) -->
+                        <div class="px-3.5 py-1 bg-slate-50/70 border-b border-slate-300 text-xs font-mono leading-relaxed flex flex-wrap items-center gap-x-2 gap-y-1">
+                            <div>
+                                <strong class="text-slate-950 font-sans font-semibold">DeCa/p</strong> 
+                                <span class="font-bold text-slate-900" x-text="c.deca"></span>/<span class="font-bold text-slate-900" x-text="c.decp"></span>
+                                <span class="text-slate-500" x-text="'(Crit ' + (c.statblock?.crit_score || '+20') + ')'"></span>;
+                            </div>
+                            <div>
+                                <strong class="text-slate-950 font-sans font-semibold">DR</strong> 
+                                <span x-text="c.dr || 0"></span>;
+                            </div>
+                            <template x-if="(c.mr || 0) > 0">
+                                <div>
+                                    <strong class="text-slate-950 font-sans font-semibold">MR</strong> 
+                                    <span x-text="c.mr"></span>;
+                                </div>
+                            </template>
+                            <div class="flex items-center gap-1.5">
+                                <strong class="text-slate-950 font-sans font-semibold">Fort/Ref/Will</strong>
+                                <button type="button" @click="rollSave(c, 'Fort', c.fort)" 
+                                        class="hover:bg-emerald-100 hover:text-emerald-950 px-1 py-0.2 rounded font-bold text-emerald-900 transition cursor-pointer"
+                                        title="Roll Fortitude Save (1d20! + bonus)">
+                                    Fort <span x-text="c.fort"></span> 🎲
+                                </button>
+                                <span class="text-slate-300">/</span>
+                                <button type="button" @click="rollSave(c, 'Ref', c.ref)" 
+                                        class="hover:bg-blue-100 hover:text-blue-950 px-1 py-0.2 rounded font-bold text-blue-900 transition cursor-pointer"
+                                        title="Roll Reflex Save (1d20! + bonus)">
+                                    Ref <span x-text="c.ref"></span> 🎲
+                                </button>
+                                <span class="text-slate-300">/</span>
+                                <button type="button" @click="rollSave(c, 'Will', c.will)" 
+                                        class="hover:bg-indigo-100 hover:text-indigo-950 px-1 py-0.2 rounded font-bold text-indigo-900 transition cursor-pointer"
+                                        title="Roll Will Save (1d20! + bonus)">
+                                    Will <span x-text="c.will"></span> 🎲
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Row 6: Interactive Resource Box (AP, HP, SP, PP) & Conditions -->
+                        <div class="px-3.5 py-2.5 bg-white border-b border-slate-300 space-y-2">
+                            <!-- Grid for AP, HP, SP, PP (Fits on a single row) -->
+                            <div class="combat-resources-grid grid grid-cols-4 gap-1.5 sm:gap-2">
                                 <!-- Action Points (AP) -->
-                                <div class="combat-resource-box">
-                                    <div class="flex items-center justify-between text-[11px] leading-none mb-1">
-                                        <span class="font-bold text-slate-700 flex items-center gap-0.5">⚡ AP</span>
-                                        <button type="button" @click="c.ap_curr = c.ap_max" class="text-[9px] text-indigo-600 hover:underline cursor-pointer font-semibold">Reset</button>
+                                <div class="bg-amber-50/50 border border-amber-900/20 rounded-lg p-1.5 flex flex-col justify-between">
+                                    <div class="flex items-center justify-between text-[11px] leading-tight mb-1">
+                                        <span class="font-bold text-amber-950 flex items-center gap-0.5">⚡ AP</span>
+                                        <button type="button" @click="resetAp(c)" class="text-[9px] text-amber-800 hover:underline cursor-pointer font-bold opacity-80 hover:opacity-100" title="Reset AP to max">↺ Reset</button>
                                     </div>
-                                    <div class="flex items-center justify-between gap-1 mb-1">
+                                    <div class="flex items-center justify-between gap-1">
                                         <div class="flex items-center gap-0.5 font-mono">
                                             <input type="number" x-model.number="c.ap_curr" min="0" :max="c.ap_max"
-                                                   class="combat-num-input" />
+                                                   class="w-8 sm:w-9 text-center font-mono font-bold text-xs bg-white border border-amber-900/30 rounded py-0.5 px-0.5 text-slate-900 focus:outline-hidden" />
                                             <span class="text-[9px] text-slate-400 font-bold">/</span>
-                                            <span class="text-[11px] text-slate-500 font-bold px-0.5" x-text="c.ap_max"></span>
+                                            <span class="text-[11px] text-slate-600 font-bold px-0.5" x-text="c.ap_max"></span>
                                         </div>
-                                        <div class="flex items-center gap-0.5">
-                                            <button type="button" @click="c.ap_curr = Math.max(0, c.ap_curr - 1)" class="combat-btn-mini">-1</button>
-                                            <button type="button" @click="c.ap_curr = Math.min(c.ap_max, c.ap_curr + 1)" class="combat-btn-mini">+1</button>
+                                        <div class="flex items-center gap-0.5 shrink-0">
+                                            <button type="button" @click="c.ap_curr = Math.max(0, c.ap_curr - 1)" class="px-1 py-0.5 bg-white hover:bg-amber-100 text-slate-700 text-[9px] font-bold rounded border border-amber-900/20 cursor-pointer">-1</button>
+                                            <button type="button" @click="c.ap_curr = Math.min(c.ap_max, c.ap_curr + 1)" class="px-1 py-0.5 bg-white hover:bg-amber-100 text-slate-700 text-[9px] font-bold rounded border border-amber-900/20 cursor-pointer">+1</button>
                                         </div>
                                     </div>
-                                    <!-- AP Progress Bar -->
-                                    <div class="w-full bg-slate-200 h-1 rounded-full overflow-hidden">
+                                    <div class="w-full bg-slate-200 h-1 sm:h-1.5 rounded-full overflow-hidden mt-1">
                                         <div class="bg-amber-500 h-full rounded-full transition-all duration-300"
                                              :style="'width: ' + Math.min(100, Math.max(0, (c.ap_curr / (c.ap_max || 1)) * 100)) + '%'"></div>
-                                    </div>
-                                    <!-- Reactions per Round -->
-                                    <div class="flex items-center justify-between text-[10px] text-slate-500 font-mono mt-1 pt-0.5 border-t border-slate-100">
-                                        <span>Reactions:</span>
-                                        <span class="text-amber-800 bg-amber-100/80 px-1 rounded font-bold" title="Reactions available per round (1 per 10 AP + Ref bonus)" x-text="(c.reactions || Math.max(1, Math.floor((c.ap_max || 10) / 10))) + ' / rnd'"></span>
                                     </div>
                                 </div>
 
                                 <!-- Hit Points (HP) -->
-                                <div class="combat-resource-box">
-                                    <div class="flex items-center justify-between text-[11px] leading-none mb-1">
-                                        <span class="font-bold text-slate-700 flex items-center gap-0.5">❤️ HP</span>
-                                        <span class="text-[9px] font-bold leading-none"
-                                              :class="{
-                                                  'text-emerald-600': c.hp_curr > c.hp_max * 0.5,
-                                                  'text-amber-600': c.hp_curr <= c.hp_max * 0.5 && c.hp_curr > 0,
-                                                  'text-rose-600 font-black': c.hp_curr <= 0
-                                              }"
-                                              x-text="c.hp_curr <= 0 ? (c.hp_curr <= -10 ? 'DEAD' : 'DYING') : (c.hp_curr <= c.hp_max * 0.5 ? 'BLOODIED' : 'OK')"></span>
+                                <div class="bg-rose-50/50 border border-rose-900/20 rounded-lg p-1.5 flex flex-col justify-between">
+                                    <div class="flex items-center justify-between text-[11px] leading-tight mb-1">
+                                        <span class="font-bold text-rose-950 flex items-center gap-0.5">❤️ HP</span>
+                                        <div class="flex items-center gap-1">
+                                            <span class="text-[8px] sm:text-[9px] font-bold leading-none uppercase"
+                                                  :class="{
+                                                      'text-emerald-700': c.hp_curr > c.hp_max * 0.5,
+                                                      'text-amber-700': c.hp_curr <= c.hp_max * 0.5 && c.hp_curr > 0,
+                                                      'text-rose-700 font-black': c.hp_curr <= 0
+                                                  }"
+                                                  x-text="c.hp_curr <= 0 ? (c.hp_curr <= -10 ? 'DEAD' : 'DYING') : (c.hp_curr <= c.hp_max * 0.5 ? 'BLOODIED' : 'OK')"></span>
+                                            <button type="button" @click="resetHp(c)" class="text-[9px] text-rose-800 hover:underline cursor-pointer font-bold opacity-80 hover:opacity-100" title="Reset HP to max">↺ Reset</button>
+                                        </div>
                                     </div>
-                                    <div class="flex items-center justify-between gap-1 mb-1">
+                                    <div class="flex items-center justify-between gap-1">
                                         <div class="flex items-center gap-0.5 font-mono">
                                             <input type="number" x-model.number="c.hp_curr"
-                                                   class="combat-num-input" />
+                                                   class="w-8 sm:w-9 text-center font-mono font-bold text-xs bg-white border border-rose-900/30 rounded py-0.5 px-0.5 text-slate-900 focus:outline-hidden" />
                                             <span class="text-[9px] text-slate-400 font-bold">/</span>
                                             <input type="number" x-model.number="c.hp_max"
-                                                   class="combat-num-input combat-num-input-muted" />
+                                                   class="w-8 sm:w-9 text-center font-mono text-[11px] bg-slate-100 border border-slate-300 rounded py-0.5 px-0.5 text-slate-600 focus:outline-hidden" />
                                         </div>
-                                        <div class="flex items-center gap-0.5">
-                                            <button type="button" @click="applyHpDelta(c, -5)" title="-5 HP" class="combat-btn-mini combat-btn-mini-danger">-5</button>
-                                            <button type="button" @click="applyHpDelta(c, -1)" title="-1 HP" class="combat-btn-mini combat-btn-mini-danger">-1</button>
-                                            <button type="button" @click="applyHpDelta(c, 1)" title="+1 HP" class="combat-btn-mini combat-btn-mini-success">+1</button>
-                                            <button type="button" @click="applyHpDelta(c, 5)" title="+5 HP" class="combat-btn-mini combat-btn-mini-success">+5</button>
+                                        <div class="flex items-center gap-0.5 shrink-0">
+                                            <button type="button" @click="applyHpDelta(c, -5)" title="-5 HP" class="px-0.5 sm:px-1 py-0.5 bg-rose-100 hover:bg-rose-200 text-rose-900 text-[9px] font-bold rounded border border-rose-300 cursor-pointer">-5</button>
+                                            <button type="button" @click="applyHpDelta(c, -1)" title="-1 HP" class="px-0.5 sm:px-1 py-0.5 bg-rose-100 hover:bg-rose-200 text-rose-900 text-[9px] font-bold rounded border border-rose-300 cursor-pointer">-1</button>
+                                            <button type="button" @click="applyHpDelta(c, 1)" title="+1 HP" class="px-0.5 sm:px-1 py-0.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-[9px] font-bold rounded border border-emerald-300 cursor-pointer">+1</button>
+                                            <button type="button" @click="applyHpDelta(c, 5)" title="+5 HP" class="px-0.5 sm:px-1 py-0.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-[9px] font-bold rounded border border-emerald-300 cursor-pointer">+5</button>
                                         </div>
                                     </div>
-                                    <!-- HP Progress Bar -->
-                                    <div class="w-full bg-slate-200 h-1 rounded-full overflow-hidden">
+                                    <div class="w-full bg-slate-200 h-1 sm:h-1.5 rounded-full overflow-hidden mt-1">
                                         <div class="h-full rounded-full transition-all duration-300"
+                                             :style="'width: ' + Math.min(100, Math.max(0, (c.hp_curr / (c.hp_max || 1)) * 100)) + '%'"
                                              :class="{
                                                  'bg-emerald-500': c.hp_curr > c.hp_max * 0.5,
                                                  'bg-amber-500': c.hp_curr <= c.hp_max * 0.5 && c.hp_curr > 0,
                                                  'bg-rose-600': c.hp_curr <= 0
-                                             }"
-                                             :style="'width: ' + Math.min(100, Math.max(0, (c.hp_curr / (c.hp_max || 1)) * 100)) + '%'"></div>
+                                             }"></div>
                                     </div>
                                 </div>
 
                                 <!-- Stamina Points (SP) -->
-                                <div class="combat-resource-box">
-                                    <div class="flex items-center justify-between text-[11px] leading-none mb-1">
-                                        <span class="font-bold text-slate-700 flex items-center gap-0.5">🛡️ SP</span>
-                                        <button type="button" @click="c.sp_curr = c.sp_max" class="text-[9px] text-indigo-600 hover:underline cursor-pointer font-semibold">Max</button>
+                                <div class="bg-blue-50/50 border border-blue-900/20 rounded-lg p-1.5 flex flex-col justify-between">
+                                    <div class="flex items-center justify-between text-[11px] leading-tight mb-1">
+                                        <span class="font-bold text-blue-950 flex items-center gap-0.5">🛡️ SP</span>
+                                        <button type="button" @click="resetSp(c)" class="text-[9px] text-blue-800 hover:underline cursor-pointer font-bold opacity-80 hover:opacity-100" title="Reset SP to max">↺ Reset</button>
                                     </div>
-                                    <div class="flex items-center justify-between gap-1 mb-1">
+                                    <div class="flex items-center justify-between gap-1">
                                         <div class="flex items-center gap-0.5 font-mono">
                                             <input type="number" x-model.number="c.sp_curr" min="0"
-                                                   class="combat-num-input" />
+                                                   class="w-8 sm:w-9 text-center font-mono font-bold text-xs bg-white border border-blue-900/30 rounded py-0.5 px-0.5 text-slate-900 focus:outline-hidden" />
                                             <span class="text-[9px] text-slate-400 font-bold">/</span>
-                                            <span class="text-[11px] text-slate-500 font-bold px-0.5" x-text="c.sp_max"></span>
+                                            <input type="number" x-model.number="c.sp_max"
+                                                   class="w-8 sm:w-9 text-center font-mono text-[11px] bg-slate-100 border border-slate-300 rounded py-0.5 px-0.5 text-slate-600 focus:outline-hidden" />
                                         </div>
-                                        <div class="flex items-center gap-0.5">
-                                            <button type="button" @click="c.sp_curr = Math.max(0, c.sp_curr - 5)" title="-5 SP" class="combat-btn-mini">-5</button>
-                                            <button type="button" @click="c.sp_curr = Math.max(0, c.sp_curr - 1)" title="-1 SP" class="combat-btn-mini">-1</button>
-                                            <button type="button" @click="c.sp_curr = Math.min(c.sp_max, c.sp_curr + 1)" title="+1 SP" class="combat-btn-mini">+1</button>
+                                        <div class="flex items-center gap-0.5 shrink-0">
+                                            <button type="button" @click="c.sp_curr = Math.max(0, c.sp_curr - 5)" title="-5 SP" class="px-0.5 sm:px-1 py-0.5 bg-blue-100 hover:bg-blue-200 text-blue-900 text-[9px] font-bold rounded border border-blue-300 cursor-pointer">-5</button>
+                                            <button type="button" @click="c.sp_curr = Math.max(0, c.sp_curr - 1)" title="-1 SP" class="px-0.5 sm:px-1 py-0.5 bg-blue-100 hover:bg-blue-200 text-blue-900 text-[9px] font-bold rounded border border-blue-300 cursor-pointer">-1</button>
+                                            <button type="button" @click="c.sp_curr = Math.min(c.sp_max, c.sp_curr + 1)" title="+1 SP" class="px-0.5 sm:px-1 py-0.5 bg-blue-100 hover:bg-blue-200 text-blue-900 text-[9px] font-bold rounded border border-blue-300 cursor-pointer">+1</button>
+                                            <button type="button" @click="c.sp_curr = Math.min(c.sp_max, c.sp_curr + 5)" title="+5 SP" class="px-0.5 sm:px-1 py-0.5 bg-blue-100 hover:bg-blue-200 text-blue-900 text-[9px] font-bold rounded border border-blue-300 cursor-pointer">+5</button>
                                         </div>
                                     </div>
-                                    <!-- SP Progress Bar -->
-                                    <div class="w-full bg-slate-200 h-1 rounded-full overflow-hidden">
+                                    <div class="w-full bg-slate-200 h-1 sm:h-1.5 rounded-full overflow-hidden mt-1">
                                         <div class="bg-blue-500 h-full rounded-full transition-all duration-300"
                                              :style="'width: ' + Math.min(100, Math.max(0, (c.sp_curr / (c.sp_max || 1)) * 100)) + '%'"></div>
                                     </div>
                                 </div>
 
                                 <!-- Power Points (PP) -->
-                                <div class="combat-resource-box">
-                                    <div class="flex items-center justify-between text-[11px] leading-none mb-1">
-                                        <span class="font-bold text-slate-700 flex items-center gap-0.5">🔮 PP</span>
-                                        <button type="button" @click="c.pp_curr = c.pp_max" class="text-[9px] text-indigo-600 hover:underline cursor-pointer font-semibold">Max</button>
+                                <div class="bg-purple-50/50 border border-purple-900/20 rounded-lg p-1.5 flex flex-col justify-between">
+                                    <div class="flex items-center justify-between text-[11px] leading-tight mb-1">
+                                        <span class="font-bold text-purple-950 flex items-center gap-0.5">🔮 PP</span>
+                                        <button type="button" @click="resetPp(c)" class="text-[9px] text-purple-800 hover:underline cursor-pointer font-bold opacity-80 hover:opacity-100" title="Reset PP to max">↺ Reset</button>
                                     </div>
-                                    <div class="flex items-center justify-between gap-1 mb-1">
+                                    <div class="flex items-center justify-between gap-1">
                                         <div class="flex items-center gap-0.5 font-mono">
                                             <input type="number" x-model.number="c.pp_curr" min="0"
-                                                   class="combat-num-input" />
+                                                   class="w-8 sm:w-9 text-center font-mono font-bold text-xs bg-white border border-purple-900/30 rounded py-0.5 px-0.5 text-slate-900 focus:outline-hidden" />
                                             <span class="text-[9px] text-slate-400 font-bold">/</span>
-                                            <span class="text-[11px] text-slate-500 font-bold px-0.5" x-text="c.pp_max"></span>
+                                            <input type="number" x-model.number="c.pp_max"
+                                                   class="w-8 sm:w-9 text-center font-mono text-[11px] bg-slate-100 border border-slate-300 rounded py-0.5 px-0.5 text-slate-600 focus:outline-hidden" />
                                         </div>
-                                        <div class="flex items-center gap-0.5">
-                                            <button type="button" @click="c.pp_curr = Math.max(0, c.pp_curr - 1)" title="-1 PP" class="combat-btn-mini">-1</button>
-                                            <button type="button" @click="c.pp_curr = Math.min(c.pp_max, c.pp_curr + 1)" title="+1 PP" class="combat-btn-mini">+1</button>
+                                        <div class="flex items-center gap-0.5 shrink-0">
+                                            <button type="button" @click="c.pp_curr = Math.max(0, c.pp_curr - 5)" title="-5 PP" class="px-0.5 sm:px-1 py-0.5 bg-purple-100 hover:bg-purple-200 text-purple-900 text-[9px] font-bold rounded border border-purple-300 cursor-pointer">-5</button>
+                                            <button type="button" @click="c.pp_curr = Math.max(0, c.pp_curr - 1)" title="-1 PP" class="px-0.5 sm:px-1 py-0.5 bg-purple-100 hover:bg-purple-200 text-purple-900 text-[9px] font-bold rounded border border-purple-300 cursor-pointer">-1</button>
+                                            <button type="button" @click="c.pp_curr = Math.min(c.pp_max, c.pp_curr + 1)" title="+1 PP" class="px-0.5 sm:px-1 py-0.5 bg-purple-100 hover:bg-purple-200 text-purple-900 text-[9px] font-bold rounded border border-purple-300 cursor-pointer">+1</button>
+                                            <button type="button" @click="c.pp_curr = Math.min(c.pp_max, c.pp_curr + 5)" title="+5 PP" class="px-0.5 sm:px-1 py-0.5 bg-purple-100 hover:bg-purple-200 text-purple-900 text-[9px] font-bold rounded border border-purple-300 cursor-pointer">+5</button>
                                         </div>
                                     </div>
-                                    <!-- PP Progress Bar -->
-                                    <div class="w-full bg-slate-200 h-1 rounded-full overflow-hidden">
+                                    <div class="w-full bg-slate-200 h-1 sm:h-1.5 rounded-full overflow-hidden mt-1">
                                         <div class="bg-purple-500 h-full rounded-full transition-all duration-300"
                                              :style="'width: ' + Math.min(100, Math.max(0, (c.pp_curr / (c.pp_max || 1)) * 100)) + '%'"></div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Defenses & Saves Card -->
-                            <div class="bg-gradient-to-r from-slate-50 via-slate-100/90 to-amber-50/60 p-2.5 rounded-xl border border-slate-300 shadow-2xs space-y-1.5">
-                                <div class="flex items-center justify-between text-[11px] border-b border-slate-200/80 pb-1">
-                                    <div class="font-bold text-slate-800 flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
-                                        <span>🛡️</span> Defenses &amp; Saving Throws
-                                    </div>
-                                    <div x-show="c.speed" class="text-[10px] font-mono font-bold text-slate-600 flex items-center gap-1">
-                                        <span>🏃</span> Speed: <span class="text-slate-900" x-text="c.speed"></span>
-                                    </div>
-                                </div>
-                                <div class="flex flex-wrap items-center gap-1.5 text-xs font-mono">
-                                    <!-- Primary Defenses: DeCa & DeCp -->
-                                    <span class="bg-sky-50 text-sky-950 px-2 py-0.5 rounded-md border border-sky-300 shadow-2xs font-semibold" title="Active Defense Category (DeCa)">
-                                        DeCa: <strong class="text-sm font-bold text-sky-900" x-text="c.deca"></strong>
-                                    </span>
-                                    <span class="bg-slate-50 text-slate-900 px-2 py-0.5 rounded-md border border-slate-300 shadow-2xs font-semibold" title="Passive Defense Category (DeCp)">
-                                        DeCp: <strong class="text-sm font-bold text-slate-900" x-text="c.decp"></strong>
-                                    </span>
-
-                                    <!-- Damage / Magic Resistance -->
-                                    <template x-if="c.dr > 0">
-                                        <span class="bg-amber-100 text-amber-950 px-2 py-0.5 rounded-md border border-amber-300 shadow-2xs font-semibold" title="Damage Reduction (DR)">
-                                            DR: <strong class="text-sm font-bold text-amber-900" x-text="c.dr"></strong>
-                                        </span>
-                                    </template>
-                                    <template x-if="c.mr > 0">
-                                        <span class="bg-purple-100 text-purple-950 px-2 py-0.5 rounded-md border border-purple-300 shadow-2xs font-semibold" title="Magic Resistance (MR)">
-                                            MR: <strong class="text-sm font-bold text-purple-900" x-text="c.mr"></strong>
-                                        </span>
-                                    </template>
-
-                                    <!-- Saving Throws -->
-                                    <span class="bg-emerald-50 text-emerald-950 px-2 py-0.5 rounded-md border border-emerald-300 shadow-2xs font-semibold" title="Fortitude Save">
-                                        Fort: <strong class="text-sm font-bold text-emerald-900" x-text="c.fort"></strong>
-                                    </span>
-                                    <span class="bg-blue-50 text-blue-950 px-2 py-0.5 rounded-md border border-blue-300 shadow-2xs font-semibold" title="Reflex Save">
-                                        Ref: <strong class="text-sm font-bold text-blue-900" x-text="c.ref"></strong>
-                                    </span>
-                                    <span class="bg-indigo-50 text-indigo-950 px-2 py-0.5 rounded-md border border-indigo-300 shadow-2xs font-semibold" title="Will Save">
-                                        Will: <strong class="text-sm font-bold text-indigo-900" x-text="c.will"></strong>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!-- Active Attack Strip with Dropdown Selector -->
-                            <div class="bg-amber-50/50 border border-amber-900/20 rounded-xl p-2 sm:p-2.5 space-y-1.5">
-                                <div class="flex items-center justify-between gap-2 flex-wrap">
-                                    <div class="text-[10px] sm:text-[11px] font-bold text-amber-950 uppercase tracking-wider flex items-center gap-1">
-                                        <span>⚔️</span> Active Attack:
-                                    </div>
-                                    <!-- Attack Switcher Dropdown (if combatant has multiple attacks) -->
-                                    <template x-if="c.attacks && c.attacks.length > 1">
-                                        <select :value="c.main_attack ? c.main_attack.id : (c.attacks[0] ? c.attacks[0].id : '')" 
-                                                @change="setActiveAttack(c, $event.target.value)"
-                                                class="bg-white border border-amber-900/30 rounded px-1.5 py-0.5 text-xs font-semibold text-stone-900 focus:outline-none focus:border-amber-600 shadow-2xs">
-                                            <template x-for="att in c.attacks" :key="att.id">
-                                                <option :value="att.id" x-text="att.name + ' (' + (att.bonus >= 0 ? '+' : '') + att.bonus + ', ' + att.damage + ')'"></option>
-                                            </template>
-                                        </select>
-                                    </template>
-                                </div>
-
-                                <!-- Active Attack Display & Roll Button -->
-                                <div class="flex flex-wrap items-center justify-between gap-2 p-1.5 bg-white border border-amber-900/15 rounded-lg shadow-2xs">
-                                    <template x-if="c.main_attack || (c.attacks && c.attacks[0])">
-                                        <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap text-xs">
-                                            <span class="font-bold text-slate-900 font-serif" x-text="(c.main_attack || c.attacks[0]).name"></span>
-                                            <span class="text-[9px] px-1 py-0.2 rounded font-bold font-mono"
-                                                  :class="{
-                                                      'bg-indigo-100 text-indigo-800 border border-indigo-200': (c.main_attack || c.attacks[0]).type === 'melee',
-                                                      'bg-emerald-100 text-emerald-800 border border-emerald-200': (c.main_attack || c.attacks[0]).type === 'ranged',
-                                                      'bg-rose-100 text-rose-800 border border-rose-200': (c.main_attack || c.attacks[0]).type === 'natural',
-                                                      'bg-amber-100 text-amber-800 border border-amber-200': (c.main_attack || c.attacks[0]).type === 'unarmed',
-                                                      'bg-slate-100 text-slate-800 border border-slate-200': (c.main_attack || c.attacks[0]).type === 'shield'
-                                                  }"
-                                                  x-text="((c.main_attack || c.attacks[0]).type || 'MELEE').toUpperCase()"></span>
-
-                                            <span class="font-mono font-bold text-slate-800" x-text="(((c.main_attack || c.attacks[0]).bonus >= 0 ? '+' : '') + (c.main_attack || c.attacks[0]).bonus) + ' to hit'"></span>
-                                            <span class="text-slate-400 font-mono">&bull;</span>
-                                            <span class="font-mono font-bold text-rose-900" x-text="(c.main_attack || c.attacks[0]).damage"></span>
-                                            <span class="text-slate-400 font-mono">&bull;</span>
-                                            <span class="font-mono text-amber-800 font-semibold" x-text="(c.main_attack || c.attacks[0]).ap + ' AP'"></span>
-                                            <template x-if="(c.main_attack || c.attacks[0]).crit && (c.main_attack || c.attacks[0]).crit !== '20/x2'">
-                                                <span class="font-mono text-[10px] text-slate-500" x-text="'Crit ' + (c.main_attack || c.attacks[0]).crit"></span>
-                                            </template>
-                                            <template x-if="(c.main_attack || c.attacks[0]).range">
-                                                <span class="font-mono text-[10px] text-slate-500" x-text="'Range ' + (c.main_attack || c.attacks[0]).range"></span>
-                                            </template>
-                                        </div>
-                                    </template>
-
-                                    <!-- Quick Roll Attack Button -->
-                                    <button type="button" @click="rollAttack(c, c.main_attack || c.attacks[0])"
-                                            class="btn-rol-primary text-xs py-1 px-2.5 font-bold flex items-center gap-1 shadow-2xs cursor-pointer">
-                                        <span>🎲</span> Roll Attack
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Condition Badges & Quick Add -->
-                            <div class="flex flex-wrap items-center gap-1.5">
-                                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mr-0.5">Conditions:</span>
+                            <!-- Conditions Row with Quick Badges and + Add Condition -->
+                            <div class="flex flex-wrap items-center gap-1.5 pt-1.5 border-t border-slate-200/80">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mr-0.5 font-sans">Conditions:</span>
                                 
                                 <template x-for="(cond, cIdx) in c.conditions" :key="cIdx">
-                                    <span class="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded border shadow-2xs"
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded border shadow-2xs font-mono"
                                           :class="{
                                               'bg-red-700 text-white border-red-800 font-extrabold': cond === 'Dead' || cond === 'DEAD',
                                               'bg-rose-600 text-white border-rose-700 font-extrabold animate-pulse': cond === 'Dying' || cond === 'DYING',
@@ -795,7 +881,7 @@
 
                                 <div class="relative">
                                     <button type="button" @click="condOpen = !condOpen; condSearch = ''"
-                                            class="text-[11px] px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-semibold border border-slate-300 flex items-center gap-1 cursor-pointer transition">
+                                            class="text-[11px] px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-semibold border border-slate-300 flex items-center gap-1 cursor-pointer transition font-sans">
                                         <span>+ Add Condition</span>
                                     </button>
                                     <div x-show="condOpen" @click.outside="condOpen = false" x-cloak
@@ -803,7 +889,7 @@
                                         <!-- Search filter -->
                                         <div class="px-2 py-1 border-b border-slate-200" @click.stop>
                                             <input type="text" x-model="condSearch" placeholder="Filter conditions..."
-                                                   class="w-full px-2 py-1 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-500 bg-slate-50 text-slate-900" />
+                                                   class="w-full px-2 py-1 text-xs border border-slate-300 rounded-lg focus:outline-hidden focus:ring-1 focus:ring-amber-500 bg-slate-50 text-slate-900" />
                                         </div>
                                         <div class="max-h-56 overflow-y-auto pr-0.5 divide-y divide-slate-100">
                                             <template x-for="condObj in filteredConditions(condSearch)" :key="condObj.name">
@@ -822,6 +908,233 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 7: Spec Def (collapsible) -->
+                        <template x-if="c.statblock?.spec_def_str">
+                            <div class="px-3.5 py-1 bg-slate-50/70 border-b border-slate-300 text-xs font-mono leading-relaxed flex items-start justify-between gap-2">
+                                <div class="flex-1 min-w-0">
+                                    <strong class="text-slate-950 font-sans font-semibold">Spec Def:</strong>
+                                    <span x-show="showDef" x-text="c.statblock.spec_def_str"></span>
+                                    <span x-show="!showDef" x-cloak class="text-slate-400 italic font-sans text-[11px]">(defenses hidden)</span>
+                                </div>
+                                <button type="button" @click="showDef = !showDef"
+                                        class="shrink-0 text-[10px] px-1.5 py-0.5 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition font-mono cursor-pointer"
+                                        :title="showDef ? 'Collapse section' : 'Expand section'">
+                                    <span x-text="showDef ? '[−]' : '[+]'"></span>
+                                </button>
+                            </div>
+                        </template>
+
+                        <!-- Row 8: Attacks with Roll Button on Every Attack Row -->
+                        <div class="px-3.5 py-2 bg-white border-b border-slate-300 text-xs font-mono leading-relaxed space-y-1.5">
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="font-bold text-slate-950 font-sans flex items-center gap-1.5">
+                                    <span>⚔️</span> Attacks
+                                    <span class="text-[10px] text-slate-500 font-mono font-normal" x-text="'(' + ((c.attacks && c.attacks.length) || (c.statblock?.attack_lines && c.statblock.attack_lines.length) || 0) + ')'"></span>
+                                </div>
+                                <button type="button" @click="showAttacks = !showAttacks"
+                                        class="shrink-0 text-[10px] px-1.5 py-0.5 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition font-mono cursor-pointer"
+                                        :title="showAttacks ? 'Collapse attacks' : 'Expand attacks'">
+                                    <span x-text="showAttacks ? '[−]' : '[+]'"></span>
+                                </button>
+                            </div>
+
+                            <!-- Attack Rows List -->
+                            <div x-show="showAttacks" class="space-y-1 mt-1">
+                                <!-- Render from c.attacks array -->
+                                <template x-for="att in c.attacks" :key="att.id">
+                                    <div class="flex items-center justify-between gap-2 p-1.5 rounded-lg border transition"
+                                         :class="(c.main_attack && c.main_attack.id === att.id) ? 'bg-amber-50/70 border-amber-300 shadow-2xs' : 'bg-slate-50/40 border-slate-200 hover:bg-slate-50'">
+                                        <div class="flex items-center gap-2 flex-wrap min-w-0">
+                                            <!-- Radio to set active attack -->
+                                            <label class="flex items-center gap-1 cursor-pointer" :title="'Set as Active Attack: ' + att.name">
+                                                <input type="radio" 
+                                                       :name="'active_attack_' + c.id" 
+                                                       :checked="c.main_attack && c.main_attack.id === att.id"
+                                                       @change="setActiveAttack(c, att.id)"
+                                                       class="text-amber-600 focus:ring-0 cursor-pointer h-3.5 w-3.5"
+                                                       title="Active Attack" />
+                                                <span class="sr-only">Active Attack</span>
+                                                <span x-show="c.main_attack && c.main_attack.id === att.id" 
+                                                      class="text-[9px] bg-amber-200/90 text-amber-950 font-bold px-1 rounded uppercase tracking-wider">Active</span>
+                                            </label>
+
+                                            <!-- Attack Name -->
+                                            <strong class="font-serif font-bold text-slate-950 text-xs sm:text-[13px]" x-text="att.name"></strong>
+
+                                            <!-- Attack Type Badge -->
+                                            <span class="text-[9px] px-1.5 py-0.2 rounded font-bold font-mono uppercase"
+                                                  :class="{
+                                                      'bg-indigo-100 text-indigo-800 border border-indigo-200': att.type === 'melee',
+                                                      'bg-emerald-100 text-emerald-800 border border-emerald-200': att.type === 'ranged',
+                                                      'bg-rose-100 text-rose-800 border border-rose-200': att.type === 'natural',
+                                                      'bg-amber-100 text-amber-800 border border-amber-200': att.type === 'unarmed',
+                                                      'bg-slate-100 text-slate-800 border border-slate-200': att.type === 'shield'
+                                                  }"
+                                                  x-text="(att.type || 'MELEE').toUpperCase()"></span>
+
+                                            <!-- Attack Details: Bonus, Damage, AP, Crit, Range -->
+                                            <div class="flex items-center gap-1.5 text-xs font-mono flex-wrap">
+                                                <span class="font-bold text-slate-800" x-text="(((att.bonus || 0) >= 0 ? '+' : '') + (att.bonus || 0)) + ' to hit'"></span>
+                                                <span class="text-slate-400">&bull;</span>
+                                                <span class="font-bold text-rose-900" x-text="att.damage"></span>
+                                                <span class="text-slate-400">&bull;</span>
+                                                <span class="text-amber-800 font-semibold" x-text="(att.ap || 5) + ' AP'"></span>
+                                                <template x-if="att.crit && att.crit !== '20/x2'">
+                                                    <span class="text-[10px] text-slate-500" x-text="'Crit ' + att.crit"></span>
+                                                </template>
+                                                <template x-if="att.range">
+                                                    <span class="text-[10px] text-slate-500" x-text="'Range ' + att.range"></span>
+                                                </template>
+                                            </div>
+                                        </div>
+
+                                        <!-- Dedicated Roll Attack Button for THIS Attack -->
+                                        <button type="button" 
+                                                @click="rollAttack(c, att)"
+                                                class="btn-rol-primary text-xs py-1 px-2.5 font-bold flex items-center gap-1 shrink-0 shadow-2xs cursor-pointer"
+                                                title="Roll Attack and calculate damage">
+                                            <span>🎲</span> Roll Attack
+                                        </button>
+                                    </div>
+                                </template>
+
+                                <!-- Fallback if c.attacks is empty but statblock attack_lines exists -->
+                                <template x-if="(!c.attacks || c.attacks.length === 0) && c.statblock?.attack_lines && c.statblock.attack_lines.length > 0">
+                                    <div class="space-y-1">
+                                        <template x-for="(line, lIdx) in c.statblock.attack_lines" :key="lIdx">
+                                            <div class="flex items-center justify-between gap-2 p-1.5 rounded-lg border bg-slate-50/40 border-slate-200">
+                                                <span class="text-xs font-mono text-slate-800" x-text="line"></span>
+                                                <button type="button" 
+                                                        @click="rollAttack(c, { id: 'line_' + lIdx, name: 'Attack', bonus: 0, damage: '1d6', ap: 5, crit: '20/x2' })"
+                                                        class="btn-rol-primary text-xs py-1 px-2.5 font-bold flex items-center gap-1 shrink-0 shadow-2xs cursor-pointer"
+                                                        title="Roll Attack">
+                                                    <span>🎲</span> Roll Attack
+                                                </button>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Row 9: Spec Att (collapsible) -->
+                        <template x-if="c.statblock?.spec_att_str && c.statblock.spec_att_str !== 'None'">
+                            <div class="px-3.5 py-1 bg-slate-50/70 border-b border-slate-300 text-xs font-mono leading-relaxed flex items-start justify-between gap-2">
+                                <div class="flex-1 min-w-0">
+                                    <strong class="text-slate-950 font-sans font-semibold">Spec Att:</strong>
+                                    <span x-show="showSpecAtt" x-text="c.statblock.spec_att_str"></span>
+                                    <span x-show="!showSpecAtt" x-cloak class="text-slate-400 italic font-sans text-[11px]">(special attacks hidden)</span>
+                                </div>
+                                <button type="button" @click="showSpecAtt = !showSpecAtt"
+                                        class="shrink-0 text-[10px] px-1.5 py-0.5 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition font-mono cursor-pointer"
+                                        :title="showSpecAtt ? 'Collapse section' : 'Expand section'">
+                                    <span x-text="showSpecAtt ? '[−]' : '[+]'"></span>
+                                </button>
+                            </div>
+                        </template>
+
+                        <!-- Row 10: Spec Abil (collapsible) -->
+                        <template x-if="c.statblock?.spec_abil_str && c.statblock.spec_abil_str !== 'None'">
+                            <div class="px-3.5 py-1 bg-white border-b border-slate-300 text-xs font-mono leading-relaxed flex items-start justify-between gap-2">
+                                <div class="flex-1 min-w-0">
+                                    <strong class="text-slate-950 font-sans font-semibold">Spec Abil:</strong>
+                                    <span x-show="showSpecAbil" x-text="c.statblock.spec_abil_str"></span>
+                                    <span x-show="!showSpecAbil" x-cloak class="text-slate-400 italic font-sans text-[11px]">(special abilities hidden)</span>
+                                </div>
+                                <button type="button" @click="showSpecAbil = !showSpecAbil"
+                                        class="shrink-0 text-[10px] px-1.5 py-0.5 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition font-mono cursor-pointer"
+                                        :title="showSpecAbil ? 'Collapse section' : 'Expand section'">
+                                    <span x-text="showSpecAbil ? '[−]' : '[+]'"></span>
+                                </button>
+                            </div>
+                        </template>
+
+                        <!-- Row 11: Skills (collapsible with Clickable Skill Check Rolls) -->
+                        <template x-if="c.statblock?.skills && c.statblock.skills.length > 0">
+                            <div class="px-3.5 py-1 bg-slate-50/70 border-b border-slate-300 text-xs font-mono leading-relaxed flex items-start justify-between gap-2">
+                                <div class="flex-1 min-w-0">
+                                    <strong class="text-slate-950 font-sans font-semibold">Skills:</strong>
+                                    <div x-show="showSkills" class="inline-flex flex-wrap items-center gap-1.5 ml-1">
+                                        <template x-for="sk in c.statblock.skills" :key="sk.id">
+                                            <button type="button" 
+                                                    @click="rollSkillCheck(c, sk.name, sk.level)"
+                                                    class="hover:bg-slate-200 hover:text-slate-950 px-1.5 py-0.2 rounded transition cursor-pointer inline-flex items-center gap-0.5 text-slate-800 border border-slate-200 bg-white shadow-2xs"
+                                                    :title="'Roll ' + sk.name + ' Check (1d20! + ' + sk.level + ')'">
+                                                <span x-text="sk.str"></span>
+                                                <span class="text-[9px] text-indigo-600">🎲</span>
+                                            </button>
+                                        </template>
+                                    </div>
+                                    <span x-show="!showSkills" x-cloak class="text-slate-400 italic font-sans text-[11px]" x-text="'(' + c.statblock.skills.length + ' skills hidden)'"></span>
+                                </div>
+                                <button type="button" @click="showSkills = !showSkills"
+                                        class="shrink-0 text-[10px] px-1.5 py-0.5 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition font-mono cursor-pointer"
+                                        :title="showSkills ? 'Collapse section' : 'Expand section'">
+                                    <span x-text="showSkills ? '[−]' : '[+]'"></span>
+                                </button>
+                            </div>
+                        </template>
+
+                        <!-- Row 12: Spells (collapsible) -->
+                        <template x-if="c.statblock?.spells && c.statblock.spells.length > 0">
+                            <div class="px-3.5 py-1 bg-white border-b border-slate-300 text-xs font-mono leading-relaxed flex items-start justify-between gap-2">
+                                <div class="flex-1 min-w-0">
+                                    <strong class="text-slate-950 font-sans font-semibold">Spells:</strong>
+                                    <div x-show="showSpells" class="inline-flex flex-wrap items-center gap-1 ml-1">
+                                        <template x-for="(sp, spIdx) in c.statblock.spells" :key="spIdx">
+                                            <span>
+                                                <a :href="'/reference/spells/' + encodeURIComponent(sp)" target="_blank" 
+                                                   class="text-indigo-900 hover:text-indigo-600 hover:underline font-medium" 
+                                                   x-text="sp"></a><span x-show="spIdx < c.statblock.spells.length - 1">,</span>
+                                            </span>
+                                        </template>
+                                    </div>
+                                    <span x-show="!showSpells" x-cloak class="text-slate-400 italic font-sans text-[11px]" x-text="'(' + c.statblock.spells.length + ' spells hidden)'"></span>
+                                </div>
+                                <button type="button" @click="showSpells = !showSpells"
+                                        class="shrink-0 text-[10px] px-1.5 py-0.5 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition font-mono cursor-pointer"
+                                        :title="showSpells ? 'Collapse section' : 'Expand section'">
+                                    <span x-text="showSpells ? '[−]' : '[+]'"></span>
+                                </button>
+                            </div>
+                        </template>
+
+                        <!-- Row 13: Possessions, EC, EP (collapsible) -->
+                        <template x-if="c.statblock?.possessions_str || (c.statblock?.ec || 0) > 0">
+                            <div class="px-3.5 py-1 bg-slate-50/70 border-b border-slate-300 text-xs font-mono leading-relaxed flex items-start justify-between gap-2">
+                                <div class="flex-1 min-w-0">
+                                    <strong class="text-slate-950 font-sans font-semibold">Possessions:</strong>
+                                    <span x-show="showPossessions">
+                                        <span x-text="c.statblock?.possessions_str || 'None'"></span>;
+                                        <strong class="text-slate-950 font-sans font-semibold">EC</strong> <span x-text="c.statblock?.ec || 0"></span>,
+                                        <strong class="text-slate-950 font-sans font-semibold">EP</strong> <span x-text="c.statblock?.ep || 0"></span>
+                                    </span>
+                                    <span x-show="!showPossessions" x-cloak class="text-slate-400 italic font-sans text-[11px]">(items hidden)</span>
+                                </div>
+                                <button type="button" @click="showPossessions = !showPossessions"
+                                        class="shrink-0 text-[10px] px-1.5 py-0.5 rounded text-slate-500 hover:text-slate-900 hover:bg-slate-200 transition font-mono cursor-pointer"
+                                        :title="showPossessions ? 'Collapse section' : 'Expand section'">
+                                    <span x-text="showPossessions ? '[−]' : '[+]'"></span>
+                                </button>
+                            </div>
+                        </template>
+
+                        <!-- Row 14: Tactical Notes & Descriptors (collapsible/editable) -->
+                        <div class="px-3.5 py-1.5 bg-white text-xs font-mono">
+                            <div class="flex items-center justify-between cursor-pointer select-none" @click="showNotes = !showNotes">
+                                <strong class="text-slate-950 font-sans font-semibold flex items-center gap-1.5">
+                                    <span>📝</span> Tactical Notes / Descriptors 
+                                    <span x-show="c.notes && c.notes.trim()" class="text-amber-600 font-bold">•</span>
+                                </strong>
+                                <button type="button" class="text-[10px] text-slate-500 font-mono" x-text="showNotes ? '[−]' : '[+]'"></button>
+                            </div>
+                            <div x-show="showNotes" class="mt-1.5 space-y-1">
+                                <textarea x-model="c.notes" rows="2" 
+                                          placeholder="Buffs, spell durations, concentration, positioning, GM notes..."
+                                          class="w-full text-xs font-mono p-1.5 border border-slate-300 rounded focus:outline-hidden focus:border-amber-500 bg-slate-50 text-slate-800"></textarea>
                             </div>
                         </div>
                     </div>
@@ -1776,6 +2089,12 @@ function combatTrackerApp() {
                             clone.ap_max = clone.ap_max || (10 + (parseInt(clone.level) || 1));
                             clone.ap_curr = clone.ap_curr !== undefined && clone.ap_curr !== null ? clone.ap_curr : clone.ap_max;
                             clone.reactions = clone.reactions !== undefined ? clone.reactions : Math.max(1, Math.floor(clone.ap_max / 10));
+                            clone.reaction_used = false;
+                            if (clone.statblock) {
+                                clone.statblock.name = clone.name;
+                            } else {
+                                clone.statblock = this.buildDefaultStatblock(clone.name, 'monster', clone.level, clone.hp_max, clone.sp_max, clone.pp_max, clone.init_mod, clone.deca, clone.decp);
+                            }
                             this.addCombatant(clone);
                         } else if (entry.name) {
                             const lvl = parseInt(entry.level) || 1;
@@ -1789,9 +2108,11 @@ function combatTrackerApp() {
                                 type: 'melee',
                                 summary: 'Strike +2 (1d6+1 P HP, 5 AP)'
                             };
+                            const customName = (count > 1 ? `${entry.name} #${i + 1}` : entry.name);
+                            const defSb = this.buildDefaultStatblock(customName, 'monster', lvl, parseInt(entry.hp) || 20, 20, 0, 0, 11, 11, customAttack.summary);
                             this.addCombatant({
                                 id: 'custom_' + Date.now() + '_' + i,
-                                name: (count > 1 ? `${entry.name} #${i + 1}` : entry.name),
+                                name: customName,
                                 creature_name: entry.name,
                                 type: 'monster',
                                 level: lvl,
@@ -1801,6 +2122,7 @@ function combatTrackerApp() {
                                 ap_max: 10 + lvl,
                                 ap_curr: 10 + lvl,
                                 reactions: Math.max(1, Math.floor((10 + lvl) / 10)),
+                                reaction_used: false,
                                 init_mod: 0,
                                 deca: 11,
                                 decp: 11,
@@ -1811,7 +2133,8 @@ function combatTrackerApp() {
                                 mr: 0,
                                 speed: "30'",
                                 attacks: [customAttack],
-                                main_attack: customAttack
+                                main_attack: customAttack,
+                                statblock: defSb
                             });
                         }
                     }
@@ -2000,9 +2323,14 @@ function combatTrackerApp() {
             copy.ap_max = copy.ap_max || (10 + (parseInt(copy.level) || 1));
             copy.ap_curr = copy.ap_curr !== undefined && copy.ap_curr !== null ? copy.ap_curr : copy.ap_max;
             copy.reactions = copy.reactions !== undefined ? copy.reactions : Math.max(1, Math.floor((copy.ap_max || 10) / 10));
+            copy.reaction_used = false;
             copy.creature_name = copy.creature_name || source.creature_name || (copy.type === 'monster' ? source.name : null);
             copy.db_id = copy.db_id || source.db_id || null;
             copy.conditions = copy.conditions ?? [];
+
+            if (!copy.statblock) {
+                copy.statblock = this.buildDefaultStatblock(copy.name, copy.type, copy.level, copy.hp_max, copy.sp_max, copy.pp_max, copy.init_mod, copy.deca, copy.decp);
+            }
 
             // Match active attack from Character Viewer's localStorage if available
             if (copy.db_id && copy.attacks && copy.attacks.length > 0) {
@@ -2051,6 +2379,10 @@ function combatTrackerApp() {
                     name = `${m.name} ${count + 1}`;
                 }
                 const roll = Math.floor(Math.random() * 20) + 1;
+                const sb = m.statblock ? JSON.parse(JSON.stringify(m.statblock)) : this.buildDefaultStatblock(name, 'monster', m.level, m.hp_max, m.sp_max, m.pp_max, m.init_mod, m.deca, m.decp);
+                if (sb) {
+                    sb.name = name;
+                }
                 const comb = {
                     id: 'comb_' + Date.now() + '_' + Math.floor(Math.random() * 10000) + '_' + i,
                     name: name,
@@ -2068,6 +2400,7 @@ function combatTrackerApp() {
                     ap_max: m.ap_max || (10 + m.level),
                     ap_curr: m.ap_max || (10 + m.level),
                     reactions: m.reactions !== undefined ? m.reactions : Math.max(1, Math.floor((m.ap_max || (10 + m.level)) / 10)),
+                    reaction_used: false,
                     init_mod: m.init_mod || 0,
                     init_roll: roll,
                     init_total: roll + (m.init_mod || 0),
@@ -2083,6 +2416,7 @@ function combatTrackerApp() {
                     notes: m.descriptors ? `Descriptors: ${m.descriptors}` : '',
                     attacks: m.attacks || [],
                     main_attack: m.main_attack || (m.attacks && m.attacks[0]) || null,
+                    statblock: sb,
                 };
                 this.combatants.push(comb);
                 this.logEvent(`Added monster <strong>${name}</strong> (Init ${comb.init_total})`);
@@ -2104,9 +2438,11 @@ function combatTrackerApp() {
                 type: 'melee',
                 summary: (this.customForm.attack_name || 'Strike') + ' +' + (this.customForm.attack_bonus || 0) + ' (' + (this.customForm.attack_damage || '1d6 HP') + ', 5 AP)'
             };
+            const customName = this.customForm.name.trim();
+            const sb = this.buildDefaultStatblock(customName, this.customForm.type, this.customForm.level, this.customForm.hp_max, this.customForm.sp_max, this.customForm.pp_max, this.customForm.init_mod, this.customForm.deca, this.customForm.decp, customAttack.summary);
             const comb = {
                 id: 'comb_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
-                name: this.customForm.name.trim(),
+                name: customName,
                 type: this.customForm.type,
                 level: this.customForm.level,
                 hp_max: this.customForm.hp_max,
@@ -2118,6 +2454,7 @@ function combatTrackerApp() {
                 ap_max: 10 + this.customForm.level,
                 ap_curr: 10 + this.customForm.level,
                 reactions: Math.max(1, Math.floor((10 + this.customForm.level) / 10)),
+                reaction_used: false,
                 init_mod: this.customForm.init_mod,
                 init_roll: roll,
                 init_total: roll + this.customForm.init_mod,
@@ -2132,7 +2469,8 @@ function combatTrackerApp() {
                 conditions: [],
                 notes: '',
                 attacks: [customAttack],
-                main_attack: customAttack
+                main_attack: customAttack,
+                statblock: sb,
             };
             this.combatants.push(comb);
             this.logEvent(`Added custom combatant <strong>${comb.name}</strong>`);
@@ -2142,6 +2480,9 @@ function combatTrackerApp() {
             const dup = JSON.parse(JSON.stringify(c));
             dup.id = 'comb_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
             dup.name = dup.name + ' (Copy)';
+            if (dup.statblock) {
+                dup.statblock.name = dup.name;
+            }
             this.combatants.push(dup);
             this.logEvent(`Duplicated <strong>${c.name}</strong>`);
         },
@@ -2164,10 +2505,19 @@ function combatTrackerApp() {
             if (target < 0 || target >= list.length) return;
             
             // Swap initiative values
-            const currInit = list[idx].init_total;
-            const targetInit = list[target].init_total;
-            list[idx].init_total = targetInit;
-            list[target].init_total = currInit;
+            let currInit = list[idx].init_total;
+            let targetInit = list[target].init_total;
+            if (currInit === targetInit) {
+                if (delta < 0) {
+                    currInit = targetInit + 1;
+                } else {
+                    currInit = targetInit - 1;
+                }
+                list[idx].init_total = currInit;
+            } else {
+                list[idx].init_total = targetInit;
+                list[target].init_total = currInit;
+            }
         },
 
         rollInitiative(c) {
@@ -2206,11 +2556,13 @@ function combatTrackerApp() {
             if (this.activeIndex >= this.sortedCombatants.length) {
                 this.activeIndex = 0;
                 this.round++;
+                this.combatants.forEach(c => { c.reaction_used = false; });
                 this.logEvent(`--- <strong>Started Round ${this.round}</strong> ---`);
             }
             const active = this.activeCombatant;
             if (active) {
                 active.ap_curr = active.ap_max; // auto reset AP on turn start
+                active.reaction_used = false; // auto reset reaction on turn start
                 this.logEvent(`<strong>${active.name}</strong>'s turn (Round ${this.round})`);
             }
             this.scrollToActiveCombatant();
@@ -2368,6 +2720,188 @@ function combatTrackerApp() {
                 alert('Error completing encounter: ' + e.message);
                 this.isEndingEncounter = false;
             }
+        },
+
+        buildDefaultStatblock(name, type, level, hp_max, sp_max, pp_max, init_mod, deca, decp, attackSummary) {
+            level = parseInt(level) || 1;
+            init_mod = parseInt(init_mod) || 0;
+            return {
+                header_line: `${name} - Lvl ${level} ${type.toUpperCase()}`,
+                name: name,
+                gender_str: '',
+                race_str: type.toUpperCase(),
+                class_str: 'Lvl ' + level,
+                alignment: 'TN',
+                size_abbr: 'M',
+                size_name: 'Medium',
+                type_subtype: type,
+                cl: level,
+                xp: 0,
+                init_str: (init_mod >= 0 ? '+' : '') + init_mod,
+                init_mod: init_mod,
+                ap: 10 + level,
+                reactions: Math.max(1, Math.floor((10 + level) / 10)),
+                spd_str: "30'",
+                perc: 10,
+                senses_str: '',
+                lang_str: 'Common',
+                abilities: {
+                    Str: { score: 10, mod: 0, mod_str: '+0' },
+                    Con: { score: 10, mod: 0, mod_str: '+0' },
+                    Dex: { score: 10, mod: 0, mod_str: '+0' },
+                    Int: { score: 10, mod: 0, mod_str: '+0' },
+                    Wis: { score: 10, mod: 0, mod_str: '+0' },
+                    Cha: { score: 10, mod: 0, mod_str: '+0' },
+                },
+                mob_str: '',
+                crit_score: '+20',
+                deca: parseInt(deca) || 11,
+                decp: parseInt(decp) || 11,
+                dr: 0,
+                mr: 0,
+                fort: 10 + level,
+                ref: 10 + level,
+                will: 10 + level,
+                hp: parseInt(hp_max) || 20,
+                sp: parseInt(sp_max) || 0,
+                pp: parseInt(pp_max) || 0,
+                spec_def_str: '',
+                spec_att_str: '',
+                spec_abil_str: '',
+                skills: [],
+                skills_str: '',
+                spells: [],
+                spells_str: '',
+                possessions_str: '',
+                possessions_count: 0,
+                ec: 0,
+                ep: 0,
+                attack_lines: attackSummary ? [attackSummary] : [],
+            };
+        },
+
+        setActiveCombatant(idx) {
+            if (idx >= 0 && idx < this.sortedCombatants.length) {
+                this.activeIndex = idx;
+                const active = this.activeCombatant;
+                if (active) {
+                    this.logEvent(`Set <strong>${active.name}</strong> as active combatant`);
+                }
+            }
+        },
+
+        resetHp(c) {
+            c.hp_curr = c.hp_max;
+            if (Array.isArray(c.conditions)) {
+                c.conditions = c.conditions.filter(cond => cond !== 'Dead' && cond !== 'Dying');
+            }
+            this.logEvent(`<strong>${c.name}</strong> HP reset to full (${c.hp_max}/${c.hp_max})`);
+        },
+
+        resetSp(c) {
+            c.sp_curr = c.sp_max;
+            this.logEvent(`<strong>${c.name}</strong> SP reset to full (${c.sp_max}/${c.sp_max})`);
+        },
+
+        resetPp(c) {
+            c.pp_curr = c.pp_max;
+            this.logEvent(`<strong>${c.name}</strong> PP reset to full (${c.pp_max}/${c.pp_max})`);
+        },
+
+        resetAp(c) {
+            c.ap_curr = c.ap_max;
+            c.reaction_used = false;
+            this.logEvent(`<strong>${c.name}</strong> AP reset to full (${c.ap_max}/${c.ap_max})`);
+        },
+
+        rollOpenEndedD20(bonus = 0, threatMin = 20) {
+            bonus = parseInt(bonus) || 0;
+            threatMin = parseInt(threatMin) || 20;
+
+            let r = Math.floor(Math.random() * 20) + 1;
+            let d20Total = r;
+            let rollType = 'normal';
+            let rollBreakdown = String(r);
+
+            if (r >= threatMin) {
+                rollType = 'explode_up';
+                let rolls = [r];
+                let sum = r;
+                let limit = 20;
+                while (r >= threatMin && --limit > 0) {
+                    r = Math.floor(Math.random() * 20) + 1;
+                    rolls.push(r);
+                    sum += r;
+                }
+                d20Total = sum;
+                rollBreakdown = '[' + rolls.slice(0, -1).join('!+') + '!+' + rolls[rolls.length - 1] + '=' + sum + ']';
+            } else if (r === 1) {
+                rollType = 'explode_down';
+                let onesCount = 1;
+                let limit = 20;
+                while (--limit > 0) {
+                    r = Math.floor(Math.random() * 20) + 1;
+                    if (r === 1) {
+                        onesCount++;
+                    } else {
+                        break;
+                    }
+                }
+                d20Total = r - (onesCount * 20);
+                rollBreakdown = '[' + '1!'.repeat(onesCount) + '->' + r + '-' + (onesCount * 20) + '=' + d20Total + ']';
+            }
+
+            const total = d20Total + bonus;
+            let hitTag = '';
+            if (rollType === 'explode_up') {
+                hitTag = ` <span class="text-amber-600 font-black">[💥 CRIT! ${rollBreakdown}]</span>`;
+            } else if (rollType === 'explode_down') {
+                hitTag = ` <span class="text-rose-600 font-black">[💀 FUMBLE! ${rollBreakdown}]</span>`;
+            } else {
+                hitTag = ` <span class="font-mono text-slate-500 text-[10px]">(d20: ${d20Total})</span>`;
+            }
+
+            return { total, breakdown: rollBreakdown, hitTag, rollType, d20Total };
+        },
+
+        rollAbilityCheck(c, abilityName, mod) {
+            const bonus = parseInt(mod) || 0;
+            const { total, breakdown, hitTag } = this.rollOpenEndedD20(bonus);
+            this.logEvent(`🎲 <strong>${c.name}</strong> rolls <strong>${abilityName} Check</strong>: ${breakdown} + ${bonus} = <strong>${total}</strong>${hitTag}`);
+            this.latestRollResult = {
+                expr: `${c.name} - ${abilityName} Check`,
+                result: `${total} (${breakdown})`
+            };
+        },
+
+        rollSave(c, saveName, bonusVal) {
+            const bonus = parseInt(bonusVal) || 0;
+            const { total, breakdown, hitTag } = this.rollOpenEndedD20(bonus);
+            this.logEvent(`🛡️ <strong>${c.name}</strong> rolls <strong>${saveName} Save</strong>: ${breakdown} + ${bonus} = <strong>${total}</strong>${hitTag}`);
+            this.latestRollResult = {
+                expr: `${c.name} - ${saveName} Save`,
+                result: `${total} (${breakdown})`
+            };
+        },
+
+        rollPerception(c) {
+            const bonus = parseInt(c.statblock?.perc ?? c.wis_mod ?? 0) || 0;
+            const { total, breakdown, hitTag } = this.rollOpenEndedD20(bonus);
+            this.logEvent(`👁️ <strong>${c.name}</strong> rolls <strong>Perception Check</strong>: ${breakdown} + ${bonus} = <strong>${total}</strong>${hitTag}`);
+            this.latestRollResult = {
+                expr: `${c.name} - Perception`,
+                result: `${total} (${breakdown})`
+            };
+        },
+
+        rollSkillCheck(c, skillName, level) {
+            const bonus = parseInt(level) || 0;
+            const { total, breakdown, hitTag } = this.rollOpenEndedD20(bonus);
+            this.logEvent(`📜 <strong>${c.name}</strong> rolls <strong>${skillName} Check</strong>: ${breakdown} + ${bonus} = <strong>${total}</strong>${hitTag}`);
+            this.latestRollResult = {
+                expr: `${c.name} - ${skillName}`,
+                result: `${total} (${breakdown})`
+            };
         },
 
         applyHpDelta(c, delta) {

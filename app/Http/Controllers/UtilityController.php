@@ -3585,10 +3585,7 @@ class UtilityController extends Controller
         global $_APP;
 
         $rawCreatureTypes = DB::table('ref_creaturetypes')->orderBy('Name')->get();
-        $creatureTypesMap = $rawCreatureTypes->keyBy('ID');
-        $creatureSubtypesMap = DB::table('ref_creaturesubtypes')->get()->keyBy('ID');
         $rawSizes = DB::table('ref_sizes')->orderBy('ID')->get();
-        $sizesMap = $rawSizes->keyBy('ID');
 
         $formatCombatant = function ($entity, $type = 'pc') {
             $calcState = \App\Services\Entity\EntityEngine::calculate($entity);
@@ -3796,112 +3793,7 @@ class UtilityController extends Controller
                 'notes' => '',
                 'attacks' => $attackList,
                 'main_attack' => $mainAttack,
-            ];
-        };
-
-        $parser = new \cExpressionParser();
-
-        $formatMonster = function ($entity) use ($creatureTypesMap, $creatureSubtypesMap, $sizesMap) {
-            $subtypeId = (int)($entity->CreatureType ?? 0);
-            $subtypeObj = $creatureSubtypesMap[$subtypeId] ?? null;
-            $mainTypeId = $subtypeObj ? (int)$subtypeObj->GroupID : 0;
-            $mainTypeObj = $creatureTypesMap[$mainTypeId] ?? null;
-            $mainTypeName = $mainTypeObj ? $mainTypeObj->Name : 'Creature';
-            $subtypeName = $subtypeObj ? $subtypeObj->Name : '';
-            $sizeObj = $sizesMap[$entity->SizeClass ?? 0] ?? null;
-
-            \App\Services\Entity\EntityEngine::loadReferenceTables();
-            $parsedConfigs = \App\Services\Entity\EntityEngine::parseCreatureStatBlockConfigs($entity->ID);
-            if (!empty($parsedConfigs)) {
-                $calc = $parsedConfigs[0]['calc_state'];
-                $rawEntity = $parsedConfigs[0]['entity_data'];
-            } else {
-                $rawEntity = \App\Services\Entity\EntityEngine::buildEntityFromConfigString($entity->ID, 'Adult { }');
-                $calc = \App\Services\Entity\EntityEngine::calculate($rawEntity);
-            }
-
-            $attacks = [];
-            foreach ($calc['attacks']['available_elements'] ?? [] as $atk) {
-                $attacks[] = [
-                    'id' => $atk['id'],
-                    'name' => $atk['name'],
-                    'bonus' => (int)($atk['attack_bonus'] ?? 0),
-                    'damage' => (string)($atk['damage'] ?? '1d3'),
-                    'ap' => (int)($atk['ap'] ?? 5),
-                    'crit' => (string)($atk['crit'] ?? '20/x2'),
-                    'reach' => (string)($atk['reach'] ?? '0-1 sq'),
-                    'range' => $atk['range'] ?? null,
-                    'type' => $atk['type'] ?? 'melee',
-                    'is_equipped' => true,
-                    'slot' => $atk['type'] ?? 'main_hand',
-                    'summary' => ($atk['name'] ?? 'Attack') . ' ' . (($atk['attack_bonus'] ?? 0) >= 0 ? '+' : '') . ($atk['attack_bonus'] ?? 0) . ' (' . ($atk['damage'] ?? '–') . ', ' . ($atk['ap'] ?? 5) . ' AP)',
-                ];
-            }
-
-            if (empty($attacks)) {
-                $attacks[] = [
-                    'id' => 'unarmed',
-                    'name' => 'Unarmed Strike',
-                    'bonus' => (int)($calc['ability_modifiers']['Str'] ?? 0),
-                    'damage' => '1d3 B SP',
-                    'ap' => 5,
-                    'crit' => '20/x2',
-                    'reach' => '0-1 sq',
-                    'range' => null,
-                    'type' => 'unarmed',
-                    'is_equipped' => true,
-                    'slot' => 'unarmed',
-                    'summary' => 'Unarmed Strike +0 (1d3 B SP, 5 AP)',
-                ];
-            }
-
-            $mainAttack = $attacks[0];
-            $h = $calc['heritage'] ?? [];
-            $d = $calc['defenses'] ?? [];
-            $hl = $calc['health'] ?? [];
-            $act = $calc['actions'] ?? [];
-            $sp = $calc['speeds'] ?? [];
-
-            $speedDisplay = (string)($sp['ground'] ?? 6) . ' sq';
-            if (!empty($sp['swim'])) $speedDisplay .= ', Swim ' . $sp['swim'] . ' sq';
-            if (!empty($sp['fly'])) $speedDisplay .= ', Fly ' . $sp['fly'] . ' sq';
-
-            return [
-                'id' => $entity->ID,
-                'name' => $entity->Name,
-                'type' => 'monster',
-                'level' => max(1, (int)($h['total_level'] ?? 1)),
-                'cl' => (int)($h['challenge_level'] ?? 0),
-                'type_id' => $mainTypeId,
-                'type_name' => $mainTypeName,
-                'subtype_id' => $subtypeId,
-                'subtype_name' => $subtypeName,
-                'size_id' => (int)($entity->SizeClass ?? 0),
-                'size_name' => $sizeObj ? ($sizeObj->Description ?? 'Medium') : 'Medium',
-                'size_abbr' => $sizeObj ? ($sizeObj->Abbreviation ?? 'M') : 'M',
-                'descriptors' => $entity->Descriptors ?? '',
-                'hp_max' => (int)($hl['hp']['total'] ?? 20),
-                'hp_curr' => (int)($hl['hp']['total'] ?? 20),
-                'sp_max' => (int)($hl['sp']['total'] ?? 0),
-                'sp_curr' => (int)($hl['sp']['total'] ?? 0),
-                'pp_max' => (int)($hl['pp']['total'] ?? 0),
-                'pp_curr' => (int)($hl['pp']['total'] ?? 0),
-                'ap_max' => (int)($act['ap'] ?? 20),
-                'ap_curr' => (int)($act['ap'] ?? 20),
-                'reactions' => (int)($act['reactions'] ?? max(1, (int)floor(($act['ap'] ?? 20) / 10))),
-                'init_mod' => (int)($d['init_mod'] ?? 0),
-                'deca' => (int)($d['dec_active'] ?? 10),
-                'decp' => (int)($d['dec_passive'] ?? 10),
-                'dr' => (int)($d['dr'] ?? 0),
-                'mr' => (int)($d['mr'] ?? 0),
-                'fort' => (int)($d['fort'] ?? 0),
-                'ref' => (int)($d['ref'] ?? 0),
-                'will' => (int)($d['will'] ?? 0),
-                'speed' => $speedDisplay,
-                'conditions' => [],
-                'notes' => !empty($entity->Descriptors) ? "Descriptors: {$entity->Descriptors}" : '',
-                'attacks' => $attacks,
-                'main_attack' => $mainAttack,
+                'statblock' => \App\Services\Entity\EntityEngine::extractStatBlockData($calcState, (array)$entity),
             ];
         };
 
@@ -3920,12 +3812,7 @@ class UtilityController extends Controller
         $characters = $rawPCs->map(fn($c) => $formatCombatant($c, 'pc'))->values()->all();
         $npcs = $rawNPCs->map(fn($c) => $formatCombatant($c, 'npc'))->values()->all();
 
-        $rawCreatures = DB::table('ref_creatures')
-            ->select('ID', 'Name', 'StatBlockConfigs', 'BaseRL', 'CLModifier', 'CreatureType', 'SizeClass', 'GroundSpeed', 'FlySpeed', 'StrAdj', 'ConAdj', 'DexAdj', 'IntAdj', 'WisAdj', 'ChaAdj', 'DR', 'MR', 'Descriptors')
-            ->orderBy('Name')
-            ->get();
-
-        $creatures = $rawCreatures->map(fn($cr) => $formatMonster($cr))->values()->all();
+        $creatures = \App\Services\RulesCacheService::getCombatTrackerCreatures();
 
         $conditionsList = [
             ['name' => 'Blinded', 'desc' => 'Cannot see. -4 DeCa, fails sight-based perception checks, attackers gain +4 on attack rolls against target.'],
