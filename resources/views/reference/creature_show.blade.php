@@ -1,7 +1,16 @@
 @extends('layouts.app', ['title' => $creature->Name . ' - Creature Stat Block'])
 
 @php
-    $resolvedImg = \cCreature::GetResolvedImageUrl($creature->ExternalImageURL ?? null, $creature->ID, $creature->Name);
+    $isTemplate = !empty($creature->IsTemplate);
+    $resolvedImg = $isTemplate
+        ? \cTemplate::GetResolvedImageUrl($creature->ExternalImageURL ?? null, (int)$creature->ID, (string)($creature->Name ?? ''))
+        : \cCreature::GetResolvedImageUrl($creature->ExternalImageURL ?? null, (int)$creature->ID, (string)($creature->Name ?? ''));
+    if ($resolvedImg && !Str::startsWith($resolvedImg, ['http://', 'https://'])) {
+        $diskImgPath = public_path(ltrim($resolvedImg, '/'));
+        if (file_exists($diskImgPath)) {
+            $resolvedImg .= '?v=' . filemtime($diskImgPath);
+        }
+    }
 @endphp
 
 @section('content')
@@ -14,7 +23,7 @@
                     <span class="text-sm font-semibold text-slate-500 italic">({{ $creature->NameInformal }})</span>
                 @endif
                 <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-300 font-mono">
-                    RL {{ $creature->BaseRL ?? 0 }} / CL {{ ($creature->CLModifier ?? 0) >= 0 ? '+' : '' }}{{ $creature->CLModifier ?? 0 }}
+                    RL {{ $isTemplate && ($creature->BaseRL ?? 0) >= 0 ? '+' : '' }}{{ $creature->BaseRL ?? 0 }} / CL {{ ($creature->CLModifier ?? 0) >= 0 ? '+' : '' }}{{ $creature->CLModifier ?? 0 }}
                 </span>
                 @if(!empty($creature->Descriptors))
                     <span class="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded border border-indigo-200 font-mono">
@@ -23,7 +32,7 @@
                 @endif
                 @if(isset($creature->PCSuitability) && $creature->PCSuitability >= 3)
                     <span class="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-200 font-medium">
-                        Playable Race
+                        {{ $isTemplate ? 'Playable Template' : 'Playable Race' }}
                     </span>
                 @endif
             </div>
@@ -47,20 +56,20 @@
 
     @if($resolvedImg)
         <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex justify-center">
-            <img src="{{ Str::startsWith($resolvedImg, ['http', '/']) ? $resolvedImg : '/' . $resolvedImg }}" alt="{{ $creature->Name }}" class="max-h-80 w-auto object-contain rounded-lg border border-slate-200 shadow-sm" onerror="this.parentElement.style.display='none';" />
+            <img src="{{ Str::startsWith($resolvedImg, ['http', '/']) ? $resolvedImg : '/' . $resolvedImg }}" alt="{{ $creature->Name }}" style="max-height: 500px; max-width: 100%;" class="w-auto object-contain rounded-lg border border-slate-200 shadow-sm" onerror="this.parentElement.style.display='none';" />
         </div>
     @endif
 
     <!-- Base Species Profile Card -->
     <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-6">
         <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-            <h2 class="text-lg font-bold text-slate-900">Base Species Characteristics</h2>
+            <h2 class="text-lg font-bold text-slate-900">{{ $isTemplate ? 'Template Characteristics' : 'Base Species Characteristics' }}</h2>
             <span class="text-xs text-slate-500 font-mono">{{ $sizeDesc }} (Class {{ $creature->SizeClass ?? 0 }})</span>
         </div>
 
         <!-- Ability Modifiers / Scores -->
         <div>
-            <h3 class="text-xs uppercase font-bold text-slate-400 tracking-wider mb-2">Racial Ability Adjustments</h3>
+            <h3 class="text-xs uppercase font-bold text-slate-400 tracking-wider mb-2">{{ $isTemplate ? 'Template Ability Adjustments' : 'Racial Ability Adjustments' }}</h3>
             <div class="grid grid-cols-6 gap-2 text-center text-xs">
                 <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">STR</div><div class="font-bold text-sm text-slate-900">{{ $creature->StrAdj !== null ? (($creature->StrAdj >= 0 ? '+' : '') . $creature->StrAdj) : '–' }}</div></div>
                 <div class="p-2 bg-slate-50 rounded border border-slate-200"><div class="text-slate-500 font-medium">CON</div><div class="font-bold text-sm text-slate-900">{{ $creature->ConAdj !== null ? (($creature->ConAdj >= 0 ? '+' : '') . $creature->ConAdj) : '–' }}</div></div>

@@ -209,53 +209,148 @@ class ReferenceController extends Controller
     {
         $this->ensureRulesLoaded();
 
-        $query = DB::table('ref_creatures')
+        $creatureQuery = DB::table('ref_creatures')
             ->leftJoin('ref_creaturesubtypes', 'ref_creatures.CreatureType', '=', 'ref_creaturesubtypes.ID')
             ->leftJoin('ref_creaturetypes', 'ref_creaturesubtypes.GroupID', '=', 'ref_creaturetypes.ID')
             ->leftJoin('ref_sizes', 'ref_creatures.SizeClass', '=', 'ref_sizes.ID')
-            ->select(
-                'ref_creatures.*',
-                'ref_creaturetypes.Name as TypeName',
-                'ref_creaturesubtypes.Name as SubtypeName',
-                'ref_sizes.Description as SizeDesc',
-                'ref_sizes.Abbreviation as SizeAbbr'
-            );
+            ->selectRaw("
+                0 as IsTemplate,
+                ref_creatures.ID as ID,
+                ref_creatures.Name as Name,
+                ref_creatures.NameInformal as NameInformal,
+                ref_creaturesubtypes.GroupID as GroupID,
+                ref_creaturetypes.Name as TypeName,
+                ref_creaturesubtypes.Name as SubtypeName,
+                ref_creatures.SizeClass as SizeClass,
+                ref_sizes.Description as SizeDesc,
+                ref_sizes.Abbreviation as SizeAbbr,
+                ref_creatures.BaseRL as BaseRL,
+                ref_creatures.CLModifier as CLModifier,
+                ref_creatures.StrAdj as StrAdj,
+                ref_creatures.ConAdj as ConAdj,
+                ref_creatures.DexAdj as DexAdj,
+                ref_creatures.IntAdj as IntAdj,
+                ref_creatures.WisAdj as WisAdj,
+                ref_creatures.ChaAdj as ChaAdj,
+                ref_creatures.GroundSpeed as GroundSpeed,
+                ref_creatures.SwimSpeed as SwimSpeed,
+                ref_creatures.FlySpeed as FlySpeed,
+                ref_creatures.DR as DR,
+                ref_creatures.MR as MR,
+                ref_creatures.Environment as Environment,
+                ref_creatures.Frequency as Frequency,
+                ref_creatures.Appearance as Appearance,
+                ref_creatures.Personality as Personality
+            ");
+
+        $templateQuery = DB::table('ref_templates')
+            ->where('ref_templates.ID', '!=', 33)
+            ->where('ref_templates.Name', '!=', 'None')
+            ->selectRaw("
+                1 as IsTemplate,
+                ref_templates.ID as ID,
+                ref_templates.Name as Name,
+                ref_templates.NameInformal as NameInformal,
+                99 as GroupID,
+                'Templates' as TypeName,
+                ref_templates.Descriptors as SubtypeName,
+                COALESCE(ref_templates.SizeAdj, 0) as SizeClass,
+                NULL as SizeDesc,
+                NULL as SizeAbbr,
+                COALESCE(ref_templates.RLModifier, 0) as BaseRL,
+                COALESCE(ref_templates.CLModifier, 0) as CLModifier,
+                ref_templates.StrAdj as StrAdj,
+                ref_templates.ConAdj as ConAdj,
+                ref_templates.DexAdj as DexAdj,
+                ref_templates.IntAdj as IntAdj,
+                ref_templates.WisAdj as WisAdj,
+                ref_templates.ChaAdj as ChaAdj,
+                ref_templates.GroundSpeed as GroundSpeed,
+                ref_templates.SwimSpeed as SwimSpeed,
+                ref_templates.FlySpeed as FlySpeed,
+                ref_templates.DR as DR,
+                ref_templates.MR as MR,
+                'Same as base creature' as Environment,
+                ref_templates.Frequency as Frequency,
+                ref_templates.Appearance as Appearance,
+                ref_templates.Personality as Personality
+            ");
+
+        $query = DB::query()->fromSub($creatureQuery->unionAll($templateQuery), 'bestiary');
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
-                $q->where('ref_creatures.Name', 'like', "%{$search}%")
-                  ->orWhere('ref_creatures.NameInformal', 'like', "%{$search}%")
-                  ->orWhere('ref_creatures.Environment', 'like', "%{$search}%")
-                  ->orWhere('ref_creatures.Appearance', 'like', "%{$search}%")
-                  ->orWhere('ref_creatures.Personality', 'like', "%{$search}%");
+                $q->where('Name', 'like', "%{$search}%")
+                  ->orWhere('NameInformal', 'like', "%{$search}%")
+                  ->orWhere('SubtypeName', 'like', "%{$search}%")
+                  ->orWhere('Environment', 'like', "%{$search}%")
+                  ->orWhere('Appearance', 'like', "%{$search}%")
+                  ->orWhere('Personality', 'like', "%{$search}%");
             });
         }
 
         if ($type = $request->input('type')) {
-            $query->where('ref_creaturesubtypes.GroupID', $type);
+            if ($type === 'templates' || (is_numeric($type) && (int)$type === 99)) {
+                $query->where('IsTemplate', 1);
+            } else {
+                $query->where('IsTemplate', 0)->where('GroupID', (int)$type);
+            }
         }
 
         $sort = $request->input('sort', 'Name');
         $direction = $request->input('direction', 'asc') === 'desc' ? 'desc' : 'asc';
-        
+
         $sortMap = [
-            'Name' => 'ref_creatures.Name',
-            'Type' => 'ref_creaturetypes.Name',
-            'TypeName' => 'ref_creaturetypes.Name',
-            'Subtype' => 'ref_creaturesubtypes.Name',
-            'Size' => 'ref_creatures.SizeClass',
-            'SizeClass' => 'ref_creatures.SizeClass',
-            'BaseRL' => 'ref_creatures.BaseRL',
-            'GroundSpeed' => 'ref_creatures.GroundSpeed',
-            'DR' => 'ref_creatures.DR',
-            'Environment' => 'ref_creatures.Environment',
-            'Frequency' => 'ref_creatures.Frequency',
+            'Name' => 'Name',
+            'Type' => 'TypeName',
+            'TypeName' => 'TypeName',
+            'Subtype' => 'SubtypeName',
+            'Size' => 'SizeClass',
+            'SizeClass' => 'SizeClass',
+            'BaseRL' => 'BaseRL',
+            'GroundSpeed' => 'GroundSpeed',
+            'DR' => 'DR',
+            'Environment' => 'Environment',
+            'Frequency' => 'Frequency',
         ];
-        $orderCol = $sortMap[$sort] ?? 'ref_creatures.Name';
+        $orderCol = $sortMap[$sort] ?? 'Name';
         $query->orderBy($orderCol, $direction);
 
         $creatures = $query->paginate(25)->withQueryString();
-        $types = \Illuminate\Support\Facades\Cache::rememberForever('cache.ref_creaturetypes', fn() => DB::table('ref_creaturetypes')->get());
+
+        global $_APP;
+        $creatures->getCollection()->transform(function ($item) use ($_APP) {
+            if (!empty($item->IsTemplate)) {
+                $tplRow = $_APP['templates'][$item->ID] ?? null;
+                if ($tplRow) {
+                    if (isset($tplRow['RequiredType']) && isset($_APP['creaturesubtypes'][$tplRow['RequiredType']])) {
+                        $oldType = $_APP['creaturesubtypes'][$tplRow['RequiredType']]['Name'];
+                    } elseif (isset($tplRow['RequiredGroup']) && isset($_APP['creaturetypes'][$tplRow['RequiredGroup']])) {
+                        $oldType = $_APP['creaturetypes'][$tplRow['RequiredGroup']]['Name'];
+                    } else {
+                        $oldType = 'Any';
+                    }
+
+                    if (isset($tplRow['AdjustedType']) && isset($_APP['creaturesubtypes'][$tplRow['AdjustedType']])) {
+                        $newType = $_APP['creaturesubtypes'][$tplRow['AdjustedType']]['Name'];
+                    } elseif (isset($tplRow['AdjustedGroup']) && isset($_APP['creaturetypes'][$tplRow['AdjustedGroup']])) {
+                        $newType = $_APP['creaturetypes'][$tplRow['AdjustedGroup']]['Name'];
+                    } else {
+                        $newType = 'Same as base race';
+                    }
+
+                    $item->SubtypeName = $oldType . ' → ' . $newType;
+                }
+                $szAdj = (int)($item->SizeClass ?? 0);
+                $item->SizeDesc = $szAdj !== 0 ? ('Size ' . ($szAdj > 0 ? '+' : '') . $szAdj) : 'Same as base';
+                $item->SizeAbbr = null;
+            }
+            return $item;
+        });
+
+        $baseTypes = \Illuminate\Support\Facades\Cache::rememberForever('cache.ref_creaturetypes', fn() => DB::table('ref_creaturetypes')->get());
+        $types = collect($baseTypes)->map(fn($t) => clone $t);
+        $types->push((object)['ID' => 'templates', 'Name' => 'Templates']);
 
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
@@ -278,11 +373,74 @@ class ReferenceController extends Controller
             ->select('ref_creatures.*', 'ref_creaturetypes.Name as TypeName', 'ref_creaturesubtypes.Name as SubtypeName')
             ->where('ref_creatures.Name', $name)
             ->first();
-        if (!$creature) {
-            abort(404, 'Creature not found');
-        }
 
         global $_APP;
+
+        if (!$creature) {
+            $template = DB::table('ref_templates')
+                ->where('ref_templates.ID', '!=', 33)
+                ->where('ref_templates.Name', $name)
+                ->first();
+
+            if (!$template) {
+                abort(404, 'Creature or template not found');
+            }
+
+            if (isset($template->RequiredType) && isset($_APP['creaturesubtypes'][$template->RequiredType])) {
+                $oldType = $_APP['creaturesubtypes'][$template->RequiredType]['Name'];
+            } elseif (isset($template->RequiredGroup) && isset($_APP['creaturetypes'][$template->RequiredGroup])) {
+                $oldType = $_APP['creaturetypes'][$template->RequiredGroup]['Name'];
+            } else {
+                $oldType = 'Any';
+            }
+
+            if (isset($template->AdjustedType) && isset($_APP['creaturesubtypes'][$template->AdjustedType])) {
+                $newType = $_APP['creaturesubtypes'][$template->AdjustedType]['Name'];
+            } elseif (isset($template->AdjustedGroup) && isset($_APP['creaturetypes'][$template->AdjustedGroup])) {
+                $newType = $_APP['creaturetypes'][$template->AdjustedGroup]['Name'];
+            } else {
+                $newType = 'Same as base race';
+            }
+
+            $creature = $template;
+            $creature->IsTemplate = true;
+            $creature->TypeName = 'Template';
+            $creature->SubtypeName = $oldType . ' → ' . $newType;
+            $creature->BaseRL = $template->RLModifier ?? 0;
+            $creature->SizeClass = $template->SizeAdj ?? 0;
+            $creature->Environment = 'Same as base creature';
+
+            $szAdj = (int)($template->SizeAdj ?? 0);
+            $sizeDesc = $szAdj !== 0 ? ('Size ' . ($szAdj > 0 ? '+' : '') . $szAdj) : 'Same as base race';
+            $sizeAbbr = $szAdj !== 0 ? (($szAdj > 0 ? '+' : '') . $szAdj) : '0';
+            $bodyDesc = 'Same as base race';
+            $culture = null;
+            $cultureClasses = [];
+
+            $statBlocks = [];
+            $statBlocksHtml = '';
+            try {
+                \App\Services\Entity\EntityEngine::loadReferenceTables();
+                $sampleClass = ((int)$template->ID === 24) ? 'Class=Mage; Lvl=11' : 'Class=Fighter; Lvl=1';
+                $cfg = "Sample {$template->Name} (Human) { Str=14; Con=12; Dex=12; Int=12; Wis=10; Cha=10; {$sampleClass}; Template={$template->ID} }";
+                $entityData = \App\Services\Entity\EntityEngine::buildEntityFromConfigString(1, $cfg);
+                $calcState = \App\Services\Entity\EntityEngine::calculate($entityData);
+                $classicHtml = \App\Services\Entity\EntityEngine::renderClassicStatBlock($calcState, $entityData);
+                $statBlocks[] = [
+                    'name' => $entityData['Name'] ?? 'Sample Character',
+                    'config_string' => $cfg,
+                    'entity_data' => $entityData,
+                    'calc_state' => $calcState,
+                    'classic_html' => $classicHtml,
+                ];
+                $statBlocksHtml = $classicHtml;
+            } catch (\Throwable $e) {
+                $statBlocks = [];
+                $statBlocksHtml = '';
+            }
+
+            return view('reference.creature_show', compact('creature', 'statBlocks', 'statBlocksHtml', 'sizeDesc', 'sizeAbbr', 'bodyDesc', 'culture', 'cultureClasses'));
+        }
 
         $sizeDesc = $_APP['sizecats'][$creature->SizeClass]['Description'] ?? ('Size ' . ($creature->SizeClass ?? 0));
         $sizeAbbr = $_APP['sizecats'][$creature->SizeClass]['Abbreviation'] ?? '';

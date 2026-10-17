@@ -38,7 +38,11 @@
                         @endif
                     </td>
                     <td class="px-3 py-3 text-center font-bold text-stone-800 whitespace-nowrap text-xs">
-                        RL {{ $creature->BaseRL ?? 0 }}
+                        @if(!empty($creature->IsTemplate))
+                            RL {{ ($creature->BaseRL ?? 0) >= 0 ? '+' : '' }}{{ $creature->BaseRL ?? 0 }}
+                        @else
+                            RL {{ $creature->BaseRL ?? 0 }}
+                        @endif
                         @if(($creature->CLModifier ?? 0) != 0)
                             <span class="text-stone-500 font-normal">({{ ($creature->CLModifier > 0 ? '+' : '') . $creature->CLModifier }})</span>
                         @endif
@@ -65,7 +69,9 @@
                             if (!empty($creature->GroundSpeed)) $spdParts[] = 'G: ' . $creature->GroundSpeed;
                             if (!empty($creature->SwimSpeed)) $spdParts[] = 'S: ' . $creature->SwimSpeed;
                             if (!empty($creature->FlySpeed)) $spdParts[] = 'F: ' . $creature->FlySpeed;
-                            $spdText = count($spdParts) > 0 ? implode(' ', $spdParts) . ' sq' : ($creature->GroundSpeed ?? 0) . ' sq';
+                            $spdText = count($spdParts) > 0
+                                ? implode(' ', $spdParts) . ' sq'
+                                : (!empty($creature->IsTemplate) ? 'Same as base' : ($creature->GroundSpeed ?? 0) . ' sq');
                         @endphp
                         <div>{{ $spdText }}</div>
                         <div class="text-[11px] text-stone-500 font-sans font-medium">DR {{ $creature->DR ?: 0 }} / MR {{ $creature->MR ?: 0 }}</div>

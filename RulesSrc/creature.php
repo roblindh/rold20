@@ -233,8 +233,8 @@ class cCreature {
     public static function GetLocalImagePath(int $id, string $name = ''): ?string {
         $extensions = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
         $baseDirs = [
-            dirname(__DIR__) . '/images/creatures/',
             dirname(__DIR__) . '/public/images/creatures/',
+            dirname(__DIR__) . '/images/creatures/',
         ];
         
         foreach ($baseDirs as $baseDir) {
@@ -375,6 +375,38 @@ class cTemplate {
             $abilstr[] = "Cha -";
         }
         return implode(", ", $abilstr);
+    }
+
+    public static function GetLocalImagePath(int $id, string $name = ''): ?string {
+        $extensions = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+        $baseDirs = [
+            dirname(__DIR__) . '/images/templates/' => 'images/templates/',
+            dirname(__DIR__) . '/public/images/templates/' => 'images/templates/',
+            dirname(__DIR__) . '/images/creatures/' => 'images/creatures/',
+            dirname(__DIR__) . '/public/images/creatures/' => 'images/creatures/',
+        ];
+
+        foreach ($baseDirs as $baseDir => $relPrefix) {
+            if (!is_dir($baseDir)) continue;
+            $prefixes = str_contains($relPrefix, 'templates') ? ["{$id}", "template_{$id}"] : ["template_{$id}"];
+            foreach ($prefixes as $prefix) {
+                foreach ($extensions as $ext) {
+                    if (file_exists($baseDir . $prefix . '.' . $ext)) {
+                        return $relPrefix . $prefix . '.' . $ext;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static function GetResolvedImageUrl(?string $rawUrl, int $id = 0, string $name = ''): ?string {
+        $localPath = self::GetLocalImagePath($id, $name);
+        if ($localPath !== null) {
+            return $localPath;
+        }
+        return !empty($rawUrl) ? trim($rawUrl) : null;
     }
 
 }

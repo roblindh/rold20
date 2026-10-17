@@ -11,13 +11,13 @@ function render_creature_image_script() {
         if (!span) return;
         var imgUrl = (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('/')) ? src : '/' + src;
         var html = '<div style="margin-top: 5px;">';
-        html += '<img src="' + imgUrl + '" alt="Creature image" style="max-width: 350px; max-height: 350px; object-fit: contain; border: 1px solid #ccc; border-radius: 4px; display: block; margin-bottom: 5px;" ';
+        html += '<img src="' + imgUrl + '" alt="Creature image" style="max-width: 500px; max-height: 500px; object-fit: contain; border: 1px solid #ccc; border-radius: 4px; display: block; margin-bottom: 5px;" ';
         html += 'onerror="this.onerror=null; this.style.display=\'none\'; document.getElementById(\'crerr' + id + '\').style.display=\'block\';"/>';
         html += '<div id="crerr' + id + '" style="display: none; color: #c00; font-size: 0.9em; margin-bottom: 5px; background: #fff0f0; border: 1px solid #ffcccc; padding: 4px 8px; border-radius: 4px;">';
         html += '⚠️ <strong>Image unavailable</strong> (remote link unreachable or blocked).';
         html += '<br/>To supply a local image, place <code>' + id + '.jpg</code> (or <code>.png</code>) in <code>images/creatures/</code>.';
         html += '</div>';
-        html += '<button type="button" onclick="hideCreatureImage(' + id + ', \'' + src.replace(/'/g, "\\'") + '\', ' + isLocal + ')">Hide</button>';
+        html += '<button type="button" class="btn-rol-secondary text-xs py-1 px-3 cursor-pointer" onclick="hideCreatureImage(\'' + id + '\', \'' + src.replace(/'/g, "\\'") + '\', ' + isLocal + ')">Hide Image</button>';
         html += '</div>';
         span.innerHTML = html;
     }
@@ -25,7 +25,7 @@ function render_creature_image_script() {
     function hideCreatureImage(id, src, isLocal) {
         var span = document.getElementById('crimg' + id);
         if (!span) return;
-        span.innerHTML = '<button type="button" onclick="showCreatureImage(' + id + ', \'' + src.replace(/'/g, "\\'") + '\', ' + isLocal + ')">Show</button>';
+        span.innerHTML = '<button type="button" class="btn-rol-secondary text-xs py-1 px-3 cursor-pointer" onclick="showCreatureImage(\'' + id + '\', \'' + src.replace(/'/g, "\\'") + '\', ' + isLocal + ')">Show Image</button>';
     }
     </script>
     <?php
@@ -226,6 +226,12 @@ function show_creatureinfo($id, $fullinfo) {
     $resolvedUrl = cCreature::GetResolvedImageUrl($rawUrl, (int)$row['ID'], $row['Name'] ?? '');
     $localImage = cCreature::GetLocalImagePath((int)$row['ID'], $row['Name'] ?? '');
     $isLocal = ($localImage !== null);
+    if ($isLocal && $resolvedUrl) {
+        $diskPath = dirname(__DIR__) . '/public/' . ltrim($resolvedUrl, '/');
+        if (file_exists($diskPath)) {
+            $resolvedUrl .= '?v=' . filemtime($diskPath);
+        }
+    }
 
     if (!empty($resolvedUrl)) {
         echo '<tr>';
@@ -601,6 +607,33 @@ function show_templateinfo($id, $fullinfo) {
         echo '</tr>';
         echo '<tr>';
         echo '<td class="cvsml text-stone-700" colspan="12">' . format_text($row['Appearance']) . '</td>';
+        echo '</tr>';
+    }
+
+    // Row 3b: Image
+    $tplRawUrl = $row['ExternalImageURL'] ?? null;
+    $tplResolvedUrl = cTemplate::GetResolvedImageUrl($tplRawUrl, (int)$row['ID'], $row['Name'] ?? '');
+    $tplLocalImage = cTemplate::GetLocalImagePath((int)$row['ID'], $row['Name'] ?? '');
+    $tplIsLocal = ($tplLocalImage !== null);
+    if ($tplIsLocal && $tplResolvedUrl) {
+        $diskPath = dirname(__DIR__) . '/public/' . ltrim($tplResolvedUrl, '/');
+        if (file_exists($diskPath)) {
+            $tplResolvedUrl .= '?v=' . filemtime($diskPath);
+        }
+    }
+
+    if (!empty($tplResolvedUrl)) {
+        render_creature_image_script();
+        $tplDomId = "'tpl_" . $row['ID'] . "'";
+        echo '<tr>';
+        echo '<td class="cvlabel" colspan="12">Image</td>';
+        echo '</tr>';
+        echo '<tr>';
+        echo '<td class="cvsml" colspan="12">';
+        echo '<span id="crimgtpl_' . $row['ID'] . '">';
+        echo '<button type="button" class="btn-rol-secondary text-xs py-1 px-3 cursor-pointer" onclick="showCreatureImage(' . $tplDomId . ', \'' . addslashes(htmlspecialchars($tplResolvedUrl, ENT_QUOTES)) . '\', ' . ($tplIsLocal ? 'true' : 'false') . ')">Show Image</button>';
+        echo '</span>';
+        echo '</td>';
         echo '</tr>';
     }
 

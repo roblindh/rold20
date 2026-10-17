@@ -212,6 +212,18 @@
 </div>
 <div class="optionalrule">
     <p>
+        <em id="ClasslessSociety">Classless Characters</em> (optional rule):
+        For DMs who want to provide players with maximum freedom and are willing to risk overpowered skill combinations, the concept of classes can be omitted entirely. When a character gains a level, instead of choosing a class, do the following:
+    </p>
+    <ul>
+        <li>Split 20 points between HP, SP, and PP increases, with a minimum of 2 points in each.</li>
+        <li>Assign 18 skill points into skills, adding either 0.5 or 1 point per skill.</li>
+        <li>Add 5 influence points.</li>
+        <li>Perform other leveling-up steps (increase TL, AP, Improvement Points, and Rep; learn new spells/powers, if applicable).</li>
+    </ul>
+</div>
+<div class="optionalrule">
+    <p>
         <em id="SkillRetraining">Skill Retraining</em> (optional rule):
         Upon gaining a level, a character can reallocate a limited pool of previously earned skill points (determined by the DM) to represent evolving focus:
     </p>

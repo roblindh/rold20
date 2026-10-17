@@ -40,10 +40,10 @@
             <h1 class="text-2xl font-bold flex items-center gap-2">
                 <span>🐲</span> Bestiary &amp; Races - Search
             </h1>
-            <p class="text-stone-700 text-sm mt-1">Complete reference of monsters, beasts, aberrations, and playable character races.</p>
+            <p class="text-stone-700 text-sm mt-1">Complete reference of monsters, beasts, aberrations, playable character races, and creature templates.</p>
         </div>
         <div class="flex items-center gap-2 text-xs">
-            <span class="bg-amber-900/10 text-amber-950 px-3 py-1 rounded-full font-bold border border-amber-800/30">{{ $creatures->total() }} Total Creatures</span>
+            <span class="bg-amber-900/10 text-amber-950 px-3 py-1 rounded-full font-bold border border-amber-800/30">{{ $creatures->total() }} Total Creatures &amp; Templates</span>
         </div>
     </div>
 

@@ -237,13 +237,13 @@
 </p>
 <div class="optionalrule">
     <p>
-        <em>Reduced Health Points</em> (optional rule for gritty campaigns):
+        <em id="ReducedHealth">Reduced Health Points</em> (optional rule for gritty campaigns):
         DMs seeking faster, higher-lethality combat may reduce the health points granted by class and racial levels by a fixed percentage (e.g., 25% or 50%), or apply reductions exclusively to specific creature types such as humanoids.
     </p>
 </div>
 <div class="optionalrule">
     <p>
-        <em>Random Health Points</em> (optional rule for classic variance):
+        <em id="RandomHealth">Random Health Points</em> (optional rule for classic variance):
         To introduce classic variability, replace fixed level-up health point bonuses with randomized dice rolls (e.g., a Fighter gaining <code>2d8 HP</code>, <code>2d6 SP</code>, and <code>1d4 PP</code> per level).
     </p>
 </div>
@@ -829,7 +829,7 @@
 
 <div class="optionalrule">
     <p>
-        <em>Cinematic Luck</em> (optional rule for high-heroism campaigns):
+        <em id="CinematicLuck">Cinematic Luck</em> (optional rule for high-heroism campaigns):
         To emulate cinematic protagonists and swashbuckling luck, DMs may grant each player character a pool of daily rerolls (e.g., 2–3 per session). A reroll can be spent to reroll any personal action check or force a foe to reroll a successful attack against the hero. Alternatively, grant characters rolling advantage (rolling 2d20 and taking the higher result) on defining heroic actions.
     </p>
 </div>
@@ -1205,12 +1205,12 @@
 <h4 id="AlternativeHealthEffects">Increased or Decreased Health Effects</h4>
 <div class="optionalrule">
     <p>
-        <em>Gritty Realism &amp; Severe Wounds</em> (optional rule): DMs seeking higher lethality may increase the physical and mental action penalties (PAM/MAM) incurred as HP, SP, and PP diminish.
+        <em id="GrittyRealism">Gritty Realism &amp; Severe Wounds</em> (optional rule): DMs seeking higher lethality may increase the physical and mental action penalties (PAM/MAM) incurred as HP, SP, and PP diminish.
     </p>
 </div>
 <div class="optionalrule">
     <p>
-        <em>Cinematic Heroism</em> (optional rule): DMs wishing to encourage desperate last stands can reduce or eliminate low-health penalties, or convert penalties into heroic adrenaline bonuses.
+        <em id="CinematicHeroism">Cinematic Heroism</em> (optional rule): DMs wishing to encourage desperate last stands can reduce or eliminate low-health penalties, or convert penalties into heroic adrenaline bonuses.
     </p>
 </div>
 
@@ -1261,7 +1261,7 @@
 
 <div class="optionalrule">
     <p>
-        <em>Fast Recovery</em> (optional rule for more cinematic campaigns):
+        <em id="FastRecovery">Fast Recovery</em> (optional rule for more cinematic campaigns):
         DMs who want a faster-paced campaign, fewer resting periods, and less resource management between encounters
         can increase the health point recovery rates listed above.
         Even full recovery of SP and PP (and maybe even of HP damage) after each encounter can be considered,

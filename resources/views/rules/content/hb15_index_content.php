@@ -330,6 +330,7 @@
             <a href="/rules/core#OngoingDamage">Ongoing damage</a><br/>
             <a href="/rules/core#OpenEndedChecks">Open-ended checks</a><br/>
             <a href="/rules/core#OpposingActions">Opposing action checks</a><br/>
+            <a href="#OptionalRules">Optional rules</a><br/>
             <a href="/rules/culture#Organizations">Organizations & factions</a><br/>
             <a href="/rules/environment#Multiverse">Outer planes</a><br/>
             <a href="/reference/creatures?type=Outsider">Outsiders</a><br/>
@@ -549,6 +550,11 @@
                     <span class="text-amber-600 text-xs">&#9656;</span> Permanent Skill Access
                 </a>
             </li>
+            <li>
+                <a href="/rules/chargen#ClasslessSociety" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Classless Characters
+                </a>
+            </li>
         </ul>
     </div>
 
@@ -564,12 +570,12 @@
                 </a>
             </li>
             <li>
-                <a href="/rules/core#HealthScores" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
-                    <span class="text-amber-600 text-xs">&#9656;</span> Decreased Health Points
+                <a href="/rules/core#ReducedHealth" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Reduced Health Points
                 </a>
             </li>
             <li>
-                <a href="/rules/core#AlternativeHealthEffects" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                <a href="/rules/core#GrittyRealism" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
                     <span class="text-amber-600 text-xs">&#9656;</span> Increased Health Penalties
                 </a>
             </li>
@@ -603,17 +609,17 @@
                 </a>
             </li>
             <li>
-                <a href="/rules/core#FatePts" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                <a href="/rules/core#CinematicLuck" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
                     <span class="text-amber-600 text-xs">&#9656;</span> Cinematic Luck
                 </a>
             </li>
             <li>
-                <a href="/rules/core#AlternativeHealthEffects" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                <a href="/rules/core#CinematicHeroism" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
                     <span class="text-amber-600 text-xs">&#9656;</span> Decreased Health Penalties
                 </a>
             </li>
             <li>
-                <a href="/rules/core#Recovery" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                <a href="/rules/core#FastRecovery" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
                     <span class="text-amber-600 text-xs">&#9656;</span> Fast Recovery
                 </a>
             </li>
@@ -640,6 +646,11 @@
             More Varied Rules
         </h4>
         <ul class="space-y-1.5 text-sm list-none p-0 m-0">
+            <li>
+                <a href="/rules/core#RandomHealth" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
+                    <span class="text-amber-600 text-xs">&#9656;</span> Random Health Points
+                </a>
+            </li>
             <li>
                 <a href="/rules/engagement#InitiativeAP" class="text-amber-950 hover:text-amber-700 font-medium hover:underline flex items-center gap-1.5">
                     <span class="text-amber-600 text-xs">&#9656;</span> Initiative-Modified AP
