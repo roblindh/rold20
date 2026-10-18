@@ -49,6 +49,15 @@
 <p>
     Certain characters form supernatural, metaphysical, or psionic bonds with extraordinary companions. These bonded servants are far more capable and loyal than ordinary creatures, growing in power alongside their master through dedicated companion skills:
 </p>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/culture_special_companions.jpg" alt="A mounted templar, an arcane wizard with a quasit familiar, a psion with a psicrystal, and a drow ranger with a black panther companion" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Supernatural bonds unite heroes with extraordinary allies: a mounted Templar atop a celestial steed, an arcane Wizard with a quasit familiar, a Psion with an articulated psicrystal, and a Drow Ranger guarded by an animal companion.
+    </figcaption>
+</figure>
+<?php endif; ?>
 <ul>
     <li><strong>Animal Companions:</strong> Gained through the <em>Animal Companion</em> skill (inspired by druids and rangers), this mystical affinity attracts one or more natural animals into devoted service.
         <ul>
