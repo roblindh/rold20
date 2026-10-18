@@ -472,6 +472,7 @@
                              showSkills: false,
                              showSpells: false,
                              showPossessions: false,
+                             showLore: false,
                              showNotes: false,
                              toggleAll(expand) {
                                  this.showMob = expand;
@@ -482,6 +483,7 @@
                                  this.showSkills = expand;
                                  this.showSpells = expand;
                                  this.showPossessions = expand;
+                                 this.showLore = expand;
                                  this.showNotes = expand;
                              },
                              isAllExpanded() {
@@ -1122,7 +1124,41 @@
                             </div>
                         </template>
 
-                        <!-- Row 14: Tactical Notes & Descriptors (collapsible/editable) -->
+                        <!-- Row 14: Lore, Personality & Connections (collapsible GM reference) -->
+                        <div class="px-3.5 py-1.5 bg-amber-50/40 border-b border-slate-300 text-xs font-sans">
+                            <div class="flex items-center justify-between cursor-pointer select-none" @click="showLore = !showLore">
+                                <strong class="text-amber-950 font-sans font-semibold flex items-center gap-1.5">
+                                    <span>🎭</span> Lore, Personality &amp; Connections
+                                    <span x-show="(c.appearance && c.appearance.trim()) || (c.personality && c.personality.trim()) || (c.history && c.history.trim()) || (c.connections && c.connections.trim())"
+                                          class="text-[10px] bg-amber-200/80 text-amber-950 px-1.5 py-0.2 rounded font-bold">Saved Details</span>
+                                </strong>
+                                <button type="button" class="text-[10px] text-slate-500 font-mono" x-text="showLore ? '[−]' : '[+]'"></button>
+                            </div>
+                            <div x-show="showLore" x-cloak class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 pb-1">
+                                <div class="bg-white/90 border border-amber-900/20 rounded p-2">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-amber-900 mb-1">👁️ Appearance</label>
+                                    <textarea x-model="c.appearance" rows="2" placeholder="Physical appearance, bearing, distinguishing marks..."
+                                              class="w-full text-xs font-sans p-1.5 border border-slate-200 rounded focus:outline-hidden focus:border-amber-500 bg-slate-50/60 text-slate-800 leading-relaxed"></textarea>
+                                </div>
+                                <div class="bg-white/90 border border-amber-900/20 rounded p-2">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-amber-900 mb-1">💬 Personality &amp; Behavior</label>
+                                    <textarea x-model="c.personality" rows="2" placeholder="Disposition, quirks, instincts, combat behavior..."
+                                              class="w-full text-xs font-sans p-1.5 border border-slate-200 rounded focus:outline-hidden focus:border-amber-500 bg-slate-50/60 text-slate-800 leading-relaxed"></textarea>
+                                </div>
+                                <div class="bg-white/90 border border-amber-900/20 rounded p-2">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-amber-900 mb-1">📜 Background History &amp; Origin</label>
+                                    <textarea x-model="c.history" rows="2" placeholder="Origin, past events, lair history..."
+                                              class="w-full text-xs font-sans p-1.5 border border-slate-200 rounded focus:outline-hidden focus:border-amber-500 bg-slate-50/60 text-slate-800 leading-relaxed"></textarea>
+                                </div>
+                                <div class="bg-white/90 border border-amber-900/20 rounded p-2">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-amber-900 mb-1">🕸️ Connections &amp; Hooks</label>
+                                    <textarea x-model="c.connections" rows="2" placeholder="Allies, rivals, ecology hooks, plot ties..."
+                                              class="w-full text-xs font-sans p-1.5 border border-slate-200 rounded focus:outline-hidden focus:border-amber-500 bg-slate-50/60 text-slate-800 leading-relaxed"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 15: Tactical Notes & Descriptors (collapsible/editable) -->
                         <div class="px-3.5 py-1.5 bg-white text-xs font-mono">
                             <div class="flex items-center justify-between cursor-pointer select-none" @click="showNotes = !showNotes">
                                 <strong class="text-slate-950 font-sans font-semibold flex items-center gap-1.5">
@@ -2086,6 +2122,33 @@ function combatTrackerApp() {
                             }
                             clone.creature_name = cr.name;
                             clone.db_id = cr.id || cr.ID || null;
+                            if (entry.type === 'npc' || entry.type === 'monster') clone.type = entry.type;
+                            if (entry.level) clone.level = parseInt(entry.level) || clone.level;
+                            if (entry.hp) { clone.hp_max = parseInt(entry.hp) || clone.hp_max; clone.hp_curr = clone.hp_max; }
+                            if (entry.sp !== undefined) { clone.sp_max = parseInt(entry.sp) || clone.sp_max; clone.sp_curr = clone.sp_max; }
+                            if (entry.pp !== undefined) { clone.pp_max = parseInt(entry.pp) || clone.pp_max; clone.pp_curr = clone.pp_max; }
+                            if (entry.ap) clone.ap_max = parseInt(entry.ap) || clone.ap_max;
+                            if (entry.init_mod !== undefined) clone.init_mod = parseInt(entry.init_mod) || 0;
+                            if (entry.deca) clone.deca = parseInt(entry.deca) || clone.deca;
+                            if (entry.decp) clone.decp = parseInt(entry.decp) || clone.decp;
+                            if (entry.fort) clone.fort = parseInt(entry.fort) || clone.fort;
+                            if (entry.ref) clone.ref = parseInt(entry.ref) || clone.ref;
+                            if (entry.will) clone.will = parseInt(entry.will) || clone.will;
+                            if (entry.dr !== undefined) clone.dr = parseInt(entry.dr) || 0;
+                            if (entry.mr !== undefined) clone.mr = parseInt(entry.mr) || 0;
+                            if (entry.speed) clone.speed = entry.speed;
+                            if (entry.attacks && Array.isArray(entry.attacks) && entry.attacks.length > 0) {
+                                clone.attacks = JSON.parse(JSON.stringify(entry.attacks));
+                                clone.main_attack = entry.main_attack ? JSON.parse(JSON.stringify(entry.main_attack)) : clone.attacks[0];
+                            }
+                            if (entry.statblock) {
+                                clone.statblock = JSON.parse(JSON.stringify(entry.statblock));
+                            }
+                            clone.appearance = entry.appearance || clone.appearance || '';
+                            clone.personality = entry.personality || clone.personality || '';
+                            clone.history = entry.history || clone.history || '';
+                            clone.connections = entry.connections || clone.connections || '';
+                            if (entry.notes) clone.notes = entry.notes;
                             clone.ap_max = clone.ap_max || (10 + (parseInt(clone.level) || 1));
                             clone.ap_curr = clone.ap_curr !== undefined && clone.ap_curr !== null ? clone.ap_curr : clone.ap_max;
                             clone.reactions = clone.reactions !== undefined ? clone.reactions : Math.max(1, Math.floor(clone.ap_max / 10));
@@ -2093,11 +2156,18 @@ function combatTrackerApp() {
                             if (clone.statblock) {
                                 clone.statblock.name = clone.name;
                             } else {
-                                clone.statblock = this.buildDefaultStatblock(clone.name, 'monster', clone.level, clone.hp_max, clone.sp_max, clone.pp_max, clone.init_mod, clone.deca, clone.decp);
+                                clone.statblock = this.buildDefaultStatblock(clone.name, clone.type || 'monster', clone.level, clone.hp_max, clone.sp_max, clone.pp_max, clone.init_mod, clone.deca, clone.decp);
                             }
                             this.addCombatant(clone);
                         } else if (entry.name) {
                             const lvl = parseInt(entry.level) || 1;
+                            const hpMax = parseInt(entry.hp) || 20;
+                            const spMax = entry.sp !== undefined ? (parseInt(entry.sp) || 0) : 20;
+                            const ppMax = entry.pp !== undefined ? (parseInt(entry.pp) || 0) : 0;
+                            const apMax = parseInt(entry.ap) || (10 + lvl);
+                            const initMod = entry.init_mod !== undefined ? (parseInt(entry.init_mod) || 0) : 0;
+                            const deca = parseInt(entry.deca) || 11;
+                            const decp = parseInt(entry.decp) || 11;
                             const customAttack = {
                                 id: 'strike',
                                 name: 'Strike',
@@ -2108,33 +2178,45 @@ function combatTrackerApp() {
                                 type: 'melee',
                                 summary: 'Strike +2 (1d6+1 P HP, 5 AP)'
                             };
+                            const attacksList = (entry.attacks && Array.isArray(entry.attacks) && entry.attacks.length > 0)
+                                ? JSON.parse(JSON.stringify(entry.attacks))
+                                : [customAttack];
+                            const mainAtt = entry.main_attack ? JSON.parse(JSON.stringify(entry.main_attack)) : attacksList[0];
                             const customName = (count > 1 ? `${entry.name} #${i + 1}` : entry.name);
-                            const defSb = this.buildDefaultStatblock(customName, 'monster', lvl, parseInt(entry.hp) || 20, 20, 0, 0, 11, 11, customAttack.summary);
+                            const defSb = entry.statblock
+                                ? JSON.parse(JSON.stringify(entry.statblock))
+                                : this.buildDefaultStatblock(customName, entry.type || 'monster', lvl, hpMax, spMax, ppMax, initMod, deca, decp, mainAtt.summary);
+                            if (defSb) defSb.name = customName;
                             this.addCombatant({
                                 id: 'custom_' + Date.now() + '_' + i,
                                 name: customName,
                                 creature_name: entry.name,
-                                type: 'monster',
+                                type: entry.type || 'monster',
                                 level: lvl,
-                                hp_max: parseInt(entry.hp) || 20,
-                                sp_max: 20,
-                                pp_max: 0,
-                                ap_max: 10 + lvl,
-                                ap_curr: 10 + lvl,
-                                reactions: Math.max(1, Math.floor((10 + lvl) / 10)),
+                                hp_max: hpMax,
+                                sp_max: spMax,
+                                pp_max: ppMax,
+                                ap_max: apMax,
+                                ap_curr: apMax,
+                                reactions: Math.max(1, Math.floor(apMax / 10)),
                                 reaction_used: false,
-                                init_mod: 0,
-                                deca: 11,
-                                decp: 11,
-                                fort: 10 + lvl,
-                                ref: 10 + lvl,
-                                will: 10 + lvl,
-                                dr: 0,
-                                mr: 0,
-                                speed: "30'",
-                                attacks: [customAttack],
-                                main_attack: customAttack,
-                                statblock: defSb
+                                init_mod: initMod,
+                                deca: deca,
+                                decp: decp,
+                                fort: parseInt(entry.fort) || (10 + lvl),
+                                ref: parseInt(entry.ref) || (10 + lvl),
+                                will: parseInt(entry.will) || (10 + lvl),
+                                dr: parseInt(entry.dr) || 0,
+                                mr: parseInt(entry.mr) || 0,
+                                speed: entry.speed || "30'",
+                                attacks: attacksList,
+                                main_attack: mainAtt,
+                                statblock: defSb,
+                                appearance: entry.appearance || '',
+                                personality: entry.personality || '',
+                                history: entry.history || '',
+                                connections: entry.connections || '',
+                                notes: entry.notes || ''
                             });
                         }
                     }
@@ -2327,6 +2409,11 @@ function combatTrackerApp() {
             copy.creature_name = copy.creature_name || source.creature_name || (copy.type === 'monster' ? source.name : null);
             copy.db_id = copy.db_id || source.db_id || null;
             copy.conditions = copy.conditions ?? [];
+            copy.appearance = copy.appearance || '';
+            copy.personality = copy.personality || '';
+            copy.history = copy.history || '';
+            copy.connections = copy.connections || '';
+            copy.notes = copy.notes || '';
 
             if (!copy.statblock) {
                 copy.statblock = this.buildDefaultStatblock(copy.name, copy.type, copy.level, copy.hp_max, copy.sp_max, copy.pp_max, copy.init_mod, copy.deca, copy.decp);
@@ -2413,6 +2500,10 @@ function combatTrackerApp() {
                     will: m.will,
                     speed: m.speed,
                     conditions: [],
+                    appearance: m.appearance || '',
+                    personality: m.personality || '',
+                    history: m.history || '',
+                    connections: m.connections || '',
                     notes: m.descriptors ? `Descriptors: ${m.descriptors}` : '',
                     attacks: m.attacks || [],
                     main_attack: m.main_attack || (m.attacks && m.attacks[0]) || null,
@@ -2467,6 +2558,10 @@ function combatTrackerApp() {
                 will: 10 + this.customForm.level,
                 speed: "30'",
                 conditions: [],
+                appearance: '',
+                personality: '',
+                history: '',
+                connections: '',
                 notes: '',
                 attacks: [customAttack],
                 main_attack: customAttack,

@@ -1562,6 +1562,8 @@ class UtilityController extends Controller
             'items.*.mods' => 'nullable|string',
             'items.*.config' => 'nullable|string',
             'items.*.config_string' => 'nullable|string',
+            'items.*.appearance' => 'nullable|string',
+            'items.*.history' => 'nullable|string',
             'wealth' => 'nullable|numeric|min:0',
             'coins' => 'nullable|array',
             'coins.pp' => 'nullable|numeric|min:0',
@@ -1591,6 +1593,8 @@ class UtilityController extends Controller
                     $traits = (string)($it['traits'] ?? '');
                     $mods = (string)($it['mods'] ?? '');
                     $configStr = (string)($it['config'] ?? $it['config_string'] ?? '');
+                    $appearance = trim((string)($it['appearance'] ?? ''));
+                    $history = trim((string)($it['history'] ?? ''));
 
                     $itemRef = [
                         'Name' => $name,
@@ -1600,6 +1604,8 @@ class UtilityController extends Controller
                         'Subtype' => $it['subtype'] ?? null,
                         'Traits' => $traits,
                         'Config' => $configStr,
+                        'appearance' => $appearance,
+                        'history' => $history,
                     ];
                     $allowed = \App\Services\Entity\EquipmentManager::getAllowedLocations($itemRef);
                     $defaultLoc = \App\Services\Entity\EquipmentManager::getDefaultLocation($itemRef);
@@ -1650,6 +1656,8 @@ class UtilityController extends Controller
                                 'mods' => $mods,
                                 'config' => $configStr,
                                 'config_string' => $configStr,
+                                'appearance' => $appearance,
+                                'history' => $history,
                                 'added_at' => $it['added_at'] ?? date('Y-m-d H:i:s'),
                             ];
                         }
@@ -1686,6 +1694,8 @@ class UtilityController extends Controller
                             'mods' => $mods,
                             'config' => $configStr,
                             'config_string' => $configStr,
+                            'appearance' => $appearance,
+                            'history' => $history,
                             'added_at' => $it['added_at'] ?? date('Y-m-d H:i:s'),
                         ];
                     }
@@ -2008,7 +2018,7 @@ class UtilityController extends Controller
             $initialStatblockHtml = '';
         }
 
-        // Campaigns for authenticated GM
+        // Campaigns and Encounters for GM / Campaign storage
         $user = \Illuminate\Support\Facades\Auth::user();
         $myCampaigns = collect();
         if ($user) {
@@ -2016,9 +2026,33 @@ class UtilityController extends Controller
                 $myCampaigns = DB::table('campaigns')->orderBy('Name')->get();
             } else {
                 $myCampaigns = DB::table('campaigns')->where('GameMaster', $user->ID)->orderBy('Name')->get();
+                if ($myCampaigns->isEmpty()) {
+                    $myCampaigns = DB::table('campaigns')->orderBy('Name')->get();
+                }
             }
+        } else {
+            $myCampaigns = DB::table('campaigns')->orderBy('Name')->get();
         }
         $selectedCampaignId = (int)$request->query('campaign', 0);
+        if ($selectedCampaignId <= 0 && $myCampaigns->isNotEmpty()) {
+            $selectedCampaignId = (int)$myCampaigns->first()->ID;
+        }
+
+        $myEncounters = DB::table('campaign_encounters')
+            ->leftJoin('campaign_adventures', 'campaign_encounters.adventure_id', '=', 'campaign_adventures.id')
+            ->select(
+                'campaign_encounters.id',
+                'campaign_encounters.campaign_id',
+                'campaign_encounters.adventure_id',
+                'campaign_encounters.name',
+                'campaign_encounters.type',
+                'campaign_encounters.encounter_level',
+                'campaign_adventures.name as adventure_name'
+            )
+            ->orderBy('campaign_encounters.campaign_id')
+            ->orderBy('campaign_encounters.order_index')
+            ->orderBy('campaign_encounters.id')
+            ->get();
 
         return view('utilities.npcgen', compact(
             'creatures',
@@ -2034,6 +2068,7 @@ class UtilityController extends Controller
             'initialStatblockHtml',
             'initialConfig',
             'myCampaigns',
+            'myEncounters',
             'selectedCampaignId'
         ));
     }
@@ -2127,14 +2162,6 @@ class UtilityController extends Controller
      */
     public function saveNpcToCampaign(Request $request): JsonResponse
     {
-        $user = \Illuminate\Support\Facades\Auth::user();
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You must be logged in to save an NPC to a campaign.',
-            ], 401);
-        }
-
         $campaignId = (int)$request->input('campaign_id', 0);
         $campaign = DB::table('campaigns')->where('ID', $campaignId)->first();
         if (!$campaign) {
@@ -2144,20 +2171,26 @@ class UtilityController extends Controller
             ], 422);
         }
 
-        if ($campaign->GameMaster !== $user->ID && !$user->isGM()) {
+        if (!$this->isAuthorizedForCampaign($campaign)) {
             return response()->json([
                 'success' => false,
                 'message' => 'You are not authorized to add NPCs to this campaign.',
             ], 403);
         }
 
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $playerId = $user ? (int)$user->ID : (int)($campaign->GameMaster ?? 1);
+
         $name = trim((string)$request->input('name', ''));
         if (empty($name)) {
             $name = trim((string)$request->input('description', 'NPC'));
         }
+        if (empty($name)) {
+            $name = 'NPC';
+        }
 
-        $statblock = $request->input('statblock_html', '');
-        $configString = $request->input('config_string', '');
+        $statblock = (string)$request->input('statblock_html', '');
+        $configString = (string)$request->input('config_string', '');
 
         $creatureId = (int)$request->input('creature_id', 1);
         $templates = $request->input('templates', []);
@@ -2194,10 +2227,15 @@ class UtilityController extends Controller
             $classesStr = implode(';', $cParts);
         }
 
-        $charId = DB::table('characters')->insertGetId([
+        $appearance = trim((string)$request->input('appearance', ''));
+        $personality = trim((string)$request->input('personality', ''));
+        $history = trim((string)$request->input('history', ''));
+        $connections = trim((string)$request->input('connections', $request->input('contacts', '')));
+
+        $npcData = [
             'Name' => $name,
             'Campaign' => $campaignId,
-            'Player' => $user->ID,
+            'Player' => $playerId,
             'IsNPC' => 1,
             'BaseRace' => $creatureId,
             'Templates' => $templateVal,
@@ -2216,14 +2254,258 @@ class UtilityController extends Controller
             'SC' => (int)$request->input('social_class', 0),
             'WC' => (int)$request->input('wealth_class', 0),
             'Equipment' => (string)$request->input('equipment', ''),
+            'Appearance' => $appearance !== '' ? $appearance : null,
+            'Personality' => $personality !== '' ? $personality : null,
+            'History' => $history !== '' ? $history : null,
+            'Contacts' => $connections !== '' ? $connections : null,
             'ConfigString' => $configString,
             'StatBlock' => $statblock,
-        ]);
+        ];
+
+        // Handle unique Name constraint on characters table
+        $existing = DB::table('characters')->where('Name', $name)->first();
+        if ($existing) {
+            if ((int)$existing->IsNPC === 1 && (int)$existing->Campaign === $campaignId) {
+                DB::table('characters')->where('ID', $existing->ID)->update($npcData);
+                $charId = (int)$existing->ID;
+                return response()->json([
+                    'success' => true,
+                    'character_id' => $charId,
+                    'message' => "Updated NPC '{$name}' in campaign '{$campaign->Name}'!",
+                ]);
+            } else {
+                $suffix = 2;
+                while (DB::table('characters')->where('Name', "{$name} ({$suffix})")->exists()) {
+                    $suffix++;
+                }
+                $name = "{$name} ({$suffix})";
+                $npcData['Name'] = $name;
+            }
+        }
+
+        $charId = DB::table('characters')->insertGetId($npcData);
 
         return response()->json([
             'success' => true,
             'character_id' => $charId,
             'message' => "NPC '{$name}' stored in campaign '{$campaign->Name}'!",
+        ]);
+    }
+
+    /**
+     * Save Generated NPC or Monster to a Campaign Encounter
+     */
+    public function saveNpcToEncounter(Request $request): JsonResponse
+    {
+        global $_APP;
+        if (!isset($_APP) || empty($_APP)) {
+            require_once base_path('page_start.php');
+        }
+
+        $campaignId = (int)$request->input('campaign_id', 0);
+        $encounterId = (int)$request->input('encounter_id', 0);
+        $newEncounterName = trim((string)$request->input('new_encounter_name', ''));
+
+        if ($encounterId > 0) {
+            $encounter = DB::table('campaign_encounters')->where('id', $encounterId)->first();
+            if (!$encounter) {
+                return response()->json(['success' => false, 'message' => 'Selected encounter was not found.'], 404);
+            }
+            $campaignId = (int)$encounter->campaign_id;
+        }
+
+        $campaign = DB::table('campaigns')->where('ID', $campaignId)->first();
+        if (!$campaign) {
+            return response()->json(['success' => false, 'message' => 'Please select a valid campaign.'], 422);
+        }
+
+        if (!$this->isAuthorizedForCampaign($campaign)) {
+            return response()->json(['success' => false, 'message' => 'You are not authorized to modify encounters in this campaign.'], 403);
+        }
+
+        $creatureId = (int)$request->input('creature_id', 1);
+        $creatureRow = DB::table('ref_creatures')->where('ID', $creatureId)->first();
+        $name = trim((string)$request->input('name', $request->input('description', '')));
+        if (empty($name)) {
+            $name = $creatureRow ? $creatureRow->Name : 'NPC';
+        }
+
+        $count = max(1, min(100, (int)$request->input('count', 1)));
+        $configString = trim((string)$request->input('config_string', ''));
+        $statblockHtml = (string)$request->input('statblock_html', '');
+
+        $appearance = trim((string)$request->input('appearance', ''));
+        $personality = trim((string)$request->input('personality', ''));
+        $history = trim((string)$request->input('history', ''));
+        $connections = trim((string)$request->input('connections', ''));
+
+        // Calculate accurate combat stats via EntityEngine so Combat Tracker & Campaign Manager have full fidelity
+        \App\Services\Entity\EntityEngine::loadReferenceTables();
+        if (empty($configString)) {
+            $configString = $name . " { }";
+        }
+        $rawEntity = \App\Services\Entity\EntityEngine::buildEntityFromConfigString($creatureId, $configString);
+        $calc = \App\Services\Entity\EntityEngine::calculate($rawEntity);
+        $statblockData = \App\Services\Entity\EntityEngine::extractStatBlockData($calc, (array)$rawEntity);
+
+        $heritage = $calc['heritage'] ?? [];
+        $defenses = $calc['defenses'] ?? [];
+        $health = $calc['health'] ?? [];
+        $actions = $calc['actions'] ?? [];
+        $attacksRaw = $calc['attacks'] ?? [];
+        $abilityMods = $calc['ability_modifiers'] ?? [];
+
+        // Format attacks array for Combat Tracker
+        $attackList = [];
+        if (!empty($attacksRaw['weapons'])) {
+            foreach ($attacksRaw['weapons'] as $wId => $w) {
+                $dmgStr = $w['one_handed']['damage'] ?? $w['two_handed']['damage'] ?? (is_array($w['damage'] ?? null) ? ($w['damage']['display'] ?? '1d6') : ($w['damage'] ?? '1d6'));
+                $bonus = (int)($w['one_handed']['attack_bonus'] ?? $w['two_handed']['attack_bonus'] ?? $w['attack_bonus'] ?? 0);
+                $bStr = ($bonus >= 0 ? "+$bonus" : "$bonus");
+                $ap = (int)($w['ap'] ?? 6);
+                $attackList[] = [
+                    'id' => 'weapon_' . $wId,
+                    'name' => $w['name'] ?? 'Weapon',
+                    'bonus' => $bonus,
+                    'damage' => $dmgStr,
+                    'ap' => $ap,
+                    'crit' => $w['crit_display'] ?? ($w['crit'] ?? '20/x2'),
+                    'reach' => $w['reach'] ?? null,
+                    'range' => !empty($w['range']) ? $w['range'] . 'm' : null,
+                    'type' => !empty($w['is_ranged']) ? 'ranged' : 'melee',
+                    'is_equipped' => !empty($w['is_equipped']),
+                    'slot' => $w['slot'] ?? 'main_hand',
+                    'summary' => ($w['name'] ?? 'Weapon') . ' ' . $bStr . ' (' . $dmgStr . ', ' . $ap . ' AP)',
+                ];
+            }
+        }
+        foreach (['primary_natural', 'secondary_natural', 'natural'] as $natKey) {
+            if (!empty($attacksRaw[$natKey])) {
+                foreach ($attacksRaw[$natKey] as $nIdx => $n) {
+                    $dmgStr = is_array($n['damage'] ?? null) ? ($n['damage']['display'] ?? '1d4') : ($n['damage'] ?? '1d4');
+                    $bonus = (int)($n['attack_bonus'] ?? $n['bonus'] ?? 0);
+                    $bStr = ($bonus >= 0 ? "+$bonus" : "$bonus");
+                    $ap = (int)($n['ap'] ?? 5);
+                    $attackList[] = [
+                        'id' => $natKey . '_' . $nIdx,
+                        'name' => $n['name'] ?? 'Natural Attack',
+                        'bonus' => $bonus,
+                        'damage' => $dmgStr,
+                        'ap' => $ap,
+                        'crit' => $n['crit'] ?? '20/x2',
+                        'reach' => $n['reach'] ?? null,
+                        'range' => null,
+                        'type' => 'natural',
+                        'is_equipped' => true,
+                        'slot' => 'natural',
+                        'summary' => ($n['name'] ?? 'Attack') . ' ' . $bStr . ' (' . $dmgStr . ', ' . $ap . ' AP)',
+                    ];
+                }
+            }
+        }
+        if (empty($attackList)) {
+            $strMod = (int)($abilityMods['Str'] ?? 0);
+            $lvl = (int)($heritage['total_level'] ?? 1);
+            $bBonus = $strMod + $lvl;
+            $dmgStr = '1d3' . ($strMod >= 0 ? "+$strMod" : "$strMod") . ' B SP';
+            $attackList[] = [
+                'id' => 'unarmed',
+                'name' => 'Unarmed Strike',
+                'bonus' => $bBonus,
+                'damage' => $dmgStr,
+                'ap' => 5,
+                'crit' => '20/x2',
+                'reach' => '0-1 sq',
+                'range' => null,
+                'type' => 'unarmed',
+                'is_equipped' => true,
+                'slot' => 'unarmed',
+                'summary' => 'Unarmed Strike ' . ($bBonus >= 0 ? "+$bBonus" : "$bBonus") . " ($dmgStr, 5 AP)",
+            ];
+        }
+
+        $cl = (int)($heritage['challenge_level'] ?? $heritage['total_level'] ?? 1);
+        $foeEntry = [
+            'name' => $name,
+            'base_creature' => $creatureRow ? $creatureRow->Name : $name,
+            'creature_id' => $creatureId,
+            'count' => $count,
+            'level' => max(1, $cl),
+            'cl' => $cl,
+            'size_abbr' => $heritage['size_abbr'] ?? 'M',
+            'hp' => (int)($health['hp']['total'] ?? 20),
+            'sp' => (int)($health['sp']['total'] ?? 20),
+            'pp' => (int)($health['pp']['total'] ?? 0),
+            'ap' => (int)($actions['ap'] ?? (10 + max(1, $cl))),
+            'reactions' => (int)($actions['reactions'] ?? 1),
+            'init_mod' => (int)($defenses['init_mod'] ?? 0),
+            'deca' => (int)($defenses['dec_active'] ?? 10),
+            'decp' => (int)($defenses['dec_passive'] ?? 10),
+            'dr' => (int)($defenses['dr'] ?? 0),
+            'mr' => (int)($defenses['mr'] ?? 0),
+            'fort' => (int)($defenses['fort'] ?? 10),
+            'ref' => (int)($defenses['ref'] ?? 10),
+            'will' => (int)($defenses['will'] ?? 10),
+            'speed' => (string)($calc['speeds']['display'] ?? '30\''),
+            'attacks' => $attackList,
+            'main_attack' => $attackList[0],
+            'statblock' => $statblockData,
+            'config_string' => $configString,
+            'statblock_html' => $statblockHtml,
+            'appearance' => $appearance,
+            'personality' => $personality,
+            'history' => $history,
+            'connections' => $connections,
+            'notes' => trim(implode(' | ', array_filter([
+                $appearance ? "Appearance: {$appearance}" : '',
+                $personality ? "Personality: {$personality}" : '',
+            ]))),
+        ];
+
+        if ($encounterId <= 0) {
+            $encName = $newEncounterName !== '' ? $newEncounterName : ($name . ' Encounter');
+            $xpPerFoe = \App\Services\Entity\EntityEngine::getXPValue($cl);
+            $encounterId = DB::table('campaign_encounters')->insertGetId([
+                'campaign_id' => $campaignId,
+                'adventure_id' => null,
+                'location_id' => null,
+                'name' => $encName,
+                'type' => 'combat',
+                'encounter_level' => max(1.0, (float)$cl),
+                'environment' => '',
+                'description' => "Ad hoc encounter featuring {$count}x {$name}.",
+                'tactics_and_features' => '',
+                'monsters_and_npcs' => json_encode([$foeEntry]),
+                'traps_and_hazards' => json_encode([]),
+                'treasure_rewards' => json_encode([]),
+                'xp_award' => (int)($xpPerFoe * $count),
+                'status' => 'planned',
+                'resolution_notes' => '',
+                'gm_notes' => '',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            $encounter = DB::table('campaign_encounters')->where('id', $encounterId)->first();
+        } else {
+            $existingFoes = !empty($encounter->monsters_and_npcs) ? (json_decode($encounter->monsters_and_npcs, true) ?: []) : [];
+            $existingFoes[] = $foeEntry;
+            $xpPerFoe = \App\Services\Entity\EntityEngine::getXPValue($cl);
+            $newXp = (int)($encounter->xp_award ?? 0) + (int)($xpPerFoe * $count);
+
+            DB::table('campaign_encounters')->where('id', $encounterId)->update([
+                'monsters_and_npcs' => json_encode($existingFoes),
+                'xp_award' => $newXp,
+                'updated_at' => now(),
+            ]);
+            $encounter = DB::table('campaign_encounters')->where('id', $encounterId)->first();
+        }
+
+        return response()->json([
+            'success' => true,
+            'encounter_id' => $encounterId,
+            'campaign_id' => $campaignId,
+            'encounter_name' => $encounter->name ?? 'Encounter',
+            'message' => "Added {$count}x '{$name}' to encounter '{$encounter->name}' in campaign '{$campaign->Name}'!",
         ]);
     }
 
@@ -2428,6 +2710,7 @@ class UtilityController extends Controller
                 global $_APP;
                 $subtypeId = (int)($item['Subtype'] ?? 0);
                 $categoryId = (int)($item['ItemTypeID'] ?? $item['Type'] ?? ($_APP['itemsubtypes'][$subtypeId]['Type'] ?? 0));
+                $subtypeName = (string)($_APP['itemsubtypes'][$subtypeId]['Name'] ?? '');
                 return [
                     'id' => (int)$item['ID'],
                     'name' => (string)$item['Name'],
@@ -2437,6 +2720,7 @@ class UtilityController extends Controller
                     'base_weight' => (float)($item['BaseWeight'] ?? 0),
                     'base_size' => (int)($item['BaseSize'] ?? 0),
                     'subtype' => $subtypeId,
+                    'subtype_name' => $subtypeName,
                 ];
             })
             ->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE)
@@ -2561,11 +2845,27 @@ class UtilityController extends Controller
             'mods_html' => $modsHtml,
         ];
 
-        // Campaigns & Characters for saving generated items
+        // Campaigns, Encounters & Characters for saving generated items
         $campaigns = DB::table('campaigns')->orderBy('Name')->get();
         $characters = DB::table('characters')->where(function($q) {
             $q->whereNull('IsNPC')->orWhere('IsNPC', 0);
         })->orderBy('Name')->get();
+
+        $encounters = DB::table('campaign_encounters')
+            ->leftJoin('campaign_adventures', 'campaign_encounters.adventure_id', '=', 'campaign_adventures.id')
+            ->select(
+                'campaign_encounters.id',
+                'campaign_encounters.campaign_id',
+                'campaign_encounters.adventure_id',
+                'campaign_encounters.name',
+                'campaign_encounters.type',
+                'campaign_encounters.encounter_level',
+                'campaign_adventures.name as adventure_name'
+            )
+            ->orderBy('campaign_encounters.campaign_id')
+            ->orderBy('campaign_encounters.order_index')
+            ->orderBy('campaign_encounters.id')
+            ->get();
 
         $importableItems = $this->getImportableModifiedItems();
         $importTypes = collect($importableItems)
@@ -2595,6 +2895,7 @@ class UtilityController extends Controller
             'initialResult',
             'campaigns',
             'characters',
+            'encounters',
             'importableItems',
             'importTypes',
             'importSubtypes'
@@ -2988,6 +3289,113 @@ class UtilityController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Item '{$itemData['name']}' stored in {$campaign->Name}'s Campaign Vault!",
+        ]);
+    }
+
+    /**
+     * Save generated item to a Campaign Encounter's treasure rewards
+     */
+    public function saveItemToEncounter(Request $request): JsonResponse
+    {
+        $campaignId = (int)$request->input('campaign_id', 0);
+        $encounterId = (int)$request->input('encounter_id', 0);
+        $newEncounterName = trim((string)$request->input('new_encounter_name', ''));
+
+        if ($encounterId > 0) {
+            $encounter = DB::table('campaign_encounters')->where('id', $encounterId)->first();
+            if (!$encounter) {
+                return response()->json(['success' => false, 'message' => 'Selected encounter was not found.'], 404);
+            }
+            $campaignId = (int)$encounter->campaign_id;
+        }
+
+        $campaign = DB::table('campaigns')->where('ID', $campaignId)->first();
+        if (!$campaign) {
+            return response()->json(['success' => false, 'message' => 'Please select a valid campaign.'], 422);
+        }
+
+        if (!$this->isAuthorizedForCampaign($campaign)) {
+            return response()->json(['success' => false, 'message' => 'You are not authorized to modify encounters in this campaign.'], 403);
+        }
+
+        $itemData = \App\Services\Entity\EquipmentManager::createInventoryRecord($request->all(), [
+            'uid' => uniqid('enc_item_'),
+        ]);
+
+        $lootEntry = [
+            'uid' => $itemData['uid'],
+            'name' => $itemData['name'],
+            'value' => (float)($itemData['value'] ?? $request->input('value', 0)),
+            'weight' => (float)($itemData['weight'] ?? $request->input('weight', 1)),
+            'size' => (string)($itemData['size'] ?? $request->input('size', 'M')),
+            'ec' => $itemData['ec'] ?? $request->input('ec', 0),
+            'pl' => (int)($itemData['pl'] ?? $request->input('pl', 0)),
+            'dr' => (int)($itemData['dr'] ?? $request->input('dr', 0)),
+            'hp' => (int)($itemData['hp'] ?? $request->input('hp', 1)),
+            'traits' => (string)($itemData['traits'] ?? $request->input('traits', '')),
+            'mods' => (string)($itemData['mods'] ?? $request->input('mods', '')),
+            'config' => (string)($itemData['config'] ?? $request->input('config_string', '')),
+            'config_string' => (string)($itemData['config_string'] ?? $request->input('config_string', '')),
+            'appearance' => (string)($itemData['appearance'] ?? ''),
+            'history' => (string)($itemData['history'] ?? ''),
+        ];
+
+        if ($encounterId <= 0) {
+            $encName = $newEncounterName !== '' ? $newEncounterName : ($itemData['name'] . ' Cache / Encounter');
+            $encounterId = DB::table('campaign_encounters')->insertGetId([
+                'campaign_id' => $campaignId,
+                'adventure_id' => null,
+                'location_id' => null,
+                'name' => $encName,
+                'type' => 'combat',
+                'encounter_level' => 1.0,
+                'environment' => '',
+                'description' => "Encounter containing {$itemData['name']}.",
+                'tactics_and_features' => '',
+                'monsters_and_npcs' => json_encode([]),
+                'traps_and_hazards' => json_encode([]),
+                'treasure_rewards' => json_encode([
+                    'coins_sp' => 0,
+                    'items' => [$lootEntry],
+                ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                'xp_award' => 300,
+                'status' => 'planned',
+                'resolution_notes' => '',
+                'gm_notes' => '',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            $encounter = DB::table('campaign_encounters')->where('id', $encounterId)->first();
+        } else {
+            $rawTreasure = !empty($encounter->treasure_rewards) ? (is_string($encounter->treasure_rewards) ? json_decode($encounter->treasure_rewards, true) : $encounter->treasure_rewards) : null;
+            $coinsSp = 0;
+            $itemsList = [];
+            if (is_array($rawTreasure)) {
+                if (array_is_list($rawTreasure)) {
+                    $itemsList = $rawTreasure;
+                } else {
+                    $coinsSp = (int)($rawTreasure['coins_sp'] ?? 0);
+                    $itemsList = is_array($rawTreasure['items'] ?? null) ? $rawTreasure['items'] : [];
+                }
+            }
+            $itemsList[] = $lootEntry;
+
+            DB::table('campaign_encounters')->where('id', $encounterId)->update([
+                'treasure_rewards' => json_encode([
+                    'coins_sp' => $coinsSp,
+                    'items' => $itemsList,
+                ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                'updated_at' => now(),
+            ]);
+            $encounter = DB::table('campaign_encounters')->where('id', $encounterId)->first();
+        }
+
+        return response()->json([
+            'success' => true,
+            'encounter_id' => $encounterId,
+            'campaign_id' => $campaignId,
+            'encounter_name' => $encounter->name ?? 'Encounter',
+            'message' => "Added '{$itemData['name']}' to encounter '{$encounter->name}' in campaign '{$campaign->Name}'!",
         ]);
     }
 
@@ -3791,6 +4199,10 @@ class UtilityController extends Controller
                 'speed' => (string)($calcState['speeds']['display'] ?? '30\''),
                 'conditions' => [],
                 'notes' => '',
+                'appearance' => (string)($entity->Appearance ?? ''),
+                'personality' => (string)($entity->Personality ?? ''),
+                'history' => (string)($entity->History ?? ''),
+                'connections' => (string)($entity->Contacts ?? $entity->Family ?? ''),
                 'attacks' => $attackList,
                 'main_attack' => $mainAttack,
                 'statblock' => \App\Services\Entity\EntityEngine::extractStatBlockData($calcState, (array)$entity),
@@ -5067,7 +5479,7 @@ class UtilityController extends Controller
     {
         $class = $request->input('class');
         $race = $request->input('race');
-        $result = \App\Services\Random\ProceduralGeneratorService::personality($class, $race);
+        $result = \App\Services\Random\ProceduralGeneratorService::personality($class, $race, $request->all());
         return response()->json(['success' => true, 'data' => $result]);
     }
 
@@ -5076,7 +5488,7 @@ class UtilityController extends Controller
         $race = $request->input('race');
         $gender = $request->input('gender');
         $age = $request->input('age') ? (int)$request->input('age') : null;
-        $result = \App\Services\Random\ProceduralGeneratorService::appearance($race, $gender, $age);
+        $result = \App\Services\Random\ProceduralGeneratorService::appearance($race, $gender, $age, $request->all());
         return response()->json(['success' => true, 'data' => $result]);
     }
 
@@ -5085,7 +5497,13 @@ class UtilityController extends Controller
         $race = $request->input('race');
         $class = $request->input('class');
         $socialClass = $request->input('social_class');
-        $result = \App\Services\Random\ProceduralGeneratorService::background($race, $class, $socialClass);
+        $result = \App\Services\Random\ProceduralGeneratorService::background($race, $class, $socialClass, $request->all());
+        return response()->json(['success' => true, 'data' => $result]);
+    }
+
+    public function generateProceduralConnections(Request $request): JsonResponse
+    {
+        $result = \App\Services\Random\ProceduralGeneratorService::connections($request->all());
         return response()->json(['success' => true, 'data' => $result]);
     }
 
@@ -5166,8 +5584,8 @@ class UtilityController extends Controller
     public function generateProceduralItemLore(Request $request): JsonResponse
     {
         $itemName = $request->input('name');
-        $pl = (int)$request->input('power_level', 1);
-        $result = \App\Services\Random\ProceduralGeneratorService::itemLore($itemName, $pl);
+        $pl = (int)$request->input('power_level', $request->input('pl', 1));
+        $result = \App\Services\Random\ProceduralGeneratorService::itemLore($itemName, $pl, $request->all());
         return response()->json(['success' => true, 'data' => $result]);
     }
 }

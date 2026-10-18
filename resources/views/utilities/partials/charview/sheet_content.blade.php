@@ -2186,6 +2186,8 @@
                     'value' => (float)(((int)($it['BaseValue'] ?? $it['value'] ?? $it['unit_price'] ?? 0)) * ((int)($it['Qty'] ?? $it['qty'] ?? 1))),
                     'traits_str' => $itemTraitsStr,
                     'traits_raw' => $itemTraitsRaw,
+                    'appearance' => trim((string)($it['appearance'] ?? $it['Appearance'] ?? '')),
+                    'history' => trim((string)($it['history'] ?? $it['History'] ?? '')),
                 ];
             }
         }
@@ -2193,6 +2195,10 @@
     <div class="mt-2" x-data="{
         equipSortCol: '',
         equipSortAsc: true,
+        openItemLoreMap: {},
+        toggleItemLore(key) {
+            this.openItemLoreMap[key] = !this.openItemLoreMap[key];
+        },
         sheetItems: {{ json_encode($preparedSheetEquipment ?? [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) }},
         sortSheetEquip(col) {
             if (this.equipSortCol === col) {
@@ -2371,6 +2377,13 @@
                             <td class="cvlist">
                                 <div class="flex items-center gap-1.5 flex-wrap">
                                     <span class="font-bold text-stone-900">{{ $it['name'] }}</span>
+                                    @if(!empty($it['appearance']) || !empty($it['history']))
+                                        <button type="button" @click="toggleItemLore('{{ $it['uid'] ?: $it['orig_index'] }}')"
+                                                class="text-[9px] px-1.5 py-0.2 bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 rounded font-bold cursor-pointer inline-flex items-center gap-0.5"
+                                                title="Toggle Item Appearance &amp; Background History">
+                                            <span>🏺</span> Lore
+                                        </button>
+                                    @endif
                                     @if($it['is_gem'])
                                         <span class="text-[9px] px-1 py-0.2 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded font-bold">💎 Gem</span>
                                     @elseif($it['is_art'])
@@ -2385,6 +2398,17 @@
                                         <span class="text-[9px] px-1 py-0.2 bg-indigo-50 text-indigo-800 border border-indigo-200 rounded font-mono">(In {{ $it['parent_container_name'] }})</span>
                                     @endif
                                 </div>
+                                @if(!empty($it['appearance']) || !empty($it['history']))
+                                    <div x-show="openItemLoreMap['{{ $it['uid'] ?: $it['orig_index'] }}']" style="display: none;"
+                                         class="mt-1 p-1.5 bg-amber-50/80 border border-amber-300 rounded text-[10px] text-stone-800 space-y-1 font-sans">
+                                        @if(!empty($it['appearance']))
+                                            <div><strong class="text-amber-950">👁️ Appearance:</strong> {{ $it['appearance'] }}</div>
+                                        @endif
+                                        @if(!empty($it['history']))
+                                            <div><strong class="text-amber-950">📜 History:</strong> {{ $it['history'] }}</div>
+                                        @endif
+                                    </div>
+                                @endif
                             </td>
                             <td class="cvlist cvcenter text-[11px] font-medium text-slate-700">
                                 <span class="bg-amber-50/80 px-1.5 py-0.5 rounded border border-amber-200 text-stone-800">{{ $it['category_name'] }}</span>
@@ -2418,6 +2442,13 @@
                             <td class="cvlist">
                                 <div class="flex items-center gap-1.5 flex-wrap">
                                     <span class="font-bold text-stone-900" x-text="it.name"></span>
+                                    <template x-if="it.appearance || it.history">
+                                        <button type="button" @click="toggleItemLore(it.uid || it.orig_index)"
+                                                class="text-[9px] px-1.5 py-0.2 bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 rounded font-bold cursor-pointer inline-flex items-center gap-0.5"
+                                                title="Toggle Item Appearance &amp; Background History">
+                                            <span>🏺</span> Lore
+                                        </button>
+                                    </template>
                                     <template x-if="it.is_gem">
                                         <span class="text-[9px] px-1 py-0.2 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded font-bold">💎 Gem</span>
                                     </template>
@@ -2434,6 +2465,17 @@
                                         <span class="text-[9px] px-1 py-0.2 bg-indigo-50 text-indigo-800 border border-indigo-200 rounded font-mono" x-text="'(In ' + it.parent_container_name + ')'"></span>
                                     </template>
                                 </div>
+                                <template x-if="it.appearance || it.history">
+                                    <div x-show="openItemLoreMap[it.uid || it.orig_index]"
+                                         class="mt-1 p-1.5 bg-amber-50/80 border border-amber-300 rounded text-[10px] text-stone-800 space-y-1 font-sans">
+                                        <template x-if="it.appearance">
+                                            <div><strong class="text-amber-950">👁️ Appearance:</strong> <span x-text="it.appearance"></span></div>
+                                        </template>
+                                        <template x-if="it.history">
+                                            <div><strong class="text-amber-950">📜 History:</strong> <span x-text="it.history"></span></div>
+                                        </template>
+                                    </div>
+                                </template>
                             </td>
                             <td class="cvlist cvcenter text-[11px] font-medium text-slate-700">
                                 <span class="bg-amber-50/80 px-1.5 py-0.5 rounded border border-amber-200 text-stone-800" x-text="it.category_name"></span>

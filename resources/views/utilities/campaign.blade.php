@@ -171,9 +171,9 @@
                     <button type="button" @click="activeTab = 'party'"
                             :class="activeTab === 'party' ? 'modal-tab-active' : 'modal-tab-inactive'"
                             class="modal-tab-btn">
-                        <span>👥</span> Party &amp; Roster
+                        <span>👥</span> Party &amp; NPCs
                         <span class="px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold"
-                              :class="activeTab === 'party' ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-700'">{{ $campChars->count() }}</span>
+                              :class="activeTab === 'party' ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-700'">{{ $campChars->count() }} / {{ $campNpcs->count() }}</span>
                     </button>
                     <button type="button" @click="activeTab = 'vault'"
                             :class="activeTab === 'vault' ? 'modal-tab-active' : 'modal-tab-inactive'"
@@ -198,7 +198,7 @@
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div>
                                 <h3 class="font-bold text-stone-900 text-sm flex items-center gap-1.5">
-                                    <span>📜</span> Campaign Adventures &amp; Encounters
+                                     <span>📜</span> Campaign Adventures &amp; Encounters
                                 </h3>
                                 <p class="text-[11px] text-stone-600">Structured narrative arcs divided into tactical encounters, traps, hazards, and rewards.</p>
                             </div>
@@ -302,9 +302,62 @@
                                                             <div class="flex items-center gap-1.5 text-[11px] text-stone-600 font-mono flex-wrap pt-0.5">
                                                                 <span class="text-stone-400">Foes:</span>
                                                                 @foreach($encFoes as $foe)
-                                                                    <span class="bg-stone-100 px-1.5 py-0.2 rounded border border-stone-200 text-[10px]">
-                                                                        {{ $foe['count'] ?? 1 }}x {{ $foe['name'] ?? 'Creature' }} (Lvl {{ $foe['level'] ?? 1 }}, {{ $foe['hp'] ?? 10 }} HP)
-                                                                    </span>
+                                                                    @php
+                                                                        $hasFoeLore = !empty($foe['appearance']) || !empty($foe['personality']) || !empty($foe['history']) || !empty($foe['connections']) || !empty($foe['statblock_html']);
+                                                                    @endphp
+                                                                    @if($hasFoeLore)
+                                                                        <button type="button" @click="openNpcLoreModal({{ json_encode($foe) }})"
+                                                                                class="bg-indigo-50 hover:bg-indigo-100 text-indigo-900 px-1.5 py-0.2 rounded border border-indigo-200 text-[10px] inline-flex items-center gap-1 cursor-pointer transition"
+                                                                                title="Click to inspect Lore, Personality, Connections &amp; Stat Block">
+                                                                            <span>🎭</span>
+                                                                            <span>{{ $foe['count'] ?? 1 }}x {{ $foe['name'] ?? 'Creature' }} (Lvl {{ $foe['level'] ?? 1 }}, {{ $foe['hp'] ?? 10 }} HP)</span>
+                                                                        </button>
+                                                                    @else
+                                                                        <span class="bg-stone-100 px-1.5 py-0.2 rounded border border-stone-200 text-[10px]">
+                                                                            {{ $foe['count'] ?? 1 }}x {{ $foe['name'] ?? 'Creature' }} (Lvl {{ $foe['level'] ?? 1 }}, {{ $foe['hp'] ?? 10 }} HP)
+                                                                        </span>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        @endif
+                                                        @if(!empty($encTreasureItems))
+                                                            <div class="space-y-1 pt-0.5" x-data="{ openLootLoreIdx: null }">
+                                                                <div class="flex items-center gap-1.5 text-[11px] text-stone-600 font-mono flex-wrap">
+                                                                    <span class="text-stone-400">Loot:</span>
+                                                                    @foreach($encTreasureItems as $lIdx => $lootItem)
+                                                                        @php
+                                                                            $hasLootLore = !empty($lootItem['appearance']) || !empty($lootItem['history']);
+                                                                        @endphp
+                                                                        @if($hasLootLore)
+                                                                            <button type="button" @click="openLootLoreIdx = (openLootLoreIdx === {{ $lIdx }} ? null : {{ $lIdx }})"
+                                                                                    class="bg-amber-50 hover:bg-amber-100 text-amber-950 px-1.5 py-0.2 rounded border border-amber-300 text-[10px] inline-flex items-center gap-1 cursor-pointer transition"
+                                                                                    title="Click to view Appearance &amp; Background History">
+                                                                                <span>🏺</span>
+                                                                                <span>{{ $lootItem['name'] ?? 'Item' }}@if(!empty($lootItem['value'])) ({{ number_format((float)$lootItem['value']) }} sp)@endif</span>
+                                                                            </button>
+                                                                        @else
+                                                                            <span class="bg-stone-100 px-1.5 py-0.2 rounded border border-stone-200 text-[10px]">
+                                                                                {{ $lootItem['name'] ?? 'Item' }}@if(!empty($lootItem['value'])) ({{ number_format((float)$lootItem['value']) }} sp)@endif
+                                                                            </span>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </div>
+                                                                @foreach($encTreasureItems as $lIdx => $lootItem)
+                                                                    @if(!empty($lootItem['appearance']) || !empty($lootItem['history']))
+                                                                        <div x-show="openLootLoreIdx === {{ $lIdx }}" style="display: none;"
+                                                                             class="p-2 bg-amber-50/70 border border-amber-300/80 rounded-lg text-xs text-stone-800 space-y-1">
+                                                                            <div class="font-bold text-amber-950 flex items-center justify-between">
+                                                                                <span>🏺 {{ $lootItem['name'] ?? 'Item' }} — Lore</span>
+                                                                                <button type="button" @click="openLootLoreIdx = null" class="text-[10px] text-stone-500 hover:text-stone-800 cursor-pointer">✕</button>
+                                                                            </div>
+                                                                            @if(!empty($lootItem['appearance']))
+                                                                                <div><strong class="text-amber-900">👁️ Appearance:</strong> {{ $lootItem['appearance'] }}</div>
+                                                                            @endif
+                                                                            @if(!empty($lootItem['history']))
+                                                                                <div><strong class="text-amber-900">📜 History:</strong> {{ $lootItem['history'] }}</div>
+                                                                            @endif
+                                                                        </div>
+                                                                    @endif
                                                                 @endforeach
                                                             </div>
                                                         @endif
@@ -402,9 +455,62 @@
                                                         <div class="flex items-center gap-1.5 text-[11px] text-stone-600 font-mono flex-wrap pt-0.5">
                                                             <span class="text-stone-400">Foes:</span>
                                                             @foreach($encFoes as $foe)
-                                                                <span class="bg-stone-100 px-1.5 py-0.2 rounded border border-stone-200 text-[10px]">
-                                                                    {{ $foe['count'] ?? 1 }}x {{ $foe['name'] ?? 'Creature' }} (Lvl {{ $foe['level'] ?? 1 }}, {{ $foe['hp'] ?? 10 }} HP)
-                                                                </span>
+                                                                @php
+                                                                    $hasFoeLore = !empty($foe['appearance']) || !empty($foe['personality']) || !empty($foe['history']) || !empty($foe['connections']) || !empty($foe['statblock_html']);
+                                                                @endphp
+                                                                @if($hasFoeLore)
+                                                                    <button type="button" @click="openNpcLoreModal({{ json_encode($foe) }})"
+                                                                            class="bg-indigo-50 hover:bg-indigo-100 text-indigo-900 px-1.5 py-0.2 rounded border border-indigo-200 text-[10px] inline-flex items-center gap-1 cursor-pointer transition"
+                                                                            title="Click to inspect Lore, Personality, Connections &amp; Stat Block">
+                                                                        <span>🎭</span>
+                                                                        <span>{{ $foe['count'] ?? 1 }}x {{ $foe['name'] ?? 'Creature' }} (Lvl {{ $foe['level'] ?? 1 }}, {{ $foe['hp'] ?? 10 }} HP)</span>
+                                                                    </button>
+                                                                @else
+                                                                    <span class="bg-stone-100 px-1.5 py-0.2 rounded border border-stone-200 text-[10px]">
+                                                                        {{ $foe['count'] ?? 1 }}x {{ $foe['name'] ?? 'Creature' }} (Lvl {{ $foe['level'] ?? 1 }}, {{ $foe['hp'] ?? 10 }} HP)
+                                                                    </span>
+                                                                @endif
+                                                            @endforeach
+                                                        </div>
+                                                    @endif
+                                                    @if(!empty($encTreasureItems))
+                                                        <div class="space-y-1 pt-0.5" x-data="{ openLootLoreIdx: null }">
+                                                            <div class="flex items-center gap-1.5 text-[11px] text-stone-600 font-mono flex-wrap">
+                                                                <span class="text-stone-400">Loot:</span>
+                                                                @foreach($encTreasureItems as $lIdx => $lootItem)
+                                                                    @php
+                                                                        $hasLootLore = !empty($lootItem['appearance']) || !empty($lootItem['history']);
+                                                                    @endphp
+                                                                    @if($hasLootLore)
+                                                                        <button type="button" @click="openLootLoreIdx = (openLootLoreIdx === {{ $lIdx }} ? null : {{ $lIdx }})"
+                                                                                class="bg-amber-50 hover:bg-amber-100 text-amber-950 px-1.5 py-0.2 rounded border border-amber-300 text-[10px] inline-flex items-center gap-1 cursor-pointer transition"
+                                                                                title="Click to view Appearance &amp; Background History">
+                                                                            <span>🏺</span>
+                                                                            <span>{{ $lootItem['name'] ?? 'Item' }}@if(!empty($lootItem['value'])) ({{ number_format((float)$lootItem['value']) }} sp)@endif</span>
+                                                                        </button>
+                                                                    @else
+                                                                        <span class="bg-stone-100 px-1.5 py-0.2 rounded border border-stone-200 text-[10px]">
+                                                                            {{ $lootItem['name'] ?? 'Item' }}@if(!empty($lootItem['value'])) ({{ number_format((float)$lootItem['value']) }} sp)@endif
+                                                                        </span>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                            @foreach($encTreasureItems as $lIdx => $lootItem)
+                                                                @if(!empty($lootItem['appearance']) || !empty($lootItem['history']))
+                                                                    <div x-show="openLootLoreIdx === {{ $lIdx }}" style="display: none;"
+                                                                         class="p-2 bg-amber-50/70 border border-amber-300/80 rounded-lg text-xs text-stone-800 space-y-1">
+                                                                        <div class="font-bold text-amber-950 flex items-center justify-between">
+                                                                            <span>🏺 {{ $lootItem['name'] ?? 'Item' }} — Lore</span>
+                                                                            <button type="button" @click="openLootLoreIdx = null" class="text-[10px] text-stone-500 hover:text-stone-800 cursor-pointer">✕</button>
+                                                                        </div>
+                                                                        @if(!empty($lootItem['appearance']))
+                                                                            <div><strong class="text-amber-900">👁️ Appearance:</strong> {{ $lootItem['appearance'] }}</div>
+                                                                        @endif
+                                                                        @if(!empty($lootItem['history']))
+                                                                            <div><strong class="text-amber-900">📜 History:</strong> {{ $lootItem['history'] }}</div>
+                                                                        @endif
+                                                                    </div>
+                                                                @endif
                                                             @endforeach
                                                         </div>
                                                     @endif
@@ -731,6 +837,100 @@
                                 </div>
                             @endforelse
                         </div>
+
+                        <!-- Campaign NPCs & Monsters Section -->
+                        <div class="pt-4 border-t border-amber-900/20 space-y-4">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                <div>
+                                    <h3 class="font-bold text-stone-900 text-sm flex items-center gap-1.5">
+                                        <span>🎭</span> Campaign NPCs &amp; Notable Creatures ({{ $campNpcs->count() }})
+                                    </h3>
+                                    <p class="text-[11px] text-stone-600">Saved NPCs and monsters with their generated appearance, personality traits, background history, connections, and stat blocks.</p>
+                                </div>
+                                @if($isMyCamp)
+                                    <a href="{{ route('utilities.npcgen', [], false) }}?campaign={{ $camp->ID }}" class="btn-rol-primary text-xs py-1 px-3 shrink-0">
+                                        <span>🧙‍♂️</span> Generate NPC / Monster
+                                    </a>
+                                @endif
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                @forelse($campNpcs as $npc)
+                                    <div class="bg-white border border-stone-200 rounded-xl p-4 space-y-3 shadow-2xs hover:border-amber-400 transition flex flex-col justify-between">
+                                        <div class="space-y-2">
+                                            <div class="flex items-center justify-between gap-2 border-b border-stone-100 pb-2">
+                                                <div>
+                                                    <h4 class="font-bold text-stone-900 font-serif text-sm">
+                                                        <a href="{{ route('utilities.charview', ['id' => $npc->ID], false) }}" class="hover:underline text-amber-900">
+                                                            {{ $npc->Name }}
+                                                        </a>
+                                                    </h4>
+                                                    <span class="text-[11px] text-stone-500">{{ $npc->RaceName ?? 'Creature' }} &bull; {{ $npc->ClassSummary ?? 'NPC' }}</span>
+                                                </div>
+                                                <span class="bg-indigo-50 text-indigo-900 font-mono text-[10px] font-bold px-2 py-0.5 rounded-full border border-indigo-200">
+                                                    NPC
+                                                </span>
+                                            </div>
+
+                                            @if(!empty($npc->Appearance) || !empty($npc->Personality) || !empty($npc->History) || !empty($npc->Contacts))
+                                                <div class="space-y-1 text-[11px] text-stone-700 bg-amber-50/50 p-2.5 rounded-lg border border-amber-200/70">
+                                                    @if(!empty($npc->Appearance))
+                                                        <div class="line-clamp-2"><strong class="text-amber-950">👁️ Appearance:</strong> {{ $npc->Appearance }}</div>
+                                                    @endif
+                                                    @if(!empty($npc->Personality))
+                                                        <div class="line-clamp-2"><strong class="text-amber-950">🧠 Personality:</strong> {{ $npc->Personality }}</div>
+                                                    @endif
+                                                    @if(!empty($npc->History))
+                                                        <div class="line-clamp-2"><strong class="text-amber-950">📜 History:</strong> {{ $npc->History }}</div>
+                                                    @endif
+                                                    @if(!empty($npc->Contacts))
+                                                        <div class="line-clamp-2"><strong class="text-amber-950">🕸️ Connections:</strong> {{ $npc->Contacts }}</div>
+                                                    @endif
+                                                </div>
+                                            @else
+                                                <div class="text-[11px] text-stone-400 italic">No lore details recorded yet.</div>
+                                            @endif
+                                        </div>
+
+                                        <div class="flex items-center justify-between gap-2 pt-2 border-t border-stone-100 text-xs">
+                                            <div class="flex items-center gap-2">
+                                                <button type="button" @click="openNpcLoreModal({{ json_encode([
+                                                    'id' => $npc->ID,
+                                                    'name' => $npc->Name,
+                                                    'race_name' => $npc->RaceName ?? 'Creature',
+                                                    'class_summary' => $npc->ClassSummary ?? '',
+                                                    'appearance' => $npc->Appearance ?? '',
+                                                    'personality' => $npc->Personality ?? '',
+                                                    'history' => $npc->History ?? '',
+                                                    'connections' => $npc->Contacts ?? $npc->Family ?? '',
+                                                    'statblock_html' => $npc->StatBlock ?? '',
+                                                    'config_string' => $npc->ConfigString ?? '',
+                                                ]) }})" class="text-amber-900 hover:underline font-bold cursor-pointer flex items-center gap-1">
+                                                    <span>🎭</span> Lore &amp; Stat Block
+                                                </button>
+                                                <span class="text-stone-300">|</span>
+                                                <a href="{{ route('utilities.charview', ['id' => $npc->ID], false) }}" class="text-indigo-700 hover:underline font-bold">
+                                                    Sheet &rarr;
+                                                </a>
+                                            </div>
+                                            @if($isMyCamp)
+                                                <form action="{{ route('utilities.campaign.remove-character', ['id' => $camp->ID], false) }}" method="POST" onsubmit="return confirm('Remove NPC {{ addslashes($npc->Name) }} from campaign?');" class="inline">
+                                                    @csrf
+                                                    <input type="hidden" name="CharacterID" value="{{ $npc->ID }}">
+                                                    <button type="submit" class="text-rose-600 hover:text-rose-800 text-[11px] font-bold">
+                                                        Remove
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @empty
+                                    <div class="col-span-full p-6 bg-amber-50/40 rounded-xl text-xs text-stone-500 italic text-center border border-dashed border-amber-900/20 space-y-2">
+                                        <p>No NPCs or custom monsters stored in this campaign yet. Use the NPC Generator to create and save NPCs or monsters with rich lore details.</p>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
                     </div>
 
                     <!-- ============================================================= -->
@@ -784,32 +984,54 @@
                                     </button>
                                 @endif
                             </div>
-                            <div class="space-y-1.5">
+                            <div class="space-y-1.5" x-data="{ openVaultLoreIdx: null }">
                                 @forelse($vaultItems as $vIdx => $vItem)
-                                    <div class="p-2.5 bg-white border border-stone-200 rounded-lg flex items-center justify-between gap-2 text-xs">
-                                        <div>
-                                            <strong class="text-stone-900">{{ $vItem['name'] ?? 'Item' }}</strong>
-                                            @php
-                                                $vVal = (float)($vItem['value'] ?? $vItem['Value'] ?? $vItem['unit_price'] ?? 0);
-                                                if ($vVal <= 0 && !empty($vItem['name']) && class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
-                                                    $lookupInst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem($vItem['config'] ?? $vItem['name']);
-                                                    if ($lookupInst && !empty($lookupInst['value_sp'])) {
-                                                        $vVal = (float)$lookupInst['value_sp'];
-                                                    }
-                                                }
-                                                $vWt = $vItem['weight'] ?? $vItem['Weight'] ?? $vItem['unit_weight'] ?? null;
-                                            @endphp
-                                            @if($vVal > 0) <span class="text-stone-500">({{ number_format($vVal) }} sp)</span>@endif
-                                            @if(!empty($vWt)) <span class="text-stone-400">&bull; {{ $vWt }} lbs</span>@endif
+                                    @php
+                                        $vVal = (float)($vItem['value'] ?? $vItem['Value'] ?? $vItem['unit_price'] ?? 0);
+                                        if ($vVal <= 0 && !empty($vItem['name']) && class_exists(\App\Services\ItemGeneration\ProceduralItemFactory::class)) {
+                                            $lookupInst = \App\Services\ItemGeneration\ProceduralItemFactory::instantiateItem($vItem['config'] ?? $vItem['name']);
+                                            if ($lookupInst && !empty($lookupInst['value_sp'])) {
+                                                $vVal = (float)$lookupInst['value_sp'];
+                                            }
+                                        }
+                                        $vWt = $vItem['weight'] ?? $vItem['Weight'] ?? $vItem['unit_weight'] ?? null;
+                                        $vApp = trim((string)($vItem['appearance'] ?? $vItem['Appearance'] ?? ''));
+                                        $vHist = trim((string)($vItem['history'] ?? $vItem['History'] ?? ''));
+                                        $hasVaultLore = $vApp !== '' || $vHist !== '';
+                                    @endphp
+                                    <div class="p-2.5 bg-white border border-stone-200 rounded-lg space-y-1.5 text-xs">
+                                        <div class="flex items-center justify-between gap-2">
+                                            <div class="flex items-center gap-1.5 flex-wrap">
+                                                <strong class="text-stone-900">{{ $vItem['name'] ?? 'Item' }}</strong>
+                                                @if($vVal > 0) <span class="text-stone-500">({{ number_format($vVal) }} sp)</span>@endif
+                                                @if(!empty($vWt)) <span class="text-stone-400">&bull; {{ $vWt }} lbs</span>@endif
+                                                @if($hasVaultLore)
+                                                    <button type="button" @click="openVaultLoreIdx = (openVaultLoreIdx === {{ $vIdx }} ? null : {{ $vIdx }})"
+                                                            class="px-1.5 py-0.5 rounded bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-bold inline-flex items-center gap-1 cursor-pointer">
+                                                        <span>🏺</span> Lore
+                                                    </button>
+                                                @endif
+                                            </div>
+                                            @if($isMyCamp)
+                                                <form action="{{ route('utilities.campaign.vault.remove', ['id' => $camp->ID], false) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    <input type="hidden" name="item_index" value="{{ $vIdx }}">
+                                                    <button type="submit" class="text-rose-600 hover:underline text-[11px] font-bold">
+                                                        Discard
+                                                    </button>
+                                                </form>
+                                            @endif
                                         </div>
-                                        @if($isMyCamp)
-                                            <form action="{{ route('utilities.campaign.vault.remove', ['id' => $camp->ID], false) }}" method="POST" class="inline">
-                                                @csrf
-                                                <input type="hidden" name="item_index" value="{{ $vIdx }}">
-                                                <button type="submit" class="text-rose-600 hover:underline text-[11px] font-bold">
-                                                    Discard
-                                                </button>
-                                            </form>
+                                        @if($hasVaultLore)
+                                            <div x-show="openVaultLoreIdx === {{ $vIdx }}" style="display: none;"
+                                                 class="p-2 bg-amber-50/60 border border-amber-200 rounded text-[11px] text-stone-800 space-y-1">
+                                                @if($vApp !== '')
+                                                    <div><strong class="text-amber-950">👁️ Appearance:</strong> {{ $vApp }}</div>
+                                                @endif
+                                                @if($vHist !== '')
+                                                    <div><strong class="text-amber-950">📜 History:</strong> {{ $vHist }}</div>
+                                                @endif
+                                            </div>
                                         @endif
                                     </div>
                                 @empty
@@ -1283,38 +1505,66 @@
 
                         <!-- Foe Item Rows -->
                         <template x-for="(m, idx) in encForm.monsters_and_npcs" :key="idx">
-                            <div class="enc-foe-row bg-white p-2 rounded-lg border border-slate-200 shadow-2xs hover:border-amber-400 transition">
-                                <!-- Monster Name with Datalist Autocomplete & Treasure Tag -->
-                                <div class="enc-foe-col-name flex items-center gap-1.5 min-w-0">
-                                    <input type="text" x-model="m.name" list="creature_datalist" @input="onCreatureNameInput(m)"
-                                           placeholder="Type or pick creature..."
-                                           class="w-full px-2.5 py-1 bg-white border border-slate-300 rounded text-xs text-slate-900 font-medium focus:ring-1 focus:ring-amber-500 focus:outline-none">
-                                    <template x-if="m.treasure">
-                                        <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-100/90 text-amber-900 border border-amber-300/80 font-mono shrink-0 hidden md:inline-block max-w-[130px] truncate"
-                                              :title="'Creature Treasure Rating: ' + m.treasure" x-text="m.treasure"></span>
-                                    </template>
+                            <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-2xs hover:border-amber-400 transition space-y-2" x-data="{ showFoeLore: Boolean(m.appearance || m.personality || m.history || m.connections) }">
+                                <div class="enc-foe-row">
+                                    <!-- Monster Name with Datalist Autocomplete & Treasure Tag -->
+                                    <div class="enc-foe-col-name flex items-center gap-1.5 min-w-0">
+                                        <input type="text" x-model="m.name" list="creature_datalist" @input="onCreatureNameInput(m)"
+                                               placeholder="Type or pick creature..."
+                                               class="w-full px-2.5 py-1 bg-white border border-slate-300 rounded text-xs text-slate-900 font-medium focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                        <button type="button" @click="showFoeLore = !showFoeLore"
+                                                class="px-1.5 py-0.5 rounded border text-[10px] font-bold shrink-0 cursor-pointer transition"
+                                                :class="(m.appearance || m.personality || m.history || m.connections) ? 'bg-indigo-100 text-indigo-900 border-indigo-300' : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'"
+                                                title="Toggle Appearance, Personality, Background History &amp; Connections">
+                                            🎭 Lore
+                                        </button>
+                                        <template x-if="m.treasure">
+                                            <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-100/90 text-amber-900 border border-amber-300/80 font-mono shrink-0 hidden md:inline-block max-w-[130px] truncate"
+                                                  :title="'Creature Treasure Rating: ' + m.treasure" x-text="m.treasure"></span>
+                                        </template>
+                                    </div>
+                                    <!-- Qty -->
+                                    <div class="enc-foe-col-qty">
+                                        <input type="number" x-model.number="m.count" min="1" max="100" placeholder="1"
+                                               class="w-full px-1 py-1 bg-white border border-slate-300 rounded text-xs font-mono font-bold text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                    </div>
+                                    <!-- Level / RL -->
+                                    <div class="enc-foe-col-lvl">
+                                        <input type="number" x-model.number="m.level" min="0" max="40" placeholder="Lvl"
+                                               class="w-full px-1 py-1 bg-white border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                    </div>
+                                    <!-- HP -->
+                                    <div class="enc-foe-col-hp">
+                                        <input type="number" x-model.number="m.hp" min="1" placeholder="HP"
+                                               class="w-full px-1 py-1 bg-white border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                    </div>
+                                    <!-- Delete Button -->
+                                    <div class="enc-foe-col-del flex items-center justify-center">
+                                        <button type="button" @click="encForm.monsters_and_npcs.splice(idx, 1)" 
+                                                class="w-7 h-7 flex items-center justify-center text-rose-500 hover:text-white hover:bg-rose-600 rounded text-xs font-bold transition cursor-pointer" title="Remove Foe">
+                                            ✕
+                                        </button>
+                                    </div>
                                 </div>
-                                <!-- Qty -->
-                                <div class="enc-foe-col-qty">
-                                    <input type="number" x-model.number="m.count" min="1" max="100" placeholder="1"
-                                           class="w-full px-1 py-1 bg-white border border-slate-300 rounded text-xs font-mono font-bold text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
-                                </div>
-                                <!-- Level / RL -->
-                                <div class="enc-foe-col-lvl">
-                                    <input type="number" x-model.number="m.level" min="0" max="40" placeholder="Lvl"
-                                           class="w-full px-1 py-1 bg-white border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
-                                </div>
-                                <!-- HP -->
-                                <div class="enc-foe-col-hp">
-                                    <input type="number" x-model.number="m.hp" min="1" placeholder="HP"
-                                           class="w-full px-1 py-1 bg-white border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
-                                </div>
-                                <!-- Delete Button -->
-                                <div class="enc-foe-col-del flex items-center justify-center">
-                                    <button type="button" @click="encForm.monsters_and_npcs.splice(idx, 1)" 
-                                            class="w-7 h-7 flex items-center justify-center text-rose-500 hover:text-white hover:bg-rose-600 rounded text-xs font-bold transition cursor-pointer" title="Remove Foe">
-                                        ✕
-                                    </button>
+
+                                <!-- Collapsible Lore Details for Foe -->
+                                <div x-show="showFoeLore" class="p-2.5 bg-amber-50/60 border border-amber-200 rounded-lg grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase text-amber-950 mb-0.5">👁️ Appearance</label>
+                                        <textarea x-model="m.appearance" rows="2" placeholder="Physical features, build, attire..." class="w-full px-2 py-1 bg-white border border-amber-300 rounded text-xs text-slate-900"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase text-amber-950 mb-0.5">🧠 Personality Traits</label>
+                                        <textarea x-model="m.personality" rows="2" placeholder="Demeanor, motivations, instincts..." class="w-full px-2 py-1 bg-white border border-amber-300 rounded text-xs text-slate-900"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase text-amber-950 mb-0.5">📜 Background History</label>
+                                        <textarea x-model="m.history" rows="2" placeholder="Origin, past events, secrets..." class="w-full px-2 py-1 bg-white border border-amber-300 rounded text-xs text-slate-900"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase text-amber-950 mb-0.5">🕸️ Connections &amp; Hooks</label>
+                                        <textarea x-model="m.connections" rows="2" placeholder="Allies, rivals, ecological/faction hooks..." class="w-full px-2 py-1 bg-white border border-amber-300 rounded text-xs text-slate-900"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </template>
@@ -1374,33 +1624,53 @@
                     </div>
 
                     <!-- Items Header & List -->
-                    <div class="space-y-1.5 max-h-48 overflow-y-auto pr-0.5">
+                    <div class="space-y-1.5 max-h-60 overflow-y-auto pr-0.5">
                         <div class="grid grid-cols-12 gap-2 px-2.5 py-1 bg-slate-200/80 rounded-lg text-[10px] font-bold text-slate-700 uppercase tracking-wider">
-                            <div class="col-span-6">Item / Valuable Description</div>
+                            <div class="col-span-5">Item / Valuable Description</div>
                             <div class="col-span-3 text-center">Value (sp)</div>
                             <div class="col-span-2 text-center">Weight (lbs)</div>
-                            <div class="col-span-1"></div>
+                            <div class="col-span-2 text-right">Lore / Del</div>
                         </div>
 
                         <template x-for="(it, tIdx) in encForm.treasure_rewards.items" :key="tIdx">
-                            <div class="grid grid-cols-12 gap-2 items-center bg-white p-1.5 rounded-lg border border-slate-200 shadow-2xs">
-                                <div class="col-span-6">
-                                    <input type="text" x-model="it.name" placeholder="Item Name (e.g. +1 Dagger, Potion)"
-                                           class="w-full px-2 py-0.5 border border-slate-300 rounded text-xs text-slate-900 font-medium focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                            <div class="bg-white p-1.5 rounded-lg border border-slate-200 shadow-2xs space-y-1.5" x-data="{ showLootLore: false }">
+                                <div class="grid grid-cols-12 gap-2 items-center">
+                                    <div class="col-span-5">
+                                        <input type="text" x-model="it.name" placeholder="Item Name (e.g. +1 Dagger, Potion)"
+                                               class="w-full px-2 py-0.5 border border-slate-300 rounded text-xs text-slate-900 font-medium focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                    </div>
+                                    <div class="col-span-3">
+                                        <input type="number" x-model.number="it.value" min="0" placeholder="0"
+                                               class="w-full px-1 py-0.5 border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                    </div>
+                                    <div class="col-span-2">
+                                        <input type="number" x-model.number="it.weight" min="0" step="any" placeholder="0.01"
+                                               class="w-full px-1 py-0.5 border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
+                                    </div>
+                                    <div class="col-span-2 flex items-center justify-end gap-1">
+                                        <button type="button" @click="showLootLore = !showLootLore"
+                                                :class="(it.appearance || it.history) ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-600 border-slate-300'"
+                                                class="px-1.5 py-0.5 rounded border text-[10px] font-bold cursor-pointer"
+                                                title="View or Edit Item Appearance &amp; Background History">
+                                            🏺
+                                        </button>
+                                        <button type="button" @click="encForm.treasure_rewards.items.splice(tIdx, 1)" 
+                                                class="text-rose-500 hover:text-rose-700 p-0.5 font-bold text-xs cursor-pointer" title="Remove Item">
+                                            ✕
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="col-span-3">
-                                    <input type="number" x-model.number="it.value" min="0" placeholder="0"
-                                           class="w-full px-1 py-0.5 border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
-                                </div>
-                                <div class="col-span-2">
-                                    <input type="number" x-model.number="it.weight" min="0" step="any" placeholder="0.01"
-                                           class="w-full px-1 py-0.5 border border-slate-300 rounded text-xs font-mono text-center text-slate-900 focus:ring-1 focus:ring-amber-500 focus:outline-none">
-                                </div>
-                                <div class="col-span-1 flex items-center justify-center">
-                                    <button type="button" @click="encForm.treasure_rewards.items.splice(tIdx, 1)" 
-                                            class="text-rose-500 hover:text-rose-700 p-0.5 font-bold text-xs cursor-pointer" title="Remove Item">
-                                        ✕
-                                    </button>
+                                <div x-show="showLootLore" class="p-2 bg-amber-50/50 border border-amber-200 rounded grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase text-amber-950 mb-0.5">👁️ Appearance &amp; Craftsmanship</label>
+                                        <textarea x-model="it.appearance" rows="2" placeholder="Physical appearance, materials, visual or magical traits..."
+                                                  class="w-full px-2 py-1 bg-white border border-amber-300 rounded text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase text-amber-950 mb-0.5">📜 Background History</label>
+                                        <textarea x-model="it.history" rows="2" placeholder="Origin, maker, past wielders, or provenance..."
+                                                  class="w-full px-2 py-1 bg-white border border-amber-300 rounded text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </template>
@@ -1690,7 +1960,12 @@
 
                     <div class="space-y-2">
                         <template x-for="(it, iIdx) in awardData.items" :key="iIdx">
-                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 shadow-2xs space-y-2">
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200 shadow-2xs space-y-2" x-data="{ showAwardItemLore: false }">
+                                <input type="hidden" :name="'items[' + iIdx + '][config]'" :value="it.config || ''">
+                                <input type="hidden" :name="'items[' + iIdx + '][traits]'" :value="it.traits || ''">
+                                <input type="hidden" :name="'items[' + iIdx + '][mods]'" :value="it.mods || ''">
+                                <input type="hidden" :name="'items[' + iIdx + '][appearance]'" :value="it.appearance || ''">
+                                <input type="hidden" :name="'items[' + iIdx + '][history]'" :value="it.history || ''">
                                 <div class="flex flex-col sm:flex-row sm:items-center gap-2">
                                     <div class="flex-1">
                                         <input type="text" :name="'items[' + iIdx + '][name]'" x-model="it.name" placeholder="Item Name (e.g. +1 Longsword, Potion of Healing)"
@@ -1718,9 +1993,27 @@
                                                 </template>
                                             </select>
                                         </div>
+                                        <button type="button" @click="showAwardItemLore = !showAwardItemLore"
+                                                :class="(it.appearance || it.history) ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-600 border-slate-300'"
+                                                class="px-1.5 py-0.5 rounded border text-[10px] font-bold cursor-pointer"
+                                                title="View or Edit Item Appearance &amp; Background History">
+                                            🏺
+                                        </button>
                                         <button type="button" @click="removeItemFromAward(iIdx)" class="text-rose-600 hover:text-rose-800 p-1 font-bold text-xs cursor-pointer" title="Remove item">
                                             ✕
                                         </button>
+                                    </div>
+                                </div>
+                                <div x-show="showAwardItemLore" class="p-2 bg-amber-50/50 border border-amber-200 rounded grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase text-amber-950 mb-0.5">👁️ Appearance &amp; Craftsmanship</label>
+                                        <textarea x-model="it.appearance" rows="2" placeholder="Physical appearance, materials, visual or magical traits..."
+                                                  class="w-full px-2 py-1 bg-white border border-amber-300 rounded text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase text-amber-950 mb-0.5">📜 Background History</label>
+                                        <textarea x-model="it.history" rows="2" placeholder="Origin, maker, past wielders, or provenance..."
+                                                  class="w-full px-2 py-1 bg-white border border-amber-300 rounded text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -1852,6 +2145,61 @@
                         <span x-show="sellingVault">Liquidating items...</span>
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NPC / Encounter Foe Lore & Stat Block Modal -->
+    <div x-show="showNpcModal" style="display: none; z-index: 9999;" class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/75 backdrop-blur-sm min-h-full flex items-start sm:items-center justify-center p-2 sm:p-4 pt-4 sm:pt-8" @keydown.escape.window="showNpcModal = false">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full border border-slate-300 overflow-hidden relative z-[10000] max-h-[92vh] flex flex-col my-auto" @click.outside="showNpcModal = false">
+            <div class="px-6 py-4 flex items-center justify-between border-b border-slate-700 rounded-t-2xl shrink-0" style="background-color: #3a4f63; color: #ffffff;">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-2xl">🎭</span>
+                    <div>
+                        <h3 class="font-bold text-lg text-white font-serif leading-tight" style="color: #ffffff !important;" x-text="activeNpc ? (activeNpc.name || 'NPC / Creature') : 'NPC / Creature'"></h3>
+                        <p class="text-xs text-slate-300" style="color: #cbd5e1 !important; margin: 0 !important;" x-text="activeNpc ? ((activeNpc.race_name || activeNpc.base_creature || 'Creature') + (activeNpc.class_summary ? ' • ' + activeNpc.class_summary : '')) : ''"></p>
+                    </div>
+                </div>
+                <button type="button" @click="showNpcModal = false" style="color: #cbd5e1;" class="hover:text-white font-bold text-2xl leading-none cursor-pointer">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4 flex-1 text-slate-800" x-show="activeNpc">
+                <!-- Lore Details Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="p-3 bg-amber-50/70 border border-amber-200 rounded-xl space-y-1">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-amber-950">👁️ Appearance &amp; Presence</div>
+                        <p class="text-xs text-stone-800 leading-relaxed whitespace-pre-line" x-text="(activeNpc && activeNpc.appearance) ? activeNpc.appearance : 'No appearance details recorded.'"></p>
+                    </div>
+                    <div class="p-3 bg-amber-50/70 border border-amber-200 rounded-xl space-y-1">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-amber-950">🧠 Personality &amp; Demeanor</div>
+                        <p class="text-xs text-stone-800 leading-relaxed whitespace-pre-line" x-text="(activeNpc && activeNpc.personality) ? activeNpc.personality : 'No personality traits recorded.'"></p>
+                    </div>
+                    <div class="p-3 bg-amber-50/70 border border-amber-200 rounded-xl space-y-1">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-amber-950">📜 Background History &amp; Origin</div>
+                        <p class="text-xs text-stone-800 leading-relaxed whitespace-pre-line" x-text="(activeNpc && activeNpc.history) ? activeNpc.history : 'No background history recorded.'"></p>
+                    </div>
+                    <div class="p-3 bg-amber-50/70 border border-amber-200 rounded-xl space-y-1">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-amber-950">🕸️ Connections &amp; Hooks</div>
+                        <p class="text-xs text-stone-800 leading-relaxed whitespace-pre-line" x-text="(activeNpc && activeNpc.connections) ? activeNpc.connections : 'No connections recorded.'"></p>
+                    </div>
+                </div>
+
+                <!-- Stored Stat Block HTML if available -->
+                <template x-if="activeNpc && activeNpc.statblock_html">
+                    <div class="space-y-1.5 pt-2 border-t border-slate-200">
+                        <div class="text-xs font-bold uppercase tracking-wider text-slate-700">⚔️ Stored Stat Block</div>
+                        <div class="border border-slate-200 rounded-xl overflow-hidden" x-html="activeNpc.statblock_html"></div>
+                    </div>
+                </template>
+            </div>
+            <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+                <div>
+                    <template x-if="activeNpc && activeNpc.id">
+                        <a :href="'{{ route('utilities.charview', [], false) }}/' + activeNpc.id" class="text-xs font-bold text-indigo-700 hover:underline">
+                            Open Full Character / NPC Sheet &rarr;
+                        </a>
+                    </template>
+                </div>
+                <button type="button" @click="showNpcModal = false" class="btn-rol-secondary text-xs py-1.5 px-4 cursor-pointer">Close</button>
             </div>
         </div>
     </div>
@@ -2065,6 +2413,12 @@ function campaignAdmin() {
             this.showAddPcModal = true;
         },
 
+        openNpcLoreModal(npcOrFoe) {
+            if (!npcOrFoe) return;
+            this.activeNpc = npcOrFoe;
+            this.showNpcModal = true;
+        },
+
         openAwardModal(camp = null, party = null, prefill = {}) {
             this.awardCamp = camp || this.activeCampaign || { ID: 0, Name: '' };
             const rawParty = party !== null ? party : this.activeCampChars;
@@ -2097,8 +2451,13 @@ function campaignAdmin() {
                 char_silver: charSilver,
                 items: Array.isArray(prefill.items) ? prefill.items.map(it => ({
                     name: it.name || it.Item || '',
+                    config: it.config || it.config_string || it.Config || '',
                     value: Math.round(Number(it.value ?? it.Value ?? it.unit_price ?? it.val_sp ?? (it.val_gp ? it.val_gp * 10 : 0) ?? 0)),
                     weight: Number(it.weight ?? it.Weight ?? it.unit_weight ?? 1),
+                    traits: it.traits || it.Traits || '',
+                    mods: it.mods || it.Mods || '',
+                    appearance: it.appearance || it.Appearance || '',
+                    history: it.history || it.History || '',
                     assign_to: it.assign_to || 'vault'
                 })) : []
             };
@@ -2111,8 +2470,13 @@ function campaignAdmin() {
             }
             this.awardData.items.push({
                 name: '',
+                config: '',
                 value: 0,
                 weight: 1,
+                traits: '',
+                mods: '',
+                appearance: '',
+                history: '',
                 assign_to: 'vault'
             });
         },
@@ -2438,7 +2802,9 @@ function campaignAdmin() {
             this.encForm.treasure_rewards.items.push({
                 name: '',
                 value: 0,
-                weight: 1
+                weight: 1,
+                appearance: '',
+                history: ''
             });
         },
 

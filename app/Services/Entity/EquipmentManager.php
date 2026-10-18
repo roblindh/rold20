@@ -285,6 +285,11 @@ class EquipmentManager
         }
         $arr = self::enrichItemWithRefData($item);
 
+        // Items with custom generated appearance or background history are unique and should not stack
+        if (!empty(trim((string)($arr['appearance'] ?? $arr['Appearance'] ?? ''))) || !empty(trim((string)($arr['history'] ?? $arr['History'] ?? '')))) {
+            return false;
+        }
+
         if (isset($arr['is_stackable'])) {
             return (bool)$arr['is_stackable'];
         }
@@ -1226,10 +1231,15 @@ class EquipmentManager
         }
         $valType = $overrides['valuable_type'] ?? $mergedInput['valuable_type'] ?? ($isValuable ? ($subtypeId === 51 ? 'gem' : ($subtypeId === 52 ? 'art' : (in_array($subtypeId, [53, 54, 55, 56]) ? 'bullion' : (preg_match('/\b(gem|ruby|emerald|sapphire|diamond|opal|amethyst|garnet|topaz|turquoise|agate|spinel|peridot|jade|pearl|onyx|zircon|quartz|tourmaline)\b/i', $name) ? 'gem' : 'valuable')))) : null);
 
+        $appearance = trim((string)($overrides['appearance'] ?? $mergedInput['appearance'] ?? $mergedInput['Appearance'] ?? ''));
+        $history = trim((string)($overrides['history'] ?? $mergedInput['history'] ?? $mergedInput['History'] ?? ''));
+
         $isStackable = self::isStackable(array_merge($itemStub, [
             'traits' => $resolvedTraits,
             'is_container' => $isContainer,
             'is_valuable' => $isValuable,
+            'appearance' => $appearance,
+            'history' => $history,
         ]));
 
         $bundle = self::parseBundleInfo($name);
@@ -1296,6 +1306,8 @@ class EquipmentManager
             'material' => $inst['material'] ?? ($mergedInput['material'] ?? ($baseItem['BaseMaterial'] ?? null)),
             'BaseMaterial' => $inst['material'] ?? ($mergedInput['material'] ?? ($baseItem['BaseMaterial'] ?? null)),
             'pl' => $pl,
+            'appearance' => $appearance,
+            'history' => $history,
             'added_at' => $mergedInput['added_at'] ?? date('Y-m-d H:i:s'),
         ];
     }

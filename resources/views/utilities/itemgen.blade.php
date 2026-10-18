@@ -305,9 +305,67 @@
                 @include('utilities.partials.item_statbox', $initialResult)
             </div>
 
-            <!-- Save to Character or Campaign Vault Card -->
+            <!-- Item Lore: Appearance & Background History Card (Kept outside statbox & config string) -->
+            <div class="parchment-card p-4 space-y-3 border border-amber-900/20">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-amber-900/15 pb-2">
+                    <div>
+                        <span class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5 font-display">
+                            <span>🏺</span> Item Lore: Appearance &amp; History
+                        </span>
+                        <p class="text-[11px] text-slate-600">Optional lore for unique or valuable items. Excluded from configuration string; stored when saved to a character, campaign, or encounter.</p>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" @click="rollItemLore('all')" :disabled="rollingLore"
+                                class="btn-rol-primary px-2.5 py-1 text-xs font-bold flex items-center gap-1 cursor-pointer">
+                            <span>🎲</span>
+                            <span x-text="rollingLore ? 'Rolling...' : 'Roll Both'"></span>
+                        </button>
+                        <button type="button" @click="clearItemLore()"
+                                x-show="itemLore.appearance || itemLore.history"
+                                class="btn-rol-secondary px-2 py-1 text-[11px] cursor-pointer">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <!-- Appearance -->
+                    <div class="bg-amber-50/40 border border-amber-900/15 rounded-lg p-2.5 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="text-[11px] font-bold uppercase tracking-wider text-amber-950 flex items-center gap-1">
+                                <span>👁️</span> Appearance &amp; Craftsmanship
+                            </label>
+                            <button type="button" @click="rollItemLore('appearance')" :disabled="rollingLore"
+                                    class="text-[11px] font-semibold text-amber-800 hover:text-amber-950 bg-amber-100/80 hover:bg-amber-200/80 px-2 py-0.5 rounded border border-amber-900/20 cursor-pointer">
+                                🎲 Roll
+                            </button>
+                        </div>
+                        <textarea x-model="itemLore.appearance" rows="4"
+                                  placeholder="Roll or write physical craftsmanship, material details, and visual or magical manifestations..."
+                                  class="w-full px-2.5 py-1.5 bg-white border border-amber-900/20 rounded text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500 resize-y"></textarea>
+                    </div>
+
+                    <!-- Background History -->
+                    <div class="bg-amber-50/40 border border-amber-900/15 rounded-lg p-2.5 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="text-[11px] font-bold uppercase tracking-wider text-amber-950 flex items-center gap-1">
+                                <span>📜</span> Background History &amp; Provenance
+                            </label>
+                            <button type="button" @click="rollItemLore('history')" :disabled="rollingLore"
+                                    class="text-[11px] font-semibold text-amber-800 hover:text-amber-950 bg-amber-100/80 hover:bg-amber-200/80 px-2 py-0.5 rounded border border-amber-900/20 cursor-pointer">
+                                🎲 Roll
+                            </button>
+                        </div>
+                        <textarea x-model="itemLore.history" rows="4"
+                                  placeholder="Roll or write who forged or commissioned the item, its past wielders, and how it was lost or preserved..."
+                                  class="w-full px-2.5 py-1.5 bg-white border border-amber-900/20 rounded text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500 resize-y"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save to Character, Campaign Vault, or Encounter Card -->
             <div class="parchment-card p-4 space-y-3">
-                <div class="flex items-center justify-between border-b border-amber-900/10 pb-2">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-amber-900/10 pb-2">
                     <span class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5 font-display">
                         <span>💾</span> Save Generated Item
                     </span>
@@ -317,6 +375,9 @@
                         </button>
                         <button type="button" @click="saveTab = 'campaign'" :class="saveTab === 'campaign' ? 'btn-rol-primary font-bold' : 'btn-rol-secondary opacity-80'" class="px-2.5 py-1 text-xs cursor-pointer">
                             Campaign Vault
+                        </button>
+                        <button type="button" @click="saveTab = 'encounter'" :class="saveTab === 'encounter' ? 'btn-rol-primary font-bold' : 'btn-rol-secondary opacity-80'" class="px-2.5 py-1 text-xs cursor-pointer">
+                            Encounter
                         </button>
                     </div>
                 </div>
@@ -348,7 +409,7 @@
                 <div x-show="saveTab === 'campaign'" class="space-y-2">
                     <label class="block text-xs font-semibold text-slate-700">Target Campaign Vault</label>
                     <div class="flex items-center gap-2">
-                        <select x-model="selectedCampaignId" class="flex-1 px-3 py-1.5 bg-white border border-amber-900/25 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-amber-500">
+                        <select x-model="selectedCampaignId" @change="onCampaignChangeForEncounter()" class="flex-1 px-3 py-1.5 bg-white border border-amber-900/25 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-amber-500">
                             @forelse($campaigns as $camp)
                                 <option value="{{ $camp->ID }}">{{ $camp->Name }}</option>
                             @empty
@@ -358,6 +419,43 @@
                         <button type="button" @click="saveToCamp()" :disabled="saving || !selectedCampaignId"
                                 class="btn-rol-primary px-3.5 py-1.5 text-xs flex items-center gap-1 cursor-pointer">
                             <span x-show="!saving">Store in Vault</span>
+                            <span x-show="saving">Saving...</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Save to Encounter -->
+                <div x-show="saveTab === 'encounter'" class="space-y-2.5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Campaign</label>
+                            <select x-model="selectedCampaignId" @change="onCampaignChangeForEncounter()" class="w-full px-3 py-1.5 bg-white border border-amber-900/25 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-amber-500">
+                                @forelse($campaigns as $camp)
+                                    <option value="{{ $camp->ID }}">{{ $camp->Name }}</option>
+                                @empty
+                                    <option value="">No campaigns found</option>
+                                @endforelse
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Target Encounter</label>
+                            <select x-model="selectedEncounterId" class="w-full px-3 py-1.5 bg-white border border-amber-900/25 rounded-lg text-xs font-medium text-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-amber-500">
+                                <template x-for="enc in filteredEncounters" :key="enc.id">
+                                    <option :value="String(enc.id)" x-text="(enc.adventure_title ? '[' + enc.adventure_title + '] ' : '') + enc.title"></option>
+                                </template>
+                                <option value="0">+ Create New Ad Hoc Encounter</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div x-show="String(selectedEncounterId) === '0'" class="pt-1">
+                        <label class="block text-[11px] font-semibold text-slate-700 mb-1">New Encounter Title</label>
+                        <input type="text" x-model="newEncounterName" placeholder="e.g., Dragon Hoard Cache / Ambush at North Gate"
+                               class="w-full px-3 py-1.5 bg-white border border-amber-900/25 rounded-lg text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-amber-500">
+                    </div>
+                    <div class="flex justify-end pt-1">
+                        <button type="button" @click="saveToEnc()" :disabled="saving || !selectedCampaignId"
+                                class="btn-rol-primary px-3.5 py-1.5 text-xs flex items-center gap-1 cursor-pointer">
+                            <span x-show="!saving">⚔️ Add to Encounter Treasure</span>
                             <span x-show="saving">Saving...</span>
                         </button>
                     </div>
@@ -415,19 +513,110 @@ function itemGeneratorWizard() {
         importableItems: @json($importableItems ?? []),
         importSubtypes: @json($importSubtypes ?? []),
 
-        // Save to Character / Campaign State
+        // Save to Character / Campaign / Encounter State
         saveTab: 'character',
         selectedCharId: '{{ $characters->first()?->ID ?? '' }}',
         selectedCampaignId: '{{ $campaigns->first()?->ID ?? '' }}',
+        encounters: @json($encounters ?? []),
+        selectedEncounterId: '0',
+        newEncounterName: '',
         saving: false,
         saveMessage: null,
         saveError: null,
+
+        // Item Lore State (excluded from configString and statbox)
+        itemLore: {
+            appearance: '',
+            history: '',
+        },
+        rollingLore: false,
 
         init() {
             // Auto update base description if needed
             const currentItem = this.items.find(i => i.id === this.itemId);
             if (currentItem) {
                 this.description = currentItem.name;
+            }
+            this.onCampaignChangeForEncounter();
+        },
+
+        get filteredEncounters() {
+            const campId = Number(this.selectedCampaignId || 0);
+            if (!campId) return [];
+            return (this.encounters || []).filter(e => Number(e.campaign_id) === campId);
+        },
+
+        onCampaignChangeForEncounter() {
+            const list = this.filteredEncounters;
+            if (list.length > 0) {
+                const stillExists = list.some(e => String(e.id) === String(this.selectedEncounterId));
+                if (!stillExists || String(this.selectedEncounterId) === '0') {
+                    this.selectedEncounterId = String(list[0].id);
+                }
+            } else {
+                this.selectedEncounterId = '0';
+            }
+        },
+
+        clearItemLore() {
+            this.itemLore.appearance = '';
+            this.itemLore.history = '';
+        },
+
+        async rollItemLore(field = 'all') {
+            this.rollingLore = true;
+            this.error = null;
+            try {
+                const currentItem = this.items.find(i => i.id === Number(this.itemId));
+                const currentCat = this.categories.find(c => c.id === Number(this.selectedCategoryId));
+                const plNum = parseFloat(String(this.latestItem?.pl || '0').replace(/[^0-9.-]/g, '')) || 0;
+                const valNum = parseFloat(String(this.latestItem?.value || '0').replace(/[^0-9.-]/g, '')) || 0;
+
+                const payload = {
+                    field: field,
+                    name: this.description || (currentItem ? currentItem.name : 'Custom Item'),
+                    item_id: Number(this.itemId || 0),
+                    base_item_name: currentItem ? currentItem.name : '',
+                    category_name: currentCat ? currentCat.name : (currentItem ? (currentItem.category_name || '') : ''),
+                    subtype_name: currentItem ? (currentItem.subtype_name || '') : '',
+                    material_id: Number(this.materialId || 0),
+                    mundane_mods: this.mundaneMods.map(m => Number(m.id)).filter(id => id > 0),
+                    magic_mods: this.magicMods.filter(m => Number(m.mod_id) > 0).map(m => ({
+                        mod_id: Number(m.mod_id),
+                        x: m.x,
+                        y: m.y,
+                        mul: m.mul
+                    })),
+                    power_level: plNum,
+                    value: valNum,
+                };
+
+                const response = await fetch('{{ route("utilities.generator.item-lore", [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const json = await response.json();
+                if (!response.ok || !json.success || !json.data) {
+                    throw new Error(json.error || 'Failed to generate item lore.');
+                }
+
+                if (field === 'all' || field === 'appearance') {
+                    this.itemLore.appearance = json.data.appearance || '';
+                }
+                if (field === 'all' || field === 'history') {
+                    this.itemLore.history = json.data.history || '';
+                }
+            } catch (err) {
+                console.error('Error rolling item lore:', err);
+                this.error = err.message || 'Could not generate item lore.';
+            } finally {
+                this.rollingLore = false;
             }
         },
 
@@ -620,6 +809,7 @@ function itemGeneratorWizard() {
             this.materialId = 0;
             this.mundaneMods = [];
             this.magicMods = [];
+            this.clearItemLore();
             this.error = null;
             this.importNotification = null;
             this.generateItem();
@@ -687,6 +877,8 @@ function itemGeneratorWizard() {
                         character_id: this.selectedCharId,
                         name: this.description || 'Custom Item',
                         config_string: this.configString,
+                        item_id: this.itemId,
+                        material_id: this.materialId,
                         value: this.latestItem?.value || 0,
                         weight: this.latestItem?.weight || 0,
                         size: this.latestItem?.size || 'Medium (M)',
@@ -695,7 +887,9 @@ function itemGeneratorWizard() {
                         dr: this.latestItem?.dr || '0',
                         hp: this.latestItem?.hp || 1,
                         traits: this.latestItem?.traits || '',
-                        mods: this.latestItem?.mods || ''
+                        mods: this.latestItem?.mods || '',
+                        appearance: this.itemLore.appearance || '',
+                        history: this.itemLore.history || ''
                     })
                 });
                 const data = await res.json();
@@ -727,6 +921,8 @@ function itemGeneratorWizard() {
                         campaign_id: this.selectedCampaignId,
                         name: this.description || 'Custom Item',
                         config_string: this.configString,
+                        item_id: this.itemId,
+                        material_id: this.materialId,
                         value: this.latestItem?.value || 0,
                         weight: this.latestItem?.weight || 0,
                         size: this.latestItem?.size || 'Medium (M)',
@@ -735,11 +931,72 @@ function itemGeneratorWizard() {
                         dr: this.latestItem?.dr || '0',
                         hp: this.latestItem?.hp || 1,
                         traits: this.latestItem?.traits || '',
-                        mods: this.latestItem?.mods || ''
+                        mods: this.latestItem?.mods || '',
+                        appearance: this.itemLore.appearance || '',
+                        history: this.itemLore.history || ''
                     })
                 });
                 const data = await res.json();
                 if (!res.ok || !data.success) throw new Error(data.message || 'Failed to store item.');
+                this.saveMessage = data.message;
+                setTimeout(() => this.saveMessage = null, 4000);
+            } catch (e) {
+                this.saveError = e.message;
+                setTimeout(() => this.saveError = null, 4000);
+            } finally {
+                this.saving = false;
+            }
+        },
+
+        async saveToEnc() {
+            if (!this.selectedCampaignId) return;
+            this.saving = true;
+            this.saveMessage = null;
+            this.saveError = null;
+            try {
+                const res = await fetch('{{ route("utilities.itemgen.save-to-encounter", [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify({
+                        campaign_id: this.selectedCampaignId,
+                        encounter_id: Number(this.selectedEncounterId || 0),
+                        new_encounter_name: this.newEncounterName,
+                        name: this.description || 'Custom Item',
+                        config_string: this.configString,
+                        item_id: this.itemId,
+                        material_id: this.materialId,
+                        value: this.latestItem?.value || 0,
+                        weight: this.latestItem?.weight || 0,
+                        size: this.latestItem?.size || 'Medium (M)',
+                        ec: this.latestItem?.ec || 0,
+                        pl: this.latestItem?.pl || '0',
+                        dr: this.latestItem?.dr || '0',
+                        hp: this.latestItem?.hp || 1,
+                        traits: this.latestItem?.traits || '',
+                        mods: this.latestItem?.mods || '',
+                        appearance: this.itemLore.appearance || '',
+                        history: this.itemLore.history || ''
+                    })
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) throw new Error(data.message || 'Failed to add item to encounter.');
+
+                // If a new encounter was created, add it to the local list and select it
+                if (data.encounter_id && String(this.selectedEncounterId) === '0') {
+                    this.encounters.push({
+                        id: Number(data.encounter_id),
+                        campaign_id: Number(this.selectedCampaignId),
+                        title: data.encounter_title || (this.newEncounterName || 'Ad Hoc Encounter'),
+                        adventure_title: ''
+                    });
+                    this.selectedEncounterId = String(data.encounter_id);
+                    this.newEncounterName = '';
+                }
+
                 this.saveMessage = data.message;
                 setTimeout(() => this.saveMessage = null, 4000);
             } catch (e) {

@@ -466,7 +466,7 @@
                           class="input-rol w-full font-mono text-xs"></textarea>
             </div>
 
-            <!-- 14. Actions & Save to Campaign -->
+            <!-- 14. Generate Stat Block Action -->
             <div class="space-y-2 pt-1">
                 <button type="button" @click="generateNpc()" :disabled="loading"
                         class="w-full py-2.5 btn-rol-primary text-sm flex items-center justify-center gap-2 cursor-pointer shadow-sm">
@@ -475,44 +475,13 @@
                         <span class="animate-spin">⏳</span> Generating...
                     </span>
                 </button>
-
-                @if($myCampaigns->isNotEmpty())
-                    <!-- GM Campaign Storage Bar -->
-                    <div class="parchment-card p-3 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-                        <div class="flex items-center gap-2 w-full sm:w-auto">
-                            <span class="text-xs font-bold text-amber-950 uppercase tracking-wider shrink-0 font-display">🏰 Campaign:</span>
-                            <select x-model.number="selectedCampaignId"
-                                    class="select-rol text-xs font-medium flex-1 sm:w-48">
-                                <option value="0">-- Select a Campaign --</option>
-                                @foreach($myCampaigns as $mc)
-                                    <option value="{{ $mc->ID }}" {{ $selectedCampaignId === $mc->ID ? 'selected' : '' }}>{{ $mc->Name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <button type="button" @click="saveToCampaign()" :disabled="savingCamp || !selectedCampaignId"
-                                class="w-full sm:w-auto btn-rol-success text-xs py-1.5 px-3.5 flex items-center justify-center gap-1.5 cursor-pointer shrink-0 disabled:opacity-50">
-                            <span x-show="!savingCamp">💾 Save to Campaign</span>
-                            <span x-show="savingCamp" class="animate-spin">⏳</span>
-                        </button>
-                    </div>
-                @endif
-
-                <template x-if="saveMessage">
-                    <div class="p-2.5 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-800 font-semibold flex items-center justify-between gap-2">
-                        <span x-text="saveMessage"></span>
-                        <a href="{{ route('utilities.campaign', [], false) }}" class="underline hover:text-emerald-950 shrink-0">Go to Campaign &rarr;</a>
-                    </div>
-                </template>
-                <template x-if="saveError">
-                    <div class="p-2.5 bg-rose-50 border border-rose-300 rounded-xl text-xs text-rose-800 font-semibold" x-text="saveError"></div>
-                </template>
             </div>
         </div>
 
-        <!-- RIGHT COLUMN: Output Stat Block Display (5 cols on lg, sticky full screen) -->
-        <div class="lg:col-span-5 lg:sticky lg:top-4 max-h-[calc(100vh-2rem)] flex flex-col">
-            <!-- Loading Overlay / Results Container -->
-            <div class="relative flex-1 overflow-y-auto pr-1">
+        <!-- RIGHT COLUMN: Output Stat Block Display, Lore Generator & Campaign/Encounter Storage (5 cols on lg) -->
+        <div class="lg:col-span-5 flex flex-col space-y-3">
+            <!-- 1. Stat Block Container -->
+            <div class="relative">
                 <div x-show="loading" class="absolute inset-0 bg-white/70 backdrop-blur-xs flex items-center justify-center z-10 rounded-2xl">
                     <div class="p-3.5 bg-white border border-indigo-200 rounded-xl shadow-lg flex items-center gap-2.5">
                         <span class="text-lg animate-spin">⏳</span>
@@ -532,6 +501,181 @@
                     </div>
                 </template>
             </div>
+
+            <!-- 2. Lore, Personality & Connections Generator (Separate from Stat Block) -->
+            <div class="parchment-card p-3.5 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200/80 pb-2">
+                    <div>
+                        <h3 class="text-xs font-bold text-amber-950 uppercase tracking-wider font-display flex items-center gap-1.5">
+                            <span>🎭</span> Lore, Personality &amp; Connections
+                        </h3>
+                        <p class="text-[10px] text-slate-500">
+                            Tailored to creature type, subtype &amp; templates. Stored when saved to a Campaign or Encounter (not shown in Stat Block).
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" @click="rollAllLore()" :disabled="rollingLore !== ''"
+                                class="btn-rol-primary text-[11px] py-1 px-2.5 font-bold cursor-pointer flex items-center gap-1 disabled:opacity-50"
+                                title="Randomly generate Appearance, Personality, Background History, and Connections">
+                            <span x-show="rollingLore !== 'all'">🎲 Roll All Details</span>
+                            <span x-show="rollingLore === 'all'" class="animate-spin">⏳</span>
+                        </button>
+                        <button type="button" @click="clearLore()"
+                                x-show="appearance || personality || history || connections"
+                                class="btn-action-pill btn-action-pill-danger text-[10px] font-semibold">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5">
+                    <!-- Appearance -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wider">👁️ Appearance &amp; Presence</label>
+                            <button type="button" @click="rollAppearance()" :disabled="rollingLore !== ''"
+                                    class="btn-action-pill text-[10px] font-bold cursor-pointer flex items-center gap-1">
+                                <span x-show="rollingLore !== 'appearance'">🎲 Roll Appearance</span>
+                                <span x-show="rollingLore === 'appearance'" class="animate-spin">⏳</span>
+                            </button>
+                        </div>
+                        <textarea x-model="appearance" rows="2"
+                                  placeholder="Click 'Roll Appearance' or type physical features, build, attire, or monstrous anatomy..."
+                                  class="input-rol w-full text-xs"></textarea>
+                    </div>
+
+                    <!-- Personality Traits -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wider">🧠 Personality &amp; Demeanor</label>
+                            <button type="button" @click="rollPersonality()" :disabled="rollingLore !== ''"
+                                    class="btn-action-pill text-[10px] font-bold cursor-pointer flex items-center gap-1">
+                                <span x-show="rollingLore !== 'personality'">🎲 Roll Personality</span>
+                                <span x-show="rollingLore === 'personality'" class="animate-spin">⏳</span>
+                            </button>
+                        </div>
+                        <textarea x-model="personality" rows="2"
+                                  placeholder="Click 'Roll Personality' or type demeanor, motivations, quirks, or instincts..."
+                                  class="input-rol w-full text-xs"></textarea>
+                    </div>
+
+                    <!-- Background History -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wider">📜 Background History &amp; Origin</label>
+                            <button type="button" @click="rollBackground()" :disabled="rollingLore !== ''"
+                                    class="btn-action-pill text-[10px] font-bold cursor-pointer flex items-center gap-1">
+                                <span x-show="rollingLore !== 'history'">🎲 Roll History</span>
+                                <span x-show="rollingLore === 'history'" class="animate-spin">⏳</span>
+                            </button>
+                        </div>
+                        <textarea x-model="history" rows="2"
+                                  placeholder="Click 'Roll History' or type origin, past events, secrets, or lair history..."
+                                  class="input-rol w-full text-xs"></textarea>
+                    </div>
+
+                    <!-- Connections -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wider">🕸️ Connections &amp; Hooks</label>
+                            <button type="button" @click="rollConnections()" :disabled="rollingLore !== ''"
+                                    class="btn-action-pill text-[10px] font-bold cursor-pointer flex items-center gap-1">
+                                <span x-show="rollingLore !== 'connections'">🎲 Roll Connections</span>
+                                <span x-show="rollingLore === 'connections'" class="animate-spin">⏳</span>
+                            </button>
+                        </div>
+                        <textarea x-model="connections" rows="2"
+                                  placeholder="Click 'Roll Connections' or type allies, rivals, faction ties, or ecological/regional hooks..."
+                                  class="input-rol w-full text-xs"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Campaign & Encounter Storage Card -->
+            <div class="parchment-card p-3.5 space-y-3">
+                <div class="border-b border-amber-200/80 pb-2">
+                    <h3 class="text-xs font-bold text-amber-950 uppercase tracking-wider font-display flex items-center gap-1.5">
+                        <span>🏰</span> Store in Campaign or Encounter
+                    </h3>
+                    <p class="text-[10px] text-slate-500">
+                        Save this NPC/monster (including stat block and generated lore details) to a Campaign roster or directly into an Encounter.
+                    </p>
+                </div>
+
+                @if($myCampaigns->isNotEmpty())
+                    <!-- Campaign Selector -->
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                        <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wider sm:w-28 shrink-0">Campaign:</label>
+                        <select x-model.number="selectedCampaignId" @change="onCampaignChanged()"
+                                class="select-rol text-xs font-medium flex-1">
+                            <option value="0">-- Select a Campaign --</option>
+                            @foreach($myCampaigns as $mc)
+                                <option value="{{ $mc->ID }}" {{ $selectedCampaignId === $mc->ID ? 'selected' : '' }}>{{ $mc->Name }}</option>
+                            @endforeach
+                        </select>
+                        <button type="button" @click="saveToCampaign()" :disabled="savingCamp || !selectedCampaignId"
+                                class="btn-rol-success text-xs py-1.5 px-3 flex items-center justify-center gap-1.5 cursor-pointer shrink-0 disabled:opacity-50"
+                                title="Save as a recurring Campaign NPC in the selected campaign">
+                            <span x-show="!savingCamp">💾 Save to Campaign</span>
+                            <span x-show="savingCamp" class="animate-spin">⏳</span>
+                        </button>
+                    </div>
+
+                    <!-- Encounter Selector & Add to Encounter -->
+                    <div class="pt-2 border-t border-amber-200/60 space-y-2">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                            <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wider sm:w-28 shrink-0">Encounter:</label>
+                            <select x-model.number="selectedEncounterId"
+                                    class="select-rol text-xs font-medium flex-1">
+                                <option value="0">+ Create New Ad Hoc Encounter...</option>
+                                <template x-for="enc in filteredEncounters" :key="enc.id">
+                                    <option :value="Number(enc.id)" x-text="(enc.adventure_name ? '[' + enc.adventure_name + '] ' : '') + enc.name + ' (EL ' + enc.encounter_level + ')'"></option>
+                                </template>
+                            </select>
+                            <div class="flex items-center gap-1 shrink-0">
+                                <label class="text-[10px] font-bold text-slate-600 uppercase">Qty:</label>
+                                <input type="number" x-model.number="encounterCount" min="1" max="50"
+                                       class="input-rol w-14 text-center text-xs py-1">
+                            </div>
+                        </div>
+
+                        <div x-show="Number(selectedEncounterId) === 0" class="flex flex-col sm:flex-row sm:items-center gap-2">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider sm:w-28 shrink-0">New Enc. Name:</label>
+                            <input type="text" x-model="newEncounterName"
+                                   :placeholder="(description || 'Monster') + ' Encounter'"
+                                   class="input-rol text-xs flex-1 py-1">
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="button" @click="saveToEncounter()" :disabled="savingEnc || !selectedCampaignId"
+                                    class="w-full sm:w-auto btn-rol-primary text-xs py-1.5 px-3.5 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                                    title="Add this NPC/monster with its stat block and lore details to the selected encounter">
+                                <span x-show="!savingEnc">⚔️ Add to Encounter</span>
+                                <span x-show="savingEnc" class="animate-spin">⏳</span>
+                            </button>
+                        </div>
+                    </div>
+                @else
+                    <div class="text-xs text-slate-500 italic">
+                        No campaigns found. <a href="{{ route('utilities.campaign', [], false) }}" class="text-indigo-700 underline font-semibold">Create a Campaign</a> first to store NPCs and encounters.
+                    </div>
+                @endif
+
+                <template x-if="saveMessage">
+                    <div class="p-2.5 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-800 font-semibold flex flex-wrap items-center justify-between gap-2">
+                        <span x-text="saveMessage"></span>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <a :href="'{{ route('utilities.campaign', [], false) }}?campaign=' + selectedCampaignId" class="underline hover:text-emerald-950">Campaign Manager &rarr;</a>
+                            <template x-if="lastSavedEncounterId > 0">
+                                <a :href="'{{ route('utilities.combattracker', [], false) }}?campaign_id=' + selectedCampaignId + '&encounter_id=' + lastSavedEncounterId" class="underline hover:text-emerald-950">Combat Tracker &rarr;</a>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+                <template x-if="saveError">
+                    <div class="p-2.5 bg-rose-50 border border-rose-300 rounded-xl text-xs text-rose-800 font-semibold" x-text="saveError"></div>
+                </template>
+            </div>
         </div>
     </div>
 </div>
@@ -542,6 +686,8 @@ function npcGeneratorWizard() {
         creatures: {!! json_encode($creatures) !!},
         cultures: {!! json_encode($cultures) !!},
         classConfigs: {!! json_encode($classConfigs) !!},
+        socialClasses: {!! json_encode($socialClasses) !!},
+        encounters: {!! json_encode($myEncounters ?? []) !!},
 
         description: 'Human',
         str: 10,
@@ -564,20 +710,47 @@ function npcGeneratorWizard() {
         wealth_class: 0,
         equipment: '',
 
+        // Lore & Roleplaying Details (stored on save, not rendered in stat block)
+        appearance: '',
+        personality: '',
+        history: '',
+        connections: '',
+        rollingLore: '',
+
         selectedCampaignId: {{ $selectedCampaignId ?? 0 }},
+        selectedEncounterId: 0,
+        encounterCount: 1,
+        newEncounterName: '',
+        lastSavedEncounterId: 0,
+
         selectedBlueprintSlug: '',
         generatingEquipment: false,
         loading: false,
         rollingAbil: false,
         savingCamp: false,
+        savingEnc: false,
         statblockHtml: {!! json_encode($initialStatblockHtml ?? '') !!},
         configString: {!! json_encode($initialConfig ?? 'Human { }') !!},
         previousCreatureName: 'Human',
         saveMessage: '',
         saveError: '',
 
+        get filteredEncounters() {
+            if (!this.selectedCampaignId) return [];
+            return (this.encounters || []).filter(e => Number(e.campaign_id) === Number(this.selectedCampaignId));
+        },
+
         init() {
-            // Stat block is already pre-rendered on initial server render
+            // Pre-select first encounter in active campaign if available
+            const list = this.filteredEncounters;
+            if (list.length > 0) {
+                this.selectedEncounterId = Number(list[0].id);
+            }
+        },
+
+        onCampaignChanged() {
+            const list = this.filteredEncounters;
+            this.selectedEncounterId = list.length > 0 ? Number(list[0].id) : 0;
         },
 
         onCreatureChanged() {
@@ -633,6 +806,159 @@ function npcGeneratorWizard() {
             this.int = val;
             this.wis = val;
             this.cha = val;
+        },
+
+        buildLoreContextPayload() {
+            const curCreature = this.creatures.find(c => Number(c.ID) === Number(this.creature_id));
+            let className = '';
+            if (this.classes.length > 0 && this.classes[0].config_id) {
+                const cc = this.classConfigs.find(cfg => Number(cfg.ID) === Number(this.classes[0].config_id));
+                if (cc) className = cc.Name;
+            }
+            if (!className && this.background_class_id) {
+                const bgc = this.classConfigs.find(cfg => Number(cfg.ID) === Number(this.background_class_id));
+                if (bgc) className = bgc.Name;
+            }
+            const scObj = (this.socialClasses || []).find(s => Number(s.ID) === Number(this.social_class));
+            const genderStr = Number(this.gender) === 2 ? 'Female' : (Number(this.gender) === 1 ? 'Male' : 'Neuter');
+            return {
+                _token: '{{ csrf_token() }}',
+                creature_id: Number(this.creature_id) || 1,
+                race: curCreature ? curCreature.Name : 'Human',
+                templates: this.templates,
+                gender: genderStr,
+                age_cat: Number(this.age_cat) || 3,
+                class: className || 'Adventurer',
+                social_class: scObj ? scObj.Name : 'Middle Class'
+            };
+        },
+
+        async rollAppearance() {
+            this.rollingLore = 'appearance';
+            try {
+                const res = await fetch('{{ route('utilities.generator.appearance', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(this.buildLoreContextPayload())
+                });
+                const json = await res.json();
+                if (json && json.success && json.data) {
+                    this.appearance = json.data.summary || '';
+                }
+            } catch (e) {
+                console.error('Error rolling appearance:', e);
+            }
+            this.rollingLore = '';
+        },
+
+        async rollPersonality() {
+            this.rollingLore = 'personality';
+            try {
+                const res = await fetch('{{ route('utilities.generator.personality', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(this.buildLoreContextPayload())
+                });
+                const json = await res.json();
+                if (json && json.success && json.data) {
+                    this.personality = json.data.summary || '';
+                }
+            } catch (e) {
+                console.error('Error rolling personality:', e);
+            }
+            this.rollingLore = '';
+        },
+
+        async rollBackground() {
+            this.rollingLore = 'history';
+            try {
+                const res = await fetch('{{ route('utilities.generator.background', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(this.buildLoreContextPayload())
+                });
+                const json = await res.json();
+                if (json && json.success && json.data) {
+                    this.history = json.data.summary || '';
+                }
+            } catch (e) {
+                console.error('Error rolling background history:', e);
+            }
+            this.rollingLore = '';
+        },
+
+        async rollConnections() {
+            this.rollingLore = 'connections';
+            try {
+                const res = await fetch('{{ route('utilities.generator.connections', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(this.buildLoreContextPayload())
+                });
+                const json = await res.json();
+                if (json && json.success && json.data) {
+                    this.connections = json.data.summary || '';
+                }
+            } catch (e) {
+                console.error('Error rolling connections:', e);
+            }
+            this.rollingLore = '';
+        },
+
+        async rollAllLore() {
+            this.rollingLore = 'all';
+            try {
+                const res = await fetch('{{ route('utilities.generator.full-profile', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(this.buildLoreContextPayload())
+                });
+                const json = await res.json();
+                if (json && json.success && json.data) {
+                    if (json.data.appearance && json.data.appearance.summary) {
+                        this.appearance = json.data.appearance.summary;
+                    }
+                    if (json.data.personality && json.data.personality.summary) {
+                        this.personality = json.data.personality.summary;
+                    }
+                    if (json.data.background && json.data.background.summary) {
+                        this.history = json.data.background.summary;
+                    }
+                    if (json.data.connections && json.data.connections.summary) {
+                        this.connections = json.data.connections.summary;
+                    }
+                }
+            } catch (e) {
+                console.error('Error rolling full lore profile:', e);
+            }
+            this.rollingLore = '';
+        },
+
+        clearLore() {
+            this.appearance = '';
+            this.personality = '';
+            this.history = '';
+            this.connections = '';
         },
 
         async rollAbilities(tier) {
@@ -745,6 +1071,10 @@ function npcGeneratorWizard() {
             this.social_class = 0;
             this.wealth_class = 0;
             this.equipment = '';
+            this.appearance = '';
+            this.personality = '';
+            this.history = '';
+            this.connections = '';
             this.saveMessage = '';
             this.saveError = '';
             this.generateNpc();
@@ -754,7 +1084,7 @@ function npcGeneratorWizard() {
             try {
                 const curCreature = this.creatures.find(c => c.ID == this.creature_id);
                 const curCulture = this.cultures.find(c => c.ID == this.culture_id);
-                const genderVal = (this.gender_id == 2) ? 'Female' : 'Male';
+                const genderVal = (this.gender == 2) ? 'Female' : 'Male';
                 const res = await fetch('/api/generator/name', {
                     method: 'POST',
                     headers: {
@@ -855,6 +1185,7 @@ function npcGeneratorWizard() {
             this.savingCamp = true;
             this.saveMessage = '';
             this.saveError = '';
+            this.lastSavedEncounterId = 0;
             try {
                 const res = await fetch('{{ route('utilities.npcgen.save-to-campaign', [], false) }}', {
                     method: 'POST',
@@ -885,6 +1216,10 @@ function npcGeneratorWizard() {
                         social_class: this.social_class,
                         wealth_class: this.wealth_class,
                         equipment: this.equipment,
+                        appearance: this.appearance,
+                        personality: this.personality,
+                        history: this.history,
+                        connections: this.connections,
                         config_string: this.configString,
                         statblock_html: this.statblockHtml
                     })
@@ -899,6 +1234,81 @@ function npcGeneratorWizard() {
                 this.saveError = 'Network error saving NPC: ' + (e.message || e);
             }
             this.savingCamp = false;
+        },
+
+        async saveToEncounter() {
+            if (!this.selectedCampaignId) {
+                this.saveError = 'Please select a campaign first.';
+                return;
+            }
+            this.savingEnc = true;
+            this.saveMessage = '';
+            this.saveError = '';
+            try {
+                const res = await fetch('{{ route('utilities.npcgen.save-to-encounter', [], false) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        _token: '{{ csrf_token() }}',
+                        campaign_id: this.selectedCampaignId,
+                        encounter_id: this.selectedEncounterId,
+                        new_encounter_name: this.newEncounterName,
+                        count: this.encounterCount || 1,
+                        name: this.description,
+                        creature_id: this.creature_id,
+                        str: this.str,
+                        con: this.con,
+                        dex: this.dex,
+                        int: this.int,
+                        wis: this.wis,
+                        cha: this.cha,
+                        templates: this.templates,
+                        gender: this.gender,
+                        age_cat: this.age_cat,
+                        rl_mod: this.rl_mod,
+                        size_mod: this.size_mod,
+                        culture_id: this.culture_id,
+                        background_class_id: this.background_class_id,
+                        classes: this.classes,
+                        social_class: this.social_class,
+                        wealth_class: this.wealth_class,
+                        equipment: this.equipment,
+                        appearance: this.appearance,
+                        personality: this.personality,
+                        history: this.history,
+                        connections: this.connections,
+                        config_string: this.configString,
+                        statblock_html: this.statblockHtml
+                    })
+                });
+                const data = await res.json();
+                if (data && data.success) {
+                    this.saveMessage = data.message;
+                    this.lastSavedEncounterId = Number(data.encounter_id) || 0;
+                    if (Number(this.selectedEncounterId) === 0 && data.encounter_id) {
+                        this.encounters.push({
+                            id: Number(data.encounter_id),
+                            campaign_id: Number(this.selectedCampaignId),
+                            adventure_id: null,
+                            name: data.encounter_name || (this.newEncounterName || (this.description + ' Encounter')),
+                            type: 'combat',
+                            encounter_level: 1,
+                            adventure_name: null
+                        });
+                        this.selectedEncounterId = Number(data.encounter_id);
+                        this.newEncounterName = '';
+                    }
+                } else {
+                    this.saveError = data.message || 'Error adding NPC/monster to encounter.';
+                }
+            } catch (e) {
+                this.saveError = 'Network error saving to encounter: ' + (e.message || e);
+            }
+            this.savingEnc = false;
         }
     };
 }

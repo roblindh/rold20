@@ -16,25 +16,33 @@ class ProceduralGeneratorService
     /**
      * Generate Personality
      */
-    public static function personality(?string $class = null, ?string $race = null): array
+    public static function personality(?string $class = null, ?string $race = null, array $extraParams = []): array
     {
-        return LoreGenerator::generatePersonality($class, $race);
+        return LoreGenerator::generatePersonality($class, $race, $extraParams);
     }
 
     /**
      * Generate Appearance
      */
-    public static function appearance(?string $race = null, ?string $gender = null, ?int $age = null): array
+    public static function appearance(?string $race = null, ?string $gender = null, ?int $age = null, array $extraParams = []): array
     {
-        return LoreGenerator::generateAppearance($race, $gender, $age);
+        return LoreGenerator::generateAppearance($race, $gender, $age, $extraParams);
     }
 
     /**
      * Generate Background History
      */
-    public static function background(?string $race = null, ?string $class = null, ?string $socialClass = null): array
+    public static function background(?string $race = null, ?string $class = null, ?string $socialClass = null, array $extraParams = []): array
     {
-        return LoreGenerator::generateBackgroundLore($race, $class, $socialClass);
+        return LoreGenerator::generateBackgroundLore($race, $class, $socialClass, $extraParams);
+    }
+
+    /**
+     * Generate Connections & Hooks
+     */
+    public static function connections(array $params = []): array
+    {
+        return LoreGenerator::generateConnections($params);
     }
 
     /**
@@ -101,10 +109,10 @@ class ProceduralGeneratorService
     }
 
     /**
-     * Generate Magic Item Lore
+     * Generate Magic Item Lore (Appearance & Background History)
      */
-    public static function itemLore(?string $itemName = null, int $powerLevel = 1): array
+    public static function itemLore(?string $itemName = null, int $powerLevel = 1, array $extraParams = []): array
     {
-        return MagicItemLoreGenerator::generateItemLore($itemName, $powerLevel);
+        return MagicItemLoreGenerator::generateItemLore($itemName, $powerLevel, $extraParams);
     }
 }

@@ -136,6 +136,8 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/npcgen/loadout', [UtilityController::class, 'generateBlueprintLoadout']);
     Route::post('/npc-generator/save-to-campaign', [UtilityController::class, 'saveNpcToCampaign'])->name('npcgen.save-to-campaign');
     Route::post('/npcgen/save-to-campaign', [UtilityController::class, 'saveNpcToCampaign']);
+    Route::post('/npc-generator/save-to-encounter', [UtilityController::class, 'saveNpcToEncounter'])->name('npcgen.save-to-encounter');
+    Route::post('/npcgen/save-to-encounter', [UtilityController::class, 'saveNpcToEncounter']);
 
     Route::get('/item-generator', [UtilityController::class, 'itemGenerator'])->name('itemgen');
     Route::get('/itemgen', [UtilityController::class, 'itemGenerator']);
@@ -151,6 +153,8 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/itemgen/save-to-character', [UtilityController::class, 'saveItemToCharacter']);
     Route::post('/item-generator/save-to-campaign', [UtilityController::class, 'saveItemToCampaign'])->name('itemgen.save-to-campaign');
     Route::post('/itemgen/save-to-campaign', [UtilityController::class, 'saveItemToCampaign']);
+    Route::post('/item-generator/save-to-encounter', [UtilityController::class, 'saveItemToEncounter'])->name('itemgen.save-to-encounter');
+    Route::post('/itemgen/save-to-encounter', [UtilityController::class, 'saveItemToEncounter']);
 
     Route::get('/treasure-generator', [UtilityController::class, 'treasureGenerator'])->name('treasuregen');
     Route::get('/treasuregen', [UtilityController::class, 'treasureGenerator']);
@@ -196,6 +200,7 @@ Route::prefix('utilities')->name('utilities.')->group(function () {
     Route::post('/generator/personality', [UtilityController::class, 'generateProceduralPersonality'])->name('generator.personality');
     Route::post('/generator/appearance', [UtilityController::class, 'generateProceduralAppearance'])->name('generator.appearance');
     Route::post('/generator/background', [UtilityController::class, 'generateProceduralBackground'])->name('generator.background');
+    Route::post('/generator/connections', [UtilityController::class, 'generateProceduralConnections'])->name('generator.connections');
     Route::post('/generator/full-profile', [UtilityController::class, 'generateProceduralFullProfile'])->name('generator.full-profile');
     Route::post('/generator/adventure', [UtilityController::class, 'generateProceduralAdventure'])->name('generator.adventure');
     Route::post('/generator/encounter', [UtilityController::class, 'generateProceduralEncounter'])->name('generator.encounter');
@@ -211,6 +216,7 @@ Route::prefix('api/generator')->name('api.generator.')->group(function () {
     Route::post('/personality', [UtilityController::class, 'generateProceduralPersonality'])->name('personality');
     Route::post('/appearance', [UtilityController::class, 'generateProceduralAppearance'])->name('appearance');
     Route::post('/background', [UtilityController::class, 'generateProceduralBackground'])->name('background');
+    Route::post('/connections', [UtilityController::class, 'generateProceduralConnections'])->name('connections');
     Route::post('/full-profile', [UtilityController::class, 'generateProceduralFullProfile'])->name('full-profile');
     Route::post('/adventure', [UtilityController::class, 'generateProceduralAdventure'])->name('adventure');
     Route::post('/encounter', [UtilityController::class, 'generateProceduralEncounter'])->name('encounter');

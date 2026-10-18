@@ -33,6 +33,8 @@
                         <input type="hidden" :name="'items[' + idx + '][traits]'" :value="item.traits || item.Traits || ''">
                         <input type="hidden" :name="'items[' + idx + '][mods]'" :value="item.mods || item.Mods || ''">
                         <input type="hidden" :name="'items[' + idx + '][config]'" :value="item.config || item.Config || item.config_string || ''">
+                        <input type="hidden" :name="'items[' + idx + '][appearance]'" :value="item.appearance || item.Appearance || ''">
+                        <input type="hidden" :name="'items[' + idx + '][history]'" :value="item.history || item.History || ''">
                         <input type="hidden" :name="'items[' + idx + '][container_id]'" :value="item.container_id || ''">
                         <input type="hidden" :name="'items[' + idx + '][slot]'" :value="item.slot || ''">
                         <template x-for="(locVal, cIdx) in (item.locations || [1,1,1,1,1])" :key="cIdx">
@@ -530,6 +532,44 @@
                             <strong>Config:</strong> <span x-text="selectedEquipmentPreviewItem.config"></span>
                         </div>
                     </template>
+
+                    <!-- Item Lore: Appearance & Background History -->
+                    <div class="bg-amber-50/60 p-2.5 rounded-lg border border-amber-200 space-y-2" x-data="{ editingModalItemLore: false }">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-amber-950 flex items-center gap-1">
+                                <span>🏺</span> Item Lore (Appearance &amp; History)
+                            </span>
+                            <button type="button" @click="editingModalItemLore = !editingModalItemLore"
+                                    class="text-[10px] font-bold px-2 py-0.5 rounded bg-white border border-amber-300 text-amber-900 hover:bg-amber-100 cursor-pointer"
+                                    x-text="editingModalItemLore ? 'Done' : ((selectedEquipmentPreviewItem.appearance || selectedEquipmentPreviewItem.history) ? '✏️ Edit Lore' : '➕ Add Lore')">
+                            </button>
+                        </div>
+                        <div x-show="!editingModalItemLore && (selectedEquipmentPreviewItem.appearance || selectedEquipmentPreviewItem.history)" class="space-y-1 text-xs text-slate-800">
+                            <template x-if="selectedEquipmentPreviewItem.appearance">
+                                <div><strong class="text-amber-950">👁️ Appearance:</strong> <span x-text="selectedEquipmentPreviewItem.appearance"></span></div>
+                            </template>
+                            <template x-if="selectedEquipmentPreviewItem.history">
+                                <div><strong class="text-amber-950">📜 History:</strong> <span x-text="selectedEquipmentPreviewItem.history"></span></div>
+                            </template>
+                        </div>
+                        <div x-show="!editingModalItemLore && !selectedEquipmentPreviewItem.appearance && !selectedEquipmentPreviewItem.history" class="text-[11px] text-slate-500 italic">
+                            No custom appearance or background history recorded for this item.
+                        </div>
+                        <div x-show="editingModalItemLore" class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase text-amber-950 mb-0.5">👁️ Appearance &amp; Craftsmanship</label>
+                                <textarea x-model="selectedEquipmentPreviewItem.appearance" rows="3"
+                                          placeholder="Physical craftsmanship, material details, and visual or magical traits..."
+                                          class="w-full px-2 py-1 bg-white border border-amber-300 rounded text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase text-amber-950 mb-0.5">📜 Background History &amp; Provenance</label>
+                                <textarea x-model="selectedEquipmentPreviewItem.history" rows="3"
+                                          placeholder="Who forged or commissioned the item, past wielders, and provenance..."
+                                          class="w-full px-2 py-1 bg-white border border-amber-300 rounded text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-amber-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Full Description -->
                     <div class="text-xs text-slate-700 bg-white/80 p-2 rounded-lg border border-slate-200 whitespace-pre-line leading-relaxed"
