@@ -406,6 +406,15 @@
 
 <?php show_sizecategories(); ?>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/core_size_comparison.jpg" alt="Creature size comparison from Fine to Colossal" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Scale comparison across all nine creature size categories: Puppeteer (Fine), Toad (Diminutive), Hawk (Tiny), Goblin (Small), Human (Medium), Ogre (Large), Red Dragon (Huge), Purple Worm (Gargantuan), and the colossal Tarrasque (Colossal).
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <h4 id="BodyType">Body Type</h4>
 <p>
     <em>Body Type (Body):</em> Describes a creature's anatomical configuration and physical posture (e.g., bipedal, quadrupedal, avian, serpentine). Body type dictates limb availability, equipment slot configuration, stability against trip attacks, and carrying capacity multipliers.
@@ -948,6 +957,15 @@
 <p class="mt-3">
     <em>Key Milestones:</em> Beating a target threshold by <strong>10 or more</strong> constitutes an exceptional success (halving damage resistance on attacks, unlocking critical insights, or doubling crafting speeds). Beating a Defense by <strong>20 or more</strong> (modified by Critical Hit Resistance) lands a devastating Critical Hit. Conversely, missing by 10 or more triggers exceptional failure (jamming mechanisms, ruining crafting materials, or exposing defenses).
 </p>
+
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/core_stealth_success_failure.jpg" alt="Critical success versus critical failure on a stealth check" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        Degrees of success and failure turn the tide: while a master elven rogue glides through shadows without a whisper, an unfortunate stumble alerts the entire castle guard.
+    </figcaption>
+</figure>
+<?php endif; ?>
 
 <h4 id="Retrying">Trying Again</h4>
 <p>

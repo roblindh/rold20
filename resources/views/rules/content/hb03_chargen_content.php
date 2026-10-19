@@ -380,6 +380,15 @@
     Characters are assumed to train, study, and refine their techniques during downtime between adventures, seamlessly integrating their newly acquired capabilities.
 </p>
 
+<?php if (empty($isPrintableRuleset)): ?>
+<figure class="rules-illustration my-8 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+    <img src="/images/rules/chargen_bard_progression.jpg" alt="A bard progressing across experience levels from novice to epic master" class="w-full h-auto max-h-[460px] object-cover rounded-t-xl" loading="lazy">
+    <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+        The journey of a hero: a bard advancing through character levels&mdash;from a humble novice tavern minstrel (Level 1) to seasoned adventurer (Level 6), master spellsinger (Level 12), and legendary epic arch-bard (Level 20).
+    </figcaption>
+</figure>
+<?php endif; ?>
+
 <div class="optionalrule">
     <p>
         <em id="LevelTraining">Level Training</em> (optional rule):
