@@ -1,7 +1,26 @@
 <?php
 
 function show_classes() {
-    global $db_server, $db_user, $db_password, $db_name;
+    global $db_server, $db_user, $db_password, $db_name, $isPrintableRuleset;
+
+    $configCaptions = [
+        'bard' => 'Bard Configurations (left to right): Jester, Diplomat, Chronicler, Skald, and Spy',
+        'cleric' => 'Cleric Configurations (left to right): Cleric of Destruction, Cleric of Knowledge, Cleric of Life, Cleric of War, and Inquisitor',
+        'druid' => 'Druid Configurations (left to right): Classic Druid, Elemental Druid, and Wild Shaper',
+        'fighter' => 'Fighter Configurations (left to right): Archer, Barbarian, Duelist, Gladiator, and Knight',
+        'monk' => 'Monk Configurations (left to right): Student of Air, Student of Earth, Student of Fire, and Student of Water',
+        'psion' => 'Psion Configurations (left to right): Egoist, Nomad, Savant, Shaper, and Telepath',
+        'psiwarrior' => 'Psiwarrior Configurations (left to right): Iron Mind, Classic Psiwarrior, Infiltrator, and Soulknife',
+        'ranger' => 'Ranger Configurations (left to right): Arcane Archer, Beast Master, Bounty Hunter, and Scout',
+        'rogue' => 'Rogue Configurations (left to right): Assassin, Smuggler, Spy, and Thug',
+        'templar' => 'Templar Configurations (left to right): Templar of Freedom, Templar of Honor, Templar of Slaughter, and Templar of Tyranny',
+        'wizard' => 'Wizard Configurations (left to right): Abjurer, Battlemage, Diviner, Necromancer, and Pyromancer',
+        'adept' => 'Adept Configurations (left to right): Cultist, Shaman, and Witch Doctor',
+        'aristocrat' => 'Aristocrat Configurations (left to right): Duelist, Politician, and Noble',
+        'commoner' => 'Commoner Configurations (left to right): Laborer, Farmer, and Servant',
+        'expert' => 'Expert Configurations (left to right): Craftsman, Merchant, and Sage',
+        'warrior' => 'Warrior Configurations (left to right): Guard, Savage, and Spearman Militia',
+    ];
 
     $db = Database::getInstance(); $db->connect($db_server, $db_user, $db_password, $db_name);
     $query = "SELECT * FROM classes";
@@ -47,6 +66,14 @@ function show_classes() {
             $candRel = 'images/classes/' . $classSlug . '.' . $ext;
             if (file_exists(dirname(__DIR__) . '/public/' . $candRel)) {
                 $imgRel = $candRel;
+                break;
+            }
+        }
+        $configImgRel = null;
+        foreach (['jpg', 'jpeg', 'png', 'webp'] as $ext) {
+            $candConfigRel = 'images/classes/' . $classSlug . '_configs.' . $ext;
+            if (file_exists(dirname(__DIR__) . '/public/' . $candConfigRel)) {
+                $configImgRel = $candConfigRel;
                 break;
             }
         }
@@ -141,6 +168,17 @@ function show_classes() {
             <?php } ?>
         </tbody></table>
         <?php
+        if (!empty($configImgRel) && empty($isPrintableRuleset)) {
+            $captionText = $configCaptions[$classSlug] ?? ($row['Name'] . ' Configurations');
+            ?>
+            <figure class="rules-illustration my-6 rounded-xl overflow-hidden shadow-lg border border-amber-950/20 bg-stone-50 dark:bg-stone-900/40">
+                <img src="/<?php echo $configImgRel; ?>" alt="<?php echo htmlspecialchars($row['Name'], ENT_QUOTES); ?> Configurations" class="w-full h-auto object-cover rounded-t-xl" style="aspect-ratio: 3 / 1;" loading="lazy">
+                <figcaption class="px-4 py-2.5 text-center text-xs italic text-stone-600 dark:text-stone-400 bg-stone-100/80 dark:bg-stone-800/80 border-t border-amber-950/10">
+                    <?php echo $captionText; ?>
+                </figcaption>
+            </figure>
+            <?php
+        }
         $query2 = "SELECT * FROM classconfigs WHERE ClassID=" . $row['ID'] . " AND ShowPCGen>0 ORDER BY Name";
         $result2 = $db->query($query2);
 
